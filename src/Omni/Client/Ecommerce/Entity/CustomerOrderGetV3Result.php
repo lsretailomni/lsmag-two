@@ -25,37 +25,37 @@ class CustomerOrderGetV3Result extends \Magento\Catalog\Model\AbstractModel impl
     public const POINTS_USED = 'pointsUsed';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -79,37 +79,37 @@ class CustomerOrderGetV3Result extends \Magento\Catalog\Model\AbstractModel impl
     }
 
     /**
-     * @param float $pointsEarned
+     * @param ?float $pointsEarned
      * @return $this
      */
-    public function setPointsEarned($pointsEarned)
+    public function setPointsEarned(?float $pointsEarned)
     {
         $this->setData(self::POINTS_EARNED, $pointsEarned);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPointsEarned()
+    public function getPointsEarned() : ?float
     {
         return $this->getData(self::POINTS_EARNED);
     }
 
     /**
-     * @param float $pointsUsed
+     * @param ?float $pointsUsed
      * @return $this
      */
-    public function setPointsUsed($pointsUsed)
+    public function setPointsUsed(?float $pointsUsed)
     {
         $this->setData(self::POINTS_USED, $pointsUsed);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPointsUsed()
+    public function getPointsUsed() : ?float
     {
         return $this->getData(self::POINTS_USED);
     }

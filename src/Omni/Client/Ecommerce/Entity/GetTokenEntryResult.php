@@ -25,91 +25,91 @@ class GetTokenEntryResult extends \Magento\Catalog\Model\AbstractModel implement
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $tokenId
+     * @param ?string $tokenId
      * @return $this
      */
-    public function setTokenId($tokenId)
+    public function setTokenId(?string $tokenId)
     {
         $this->setData(self::TOKEN_ID, $tokenId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTokenId()
+    public function getTokenId() : ?string
     {
         return $this->getData(self::TOKEN_ID);
     }
 
     /**
-     * @param date $expiryDate
+     * @param ?string $expiryDate
      * @return $this
      */
-    public function setExpiryDate($expiryDate)
+    public function setExpiryDate(?string $expiryDate)
     {
         $this->setData(self::EXPIRY_DATE, $expiryDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getExpiryDate()
+    public function getExpiryDate() : ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
 
     /**
-     * @param string $result
+     * @param ?string $result
      * @return $this
      */
-    public function setResult($result)
+    public function setResult(?string $result)
     {
         $this->setData(self::RESULT, $result);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResult()
+    public function getResult() : ?string
     {
         return $this->getData(self::RESULT);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

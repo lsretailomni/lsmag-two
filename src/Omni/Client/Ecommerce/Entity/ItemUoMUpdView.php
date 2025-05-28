@@ -195,12 +195,12 @@ class ItemUoMUpdView extends AbstractModel
         return $this->setData(self::LSC_COUNT_AS_1_ON_RECEIPT, $value);
     }
 
-    public function getLscPosSelection(): ?string
+    public function getLscPosSelection(): ?int
     {
         return $this->getData(self::LSC_POS_SELECTION);
     }
 
-    public function setLscPosSelection(?string $value)
+    public function setLscPosSelection(?int $value)
     {
         return $this->setData(self::LSC_POS_SELECTION, $value);
     }
@@ -215,12 +215,12 @@ class ItemUoMUpdView extends AbstractModel
         return $this->setData(self::LSC_ORDER, $value);
     }
 
-    public function getLscEcomSelection(): ?string
+    public function getLscEcomSelection(): ?int
     {
         return $this->getData(self::LSC_ECOM_SELECTION);
     }
 
-    public function setLscEcomSelection(?string $value)
+    public function setLscEcomSelection(?int $value)
     {
         return $this->setData(self::LSC_ECOM_SELECTION, $value);
     }
@@ -235,12 +235,12 @@ class ItemUoMUpdView extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -255,12 +255,12 @@ class ItemUoMUpdView extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

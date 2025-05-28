@@ -21,73 +21,73 @@ class SPGOrderCheckCOPayment extends \Magento\Catalog\Model\AbstractModel
     public const AUTORIZATION_CODE = 'AutorizationCode';
 
     /**
-     * @param string $CardType
+     * @param ?string $CardType
      * @return $this
      */
-    public function setCardType($CardType)
+    public function setCardType(?string $CardType)
     {
         $this->setData(self::CARD_TYPE, $CardType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardType()
+    public function getCardType() : ?string
     {
         return $this->getData(self::CARD_TYPE);
     }
 
     /**
-     * @param string $ExternalRef
+     * @param ?string $ExternalRef
      * @return $this
      */
-    public function setExternalRef($ExternalRef)
+    public function setExternalRef(?string $ExternalRef)
     {
         $this->setData(self::EXTERNAL_REF, $ExternalRef);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExternalRef()
+    public function getExternalRef() : ?string
     {
         return $this->getData(self::EXTERNAL_REF);
     }
 
     /**
-     * @param float $PaymentAmount
+     * @param ?float $PaymentAmount
      * @return $this
      */
-    public function setPaymentAmount($PaymentAmount)
+    public function setPaymentAmount(?float $PaymentAmount)
     {
         $this->setData(self::PAYMENT_AMOUNT, $PaymentAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPaymentAmount()
+    public function getPaymentAmount() : ?float
     {
         return $this->getData(self::PAYMENT_AMOUNT);
     }
 
     /**
-     * @param string $AutorizationCode
+     * @param ?string $AutorizationCode
      * @return $this
      */
-    public function setAutorizationCode($AutorizationCode)
+    public function setAutorizationCode(?string $AutorizationCode)
     {
         $this->setData(self::AUTORIZATION_CODE, $AutorizationCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAutorizationCode()
+    public function getAutorizationCode() : ?string
     {
         return $this->getData(self::AUTORIZATION_CODE);
     }

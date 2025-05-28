@@ -47,127 +47,127 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $SecurityToken
+     * @param ?string $SecurityToken
      * @return $this
      */
-    public function setSecurityToken($SecurityToken)
+    public function setSecurityToken(?string $SecurityToken)
     {
         $this->setData(self::SECURITY_TOKEN, $SecurityToken);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSecurityToken()
+    public function getSecurityToken() : ?string
     {
         return $this->getData(self::SECURITY_TOKEN);
     }
 
     /**
-     * @param string $FriendlyName
+     * @param ?string $FriendlyName
      * @return $this
      */
-    public function setFriendlyName($FriendlyName)
+    public function setFriendlyName(?string $FriendlyName)
     {
         $this->setData(self::FRIENDLY_NAME, $FriendlyName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFriendlyName()
+    public function getFriendlyName() : ?string
     {
         return $this->getData(self::FRIENDLY_NAME);
     }
 
     /**
-     * @param string $Status
+     * @param ?string $Status
      * @return $this
      */
-    public function setStatus($Status)
+    public function setStatus(?string $Status)
     {
         $this->setData(self::STATUS, $Status);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatus()
+    public function getStatus() : ?string
     {
         return $this->getData(self::STATUS);
     }
 
     /**
-     * @param string $ReasonBlocked
+     * @param ?string $ReasonBlocked
      * @return $this
      */
-    public function setReasonBlocked($ReasonBlocked)
+    public function setReasonBlocked(?string $ReasonBlocked)
     {
         $this->setData(self::REASON_BLOCKED, $ReasonBlocked);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReasonBlocked()
+    public function getReasonBlocked() : ?string
     {
         return $this->getData(self::REASON_BLOCKED);
     }
 
     /**
-     * @param date $DateBlocked
+     * @param ?string $DateBlocked
      * @return $this
      */
-    public function setDateBlocked($DateBlocked)
+    public function setDateBlocked(?string $DateBlocked)
     {
         $this->setData(self::DATE_BLOCKED, $DateBlocked);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDateBlocked()
+    public function getDateBlocked() : ?string
     {
         return $this->getData(self::DATE_BLOCKED);
     }
 
     /**
-     * @param string $BlockedBy
+     * @param ?string $BlockedBy
      * @return $this
      */
-    public function setBlockedBy($BlockedBy)
+    public function setBlockedBy(?string $BlockedBy)
     {
         $this->setData(self::BLOCKED_BY, $BlockedBy);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBlockedBy()
+    public function getBlockedBy() : ?string
     {
         return $this->getData(self::BLOCKED_BY);
     }
 
     /**
-     * @param string $SystemId
+     * @param ?string $SystemId
      * @return $this
      */
-    public function setSystemId($SystemId)
+    public function setSystemId(?string $SystemId)
     {
         $this->setData(self::SYSTEM_ID, $SystemId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSystemId()
+    public function getSystemId() : ?string
     {
         return $this->getData(self::SYSTEM_ID);
     }

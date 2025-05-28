@@ -21,37 +21,37 @@ class CustomerOrderGetCOLineDataEntryV3 extends \Magento\Catalog\Model\AbstractM
     public const LINE_NO = 'LineNo';
 
     /**
-     * @param string $DataEntryType
+     * @param ?string $DataEntryType
      * @return $this
      */
-    public function setDataEntryType($DataEntryType)
+    public function setDataEntryType(?string $DataEntryType)
     {
         $this->setData(self::DATA_ENTRY_TYPE, $DataEntryType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDataEntryType()
+    public function getDataEntryType() : ?string
     {
         return $this->getData(self::DATA_ENTRY_TYPE);
     }
 
     /**
-     * @param string $DataEntryCode
+     * @param ?string $DataEntryCode
      * @return $this
      */
-    public function setDataEntryCode($DataEntryCode)
+    public function setDataEntryCode(?string $DataEntryCode)
     {
         $this->setData(self::DATA_ENTRY_CODE, $DataEntryCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDataEntryCode()
+    public function getDataEntryCode() : ?string
     {
         return $this->getData(self::DATA_ENTRY_CODE);
     }

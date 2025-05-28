@@ -55,37 +55,37 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPOSTerminalNo(?string $POSTerminalNo)
     {
         $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPOSTerminalNo() : ?string
     {
         return $this->getData(self::P_O_S_TERMINAL_NO);
     }
@@ -127,289 +127,289 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $TaxAreaCode
+     * @param ?string $TaxAreaCode
      * @return $this
      */
-    public function setTaxAreaCode($TaxAreaCode)
+    public function setTaxAreaCode(?string $TaxAreaCode)
     {
         $this->setData(self::TAX_AREA_CODE, $TaxAreaCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTaxAreaCode()
+    public function getTaxAreaCode() : ?string
     {
         return $this->getData(self::TAX_AREA_CODE);
     }
 
     /**
-     * @param string $TaxJurisdictionCode
+     * @param ?string $TaxJurisdictionCode
      * @return $this
      */
-    public function setTaxJurisdictionCode($TaxJurisdictionCode)
+    public function setTaxJurisdictionCode(?string $TaxJurisdictionCode)
     {
         $this->setData(self::TAX_JURISDICTION_CODE, $TaxJurisdictionCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTaxJurisdictionCode()
+    public function getTaxJurisdictionCode() : ?string
     {
         return $this->getData(self::TAX_JURISDICTION_CODE);
     }
 
     /**
-     * @param string $TaxGroupCode
+     * @param ?string $TaxGroupCode
      * @return $this
      */
-    public function setTaxGroupCode($TaxGroupCode)
+    public function setTaxGroupCode(?string $TaxGroupCode)
     {
         $this->setData(self::TAX_GROUP_CODE, $TaxGroupCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTaxGroupCode()
+    public function getTaxGroupCode() : ?string
     {
         return $this->getData(self::TAX_GROUP_CODE);
     }
 
     /**
-     * @param boolean $ExpenseCapitalize
+     * @param ?bool $ExpenseCapitalize
      * @return $this
      */
-    public function setExpenseCapitalize($ExpenseCapitalize)
+    public function setExpenseCapitalize(?bool $ExpenseCapitalize)
     {
         $this->setData(self::EXPENSE_CAPITALIZE, $ExpenseCapitalize);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getExpenseCapitalize()
+    public function getExpenseCapitalize() : ?bool
     {
         return $this->getData(self::EXPENSE_CAPITALIZE);
     }
 
     /**
-     * @param string $TaxType
+     * @param ?string $TaxType
      * @return $this
      */
-    public function setTaxType($TaxType)
+    public function setTaxType(?string $TaxType)
     {
         $this->setData(self::TAX_TYPE, $TaxType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTaxType()
+    public function getTaxType() : ?string
     {
         return $this->getData(self::TAX_TYPE);
     }
 
     /**
-     * @param boolean $UseTax
+     * @param ?bool $UseTax
      * @return $this
      */
-    public function setUseTax($UseTax)
+    public function setUseTax(?bool $UseTax)
     {
         $this->setData(self::USE_TAX, $UseTax);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getUseTax()
+    public function getUseTax() : ?bool
     {
         return $this->getData(self::USE_TAX);
     }
 
     /**
-     * @param boolean $Positive
+     * @param ?bool $Positive
      * @return $this
      */
-    public function setPositive($Positive)
+    public function setPositive(?bool $Positive)
     {
         $this->setData(self::POSITIVE, $Positive);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getPositive()
+    public function getPositive() : ?bool
     {
         return $this->getData(self::POSITIVE);
     }
 
     /**
-     * @param boolean $TaxLiable
+     * @param ?bool $TaxLiable
      * @return $this
      */
-    public function setTaxLiable($TaxLiable)
+    public function setTaxLiable(?bool $TaxLiable)
     {
         $this->setData(self::TAX_LIABLE, $TaxLiable);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getTaxLiable()
+    public function getTaxLiable() : ?bool
     {
         return $this->getData(self::TAX_LIABLE);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param float $TaxPercentage
+     * @param ?float $TaxPercentage
      * @return $this
      */
-    public function setTaxPercentage($TaxPercentage)
+    public function setTaxPercentage(?float $TaxPercentage)
     {
         $this->setData(self::TAX_PERCENTAGE, $TaxPercentage);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTaxPercentage()
+    public function getTaxPercentage() : ?float
     {
         return $this->getData(self::TAX_PERCENTAGE);
     }
 
     /**
-     * @param float $TaxBaseAmount
+     * @param ?float $TaxBaseAmount
      * @return $this
      */
-    public function setTaxBaseAmount($TaxBaseAmount)
+    public function setTaxBaseAmount(?float $TaxBaseAmount)
     {
         $this->setData(self::TAX_BASE_AMOUNT, $TaxBaseAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTaxBaseAmount()
+    public function getTaxBaseAmount() : ?float
     {
         return $this->getData(self::TAX_BASE_AMOUNT);
     }
 
     /**
-     * @param float $TaxAmount
+     * @param ?float $TaxAmount
      * @return $this
      */
-    public function setTaxAmount($TaxAmount)
+    public function setTaxAmount(?float $TaxAmount)
     {
         $this->setData(self::TAX_AMOUNT, $TaxAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTaxAmount()
+    public function getTaxAmount() : ?float
     {
         return $this->getData(self::TAX_AMOUNT);
     }
 
     /**
-     * @param float $TaxDifference
+     * @param ?float $TaxDifference
      * @return $this
      */
-    public function setTaxDifference($TaxDifference)
+    public function setTaxDifference(?float $TaxDifference)
     {
         $this->setData(self::TAX_DIFFERENCE, $TaxDifference);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTaxDifference()
+    public function getTaxDifference() : ?float
     {
         return $this->getData(self::TAX_DIFFERENCE);
     }
 
     /**
-     * @param string $AvaTaxJurisdiction
+     * @param ?string $AvaTaxJurisdiction
      * @return $this
      */
-    public function setAvaTaxJurisdiction($AvaTaxJurisdiction)
+    public function setAvaTaxJurisdiction(?string $AvaTaxJurisdiction)
     {
         $this->setData(self::AVA_TAX_JURISDICTION, $AvaTaxJurisdiction);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAvaTaxJurisdiction()
+    public function getAvaTaxJurisdiction() : ?string
     {
         return $this->getData(self::AVA_TAX_JURISDICTION);
     }
 
     /**
-     * @param string $AvaTaxName
+     * @param ?string $AvaTaxName
      * @return $this
      */
-    public function setAvaTaxName($AvaTaxName)
+    public function setAvaTaxName(?string $AvaTaxName)
     {
         $this->setData(self::AVA_TAX_NAME, $AvaTaxName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAvaTaxName()
+    public function getAvaTaxName() : ?string
     {
         return $this->getData(self::AVA_TAX_NAME);
     }
 
     /**
-     * @param string $AvaTaxCustomerUsageType
+     * @param ?string $AvaTaxCustomerUsageType
      * @return $this
      */
-    public function setAvaTaxCustomerUsageType($AvaTaxCustomerUsageType)
+    public function setAvaTaxCustomerUsageType(?string $AvaTaxCustomerUsageType)
     {
         $this->setData(self::AVA_TAX_CUSTOMER_USAGE_TYPE, $AvaTaxCustomerUsageType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAvaTaxCustomerUsageType()
+    public function getAvaTaxCustomerUsageType() : ?string
     {
         return $this->getData(self::AVA_TAX_CUSTOMER_USAGE_TYPE);
     }

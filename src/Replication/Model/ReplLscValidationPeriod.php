@@ -29,6 +29,446 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\Ecommerce\Entity\LSCValida
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getId()
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ID]);
+    }
+
+    public function setId($value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ID], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getStartingDate() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STARTING_DATE]);
+    }
+
+    public function setStartingDate(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STARTING_DATE], $value);
+    }
+
+    public function getEndingDate() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ENDING_DATE]);
+    }
+
+    public function setEndingDate(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ENDING_DATE], $value);
+    }
+
+    public function getStartingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STARTING_TIME]);
+    }
+
+    public function setStartingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STARTING_TIME], $value);
+    }
+
+    public function getEndingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ENDING_TIME]);
+    }
+
+    public function setEndingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ENDING_TIME], $value);
+    }
+
+    public function getTimeWithinBounds() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TIME_WITHIN_BOUNDS]);
+    }
+
+    public function setTimeWithinBounds(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TIME_WITHIN_BOUNDS], $value);
+    }
+
+    public function getMondayStartingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MONDAY_STARTING_TIME]);
+    }
+
+    public function setMondayStartingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MONDAY_STARTING_TIME], $value);
+    }
+
+    public function getMondayEndingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MONDAY_ENDING_TIME]);
+    }
+
+    public function setMondayEndingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MONDAY_ENDING_TIME], $value);
+    }
+
+    public function getMonTimeWithinBounds() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MON_TIME_WITHIN_BOUNDS]);
+    }
+
+    public function setMonTimeWithinBounds(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MON_TIME_WITHIN_BOUNDS], $value);
+    }
+
+    public function getTuesdayStartingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TUESDAY_STARTING_TIME]);
+    }
+
+    public function setTuesdayStartingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TUESDAY_STARTING_TIME], $value);
+    }
+
+    public function getTuesdayEndingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TUESDAY_ENDING_TIME]);
+    }
+
+    public function setTuesdayEndingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TUESDAY_ENDING_TIME], $value);
+    }
+
+    public function getTueTimeWithinBounds() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TUE_TIME_WITHIN_BOUNDS]);
+    }
+
+    public function setTueTimeWithinBounds(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TUE_TIME_WITHIN_BOUNDS], $value);
+    }
+
+    public function getWednesdayStartingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::WEDNESDAY_STARTING_TIME]);
+    }
+
+    public function setWednesdayStartingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::WEDNESDAY_STARTING_TIME], $value);
+    }
+
+    public function getWednesdayEndingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::WEDNESDAY_ENDING_TIME]);
+    }
+
+    public function setWednesdayEndingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::WEDNESDAY_ENDING_TIME], $value);
+    }
+
+    public function getWedTimeWithinBounds() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::WED_TIME_WITHIN_BOUNDS]);
+    }
+
+    public function setWedTimeWithinBounds(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::WED_TIME_WITHIN_BOUNDS], $value);
+    }
+
+    public function getThursdayStartingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::THURSDAY_STARTING_TIME]);
+    }
+
+    public function setThursdayStartingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::THURSDAY_STARTING_TIME], $value);
+    }
+
+    public function getThursdayEndingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::THURSDAY_ENDING_TIME]);
+    }
+
+    public function setThursdayEndingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::THURSDAY_ENDING_TIME], $value);
+    }
+
+    public function getThuTimeWithinBounds() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::THU_TIME_WITHIN_BOUNDS]);
+    }
+
+    public function setThuTimeWithinBounds(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::THU_TIME_WITHIN_BOUNDS], $value);
+    }
+
+    public function getFridayStartingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FRIDAY_STARTING_TIME]);
+    }
+
+    public function setFridayStartingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FRIDAY_STARTING_TIME], $value);
+    }
+
+    public function getFridayEndingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FRIDAY_ENDING_TIME]);
+    }
+
+    public function setFridayEndingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FRIDAY_ENDING_TIME], $value);
+    }
+
+    public function getFriTimeWithinBounds() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FRI_TIME_WITHIN_BOUNDS]);
+    }
+
+    public function setFriTimeWithinBounds(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FRI_TIME_WITHIN_BOUNDS], $value);
+    }
+
+    public function getSaturdayStartingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SATURDAY_STARTING_TIME]);
+    }
+
+    public function setSaturdayStartingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SATURDAY_STARTING_TIME], $value);
+    }
+
+    public function getSaturdayEndingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SATURDAY_ENDING_TIME]);
+    }
+
+    public function setSaturdayEndingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SATURDAY_ENDING_TIME], $value);
+    }
+
+    public function getSatTimeWithinBounds() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SAT_TIME_WITHIN_BOUNDS]);
+    }
+
+    public function setSatTimeWithinBounds(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SAT_TIME_WITHIN_BOUNDS], $value);
+    }
+
+    public function getSundayStartingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SUNDAY_STARTING_TIME]);
+    }
+
+    public function setSundayStartingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SUNDAY_STARTING_TIME], $value);
+    }
+
+    public function getSundayEndingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SUNDAY_ENDING_TIME]);
+    }
+
+    public function setSundayEndingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SUNDAY_ENDING_TIME], $value);
+    }
+
+    public function getSunTimeWithinBounds() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SUN_TIME_WITHIN_BOUNDS]);
+    }
+
+    public function setSunTimeWithinBounds(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SUN_TIME_WITHIN_BOUNDS], $value);
+    }
+
+    public function getEndingTimeAfterMidnight() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ENDING_TIME_AFTER_MIDNIGHT]);
+    }
+
+    public function setEndingTimeAfterMidnight(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ENDING_TIME_AFTER_MIDNIGHT], $value);
+    }
+
+    public function getMonEndTimeAfterMidnight() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MON_END_TIME_AFTER_MIDNIGHT]);
+    }
+
+    public function setMonEndTimeAfterMidnight(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MON_END_TIME_AFTER_MIDNIGHT], $value);
+    }
+
+    public function getTueEndTimeAfterMidnight() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TUE_END_TIME_AFTER_MIDNIGHT]);
+    }
+
+    public function setTueEndTimeAfterMidnight(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TUE_END_TIME_AFTER_MIDNIGHT], $value);
+    }
+
+    public function getWedEndTimeAfterMidnight() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::WED_END_TIME_AFTER_MIDNIGHT]);
+    }
+
+    public function setWedEndTimeAfterMidnight(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::WED_END_TIME_AFTER_MIDNIGHT], $value);
+    }
+
+    public function getThuEndTimeAfterMidnight() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::THU_END_TIME_AFTER_MIDNIGHT]);
+    }
+
+    public function setThuEndTimeAfterMidnight(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::THU_END_TIME_AFTER_MIDNIGHT], $value);
+    }
+
+    public function getFriEndTimeAfterMidnight() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FRI_END_TIME_AFTER_MIDNIGHT]);
+    }
+
+    public function setFriEndTimeAfterMidnight(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FRI_END_TIME_AFTER_MIDNIGHT], $value);
+    }
+
+    public function getSatEndTimeAfterMidnight() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SAT_END_TIME_AFTER_MIDNIGHT]);
+    }
+
+    public function setSatEndTimeAfterMidnight(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SAT_END_TIME_AFTER_MIDNIGHT], $value);
+    }
+
+    public function getSunEndTimeAfterMidnight() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SUN_END_TIME_AFTER_MIDNIGHT]);
+    }
+
+    public function setSunEndTimeAfterMidnight(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SUN_END_TIME_AFTER_MIDNIGHT], $value);
+    }
+
+    public function getNoSeries() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NO_SERIES]);
+    }
+
+    public function setNoSeries(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NO_SERIES], $value);
+    }
+
+    public function getOfferStartingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::OFFER_STARTING_TIME]);
+    }
+
+    public function setOfferStartingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::OFFER_STARTING_TIME], $value);
+    }
+
+    public function getOfferEndingTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::OFFER_ENDING_TIME]);
+    }
+
+    public function setOfferEndingTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::OFFER_ENDING_TIME], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

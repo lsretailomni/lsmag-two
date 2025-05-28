@@ -23,55 +23,55 @@ class COUpdatePaymentResult extends \Magento\Catalog\Model\AbstractModel impleme
     public const C_O_UPDATE_PAYMENT_X_M_L = 'cOUpdatePaymentXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param boolean $webPreAuthNotAuthorize
+     * @param ?bool $webPreAuthNotAuthorize
      * @return $this
      */
-    public function setWebPreAuthNotAuthorize($webPreAuthNotAuthorize)
+    public function setWebPreAuthNotAuthorize(?bool $webPreAuthNotAuthorize)
     {
         $this->setData(self::WEB_PRE_AUTH_NOT_AUTHORIZE, $webPreAuthNotAuthorize);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getWebPreAuthNotAuthorize()
+    public function getWebPreAuthNotAuthorize() : ?bool
     {
         return $this->getData(self::WEB_PRE_AUTH_NOT_AUTHORIZE);
     }

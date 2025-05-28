@@ -25,73 +25,73 @@ class MobileGetProfiles extends \Magento\Catalog\Model\AbstractModel implements 
     public const MOBILE_GET_PROFILES_X_M_L = 'mobileGetProfilesXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $profileID
+     * @param ?string $profileID
      * @return $this
      */
-    public function setProfileID($profileID)
+    public function setProfileID(?string $profileID)
     {
         $this->setData(self::PROFILE_I_D, $profileID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getProfileID()
+    public function getProfileID() : ?string
     {
         return $this->getData(self::PROFILE_I_D);
     }
 
     /**
-     * @param string $clubID
+     * @param ?string $clubID
      * @return $this
      */
-    public function setClubID($clubID)
+    public function setClubID(?string $clubID)
     {
         $this->setData(self::CLUB_I_D, $clubID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubID()
+    public function getClubID() : ?string
     {
         return $this->getData(self::CLUB_I_D);
     }

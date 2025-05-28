@@ -19,55 +19,55 @@ class SPGProfileTender extends \Magento\Catalog\Model\AbstractModel
     public const DESCRIPTION = 'Description';
 
     /**
-     * @param string $ProfileCode
+     * @param ?string $ProfileCode
      * @return $this
      */
-    public function setProfileCode($ProfileCode)
+    public function setProfileCode(?string $ProfileCode)
     {
         $this->setData(self::PROFILE_CODE, $ProfileCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getProfileCode()
+    public function getProfileCode() : ?string
     {
         return $this->getData(self::PROFILE_CODE);
     }
 
     /**
-     * @param string $TenderType
+     * @param ?string $TenderType
      * @return $this
      */
-    public function setTenderType($TenderType)
+    public function setTenderType(?string $TenderType)
     {
         $this->setData(self::TENDER_TYPE, $TenderType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTenderType()
+    public function getTenderType() : ?string
     {
         return $this->getData(self::TENDER_TYPE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }

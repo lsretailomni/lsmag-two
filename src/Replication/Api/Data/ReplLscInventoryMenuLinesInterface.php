@@ -12,9 +12,9 @@ interface ReplLscInventoryMenuLinesInterface
 {
     public static function getDbColumnsMapping() : array;
 
-    public function getDeviceType() : ?string;
+    public function getDeviceType() : ?int;
 
-    public function setDeviceType(?string $value);
+    public function setDeviceType(?int $value);
 
     public function getMenuCode() : ?string;
 
@@ -36,9 +36,9 @@ interface ReplLscInventoryMenuLinesInterface
 
     public function setText(?string $value);
 
-    public function getLineType() : ?string;
+    public function getLineType() : ?int;
 
-    public function setLineType(?string $value);
+    public function setLineType(?int $value);
 
     public function getCode() : ?string;
 
@@ -48,13 +48,13 @@ interface ReplLscInventoryMenuLinesInterface
 
     public function setBitmap(?string $value);
 
-    public function getStatus() : ?string;
+    public function getStatus() : ?int;
 
-    public function setStatus(?string $value);
+    public function setStatus(?int $value);
 
-    public function getCodeType() : ?string;
+    public function getCodeType() : ?int;
 
-    public function setCodeType(?string $value);
+    public function setCodeType(?int $value);
 
     public function getLocationCode() : ?string;
 
@@ -80,9 +80,9 @@ interface ReplLscInventoryMenuLinesInterface
 
     public function setWorksheetseqno(?int $value);
 
-    public function getWorksheetType() : ?string;
+    public function getWorksheetType() : ?int;
 
-    public function setWorksheetType(?string $value);
+    public function setWorksheetType(?int $value);
 
     public function getWorksheetDescription() : ?string;
 
@@ -96,17 +96,17 @@ interface ReplLscInventoryMenuLinesInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

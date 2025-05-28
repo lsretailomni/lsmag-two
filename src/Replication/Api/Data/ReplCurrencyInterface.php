@@ -52,9 +52,9 @@ interface ReplCurrencyInterface
 
     public function setInvoiceRoundingPrecision(?float $value);
 
-    public function getInvoiceRoundingType() : ?string;
+    public function getInvoiceRoundingType() : ?int;
 
-    public function setInvoiceRoundingType(?string $value);
+    public function setInvoiceRoundingType(?int $value);
 
     public function getAmountRoundingPrecision() : ?float;
 
@@ -116,9 +116,9 @@ interface ReplCurrencyInterface
 
     public function setMaxVatDifferenceAllowed(?float $value);
 
-    public function getVatRoundingType() : ?string;
+    public function getVatRoundingType() : ?int;
 
-    public function setVatRoundingType(?string $value);
+    public function setVatRoundingType(?int $value);
 
     public function getPaymentTolerance() : ?float;
 
@@ -132,25 +132,25 @@ interface ReplCurrencyInterface
 
     public function setSymbol(?string $value);
 
-    public function getLastModifiedDateTime() : ?\DateTime;
+    public function getLastModifiedDateTime() : ?string;
 
-    public function setLastModifiedDateTime(?\DateTime $value);
+    public function setLastModifiedDateTime(?string $value);
 
     public function getLscLowestAcceptDenomAmt() : ?float;
 
     public function setLscLowestAcceptDenomAmt(?float $value);
 
-    public function getLscDenominationRoundingType() : ?string;
+    public function getLscDenominationRoundingType() : ?int;
 
-    public function setLscDenominationRoundingType(?string $value);
+    public function setLscDenominationRoundingType(?int $value);
 
     public function getLscPosCurrencySymbol() : ?string;
 
     public function setLscPosCurrencySymbol(?string $value);
 
-    public function getLscPlacementOfCurrSymbol() : ?string;
+    public function getLscPlacementOfCurrSymbol() : ?int;
 
-    public function setLscPlacementOfCurrSymbol(?string $value);
+    public function setLscPlacementOfCurrSymbol(?int $value);
 
     public function getLscFiscalPrinterId() : ?int;
 
@@ -160,17 +160,17 @@ interface ReplCurrencyInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

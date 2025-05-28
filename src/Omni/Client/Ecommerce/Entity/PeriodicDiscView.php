@@ -163,12 +163,12 @@ class PeriodicDiscView extends AbstractModel
         return $this->setData(self::LINE_NO, $value);
     }
 
-    public function getType(): ?string
+    public function getType(): ?int
     {
         return $this->getData(self::TYPE);
     }
 
-    public function setType(?string $value)
+    public function setType(?int $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -323,12 +323,12 @@ class PeriodicDiscView extends AbstractModel
         return $this->setData(self::NO_OF_ITEMS_NEEDED, $value);
     }
 
-    public function getDiscType(): ?string
+    public function getDiscType(): ?int
     {
         return $this->getData(self::DISC_TYPE);
     }
 
-    public function setDiscType(?string $value)
+    public function setDiscType(?int $value)
     {
         return $this->setData(self::DISC_TYPE, $value);
     }
@@ -383,12 +383,12 @@ class PeriodicDiscView extends AbstractModel
         return $this->setData(self::TRIGGER_POPUP_ON_POS, $value);
     }
 
-    public function getVariantType(): ?string
+    public function getVariantType(): ?int
     {
         return $this->getData(self::VARIANT_TYPE);
     }
 
-    public function setVariantType(?string $value)
+    public function setVariantType(?int $value)
     {
         return $this->setData(self::VARIANT_TYPE, $value);
     }
@@ -423,22 +423,22 @@ class PeriodicDiscView extends AbstractModel
         return $this->setData(self::PROMPT_AT_SCAN, $value);
     }
 
-    public function getHeaderType(): ?string
+    public function getHeaderType(): ?int
     {
         return $this->getData(self::HEADER_TYPE);
     }
 
-    public function setHeaderType(?string $value)
+    public function setHeaderType(?int $value)
     {
         return $this->setData(self::HEADER_TYPE, $value);
     }
 
-    public function getPlannedDemandType(): ?string
+    public function getPlannedDemandType(): ?int
     {
         return $this->getData(self::PLANNED_DEMAND_TYPE);
     }
 
-    public function setPlannedDemandType(?string $value)
+    public function setPlannedDemandType(?int $value)
     {
         return $this->setData(self::PLANNED_DEMAND_TYPE, $value);
     }
@@ -463,12 +463,12 @@ class PeriodicDiscView extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -483,12 +483,12 @@ class PeriodicDiscView extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
@@ -503,12 +503,12 @@ class PeriodicDiscView extends AbstractModel
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(?string $value)
+    public function setStatus(?int $value)
     {
         return $this->setData(self::STATUS, $value);
     }
@@ -543,12 +543,12 @@ class PeriodicDiscView extends AbstractModel
         return $this->setData(self::VALIDATION_PERIOD_ID, $value);
     }
 
-    public function getDiscountType(): ?string
+    public function getDiscountType(): ?int
     {
         return $this->getData(self::DISCOUNT_TYPE);
     }
 
-    public function setDiscountType(?string $value)
+    public function setDiscountType(?int $value)
     {
         return $this->setData(self::DISCOUNT_TYPE, $value);
     }
@@ -663,12 +663,12 @@ class PeriodicDiscView extends AbstractModel
         return $this->setData(self::COUPON_QTY_NEEDED, $value);
     }
 
-    public function getMemberType(): ?string
+    public function getMemberType(): ?int
     {
         return $this->getData(self::MEMBER_TYPE);
     }
 
-    public function setMemberType(?string $value)
+    public function setMemberType(?int $value)
     {
         return $this->setData(self::MEMBER_TYPE, $value);
     }
@@ -713,12 +713,12 @@ class PeriodicDiscView extends AbstractModel
         return $this->setData(self::TENDER_TYPE_VALUE, $value);
     }
 
-    public function getPromptForAction(): ?string
+    public function getPromptForAction(): ?int
     {
         return $this->getData(self::PROMPT_FOR_ACTION);
     }
 
-    public function setPromptForAction(?string $value)
+    public function setPromptForAction(?int $value)
     {
         return $this->setData(self::PROMPT_FOR_ACTION, $value);
     }

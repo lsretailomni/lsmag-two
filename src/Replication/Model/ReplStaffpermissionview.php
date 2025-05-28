@@ -29,6 +29,176 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\Ecommerce\Entity\StaffPerm
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getStaff() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STAFF]);
+    }
+
+    public function setStaff(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STAFF], $value);
+    }
+
+    public function getManagerPrivileges() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MANAGER_PRIVILEGES]);
+    }
+
+    public function setManagerPrivileges(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MANAGER_PRIVILEGES], $value);
+    }
+
+    public function getVoidTransaction() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VOID_TRANSACTION]);
+    }
+
+    public function setVoidTransaction(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VOID_TRANSACTION], $value);
+    }
+
+    public function getXzyReportPrinting() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::XZYREPORT_PRINTING]);
+    }
+
+    public function setXzyReportPrinting(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::XZYREPORT_PRINTING], $value);
+    }
+
+    public function getTenderDeclaration() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TENDER_DECLARATION]);
+    }
+
+    public function setTenderDeclaration(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TENDER_DECLARATION], $value);
+    }
+
+    public function getFloatingDeclaration() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FLOATING_DECLARATION]);
+    }
+
+    public function setFloatingDeclaration(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FLOATING_DECLARATION], $value);
+    }
+
+    public function getPriceOverride() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRICE_OVERRIDE]);
+    }
+
+    public function setPriceOverride(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRICE_OVERRIDE], $value);
+    }
+
+    public function getSuspendTransaction() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SUSPEND_TRANSACTION]);
+    }
+
+    public function setSuspendTransaction(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SUSPEND_TRANSACTION], $value);
+    }
+
+    public function getReturnInTransaction() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RETURN_IN_TRANSACTION]);
+    }
+
+    public function setReturnInTransaction(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RETURN_IN_TRANSACTION], $value);
+    }
+
+    public function getVoidLine() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VOID_LINE]);
+    }
+
+    public function setVoidLine(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VOID_LINE], $value);
+    }
+
+    public function getAddPayment() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ADD_PAYMENT]);
+    }
+
+    public function setAddPayment(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ADD_PAYMENT], $value);
+    }
+
+    public function getCreateCustomers() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CREATE_CUSTOMERS]);
+    }
+
+    public function setCreateCustomers(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CREATE_CUSTOMERS], $value);
+    }
+
+    public function getViewSalesHistory() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VIEW_SALES_HISTORY]);
+    }
+
+    public function setViewSalesHistory(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VIEW_SALES_HISTORY], $value);
+    }
+
+    public function getCustomerComments() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_COMMENTS]);
+    }
+
+    public function setCustomerComments(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_COMMENTS], $value);
+    }
+
+    public function getUpdateCustomers() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UPDATE_CUSTOMERS]);
+    }
+
+    public function setUpdateCustomers(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UPDATE_CUSTOMERS], $value);
+    }
+
+    public function getMaxDiscountToGive() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MAX_DISCOUNT_TO_GIVE]);
+    }
+
+    public function setMaxDiscountToGive(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MAX_DISCOUNT_TO_GIVE], $value);
+    }
+
+    public function getMaxTotalDiscount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MAX_TOTAL_DISCOUNT]);
+    }
+
+    public function setMaxTotalDiscount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MAX_TOTAL_DISCOUNT], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

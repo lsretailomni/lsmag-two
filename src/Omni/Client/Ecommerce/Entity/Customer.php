@@ -633,12 +633,12 @@ class Customer extends AbstractModel
         return $this->setData(self::AMOUNT, $value);
     }
 
-    public function getBlocked(): ?string
+    public function getBlocked(): ?int
     {
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(?string $value)
+    public function setBlocked(?int $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
@@ -713,12 +713,12 @@ class Customer extends AbstractModel
         return $this->setData(self::FORMAT_REGION, $value);
     }
 
-    public function getLastModifiedDateTime(): ?\DateTime
+    public function getLastModifiedDateTime(): ?string
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
     }
 
-    public function setLastModifiedDateTime(?\DateTime $value)
+    public function setLastModifiedDateTime(?string $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
@@ -733,12 +733,12 @@ class Customer extends AbstractModel
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
 
-    public function getApplicationMethod(): ?string
+    public function getApplicationMethod(): ?int
     {
         return $this->getData(self::APPLICATION_METHOD);
     }
 
-    public function setApplicationMethod(?string $value)
+    public function setApplicationMethod(?int $value)
     {
         return $this->setData(self::APPLICATION_METHOD, $value);
     }
@@ -933,12 +933,12 @@ class Customer extends AbstractModel
         return $this->setData(self::VAT_BUS_POSTING_GROUP, $value);
     }
 
-    public function getReserve(): ?string
+    public function getReserve(): ?int
     {
         return $this->getData(self::RESERVE);
     }
 
-    public function setReserve(?string $value)
+    public function setReserve(?int $value)
     {
         return $this->setData(self::RESERVE, $value);
     }
@@ -973,22 +973,22 @@ class Customer extends AbstractModel
         return $this->setData(self::PREPAYMENT, $value);
     }
 
-    public function getPartnerType(): ?string
+    public function getPartnerType(): ?int
     {
         return $this->getData(self::PARTNER_TYPE);
     }
 
-    public function setPartnerType(?string $value)
+    public function setPartnerType(?int $value)
     {
         return $this->setData(self::PARTNER_TYPE, $value);
     }
 
-    public function getIntrastatPartnerType(): ?string
+    public function getIntrastatPartnerType(): ?int
     {
         return $this->getData(self::INTRASTAT_PARTNER_TYPE);
     }
 
-    public function setIntrastatPartnerType(?string $value)
+    public function setIntrastatPartnerType(?int $value)
     {
         return $this->setData(self::INTRASTAT_PARTNER_TYPE, $value);
     }
@@ -1103,12 +1103,12 @@ class Customer extends AbstractModel
         return $this->setData(self::PRIMARY_CONTACT_NO, $value);
     }
 
-    public function getContactType(): ?string
+    public function getContactType(): ?int
     {
         return $this->getData(self::CONTACT_TYPE);
     }
 
-    public function setContactType(?string $value)
+    public function setContactType(?int $value)
     {
         return $this->setData(self::CONTACT_TYPE, $value);
     }
@@ -1133,12 +1133,12 @@ class Customer extends AbstractModel
         return $this->setData(self::RESPONSIBILITY_CENTER, $value);
     }
 
-    public function getShippingAdvice(): ?string
+    public function getShippingAdvice(): ?int
     {
         return $this->getData(self::SHIPPING_ADVICE);
     }
 
-    public function setShippingAdvice(?string $value)
+    public function setShippingAdvice(?int $value)
     {
         return $this->setData(self::SHIPPING_ADVICE, $value);
     }
@@ -1183,12 +1183,12 @@ class Customer extends AbstractModel
         return $this->setData(self::COMBINE_SERVICE_SHIPMENTS, $value);
     }
 
-    public function getPriceCalculationMethod(): ?string
+    public function getPriceCalculationMethod(): ?int
     {
         return $this->getData(self::PRICE_CALCULATION_METHOD);
     }
 
-    public function setPriceCalculationMethod(?string $value)
+    public function setPriceCalculationMethod(?int $value)
     {
         return $this->setData(self::PRICE_CALCULATION_METHOD, $value);
     }
@@ -1213,12 +1213,12 @@ class Customer extends AbstractModel
         return $this->setData(self::BASE_CALENDAR_CODE, $value);
     }
 
-    public function getCopySellToAddrToQteFrom(): ?string
+    public function getCopySellToAddrToQteFrom(): ?int
     {
         return $this->getData(self::COPY_SELLTO_ADDR_TO_QTE_FROM);
     }
 
-    public function setCopySellToAddrToQteFrom(?string $value)
+    public function setCopySellToAddrToQteFrom(?int $value)
     {
         return $this->setData(self::COPY_SELLTO_ADDR_TO_QTE_FROM, $value);
     }
@@ -1353,12 +1353,12 @@ class Customer extends AbstractModel
         return $this->setData(self::LSC_REASON_CODE, $value);
     }
 
-    public function getLscRestrictionFunctionality(): ?string
+    public function getLscRestrictionFunctionality(): ?int
     {
         return $this->getData(self::LSC_RESTRICTION_FUNCTIONALITY);
     }
 
-    public function setLscRestrictionFunctionality(?string $value)
+    public function setLscRestrictionFunctionality(?int $value)
     {
         return $this->setData(self::LSC_RESTRICTION_FUNCTIONALITY, $value);
     }
@@ -1493,12 +1493,12 @@ class Customer extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -1513,12 +1513,12 @@ class Customer extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

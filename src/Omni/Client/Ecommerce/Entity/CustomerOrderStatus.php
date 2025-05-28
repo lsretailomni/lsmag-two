@@ -27,19 +27,19 @@ class CustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel implement
     public const DOCUMENT_NO = 'DocumentNo';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentID(?string $DocumentID)
     {
         $this->setData(self::DOCUMENT_I_D, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentID() : ?string
     {
         return $this->getData(self::DOCUMENT_I_D);
     }
@@ -99,37 +99,37 @@ class CustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel implement
     }
 
     /**
-     * @param string $DocumentType
+     * @param ?string $DocumentType
      * @return $this
      */
-    public function setDocumentType($DocumentType)
+    public function setDocumentType(?string $DocumentType)
     {
         $this->setData(self::DOCUMENT_TYPE, $DocumentType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentType()
+    public function getDocumentType() : ?string
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
 
     /**
-     * @param string $DocumentNo
+     * @param ?string $DocumentNo
      * @return $this
      */
-    public function setDocumentNo($DocumentNo)
+    public function setDocumentNo(?string $DocumentNo)
     {
         $this->setData(self::DOCUMENT_NO, $DocumentNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentNo()
+    public function getDocumentNo() : ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }

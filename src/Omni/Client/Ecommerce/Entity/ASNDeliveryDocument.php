@@ -27,127 +27,127 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     public const DISPATCH_NO = 'DispatchNo';
 
     /**
-     * @param string $ASNDocumentNo
+     * @param ?string $ASNDocumentNo
      * @return $this
      */
-    public function setASNDocumentNo($ASNDocumentNo)
+    public function setASNDocumentNo(?string $ASNDocumentNo)
     {
         $this->setData(self::A_S_N_DOCUMENT_NO, $ASNDocumentNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getASNDocumentNo()
+    public function getASNDocumentNo() : ?string
     {
         return $this->getData(self::A_S_N_DOCUMENT_NO);
     }
 
     /**
-     * @param string $VendorNo
+     * @param ?string $VendorNo
      * @return $this
      */
-    public function setVendorNo($VendorNo)
+    public function setVendorNo(?string $VendorNo)
     {
         $this->setData(self::VENDOR_NO, $VendorNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVendorNo()
+    public function getVendorNo() : ?string
     {
         return $this->getData(self::VENDOR_NO);
     }
 
     /**
-     * @param string $VendorName
+     * @param ?string $VendorName
      * @return $this
      */
-    public function setVendorName($VendorName)
+    public function setVendorName(?string $VendorName)
     {
         $this->setData(self::VENDOR_NAME, $VendorName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVendorName()
+    public function getVendorName() : ?string
     {
         return $this->getData(self::VENDOR_NAME);
     }
 
     /**
-     * @param string $TrustLevel
+     * @param ?string $TrustLevel
      * @return $this
      */
-    public function setTrustLevel($TrustLevel)
+    public function setTrustLevel(?string $TrustLevel)
     {
         $this->setData(self::TRUST_LEVEL, $TrustLevel);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTrustLevel()
+    public function getTrustLevel() : ?string
     {
         return $this->getData(self::TRUST_LEVEL);
     }
 
     /**
-     * @param string $EstimatedArrivalDate
+     * @param ?string $EstimatedArrivalDate
      * @return $this
      */
-    public function setEstimatedArrivalDate($EstimatedArrivalDate)
+    public function setEstimatedArrivalDate(?string $EstimatedArrivalDate)
     {
         $this->setData(self::ESTIMATED_ARRIVAL_DATE, $EstimatedArrivalDate);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEstimatedArrivalDate()
+    public function getEstimatedArrivalDate() : ?string
     {
         return $this->getData(self::ESTIMATED_ARRIVAL_DATE);
     }
 
     /**
-     * @param string $ManifestNo
+     * @param ?string $ManifestNo
      * @return $this
      */
-    public function setManifestNo($ManifestNo)
+    public function setManifestNo(?string $ManifestNo)
     {
         $this->setData(self::MANIFEST_NO, $ManifestNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getManifestNo()
+    public function getManifestNo() : ?string
     {
         return $this->getData(self::MANIFEST_NO);
     }
 
     /**
-     * @param string $DispatchNo
+     * @param ?string $DispatchNo
      * @return $this
      */
-    public function setDispatchNo($DispatchNo)
+    public function setDispatchNo(?string $DispatchNo)
     {
         $this->setData(self::DISPATCH_NO, $DispatchNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDispatchNo()
+    public function getDispatchNo() : ?string
     {
         return $this->getData(self::DISPATCH_NO);
     }

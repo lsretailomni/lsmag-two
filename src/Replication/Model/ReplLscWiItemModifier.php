@@ -29,6 +29,236 @@ class ReplLscWiItemModifier extends \Ls\Omni\Client\Ecommerce\Entity\LSCWIItemMo
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getParentItemNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PARENT_ITEM_NO]);
+    }
+
+    public function setParentItemNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PARENT_ITEM_NO], $value);
+    }
+
+    public function getInfocodeCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::INFOCODE_CODE]);
+    }
+
+    public function setInfocodeCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::INFOCODE_CODE], $value);
+    }
+
+    public function getSubcode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SUBCODE]);
+    }
+
+    public function setSubcode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SUBCODE], $value);
+    }
+
+    public function getExplanatoryHeaderText() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EXPLANATORY_HEADER_TEXT]);
+    }
+
+    public function setExplanatoryHeaderText(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EXPLANATORY_HEADER_TEXT], $value);
+    }
+
+    public function getPrompt() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PROMPT]);
+    }
+
+    public function setPrompt(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PROMPT], $value);
+    }
+
+    public function getGroupMinSelection() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::GROUP_MIN_SELECTION]);
+    }
+
+    public function setGroupMinSelection(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::GROUP_MIN_SELECTION], $value);
+    }
+
+    public function getGroupMaxSelection() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::GROUP_MAX_SELECTION]);
+    }
+
+    public function setGroupMaxSelection(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::GROUP_MAX_SELECTION], $value);
+    }
+
+    public function getItemNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
+    }
+
+    public function setItemNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
+    }
+
+    public function getVariantCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
+    }
+
+    public function setVariantCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getMinSelection() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MIN_SELECTION]);
+    }
+
+    public function setMinSelection(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MIN_SELECTION], $value);
+    }
+
+    public function getMaxSelection() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MAX_SELECTION]);
+    }
+
+    public function setMaxSelection(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MAX_SELECTION], $value);
+    }
+
+    public function getPriceHandling() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRICE_HANDLING]);
+    }
+
+    public function setPriceHandling(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRICE_HANDLING], $value);
+    }
+
+    public function getPriceType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRICE_TYPE]);
+    }
+
+    public function setPriceType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRICE_TYPE], $value);
+    }
+
+    public function getAmountPercent() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::AMOUNT_PERCENT]);
+    }
+
+    public function setAmountPercent(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::AMOUNT_PERCENT], $value);
+    }
+
+    public function getUnitOfMeasure() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE]);
+    }
+
+    public function setUnitOfMeasure(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE], $value);
+    }
+
+    public function getQtyPerUnitOfMeasure() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::QTY_PER_UNIT_OF_MEASURE]);
+    }
+
+    public function setQtyPerUnitOfMeasure(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::QTY_PER_UNIT_OF_MEASURE], $value);
+    }
+
+    public function getTimeModifierMinutes() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TIME_MODIFIER_MINUTES]);
+    }
+
+    public function setTimeModifierMinutes(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TIME_MODIFIER_MINUTES], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

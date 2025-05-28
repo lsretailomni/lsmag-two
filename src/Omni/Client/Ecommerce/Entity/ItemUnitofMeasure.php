@@ -59,12 +59,12 @@ class ItemUnitofMeasure extends AbstractModel
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }
 
-    public function getLscEcomSelection(): ?string
+    public function getLscEcomSelection(): ?int
     {
         return $this->getData(self::LSC_ECOM_SELECTION);
     }
 
-    public function setLscEcomSelection(?string $value)
+    public function setLscEcomSelection(?int $value)
     {
         return $this->setData(self::LSC_ECOM_SELECTION, $value);
     }

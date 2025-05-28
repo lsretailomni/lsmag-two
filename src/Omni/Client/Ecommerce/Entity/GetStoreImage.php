@@ -25,55 +25,55 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
     public const STORE_IMAGE = 'storeImage';
 
     /**
-     * @param string $respondCode
+     * @param ?string $respondCode
      * @return $this
      */
-    public function setRespondCode($respondCode)
+    public function setRespondCode(?string $respondCode)
     {
         $this->setData(self::RESPOND_CODE, $respondCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRespondCode()
+    public function getRespondCode() : ?string
     {
         return $this->getData(self::RESPOND_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreNo(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -97,19 +97,19 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
     }
 
     /**
-     * @param string $storeImage
+     * @param ?string $storeImage
      * @return $this
      */
-    public function setStoreImage($storeImage)
+    public function setStoreImage(?string $storeImage)
     {
         $this->setData(self::STORE_IMAGE, $storeImage);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreImage()
+    public function getStoreImage() : ?string
     {
         return $this->getData(self::STORE_IMAGE);
     }

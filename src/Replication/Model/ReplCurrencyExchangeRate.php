@@ -29,6 +29,156 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\Ecommerce\Entity\Currency
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getCurrencyCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
+    }
+
+    public function setCurrencyCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
+    }
+
+    public function getStartingDate() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STARTING_DATE]);
+    }
+
+    public function setStartingDate(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STARTING_DATE], $value);
+    }
+
+    public function getExchangeRateAmount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EXCHANGE_RATE_AMOUNT]);
+    }
+
+    public function setExchangeRateAmount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EXCHANGE_RATE_AMOUNT], $value);
+    }
+
+    public function getAdjustmentExchRateAmount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ADJUSTMENT_EXCH_RATE_AMOUNT]);
+    }
+
+    public function setAdjustmentExchRateAmount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ADJUSTMENT_EXCH_RATE_AMOUNT], $value);
+    }
+
+    public function getRelationalCurrencyCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RELATIONAL_CURRENCY_CODE]);
+    }
+
+    public function setRelationalCurrencyCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RELATIONAL_CURRENCY_CODE], $value);
+    }
+
+    public function getRelationalExchRateAmount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RELATIONAL_EXCH_RATE_AMOUNT]);
+    }
+
+    public function setRelationalExchRateAmount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RELATIONAL_EXCH_RATE_AMOUNT], $value);
+    }
+
+    public function getFixExchangeRateAmount() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FIX_EXCHANGE_RATE_AMOUNT]);
+    }
+
+    public function setFixExchangeRateAmount(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FIX_EXCHANGE_RATE_AMOUNT], $value);
+    }
+
+    public function getRelationalAdjmtExchRateAmt() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RELATIONAL_ADJMT_EXCH_RATE_AMT]);
+    }
+
+    public function setRelationalAdjmtExchRateAmt(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RELATIONAL_ADJMT_EXCH_RATE_AMT], $value);
+    }
+
+    public function getLscPosExchangeRateAmount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_EXCHANGE_RATE_AMOUNT]);
+    }
+
+    public function setLscPosExchangeRateAmount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_POS_EXCHANGE_RATE_AMOUNT], $value);
+    }
+
+    public function getLscPosRelExchRateAmount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_REL_EXCH_RATE_AMOUNT]);
+    }
+
+    public function setLscPosRelExchRateAmount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_POS_REL_EXCH_RATE_AMOUNT], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

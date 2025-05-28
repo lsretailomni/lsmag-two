@@ -16,35 +16,32 @@ class Service
 
     /** @var null|string $baseUrl */
     public $baseUrl = null;
-
-    /** @var array $endpoints */
-    public static $endpoints = [
-        ServiceType::ECOMMERCE => 'WS/Codeunit/OmniWrapper'
-    ];
+    public const CODE_UNIT = 'WS/Codeunit/OmniWrapper';
 
     // @codingStandardsIgnoreStart
     /**
      * Generates a URI for a specified service type.
      *
-     * @param ServiceType $serviceType The type of service (e.g., Ecommerce).
      * @param string $baseUrl The base URL to use (optional).
      * @param bool $wsdl Flag to indicate whether to include WSDL (optional).
      *
      * @return Uri The generated URI.
      */
     public static function getUrl(
-        ServiceType $serviceType,
-                    $baseUrl = self::DEFAULT_BASE_URL,
-                    $wsdl = true
+        $baseUrl = self::DEFAULT_BASE_URL,
+        $wsdl = false
     ) {
         // If no base URL is provided, use the default Omni base URL.
         if ($baseUrl == null) {
             // @codingStandardsIgnoreLine
             $baseUrl = (new self())->getOmniBaseUrl();
         }
+        $url = $baseUrl;
+        if ($wsdl) {
+            // Build the full URL by joining the base URL and the corresponding service endpoint.
+            $url = join('/', [$baseUrl, self::CODE_UNIT]);
+        }
 
-        // Build the full URL by joining the base URL and the corresponding service endpoint.
-        $url = join('/', [$baseUrl, static::$endpoints[$serviceType->getValue()]]);
         return UriFactory::factory($url);
     }
     // @codingStandardsIgnoreEnd

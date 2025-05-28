@@ -55,22 +55,22 @@ class HierarchyView extends AbstractModel
         return $this->setData(self::DESCRIPTION, $value);
     }
 
-    public function getType(): ?string
+    public function getType(): ?int
     {
         return $this->getData(self::TYPE);
     }
 
-    public function setType(?string $value)
+    public function setType(?int $value)
     {
         return $this->setData(self::TYPE, $value);
     }
 
-    public function getStartDate(): ?\DateTime
+    public function getStartDate(): ?string
     {
         return $this->getData(self::START_DATE);
     }
 
-    public function setStartDate(?\DateTime $value)
+    public function setStartDate(?string $value)
     {
         return $this->setData(self::START_DATE, $value);
     }

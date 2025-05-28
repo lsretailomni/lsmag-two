@@ -85,12 +85,12 @@ class LSCRetailImageLink extends AbstractModel
         return $this->setData(self::KEYVALUE, $value);
     }
 
-    public function getLinkType(): ?string
+    public function getLinkType(): ?int
     {
         return $this->getData(self::LINK_TYPE);
     }
 
-    public function setLinkType(?string $value)
+    public function setLinkType(?int $value)
     {
         return $this->setData(self::LINK_TYPE, $value);
     }
@@ -105,12 +105,12 @@ class LSCRetailImageLink extends AbstractModel
         return $this->setData(self::RECORD_ID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -125,12 +125,12 @@ class LSCRetailImageLink extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

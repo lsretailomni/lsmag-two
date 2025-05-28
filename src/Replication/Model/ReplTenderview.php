@@ -29,6 +29,186 @@ class ReplTenderview extends \Ls\Omni\Client\Ecommerce\Entity\TenderView impleme
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CODE]);
+    }
+
+    public function setCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
+    }
+
+    public function getStoreNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
+    }
+
+    public function setStoreNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getFunction() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FUNCTION]);
+    }
+
+    public function setFunction(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FUNCTION], $value);
+    }
+
+    public function getValidOnMobilePos() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VALID_ON_MOBILE_POS]);
+    }
+
+    public function setValidOnMobilePos(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VALID_ON_MOBILE_POS], $value);
+    }
+
+    public function getChangeTendCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CHANGE_TEND_CODE]);
+    }
+
+    public function setChangeTendCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CHANGE_TEND_CODE], $value);
+    }
+
+    public function getAboveMinChangeTenderType() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ABOVE_MIN_CHANGE_TENDER_TYPE]);
+    }
+
+    public function setAboveMinChangeTenderType(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ABOVE_MIN_CHANGE_TENDER_TYPE], $value);
+    }
+
+    public function getMinChange() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MIN_CHANGE]);
+    }
+
+    public function setMinChange(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MIN_CHANGE], $value);
+    }
+
+    public function getRounding() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ROUNDING]);
+    }
+
+    public function setRounding(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ROUNDING], $value);
+    }
+
+    public function getRoundingTo() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ROUNDING_TO]);
+    }
+
+    public function setRoundingTo(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ROUNDING_TO], $value);
+    }
+
+    public function getReturnMinusAllowed() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RETURNMINUS_ALLOWED]);
+    }
+
+    public function setReturnMinusAllowed(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RETURNMINUS_ALLOWED], $value);
+    }
+
+    public function getForeignCurrency() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FOREIGN_CURRENCY]);
+    }
+
+    public function setForeignCurrency(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FOREIGN_CURRENCY], $value);
+    }
+
+    public function getUndertenderAllowed() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNDERTENDER_ALLOWED]);
+    }
+
+    public function setUndertenderAllowed(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNDERTENDER_ALLOWED], $value);
+    }
+
+    public function getOvertenderAllowed() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::OVERTENDER_ALLOWED]);
+    }
+
+    public function setOvertenderAllowed(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::OVERTENDER_ALLOWED], $value);
+    }
+
+    public function getOvertenderMaxAmt() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::OVERTENDER_MAX_AMT]);
+    }
+
+    public function setOvertenderMaxAmt(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::OVERTENDER_MAX_AMT], $value);
+    }
+
+    public function getCountingRequired() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::COUNTING_REQUIRED]);
+    }
+
+    public function setCountingRequired(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::COUNTING_REQUIRED], $value);
+    }
+
+    public function getDrawerOpens() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DRAWER_OPENS]);
+    }
+
+    public function setDrawerOpens(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DRAWER_OPENS], $value);
+    }
+
+    public function getDateentrycodes() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DATEENTRYCODES]);
+    }
+
+    public function setDateentrycodes(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DATEENTRYCODES], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

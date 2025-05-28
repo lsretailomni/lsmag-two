@@ -29,6 +29,186 @@ class ReplCountryview extends \Ls\Omni\Client\Ecommerce\Entity\CountryView imple
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CODE]);
+    }
+
+    public function setCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
+    }
+
+    public function getName() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NAME]);
+    }
+
+    public function setName(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NAME], $value);
+    }
+
+    public function getIsoCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ISO_CODE]);
+    }
+
+    public function setIsoCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ISO_CODE], $value);
+    }
+
+    public function getIsoNumericCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ISO_NUMERIC_CODE]);
+    }
+
+    public function setIsoNumericCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ISO_NUMERIC_CODE], $value);
+    }
+
+    public function getEuCountryRegionCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EU_COUNTRYREGION_CODE]);
+    }
+
+    public function setEuCountryRegionCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EU_COUNTRYREGION_CODE], $value);
+    }
+
+    public function getIntrastatCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::INTRASTAT_CODE]);
+    }
+
+    public function setIntrastatCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::INTRASTAT_CODE], $value);
+    }
+
+    public function getAddressFormat() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ADDRESS_FORMAT]);
+    }
+
+    public function setAddressFormat(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ADDRESS_FORMAT], $value);
+    }
+
+    public function getContactAddressFormat() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CONTACT_ADDRESS_FORMAT]);
+    }
+
+    public function setContactAddressFormat(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CONTACT_ADDRESS_FORMAT], $value);
+    }
+
+    public function getVatScheme() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAT_SCHEME]);
+    }
+
+    public function setVatScheme(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAT_SCHEME], $value);
+    }
+
+    public function getLastModifiedDateTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME]);
+    }
+
+    public function setLastModifiedDateTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME], $value);
+    }
+
+    public function getCountyName() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::COUNTY_NAME]);
+    }
+
+    public function setCountyName(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::COUNTY_NAME], $value);
+    }
+
+    public function getLscWebStoreCustomerNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_WEB_STORE_CUSTOMER_NO]);
+    }
+
+    public function setLscWebStoreCustomerNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_WEB_STORE_CUSTOMER_NO], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
+    public function getTaxpostgroup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TAXPOSTGROUP]);
+    }
+
+    public function setTaxpostgroup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TAXPOSTGROUP], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

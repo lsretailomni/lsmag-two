@@ -21,73 +21,73 @@ class ShippingAgentServices extends \Magento\Catalog\Model\AbstractModel
     public const SHIPPING_TIME = 'ShippingTime';
 
     /**
-     * @param string $ShippingAgentCode
+     * @param ?string $ShippingAgentCode
      * @return $this
      */
-    public function setShippingAgentCode($ShippingAgentCode)
+    public function setShippingAgentCode(?string $ShippingAgentCode)
     {
         $this->setData(self::SHIPPING_AGENT_CODE, $ShippingAgentCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShippingAgentCode()
+    public function getShippingAgentCode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
 
     /**
-     * @param string $Code
+     * @param ?string $Code
      * @return $this
      */
-    public function setCode($Code)
+    public function setCode(?string $Code)
     {
         $this->setData(self::CODE, $Code);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCode()
+    public function getCode() : ?string
     {
         return $this->getData(self::CODE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $ShippingTime
+     * @param ?string $ShippingTime
      * @return $this
      */
-    public function setShippingTime($ShippingTime)
+    public function setShippingTime(?string $ShippingTime)
     {
         $this->setData(self::SHIPPING_TIME, $ShippingTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShippingTime()
+    public function getShippingTime() : ?string
     {
         return $this->getData(self::SHIPPING_TIME);
     }

@@ -63,12 +63,12 @@ class LSCPeriodicDiscount extends AbstractModel
         return $this->setData(self::NO, $value);
     }
 
-    public function getType(): ?string
+    public function getType(): ?int
     {
         return $this->getData(self::TYPE);
     }
 
-    public function setType(?string $value)
+    public function setType(?int $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -123,12 +123,12 @@ class LSCPeriodicDiscount extends AbstractModel
         return $this->setData(self::POPUP_LINE_3, $value);
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(?string $value)
+    public function setStatus(?int $value)
     {
         return $this->setData(self::STATUS, $value);
     }
@@ -143,12 +143,12 @@ class LSCPeriodicDiscount extends AbstractModel
         return $this->setData(self::PRICE_GROUP, $value);
     }
 
-    public function getOfferType(): ?string
+    public function getOfferType(): ?int
     {
         return $this->getData(self::OFFER_TYPE);
     }
 
-    public function setOfferType(?string $value)
+    public function setOfferType(?int $value)
     {
         return $this->setData(self::OFFER_TYPE, $value);
     }
@@ -163,12 +163,12 @@ class LSCPeriodicDiscount extends AbstractModel
         return $this->setData(self::SALES_TYPE_FILTER, $value);
     }
 
-    public function getDiscountType(): ?string
+    public function getDiscountType(): ?int
     {
         return $this->getData(self::DISCOUNT_TYPE);
     }
 
-    public function setDiscountType(?string $value)
+    public function setDiscountType(?int $value)
     {
         return $this->setData(self::DISCOUNT_TYPE, $value);
     }

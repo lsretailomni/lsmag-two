@@ -42,7 +42,7 @@ class ReplLscWiItemRecipeBufferTask extends AbstractReplicationTask
 
     public function setRepository(ReplLscWiItemRecipeBufferRepository $repository)
     {
-        $this->repository =  $repository;
+        $this->repository = $repository;
         return $this;
     }
 
@@ -53,7 +53,7 @@ class ReplLscWiItemRecipeBufferTask extends AbstractReplicationTask
 
     public function setFactory(ReplLscWiItemRecipeBufferFactory $factory)
     {
-        $this->factory =  $factory;
+        $this->factory = $factory;
         return $this;
     }
 
@@ -64,7 +64,7 @@ class ReplLscWiItemRecipeBufferTask extends AbstractReplicationTask
 
     public function setDataInterface(ReplLscWiItemRecipeBufferInterface $dataInterface)
     {
-        $this->dataInterface =  $dataInterface;
+        $this->dataInterface = $dataInterface;
         return $this;
     }
 

@@ -157,12 +157,12 @@ class ItemCategory extends AbstractModel
         return $this->setData(self::HAS_CHILDREN, $value);
     }
 
-    public function getLastModifiedDateTime(): ?\DateTime
+    public function getLastModifiedDateTime(): ?string
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
     }
 
-    public function setLastModifiedDateTime(?\DateTime $value)
+    public function setLastModifiedDateTime(?string $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
@@ -357,12 +357,12 @@ class ItemCategory extends AbstractModel
         return $this->setData(self::LSC_REPLEN_TRANSFER_RULE_CODE, $value);
     }
 
-    public function getLscDefItemDistrType(): ?string
+    public function getLscDefItemDistrType(): ?int
     {
         return $this->getData(self::LSC_DEF_ITEM_DISTR_TYPE);
     }
 
-    public function setLscDefItemDistrType(?string $value)
+    public function setLscDefItemDistrType(?int $value)
     {
         return $this->setData(self::LSC_DEF_ITEM_DISTR_TYPE, $value);
     }
@@ -437,12 +437,12 @@ class ItemCategory extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -457,12 +457,12 @@ class ItemCategory extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

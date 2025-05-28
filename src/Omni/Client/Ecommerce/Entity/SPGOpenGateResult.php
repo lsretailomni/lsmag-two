@@ -31,145 +31,145 @@ class SPGOpenGateResult extends \Magento\Catalog\Model\AbstractModel implements 
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreNo(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $deviceLocation
+     * @param ?string $deviceLocation
      * @return $this
      */
-    public function setDeviceLocation($deviceLocation)
+    public function setDeviceLocation(?string $deviceLocation)
     {
         $this->setData(self::DEVICE_LOCATION, $deviceLocation);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDeviceLocation()
+    public function getDeviceLocation() : ?string
     {
         return $this->getData(self::DEVICE_LOCATION);
     }
 
     /**
-     * @param string $memberAccountNo
+     * @param ?string $memberAccountNo
      * @return $this
      */
-    public function setMemberAccountNo($memberAccountNo)
+    public function setMemberAccountNo(?string $memberAccountNo)
     {
         $this->setData(self::MEMBER_ACCOUNT_NO, $memberAccountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberAccountNo()
+    public function getMemberAccountNo() : ?string
     {
         return $this->getData(self::MEMBER_ACCOUNT_NO);
     }
 
     /**
-     * @param boolean $exitWithoutShopping
+     * @param ?bool $exitWithoutShopping
      * @return $this
      */
-    public function setExitWithoutShopping($exitWithoutShopping)
+    public function setExitWithoutShopping(?bool $exitWithoutShopping)
     {
         $this->setData(self::EXIT_WITHOUT_SHOPPING, $exitWithoutShopping);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getExitWithoutShopping()
+    public function getExitWithoutShopping() : ?bool
     {
         return $this->getData(self::EXIT_WITHOUT_SHOPPING);
     }
 
     /**
-     * @param boolean $isEntering
+     * @param ?bool $isEntering
      * @return $this
      */
-    public function setIsEntering($isEntering)
+    public function setIsEntering(?bool $isEntering)
     {
         $this->setData(self::IS_ENTERING, $isEntering);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getIsEntering()
+    public function getIsEntering() : ?bool
     {
         return $this->getData(self::IS_ENTERING);
     }
 
     /**
-     * @param boolean $returnValue
+     * @param ?bool $returnValue
      * @return $this
      */
-    public function setReturnValue($returnValue)
+    public function setReturnValue(?bool $returnValue)
     {
         $this->setData(self::RETURN_VALUE, $returnValue);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getReturnValue()
+    public function getReturnValue() : ?bool
     {
         return $this->getData(self::RETURN_VALUE);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

@@ -21,55 +21,55 @@ class CustomerOrderCreateV5Result extends \Magento\Catalog\Model\AbstractModel i
     public const CUSTOMER_ORDER_I_D = 'customerOrderID';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $customerOrderID
+     * @param ?string $customerOrderID
      * @return $this
      */
-    public function setCustomerOrderID($customerOrderID)
+    public function setCustomerOrderID(?string $customerOrderID)
     {
         $this->setData(self::CUSTOMER_ORDER_I_D, $customerOrderID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCustomerOrderID()
+    public function getCustomerOrderID() : ?string
     {
         return $this->getData(self::CUSTOMER_ORDER_I_D);
     }

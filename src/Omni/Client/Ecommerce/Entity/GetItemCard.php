@@ -35,163 +35,163 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     public const LEFT_RIGHT_LINE_X_M_L = 'leftRightLineXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $terminalNo
+     * @param ?string $terminalNo
      * @return $this
      */
-    public function setTerminalNo($terminalNo)
+    public function setTerminalNo(?string $terminalNo)
     {
         $this->setData(self::TERMINAL_NO, $terminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalNo()
+    public function getTerminalNo() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreNo(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $locationNo
+     * @param ?string $locationNo
      * @return $this
      */
-    public function setLocationNo($locationNo)
+    public function setLocationNo(?string $locationNo)
     {
         $this->setData(self::LOCATION_NO, $locationNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLocationNo()
+    public function getLocationNo() : ?string
     {
         return $this->getData(self::LOCATION_NO);
     }
 
     /**
-     * @param string $itemNo
+     * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo($itemNo)
+    public function setItemNo(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemNo() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $variantCode
+     * @param ?string $variantCode
      * @return $this
      */
-    public function setVariantCode($variantCode)
+    public function setVariantCode(?string $variantCode)
     {
         $this->setData(self::VARIANT_CODE, $variantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantCode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $barcodeNo
+     * @param ?string $barcodeNo
      * @return $this
      */
-    public function setBarcodeNo($barcodeNo)
+    public function setBarcodeNo(?string $barcodeNo)
     {
         $this->setData(self::BARCODE_NO, $barcodeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeNo()
+    public function getBarcodeNo() : ?string
     {
         return $this->getData(self::BARCODE_NO);
     }
 
     /**
-     * @param string $viewCode
+     * @param ?string $viewCode
      * @return $this
      */
-    public function setViewCode($viewCode)
+    public function setViewCode(?string $viewCode)
     {
         $this->setData(self::VIEW_CODE, $viewCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getViewCode()
+    public function getViewCode() : ?string
     {
         return $this->getData(self::VIEW_CODE);
     }

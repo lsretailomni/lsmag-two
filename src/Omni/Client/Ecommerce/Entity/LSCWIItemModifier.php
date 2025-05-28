@@ -187,22 +187,22 @@ class LSCWIItemModifier extends AbstractModel
         return $this->setData(self::MAX_SELECTION, $value);
     }
 
-    public function getPriceHandling(): ?string
+    public function getPriceHandling(): ?int
     {
         return $this->getData(self::PRICE_HANDLING);
     }
 
-    public function setPriceHandling(?string $value)
+    public function setPriceHandling(?int $value)
     {
         return $this->setData(self::PRICE_HANDLING, $value);
     }
 
-    public function getPriceType(): ?string
+    public function getPriceType(): ?int
     {
         return $this->getData(self::PRICE_TYPE);
     }
 
-    public function setPriceType(?string $value)
+    public function setPriceType(?int $value)
     {
         return $this->setData(self::PRICE_TYPE, $value);
     }
@@ -257,12 +257,12 @@ class LSCWIItemModifier extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -277,12 +277,12 @@ class LSCWIItemModifier extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

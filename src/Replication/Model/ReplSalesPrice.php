@@ -29,6 +29,236 @@ class ReplSalesPrice extends \Ls\Omni\Client\Ecommerce\Entity\SalesPrice impleme
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getItemNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
+    }
+
+    public function setItemNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
+    }
+
+    public function getSalesCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SALES_CODE]);
+    }
+
+    public function setSalesCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SALES_CODE], $value);
+    }
+
+    public function getCurrencyCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
+    }
+
+    public function setCurrencyCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
+    }
+
+    public function getStartingDate() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STARTING_DATE]);
+    }
+
+    public function setStartingDate(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STARTING_DATE], $value);
+    }
+
+    public function getUnitPrice() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNIT_PRICE]);
+    }
+
+    public function setUnitPrice(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNIT_PRICE], $value);
+    }
+
+    public function getPriceIncludesVat() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRICE_INCLUDES_VAT]);
+    }
+
+    public function setPriceIncludesVat(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRICE_INCLUDES_VAT], $value);
+    }
+
+    public function getAllowInvoiceDisc() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ALLOW_INVOICE_DISC]);
+    }
+
+    public function setAllowInvoiceDisc(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ALLOW_INVOICE_DISC], $value);
+    }
+
+    public function getVatBusPostingGrPrice() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GR_PRICE]);
+    }
+
+    public function setVatBusPostingGrPrice(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GR_PRICE], $value);
+    }
+
+    public function getSalesType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SALES_TYPE]);
+    }
+
+    public function setSalesType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SALES_TYPE], $value);
+    }
+
+    public function getMinimumQuantity() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MINIMUM_QUANTITY]);
+    }
+
+    public function setMinimumQuantity(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MINIMUM_QUANTITY], $value);
+    }
+
+    public function getEndingDate() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ENDING_DATE]);
+    }
+
+    public function setEndingDate(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ENDING_DATE], $value);
+    }
+
+    public function getUnitOfMeasureCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE]);
+    }
+
+    public function setUnitOfMeasureCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE], $value);
+    }
+
+    public function getVariantCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
+    }
+
+    public function setVariantCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
+    }
+
+    public function getAllowLineDisc() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ALLOW_LINE_DISC]);
+    }
+
+    public function setAllowLineDisc(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ALLOW_LINE_DISC], $value);
+    }
+
+    public function getLscMarkup() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_MARKUP]);
+    }
+
+    public function setLscMarkup(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_MARKUP], $value);
+    }
+
+    public function getLscProfit() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_PROFIT]);
+    }
+
+    public function setLscProfit(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_PROFIT], $value);
+    }
+
+    public function getLscProfitLcy() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_PROFIT_LCY]);
+    }
+
+    public function setLscProfitLcy(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_PROFIT_LCY], $value);
+    }
+
+    public function getLscUnitPriceIncludingVat() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_UNIT_PRICE_INCLUDING_VAT]);
+    }
+
+    public function setLscUnitPriceIncludingVat(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_UNIT_PRICE_INCLUDING_VAT], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

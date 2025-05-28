@@ -120,9 +120,9 @@ interface ReplVendorInterface
 
     public function setCountryRegionCode(?string $value);
 
-    public function getBlocked() : ?string;
+    public function getBlocked() : ?int;
 
-    public function setBlocked(?string $value);
+    public function setBlocked(?int $value);
 
     public function getPayToVendorNo() : ?string;
 
@@ -140,17 +140,17 @@ interface ReplVendorInterface
 
     public function setFormatRegion(?string $value);
 
-    public function getLastModifiedDateTime() : ?\DateTime;
+    public function getLastModifiedDateTime() : ?string;
 
-    public function setLastModifiedDateTime(?\DateTime $value);
+    public function setLastModifiedDateTime(?string $value);
 
     public function getLastDateModified() : ?string;
 
     public function setLastDateModified(?string $value);
 
-    public function getApplicationMethod() : ?string;
+    public function getApplicationMethod() : ?int;
 
-    public function setApplicationMethod(?string $value);
+    public function setApplicationMethod(?int $value);
 
     public function getPricesIncludingVat() : ?bool;
 
@@ -224,13 +224,13 @@ interface ReplVendorInterface
 
     public function setPrepayment(?float $value);
 
-    public function getPartnerType() : ?string;
+    public function getPartnerType() : ?int;
 
-    public function setPartnerType(?string $value);
+    public function setPartnerType(?int $value);
 
-    public function getIntrastatPartnerType() : ?string;
+    public function getIntrastatPartnerType() : ?int;
 
-    public function setIntrastatPartnerType(?string $value);
+    public function setIntrastatPartnerType(?int $value);
 
     public function getExcludeFromPmtPractices() : ?bool;
 
@@ -300,9 +300,9 @@ interface ReplVendorInterface
 
     public function setLeadTimeCalculation(?string $value);
 
-    public function getReceiveEDocumentTo() : ?string;
+    public function getReceiveEDocumentTo() : ?int;
 
-    public function setReceiveEDocumentTo(?string $value);
+    public function setReceiveEDocumentTo(?int $value);
 
     public function getSustCertNo() : ?string;
 
@@ -312,9 +312,9 @@ interface ReplVendorInterface
 
     public function setSustCertName(?string $value);
 
-    public function getPriceCalculationMethod() : ?string;
+    public function getPriceCalculationMethod() : ?int;
 
-    public function setPriceCalculationMethod(?string $value);
+    public function setPriceCalculationMethod(?int $value);
 
     public function getBaseCalendarCode() : ?string;
 
@@ -344,9 +344,9 @@ interface ReplVendorInterface
 
     public function setOverReceiptCode(?string $value);
 
-    public function getLscRtcFilterField() : ?string;
+    public function getLscRtcFilterField() : ?int;
 
-    public function setLscRtcFilterField(?string $value);
+    public function setLscRtcFilterField(?int $value);
 
     public function getLscEnableForRelCalendar() : ?bool;
 
@@ -368,9 +368,9 @@ interface ReplVendorInterface
 
     public function setLscAsnTrustProfile(?string $value);
 
-    public function getLscTrustLevel() : ?string;
+    public function getLscTrustLevel() : ?int;
 
-    public function setLscTrustLevel(?string $value);
+    public function setLscTrustLevel(?int $value);
 
     public function getLscValidateTrackingCode() : ?bool;
 
@@ -380,17 +380,17 @@ interface ReplVendorInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

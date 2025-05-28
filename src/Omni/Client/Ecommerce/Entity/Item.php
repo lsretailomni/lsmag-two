@@ -115,12 +115,12 @@ class Item extends AbstractModel
         return $this->setData(self::VAT_PROD_POSTING_GROUP, $value);
     }
 
-    public function getType(): ?string
+    public function getType(): ?int
     {
         return $this->getData(self::TYPE);
     }
 
-    public function setType(?string $value)
+    public function setType(?int $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -275,22 +275,22 @@ class Item extends AbstractModel
         return $this->setData(self::LSC_RETAIL_PRODUCT_CODE, $value);
     }
 
-    public function getLscKeyingInPrice(): ?string
+    public function getLscKeyingInPrice(): ?int
     {
         return $this->getData(self::LSC_KEYING_IN_PRICE);
     }
 
-    public function setLscKeyingInPrice(?string $value)
+    public function setLscKeyingInPrice(?int $value)
     {
         return $this->setData(self::LSC_KEYING_IN_PRICE, $value);
     }
 
-    public function getLscKeyingInQuantity(): ?string
+    public function getLscKeyingInQuantity(): ?int
     {
         return $this->getData(self::LSC_KEYING_IN_QUANTITY);
     }
 
-    public function setLscKeyingInQuantity(?string $value)
+    public function setLscKeyingInQuantity(?int $value)
     {
         return $this->setData(self::LSC_KEYING_IN_QUANTITY, $value);
     }

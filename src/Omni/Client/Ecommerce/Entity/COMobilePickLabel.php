@@ -41,37 +41,37 @@ class COMobilePickLabel extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentID(?string $DocumentID)
     {
         $this->setData(self::DOCUMENT_I_D, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentID() : ?string
     {
         return $this->getData(self::DOCUMENT_I_D);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -95,19 +95,19 @@ class COMobilePickLabel extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $BoxNo
+     * @param ?string $BoxNo
      * @return $this
      */
-    public function setBoxNo($BoxNo)
+    public function setBoxNo(?string $BoxNo)
     {
         $this->setData(self::BOX_NO, $BoxNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBoxNo()
+    public function getBoxNo() : ?string
     {
         return $this->getData(self::BOX_NO);
     }

@@ -17,37 +17,37 @@ class HierarchyAttributeFilter extends \Magento\Catalog\Model\AbstractModel
     public const VALUE = 'Value';
 
     /**
-     * @param string $Attribute
+     * @param ?string $Attribute
      * @return $this
      */
-    public function setAttribute($Attribute)
+    public function setAttribute(?string $Attribute)
     {
         $this->setData(self::ATTRIBUTE, $Attribute);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAttribute()
+    public function getAttribute() : ?string
     {
         return $this->getData(self::ATTRIBUTE);
     }
 
     /**
-     * @param string $Value
+     * @param ?string $Value
      * @return $this
      */
-    public function setValue($Value)
+    public function setValue(?string $Value)
     {
         $this->setData(self::VALUE, $Value);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getValue()
+    public function getValue() : ?string
     {
         return $this->getData(self::VALUE);
     }

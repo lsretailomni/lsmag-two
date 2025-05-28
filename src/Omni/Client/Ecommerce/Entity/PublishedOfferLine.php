@@ -37,55 +37,55 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     public const TABLE_NO = 'TableNo';
 
     /**
-     * @param string $PublishedOfferNo
+     * @param ?string $PublishedOfferNo
      * @return $this
      */
-    public function setPublishedOfferNo($PublishedOfferNo)
+    public function setPublishedOfferNo(?string $PublishedOfferNo)
     {
         $this->setData(self::PUBLISHED_OFFER_NO, $PublishedOfferNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPublishedOfferNo()
+    public function getPublishedOfferNo() : ?string
     {
         return $this->getData(self::PUBLISHED_OFFER_NO);
     }
 
     /**
-     * @param string $DiscountType
+     * @param ?string $DiscountType
      * @return $this
      */
-    public function setDiscountType($DiscountType)
+    public function setDiscountType(?string $DiscountType)
     {
         $this->setData(self::DISCOUNT_TYPE, $DiscountType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDiscountType()
+    public function getDiscountType() : ?string
     {
         return $this->getData(self::DISCOUNT_TYPE);
     }
 
     /**
-     * @param string $DiscountNo
+     * @param ?string $DiscountNo
      * @return $this
      */
-    public function setDiscountNo($DiscountNo)
+    public function setDiscountNo(?string $DiscountNo)
     {
         $this->setData(self::DISCOUNT_NO, $DiscountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDiscountNo()
+    public function getDiscountNo() : ?string
     {
         return $this->getData(self::DISCOUNT_NO);
     }
@@ -127,109 +127,109 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $DiscountLineId
+     * @param ?string $DiscountLineId
      * @return $this
      */
-    public function setDiscountLineId($DiscountLineId)
+    public function setDiscountLineId(?string $DiscountLineId)
     {
         $this->setData(self::DISCOUNT_LINE_ID, $DiscountLineId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDiscountLineId()
+    public function getDiscountLineId() : ?string
     {
         return $this->getData(self::DISCOUNT_LINE_ID);
     }
 
     /**
-     * @param string $DiscountLineDescription
+     * @param ?string $DiscountLineDescription
      * @return $this
      */
-    public function setDiscountLineDescription($DiscountLineDescription)
+    public function setDiscountLineDescription(?string $DiscountLineDescription)
     {
         $this->setData(self::DISCOUNT_LINE_DESCRIPTION, $DiscountLineDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDiscountLineDescription()
+    public function getDiscountLineDescription() : ?string
     {
         return $this->getData(self::DISCOUNT_LINE_DESCRIPTION);
     }
 
     /**
-     * @param string $VariantType
+     * @param ?string $VariantType
      * @return $this
      */
-    public function setVariantType($VariantType)
+    public function setVariantType(?string $VariantType)
     {
         $this->setData(self::VARIANT_TYPE, $VariantType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantType()
+    public function getVariantType() : ?string
     {
         return $this->getData(self::VARIANT_TYPE);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantCode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantCode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param boolean $Exclude
+     * @param ?bool $Exclude
      * @return $this
      */
-    public function setExclude($Exclude)
+    public function setExclude(?bool $Exclude)
     {
         $this->setData(self::EXCLUDE, $Exclude);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getExclude()
+    public function getExclude() : ?bool
     {
         return $this->getData(self::EXCLUDE);
     }
 
     /**
-     * @param string $UnitOfMeasure
+     * @param ?string $UnitOfMeasure
      * @return $this
      */
-    public function setUnitOfMeasure($UnitOfMeasure)
+    public function setUnitOfMeasure(?string $UnitOfMeasure)
     {
         $this->setData(self::UNIT_OF_MEASURE, $UnitOfMeasure);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnitOfMeasure()
+    public function getUnitOfMeasure() : ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE);
     }

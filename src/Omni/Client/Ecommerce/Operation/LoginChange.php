@@ -78,7 +78,7 @@ class LoginChange extends AbstractOperation
     /**
      * @return LoginChangeRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new LoginChangeRequest();

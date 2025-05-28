@@ -37,19 +37,19 @@ class CustomerOrderCreateCODiscountLineV6 extends \Magento\Catalog\Model\Abstrac
     public const SEQUENCE_FUNCTION = 'SequenceFunction';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentID(?string $DocumentID)
     {
         $this->setData(self::DOCUMENT_I_D, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentID() : ?string
     {
         return $this->getData(self::DOCUMENT_I_D);
     }
@@ -109,19 +109,19 @@ class CustomerOrderCreateCODiscountLineV6 extends \Magento\Catalog\Model\Abstrac
     }
 
     /**
-     * @param string $OfferNo
+     * @param ?string $OfferNo
      * @return $this
      */
-    public function setOfferNo($OfferNo)
+    public function setOfferNo(?string $OfferNo)
     {
         $this->setData(self::OFFER_NO, $OfferNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOfferNo()
+    public function getOfferNo() : ?string
     {
         return $this->getData(self::OFFER_NO);
     }
@@ -145,109 +145,109 @@ class CustomerOrderCreateCODiscountLineV6 extends \Magento\Catalog\Model\Abstrac
     }
 
     /**
-     * @param string $PeriodicDiscGroup
+     * @param ?string $PeriodicDiscGroup
      * @return $this
      */
-    public function setPeriodicDiscGroup($PeriodicDiscGroup)
+    public function setPeriodicDiscGroup(?string $PeriodicDiscGroup)
     {
         $this->setData(self::PERIODIC_DISC_GROUP, $PeriodicDiscGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPeriodicDiscGroup()
+    public function getPeriodicDiscGroup() : ?string
     {
         return $this->getData(self::PERIODIC_DISC_GROUP);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param float $DiscountPercent
+     * @param ?float $DiscountPercent
      * @return $this
      */
-    public function setDiscountPercent($DiscountPercent)
+    public function setDiscountPercent(?float $DiscountPercent)
     {
         $this->setData(self::DISCOUNT_PERCENT, $DiscountPercent);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountPercent()
+    public function getDiscountPercent() : ?float
     {
         return $this->getData(self::DISCOUNT_PERCENT);
     }
 
     /**
-     * @param float $DiscountAmount
+     * @param ?float $DiscountAmount
      * @return $this
      */
-    public function setDiscountAmount($DiscountAmount)
+    public function setDiscountAmount(?float $DiscountAmount)
     {
         $this->setData(self::DISCOUNT_AMOUNT, $DiscountAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountAmount()
+    public function getDiscountAmount() : ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
     /**
-     * @param string $SequenceCode
+     * @param ?string $SequenceCode
      * @return $this
      */
-    public function setSequenceCode($SequenceCode)
+    public function setSequenceCode(?string $SequenceCode)
     {
         $this->setData(self::SEQUENCE_CODE, $SequenceCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSequenceCode()
+    public function getSequenceCode() : ?string
     {
         return $this->getData(self::SEQUENCE_CODE);
     }
 
     /**
-     * @param string $SequenceFunction
+     * @param ?string $SequenceFunction
      * @return $this
      */
-    public function setSequenceFunction($SequenceFunction)
+    public function setSequenceFunction(?string $SequenceFunction)
     {
         $this->setData(self::SEQUENCE_FUNCTION, $SequenceFunction);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSequenceFunction()
+    public function getSequenceFunction() : ?string
     {
         return $this->getData(self::SEQUENCE_FUNCTION);
     }

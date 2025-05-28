@@ -33,127 +33,127 @@ class MobilePosPrint extends \Magento\Catalog\Model\AbstractModel implements Req
     public const MOBILE_POS_PRINT_X_M_L = 'mobilePosPrintXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $printMethod
+     * @param ?string $printMethod
      * @return $this
      */
-    public function setPrintMethod($printMethod)
+    public function setPrintMethod(?string $printMethod)
     {
         $this->setData(self::PRINT_METHOD, $printMethod);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPrintMethod()
+    public function getPrintMethod() : ?string
     {
         return $this->getData(self::PRINT_METHOD);
     }
 
     /**
-     * @param string $mailRecipient
+     * @param ?string $mailRecipient
      * @return $this
      */
-    public function setMailRecipient($mailRecipient)
+    public function setMailRecipient(?string $mailRecipient)
     {
         $this->setData(self::MAIL_RECIPIENT, $mailRecipient);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMailRecipient()
+    public function getMailRecipient() : ?string
     {
         return $this->getData(self::MAIL_RECIPIENT);
     }
 
     /**
-     * @param string $externalPrinterID
+     * @param ?string $externalPrinterID
      * @return $this
      */
-    public function setExternalPrinterID($externalPrinterID)
+    public function setExternalPrinterID(?string $externalPrinterID)
     {
         $this->setData(self::EXTERNAL_PRINTER_I_D, $externalPrinterID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExternalPrinterID()
+    public function getExternalPrinterID() : ?string
     {
         return $this->getData(self::EXTERNAL_PRINTER_I_D);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreNo(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $terminalNo
+     * @param ?string $terminalNo
      * @return $this
      */
-    public function setTerminalNo($terminalNo)
+    public function setTerminalNo(?string $terminalNo)
     {
         $this->setData(self::TERMINAL_NO, $terminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalNo()
+    public function getTerminalNo() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }

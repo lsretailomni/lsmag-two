@@ -29,6 +29,236 @@ class ReplStoreview extends \Ls\Omni\Client\Ecommerce\Entity\StoreView implement
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NO]);
+    }
+
+    public function setNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NO], $value);
+    }
+
+    public function getName() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NAME]);
+    }
+
+    public function setName(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NAME], $value);
+    }
+
+    public function getAddress() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ADDRESS]);
+    }
+
+    public function setAddress(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ADDRESS], $value);
+    }
+
+    public function getAddress2() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ADDRESS2]);
+    }
+
+    public function setAddress2(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ADDRESS2], $value);
+    }
+
+    public function getPostCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::POST_CODE]);
+    }
+
+    public function setPostCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::POST_CODE], $value);
+    }
+
+    public function getCity() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CITY]);
+    }
+
+    public function setCity(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CITY], $value);
+    }
+
+    public function getCounty() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::COUNTY]);
+    }
+
+    public function setCounty(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::COUNTY], $value);
+    }
+
+    public function getCountryCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::COUNTRY_CODE]);
+    }
+
+    public function setCountryCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::COUNTRY_CODE], $value);
+    }
+
+    public function getLatitude() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LATITUDE]);
+    }
+
+    public function setLatitude(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LATITUDE], $value);
+    }
+
+    public function getLongitude() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LONGITUDE]);
+    }
+
+    public function setLongitude(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LONGITUDE], $value);
+    }
+
+    public function getPhoneNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PHONE_NO]);
+    }
+
+    public function setPhoneNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PHONE_NO], $value);
+    }
+
+    public function getCurrencyCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
+    }
+
+    public function setCurrencyCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
+    }
+
+    public function getFunctionalityProfile() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FUNCTIONALITY_PROFILE]);
+    }
+
+    public function setFunctionalityProfile(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FUNCTIONALITY_PROFILE], $value);
+    }
+
+    public function getStoreVatBusPostGr() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STORE_VAT_BUS_POST_GR]);
+    }
+
+    public function setStoreVatBusPostGr(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STORE_VAT_BUS_POST_GR], $value);
+    }
+
+    public function getClickAndCollect() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CLICK_AND_COLLECT]);
+    }
+
+    public function setClickAndCollect(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CLICK_AND_COLLECT], $value);
+    }
+
+    public function getLoyalty() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LOYALTY]);
+    }
+
+    public function setLoyalty(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LOYALTY], $value);
+    }
+
+    public function getWebStore() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::WEB_STORE]);
+    }
+
+    public function setWebStore(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::WEB_STORE], $value);
+    }
+
+    public function getWebStorePosTerminal() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::WEB_STORE_POS_TERMINAL]);
+    }
+
+    public function setWebStorePosTerminal(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::WEB_STORE_POS_TERMINAL], $value);
+    }
+
+    public function getWebStoreStaffId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::WEB_STORE_STAFF_ID]);
+    }
+
+    public function setWebStoreStaffId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::WEB_STORE_STAFF_ID], $value);
+    }
+
+    public function getCalcInvForSourcingLocation() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CALC_INV_FOR_SOURCING_LOCATION]);
+    }
+
+    public function setCalcInvForSourcingLocation(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CALC_INV_FOR_SOURCING_LOCATION], $value);
+    }
+
+    public function getLcyCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LCY_CODE]);
+    }
+
+    public function setLcyCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LCY_CODE], $value);
+    }
+
+    public function getStoreGroupCodes() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STORE_GROUP_CODES]);
+    }
+
+    public function setStoreGroupCodes(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STORE_GROUP_CODES], $value);
+    }
+
+    public function getPriceGroupCodes() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRICE_GROUP_CODES]);
+    }
+
+    public function setPriceGroupCodes(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRICE_GROUP_CODES], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

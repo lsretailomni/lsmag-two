@@ -27,91 +27,91 @@ class MobilePosSave extends \Magento\Catalog\Model\AbstractModel implements Requ
     public const MOBILE_TRANSACTION_X_M_L = 'mobileTransactionXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $staffId
+     * @param ?string $staffId
      * @return $this
      */
-    public function setStaffId($staffId)
+    public function setStaffId(?string $staffId)
     {
         $this->setData(self::STAFF_ID, $staffId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffId()
+    public function getStaffId() : ?string
     {
         return $this->getData(self::STAFF_ID);
     }
 
     /**
-     * @param string $menuType
+     * @param ?string $menuType
      * @return $this
      */
-    public function setMenuType($menuType)
+    public function setMenuType(?string $menuType)
     {
         $this->setData(self::MENU_TYPE, $menuType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMenuType()
+    public function getMenuType() : ?string
     {
         return $this->getData(self::MENU_TYPE);
     }
 
     /**
-     * @param boolean $unlockTrans
+     * @param ?bool $unlockTrans
      * @return $this
      */
-    public function setUnlockTrans($unlockTrans)
+    public function setUnlockTrans(?bool $unlockTrans)
     {
         $this->setData(self::UNLOCK_TRANS, $unlockTrans);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getUnlockTrans()
+    public function getUnlockTrans() : ?bool
     {
         return $this->getData(self::UNLOCK_TRANS);
     }

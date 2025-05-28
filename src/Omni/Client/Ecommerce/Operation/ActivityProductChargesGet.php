@@ -78,7 +78,7 @@ class ActivityProductChargesGet extends AbstractOperation
     /**
      * @return ActivityProductChargesGetRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ActivityProductChargesGetRequest();

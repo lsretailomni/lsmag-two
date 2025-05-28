@@ -187,6 +187,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO = 'ls_mag/replication/success_repl_data_translation_to_magento';
     const SC_CRON_DATA_TRANSLATION_TO_MAGENTO_CONFIG_PATH_LAST_EXECUTE =
         'ls_mag/replication/last_execute_repl_data_translation_to_magento';
+
+    const SC_STORE_REPLICATED_DATA_TRANSLATION_LANG_CODE = 'ls_mag/replication/replicated_data_translation_lang_code';
     const SC_STORE_DATA_TRANSLATION_LANG_CODE = 'ls_mag/replication/replicate_data_translation_lang_code';
     const SC_TRANSLATION_ID_ITEM_DESCRIPTION = 'T0000000027-F0000000003';
     const SC_TRANSLATION_ID_ITEM_HTML = 'T0010001410-F0000000020';

@@ -78,7 +78,7 @@ class ChangePassword extends AbstractOperation
     /**
      * @return ChangePasswordRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ChangePasswordRequest();

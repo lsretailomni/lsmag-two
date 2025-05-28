@@ -47,55 +47,55 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     public const EXPIRATION_PERIOD_TYPE = 'ExpirationPeriodType';
 
     /**
-     * @param string $Code
+     * @param ?string $Code
      * @return $this
      */
-    public function setCode($Code)
+    public function setCode(?string $Code)
     {
         $this->setData(self::CODE, $Code);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCode()
+    public function getCode() : ?string
     {
         return $this->getData(self::CODE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $StartingCardNo
+     * @param ?string $StartingCardNo
      * @return $this
      */
-    public function setStartingCardNo($StartingCardNo)
+    public function setStartingCardNo(?string $StartingCardNo)
     {
         $this->setData(self::STARTING_CARD_NO, $StartingCardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStartingCardNo()
+    public function getStartingCardNo() : ?string
     {
         return $this->getData(self::STARTING_CARD_NO);
     }
@@ -119,73 +119,73 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $BarcodeMask
+     * @param ?string $BarcodeMask
      * @return $this
      */
-    public function setBarcodeMask($BarcodeMask)
+    public function setBarcodeMask(?string $BarcodeMask)
     {
         $this->setData(self::BARCODE_MASK, $BarcodeMask);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeMask()
+    public function getBarcodeMask() : ?string
     {
         return $this->getData(self::BARCODE_MASK);
     }
 
     /**
-     * @param string $DefaultCustDiscGroup
+     * @param ?string $DefaultCustDiscGroup
      * @return $this
      */
-    public function setDefaultCustDiscGroup($DefaultCustDiscGroup)
+    public function setDefaultCustDiscGroup(?string $DefaultCustDiscGroup)
     {
         $this->setData(self::DEFAULT_CUST_DISC_GROUP, $DefaultCustDiscGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDefaultCustDiscGroup()
+    public function getDefaultCustDiscGroup() : ?string
     {
         return $this->getData(self::DEFAULT_CUST_DISC_GROUP);
     }
 
     /**
-     * @param string $DefaultPriceGroup
+     * @param ?string $DefaultPriceGroup
      * @return $this
      */
-    public function setDefaultPriceGroup($DefaultPriceGroup)
+    public function setDefaultPriceGroup(?string $DefaultPriceGroup)
     {
         $this->setData(self::DEFAULT_PRICE_GROUP, $DefaultPriceGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDefaultPriceGroup()
+    public function getDefaultPriceGroup() : ?string
     {
         return $this->getData(self::DEFAULT_PRICE_GROUP);
     }
 
     /**
-     * @param string $ClubCode
+     * @param ?string $ClubCode
      * @return $this
      */
-    public function setClubCode($ClubCode)
+    public function setClubCode(?string $ClubCode)
     {
         $this->setData(self::CLUB_CODE, $ClubCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubCode()
+    public function getClubCode() : ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
@@ -209,37 +209,37 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param float $MinPointforUpgrade
+     * @param ?float $MinPointforUpgrade
      * @return $this
      */
-    public function setMinPointforUpgrade($MinPointforUpgrade)
+    public function setMinPointforUpgrade(?float $MinPointforUpgrade)
     {
         $this->setData(self::MIN_POINTFOR_UPGRADE, $MinPointforUpgrade);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getMinPointforUpgrade()
+    public function getMinPointforUpgrade() : ?float
     {
         return $this->getData(self::MIN_POINTFOR_UPGRADE);
     }
 
     /**
-     * @param string $WhenCheckforUpgraded
+     * @param ?string $WhenCheckforUpgraded
      * @return $this
      */
-    public function setWhenCheckforUpgraded($WhenCheckforUpgraded)
+    public function setWhenCheckforUpgraded(?string $WhenCheckforUpgraded)
     {
         $this->setData(self::WHEN_CHECKFOR_UPGRADED, $WhenCheckforUpgraded);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getWhenCheckforUpgraded()
+    public function getWhenCheckforUpgraded() : ?string
     {
         return $this->getData(self::WHEN_CHECKFOR_UPGRADED);
     }
@@ -263,91 +263,91 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param float $PointLimitforDowngrade
+     * @param ?float $PointLimitforDowngrade
      * @return $this
      */
-    public function setPointLimitforDowngrade($PointLimitforDowngrade)
+    public function setPointLimitforDowngrade(?float $PointLimitforDowngrade)
     {
         $this->setData(self::POINT_LIMITFOR_DOWNGRADE, $PointLimitforDowngrade);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPointLimitforDowngrade()
+    public function getPointLimitforDowngrade() : ?float
     {
         return $this->getData(self::POINT_LIMITFOR_DOWNGRADE);
     }
 
     /**
-     * @param string $NextScheme
+     * @param ?string $NextScheme
      * @return $this
      */
-    public function setNextScheme($NextScheme)
+    public function setNextScheme(?string $NextScheme)
     {
         $this->setData(self::NEXT_SCHEME, $NextScheme);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNextScheme()
+    public function getNextScheme() : ?string
     {
         return $this->getData(self::NEXT_SCHEME);
     }
 
     /**
-     * @param string $NextSchemeBenefits
+     * @param ?string $NextSchemeBenefits
      * @return $this
      */
-    public function setNextSchemeBenefits($NextSchemeBenefits)
+    public function setNextSchemeBenefits(?string $NextSchemeBenefits)
     {
         $this->setData(self::NEXT_SCHEME_BENEFITS, $NextSchemeBenefits);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNextSchemeBenefits()
+    public function getNextSchemeBenefits() : ?string
     {
         return $this->getData(self::NEXT_SCHEME_BENEFITS);
     }
 
     /**
-     * @param string $CardNoSeries
+     * @param ?string $CardNoSeries
      * @return $this
      */
-    public function setCardNoSeries($CardNoSeries)
+    public function setCardNoSeries(?string $CardNoSeries)
     {
         $this->setData(self::CARD_NO_SERIES, $CardNoSeries);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNoSeries()
+    public function getCardNoSeries() : ?string
     {
         return $this->getData(self::CARD_NO_SERIES);
     }
 
     /**
-     * @param string $ExpirationPeriodType
+     * @param ?string $ExpirationPeriodType
      * @return $this
      */
-    public function setExpirationPeriodType($ExpirationPeriodType)
+    public function setExpirationPeriodType(?string $ExpirationPeriodType)
     {
         $this->setData(self::EXPIRATION_PERIOD_TYPE, $ExpirationPeriodType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExpirationPeriodType()
+    public function getExpirationPeriodType() : ?string
     {
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
     }

@@ -29,6 +29,176 @@ class ReplLscWiPrice extends \Ls\Omni\Client\Ecommerce\Entity\LSCWIPrice impleme
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getCurrencyCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
+    }
+
+    public function setCurrencyCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
+    }
+
+    public function getCustomerDiscGroup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP]);
+    }
+
+    public function setCustomerDiscGroup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP], $value);
+    }
+
+    public function getItemNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
+    }
+
+    public function setItemNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
+    }
+
+    public function getLastModifyDate() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LAST_MODIFY_DATE]);
+    }
+
+    public function setLastModifyDate(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFY_DATE], $value);
+    }
+
+    public function getLoyaltySchemeCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LOYALTY_SCHEME_CODE]);
+    }
+
+    public function setLoyaltySchemeCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LOYALTY_SCHEME_CODE], $value);
+    }
+
+    public function getNetUnitPrice() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NET_UNIT_PRICE]);
+    }
+
+    public function setNetUnitPrice(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NET_UNIT_PRICE], $value);
+    }
+
+    public function getOfferNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::OFFER_NO]);
+    }
+
+    public function setOfferNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::OFFER_NO], $value);
+    }
+
+    public function getQtyPerUnitOfMeasure() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::QTY_PER_UNIT_OF_MEASURE]);
+    }
+
+    public function setQtyPerUnitOfMeasure(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::QTY_PER_UNIT_OF_MEASURE], $value);
+    }
+
+    public function getStoreNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
+    }
+
+    public function setStoreNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
+    public function getUnitOfMeasureCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE]);
+    }
+
+    public function setUnitOfMeasureCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE], $value);
+    }
+
+    public function getUnitPrice() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNIT_PRICE]);
+    }
+
+    public function setUnitPrice(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNIT_PRICE], $value);
+    }
+
+    public function getVariantCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
+    }
+
+    public function setVariantCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

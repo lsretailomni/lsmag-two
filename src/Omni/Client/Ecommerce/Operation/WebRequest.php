@@ -78,7 +78,7 @@ class WebRequest extends AbstractOperation
     /**
      * @return WebRequestRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new WebRequestRequest();

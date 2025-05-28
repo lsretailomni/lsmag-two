@@ -19,19 +19,19 @@ class PublishedOfferDetailLineImages extends \Magento\Catalog\Model\AbstractMode
     public const IMAGE_ID = 'ImageId';
 
     /**
-     * @param string $KeyValue
+     * @param ?string $KeyValue
      * @return $this
      */
-    public function setKeyValue($KeyValue)
+    public function setKeyValue(?string $KeyValue)
     {
         $this->setData(self::KEY_VALUE, $KeyValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getKeyValue()
+    public function getKeyValue() : ?string
     {
         return $this->getData(self::KEY_VALUE);
     }
@@ -55,19 +55,19 @@ class PublishedOfferDetailLineImages extends \Magento\Catalog\Model\AbstractMode
     }
 
     /**
-     * @param string $ImageId
+     * @param ?string $ImageId
      * @return $this
      */
-    public function setImageId($ImageId)
+    public function setImageId(?string $ImageId)
     {
         $this->setData(self::IMAGE_ID, $ImageId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getImageId()
+    public function getImageId() : ?string
     {
         return $this->getData(self::IMAGE_ID);
     }

@@ -29,6 +29,86 @@ class ReplHierarchynodesview extends \Ls\Omni\Client\Ecommerce\Entity\HierarchyN
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getHierarchyCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::HIERARCHY_CODE]);
+    }
+
+    public function setHierarchyCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::HIERARCHY_CODE], $value);
+    }
+
+    public function getNodeId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NODE_ID]);
+    }
+
+    public function setNodeId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NODE_ID], $value);
+    }
+
+    public function getParentNodeId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PARENT_NODE_ID]);
+    }
+
+    public function setParentNodeId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PARENT_NODE_ID], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getChildrenOrder() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CHILDREN_ORDER]);
+    }
+
+    public function setChildrenOrder(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CHILDREN_ORDER], $value);
+    }
+
+    public function getIndentation() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::INDENTATION]);
+    }
+
+    public function setIndentation(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::INDENTATION], $value);
+    }
+
+    public function getPresentationOrder() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRESENTATION_ORDER]);
+    }
+
+    public function setPresentationOrder(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRESENTATION_ORDER], $value);
+    }
+
+    public function getRetailImageId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RETAIL_IMAGE_ID]);
+    }
+
+    public function setRetailImageId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RETAIL_IMAGE_ID], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

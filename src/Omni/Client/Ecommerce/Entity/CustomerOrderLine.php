@@ -35,19 +35,19 @@ class CustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     public const QTY_COLLECTED = 'QtyCollected';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentID(?string $DocumentID)
     {
         $this->setData(self::DOCUMENT_I_D, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentID() : ?string
     {
         return $this->getData(self::DOCUMENT_I_D);
     }
@@ -71,163 +71,163 @@ class CustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $LineType
+     * @param ?string $LineType
      * @return $this
      */
-    public function setLineType($LineType)
+    public function setLineType(?string $LineType)
     {
         $this->setData(self::LINE_TYPE, $LineType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLineType()
+    public function getLineType() : ?string
     {
         return $this->getData(self::LINE_TYPE);
     }
 
     /**
-     * @param string $Number
+     * @param ?string $Number
      * @return $this
      */
-    public function setNumber($Number)
+    public function setNumber(?string $Number)
     {
         $this->setData(self::NUMBER, $Number);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNumber()
+    public function getNumber() : ?string
     {
         return $this->getData(self::NUMBER);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantCode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantCode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $UnitofMeasureCode
+     * @param ?string $UnitofMeasureCode
      * @return $this
      */
-    public function setUnitofMeasureCode($UnitofMeasureCode)
+    public function setUnitofMeasureCode(?string $UnitofMeasureCode)
     {
         $this->setData(self::UNITOF_MEASURE_CODE, $UnitofMeasureCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnitofMeasureCode()
+    public function getUnitofMeasureCode() : ?string
     {
         return $this->getData(self::UNITOF_MEASURE_CODE);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param float $Amount
+     * @param ?float $Amount
      * @return $this
      */
-    public function setAmount($Amount)
+    public function setAmount(?float $Amount)
     {
         $this->setData(self::AMOUNT, $Amount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmount()
+    public function getAmount() : ?float
     {
         return $this->getData(self::AMOUNT);
     }
 
     /**
-     * @param string $SourcingOrderType
+     * @param ?string $SourcingOrderType
      * @return $this
      */
-    public function setSourcingOrderType($SourcingOrderType)
+    public function setSourcingOrderType(?string $SourcingOrderType)
     {
         $this->setData(self::SOURCING_ORDER_TYPE, $SourcingOrderType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSourcingOrderType()
+    public function getSourcingOrderType() : ?string
     {
         return $this->getData(self::SOURCING_ORDER_TYPE);
     }
 
     /**
-     * @param string $Status
+     * @param ?string $Status
      * @return $this
      */
-    public function setStatus($Status)
+    public function setStatus(?string $Status)
     {
         $this->setData(self::STATUS, $Status);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatus()
+    public function getStatus() : ?string
     {
         return $this->getData(self::STATUS);
     }
 
     /**
-     * @param float $QtyCollected
+     * @param ?float $QtyCollected
      * @return $this
      */
-    public function setQtyCollected($QtyCollected)
+    public function setQtyCollected(?float $QtyCollected)
     {
         $this->setData(self::QTY_COLLECTED, $QtyCollected);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQtyCollected()
+    public function getQtyCollected() : ?float
     {
         return $this->getData(self::QTY_COLLECTED);
     }

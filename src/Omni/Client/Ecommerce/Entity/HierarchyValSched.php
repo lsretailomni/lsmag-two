@@ -19,55 +19,55 @@ class HierarchyValSched extends \Magento\Catalog\Model\AbstractModel
     public const TYPE = 'Type';
 
     /**
-     * @param string $HierarchyCode
+     * @param ?string $HierarchyCode
      * @return $this
      */
-    public function setHierarchyCode($HierarchyCode)
+    public function setHierarchyCode(?string $HierarchyCode)
     {
         $this->setData(self::HIERARCHY_CODE, $HierarchyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getHierarchyCode()
+    public function getHierarchyCode() : ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $Type
+     * @param ?string $Type
      * @return $this
      */
-    public function setType($Type)
+    public function setType(?string $Type)
     {
         $this->setData(self::TYPE, $Type);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getType()
+    public function getType() : ?string
     {
         return $this->getData(self::TYPE);
     }

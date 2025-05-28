@@ -61,55 +61,55 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     }
 
     /**
-     * @param string $TerminalNo
+     * @param ?string $TerminalNo
      * @return $this
      */
-    public function setTerminalNo($TerminalNo)
+    public function setTerminalNo(?string $TerminalNo)
     {
         $this->setData(self::TERMINAL_NO, $TerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalNo()
+    public function getTerminalNo() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentID(?string $DocumentID)
     {
         $this->setData(self::DOCUMENT_I_D, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentID() : ?string
     {
         return $this->getData(self::DOCUMENT_I_D);
     }
@@ -133,163 +133,163 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     }
 
     /**
-     * @param string $ItemNo
+     * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo($ItemNo)
+    public function setItemNo(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemNo() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantCode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantCode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param float $Quntity
+     * @param ?float $Quntity
      * @return $this
      */
-    public function setQuntity($Quntity)
+    public function setQuntity(?float $Quntity)
     {
         $this->setData(self::QUNTITY, $Quntity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuntity()
+    public function getQuntity() : ?float
     {
         return $this->getData(self::QUNTITY);
     }
 
     /**
-     * @param float $QuantityBase
+     * @param ?float $QuantityBase
      * @return $this
      */
-    public function setQuantityBase($QuantityBase)
+    public function setQuantityBase(?float $QuantityBase)
     {
         $this->setData(self::QUANTITY_BASE, $QuantityBase);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantityBase()
+    public function getQuantityBase() : ?float
     {
         return $this->getData(self::QUANTITY_BASE);
     }
 
     /**
-     * @param boolean $Picked
+     * @param ?bool $Picked
      * @return $this
      */
-    public function setPicked($Picked)
+    public function setPicked(?bool $Picked)
     {
         $this->setData(self::PICKED, $Picked);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getPicked()
+    public function getPicked() : ?bool
     {
         return $this->getData(self::PICKED);
     }
 
     /**
-     * @param boolean $NotInStock
+     * @param ?bool $NotInStock
      * @return $this
      */
-    public function setNotInStock($NotInStock)
+    public function setNotInStock(?bool $NotInStock)
     {
         $this->setData(self::NOT_IN_STOCK, $NotInStock);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getNotInStock()
+    public function getNotInStock() : ?bool
     {
         return $this->getData(self::NOT_IN_STOCK);
     }
 
     /**
-     * @param string $LineComment
+     * @param ?string $LineComment
      * @return $this
      */
-    public function setLineComment($LineComment)
+    public function setLineComment(?string $LineComment)
     {
         $this->setData(self::LINE_COMMENT, $LineComment);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLineComment()
+    public function getLineComment() : ?string
     {
         return $this->getData(self::LINE_COMMENT);
     }
 
     /**
-     * @param string $BoxNo
+     * @param ?string $BoxNo
      * @return $this
      */
-    public function setBoxNo($BoxNo)
+    public function setBoxNo(?string $BoxNo)
     {
         $this->setData(self::BOX_NO, $BoxNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBoxNo()
+    public function getBoxNo() : ?string
     {
         return $this->getData(self::BOX_NO);
     }
 
     /**
-     * @param string $BoxLocation
+     * @param ?string $BoxLocation
      * @return $this
      */
-    public function setBoxLocation($BoxLocation)
+    public function setBoxLocation(?string $BoxLocation)
     {
         $this->setData(self::BOX_LOCATION, $BoxLocation);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBoxLocation()
+    public function getBoxLocation() : ?string
     {
         return $this->getData(self::BOX_LOCATION);
     }

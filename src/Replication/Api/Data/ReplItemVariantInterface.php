@@ -48,9 +48,9 @@ interface ReplItemVariantInterface
 
     public function setServiceBlocked(?bool $value);
 
-    public function getProductionBlocked() : ?string;
+    public function getProductionBlocked() : ?int;
 
-    public function setProductionBlocked(?string $value);
+    public function setProductionBlocked(?int $value);
 
     public function getLscCommonItemNo() : ?string;
 
@@ -60,17 +60,17 @@ interface ReplItemVariantInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

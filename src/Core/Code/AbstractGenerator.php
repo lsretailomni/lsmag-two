@@ -149,7 +149,7 @@ CODE);
             } else {
                 if ($defineProperty) {
                     $setMethod->setBody(<<<CODE
-\$this->{$variableField} =  \$$variableName;
+\$this->{$variableField} = \$$variableName;
 return \$this;
 CODE);
                     $getMethod->setBody(<<<CODE
@@ -198,6 +198,7 @@ CODE);
      * @param array $flags
      * @param array $parameters
      * @param ReflectionNamedType|null $returnType
+     * @param string $body
      * @return void
      */
     public function copyGivenMethod(
@@ -206,7 +207,8 @@ CODE);
         bool $isAbstract = false,
         array $flags = [],
         array $parameters = [],
-        ReflectionNamedType $returnType = null
+        ReflectionNamedType $returnType = null,
+        string $body = ''
     ): void {
         $methodGen = new MethodGenerator();
         $methodGen->setName($methodName);
@@ -254,6 +256,10 @@ CODE);
                 : $nullablePrefix . '\\' . ltrim($typeName, '\\');
 
             $methodGen->setReturnType($resolvedType);
+        }
+
+        if (!empty($body)) {
+            $methodGen->setBody($body);
         }
 
         $this->class->addMethodFromGenerator($methodGen);

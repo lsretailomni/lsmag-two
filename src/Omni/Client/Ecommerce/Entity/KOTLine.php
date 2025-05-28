@@ -19,19 +19,19 @@ class KOTLine extends \Magento\Catalog\Model\AbstractModel
     public const ITEM_NO = 'ItemNo';
 
     /**
-     * @param string $KotNo
+     * @param ?string $KotNo
      * @return $this
      */
-    public function setKotNo($KotNo)
+    public function setKotNo(?string $KotNo)
     {
         $this->setData(self::KOT_NO, $KotNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getKotNo()
+    public function getKotNo() : ?string
     {
         return $this->getData(self::KOT_NO);
     }
@@ -55,19 +55,19 @@ class KOTLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $ItemNo
+     * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo($ItemNo)
+    public function setItemNo(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemNo() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }

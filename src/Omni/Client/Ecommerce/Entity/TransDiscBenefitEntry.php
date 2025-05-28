@@ -43,37 +43,37 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPOSTerminalNo(?string $POSTerminalNo)
     {
         $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPOSTerminalNo() : ?string
     {
         return $this->getData(self::P_O_S_TERMINAL_NO);
     }
@@ -115,37 +115,37 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $OfferType
+     * @param ?string $OfferType
      * @return $this
      */
-    public function setOfferType($OfferType)
+    public function setOfferType(?string $OfferType)
     {
         $this->setData(self::OFFER_TYPE, $OfferType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOfferType()
+    public function getOfferType() : ?string
     {
         return $this->getData(self::OFFER_TYPE);
     }
 
     /**
-     * @param string $OfferNo
+     * @param ?string $OfferNo
      * @return $this
      */
-    public function setOfferNo($OfferNo)
+    public function setOfferNo(?string $OfferNo)
     {
         $this->setData(self::OFFER_NO, $OfferNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOfferNo()
+    public function getOfferNo() : ?string
     {
         return $this->getData(self::OFFER_NO);
     }
@@ -169,127 +169,127 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $Type
+     * @param ?string $Type
      * @return $this
      */
-    public function setType($Type)
+    public function setType(?string $Type)
     {
         $this->setData(self::TYPE, $Type);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getType()
+    public function getType() : ?string
     {
         return $this->getData(self::TYPE);
     }
 
     /**
-     * @param string $No
+     * @param ?string $No
      * @return $this
      */
-    public function setNo($No)
+    public function setNo(?string $No)
     {
         $this->setData(self::NO, $No);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNo()
+    public function getNo() : ?string
     {
         return $this->getData(self::NO);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantCode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantCode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $ValueType
+     * @param ?string $ValueType
      * @return $this
      */
-    public function setValueType($ValueType)
+    public function setValueType(?string $ValueType)
     {
         $this->setData(self::VALUE_TYPE, $ValueType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getValueType()
+    public function getValueType() : ?string
     {
         return $this->getData(self::VALUE_TYPE);
     }
 
     /**
-     * @param float $Value
+     * @param ?float $Value
      * @return $this
      */
-    public function setValue($Value)
+    public function setValue(?float $Value)
     {
         $this->setData(self::VALUE, $Value);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getValue()
+    public function getValue() : ?float
     {
         return $this->getData(self::VALUE);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }

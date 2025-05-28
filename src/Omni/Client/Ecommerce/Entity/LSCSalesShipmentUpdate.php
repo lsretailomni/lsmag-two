@@ -23,55 +23,55 @@ class LSCSalesShipmentUpdate extends \Magento\Catalog\Model\AbstractModel implem
     public const SALES_SHIPMENT_UPDATE_X_M_L = 'salesShipmentUpdateXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $documentId
+     * @param ?string $documentId
      * @return $this
      */
-    public function setDocumentId($documentId)
+    public function setDocumentId(?string $documentId)
     {
         $this->setData(self::DOCUMENT_ID, $documentId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentId()
+    public function getDocumentId() : ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }

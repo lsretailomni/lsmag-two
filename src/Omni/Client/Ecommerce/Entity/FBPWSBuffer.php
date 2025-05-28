@@ -29,37 +29,37 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
     public const COUPON_CODE = 'CouponCode';
 
     /**
-     * @param string $FBPHeaderNo
+     * @param ?string $FBPHeaderNo
      * @return $this
      */
-    public function setFBPHeaderNo($FBPHeaderNo)
+    public function setFBPHeaderNo(?string $FBPHeaderNo)
     {
         $this->setData(self::F_B_P_HEADER_NO, $FBPHeaderNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFBPHeaderNo()
+    public function getFBPHeaderNo() : ?string
     {
         return $this->getData(self::F_B_P_HEADER_NO);
     }
 
     /**
-     * @param string $FBPDescription
+     * @param ?string $FBPDescription
      * @return $this
      */
-    public function setFBPDescription($FBPDescription)
+    public function setFBPDescription(?string $FBPDescription)
     {
         $this->setData(self::F_B_P_DESCRIPTION, $FBPDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFBPDescription()
+    public function getFBPDescription() : ?string
     {
         return $this->getData(self::F_B_P_DESCRIPTION);
     }
@@ -155,19 +155,19 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $CouponCode
+     * @param ?string $CouponCode
      * @return $this
      */
-    public function setCouponCode($CouponCode)
+    public function setCouponCode(?string $CouponCode)
     {
         $this->setData(self::COUPON_CODE, $CouponCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCouponCode()
+    public function getCouponCode() : ?string
     {
         return $this->getData(self::COUPON_CODE);
     }

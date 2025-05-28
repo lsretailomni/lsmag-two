@@ -20,13 +20,13 @@ interface ReplHierarchyviewInterface
 
     public function setDescription(?string $value);
 
-    public function getType() : ?string;
+    public function getType() : ?int;
 
-    public function setType(?string $value);
+    public function setType(?int $value);
 
-    public function getStartDate() : ?\DateTime;
+    public function getStartDate() : ?string;
 
-    public function setStartDate(?\DateTime $value);
+    public function setStartDate(?string $value);
 
     public function getPriority() : ?int;
 

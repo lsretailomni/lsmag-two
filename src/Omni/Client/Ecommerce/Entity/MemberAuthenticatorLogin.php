@@ -31,91 +31,91 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $authenticator
+     * @param ?string $authenticator
      * @return $this
      */
-    public function setAuthenticator($authenticator)
+    public function setAuthenticator(?string $authenticator)
     {
         $this->setData(self::AUTHENTICATOR, $authenticator);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAuthenticator()
+    public function getAuthenticator() : ?string
     {
         return $this->getData(self::AUTHENTICATOR);
     }
 
     /**
-     * @param string $authenticationID
+     * @param ?string $authenticationID
      * @return $this
      */
-    public function setAuthenticationID($authenticationID)
+    public function setAuthenticationID(?string $authenticationID)
     {
         $this->setData(self::AUTHENTICATION_I_D, $authenticationID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAuthenticationID()
+    public function getAuthenticationID() : ?string
     {
         return $this->getData(self::AUTHENTICATION_I_D);
     }
 
     /**
-     * @param string $deviceID
+     * @param ?string $deviceID
      * @return $this
      */
-    public function setDeviceID($deviceID)
+    public function setDeviceID(?string $deviceID)
     {
         $this->setData(self::DEVICE_I_D, $deviceID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDeviceID()
+    public function getDeviceID() : ?string
     {
         return $this->getData(self::DEVICE_I_D);
     }
 
     /**
-     * @param string $deviceFriendlyName
+     * @param ?string $deviceFriendlyName
      * @return $this
      */
-    public function setDeviceFriendlyName($deviceFriendlyName)
+    public function setDeviceFriendlyName(?string $deviceFriendlyName)
     {
         $this->setData(self::DEVICE_FRIENDLY_NAME, $deviceFriendlyName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDeviceFriendlyName()
+    public function getDeviceFriendlyName() : ?string
     {
         return $this->getData(self::DEVICE_FRIENDLY_NAME);
     }
 
     /**
-     * @param float $totalRemainingPoints
+     * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints($totalRemainingPoints)
+    public function setTotalRemainingPoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalRemainingPoints()
+    public function getTotalRemainingPoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
@@ -139,37 +139,37 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

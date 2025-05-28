@@ -42,7 +42,7 @@ class ReplLscDataTranslationTask extends AbstractReplicationTask
 
     public function setRepository(ReplLscDataTranslationRepository $repository)
     {
-        $this->repository =  $repository;
+        $this->repository = $repository;
         return $this;
     }
 
@@ -53,7 +53,7 @@ class ReplLscDataTranslationTask extends AbstractReplicationTask
 
     public function setFactory(ReplLscDataTranslationFactory $factory)
     {
-        $this->factory =  $factory;
+        $this->factory = $factory;
         return $this;
     }
 
@@ -64,7 +64,7 @@ class ReplLscDataTranslationTask extends AbstractReplicationTask
 
     public function setDataInterface(ReplLscDataTranslationInterface $dataInterface)
     {
-        $this->dataInterface =  $dataInterface;
+        $this->dataInterface = $dataInterface;
         return $this;
     }
 

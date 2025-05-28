@@ -45,37 +45,37 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPOSTerminalNo(?string $POSTerminalNo)
     {
         $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPOSTerminalNo() : ?string
     {
         return $this->getData(self::P_O_S_TERMINAL_NO);
     }
@@ -99,55 +99,55 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $TransactionType
+     * @param ?string $TransactionType
      * @return $this
      */
-    public function setTransactionType($TransactionType)
+    public function setTransactionType(?string $TransactionType)
     {
         $this->setData(self::TRANSACTION_TYPE, $TransactionType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionType()
+    public function getTransactionType() : ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptNo(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptNo() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param date $TransDate
+     * @param ?string $TransDate
      * @return $this
      */
-    public function setTransDate($TransDate)
+    public function setTransDate(?string $TransDate)
     {
         $this->setData(self::TRANS_DATE, $TransDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getTransDate()
+    public function getTransDate() : ?string
     {
         return $this->getData(self::TRANS_DATE);
     }
@@ -171,19 +171,19 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param boolean $CreditSale
+     * @param ?bool $CreditSale
      * @return $this
      */
-    public function setCreditSale($CreditSale)
+    public function setCreditSale(?bool $CreditSale)
     {
         $this->setData(self::CREDIT_SALE, $CreditSale);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getCreditSale()
+    public function getCreditSale() : ?bool
     {
         return $this->getData(self::CREDIT_SALE);
     }
@@ -207,19 +207,19 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param boolean $Training
+     * @param ?bool $Training
      * @return $this
      */
-    public function setTraining($Training)
+    public function setTraining(?bool $Training)
     {
         $this->setData(self::TRAINING, $Training);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getTraining()
+    public function getTraining() : ?bool
     {
         return $this->getData(self::TRAINING);
     }
@@ -243,73 +243,73 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param float $NetAmount
+     * @param ?float $NetAmount
      * @return $this
      */
-    public function setNetAmount($NetAmount)
+    public function setNetAmount(?float $NetAmount)
     {
         $this->setData(self::NET_AMOUNT, $NetAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getNetAmount()
+    public function getNetAmount() : ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
 
     /**
-     * @param float $Amount
+     * @param ?float $Amount
      * @return $this
      */
-    public function setAmount($Amount)
+    public function setAmount(?float $Amount)
     {
         $this->setData(self::AMOUNT, $Amount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmount()
+    public function getAmount() : ?float
     {
         return $this->getData(self::AMOUNT);
     }
 
     /**
-     * @param string $PrivateKeyVersion
+     * @param ?string $PrivateKeyVersion
      * @return $this
      */
-    public function setPrivateKeyVersion($PrivateKeyVersion)
+    public function setPrivateKeyVersion(?string $PrivateKeyVersion)
     {
         $this->setData(self::PRIVATE_KEY_VERSION, $PrivateKeyVersion);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPrivateKeyVersion()
+    public function getPrivateKeyVersion() : ?string
     {
         return $this->getData(self::PRIVATE_KEY_VERSION);
     }
 
     /**
-     * @param string $Signature
+     * @param ?string $Signature
      * @return $this
      */
-    public function setSignature($Signature)
+    public function setSignature(?string $Signature)
     {
         $this->setData(self::SIGNATURE, $Signature);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSignature()
+    public function getSignature() : ?string
     {
         return $this->getData(self::SIGNATURE);
     }

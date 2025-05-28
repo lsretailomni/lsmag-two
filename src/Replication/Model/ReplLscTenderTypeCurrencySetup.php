@@ -29,6 +29,166 @@ class ReplLscTenderTypeCurrencySetup extends \Ls\Omni\Client\Ecommerce\Entity\LS
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getCurrencyCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
+    }
+
+    public function setCurrencyCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getStoreNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
+    }
+
+    public function setStoreNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
+    }
+
+    public function getTenderTypeCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TENDER_TYPE_CODE]);
+    }
+
+    public function setTenderTypeCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TENDER_TYPE_CODE], $value);
+    }
+
+    public function getAccountType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ACCOUNT_TYPE]);
+    }
+
+    public function setAccountType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ACCOUNT_TYPE], $value);
+    }
+
+    public function getAccountNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ACCOUNT_NO]);
+    }
+
+    public function setAccountNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ACCOUNT_NO], $value);
+    }
+
+    public function getAccountName() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ACCOUNT_NAME]);
+    }
+
+    public function setAccountName(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ACCOUNT_NAME], $value);
+    }
+
+    public function getDifferenceGLAcc() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DIFFERENCE_GL_ACC]);
+    }
+
+    public function setDifferenceGLAcc(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DIFFERENCE_GL_ACC], $value);
+    }
+
+    public function getPrimaryKey() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRIMARY_KEY]);
+    }
+
+    public function setPrimaryKey(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRIMARY_KEY], $value);
+    }
+
+    public function getPosPickupWarningAmount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::POS_PICKUP_WARNING_AMOUNT]);
+    }
+
+    public function setPosPickupWarningAmount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::POS_PICKUP_WARNING_AMOUNT], $value);
+    }
+
+    public function getPosPickupWarningText() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::POS_PICKUP_WARNING_TEXT]);
+    }
+
+    public function setPosPickupWarningText(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::POS_PICKUP_WARNING_TEXT], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

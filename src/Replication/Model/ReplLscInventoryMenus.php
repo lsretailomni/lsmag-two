@@ -29,6 +29,126 @@ class ReplLscInventoryMenus extends \Ls\Omni\Client\Ecommerce\Entity\LSCInventor
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getDeviceType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DEVICE_TYPE]);
+    }
+
+    public function setDeviceType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DEVICE_TYPE], $value);
+    }
+
+    public function getCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CODE]);
+    }
+
+    public function setCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
+    }
+
+    public function getStoreNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
+    }
+
+    public function setStoreNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getText() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TEXT]);
+    }
+
+    public function setText(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TEXT], $value);
+    }
+
+    public function getBitmap() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::BITMAP]);
+    }
+
+    public function setBitmap(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::BITMAP], $value);
+    }
+
+    public function getMainMenu() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MAIN_MENU]);
+    }
+
+    public function setMainMenu(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MAIN_MENU], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

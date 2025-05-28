@@ -52,9 +52,9 @@ interface ReplLscAttributeValueInterface
 
     public function setLinkField3(?string $value);
 
-    public function getLinkType() : ?string;
+    public function getLinkType() : ?int;
 
-    public function setLinkType(?string $value);
+    public function setLinkType(?int $value);
 
     public function getNumericValue() : ?float;
 
@@ -68,25 +68,25 @@ interface ReplLscAttributeValueInterface
 
     public function setSequence(?int $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 
     public function setSystemmodifiedby(?string $value);
 
-    public function getValueCalculated() : ?string;
+    public function getValueCalculated() : ?int;
 
-    public function setValueCalculated(?string $value);
+    public function setValueCalculated(?int $value);
 
     public function getSystemid() : ?string;
 

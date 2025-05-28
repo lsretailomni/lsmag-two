@@ -60,13 +60,13 @@ interface ReplLscWiItemModifierInterface
 
     public function setMaxSelection(?int $value);
 
-    public function getPriceHandling() : ?string;
+    public function getPriceHandling() : ?int;
 
-    public function setPriceHandling(?string $value);
+    public function setPriceHandling(?int $value);
 
-    public function getPriceType() : ?string;
+    public function getPriceType() : ?int;
 
-    public function setPriceType(?string $value);
+    public function setPriceType(?int $value);
 
     public function getAmountPercent() : ?float;
 
@@ -88,17 +88,17 @@ interface ReplLscWiItemModifierInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

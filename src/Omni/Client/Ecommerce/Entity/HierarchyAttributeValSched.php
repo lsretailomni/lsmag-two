@@ -19,55 +19,55 @@ class HierarchyAttributeValSched extends \Magento\Catalog\Model\AbstractModel
     public const DESCRIPTION = 'Description';
 
     /**
-     * @param string $HierarchyCode
+     * @param ?string $HierarchyCode
      * @return $this
      */
-    public function setHierarchyCode($HierarchyCode)
+    public function setHierarchyCode(?string $HierarchyCode)
     {
         $this->setData(self::HIERARCHY_CODE, $HierarchyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getHierarchyCode()
+    public function getHierarchyCode() : ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
 
     /**
-     * @param string $AttributeCode
+     * @param ?string $AttributeCode
      * @return $this
      */
-    public function setAttributeCode($AttributeCode)
+    public function setAttributeCode(?string $AttributeCode)
     {
         $this->setData(self::ATTRIBUTE_CODE, $AttributeCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAttributeCode()
+    public function getAttributeCode() : ?string
     {
         return $this->getData(self::ATTRIBUTE_CODE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }

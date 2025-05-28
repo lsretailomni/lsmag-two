@@ -117,22 +117,22 @@ class CountryView extends AbstractModel
         return $this->setData(self::INTRASTAT_CODE, $value);
     }
 
-    public function getAddressFormat(): ?string
+    public function getAddressFormat(): ?int
     {
         return $this->getData(self::ADDRESS_FORMAT);
     }
 
-    public function setAddressFormat(?string $value)
+    public function setAddressFormat(?int $value)
     {
         return $this->setData(self::ADDRESS_FORMAT, $value);
     }
 
-    public function getContactAddressFormat(): ?string
+    public function getContactAddressFormat(): ?int
     {
         return $this->getData(self::CONTACT_ADDRESS_FORMAT);
     }
 
-    public function setContactAddressFormat(?string $value)
+    public function setContactAddressFormat(?int $value)
     {
         return $this->setData(self::CONTACT_ADDRESS_FORMAT, $value);
     }
@@ -147,12 +147,12 @@ class CountryView extends AbstractModel
         return $this->setData(self::VAT_SCHEME, $value);
     }
 
-    public function getLastModifiedDateTime(): ?\DateTime
+    public function getLastModifiedDateTime(): ?string
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
     }
 
-    public function setLastModifiedDateTime(?\DateTime $value)
+    public function setLastModifiedDateTime(?string $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
@@ -187,12 +187,12 @@ class CountryView extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -207,12 +207,12 @@ class CountryView extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

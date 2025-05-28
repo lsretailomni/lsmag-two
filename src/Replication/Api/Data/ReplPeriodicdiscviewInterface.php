@@ -20,9 +20,9 @@ interface ReplPeriodicdiscviewInterface
 
     public function setLineNo(?int $value);
 
-    public function getType() : ?string;
+    public function getType() : ?int;
 
-    public function setType(?string $value);
+    public function setType(?int $value);
 
     public function getNo() : ?string;
 
@@ -84,9 +84,9 @@ interface ReplPeriodicdiscviewInterface
 
     public function setNoOfItemsNeeded(?int $value);
 
-    public function getDiscType() : ?string;
+    public function getDiscType() : ?int;
 
-    public function setDiscType(?string $value);
+    public function setDiscType(?int $value);
 
     public function getDiscountAmount() : ?float;
 
@@ -108,9 +108,9 @@ interface ReplPeriodicdiscviewInterface
 
     public function setTriggerPopUpOnPos(?bool $value);
 
-    public function getVariantType() : ?string;
+    public function getVariantType() : ?int;
 
-    public function setVariantType(?string $value);
+    public function setVariantType(?int $value);
 
     public function getExclude() : ?bool;
 
@@ -124,13 +124,13 @@ interface ReplPeriodicdiscviewInterface
 
     public function setPromptAtScan(?bool $value);
 
-    public function getHeaderType() : ?string;
+    public function getHeaderType() : ?int;
 
-    public function setHeaderType(?string $value);
+    public function setHeaderType(?int $value);
 
-    public function getPlannedDemandType() : ?string;
+    public function getPlannedDemandType() : ?int;
 
-    public function setPlannedDemandType(?string $value);
+    public function setPlannedDemandType(?int $value);
 
     public function getPlannedDemand() : ?float;
 
@@ -140,25 +140,25 @@ interface ReplPeriodicdiscviewInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 
     public function setSystemmodifiedby(?string $value);
 
-    public function getStatus() : ?string;
+    public function getStatus() : ?int;
 
-    public function setStatus(?string $value);
+    public function setStatus(?int $value);
 
     public function getHeadPriceGroup() : ?string;
 
@@ -172,9 +172,9 @@ interface ReplPeriodicdiscviewInterface
 
     public function setValidationPeriodId(?string $value);
 
-    public function getDiscountType() : ?string;
+    public function getDiscountType() : ?int;
 
-    public function setDiscountType(?string $value);
+    public function setDiscountType(?int $value);
 
     public function getDealPriceValue() : ?float;
 
@@ -220,9 +220,9 @@ interface ReplPeriodicdiscviewInterface
 
     public function setCouponQtyNeeded(?float $value);
 
-    public function getMemberType() : ?string;
+    public function getMemberType() : ?int;
 
-    public function setMemberType(?string $value);
+    public function setMemberType(?int $value);
 
     public function getMemberAttribute() : ?string;
 
@@ -240,9 +240,9 @@ interface ReplPeriodicdiscviewInterface
 
     public function setTenderTypeValue(?string $value);
 
-    public function getPromptForAction() : ?string;
+    public function getPromptForAction() : ?int;
 
-    public function setPromptForAction(?string $value);
+    public function setPromptForAction(?int $value);
 
     public function getTenderOffer() : ?float;
 

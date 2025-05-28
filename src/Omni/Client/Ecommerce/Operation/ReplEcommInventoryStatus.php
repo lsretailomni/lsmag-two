@@ -78,7 +78,7 @@ class ReplEcommInventoryStatus extends AbstractOperation
     /**
      * @return ReplEcommInventoryStatusRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ReplEcommInventoryStatusRequest();

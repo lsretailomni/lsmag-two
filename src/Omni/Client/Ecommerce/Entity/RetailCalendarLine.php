@@ -39,109 +39,109 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     public const REASON_CLOSED = 'ReasonClosed';
 
     /**
-     * @param string $CalendarType
+     * @param ?string $CalendarType
      * @return $this
      */
-    public function setCalendarType($CalendarType)
+    public function setCalendarType(?string $CalendarType)
     {
         $this->setData(self::CALENDAR_TYPE, $CalendarType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCalendarType()
+    public function getCalendarType() : ?string
     {
         return $this->getData(self::CALENDAR_TYPE);
     }
 
     /**
-     * @param string $GroupType
+     * @param ?string $GroupType
      * @return $this
      */
-    public function setGroupType($GroupType)
+    public function setGroupType(?string $GroupType)
     {
         $this->setData(self::GROUP_TYPE, $GroupType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getGroupType()
+    public function getGroupType() : ?string
     {
         return $this->getData(self::GROUP_TYPE);
     }
 
     /**
-     * @param string $CalendarID
+     * @param ?string $CalendarID
      * @return $this
      */
-    public function setCalendarID($CalendarID)
+    public function setCalendarID(?string $CalendarID)
     {
         $this->setData(self::CALENDAR_I_D, $CalendarID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCalendarID()
+    public function getCalendarID() : ?string
     {
         return $this->getData(self::CALENDAR_I_D);
     }
 
     /**
-     * @param string $LineType
+     * @param ?string $LineType
      * @return $this
      */
-    public function setLineType($LineType)
+    public function setLineType(?string $LineType)
     {
         $this->setData(self::LINE_TYPE, $LineType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLineType()
+    public function getLineType() : ?string
     {
         return $this->getData(self::LINE_TYPE);
     }
 
     /**
-     * @param date $StartingDate
+     * @param ?string $StartingDate
      * @return $this
      */
-    public function setStartingDate($StartingDate)
+    public function setStartingDate(?string $StartingDate)
     {
         $this->setData(self::STARTING_DATE, $StartingDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getStartingDate()
+    public function getStartingDate() : ?string
     {
         return $this->getData(self::STARTING_DATE);
     }
 
     /**
-     * @param date $EndingDate
+     * @param ?string $EndingDate
      * @return $this
      */
-    public function setEndingDate($EndingDate)
+    public function setEndingDate(?string $EndingDate)
     {
         $this->setData(self::ENDING_DATE, $EndingDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getEndingDate()
+    public function getEndingDate() : ?string
     {
         return $this->getData(self::ENDING_DATE);
     }
@@ -165,19 +165,19 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $DayName
+     * @param ?string $DayName
      * @return $this
      */
-    public function setDayName($DayName)
+    public function setDayName(?string $DayName)
     {
         $this->setData(self::DAY_NAME, $DayName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDayName()
+    public function getDayName() : ?string
     {
         return $this->getData(self::DAY_NAME);
     }
@@ -219,55 +219,55 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param boolean $MidnightOpen
+     * @param ?bool $MidnightOpen
      * @return $this
      */
-    public function setMidnightOpen($MidnightOpen)
+    public function setMidnightOpen(?bool $MidnightOpen)
     {
         $this->setData(self::MIDNIGHT_OPEN, $MidnightOpen);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getMidnightOpen()
+    public function getMidnightOpen() : ?bool
     {
         return $this->getData(self::MIDNIGHT_OPEN);
     }
 
     /**
-     * @param boolean $IncludeAllWeekDays
+     * @param ?bool $IncludeAllWeekDays
      * @return $this
      */
-    public function setIncludeAllWeekDays($IncludeAllWeekDays)
+    public function setIncludeAllWeekDays(?bool $IncludeAllWeekDays)
     {
         $this->setData(self::INCLUDE_ALL_WEEK_DAYS, $IncludeAllWeekDays);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getIncludeAllWeekDays()
+    public function getIncludeAllWeekDays() : ?bool
     {
         return $this->getData(self::INCLUDE_ALL_WEEK_DAYS);
     }
 
     /**
-     * @param string $ReasonClosed
+     * @param ?string $ReasonClosed
      * @return $this
      */
-    public function setReasonClosed($ReasonClosed)
+    public function setReasonClosed(?string $ReasonClosed)
     {
         $this->setData(self::REASON_CLOSED, $ReasonClosed);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReasonClosed()
+    public function getReasonClosed() : ?string
     {
         return $this->getData(self::REASON_CLOSED);
     }

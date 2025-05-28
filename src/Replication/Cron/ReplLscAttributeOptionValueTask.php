@@ -42,7 +42,7 @@ class ReplLscAttributeOptionValueTask extends AbstractReplicationTask
 
     public function setRepository(ReplLscAttributeOptionValueRepository $repository)
     {
-        $this->repository =  $repository;
+        $this->repository = $repository;
         return $this;
     }
 
@@ -53,7 +53,7 @@ class ReplLscAttributeOptionValueTask extends AbstractReplicationTask
 
     public function setFactory(ReplLscAttributeOptionValueFactory $factory)
     {
-        $this->factory =  $factory;
+        $this->factory = $factory;
         return $this;
     }
 
@@ -64,7 +64,7 @@ class ReplLscAttributeOptionValueTask extends AbstractReplicationTask
 
     public function setDataInterface(ReplLscAttributeOptionValueInterface $dataInterface)
     {
-        $this->dataInterface =  $dataInterface;
+        $this->dataInterface = $dataInterface;
         return $this;
     }
 

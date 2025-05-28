@@ -69,505 +69,505 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     public const LANGUAGE_CODE = 'LanguageCode';
 
     /**
-     * @param string $No
+     * @param ?string $No
      * @return $this
      */
-    public function setNo($No)
+    public function setNo(?string $No)
     {
         $this->setData(self::NO, $No);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNo()
+    public function getNo() : ?string
     {
         return $this->getData(self::NO);
     }
 
     /**
-     * @param string $Status
+     * @param ?string $Status
      * @return $this
      */
-    public function setStatus($Status)
+    public function setStatus(?string $Status)
     {
         $this->setData(self::STATUS, $Status);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatus()
+    public function getStatus() : ?string
     {
         return $this->getData(self::STATUS);
     }
 
     /**
-     * @param string $AccountType
+     * @param ?string $AccountType
      * @return $this
      */
-    public function setAccountType($AccountType)
+    public function setAccountType(?string $AccountType)
     {
         $this->setData(self::ACCOUNT_TYPE, $AccountType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountType()
+    public function getAccountType() : ?string
     {
         return $this->getData(self::ACCOUNT_TYPE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $LinkedToCustomerNo
+     * @param ?string $LinkedToCustomerNo
      * @return $this
      */
-    public function setLinkedToCustomerNo($LinkedToCustomerNo)
+    public function setLinkedToCustomerNo(?string $LinkedToCustomerNo)
     {
         $this->setData(self::LINKED_TO_CUSTOMER_NO, $LinkedToCustomerNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLinkedToCustomerNo()
+    public function getLinkedToCustomerNo() : ?string
     {
         return $this->getData(self::LINKED_TO_CUSTOMER_NO);
     }
 
     /**
-     * @param date $DateActivated
+     * @param ?string $DateActivated
      * @return $this
      */
-    public function setDateActivated($DateActivated)
+    public function setDateActivated(?string $DateActivated)
     {
         $this->setData(self::DATE_ACTIVATED, $DateActivated);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDateActivated()
+    public function getDateActivated() : ?string
     {
         return $this->getData(self::DATE_ACTIVATED);
     }
 
     /**
-     * @param string $ActivatedBy
+     * @param ?string $ActivatedBy
      * @return $this
      */
-    public function setActivatedBy($ActivatedBy)
+    public function setActivatedBy(?string $ActivatedBy)
     {
         $this->setData(self::ACTIVATED_BY, $ActivatedBy);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getActivatedBy()
+    public function getActivatedBy() : ?string
     {
         return $this->getData(self::ACTIVATED_BY);
     }
 
     /**
-     * @param string $ClubCode
+     * @param ?string $ClubCode
      * @return $this
      */
-    public function setClubCode($ClubCode)
+    public function setClubCode(?string $ClubCode)
     {
         $this->setData(self::CLUB_CODE, $ClubCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubCode()
+    public function getClubCode() : ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
 
     /**
-     * @param string $SchemeCode
+     * @param ?string $SchemeCode
      * @return $this
      */
-    public function setSchemeCode($SchemeCode)
+    public function setSchemeCode(?string $SchemeCode)
     {
         $this->setData(self::SCHEME_CODE, $SchemeCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSchemeCode()
+    public function getSchemeCode() : ?string
     {
         return $this->getData(self::SCHEME_CODE);
     }
 
     /**
-     * @param string $PriceGroup
+     * @param ?string $PriceGroup
      * @return $this
      */
-    public function setPriceGroup($PriceGroup)
+    public function setPriceGroup(?string $PriceGroup)
     {
         $this->setData(self::PRICE_GROUP, $PriceGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPriceGroup()
+    public function getPriceGroup() : ?string
     {
         return $this->getData(self::PRICE_GROUP);
     }
 
     /**
-     * @param string $CustDiscGroup
+     * @param ?string $CustDiscGroup
      * @return $this
      */
-    public function setCustDiscGroup($CustDiscGroup)
+    public function setCustDiscGroup(?string $CustDiscGroup)
     {
         $this->setData(self::CUST_DISC_GROUP, $CustDiscGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCustDiscGroup()
+    public function getCustDiscGroup() : ?string
     {
         return $this->getData(self::CUST_DISC_GROUP);
     }
 
     /**
-     * @param string $NoSeries
+     * @param ?string $NoSeries
      * @return $this
      */
-    public function setNoSeries($NoSeries)
+    public function setNoSeries(?string $NoSeries)
     {
         $this->setData(self::NO_SERIES, $NoSeries);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNoSeries()
+    public function getNoSeries() : ?string
     {
         return $this->getData(self::NO_SERIES);
     }
 
     /**
-     * @param string $ExpirationPeriodType
+     * @param ?string $ExpirationPeriodType
      * @return $this
      */
-    public function setExpirationPeriodType($ExpirationPeriodType)
+    public function setExpirationPeriodType(?string $ExpirationPeriodType)
     {
         $this->setData(self::EXPIRATION_PERIOD_TYPE, $ExpirationPeriodType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExpirationPeriodType()
+    public function getExpirationPeriodType() : ?string
     {
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
     }
 
     /**
-     * @param float $SalesCurrentYear
+     * @param ?float $SalesCurrentYear
      * @return $this
      */
-    public function setSalesCurrentYear($SalesCurrentYear)
+    public function setSalesCurrentYear(?float $SalesCurrentYear)
     {
         $this->setData(self::SALES_CURRENT_YEAR, $SalesCurrentYear);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getSalesCurrentYear()
+    public function getSalesCurrentYear() : ?float
     {
         return $this->getData(self::SALES_CURRENT_YEAR);
     }
 
     /**
-     * @param date $LastSalesDate
+     * @param ?string $LastSalesDate
      * @return $this
      */
-    public function setLastSalesDate($LastSalesDate)
+    public function setLastSalesDate(?string $LastSalesDate)
     {
         $this->setData(self::LAST_SALES_DATE, $LastSalesDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getLastSalesDate()
+    public function getLastSalesDate() : ?string
     {
         return $this->getData(self::LAST_SALES_DATE);
     }
 
     /**
-     * @param boolean $Blocked
+     * @param ?bool $Blocked
      * @return $this
      */
-    public function setBlocked($Blocked)
+    public function setBlocked(?bool $Blocked)
     {
         $this->setData(self::BLOCKED, $Blocked);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getBlocked()
+    public function getBlocked() : ?bool
     {
         return $this->getData(self::BLOCKED);
     }
 
     /**
-     * @param string $ReasonBlocked
+     * @param ?string $ReasonBlocked
      * @return $this
      */
-    public function setReasonBlocked($ReasonBlocked)
+    public function setReasonBlocked(?string $ReasonBlocked)
     {
         $this->setData(self::REASON_BLOCKED, $ReasonBlocked);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReasonBlocked()
+    public function getReasonBlocked() : ?string
     {
         return $this->getData(self::REASON_BLOCKED);
     }
 
     /**
-     * @param date $DateBlocked
+     * @param ?string $DateBlocked
      * @return $this
      */
-    public function setDateBlocked($DateBlocked)
+    public function setDateBlocked(?string $DateBlocked)
     {
         $this->setData(self::DATE_BLOCKED, $DateBlocked);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDateBlocked()
+    public function getDateBlocked() : ?string
     {
         return $this->getData(self::DATE_BLOCKED);
     }
 
     /**
-     * @param string $BlockedBy
+     * @param ?string $BlockedBy
      * @return $this
      */
-    public function setBlockedBy($BlockedBy)
+    public function setBlockedBy(?string $BlockedBy)
     {
         $this->setData(self::BLOCKED_BY, $BlockedBy);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBlockedBy()
+    public function getBlockedBy() : ?string
     {
         return $this->getData(self::BLOCKED_BY);
     }
 
     /**
-     * @param date $CreatedDate
+     * @param ?string $CreatedDate
      * @return $this
      */
-    public function setCreatedDate($CreatedDate)
+    public function setCreatedDate(?string $CreatedDate)
     {
         $this->setData(self::CREATED_DATE, $CreatedDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getCreatedDate()
+    public function getCreatedDate() : ?string
     {
         return $this->getData(self::CREATED_DATE);
     }
 
     /**
-     * @param string $CreatedBy
+     * @param ?string $CreatedBy
      * @return $this
      */
-    public function setCreatedBy($CreatedBy)
+    public function setCreatedBy(?string $CreatedBy)
     {
         $this->setData(self::CREATED_BY, $CreatedBy);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCreatedBy()
+    public function getCreatedBy() : ?string
     {
         return $this->getData(self::CREATED_BY);
     }
 
     /**
-     * @param float $TotalRemainingPoints
+     * @param ?float $TotalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints($TotalRemainingPoints)
+    public function setTotalRemainingPoints(?float $TotalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $TotalRemainingPoints);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalRemainingPoints()
+    public function getTotalRemainingPoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
 
     /**
-     * @param float $TotalSales
+     * @param ?float $TotalSales
      * @return $this
      */
-    public function setTotalSales($TotalSales)
+    public function setTotalSales(?float $TotalSales)
     {
         $this->setData(self::TOTAL_SALES, $TotalSales);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalSales()
+    public function getTotalSales() : ?float
     {
         return $this->getData(self::TOTAL_SALES);
     }
 
     /**
-     * @param string $AccountNo
+     * @param ?string $AccountNo
      * @return $this
      */
-    public function setAccountNo($AccountNo)
+    public function setAccountNo(?string $AccountNo)
     {
         $this->setData(self::ACCOUNT_NO, $AccountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountNo()
+    public function getAccountNo() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
 
     /**
-     * @param string $MainContact
+     * @param ?string $MainContact
      * @return $this
      */
-    public function setMainContact($MainContact)
+    public function setMainContact(?string $MainContact)
     {
         $this->setData(self::MAIN_CONTACT, $MainContact);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMainContact()
+    public function getMainContact() : ?string
     {
         return $this->getData(self::MAIN_CONTACT);
     }
 
     /**
-     * @param string $MainContactName
+     * @param ?string $MainContactName
      * @return $this
      */
-    public function setMainContactName($MainContactName)
+    public function setMainContactName(?string $MainContactName)
     {
         $this->setData(self::MAIN_CONTACT_NAME, $MainContactName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMainContactName()
+    public function getMainContactName() : ?string
     {
         return $this->getData(self::MAIN_CONTACT_NAME);
     }
 
     /**
-     * @param string $CustomerNo
+     * @param ?string $CustomerNo
      * @return $this
      */
-    public function setCustomerNo($CustomerNo)
+    public function setCustomerNo(?string $CustomerNo)
     {
         $this->setData(self::CUSTOMER_NO, $CustomerNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCustomerNo()
+    public function getCustomerNo() : ?string
     {
         return $this->getData(self::CUSTOMER_NO);
     }
 
     /**
-     * @param string $LanguageCode
+     * @param ?string $LanguageCode
      * @return $this
      */
-    public function setLanguageCode($LanguageCode)
+    public function setLanguageCode(?string $LanguageCode)
     {
         $this->setData(self::LANGUAGE_CODE, $LanguageCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLanguageCode()
+    public function getLanguageCode() : ?string
     {
         return $this->getData(self::LANGUAGE_CODE);
     }

@@ -16,61 +16,61 @@ interface ReplStaffpermissionviewInterface
 
     public function setStaff(?string $value);
 
-    public function getManagerPrivileges() : ?string;
+    public function getManagerPrivileges() : ?int;
 
-    public function setManagerPrivileges(?string $value);
+    public function setManagerPrivileges(?int $value);
 
-    public function getVoidTransaction() : ?string;
+    public function getVoidTransaction() : ?int;
 
-    public function setVoidTransaction(?string $value);
+    public function setVoidTransaction(?int $value);
 
-    public function getXzyReportPrinting() : ?string;
+    public function getXzyReportPrinting() : ?int;
 
-    public function setXzyReportPrinting(?string $value);
+    public function setXzyReportPrinting(?int $value);
 
-    public function getTenderDeclaration() : ?string;
+    public function getTenderDeclaration() : ?int;
 
-    public function setTenderDeclaration(?string $value);
+    public function setTenderDeclaration(?int $value);
 
-    public function getFloatingDeclaration() : ?string;
+    public function getFloatingDeclaration() : ?int;
 
-    public function setFloatingDeclaration(?string $value);
+    public function setFloatingDeclaration(?int $value);
 
-    public function getPriceOverride() : ?string;
+    public function getPriceOverride() : ?int;
 
-    public function setPriceOverride(?string $value);
+    public function setPriceOverride(?int $value);
 
-    public function getSuspendTransaction() : ?string;
+    public function getSuspendTransaction() : ?int;
 
-    public function setSuspendTransaction(?string $value);
+    public function setSuspendTransaction(?int $value);
 
-    public function getReturnInTransaction() : ?string;
+    public function getReturnInTransaction() : ?int;
 
-    public function setReturnInTransaction(?string $value);
+    public function setReturnInTransaction(?int $value);
 
-    public function getVoidLine() : ?string;
+    public function getVoidLine() : ?int;
 
-    public function setVoidLine(?string $value);
+    public function setVoidLine(?int $value);
 
-    public function getAddPayment() : ?string;
+    public function getAddPayment() : ?int;
 
-    public function setAddPayment(?string $value);
+    public function setAddPayment(?int $value);
 
-    public function getCreateCustomers() : ?string;
+    public function getCreateCustomers() : ?int;
 
-    public function setCreateCustomers(?string $value);
+    public function setCreateCustomers(?int $value);
 
-    public function getViewSalesHistory() : ?string;
+    public function getViewSalesHistory() : ?int;
 
-    public function setViewSalesHistory(?string $value);
+    public function setViewSalesHistory(?int $value);
 
-    public function getCustomerComments() : ?string;
+    public function getCustomerComments() : ?int;
 
-    public function setCustomerComments(?string $value);
+    public function setCustomerComments(?int $value);
 
-    public function getUpdateCustomers() : ?string;
+    public function getUpdateCustomers() : ?int;
 
-    public function setUpdateCustomers(?string $value);
+    public function setUpdateCustomers(?int $value);
 
     public function getMaxDiscountToGive() : ?float;
 

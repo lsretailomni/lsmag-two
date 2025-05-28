@@ -227,12 +227,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::DESCRIPTION, $value);
     }
 
-    public function getFunction(): ?string
+    public function getFunction(): ?int
     {
         return $this->getData(self::FUNCTION);
     }
 
-    public function setFunction(?string $value)
+    public function setFunction(?int $value)
     {
         return $this->setData(self::FUNCTION, $value);
     }
@@ -297,12 +297,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::MIN_CHANGE, $value);
     }
 
-    public function getRounding(): ?string
+    public function getRounding(): ?int
     {
         return $this->getData(self::ROUNDING);
     }
 
-    public function setRounding(?string $value)
+    public function setRounding(?int $value)
     {
         return $this->setData(self::ROUNDING, $value);
     }
@@ -467,12 +467,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::ASK_FOR_DATE, $value);
     }
 
-    public function getSeekAuthorization(): ?string
+    public function getSeekAuthorization(): ?int
     {
         return $this->getData(self::SEEK_AUTHORIZATION);
     }
 
-    public function setSeekAuthorization(?string $value)
+    public function setSeekAuthorization(?int $value)
     {
         return $this->setData(self::SEEK_AUTHORIZATION, $value);
     }
@@ -667,12 +667,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::MULTIPLY_IN_TENDER_OPERATIONS, $value);
     }
 
-    public function getAccountType(): ?string
+    public function getAccountType(): ?int
     {
         return $this->getData(self::ACCOUNT_TYPE);
     }
 
-    public function setAccountType(?string $value)
+    public function setAccountType(?int $value)
     {
         return $this->setData(self::ACCOUNT_TYPE, $value);
     }
@@ -807,12 +807,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::POS_PICKUP_WARNING_AMOUNT, $value);
     }
 
-    public function getBankAccountType(): ?string
+    public function getBankAccountType(): ?int
     {
         return $this->getData(self::BANK_ACCOUNT_TYPE);
     }
 
-    public function setBankAccountType(?string $value)
+    public function setBankAccountType(?int $value)
     {
         return $this->setData(self::BANK_ACCOUNT_TYPE, $value);
     }
@@ -887,12 +887,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::REMOVEFLOAT_TYPE, $value);
     }
 
-    public function getFastClosingMethod(): ?string
+    public function getFastClosingMethod(): ?int
     {
         return $this->getData(self::FAST_CLOSING_METHOD);
     }
 
-    public function setFastClosingMethod(?string $value)
+    public function setFastClosingMethod(?int $value)
     {
         return $this->setData(self::FAST_CLOSING_METHOD, $value);
     }
@@ -947,12 +947,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::USE_BAGS_FOR_BANK, $value);
     }
 
-    public function getBankBagsNoType(): ?string
+    public function getBankBagsNoType(): ?int
     {
         return $this->getData(self::BANK_BAGS_NO_TYPE);
     }
 
-    public function setBankBagsNoType(?string $value)
+    public function setBankBagsNoType(?int $value)
     {
         return $this->setData(self::BANK_BAGS_NO_TYPE, $value);
     }
@@ -977,12 +977,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::USE_BAGS_FOR_SAFE, $value);
     }
 
-    public function getSafeBagsNoType(): ?string
+    public function getSafeBagsNoType(): ?int
     {
         return $this->getData(self::SAFE_BAGS_NO_TYPE);
     }
 
-    public function setSafeBagsNoType(?string $value)
+    public function setSafeBagsNoType(?int $value)
     {
         return $this->setData(self::SAFE_BAGS_NO_TYPE, $value);
     }
@@ -1017,12 +1017,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::USE_BAGS_FOR_FIXED_FLOAT, $value);
     }
 
-    public function getFixedFloatBagsNoType(): ?string
+    public function getFixedFloatBagsNoType(): ?int
     {
         return $this->getData(self::FIXED_FLOAT_BAGS_NO_TYPE);
     }
 
-    public function setFixedFloatBagsNoType(?string $value)
+    public function setFixedFloatBagsNoType(?int $value)
     {
         return $this->setData(self::FIXED_FLOAT_BAGS_NO_TYPE, $value);
     }
@@ -1097,12 +1097,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -1117,12 +1117,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

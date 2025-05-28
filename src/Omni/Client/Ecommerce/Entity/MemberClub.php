@@ -97,109 +97,109 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     public const SHOW_F_B_P_COUPONSON_RECEIPT = 'ShowFBPCouponsonReceipt';
 
     /**
-     * @param string $Code
+     * @param ?string $Code
      * @return $this
      */
-    public function setCode($Code)
+    public function setCode(?string $Code)
     {
         $this->setData(self::CODE, $Code);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCode()
+    public function getCode() : ?string
     {
         return $this->getData(self::CODE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param boolean $PointCalculation
+     * @param ?bool $PointCalculation
      * @return $this
      */
-    public function setPointCalculation($PointCalculation)
+    public function setPointCalculation(?bool $PointCalculation)
     {
         $this->setData(self::POINT_CALCULATION, $PointCalculation);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getPointCalculation()
+    public function getPointCalculation() : ?bool
     {
         return $this->getData(self::POINT_CALCULATION);
     }
 
     /**
-     * @param string $ClubType
+     * @param ?string $ClubType
      * @return $this
      */
-    public function setClubType($ClubType)
+    public function setClubType(?string $ClubType)
     {
         $this->setData(self::CLUB_TYPE, $ClubType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubType()
+    public function getClubType() : ?string
     {
         return $this->getData(self::CLUB_TYPE);
     }
 
     /**
-     * @param string $CardRegistration
+     * @param ?string $CardRegistration
      * @return $this
      */
-    public function setCardRegistration($CardRegistration)
+    public function setCardRegistration(?string $CardRegistration)
     {
         $this->setData(self::CARD_REGISTRATION, $CardRegistration);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardRegistration()
+    public function getCardRegistration() : ?string
     {
         return $this->getData(self::CARD_REGISTRATION);
     }
 
     /**
-     * @param string $StartingCardNo
+     * @param ?string $StartingCardNo
      * @return $this
      */
-    public function setStartingCardNo($StartingCardNo)
+    public function setStartingCardNo(?string $StartingCardNo)
     {
         $this->setData(self::STARTING_CARD_NO, $StartingCardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStartingCardNo()
+    public function getStartingCardNo() : ?string
     {
         return $this->getData(self::STARTING_CARD_NO);
     }
@@ -223,631 +223,631 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $BarcodeMask
+     * @param ?string $BarcodeMask
      * @return $this
      */
-    public function setBarcodeMask($BarcodeMask)
+    public function setBarcodeMask(?string $BarcodeMask)
     {
         $this->setData(self::BARCODE_MASK, $BarcodeMask);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeMask()
+    public function getBarcodeMask() : ?string
     {
         return $this->getData(self::BARCODE_MASK);
     }
 
     /**
-     * @param string $ContactHandling
+     * @param ?string $ContactHandling
      * @return $this
      */
-    public function setContactHandling($ContactHandling)
+    public function setContactHandling(?string $ContactHandling)
     {
         $this->setData(self::CONTACT_HANDLING, $ContactHandling);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactHandling()
+    public function getContactHandling() : ?string
     {
         return $this->getData(self::CONTACT_HANDLING);
     }
 
     /**
-     * @param string $DefaultScheme
+     * @param ?string $DefaultScheme
      * @return $this
      */
-    public function setDefaultScheme($DefaultScheme)
+    public function setDefaultScheme(?string $DefaultScheme)
     {
         $this->setData(self::DEFAULT_SCHEME, $DefaultScheme);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDefaultScheme()
+    public function getDefaultScheme() : ?string
     {
         return $this->getData(self::DEFAULT_SCHEME);
     }
 
     /**
-     * @param string $UnassignedAccountNo
+     * @param ?string $UnassignedAccountNo
      * @return $this
      */
-    public function setUnassignedAccountNo($UnassignedAccountNo)
+    public function setUnassignedAccountNo(?string $UnassignedAccountNo)
     {
         $this->setData(self::UNASSIGNED_ACCOUNT_NO, $UnassignedAccountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnassignedAccountNo()
+    public function getUnassignedAccountNo() : ?string
     {
         return $this->getData(self::UNASSIGNED_ACCOUNT_NO);
     }
 
     /**
-     * @param string $ShowPointsonReceipt
+     * @param ?string $ShowPointsonReceipt
      * @return $this
      */
-    public function setShowPointsonReceipt($ShowPointsonReceipt)
+    public function setShowPointsonReceipt(?string $ShowPointsonReceipt)
     {
         $this->setData(self::SHOW_POINTSON_RECEIPT, $ShowPointsonReceipt);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShowPointsonReceipt()
+    public function getShowPointsonReceipt() : ?string
     {
         return $this->getData(self::SHOW_POINTSON_RECEIPT);
     }
 
     /**
-     * @param string $DisplayMessageonPOS
+     * @param ?string $DisplayMessageonPOS
      * @return $this
      */
-    public function setDisplayMessageonPOS($DisplayMessageonPOS)
+    public function setDisplayMessageonPOS(?string $DisplayMessageonPOS)
     {
         $this->setData(self::DISPLAY_MESSAGEON_P_O_S, $DisplayMessageonPOS);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDisplayMessageonPOS()
+    public function getDisplayMessageonPOS() : ?string
     {
         return $this->getData(self::DISPLAY_MESSAGEON_P_O_S);
     }
 
     /**
-     * @param string $DefaultCustDiscGroup
+     * @param ?string $DefaultCustDiscGroup
      * @return $this
      */
-    public function setDefaultCustDiscGroup($DefaultCustDiscGroup)
+    public function setDefaultCustDiscGroup(?string $DefaultCustDiscGroup)
     {
         $this->setData(self::DEFAULT_CUST_DISC_GROUP, $DefaultCustDiscGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDefaultCustDiscGroup()
+    public function getDefaultCustDiscGroup() : ?string
     {
         return $this->getData(self::DEFAULT_CUST_DISC_GROUP);
     }
 
     /**
-     * @param string $MemberPointTenderType
+     * @param ?string $MemberPointTenderType
      * @return $this
      */
-    public function setMemberPointTenderType($MemberPointTenderType)
+    public function setMemberPointTenderType(?string $MemberPointTenderType)
     {
         $this->setData(self::MEMBER_POINT_TENDER_TYPE, $MemberPointTenderType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberPointTenderType()
+    public function getMemberPointTenderType() : ?string
     {
         return $this->getData(self::MEMBER_POINT_TENDER_TYPE);
     }
 
     /**
-     * @param string $DefaultPriceGroup
+     * @param ?string $DefaultPriceGroup
      * @return $this
      */
-    public function setDefaultPriceGroup($DefaultPriceGroup)
+    public function setDefaultPriceGroup(?string $DefaultPriceGroup)
     {
         $this->setData(self::DEFAULT_PRICE_GROUP, $DefaultPriceGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDefaultPriceGroup()
+    public function getDefaultPriceGroup() : ?string
     {
         return $this->getData(self::DEFAULT_PRICE_GROUP);
     }
 
     /**
-     * @param string $CardExpiration
+     * @param ?string $CardExpiration
      * @return $this
      */
-    public function setCardExpiration($CardExpiration)
+    public function setCardExpiration(?string $CardExpiration)
     {
         $this->setData(self::CARD_EXPIRATION, $CardExpiration);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardExpiration()
+    public function getCardExpiration() : ?string
     {
         return $this->getData(self::CARD_EXPIRATION);
     }
 
     /**
-     * @param string $UnassignedCardExp
+     * @param ?string $UnassignedCardExp
      * @return $this
      */
-    public function setUnassignedCardExp($UnassignedCardExp)
+    public function setUnassignedCardExp(?string $UnassignedCardExp)
     {
         $this->setData(self::UNASSIGNED_CARD_EXP, $UnassignedCardExp);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnassignedCardExp()
+    public function getUnassignedCardExp() : ?string
     {
         return $this->getData(self::UNASSIGNED_CARD_EXP);
     }
 
     /**
-     * @param string $PointExpiration
+     * @param ?string $PointExpiration
      * @return $this
      */
-    public function setPointExpiration($PointExpiration)
+    public function setPointExpiration(?string $PointExpiration)
     {
         $this->setData(self::POINT_EXPIRATION, $PointExpiration);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPointExpiration()
+    public function getPointExpiration() : ?string
     {
         return $this->getData(self::POINT_EXPIRATION);
     }
 
     /**
-     * @param string $PointRoundingType
+     * @param ?string $PointRoundingType
      * @return $this
      */
-    public function setPointRoundingType($PointRoundingType)
+    public function setPointRoundingType(?string $PointRoundingType)
     {
         $this->setData(self::POINT_ROUNDING_TYPE, $PointRoundingType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPointRoundingType()
+    public function getPointRoundingType() : ?string
     {
         return $this->getData(self::POINT_ROUNDING_TYPE);
     }
 
     /**
-     * @param float $PointRoundingPrecision
+     * @param ?float $PointRoundingPrecision
      * @return $this
      */
-    public function setPointRoundingPrecision($PointRoundingPrecision)
+    public function setPointRoundingPrecision(?float $PointRoundingPrecision)
     {
         $this->setData(self::POINT_ROUNDING_PRECISION, $PointRoundingPrecision);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPointRoundingPrecision()
+    public function getPointRoundingPrecision() : ?float
     {
         return $this->getData(self::POINT_ROUNDING_PRECISION);
     }
 
     /**
-     * @param float $PointValue
+     * @param ?float $PointValue
      * @return $this
      */
-    public function setPointValue($PointValue)
+    public function setPointValue(?float $PointValue)
     {
         $this->setData(self::POINT_VALUE, $PointValue);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPointValue()
+    public function getPointValue() : ?float
     {
         return $this->getData(self::POINT_VALUE);
     }
 
     /**
-     * @param string $PeriodCalcforUpDowngrade
+     * @param ?string $PeriodCalcforUpDowngrade
      * @return $this
      */
-    public function setPeriodCalcforUpDowngrade($PeriodCalcforUpDowngrade)
+    public function setPeriodCalcforUpDowngrade(?string $PeriodCalcforUpDowngrade)
     {
         $this->setData(self::PERIOD_CALCFOR_UP_DOWNGRADE, $PeriodCalcforUpDowngrade);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPeriodCalcforUpDowngrade()
+    public function getPeriodCalcforUpDowngrade() : ?string
     {
         return $this->getData(self::PERIOD_CALCFOR_UP_DOWNGRADE);
     }
 
     /**
-     * @param float $MinTransAmtforPointCalc
+     * @param ?float $MinTransAmtforPointCalc
      * @return $this
      */
-    public function setMinTransAmtforPointCalc($MinTransAmtforPointCalc)
+    public function setMinTransAmtforPointCalc(?float $MinTransAmtforPointCalc)
     {
         $this->setData(self::MIN_TRANS_AMTFOR_POINT_CALC, $MinTransAmtforPointCalc);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getMinTransAmtforPointCalc()
+    public function getMinTransAmtforPointCalc() : ?float
     {
         return $this->getData(self::MIN_TRANS_AMTFOR_POINT_CALC);
     }
 
     /**
-     * @param string $TransferredPointType
+     * @param ?string $TransferredPointType
      * @return $this
      */
-    public function setTransferredPointType($TransferredPointType)
+    public function setTransferredPointType(?string $TransferredPointType)
     {
         $this->setData(self::TRANSFERRED_POINT_TYPE, $TransferredPointType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransferredPointType()
+    public function getTransferredPointType() : ?string
     {
         return $this->getData(self::TRANSFERRED_POINT_TYPE);
     }
 
     /**
-     * @param string $TransferredPointExpir
+     * @param ?string $TransferredPointExpir
      * @return $this
      */
-    public function setTransferredPointExpir($TransferredPointExpir)
+    public function setTransferredPointExpir(?string $TransferredPointExpir)
     {
         $this->setData(self::TRANSFERRED_POINT_EXPIR, $TransferredPointExpir);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransferredPointExpir()
+    public function getTransferredPointExpir() : ?string
     {
         return $this->getData(self::TRANSFERRED_POINT_EXPIR);
     }
 
     /**
-     * @param string $MinRemainPeriodforTrans
+     * @param ?string $MinRemainPeriodforTrans
      * @return $this
      */
-    public function setMinRemainPeriodforTrans($MinRemainPeriodforTrans)
+    public function setMinRemainPeriodforTrans(?string $MinRemainPeriodforTrans)
     {
         $this->setData(self::MIN_REMAIN_PERIODFOR_TRANS, $MinRemainPeriodforTrans);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMinRemainPeriodforTrans()
+    public function getMinRemainPeriodforTrans() : ?string
     {
         return $this->getData(self::MIN_REMAIN_PERIODFOR_TRANS);
     }
 
     /**
-     * @param float $TransferValueFactor
+     * @param ?float $TransferValueFactor
      * @return $this
      */
-    public function setTransferValueFactor($TransferValueFactor)
+    public function setTransferValueFactor(?float $TransferValueFactor)
     {
         $this->setData(self::TRANSFER_VALUE_FACTOR, $TransferValueFactor);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTransferValueFactor()
+    public function getTransferValueFactor() : ?float
     {
         return $this->getData(self::TRANSFER_VALUE_FACTOR);
     }
 
     /**
-     * @param string $DiscBenefitPointType
+     * @param ?string $DiscBenefitPointType
      * @return $this
      */
-    public function setDiscBenefitPointType($DiscBenefitPointType)
+    public function setDiscBenefitPointType(?string $DiscBenefitPointType)
     {
         $this->setData(self::DISC_BENEFIT_POINT_TYPE, $DiscBenefitPointType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDiscBenefitPointType()
+    public function getDiscBenefitPointType() : ?string
     {
         return $this->getData(self::DISC_BENEFIT_POINT_TYPE);
     }
 
     /**
-     * @param string $ReasonCodesAccounts
+     * @param ?string $ReasonCodesAccounts
      * @return $this
      */
-    public function setReasonCodesAccounts($ReasonCodesAccounts)
+    public function setReasonCodesAccounts(?string $ReasonCodesAccounts)
     {
         $this->setData(self::REASON_CODES_ACCOUNTS, $ReasonCodesAccounts);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReasonCodesAccounts()
+    public function getReasonCodesAccounts() : ?string
     {
         return $this->getData(self::REASON_CODES_ACCOUNTS);
     }
 
     /**
-     * @param string $ReasonCodesContacts
+     * @param ?string $ReasonCodesContacts
      * @return $this
      */
-    public function setReasonCodesContacts($ReasonCodesContacts)
+    public function setReasonCodesContacts(?string $ReasonCodesContacts)
     {
         $this->setData(self::REASON_CODES_CONTACTS, $ReasonCodesContacts);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReasonCodesContacts()
+    public function getReasonCodesContacts() : ?string
     {
         return $this->getData(self::REASON_CODES_CONTACTS);
     }
 
     /**
-     * @param string $ReasonCodesCards
+     * @param ?string $ReasonCodesCards
      * @return $this
      */
-    public function setReasonCodesCards($ReasonCodesCards)
+    public function setReasonCodesCards(?string $ReasonCodesCards)
     {
         $this->setData(self::REASON_CODES_CARDS, $ReasonCodesCards);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReasonCodesCards()
+    public function getReasonCodesCards() : ?string
     {
         return $this->getData(self::REASON_CODES_CARDS);
     }
 
     /**
-     * @param string $ReasonCodesPointJournals
+     * @param ?string $ReasonCodesPointJournals
      * @return $this
      */
-    public function setReasonCodesPointJournals($ReasonCodesPointJournals)
+    public function setReasonCodesPointJournals(?string $ReasonCodesPointJournals)
     {
         $this->setData(self::REASON_CODES_POINT_JOURNALS, $ReasonCodesPointJournals);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReasonCodesPointJournals()
+    public function getReasonCodesPointJournals() : ?string
     {
         return $this->getData(self::REASON_CODES_POINT_JOURNALS);
     }
 
     /**
-     * @param string $AccountNoSeries
+     * @param ?string $AccountNoSeries
      * @return $this
      */
-    public function setAccountNoSeries($AccountNoSeries)
+    public function setAccountNoSeries(?string $AccountNoSeries)
     {
         $this->setData(self::ACCOUNT_NO_SERIES, $AccountNoSeries);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountNoSeries()
+    public function getAccountNoSeries() : ?string
     {
         return $this->getData(self::ACCOUNT_NO_SERIES);
     }
 
     /**
-     * @param string $CardSetupType
+     * @param ?string $CardSetupType
      * @return $this
      */
-    public function setCardSetupType($CardSetupType)
+    public function setCardSetupType(?string $CardSetupType)
     {
         $this->setData(self::CARD_SETUP_TYPE, $CardSetupType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardSetupType()
+    public function getCardSetupType() : ?string
     {
         return $this->getData(self::CARD_SETUP_TYPE);
     }
 
     /**
-     * @param string $CardNoSeries
+     * @param ?string $CardNoSeries
      * @return $this
      */
-    public function setCardNoSeries($CardNoSeries)
+    public function setCardNoSeries(?string $CardNoSeries)
     {
         $this->setData(self::CARD_NO_SERIES, $CardNoSeries);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNoSeries()
+    public function getCardNoSeries() : ?string
     {
         return $this->getData(self::CARD_NO_SERIES);
     }
 
     /**
-     * @param string $ContactNoSeries
+     * @param ?string $ContactNoSeries
      * @return $this
      */
-    public function setContactNoSeries($ContactNoSeries)
+    public function setContactNoSeries(?string $ContactNoSeries)
     {
         $this->setData(self::CONTACT_NO_SERIES, $ContactNoSeries);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactNoSeries()
+    public function getContactNoSeries() : ?string
     {
         return $this->getData(self::CONTACT_NO_SERIES);
     }
 
     /**
-     * @param boolean $PosttoGL
+     * @param ?bool $PosttoGL
      * @return $this
      */
-    public function setPosttoGL($PosttoGL)
+    public function setPosttoGL(?bool $PosttoGL)
     {
         $this->setData(self::POSTTO_G_L, $PosttoGL);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getPosttoGL()
+    public function getPosttoGL() : ?bool
     {
         return $this->getData(self::POSTTO_G_L);
     }
 
     /**
-     * @param string $AccountNo
+     * @param ?string $AccountNo
      * @return $this
      */
-    public function setAccountNo($AccountNo)
+    public function setAccountNo(?string $AccountNo)
     {
         $this->setData(self::ACCOUNT_NO, $AccountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountNo()
+    public function getAccountNo() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
 
     /**
-     * @param string $BalAccountNo
+     * @param ?string $BalAccountNo
      * @return $this
      */
-    public function setBalAccountNo($BalAccountNo)
+    public function setBalAccountNo(?string $BalAccountNo)
     {
         $this->setData(self::BAL_ACCOUNT_NO, $BalAccountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBalAccountNo()
+    public function getBalAccountNo() : ?string
     {
         return $this->getData(self::BAL_ACCOUNT_NO);
     }
 
     /**
-     * @param string $ExpirationPeriodType
+     * @param ?string $ExpirationPeriodType
      * @return $this
      */
-    public function setExpirationPeriodType($ExpirationPeriodType)
+    public function setExpirationPeriodType(?string $ExpirationPeriodType)
     {
         $this->setData(self::EXPIRATION_PERIOD_TYPE, $ExpirationPeriodType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExpirationPeriodType()
+    public function getExpirationPeriodType() : ?string
     {
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
     }
 
     /**
-     * @param string $ShowFBPCouponsonReceipt
+     * @param ?string $ShowFBPCouponsonReceipt
      * @return $this
      */
-    public function setShowFBPCouponsonReceipt($ShowFBPCouponsonReceipt)
+    public function setShowFBPCouponsonReceipt(?string $ShowFBPCouponsonReceipt)
     {
         $this->setData(self::SHOW_F_B_P_COUPONSON_RECEIPT, $ShowFBPCouponsonReceipt);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShowFBPCouponsonReceipt()
+    public function getShowFBPCouponsonReceipt() : ?string
     {
         return $this->getData(self::SHOW_F_B_P_COUPONSON_RECEIPT);
     }

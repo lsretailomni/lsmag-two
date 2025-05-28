@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Ls\Replication\Code;
 
 use Exception;
+use Laminas\Code\Generator\AbstractMemberGenerator;
+use Laminas\Code\Reflection\ClassReflection;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Helper\ReplicationHelper;
@@ -37,7 +39,7 @@ class ModelGenerator extends AbstractGenerator
     {
         parent::__construct();
         $this->operation = $operation;
-        $this->reflectedEntity = new ReflectionClass($this->operation->getOmniEntityFqn());
+        $this->reflectedEntity = new ClassReflection($this->operation->getOmniEntityFqn());
     }
 
     /**
@@ -54,6 +56,7 @@ class ModelGenerator extends AbstractGenerator
      * Generate the Magento model class code.
      *
      * @return string
+     * @throws ReflectionException
      */
     public function generate(): string
     {
@@ -79,16 +82,47 @@ class ModelGenerator extends AbstractGenerator
         $this->class->addProperty(
             '_cacheTag',
             'ls_replication_' . $this->operation->getTableName(),
-            PropertyGenerator::FLAG_PROTECTED
+            AbstractMemberGenerator::FLAG_PROTECTED
         );
         $this->class->addProperty(
             '_eventPrefix',
             'ls_replication_' . $this->operation->getTableName(),
-            PropertyGenerator::FLAG_PROTECTED
+            AbstractMemberGenerator::FLAG_PROTECTED
         );
 
         $this->class->addMethodFromGenerator($constructorMethod);
         $this->class->addMethodFromGenerator($identitiesMethod);
+        $originalClass = $this->operation->getOmniEntityFqn();
+        foreach ($this->reflectedEntity->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            if ($method->getDeclaringClass()->getName() !== $originalClass ||
+                $method->getName() == 'getDbColumnsMapping'
+            ) {
+                continue;
+            }
+            $body = '';
+            preg_match('/self::([A-Z0-9_]+)/', $method->getBody(), $matches);
+            if (!empty($matches)) {
+                $constName = $matches[1];
+                if (str_starts_with($method->getName(), 'get')) {
+                    $body = <<<CODE
+return \$this->getData(self::getDbColumnsMapping()[self::{$constName}]);
+CODE;
+                } else {
+                    $body = <<<CODE
+return \$this->setData(self::getDbColumnsMapping()[self::{$constName}], \$value);
+CODE;
+                }
+            }
+            $this->copyGivenMethod(
+                $method->getName(),
+                AbstractMemberGenerator::VISIBILITY_PUBLIC,
+                false,
+                $method->isStatic() ? [AbstractMemberGenerator::FLAG_STATIC] : [],
+                $method->getParameters(),
+                $method->getReturnType(),
+                $body
+            );
+        }
 
         $this->createProperty(
             null,

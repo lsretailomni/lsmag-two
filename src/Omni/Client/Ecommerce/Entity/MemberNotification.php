@@ -39,235 +39,235 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     public const SEND_H_T_M_L = 'SendHTML';
 
     /**
-     * @param string $No
+     * @param ?string $No
      * @return $this
      */
-    public function setNo($No)
+    public function setNo(?string $No)
     {
         $this->setData(self::NO, $No);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNo()
+    public function getNo() : ?string
     {
         return $this->getData(self::NO);
     }
 
     /**
-     * @param string $ContactNo
+     * @param ?string $ContactNo
      * @return $this
      */
-    public function setContactNo($ContactNo)
+    public function setContactNo(?string $ContactNo)
     {
         $this->setData(self::CONTACT_NO, $ContactNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactNo()
+    public function getContactNo() : ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
 
     /**
-     * @param string $PrimaryText
+     * @param ?string $PrimaryText
      * @return $this
      */
-    public function setPrimaryText($PrimaryText)
+    public function setPrimaryText(?string $PrimaryText)
     {
         $this->setData(self::PRIMARY_TEXT, $PrimaryText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPrimaryText()
+    public function getPrimaryText() : ?string
     {
         return $this->getData(self::PRIMARY_TEXT);
     }
 
     /**
-     * @param string $SecondaryText
+     * @param ?string $SecondaryText
      * @return $this
      */
-    public function setSecondaryText($SecondaryText)
+    public function setSecondaryText(?string $SecondaryText)
     {
         $this->setData(self::SECONDARY_TEXT, $SecondaryText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSecondaryText()
+    public function getSecondaryText() : ?string
     {
         return $this->getData(self::SECONDARY_TEXT);
     }
 
     /**
-     * @param string $WhenDisplay
+     * @param ?string $WhenDisplay
      * @return $this
      */
-    public function setWhenDisplay($WhenDisplay)
+    public function setWhenDisplay(?string $WhenDisplay)
     {
         $this->setData(self::WHEN_DISPLAY, $WhenDisplay);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getWhenDisplay()
+    public function getWhenDisplay() : ?string
     {
         return $this->getData(self::WHEN_DISPLAY);
     }
 
     /**
-     * @param date $ValidFromDate
+     * @param ?string $ValidFromDate
      * @return $this
      */
-    public function setValidFromDate($ValidFromDate)
+    public function setValidFromDate(?string $ValidFromDate)
     {
         $this->setData(self::VALID_FROM_DATE, $ValidFromDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getValidFromDate()
+    public function getValidFromDate() : ?string
     {
         return $this->getData(self::VALID_FROM_DATE);
     }
 
     /**
-     * @param date $ValidToDate
+     * @param ?string $ValidToDate
      * @return $this
      */
-    public function setValidToDate($ValidToDate)
+    public function setValidToDate(?string $ValidToDate)
     {
         $this->setData(self::VALID_TO_DATE, $ValidToDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getValidToDate()
+    public function getValidToDate() : ?string
     {
         return $this->getData(self::VALID_TO_DATE);
     }
 
     /**
-     * @param string $MemberAttribute
+     * @param ?string $MemberAttribute
      * @return $this
      */
-    public function setMemberAttribute($MemberAttribute)
+    public function setMemberAttribute(?string $MemberAttribute)
     {
         $this->setData(self::MEMBER_ATTRIBUTE, $MemberAttribute);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberAttribute()
+    public function getMemberAttribute() : ?string
     {
         return $this->getData(self::MEMBER_ATTRIBUTE);
     }
 
     /**
-     * @param string $MemberAttributeValue
+     * @param ?string $MemberAttributeValue
      * @return $this
      */
-    public function setMemberAttributeValue($MemberAttributeValue)
+    public function setMemberAttributeValue(?string $MemberAttributeValue)
     {
         $this->setData(self::MEMBER_ATTRIBUTE_VALUE, $MemberAttributeValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberAttributeValue()
+    public function getMemberAttributeValue() : ?string
     {
         return $this->getData(self::MEMBER_ATTRIBUTE_VALUE);
     }
 
     /**
-     * @param string $WebLink
+     * @param ?string $WebLink
      * @return $this
      */
-    public function setWebLink($WebLink)
+    public function setWebLink(?string $WebLink)
     {
         $this->setData(self::WEB_LINK, $WebLink);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getWebLink()
+    public function getWebLink() : ?string
     {
         return $this->getData(self::WEB_LINK);
     }
 
     /**
-     * @param string $EMailDisclaimer
+     * @param ?string $EMailDisclaimer
      * @return $this
      */
-    public function setEMailDisclaimer($EMailDisclaimer)
+    public function setEMailDisclaimer(?string $EMailDisclaimer)
     {
         $this->setData(self::E_MAIL_DISCLAIMER, $EMailDisclaimer);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEMailDisclaimer()
+    public function getEMailDisclaimer() : ?string
     {
         return $this->getData(self::E_MAIL_DISCLAIMER);
     }
 
     /**
-     * @param boolean $PersonalizedEMail
+     * @param ?bool $PersonalizedEMail
      * @return $this
      */
-    public function setPersonalizedEMail($PersonalizedEMail)
+    public function setPersonalizedEMail(?bool $PersonalizedEMail)
     {
         $this->setData(self::PERSONALIZED_E_MAIL, $PersonalizedEMail);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getPersonalizedEMail()
+    public function getPersonalizedEMail() : ?bool
     {
         return $this->getData(self::PERSONALIZED_E_MAIL);
     }
 
     /**
-     * @param boolean $SendHTML
+     * @param ?bool $SendHTML
      * @return $this
      */
-    public function setSendHTML($SendHTML)
+    public function setSendHTML(?bool $SendHTML)
     {
         $this->setData(self::SEND_H_T_M_L, $SendHTML);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getSendHTML()
+    public function getSendHTML() : ?bool
     {
         return $this->getData(self::SEND_H_T_M_L);
     }

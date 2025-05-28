@@ -36,21 +36,21 @@ interface ReplCountryviewInterface
 
     public function setIntrastatCode(?string $value);
 
-    public function getAddressFormat() : ?string;
+    public function getAddressFormat() : ?int;
 
-    public function setAddressFormat(?string $value);
+    public function setAddressFormat(?int $value);
 
-    public function getContactAddressFormat() : ?string;
+    public function getContactAddressFormat() : ?int;
 
-    public function setContactAddressFormat(?string $value);
+    public function setContactAddressFormat(?int $value);
 
     public function getVatScheme() : ?string;
 
     public function setVatScheme(?string $value);
 
-    public function getLastModifiedDateTime() : ?\DateTime;
+    public function getLastModifiedDateTime() : ?string;
 
-    public function setLastModifiedDateTime(?\DateTime $value);
+    public function setLastModifiedDateTime(?string $value);
 
     public function getCountyName() : ?string;
 
@@ -64,17 +64,17 @@ interface ReplCountryviewInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

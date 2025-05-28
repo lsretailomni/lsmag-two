@@ -203,12 +203,12 @@ class Currency extends AbstractModel
         return $this->setData(self::INVOICE_ROUNDING_PRECISION, $value);
     }
 
-    public function getInvoiceRoundingType(): ?string
+    public function getInvoiceRoundingType(): ?int
     {
         return $this->getData(self::INVOICE_ROUNDING_TYPE);
     }
 
-    public function setInvoiceRoundingType(?string $value)
+    public function setInvoiceRoundingType(?int $value)
     {
         return $this->setData(self::INVOICE_ROUNDING_TYPE, $value);
     }
@@ -363,12 +363,12 @@ class Currency extends AbstractModel
         return $this->setData(self::MAX_VAT_DIFFERENCE_ALLOWED, $value);
     }
 
-    public function getVatRoundingType(): ?string
+    public function getVatRoundingType(): ?int
     {
         return $this->getData(self::VAT_ROUNDING_TYPE);
     }
 
-    public function setVatRoundingType(?string $value)
+    public function setVatRoundingType(?int $value)
     {
         return $this->setData(self::VAT_ROUNDING_TYPE, $value);
     }
@@ -403,12 +403,12 @@ class Currency extends AbstractModel
         return $this->setData(self::SYMBOL, $value);
     }
 
-    public function getLastModifiedDateTime(): ?\DateTime
+    public function getLastModifiedDateTime(): ?string
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
     }
 
-    public function setLastModifiedDateTime(?\DateTime $value)
+    public function setLastModifiedDateTime(?string $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
@@ -423,12 +423,12 @@ class Currency extends AbstractModel
         return $this->setData(self::LSC_LOWEST_ACCEPT_DENOM_AMT, $value);
     }
 
-    public function getLscDenominationRoundingType(): ?string
+    public function getLscDenominationRoundingType(): ?int
     {
         return $this->getData(self::LSC_DENOMINATION_ROUNDING_TYPE);
     }
 
-    public function setLscDenominationRoundingType(?string $value)
+    public function setLscDenominationRoundingType(?int $value)
     {
         return $this->setData(self::LSC_DENOMINATION_ROUNDING_TYPE, $value);
     }
@@ -443,12 +443,12 @@ class Currency extends AbstractModel
         return $this->setData(self::LSC_POS_CURRENCY_SYMBOL, $value);
     }
 
-    public function getLscPlacementOfCurrSymbol(): ?string
+    public function getLscPlacementOfCurrSymbol(): ?int
     {
         return $this->getData(self::LSC_PLACEMENT_OF_CURR_SYMBOL);
     }
 
-    public function setLscPlacementOfCurrSymbol(?string $value)
+    public function setLscPlacementOfCurrSymbol(?int $value)
     {
         return $this->setData(self::LSC_PLACEMENT_OF_CURR_SYMBOL, $value);
     }
@@ -473,12 +473,12 @@ class Currency extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -493,12 +493,12 @@ class Currency extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

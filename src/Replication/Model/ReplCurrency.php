@@ -29,6 +29,416 @@ class ReplCurrency extends \Ls\Omni\Client\Ecommerce\Entity\Currency implements 
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CODE]);
+    }
+
+    public function setCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
+    }
+
+    public function getLastDateModified() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED]);
+    }
+
+    public function setLastDateModified(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED], $value);
+    }
+
+    public function getLastDateAdjusted() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_ADJUSTED]);
+    }
+
+    public function setLastDateAdjusted(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_ADJUSTED], $value);
+    }
+
+    public function getIsoCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ISO_CODE]);
+    }
+
+    public function setIsoCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ISO_CODE], $value);
+    }
+
+    public function getIsoNumericCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ISO_NUMERIC_CODE]);
+    }
+
+    public function setIsoNumericCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ISO_NUMERIC_CODE], $value);
+    }
+
+    public function getUnrealizedGainsAcc() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNREALIZED_GAINS_ACC]);
+    }
+
+    public function setUnrealizedGainsAcc(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNREALIZED_GAINS_ACC], $value);
+    }
+
+    public function getRealizedGainsAcc() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::REALIZED_GAINS_ACC]);
+    }
+
+    public function setRealizedGainsAcc(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::REALIZED_GAINS_ACC], $value);
+    }
+
+    public function getUnrealizedLossesAcc() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNREALIZED_LOSSES_ACC]);
+    }
+
+    public function setUnrealizedLossesAcc(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNREALIZED_LOSSES_ACC], $value);
+    }
+
+    public function getRealizedLossesAcc() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::REALIZED_LOSSES_ACC]);
+    }
+
+    public function setRealizedLossesAcc(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::REALIZED_LOSSES_ACC], $value);
+    }
+
+    public function getInvoiceRoundingPrecision() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::INVOICE_ROUNDING_PRECISION]);
+    }
+
+    public function setInvoiceRoundingPrecision(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::INVOICE_ROUNDING_PRECISION], $value);
+    }
+
+    public function getInvoiceRoundingType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::INVOICE_ROUNDING_TYPE]);
+    }
+
+    public function setInvoiceRoundingType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::INVOICE_ROUNDING_TYPE], $value);
+    }
+
+    public function getAmountRoundingPrecision() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::AMOUNT_ROUNDING_PRECISION]);
+    }
+
+    public function setAmountRoundingPrecision(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::AMOUNT_ROUNDING_PRECISION], $value);
+    }
+
+    public function getUnitAmountRoundingPrecision() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNITAMOUNT_ROUNDING_PRECISION]);
+    }
+
+    public function setUnitAmountRoundingPrecision(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNITAMOUNT_ROUNDING_PRECISION], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getAmountDecimalPlaces() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::AMOUNT_DECIMAL_PLACES]);
+    }
+
+    public function setAmountDecimalPlaces(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::AMOUNT_DECIMAL_PLACES], $value);
+    }
+
+    public function getUnitAmountDecimalPlaces() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNITAMOUNT_DECIMAL_PLACES]);
+    }
+
+    public function setUnitAmountDecimalPlaces(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNITAMOUNT_DECIMAL_PLACES], $value);
+    }
+
+    public function getRealizedGLGainsAccount() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::REALIZED_GL_GAINS_ACCOUNT]);
+    }
+
+    public function setRealizedGLGainsAccount(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::REALIZED_GL_GAINS_ACCOUNT], $value);
+    }
+
+    public function getRealizedGLLossesAccount() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::REALIZED_GL_LOSSES_ACCOUNT]);
+    }
+
+    public function setRealizedGLLossesAccount(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::REALIZED_GL_LOSSES_ACCOUNT], $value);
+    }
+
+    public function getApplnRoundingPrecision() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::APPLN_ROUNDING_PRECISION]);
+    }
+
+    public function setApplnRoundingPrecision(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::APPLN_ROUNDING_PRECISION], $value);
+    }
+
+    public function getEmuCurrency() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EMU_CURRENCY]);
+    }
+
+    public function setEmuCurrency(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EMU_CURRENCY], $value);
+    }
+
+    public function getCurrencyFactor() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_FACTOR]);
+    }
+
+    public function setCurrencyFactor(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_FACTOR], $value);
+    }
+
+    public function getResidualGainsAccount() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RESIDUAL_GAINS_ACCOUNT]);
+    }
+
+    public function setResidualGainsAccount(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RESIDUAL_GAINS_ACCOUNT], $value);
+    }
+
+    public function getResidualLossesAccount() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RESIDUAL_LOSSES_ACCOUNT]);
+    }
+
+    public function setResidualLossesAccount(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RESIDUAL_LOSSES_ACCOUNT], $value);
+    }
+
+    public function getConvLcyRndgDebitAcc() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CONV_LCY_RNDG_DEBIT_ACC]);
+    }
+
+    public function setConvLcyRndgDebitAcc(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CONV_LCY_RNDG_DEBIT_ACC], $value);
+    }
+
+    public function getConvLcyRndgCreditAcc() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CONV_LCY_RNDG_CREDIT_ACC]);
+    }
+
+    public function setConvLcyRndgCreditAcc(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CONV_LCY_RNDG_CREDIT_ACC], $value);
+    }
+
+    public function getMaxVatDifferenceAllowed() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MAX_VAT_DIFFERENCE_ALLOWED]);
+    }
+
+    public function setMaxVatDifferenceAllowed(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MAX_VAT_DIFFERENCE_ALLOWED], $value);
+    }
+
+    public function getVatRoundingType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAT_ROUNDING_TYPE]);
+    }
+
+    public function setVatRoundingType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAT_ROUNDING_TYPE], $value);
+    }
+
+    public function getPaymentTolerance() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_TOLERANCE]);
+    }
+
+    public function setPaymentTolerance(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_TOLERANCE], $value);
+    }
+
+    public function getMaxPaymentToleranceAmount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MAX_PAYMENT_TOLERANCE_AMOUNT]);
+    }
+
+    public function setMaxPaymentToleranceAmount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MAX_PAYMENT_TOLERANCE_AMOUNT], $value);
+    }
+
+    public function getSymbol() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYMBOL]);
+    }
+
+    public function setSymbol(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYMBOL], $value);
+    }
+
+    public function getLastModifiedDateTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME]);
+    }
+
+    public function setLastModifiedDateTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME], $value);
+    }
+
+    public function getLscLowestAcceptDenomAmt() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_LOWEST_ACCEPT_DENOM_AMT]);
+    }
+
+    public function setLscLowestAcceptDenomAmt(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_LOWEST_ACCEPT_DENOM_AMT], $value);
+    }
+
+    public function getLscDenominationRoundingType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_DENOMINATION_ROUNDING_TYPE]);
+    }
+
+    public function setLscDenominationRoundingType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_DENOMINATION_ROUNDING_TYPE], $value);
+    }
+
+    public function getLscPosCurrencySymbol() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_CURRENCY_SYMBOL]);
+    }
+
+    public function setLscPosCurrencySymbol(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_POS_CURRENCY_SYMBOL], $value);
+    }
+
+    public function getLscPlacementOfCurrSymbol() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_PLACEMENT_OF_CURR_SYMBOL]);
+    }
+
+    public function setLscPlacementOfCurrSymbol(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_PLACEMENT_OF_CURR_SYMBOL], $value);
+    }
+
+    public function getLscFiscalPrinterId() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_FISCAL_PRINTER_ID]);
+    }
+
+    public function setLscFiscalPrinterId(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_FISCAL_PRINTER_ID], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

@@ -20,9 +20,9 @@ interface ReplPriceListLineInterface
 
     public function setLineNo(?int $value);
 
-    public function getSourceType() : ?string;
+    public function getSourceType() : ?int;
 
-    public function setSourceType(?string $value);
+    public function setSourceType(?int $value);
 
     public function getSourceNo() : ?string;
 
@@ -36,9 +36,9 @@ interface ReplPriceListLineInterface
 
     public function setSourceId(?string $value);
 
-    public function getAssetType() : ?string;
+    public function getAssetType() : ?int;
 
-    public function setAssetType(?string $value);
+    public function setAssetType(?int $value);
 
     public function getAssetNo() : ?string;
 
@@ -72,9 +72,9 @@ interface ReplPriceListLineInterface
 
     public function setUnitOfMeasureCode(?string $value);
 
-    public function getAmountType() : ?string;
+    public function getAmountType() : ?int;
 
-    public function setAmountType(?string $value);
+    public function setAmountType(?int $value);
 
     public function getUnitPrice() : ?float;
 
@@ -120,25 +120,25 @@ interface ReplPriceListLineInterface
 
     public function setLineAmount(?float $value);
 
-    public function getPriceType() : ?string;
+    public function getPriceType() : ?int;
 
-    public function setPriceType(?string $value);
+    public function setPriceType(?int $value);
 
     public function getDescription() : ?string;
 
     public function setDescription(?string $value);
 
-    public function getStatus() : ?string;
+    public function getStatus() : ?int;
 
-    public function setStatus(?string $value);
+    public function setStatus(?int $value);
 
     public function getDirectUnitCost() : ?float;
 
     public function setDirectUnitCost(?float $value);
 
-    public function getSourceGroup() : ?string;
+    public function getSourceGroup() : ?int;
 
-    public function setSourceGroup(?string $value);
+    public function setSourceGroup(?int $value);
 
     public function getProductNo() : ?string;
 
@@ -192,17 +192,17 @@ interface ReplPriceListLineInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

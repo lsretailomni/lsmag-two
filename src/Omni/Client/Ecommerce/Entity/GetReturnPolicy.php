@@ -35,163 +35,163 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
     public const GET_RETURN_POLICY_X_M_L = 'getReturnPolicyXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreNo(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $storeGroupCode
+     * @param ?string $storeGroupCode
      * @return $this
      */
-    public function setStoreGroupCode($storeGroupCode)
+    public function setStoreGroupCode(?string $storeGroupCode)
     {
         $this->setData(self::STORE_GROUP_CODE, $storeGroupCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreGroupCode()
+    public function getStoreGroupCode() : ?string
     {
         return $this->getData(self::STORE_GROUP_CODE);
     }
 
     /**
-     * @param string $itemCategoryCode
+     * @param ?string $itemCategoryCode
      * @return $this
      */
-    public function setItemCategoryCode($itemCategoryCode)
+    public function setItemCategoryCode(?string $itemCategoryCode)
     {
         $this->setData(self::ITEM_CATEGORY_CODE, $itemCategoryCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemCategoryCode()
+    public function getItemCategoryCode() : ?string
     {
         return $this->getData(self::ITEM_CATEGORY_CODE);
     }
 
     /**
-     * @param string $retailProductCode
+     * @param ?string $retailProductCode
      * @return $this
      */
-    public function setRetailProductCode($retailProductCode)
+    public function setRetailProductCode(?string $retailProductCode)
     {
         $this->setData(self::RETAIL_PRODUCT_CODE, $retailProductCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRetailProductCode()
+    public function getRetailProductCode() : ?string
     {
         return $this->getData(self::RETAIL_PRODUCT_CODE);
     }
 
     /**
-     * @param string $itemNo
+     * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo($itemNo)
+    public function setItemNo(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemNo() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $variantCode
+     * @param ?string $variantCode
      * @return $this
      */
-    public function setVariantCode($variantCode)
+    public function setVariantCode(?string $variantCode)
     {
         $this->setData(self::VARIANT_CODE, $variantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantCode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $variantDimension1Code
+     * @param ?string $variantDimension1Code
      * @return $this
      */
-    public function setVariantDimension1Code($variantDimension1Code)
+    public function setVariantDimension1Code(?string $variantDimension1Code)
     {
         $this->setData(self::VARIANT_DIMENSION1_CODE, $variantDimension1Code);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantDimension1Code()
+    public function getVariantDimension1Code() : ?string
     {
         return $this->getData(self::VARIANT_DIMENSION1_CODE);
     }

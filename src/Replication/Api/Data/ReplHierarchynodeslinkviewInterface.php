@@ -20,9 +20,9 @@ interface ReplHierarchynodeslinkviewInterface
 
     public function setNodeId(?string $value);
 
-    public function getType() : ?string;
+    public function getType() : ?int;
 
-    public function setType(?string $value);
+    public function setType(?int $value);
 
     public function getNo() : ?string;
 
@@ -44,9 +44,9 @@ interface ReplHierarchynodeslinkviewInterface
 
     public function setRetailImageId(?string $value);
 
-    public function getMemberType() : ?string;
+    public function getMemberType() : ?int;
 
-    public function setMemberType(?string $value);
+    public function setMemberType(?int $value);
 
     public function getMemberValue() : ?string;
 
@@ -60,9 +60,9 @@ interface ReplHierarchynodeslinkviewInterface
 
     public function setValidationPeriodId(?string $value);
 
-    public function getStatus() : ?string;
+    public function getStatus() : ?int;
 
-    public function setStatus(?string $value);
+    public function setStatus(?int $value);
 
     public function setProcessed(?bool $processed);
 

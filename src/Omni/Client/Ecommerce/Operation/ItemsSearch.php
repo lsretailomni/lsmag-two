@@ -78,7 +78,7 @@ class ItemsSearch extends AbstractOperation
     /**
      * @return ItemsSearchRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ItemsSearchRequest();

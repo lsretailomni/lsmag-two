@@ -17,37 +17,37 @@ class SPGOrderCheckCOHeader extends \Magento\Catalog\Model\AbstractModel
     public const STATUS_DATE_TIME = 'StatusDateTime';
 
     /**
-     * @param string $Status
+     * @param ?string $Status
      * @return $this
      */
-    public function setStatus($Status)
+    public function setStatus(?string $Status)
     {
         $this->setData(self::STATUS, $Status);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatus()
+    public function getStatus() : ?string
     {
         return $this->getData(self::STATUS);
     }
 
     /**
-     * @param string $StatusDateTime
+     * @param ?string $StatusDateTime
      * @return $this
      */
-    public function setStatusDateTime($StatusDateTime)
+    public function setStatusDateTime(?string $StatusDateTime)
     {
         $this->setData(self::STATUS_DATE_TIME, $StatusDateTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatusDateTime()
+    public function getStatusDateTime() : ?string
     {
         return $this->getData(self::STATUS_DATE_TIME);
     }

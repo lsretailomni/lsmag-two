@@ -31,91 +31,91 @@ class CustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel implements
     public const POINTS_USED = 'pointsUsed';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $documentStatus
+     * @param ?string $documentStatus
      * @return $this
      */
-    public function setDocumentStatus($documentStatus)
+    public function setDocumentStatus(?string $documentStatus)
     {
         $this->setData(self::DOCUMENT_STATUS, $documentStatus);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentStatus()
+    public function getDocumentStatus() : ?string
     {
         return $this->getData(self::DOCUMENT_STATUS);
     }
 
     /**
-     * @param string $documentID
+     * @param ?string $documentID
      * @return $this
      */
-    public function setDocumentID($documentID)
+    public function setDocumentID(?string $documentID)
     {
         $this->setData(self::DOCUMENT_I_D, $documentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentID() : ?string
     {
         return $this->getData(self::DOCUMENT_I_D);
     }
 
     /**
-     * @param string $posTerminalNo
+     * @param ?string $posTerminalNo
      * @return $this
      */
-    public function setPosTerminalNo($posTerminalNo)
+    public function setPosTerminalNo(?string $posTerminalNo)
     {
         $this->setData(self::POS_TERMINAL_NO, $posTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPosTerminalNo()
+    public function getPosTerminalNo() : ?string
     {
         return $this->getData(self::POS_TERMINAL_NO);
     }
@@ -139,37 +139,37 @@ class CustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel implements
     }
 
     /**
-     * @param float $pointsEarned
+     * @param ?float $pointsEarned
      * @return $this
      */
-    public function setPointsEarned($pointsEarned)
+    public function setPointsEarned(?float $pointsEarned)
     {
         $this->setData(self::POINTS_EARNED, $pointsEarned);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPointsEarned()
+    public function getPointsEarned() : ?float
     {
         return $this->getData(self::POINTS_EARNED);
     }
 
     /**
-     * @param float $pointsUsed
+     * @param ?float $pointsUsed
      * @return $this
      */
-    public function setPointsUsed($pointsUsed)
+    public function setPointsUsed(?float $pointsUsed)
     {
         $this->setData(self::POINTS_USED, $pointsUsed);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPointsUsed()
+    public function getPointsUsed() : ?float
     {
         return $this->getData(self::POINTS_USED);
     }

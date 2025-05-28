@@ -71,91 +71,91 @@ class TransHospitalityEntry extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptNo(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptNo() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPOSTerminalNo(?string $POSTerminalNo)
     {
         $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPOSTerminalNo() : ?string
     {
         return $this->getData(self::P_O_S_TERMINAL_NO);
     }
 
     /**
-     * @param string $ItemNo
+     * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo($ItemNo)
+    public function setItemNo(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemNo() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $RestaurantMenuTypeCode
+     * @param ?string $RestaurantMenuTypeCode
      * @return $this
      */
-    public function setRestaurantMenuTypeCode($RestaurantMenuTypeCode)
+    public function setRestaurantMenuTypeCode(?string $RestaurantMenuTypeCode)
     {
         $this->setData(self::RESTAURANT_MENU_TYPE_CODE, $RestaurantMenuTypeCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRestaurantMenuTypeCode()
+    public function getRestaurantMenuTypeCode() : ?string
     {
         return $this->getData(self::RESTAURANT_MENU_TYPE_CODE);
     }
@@ -179,37 +179,37 @@ class TransHospitalityEntry extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $OriginalReceiptNo
+     * @param ?string $OriginalReceiptNo
      * @return $this
      */
-    public function setOriginalReceiptNo($OriginalReceiptNo)
+    public function setOriginalReceiptNo(?string $OriginalReceiptNo)
     {
         $this->setData(self::ORIGINAL_RECEIPT_NO, $OriginalReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOriginalReceiptNo()
+    public function getOriginalReceiptNo() : ?string
     {
         return $this->getData(self::ORIGINAL_RECEIPT_NO);
     }
 
     /**
-     * @param boolean $Replicated
+     * @param ?bool $Replicated
      * @return $this
      */
-    public function setReplicated($Replicated)
+    public function setReplicated(?bool $Replicated)
     {
         $this->setData(self::REPLICATED, $Replicated);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getReplicated()
+    public function getReplicated() : ?bool
     {
         return $this->getData(self::REPLICATED);
     }

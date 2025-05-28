@@ -36,9 +36,9 @@ interface ReplItemCategoryInterface
 
     public function setHasChildren(?bool $value);
 
-    public function getLastModifiedDateTime() : ?\DateTime;
+    public function getLastModifiedDateTime() : ?string;
 
-    public function setLastModifiedDateTime(?\DateTime $value);
+    public function setLastModifiedDateTime(?string $value);
 
     public function getDefaultSustAccount() : ?string;
 
@@ -116,9 +116,9 @@ interface ReplItemCategoryInterface
 
     public function setLscReplenTransferRuleCode(?string $value);
 
-    public function getLscDefItemDistrType() : ?string;
+    public function getLscDefItemDistrType() : ?int;
 
-    public function setLscDefItemDistrType(?string $value);
+    public function setLscDefItemDistrType(?int $value);
 
     public function getLscDefItemDistrCode() : ?string;
 
@@ -148,17 +148,17 @@ interface ReplItemCategoryInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

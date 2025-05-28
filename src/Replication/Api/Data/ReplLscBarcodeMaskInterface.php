@@ -24,17 +24,17 @@ interface ReplLscBarcodeMaskInterface
 
     public function setDescription(?string $value);
 
-    public function getType() : ?string;
+    public function getType() : ?int;
 
-    public function setType(?string $value);
+    public function setType(?int $value);
 
     public function getPrefix() : ?string;
 
     public function setPrefix(?string $value);
 
-    public function getSymbology() : ?string;
+    public function getSymbology() : ?int;
 
-    public function setSymbology(?string $value);
+    public function setSymbology(?int $value);
 
     public function getNumberSeries() : ?string;
 
@@ -44,17 +44,17 @@ interface ReplLscBarcodeMaskInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

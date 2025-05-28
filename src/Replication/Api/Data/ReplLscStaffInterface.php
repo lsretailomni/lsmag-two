@@ -28,49 +28,49 @@ interface ReplLscStaffInterface
 
     public function setStoreNo(?string $value);
 
-    public function getVoidTransaction() : ?string;
+    public function getVoidTransaction() : ?int;
 
-    public function setVoidTransaction(?string $value);
+    public function setVoidTransaction(?int $value);
 
-    public function getManagerPrivileges() : ?string;
+    public function getManagerPrivileges() : ?int;
 
-    public function setManagerPrivileges(?string $value);
+    public function setManagerPrivileges(?int $value);
 
-    public function getXzyReportPrinting() : ?string;
+    public function getXzyReportPrinting() : ?int;
 
-    public function setXzyReportPrinting(?string $value);
+    public function setXzyReportPrinting(?int $value);
 
-    public function getTenderDeclaration() : ?string;
+    public function getTenderDeclaration() : ?int;
 
-    public function setTenderDeclaration(?string $value);
+    public function setTenderDeclaration(?int $value);
 
-    public function getFloatingDeclaration() : ?string;
+    public function getFloatingDeclaration() : ?int;
 
-    public function setFloatingDeclaration(?string $value);
+    public function setFloatingDeclaration(?int $value);
 
-    public function getPriceOverride() : ?string;
+    public function getPriceOverride() : ?int;
 
-    public function setPriceOverride(?string $value);
+    public function setPriceOverride(?int $value);
 
     public function getMaxDiscountToGive() : ?float;
 
     public function setMaxDiscountToGive(?float $value);
 
-    public function getSuspendTransaction() : ?string;
+    public function getSuspendTransaction() : ?int;
 
-    public function setSuspendTransaction(?string $value);
+    public function setSuspendTransaction(?int $value);
 
     public function getMaxTotalDiscount() : ?float;
 
     public function setMaxTotalDiscount(?float $value);
 
-    public function getOpenDrawWithoutSale() : ?string;
+    public function getOpenDrawWithoutSale() : ?int;
 
-    public function setOpenDrawWithoutSale(?string $value);
+    public function setOpenDrawWithoutSale(?int $value);
 
-    public function getDiscountFromPermGroup() : ?string;
+    public function getDiscountFromPermGroup() : ?int;
 
-    public function setDiscountFromPermGroup(?string $value);
+    public function setDiscountFromPermGroup(?int $value);
 
     public function getFirstName() : ?string;
 
@@ -80,9 +80,9 @@ interface ReplLscStaffInterface
 
     public function setLastName(?string $value);
 
-    public function getEmploymentType() : ?string;
+    public function getEmploymentType() : ?int;
 
-    public function setEmploymentType(?string $value);
+    public function setEmploymentType(?int $value);
 
     public function getFraudSortField() : ?float;
 
@@ -160,97 +160,97 @@ interface ReplLscStaffInterface
 
     public function setPrivacyBlocked(?bool $value);
 
-    public function getReturnInTransaction() : ?string;
+    public function getReturnInTransaction() : ?int;
 
-    public function setReturnInTransaction(?string $value);
+    public function setReturnInTransaction(?int $value);
 
-    public function getVoidPrepayment() : ?string;
+    public function getVoidPrepayment() : ?int;
 
-    public function setVoidPrepayment(?string $value);
+    public function setVoidPrepayment(?int $value);
 
-    public function getVoidPrepaymentLine() : ?string;
+    public function getVoidPrepaymentLine() : ?int;
 
-    public function setVoidPrepaymentLine(?string $value);
+    public function setVoidPrepaymentLine(?int $value);
 
-    public function getChangePrepaymentAmt() : ?string;
+    public function getChangePrepaymentAmt() : ?int;
 
-    public function setChangePrepaymentAmt(?string $value);
+    public function setChangePrepaymentAmt(?int $value);
 
-    public function getAddPrepaymentAmt() : ?string;
+    public function getAddPrepaymentAmt() : ?int;
 
-    public function setAddPrepaymentAmt(?string $value);
+    public function setAddPrepaymentAmt(?int $value);
 
-    public function getVoidLine() : ?string;
+    public function getVoidLine() : ?int;
 
-    public function setVoidLine(?string $value);
+    public function setVoidLine(?int $value);
 
-    public function getAddPayment() : ?string;
+    public function getAddPayment() : ?int;
 
-    public function setAddPayment(?string $value);
+    public function setAddPayment(?int $value);
 
-    public function getTransferOrders() : ?string;
+    public function getTransferOrders() : ?int;
 
-    public function setTransferOrders(?string $value);
+    public function setTransferOrders(?int $value);
 
-    public function getSplitBills() : ?string;
+    public function getSplitBills() : ?int;
 
-    public function setSplitBills(?string $value);
+    public function setSplitBills(?int $value);
 
-    public function getSwitchDiningTableLayout() : ?string;
+    public function getSwitchDiningTableLayout() : ?int;
 
-    public function setSwitchDiningTableLayout(?string $value);
+    public function setSwitchDiningTableLayout(?int $value);
 
-    public function getAdjustDiningTables() : ?string;
+    public function getAdjustDiningTables() : ?int;
 
-    public function setAdjustDiningTables(?string $value);
+    public function setAdjustDiningTables(?int $value);
 
-    public function getDesignDiningTableLayout() : ?string;
+    public function getDesignDiningTableLayout() : ?int;
 
-    public function setDesignDiningTableLayout(?string $value);
+    public function setDesignDiningTableLayout(?int $value);
 
-    public function getSeatGuests() : ?string;
+    public function getSeatGuests() : ?int;
 
-    public function setSeatGuests(?string $value);
+    public function setSeatGuests(?int $value);
 
-    public function getViewKitchenStatus() : ?string;
+    public function getViewKitchenStatus() : ?int;
 
-    public function setViewKitchenStatus(?string $value);
+    public function setViewKitchenStatus(?int $value);
 
-    public function getChangeStaff() : ?string;
+    public function getChangeStaff() : ?int;
 
-    public function setChangeStaff(?string $value);
+    public function setChangeStaff(?int $value);
 
-    public function getAddStartFloat() : ?string;
+    public function getAddStartFloat() : ?int;
 
-    public function setAddStartFloat(?string $value);
+    public function setAddStartFloat(?int $value);
 
-    public function getOpenSalesPosDirectly() : ?string;
+    public function getOpenSalesPosDirectly() : ?int;
 
-    public function setOpenSalesPosDirectly(?string $value);
+    public function setOpenSalesPosDirectly(?int $value);
 
-    public function getOpenSalesPos() : ?string;
+    public function getOpenSalesPos() : ?int;
 
-    public function setOpenSalesPos(?string $value);
+    public function setOpenSalesPos(?int $value);
 
-    public function getChangeDiningTblStatus() : ?string;
+    public function getChangeDiningTblStatus() : ?int;
 
-    public function setChangeDiningTblStatus(?string $value);
+    public function setChangeDiningTblStatus(?int $value);
 
-    public function getResetDiningTblStatus() : ?string;
+    public function getResetDiningTblStatus() : ?int;
 
-    public function setResetDiningTblStatus(?string $value);
+    public function setResetDiningTblStatus(?int $value);
 
-    public function getRushOrderInKitchen() : ?string;
+    public function getRushOrderInKitchen() : ?int;
 
-    public function setRushOrderInKitchen(?string $value);
+    public function setRushOrderInKitchen(?int $value);
 
-    public function getOpenDinTblLockedByStaff() : ?string;
+    public function getOpenDinTblLockedByStaff() : ?int;
 
-    public function setOpenDinTblLockedByStaff(?string $value);
+    public function setOpenDinTblLockedByStaff(?int $value);
 
-    public function getEditAvailableQty() : ?string;
+    public function getEditAvailableQty() : ?int;
 
-    public function setEditAvailableQty(?string $value);
+    public function setEditAvailableQty(?int $value);
 
     public function getContinueOnTsErrors() : ?bool;
 
@@ -268,17 +268,17 @@ interface ReplLscStaffInterface
 
     public function setLanguage(?string $value);
 
-    public function getCreateCustomers() : ?string;
+    public function getCreateCustomers() : ?int;
 
-    public function setCreateCustomers(?string $value);
+    public function setCreateCustomers(?int $value);
 
-    public function getViewSalesHistory() : ?string;
+    public function getViewSalesHistory() : ?int;
 
-    public function setViewSalesHistory(?string $value);
+    public function setViewSalesHistory(?int $value);
 
-    public function getCustomerComments() : ?string;
+    public function getCustomerComments() : ?int;
 
-    public function setCustomerComments(?string $value);
+    public function setCustomerComments(?int $value);
 
     public function getMaxTenderDeclDifference() : ?float;
 
@@ -288,37 +288,37 @@ interface ReplLscStaffInterface
 
     public function setMaxWarningCount(?int $value);
 
-    public function getShowDifferenceInWarning() : ?string;
+    public function getShowDifferenceInWarning() : ?int;
 
-    public function setShowDifferenceInWarning(?string $value);
+    public function setShowDifferenceInWarning(?int $value);
 
-    public function getActionAfterDiffWarning() : ?string;
+    public function getActionAfterDiffWarning() : ?int;
 
-    public function setActionAfterDiffWarning(?string $value);
+    public function setActionAfterDiffWarning(?int $value);
 
-    public function getCidReportPrinting() : ?string;
+    public function getCidReportPrinting() : ?int;
 
-    public function setCidReportPrinting(?string $value);
+    public function setCidReportPrinting(?int $value);
 
-    public function getShowTransAmount() : ?string;
+    public function getShowTransAmount() : ?int;
 
-    public function setShowTransAmount(?string $value);
+    public function setShowTransAmount(?int $value);
 
-    public function getUpdateCustomers() : ?string;
+    public function getUpdateCustomers() : ?int;
 
-    public function setUpdateCustomers(?string $value);
+    public function setUpdateCustomers(?int $value);
 
-    public function getTipsHandling() : ?string;
+    public function getTipsHandling() : ?int;
 
-    public function setTipsHandling(?string $value);
+    public function setTipsHandling(?int $value);
 
     public function getLastYReport() : ?string;
 
     public function setLastYReport(?string $value);
 
-    public function getMaxDiffWarnFromPermGr() : ?string;
+    public function getMaxDiffWarnFromPermGr() : ?int;
 
-    public function setMaxDiffWarnFromPermGr(?string $value);
+    public function setMaxDiffWarnFromPermGr(?int $value);
 
     public function getInventoryActive() : ?bool;
 
@@ -340,17 +340,17 @@ interface ReplLscStaffInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

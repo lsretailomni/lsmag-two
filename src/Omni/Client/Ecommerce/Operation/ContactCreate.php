@@ -78,7 +78,7 @@ class ContactCreate extends AbstractOperation
     /**
      * @return ContactCreateRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ContactCreateRequest();

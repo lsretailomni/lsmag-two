@@ -21,73 +21,73 @@ class ShippingAgent extends \Magento\Catalog\Model\AbstractModel
     public const ACCOUNT_NO = 'AccountNo';
 
     /**
-     * @param string $Code
+     * @param ?string $Code
      * @return $this
      */
-    public function setCode($Code)
+    public function setCode(?string $Code)
     {
         $this->setData(self::CODE, $Code);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCode()
+    public function getCode() : ?string
     {
         return $this->getData(self::CODE);
     }
 
     /**
-     * @param string $Name
+     * @param ?string $Name
      * @return $this
      */
-    public function setName($Name)
+    public function setName(?string $Name)
     {
         $this->setData(self::NAME, $Name);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getName()
+    public function getName() : ?string
     {
         return $this->getData(self::NAME);
     }
 
     /**
-     * @param string $InternetAddress
+     * @param ?string $InternetAddress
      * @return $this
      */
-    public function setInternetAddress($InternetAddress)
+    public function setInternetAddress(?string $InternetAddress)
     {
         $this->setData(self::INTERNET_ADDRESS, $InternetAddress);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getInternetAddress()
+    public function getInternetAddress() : ?string
     {
         return $this->getData(self::INTERNET_ADDRESS);
     }
 
     /**
-     * @param string $AccountNo
+     * @param ?string $AccountNo
      * @return $this
      */
-    public function setAccountNo($AccountNo)
+    public function setAccountNo(?string $AccountNo)
     {
         $this->setData(self::ACCOUNT_NO, $AccountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountNo()
+    public function getAccountNo() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }

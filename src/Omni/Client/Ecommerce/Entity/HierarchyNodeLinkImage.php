@@ -21,19 +21,19 @@ class HierarchyNodeLinkImage extends \Magento\Catalog\Model\AbstractModel
     public const TABLE_NAME = 'TableName';
 
     /**
-     * @param string $KeyValue
+     * @param ?string $KeyValue
      * @return $this
      */
-    public function setKeyValue($KeyValue)
+    public function setKeyValue(?string $KeyValue)
     {
         $this->setData(self::KEY_VALUE, $KeyValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getKeyValue()
+    public function getKeyValue() : ?string
     {
         return $this->getData(self::KEY_VALUE);
     }
@@ -57,37 +57,37 @@ class HierarchyNodeLinkImage extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $ImageId
+     * @param ?string $ImageId
      * @return $this
      */
-    public function setImageId($ImageId)
+    public function setImageId(?string $ImageId)
     {
         $this->setData(self::IMAGE_ID, $ImageId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getImageId()
+    public function getImageId() : ?string
     {
         return $this->getData(self::IMAGE_ID);
     }
 
     /**
-     * @param string $TableName
+     * @param ?string $TableName
      * @return $this
      */
-    public function setTableName($TableName)
+    public function setTableName(?string $TableName)
     {
         $this->setData(self::TABLE_NAME, $TableName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTableName()
+    public function getTableName() : ?string
     {
         return $this->getData(self::TABLE_NAME);
     }

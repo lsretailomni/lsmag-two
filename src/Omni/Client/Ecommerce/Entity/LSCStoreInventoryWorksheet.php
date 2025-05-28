@@ -137,12 +137,12 @@ class LSCStoreInventoryWorksheet extends AbstractModel
         return $this->setData(self::REASON_CODE, $value);
     }
 
-    public function getDefaultUom(): ?string
+    public function getDefaultUom(): ?int
     {
         return $this->getData(self::DEFAULT_UOM);
     }
 
-    public function setDefaultUom(?string $value)
+    public function setDefaultUom(?int $value)
     {
         return $this->setData(self::DEFAULT_UOM, $value);
     }
@@ -167,12 +167,12 @@ class LSCStoreInventoryWorksheet extends AbstractModel
         return $this->setData(self::USE_AREA, $value);
     }
 
-    public function getTypeOfEntering(): ?string
+    public function getTypeOfEntering(): ?int
     {
         return $this->getData(self::TYPE_OF_ENTERING);
     }
 
-    public function setTypeOfEntering(?string $value)
+    public function setTypeOfEntering(?int $value)
     {
         return $this->setData(self::TYPE_OF_ENTERING, $value);
     }
@@ -217,22 +217,22 @@ class LSCStoreInventoryWorksheet extends AbstractModel
         return $this->setData(self::USE_BARCODE_UOM_IN_MOBILE, $value);
     }
 
-    public function getWorksheetType(): ?string
+    public function getWorksheetType(): ?int
     {
         return $this->getData(self::WORKSHEET_TYPE);
     }
 
-    public function setWorksheetType(?string $value)
+    public function setWorksheetType(?int $value)
     {
         return $this->setData(self::WORKSHEET_TYPE, $value);
     }
 
-    public function getLabelType(): ?string
+    public function getLabelType(): ?int
     {
         return $this->getData(self::LABEL_TYPE);
     }
 
-    public function setLabelType(?string $value)
+    public function setLabelType(?int $value)
     {
         return $this->setData(self::LABEL_TYPE, $value);
     }
@@ -307,12 +307,12 @@ class LSCStoreInventoryWorksheet extends AbstractModel
         return $this->setData(self::RETAIL_PRODUCT_FILTER, $value);
     }
 
-    public function getQuantityMethod(): ?string
+    public function getQuantityMethod(): ?int
     {
         return $this->getData(self::QUANTITY_METHOD);
     }
 
-    public function setQuantityMethod(?string $value)
+    public function setQuantityMethod(?int $value)
     {
         return $this->setData(self::QUANTITY_METHOD, $value);
     }
@@ -437,12 +437,12 @@ class LSCStoreInventoryWorksheet extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -457,12 +457,12 @@ class LSCStoreInventoryWorksheet extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

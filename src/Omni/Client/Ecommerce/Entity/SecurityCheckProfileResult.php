@@ -21,55 +21,55 @@ class SecurityCheckProfileResult extends \Magento\Catalog\Model\AbstractModel im
     public const SECURITY_PROFILE_EXIST = 'securityProfileExist';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param boolean $securityProfileExist
+     * @param ?bool $securityProfileExist
      * @return $this
      */
-    public function setSecurityProfileExist($securityProfileExist)
+    public function setSecurityProfileExist(?bool $securityProfileExist)
     {
         $this->setData(self::SECURITY_PROFILE_EXIST, $securityProfileExist);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getSecurityProfileExist()
+    public function getSecurityProfileExist() : ?bool
     {
         return $this->getData(self::SECURITY_PROFILE_EXIST);
     }

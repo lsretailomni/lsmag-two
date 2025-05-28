@@ -29,6 +29,166 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\Ecommerce\Entity\LSCWIIt
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getParentItemNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PARENT_ITEM_NO]);
+    }
+
+    public function setParentItemNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PARENT_ITEM_NO], $value);
+    }
+
+    public function getLineNo() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LINE_NO]);
+    }
+
+    public function setLineNo(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LINE_NO], $value);
+    }
+
+    public function getType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TYPE]);
+    }
+
+    public function setType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TYPE], $value);
+    }
+
+    public function getNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NO]);
+    }
+
+    public function setNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NO], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getUnitOfMeasureCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE]);
+    }
+
+    public function setUnitOfMeasureCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE], $value);
+    }
+
+    public function getQuantityPer() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::QUANTITY_PER]);
+    }
+
+    public function setQuantityPer(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::QUANTITY_PER], $value);
+    }
+
+    public function getLscItemNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_ITEM_NO]);
+    }
+
+    public function setLscItemNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_ITEM_NO], $value);
+    }
+
+    public function getLscExclusion() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_EXCLUSION]);
+    }
+
+    public function setLscExclusion(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_EXCLUSION], $value);
+    }
+
+    public function getLscPriceOnExclusion() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_PRICE_ON_EXCLUSION]);
+    }
+
+    public function setLscPriceOnExclusion(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_PRICE_ON_EXCLUSION], $value);
+    }
+
+    public function getRetailImageId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RETAIL_IMAGE_ID]);
+    }
+
+    public function setRetailImageId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RETAIL_IMAGE_ID], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

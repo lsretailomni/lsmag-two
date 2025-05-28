@@ -27,109 +27,109 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
     public const L_S_RETAIL_COPYRIGHT = 'lSRetailCopyright';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $applicationVersion
+     * @param ?string $applicationVersion
      * @return $this
      */
-    public function setApplicationVersion($applicationVersion)
+    public function setApplicationVersion(?string $applicationVersion)
     {
         $this->setData(self::APPLICATION_VERSION, $applicationVersion);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getApplicationVersion()
+    public function getApplicationVersion() : ?string
     {
         return $this->getData(self::APPLICATION_VERSION);
     }
 
     /**
-     * @param string $applicationBuild
+     * @param ?string $applicationBuild
      * @return $this
      */
-    public function setApplicationBuild($applicationBuild)
+    public function setApplicationBuild(?string $applicationBuild)
     {
         $this->setData(self::APPLICATION_BUILD, $applicationBuild);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getApplicationBuild()
+    public function getApplicationBuild() : ?string
     {
         return $this->getData(self::APPLICATION_BUILD);
     }
 
     /**
-     * @param string $lSRetailVersion
+     * @param ?string $lSRetailVersion
      * @return $this
      */
-    public function setLSRetailVersion($lSRetailVersion)
+    public function setLSRetailVersion(?string $lSRetailVersion)
     {
         $this->setData(self::L_S_RETAIL_VERSION, $lSRetailVersion);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLSRetailVersion()
+    public function getLSRetailVersion() : ?string
     {
         return $this->getData(self::L_S_RETAIL_VERSION);
     }
 
     /**
-     * @param string $lSRetailCopyright
+     * @param ?string $lSRetailCopyright
      * @return $this
      */
-    public function setLSRetailCopyright($lSRetailCopyright)
+    public function setLSRetailCopyright(?string $lSRetailCopyright)
     {
         $this->setData(self::L_S_RETAIL_COPYRIGHT, $lSRetailCopyright);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLSRetailCopyright()
+    public function getLSRetailCopyright() : ?string
     {
         return $this->getData(self::L_S_RETAIL_COPYRIGHT);
     }

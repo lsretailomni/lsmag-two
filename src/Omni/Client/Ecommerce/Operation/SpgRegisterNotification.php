@@ -78,7 +78,7 @@ class SpgRegisterNotification extends AbstractOperation
     /**
      * @return SpgRegisterNotificationRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new SpgRegisterNotificationRequest();

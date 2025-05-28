@@ -25,73 +25,73 @@ class ItemSalesInfo extends \Magento\Catalog\Model\AbstractModel implements Requ
     public const ITEM_SALES_INFO_X_M_L = 'itemSalesInfoXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $itemNo
+     * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo($itemNo)
+    public function setItemNo(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemNo() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $locationCode
+     * @param ?string $locationCode
      * @return $this
      */
-    public function setLocationCode($locationCode)
+    public function setLocationCode(?string $locationCode)
     {
         $this->setData(self::LOCATION_CODE, $locationCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLocationCode()
+    public function getLocationCode() : ?string
     {
         return $this->getData(self::LOCATION_CODE);
     }

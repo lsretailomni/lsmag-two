@@ -217,12 +217,12 @@ class LSCMemberContact extends AbstractModel
         return $this->setData(self::CLUB_CODE, $value);
     }
 
-    public function getContactGender(): ?string
+    public function getContactGender(): ?int
     {
         return $this->getData(self::CONTACT_GENDER);
     }
 
-    public function setContactGender(?string $value)
+    public function setContactGender(?int $value)
     {
         return $this->setData(self::CONTACT_GENDER, $value);
     }
@@ -317,12 +317,12 @@ class LSCMemberContact extends AbstractModel
         return $this->setData(self::EMAIL, $value);
     }
 
-    public function getExpirationPeriodType(): ?string
+    public function getExpirationPeriodType(): ?int
     {
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
     }
 
-    public function setExpirationPeriodType(?string $value)
+    public function setExpirationPeriodType(?int $value)
     {
         return $this->setData(self::EXPIRATION_PERIOD_TYPE, $value);
     }
@@ -357,12 +357,12 @@ class LSCMemberContact extends AbstractModel
         return $this->setData(self::FIRST_NAME, $value);
     }
 
-    public function getGender(): ?string
+    public function getGender(): ?int
     {
         return $this->getData(self::GENDER);
     }
 
-    public function setGender(?string $value)
+    public function setGender(?int $value)
     {
         return $this->setData(self::GENDER, $value);
     }
@@ -417,12 +417,12 @@ class LSCMemberContact extends AbstractModel
         return $this->setData(self::MAIN_CONTACT, $value);
     }
 
-    public function getMaritalStatus(): ?string
+    public function getMaritalStatus(): ?int
     {
         return $this->getData(self::MARITAL_STATUS);
     }
 
-    public function setMaritalStatus(?string $value)
+    public function setMaritalStatus(?int $value)
     {
         return $this->setData(self::MARITAL_STATUS, $value);
     }
@@ -577,12 +577,12 @@ class LSCMemberContact extends AbstractModel
         return $this->setData(self::SEARCH_NAME, $value);
     }
 
-    public function getSendReceiptByEMail(): ?string
+    public function getSendReceiptByEMail(): ?int
     {
         return $this->getData(self::SEND_RECEIPT_BY_EMAIL);
     }
 
-    public function setSendReceiptByEMail(?string $value)
+    public function setSendReceiptByEMail(?int $value)
     {
         return $this->setData(self::SEND_RECEIPT_BY_EMAIL, $value);
     }
@@ -597,12 +597,12 @@ class LSCMemberContact extends AbstractModel
         return $this->setData(self::SURNAME, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -617,12 +617,12 @@ class LSCMemberContact extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

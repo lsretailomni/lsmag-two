@@ -27,91 +27,91 @@ class GetDocument extends \Magento\Catalog\Model\AbstractModel implements Reques
     public const GET_DOCUMENT_X_M_L = 'getDocumentXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $terminalNo
+     * @param ?string $terminalNo
      * @return $this
      */
-    public function setTerminalNo($terminalNo)
+    public function setTerminalNo(?string $terminalNo)
     {
         $this->setData(self::TERMINAL_NO, $terminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalNo()
+    public function getTerminalNo() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
 
     /**
-     * @param string $requestType
+     * @param ?string $requestType
      * @return $this
      */
-    public function setRequestType($requestType)
+    public function setRequestType(?string $requestType)
     {
         $this->setData(self::REQUEST_TYPE, $requestType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRequestType()
+    public function getRequestType() : ?string
     {
         return $this->getData(self::REQUEST_TYPE);
     }
 
     /**
-     * @param string $documentNo
+     * @param ?string $documentNo
      * @return $this
      */
-    public function setDocumentNo($documentNo)
+    public function setDocumentNo(?string $documentNo)
     {
         $this->setData(self::DOCUMENT_NO, $documentNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentNo()
+    public function getDocumentNo() : ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }

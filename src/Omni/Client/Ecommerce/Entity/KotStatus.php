@@ -25,109 +25,109 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
     public const ORDER_I_D = 'OrderID';
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptNo(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptNo() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param string $KotNo
+     * @param ?string $KotNo
      * @return $this
      */
-    public function setKotNo($KotNo)
+    public function setKotNo(?string $KotNo)
     {
         $this->setData(self::KOT_NO, $KotNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getKotNo()
+    public function getKotNo() : ?string
     {
         return $this->getData(self::KOT_NO);
     }
 
     /**
-     * @param string $Status
+     * @param ?string $Status
      * @return $this
      */
-    public function setStatus($Status)
+    public function setStatus(?string $Status)
     {
         $this->setData(self::STATUS, $Status);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatus()
+    public function getStatus() : ?string
     {
         return $this->getData(self::STATUS);
     }
 
     /**
-     * @param boolean $ConfirmedbyExp
+     * @param ?bool $ConfirmedbyExp
      * @return $this
      */
-    public function setConfirmedbyExp($ConfirmedbyExp)
+    public function setConfirmedbyExp(?bool $ConfirmedbyExp)
     {
         $this->setData(self::CONFIRMEDBY_EXP, $ConfirmedbyExp);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getConfirmedbyExp()
+    public function getConfirmedbyExp() : ?bool
     {
         return $this->getData(self::CONFIRMEDBY_EXP);
     }
 
     /**
-     * @param float $KotProdTime
+     * @param ?float $KotProdTime
      * @return $this
      */
-    public function setKotProdTime($KotProdTime)
+    public function setKotProdTime(?float $KotProdTime)
     {
         $this->setData(self::KOT_PROD_TIME, $KotProdTime);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getKotProdTime()
+    public function getKotProdTime() : ?float
     {
         return $this->getData(self::KOT_PROD_TIME);
     }
 
     /**
-     * @param string $OrderID
+     * @param ?string $OrderID
      * @return $this
      */
-    public function setOrderID($OrderID)
+    public function setOrderID(?string $OrderID)
     {
         $this->setData(self::ORDER_I_D, $OrderID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOrderID()
+    public function getOrderID() : ?string
     {
         return $this->getData(self::ORDER_I_D);
     }

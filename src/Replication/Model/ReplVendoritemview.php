@@ -29,6 +29,36 @@ class ReplVendoritemview extends \Ls\Omni\Client\Ecommerce\Entity\VendorItemView
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getItemno() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ITEMNO]);
+    }
+
+    public function setItemno(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ITEMNO], $value);
+    }
+
+    public function getVendorno() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VENDORNO]);
+    }
+
+    public function setVendorno(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VENDORNO], $value);
+    }
+
+    public function getVendoritemno() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VENDORITEMNO]);
+    }
+
+    public function setVendoritemno(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VENDORITEMNO], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

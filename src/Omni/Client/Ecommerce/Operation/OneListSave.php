@@ -78,7 +78,7 @@ class OneListSave extends AbstractOperation
     /**
      * @return OneListSaveRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new OneListSaveRequest();

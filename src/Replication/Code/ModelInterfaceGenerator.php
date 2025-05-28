@@ -55,7 +55,9 @@ class ModelInterfaceGenerator extends AbstractGenerator
         $originalClass = $this->entityFqn;
         $this->class->setNamespaceName(self::$namespace);
         $this->class->setName($this->getName());
-
+        if ($this->getName() == 'ReplCountryviewInterface') {
+            $x1 = 1;
+        }
         foreach ($this->reflectedEntity->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if ($method->getDeclaringClass()->getName() !== $originalClass) {
                 continue;

@@ -29,6 +29,76 @@ class ReplHierarchyview extends \Ls\Omni\Client\Ecommerce\Entity\HierarchyView i
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getHierarchyCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::HIERARCHY_CODE]);
+    }
+
+    public function setHierarchyCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::HIERARCHY_CODE], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TYPE]);
+    }
+
+    public function setType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TYPE], $value);
+    }
+
+    public function getStartDate() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::START_DATE]);
+    }
+
+    public function setStartDate(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::START_DATE], $value);
+    }
+
+    public function getPriority() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRIORITY]);
+    }
+
+    public function setPriority(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRIORITY], $value);
+    }
+
+    public function getSalesTypeFilter() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SALES_TYPE_FILTER]);
+    }
+
+    public function setSalesTypeFilter(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SALES_TYPE_FILTER], $value);
+    }
+
+    public function getValidationScheduleId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VALIDATION_SCHEDULE_ID]);
+    }
+
+    public function setValidationScheduleId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VALIDATION_SCHEDULE_ID], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

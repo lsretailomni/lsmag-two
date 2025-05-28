@@ -8,11 +8,8 @@
 
 namespace Ls\Omni\Client\Ecommerce\Operation;
 
-use Ls\Omni\Client\RequestInterface;
-use Ls\Omni\Client\ResponseInterface;
 use Ls\Omni\Client\AbstractOperation;
 use Ls\Omni\Service\Service as OmniService;
-use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
 use Ls\Omni\Client\Ecommerce\Entity\StoreInvTransactionSendV2 as StoreInvTransactionSendV2Request;
@@ -24,88 +21,107 @@ class StoreInvTransactionSendV2 extends AbstractOperation
 
     public const SERVICE_TYPE = 'ecommerce';
 
+    /**
+     * @property OmniClient $client
+     */
+    public $client = null;
+
+    /**
+     * @property StoreInvTransactionSendV2Request $request
+     */
+    public $request = null;
+
+    /**
+     * @property StoreInvTransactionSendV2Response $response
+     */
+    public $response = null;
+
+    /**
+     * @property string $requestXml
+     */
+    public $requestXml = null;
+
+    /**
+     * @property string $responseXml
+     */
+    public $responseXml = null;
+
+    /**
+     * @property \Exception $error
+     */
+    public $error = null;
+
     public function __construct($baseUrl = '')
     {
-        $serviceType = new ServiceType( self::SERVICE_TYPE );
-        parent::__construct( $serviceType );
-        $url = OmniService::getUrl( $serviceType, $baseUrl );
-        $this->client = new OmniClient( $url, $serviceType );
-        $this->client->setClassmap( $this->getClassMap() );
+        parent::__construct();
+        $url = OmniService::getUrl($baseUrl, true);
+        $this->client = $this->createInstance(OmniClient::class, ['uri' => $url]);
+        $this->client->setClassmap($this->getClassMap());
     }
 
-/** @noinspection PhpDocSignatureInspection */
-    /**
-     * @param StoreInvTransactionSendV2Request $request
-     * @return ResponseInterface|StoreInvTransactionSendV2Response
-     */
-    public function execute(RequestInterface $request = null)
+    public function execute()
     {
-        if ( !is_null( $request ) ) {
-            $this->setRequest( $request );
-        }
-        return $this->makeRequest( self::OPERATION_NAME );
+        return $this->makeRequest(self::OPERATION_NAME);
     }
 
-    /**
-     * @return StoreInvTransactionSendV2Request
-     */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
-        if ( is_null( $this->request ) ) {
-            $this->request = new StoreInvTransactionSendV2Request();
-        }
-        return $this->request;
+        $this->setRequest(
+            $this->createInstance(
+                StoreInvTransactionSendV2Request::class,
+                ['data' => $params]
+            )
+        );
+        $request = $this->getRequest();
+        return $request;
     }
 
-    /**
-     * @return array
-     */
+    public function createInstance(string $entityClassName = null, array $data = [])
+    {
+        return \Magento\Framework\App\ObjectManager::getInstance()->create($entityClassName, $data);
+    }
+
     public function getClassMap()
     {
         return ClassMap::getClassMap();
     }
 
-    public function isTokenized()
+    public function setClient(OmniClient $client)
     {
-        return FALSE;
-    }
-
-    public function setClient(\OmniClient $client)
-    {
-        $this->setData('client', $client);
+        $this->client = $client;
         return $this;
     }
 
-    public function getClient() : \OmniClient
+    public function getClient() : OmniClient
     {
         return $this->client;
     }
 
-    public function setRequest(\StoreInvTransactionSendV2Request $request)
+    public function setRequest(StoreInvTransactionSendV2Request $request)
     {
-        $this->setData('request', $request);
+        $this->request = $request;
         return $this;
     }
 
-    public function getRequest() : \StoreInvTransactionSendV2Request
+    public function getRequest() : StoreInvTransactionSendV2Request
     {
         return $this->request;
     }
 
-    public function setResponse(\StoreInvTransactionSendV2Response $response)
+    public function setResponse(StoreInvTransactionSendV2Response $response)
     {
-        $this->setData('response', $response);
+        $this->response = $response;
         return $this;
     }
 
-    public function getResponse() : \StoreInvTransactionSendV2Response
+    public function getResponse() : StoreInvTransactionSendV2Response
     {
         return $this->response;
     }
 
     public function setRequestXml(string $requestXml)
     {
-        $this->setData('requestXml', $requestXml);
+        $this->requestXml = $requestXml;
         return $this;
     }
 
@@ -116,7 +132,7 @@ class StoreInvTransactionSendV2 extends AbstractOperation
 
     public function setResponseXml(string $responseXml)
     {
-        $this->setData('responseXml', $responseXml);
+        $this->responseXml = $responseXml;
         return $this;
     }
 
@@ -127,7 +143,7 @@ class StoreInvTransactionSendV2 extends AbstractOperation
 
     public function setError(\Exception $error)
     {
-        $this->setData('error', $error);
+        $this->error = $error;
         return $this;
     }
 

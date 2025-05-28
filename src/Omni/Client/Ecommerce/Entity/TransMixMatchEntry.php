@@ -73,55 +73,55 @@ class TransMixMatchEntry extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $MixMatchGroup
+     * @param ?string $MixMatchGroup
      * @return $this
      */
-    public function setMixMatchGroup($MixMatchGroup)
+    public function setMixMatchGroup(?string $MixMatchGroup)
     {
         $this->setData(self::MIX_MATCH_GROUP, $MixMatchGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMixMatchGroup()
+    public function getMixMatchGroup() : ?string
     {
         return $this->getData(self::MIX_MATCH_GROUP);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param date $Date
+     * @param ?string $Date
      * @return $this
      */
-    public function setDate($Date)
+    public function setDate(?string $Date)
     {
         $this->setData(self::DATE, $Date);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDate()
+    public function getDate() : ?string
     {
         return $this->getData(self::DATE);
     }
@@ -145,55 +145,55 @@ class TransMixMatchEntry extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param float $DiscountAmount
+     * @param ?float $DiscountAmount
      * @return $this
      */
-    public function setDiscountAmount($DiscountAmount)
+    public function setDiscountAmount(?float $DiscountAmount)
     {
         $this->setData(self::DISCOUNT_AMOUNT, $DiscountAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountAmount()
+    public function getDiscountAmount() : ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPOSTerminalNo(?string $POSTerminalNo)
     {
         $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPOSTerminalNo() : ?string
     {
         return $this->getData(self::P_O_S_TERMINAL_NO);
     }
@@ -217,19 +217,19 @@ class TransMixMatchEntry extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param boolean $Replicated
+     * @param ?bool $Replicated
      * @return $this
      */
-    public function setReplicated($Replicated)
+    public function setReplicated(?bool $Replicated)
     {
         $this->setData(self::REPLICATED, $Replicated);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getReplicated()
+    public function getReplicated() : ?bool
     {
         return $this->getData(self::REPLICATED);
     }

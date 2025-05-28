@@ -20,17 +20,17 @@ interface ReplVatPostingSetupInterface
 
     public function setVatProdPostingGroup(?string $value);
 
-    public function getVatCalculationType() : ?string;
+    public function getVatCalculationType() : ?int;
 
-    public function setVatCalculationType(?string $value);
+    public function setVatCalculationType(?int $value);
 
     public function getVat() : ?float;
 
     public function setVat(?float $value);
 
-    public function getUnrealizedVatType() : ?string;
+    public function getUnrealizedVatType() : ?int;
 
-    public function setUnrealizedVatType(?string $value);
+    public function setUnrealizedVatType(?int $value);
 
     public function getAdjustForPaymentDiscount() : ?bool;
 
@@ -116,9 +116,9 @@ interface ReplVatPostingSetupInterface
 
     public function setNonDedPurchaseVatAccount(?string $value);
 
-    public function getAllowNonDeductibleVat() : ?string;
+    public function getAllowNonDeductibleVat() : ?int;
 
-    public function setAllowNonDeductibleVat(?string $value);
+    public function setAllowNonDeductibleVat(?int $value);
 
     public function getLscVatGroupCode() : ?string;
 
@@ -132,17 +132,17 @@ interface ReplVatPostingSetupInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

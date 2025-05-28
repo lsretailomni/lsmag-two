@@ -35,19 +35,19 @@ class SPGOrderCheckCOLine extends \Magento\Catalog\Model\AbstractModel
     public const ALWAYS_CHECK = 'AlwaysCheck';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentID(?string $DocumentID)
     {
         $this->setData(self::DOCUMENT_I_D, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentID() : ?string
     {
         return $this->getData(self::DOCUMENT_I_D);
     }
@@ -71,163 +71,163 @@ class SPGOrderCheckCOLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $Number
+     * @param ?string $Number
      * @return $this
      */
-    public function setNumber($Number)
+    public function setNumber(?string $Number)
     {
         $this->setData(self::NUMBER, $Number);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNumber()
+    public function getNumber() : ?string
     {
         return $this->getData(self::NUMBER);
     }
 
     /**
-     * @param string $ItemDescription
+     * @param ?string $ItemDescription
      * @return $this
      */
-    public function setItemDescription($ItemDescription)
+    public function setItemDescription(?string $ItemDescription)
     {
         $this->setData(self::ITEM_DESCRIPTION, $ItemDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemDescription()
+    public function getItemDescription() : ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantCode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantCode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $VariantDescription
+     * @param ?string $VariantDescription
      * @return $this
      */
-    public function setVariantDescription($VariantDescription)
+    public function setVariantDescription(?string $VariantDescription)
     {
         $this->setData(self::VARIANT_DESCRIPTION, $VariantDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantDescription()
+    public function getVariantDescription() : ?string
     {
         return $this->getData(self::VARIANT_DESCRIPTION);
     }
 
     /**
-     * @param string $UnitofMeasureCode
+     * @param ?string $UnitofMeasureCode
      * @return $this
      */
-    public function setUnitofMeasureCode($UnitofMeasureCode)
+    public function setUnitofMeasureCode(?string $UnitofMeasureCode)
     {
         $this->setData(self::UNITOF_MEASURE_CODE, $UnitofMeasureCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnitofMeasureCode()
+    public function getUnitofMeasureCode() : ?string
     {
         return $this->getData(self::UNITOF_MEASURE_CODE);
     }
 
     /**
-     * @param string $UoMDescription
+     * @param ?string $UoMDescription
      * @return $this
      */
-    public function setUoMDescription($UoMDescription)
+    public function setUoMDescription(?string $UoMDescription)
     {
         $this->setData(self::UO_M_DESCRIPTION, $UoMDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUoMDescription()
+    public function getUoMDescription() : ?string
     {
         return $this->getData(self::UO_M_DESCRIPTION);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param float $Amount
+     * @param ?float $Amount
      * @return $this
      */
-    public function setAmount($Amount)
+    public function setAmount(?float $Amount)
     {
         $this->setData(self::AMOUNT, $Amount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmount()
+    public function getAmount() : ?float
     {
         return $this->getData(self::AMOUNT);
     }
 
     /**
-     * @param boolean $AlwaysCheck
+     * @param ?bool $AlwaysCheck
      * @return $this
      */
-    public function setAlwaysCheck($AlwaysCheck)
+    public function setAlwaysCheck(?bool $AlwaysCheck)
     {
         $this->setData(self::ALWAYS_CHECK, $AlwaysCheck);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getAlwaysCheck()
+    public function getAlwaysCheck() : ?bool
     {
         return $this->getData(self::ALWAYS_CHECK);
     }

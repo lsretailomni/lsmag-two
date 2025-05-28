@@ -23,73 +23,73 @@ class StoreInventoryLinesGet extends \Magento\Catalog\Model\AbstractModel implem
     public const SCAN_DATE_TIME = 'ScanDateTime';
 
     /**
-     * @param string $ItemNo
+     * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo($ItemNo)
+    public function setItemNo(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemNo() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $Variant
+     * @param ?string $Variant
      * @return $this
      */
-    public function setVariant($Variant)
+    public function setVariant(?string $Variant)
     {
         $this->setData(self::VARIANT, $Variant);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariant()
+    public function getVariant() : ?string
     {
         return $this->getData(self::VARIANT);
     }
 
     /**
-     * @param float $QuantityCalculated
+     * @param ?float $QuantityCalculated
      * @return $this
      */
-    public function setQuantityCalculated($QuantityCalculated)
+    public function setQuantityCalculated(?float $QuantityCalculated)
     {
         $this->setData(self::QUANTITY_CALCULATED, $QuantityCalculated);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantityCalculated()
+    public function getQuantityCalculated() : ?float
     {
         return $this->getData(self::QUANTITY_CALCULATED);
     }
 
     /**
-     * @param string $ScanDateTime
+     * @param ?string $ScanDateTime
      * @return $this
      */
-    public function setScanDateTime($ScanDateTime)
+    public function setScanDateTime(?string $ScanDateTime)
     {
         $this->setData(self::SCAN_DATE_TIME, $ScanDateTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getScanDateTime()
+    public function getScanDateTime() : ?string
     {
         return $this->getData(self::SCAN_DATE_TIME);
     }

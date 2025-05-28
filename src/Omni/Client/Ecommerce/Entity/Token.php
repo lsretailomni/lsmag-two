@@ -53,289 +53,289 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     public const CREATED = 'Created';
 
     /**
-     * @param string $AccountNo
+     * @param ?string $AccountNo
      * @return $this
      */
-    public function setAccountNo($AccountNo)
+    public function setAccountNo(?string $AccountNo)
     {
         $this->setData(self::ACCOUNT_NO, $AccountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountNo()
+    public function getAccountNo() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
 
     /**
-     * @param string $TokenId
+     * @param ?string $TokenId
      * @return $this
      */
-    public function setTokenId($TokenId)
+    public function setTokenId(?string $TokenId)
     {
         $this->setData(self::TOKEN_ID, $TokenId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTokenId()
+    public function getTokenId() : ?string
     {
         return $this->getData(self::TOKEN_ID);
     }
 
     /**
-     * @param string $TokenValue
+     * @param ?string $TokenValue
      * @return $this
      */
-    public function setTokenValue($TokenValue)
+    public function setTokenValue(?string $TokenValue)
     {
         $this->setData(self::TOKEN_VALUE, $TokenValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTokenValue()
+    public function getTokenValue() : ?string
     {
         return $this->getData(self::TOKEN_VALUE);
     }
 
     /**
-     * @param string $TokenType
+     * @param ?string $TokenType
      * @return $this
      */
-    public function setTokenType($TokenType)
+    public function setTokenType(?string $TokenType)
     {
         $this->setData(self::TOKEN_TYPE, $TokenType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTokenType()
+    public function getTokenType() : ?string
     {
         return $this->getData(self::TOKEN_TYPE);
     }
 
     /**
-     * @param string $PSPID
+     * @param ?string $PSPID
      * @return $this
      */
-    public function setPSPID($PSPID)
+    public function setPSPID(?string $PSPID)
     {
         $this->setData(self::P_S_P_I_D, $PSPID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPSPID()
+    public function getPSPID() : ?string
     {
         return $this->getData(self::P_S_P_I_D);
     }
 
     /**
-     * @param string $CardMask
+     * @param ?string $CardMask
      * @return $this
      */
-    public function setCardMask($CardMask)
+    public function setCardMask(?string $CardMask)
     {
         $this->setData(self::CARD_MASK, $CardMask);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardMask()
+    public function getCardMask() : ?string
     {
         return $this->getData(self::CARD_MASK);
     }
 
     /**
-     * @param date $ExpiryDate
+     * @param ?string $ExpiryDate
      * @return $this
      */
-    public function setExpiryDate($ExpiryDate)
+    public function setExpiryDate(?string $ExpiryDate)
     {
         $this->setData(self::EXPIRY_DATE, $ExpiryDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getExpiryDate()
+    public function getExpiryDate() : ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
 
     /**
-     * @param boolean $DefaultToken
+     * @param ?bool $DefaultToken
      * @return $this
      */
-    public function setDefaultToken($DefaultToken)
+    public function setDefaultToken(?bool $DefaultToken)
     {
         $this->setData(self::DEFAULT_TOKEN, $DefaultToken);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getDefaultToken()
+    public function getDefaultToken() : ?bool
     {
         return $this->getData(self::DEFAULT_TOKEN);
     }
 
     /**
-     * @param string $CreatedDateTime
+     * @param ?string $CreatedDateTime
      * @return $this
      */
-    public function setCreatedDateTime($CreatedDateTime)
+    public function setCreatedDateTime(?string $CreatedDateTime)
     {
         $this->setData(self::CREATED_DATE_TIME, $CreatedDateTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCreatedDateTime()
+    public function getCreatedDateTime() : ?string
     {
         return $this->getData(self::CREATED_DATE_TIME);
     }
 
     /**
-     * @param string $Initiator
+     * @param ?string $Initiator
      * @return $this
      */
-    public function setInitiator($Initiator)
+    public function setInitiator(?string $Initiator)
     {
         $this->setData(self::INITIATOR, $Initiator);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getInitiator()
+    public function getInitiator() : ?string
     {
         return $this->getData(self::INITIATOR);
     }
 
     /**
-     * @param string $InitiatorReason
+     * @param ?string $InitiatorReason
      * @return $this
      */
-    public function setInitiatorReason($InitiatorReason)
+    public function setInitiatorReason(?string $InitiatorReason)
     {
         $this->setData(self::INITIATOR_REASON, $InitiatorReason);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getInitiatorReason()
+    public function getInitiatorReason() : ?string
     {
         return $this->getData(self::INITIATOR_REASON);
     }
 
     /**
-     * @param string $TokenIDExternal
+     * @param ?string $TokenIDExternal
      * @return $this
      */
-    public function setTokenIDExternal($TokenIDExternal)
+    public function setTokenIDExternal(?string $TokenIDExternal)
     {
         $this->setData(self::TOKEN_I_D_EXTERNAL, $TokenIDExternal);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTokenIDExternal()
+    public function getTokenIDExternal() : ?string
     {
         return $this->getData(self::TOKEN_I_D_EXTERNAL);
     }
 
     /**
-     * @param string $CardNumber
+     * @param ?string $CardNumber
      * @return $this
      */
-    public function setCardNumber($CardNumber)
+    public function setCardNumber(?string $CardNumber)
     {
         $this->setData(self::CARD_NUMBER, $CardNumber);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNumber()
+    public function getCardNumber() : ?string
     {
         return $this->getData(self::CARD_NUMBER);
     }
 
     /**
-     * @param string $CardTypeName
+     * @param ?string $CardTypeName
      * @return $this
      */
-    public function setCardTypeName($CardTypeName)
+    public function setCardTypeName(?string $CardTypeName)
     {
         $this->setData(self::CARD_TYPE_NAME, $CardTypeName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardTypeName()
+    public function getCardTypeName() : ?string
     {
         return $this->getData(self::CARD_TYPE_NAME);
     }
 
     /**
-     * @param string $CardIssuerID
+     * @param ?string $CardIssuerID
      * @return $this
      */
-    public function setCardIssuerID($CardIssuerID)
+    public function setCardIssuerID(?string $CardIssuerID)
     {
         $this->setData(self::CARD_ISSUER_I_D, $CardIssuerID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardIssuerID()
+    public function getCardIssuerID() : ?string
     {
         return $this->getData(self::CARD_ISSUER_I_D);
     }
 
     /**
-     * @param string $PAR
+     * @param ?string $PAR
      * @return $this
      */
-    public function setPAR($PAR)
+    public function setPAR(?string $PAR)
     {
         $this->setData(self::P_A_R, $PAR);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPAR()
+    public function getPAR() : ?string
     {
         return $this->getData(self::P_A_R);
     }
@@ -359,55 +359,55 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $Token
+     * @param ?string $Token
      * @return $this
      */
-    public function setToken($Token)
+    public function setToken(?string $Token)
     {
         $this->setData(self::TOKEN, $Token);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getToken()
+    public function getToken() : ?string
     {
         return $this->getData(self::TOKEN);
     }
 
     /**
-     * @param string $ContactNo
+     * @param ?string $ContactNo
      * @return $this
      */
-    public function setContactNo($ContactNo)
+    public function setContactNo(?string $ContactNo)
     {
         $this->setData(self::CONTACT_NO, $ContactNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactNo()
+    public function getContactNo() : ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
 
     /**
-     * @param string $Created
+     * @param ?string $Created
      * @return $this
      */
-    public function setCreated($Created)
+    public function setCreated(?string $Created)
     {
         $this->setData(self::CREATED, $Created);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCreated()
+    public function getCreated() : ?string
     {
         return $this->getData(self::CREATED);
     }

@@ -78,7 +78,7 @@ class StoresGetAll extends AbstractOperation
     /**
      * @return StoresGetAllRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new StoresGetAllRequest();

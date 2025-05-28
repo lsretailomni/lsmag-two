@@ -17,37 +17,37 @@ class CustomerOrderGetGeneralCommentV3 extends \Magento\Catalog\Model\AbstractMo
     public const COMMENT = 'Comment';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentID(?string $DocumentID)
     {
         $this->setData(self::DOCUMENT_I_D, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentID() : ?string
     {
         return $this->getData(self::DOCUMENT_I_D);
     }
 
     /**
-     * @param string $Comment
+     * @param ?string $Comment
      * @return $this
      */
-    public function setComment($Comment)
+    public function setComment(?string $Comment)
     {
         $this->setData(self::COMMENT, $Comment);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getComment()
+    public function getComment() : ?string
     {
         return $this->getData(self::COMMENT);
     }

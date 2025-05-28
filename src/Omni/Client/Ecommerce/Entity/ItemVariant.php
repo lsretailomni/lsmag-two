@@ -143,12 +143,12 @@ class ItemVariant extends AbstractModel
         return $this->setData(self::SERVICE_BLOCKED, $value);
     }
 
-    public function getProductionBlocked(): ?string
+    public function getProductionBlocked(): ?int
     {
         return $this->getData(self::PRODUCTION_BLOCKED);
     }
 
-    public function setProductionBlocked(?string $value)
+    public function setProductionBlocked(?int $value)
     {
         return $this->setData(self::PRODUCTION_BLOCKED, $value);
     }
@@ -173,12 +173,12 @@ class ItemVariant extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -193,12 +193,12 @@ class ItemVariant extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

@@ -78,7 +78,7 @@ class ActivityConfirm extends AbstractOperation
     /**
      * @return ActivityConfirmRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ActivityConfirmRequest();

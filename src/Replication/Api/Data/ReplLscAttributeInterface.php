@@ -40,17 +40,17 @@ interface ReplLscAttributeInterface
 
     public function setDinReservSpecialRequest(?bool $value);
 
-    public function getDisplayOnPos() : ?string;
+    public function getDisplayOnPos() : ?int;
 
-    public function setDisplayOnPos(?string $value);
+    public function setDisplayOnPos(?int $value);
 
     public function getInstances() : ?int;
 
     public function setInstances(?int $value);
 
-    public function getLinking() : ?string;
+    public function getLinking() : ?int;
 
-    public function setLinking(?string $value);
+    public function setLinking(?int $value);
 
     public function getMaxValue() : ?int;
 
@@ -72,33 +72,33 @@ interface ReplLscAttributeInterface
 
     public function setOptionValueTableLink(?int $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 
     public function setSystemmodifiedby(?string $value);
 
-    public function getValueForRecipe() : ?string;
+    public function getValueForRecipe() : ?int;
 
-    public function setValueForRecipe(?string $value);
+    public function setValueForRecipe(?int $value);
 
-    public function getValueRequired() : ?string;
+    public function getValueRequired() : ?int;
 
-    public function setValueRequired(?string $value);
+    public function setValueRequired(?int $value);
 
-    public function getValueType() : ?string;
+    public function getValueType() : ?int;
 
-    public function setValueType(?string $value);
+    public function setValueType(?int $value);
 
     public function getSystemid() : ?string;
 

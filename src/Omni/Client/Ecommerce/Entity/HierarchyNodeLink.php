@@ -27,109 +27,109 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
     public const SORT_ORDER = 'SortOrder';
 
     /**
-     * @param string $HierarchyCode
+     * @param ?string $HierarchyCode
      * @return $this
      */
-    public function setHierarchyCode($HierarchyCode)
+    public function setHierarchyCode(?string $HierarchyCode)
     {
         $this->setData(self::HIERARCHY_CODE, $HierarchyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getHierarchyCode()
+    public function getHierarchyCode() : ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
 
     /**
-     * @param string $NodeID
+     * @param ?string $NodeID
      * @return $this
      */
-    public function setNodeID($NodeID)
+    public function setNodeID(?string $NodeID)
     {
         $this->setData(self::NODE_I_D, $NodeID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNodeID()
+    public function getNodeID() : ?string
     {
         return $this->getData(self::NODE_I_D);
     }
 
     /**
-     * @param string $Type
+     * @param ?string $Type
      * @return $this
      */
-    public function setType($Type)
+    public function setType(?string $Type)
     {
         $this->setData(self::TYPE, $Type);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getType()
+    public function getType() : ?string
     {
         return $this->getData(self::TYPE);
     }
 
     /**
-     * @param string $No
+     * @param ?string $No
      * @return $this
      */
-    public function setNo($No)
+    public function setNo(?string $No)
     {
         $this->setData(self::NO, $No);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNo()
+    public function getNo() : ?string
     {
         return $this->getData(self::NO);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $ItemUnitofMeasure
+     * @param ?string $ItemUnitofMeasure
      * @return $this
      */
-    public function setItemUnitofMeasure($ItemUnitofMeasure)
+    public function setItemUnitofMeasure(?string $ItemUnitofMeasure)
     {
         $this->setData(self::ITEM_UNITOF_MEASURE, $ItemUnitofMeasure);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemUnitofMeasure()
+    public function getItemUnitofMeasure() : ?string
     {
         return $this->getData(self::ITEM_UNITOF_MEASURE);
     }

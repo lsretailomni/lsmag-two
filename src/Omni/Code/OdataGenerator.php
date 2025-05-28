@@ -685,10 +685,9 @@ PHP;
                 $phpType = $field['FieldDataType'];
             } else {
                 $phpType = match (strtolower($field['FieldDataType'])) {
-                    'integer' => 'int',
-                    'decimal' => 'float',
-                    'datetime' => '\DateTime',
-                    'boolean' => 'bool',
+                    'integer', 'long', 'char', 'option' => 'int',
+                    'decimal'    => 'float',
+                    'boolean'    => 'bool',
                     default => 'string'
                 };
             }

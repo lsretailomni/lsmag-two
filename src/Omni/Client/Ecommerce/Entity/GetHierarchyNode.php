@@ -29,91 +29,91 @@ class GetHierarchyNode extends \Magento\Catalog\Model\AbstractModel implements R
     public const GET_HIERARCHY_NODE_OUT_X_M_L = 'getHierarchyNodeOutXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $hierarchyCode
+     * @param ?string $hierarchyCode
      * @return $this
      */
-    public function setHierarchyCode($hierarchyCode)
+    public function setHierarchyCode(?string $hierarchyCode)
     {
         $this->setData(self::HIERARCHY_CODE, $hierarchyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getHierarchyCode()
+    public function getHierarchyCode() : ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
 
     /**
-     * @param string $nodeID
+     * @param ?string $nodeID
      * @return $this
      */
-    public function setNodeID($nodeID)
+    public function setNodeID(?string $nodeID)
     {
         $this->setData(self::NODE_I_D, $nodeID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNodeID()
+    public function getNodeID() : ?string
     {
         return $this->getData(self::NODE_I_D);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreNo(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }

@@ -23,55 +23,55 @@ class SendTransactionHeader extends \Magento\Catalog\Model\AbstractModel impleme
     public const SEND_TRANSACTION_HEADER_X_M_L = 'sendTransactionHeaderXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param boolean $updateReplicationCounter
+     * @param ?bool $updateReplicationCounter
      * @return $this
      */
-    public function setUpdateReplicationCounter($updateReplicationCounter)
+    public function setUpdateReplicationCounter(?bool $updateReplicationCounter)
     {
         $this->setData(self::UPDATE_REPLICATION_COUNTER, $updateReplicationCounter);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getUpdateReplicationCounter()
+    public function getUpdateReplicationCounter() : ?bool
     {
         return $this->getData(self::UPDATE_REPLICATION_COUNTER);
     }

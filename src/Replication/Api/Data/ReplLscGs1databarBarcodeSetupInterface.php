@@ -12,17 +12,17 @@ interface ReplLscGs1databarBarcodeSetupInterface
 {
     public static function getDbColumnsMapping() : array;
 
-    public function getType() : ?string;
+    public function getType() : ?int;
 
-    public function setType(?string $value);
+    public function setType(?int $value);
 
     public function getIdentifier() : ?string;
 
     public function setIdentifier(?string $value);
 
-    public function getSectionType() : ?string;
+    public function getSectionType() : ?int;
 
-    public function setSectionType(?string $value);
+    public function setSectionType(?int $value);
 
     public function getSectionSize() : ?int;
 
@@ -32,9 +32,9 @@ interface ReplLscGs1databarBarcodeSetupInterface
 
     public function setIdentifierSize(?int $value);
 
-    public function getSectionMapping() : ?string;
+    public function getSectionMapping() : ?int;
 
-    public function setSectionMapping(?string $value);
+    public function setSectionMapping(?int $value);
 
     public function getMappingStartingChar() : ?int;
 
@@ -48,9 +48,9 @@ interface ReplLscGs1databarBarcodeSetupInterface
 
     public function setDecimals(?float $value);
 
-    public function getValueType() : ?string;
+    public function getValueType() : ?int;
 
-    public function setValueType(?string $value);
+    public function setValueType(?int $value);
 
     public function getBarcodeValue() : ?string;
 
@@ -68,17 +68,17 @@ interface ReplLscGs1databarBarcodeSetupInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

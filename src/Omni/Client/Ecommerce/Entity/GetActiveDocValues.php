@@ -33,145 +33,145 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     public const GET_ACTIVE_DOC_VALUES_X_M_L = 'getActiveDocValuesXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $pOSTerminalNo
+     * @param ?string $pOSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($pOSTerminalNo)
+    public function setPOSTerminalNo(?string $pOSTerminalNo)
     {
         $this->setData(self::P_O_S_TERMINAL_NO, $pOSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPOSTerminalNo() : ?string
     {
         return $this->getData(self::P_O_S_TERMINAL_NO);
     }
 
     /**
-     * @param string $valueType
+     * @param ?string $valueType
      * @return $this
      */
-    public function setValueType($valueType)
+    public function setValueType(?string $valueType)
     {
         $this->setData(self::VALUE_TYPE, $valueType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getValueType()
+    public function getValueType() : ?string
     {
         return $this->getData(self::VALUE_TYPE);
     }
 
     /**
-     * @param string $processType
+     * @param ?string $processType
      * @return $this
      */
-    public function setProcessType($processType)
+    public function setProcessType(?string $processType)
     {
         $this->setData(self::PROCESS_TYPE, $processType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getProcessType()
+    public function getProcessType() : ?string
     {
         return $this->getData(self::PROCESS_TYPE);
     }
 
     /**
-     * @param string $documentType
+     * @param ?string $documentType
      * @return $this
      */
-    public function setDocumentType($documentType)
+    public function setDocumentType(?string $documentType)
     {
         $this->setData(self::DOCUMENT_TYPE, $documentType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentType()
+    public function getDocumentType() : ?string
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreNo(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $locationNo
+     * @param ?string $locationNo
      * @return $this
      */
-    public function setLocationNo($locationNo)
+    public function setLocationNo(?string $locationNo)
     {
         $this->setData(self::LOCATION_NO, $locationNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLocationNo()
+    public function getLocationNo() : ?string
     {
         return $this->getData(self::LOCATION_NO);
     }

@@ -20,9 +20,9 @@ interface ReplLscTenderTypeInterface
 
     public function setDescription(?string $value);
 
-    public function getFunction() : ?string;
+    public function getFunction() : ?int;
 
-    public function setFunction(?string $value);
+    public function setFunction(?int $value);
 
     public function getValidOnMobilePos() : ?bool;
 
@@ -48,9 +48,9 @@ interface ReplLscTenderTypeInterface
 
     public function setMinChange(?float $value);
 
-    public function getRounding() : ?string;
+    public function getRounding() : ?int;
 
-    public function setRounding(?string $value);
+    public function setRounding(?int $value);
 
     public function getRoundingTo() : ?float;
 
@@ -116,9 +116,9 @@ interface ReplLscTenderTypeInterface
 
     public function setAskForDate(?bool $value);
 
-    public function getSeekAuthorization() : ?string;
+    public function getSeekAuthorization() : ?int;
 
-    public function setSeekAuthorization(?string $value);
+    public function setSeekAuthorization(?int $value);
 
     public function getPrintSeparateInvoice() : ?bool;
 
@@ -196,9 +196,9 @@ interface ReplLscTenderTypeInterface
 
     public function setMultiplyInTenderOperations(?bool $value);
 
-    public function getAccountType() : ?string;
+    public function getAccountType() : ?int;
 
-    public function setAccountType(?string $value);
+    public function setAccountType(?int $value);
 
     public function getAccountNo() : ?string;
 
@@ -252,9 +252,9 @@ interface ReplLscTenderTypeInterface
 
     public function setPosPickupWarningAmount(?float $value);
 
-    public function getBankAccountType() : ?string;
+    public function getBankAccountType() : ?int;
 
-    public function setBankAccountType(?string $value);
+    public function setBankAccountType(?int $value);
 
     public function getBankAccountNo() : ?string;
 
@@ -284,9 +284,9 @@ interface ReplLscTenderTypeInterface
 
     public function setRemoveFloatType(?string $value);
 
-    public function getFastClosingMethod() : ?string;
+    public function getFastClosingMethod() : ?int;
 
-    public function setFastClosingMethod(?string $value);
+    public function setFastClosingMethod(?int $value);
 
     public function getExcludeCoinsToBank() : ?bool;
 
@@ -308,9 +308,9 @@ interface ReplLscTenderTypeInterface
 
     public function setUseBagsForBank(?bool $value);
 
-    public function getBankBagsNoType() : ?string;
+    public function getBankBagsNoType() : ?int;
 
-    public function setBankBagsNoType(?string $value);
+    public function setBankBagsNoType(?int $value);
 
     public function getBankBagsNos() : ?string;
 
@@ -320,9 +320,9 @@ interface ReplLscTenderTypeInterface
 
     public function setUseBagsForSafe(?bool $value);
 
-    public function getSafeBagsNoType() : ?string;
+    public function getSafeBagsNoType() : ?int;
 
-    public function setSafeBagsNoType(?string $value);
+    public function setSafeBagsNoType(?int $value);
 
     public function getSafeBagsNos() : ?string;
 
@@ -336,9 +336,9 @@ interface ReplLscTenderTypeInterface
 
     public function setUseBagsForFixedFloat(?bool $value);
 
-    public function getFixedFloatBagsNoType() : ?string;
+    public function getFixedFloatBagsNoType() : ?int;
 
-    public function setFixedFloatBagsNoType(?string $value);
+    public function setFixedFloatBagsNoType(?int $value);
 
     public function getFixedFloatBagsNos() : ?string;
 
@@ -368,17 +368,17 @@ interface ReplLscTenderTypeInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

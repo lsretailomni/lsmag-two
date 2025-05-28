@@ -29,91 +29,91 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
     public const GET_TRANSACTION_V2_X_M_L = 'getTransactionV2XML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $receiptNo
+     * @param ?string $receiptNo
      * @return $this
      */
-    public function setReceiptNo($receiptNo)
+    public function setReceiptNo(?string $receiptNo)
     {
         $this->setData(self::RECEIPT_NO, $receiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptNo() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreNo(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $posTerminalNo
+     * @param ?string $posTerminalNo
      * @return $this
      */
-    public function setPosTerminalNo($posTerminalNo)
+    public function setPosTerminalNo(?string $posTerminalNo)
     {
         $this->setData(self::POS_TERMINAL_NO, $posTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPosTerminalNo()
+    public function getPosTerminalNo() : ?string
     {
         return $this->getData(self::POS_TERMINAL_NO);
     }

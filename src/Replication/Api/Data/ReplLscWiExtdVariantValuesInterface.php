@@ -20,9 +20,9 @@ interface ReplLscWiExtdVariantValuesInterface
 
     public function setFrameworkCode(?string $value);
 
-    public function getValueType() : ?string;
+    public function getValueType() : ?int;
 
-    public function setValueType(?string $value);
+    public function setValueType(?int $value);
 
     public function getCode() : ?string;
 
@@ -64,9 +64,9 @@ interface ReplLscWiExtdVariantValuesInterface
 
     public function setDefaultVariantWeight(?float $value);
 
-    public function getStatus() : ?string;
+    public function getStatus() : ?int;
 
-    public function setStatus(?string $value);
+    public function setStatus(?int $value);
 
     public function getValueDescription() : ?string;
 
@@ -96,17 +96,17 @@ interface ReplLscWiExtdVariantValuesInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

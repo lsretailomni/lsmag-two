@@ -63,12 +63,12 @@ class LSCMemberContactAttrList extends AbstractModel
         return $this->setData(self::CODE, $value);
     }
 
-    public function getType(): ?string
+    public function getType(): ?int
     {
         return $this->getData(self::TYPE);
     }
 
-    public function setType(?string $value)
+    public function setType(?int $value)
     {
         return $this->setData(self::TYPE, $value);
     }

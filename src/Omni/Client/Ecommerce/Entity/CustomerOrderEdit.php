@@ -25,37 +25,37 @@ class CustomerOrderEdit extends \Magento\Catalog\Model\AbstractModel implements 
     public const CO_EDIT_TYPE = 'coEditType';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -79,37 +79,37 @@ class CustomerOrderEdit extends \Magento\Catalog\Model\AbstractModel implements 
     }
 
     /**
-     * @param string $customerOrderID
+     * @param ?string $customerOrderID
      * @return $this
      */
-    public function setCustomerOrderID($customerOrderID)
+    public function setCustomerOrderID(?string $customerOrderID)
     {
         $this->setData(self::CUSTOMER_ORDER_I_D, $customerOrderID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCustomerOrderID()
+    public function getCustomerOrderID() : ?string
     {
         return $this->getData(self::CUSTOMER_ORDER_I_D);
     }
 
     /**
-     * @param string $coEditType
+     * @param ?string $coEditType
      * @return $this
      */
-    public function setCoEditType($coEditType)
+    public function setCoEditType(?string $coEditType)
     {
         $this->setData(self::CO_EDIT_TYPE, $coEditType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCoEditType()
+    public function getCoEditType() : ?string
     {
         return $this->getData(self::CO_EDIT_TYPE);
     }

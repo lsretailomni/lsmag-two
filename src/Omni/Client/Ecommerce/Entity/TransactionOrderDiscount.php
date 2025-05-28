@@ -79,217 +79,217 @@ class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptNo(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptNo() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPOSTerminalNo(?string $POSTerminalNo)
     {
         $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPOSTerminalNo() : ?string
     {
         return $this->getData(self::P_O_S_TERMINAL_NO);
     }
 
     /**
-     * @param string $MemberAttribute
+     * @param ?string $MemberAttribute
      * @return $this
      */
-    public function setMemberAttribute($MemberAttribute)
+    public function setMemberAttribute(?string $MemberAttribute)
     {
         $this->setData(self::MEMBER_ATTRIBUTE, $MemberAttribute);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberAttribute()
+    public function getMemberAttribute() : ?string
     {
         return $this->getData(self::MEMBER_ATTRIBUTE);
     }
 
     /**
-     * @param string $MemberAttributeValue
+     * @param ?string $MemberAttributeValue
      * @return $this
      */
-    public function setMemberAttributeValue($MemberAttributeValue)
+    public function setMemberAttributeValue(?string $MemberAttributeValue)
     {
         $this->setData(self::MEMBER_ATTRIBUTE_VALUE, $MemberAttributeValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberAttributeValue()
+    public function getMemberAttributeValue() : ?string
     {
         return $this->getData(self::MEMBER_ATTRIBUTE_VALUE);
     }
 
     /**
-     * @param string $TrackingNo
+     * @param ?string $TrackingNo
      * @return $this
      */
-    public function setTrackingNo($TrackingNo)
+    public function setTrackingNo(?string $TrackingNo)
     {
         $this->setData(self::TRACKING_NO, $TrackingNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTrackingNo()
+    public function getTrackingNo() : ?string
     {
         return $this->getData(self::TRACKING_NO);
     }
 
     /**
-     * @param string $OfferType
+     * @param ?string $OfferType
      * @return $this
      */
-    public function setOfferType($OfferType)
+    public function setOfferType(?string $OfferType)
     {
         $this->setData(self::OFFER_TYPE, $OfferType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOfferType()
+    public function getOfferType() : ?string
     {
         return $this->getData(self::OFFER_TYPE);
     }
 
     /**
-     * @param string $OfferNo
+     * @param ?string $OfferNo
      * @return $this
      */
-    public function setOfferNo($OfferNo)
+    public function setOfferNo(?string $OfferNo)
     {
         $this->setData(self::OFFER_NO, $OfferNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOfferNo()
+    public function getOfferNo() : ?string
     {
         return $this->getData(self::OFFER_NO);
     }
 
     /**
-     * @param float $DiscountAmount
+     * @param ?float $DiscountAmount
      * @return $this
      */
-    public function setDiscountAmount($DiscountAmount)
+    public function setDiscountAmount(?float $DiscountAmount)
     {
         $this->setData(self::DISCOUNT_AMOUNT, $DiscountAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountAmount()
+    public function getDiscountAmount() : ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
     /**
-     * @param float $Points
+     * @param ?float $Points
      * @return $this
      */
-    public function setPoints($Points)
+    public function setPoints(?float $Points)
     {
         $this->setData(self::POINTS, $Points);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPoints()
+    public function getPoints() : ?float
     {
         return $this->getData(self::POINTS);
     }
 
     /**
-     * @param string $SequenceCode
+     * @param ?string $SequenceCode
      * @return $this
      */
-    public function setSequenceCode($SequenceCode)
+    public function setSequenceCode(?string $SequenceCode)
     {
         $this->setData(self::SEQUENCE_CODE, $SequenceCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSequenceCode()
+    public function getSequenceCode() : ?string
     {
         return $this->getData(self::SEQUENCE_CODE);
     }
 
     /**
-     * @param string $SequenceFunction
+     * @param ?string $SequenceFunction
      * @return $this
      */
-    public function setSequenceFunction($SequenceFunction)
+    public function setSequenceFunction(?string $SequenceFunction)
     {
         $this->setData(self::SEQUENCE_FUNCTION, $SequenceFunction);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSequenceFunction()
+    public function getSequenceFunction() : ?string
     {
         return $this->getData(self::SEQUENCE_FUNCTION);
     }

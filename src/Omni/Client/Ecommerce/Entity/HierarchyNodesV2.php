@@ -27,73 +27,73 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
     public const HAS_CHILDREN = 'HasChildren';
 
     /**
-     * @param string $HierarchyCode
+     * @param ?string $HierarchyCode
      * @return $this
      */
-    public function setHierarchyCode($HierarchyCode)
+    public function setHierarchyCode(?string $HierarchyCode)
     {
         $this->setData(self::HIERARCHY_CODE, $HierarchyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getHierarchyCode()
+    public function getHierarchyCode() : ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
 
     /**
-     * @param string $NodeID
+     * @param ?string $NodeID
      * @return $this
      */
-    public function setNodeID($NodeID)
+    public function setNodeID(?string $NodeID)
     {
         $this->setData(self::NODE_I_D, $NodeID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNodeID()
+    public function getNodeID() : ?string
     {
         return $this->getData(self::NODE_I_D);
     }
 
     /**
-     * @param string $ParentNodeID
+     * @param ?string $ParentNodeID
      * @return $this
      */
-    public function setParentNodeID($ParentNodeID)
+    public function setParentNodeID(?string $ParentNodeID)
     {
         $this->setData(self::PARENT_NODE_I_D, $ParentNodeID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getParentNodeID()
+    public function getParentNodeID() : ?string
     {
         return $this->getData(self::PARENT_NODE_I_D);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -135,19 +135,19 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param boolean $HasChildren
+     * @param ?bool $HasChildren
      * @return $this
      */
-    public function setHasChildren($HasChildren)
+    public function setHasChildren(?bool $HasChildren)
     {
         $this->setData(self::HAS_CHILDREN, $HasChildren);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getHasChildren()
+    public function getHasChildren() : ?bool
     {
         return $this->getData(self::HAS_CHILDREN);
     }

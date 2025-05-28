@@ -78,7 +78,7 @@ class PaymentClientTokenGet extends AbstractOperation
     /**
      * @return PaymentClientTokenGetRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new PaymentClientTokenGetRequest();

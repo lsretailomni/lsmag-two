@@ -29,6 +29,256 @@ class ReplVariantregview extends \Ls\Omni\Client\Ecommerce\Entity\VariantRegView
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getItemNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
+    }
+
+    public function setItemNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
+    }
+
+    public function getFrameworkCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FRAMEWORK_CODE]);
+    }
+
+    public function setFrameworkCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FRAMEWORK_CODE], $value);
+    }
+
+    public function getVariantDimension1() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_1]);
+    }
+
+    public function setVariantDimension1(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_1], $value);
+    }
+
+    public function getVariantDimension2() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_2]);
+    }
+
+    public function setVariantDimension2(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_2], $value);
+    }
+
+    public function getVariantDimension3() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_3]);
+    }
+
+    public function setVariantDimension3(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_3], $value);
+    }
+
+    public function getVariantDimension4() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_4]);
+    }
+
+    public function setVariantDimension4(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_4], $value);
+    }
+
+    public function getVariantDimension5() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_5]);
+    }
+
+    public function setVariantDimension5(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_5], $value);
+    }
+
+    public function getVariantDimension6() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_6]);
+    }
+
+    public function setVariantDimension6(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_6], $value);
+    }
+
+    public function getVariant() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT]);
+    }
+
+    public function setVariant(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT], $value);
+    }
+
+    public function getBarcode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::BARCODE]);
+    }
+
+    public function setBarcode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::BARCODE], $value);
+    }
+
+    public function getLogicalOrder() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LOGICAL_ORDER]);
+    }
+
+    public function setLogicalOrder(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LOGICAL_ORDER], $value);
+    }
+
+    public function getDimension1Weight() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_1_WEIGHT]);
+    }
+
+    public function setDimension1Weight(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_1_WEIGHT], $value);
+    }
+
+    public function getDimension2Weight() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_2_WEIGHT]);
+    }
+
+    public function setDimension2Weight(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_2_WEIGHT], $value);
+    }
+
+    public function getDimension3Weight() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_3_WEIGHT]);
+    }
+
+    public function setDimension3Weight(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_3_WEIGHT], $value);
+    }
+
+    public function getDimension4Weight() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_4_WEIGHT]);
+    }
+
+    public function setDimension4Weight(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_4_WEIGHT], $value);
+    }
+
+    public function getDimension5Weight() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_5_WEIGHT]);
+    }
+
+    public function setDimension5Weight(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_5_WEIGHT], $value);
+    }
+
+    public function getDimension6Weight() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_6_WEIGHT]);
+    }
+
+    public function setDimension6Weight(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_6_WEIGHT], $value);
+    }
+
+    public function getVariantWeight() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_WEIGHT]);
+    }
+
+    public function setVariantWeight(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_WEIGHT], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
+    public function getBlockSaleOnPos() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::BLOCK_SALE_ON_POS]);
+    }
+
+    public function setBlockSaleOnPos(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::BLOCK_SALE_ON_POS], $value);
+    }
+
+    public function getBlockedOnEcommerce() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::BLOCKED_ON_ECOMMERCE]);
+    }
+
+    public function setBlockedOnEcommerce(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::BLOCKED_ON_ECOMMERCE], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

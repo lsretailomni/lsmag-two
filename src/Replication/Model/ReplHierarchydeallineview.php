@@ -29,6 +29,146 @@ class ReplHierarchydeallineview extends \Ls\Omni\Client\Ecommerce\Entity\Hierarc
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getHierarchyCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::HIERARCHY_CODE]);
+    }
+
+    public function setHierarchyCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::HIERARCHY_CODE], $value);
+    }
+
+    public function getNodeId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NODE_ID]);
+    }
+
+    public function setNodeId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NODE_ID], $value);
+    }
+
+    public function getOfferNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::OFFER_NO]);
+    }
+
+    public function setOfferNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::OFFER_NO], $value);
+    }
+
+    public function getOfferLineNo() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::OFFER_LINE_NO]);
+    }
+
+    public function setOfferLineNo(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::OFFER_LINE_NO], $value);
+    }
+
+    public function getDealModifierLineNo() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DEAL_MODIFIER_LINE_NO]);
+    }
+
+    public function setDealModifierLineNo(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DEAL_MODIFIER_LINE_NO], $value);
+    }
+
+    public function getDealModifierCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DEAL_MODIFIER_CODE]);
+    }
+
+    public function setDealModifierCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DEAL_MODIFIER_CODE], $value);
+    }
+
+    public function getItemNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
+    }
+
+    public function setItemNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getVariantCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
+    }
+
+    public function setVariantCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
+    }
+
+    public function getUnitOfMeasure() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE]);
+    }
+
+    public function setUnitOfMeasure(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE], $value);
+    }
+
+    public function getMinSelection() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MIN_SELECTION]);
+    }
+
+    public function setMinSelection(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MIN_SELECTION], $value);
+    }
+
+    public function getMaxItemSelection() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MAX_ITEM_SELECTION]);
+    }
+
+    public function setMaxItemSelection(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MAX_ITEM_SELECTION], $value);
+    }
+
+    public function getAddedAmount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ADDED_AMOUNT]);
+    }
+
+    public function setAddedAmount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ADDED_AMOUNT], $value);
+    }
+
+    public function getRetailImageId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RETAIL_IMAGE_ID]);
+    }
+
+    public function setRetailImageId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RETAIL_IMAGE_ID], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

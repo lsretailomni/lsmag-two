@@ -29,6 +29,186 @@ class ReplLscGs1databarBarcodeSetup extends \Ls\Omni\Client\Ecommerce\Entity\LSC
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TYPE]);
+    }
+
+    public function setType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TYPE], $value);
+    }
+
+    public function getIdentifier() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::IDENTIFIER]);
+    }
+
+    public function setIdentifier(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::IDENTIFIER], $value);
+    }
+
+    public function getSectionType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SECTION_TYPE]);
+    }
+
+    public function setSectionType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SECTION_TYPE], $value);
+    }
+
+    public function getSectionSize() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SECTION_SIZE]);
+    }
+
+    public function setSectionSize(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SECTION_SIZE], $value);
+    }
+
+    public function getIdentifierSize() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::IDENTIFIER_SIZE]);
+    }
+
+    public function setIdentifierSize(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::IDENTIFIER_SIZE], $value);
+    }
+
+    public function getSectionMapping() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SECTION_MAPPING]);
+    }
+
+    public function setSectionMapping(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SECTION_MAPPING], $value);
+    }
+
+    public function getMappingStartingChar() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MAPPING_STARTING_CHAR]);
+    }
+
+    public function setMappingStartingChar(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MAPPING_STARTING_CHAR], $value);
+    }
+
+    public function getPreferredSequence() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PREFERRED_SEQUENCE]);
+    }
+
+    public function setPreferredSequence(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PREFERRED_SEQUENCE], $value);
+    }
+
+    public function getDecimals() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DECIMALS]);
+    }
+
+    public function setDecimals(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DECIMALS], $value);
+    }
+
+    public function getValueType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VALUE_TYPE]);
+    }
+
+    public function setValueType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VALUE_TYPE], $value);
+    }
+
+    public function getBarcodeValue() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::BARCODE_VALUE]);
+    }
+
+    public function setBarcodeValue(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::BARCODE_VALUE], $value);
+    }
+
+    public function getValueDec() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VALUE_DEC]);
+    }
+
+    public function setValueDec(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VALUE_DEC], $value);
+    }
+
+    public function getValueDate() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VALUE_DATE]);
+    }
+
+    public function setValueDate(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VALUE_DATE], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

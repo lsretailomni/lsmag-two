@@ -22,11 +22,14 @@ class EntityGenerator extends AbstractOmniGenerator
     /** @var array Mapping of data types to their equivalents */
     public $dataTypeEquivalences = [
         'decimal'    => 'float',
+        'boolean'    => 'bool',
         'long'       => 'int',
         'dateTime'   => 'string',
         'char'       => 'int',
         'guid'       => 'string',
         'StreamBody' => 'string',
+        'string'     => 'string',
+        'date'       => 'string',
     ];
 
     /** @var Entity */
@@ -99,13 +102,15 @@ class EntityGenerator extends AbstractOmniGenerator
         if ($typeDefinitionArray != null) {
             foreach ($typeDefinitionArray as $fieldName => $fieldType) {
                 $fieldDataType = $this->normalizeDataType($fieldType->getDataType()) . ($isArray ? '[]' : '');
-
                 // Sanitize field name for use in method names
                 $fieldNameOptimized = preg_replace('/[-._]/', '', $fieldName);
                 $fieldNameForMethodName = preg_replace('/[-._]/', ' ', $fieldName);
                 $fieldNameCapitalized = ucwords($fieldNameForMethodName);
                 $fieldNameCapitalized = str_replace(' ', '', $fieldNameCapitalized);
-
+                $eqExists = array_key_exists($fieldType->getDataType(), $this->dataTypeEquivalences);
+                if (strtolower($fieldNameCapitalized) == 'id') {
+                    $eqExists = false;
+                }
                 // Create constant for the field
                 $constantName = strtoupper(preg_replace('/\B([A-Z])/', '_$1', $fieldNameOptimized));
                 $this->class->addConstant($constantName, $fieldName);
@@ -121,11 +126,21 @@ class EntityGenerator extends AbstractOmniGenerator
                 if (!$this->class->hasMethod($setMethodName)) {
                     $setMethod = new MethodGenerator();
                     $setMethod->setName($setMethodName);
-                    $setMethod->setParameter(ParameterGenerator::fromArray(['name' => $fieldNameOptimized]));
+                    $param = [
+                        'name' => $fieldNameOptimized
+                    ];
+                    if ($eqExists) {
+                        $param['type'] = '?'. $fieldDataType;
+                    }
+                    $setMethod->setParameter(
+                        ParameterGenerator::fromArray(
+                            $param
+                        )
+                    );
                     $setMethod->setDocBlock(
                         DocBlockGenerator::fromArray([
                             'tags' => [
-                                new Tag\ParamTag($fieldNameOptimized, [$fieldDataType]),
+                                new Tag\ParamTag($fieldNameOptimized, [$param['type'] ?? $fieldDataType]),
                                 new Tag\ReturnTag(['$this'])
                             ]
                         ])
@@ -191,12 +206,15 @@ CODE
                     $getMethod = new MethodGenerator();
                     $getMethod->setName($getMethodName)
                         ->setDocBlock(
-                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$fieldDataType])]])
+                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$param['type'] ?? $fieldDataType])]])
                         );
                     $getMethod->setBody(<<<CODE
 return \$this->getData(self::$constantName);
 CODE
                     );
+                    if ($eqExists) {
+                        $getMethod->setReturnType('?'. $fieldDataType);
+                    }
 
                     $this->class->addMethodFromGenerator($getMethod);
                 }

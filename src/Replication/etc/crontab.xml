@@ -79,6 +79,9 @@
         <job name="repl_lsc_data_translation" instance="Ls\Replication\Cron\ReplLscDataTranslationTask" method="execute">
             <schedule>*/15 * * * *</schedule>
         </job>
+        <job name="repl_data_translation_lang_code" instance="Ls\Replication\Cron\ReplDataTranslationLanguageCodeTask" method="execute">
+            <schedule>*/15 * * * *</schedule>
+        </job>
         <job name="repl_lsc_item_html_ml" instance="Ls\Replication\Cron\ReplLscItemHtmlMlTask" method="execute">
             <schedule>*/15 * * * *</schedule>
         </job>

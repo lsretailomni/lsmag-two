@@ -29,6 +29,116 @@ class ReplLscBarcodeMaskSegment extends \Ls\Omni\Client\Ecommerce\Entity\LSCBarc
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getMaskEntryNo() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MASK_ENTRY_NO]);
+    }
+
+    public function setMaskEntryNo(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MASK_ENTRY_NO], $value);
+    }
+
+    public function getSegmentNo() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SEGMENT_NO]);
+    }
+
+    public function setSegmentNo(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SEGMENT_NO], $value);
+    }
+
+    public function getLength() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LENGTH]);
+    }
+
+    public function setLength(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LENGTH], $value);
+    }
+
+    public function getType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TYPE]);
+    }
+
+    public function setType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TYPE], $value);
+    }
+
+    public function getDecimals() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DECIMALS]);
+    }
+
+    public function setDecimals(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DECIMALS], $value);
+    }
+
+    public function getChar() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CHAR]);
+    }
+
+    public function setChar(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CHAR], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

@@ -33,55 +33,55 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     public const TRANSACTION_NO = 'TransactionNo';
 
     /**
-     * @param string $RequestStoreNo
+     * @param ?string $RequestStoreNo
      * @return $this
      */
-    public function setRequestStoreNo($RequestStoreNo)
+    public function setRequestStoreNo(?string $RequestStoreNo)
     {
         $this->setData(self::REQUEST_STORE_NO, $RequestStoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRequestStoreNo()
+    public function getRequestStoreNo() : ?string
     {
         return $this->getData(self::REQUEST_STORE_NO);
     }
 
     /**
-     * @param string $RequestPOSTerminalNo
+     * @param ?string $RequestPOSTerminalNo
      * @return $this
      */
-    public function setRequestPOSTerminalNo($RequestPOSTerminalNo)
+    public function setRequestPOSTerminalNo(?string $RequestPOSTerminalNo)
     {
         $this->setData(self::REQUEST_P_O_S_TERMINAL_NO, $RequestPOSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRequestPOSTerminalNo()
+    public function getRequestPOSTerminalNo() : ?string
     {
         return $this->getData(self::REQUEST_P_O_S_TERMINAL_NO);
     }
 
     /**
-     * @param string $RequestID
+     * @param ?string $RequestID
      * @return $this
      */
-    public function setRequestID($RequestID)
+    public function setRequestID(?string $RequestID)
     {
         $this->setData(self::REQUEST_I_D, $RequestID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRequestID()
+    public function getRequestID() : ?string
     {
         return $this->getData(self::REQUEST_I_D);
     }
@@ -105,91 +105,91 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $PrimaryKey
+     * @param ?string $PrimaryKey
      * @return $this
      */
-    public function setPrimaryKey($PrimaryKey)
+    public function setPrimaryKey(?string $PrimaryKey)
     {
         $this->setData(self::PRIMARY_KEY, $PrimaryKey);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPrimaryKey()
+    public function getPrimaryKey() : ?string
     {
         return $this->getData(self::PRIMARY_KEY);
     }
 
     /**
-     * @param string $RequestParameter
+     * @param ?string $RequestParameter
      * @return $this
      */
-    public function setRequestParameter($RequestParameter)
+    public function setRequestParameter(?string $RequestParameter)
     {
         $this->setData(self::REQUEST_PARAMETER, $RequestParameter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRequestParameter()
+    public function getRequestParameter() : ?string
     {
         return $this->getData(self::REQUEST_PARAMETER);
     }
 
     /**
-     * @param string $RequestDateTime
+     * @param ?string $RequestDateTime
      * @return $this
      */
-    public function setRequestDateTime($RequestDateTime)
+    public function setRequestDateTime(?string $RequestDateTime)
     {
         $this->setData(self::REQUEST_DATE_TIME, $RequestDateTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRequestDateTime()
+    public function getRequestDateTime() : ?string
     {
         return $this->getData(self::REQUEST_DATE_TIME);
     }
 
     /**
-     * @param string $LastProcessDateTime
+     * @param ?string $LastProcessDateTime
      * @return $this
      */
-    public function setLastProcessDateTime($LastProcessDateTime)
+    public function setLastProcessDateTime(?string $LastProcessDateTime)
     {
         $this->setData(self::LAST_PROCESS_DATE_TIME, $LastProcessDateTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLastProcessDateTime()
+    public function getLastProcessDateTime() : ?string
     {
         return $this->getData(self::LAST_PROCESS_DATE_TIME);
     }
 
     /**
-     * @param string $ErrorMessage
+     * @param ?string $ErrorMessage
      * @return $this
      */
-    public function setErrorMessage($ErrorMessage)
+    public function setErrorMessage(?string $ErrorMessage)
     {
         $this->setData(self::ERROR_MESSAGE, $ErrorMessage);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorMessage()
+    public function getErrorMessage() : ?string
     {
         return $this->getData(self::ERROR_MESSAGE);
     }

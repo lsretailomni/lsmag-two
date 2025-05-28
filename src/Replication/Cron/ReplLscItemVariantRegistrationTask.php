@@ -42,7 +42,7 @@ class ReplLscItemVariantRegistrationTask extends AbstractReplicationTask
 
     public function setRepository(ReplLscItemVariantRegistrationRepository $repository)
     {
-        $this->repository =  $repository;
+        $this->repository = $repository;
         return $this;
     }
 
@@ -53,7 +53,7 @@ class ReplLscItemVariantRegistrationTask extends AbstractReplicationTask
 
     public function setFactory(ReplLscItemVariantRegistrationFactory $factory)
     {
-        $this->factory =  $factory;
+        $this->factory = $factory;
         return $this;
     }
 
@@ -64,7 +64,7 @@ class ReplLscItemVariantRegistrationTask extends AbstractReplicationTask
 
     public function setDataInterface(ReplLscItemVariantRegistrationInterface $dataInterface)
     {
-        $this->dataInterface =  $dataInterface;
+        $this->dataInterface = $dataInterface;
         return $this;
     }
 

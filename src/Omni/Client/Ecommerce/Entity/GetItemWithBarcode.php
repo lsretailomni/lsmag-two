@@ -25,19 +25,19 @@ class GetItemWithBarcode extends \Magento\Catalog\Model\AbstractModel implements
     public const ITEM_HTML = 'itemHtml';
 
     /**
-     * @param string $barcodeNo
+     * @param ?string $barcodeNo
      * @return $this
      */
-    public function setBarcodeNo($barcodeNo)
+    public function setBarcodeNo(?string $barcodeNo)
     {
         $this->setData(self::BARCODE_NO, $barcodeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeNo()
+    public function getBarcodeNo() : ?string
     {
         return $this->getData(self::BARCODE_NO);
     }
@@ -61,55 +61,55 @@ class GetItemWithBarcode extends \Magento\Catalog\Model\AbstractModel implements
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $itemHtml
+     * @param ?string $itemHtml
      * @return $this
      */
-    public function setItemHtml($itemHtml)
+    public function setItemHtml(?string $itemHtml)
     {
         $this->setData(self::ITEM_HTML, $itemHtml);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemHtml()
+    public function getItemHtml() : ?string
     {
         return $this->getData(self::ITEM_HTML);
     }

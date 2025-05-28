@@ -41,217 +41,217 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     public const MOBILE_POS_SALES_HISTORY_X_M_L = 'mobilePosSalesHistoryXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $searchType
+     * @param ?string $searchType
      * @return $this
      */
-    public function setSearchType($searchType)
+    public function setSearchType(?string $searchType)
     {
         $this->setData(self::SEARCH_TYPE, $searchType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSearchType()
+    public function getSearchType() : ?string
     {
         return $this->getData(self::SEARCH_TYPE);
     }
 
     /**
-     * @param string $searchKey
+     * @param ?string $searchKey
      * @return $this
      */
-    public function setSearchKey($searchKey)
+    public function setSearchKey(?string $searchKey)
     {
         $this->setData(self::SEARCH_KEY, $searchKey);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSearchKey()
+    public function getSearchKey() : ?string
     {
         return $this->getData(self::SEARCH_KEY);
     }
 
     /**
-     * @param string $storeFilter
+     * @param ?string $storeFilter
      * @return $this
      */
-    public function setStoreFilter($storeFilter)
+    public function setStoreFilter(?string $storeFilter)
     {
         $this->setData(self::STORE_FILTER, $storeFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreFilter()
+    public function getStoreFilter() : ?string
     {
         return $this->getData(self::STORE_FILTER);
     }
 
     /**
-     * @param string $terminalFilter
+     * @param ?string $terminalFilter
      * @return $this
      */
-    public function setTerminalFilter($terminalFilter)
+    public function setTerminalFilter(?string $terminalFilter)
     {
         $this->setData(self::TERMINAL_FILTER, $terminalFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalFilter()
+    public function getTerminalFilter() : ?string
     {
         return $this->getData(self::TERMINAL_FILTER);
     }
 
     /**
-     * @param string $transactionNoFilter
+     * @param ?string $transactionNoFilter
      * @return $this
      */
-    public function setTransactionNoFilter($transactionNoFilter)
+    public function setTransactionNoFilter(?string $transactionNoFilter)
     {
         $this->setData(self::TRANSACTION_NO_FILTER, $transactionNoFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionNoFilter()
+    public function getTransactionNoFilter() : ?string
     {
         return $this->getData(self::TRANSACTION_NO_FILTER);
     }
 
     /**
-     * @param string $dateFilter
+     * @param ?string $dateFilter
      * @return $this
      */
-    public function setDateFilter($dateFilter)
+    public function setDateFilter(?string $dateFilter)
     {
         $this->setData(self::DATE_FILTER, $dateFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDateFilter()
+    public function getDateFilter() : ?string
     {
         return $this->getData(self::DATE_FILTER);
     }
 
     /**
-     * @param string $itemFilter
+     * @param ?string $itemFilter
      * @return $this
      */
-    public function setItemFilter($itemFilter)
+    public function setItemFilter(?string $itemFilter)
     {
         $this->setData(self::ITEM_FILTER, $itemFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemFilter()
+    public function getItemFilter() : ?string
     {
         return $this->getData(self::ITEM_FILTER);
     }
 
     /**
-     * @param string $descriptionFilter
+     * @param ?string $descriptionFilter
      * @return $this
      */
-    public function setDescriptionFilter($descriptionFilter)
+    public function setDescriptionFilter(?string $descriptionFilter)
     {
         $this->setData(self::DESCRIPTION_FILTER, $descriptionFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescriptionFilter()
+    public function getDescriptionFilter() : ?string
     {
         return $this->getData(self::DESCRIPTION_FILTER);
     }
 
     /**
-     * @param string $itemProductGrFilter
+     * @param ?string $itemProductGrFilter
      * @return $this
      */
-    public function setItemProductGrFilter($itemProductGrFilter)
+    public function setItemProductGrFilter(?string $itemProductGrFilter)
     {
         $this->setData(self::ITEM_PRODUCT_GR_FILTER, $itemProductGrFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemProductGrFilter()
+    public function getItemProductGrFilter() : ?string
     {
         return $this->getData(self::ITEM_PRODUCT_GR_FILTER);
     }
 
     /**
-     * @param string $itemCatFilter
+     * @param ?string $itemCatFilter
      * @return $this
      */
-    public function setItemCatFilter($itemCatFilter)
+    public function setItemCatFilter(?string $itemCatFilter)
     {
         $this->setData(self::ITEM_CAT_FILTER, $itemCatFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemCatFilter()
+    public function getItemCatFilter() : ?string
     {
         return $this->getData(self::ITEM_CAT_FILTER);
     }

@@ -111,12 +111,12 @@ class CurrencyExchangeRate extends AbstractModel
         return $this->setData(self::RELATIONAL_EXCH_RATE_AMOUNT, $value);
     }
 
-    public function getFixExchangeRateAmount(): ?string
+    public function getFixExchangeRateAmount(): ?int
     {
         return $this->getData(self::FIX_EXCHANGE_RATE_AMOUNT);
     }
 
-    public function setFixExchangeRateAmount(?string $value)
+    public function setFixExchangeRateAmount(?int $value)
     {
         return $this->setData(self::FIX_EXCHANGE_RATE_AMOUNT, $value);
     }
@@ -161,12 +161,12 @@ class CurrencyExchangeRate extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -181,12 +181,12 @@ class CurrencyExchangeRate extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

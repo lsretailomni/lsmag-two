@@ -27,37 +27,37 @@ class SetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $contractRecordIdp
+     * @param ?string $contractRecordIdp
      * @return $this
      */
-    public function setContractRecordIdP($contractRecordIdp)
+    public function setContractRecordIdP(?string $contractRecordIdp)
     {
         $this->setData(self::CONTRACT_RECORD_IDP, $contractRecordIdp);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContractRecordIdP()
+    public function getContractRecordIdP() : ?string
     {
         return $this->getData(self::CONTRACT_RECORD_IDP);
     }
 
     /**
-     * @param string $memberCardNo
+     * @param ?string $memberCardNo
      * @return $this
      */
-    public function setMemberCardNo($memberCardNo)
+    public function setMemberCardNo(?string $memberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $memberCardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberCardNo()
+    public function getMemberCardNo() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -81,55 +81,55 @@ class SetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     }
 
     /**
-     * @param boolean $result
+     * @param ?bool $result
      * @return $this
      */
-    public function setResult($result)
+    public function setResult(?bool $result)
     {
         $this->setData(self::RESULT, $result);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getResult()
+    public function getResult() : ?bool
     {
         return $this->getData(self::RESULT);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

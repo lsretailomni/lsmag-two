@@ -67,12 +67,12 @@ class HierarchyNodesLinkView extends AbstractModel
         return $this->setData(self::NODE_ID, $value);
     }
 
-    public function getType(): ?string
+    public function getType(): ?int
     {
         return $this->getData(self::TYPE);
     }
 
-    public function setType(?string $value)
+    public function setType(?int $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -127,12 +127,12 @@ class HierarchyNodesLinkView extends AbstractModel
         return $this->setData(self::RETAIL_IMAGE_ID, $value);
     }
 
-    public function getMemberType(): ?string
+    public function getMemberType(): ?int
     {
         return $this->getData(self::MEMBER_TYPE);
     }
 
-    public function setMemberType(?string $value)
+    public function setMemberType(?int $value)
     {
         return $this->setData(self::MEMBER_TYPE, $value);
     }
@@ -167,12 +167,12 @@ class HierarchyNodesLinkView extends AbstractModel
         return $this->setData(self::VALIDATION_PERIOD_ID, $value);
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(?string $value)
+    public function setStatus(?int $value)
     {
         return $this->setData(self::STATUS, $value);
     }

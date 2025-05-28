@@ -21,73 +21,73 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
     public const SHIP_ORDER = 'ShipOrder';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentID(?string $DocumentID)
     {
         $this->setData(self::DOCUMENT_I_D, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentID() : ?string
     {
         return $this->getData(self::DOCUMENT_I_D);
     }
 
     /**
-     * @param string $CreatedAtStore
+     * @param ?string $CreatedAtStore
      * @return $this
      */
-    public function setCreatedAtStore($CreatedAtStore)
+    public function setCreatedAtStore(?string $CreatedAtStore)
     {
         $this->setData(self::CREATED_AT_STORE, $CreatedAtStore);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCreatedAtStore()
+    public function getCreatedAtStore() : ?string
     {
         return $this->getData(self::CREATED_AT_STORE);
     }
 
     /**
-     * @param string $MemberCardNo
+     * @param ?string $MemberCardNo
      * @return $this
      */
-    public function setMemberCardNo($MemberCardNo)
+    public function setMemberCardNo(?string $MemberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $MemberCardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberCardNo()
+    public function getMemberCardNo() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
 
     /**
-     * @param boolean $ShipOrder
+     * @param ?bool $ShipOrder
      * @return $this
      */
-    public function setShipOrder($ShipOrder)
+    public function setShipOrder(?bool $ShipOrder)
     {
         $this->setData(self::SHIP_ORDER, $ShipOrder);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getShipOrder()
+    public function getShipOrder() : ?bool
     {
         return $this->getData(self::SHIP_ORDER);
     }

@@ -12,9 +12,9 @@ interface ReplLscInventoryMenusInterface
 {
     public static function getDbColumnsMapping() : array;
 
-    public function getDeviceType() : ?string;
+    public function getDeviceType() : ?int;
 
-    public function setDeviceType(?string $value);
+    public function setDeviceType(?int $value);
 
     public function getCode() : ?string;
 
@@ -44,17 +44,17 @@ interface ReplLscInventoryMenusInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

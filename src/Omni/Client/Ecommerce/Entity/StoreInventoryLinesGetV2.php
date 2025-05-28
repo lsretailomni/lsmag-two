@@ -27,91 +27,91 @@ class StoreInventoryLinesGetV2 extends \Magento\Catalog\Model\AbstractModel impl
     public const STORE_INVENTORY_LINES_GET_X_M_L = 'storeInventoryLinesGetXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $worksheetSeqNo
+     * @param ?string $worksheetSeqNo
      * @return $this
      */
-    public function setWorksheetSeqNo($worksheetSeqNo)
+    public function setWorksheetSeqNo(?string $worksheetSeqNo)
     {
         $this->setData(self::WORKSHEET_SEQ_NO, $worksheetSeqNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getWorksheetSeqNo()
+    public function getWorksheetSeqNo() : ?string
     {
         return $this->getData(self::WORKSHEET_SEQ_NO);
     }
 
     /**
-     * @param string $areaCode
+     * @param ?string $areaCode
      * @return $this
      */
-    public function setAreaCode($areaCode)
+    public function setAreaCode(?string $areaCode)
     {
         $this->setData(self::AREA_CODE, $areaCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAreaCode()
+    public function getAreaCode() : ?string
     {
         return $this->getData(self::AREA_CODE);
     }
 
     /**
-     * @param boolean $addCycleCountItems
+     * @param ?bool $addCycleCountItems
      * @return $this
      */
-    public function setAddCycleCountItems($addCycleCountItems)
+    public function setAddCycleCountItems(?bool $addCycleCountItems)
     {
         $this->setData(self::ADD_CYCLE_COUNT_ITEMS, $addCycleCountItems);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getAddCycleCountItems()
+    public function getAddCycleCountItems() : ?bool
     {
         return $this->getData(self::ADD_CYCLE_COUNT_ITEMS);
     }

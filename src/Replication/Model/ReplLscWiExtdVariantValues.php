@@ -29,6 +29,256 @@ class ReplLscWiExtdVariantValues extends \Ls\Omni\Client\Ecommerce\Entity\LSCWIE
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getItemNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
+    }
+
+    public function setItemNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
+    }
+
+    public function getFrameworkCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FRAMEWORK_CODE]);
+    }
+
+    public function setFrameworkCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FRAMEWORK_CODE], $value);
+    }
+
+    public function getValueType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VALUE_TYPE]);
+    }
+
+    public function setValueType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VALUE_TYPE], $value);
+    }
+
+    public function getCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CODE]);
+    }
+
+    public function setCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
+    }
+
+    public function getDimension() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DIMENSION]);
+    }
+
+    public function setDimension(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DIMENSION], $value);
+    }
+
+    public function getValue() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VALUE]);
+    }
+
+    public function setValue(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VALUE], $value);
+    }
+
+    public function getDimensionLink() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_LINK]);
+    }
+
+    public function setDimensionLink(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_LINK], $value);
+    }
+
+    public function getExtension() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EXTENSION]);
+    }
+
+    public function setExtension(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EXTENSION], $value);
+    }
+
+    public function getComparisonValue() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::COMPARISON_VALUE]);
+    }
+
+    public function setComparisonValue(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::COMPARISON_VALUE], $value);
+    }
+
+    public function getSelection() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SELECTION]);
+    }
+
+    public function setSelection(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SELECTION], $value);
+    }
+
+    public function getLogicalOrder() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LOGICAL_ORDER]);
+    }
+
+    public function setLogicalOrder(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LOGICAL_ORDER], $value);
+    }
+
+    public function getViewingColor() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VIEWING_COLOR]);
+    }
+
+    public function setViewingColor(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VIEWING_COLOR], $value);
+    }
+
+    public function getDefaultVariantWeight() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_VARIANT_WEIGHT]);
+    }
+
+    public function setDefaultVariantWeight(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_VARIANT_WEIGHT], $value);
+    }
+
+    public function getStatus() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STATUS]);
+    }
+
+    public function setStatus(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STATUS], $value);
+    }
+
+    public function getValueDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VALUE_DESCRIPTION]);
+    }
+
+    public function setValueDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VALUE_DESCRIPTION], $value);
+    }
+
+    public function getAttribute1Value() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ATTRIBUTE_1_VALUE]);
+    }
+
+    public function setAttribute1Value(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ATTRIBUTE_1_VALUE], $value);
+    }
+
+    public function getAttribute2Value() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ATTRIBUTE_2_VALUE]);
+    }
+
+    public function setAttribute2Value(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ATTRIBUTE_2_VALUE], $value);
+    }
+
+    public function getAttribute3Value() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ATTRIBUTE_3_VALUE]);
+    }
+
+    public function setAttribute3Value(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ATTRIBUTE_3_VALUE], $value);
+    }
+
+    public function getDimensionOrder() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_ORDER]);
+    }
+
+    public function setDimensionOrder(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_ORDER], $value);
+    }
+
+    public function getCodeDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CODE_DESCRIPTION]);
+    }
+
+    public function setCodeDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CODE_DESCRIPTION], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

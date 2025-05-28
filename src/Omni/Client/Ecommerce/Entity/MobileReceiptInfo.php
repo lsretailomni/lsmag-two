@@ -61,37 +61,37 @@ class MobileReceiptInfo extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $Key
+     * @param ?string $Key
      * @return $this
      */
-    public function setKey($Key)
+    public function setKey(?string $Key)
     {
         $this->setData(self::KEY, $Key);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getKey()
+    public function getKey() : ?string
     {
         return $this->getData(self::KEY);
     }
 
     /**
-     * @param string $Value
+     * @param ?string $Value
      * @return $this
      */
-    public function setValue($Value)
+    public function setValue(?string $Value)
     {
         $this->setData(self::VALUE, $Value);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getValue()
+    public function getValue() : ?string
     {
         return $this->getData(self::VALUE);
     }
@@ -115,19 +115,19 @@ class MobileReceiptInfo extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $Type
+     * @param ?string $Type
      * @return $this
      */
-    public function setType($Type)
+    public function setType(?string $Type)
     {
         $this->setData(self::TYPE, $Type);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getType()
+    public function getType() : ?string
     {
         return $this->getData(self::TYPE);
     }

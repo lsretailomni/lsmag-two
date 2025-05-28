@@ -25,37 +25,37 @@ class GetASNDocumentList extends \Magento\Catalog\Model\AbstractModel implements
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $vendorNop
+     * @param ?string $vendorNop
      * @return $this
      */
-    public function setVendorNoP($vendorNop)
+    public function setVendorNoP(?string $vendorNop)
     {
         $this->setData(self::VENDOR_NOP, $vendorNop);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVendorNoP()
+    public function getVendorNoP() : ?string
     {
         return $this->getData(self::VENDOR_NOP);
     }
 
     /**
-     * @param string $locationCodep
+     * @param ?string $locationCodep
      * @return $this
      */
-    public function setLocationCodeP($locationCodep)
+    public function setLocationCodeP(?string $locationCodep)
     {
         $this->setData(self::LOCATION_CODEP, $locationCodep);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLocationCodeP()
+    public function getLocationCodeP() : ?string
     {
         return $this->getData(self::LOCATION_CODEP);
     }
@@ -79,37 +79,37 @@ class GetASNDocumentList extends \Magento\Catalog\Model\AbstractModel implements
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

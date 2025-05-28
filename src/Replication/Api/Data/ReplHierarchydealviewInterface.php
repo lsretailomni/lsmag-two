@@ -28,9 +28,9 @@ interface ReplHierarchydealviewInterface
 
     public function setLineNo(?int $value);
 
-    public function getType() : ?string;
+    public function getType() : ?int;
 
-    public function setType(?string $value);
+    public function setType(?int $value);
 
     public function getNo() : ?string;
 

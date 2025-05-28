@@ -25,109 +25,109 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
     public const SYSTEM_ID = 'SystemId';
 
     /**
-     * @param string $ClubCode
+     * @param ?string $ClubCode
      * @return $this
      */
-    public function setClubCode($ClubCode)
+    public function setClubCode(?string $ClubCode)
     {
         $this->setData(self::CLUB_CODE, $ClubCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubCode()
+    public function getClubCode() : ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
 
     /**
-     * @param string $ClubDescription
+     * @param ?string $ClubDescription
      * @return $this
      */
-    public function setClubDescription($ClubDescription)
+    public function setClubDescription(?string $ClubDescription)
     {
         $this->setData(self::CLUB_DESCRIPTION, $ClubDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubDescription()
+    public function getClubDescription() : ?string
     {
         return $this->getData(self::CLUB_DESCRIPTION);
     }
 
     /**
-     * @param string $CardNo
+     * @param ?string $CardNo
      * @return $this
      */
-    public function setCardNo($CardNo)
+    public function setCardNo(?string $CardNo)
     {
         $this->setData(self::CARD_NO, $CardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNo()
+    public function getCardNo() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
 
     /**
-     * @param string $ClubHolderName
+     * @param ?string $ClubHolderName
      * @return $this
      */
-    public function setClubHolderName($ClubHolderName)
+    public function setClubHolderName(?string $ClubHolderName)
     {
         $this->setData(self::CLUB_HOLDER_NAME, $ClubHolderName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubHolderName()
+    public function getClubHolderName() : ?string
     {
         return $this->getData(self::CLUB_HOLDER_NAME);
     }
 
     /**
-     * @param boolean $Blocked
+     * @param ?bool $Blocked
      * @return $this
      */
-    public function setBlocked($Blocked)
+    public function setBlocked(?bool $Blocked)
     {
         $this->setData(self::BLOCKED, $Blocked);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getBlocked()
+    public function getBlocked() : ?bool
     {
         return $this->getData(self::BLOCKED);
     }
 
     /**
-     * @param string $SystemId
+     * @param ?string $SystemId
      * @return $this
      */
-    public function setSystemId($SystemId)
+    public function setSystemId(?string $SystemId)
     {
         $this->setData(self::SYSTEM_ID, $SystemId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSystemId()
+    public function getSystemId() : ?string
     {
         return $this->getData(self::SYSTEM_ID);
     }

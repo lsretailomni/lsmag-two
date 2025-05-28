@@ -19,55 +19,55 @@ class CODefaultShippingAgent extends \Magento\Catalog\Model\AbstractModel
     public const AGENT_SERVICE_CODE = 'AgentServiceCode';
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $ShippingAgentCode
+     * @param ?string $ShippingAgentCode
      * @return $this
      */
-    public function setShippingAgentCode($ShippingAgentCode)
+    public function setShippingAgentCode(?string $ShippingAgentCode)
     {
         $this->setData(self::SHIPPING_AGENT_CODE, $ShippingAgentCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShippingAgentCode()
+    public function getShippingAgentCode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
 
     /**
-     * @param string $AgentServiceCode
+     * @param ?string $AgentServiceCode
      * @return $this
      */
-    public function setAgentServiceCode($AgentServiceCode)
+    public function setAgentServiceCode(?string $AgentServiceCode)
     {
         $this->setData(self::AGENT_SERVICE_CODE, $AgentServiceCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAgentServiceCode()
+    public function getAgentServiceCode() : ?string
     {
         return $this->getData(self::AGENT_SERVICE_CODE);
     }

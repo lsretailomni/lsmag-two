@@ -64,33 +64,33 @@ interface ReplItemuomupdviewInterface
 
     public function setLscCountAs1OnReceipt(?bool $value);
 
-    public function getLscPosSelection() : ?string;
+    public function getLscPosSelection() : ?int;
 
-    public function setLscPosSelection(?string $value);
+    public function setLscPosSelection(?int $value);
 
     public function getLscOrder() : ?int;
 
     public function setLscOrder(?int $value);
 
-    public function getLscEcomSelection() : ?string;
+    public function getLscEcomSelection() : ?int;
 
-    public function setLscEcomSelection(?string $value);
+    public function setLscEcomSelection(?int $value);
 
     public function getSystemid() : ?string;
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

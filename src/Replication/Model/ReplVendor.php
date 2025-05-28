@@ -29,6 +29,966 @@ class ReplVendor extends \Ls\Omni\Client\Ecommerce\Entity\Vendor implements Repl
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NO]);
+    }
+
+    public function setNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NO], $value);
+    }
+
+    public function getName() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NAME]);
+    }
+
+    public function setName(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NAME], $value);
+    }
+
+    public function getSearchName() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SEARCH_NAME]);
+    }
+
+    public function setSearchName(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SEARCH_NAME], $value);
+    }
+
+    public function getName2() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NAME_2]);
+    }
+
+    public function setName2(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NAME_2], $value);
+    }
+
+    public function getAddress() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ADDRESS]);
+    }
+
+    public function setAddress(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ADDRESS], $value);
+    }
+
+    public function getAddress2() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ADDRESS_2]);
+    }
+
+    public function setAddress2(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ADDRESS_2], $value);
+    }
+
+    public function getCity() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CITY]);
+    }
+
+    public function setCity(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CITY], $value);
+    }
+
+    public function getContact() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CONTACT]);
+    }
+
+    public function setContact(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CONTACT], $value);
+    }
+
+    public function getPhoneNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PHONE_NO]);
+    }
+
+    public function setPhoneNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PHONE_NO], $value);
+    }
+
+    public function getTelexNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TELEX_NO]);
+    }
+
+    public function setTelexNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TELEX_NO], $value);
+    }
+
+    public function getOurAccountNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::OUR_ACCOUNT_NO]);
+    }
+
+    public function setOurAccountNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::OUR_ACCOUNT_NO], $value);
+    }
+
+    public function getTerritoryCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TERRITORY_CODE]);
+    }
+
+    public function setTerritoryCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TERRITORY_CODE], $value);
+    }
+
+    public function getGlobalDimension1Code() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::GLOBAL_DIMENSION_1_CODE]);
+    }
+
+    public function setGlobalDimension1Code(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::GLOBAL_DIMENSION_1_CODE], $value);
+    }
+
+    public function getGlobalDimension2Code() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::GLOBAL_DIMENSION_2_CODE]);
+    }
+
+    public function setGlobalDimension2Code(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::GLOBAL_DIMENSION_2_CODE], $value);
+    }
+
+    public function getBudgetedAmount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::BUDGETED_AMOUNT]);
+    }
+
+    public function setBudgetedAmount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::BUDGETED_AMOUNT], $value);
+    }
+
+    public function getVendorPostingGroup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VENDOR_POSTING_GROUP]);
+    }
+
+    public function setVendorPostingGroup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VENDOR_POSTING_GROUP], $value);
+    }
+
+    public function getCurrencyCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
+    }
+
+    public function setCurrencyCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
+    }
+
+    public function getLanguageCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LANGUAGE_CODE]);
+    }
+
+    public function setLanguageCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LANGUAGE_CODE], $value);
+    }
+
+    public function getRegistrationNumber() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::REGISTRATION_NUMBER]);
+    }
+
+    public function setRegistrationNumber(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::REGISTRATION_NUMBER], $value);
+    }
+
+    public function getStatisticsGroup() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STATISTICS_GROUP]);
+    }
+
+    public function setStatisticsGroup(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STATISTICS_GROUP], $value);
+    }
+
+    public function getPaymentTermsCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_TERMS_CODE]);
+    }
+
+    public function setPaymentTermsCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_TERMS_CODE], $value);
+    }
+
+    public function getFinChargeTermsCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FIN_CHARGE_TERMS_CODE]);
+    }
+
+    public function setFinChargeTermsCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FIN_CHARGE_TERMS_CODE], $value);
+    }
+
+    public function getPurchaserCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PURCHASER_CODE]);
+    }
+
+    public function setPurchaserCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PURCHASER_CODE], $value);
+    }
+
+    public function getShipmentMethodCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SHIPMENT_METHOD_CODE]);
+    }
+
+    public function setShipmentMethodCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SHIPMENT_METHOD_CODE], $value);
+    }
+
+    public function getShippingAgentCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SHIPPING_AGENT_CODE]);
+    }
+
+    public function setShippingAgentCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SHIPPING_AGENT_CODE], $value);
+    }
+
+    public function getInvoiceDiscCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::INVOICE_DISC_CODE]);
+    }
+
+    public function setInvoiceDiscCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::INVOICE_DISC_CODE], $value);
+    }
+
+    public function getCountryRegionCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::COUNTRYREGION_CODE]);
+    }
+
+    public function setCountryRegionCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::COUNTRYREGION_CODE], $value);
+    }
+
+    public function getBlocked() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::BLOCKED]);
+    }
+
+    public function setBlocked(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::BLOCKED], $value);
+    }
+
+    public function getPayToVendorNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PAYTO_VENDOR_NO]);
+    }
+
+    public function setPayToVendorNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PAYTO_VENDOR_NO], $value);
+    }
+
+    public function getPriority() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRIORITY]);
+    }
+
+    public function setPriority(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRIORITY], $value);
+    }
+
+    public function getPaymentMethodCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_METHOD_CODE]);
+    }
+
+    public function setPaymentMethodCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_METHOD_CODE], $value);
+    }
+
+    public function getFormatRegion() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FORMAT_REGION]);
+    }
+
+    public function setFormatRegion(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FORMAT_REGION], $value);
+    }
+
+    public function getLastModifiedDateTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME]);
+    }
+
+    public function setLastModifiedDateTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME], $value);
+    }
+
+    public function getLastDateModified() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED]);
+    }
+
+    public function setLastDateModified(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED], $value);
+    }
+
+    public function getApplicationMethod() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::APPLICATION_METHOD]);
+    }
+
+    public function setApplicationMethod(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::APPLICATION_METHOD], $value);
+    }
+
+    public function getPricesIncludingVat() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRICES_INCLUDING_VAT]);
+    }
+
+    public function setPricesIncludingVat(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRICES_INCLUDING_VAT], $value);
+    }
+
+    public function getFaxNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FAX_NO]);
+    }
+
+    public function setFaxNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FAX_NO], $value);
+    }
+
+    public function getTelexAnswerBack() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TELEX_ANSWER_BACK]);
+    }
+
+    public function setTelexAnswerBack(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TELEX_ANSWER_BACK], $value);
+    }
+
+    public function getVatRegistrationNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAT_REGISTRATION_NO]);
+    }
+
+    public function setVatRegistrationNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAT_REGISTRATION_NO], $value);
+    }
+
+    public function getGenBusPostingGroup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::GEN_BUS_POSTING_GROUP]);
+    }
+
+    public function setGenBusPostingGroup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::GEN_BUS_POSTING_GROUP], $value);
+    }
+
+    public function getGln() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::GLN]);
+    }
+
+    public function setGln(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::GLN], $value);
+    }
+
+    public function getPostCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::POST_CODE]);
+    }
+
+    public function setPostCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::POST_CODE], $value);
+    }
+
+    public function getCounty() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::COUNTY]);
+    }
+
+    public function setCounty(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::COUNTY], $value);
+    }
+
+    public function getEoriNumber() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EORI_NUMBER]);
+    }
+
+    public function setEoriNumber(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EORI_NUMBER], $value);
+    }
+
+    public function getEMail() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EMAIL]);
+    }
+
+    public function setEMail(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EMAIL], $value);
+    }
+
+    public function getHomePage() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::HOME_PAGE]);
+    }
+
+    public function setHomePage(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::HOME_PAGE], $value);
+    }
+
+    public function getNoSeries() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NO_SERIES]);
+    }
+
+    public function setNoSeries(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NO_SERIES], $value);
+    }
+
+    public function getTaxAreaCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TAX_AREA_CODE]);
+    }
+
+    public function setTaxAreaCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TAX_AREA_CODE], $value);
+    }
+
+    public function getTaxLiable() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TAX_LIABLE]);
+    }
+
+    public function setTaxLiable(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TAX_LIABLE], $value);
+    }
+
+    public function getVatBusPostingGroup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GROUP]);
+    }
+
+    public function setVatBusPostingGroup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GROUP], $value);
+    }
+
+    public function getBlockPaymentTolerance() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::BLOCK_PAYMENT_TOLERANCE]);
+    }
+
+    public function setBlockPaymentTolerance(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::BLOCK_PAYMENT_TOLERANCE], $value);
+    }
+
+    public function getIcPartnerCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::IC_PARTNER_CODE]);
+    }
+
+    public function setIcPartnerCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::IC_PARTNER_CODE], $value);
+    }
+
+    public function getPrepayment() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PREPAYMENT]);
+    }
+
+    public function setPrepayment(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PREPAYMENT], $value);
+    }
+
+    public function getPartnerType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PARTNER_TYPE]);
+    }
+
+    public function setPartnerType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PARTNER_TYPE], $value);
+    }
+
+    public function getIntrastatPartnerType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::INTRASTAT_PARTNER_TYPE]);
+    }
+
+    public function setIntrastatPartnerType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::INTRASTAT_PARTNER_TYPE], $value);
+    }
+
+    public function getExcludeFromPmtPractices() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_PMT_PRACTICES]);
+    }
+
+    public function setExcludeFromPmtPractices(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_PMT_PRACTICES], $value);
+    }
+
+    public function getCompanySizeCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::COMPANY_SIZE_CODE]);
+    }
+
+    public function setCompanySizeCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::COMPANY_SIZE_CODE], $value);
+    }
+
+    public function getImage() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::IMAGE]);
+    }
+
+    public function setImage(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::IMAGE], $value);
+    }
+
+    public function getPrivacyBlocked() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRIVACY_BLOCKED]);
+    }
+
+    public function setPrivacyBlocked(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRIVACY_BLOCKED], $value);
+    }
+
+    public function getDisableSearchByName() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DISABLE_SEARCH_BY_NAME]);
+    }
+
+    public function setDisableSearchByName(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DISABLE_SEARCH_BY_NAME], $value);
+    }
+
+    public function getCreditorNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CREDITOR_NO]);
+    }
+
+    public function setCreditorNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CREDITOR_NO], $value);
+    }
+
+    public function getAllowMultiplePostingGroups() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ALLOW_MULTIPLE_POSTING_GROUPS]);
+    }
+
+    public function setAllowMultiplePostingGroups(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ALLOW_MULTIPLE_POSTING_GROUPS], $value);
+    }
+
+    public function getPreferredBankAccountCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PREFERRED_BANK_ACCOUNT_CODE]);
+    }
+
+    public function setPreferredBankAccountCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PREFERRED_BANK_ACCOUNT_CODE], $value);
+    }
+
+    public function getCashFlowPaymentTermsCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CASH_FLOW_PAYMENT_TERMS_CODE]);
+    }
+
+    public function setCashFlowPaymentTermsCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CASH_FLOW_PAYMENT_TERMS_CODE], $value);
+    }
+
+    public function getDefaultTransType() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_TRANS_TYPE]);
+    }
+
+    public function setDefaultTransType(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_TRANS_TYPE], $value);
+    }
+
+    public function getDefaultTransTypeReturn() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_TRANS_TYPE_RETURN]);
+    }
+
+    public function setDefaultTransTypeReturn(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_TRANS_TYPE_RETURN], $value);
+    }
+
+    public function getDefTransportMethod() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DEF_TRANSPORT_METHOD]);
+    }
+
+    public function setDefTransportMethod(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DEF_TRANSPORT_METHOD], $value);
+    }
+
+    public function getPrimaryContactNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRIMARY_CONTACT_NO]);
+    }
+
+    public function setPrimaryContactNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRIMARY_CONTACT_NO], $value);
+    }
+
+    public function getMobilePhoneNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MOBILE_PHONE_NO]);
+    }
+
+    public function setMobilePhoneNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MOBILE_PHONE_NO], $value);
+    }
+
+    public function getResponsibilityCenter() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RESPONSIBILITY_CENTER]);
+    }
+
+    public function setResponsibilityCenter(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RESPONSIBILITY_CENTER], $value);
+    }
+
+    public function getLocationCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LOCATION_CODE]);
+    }
+
+    public function setLocationCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LOCATION_CODE], $value);
+    }
+
+    public function getLeadTimeCalculation() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LEAD_TIME_CALCULATION]);
+    }
+
+    public function setLeadTimeCalculation(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LEAD_TIME_CALCULATION], $value);
+    }
+
+    public function getReceiveEDocumentTo() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RECEIVE_EDOCUMENT_TO]);
+    }
+
+    public function setReceiveEDocumentTo(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RECEIVE_EDOCUMENT_TO], $value);
+    }
+
+    public function getSustCertNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SUST_CERT_NO]);
+    }
+
+    public function setSustCertNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SUST_CERT_NO], $value);
+    }
+
+    public function getSustCertName() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SUST_CERT_NAME]);
+    }
+
+    public function setSustCertName(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SUST_CERT_NAME], $value);
+    }
+
+    public function getPriceCalculationMethod() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRICE_CALCULATION_METHOD]);
+    }
+
+    public function setPriceCalculationMethod(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRICE_CALCULATION_METHOD], $value);
+    }
+
+    public function getBaseCalendarCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::BASE_CALENDAR_CODE]);
+    }
+
+    public function setBaseCalendarCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::BASE_CALENDAR_CODE], $value);
+    }
+
+    public function getDocumentSendingProfile() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DOCUMENT_SENDING_PROFILE]);
+    }
+
+    public function setDocumentSendingProfile(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DOCUMENT_SENDING_PROFILE], $value);
+    }
+
+    public function getValidateEuVatRegNo() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VALIDATE_EU_VAT_REG_NO]);
+    }
+
+    public function setValidateEuVatRegNo(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VALIDATE_EU_VAT_REG_NO], $value);
+    }
+
+    public function getCurrencyId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_ID]);
+    }
+
+    public function setCurrencyId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_ID], $value);
+    }
+
+    public function getPaymentTermsId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_TERMS_ID]);
+    }
+
+    public function setPaymentTermsId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_TERMS_ID], $value);
+    }
+
+    public function getPaymentMethodId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_METHOD_ID]);
+    }
+
+    public function setPaymentMethodId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_METHOD_ID], $value);
+    }
+
+    public function getOverReceiptCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::OVERRECEIPT_CODE]);
+    }
+
+    public function setOverReceiptCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::OVERRECEIPT_CODE], $value);
+    }
+
+    public function getLscRtcFilterField() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_RTC_FILTER_FIELD]);
+    }
+
+    public function setLscRtcFilterField(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_RTC_FILTER_FIELD], $value);
+    }
+
+    public function getLscEnableForRelCalendar() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_ENABLE_FOR_REL_CALENDAR]);
+    }
+
+    public function setLscEnableForRelCalendar(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_ENABLE_FOR_REL_CALENDAR], $value);
+    }
+
+    public function getLscReleaseCalendarGroup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_RELEASE_CALENDAR_GROUP]);
+    }
+
+    public function setLscReleaseCalendarGroup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_RELEASE_CALENDAR_GROUP], $value);
+    }
+
+    public function getLscBuyerGroupCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_BUYER_GROUP_CODE]);
+    }
+
+    public function setLscBuyerGroupCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_BUYER_GROUP_CODE], $value);
+    }
+
+    public function getLscBuyerId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_BUYER_ID]);
+    }
+
+    public function setLscBuyerId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_BUYER_ID], $value);
+    }
+
+    public function getLscAsnTrustProfile() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_ASN_TRUST_PROFILE]);
+    }
+
+    public function setLscAsnTrustProfile(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_ASN_TRUST_PROFILE], $value);
+    }
+
+    public function getLscTrustLevel() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_TRUST_LEVEL]);
+    }
+
+    public function setLscTrustLevel(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_TRUST_LEVEL], $value);
+    }
+
+    public function getLscValidateTrackingCode() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_VALIDATE_TRACKING_CODE]);
+    }
+
+    public function setLscValidateTrackingCode(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_VALIDATE_TRACKING_CODE], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

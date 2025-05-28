@@ -43,73 +43,73 @@ class GetReplCountersFromRemoteDB extends \Magento\Catalog\Model\AbstractModel i
     }
 
     /**
-     * @param string $replCountFieldName
+     * @param ?string $replCountFieldName
      * @return $this
      */
-    public function setReplCountFieldName($replCountFieldName)
+    public function setReplCountFieldName(?string $replCountFieldName)
     {
         $this->setData(self::REPL_COUNT_FIELD_NAME, $replCountFieldName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReplCountFieldName()
+    public function getReplCountFieldName() : ?string
     {
         return $this->getData(self::REPL_COUNT_FIELD_NAME);
     }
 
     /**
-     * @param string $replicationCounter
+     * @param ?string $replicationCounter
      * @return $this
      */
-    public function setReplicationCounter($replicationCounter)
+    public function setReplicationCounter(?string $replicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $replicationCounter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReplicationCounter()
+    public function getReplicationCounter() : ?string
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

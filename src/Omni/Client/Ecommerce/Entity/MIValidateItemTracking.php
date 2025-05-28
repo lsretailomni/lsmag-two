@@ -29,55 +29,55 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $itemNo
+     * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo($itemNo)
+    public function setItemNo(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemNo() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $variantCode
+     * @param ?string $variantCode
      * @return $this
      */
-    public function setVariantCode($variantCode)
+    public function setVariantCode(?string $variantCode)
     {
         $this->setData(self::VARIANT_CODE, $variantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantCode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $itemTrackingID
+     * @param ?string $itemTrackingID
      * @return $this
      */
-    public function setItemTrackingID($itemTrackingID)
+    public function setItemTrackingID(?string $itemTrackingID)
     {
         $this->setData(self::ITEM_TRACKING_I_D, $itemTrackingID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemTrackingID()
+    public function getItemTrackingID() : ?string
     {
         return $this->getData(self::ITEM_TRACKING_I_D);
     }
@@ -101,55 +101,55 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
     }
 
     /**
-     * @param boolean $validTracking
+     * @param ?bool $validTracking
      * @return $this
      */
-    public function setValidTracking($validTracking)
+    public function setValidTracking(?bool $validTracking)
     {
         $this->setData(self::VALID_TRACKING, $validTracking);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getValidTracking()
+    public function getValidTracking() : ?bool
     {
         return $this->getData(self::VALID_TRACKING);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

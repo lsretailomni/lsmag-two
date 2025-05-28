@@ -133,55 +133,55 @@ class PosPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $LineType
+     * @param ?string $LineType
      * @return $this
      */
-    public function setLineType($LineType)
+    public function setLineType(?string $LineType)
     {
         $this->setData(self::LINE_TYPE, $LineType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLineType()
+    public function getLineType() : ?string
     {
         return $this->getData(self::LINE_TYPE);
     }
 
     /**
-     * @param string $HostID
+     * @param ?string $HostID
      * @return $this
      */
-    public function setHostID($HostID)
+    public function setHostID(?string $HostID)
     {
         $this->setData(self::HOST_I_D, $HostID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getHostID()
+    public function getHostID() : ?string
     {
         return $this->getData(self::HOST_I_D);
     }
 
     /**
-     * @param string $ProfileID
+     * @param ?string $ProfileID
      * @return $this
      */
-    public function setProfileID($ProfileID)
+    public function setProfileID(?string $ProfileID)
     {
         $this->setData(self::PROFILE_I_D, $ProfileID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getProfileID()
+    public function getProfileID() : ?string
     {
         return $this->getData(self::PROFILE_I_D);
     }
@@ -205,19 +205,19 @@ class PosPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $Text
+     * @param ?string $Text
      * @return $this
      */
-    public function setText($Text)
+    public function setText(?string $Text)
     {
         $this->setData(self::TEXT, $Text);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getText()
+    public function getText() : ?string
     {
         return $this->getData(self::TEXT);
     }
@@ -259,19 +259,19 @@ class PosPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $BCType
+     * @param ?string $BCType
      * @return $this
      */
-    public function setBCType($BCType)
+    public function setBCType(?string $BCType)
     {
         $this->setData(self::B_C_TYPE, $BCType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBCType()
+    public function getBCType() : ?string
     {
         return $this->getData(self::B_C_TYPE);
     }
@@ -295,19 +295,19 @@ class PosPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param boolean $SetBackPrinting
+     * @param ?bool $SetBackPrinting
      * @return $this
      */
-    public function setSetBackPrinting($SetBackPrinting)
+    public function setSetBackPrinting(?bool $SetBackPrinting)
     {
         $this->setData(self::SET_BACK_PRINTING, $SetBackPrinting);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getSetBackPrinting()
+    public function getSetBackPrinting() : ?bool
     {
         return $this->getData(self::SET_BACK_PRINTING);
     }

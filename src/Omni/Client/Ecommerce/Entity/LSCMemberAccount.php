@@ -121,22 +121,22 @@ class LSCMemberAccount extends AbstractModel
         return $this->setData(self::SCHEME_CODE, $value);
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(?string $value)
+    public function setStatus(?int $value)
     {
         return $this->setData(self::STATUS, $value);
     }
 
-    public function getAccountType(): ?string
+    public function getAccountType(): ?int
     {
         return $this->getData(self::ACCOUNT_TYPE);
     }
 
-    public function setAccountType(?string $value)
+    public function setAccountType(?int $value)
     {
         return $this->setData(self::ACCOUNT_TYPE, $value);
     }

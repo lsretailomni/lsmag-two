@@ -78,7 +78,7 @@ class ReplEcommStores extends AbstractOperation
     /**
      * @return ReplEcommStoresRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ReplEcommStoresRequest();

@@ -35,199 +35,199 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
     public const EXPECTED_DATE = 'ExpectedDate';
 
     /**
-     * @param string $TransactionNo
+     * @param ?string $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionNo(?string $TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionNo()
+    public function getTransactionNo() : ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
 
     /**
-     * @param string $TransactionType
+     * @param ?string $TransactionType
      * @return $this
      */
-    public function setTransactionType($TransactionType)
+    public function setTransactionType(?string $TransactionType)
     {
         $this->setData(self::TRANSACTION_TYPE, $TransactionType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionType()
+    public function getTransactionType() : ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPOSTerminalNo(?string $POSTerminalNo)
     {
         $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPOSTerminalNo() : ?string
     {
         return $this->getData(self::P_O_S_TERMINAL_NO);
     }
 
     /**
-     * @param string $StaffID
+     * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID($StaffID)
+    public function setStaffID(?string $StaffID)
     {
         $this->setData(self::STAFF_I_D, $StaffID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffID()
+    public function getStaffID() : ?string
     {
         return $this->getData(self::STAFF_I_D);
     }
 
     /**
-     * @param string $DocumentMember
+     * @param ?string $DocumentMember
      * @return $this
      */
-    public function setDocumentMember($DocumentMember)
+    public function setDocumentMember(?string $DocumentMember)
     {
         $this->setData(self::DOCUMENT_MEMBER, $DocumentMember);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentMember()
+    public function getDocumentMember() : ?string
     {
         return $this->getData(self::DOCUMENT_MEMBER);
     }
 
     /**
-     * @param string $DocumentType
+     * @param ?string $DocumentType
      * @return $this
      */
-    public function setDocumentType($DocumentType)
+    public function setDocumentType(?string $DocumentType)
     {
         $this->setData(self::DOCUMENT_TYPE, $DocumentType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentType()
+    public function getDocumentType() : ?string
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
 
     /**
-     * @param string $DocumentNo
+     * @param ?string $DocumentNo
      * @return $this
      */
-    public function setDocumentNo($DocumentNo)
+    public function setDocumentNo(?string $DocumentNo)
     {
         $this->setData(self::DOCUMENT_NO, $DocumentNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentNo()
+    public function getDocumentNo() : ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
 
     /**
-     * @param string $DocumentMemberName
+     * @param ?string $DocumentMemberName
      * @return $this
      */
-    public function setDocumentMemberName($DocumentMemberName)
+    public function setDocumentMemberName(?string $DocumentMemberName)
     {
         $this->setData(self::DOCUMENT_MEMBER_NAME, $DocumentMemberName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentMemberName()
+    public function getDocumentMemberName() : ?string
     {
         return $this->getData(self::DOCUMENT_MEMBER_NAME);
     }
 
     /**
-     * @param string $PRCountingHeaderNo
+     * @param ?string $PRCountingHeaderNo
      * @return $this
      */
-    public function setPRCountingHeaderNo($PRCountingHeaderNo)
+    public function setPRCountingHeaderNo(?string $PRCountingHeaderNo)
     {
         $this->setData(self::P_R_COUNTING_HEADER_NO, $PRCountingHeaderNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPRCountingHeaderNo()
+    public function getPRCountingHeaderNo() : ?string
     {
         return $this->getData(self::P_R_COUNTING_HEADER_NO);
     }
 
     /**
-     * @param date $ExpectedDate
+     * @param ?string $ExpectedDate
      * @return $this
      */
-    public function setExpectedDate($ExpectedDate)
+    public function setExpectedDate(?string $ExpectedDate)
     {
         $this->setData(self::EXPECTED_DATE, $ExpectedDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getExpectedDate()
+    public function getExpectedDate() : ?string
     {
         return $this->getData(self::EXPECTED_DATE);
     }

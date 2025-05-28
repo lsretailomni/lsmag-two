@@ -48,9 +48,9 @@ interface ReplLscMemberContactInterface
 
     public function setClubCode(?string $value);
 
-    public function getContactGender() : ?string;
+    public function getContactGender() : ?int;
 
-    public function setContactGender(?string $value);
+    public function setContactGender(?int $value);
 
     public function getContactNo() : ?string;
 
@@ -88,9 +88,9 @@ interface ReplLscMemberContactInterface
 
     public function setEMail(?string $value);
 
-    public function getExpirationPeriodType() : ?string;
+    public function getExpirationPeriodType() : ?int;
 
-    public function setExpirationPeriodType(?string $value);
+    public function setExpirationPeriodType(?int $value);
 
     public function getExternalId() : ?string;
 
@@ -104,9 +104,9 @@ interface ReplLscMemberContactInterface
 
     public function setFirstName(?string $value);
 
-    public function getGender() : ?string;
+    public function getGender() : ?int;
 
-    public function setGender(?string $value);
+    public function setGender(?int $value);
 
     public function getGuestType() : ?string;
 
@@ -128,9 +128,9 @@ interface ReplLscMemberContactInterface
 
     public function setMainContact(?bool $value);
 
-    public function getMaritalStatus() : ?string;
+    public function getMaritalStatus() : ?int;
 
-    public function setMaritalStatus(?string $value);
+    public function setMaritalStatus(?int $value);
 
     public function getMemberCardTemporary() : ?string;
 
@@ -192,25 +192,25 @@ interface ReplLscMemberContactInterface
 
     public function setSearchName(?string $value);
 
-    public function getSendReceiptByEMail() : ?string;
+    public function getSendReceiptByEMail() : ?int;
 
-    public function setSendReceiptByEMail(?string $value);
+    public function setSendReceiptByEMail(?int $value);
 
     public function getSurname() : ?string;
 
     public function setSurname(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

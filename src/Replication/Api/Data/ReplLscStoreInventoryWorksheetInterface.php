@@ -28,9 +28,9 @@ interface ReplLscStoreInventoryWorksheetInterface
 
     public function setReasonCode(?string $value);
 
-    public function getDefaultUom() : ?string;
+    public function getDefaultUom() : ?int;
 
-    public function setDefaultUom(?string $value);
+    public function setDefaultUom(?int $value);
 
     public function getLocationCode() : ?string;
 
@@ -40,9 +40,9 @@ interface ReplLscStoreInventoryWorksheetInterface
 
     public function setUseArea(?bool $value);
 
-    public function getTypeOfEntering() : ?string;
+    public function getTypeOfEntering() : ?int;
 
-    public function setTypeOfEntering(?string $value);
+    public function setTypeOfEntering(?int $value);
 
     public function getCountingPeriod() : ?string;
 
@@ -60,13 +60,13 @@ interface ReplLscStoreInventoryWorksheetInterface
 
     public function setUseBarcodeUomInMobile(?bool $value);
 
-    public function getWorksheetType() : ?string;
+    public function getWorksheetType() : ?int;
 
-    public function setWorksheetType(?string $value);
+    public function setWorksheetType(?int $value);
 
-    public function getLabelType() : ?string;
+    public function getLabelType() : ?int;
 
-    public function setLabelType(?string $value);
+    public function setLabelType(?int $value);
 
     public function getLabelFunctionCode() : ?string;
 
@@ -96,9 +96,9 @@ interface ReplLscStoreInventoryWorksheetInterface
 
     public function setRetailProductFilter(?string $value);
 
-    public function getQuantityMethod() : ?string;
+    public function getQuantityMethod() : ?int;
 
-    public function setQuantityMethod(?string $value);
+    public function setQuantityMethod(?int $value);
 
     public function getQuickDefaultQuantity() : ?float;
 
@@ -148,17 +148,17 @@ interface ReplLscStoreInventoryWorksheetInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

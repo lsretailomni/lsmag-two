@@ -139,12 +139,12 @@ class PriceListLine extends AbstractModel
         return $this->setData(self::LINE_NO, $value);
     }
 
-    public function getSourceType(): ?string
+    public function getSourceType(): ?int
     {
         return $this->getData(self::SOURCE_TYPE);
     }
 
-    public function setSourceType(?string $value)
+    public function setSourceType(?int $value)
     {
         return $this->setData(self::SOURCE_TYPE, $value);
     }
@@ -179,12 +179,12 @@ class PriceListLine extends AbstractModel
         return $this->setData(self::SOURCE_ID, $value);
     }
 
-    public function getAssetType(): ?string
+    public function getAssetType(): ?int
     {
         return $this->getData(self::ASSET_TYPE);
     }
 
-    public function setAssetType(?string $value)
+    public function setAssetType(?int $value)
     {
         return $this->setData(self::ASSET_TYPE, $value);
     }
@@ -269,12 +269,12 @@ class PriceListLine extends AbstractModel
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
 
-    public function getAmountType(): ?string
+    public function getAmountType(): ?int
     {
         return $this->getData(self::AMOUNT_TYPE);
     }
 
-    public function setAmountType(?string $value)
+    public function setAmountType(?int $value)
     {
         return $this->setData(self::AMOUNT_TYPE, $value);
     }
@@ -389,12 +389,12 @@ class PriceListLine extends AbstractModel
         return $this->setData(self::LINE_AMOUNT, $value);
     }
 
-    public function getPriceType(): ?string
+    public function getPriceType(): ?int
     {
         return $this->getData(self::PRICE_TYPE);
     }
 
-    public function setPriceType(?string $value)
+    public function setPriceType(?int $value)
     {
         return $this->setData(self::PRICE_TYPE, $value);
     }
@@ -409,12 +409,12 @@ class PriceListLine extends AbstractModel
         return $this->setData(self::DESCRIPTION, $value);
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(?string $value)
+    public function setStatus(?int $value)
     {
         return $this->setData(self::STATUS, $value);
     }
@@ -429,12 +429,12 @@ class PriceListLine extends AbstractModel
         return $this->setData(self::DIRECT_UNIT_COST, $value);
     }
 
-    public function getSourceGroup(): ?string
+    public function getSourceGroup(): ?int
     {
         return $this->getData(self::SOURCE_GROUP);
     }
 
-    public function setSourceGroup(?string $value)
+    public function setSourceGroup(?int $value)
     {
         return $this->setData(self::SOURCE_GROUP, $value);
     }
@@ -569,12 +569,12 @@ class PriceListLine extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -589,12 +589,12 @@ class PriceListLine extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

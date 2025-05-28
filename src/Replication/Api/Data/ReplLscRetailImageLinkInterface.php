@@ -28,25 +28,25 @@ interface ReplLscRetailImageLinkInterface
 
     public function setKeyvalue(?string $value);
 
-    public function getLinkType() : ?string;
+    public function getLinkType() : ?int;
 
-    public function setLinkType(?string $value);
+    public function setLinkType(?int $value);
 
     public function getRecordId() : ?string;
 
     public function setRecordId(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

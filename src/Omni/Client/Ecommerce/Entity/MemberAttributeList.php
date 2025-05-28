@@ -27,127 +27,127 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     public const ATTRIBUTE_TYPE = 'AttributeType';
 
     /**
-     * @param string $Type
+     * @param ?string $Type
      * @return $this
      */
-    public function setType($Type)
+    public function setType(?string $Type)
     {
         $this->setData(self::TYPE, $Type);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getType()
+    public function getType() : ?string
     {
         return $this->getData(self::TYPE);
     }
 
     /**
-     * @param string $Code
+     * @param ?string $Code
      * @return $this
      */
-    public function setCode($Code)
+    public function setCode(?string $Code)
     {
         $this->setData(self::CODE, $Code);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCode()
+    public function getCode() : ?string
     {
         return $this->getData(self::CODE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $Value
+     * @param ?string $Value
      * @return $this
      */
-    public function setValue($Value)
+    public function setValue(?string $Value)
     {
         $this->setData(self::VALUE, $Value);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getValue()
+    public function getValue() : ?string
     {
         return $this->getData(self::VALUE);
     }
 
     /**
-     * @param string $ActionType
+     * @param ?string $ActionType
      * @return $this
      */
-    public function setActionType($ActionType)
+    public function setActionType(?string $ActionType)
     {
         $this->setData(self::ACTION_TYPE, $ActionType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getActionType()
+    public function getActionType() : ?string
     {
         return $this->getData(self::ACTION_TYPE);
     }
 
     /**
-     * @param string $LimitationType
+     * @param ?string $LimitationType
      * @return $this
      */
-    public function setLimitationType($LimitationType)
+    public function setLimitationType(?string $LimitationType)
     {
         $this->setData(self::LIMITATION_TYPE, $LimitationType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLimitationType()
+    public function getLimitationType() : ?string
     {
         return $this->getData(self::LIMITATION_TYPE);
     }
 
     /**
-     * @param string $AttributeType
+     * @param ?string $AttributeType
      * @return $this
      */
-    public function setAttributeType($AttributeType)
+    public function setAttributeType(?string $AttributeType)
     {
         $this->setData(self::ATTRIBUTE_TYPE, $AttributeType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAttributeType()
+    public function getAttributeType() : ?string
     {
         return $this->getData(self::ATTRIBUTE_TYPE);
     }

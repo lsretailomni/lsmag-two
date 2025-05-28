@@ -37,181 +37,181 @@ class GetDocumentListV2 extends \Magento\Catalog\Model\AbstractModel implements 
     public const GET_DOCUMENT_LIST_X_M_L = 'getDocumentListXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $pHHTID
+     * @param ?string $pHHTID
      * @return $this
      */
-    public function setPHHTID($pHHTID)
+    public function setPHHTID(?string $pHHTID)
     {
         $this->setData(self::P_H_H_T_I_D, $pHHTID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPHHTID()
+    public function getPHHTID() : ?string
     {
         return $this->getData(self::P_H_H_T_I_D);
     }
 
     /**
-     * @param string $pValueType
+     * @param ?string $pValueType
      * @return $this
      */
-    public function setPValueType($pValueType)
+    public function setPValueType(?string $pValueType)
     {
         $this->setData(self::P_VALUE_TYPE, $pValueType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPValueType()
+    public function getPValueType() : ?string
     {
         return $this->getData(self::P_VALUE_TYPE);
     }
 
     /**
-     * @param string $pValue
+     * @param ?string $pValue
      * @return $this
      */
-    public function setPValue($pValue)
+    public function setPValue(?string $pValue)
     {
         $this->setData(self::P_VALUE, $pValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPValue()
+    public function getPValue() : ?string
     {
         return $this->getData(self::P_VALUE);
     }
 
     /**
-     * @param string $pProcessType
+     * @param ?string $pProcessType
      * @return $this
      */
-    public function setPProcessType($pProcessType)
+    public function setPProcessType(?string $pProcessType)
     {
         $this->setData(self::P_PROCESS_TYPE, $pProcessType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPProcessType()
+    public function getPProcessType() : ?string
     {
         return $this->getData(self::P_PROCESS_TYPE);
     }
 
     /**
-     * @param string $pDocumentType
+     * @param ?string $pDocumentType
      * @return $this
      */
-    public function setPDocumentType($pDocumentType)
+    public function setPDocumentType(?string $pDocumentType)
     {
         $this->setData(self::P_DOCUMENT_TYPE, $pDocumentType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPDocumentType()
+    public function getPDocumentType() : ?string
     {
         return $this->getData(self::P_DOCUMENT_TYPE);
     }
 
     /**
-     * @param string $pStoreNo
+     * @param ?string $pStoreNo
      * @return $this
      */
-    public function setPStoreNo($pStoreNo)
+    public function setPStoreNo(?string $pStoreNo)
     {
         $this->setData(self::P_STORE_NO, $pStoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPStoreNo()
+    public function getPStoreNo() : ?string
     {
         return $this->getData(self::P_STORE_NO);
     }
 
     /**
-     * @param string $pLocationCode
+     * @param ?string $pLocationCode
      * @return $this
      */
-    public function setPLocationCode($pLocationCode)
+    public function setPLocationCode(?string $pLocationCode)
     {
         $this->setData(self::P_LOCATION_CODE, $pLocationCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPLocationCode()
+    public function getPLocationCode() : ?string
     {
         return $this->getData(self::P_LOCATION_CODE);
     }
 
     /**
-     * @param string $pItemNo
+     * @param ?string $pItemNo
      * @return $this
      */
-    public function setPItemNo($pItemNo)
+    public function setPItemNo(?string $pItemNo)
     {
         $this->setData(self::P_ITEM_NO, $pItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPItemNo()
+    public function getPItemNo() : ?string
     {
         return $this->getData(self::P_ITEM_NO);
     }

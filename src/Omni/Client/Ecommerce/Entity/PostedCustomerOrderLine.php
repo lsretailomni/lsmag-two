@@ -31,55 +31,55 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     public const QTY_PUT_BACK = 'QtyPutBack';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentID(?string $DocumentID)
     {
         $this->setData(self::DOCUMENT_I_D, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentID() : ?string
     {
         return $this->getData(self::DOCUMENT_I_D);
     }
 
     /**
-     * @param string $ItemNumber
+     * @param ?string $ItemNumber
      * @return $this
      */
-    public function setItemNumber($ItemNumber)
+    public function setItemNumber(?string $ItemNumber)
     {
         $this->setData(self::ITEM_NUMBER, $ItemNumber);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNumber()
+    public function getItemNumber() : ?string
     {
         return $this->getData(self::ITEM_NUMBER);
     }
 
     /**
-     * @param string $ItemDescription
+     * @param ?string $ItemDescription
      * @return $this
      */
-    public function setItemDescription($ItemDescription)
+    public function setItemDescription(?string $ItemDescription)
     {
         $this->setData(self::ITEM_DESCRIPTION, $ItemDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemDescription()
+    public function getItemDescription() : ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
@@ -103,91 +103,91 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $CollectTimeLimit
+     * @param ?string $CollectTimeLimit
      * @return $this
      */
-    public function setCollectTimeLimit($CollectTimeLimit)
+    public function setCollectTimeLimit(?string $CollectTimeLimit)
     {
         $this->setData(self::COLLECT_TIME_LIMIT, $CollectTimeLimit);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCollectTimeLimit()
+    public function getCollectTimeLimit() : ?string
     {
         return $this->getData(self::COLLECT_TIME_LIMIT);
     }
 
     /**
-     * @param float $Amount
+     * @param ?float $Amount
      * @return $this
      */
-    public function setAmount($Amount)
+    public function setAmount(?float $Amount)
     {
         $this->setData(self::AMOUNT, $Amount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmount()
+    public function getAmount() : ?float
     {
         return $this->getData(self::AMOUNT);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param float $QtyCanceledInCollecting
+     * @param ?float $QtyCanceledInCollecting
      * @return $this
      */
-    public function setQtyCanceledInCollecting($QtyCanceledInCollecting)
+    public function setQtyCanceledInCollecting(?float $QtyCanceledInCollecting)
     {
         $this->setData(self::QTY_CANCELED_IN_COLLECTING, $QtyCanceledInCollecting);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQtyCanceledInCollecting()
+    public function getQtyCanceledInCollecting() : ?float
     {
         return $this->getData(self::QTY_CANCELED_IN_COLLECTING);
     }
 
     /**
-     * @param float $QtyPutBack
+     * @param ?float $QtyPutBack
      * @return $this
      */
-    public function setQtyPutBack($QtyPutBack)
+    public function setQtyPutBack(?float $QtyPutBack)
     {
         $this->setData(self::QTY_PUT_BACK, $QtyPutBack);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQtyPutBack()
+    public function getQtyPutBack() : ?float
     {
         return $this->getData(self::QTY_PUT_BACK);
     }

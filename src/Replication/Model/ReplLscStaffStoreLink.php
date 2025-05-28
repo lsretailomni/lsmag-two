@@ -29,6 +29,166 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\Ecommerce\Entity\LSCSTAFFSto
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getStaffId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STAFF_ID]);
+    }
+
+    public function setStaffId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STAFF_ID], $value);
+    }
+
+    public function getStoreNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
+    }
+
+    public function setStoreNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
+    }
+
+    public function getPermissionGrp() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PERMISSION_GRP]);
+    }
+
+    public function setPermissionGrp(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PERMISSION_GRP], $value);
+    }
+
+    public function getPermissionGroup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PERMISSION_GROUP]);
+    }
+
+    public function setPermissionGroup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PERMISSION_GROUP], $value);
+    }
+
+    public function getPosInterfaceProfile() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::POS_INTERFACE_PROFILE]);
+    }
+
+    public function setPosInterfaceProfile(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::POS_INTERFACE_PROFILE], $value);
+    }
+
+    public function getPosStyleProfile() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::POS_STYLE_PROFILE]);
+    }
+
+    public function setPosStyleProfile(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::POS_STYLE_PROFILE], $value);
+    }
+
+    public function getPosMenuProfile() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::POS_MENU_PROFILE]);
+    }
+
+    public function setPosMenuProfile(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::POS_MENU_PROFILE], $value);
+    }
+
+    public function getDeliveryDriver() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DELIVERY_DRIVER]);
+    }
+
+    public function setDeliveryDriver(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DELIVERY_DRIVER], $value);
+    }
+
+    public function getFloat() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FLOAT]);
+    }
+
+    public function setFloat(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FLOAT], $value);
+    }
+
+    public function getOnCall() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ON_CALL]);
+    }
+
+    public function setOnCall(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ON_CALL], $value);
+    }
+
+    public function getDefaultSalesType() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_SALES_TYPE]);
+    }
+
+    public function setDefaultSalesType(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_SALES_TYPE], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

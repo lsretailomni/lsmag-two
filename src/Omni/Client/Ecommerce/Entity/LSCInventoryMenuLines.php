@@ -71,12 +71,12 @@ class LSCInventoryMenuLines extends AbstractModel
     }
 
 
-    public function getDeviceType(): ?string
+    public function getDeviceType(): ?int
     {
         return $this->getData(self::DEVICE_TYPE);
     }
 
-    public function setDeviceType(?string $value)
+    public function setDeviceType(?int $value)
     {
         return $this->setData(self::DEVICE_TYPE, $value);
     }
@@ -131,12 +131,12 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->setData(self::TEXT, $value);
     }
 
-    public function getLineType(): ?string
+    public function getLineType(): ?int
     {
         return $this->getData(self::LINE_TYPE);
     }
 
-    public function setLineType(?string $value)
+    public function setLineType(?int $value)
     {
         return $this->setData(self::LINE_TYPE, $value);
     }
@@ -161,22 +161,22 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->setData(self::BITMAP, $value);
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(?string $value)
+    public function setStatus(?int $value)
     {
         return $this->setData(self::STATUS, $value);
     }
 
-    public function getCodeType(): ?string
+    public function getCodeType(): ?int
     {
         return $this->getData(self::CODE_TYPE);
     }
 
-    public function setCodeType(?string $value)
+    public function setCodeType(?int $value)
     {
         return $this->setData(self::CODE_TYPE, $value);
     }
@@ -241,12 +241,12 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->setData(self::WORKSHEETSEQNO, $value);
     }
 
-    public function getWorksheetType(): ?string
+    public function getWorksheetType(): ?int
     {
         return $this->getData(self::WORKSHEET_TYPE);
     }
 
-    public function setWorksheetType(?string $value)
+    public function setWorksheetType(?int $value)
     {
         return $this->setData(self::WORKSHEET_TYPE, $value);
     }
@@ -281,12 +281,12 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -301,12 +301,12 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

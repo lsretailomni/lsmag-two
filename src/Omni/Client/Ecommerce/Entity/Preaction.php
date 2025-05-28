@@ -43,37 +43,37 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $LocationGroupFilter
+     * @param ?string $LocationGroupFilter
      * @return $this
      */
-    public function setLocationGroupFilter($LocationGroupFilter)
+    public function setLocationGroupFilter(?string $LocationGroupFilter)
     {
         $this->setData(self::LOCATION_GROUP_FILTER, $LocationGroupFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLocationGroupFilter()
+    public function getLocationGroupFilter() : ?string
     {
         return $this->getData(self::LOCATION_GROUP_FILTER);
     }
 
     /**
-     * @param string $Action
+     * @param ?string $Action
      * @return $this
      */
-    public function setAction($Action)
+    public function setAction(?string $Action)
     {
         $this->setData(self::ACTION, $Action);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAction()
+    public function getAction() : ?string
     {
         return $this->getData(self::ACTION);
     }
@@ -97,37 +97,37 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $KeyValue
+     * @param ?string $KeyValue
      * @return $this
      */
-    public function setKeyValue($KeyValue)
+    public function setKeyValue(?string $KeyValue)
     {
         $this->setData(self::KEY_VALUE, $KeyValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getKeyValue()
+    public function getKeyValue() : ?string
     {
         return $this->getData(self::KEY_VALUE);
     }
 
     /**
-     * @param string $Batch
+     * @param ?string $Batch
      * @return $this
      */
-    public function setBatch($Batch)
+    public function setBatch(?string $Batch)
     {
         $this->setData(self::BATCH, $Batch);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBatch()
+    public function getBatch() : ?string
     {
         return $this->getData(self::BATCH);
     }

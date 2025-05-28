@@ -37,37 +37,37 @@ class FieldFilter extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $FieldName
+     * @param ?string $FieldName
      * @return $this
      */
-    public function setFieldName($FieldName)
+    public function setFieldName(?string $FieldName)
     {
         $this->setData(self::FIELD_NAME, $FieldName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFieldName()
+    public function getFieldName() : ?string
     {
         return $this->getData(self::FIELD_NAME);
     }
 
     /**
-     * @param string $FieldValue
+     * @param ?string $FieldValue
      * @return $this
      */
-    public function setFieldValue($FieldValue)
+    public function setFieldValue(?string $FieldValue)
     {
         $this->setData(self::FIELD_VALUE, $FieldValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFieldValue()
+    public function getFieldValue() : ?string
     {
         return $this->getData(self::FIELD_VALUE);
     }

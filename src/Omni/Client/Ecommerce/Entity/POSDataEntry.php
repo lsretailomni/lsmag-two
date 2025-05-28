@@ -21,55 +21,55 @@ class POSDataEntry extends \Magento\Catalog\Model\AbstractModel
     public const P_I_N = 'PIN';
 
     /**
-     * @param float $Balance
+     * @param ?float $Balance
      * @return $this
      */
-    public function setBalance($Balance)
+    public function setBalance(?float $Balance)
     {
         $this->setData(self::BALANCE, $Balance);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getBalance()
+    public function getBalance() : ?float
     {
         return $this->getData(self::BALANCE);
     }
 
     /**
-     * @param date $ExpiryDate
+     * @param ?string $ExpiryDate
      * @return $this
      */
-    public function setExpiryDate($ExpiryDate)
+    public function setExpiryDate(?string $ExpiryDate)
     {
         $this->setData(self::EXPIRY_DATE, $ExpiryDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getExpiryDate()
+    public function getExpiryDate() : ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
 
     /**
-     * @param string $CurrencyCode
+     * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode($CurrencyCode)
+    public function setCurrencyCode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCurrencyCode()
+    public function getCurrencyCode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }

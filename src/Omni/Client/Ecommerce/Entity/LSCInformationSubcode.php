@@ -93,12 +93,12 @@ class LSCInformationSubcode extends AbstractModel
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
 
-    public function getTriggerFunction(): ?string
+    public function getTriggerFunction(): ?int
     {
         return $this->getData(self::TRIGGER_FUNCTION);
     }
 
-    public function setTriggerFunction(?string $value)
+    public function setTriggerFunction(?int $value)
     {
         return $this->setData(self::TRIGGER_FUNCTION, $value);
     }
@@ -113,22 +113,22 @@ class LSCInformationSubcode extends AbstractModel
         return $this->setData(self::TRIGGER_CODE, $value);
     }
 
-    public function getPriceType(): ?string
+    public function getPriceType(): ?int
     {
         return $this->getData(self::PRICE_TYPE);
     }
 
-    public function setPriceType(?string $value)
+    public function setPriceType(?int $value)
     {
         return $this->setData(self::PRICE_TYPE, $value);
     }
 
-    public function getPriceHandling(): ?string
+    public function getPriceHandling(): ?int
     {
         return $this->getData(self::PRICE_HANDLING);
     }
 
-    public function setPriceHandling(?string $value)
+    public function setPriceHandling(?int $value)
     {
         return $this->setData(self::PRICE_HANDLING, $value);
     }

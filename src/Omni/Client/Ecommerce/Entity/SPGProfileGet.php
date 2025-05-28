@@ -21,55 +21,55 @@ class SPGProfileGet extends \Magento\Catalog\Model\AbstractModel implements Requ
     public const SECURITY_CHECK_TRIGGER = 'SecurityCheckTrigger';
 
     /**
-     * @param string $Code
+     * @param ?string $Code
      * @return $this
      */
-    public function setCode($Code)
+    public function setCode(?string $Code)
     {
         $this->setData(self::CODE, $Code);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCode()
+    public function getCode() : ?string
     {
         return $this->getData(self::CODE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $SecurityCheckTrigger
+     * @param ?string $SecurityCheckTrigger
      * @return $this
      */
-    public function setSecurityCheckTrigger($SecurityCheckTrigger)
+    public function setSecurityCheckTrigger(?string $SecurityCheckTrigger)
     {
         $this->setData(self::SECURITY_CHECK_TRIGGER, $SecurityCheckTrigger);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSecurityCheckTrigger()
+    public function getSecurityCheckTrigger() : ?string
     {
         return $this->getData(self::SECURITY_CHECK_TRIGGER);
     }

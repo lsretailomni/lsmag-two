@@ -175,12 +175,12 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->setData(self::COUNTY, $value);
     }
 
-    public function getCreateDatetime(): ?\DateTime
+    public function getCreateDatetime(): ?string
     {
         return $this->getData(self::CREATE_DATETIME);
     }
 
-    public function setCreateDatetime(?\DateTime $value)
+    public function setCreateDatetime(?string $value)
     {
         return $this->setData(self::CREATE_DATETIME, $value);
     }
@@ -215,12 +215,12 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->setData(self::CUSTOMER_NO, $value);
     }
 
-    public function getDateTime(): ?\DateTime
+    public function getDateTime(): ?string
     {
         return $this->getData(self::DATE_TIME);
     }
 
-    public function setDateTime(?\DateTime $value)
+    public function setDateTime(?string $value)
     {
         return $this->setData(self::DATE_TIME, $value);
     }
@@ -255,22 +255,22 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->setData(self::DOCUMENT_ID, $value);
     }
 
-    public function getDocumentSourceType(): ?string
+    public function getDocumentSourceType(): ?int
     {
         return $this->getData(self::DOCUMENT_SOURCE_TYPE);
     }
 
-    public function setDocumentSourceType(?string $value)
+    public function setDocumentSourceType(?int $value)
     {
         return $this->setData(self::DOCUMENT_SOURCE_TYPE, $value);
     }
 
-    public function getDocumentStatus(): ?string
+    public function getDocumentStatus(): ?int
     {
         return $this->getData(self::DOCUMENT_STATUS);
     }
 
-    public function setDocumentStatus(?string $value)
+    public function setDocumentStatus(?int $value)
     {
         return $this->setData(self::DOCUMENT_STATUS, $value);
     }

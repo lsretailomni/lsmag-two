@@ -483,12 +483,12 @@ class Vendor extends AbstractModel
         return $this->setData(self::COUNTRYREGION_CODE, $value);
     }
 
-    public function getBlocked(): ?string
+    public function getBlocked(): ?int
     {
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(?string $value)
+    public function setBlocked(?int $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
@@ -533,12 +533,12 @@ class Vendor extends AbstractModel
         return $this->setData(self::FORMAT_REGION, $value);
     }
 
-    public function getLastModifiedDateTime(): ?\DateTime
+    public function getLastModifiedDateTime(): ?string
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
     }
 
-    public function setLastModifiedDateTime(?\DateTime $value)
+    public function setLastModifiedDateTime(?string $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
@@ -553,12 +553,12 @@ class Vendor extends AbstractModel
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
 
-    public function getApplicationMethod(): ?string
+    public function getApplicationMethod(): ?int
     {
         return $this->getData(self::APPLICATION_METHOD);
     }
 
-    public function setApplicationMethod(?string $value)
+    public function setApplicationMethod(?int $value)
     {
         return $this->setData(self::APPLICATION_METHOD, $value);
     }
@@ -743,22 +743,22 @@ class Vendor extends AbstractModel
         return $this->setData(self::PREPAYMENT, $value);
     }
 
-    public function getPartnerType(): ?string
+    public function getPartnerType(): ?int
     {
         return $this->getData(self::PARTNER_TYPE);
     }
 
-    public function setPartnerType(?string $value)
+    public function setPartnerType(?int $value)
     {
         return $this->setData(self::PARTNER_TYPE, $value);
     }
 
-    public function getIntrastatPartnerType(): ?string
+    public function getIntrastatPartnerType(): ?int
     {
         return $this->getData(self::INTRASTAT_PARTNER_TYPE);
     }
 
-    public function setIntrastatPartnerType(?string $value)
+    public function setIntrastatPartnerType(?int $value)
     {
         return $this->setData(self::INTRASTAT_PARTNER_TYPE, $value);
     }
@@ -933,12 +933,12 @@ class Vendor extends AbstractModel
         return $this->setData(self::LEAD_TIME_CALCULATION, $value);
     }
 
-    public function getReceiveEDocumentTo(): ?string
+    public function getReceiveEDocumentTo(): ?int
     {
         return $this->getData(self::RECEIVE_EDOCUMENT_TO);
     }
 
-    public function setReceiveEDocumentTo(?string $value)
+    public function setReceiveEDocumentTo(?int $value)
     {
         return $this->setData(self::RECEIVE_EDOCUMENT_TO, $value);
     }
@@ -963,12 +963,12 @@ class Vendor extends AbstractModel
         return $this->setData(self::SUST_CERT_NAME, $value);
     }
 
-    public function getPriceCalculationMethod(): ?string
+    public function getPriceCalculationMethod(): ?int
     {
         return $this->getData(self::PRICE_CALCULATION_METHOD);
     }
 
-    public function setPriceCalculationMethod(?string $value)
+    public function setPriceCalculationMethod(?int $value)
     {
         return $this->setData(self::PRICE_CALCULATION_METHOD, $value);
     }
@@ -1043,12 +1043,12 @@ class Vendor extends AbstractModel
         return $this->setData(self::OVERRECEIPT_CODE, $value);
     }
 
-    public function getLscRtcFilterField(): ?string
+    public function getLscRtcFilterField(): ?int
     {
         return $this->getData(self::LSC_RTC_FILTER_FIELD);
     }
 
-    public function setLscRtcFilterField(?string $value)
+    public function setLscRtcFilterField(?int $value)
     {
         return $this->setData(self::LSC_RTC_FILTER_FIELD, $value);
     }
@@ -1103,12 +1103,12 @@ class Vendor extends AbstractModel
         return $this->setData(self::LSC_ASN_TRUST_PROFILE, $value);
     }
 
-    public function getLscTrustLevel(): ?string
+    public function getLscTrustLevel(): ?int
     {
         return $this->getData(self::LSC_TRUST_LEVEL);
     }
 
-    public function setLscTrustLevel(?string $value)
+    public function setLscTrustLevel(?int $value)
     {
         return $this->setData(self::LSC_TRUST_LEVEL, $value);
     }
@@ -1133,12 +1133,12 @@ class Vendor extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -1153,12 +1153,12 @@ class Vendor extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

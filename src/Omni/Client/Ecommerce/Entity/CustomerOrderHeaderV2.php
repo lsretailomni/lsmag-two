@@ -49,325 +49,325 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     public const PICK_TYPE = 'PickType';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentID(?string $DocumentID)
     {
         $this->setData(self::DOCUMENT_I_D, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentID() : ?string
     {
         return $this->getData(self::DOCUMENT_I_D);
     }
 
     /**
-     * @param string $CreatedatStore
+     * @param ?string $CreatedatStore
      * @return $this
      */
-    public function setCreatedatStore($CreatedatStore)
+    public function setCreatedatStore(?string $CreatedatStore)
     {
         $this->setData(self::CREATEDAT_STORE, $CreatedatStore);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCreatedatStore()
+    public function getCreatedatStore() : ?string
     {
         return $this->getData(self::CREATEDAT_STORE);
     }
 
     /**
-     * @param string $Created
+     * @param ?string $Created
      * @return $this
      */
-    public function setCreated($Created)
+    public function setCreated(?string $Created)
     {
         $this->setData(self::CREATED, $Created);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCreated()
+    public function getCreated() : ?string
     {
         return $this->getData(self::CREATED);
     }
 
     /**
-     * @param string $MemberCardNo
+     * @param ?string $MemberCardNo
      * @return $this
      */
-    public function setMemberCardNo($MemberCardNo)
+    public function setMemberCardNo(?string $MemberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $MemberCardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberCardNo()
+    public function getMemberCardNo() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
 
     /**
-     * @param string $FullName
+     * @param ?string $FullName
      * @return $this
      */
-    public function setFullName($FullName)
+    public function setFullName(?string $FullName)
     {
         $this->setData(self::FULL_NAME, $FullName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFullName()
+    public function getFullName() : ?string
     {
         return $this->getData(self::FULL_NAME);
     }
 
     /**
-     * @param string $Address
+     * @param ?string $Address
      * @return $this
      */
-    public function setAddress($Address)
+    public function setAddress(?string $Address)
     {
         $this->setData(self::ADDRESS, $Address);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAddress()
+    public function getAddress() : ?string
     {
         return $this->getData(self::ADDRESS);
     }
 
     /**
-     * @param string $PhoneNo
+     * @param ?string $PhoneNo
      * @return $this
      */
-    public function setPhoneNo($PhoneNo)
+    public function setPhoneNo(?string $PhoneNo)
     {
         $this->setData(self::PHONE_NO, $PhoneNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPhoneNo()
+    public function getPhoneNo() : ?string
     {
         return $this->getData(self::PHONE_NO);
     }
 
     /**
-     * @param string $Email
+     * @param ?string $Email
      * @return $this
      */
-    public function setEmail($Email)
+    public function setEmail(?string $Email)
     {
         $this->setData(self::EMAIL, $Email);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEmail()
+    public function getEmail() : ?string
     {
         return $this->getData(self::EMAIL);
     }
 
     /**
-     * @param string $ShipOrderPOSFlag
+     * @param ?string $ShipOrderPOSFlag
      * @return $this
      */
-    public function setShipOrderPOSFlag($ShipOrderPOSFlag)
+    public function setShipOrderPOSFlag(?string $ShipOrderPOSFlag)
     {
         $this->setData(self::SHIP_ORDER_P_O_S_FLAG, $ShipOrderPOSFlag);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShipOrderPOSFlag()
+    public function getShipOrderPOSFlag() : ?string
     {
         return $this->getData(self::SHIP_ORDER_P_O_S_FLAG);
     }
 
     /**
-     * @param float $TotalAmount
+     * @param ?float $TotalAmount
      * @return $this
      */
-    public function setTotalAmount($TotalAmount)
+    public function setTotalAmount(?float $TotalAmount)
     {
         $this->setData(self::TOTAL_AMOUNT, $TotalAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalAmount()
+    public function getTotalAmount() : ?float
     {
         return $this->getData(self::TOTAL_AMOUNT);
     }
 
     /**
-     * @param float $TotalQuantity
+     * @param ?float $TotalQuantity
      * @return $this
      */
-    public function setTotalQuantity($TotalQuantity)
+    public function setTotalQuantity(?float $TotalQuantity)
     {
         $this->setData(self::TOTAL_QUANTITY, $TotalQuantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalQuantity()
+    public function getTotalQuantity() : ?float
     {
         return $this->getData(self::TOTAL_QUANTITY);
     }
 
     /**
-     * @param string $ProcessingStatus
+     * @param ?string $ProcessingStatus
      * @return $this
      */
-    public function setProcessingStatus($ProcessingStatus)
+    public function setProcessingStatus(?string $ProcessingStatus)
     {
         $this->setData(self::PROCESSING_STATUS, $ProcessingStatus);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getProcessingStatus()
+    public function getProcessingStatus() : ?string
     {
         return $this->getData(self::PROCESSING_STATUS);
     }
 
     /**
-     * @param string $StatusInt
+     * @param ?string $StatusInt
      * @return $this
      */
-    public function setStatusInt($StatusInt)
+    public function setStatusInt(?string $StatusInt)
     {
         $this->setData(self::STATUS_INT, $StatusInt);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatusInt()
+    public function getStatusInt() : ?string
     {
         return $this->getData(self::STATUS_INT);
     }
 
     /**
-     * @param date $RequestedDeliveryDate
+     * @param ?string $RequestedDeliveryDate
      * @return $this
      */
-    public function setRequestedDeliveryDate($RequestedDeliveryDate)
+    public function setRequestedDeliveryDate(?string $RequestedDeliveryDate)
     {
         $this->setData(self::REQUESTED_DELIVERY_DATE, $RequestedDeliveryDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getRequestedDeliveryDate()
+    public function getRequestedDeliveryDate() : ?string
     {
         return $this->getData(self::REQUESTED_DELIVERY_DATE);
     }
 
     /**
-     * @param boolean $ShipOrder
+     * @param ?bool $ShipOrder
      * @return $this
      */
-    public function setShipOrder($ShipOrder)
+    public function setShipOrder(?bool $ShipOrder)
     {
         $this->setData(self::SHIP_ORDER, $ShipOrder);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getShipOrder()
+    public function getShipOrder() : ?bool
     {
         return $this->getData(self::SHIP_ORDER);
     }
 
     /**
-     * @param string $ExternalID
+     * @param ?string $ExternalID
      * @return $this
      */
-    public function setExternalID($ExternalID)
+    public function setExternalID(?string $ExternalID)
     {
         $this->setData(self::EXTERNAL_I_D, $ExternalID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExternalID()
+    public function getExternalID() : ?string
     {
         return $this->getData(self::EXTERNAL_I_D);
     }
 
     /**
-     * @param boolean $CompressedLinesInt
+     * @param ?bool $CompressedLinesInt
      * @return $this
      */
-    public function setCompressedLinesInt($CompressedLinesInt)
+    public function setCompressedLinesInt(?bool $CompressedLinesInt)
     {
         $this->setData(self::COMPRESSED_LINES_INT, $CompressedLinesInt);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getCompressedLinesInt()
+    public function getCompressedLinesInt() : ?bool
     {
         return $this->getData(self::COMPRESSED_LINES_INT);
     }
 
     /**
-     * @param string $PickType
+     * @param ?string $PickType
      * @return $this
      */
-    public function setPickType($PickType)
+    public function setPickType(?string $PickType)
     {
         $this->setData(self::PICK_TYPE, $PickType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPickType()
+    public function getPickType() : ?string
     {
         return $this->getData(self::PICK_TYPE);
     }

@@ -27,91 +27,91 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
     public const LOAD_MEMBER_DIR_MARK_INFO_X_M_L = 'loadMemberDirMarkInfoXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $cardId
+     * @param ?string $cardId
      * @return $this
      */
-    public function setCardId($cardId)
+    public function setCardId(?string $cardId)
     {
         $this->setData(self::CARD_ID, $cardId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardId()
+    public function getCardId() : ?string
     {
         return $this->getData(self::CARD_ID);
     }
 
     /**
-     * @param string $itemNo
+     * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo($itemNo)
+    public function setItemNo(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemNo() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreNo(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }

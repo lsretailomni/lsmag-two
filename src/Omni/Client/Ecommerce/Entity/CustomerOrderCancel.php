@@ -25,55 +25,55 @@ class CustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel implement
     public const CUSTOMER_ORDER_CANCEL_X_M_L = 'customerOrderCancelXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $customerOrderDocumentID
+     * @param ?string $customerOrderDocumentID
      * @return $this
      */
-    public function setCustomerOrderDocumentID($customerOrderDocumentID)
+    public function setCustomerOrderDocumentID(?string $customerOrderDocumentID)
     {
         $this->setData(self::CUSTOMER_ORDER_DOCUMENT_I_D, $customerOrderDocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCustomerOrderDocumentID()
+    public function getCustomerOrderDocumentID() : ?string
     {
         return $this->getData(self::CUSTOMER_ORDER_DOCUMENT_I_D);
     }

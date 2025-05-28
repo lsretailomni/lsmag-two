@@ -29,6 +29,96 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\Ecommerce\Entity\LSCItemHTMLML i
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getHtml() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::HTML]);
+    }
+
+    public function setHtml(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::HTML], $value);
+    }
+
+    public function getItemNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
+    }
+
+    public function setItemNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
+    }
+
+    public function getLanguage() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LANGUAGE]);
+    }
+
+    public function setLanguage(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LANGUAGE], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
+    public function getUrl() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::URL]);
+    }
+
+    public function setUrl(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::URL], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

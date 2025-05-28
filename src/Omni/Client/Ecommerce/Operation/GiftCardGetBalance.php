@@ -78,7 +78,7 @@ class GiftCardGetBalance extends AbstractOperation
     /**
      * @return GiftCardGetBalanceRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new GiftCardGetBalanceRequest();

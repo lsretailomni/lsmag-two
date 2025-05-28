@@ -29,109 +29,109 @@ class GetVendorCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     public const LEFT_RIGHT_LINE_X_M_L = 'leftRightLineXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $terminalNo
+     * @param ?string $terminalNo
      * @return $this
      */
-    public function setTerminalNo($terminalNo)
+    public function setTerminalNo(?string $terminalNo)
     {
         $this->setData(self::TERMINAL_NO, $terminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalNo()
+    public function getTerminalNo() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreNo(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $vendorNo
+     * @param ?string $vendorNo
      * @return $this
      */
-    public function setVendorNo($vendorNo)
+    public function setVendorNo(?string $vendorNo)
     {
         $this->setData(self::VENDOR_NO, $vendorNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVendorNo()
+    public function getVendorNo() : ?string
     {
         return $this->getData(self::VENDOR_NO);
     }
 
     /**
-     * @param string $view
+     * @param ?string $view
      * @return $this
      */
-    public function setView($view)
+    public function setView(?string $view)
     {
         $this->setData(self::VIEW, $view);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getView()
+    public function getView() : ?string
     {
         return $this->getData(self::VIEW);
     }

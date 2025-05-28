@@ -41,37 +41,37 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPOSTerminalNo(?string $POSTerminalNo)
     {
         $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPOSTerminalNo() : ?string
     {
         return $this->getData(self::P_O_S_TERMINAL_NO);
     }
@@ -95,73 +95,73 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $TenderType
+     * @param ?string $TenderType
      * @return $this
      */
-    public function setTenderType($TenderType)
+    public function setTenderType(?string $TenderType)
     {
         $this->setData(self::TENDER_TYPE, $TenderType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTenderType()
+    public function getTenderType() : ?string
     {
         return $this->getData(self::TENDER_TYPE);
     }
 
     /**
-     * @param string $CurrencyCode
+     * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode($CurrencyCode)
+    public function setCurrencyCode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCurrencyCode()
+    public function getCurrencyCode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
 
     /**
-     * @param string $Type
+     * @param ?string $Type
      * @return $this
      */
-    public function setType($Type)
+    public function setType(?string $Type)
     {
         $this->setData(self::TYPE, $Type);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getType()
+    public function getType() : ?string
     {
         return $this->getData(self::TYPE);
     }
 
     /**
-     * @param float $Amount
+     * @param ?float $Amount
      * @return $this
      */
-    public function setAmount($Amount)
+    public function setAmount(?float $Amount)
     {
         $this->setData(self::AMOUNT, $Amount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmount()
+    public function getAmount() : ?float
     {
         return $this->getData(self::AMOUNT);
     }
@@ -185,91 +185,91 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param float $Total
+     * @param ?float $Total
      * @return $this
      */
-    public function setTotal($Total)
+    public function setTotal(?float $Total)
     {
         $this->setData(self::TOTAL, $Total);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotal()
+    public function getTotal() : ?float
     {
         return $this->getData(self::TOTAL);
     }
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptNo(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptNo() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $StaffID
+     * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID($StaffID)
+    public function setStaffID(?string $StaffID)
     {
         $this->setData(self::STAFF_I_D, $StaffID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffID()
+    public function getStaffID() : ?string
     {
         return $this->getData(self::STAFF_I_D);
     }
 
     /**
-     * @param string $DeclType
+     * @param ?string $DeclType
      * @return $this
      */
-    public function setDeclType($DeclType)
+    public function setDeclType(?string $DeclType)
     {
         $this->setData(self::DECL_TYPE, $DeclType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDeclType()
+    public function getDeclType() : ?string
     {
         return $this->getData(self::DECL_TYPE);
     }

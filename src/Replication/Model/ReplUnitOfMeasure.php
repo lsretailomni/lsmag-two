@@ -29,6 +29,126 @@ class ReplUnitOfMeasure extends \Ls\Omni\Client\Ecommerce\Entity\UnitofMeasure i
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CODE]);
+    }
+
+    public function setCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getInternationalStandardCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::INTERNATIONAL_STANDARD_CODE]);
+    }
+
+    public function setInternationalStandardCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::INTERNATIONAL_STANDARD_CODE], $value);
+    }
+
+    public function getLastModifiedDateTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME]);
+    }
+
+    public function setLastModifiedDateTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME], $value);
+    }
+
+    public function getLscPosMinDenominator() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_MIN_DENOMINATOR]);
+    }
+
+    public function setLscPosMinDenominator(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_POS_MIN_DENOMINATOR], $value);
+    }
+
+    public function getLscWeightUnitOfMeasure() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_WEIGHT_UNIT_OF_MEASURE]);
+    }
+
+    public function setLscWeightUnitOfMeasure(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_WEIGHT_UNIT_OF_MEASURE], $value);
+    }
+
+    public function getSymbol() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYMBOL]);
+    }
+
+    public function setSymbol(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYMBOL], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

@@ -19,55 +19,55 @@ class SalesShipmentHeader extends \Magento\Catalog\Model\AbstractModel
     public const PACKAGE_TRACKING_NO = 'PackageTrackingNo';
 
     /**
-     * @param string $ShippingAgentCode
+     * @param ?string $ShippingAgentCode
      * @return $this
      */
-    public function setShippingAgentCode($ShippingAgentCode)
+    public function setShippingAgentCode(?string $ShippingAgentCode)
     {
         $this->setData(self::SHIPPING_AGENT_CODE, $ShippingAgentCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShippingAgentCode()
+    public function getShippingAgentCode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
 
     /**
-     * @param string $ShippingAgentServiceCode
+     * @param ?string $ShippingAgentServiceCode
      * @return $this
      */
-    public function setShippingAgentServiceCode($ShippingAgentServiceCode)
+    public function setShippingAgentServiceCode(?string $ShippingAgentServiceCode)
     {
         $this->setData(self::SHIPPING_AGENT_SERVICE_CODE, $ShippingAgentServiceCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShippingAgentServiceCode()
+    public function getShippingAgentServiceCode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_SERVICE_CODE);
     }
 
     /**
-     * @param string $PackageTrackingNo
+     * @param ?string $PackageTrackingNo
      * @return $this
      */
-    public function setPackageTrackingNo($PackageTrackingNo)
+    public function setPackageTrackingNo(?string $PackageTrackingNo)
     {
         $this->setData(self::PACKAGE_TRACKING_NO, $PackageTrackingNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPackageTrackingNo()
+    public function getPackageTrackingNo() : ?string
     {
         return $this->getData(self::PACKAGE_TRACKING_NO);
     }

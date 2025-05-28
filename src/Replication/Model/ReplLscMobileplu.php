@@ -29,6 +29,126 @@ class ReplLscMobileplu extends \Ls\Omni\Client\Ecommerce\Entity\LSCMobilePlu imp
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getStoreid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STOREID]);
+    }
+
+    public function setStoreid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STOREID], $value);
+    }
+
+    public function getPageid() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PAGEID]);
+    }
+
+    public function setPageid(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PAGEID], $value);
+    }
+
+    public function getPageindex() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PAGEINDEX]);
+    }
+
+    public function setPageindex(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PAGEINDEX], $value);
+    }
+
+    public function getItemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ITEMID]);
+    }
+
+    public function setItemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ITEMID], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getRetailimageid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RETAILIMAGEID]);
+    }
+
+    public function setRetailimageid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RETAILIMAGEID], $value);
+    }
+
+    public function getImageblob() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::IMAGEBLOB]);
+    }
+
+    public function setImageblob(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::IMAGEBLOB], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

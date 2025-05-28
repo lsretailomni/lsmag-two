@@ -29,6 +29,536 @@ class ReplLscMemberContact extends \Ls\Omni\Client\Ecommerce\Entity\LSCMemberCon
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getAccountNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ACCOUNT_NO]);
+    }
+
+    public function setAccountNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ACCOUNT_NO], $value);
+    }
+
+    public function getAddress() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ADDRESS]);
+    }
+
+    public function setAddress(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ADDRESS], $value);
+    }
+
+    public function getAddress2() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ADDRESS_2]);
+    }
+
+    public function setAddress2(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ADDRESS_2], $value);
+    }
+
+    public function getBirthday() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::BIRTHDAY]);
+    }
+
+    public function setBirthday(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::BIRTHDAY], $value);
+    }
+
+    public function getBlocked() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::BLOCKED]);
+    }
+
+    public function setBlocked(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::BLOCKED], $value);
+    }
+
+    public function getBlockedBy() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::BLOCKED_BY]);
+    }
+
+    public function setBlockedBy(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::BLOCKED_BY], $value);
+    }
+
+    public function getCity() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CITY]);
+    }
+
+    public function setCity(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CITY], $value);
+    }
+
+    public function getCitySearchInternal() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CITY_SEARCH_INTERNAL]);
+    }
+
+    public function setCitySearchInternal(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CITY_SEARCH_INTERNAL], $value);
+    }
+
+    public function getClubCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CLUB_CODE]);
+    }
+
+    public function setClubCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CLUB_CODE], $value);
+    }
+
+    public function getContactGender() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CONTACT_GENDER]);
+    }
+
+    public function setContactGender(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CONTACT_GENDER], $value);
+    }
+
+    public function getContactNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CONTACT_NO]);
+    }
+
+    public function setContactNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CONTACT_NO], $value);
+    }
+
+    public function getCountryRegionCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::COUNTRYREGION_CODE]);
+    }
+
+    public function setCountryRegionCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::COUNTRYREGION_CODE], $value);
+    }
+
+    public function getCounty() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::COUNTY]);
+    }
+
+    public function setCounty(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::COUNTY], $value);
+    }
+
+    public function getCreatedBy() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CREATED_BY]);
+    }
+
+    public function setCreatedBy(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CREATED_BY], $value);
+    }
+
+    public function getCreatedDate() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CREATED_DATE]);
+    }
+
+    public function setCreatedDate(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CREATED_DATE], $value);
+    }
+
+    public function getDateBlocked() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DATE_BLOCKED]);
+    }
+
+    public function setDateBlocked(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DATE_BLOCKED], $value);
+    }
+
+    public function getDateOfBirth() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DATE_OF_BIRTH]);
+    }
+
+    public function setDateOfBirth(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DATE_OF_BIRTH], $value);
+    }
+
+    public function getDefaultToken() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_TOKEN]);
+    }
+
+    public function setDefaultToken(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_TOKEN], $value);
+    }
+
+    public function getEMail() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EMAIL]);
+    }
+
+    public function setEMail(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EMAIL], $value);
+    }
+
+    public function getExpirationPeriodType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EXPIRATION_PERIOD_TYPE]);
+    }
+
+    public function setExpirationPeriodType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EXPIRATION_PERIOD_TYPE], $value);
+    }
+
+    public function getExternalId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EXTERNAL_ID]);
+    }
+
+    public function setExternalId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EXTERNAL_ID], $value);
+    }
+
+    public function getExternalSystem() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EXTERNAL_SYSTEM]);
+    }
+
+    public function setExternalSystem(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EXTERNAL_SYSTEM], $value);
+    }
+
+    public function getFirstName() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::FIRST_NAME]);
+    }
+
+    public function setFirstName(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::FIRST_NAME], $value);
+    }
+
+    public function getGender() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::GENDER]);
+    }
+
+    public function setGender(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::GENDER], $value);
+    }
+
+    public function getGuestType() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::GUEST_TYPE]);
+    }
+
+    public function setGuestType(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::GUEST_TYPE], $value);
+    }
+
+    public function getHomePage() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::HOME_PAGE]);
+    }
+
+    public function setHomePage(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::HOME_PAGE], $value);
+    }
+
+    public function getHouseApartmentNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::HOUSEAPARTMENT_NO]);
+    }
+
+    public function setHouseApartmentNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::HOUSEAPARTMENT_NO], $value);
+    }
+
+    public function getLanguageCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LANGUAGE_CODE]);
+    }
+
+    public function setLanguageCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LANGUAGE_CODE], $value);
+    }
+
+    public function getMainContact() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MAIN_CONTACT]);
+    }
+
+    public function setMainContact(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MAIN_CONTACT], $value);
+    }
+
+    public function getMaritalStatus() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MARITAL_STATUS]);
+    }
+
+    public function setMaritalStatus(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MARITAL_STATUS], $value);
+    }
+
+    public function getMemberCardTemporary() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MEMBER_CARD_TEMPORARY]);
+    }
+
+    public function setMemberCardTemporary(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MEMBER_CARD_TEMPORARY], $value);
+    }
+
+    public function getMiddleName() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MIDDLE_NAME]);
+    }
+
+    public function setMiddleName(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MIDDLE_NAME], $value);
+    }
+
+    public function getMobilePhoneNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MOBILE_PHONE_NO]);
+    }
+
+    public function setMobilePhoneNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MOBILE_PHONE_NO], $value);
+    }
+
+    public function getName() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NAME]);
+    }
+
+    public function setName(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NAME], $value);
+    }
+
+    public function getName2() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NAME_2]);
+    }
+
+    public function setName2(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NAME_2], $value);
+    }
+
+    public function getNoSeries() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NO_SERIES]);
+    }
+
+    public function setNoSeries(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NO_SERIES], $value);
+    }
+
+    public function getPhoneNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PHONE_NO]);
+    }
+
+    public function setPhoneNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PHONE_NO], $value);
+    }
+
+    public function getPostCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::POST_CODE]);
+    }
+
+    public function setPostCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::POST_CODE], $value);
+    }
+
+    public function getPostCodeSearchInternal() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::POST_CODE_SEARCH_INTERNAL]);
+    }
+
+    public function setPostCodeSearchInternal(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::POST_CODE_SEARCH_INTERNAL], $value);
+    }
+
+    public function getPrivacyBlocked() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRIVACY_BLOCKED]);
+    }
+
+    public function setPrivacyBlocked(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRIVACY_BLOCKED], $value);
+    }
+
+    public function getReasonBlocked() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::REASON_BLOCKED]);
+    }
+
+    public function setReasonBlocked(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::REASON_BLOCKED], $value);
+    }
+
+    public function getSalutationCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SALUTATION_CODE]);
+    }
+
+    public function setSalutationCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SALUTATION_CODE], $value);
+    }
+
+    public function getSchemeCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SCHEME_CODE]);
+    }
+
+    public function setSchemeCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SCHEME_CODE], $value);
+    }
+
+    public function getSearchEMail() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SEARCH_EMAIL]);
+    }
+
+    public function setSearchEMail(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SEARCH_EMAIL], $value);
+    }
+
+    public function getSearchName() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SEARCH_NAME]);
+    }
+
+    public function setSearchName(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SEARCH_NAME], $value);
+    }
+
+    public function getSendReceiptByEMail() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SEND_RECEIPT_BY_EMAIL]);
+    }
+
+    public function setSendReceiptByEMail(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SEND_RECEIPT_BY_EMAIL], $value);
+    }
+
+    public function getSurname() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SURNAME]);
+    }
+
+    public function setSurname(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SURNAME], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
+    public function getTerritoryCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TERRITORY_CODE]);
+    }
+
+    public function setTerritoryCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TERRITORY_CODE], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

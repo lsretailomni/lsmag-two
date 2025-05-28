@@ -97,12 +97,12 @@ class BOMComponent extends AbstractModel
         return $this->setData(self::LSC_ITEM_NO, $value);
     }
 
-    public function getLscExclusion(): ?string
+    public function getLscExclusion(): ?int
     {
         return $this->getData(self::LSC_EXCLUSION);
     }
 
-    public function setLscExclusion(?string $value)
+    public function setLscExclusion(?int $value)
     {
         return $this->setData(self::LSC_EXCLUSION, $value);
     }

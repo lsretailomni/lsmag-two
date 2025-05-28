@@ -107,12 +107,12 @@ class LSCMembershipCard extends AbstractModel
         return $this->setData(self::LINKED_TO_ACCOUNT, $value);
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(?string $value)
+    public function setStatus(?int $value)
     {
         return $this->setData(self::STATUS, $value);
     }

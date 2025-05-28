@@ -95,12 +95,12 @@ class LSCMemberSalesDocDiscLine extends AbstractModel
         return $this->setData(self::OFFER_NO, $value);
     }
 
-    public function getOfferType(): ?string
+    public function getOfferType(): ?int
     {
         return $this->getData(self::OFFER_TYPE);
     }
 
-    public function setOfferType(?string $value)
+    public function setOfferType(?int $value)
     {
         return $this->setData(self::OFFER_TYPE, $value);
     }

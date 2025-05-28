@@ -23,91 +23,91 @@ class MemberAttribute extends \Magento\Catalog\Model\AbstractModel
     public const MANDATORY = 'Mandatory';
 
     /**
-     * @param string $Code
+     * @param ?string $Code
      * @return $this
      */
-    public function setCode($Code)
+    public function setCode(?string $Code)
     {
         $this->setData(self::CODE, $Code);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCode()
+    public function getCode() : ?string
     {
         return $this->getData(self::CODE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $AttributeType
+     * @param ?string $AttributeType
      * @return $this
      */
-    public function setAttributeType($AttributeType)
+    public function setAttributeType(?string $AttributeType)
     {
         $this->setData(self::ATTRIBUTE_TYPE, $AttributeType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAttributeType()
+    public function getAttributeType() : ?string
     {
         return $this->getData(self::ATTRIBUTE_TYPE);
     }
 
     /**
-     * @param string $DefaultValue
+     * @param ?string $DefaultValue
      * @return $this
      */
-    public function setDefaultValue($DefaultValue)
+    public function setDefaultValue(?string $DefaultValue)
     {
         $this->setData(self::DEFAULT_VALUE, $DefaultValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDefaultValue()
+    public function getDefaultValue() : ?string
     {
         return $this->getData(self::DEFAULT_VALUE);
     }
 
     /**
-     * @param boolean $Mandatory
+     * @param ?bool $Mandatory
      * @return $this
      */
-    public function setMandatory($Mandatory)
+    public function setMandatory(?bool $Mandatory)
     {
         $this->setData(self::MANDATORY, $Mandatory);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getMandatory()
+    public function getMandatory() : ?bool
     {
         return $this->getData(self::MANDATORY);
     }

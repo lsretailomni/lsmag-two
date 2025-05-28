@@ -161,37 +161,37 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $StoreId
+     * @param ?string $StoreId
      * @return $this
      */
-    public function setStoreId($StoreId)
+    public function setStoreId(?string $StoreId)
     {
         $this->setData(self::STORE_ID, $StoreId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreId()
+    public function getStoreId() : ?string
     {
         return $this->getData(self::STORE_ID);
     }
 
     /**
-     * @param string $TerminalId
+     * @param ?string $TerminalId
      * @return $this
      */
-    public function setTerminalId($TerminalId)
+    public function setTerminalId(?string $TerminalId)
     {
         $this->setData(self::TERMINAL_ID, $TerminalId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalId()
+    public function getTerminalId() : ?string
     {
         return $this->getData(self::TERMINAL_ID);
     }
@@ -251,109 +251,109 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $Number
+     * @param ?string $Number
      * @return $this
      */
-    public function setNumber($Number)
+    public function setNumber(?string $Number)
     {
         $this->setData(self::NUMBER, $Number);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNumber()
+    public function getNumber() : ?string
     {
         return $this->getData(self::NUMBER);
     }
 
     /**
-     * @param string $Barcode
+     * @param ?string $Barcode
      * @return $this
      */
-    public function setBarcode($Barcode)
+    public function setBarcode(?string $Barcode)
     {
         $this->setData(self::BARCODE, $Barcode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcode()
+    public function getBarcode() : ?string
     {
         return $this->getData(self::BARCODE);
     }
 
     /**
-     * @param string $CurrencyCode
+     * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode($CurrencyCode)
+    public function setCurrencyCode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCurrencyCode()
+    public function getCurrencyCode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
 
     /**
-     * @param float $CurrencyFactor
+     * @param ?float $CurrencyFactor
      * @return $this
      */
-    public function setCurrencyFactor($CurrencyFactor)
+    public function setCurrencyFactor(?float $CurrencyFactor)
     {
         $this->setData(self::CURRENCY_FACTOR, $CurrencyFactor);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getCurrencyFactor()
+    public function getCurrencyFactor() : ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantCode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantCode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $UomId
+     * @param ?string $UomId
      * @return $this
      */
-    public function setUomId($UomId)
+    public function setUomId(?string $UomId)
     {
         $this->setData(self::UOM_ID, $UomId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUomId()
+    public function getUomId() : ?string
     {
         return $this->getData(self::UOM_ID);
     }
@@ -395,289 +395,289 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $CouponCode
+     * @param ?string $CouponCode
      * @return $this
      */
-    public function setCouponCode($CouponCode)
+    public function setCouponCode(?string $CouponCode)
     {
         $this->setData(self::COUPON_CODE, $CouponCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCouponCode()
+    public function getCouponCode() : ?string
     {
         return $this->getData(self::COUPON_CODE);
     }
 
     /**
-     * @param float $NetPrice
+     * @param ?float $NetPrice
      * @return $this
      */
-    public function setNetPrice($NetPrice)
+    public function setNetPrice(?float $NetPrice)
     {
         $this->setData(self::NET_PRICE, $NetPrice);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getNetPrice()
+    public function getNetPrice() : ?float
     {
         return $this->getData(self::NET_PRICE);
     }
 
     /**
-     * @param float $Price
+     * @param ?float $Price
      * @return $this
      */
-    public function setPrice($Price)
+    public function setPrice(?float $Price)
     {
         $this->setData(self::PRICE, $Price);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPrice()
+    public function getPrice() : ?float
     {
         return $this->getData(self::PRICE);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param float $DiscountAmount
+     * @param ?float $DiscountAmount
      * @return $this
      */
-    public function setDiscountAmount($DiscountAmount)
+    public function setDiscountAmount(?float $DiscountAmount)
     {
         $this->setData(self::DISCOUNT_AMOUNT, $DiscountAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountAmount()
+    public function getDiscountAmount() : ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
     /**
-     * @param float $DiscountPercent
+     * @param ?float $DiscountPercent
      * @return $this
      */
-    public function setDiscountPercent($DiscountPercent)
+    public function setDiscountPercent(?float $DiscountPercent)
     {
         $this->setData(self::DISCOUNT_PERCENT, $DiscountPercent);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountPercent()
+    public function getDiscountPercent() : ?float
     {
         return $this->getData(self::DISCOUNT_PERCENT);
     }
 
     /**
-     * @param float $NetAmount
+     * @param ?float $NetAmount
      * @return $this
      */
-    public function setNetAmount($NetAmount)
+    public function setNetAmount(?float $NetAmount)
     {
         $this->setData(self::NET_AMOUNT, $NetAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getNetAmount()
+    public function getNetAmount() : ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
 
     /**
-     * @param float $TAXAmount
+     * @param ?float $TAXAmount
      * @return $this
      */
-    public function setTAXAmount($TAXAmount)
+    public function setTAXAmount(?float $TAXAmount)
     {
         $this->setData(self::T_A_X_AMOUNT, $TAXAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTAXAmount()
+    public function getTAXAmount() : ?float
     {
         return $this->getData(self::T_A_X_AMOUNT);
     }
 
     /**
-     * @param string $VatBusPostingGroup
+     * @param ?string $VatBusPostingGroup
      * @return $this
      */
-    public function setVatBusPostingGroup($VatBusPostingGroup)
+    public function setVatBusPostingGroup(?string $VatBusPostingGroup)
     {
         $this->setData(self::VAT_BUS_POSTING_GROUP, $VatBusPostingGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVatBusPostingGroup()
+    public function getVatBusPostingGroup() : ?string
     {
         return $this->getData(self::VAT_BUS_POSTING_GROUP);
     }
 
     /**
-     * @param string $VatProdPostingGroup
+     * @param ?string $VatProdPostingGroup
      * @return $this
      */
-    public function setVatProdPostingGroup($VatProdPostingGroup)
+    public function setVatProdPostingGroup(?string $VatProdPostingGroup)
     {
         $this->setData(self::VAT_PROD_POSTING_GROUP, $VatProdPostingGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVatProdPostingGroup()
+    public function getVatProdPostingGroup() : ?string
     {
         return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
 
     /**
-     * @param string $GenBusPostingGroup
+     * @param ?string $GenBusPostingGroup
      * @return $this
      */
-    public function setGenBusPostingGroup($GenBusPostingGroup)
+    public function setGenBusPostingGroup(?string $GenBusPostingGroup)
     {
         $this->setData(self::GEN_BUS_POSTING_GROUP, $GenBusPostingGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getGenBusPostingGroup()
+    public function getGenBusPostingGroup() : ?string
     {
         return $this->getData(self::GEN_BUS_POSTING_GROUP);
     }
 
     /**
-     * @param string $GenProdPostingGroup
+     * @param ?string $GenProdPostingGroup
      * @return $this
      */
-    public function setGenProdPostingGroup($GenProdPostingGroup)
+    public function setGenProdPostingGroup(?string $GenProdPostingGroup)
     {
         $this->setData(self::GEN_PROD_POSTING_GROUP, $GenProdPostingGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getGenProdPostingGroup()
+    public function getGenProdPostingGroup() : ?string
     {
         return $this->getData(self::GEN_PROD_POSTING_GROUP);
     }
 
     /**
-     * @param float $ManualPrice
+     * @param ?float $ManualPrice
      * @return $this
      */
-    public function setManualPrice($ManualPrice)
+    public function setManualPrice(?float $ManualPrice)
     {
         $this->setData(self::MANUAL_PRICE, $ManualPrice);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getManualPrice()
+    public function getManualPrice() : ?float
     {
         return $this->getData(self::MANUAL_PRICE);
     }
 
     /**
-     * @param string $CardOrCustNo
+     * @param ?string $CardOrCustNo
      * @return $this
      */
-    public function setCardOrCustNo($CardOrCustNo)
+    public function setCardOrCustNo(?string $CardOrCustNo)
     {
         $this->setData(self::CARD_OR_CUST_NO, $CardOrCustNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardOrCustNo()
+    public function getCardOrCustNo() : ?string
     {
         return $this->getData(self::CARD_OR_CUST_NO);
     }
 
     /**
-     * @param float $ManualDiscountPercent
+     * @param ?float $ManualDiscountPercent
      * @return $this
      */
-    public function setManualDiscountPercent($ManualDiscountPercent)
+    public function setManualDiscountPercent(?float $ManualDiscountPercent)
     {
         $this->setData(self::MANUAL_DISCOUNT_PERCENT, $ManualDiscountPercent);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getManualDiscountPercent()
+    public function getManualDiscountPercent() : ?float
     {
         return $this->getData(self::MANUAL_DISCOUNT_PERCENT);
     }
 
     /**
-     * @param float $ManualDiscountAmount
+     * @param ?float $ManualDiscountAmount
      * @return $this
      */
-    public function setManualDiscountAmount($ManualDiscountAmount)
+    public function setManualDiscountAmount(?float $ManualDiscountAmount)
     {
         $this->setData(self::MANUAL_DISCOUNT_AMOUNT, $ManualDiscountAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getManualDiscountAmount()
+    public function getManualDiscountAmount() : ?float
     {
         return $this->getData(self::MANUAL_DISCOUNT_AMOUNT);
     }
@@ -719,91 +719,91 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $ItemDescription
+     * @param ?string $ItemDescription
      * @return $this
      */
-    public function setItemDescription($ItemDescription)
+    public function setItemDescription(?string $ItemDescription)
     {
         $this->setData(self::ITEM_DESCRIPTION, $ItemDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemDescription()
+    public function getItemDescription() : ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
 
     /**
-     * @param string $VariantDescription
+     * @param ?string $VariantDescription
      * @return $this
      */
-    public function setVariantDescription($VariantDescription)
+    public function setVariantDescription(?string $VariantDescription)
     {
         $this->setData(self::VARIANT_DESCRIPTION, $VariantDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantDescription()
+    public function getVariantDescription() : ?string
     {
         return $this->getData(self::VARIANT_DESCRIPTION);
     }
 
     /**
-     * @param string $UomDescription
+     * @param ?string $UomDescription
      * @return $this
      */
-    public function setUomDescription($UomDescription)
+    public function setUomDescription(?string $UomDescription)
     {
         $this->setData(self::UOM_DESCRIPTION, $UomDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUomDescription()
+    public function getUomDescription() : ?string
     {
         return $this->getData(self::UOM_DESCRIPTION);
     }
 
     /**
-     * @param string $TenderDescription
+     * @param ?string $TenderDescription
      * @return $this
      */
-    public function setTenderDescription($TenderDescription)
+    public function setTenderDescription(?string $TenderDescription)
     {
         $this->setData(self::TENDER_DESCRIPTION, $TenderDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTenderDescription()
+    public function getTenderDescription() : ?string
     {
         return $this->getData(self::TENDER_DESCRIPTION);
     }
 
     /**
-     * @param string $TransDate
+     * @param ?string $TransDate
      * @return $this
      */
-    public function setTransDate($TransDate)
+    public function setTransDate(?string $TransDate)
     {
         $this->setData(self::TRANS_DATE, $TransDate);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransDate()
+    public function getTransDate() : ?string
     {
         return $this->getData(self::TRANS_DATE);
     }
@@ -827,73 +827,73 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $EFTCardNumber
+     * @param ?string $EFTCardNumber
      * @return $this
      */
-    public function setEFTCardNumber($EFTCardNumber)
+    public function setEFTCardNumber(?string $EFTCardNumber)
     {
         $this->setData(self::E_F_T_CARD_NUMBER, $EFTCardNumber);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTCardNumber()
+    public function getEFTCardNumber() : ?string
     {
         return $this->getData(self::E_F_T_CARD_NUMBER);
     }
 
     /**
-     * @param string $EFTCardName
+     * @param ?string $EFTCardName
      * @return $this
      */
-    public function setEFTCardName($EFTCardName)
+    public function setEFTCardName(?string $EFTCardName)
     {
         $this->setData(self::E_F_T_CARD_NAME, $EFTCardName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTCardName()
+    public function getEFTCardName() : ?string
     {
         return $this->getData(self::E_F_T_CARD_NAME);
     }
 
     /**
-     * @param string $EFTAuthCode
+     * @param ?string $EFTAuthCode
      * @return $this
      */
-    public function setEFTAuthCode($EFTAuthCode)
+    public function setEFTAuthCode(?string $EFTAuthCode)
     {
         $this->setData(self::E_F_T_AUTH_CODE, $EFTAuthCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTAuthCode()
+    public function getEFTAuthCode() : ?string
     {
         return $this->getData(self::E_F_T_AUTH_CODE);
     }
 
     /**
-     * @param string $EFTMessage
+     * @param ?string $EFTMessage
      * @return $this
      */
-    public function setEFTMessage($EFTMessage)
+    public function setEFTMessage(?string $EFTMessage)
     {
         $this->setData(self::E_F_T_MESSAGE, $EFTMessage);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTMessage()
+    public function getEFTMessage() : ?string
     {
         return $this->getData(self::E_F_T_MESSAGE);
     }
@@ -917,19 +917,19 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $EFTTransactionNo
+     * @param ?string $EFTTransactionNo
      * @return $this
      */
-    public function setEFTTransactionNo($EFTTransactionNo)
+    public function setEFTTransactionNo(?string $EFTTransactionNo)
     {
         $this->setData(self::E_F_T_TRANSACTION_NO, $EFTTransactionNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTTransactionNo()
+    public function getEFTTransactionNo() : ?string
     {
         return $this->getData(self::E_F_T_TRANSACTION_NO);
     }
@@ -971,19 +971,19 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $EFTDateTime
+     * @param ?string $EFTDateTime
      * @return $this
      */
-    public function setEFTDateTime($EFTDateTime)
+    public function setEFTDateTime(?string $EFTDateTime)
     {
         $this->setData(self::E_F_T_DATE_TIME, $EFTDateTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTDateTime()
+    public function getEFTDateTime() : ?string
     {
         return $this->getData(self::E_F_T_DATE_TIME);
     }
@@ -1025,55 +1025,55 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $StaffId
+     * @param ?string $StaffId
      * @return $this
      */
-    public function setStaffId($StaffId)
+    public function setStaffId(?string $StaffId)
     {
         $this->setData(self::STAFF_ID, $StaffId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffId()
+    public function getStaffId() : ?string
     {
         return $this->getData(self::STAFF_ID);
     }
 
     /**
-     * @param string $SalesType
+     * @param ?string $SalesType
      * @return $this
      */
-    public function setSalesType($SalesType)
+    public function setSalesType(?string $SalesType)
     {
         $this->setData(self::SALES_TYPE, $SalesType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSalesType()
+    public function getSalesType() : ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
 
     /**
-     * @param string $PriceGroupCode
+     * @param ?string $PriceGroupCode
      * @return $this
      */
-    public function setPriceGroupCode($PriceGroupCode)
+    public function setPriceGroupCode(?string $PriceGroupCode)
     {
         $this->setData(self::PRICE_GROUP_CODE, $PriceGroupCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPriceGroupCode()
+    public function getPriceGroupCode() : ?string
     {
         return $this->getData(self::PRICE_GROUP_CODE);
     }
@@ -1097,19 +1097,19 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $RestMenuTypeCode
+     * @param ?string $RestMenuTypeCode
      * @return $this
      */
-    public function setRestMenuTypeCode($RestMenuTypeCode)
+    public function setRestMenuTypeCode(?string $RestMenuTypeCode)
     {
         $this->setData(self::REST_MENU_TYPE_CODE, $RestMenuTypeCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRestMenuTypeCode()
+    public function getRestMenuTypeCode() : ?string
     {
         return $this->getData(self::REST_MENU_TYPE_CODE);
     }
@@ -1169,73 +1169,73 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $LineKitchenStatusCode
+     * @param ?string $LineKitchenStatusCode
      * @return $this
      */
-    public function setLineKitchenStatusCode($LineKitchenStatusCode)
+    public function setLineKitchenStatusCode(?string $LineKitchenStatusCode)
     {
         $this->setData(self::LINE_KITCHEN_STATUS_CODE, $LineKitchenStatusCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLineKitchenStatusCode()
+    public function getLineKitchenStatusCode() : ?string
     {
         return $this->getData(self::LINE_KITCHEN_STATUS_CODE);
     }
 
     /**
-     * @param boolean $RecommendedItem
+     * @param ?bool $RecommendedItem
      * @return $this
      */
-    public function setRecommendedItem($RecommendedItem)
+    public function setRecommendedItem(?bool $RecommendedItem)
     {
         $this->setData(self::RECOMMENDED_ITEM, $RecommendedItem);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getRecommendedItem()
+    public function getRecommendedItem() : ?bool
     {
         return $this->getData(self::RECOMMENDED_ITEM);
     }
 
     /**
-     * @param string $OrigTransStore
+     * @param ?string $OrigTransStore
      * @return $this
      */
-    public function setOrigTransStore($OrigTransStore)
+    public function setOrigTransStore(?string $OrigTransStore)
     {
         $this->setData(self::ORIG_TRANS_STORE, $OrigTransStore);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOrigTransStore()
+    public function getOrigTransStore() : ?string
     {
         return $this->getData(self::ORIG_TRANS_STORE);
     }
 
     /**
-     * @param string $OrigTransPos
+     * @param ?string $OrigTransPos
      * @return $this
      */
-    public function setOrigTransPos($OrigTransPos)
+    public function setOrigTransPos(?string $OrigTransPos)
     {
         $this->setData(self::ORIG_TRANS_POS, $OrigTransPos);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOrigTransPos()
+    public function getOrigTransPos() : ?string
     {
         return $this->getData(self::ORIG_TRANS_POS);
     }
@@ -1277,19 +1277,19 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $RetailImageID
+     * @param ?string $RetailImageID
      * @return $this
      */
-    public function setRetailImageID($RetailImageID)
+    public function setRetailImageID(?string $RetailImageID)
     {
         $this->setData(self::RETAIL_IMAGE_I_D, $RetailImageID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRetailImageID()
+    public function getRetailImageID() : ?string
     {
         return $this->getData(self::RETAIL_IMAGE_I_D);
     }

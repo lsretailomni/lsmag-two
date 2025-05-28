@@ -78,7 +78,7 @@ class OrderHospCreate extends AbstractOperation
     /**
      * @return OrderHospCreateRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new OrderHospCreateRequest();

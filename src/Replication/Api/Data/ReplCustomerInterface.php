@@ -156,9 +156,9 @@ interface ReplCustomerInterface
 
     public function setAmount(?float $value);
 
-    public function getBlocked() : ?string;
+    public function getBlocked() : ?int;
 
-    public function setBlocked(?string $value);
+    public function setBlocked(?int $value);
 
     public function getInvoiceCopies() : ?int;
 
@@ -188,17 +188,17 @@ interface ReplCustomerInterface
 
     public function setFormatRegion(?string $value);
 
-    public function getLastModifiedDateTime() : ?\DateTime;
+    public function getLastModifiedDateTime() : ?string;
 
-    public function setLastModifiedDateTime(?\DateTime $value);
+    public function setLastModifiedDateTime(?string $value);
 
     public function getLastDateModified() : ?string;
 
     public function setLastDateModified(?string $value);
 
-    public function getApplicationMethod() : ?string;
+    public function getApplicationMethod() : ?int;
 
-    public function setApplicationMethod(?string $value);
+    public function setApplicationMethod(?int $value);
 
     public function getPricesIncludingVat() : ?bool;
 
@@ -276,9 +276,9 @@ interface ReplCustomerInterface
 
     public function setVatBusPostingGroup(?string $value);
 
-    public function getReserve() : ?string;
+    public function getReserve() : ?int;
 
-    public function setReserve(?string $value);
+    public function setReserve(?int $value);
 
     public function getBlockPaymentTolerance() : ?bool;
 
@@ -292,13 +292,13 @@ interface ReplCustomerInterface
 
     public function setPrepayment(?float $value);
 
-    public function getPartnerType() : ?string;
+    public function getPartnerType() : ?int;
 
-    public function setPartnerType(?string $value);
+    public function setPartnerType(?int $value);
 
-    public function getIntrastatPartnerType() : ?string;
+    public function getIntrastatPartnerType() : ?int;
 
-    public function setIntrastatPartnerType(?string $value);
+    public function setIntrastatPartnerType(?int $value);
 
     public function getExcludeFromPmtPractices() : ?bool;
 
@@ -344,9 +344,9 @@ interface ReplCustomerInterface
 
     public function setPrimaryContactNo(?string $value);
 
-    public function getContactType() : ?string;
+    public function getContactType() : ?int;
 
-    public function setContactType(?string $value);
+    public function setContactType(?int $value);
 
     public function getMobilePhoneNo() : ?string;
 
@@ -356,9 +356,9 @@ interface ReplCustomerInterface
 
     public function setResponsibilityCenter(?string $value);
 
-    public function getShippingAdvice() : ?string;
+    public function getShippingAdvice() : ?int;
 
-    public function setShippingAdvice(?string $value);
+    public function setShippingAdvice(?int $value);
 
     public function getShippingTime() : ?string;
 
@@ -376,9 +376,9 @@ interface ReplCustomerInterface
 
     public function setCombineServiceShipments(?bool $value);
 
-    public function getPriceCalculationMethod() : ?string;
+    public function getPriceCalculationMethod() : ?int;
 
-    public function setPriceCalculationMethod(?string $value);
+    public function setPriceCalculationMethod(?int $value);
 
     public function getAllowLineDisc() : ?bool;
 
@@ -388,9 +388,9 @@ interface ReplCustomerInterface
 
     public function setBaseCalendarCode(?string $value);
 
-    public function getCopySellToAddrToQteFrom() : ?string;
+    public function getCopySellToAddrToQteFrom() : ?int;
 
-    public function setCopySellToAddrToQteFrom(?string $value);
+    public function setCopySellToAddrToQteFrom(?int $value);
 
     public function getValidateEuVatRegNo() : ?bool;
 
@@ -444,9 +444,9 @@ interface ReplCustomerInterface
 
     public function setLscReasonCode(?string $value);
 
-    public function getLscRestrictionFunctionality() : ?string;
+    public function getLscRestrictionFunctionality() : ?int;
 
-    public function setLscRestrictionFunctionality(?string $value);
+    public function setLscRestrictionFunctionality(?int $value);
 
     public function getLscPrintDocumentInvoice() : ?bool;
 
@@ -500,17 +500,17 @@ interface ReplCustomerInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

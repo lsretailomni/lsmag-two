@@ -27,37 +27,37 @@ class MemberCouponBuffer extends \Magento\Catalog\Model\AbstractModel
     public const BARCODE = 'Barcode';
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPOSTerminalNo(?string $POSTerminalNo)
     {
         $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPOSTerminalNo() : ?string
     {
         return $this->getData(self::P_O_S_TERMINAL_NO);
     }
@@ -81,19 +81,19 @@ class MemberCouponBuffer extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $CouponCode
+     * @param ?string $CouponCode
      * @return $this
      */
-    public function setCouponCode($CouponCode)
+    public function setCouponCode(?string $CouponCode)
     {
         $this->setData(self::COUPON_CODE, $CouponCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCouponCode()
+    public function getCouponCode() : ?string
     {
         return $this->getData(self::COUPON_CODE);
     }
@@ -117,37 +117,37 @@ class MemberCouponBuffer extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $Barcode
+     * @param ?string $Barcode
      * @return $this
      */
-    public function setBarcode($Barcode)
+    public function setBarcode(?string $Barcode)
     {
         $this->setData(self::BARCODE, $Barcode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcode()
+    public function getBarcode() : ?string
     {
         return $this->getData(self::BARCODE);
     }

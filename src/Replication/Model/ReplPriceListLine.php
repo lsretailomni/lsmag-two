@@ -29,6 +29,496 @@ class ReplPriceListLine extends \Ls\Omni\Client\Ecommerce\Entity\PriceListLine i
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getPriceListCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRICE_LIST_CODE]);
+    }
+
+    public function setPriceListCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRICE_LIST_CODE], $value);
+    }
+
+    public function getLineNo() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LINE_NO]);
+    }
+
+    public function setLineNo(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LINE_NO], $value);
+    }
+
+    public function getSourceType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SOURCE_TYPE]);
+    }
+
+    public function setSourceType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SOURCE_TYPE], $value);
+    }
+
+    public function getSourceNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SOURCE_NO]);
+    }
+
+    public function setSourceNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SOURCE_NO], $value);
+    }
+
+    public function getParentSourceNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PARENT_SOURCE_NO]);
+    }
+
+    public function setParentSourceNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PARENT_SOURCE_NO], $value);
+    }
+
+    public function getSourceId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SOURCE_ID]);
+    }
+
+    public function setSourceId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SOURCE_ID], $value);
+    }
+
+    public function getAssetType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ASSET_TYPE]);
+    }
+
+    public function setAssetType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ASSET_TYPE], $value);
+    }
+
+    public function getAssetNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ASSET_NO]);
+    }
+
+    public function setAssetNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ASSET_NO], $value);
+    }
+
+    public function getVariantCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
+    }
+
+    public function setVariantCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
+    }
+
+    public function getCurrencyCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
+    }
+
+    public function setCurrencyCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
+    }
+
+    public function getWorkTypeCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::WORK_TYPE_CODE]);
+    }
+
+    public function setWorkTypeCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::WORK_TYPE_CODE], $value);
+    }
+
+    public function getStartingDate() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STARTING_DATE]);
+    }
+
+    public function setStartingDate(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STARTING_DATE], $value);
+    }
+
+    public function getEndingDate() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ENDING_DATE]);
+    }
+
+    public function setEndingDate(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ENDING_DATE], $value);
+    }
+
+    public function getMinimumQuantity() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MINIMUM_QUANTITY]);
+    }
+
+    public function setMinimumQuantity(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MINIMUM_QUANTITY], $value);
+    }
+
+    public function getUnitOfMeasureCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE]);
+    }
+
+    public function setUnitOfMeasureCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE], $value);
+    }
+
+    public function getAmountType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::AMOUNT_TYPE]);
+    }
+
+    public function setAmountType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::AMOUNT_TYPE], $value);
+    }
+
+    public function getUnitPrice() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNIT_PRICE]);
+    }
+
+    public function setUnitPrice(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNIT_PRICE], $value);
+    }
+
+    public function getCostFactor() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::COST_FACTOR]);
+    }
+
+    public function setCostFactor(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::COST_FACTOR], $value);
+    }
+
+    public function getUnitCost() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNIT_COST]);
+    }
+
+    public function setUnitCost(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNIT_COST], $value);
+    }
+
+    public function getLineDiscount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LINE_DISCOUNT]);
+    }
+
+    public function setLineDiscount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LINE_DISCOUNT], $value);
+    }
+
+    public function getAllowLineDisc() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ALLOW_LINE_DISC]);
+    }
+
+    public function setAllowLineDisc(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ALLOW_LINE_DISC], $value);
+    }
+
+    public function getAllowInvoiceDisc() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ALLOW_INVOICE_DISC]);
+    }
+
+    public function setAllowInvoiceDisc(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ALLOW_INVOICE_DISC], $value);
+    }
+
+    public function getPriceIncludesVat() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRICE_INCLUDES_VAT]);
+    }
+
+    public function setPriceIncludesVat(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRICE_INCLUDES_VAT], $value);
+    }
+
+    public function getVatBusPostingGrPrice() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GR_PRICE]);
+    }
+
+    public function setVatBusPostingGrPrice(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GR_PRICE], $value);
+    }
+
+    public function getVatProdPostingGroup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAT_PROD_POSTING_GROUP]);
+    }
+
+    public function setVatProdPostingGroup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAT_PROD_POSTING_GROUP], $value);
+    }
+
+    public function getAssetId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ASSET_ID]);
+    }
+
+    public function setAssetId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ASSET_ID], $value);
+    }
+
+    public function getLineAmount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LINE_AMOUNT]);
+    }
+
+    public function setLineAmount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LINE_AMOUNT], $value);
+    }
+
+    public function getPriceType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRICE_TYPE]);
+    }
+
+    public function setPriceType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRICE_TYPE], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getStatus() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STATUS]);
+    }
+
+    public function setStatus(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STATUS], $value);
+    }
+
+    public function getDirectUnitCost() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DIRECT_UNIT_COST]);
+    }
+
+    public function setDirectUnitCost(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DIRECT_UNIT_COST], $value);
+    }
+
+    public function getSourceGroup() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SOURCE_GROUP]);
+    }
+
+    public function setSourceGroup(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SOURCE_GROUP], $value);
+    }
+
+    public function getProductNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRODUCT_NO]);
+    }
+
+    public function setProductNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRODUCT_NO], $value);
+    }
+
+    public function getAssignToNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ASSIGNTO_NO]);
+    }
+
+    public function setAssignToNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ASSIGNTO_NO], $value);
+    }
+
+    public function getAssignToParentNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ASSIGNTO_PARENT_NO]);
+    }
+
+    public function setAssignToParentNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ASSIGNTO_PARENT_NO], $value);
+    }
+
+    public function getVariantCodeLookup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE_LOOKUP]);
+    }
+
+    public function setVariantCodeLookup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE_LOOKUP], $value);
+    }
+
+    public function getUnitOfMeasureCodeLookup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE_LOOKUP]);
+    }
+
+    public function setUnitOfMeasureCodeLookup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE_LOOKUP], $value);
+    }
+
+    public function getLscMarkup() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_MARKUP]);
+    }
+
+    public function setLscMarkup(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_MARKUP], $value);
+    }
+
+    public function getLscProfit() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_PROFIT]);
+    }
+
+    public function setLscProfit(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_PROFIT], $value);
+    }
+
+    public function getLscProfitLcy() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_PROFIT_LCY]);
+    }
+
+    public function setLscProfitLcy(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_PROFIT_LCY], $value);
+    }
+
+    public function getLscUnitPriceIncludingVat() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_UNIT_PRICE_INCLUDING_VAT]);
+    }
+
+    public function setLscUnitPriceIncludingVat(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_UNIT_PRICE_INCLUDING_VAT], $value);
+    }
+
+    public function getLscWholesalePrice() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_WHOLESALE_PRICE]);
+    }
+
+    public function setLscWholesalePrice(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_WHOLESALE_PRICE], $value);
+    }
+
+    public function getLscWholesaleDiscount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_WHOLESALE_DISCOUNT]);
+    }
+
+    public function setLscWholesaleDiscount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_WHOLESALE_DISCOUNT], $value);
+    }
+
+    public function getLscCompPriceInclVat() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_COMP_PRICE_INCL_VAT]);
+    }
+
+    public function setLscCompPriceInclVat(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_COMP_PRICE_INCL_VAT], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

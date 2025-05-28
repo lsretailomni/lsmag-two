@@ -109,12 +109,12 @@ class VATPostingSetup extends AbstractModel
         return $this->setData(self::VAT_PROD_POSTING_GROUP, $value);
     }
 
-    public function getVatCalculationType(): ?string
+    public function getVatCalculationType(): ?int
     {
         return $this->getData(self::VAT_CALCULATION_TYPE);
     }
 
-    public function setVatCalculationType(?string $value)
+    public function setVatCalculationType(?int $value)
     {
         return $this->setData(self::VAT_CALCULATION_TYPE, $value);
     }
@@ -129,12 +129,12 @@ class VATPostingSetup extends AbstractModel
         return $this->setData(self::VAT, $value);
     }
 
-    public function getUnrealizedVatType(): ?string
+    public function getUnrealizedVatType(): ?int
     {
         return $this->getData(self::UNREALIZED_VAT_TYPE);
     }
 
-    public function setUnrealizedVatType(?string $value)
+    public function setUnrealizedVatType(?int $value)
     {
         return $this->setData(self::UNREALIZED_VAT_TYPE, $value);
     }
@@ -349,12 +349,12 @@ class VATPostingSetup extends AbstractModel
         return $this->setData(self::NONDED_PURCHASE_VAT_ACCOUNT, $value);
     }
 
-    public function getAllowNonDeductibleVat(): ?string
+    public function getAllowNonDeductibleVat(): ?int
     {
         return $this->getData(self::ALLOW_NONDEDUCTIBLE_VAT);
     }
 
-    public function setAllowNonDeductibleVat(?string $value)
+    public function setAllowNonDeductibleVat(?int $value)
     {
         return $this->setData(self::ALLOW_NONDEDUCTIBLE_VAT, $value);
     }
@@ -389,12 +389,12 @@ class VATPostingSetup extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -409,12 +409,12 @@ class VATPostingSetup extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

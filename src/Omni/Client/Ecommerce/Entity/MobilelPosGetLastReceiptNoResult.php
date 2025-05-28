@@ -21,55 +21,55 @@ class MobilelPosGetLastReceiptNoResult extends \Magento\Catalog\Model\AbstractMo
     public const LAST_RECEIPT_NO = 'lastReceiptNo';
 
     /**
-     * @param string $respondCode
+     * @param ?string $respondCode
      * @return $this
      */
-    public function setRespondCode($respondCode)
+    public function setRespondCode(?string $respondCode)
     {
         $this->setData(self::RESPOND_CODE, $respondCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRespondCode()
+    public function getRespondCode() : ?string
     {
         return $this->getData(self::RESPOND_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $lastReceiptNo
+     * @param ?string $lastReceiptNo
      * @return $this
      */
-    public function setLastReceiptNo($lastReceiptNo)
+    public function setLastReceiptNo(?string $lastReceiptNo)
     {
         $this->setData(self::LAST_RECEIPT_NO, $lastReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLastReceiptNo()
+    public function getLastReceiptNo() : ?string
     {
         return $this->getData(self::LAST_RECEIPT_NO);
     }

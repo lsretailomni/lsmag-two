@@ -33,145 +33,145 @@ class MemberContactCreate extends \Magento\Catalog\Model\AbstractModel implement
     public const MEMBER_CONTACT_CREATE_X_M_L = 'memberContactCreateXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $clubID
+     * @param ?string $clubID
      * @return $this
      */
-    public function setClubID($clubID)
+    public function setClubID(?string $clubID)
     {
         $this->setData(self::CLUB_I_D, $clubID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubID()
+    public function getClubID() : ?string
     {
         return $this->getData(self::CLUB_I_D);
     }
 
     /**
-     * @param string $schemeID
+     * @param ?string $schemeID
      * @return $this
      */
-    public function setSchemeID($schemeID)
+    public function setSchemeID(?string $schemeID)
     {
         $this->setData(self::SCHEME_I_D, $schemeID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSchemeID()
+    public function getSchemeID() : ?string
     {
         return $this->getData(self::SCHEME_I_D);
     }
 
     /**
-     * @param string $accountID
+     * @param ?string $accountID
      * @return $this
      */
-    public function setAccountID($accountID)
+    public function setAccountID(?string $accountID)
     {
         $this->setData(self::ACCOUNT_I_D, $accountID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountID()
+    public function getAccountID() : ?string
     {
         return $this->getData(self::ACCOUNT_I_D);
     }
 
     /**
-     * @param string $contactID
+     * @param ?string $contactID
      * @return $this
      */
-    public function setContactID($contactID)
+    public function setContactID(?string $contactID)
     {
         $this->setData(self::CONTACT_I_D, $contactID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactID()
+    public function getContactID() : ?string
     {
         return $this->getData(self::CONTACT_I_D);
     }
 
     /**
-     * @param string $cardID
+     * @param ?string $cardID
      * @return $this
      */
-    public function setCardID($cardID)
+    public function setCardID(?string $cardID)
     {
         $this->setData(self::CARD_I_D, $cardID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardID()
+    public function getCardID() : ?string
     {
         return $this->getData(self::CARD_I_D);
     }
 
     /**
-     * @param float $totalRemainingPoints
+     * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints($totalRemainingPoints)
+    public function setTotalRemainingPoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalRemainingPoints()
+    public function getTotalRemainingPoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }

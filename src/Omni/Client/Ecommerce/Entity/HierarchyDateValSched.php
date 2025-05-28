@@ -21,55 +21,55 @@ class HierarchyDateValSched extends \Magento\Catalog\Model\AbstractModel
     public const PRIORITY = 'Priority';
 
     /**
-     * @param string $HierarchyCode
+     * @param ?string $HierarchyCode
      * @return $this
      */
-    public function setHierarchyCode($HierarchyCode)
+    public function setHierarchyCode(?string $HierarchyCode)
     {
         $this->setData(self::HIERARCHY_CODE, $HierarchyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getHierarchyCode()
+    public function getHierarchyCode() : ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
 
     /**
-     * @param string $ValidationScheduleID
+     * @param ?string $ValidationScheduleID
      * @return $this
      */
-    public function setValidationScheduleID($ValidationScheduleID)
+    public function setValidationScheduleID(?string $ValidationScheduleID)
     {
         $this->setData(self::VALIDATION_SCHEDULE_I_D, $ValidationScheduleID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getValidationScheduleID()
+    public function getValidationScheduleID() : ?string
     {
         return $this->getData(self::VALIDATION_SCHEDULE_I_D);
     }
 
     /**
-     * @param string $SalesTypeFilter
+     * @param ?string $SalesTypeFilter
      * @return $this
      */
-    public function setSalesTypeFilter($SalesTypeFilter)
+    public function setSalesTypeFilter(?string $SalesTypeFilter)
     {
         $this->setData(self::SALES_TYPE_FILTER, $SalesTypeFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSalesTypeFilter()
+    public function getSalesTypeFilter() : ?string
     {
         return $this->getData(self::SALES_TYPE_FILTER);
     }

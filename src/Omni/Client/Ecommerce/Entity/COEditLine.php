@@ -117,19 +117,19 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     public const PREPAYMENT_DOCUMENT_NO = 'PrepaymentDocumentNo';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentID(?string $DocumentID)
     {
         $this->setData(self::DOCUMENT_I_D, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentID() : ?string
     {
         return $this->getData(self::DOCUMENT_I_D);
     }
@@ -153,307 +153,307 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $Status
+     * @param ?string $Status
      * @return $this
      */
-    public function setStatus($Status)
+    public function setStatus(?string $Status)
     {
         $this->setData(self::STATUS, $Status);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatus()
+    public function getStatus() : ?string
     {
         return $this->getData(self::STATUS);
     }
 
     /**
-     * @param string $LineType
+     * @param ?string $LineType
      * @return $this
      */
-    public function setLineType($LineType)
+    public function setLineType(?string $LineType)
     {
         $this->setData(self::LINE_TYPE, $LineType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLineType()
+    public function getLineType() : ?string
     {
         return $this->getData(self::LINE_TYPE);
     }
 
     /**
-     * @param string $Number
+     * @param ?string $Number
      * @return $this
      */
-    public function setNumber($Number)
+    public function setNumber(?string $Number)
     {
         $this->setData(self::NUMBER, $Number);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNumber()
+    public function getNumber() : ?string
     {
         return $this->getData(self::NUMBER);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantCode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantCode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $UnitofMeasureCode
+     * @param ?string $UnitofMeasureCode
      * @return $this
      */
-    public function setUnitofMeasureCode($UnitofMeasureCode)
+    public function setUnitofMeasureCode(?string $UnitofMeasureCode)
     {
         $this->setData(self::UNITOF_MEASURE_CODE, $UnitofMeasureCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnitofMeasureCode()
+    public function getUnitofMeasureCode() : ?string
     {
         return $this->getData(self::UNITOF_MEASURE_CODE);
     }
 
     /**
-     * @param float $NetPrice
+     * @param ?float $NetPrice
      * @return $this
      */
-    public function setNetPrice($NetPrice)
+    public function setNetPrice(?float $NetPrice)
     {
         $this->setData(self::NET_PRICE, $NetPrice);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getNetPrice()
+    public function getNetPrice() : ?float
     {
         return $this->getData(self::NET_PRICE);
     }
 
     /**
-     * @param float $Price
+     * @param ?float $Price
      * @return $this
      */
-    public function setPrice($Price)
+    public function setPrice(?float $Price)
     {
         $this->setData(self::PRICE, $Price);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPrice()
+    public function getPrice() : ?float
     {
         return $this->getData(self::PRICE);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param float $DiscountAmount
+     * @param ?float $DiscountAmount
      * @return $this
      */
-    public function setDiscountAmount($DiscountAmount)
+    public function setDiscountAmount(?float $DiscountAmount)
     {
         $this->setData(self::DISCOUNT_AMOUNT, $DiscountAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountAmount()
+    public function getDiscountAmount() : ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
     /**
-     * @param float $DiscountPercent
+     * @param ?float $DiscountPercent
      * @return $this
      */
-    public function setDiscountPercent($DiscountPercent)
+    public function setDiscountPercent(?float $DiscountPercent)
     {
         $this->setData(self::DISCOUNT_PERCENT, $DiscountPercent);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountPercent()
+    public function getDiscountPercent() : ?float
     {
         return $this->getData(self::DISCOUNT_PERCENT);
     }
 
     /**
-     * @param float $NetAmount
+     * @param ?float $NetAmount
      * @return $this
      */
-    public function setNetAmount($NetAmount)
+    public function setNetAmount(?float $NetAmount)
     {
         $this->setData(self::NET_AMOUNT, $NetAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getNetAmount()
+    public function getNetAmount() : ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
 
     /**
-     * @param float $VatAmount
+     * @param ?float $VatAmount
      * @return $this
      */
-    public function setVatAmount($VatAmount)
+    public function setVatAmount(?float $VatAmount)
     {
         $this->setData(self::VAT_AMOUNT, $VatAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getVatAmount()
+    public function getVatAmount() : ?float
     {
         return $this->getData(self::VAT_AMOUNT);
     }
 
     /**
-     * @param float $Amount
+     * @param ?float $Amount
      * @return $this
      */
-    public function setAmount($Amount)
+    public function setAmount(?float $Amount)
     {
         $this->setData(self::AMOUNT, $Amount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmount()
+    public function getAmount() : ?float
     {
         return $this->getData(self::AMOUNT);
     }
 
     /**
-     * @param string $VatProdPostingGroup
+     * @param ?string $VatProdPostingGroup
      * @return $this
      */
-    public function setVatProdPostingGroup($VatProdPostingGroup)
+    public function setVatProdPostingGroup(?string $VatProdPostingGroup)
     {
         $this->setData(self::VAT_PROD_POSTING_GROUP, $VatProdPostingGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVatProdPostingGroup()
+    public function getVatProdPostingGroup() : ?string
     {
         return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
 
     /**
-     * @param string $ItemDescription
+     * @param ?string $ItemDescription
      * @return $this
      */
-    public function setItemDescription($ItemDescription)
+    public function setItemDescription(?string $ItemDescription)
     {
         $this->setData(self::ITEM_DESCRIPTION, $ItemDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemDescription()
+    public function getItemDescription() : ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
 
     /**
-     * @param string $VariantDescription
+     * @param ?string $VariantDescription
      * @return $this
      */
-    public function setVariantDescription($VariantDescription)
+    public function setVariantDescription(?string $VariantDescription)
     {
         $this->setData(self::VARIANT_DESCRIPTION, $VariantDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantDescription()
+    public function getVariantDescription() : ?string
     {
         return $this->getData(self::VARIANT_DESCRIPTION);
     }
 
     /**
-     * @param string $UoMDescription
+     * @param ?string $UoMDescription
      * @return $this
      */
-    public function setUoMDescription($UoMDescription)
+    public function setUoMDescription(?string $UoMDescription)
     {
         $this->setData(self::UO_M_DESCRIPTION, $UoMDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUoMDescription()
+    public function getUoMDescription() : ?string
     {
         return $this->getData(self::UO_M_DESCRIPTION);
     }
@@ -477,577 +477,577 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $SourcingLocation
+     * @param ?string $SourcingLocation
      * @return $this
      */
-    public function setSourcingLocation($SourcingLocation)
+    public function setSourcingLocation(?string $SourcingLocation)
     {
         $this->setData(self::SOURCING_LOCATION, $SourcingLocation);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSourcingLocation()
+    public function getSourcingLocation() : ?string
     {
         return $this->getData(self::SOURCING_LOCATION);
     }
 
     /**
-     * @param string $OrderReference
+     * @param ?string $OrderReference
      * @return $this
      */
-    public function setOrderReference($OrderReference)
+    public function setOrderReference(?string $OrderReference)
     {
         $this->setData(self::ORDER_REFERENCE, $OrderReference);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOrderReference()
+    public function getOrderReference() : ?string
     {
         return $this->getData(self::ORDER_REFERENCE);
     }
 
     /**
-     * @param boolean $InventoryTransfer
+     * @param ?bool $InventoryTransfer
      * @return $this
      */
-    public function setInventoryTransfer($InventoryTransfer)
+    public function setInventoryTransfer(?bool $InventoryTransfer)
     {
         $this->setData(self::INVENTORY_TRANSFER, $InventoryTransfer);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getInventoryTransfer()
+    public function getInventoryTransfer() : ?bool
     {
         return $this->getData(self::INVENTORY_TRANSFER);
     }
 
     /**
-     * @param boolean $VendorSourcing
+     * @param ?bool $VendorSourcing
      * @return $this
      */
-    public function setVendorSourcing($VendorSourcing)
+    public function setVendorSourcing(?bool $VendorSourcing)
     {
         $this->setData(self::VENDOR_SOURCING, $VendorSourcing);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getVendorSourcing()
+    public function getVendorSourcing() : ?bool
     {
         return $this->getData(self::VENDOR_SOURCING);
     }
 
     /**
-     * @param string $LeadTime
+     * @param ?string $LeadTime
      * @return $this
      */
-    public function setLeadTime($LeadTime)
+    public function setLeadTime(?string $LeadTime)
     {
         $this->setData(self::LEAD_TIME, $LeadTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLeadTime()
+    public function getLeadTime() : ?string
     {
         return $this->getData(self::LEAD_TIME);
     }
 
     /**
-     * @param float $PrepaymentAmount
+     * @param ?float $PrepaymentAmount
      * @return $this
      */
-    public function setPrepaymentAmount($PrepaymentAmount)
+    public function setPrepaymentAmount(?float $PrepaymentAmount)
     {
         $this->setData(self::PREPAYMENT_AMOUNT, $PrepaymentAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPrepaymentAmount()
+    public function getPrepaymentAmount() : ?float
     {
         return $this->getData(self::PREPAYMENT_AMOUNT);
     }
 
     /**
-     * @param string $PurchaseOrderNo
+     * @param ?string $PurchaseOrderNo
      * @return $this
      */
-    public function setPurchaseOrderNo($PurchaseOrderNo)
+    public function setPurchaseOrderNo(?string $PurchaseOrderNo)
     {
         $this->setData(self::PURCHASE_ORDER_NO, $PurchaseOrderNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPurchaseOrderNo()
+    public function getPurchaseOrderNo() : ?string
     {
         return $this->getData(self::PURCHASE_ORDER_NO);
     }
 
     /**
-     * @param float $QuantityReceived
+     * @param ?float $QuantityReceived
      * @return $this
      */
-    public function setQuantityReceived($QuantityReceived)
+    public function setQuantityReceived(?float $QuantityReceived)
     {
         $this->setData(self::QUANTITY_RECEIVED, $QuantityReceived);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantityReceived()
+    public function getQuantityReceived() : ?float
     {
         return $this->getData(self::QUANTITY_RECEIVED);
     }
 
     /**
-     * @param string $RetailImageID
+     * @param ?string $RetailImageID
      * @return $this
      */
-    public function setRetailImageID($RetailImageID)
+    public function setRetailImageID(?string $RetailImageID)
     {
         $this->setData(self::RETAIL_IMAGE_I_D, $RetailImageID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRetailImageID()
+    public function getRetailImageID() : ?string
     {
         return $this->getData(self::RETAIL_IMAGE_I_D);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $TerminalNo
+     * @param ?string $TerminalNo
      * @return $this
      */
-    public function setTerminalNo($TerminalNo)
+    public function setTerminalNo(?string $TerminalNo)
     {
         $this->setData(self::TERMINAL_NO, $TerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalNo()
+    public function getTerminalNo() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
 
     /**
-     * @param string $CollectTimeLimit
+     * @param ?string $CollectTimeLimit
      * @return $this
      */
-    public function setCollectTimeLimit($CollectTimeLimit)
+    public function setCollectTimeLimit(?string $CollectTimeLimit)
     {
         $this->setData(self::COLLECT_TIME_LIMIT, $CollectTimeLimit);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCollectTimeLimit()
+    public function getCollectTimeLimit() : ?string
     {
         return $this->getData(self::COLLECT_TIME_LIMIT);
     }
 
     /**
-     * @param boolean $ClickAndCollectLine
+     * @param ?bool $ClickAndCollectLine
      * @return $this
      */
-    public function setClickAndCollectLine($ClickAndCollectLine)
+    public function setClickAndCollectLine(?bool $ClickAndCollectLine)
     {
         $this->setData(self::CLICK_AND_COLLECT_LINE, $ClickAndCollectLine);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getClickAndCollectLine()
+    public function getClickAndCollectLine() : ?bool
     {
         return $this->getData(self::CLICK_AND_COLLECT_LINE);
     }
 
     /**
-     * @param string $ShippingAgentCode
+     * @param ?string $ShippingAgentCode
      * @return $this
      */
-    public function setShippingAgentCode($ShippingAgentCode)
+    public function setShippingAgentCode(?string $ShippingAgentCode)
     {
         $this->setData(self::SHIPPING_AGENT_CODE, $ShippingAgentCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShippingAgentCode()
+    public function getShippingAgentCode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
 
     /**
-     * @param string $ShippingAgentServiceCode
+     * @param ?string $ShippingAgentServiceCode
      * @return $this
      */
-    public function setShippingAgentServiceCode($ShippingAgentServiceCode)
+    public function setShippingAgentServiceCode(?string $ShippingAgentServiceCode)
     {
         $this->setData(self::SHIPPING_AGENT_SERVICE_CODE, $ShippingAgentServiceCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShippingAgentServiceCode()
+    public function getShippingAgentServiceCode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_SERVICE_CODE);
     }
 
     /**
-     * @param string $SourcingOrderType
+     * @param ?string $SourcingOrderType
      * @return $this
      */
-    public function setSourcingOrderType($SourcingOrderType)
+    public function setSourcingOrderType(?string $SourcingOrderType)
     {
         $this->setData(self::SOURCING_ORDER_TYPE, $SourcingOrderType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSourcingOrderType()
+    public function getSourcingOrderType() : ?string
     {
         return $this->getData(self::SOURCING_ORDER_TYPE);
     }
 
     /**
-     * @param date $RequestedDeliveryDate
+     * @param ?string $RequestedDeliveryDate
      * @return $this
      */
-    public function setRequestedDeliveryDate($RequestedDeliveryDate)
+    public function setRequestedDeliveryDate(?string $RequestedDeliveryDate)
     {
         $this->setData(self::REQUESTED_DELIVERY_DATE, $RequestedDeliveryDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getRequestedDeliveryDate()
+    public function getRequestedDeliveryDate() : ?string
     {
         return $this->getData(self::REQUESTED_DELIVERY_DATE);
     }
 
     /**
-     * @param string $ExternalID
+     * @param ?string $ExternalID
      * @return $this
      */
-    public function setExternalID($ExternalID)
+    public function setExternalID(?string $ExternalID)
     {
         $this->setData(self::EXTERNAL_I_D, $ExternalID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExternalID()
+    public function getExternalID() : ?string
     {
         return $this->getData(self::EXTERNAL_I_D);
     }
 
     /**
-     * @param string $BoxNo
+     * @param ?string $BoxNo
      * @return $this
      */
-    public function setBoxNo($BoxNo)
+    public function setBoxNo(?string $BoxNo)
     {
         $this->setData(self::BOX_NO, $BoxNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBoxNo()
+    public function getBoxNo() : ?string
     {
         return $this->getData(self::BOX_NO);
     }
 
     /**
-     * @param boolean $ShipLine
+     * @param ?bool $ShipLine
      * @return $this
      */
-    public function setShipLine($ShipLine)
+    public function setShipLine(?bool $ShipLine)
     {
         $this->setData(self::SHIP_LINE, $ShipLine);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getShipLine()
+    public function getShipLine() : ?bool
     {
         return $this->getData(self::SHIP_LINE);
     }
 
     /**
-     * @param string $TaxGroupCode
+     * @param ?string $TaxGroupCode
      * @return $this
      */
-    public function setTaxGroupCode($TaxGroupCode)
+    public function setTaxGroupCode(?string $TaxGroupCode)
     {
         $this->setData(self::TAX_GROUP_CODE, $TaxGroupCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTaxGroupCode()
+    public function getTaxGroupCode() : ?string
     {
         return $this->getData(self::TAX_GROUP_CODE);
     }
 
     /**
-     * @param boolean $ValidateTaxParameter
+     * @param ?bool $ValidateTaxParameter
      * @return $this
      */
-    public function setValidateTaxParameter($ValidateTaxParameter)
+    public function setValidateTaxParameter(?bool $ValidateTaxParameter)
     {
         $this->setData(self::VALIDATE_TAX_PARAMETER, $ValidateTaxParameter);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getValidateTaxParameter()
+    public function getValidateTaxParameter() : ?bool
     {
         return $this->getData(self::VALIDATE_TAX_PARAMETER);
     }
 
     /**
-     * @param boolean $ServiceItem
+     * @param ?bool $ServiceItem
      * @return $this
      */
-    public function setServiceItem($ServiceItem)
+    public function setServiceItem(?bool $ServiceItem)
     {
         $this->setData(self::SERVICE_ITEM, $ServiceItem);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getServiceItem()
+    public function getServiceItem() : ?bool
     {
         return $this->getData(self::SERVICE_ITEM);
     }
 
     /**
-     * @param float $QtyPicked
+     * @param ?float $QtyPicked
      * @return $this
      */
-    public function setQtyPicked($QtyPicked)
+    public function setQtyPicked(?float $QtyPicked)
     {
         $this->setData(self::QTY_PICKED, $QtyPicked);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQtyPicked()
+    public function getQtyPicked() : ?float
     {
         return $this->getData(self::QTY_PICKED);
     }
 
     /**
-     * @param float $QtyShortage
+     * @param ?float $QtyShortage
      * @return $this
      */
-    public function setQtyShortage($QtyShortage)
+    public function setQtyShortage(?float $QtyShortage)
     {
         $this->setData(self::QTY_SHORTAGE, $QtyShortage);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQtyShortage()
+    public function getQtyShortage() : ?float
     {
         return $this->getData(self::QTY_SHORTAGE);
     }
 
     /**
-     * @param float $QtyCanceledInPicking
+     * @param ?float $QtyCanceledInPicking
      * @return $this
      */
-    public function setQtyCanceledInPicking($QtyCanceledInPicking)
+    public function setQtyCanceledInPicking(?float $QtyCanceledInPicking)
     {
         $this->setData(self::QTY_CANCELED_IN_PICKING, $QtyCanceledInPicking);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQtyCanceledInPicking()
+    public function getQtyCanceledInPicking() : ?float
     {
         return $this->getData(self::QTY_CANCELED_IN_PICKING);
     }
 
     /**
-     * @param float $QtyCollected
+     * @param ?float $QtyCollected
      * @return $this
      */
-    public function setQtyCollected($QtyCollected)
+    public function setQtyCollected(?float $QtyCollected)
     {
         $this->setData(self::QTY_COLLECTED, $QtyCollected);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQtyCollected()
+    public function getQtyCollected() : ?float
     {
         return $this->getData(self::QTY_COLLECTED);
     }
 
     /**
-     * @param float $QtyCanceledInCollecting
+     * @param ?float $QtyCanceledInCollecting
      * @return $this
      */
-    public function setQtyCanceledInCollecting($QtyCanceledInCollecting)
+    public function setQtyCanceledInCollecting(?float $QtyCanceledInCollecting)
     {
         $this->setData(self::QTY_CANCELED_IN_COLLECTING, $QtyCanceledInCollecting);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQtyCanceledInCollecting()
+    public function getQtyCanceledInCollecting() : ?float
     {
         return $this->getData(self::QTY_CANCELED_IN_COLLECTING);
     }
 
     /**
-     * @param float $ToTransferInt
+     * @param ?float $ToTransferInt
      * @return $this
      */
-    public function setToTransferInt($ToTransferInt)
+    public function setToTransferInt(?float $ToTransferInt)
     {
         $this->setData(self::TO_TRANSFER_INT, $ToTransferInt);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getToTransferInt()
+    public function getToTransferInt() : ?float
     {
         return $this->getData(self::TO_TRANSFER_INT);
     }
 
     /**
-     * @param string $CreatedByReceipt
+     * @param ?string $CreatedByReceipt
      * @return $this
      */
-    public function setCreatedByReceipt($CreatedByReceipt)
+    public function setCreatedByReceipt(?string $CreatedByReceipt)
     {
         $this->setData(self::CREATED_BY_RECEIPT, $CreatedByReceipt);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCreatedByReceipt()
+    public function getCreatedByReceipt() : ?string
     {
         return $this->getData(self::CREATED_BY_RECEIPT);
     }
 
     /**
-     * @param string $PrepaymentDocumentType
+     * @param ?string $PrepaymentDocumentType
      * @return $this
      */
-    public function setPrepaymentDocumentType($PrepaymentDocumentType)
+    public function setPrepaymentDocumentType(?string $PrepaymentDocumentType)
     {
         $this->setData(self::PREPAYMENT_DOCUMENT_TYPE, $PrepaymentDocumentType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPrepaymentDocumentType()
+    public function getPrepaymentDocumentType() : ?string
     {
         return $this->getData(self::PREPAYMENT_DOCUMENT_TYPE);
     }
 
     /**
-     * @param string $PrepaymentDocumentNo
+     * @param ?string $PrepaymentDocumentNo
      * @return $this
      */
-    public function setPrepaymentDocumentNo($PrepaymentDocumentNo)
+    public function setPrepaymentDocumentNo(?string $PrepaymentDocumentNo)
     {
         $this->setData(self::PREPAYMENT_DOCUMENT_NO, $PrepaymentDocumentNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPrepaymentDocumentNo()
+    public function getPrepaymentDocumentNo() : ?string
     {
         return $this->getData(self::PREPAYMENT_DOCUMENT_NO);
     }

@@ -75,289 +75,289 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     public const Q_R_MESSAGE = 'QRMessage';
 
     /**
-     * @param string $OrderNo
+     * @param ?string $OrderNo
      * @return $this
      */
-    public function setOrderNo($OrderNo)
+    public function setOrderNo(?string $OrderNo)
     {
         $this->setData(self::ORDER_NO, $OrderNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOrderNo()
+    public function getOrderNo() : ?string
     {
         return $this->getData(self::ORDER_NO);
     }
 
     /**
-     * @param string $ClientEmail
+     * @param ?string $ClientEmail
      * @return $this
      */
-    public function setClientEmail($ClientEmail)
+    public function setClientEmail(?string $ClientEmail)
     {
         $this->setData(self::CLIENT_EMAIL, $ClientEmail);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClientEmail()
+    public function getClientEmail() : ?string
     {
         return $this->getData(self::CLIENT_EMAIL);
     }
 
     /**
-     * @param string $ClientPhoneNo
+     * @param ?string $ClientPhoneNo
      * @return $this
      */
-    public function setClientPhoneNo($ClientPhoneNo)
+    public function setClientPhoneNo(?string $ClientPhoneNo)
     {
         $this->setData(self::CLIENT_PHONE_NO, $ClientPhoneNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClientPhoneNo()
+    public function getClientPhoneNo() : ?string
     {
         return $this->getData(self::CLIENT_PHONE_NO);
     }
 
     /**
-     * @param string $ClientAddress
+     * @param ?string $ClientAddress
      * @return $this
      */
-    public function setClientAddress($ClientAddress)
+    public function setClientAddress(?string $ClientAddress)
     {
         $this->setData(self::CLIENT_ADDRESS, $ClientAddress);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClientAddress()
+    public function getClientAddress() : ?string
     {
         return $this->getData(self::CLIENT_ADDRESS);
     }
 
     /**
-     * @param string $ClientName
+     * @param ?string $ClientName
      * @return $this
      */
-    public function setClientName($ClientName)
+    public function setClientName(?string $ClientName)
     {
         $this->setData(self::CLIENT_NAME, $ClientName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClientName()
+    public function getClientName() : ?string
     {
         return $this->getData(self::CLIENT_NAME);
     }
 
     /**
-     * @param string $ClientStreetNo
+     * @param ?string $ClientStreetNo
      * @return $this
      */
-    public function setClientStreetNo($ClientStreetNo)
+    public function setClientStreetNo(?string $ClientStreetNo)
     {
         $this->setData(self::CLIENT_STREET_NO, $ClientStreetNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClientStreetNo()
+    public function getClientStreetNo() : ?string
     {
         return $this->getData(self::CLIENT_STREET_NO);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $ClientAddress2
+     * @param ?string $ClientAddress2
      * @return $this
      */
-    public function setClientAddress2($ClientAddress2)
+    public function setClientAddress2(?string $ClientAddress2)
     {
         $this->setData(self::CLIENT_ADDRESS2, $ClientAddress2);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClientAddress2()
+    public function getClientAddress2() : ?string
     {
         return $this->getData(self::CLIENT_ADDRESS2);
     }
 
     /**
-     * @param string $ClientCity
+     * @param ?string $ClientCity
      * @return $this
      */
-    public function setClientCity($ClientCity)
+    public function setClientCity(?string $ClientCity)
     {
         $this->setData(self::CLIENT_CITY, $ClientCity);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClientCity()
+    public function getClientCity() : ?string
     {
         return $this->getData(self::CLIENT_CITY);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPOSTerminalNo(?string $POSTerminalNo)
     {
         $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPOSTerminalNo() : ?string
     {
         return $this->getData(self::P_O_S_TERMINAL_NO);
     }
 
     /**
-     * @param string $ClientPostCode
+     * @param ?string $ClientPostCode
      * @return $this
      */
-    public function setClientPostCode($ClientPostCode)
+    public function setClientPostCode(?string $ClientPostCode)
     {
         $this->setData(self::CLIENT_POST_CODE, $ClientPostCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClientPostCode()
+    public function getClientPostCode() : ?string
     {
         return $this->getData(self::CLIENT_POST_CODE);
     }
 
     /**
-     * @param string $ClientTerritoryCode
+     * @param ?string $ClientTerritoryCode
      * @return $this
      */
-    public function setClientTerritoryCode($ClientTerritoryCode)
+    public function setClientTerritoryCode(?string $ClientTerritoryCode)
     {
         $this->setData(self::CLIENT_TERRITORY_CODE, $ClientTerritoryCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClientTerritoryCode()
+    public function getClientTerritoryCode() : ?string
     {
         return $this->getData(self::CLIENT_TERRITORY_CODE);
     }
 
     /**
-     * @param string $ClientCountryRegion
+     * @param ?string $ClientCountryRegion
      * @return $this
      */
-    public function setClientCountryRegion($ClientCountryRegion)
+    public function setClientCountryRegion(?string $ClientCountryRegion)
     {
         $this->setData(self::CLIENT_COUNTRY_REGION, $ClientCountryRegion);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClientCountryRegion()
+    public function getClientCountryRegion() : ?string
     {
         return $this->getData(self::CLIENT_COUNTRY_REGION);
     }
 
     /**
-     * @param string $CreatedOnPOSTermnial
+     * @param ?string $CreatedOnPOSTermnial
      * @return $this
      */
-    public function setCreatedOnPOSTermnial($CreatedOnPOSTermnial)
+    public function setCreatedOnPOSTermnial(?string $CreatedOnPOSTermnial)
     {
         $this->setData(self::CREATED_ON_P_O_S_TERMNIAL, $CreatedOnPOSTermnial);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCreatedOnPOSTermnial()
+    public function getCreatedOnPOSTermnial() : ?string
     {
         return $this->getData(self::CREATED_ON_P_O_S_TERMNIAL);
     }
 
     /**
-     * @param string $StaffID
+     * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID($StaffID)
+    public function setStaffID(?string $StaffID)
     {
         $this->setData(self::STAFF_I_D, $StaffID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffID()
+    public function getStaffID() : ?string
     {
         return $this->getData(self::STAFF_I_D);
     }
 
     /**
-     * @param date $PickupDate
+     * @param ?string $PickupDate
      * @return $this
      */
-    public function setPickupDate($PickupDate)
+    public function setPickupDate(?string $PickupDate)
     {
         $this->setData(self::PICKUP_DATE, $PickupDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getPickupDate()
+    public function getPickupDate() : ?string
     {
         return $this->getData(self::PICKUP_DATE);
     }
@@ -381,145 +381,145 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $KitchenStatus
+     * @param ?string $KitchenStatus
      * @return $this
      */
-    public function setKitchenStatus($KitchenStatus)
+    public function setKitchenStatus(?string $KitchenStatus)
     {
         $this->setData(self::KITCHEN_STATUS, $KitchenStatus);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getKitchenStatus()
+    public function getKitchenStatus() : ?string
     {
         return $this->getData(self::KITCHEN_STATUS);
     }
 
     /**
-     * @param string $OrderStatus
+     * @param ?string $OrderStatus
      * @return $this
      */
-    public function setOrderStatus($OrderStatus)
+    public function setOrderStatus(?string $OrderStatus)
     {
         $this->setData(self::ORDER_STATUS, $OrderStatus);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOrderStatus()
+    public function getOrderStatus() : ?string
     {
         return $this->getData(self::ORDER_STATUS);
     }
 
     /**
-     * @param float $GrossAmount
+     * @param ?float $GrossAmount
      * @return $this
      */
-    public function setGrossAmount($GrossAmount)
+    public function setGrossAmount(?float $GrossAmount)
     {
         $this->setData(self::GROSS_AMOUNT, $GrossAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getGrossAmount()
+    public function getGrossAmount() : ?float
     {
         return $this->getData(self::GROSS_AMOUNT);
     }
 
     /**
-     * @param string $SalesType
+     * @param ?string $SalesType
      * @return $this
      */
-    public function setSalesType($SalesType)
+    public function setSalesType(?string $SalesType)
     {
         $this->setData(self::SALES_TYPE, $SalesType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSalesType()
+    public function getSalesType() : ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
 
     /**
-     * @param string $PickupDateTime
+     * @param ?string $PickupDateTime
      * @return $this
      */
-    public function setPickupDateTime($PickupDateTime)
+    public function setPickupDateTime(?string $PickupDateTime)
     {
         $this->setData(self::PICKUP_DATE_TIME, $PickupDateTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPickupDateTime()
+    public function getPickupDateTime() : ?string
     {
         return $this->getData(self::PICKUP_DATE_TIME);
     }
 
     /**
-     * @param boolean $ContactComment
+     * @param ?bool $ContactComment
      * @return $this
      */
-    public function setContactComment($ContactComment)
+    public function setContactComment(?bool $ContactComment)
     {
         $this->setData(self::CONTACT_COMMENT, $ContactComment);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getContactComment()
+    public function getContactComment() : ?bool
     {
         return $this->getData(self::CONTACT_COMMENT);
     }
 
     /**
-     * @param string $ContactCommentIcon
+     * @param ?string $ContactCommentIcon
      * @return $this
      */
-    public function setContactCommentIcon($ContactCommentIcon)
+    public function setContactCommentIcon(?string $ContactCommentIcon)
     {
         $this->setData(self::CONTACT_COMMENT_ICON, $ContactCommentIcon);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactCommentIcon()
+    public function getContactCommentIcon() : ?string
     {
         return $this->getData(self::CONTACT_COMMENT_ICON);
     }
 
     /**
-     * @param string $CustomerComment
+     * @param ?string $CustomerComment
      * @return $this
      */
-    public function setCustomerComment($CustomerComment)
+    public function setCustomerComment(?string $CustomerComment)
     {
         $this->setData(self::CUSTOMER_COMMENT, $CustomerComment);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCustomerComment()
+    public function getCustomerComment() : ?string
     {
         return $this->getData(self::CUSTOMER_COMMENT);
     }
@@ -543,37 +543,37 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param boolean $PreOrder
+     * @param ?bool $PreOrder
      * @return $this
      */
-    public function setPreOrder($PreOrder)
+    public function setPreOrder(?bool $PreOrder)
     {
         $this->setData(self::PRE_ORDER, $PreOrder);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getPreOrder()
+    public function getPreOrder() : ?bool
     {
         return $this->getData(self::PRE_ORDER);
     }
 
     /**
-     * @param string $QueueCounter
+     * @param ?string $QueueCounter
      * @return $this
      */
-    public function setQueueCounter($QueueCounter)
+    public function setQueueCounter(?string $QueueCounter)
     {
         $this->setData(self::QUEUE_COUNTER, $QueueCounter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getQueueCounter()
+    public function getQueueCounter() : ?string
     {
         return $this->getData(self::QUEUE_COUNTER);
     }
@@ -597,37 +597,37 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $ExternalID
+     * @param ?string $ExternalID
      * @return $this
      */
-    public function setExternalID($ExternalID)
+    public function setExternalID(?string $ExternalID)
     {
         $this->setData(self::EXTERNAL_I_D, $ExternalID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExternalID()
+    public function getExternalID() : ?string
     {
         return $this->getData(self::EXTERNAL_I_D);
     }
 
     /**
-     * @param string $QRMessage
+     * @param ?string $QRMessage
      * @return $this
      */
-    public function setQRMessage($QRMessage)
+    public function setQRMessage(?string $QRMessage)
     {
         $this->setData(self::Q_R_MESSAGE, $QRMessage);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getQRMessage()
+    public function getQRMessage() : ?string
     {
         return $this->getData(self::Q_R_MESSAGE);
     }

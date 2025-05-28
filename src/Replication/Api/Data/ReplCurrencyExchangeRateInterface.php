@@ -36,9 +36,9 @@ interface ReplCurrencyExchangeRateInterface
 
     public function setRelationalExchRateAmount(?float $value);
 
-    public function getFixExchangeRateAmount() : ?string;
+    public function getFixExchangeRateAmount() : ?int;
 
-    public function setFixExchangeRateAmount(?string $value);
+    public function setFixExchangeRateAmount(?int $value);
 
     public function getRelationalAdjmtExchRateAmt() : ?float;
 
@@ -56,17 +56,17 @@ interface ReplCurrencyExchangeRateInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

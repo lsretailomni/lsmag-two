@@ -28,9 +28,9 @@ interface ReplLscWiDiscountsInterface
 
     public function setDiscountAmountValue(?float $value);
 
-    public function getDiscountType() : ?string;
+    public function getDiscountType() : ?int;
 
-    public function setDiscountType(?string $value);
+    public function setDiscountType(?int $value);
 
     public function getExclude() : ?bool;
 
@@ -80,17 +80,17 @@ interface ReplLscWiDiscountsInterface
 
     public function setStoreNo(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 
@@ -100,9 +100,9 @@ interface ReplLscWiDiscountsInterface
 
     public function setToDate(?string $value);
 
-    public function getType() : ?string;
+    public function getType() : ?int;
 
-    public function setType(?string $value);
+    public function setType(?int $value);
 
     public function getUnitOfMeasureCode() : ?string;
 

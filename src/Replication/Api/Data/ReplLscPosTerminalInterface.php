@@ -20,9 +20,9 @@ interface ReplLscPosTerminalInterface
 
     public function setNo(?string $value);
 
-    public function getTerminalType() : ?string;
+    public function getTerminalType() : ?int;
 
-    public function setTerminalType(?string $value);
+    public function setTerminalType(?int $value);
 
     public function getDescription() : ?string;
 
@@ -32,9 +32,9 @@ interface ReplLscPosTerminalInterface
 
     public function setPlacement(?string $value);
 
-    public function getStatementMethod() : ?string;
+    public function getStatementMethod() : ?int;
 
-    public function setStatementMethod(?string $value);
+    public function setStatementMethod(?int $value);
 
     public function getTerminalStatement() : ?bool;
 
@@ -56,9 +56,9 @@ interface ReplLscPosTerminalInterface
 
     public function setTerminalIpAddress(?string $value);
 
-    public function getTerminalConnection() : ?string;
+    public function getTerminalConnection() : ?int;
 
-    public function setTerminalConnection(?string $value);
+    public function setTerminalConnection(?int $value);
 
     public function getShowItemImage() : ?bool;
 
@@ -92,9 +92,9 @@ interface ReplLscPosTerminalInterface
 
     public function setKeylockStaffPermGroup(?string $value);
 
-    public function getSlipIfReturn() : ?string;
+    public function getSlipIfReturn() : ?int;
 
-    public function setSlipIfReturn(?string $value);
+    public function setSlipIfReturn(?int $value);
 
     public function getOpenDrawerAtLiLo() : ?bool;
 
@@ -120,9 +120,9 @@ interface ReplLscPosTerminalInterface
 
     public function setReturnInTransaction(?bool $value);
 
-    public function getItemNoOnReceipt() : ?string;
+    public function getItemNoOnReceipt() : ?int;
 
-    public function setItemNoOnReceipt(?string $value);
+    public function setItemNoOnReceipt(?int $value);
 
     public function getPrintReceiptForNegAdj() : ?bool;
 
@@ -160,9 +160,9 @@ interface ReplLscPosTerminalInterface
 
     public function setReceiptBarcode(?bool $value);
 
-    public function getReceiptSetupLocation() : ?string;
+    public function getReceiptSetupLocation() : ?int;
 
-    public function setReceiptSetupLocation(?string $value);
+    public function setReceiptSetupLocation(?int $value);
 
     public function getDisplayTextMaxLength() : ?int;
 
@@ -176,9 +176,9 @@ interface ReplLscPosTerminalInterface
 
     public function setCustomerDisplayText2(?string $value);
 
-    public function getPrintReceiptBcType() : ?string;
+    public function getPrintReceiptBcType() : ?int;
 
-    public function setPrintReceiptBcType(?string $value);
+    public function setPrintReceiptBcType(?int $value);
 
     public function getReceiptBarcodeWidth() : ?int;
 
@@ -212,9 +212,9 @@ interface ReplLscPosTerminalInterface
 
     public function setTableViewAtLogon(?bool $value);
 
-    public function getOperationalMode() : ?string;
+    public function getOperationalMode() : ?int;
 
-    public function setOperationalMode(?string $value);
+    public function setOperationalMode(?int $value);
 
     public function getRecPrintingOffByDefault() : ?bool;
 
@@ -236,9 +236,9 @@ interface ReplLscPosTerminalInterface
 
     public function setSafeNo(?string $value);
 
-    public function getStaffLoginValidation() : ?string;
+    public function getStaffLoginValidation() : ?int;
 
-    public function setStaffLoginValidation(?string $value);
+    public function setStaffLoginValidation(?int $value);
 
     public function getExcludeFromCashMgnt() : ?bool;
 
@@ -328,25 +328,25 @@ interface ReplLscPosTerminalInterface
 
     public function setExternalPrinterId(?string $value);
 
-    public function getHospTypePopUpOnLogon() : ?string;
+    public function getHospTypePopUpOnLogon() : ?int;
 
-    public function setHospTypePopUpOnLogon(?string $value);
+    public function setHospTypePopUpOnLogon(?int $value);
 
     public function getReceiptBarcodeId() : ?int;
 
     public function setReceiptBarcodeId(?int $value);
 
-    public function getPrinterKotStatusAfterSent() : ?string;
+    public function getPrinterKotStatusAfterSent() : ?int;
 
-    public function setPrinterKotStatusAfterSent(?string $value);
+    public function setPrinterKotStatusAfterSent(?int $value);
 
-    public function getSalesSlip() : ?string;
+    public function getSalesSlip() : ?int;
 
-    public function setSalesSlip(?string $value);
+    public function setSalesSlip(?int $value);
 
-    public function getVoidSlip() : ?string;
+    public function getVoidSlip() : ?int;
 
-    public function setVoidSlip(?string $value);
+    public function setVoidSlip(?int $value);
 
     public function getOnlyEmailSalesTransactions() : ?bool;
 
@@ -368,9 +368,9 @@ interface ReplLscPosTerminalInterface
 
     public function setAllowPostImDocuments(?bool $value);
 
-    public function getAsnQuantityMethod() : ?string;
+    public function getAsnQuantityMethod() : ?int;
 
-    public function setAsnQuantityMethod(?string $value);
+    public function setAsnQuantityMethod(?int $value);
 
     public function getDualDispEnabled() : ?bool;
 
@@ -396,13 +396,13 @@ interface ReplLscPosTerminalInterface
 
     public function setDualDispScreen(?int $value);
 
-    public function getSlipPrintOrder() : ?string;
+    public function getSlipPrintOrder() : ?int;
 
-    public function setSlipPrintOrder(?string $value);
+    public function setSlipPrintOrder(?int $value);
 
-    public function getTipsHandling() : ?string;
+    public function getTipsHandling() : ?int;
 
-    public function setTipsHandling(?string $value);
+    public function setTipsHandling(?int $value);
 
     public function getSkipMerchantReceipt() : ?bool;
 
@@ -424,9 +424,9 @@ interface ReplLscPosTerminalInterface
 
     public function setUseNumpad(?bool $value);
 
-    public function getIncludeEftZreport() : ?string;
+    public function getIncludeEftZreport() : ?int;
 
-    public function setIncludeEftZreport(?string $value);
+    public function setIncludeEftZreport(?int $value);
 
     public function getAllowBlockedItemsMobilePos() : ?bool;
 
@@ -440,25 +440,25 @@ interface ReplLscPosTerminalInterface
 
     public function setEftAutoRecoveryAttempts(?int $value);
 
-    public function getPosSearchEngine() : ?string;
+    public function getPosSearchEngine() : ?int;
 
-    public function setPosSearchEngine(?string $value);
+    public function setPosSearchEngine(?int $value);
 
     public function getSalesOrderNos() : ?string;
 
     public function setSalesOrderNos(?string $value);
 
-    public function getItemFilteringMethod() : ?string;
+    public function getItemFilteringMethod() : ?int;
 
-    public function setItemFilteringMethod(?string $value);
+    public function setItemFilteringMethod(?int $value);
 
     public function getShowNumberpad() : ?bool;
 
     public function setShowNumberpad(?bool $value);
 
-    public function getDeviceType() : ?string;
+    public function getDeviceType() : ?int;
 
-    public function setDeviceType(?string $value);
+    public function setDeviceType(?int $value);
 
     public function getDeviceLicenseKey() : ?string;
 
@@ -480,17 +480,17 @@ interface ReplLscPosTerminalInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

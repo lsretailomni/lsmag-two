@@ -78,7 +78,7 @@ class ReplEcommShippingAgent extends AbstractOperation
     /**
      * @return ReplEcommShippingAgentRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ReplEcommShippingAgentRequest();

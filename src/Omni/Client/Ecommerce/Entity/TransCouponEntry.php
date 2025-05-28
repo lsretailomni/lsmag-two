@@ -79,19 +79,19 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $EntryType
+     * @param ?string $EntryType
      * @return $this
      */
-    public function setEntryType($EntryType)
+    public function setEntryType(?string $EntryType)
     {
         $this->setData(self::ENTRY_TYPE, $EntryType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEntryType()
+    public function getEntryType() : ?string
     {
         return $this->getData(self::ENTRY_TYPE);
     }
@@ -115,361 +115,361 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptNo(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptNo() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param string $Barcode
+     * @param ?string $Barcode
      * @return $this
      */
-    public function setBarcode($Barcode)
+    public function setBarcode(?string $Barcode)
     {
         $this->setData(self::BARCODE, $Barcode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcode()
+    public function getBarcode() : ?string
     {
         return $this->getData(self::BARCODE);
     }
 
     /**
-     * @param float $IssuedAmount
+     * @param ?float $IssuedAmount
      * @return $this
      */
-    public function setIssuedAmount($IssuedAmount)
+    public function setIssuedAmount(?float $IssuedAmount)
     {
         $this->setData(self::ISSUED_AMOUNT, $IssuedAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getIssuedAmount()
+    public function getIssuedAmount() : ?float
     {
         return $this->getData(self::ISSUED_AMOUNT);
     }
 
     /**
-     * @param float $UsedQuantity
+     * @param ?float $UsedQuantity
      * @return $this
      */
-    public function setUsedQuantity($UsedQuantity)
+    public function setUsedQuantity(?float $UsedQuantity)
     {
         $this->setData(self::USED_QUANTITY, $UsedQuantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getUsedQuantity()
+    public function getUsedQuantity() : ?float
     {
         return $this->getData(self::USED_QUANTITY);
     }
 
     /**
-     * @param float $IssuedQuantity
+     * @param ?float $IssuedQuantity
      * @return $this
      */
-    public function setIssuedQuantity($IssuedQuantity)
+    public function setIssuedQuantity(?float $IssuedQuantity)
     {
         $this->setData(self::ISSUED_QUANTITY, $IssuedQuantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getIssuedQuantity()
+    public function getIssuedQuantity() : ?float
     {
         return $this->getData(self::ISSUED_QUANTITY);
     }
 
     /**
-     * @param float $UsedAmount
+     * @param ?float $UsedAmount
      * @return $this
      */
-    public function setUsedAmount($UsedAmount)
+    public function setUsedAmount(?float $UsedAmount)
     {
         $this->setData(self::USED_AMOUNT, $UsedAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getUsedAmount()
+    public function getUsedAmount() : ?float
     {
         return $this->getData(self::USED_AMOUNT);
     }
 
     /**
-     * @param float $Discount
+     * @param ?float $Discount
      * @return $this
      */
-    public function setDiscount($Discount)
+    public function setDiscount(?float $Discount)
     {
         $this->setData(self::DISCOUNT, $Discount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscount()
+    public function getDiscount() : ?float
     {
         return $this->getData(self::DISCOUNT);
     }
 
     /**
-     * @param float $DiscountAmount
+     * @param ?float $DiscountAmount
      * @return $this
      */
-    public function setDiscountAmount($DiscountAmount)
+    public function setDiscountAmount(?float $DiscountAmount)
     {
         $this->setData(self::DISCOUNT_AMOUNT, $DiscountAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountAmount()
+    public function getDiscountAmount() : ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
     /**
-     * @param string $CouponIssuer
+     * @param ?string $CouponIssuer
      * @return $this
      */
-    public function setCouponIssuer($CouponIssuer)
+    public function setCouponIssuer(?string $CouponIssuer)
     {
         $this->setData(self::COUPON_ISSUER, $CouponIssuer);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCouponIssuer()
+    public function getCouponIssuer() : ?string
     {
         return $this->getData(self::COUPON_ISSUER);
     }
 
     /**
-     * @param string $ItemNo
+     * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo($ItemNo)
+    public function setItemNo(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemNo() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $CouponFunction
+     * @param ?string $CouponFunction
      * @return $this
      */
-    public function setCouponFunction($CouponFunction)
+    public function setCouponFunction(?string $CouponFunction)
     {
         $this->setData(self::COUPON_FUNCTION, $CouponFunction);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCouponFunction()
+    public function getCouponFunction() : ?string
     {
         return $this->getData(self::COUPON_FUNCTION);
     }
 
     /**
-     * @param string $TransactionStatus
+     * @param ?string $TransactionStatus
      * @return $this
      */
-    public function setTransactionStatus($TransactionStatus)
+    public function setTransactionStatus(?string $TransactionStatus)
     {
         $this->setData(self::TRANSACTION_STATUS, $TransactionStatus);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionStatus()
+    public function getTransactionStatus() : ?string
     {
         return $this->getData(self::TRANSACTION_STATUS);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPOSTerminalNo(?string $POSTerminalNo)
     {
         $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPOSTerminalNo() : ?string
     {
         return $this->getData(self::P_O_S_TERMINAL_NO);
     }
 
     /**
-     * @param string $CouponCode
+     * @param ?string $CouponCode
      * @return $this
      */
-    public function setCouponCode($CouponCode)
+    public function setCouponCode(?string $CouponCode)
     {
         $this->setData(self::COUPON_CODE, $CouponCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCouponCode()
+    public function getCouponCode() : ?string
     {
         return $this->getData(self::COUPON_CODE);
     }
 
     /**
-     * @param date $Date
+     * @param ?string $Date
      * @return $this
      */
-    public function setDate($Date)
+    public function setDate(?string $Date)
     {
         $this->setData(self::DATE, $Date);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDate()
+    public function getDate() : ?string
     {
         return $this->getData(self::DATE);
     }
 
     /**
-     * @param string $MemberAccountNo
+     * @param ?string $MemberAccountNo
      * @return $this
      */
-    public function setMemberAccountNo($MemberAccountNo)
+    public function setMemberAccountNo(?string $MemberAccountNo)
     {
         $this->setData(self::MEMBER_ACCOUNT_NO, $MemberAccountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberAccountNo()
+    public function getMemberAccountNo() : ?string
     {
         return $this->getData(self::MEMBER_ACCOUNT_NO);
     }
 
     /**
-     * @param date $ValidFromDate
+     * @param ?string $ValidFromDate
      * @return $this
      */
-    public function setValidFromDate($ValidFromDate)
+    public function setValidFromDate(?string $ValidFromDate)
     {
         $this->setData(self::VALID_FROM_DATE, $ValidFromDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getValidFromDate()
+    public function getValidFromDate() : ?string
     {
         return $this->getData(self::VALID_FROM_DATE);
     }
 
     /**
-     * @param date $ValidToDate
+     * @param ?string $ValidToDate
      * @return $this
      */
-    public function setValidToDate($ValidToDate)
+    public function setValidToDate(?string $ValidToDate)
     {
         $this->setData(self::VALID_TO_DATE, $ValidToDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getValidToDate()
+    public function getValidToDate() : ?string
     {
         return $this->getData(self::VALID_TO_DATE);
     }
 
     /**
-     * @param string $CreatedbyOfferNo
+     * @param ?string $CreatedbyOfferNo
      * @return $this
      */
-    public function setCreatedbyOfferNo($CreatedbyOfferNo)
+    public function setCreatedbyOfferNo(?string $CreatedbyOfferNo)
     {
         $this->setData(self::CREATEDBY_OFFER_NO, $CreatedbyOfferNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCreatedbyOfferNo()
+    public function getCreatedbyOfferNo() : ?string
     {
         return $this->getData(self::CREATEDBY_OFFER_NO);
     }

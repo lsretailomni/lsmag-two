@@ -29,6 +29,306 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\Ecommerce\Entity\LSCIn
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
+    public function getItemNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
+    }
+
+    public function setItemNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
+    }
+
+    public function getVariantCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
+    }
+
+    public function setVariantCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
+    }
+
+    public function getLocation() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LOCATION]);
+    }
+
+    public function setLocation(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LOCATION], $value);
+    }
+
+    public function getStoreNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
+    }
+
+    public function setStoreNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
+    }
+
+    public function getPhysInventory() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PHYS_INVENTORY]);
+    }
+
+    public function setPhysInventory(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PHYS_INVENTORY], $value);
+    }
+
+    public function getPurchaseOrder() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PURCHASE_ORDER]);
+    }
+
+    public function setPurchaseOrder(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PURCHASE_ORDER], $value);
+    }
+
+    public function getTotalSales() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TOTAL_SALES]);
+    }
+
+    public function setTotalSales(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TOTAL_SALES], $value);
+    }
+
+    public function getCoResEntries() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CO_RES_ENTRIES]);
+    }
+
+    public function setCoResEntries(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CO_RES_ENTRIES], $value);
+    }
+
+    public function getVarPhysInventory() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAR_PHYS_INVENTORY]);
+    }
+
+    public function setVarPhysInventory(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAR_PHYS_INVENTORY], $value);
+    }
+
+    public function getVarPurchaseOrder() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAR_PURCHASE_ORDER]);
+    }
+
+    public function setVarPurchaseOrder(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAR_PURCHASE_ORDER], $value);
+    }
+
+    public function getVarTotalSales() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAR_TOTAL_SALES]);
+    }
+
+    public function setVarTotalSales(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAR_TOTAL_SALES], $value);
+    }
+
+    public function getVarCoResEntries() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAR_CO_RES_ENTRIES]);
+    }
+
+    public function setVarCoResEntries(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAR_CO_RES_ENTRIES], $value);
+    }
+
+    public function getPostedSales() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::POSTED_SALES]);
+    }
+
+    public function setPostedSales(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::POSTED_SALES], $value);
+    }
+
+    public function getVarPostedSales() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAR_POSTED_SALES]);
+    }
+
+    public function setVarPostedSales(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAR_POSTED_SALES], $value);
+    }
+
+    public function getSerialNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SERIAL_NO]);
+    }
+
+    public function setSerialNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SERIAL_NO], $value);
+    }
+
+    public function getLotNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LOT_NO]);
+    }
+
+    public function setLotNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LOT_NO], $value);
+    }
+
+    public function getExpirationDate() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EXPIRATION_DATE]);
+    }
+
+    public function setExpirationDate(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EXPIRATION_DATE], $value);
+    }
+
+    public function getTotalInvAdjmt() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TOTAL_INV_ADJMT]);
+    }
+
+    public function setTotalInvAdjmt(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TOTAL_INV_ADJMT], $value);
+    }
+
+    public function getVarTotalInvAdjmt() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAR_TOTAL_INV_ADJMT]);
+    }
+
+    public function setVarTotalInvAdjmt(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAR_TOTAL_INV_ADJMT], $value);
+    }
+
+    public function getPostedInvAdjmt() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::POSTED_INV_ADJMT]);
+    }
+
+    public function setPostedInvAdjmt(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::POSTED_INV_ADJMT], $value);
+    }
+
+    public function getVarPostedInvAdjmt() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAR_POSTED_INV_ADJMT]);
+    }
+
+    public function setVarPostedInvAdjmt(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAR_POSTED_INV_ADJMT], $value);
+    }
+
+    public function getNetInventory() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NET_INVENTORY]);
+    }
+
+    public function setNetInventory(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NET_INVENTORY], $value);
+    }
+
+    public function getLocationProfile() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LOCATION_PROFILE]);
+    }
+
+    public function setLocationProfile(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LOCATION_PROFILE], $value);
+    }
+
+    public function getReplicationCounter() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::REPLICATION_COUNTER]);
+    }
+
+    public function setReplicationCounter(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::REPLICATION_COUNTER], $value);
+    }
+
+    public function getSourcingLocationInventory() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SOURCING_LOCATION_INVENTORY]);
+    }
+
+    public function setSourcingLocationInventory(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SOURCING_LOCATION_INVENTORY], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

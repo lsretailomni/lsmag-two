@@ -53,8 +53,8 @@ class ClientGenerate extends Command
         $entityDir    = AbstractGenerator::path($baseDir, 'Entity');
         $fs     = new Filesystem();
         $cwd    = getcwd();
-        $wsdl   = Service::getUrl($this->type, $this->baseUrl);
-        $client = new Client($wsdl, $this->type);
+        $wsdl   = Service::getUrl($this->baseUrl, true);
+        $client = new Client($wsdl);
         try {
             $metadata     = $client->getMetadata();
         } catch (\Exception $e) {

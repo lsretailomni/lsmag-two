@@ -233,62 +233,62 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::STORE_NO, $value);
     }
 
-    public function getVoidTransaction(): ?string
+    public function getVoidTransaction(): ?int
     {
         return $this->getData(self::VOID_TRANSACTION);
     }
 
-    public function setVoidTransaction(?string $value)
+    public function setVoidTransaction(?int $value)
     {
         return $this->setData(self::VOID_TRANSACTION, $value);
     }
 
-    public function getManagerPrivileges(): ?string
+    public function getManagerPrivileges(): ?int
     {
         return $this->getData(self::MANAGER_PRIVILEGES);
     }
 
-    public function setManagerPrivileges(?string $value)
+    public function setManagerPrivileges(?int $value)
     {
         return $this->setData(self::MANAGER_PRIVILEGES, $value);
     }
 
-    public function getXzyReportPrinting(): ?string
+    public function getXzyReportPrinting(): ?int
     {
         return $this->getData(self::XZYREPORT_PRINTING);
     }
 
-    public function setXzyReportPrinting(?string $value)
+    public function setXzyReportPrinting(?int $value)
     {
         return $this->setData(self::XZYREPORT_PRINTING, $value);
     }
 
-    public function getTenderDeclaration(): ?string
+    public function getTenderDeclaration(): ?int
     {
         return $this->getData(self::TENDER_DECLARATION);
     }
 
-    public function setTenderDeclaration(?string $value)
+    public function setTenderDeclaration(?int $value)
     {
         return $this->setData(self::TENDER_DECLARATION, $value);
     }
 
-    public function getFloatingDeclaration(): ?string
+    public function getFloatingDeclaration(): ?int
     {
         return $this->getData(self::FLOATING_DECLARATION);
     }
 
-    public function setFloatingDeclaration(?string $value)
+    public function setFloatingDeclaration(?int $value)
     {
         return $this->setData(self::FLOATING_DECLARATION, $value);
     }
 
-    public function getPriceOverride(): ?string
+    public function getPriceOverride(): ?int
     {
         return $this->getData(self::PRICE_OVERRIDE);
     }
 
-    public function setPriceOverride(?string $value)
+    public function setPriceOverride(?int $value)
     {
         return $this->setData(self::PRICE_OVERRIDE, $value);
     }
@@ -303,12 +303,12 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::MAX_DISCOUNT_TO_GIVE, $value);
     }
 
-    public function getSuspendTransaction(): ?string
+    public function getSuspendTransaction(): ?int
     {
         return $this->getData(self::SUSPEND_TRANSACTION);
     }
 
-    public function setSuspendTransaction(?string $value)
+    public function setSuspendTransaction(?int $value)
     {
         return $this->setData(self::SUSPEND_TRANSACTION, $value);
     }
@@ -323,22 +323,22 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::MAX_TOTAL_DISCOUNT, $value);
     }
 
-    public function getOpenDrawWithoutSale(): ?string
+    public function getOpenDrawWithoutSale(): ?int
     {
         return $this->getData(self::OPEN_DRAW_WITHOUT_SALE);
     }
 
-    public function setOpenDrawWithoutSale(?string $value)
+    public function setOpenDrawWithoutSale(?int $value)
     {
         return $this->setData(self::OPEN_DRAW_WITHOUT_SALE, $value);
     }
 
-    public function getDiscountFromPermGroup(): ?string
+    public function getDiscountFromPermGroup(): ?int
     {
         return $this->getData(self::DISCOUNT_FROM_PERM_GROUP);
     }
 
-    public function setDiscountFromPermGroup(?string $value)
+    public function setDiscountFromPermGroup(?int $value)
     {
         return $this->setData(self::DISCOUNT_FROM_PERM_GROUP, $value);
     }
@@ -363,12 +363,12 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::LAST_NAME, $value);
     }
 
-    public function getEmploymentType(): ?string
+    public function getEmploymentType(): ?int
     {
         return $this->getData(self::EMPLOYMENT_TYPE);
     }
 
-    public function setEmploymentType(?string $value)
+    public function setEmploymentType(?int $value)
     {
         return $this->setData(self::EMPLOYMENT_TYPE, $value);
     }
@@ -563,232 +563,232 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::PRIVACY_BLOCKED, $value);
     }
 
-    public function getReturnInTransaction(): ?string
+    public function getReturnInTransaction(): ?int
     {
         return $this->getData(self::RETURN_IN_TRANSACTION);
     }
 
-    public function setReturnInTransaction(?string $value)
+    public function setReturnInTransaction(?int $value)
     {
         return $this->setData(self::RETURN_IN_TRANSACTION, $value);
     }
 
-    public function getVoidPrepayment(): ?string
+    public function getVoidPrepayment(): ?int
     {
         return $this->getData(self::VOID_PREPAYMENT);
     }
 
-    public function setVoidPrepayment(?string $value)
+    public function setVoidPrepayment(?int $value)
     {
         return $this->setData(self::VOID_PREPAYMENT, $value);
     }
 
-    public function getVoidPrepaymentLine(): ?string
+    public function getVoidPrepaymentLine(): ?int
     {
         return $this->getData(self::VOID_PREPAYMENT_LINE);
     }
 
-    public function setVoidPrepaymentLine(?string $value)
+    public function setVoidPrepaymentLine(?int $value)
     {
         return $this->setData(self::VOID_PREPAYMENT_LINE, $value);
     }
 
-    public function getChangePrepaymentAmt(): ?string
+    public function getChangePrepaymentAmt(): ?int
     {
         return $this->getData(self::CHANGE_PREPAYMENT_AMT);
     }
 
-    public function setChangePrepaymentAmt(?string $value)
+    public function setChangePrepaymentAmt(?int $value)
     {
         return $this->setData(self::CHANGE_PREPAYMENT_AMT, $value);
     }
 
-    public function getAddPrepaymentAmt(): ?string
+    public function getAddPrepaymentAmt(): ?int
     {
         return $this->getData(self::ADD_PREPAYMENT_AMT);
     }
 
-    public function setAddPrepaymentAmt(?string $value)
+    public function setAddPrepaymentAmt(?int $value)
     {
         return $this->setData(self::ADD_PREPAYMENT_AMT, $value);
     }
 
-    public function getVoidLine(): ?string
+    public function getVoidLine(): ?int
     {
         return $this->getData(self::VOID_LINE);
     }
 
-    public function setVoidLine(?string $value)
+    public function setVoidLine(?int $value)
     {
         return $this->setData(self::VOID_LINE, $value);
     }
 
-    public function getAddPayment(): ?string
+    public function getAddPayment(): ?int
     {
         return $this->getData(self::ADD_PAYMENT);
     }
 
-    public function setAddPayment(?string $value)
+    public function setAddPayment(?int $value)
     {
         return $this->setData(self::ADD_PAYMENT, $value);
     }
 
-    public function getTransferOrders(): ?string
+    public function getTransferOrders(): ?int
     {
         return $this->getData(self::TRANSFER_ORDERS);
     }
 
-    public function setTransferOrders(?string $value)
+    public function setTransferOrders(?int $value)
     {
         return $this->setData(self::TRANSFER_ORDERS, $value);
     }
 
-    public function getSplitBills(): ?string
+    public function getSplitBills(): ?int
     {
         return $this->getData(self::SPLIT_BILLS);
     }
 
-    public function setSplitBills(?string $value)
+    public function setSplitBills(?int $value)
     {
         return $this->setData(self::SPLIT_BILLS, $value);
     }
 
-    public function getSwitchDiningTableLayout(): ?string
+    public function getSwitchDiningTableLayout(): ?int
     {
         return $this->getData(self::SWITCH_DINING_TABLE_LAYOUT);
     }
 
-    public function setSwitchDiningTableLayout(?string $value)
+    public function setSwitchDiningTableLayout(?int $value)
     {
         return $this->setData(self::SWITCH_DINING_TABLE_LAYOUT, $value);
     }
 
-    public function getAdjustDiningTables(): ?string
+    public function getAdjustDiningTables(): ?int
     {
         return $this->getData(self::ADJUST_DINING_TABLES);
     }
 
-    public function setAdjustDiningTables(?string $value)
+    public function setAdjustDiningTables(?int $value)
     {
         return $this->setData(self::ADJUST_DINING_TABLES, $value);
     }
 
-    public function getDesignDiningTableLayout(): ?string
+    public function getDesignDiningTableLayout(): ?int
     {
         return $this->getData(self::DESIGN_DINING_TABLE_LAYOUT);
     }
 
-    public function setDesignDiningTableLayout(?string $value)
+    public function setDesignDiningTableLayout(?int $value)
     {
         return $this->setData(self::DESIGN_DINING_TABLE_LAYOUT, $value);
     }
 
-    public function getSeatGuests(): ?string
+    public function getSeatGuests(): ?int
     {
         return $this->getData(self::SEAT_GUESTS);
     }
 
-    public function setSeatGuests(?string $value)
+    public function setSeatGuests(?int $value)
     {
         return $this->setData(self::SEAT_GUESTS, $value);
     }
 
-    public function getViewKitchenStatus(): ?string
+    public function getViewKitchenStatus(): ?int
     {
         return $this->getData(self::VIEW_KITCHEN_STATUS);
     }
 
-    public function setViewKitchenStatus(?string $value)
+    public function setViewKitchenStatus(?int $value)
     {
         return $this->setData(self::VIEW_KITCHEN_STATUS, $value);
     }
 
-    public function getChangeStaff(): ?string
+    public function getChangeStaff(): ?int
     {
         return $this->getData(self::CHANGE_STAFF);
     }
 
-    public function setChangeStaff(?string $value)
+    public function setChangeStaff(?int $value)
     {
         return $this->setData(self::CHANGE_STAFF, $value);
     }
 
-    public function getAddStartFloat(): ?string
+    public function getAddStartFloat(): ?int
     {
         return $this->getData(self::ADD_START_FLOAT);
     }
 
-    public function setAddStartFloat(?string $value)
+    public function setAddStartFloat(?int $value)
     {
         return $this->setData(self::ADD_START_FLOAT, $value);
     }
 
-    public function getOpenSalesPosDirectly(): ?string
+    public function getOpenSalesPosDirectly(): ?int
     {
         return $this->getData(self::OPEN_SALES_POS_DIRECTLY);
     }
 
-    public function setOpenSalesPosDirectly(?string $value)
+    public function setOpenSalesPosDirectly(?int $value)
     {
         return $this->setData(self::OPEN_SALES_POS_DIRECTLY, $value);
     }
 
-    public function getOpenSalesPos(): ?string
+    public function getOpenSalesPos(): ?int
     {
         return $this->getData(self::OPEN_SALES_POS);
     }
 
-    public function setOpenSalesPos(?string $value)
+    public function setOpenSalesPos(?int $value)
     {
         return $this->setData(self::OPEN_SALES_POS, $value);
     }
 
-    public function getChangeDiningTblStatus(): ?string
+    public function getChangeDiningTblStatus(): ?int
     {
         return $this->getData(self::CHANGE_DINING_TBL_STATUS);
     }
 
-    public function setChangeDiningTblStatus(?string $value)
+    public function setChangeDiningTblStatus(?int $value)
     {
         return $this->setData(self::CHANGE_DINING_TBL_STATUS, $value);
     }
 
-    public function getResetDiningTblStatus(): ?string
+    public function getResetDiningTblStatus(): ?int
     {
         return $this->getData(self::RESET_DINING_TBL_STATUS);
     }
 
-    public function setResetDiningTblStatus(?string $value)
+    public function setResetDiningTblStatus(?int $value)
     {
         return $this->setData(self::RESET_DINING_TBL_STATUS, $value);
     }
 
-    public function getRushOrderInKitchen(): ?string
+    public function getRushOrderInKitchen(): ?int
     {
         return $this->getData(self::RUSH_ORDER_IN_KITCHEN);
     }
 
-    public function setRushOrderInKitchen(?string $value)
+    public function setRushOrderInKitchen(?int $value)
     {
         return $this->setData(self::RUSH_ORDER_IN_KITCHEN, $value);
     }
 
-    public function getOpenDinTblLockedByStaff(): ?string
+    public function getOpenDinTblLockedByStaff(): ?int
     {
         return $this->getData(self::OPEN_DIN_TBL_LOCKED_BY_STAFF);
     }
 
-    public function setOpenDinTblLockedByStaff(?string $value)
+    public function setOpenDinTblLockedByStaff(?int $value)
     {
         return $this->setData(self::OPEN_DIN_TBL_LOCKED_BY_STAFF, $value);
     }
 
-    public function getEditAvailableQty(): ?string
+    public function getEditAvailableQty(): ?int
     {
         return $this->getData(self::EDIT_AVAILABLE_QTY);
     }
 
-    public function setEditAvailableQty(?string $value)
+    public function setEditAvailableQty(?int $value)
     {
         return $this->setData(self::EDIT_AVAILABLE_QTY, $value);
     }
@@ -833,32 +833,32 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::LANGUAGE, $value);
     }
 
-    public function getCreateCustomers(): ?string
+    public function getCreateCustomers(): ?int
     {
         return $this->getData(self::CREATE_CUSTOMERS);
     }
 
-    public function setCreateCustomers(?string $value)
+    public function setCreateCustomers(?int $value)
     {
         return $this->setData(self::CREATE_CUSTOMERS, $value);
     }
 
-    public function getViewSalesHistory(): ?string
+    public function getViewSalesHistory(): ?int
     {
         return $this->getData(self::VIEW_SALES_HISTORY);
     }
 
-    public function setViewSalesHistory(?string $value)
+    public function setViewSalesHistory(?int $value)
     {
         return $this->setData(self::VIEW_SALES_HISTORY, $value);
     }
 
-    public function getCustomerComments(): ?string
+    public function getCustomerComments(): ?int
     {
         return $this->getData(self::CUSTOMER_COMMENTS);
     }
 
-    public function setCustomerComments(?string $value)
+    public function setCustomerComments(?int $value)
     {
         return $this->setData(self::CUSTOMER_COMMENTS, $value);
     }
@@ -883,62 +883,62 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::MAX_WARNING_COUNT, $value);
     }
 
-    public function getShowDifferenceInWarning(): ?string
+    public function getShowDifferenceInWarning(): ?int
     {
         return $this->getData(self::SHOW_DIFFERENCE_IN_WARNING);
     }
 
-    public function setShowDifferenceInWarning(?string $value)
+    public function setShowDifferenceInWarning(?int $value)
     {
         return $this->setData(self::SHOW_DIFFERENCE_IN_WARNING, $value);
     }
 
-    public function getActionAfterDiffWarning(): ?string
+    public function getActionAfterDiffWarning(): ?int
     {
         return $this->getData(self::ACTION_AFTER_DIFF_WARNING);
     }
 
-    public function setActionAfterDiffWarning(?string $value)
+    public function setActionAfterDiffWarning(?int $value)
     {
         return $this->setData(self::ACTION_AFTER_DIFF_WARNING, $value);
     }
 
-    public function getCidReportPrinting(): ?string
+    public function getCidReportPrinting(): ?int
     {
         return $this->getData(self::CIDREPORT_PRINTING);
     }
 
-    public function setCidReportPrinting(?string $value)
+    public function setCidReportPrinting(?int $value)
     {
         return $this->setData(self::CIDREPORT_PRINTING, $value);
     }
 
-    public function getShowTransAmount(): ?string
+    public function getShowTransAmount(): ?int
     {
         return $this->getData(self::SHOW_TRANS_AMOUNT);
     }
 
-    public function setShowTransAmount(?string $value)
+    public function setShowTransAmount(?int $value)
     {
         return $this->setData(self::SHOW_TRANS_AMOUNT, $value);
     }
 
-    public function getUpdateCustomers(): ?string
+    public function getUpdateCustomers(): ?int
     {
         return $this->getData(self::UPDATE_CUSTOMERS);
     }
 
-    public function setUpdateCustomers(?string $value)
+    public function setUpdateCustomers(?int $value)
     {
         return $this->setData(self::UPDATE_CUSTOMERS, $value);
     }
 
-    public function getTipsHandling(): ?string
+    public function getTipsHandling(): ?int
     {
         return $this->getData(self::TIPS_HANDLING);
     }
 
-    public function setTipsHandling(?string $value)
+    public function setTipsHandling(?int $value)
     {
         return $this->setData(self::TIPS_HANDLING, $value);
     }
@@ -953,12 +953,12 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::LAST_YREPORT, $value);
     }
 
-    public function getMaxDiffWarnFromPermGr(): ?string
+    public function getMaxDiffWarnFromPermGr(): ?int
     {
         return $this->getData(self::MAX_DIFFWARN_FROM_PERM_GR);
     }
 
-    public function setMaxDiffWarnFromPermGr(?string $value)
+    public function setMaxDiffWarnFromPermGr(?int $value)
     {
         return $this->setData(self::MAX_DIFFWARN_FROM_PERM_GR, $value);
     }
@@ -1013,12 +1013,12 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -1033,12 +1033,12 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

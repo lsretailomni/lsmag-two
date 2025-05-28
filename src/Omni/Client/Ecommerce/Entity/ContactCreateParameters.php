@@ -57,397 +57,397 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     public const GUEST_TYPE = 'GuestType';
 
     /**
-     * @param string $ContactID
+     * @param ?string $ContactID
      * @return $this
      */
-    public function setContactID($ContactID)
+    public function setContactID(?string $ContactID)
     {
         $this->setData(self::CONTACT_I_D, $ContactID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactID()
+    public function getContactID() : ?string
     {
         return $this->getData(self::CONTACT_I_D);
     }
 
     /**
-     * @param string $Email
+     * @param ?string $Email
      * @return $this
      */
-    public function setEmail($Email)
+    public function setEmail(?string $Email)
     {
         $this->setData(self::EMAIL, $Email);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEmail()
+    public function getEmail() : ?string
     {
         return $this->getData(self::EMAIL);
     }
 
     /**
-     * @param string $FirstName
+     * @param ?string $FirstName
      * @return $this
      */
-    public function setFirstName($FirstName)
+    public function setFirstName(?string $FirstName)
     {
         $this->setData(self::FIRST_NAME, $FirstName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFirstName()
+    public function getFirstName() : ?string
     {
         return $this->getData(self::FIRST_NAME);
     }
 
     /**
-     * @param string $LastName
+     * @param ?string $LastName
      * @return $this
      */
-    public function setLastName($LastName)
+    public function setLastName(?string $LastName)
     {
         $this->setData(self::LAST_NAME, $LastName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLastName()
+    public function getLastName() : ?string
     {
         return $this->getData(self::LAST_NAME);
     }
 
     /**
-     * @param string $MiddleName
+     * @param ?string $MiddleName
      * @return $this
      */
-    public function setMiddleName($MiddleName)
+    public function setMiddleName(?string $MiddleName)
     {
         $this->setData(self::MIDDLE_NAME, $MiddleName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMiddleName()
+    public function getMiddleName() : ?string
     {
         return $this->getData(self::MIDDLE_NAME);
     }
 
     /**
-     * @param string $Gender
+     * @param ?string $Gender
      * @return $this
      */
-    public function setGender($Gender)
+    public function setGender(?string $Gender)
     {
         $this->setData(self::GENDER, $Gender);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getGender()
+    public function getGender() : ?string
     {
         return $this->getData(self::GENDER);
     }
 
     /**
-     * @param string $Phone
+     * @param ?string $Phone
      * @return $this
      */
-    public function setPhone($Phone)
+    public function setPhone(?string $Phone)
     {
         $this->setData(self::PHONE, $Phone);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPhone()
+    public function getPhone() : ?string
     {
         return $this->getData(self::PHONE);
     }
 
     /**
-     * @param string $Address1
+     * @param ?string $Address1
      * @return $this
      */
-    public function setAddress1($Address1)
+    public function setAddress1(?string $Address1)
     {
         $this->setData(self::ADDRESS1, $Address1);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAddress1()
+    public function getAddress1() : ?string
     {
         return $this->getData(self::ADDRESS1);
     }
 
     /**
-     * @param string $Address2
+     * @param ?string $Address2
      * @return $this
      */
-    public function setAddress2($Address2)
+    public function setAddress2(?string $Address2)
     {
         $this->setData(self::ADDRESS2, $Address2);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAddress2()
+    public function getAddress2() : ?string
     {
         return $this->getData(self::ADDRESS2);
     }
 
     /**
-     * @param string $City
+     * @param ?string $City
      * @return $this
      */
-    public function setCity($City)
+    public function setCity(?string $City)
     {
         $this->setData(self::CITY, $City);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCity()
+    public function getCity() : ?string
     {
         return $this->getData(self::CITY);
     }
 
     /**
-     * @param string $PostCode
+     * @param ?string $PostCode
      * @return $this
      */
-    public function setPostCode($PostCode)
+    public function setPostCode(?string $PostCode)
     {
         $this->setData(self::POST_CODE, $PostCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPostCode()
+    public function getPostCode() : ?string
     {
         return $this->getData(self::POST_CODE);
     }
 
     /**
-     * @param string $StateProvinceRegion
+     * @param ?string $StateProvinceRegion
      * @return $this
      */
-    public function setStateProvinceRegion($StateProvinceRegion)
+    public function setStateProvinceRegion(?string $StateProvinceRegion)
     {
         $this->setData(self::STATE_PROVINCE_REGION, $StateProvinceRegion);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStateProvinceRegion()
+    public function getStateProvinceRegion() : ?string
     {
         return $this->getData(self::STATE_PROVINCE_REGION);
     }
 
     /**
-     * @param string $Country
+     * @param ?string $Country
      * @return $this
      */
-    public function setCountry($Country)
+    public function setCountry(?string $Country)
     {
         $this->setData(self::COUNTRY, $Country);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCountry()
+    public function getCountry() : ?string
     {
         return $this->getData(self::COUNTRY);
     }
 
     /**
-     * @param string $AccountID
+     * @param ?string $AccountID
      * @return $this
      */
-    public function setAccountID($AccountID)
+    public function setAccountID(?string $AccountID)
     {
         $this->setData(self::ACCOUNT_I_D, $AccountID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountID()
+    public function getAccountID() : ?string
     {
         return $this->getData(self::ACCOUNT_I_D);
     }
 
     /**
-     * @param string $ExternalID
+     * @param ?string $ExternalID
      * @return $this
      */
-    public function setExternalID($ExternalID)
+    public function setExternalID(?string $ExternalID)
     {
         $this->setData(self::EXTERNAL_I_D, $ExternalID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExternalID()
+    public function getExternalID() : ?string
     {
         return $this->getData(self::EXTERNAL_I_D);
     }
 
     /**
-     * @param string $ExternalSystem
+     * @param ?string $ExternalSystem
      * @return $this
      */
-    public function setExternalSystem($ExternalSystem)
+    public function setExternalSystem(?string $ExternalSystem)
     {
         $this->setData(self::EXTERNAL_SYSTEM, $ExternalSystem);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExternalSystem()
+    public function getExternalSystem() : ?string
     {
         return $this->getData(self::EXTERNAL_SYSTEM);
     }
 
     /**
-     * @param date $DateOfBirth
+     * @param ?string $DateOfBirth
      * @return $this
      */
-    public function setDateOfBirth($DateOfBirth)
+    public function setDateOfBirth(?string $DateOfBirth)
     {
         $this->setData(self::DATE_OF_BIRTH, $DateOfBirth);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDateOfBirth()
+    public function getDateOfBirth() : ?string
     {
         return $this->getData(self::DATE_OF_BIRTH);
     }
 
     /**
-     * @param string $MobilePhoneNo
+     * @param ?string $MobilePhoneNo
      * @return $this
      */
-    public function setMobilePhoneNo($MobilePhoneNo)
+    public function setMobilePhoneNo(?string $MobilePhoneNo)
     {
         $this->setData(self::MOBILE_PHONE_NO, $MobilePhoneNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMobilePhoneNo()
+    public function getMobilePhoneNo() : ?string
     {
         return $this->getData(self::MOBILE_PHONE_NO);
     }
 
     /**
-     * @param string $HouseApartmentNo
+     * @param ?string $HouseApartmentNo
      * @return $this
      */
-    public function setHouseApartmentNo($HouseApartmentNo)
+    public function setHouseApartmentNo(?string $HouseApartmentNo)
     {
         $this->setData(self::HOUSE_APARTMENT_NO, $HouseApartmentNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getHouseApartmentNo()
+    public function getHouseApartmentNo() : ?string
     {
         return $this->getData(self::HOUSE_APARTMENT_NO);
     }
 
     /**
-     * @param string $TerritoryCode
+     * @param ?string $TerritoryCode
      * @return $this
      */
-    public function setTerritoryCode($TerritoryCode)
+    public function setTerritoryCode(?string $TerritoryCode)
     {
         $this->setData(self::TERRITORY_CODE, $TerritoryCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerritoryCode()
+    public function getTerritoryCode() : ?string
     {
         return $this->getData(self::TERRITORY_CODE);
     }
 
     /**
-     * @param string $SendReceiptbyEmail
+     * @param ?string $SendReceiptbyEmail
      * @return $this
      */
-    public function setSendReceiptbyEmail($SendReceiptbyEmail)
+    public function setSendReceiptbyEmail(?string $SendReceiptbyEmail)
     {
         $this->setData(self::SEND_RECEIPTBY_EMAIL, $SendReceiptbyEmail);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSendReceiptbyEmail()
+    public function getSendReceiptbyEmail() : ?string
     {
         return $this->getData(self::SEND_RECEIPTBY_EMAIL);
     }
 
     /**
-     * @param string $GuestType
+     * @param ?string $GuestType
      * @return $this
      */
-    public function setGuestType($GuestType)
+    public function setGuestType(?string $GuestType)
     {
         $this->setData(self::GUEST_TYPE, $GuestType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getGuestType()
+    public function getGuestType() : ?string
     {
         return $this->getData(self::GUEST_TYPE);
     }

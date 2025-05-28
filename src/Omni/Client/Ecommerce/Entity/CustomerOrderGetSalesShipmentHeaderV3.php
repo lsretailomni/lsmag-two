@@ -49,325 +49,325 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     public const SHIPMENT_DATE = 'ShipmentDate';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentID(?string $DocumentID)
     {
         $this->setData(self::DOCUMENT_I_D, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentID() : ?string
     {
         return $this->getData(self::DOCUMENT_I_D);
     }
 
     /**
-     * @param date $RequestedDate
+     * @param ?string $RequestedDate
      * @return $this
      */
-    public function setRequestedDate($RequestedDate)
+    public function setRequestedDate(?string $RequestedDate)
     {
         $this->setData(self::REQUESTED_DATE, $RequestedDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getRequestedDate()
+    public function getRequestedDate() : ?string
     {
         return $this->getData(self::REQUESTED_DATE);
     }
 
     /**
-     * @param string $OrderNo
+     * @param ?string $OrderNo
      * @return $this
      */
-    public function setOrderNo($OrderNo)
+    public function setOrderNo(?string $OrderNo)
     {
         $this->setData(self::ORDER_NO, $OrderNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOrderNo()
+    public function getOrderNo() : ?string
     {
         return $this->getData(self::ORDER_NO);
     }
 
     /**
-     * @param string $CustomerOrderId
+     * @param ?string $CustomerOrderId
      * @return $this
      */
-    public function setCustomerOrderId($CustomerOrderId)
+    public function setCustomerOrderId(?string $CustomerOrderId)
     {
         $this->setData(self::CUSTOMER_ORDER_ID, $CustomerOrderId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCustomerOrderId()
+    public function getCustomerOrderId() : ?string
     {
         return $this->getData(self::CUSTOMER_ORDER_ID);
     }
 
     /**
-     * @param string $ShipToName
+     * @param ?string $ShipToName
      * @return $this
      */
-    public function setShipToName($ShipToName)
+    public function setShipToName(?string $ShipToName)
     {
         $this->setData(self::SHIP_TO_NAME, $ShipToName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShipToName()
+    public function getShipToName() : ?string
     {
         return $this->getData(self::SHIP_TO_NAME);
     }
 
     /**
-     * @param string $ShipToName2
+     * @param ?string $ShipToName2
      * @return $this
      */
-    public function setShipToName2($ShipToName2)
+    public function setShipToName2(?string $ShipToName2)
     {
         $this->setData(self::SHIP_TO_NAME2, $ShipToName2);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShipToName2()
+    public function getShipToName2() : ?string
     {
         return $this->getData(self::SHIP_TO_NAME2);
     }
 
     /**
-     * @param string $ShipToAddress
+     * @param ?string $ShipToAddress
      * @return $this
      */
-    public function setShipToAddress($ShipToAddress)
+    public function setShipToAddress(?string $ShipToAddress)
     {
         $this->setData(self::SHIP_TO_ADDRESS, $ShipToAddress);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShipToAddress()
+    public function getShipToAddress() : ?string
     {
         return $this->getData(self::SHIP_TO_ADDRESS);
     }
 
     /**
-     * @param string $ShipToAddress2
+     * @param ?string $ShipToAddress2
      * @return $this
      */
-    public function setShipToAddress2($ShipToAddress2)
+    public function setShipToAddress2(?string $ShipToAddress2)
     {
         $this->setData(self::SHIP_TO_ADDRESS2, $ShipToAddress2);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShipToAddress2()
+    public function getShipToAddress2() : ?string
     {
         return $this->getData(self::SHIP_TO_ADDRESS2);
     }
 
     /**
-     * @param string $ShipToPostCode
+     * @param ?string $ShipToPostCode
      * @return $this
      */
-    public function setShipToPostCode($ShipToPostCode)
+    public function setShipToPostCode(?string $ShipToPostCode)
     {
         $this->setData(self::SHIP_TO_POST_CODE, $ShipToPostCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShipToPostCode()
+    public function getShipToPostCode() : ?string
     {
         return $this->getData(self::SHIP_TO_POST_CODE);
     }
 
     /**
-     * @param string $ShipToCity
+     * @param ?string $ShipToCity
      * @return $this
      */
-    public function setShipToCity($ShipToCity)
+    public function setShipToCity(?string $ShipToCity)
     {
         $this->setData(self::SHIP_TO_CITY, $ShipToCity);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShipToCity()
+    public function getShipToCity() : ?string
     {
         return $this->getData(self::SHIP_TO_CITY);
     }
 
     /**
-     * @param string $ShipToCounty
+     * @param ?string $ShipToCounty
      * @return $this
      */
-    public function setShipToCounty($ShipToCounty)
+    public function setShipToCounty(?string $ShipToCounty)
     {
         $this->setData(self::SHIP_TO_COUNTY, $ShipToCounty);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShipToCounty()
+    public function getShipToCounty() : ?string
     {
         return $this->getData(self::SHIP_TO_COUNTY);
     }
 
     /**
-     * @param string $ShipToCountry
+     * @param ?string $ShipToCountry
      * @return $this
      */
-    public function setShipToCountry($ShipToCountry)
+    public function setShipToCountry(?string $ShipToCountry)
     {
         $this->setData(self::SHIP_TO_COUNTRY, $ShipToCountry);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShipToCountry()
+    public function getShipToCountry() : ?string
     {
         return $this->getData(self::SHIP_TO_COUNTRY);
     }
 
     /**
-     * @param string $ShipToContact
+     * @param ?string $ShipToContact
      * @return $this
      */
-    public function setShipToContact($ShipToContact)
+    public function setShipToContact(?string $ShipToContact)
     {
         $this->setData(self::SHIP_TO_CONTACT, $ShipToContact);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShipToContact()
+    public function getShipToContact() : ?string
     {
         return $this->getData(self::SHIP_TO_CONTACT);
     }
 
     /**
-     * @param string $ShippingAgentCode
+     * @param ?string $ShippingAgentCode
      * @return $this
      */
-    public function setShippingAgentCode($ShippingAgentCode)
+    public function setShippingAgentCode(?string $ShippingAgentCode)
     {
         $this->setData(self::SHIPPING_AGENT_CODE, $ShippingAgentCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShippingAgentCode()
+    public function getShippingAgentCode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
 
     /**
-     * @param string $ShippingAgentServiceCode
+     * @param ?string $ShippingAgentServiceCode
      * @return $this
      */
-    public function setShippingAgentServiceCode($ShippingAgentServiceCode)
+    public function setShippingAgentServiceCode(?string $ShippingAgentServiceCode)
     {
         $this->setData(self::SHIPPING_AGENT_SERVICE_CODE, $ShippingAgentServiceCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShippingAgentServiceCode()
+    public function getShippingAgentServiceCode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_SERVICE_CODE);
     }
 
     /**
-     * @param string $PackageTrackingNo
+     * @param ?string $PackageTrackingNo
      * @return $this
      */
-    public function setPackageTrackingNo($PackageTrackingNo)
+    public function setPackageTrackingNo(?string $PackageTrackingNo)
     {
         $this->setData(self::PACKAGE_TRACKING_NO, $PackageTrackingNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPackageTrackingNo()
+    public function getPackageTrackingNo() : ?string
     {
         return $this->getData(self::PACKAGE_TRACKING_NO);
     }
 
     /**
-     * @param string $PackageTrackingUrl
+     * @param ?string $PackageTrackingUrl
      * @return $this
      */
-    public function setPackageTrackingUrl($PackageTrackingUrl)
+    public function setPackageTrackingUrl(?string $PackageTrackingUrl)
     {
         $this->setData(self::PACKAGE_TRACKING_URL, $PackageTrackingUrl);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPackageTrackingUrl()
+    public function getPackageTrackingUrl() : ?string
     {
         return $this->getData(self::PACKAGE_TRACKING_URL);
     }
 
     /**
-     * @param date $ShipmentDate
+     * @param ?string $ShipmentDate
      * @return $this
      */
-    public function setShipmentDate($ShipmentDate)
+    public function setShipmentDate(?string $ShipmentDate)
     {
         $this->setData(self::SHIPMENT_DATE, $ShipmentDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getShipmentDate()
+    public function getShipmentDate() : ?string
     {
         return $this->getData(self::SHIPMENT_DATE);
     }

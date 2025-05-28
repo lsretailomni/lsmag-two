@@ -27,109 +27,109 @@ class MemberContactBlock extends \Magento\Catalog\Model\AbstractModel implements
     public const BLOCK_YES_NO = 'blockYesNo';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $accountID
+     * @param ?string $accountID
      * @return $this
      */
-    public function setAccountID($accountID)
+    public function setAccountID(?string $accountID)
     {
         $this->setData(self::ACCOUNT_I_D, $accountID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountID()
+    public function getAccountID() : ?string
     {
         return $this->getData(self::ACCOUNT_I_D);
     }
 
     /**
-     * @param string $contactID
+     * @param ?string $contactID
      * @return $this
      */
-    public function setContactID($contactID)
+    public function setContactID(?string $contactID)
     {
         $this->setData(self::CONTACT_I_D, $contactID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactID()
+    public function getContactID() : ?string
     {
         return $this->getData(self::CONTACT_I_D);
     }
 
     /**
-     * @param string $reasonID
+     * @param ?string $reasonID
      * @return $this
      */
-    public function setReasonID($reasonID)
+    public function setReasonID(?string $reasonID)
     {
         $this->setData(self::REASON_I_D, $reasonID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReasonID()
+    public function getReasonID() : ?string
     {
         return $this->getData(self::REASON_I_D);
     }
 
     /**
-     * @param string $blockYesNo
+     * @param ?string $blockYesNo
      * @return $this
      */
-    public function setBlockYesNo($blockYesNo)
+    public function setBlockYesNo(?string $blockYesNo)
     {
         $this->setData(self::BLOCK_YES_NO, $blockYesNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBlockYesNo()
+    public function getBlockYesNo() : ?string
     {
         return $this->getData(self::BLOCK_YES_NO);
     }

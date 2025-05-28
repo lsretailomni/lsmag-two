@@ -37,217 +37,217 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     public const BLOCKEDBY = 'Blockedby';
 
     /**
-     * @param string $CardNo
+     * @param ?string $CardNo
      * @return $this
      */
-    public function setCardNo($CardNo)
+    public function setCardNo(?string $CardNo)
     {
         $this->setData(self::CARD_NO, $CardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNo()
+    public function getCardNo() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
 
     /**
-     * @param string $Status
+     * @param ?string $Status
      * @return $this
      */
-    public function setStatus($Status)
+    public function setStatus(?string $Status)
     {
         $this->setData(self::STATUS, $Status);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatus()
+    public function getStatus() : ?string
     {
         return $this->getData(self::STATUS);
     }
 
     /**
-     * @param boolean $LinkedtoAccount
+     * @param ?bool $LinkedtoAccount
      * @return $this
      */
-    public function setLinkedtoAccount($LinkedtoAccount)
+    public function setLinkedtoAccount(?bool $LinkedtoAccount)
     {
         $this->setData(self::LINKEDTO_ACCOUNT, $LinkedtoAccount);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getLinkedtoAccount()
+    public function getLinkedtoAccount() : ?bool
     {
         return $this->getData(self::LINKEDTO_ACCOUNT);
     }
 
     /**
-     * @param string $ClubCode
+     * @param ?string $ClubCode
      * @return $this
      */
-    public function setClubCode($ClubCode)
+    public function setClubCode(?string $ClubCode)
     {
         $this->setData(self::CLUB_CODE, $ClubCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubCode()
+    public function getClubCode() : ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
 
     /**
-     * @param string $SchemeCode
+     * @param ?string $SchemeCode
      * @return $this
      */
-    public function setSchemeCode($SchemeCode)
+    public function setSchemeCode(?string $SchemeCode)
     {
         $this->setData(self::SCHEME_CODE, $SchemeCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSchemeCode()
+    public function getSchemeCode() : ?string
     {
         return $this->getData(self::SCHEME_CODE);
     }
 
     /**
-     * @param string $AccountNo
+     * @param ?string $AccountNo
      * @return $this
      */
-    public function setAccountNo($AccountNo)
+    public function setAccountNo(?string $AccountNo)
     {
         $this->setData(self::ACCOUNT_NO, $AccountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountNo()
+    public function getAccountNo() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
 
     /**
-     * @param string $ContactNo
+     * @param ?string $ContactNo
      * @return $this
      */
-    public function setContactNo($ContactNo)
+    public function setContactNo(?string $ContactNo)
     {
         $this->setData(self::CONTACT_NO, $ContactNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactNo()
+    public function getContactNo() : ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
 
     /**
-     * @param date $FirstDateUsed
+     * @param ?string $FirstDateUsed
      * @return $this
      */
-    public function setFirstDateUsed($FirstDateUsed)
+    public function setFirstDateUsed(?string $FirstDateUsed)
     {
         $this->setData(self::FIRST_DATE_USED, $FirstDateUsed);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getFirstDateUsed()
+    public function getFirstDateUsed() : ?string
     {
         return $this->getData(self::FIRST_DATE_USED);
     }
 
     /**
-     * @param date $LastValidDate
+     * @param ?string $LastValidDate
      * @return $this
      */
-    public function setLastValidDate($LastValidDate)
+    public function setLastValidDate(?string $LastValidDate)
     {
         $this->setData(self::LAST_VALID_DATE, $LastValidDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getLastValidDate()
+    public function getLastValidDate() : ?string
     {
         return $this->getData(self::LAST_VALID_DATE);
     }
 
     /**
-     * @param string $ReasonBlocked
+     * @param ?string $ReasonBlocked
      * @return $this
      */
-    public function setReasonBlocked($ReasonBlocked)
+    public function setReasonBlocked(?string $ReasonBlocked)
     {
         $this->setData(self::REASON_BLOCKED, $ReasonBlocked);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReasonBlocked()
+    public function getReasonBlocked() : ?string
     {
         return $this->getData(self::REASON_BLOCKED);
     }
 
     /**
-     * @param date $DateBlocked
+     * @param ?string $DateBlocked
      * @return $this
      */
-    public function setDateBlocked($DateBlocked)
+    public function setDateBlocked(?string $DateBlocked)
     {
         $this->setData(self::DATE_BLOCKED, $DateBlocked);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDateBlocked()
+    public function getDateBlocked() : ?string
     {
         return $this->getData(self::DATE_BLOCKED);
     }
 
     /**
-     * @param string $Blockedby
+     * @param ?string $Blockedby
      * @return $this
      */
-    public function setBlockedby($Blockedby)
+    public function setBlockedby(?string $Blockedby)
     {
         $this->setData(self::BLOCKEDBY, $Blockedby);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBlockedby()
+    public function getBlockedby() : ?string
     {
         return $this->getData(self::BLOCKEDBY);
     }

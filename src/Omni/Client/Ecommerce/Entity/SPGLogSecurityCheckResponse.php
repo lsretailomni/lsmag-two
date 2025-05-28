@@ -25,91 +25,91 @@ class SPGLogSecurityCheckResponse extends \Magento\Catalog\Model\AbstractModel i
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $orderId
+     * @param ?string $orderId
      * @return $this
      */
-    public function setOrderId($orderId)
+    public function setOrderId(?string $orderId)
     {
         $this->setData(self::ORDER_ID, $orderId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOrderId()
+    public function getOrderId() : ?string
     {
         return $this->getData(self::ORDER_ID);
     }
 
     /**
-     * @param boolean $validationSuccessful
+     * @param ?bool $validationSuccessful
      * @return $this
      */
-    public function setValidationSuccessful($validationSuccessful)
+    public function setValidationSuccessful(?bool $validationSuccessful)
     {
         $this->setData(self::VALIDATION_SUCCESSFUL, $validationSuccessful);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getValidationSuccessful()
+    public function getValidationSuccessful() : ?bool
     {
         return $this->getData(self::VALIDATION_SUCCESSFUL);
     }
 
     /**
-     * @param string $validationError
+     * @param ?string $validationError
      * @return $this
      */
-    public function setValidationError($validationError)
+    public function setValidationError(?string $validationError)
     {
         $this->setData(self::VALIDATION_ERROR, $validationError);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getValidationError()
+    public function getValidationError() : ?string
     {
         return $this->getData(self::VALIDATION_ERROR);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponseCode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponseCode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrorText(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

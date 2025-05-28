@@ -65,142 +65,142 @@ class StaffPermissionView extends AbstractModel
         return $this->setData(self::STAFF, $value);
     }
 
-    public function getManagerPrivileges(): ?string
+    public function getManagerPrivileges(): ?int
     {
         return $this->getData(self::MANAGER_PRIVILEGES);
     }
 
-    public function setManagerPrivileges(?string $value)
+    public function setManagerPrivileges(?int $value)
     {
         return $this->setData(self::MANAGER_PRIVILEGES, $value);
     }
 
-    public function getVoidTransaction(): ?string
+    public function getVoidTransaction(): ?int
     {
         return $this->getData(self::VOID_TRANSACTION);
     }
 
-    public function setVoidTransaction(?string $value)
+    public function setVoidTransaction(?int $value)
     {
         return $this->setData(self::VOID_TRANSACTION, $value);
     }
 
-    public function getXzyReportPrinting(): ?string
+    public function getXzyReportPrinting(): ?int
     {
         return $this->getData(self::XZYREPORT_PRINTING);
     }
 
-    public function setXzyReportPrinting(?string $value)
+    public function setXzyReportPrinting(?int $value)
     {
         return $this->setData(self::XZYREPORT_PRINTING, $value);
     }
 
-    public function getTenderDeclaration(): ?string
+    public function getTenderDeclaration(): ?int
     {
         return $this->getData(self::TENDER_DECLARATION);
     }
 
-    public function setTenderDeclaration(?string $value)
+    public function setTenderDeclaration(?int $value)
     {
         return $this->setData(self::TENDER_DECLARATION, $value);
     }
 
-    public function getFloatingDeclaration(): ?string
+    public function getFloatingDeclaration(): ?int
     {
         return $this->getData(self::FLOATING_DECLARATION);
     }
 
-    public function setFloatingDeclaration(?string $value)
+    public function setFloatingDeclaration(?int $value)
     {
         return $this->setData(self::FLOATING_DECLARATION, $value);
     }
 
-    public function getPriceOverride(): ?string
+    public function getPriceOverride(): ?int
     {
         return $this->getData(self::PRICE_OVERRIDE);
     }
 
-    public function setPriceOverride(?string $value)
+    public function setPriceOverride(?int $value)
     {
         return $this->setData(self::PRICE_OVERRIDE, $value);
     }
 
-    public function getSuspendTransaction(): ?string
+    public function getSuspendTransaction(): ?int
     {
         return $this->getData(self::SUSPEND_TRANSACTION);
     }
 
-    public function setSuspendTransaction(?string $value)
+    public function setSuspendTransaction(?int $value)
     {
         return $this->setData(self::SUSPEND_TRANSACTION, $value);
     }
 
-    public function getReturnInTransaction(): ?string
+    public function getReturnInTransaction(): ?int
     {
         return $this->getData(self::RETURN_IN_TRANSACTION);
     }
 
-    public function setReturnInTransaction(?string $value)
+    public function setReturnInTransaction(?int $value)
     {
         return $this->setData(self::RETURN_IN_TRANSACTION, $value);
     }
 
-    public function getVoidLine(): ?string
+    public function getVoidLine(): ?int
     {
         return $this->getData(self::VOID_LINE);
     }
 
-    public function setVoidLine(?string $value)
+    public function setVoidLine(?int $value)
     {
         return $this->setData(self::VOID_LINE, $value);
     }
 
-    public function getAddPayment(): ?string
+    public function getAddPayment(): ?int
     {
         return $this->getData(self::ADD_PAYMENT);
     }
 
-    public function setAddPayment(?string $value)
+    public function setAddPayment(?int $value)
     {
         return $this->setData(self::ADD_PAYMENT, $value);
     }
 
-    public function getCreateCustomers(): ?string
+    public function getCreateCustomers(): ?int
     {
         return $this->getData(self::CREATE_CUSTOMERS);
     }
 
-    public function setCreateCustomers(?string $value)
+    public function setCreateCustomers(?int $value)
     {
         return $this->setData(self::CREATE_CUSTOMERS, $value);
     }
 
-    public function getViewSalesHistory(): ?string
+    public function getViewSalesHistory(): ?int
     {
         return $this->getData(self::VIEW_SALES_HISTORY);
     }
 
-    public function setViewSalesHistory(?string $value)
+    public function setViewSalesHistory(?int $value)
     {
         return $this->setData(self::VIEW_SALES_HISTORY, $value);
     }
 
-    public function getCustomerComments(): ?string
+    public function getCustomerComments(): ?int
     {
         return $this->getData(self::CUSTOMER_COMMENTS);
     }
 
-    public function setCustomerComments(?string $value)
+    public function setCustomerComments(?int $value)
     {
         return $this->setData(self::CUSTOMER_COMMENTS, $value);
     }
 
-    public function getUpdateCustomers(): ?string
+    public function getUpdateCustomers(): ?int
     {
         return $this->getData(self::UPDATE_CUSTOMERS);
     }
 
-    public function setUpdateCustomers(?string $value)
+    public function setUpdateCustomers(?int $value)
     {
         return $this->setData(self::UPDATE_CUSTOMERS, $value);
     }

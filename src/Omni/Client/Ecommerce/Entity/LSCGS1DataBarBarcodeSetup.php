@@ -57,12 +57,12 @@ class LSCGS1DataBarBarcodeSetup extends AbstractModel
     }
 
 
-    public function getType(): ?string
+    public function getType(): ?int
     {
         return $this->getData(self::TYPE);
     }
 
-    public function setType(?string $value)
+    public function setType(?int $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -77,12 +77,12 @@ class LSCGS1DataBarBarcodeSetup extends AbstractModel
         return $this->setData(self::IDENTIFIER, $value);
     }
 
-    public function getSectionType(): ?string
+    public function getSectionType(): ?int
     {
         return $this->getData(self::SECTION_TYPE);
     }
 
-    public function setSectionType(?string $value)
+    public function setSectionType(?int $value)
     {
         return $this->setData(self::SECTION_TYPE, $value);
     }
@@ -107,12 +107,12 @@ class LSCGS1DataBarBarcodeSetup extends AbstractModel
         return $this->setData(self::IDENTIFIER_SIZE, $value);
     }
 
-    public function getSectionMapping(): ?string
+    public function getSectionMapping(): ?int
     {
         return $this->getData(self::SECTION_MAPPING);
     }
 
-    public function setSectionMapping(?string $value)
+    public function setSectionMapping(?int $value)
     {
         return $this->setData(self::SECTION_MAPPING, $value);
     }
@@ -147,12 +147,12 @@ class LSCGS1DataBarBarcodeSetup extends AbstractModel
         return $this->setData(self::DECIMALS, $value);
     }
 
-    public function getValueType(): ?string
+    public function getValueType(): ?int
     {
         return $this->getData(self::VALUE_TYPE);
     }
 
-    public function setValueType(?string $value)
+    public function setValueType(?int $value)
     {
         return $this->setData(self::VALUE_TYPE, $value);
     }
@@ -197,12 +197,12 @@ class LSCGS1DataBarBarcodeSetup extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -217,12 +217,12 @@ class LSCGS1DataBarBarcodeSetup extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

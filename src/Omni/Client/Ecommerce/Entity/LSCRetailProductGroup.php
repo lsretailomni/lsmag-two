@@ -375,12 +375,12 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->setData(self::REPLEN_TRANSFER_RULE_CODE, $value);
     }
 
-    public function getDefItemDistrType(): ?string
+    public function getDefItemDistrType(): ?int
     {
         return $this->getData(self::DEF_ITEM_DISTR_TYPE);
     }
 
-    public function setDefItemDistrType(?string $value)
+    public function setDefItemDistrType(?int $value)
     {
         return $this->setData(self::DEF_ITEM_DISTR_TYPE, $value);
     }
@@ -485,12 +485,12 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -505,12 +505,12 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }

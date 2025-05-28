@@ -96,9 +96,9 @@ interface ReplContactviewInterface
 
     public function setLanguageCode(?string $value);
 
-    public function getGender() : ?string;
+    public function getGender() : ?int;
 
-    public function setGender(?string $value);
+    public function setGender(?int $value);
 
     public function getDateOfBirth() : ?string;
 
@@ -108,21 +108,21 @@ interface ReplContactviewInterface
 
     public function setBirthday(?string $value);
 
-    public function getContactGender() : ?string;
+    public function getContactGender() : ?int;
 
-    public function setContactGender(?string $value);
+    public function setContactGender(?int $value);
 
-    public function getMaritalStatus() : ?string;
+    public function getMaritalStatus() : ?int;
 
-    public function setMaritalStatus(?string $value);
+    public function setMaritalStatus(?int $value);
 
     public function getGuestType() : ?string;
 
     public function setGuestType(?string $value);
 
-    public function getExpirationPeriodType() : ?string;
+    public function getExpirationPeriodType() : ?int;
 
-    public function setExpirationPeriodType(?string $value);
+    public function setExpirationPeriodType(?int $value);
 
     public function getBlocked() : ?bool;
 
@@ -188,9 +188,9 @@ interface ReplContactviewInterface
 
     public function setSearchEMail(?string $value);
 
-    public function getSendReceiptByEMail() : ?string;
+    public function getSendReceiptByEMail() : ?int;
 
-    public function setSendReceiptByEMail(?string $value);
+    public function setSendReceiptByEMail(?int $value);
 
     public function getCitySearchInternal() : ?string;
 
@@ -208,17 +208,17 @@ interface ReplContactviewInterface
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?\DateTime;
+    public function getSystemcreatedat() : ?string;
 
-    public function setSystemcreatedat(?\DateTime $value);
+    public function setSystemcreatedat(?string $value);
 
     public function getSystemcreatedby() : ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?\DateTime;
+    public function getSystemmodifiedat() : ?string;
 
-    public function setSystemmodifiedat(?\DateTime $value);
+    public function setSystemmodifiedat(?string $value);
 
     public function getSystemmodifiedby() : ?string;
 

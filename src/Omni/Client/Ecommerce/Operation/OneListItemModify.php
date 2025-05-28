@@ -78,7 +78,7 @@ class OneListItemModify extends AbstractOperation
     /**
      * @return OneListItemModifyRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new OneListItemModifyRequest();

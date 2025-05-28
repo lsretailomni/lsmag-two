@@ -189,12 +189,12 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->setData(self::DOCUMENT_ID, $value);
     }
 
-    public function getEntryType(): ?string
+    public function getEntryType(): ?int
     {
         return $this->getData(self::ENTRY_TYPE);
     }
 
-    public function setEntryType(?string $value)
+    public function setEntryType(?int $value)
     {
         return $this->setData(self::ENTRY_TYPE, $value);
     }

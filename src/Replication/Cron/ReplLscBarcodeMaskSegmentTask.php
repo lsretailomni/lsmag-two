@@ -42,7 +42,7 @@ class ReplLscBarcodeMaskSegmentTask extends AbstractReplicationTask
 
     public function setRepository(ReplLscBarcodeMaskSegmentRepository $repository)
     {
-        $this->repository =  $repository;
+        $this->repository = $repository;
         return $this;
     }
 
@@ -53,7 +53,7 @@ class ReplLscBarcodeMaskSegmentTask extends AbstractReplicationTask
 
     public function setFactory(ReplLscBarcodeMaskSegmentFactory $factory)
     {
-        $this->factory =  $factory;
+        $this->factory = $factory;
         return $this;
     }
 
@@ -64,7 +64,7 @@ class ReplLscBarcodeMaskSegmentTask extends AbstractReplicationTask
 
     public function setDataInterface(ReplLscBarcodeMaskSegmentInterface $dataInterface)
     {
-        $this->dataInterface =  $dataInterface;
+        $this->dataInterface = $dataInterface;
         return $this;
     }
 

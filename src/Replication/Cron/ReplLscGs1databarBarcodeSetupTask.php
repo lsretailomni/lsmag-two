@@ -42,7 +42,7 @@ class ReplLscGs1databarBarcodeSetupTask extends AbstractReplicationTask
 
     public function setRepository(ReplLscGs1databarBarcodeSetupRepository $repository)
     {
-        $this->repository =  $repository;
+        $this->repository = $repository;
         return $this;
     }
 
@@ -53,7 +53,7 @@ class ReplLscGs1databarBarcodeSetupTask extends AbstractReplicationTask
 
     public function setFactory(ReplLscGs1databarBarcodeSetupFactory $factory)
     {
-        $this->factory =  $factory;
+        $this->factory = $factory;
         return $this;
     }
 
@@ -64,7 +64,7 @@ class ReplLscGs1databarBarcodeSetupTask extends AbstractReplicationTask
 
     public function setDataInterface(ReplLscGs1databarBarcodeSetupInterface $dataInterface)
     {
-        $this->dataInterface =  $dataInterface;
+        $this->dataInterface = $dataInterface;
         return $this;
     }
 

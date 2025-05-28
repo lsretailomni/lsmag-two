@@ -275,7 +275,6 @@ abstract class AbstractReplicationTask
                 $entity->setData($property, $source->getData($propertyIndex));
             }
         }
-
         try {
             $this->getRepository()->save($entity);
         } catch (Exception $e) {

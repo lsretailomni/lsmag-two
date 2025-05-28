@@ -53,19 +53,19 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     public const EXT_FIELD3 = 'ExtField3';
 
     /**
-     * @param string $TransactionNo
+     * @param ?string $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionNo(?string $TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionNo()
+    public function getTransactionNo() : ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -89,325 +89,325 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $ItemNo
+     * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo($ItemNo)
+    public function setItemNo(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemNo() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantCode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantCode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $ItemDescription
+     * @param ?string $ItemDescription
      * @return $this
      */
-    public function setItemDescription($ItemDescription)
+    public function setItemDescription(?string $ItemDescription)
     {
         $this->setData(self::ITEM_DESCRIPTION, $ItemDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemDescription()
+    public function getItemDescription() : ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
 
     /**
-     * @param string $ItemDescription2
+     * @param ?string $ItemDescription2
      * @return $this
      */
-    public function setItemDescription2($ItemDescription2)
+    public function setItemDescription2(?string $ItemDescription2)
     {
         $this->setData(self::ITEM_DESCRIPTION2, $ItemDescription2);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemDescription2()
+    public function getItemDescription2() : ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION2);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param float $OutstandingQty
+     * @param ?float $OutstandingQty
      * @return $this
      */
-    public function setOutstandingQty($OutstandingQty)
+    public function setOutstandingQty(?float $OutstandingQty)
     {
         $this->setData(self::OUTSTANDING_QTY, $OutstandingQty);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getOutstandingQty()
+    public function getOutstandingQty() : ?float
     {
         return $this->getData(self::OUTSTANDING_QTY);
     }
 
     /**
-     * @param string $UnitofMeasure
+     * @param ?string $UnitofMeasure
      * @return $this
      */
-    public function setUnitofMeasure($UnitofMeasure)
+    public function setUnitofMeasure(?string $UnitofMeasure)
     {
         $this->setData(self::UNITOF_MEASURE, $UnitofMeasure);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnitofMeasure()
+    public function getUnitofMeasure() : ?string
     {
         return $this->getData(self::UNITOF_MEASURE);
     }
 
     /**
-     * @param float $UOMQty
+     * @param ?float $UOMQty
      * @return $this
      */
-    public function setUOMQty($UOMQty)
+    public function setUOMQty(?float $UOMQty)
     {
         $this->setData(self::U_O_M_QTY, $UOMQty);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getUOMQty()
+    public function getUOMQty() : ?float
     {
         return $this->getData(self::U_O_M_QTY);
     }
 
     /**
-     * @param float $QuantityBase
+     * @param ?float $QuantityBase
      * @return $this
      */
-    public function setQuantityBase($QuantityBase)
+    public function setQuantityBase(?float $QuantityBase)
     {
         $this->setData(self::QUANTITY_BASE, $QuantityBase);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantityBase()
+    public function getQuantityBase() : ?float
     {
         return $this->getData(self::QUANTITY_BASE);
     }
 
     /**
-     * @param float $OutStandingQtyBase
+     * @param ?float $OutStandingQtyBase
      * @return $this
      */
-    public function setOutStandingQtyBase($OutStandingQtyBase)
+    public function setOutStandingQtyBase(?float $OutStandingQtyBase)
     {
         $this->setData(self::OUT_STANDING_QTY_BASE, $OutStandingQtyBase);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getOutStandingQtyBase()
+    public function getOutStandingQtyBase() : ?float
     {
         return $this->getData(self::OUT_STANDING_QTY_BASE);
     }
 
     /**
-     * @param string $VendorNo
+     * @param ?string $VendorNo
      * @return $this
      */
-    public function setVendorNo($VendorNo)
+    public function setVendorNo(?string $VendorNo)
     {
         $this->setData(self::VENDOR_NO, $VendorNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVendorNo()
+    public function getVendorNo() : ?string
     {
         return $this->getData(self::VENDOR_NO);
     }
 
     /**
-     * @param string $VendorItemNo
+     * @param ?string $VendorItemNo
      * @return $this
      */
-    public function setVendorItemNo($VendorItemNo)
+    public function setVendorItemNo(?string $VendorItemNo)
     {
         $this->setData(self::VENDOR_ITEM_NO, $VendorItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVendorItemNo()
+    public function getVendorItemNo() : ?string
     {
         return $this->getData(self::VENDOR_ITEM_NO);
     }
 
     /**
-     * @param string $VendorItemCode
+     * @param ?string $VendorItemCode
      * @return $this
      */
-    public function setVendorItemCode($VendorItemCode)
+    public function setVendorItemCode(?string $VendorItemCode)
     {
         $this->setData(self::VENDOR_ITEM_CODE, $VendorItemCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVendorItemCode()
+    public function getVendorItemCode() : ?string
     {
         return $this->getData(self::VENDOR_ITEM_CODE);
     }
 
     /**
-     * @param boolean $ReceiveConfirmScan
+     * @param ?bool $ReceiveConfirmScan
      * @return $this
      */
-    public function setReceiveConfirmScan($ReceiveConfirmScan)
+    public function setReceiveConfirmScan(?bool $ReceiveConfirmScan)
     {
         $this->setData(self::RECEIVE_CONFIRM_SCAN, $ReceiveConfirmScan);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getReceiveConfirmScan()
+    public function getReceiveConfirmScan() : ?bool
     {
         return $this->getData(self::RECEIVE_CONFIRM_SCAN);
     }
 
     /**
-     * @param string $ExtField1
+     * @param ?string $ExtField1
      * @return $this
      */
-    public function setExtField1($ExtField1)
+    public function setExtField1(?string $ExtField1)
     {
         $this->setData(self::EXT_FIELD1, $ExtField1);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExtField1()
+    public function getExtField1() : ?string
     {
         return $this->getData(self::EXT_FIELD1);
     }
 
     /**
-     * @param string $ExtField2
+     * @param ?string $ExtField2
      * @return $this
      */
-    public function setExtField2($ExtField2)
+    public function setExtField2(?string $ExtField2)
     {
         $this->setData(self::EXT_FIELD2, $ExtField2);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExtField2()
+    public function getExtField2() : ?string
     {
         return $this->getData(self::EXT_FIELD2);
     }
 
     /**
-     * @param string $ExtField3
+     * @param ?string $ExtField3
      * @return $this
      */
-    public function setExtField3($ExtField3)
+    public function setExtField3(?string $ExtField3)
     {
         $this->setData(self::EXT_FIELD3, $ExtField3);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExtField3()
+    public function getExtField3() : ?string
     {
         return $this->getData(self::EXT_FIELD3);
     }

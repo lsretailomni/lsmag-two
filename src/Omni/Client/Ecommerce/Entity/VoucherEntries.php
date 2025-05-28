@@ -55,55 +55,55 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     public const AMOUNT_IN_STORE_CURRENCY = 'AmountInStoreCurrency';
 
     /**
-     * @param string $VoucherNo
+     * @param ?string $VoucherNo
      * @return $this
      */
-    public function setVoucherNo($VoucherNo)
+    public function setVoucherNo(?string $VoucherNo)
     {
         $this->setData(self::VOUCHER_NO, $VoucherNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVoucherNo()
+    public function getVoucherNo() : ?string
     {
         return $this->getData(self::VOUCHER_NO);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreNo(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPOSTerminalNo(?string $POSTerminalNo)
     {
         $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPOSTerminalNo() : ?string
     {
         return $this->getData(self::P_O_S_TERMINAL_NO);
     }
@@ -145,73 +145,73 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $ReceiptNumber
+     * @param ?string $ReceiptNumber
      * @return $this
      */
-    public function setReceiptNumber($ReceiptNumber)
+    public function setReceiptNumber(?string $ReceiptNumber)
     {
         $this->setData(self::RECEIPT_NUMBER, $ReceiptNumber);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNumber()
+    public function getReceiptNumber() : ?string
     {
         return $this->getData(self::RECEIPT_NUMBER);
     }
 
     /**
-     * @param boolean $Unposted
+     * @param ?bool $Unposted
      * @return $this
      */
-    public function setUnposted($Unposted)
+    public function setUnposted(?bool $Unposted)
     {
         $this->setData(self::UNPOSTED, $Unposted);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getUnposted()
+    public function getUnposted() : ?bool
     {
         return $this->getData(self::UNPOSTED);
     }
 
     /**
-     * @param string $EntryType
+     * @param ?string $EntryType
      * @return $this
      */
-    public function setEntryType($EntryType)
+    public function setEntryType(?string $EntryType)
     {
         $this->setData(self::ENTRY_TYPE, $EntryType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEntryType()
+    public function getEntryType() : ?string
     {
         return $this->getData(self::ENTRY_TYPE);
     }
 
     /**
-     * @param date $Date
+     * @param ?string $Date
      * @return $this
      */
-    public function setDate($Date)
+    public function setDate(?string $Date)
     {
         $this->setData(self::DATE, $Date);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDate()
+    public function getDate() : ?string
     {
         return $this->getData(self::DATE);
     }
@@ -235,55 +235,55 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param float $Amount
+     * @param ?float $Amount
      * @return $this
      */
-    public function setAmount($Amount)
+    public function setAmount(?float $Amount)
     {
         $this->setData(self::AMOUNT, $Amount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmount()
+    public function getAmount() : ?float
     {
         return $this->getData(self::AMOUNT);
     }
 
     /**
-     * @param boolean $Voided
+     * @param ?bool $Voided
      * @return $this
      */
-    public function setVoided($Voided)
+    public function setVoided(?bool $Voided)
     {
         $this->setData(self::VOIDED, $Voided);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getVoided()
+    public function getVoided() : ?bool
     {
         return $this->getData(self::VOIDED);
     }
 
     /**
-     * @param float $RemainingAmountNow
+     * @param ?float $RemainingAmountNow
      * @return $this
      */
-    public function setRemainingAmountNow($RemainingAmountNow)
+    public function setRemainingAmountNow(?float $RemainingAmountNow)
     {
         $this->setData(self::REMAINING_AMOUNT_NOW, $RemainingAmountNow);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getRemainingAmountNow()
+    public function getRemainingAmountNow() : ?float
     {
         return $this->getData(self::REMAINING_AMOUNT_NOW);
     }
@@ -307,127 +307,127 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param boolean $OneTimeRedemption
+     * @param ?bool $OneTimeRedemption
      * @return $this
      */
-    public function setOneTimeRedemption($OneTimeRedemption)
+    public function setOneTimeRedemption(?bool $OneTimeRedemption)
     {
         $this->setData(self::ONE_TIME_REDEMPTION, $OneTimeRedemption);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getOneTimeRedemption()
+    public function getOneTimeRedemption() : ?bool
     {
         return $this->getData(self::ONE_TIME_REDEMPTION);
     }
 
     /**
-     * @param float $WriteOffAmount
+     * @param ?float $WriteOffAmount
      * @return $this
      */
-    public function setWriteOffAmount($WriteOffAmount)
+    public function setWriteOffAmount(?float $WriteOffAmount)
     {
         $this->setData(self::WRITE_OFF_AMOUNT, $WriteOffAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getWriteOffAmount()
+    public function getWriteOffAmount() : ?float
     {
         return $this->getData(self::WRITE_OFF_AMOUNT);
     }
 
     /**
-     * @param string $VoucherType
+     * @param ?string $VoucherType
      * @return $this
      */
-    public function setVoucherType($VoucherType)
+    public function setVoucherType(?string $VoucherType)
     {
         $this->setData(self::VOUCHER_TYPE, $VoucherType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVoucherType()
+    public function getVoucherType() : ?string
     {
         return $this->getData(self::VOUCHER_TYPE);
     }
 
     /**
-     * @param string $CurrencyCode
+     * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode($CurrencyCode)
+    public function setCurrencyCode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCurrencyCode()
+    public function getCurrencyCode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
 
     /**
-     * @param float $CurrencyFactor
+     * @param ?float $CurrencyFactor
      * @return $this
      */
-    public function setCurrencyFactor($CurrencyFactor)
+    public function setCurrencyFactor(?float $CurrencyFactor)
     {
         $this->setData(self::CURRENCY_FACTOR, $CurrencyFactor);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getCurrencyFactor()
+    public function getCurrencyFactor() : ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
     }
 
     /**
-     * @param string $StoreCurrencyCode
+     * @param ?string $StoreCurrencyCode
      * @return $this
      */
-    public function setStoreCurrencyCode($StoreCurrencyCode)
+    public function setStoreCurrencyCode(?string $StoreCurrencyCode)
     {
         $this->setData(self::STORE_CURRENCY_CODE, $StoreCurrencyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreCurrencyCode()
+    public function getStoreCurrencyCode() : ?string
     {
         return $this->getData(self::STORE_CURRENCY_CODE);
     }
 
     /**
-     * @param float $AmountInStoreCurrency
+     * @param ?float $AmountInStoreCurrency
      * @return $this
      */
-    public function setAmountInStoreCurrency($AmountInStoreCurrency)
+    public function setAmountInStoreCurrency(?float $AmountInStoreCurrency)
     {
         $this->setData(self::AMOUNT_IN_STORE_CURRENCY, $AmountInStoreCurrency);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmountInStoreCurrency()
+    public function getAmountInStoreCurrency() : ?float
     {
         return $this->getData(self::AMOUNT_IN_STORE_CURRENCY);
     }

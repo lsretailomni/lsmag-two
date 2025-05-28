@@ -137,12 +137,12 @@ class LSCAttribute extends AbstractModel
         return $this->setData(self::DIN_RESERV_SPECIAL_REQUEST, $value);
     }
 
-    public function getDisplayOnPos(): ?string
+    public function getDisplayOnPos(): ?int
     {
         return $this->getData(self::DISPLAY_ON_POS);
     }
 
-    public function setDisplayOnPos(?string $value)
+    public function setDisplayOnPos(?int $value)
     {
         return $this->setData(self::DISPLAY_ON_POS, $value);
     }
@@ -157,12 +157,12 @@ class LSCAttribute extends AbstractModel
         return $this->setData(self::INSTANCES, $value);
     }
 
-    public function getLinking(): ?string
+    public function getLinking(): ?int
     {
         return $this->getData(self::LINKING);
     }
 
-    public function setLinking(?string $value)
+    public function setLinking(?int $value)
     {
         return $this->setData(self::LINKING, $value);
     }
@@ -217,12 +217,12 @@ class LSCAttribute extends AbstractModel
         return $this->setData(self::OPTION_VALUE_TABLE_LINK, $value);
     }
 
-    public function getSystemcreatedat(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemcreatedat(?\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
@@ -237,12 +237,12 @@ class LSCAttribute extends AbstractModel
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemmodifiedat(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemmodifiedat(?\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
@@ -257,32 +257,32 @@ class LSCAttribute extends AbstractModel
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
-    public function getValueForRecipe(): ?string
+    public function getValueForRecipe(): ?int
     {
         return $this->getData(self::VALUE_FOR_RECIPE);
     }
 
-    public function setValueForRecipe(?string $value)
+    public function setValueForRecipe(?int $value)
     {
         return $this->setData(self::VALUE_FOR_RECIPE, $value);
     }
 
-    public function getValueRequired(): ?string
+    public function getValueRequired(): ?int
     {
         return $this->getData(self::VALUE_REQUIRED);
     }
 
-    public function setValueRequired(?string $value)
+    public function setValueRequired(?int $value)
     {
         return $this->setData(self::VALUE_REQUIRED, $value);
     }
 
-    public function getValueType(): ?string
+    public function getValueType(): ?int
     {
         return $this->getData(self::VALUE_TYPE);
     }
 
-    public function setValueType(?string $value)
+    public function setValueType(?int $value)
     {
         return $this->setData(self::VALUE_TYPE, $value);
     }
