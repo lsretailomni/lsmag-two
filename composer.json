@@ -28,8 +28,7 @@
             "Ls\\Replication\\": "src/Replication/",
             "Ls\\Customer\\": "src/Customer/",
             "Ls\\CustomerGraphQl\\": "src/CustomerGraphQl/",
-            "Ls\\Webhooks\\": "src/Webhooks/",
-            "Ls\\CommerceCloud\\": "src/CommerceCloud/"
+            "Ls\\Webhooks\\": "src/Webhooks/"
         },
         "files": [
             "src/Core/registration.php",
@@ -38,8 +37,7 @@
             "src/Replication/registration.php",
             "src/Customer/registration.php",
             "src/CustomerGraphQl/registration.php",
-            "src/Webhooks/registration.php",
-            "src/CommerceCloud/registration.php"
+            "src/Webhooks/registration.php"
         ]
     },
     "archive": {
