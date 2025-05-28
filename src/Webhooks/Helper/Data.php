@@ -247,6 +247,10 @@ class Data
                 if ($item['order_status'] == $orderStatus) {
                     $template = $item['email_template'];
                     break;
+                } else {
+                    if ($item['order_status'] == 'MISC') {
+                        $template = $item['email_template'];
+                    }
                 }
             }
         }
@@ -272,7 +276,7 @@ class Data
      * @return array
      * @throws NoSuchEntityException
      */
-        public function getItems($order, $itemsInfo, $linesMerged = true)
+    public function getItems($order, $itemsInfo, $linesMerged = true)
     {
         $items                = [];
         $globalCounter        = 0;
