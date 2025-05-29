@@ -1627,7 +1627,7 @@ class ReplicationHelper extends AbstractHelper
                 $primaryTableColumnName2,
                 $groupColumns
             );
-        } else {
+        } elseif (!empty($primaryTableColumnName)) {
             $this->applyItemIdJoin($collection, 'main_table', $primaryTableColumnName, $groupColumns, $isItemCategory);
         }
         /** For Xdebug only to check the query */
@@ -4004,4 +4004,30 @@ class ReplicationHelper extends AbstractHelper
 
         return $variantIds;
     }
+
+    /**
+     * Get products based on receipe ID
+     * 
+     * @param $recipeIds
+     * @return Collection
+     */
+    public function getProductsByRecipeId($recipeIds)
+    {
+        $connection = $this->resource->getConnection();
+        $productOptionTable = $connection->getTableName('catalog_product_option');
+
+        $collection = $this->productCollectionFactory->create();
+        $collection->addAttributeToSelect('*');
+
+        $collection->getSelect()->join(
+            ['cpo' => $productOptionTable],
+            'e.entity_id = cpo.product_id',
+            []
+        )->where('cpo.ls_modifier_recipe_id IN (?)', $recipeIds);
+
+        $query = $collection->getSelect()->__toString();
+
+        return $collection;
+    }
+    
 }
