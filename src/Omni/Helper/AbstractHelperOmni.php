@@ -21,6 +21,7 @@ use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\ResourceModel\Quote;
+use Magento\Quote\Model\ResourceModel\Quote\Item;
 
 /**
  * Abstract Helper for merging common data members and member functions
@@ -163,6 +164,11 @@ class AbstractHelperOmni extends AbstractHelper
     public $dateTime;
 
     /**
+     * @var Item
+     */
+    public $itemResourceModel;
+
+    /**
      * @param Context $context
      * @param BasketHelper $basketHelper
      * @param CacheHelper $cacheHelper
@@ -193,6 +199,7 @@ class AbstractHelperOmni extends AbstractHelper
      * @param Quote $quoteResourceModel
      * @param CartRepositoryInterface $cartRepository
      * @param DateTime $dateTime
+     * @param Item $itemResourceModel
      */
     public function __construct(
         Context                  $context,
@@ -224,7 +231,8 @@ class AbstractHelperOmni extends AbstractHelper
         CartRepositoryInterface  $quoteRepository,
         Quote                    $quoteResourceModel,
         CartRepositoryInterface  $cartRepository,
-        DateTime                 $dateTime
+        DateTime                 $dateTime,
+        Item                     $itemResourceModel
     ) {
         parent::__construct($context);
         $this->basketHelper                   = $basketHelper;
@@ -256,6 +264,7 @@ class AbstractHelperOmni extends AbstractHelper
         $this->quoteResourceModel             = $quoteResourceModel;
         $this->cartRepository                 = $cartRepository;
         $this->dateTime                       = $dateTime;
+        $this->itemResourceModel              = $itemResourceModel;
         $this->initialize();
     }
 
