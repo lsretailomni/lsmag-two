@@ -3989,10 +3989,10 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Get products based on receipe ID
      * 
-     * @param $recipeIds
+     * @param $lsModifierRecipeIds
      * @return Collection
      */
-    public function getProductsByRecipeId($recipeIds)
+    public function getProductsByRecipeId($lsModifierRecipeIds)
     {
         $connection = $this->resource->getConnection();
         $productOptionTable = $connection->getTableName('catalog_product_option');
@@ -4004,7 +4004,7 @@ class ReplicationHelper extends AbstractHelper
             ['cpo' => $productOptionTable],
             'e.entity_id = cpo.product_id',
             []
-        )->where('cpo.ls_modifier_recipe_id IN (?)', $recipeIds);
+        )->where('cpo.ls_modifier_recipe_id IN (?)', $lsModifierRecipeIds);
 
         $query = $collection->getSelect()->__toString();
 
