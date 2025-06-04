@@ -18,7 +18,7 @@ class RootGetItemSalesInfo extends \Magento\Catalog\Model\AbstractModel
      * @param FieldFilter $FieldFilter
      * @return $this
      */
-    public function setFieldFilter($FieldFilter)
+    public function setFieldfilter($FieldFilter)
     {
         $this->setData(self::FIELD_FILTER, $FieldFilter);
         return $this;
@@ -27,7 +27,7 @@ class RootGetItemSalesInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return FieldFilter
      */
-    public function getFieldFilter()
+    public function getFieldfilter()
     {
         return $this->getData(self::FIELD_FILTER);
     }

@@ -22,13 +22,13 @@ class SecurityCheckProfile extends \Magento\Catalog\Model\AbstractModel implemen
 
     public const STORE_NO = 'storeNo';
 
-    public const CUSTOMER_ORDER_I_D = 'customerOrderID';
+    public const CUSTOMER_ORDER_ID = 'customerOrderID';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -37,7 +37,7 @@ class SecurityCheckProfile extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -46,7 +46,7 @@ class SecurityCheckProfile extends \Magento\Catalog\Model\AbstractModel implemen
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -55,7 +55,7 @@ class SecurityCheckProfile extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -64,7 +64,7 @@ class SecurityCheckProfile extends \Magento\Catalog\Model\AbstractModel implemen
      * @param ?bool $securityProfileExist
      * @return $this
      */
-    public function setSecurityProfileExist(?bool $securityProfileExist)
+    public function setSecurityprofileexist(?bool $securityProfileExist)
     {
         $this->setData(self::SECURITY_PROFILE_EXIST, $securityProfileExist);
         return $this;
@@ -73,7 +73,7 @@ class SecurityCheckProfile extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?bool
      */
-    public function getSecurityProfileExist() : ?bool
+    public function getSecurityprofileexist() : ?bool
     {
         return $this->getData(self::SECURITY_PROFILE_EXIST);
     }
@@ -82,7 +82,7 @@ class SecurityCheckProfile extends \Magento\Catalog\Model\AbstractModel implemen
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -91,7 +91,7 @@ class SecurityCheckProfile extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -100,18 +100,18 @@ class SecurityCheckProfile extends \Magento\Catalog\Model\AbstractModel implemen
      * @param ?string $customerOrderID
      * @return $this
      */
-    public function setCustomerOrderID(?string $customerOrderID)
+    public function setCustomerorderid(?string $customerOrderID)
     {
-        $this->setData(self::CUSTOMER_ORDER_I_D, $customerOrderID);
+        $this->setData(self::CUSTOMER_ORDER_ID, $customerOrderID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getCustomerOrderID() : ?string
+    public function getCustomerorderid() : ?string
     {
-        return $this->getData(self::CUSTOMER_ORDER_I_D);
+        return $this->getData(self::CUSTOMER_ORDER_ID);
     }
 }
 

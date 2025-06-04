@@ -14,7 +14,7 @@ class HierarchyDateValSched extends \Magento\Catalog\Model\AbstractModel
 
     public const HIERARCHY_CODE = 'HierarchyCode';
 
-    public const VALIDATION_SCHEDULE_I_D = 'ValidationScheduleID';
+    public const VALIDATION_SCHEDULE_ID = 'ValidationScheduleID';
 
     public const SALES_TYPE_FILTER = 'SalesTypeFilter';
 
@@ -24,7 +24,7 @@ class HierarchyDateValSched extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $HierarchyCode
      * @return $this
      */
-    public function setHierarchyCode(?string $HierarchyCode)
+    public function setHierarchycode(?string $HierarchyCode)
     {
         $this->setData(self::HIERARCHY_CODE, $HierarchyCode);
         return $this;
@@ -33,7 +33,7 @@ class HierarchyDateValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHierarchyCode() : ?string
+    public function getHierarchycode() : ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
@@ -42,25 +42,25 @@ class HierarchyDateValSched extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ValidationScheduleID
      * @return $this
      */
-    public function setValidationScheduleID(?string $ValidationScheduleID)
+    public function setValidationscheduleid(?string $ValidationScheduleID)
     {
-        $this->setData(self::VALIDATION_SCHEDULE_I_D, $ValidationScheduleID);
+        $this->setData(self::VALIDATION_SCHEDULE_ID, $ValidationScheduleID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getValidationScheduleID() : ?string
+    public function getValidationscheduleid() : ?string
     {
-        return $this->getData(self::VALIDATION_SCHEDULE_I_D);
+        return $this->getData(self::VALIDATION_SCHEDULE_ID);
     }
 
     /**
      * @param ?string $SalesTypeFilter
      * @return $this
      */
-    public function setSalesTypeFilter(?string $SalesTypeFilter)
+    public function setSalestypefilter(?string $SalesTypeFilter)
     {
         $this->setData(self::SALES_TYPE_FILTER, $SalesTypeFilter);
         return $this;
@@ -69,7 +69,7 @@ class HierarchyDateValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalesTypeFilter() : ?string
+    public function getSalestypefilter() : ?string
     {
         return $this->getData(self::SALES_TYPE_FILTER);
     }

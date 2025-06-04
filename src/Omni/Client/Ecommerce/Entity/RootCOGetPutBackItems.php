@@ -18,7 +18,7 @@ class RootCOGetPutBackItems extends \Magento\Catalog\Model\AbstractModel
      * @param PostedCustomerOrderLine $PostedCustomerOrderLine
      * @return $this
      */
-    public function setPostedCustomerOrderLine($PostedCustomerOrderLine)
+    public function setPostedcustomerorderline($PostedCustomerOrderLine)
     {
         $this->setData(self::POSTED_CUSTOMER_ORDER_LINE, $PostedCustomerOrderLine);
         return $this;
@@ -27,7 +27,7 @@ class RootCOGetPutBackItems extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return PostedCustomerOrderLine
      */
-    public function getPostedCustomerOrderLine()
+    public function getPostedcustomerorderline()
     {
         return $this->getData(self::POSTED_CUSTOMER_ORDER_LINE);
     }

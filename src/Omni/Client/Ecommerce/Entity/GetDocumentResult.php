@@ -18,13 +18,13 @@ class GetDocumentResult extends \Magento\Catalog\Model\AbstractModel implements 
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_DOCUMENT_X_M_L = 'getDocumentXML';
+    public const GET_DOCUMENT_XML = 'getDocumentXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class GetDocumentResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class GetDocumentResult extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class GetDocumentResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetDocumentResult extends \Magento\Catalog\Model\AbstractModel implements 
      * @param RootGetDocumnet $getDocumentXML
      * @return $this
      */
-    public function setGetDocumentXML($getDocumentXML)
+    public function setGetdocumentxml($getDocumentXML)
     {
-        $this->setData(self::GET_DOCUMENT_X_M_L, $getDocumentXML);
+        $this->setData(self::GET_DOCUMENT_XML, $getDocumentXML);
         return $this;
     }
 
     /**
      * @return RootGetDocumnet
      */
-    public function getGetDocumentXML()
+    public function getGetdocumentxml()
     {
-        return $this->getData(self::GET_DOCUMENT_X_M_L);
+        return $this->getData(self::GET_DOCUMENT_XML);
     }
 
     /**

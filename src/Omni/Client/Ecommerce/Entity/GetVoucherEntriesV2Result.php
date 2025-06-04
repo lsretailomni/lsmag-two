@@ -18,13 +18,13 @@ class GetVoucherEntriesV2Result extends \Magento\Catalog\Model\AbstractModel imp
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_VOUCHER_ENTRIES_X_M_L = 'getVoucherEntriesXML';
+    public const GET_VOUCHER_ENTRIES_XML = 'getVoucherEntriesXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class GetVoucherEntriesV2Result extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class GetVoucherEntriesV2Result extends \Magento\Catalog\Model\AbstractModel imp
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class GetVoucherEntriesV2Result extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetVoucherEntriesV2Result extends \Magento\Catalog\Model\AbstractModel imp
      * @param RootGetVoucherEntries $getVoucherEntriesXML
      * @return $this
      */
-    public function setGetVoucherEntriesXML($getVoucherEntriesXML)
+    public function setGetvoucherentriesxml($getVoucherEntriesXML)
     {
-        $this->setData(self::GET_VOUCHER_ENTRIES_X_M_L, $getVoucherEntriesXML);
+        $this->setData(self::GET_VOUCHER_ENTRIES_XML, $getVoucherEntriesXML);
         return $this;
     }
 
     /**
      * @return RootGetVoucherEntries
      */
-    public function getGetVoucherEntriesXML()
+    public function getGetvoucherentriesxml()
     {
-        return $this->getData(self::GET_VOUCHER_ENTRIES_X_M_L);
+        return $this->getData(self::GET_VOUCHER_ENTRIES_XML);
     }
 
     /**

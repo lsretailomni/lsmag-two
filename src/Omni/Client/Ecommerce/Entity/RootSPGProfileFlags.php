@@ -12,24 +12,24 @@ class RootSPGProfileFlags extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootSPGProfileFlags';
 
-    public const S_P_G_PROFILE_FEATURE_FLAGS = 'SPGProfileFeatureFlags';
+    public const SPGPROFILE_FEATURE_FLAGS = 'SPGProfileFeatureFlags';
 
     /**
      * @param SPGProfileFeatureFlags $SPGProfileFeatureFlags
      * @return $this
      */
-    public function setSPGProfileFeatureFlags($SPGProfileFeatureFlags)
+    public function setSpgprofilefeatureflags($SPGProfileFeatureFlags)
     {
-        $this->setData(self::S_P_G_PROFILE_FEATURE_FLAGS, $SPGProfileFeatureFlags);
+        $this->setData(self::SPGPROFILE_FEATURE_FLAGS, $SPGProfileFeatureFlags);
         return $this;
     }
 
     /**
      * @return SPGProfileFeatureFlags
      */
-    public function getSPGProfileFeatureFlags()
+    public function getSpgprofilefeatureflags()
     {
-        return $this->getData(self::S_P_G_PROFILE_FEATURE_FLAGS);
+        return $this->getData(self::SPGPROFILE_FEATURE_FLAGS);
     }
 }
 

@@ -34,7 +34,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const SALES_STAFF = 'SalesStaff';
 
@@ -52,9 +52,9 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
 
     public const PRICE_GROUP_CODE = 'PriceGroupCode';
 
-    public const V_A_T_CODE = 'VATCode';
+    public const VATCODE = 'VATCode';
 
-    public const V_A_T = 'VAT';
+    public const VAT = 'VAT';
 
     public const DISCOUNT = 'Discount';
 
@@ -66,7 +66,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
 
     public const NET_AMOUNT = 'NetAmount';
 
-    public const V_A_T_AMOUNT = 'VATAmount';
+    public const VATAMOUNT = 'VATAmount';
 
     public const AMOUNT = 'Amount';
 
@@ -90,7 +90,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
 
     public const CARD_ENTRY_NO = 'CardEntryNo';
 
-    public const COUPON_E_A_N_ORG = 'CouponEANOrg';
+    public const COUPON_EANORG = 'CouponEANOrg';
 
     public const ITEM_NUMBER_SCANNED = 'ItemNumberScanned';
 
@@ -120,9 +120,9 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
 
     public const TOTAL_ROUNDED_AMT = 'TotalRoundedAmt';
 
-    public const ORG_PRICE_INC_V_A_T = 'OrgPriceIncVAT';
+    public const ORG_PRICE_INC_VAT = 'OrgPriceIncVAT';
 
-    public const ORG_PRICE_EXC_V_A_T = 'OrgPriceExcVAT';
+    public const ORG_PRICE_EXC_VAT = 'OrgPriceExcVAT';
 
     public const SERIAL_NO = 'SerialNo';
 
@@ -184,7 +184,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
 
     public const DEAL_TOTAL_DISC_AMT = 'DealTotalDiscAmt';
 
-    public const PROMPTEDFOR_I_P_O = 'PromptedforIPO';
+    public const PROMPTEDFOR_IPO = 'PromptedforIPO';
 
     public const CUSTOMER_PRICE = 'CustomerPrice';
 
@@ -336,7 +336,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
 
     public const SET_LIMIT_AMOUNT = 'SetLimitAmount';
 
-    public const S_P_O_PREPAYMENT = 'SPOPrepayment';
+    public const SPOPREPAYMENT = 'SPOPrepayment';
 
     public const PAYMENT_ACTUAL = 'Payment-Actual';
 
@@ -346,7 +346,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
 
     public const DELIVERY_STATUS = 'DeliveryStatus';
 
-    public const CONFIGURATION_I_D = 'ConfigurationID';
+    public const CONFIGURATION_ID = 'ConfigurationID';
 
     public const MANDATORY_OPTIONS_EXIST = 'MandatoryOptionsExist';
 
@@ -354,7 +354,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
 
     public const DELIVERY_REFERENCE_NO = 'DeliveryReferenceNo';
 
-    public const DELIVERY_USER_I_D = 'DeliveryUserID';
+    public const DELIVERY_USER_ID = 'DeliveryUserID';
 
     public const DELIVERY_DATE_TIME = 'DeliveryDateTime';
 
@@ -378,11 +378,11 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
 
     public const PAYMENT_AT_PURCHASE_ORDER_LIMIT = 'Payment-AtPurchaseOrder-Limit';
 
-    public const S_P_O_DOCUMENT_METHOD = 'SPODocumentMethod';
+    public const SPODOCUMENT_METHOD = 'SPODocumentMethod';
 
     public const STORE_SALES_LOCATION = 'StoreSalesLocation';
 
-    public const S_P_O_WHSE_LOCATION = 'SPOWhseLocation';
+    public const SPOWHSE_LOCATION = 'SPOWhseLocation';
 
     public const VENDOR_NO = 'VendorNo';
 
@@ -402,13 +402,13 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
 
     public const SPECIAL_ORDER_DEPOSIT_ENTRY = 'SpecialOrderDepositEntry';
 
-    public const CREATEDBY_STAFF_I_D = 'CreatedbyStaffID';
+    public const CREATEDBY_STAFF_ID = 'CreatedbyStaffID';
 
     /**
      * @param ?string $EntryType
      * @return $this
      */
-    public function setEntryType(?string $EntryType)
+    public function setEntrytype(?string $EntryType)
     {
         $this->setData(self::ENTRY_TYPE, $EntryType);
         return $this;
@@ -417,7 +417,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEntryType() : ?string
+    public function getEntrytype() : ?string
     {
         return $this->getData(self::ENTRY_TYPE);
     }
@@ -426,7 +426,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -435,7 +435,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -444,7 +444,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo(?string $ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
@@ -453,7 +453,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptNo() : ?string
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -462,7 +462,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $BarcodeNo
      * @return $this
      */
-    public function setBarcodeNo(?string $BarcodeNo)
+    public function setBarcodeno(?string $BarcodeNo)
     {
         $this->setData(self::BARCODE_NO, $BarcodeNo);
         return $this;
@@ -471,7 +471,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeNo() : ?string
+    public function getBarcodeno() : ?string
     {
         return $this->getData(self::BARCODE_NO);
     }
@@ -498,7 +498,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $EntryStatus
      * @return $this
      */
-    public function setEntryStatus(?string $EntryStatus)
+    public function setEntrystatus(?string $EntryStatus)
     {
         $this->setData(self::ENTRY_STATUS, $EntryStatus);
         return $this;
@@ -507,7 +507,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEntryStatus() : ?string
+    public function getEntrystatus() : ?string
     {
         return $this->getData(self::ENTRY_STATUS);
     }
@@ -516,7 +516,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode(?string $CurrencyCode)
+    public function setCurrencycode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
@@ -525,7 +525,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencyCode() : ?string
+    public function getCurrencycode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -534,7 +534,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -543,7 +543,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -570,7 +570,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $UnitofMeasure
      * @return $this
      */
-    public function setUnitofMeasure(?string $UnitofMeasure)
+    public function setUnitofmeasure(?string $UnitofMeasure)
     {
         $this->setData(self::UNITOF_MEASURE, $UnitofMeasure);
         return $this;
@@ -579,7 +579,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitofMeasure() : ?string
+    public function getUnitofmeasure() : ?string
     {
         return $this->getData(self::UNITOF_MEASURE);
     }
@@ -588,7 +588,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -597,7 +597,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -606,25 +606,25 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo(?string $POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param ?string $SalesStaff
      * @return $this
      */
-    public function setSalesStaff(?string $SalesStaff)
+    public function setSalesstaff(?string $SalesStaff)
     {
         $this->setData(self::SALES_STAFF, $SalesStaff);
         return $this;
@@ -633,7 +633,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalesStaff() : ?string
+    public function getSalesstaff() : ?string
     {
         return $this->getData(self::SALES_STAFF);
     }
@@ -642,7 +642,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TextType
      * @return $this
      */
-    public function setTextType(?string $TextType)
+    public function setTexttype(?string $TextType)
     {
         $this->setData(self::TEXT_TYPE, $TextType);
         return $this;
@@ -651,7 +651,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTextType() : ?string
+    public function getTexttype() : ?string
     {
         return $this->getData(self::TEXT_TYPE);
     }
@@ -660,7 +660,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemCategoryCode
      * @return $this
      */
-    public function setItemCategoryCode(?string $ItemCategoryCode)
+    public function setItemcategorycode(?string $ItemCategoryCode)
     {
         $this->setData(self::ITEM_CATEGORY_CODE, $ItemCategoryCode);
         return $this;
@@ -669,7 +669,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemCategoryCode() : ?string
+    public function getItemcategorycode() : ?string
     {
         return $this->getData(self::ITEM_CATEGORY_CODE);
     }
@@ -678,7 +678,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ProductGroupCode
      * @return $this
      */
-    public function setProductGroupCode(?string $ProductGroupCode)
+    public function setProductgroupcode(?string $ProductGroupCode)
     {
         $this->setData(self::PRODUCT_GROUP_CODE, $ProductGroupCode);
         return $this;
@@ -687,7 +687,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getProductGroupCode() : ?string
+    public function getProductgroupcode() : ?string
     {
         return $this->getData(self::PRODUCT_GROUP_CODE);
     }
@@ -714,7 +714,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $NetPrice
      * @return $this
      */
-    public function setNetPrice(?float $NetPrice)
+    public function setNetprice(?float $NetPrice)
     {
         $this->setData(self::NET_PRICE, $NetPrice);
         return $this;
@@ -723,7 +723,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetPrice() : ?float
+    public function getNetprice() : ?float
     {
         return $this->getData(self::NET_PRICE);
     }
@@ -750,7 +750,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PriceGroupCode
      * @return $this
      */
-    public function setPriceGroupCode(?string $PriceGroupCode)
+    public function setPricegroupcode(?string $PriceGroupCode)
     {
         $this->setData(self::PRICE_GROUP_CODE, $PriceGroupCode);
         return $this;
@@ -759,7 +759,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPriceGroupCode() : ?string
+    public function getPricegroupcode() : ?string
     {
         return $this->getData(self::PRICE_GROUP_CODE);
     }
@@ -768,36 +768,36 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VATCode
      * @return $this
      */
-    public function setVATCode(?string $VATCode)
+    public function setVatcode(?string $VATCode)
     {
-        $this->setData(self::V_A_T_CODE, $VATCode);
+        $this->setData(self::VATCODE, $VATCode);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getVATCode() : ?string
+    public function getVatcode() : ?string
     {
-        return $this->getData(self::V_A_T_CODE);
+        return $this->getData(self::VATCODE);
     }
 
     /**
      * @param ?float $VAT
      * @return $this
      */
-    public function setVAT(?float $VAT)
+    public function setVat(?float $VAT)
     {
-        $this->setData(self::V_A_T, $VAT);
+        $this->setData(self::VAT, $VAT);
         return $this;
     }
 
     /**
      * @return ?float
      */
-    public function getVAT() : ?float
+    public function getVat() : ?float
     {
-        return $this->getData(self::V_A_T);
+        return $this->getData(self::VAT);
     }
 
     /**
@@ -822,7 +822,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $DiscountAmount
      * @return $this
      */
-    public function setDiscountAmount(?float $DiscountAmount)
+    public function setDiscountamount(?float $DiscountAmount)
     {
         $this->setData(self::DISCOUNT_AMOUNT, $DiscountAmount);
         return $this;
@@ -831,7 +831,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountAmount() : ?float
+    public function getDiscountamount() : ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
@@ -840,7 +840,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $CostAmount
      * @return $this
      */
-    public function setCostAmount(?float $CostAmount)
+    public function setCostamount(?float $CostAmount)
     {
         $this->setData(self::COST_AMOUNT, $CostAmount);
         return $this;
@@ -849,7 +849,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCostAmount() : ?float
+    public function getCostamount() : ?float
     {
         return $this->getData(self::COST_AMOUNT);
     }
@@ -858,7 +858,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $CostPrice
      * @return $this
      */
-    public function setCostPrice(?float $CostPrice)
+    public function setCostprice(?float $CostPrice)
     {
         $this->setData(self::COST_PRICE, $CostPrice);
         return $this;
@@ -867,7 +867,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCostPrice() : ?float
+    public function getCostprice() : ?float
     {
         return $this->getData(self::COST_PRICE);
     }
@@ -876,7 +876,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $NetAmount
      * @return $this
      */
-    public function setNetAmount(?float $NetAmount)
+    public function setNetamount(?float $NetAmount)
     {
         $this->setData(self::NET_AMOUNT, $NetAmount);
         return $this;
@@ -885,7 +885,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetAmount() : ?float
+    public function getNetamount() : ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
@@ -894,18 +894,18 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $VATAmount
      * @return $this
      */
-    public function setVATAmount(?float $VATAmount)
+    public function setVatamount(?float $VATAmount)
     {
-        $this->setData(self::V_A_T_AMOUNT, $VATAmount);
+        $this->setData(self::VATAMOUNT, $VATAmount);
         return $this;
     }
 
     /**
      * @return ?float
      */
-    public function getVATAmount() : ?float
+    public function getVatamount() : ?float
     {
-        return $this->getData(self::V_A_T_AMOUNT);
+        return $this->getData(self::VATAMOUNT);
     }
 
     /**
@@ -930,7 +930,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $AmountInCurrency
      * @return $this
      */
-    public function setAmountInCurrency(?float $AmountInCurrency)
+    public function setAmountincurrency(?float $AmountInCurrency)
     {
         $this->setData(self::AMOUNT_IN_CURRENCY, $AmountInCurrency);
         return $this;
@@ -939,7 +939,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmountInCurrency() : ?float
+    public function getAmountincurrency() : ?float
     {
         return $this->getData(self::AMOUNT_IN_CURRENCY);
     }
@@ -948,7 +948,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CardType
      * @return $this
      */
-    public function setCardType(?string $CardType)
+    public function setCardtype(?string $CardType)
     {
         $this->setData(self::CARD_TYPE, $CardType);
         return $this;
@@ -957,7 +957,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardType() : ?string
+    public function getCardtype() : ?string
     {
         return $this->getData(self::CARD_TYPE);
     }
@@ -966,7 +966,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CardCustomerCoupItemNo
      * @return $this
      */
-    public function setCardCustomerCoupItemNo(?string $CardCustomerCoupItemNo)
+    public function setCardcustomercoupitemno(?string $CardCustomerCoupItemNo)
     {
         $this->setData(self::CARD_CUSTOMER_COUP_ITEM_NO, $CardCustomerCoupItemNo);
         return $this;
@@ -975,7 +975,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardCustomerCoupItemNo() : ?string
+    public function getCardcustomercoupitemno() : ?string
     {
         return $this->getData(self::CARD_CUSTOMER_COUP_ITEM_NO);
     }
@@ -984,7 +984,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VatBusPostingGroup
      * @return $this
      */
-    public function setVatBusPostingGroup(?string $VatBusPostingGroup)
+    public function setVatbuspostinggroup(?string $VatBusPostingGroup)
     {
         $this->setData(self::VAT_BUS_POSTING_GROUP, $VatBusPostingGroup);
         return $this;
@@ -993,7 +993,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatBusPostingGroup() : ?string
+    public function getVatbuspostinggroup() : ?string
     {
         return $this->getData(self::VAT_BUS_POSTING_GROUP);
     }
@@ -1002,7 +1002,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VatProdPostingGroup
      * @return $this
      */
-    public function setVatProdPostingGroup(?string $VatProdPostingGroup)
+    public function setVatprodpostinggroup(?string $VatProdPostingGroup)
     {
         $this->setData(self::VAT_PROD_POSTING_GROUP, $VatProdPostingGroup);
         return $this;
@@ -1011,7 +1011,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatProdPostingGroup() : ?string
+    public function getVatprodpostinggroup() : ?string
     {
         return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
@@ -1020,7 +1020,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $GenBusPostingGroup
      * @return $this
      */
-    public function setGenBusPostingGroup(?string $GenBusPostingGroup)
+    public function setGenbuspostinggroup(?string $GenBusPostingGroup)
     {
         $this->setData(self::GEN_BUS_POSTING_GROUP, $GenBusPostingGroup);
         return $this;
@@ -1029,7 +1029,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGenBusPostingGroup() : ?string
+    public function getGenbuspostinggroup() : ?string
     {
         return $this->getData(self::GEN_BUS_POSTING_GROUP);
     }
@@ -1038,7 +1038,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $GenProdPostingGroup
      * @return $this
      */
-    public function setGenProdPostingGroup(?string $GenProdPostingGroup)
+    public function setGenprodpostinggroup(?string $GenProdPostingGroup)
     {
         $this->setData(self::GEN_PROD_POSTING_GROUP, $GenProdPostingGroup);
         return $this;
@@ -1047,7 +1047,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGenProdPostingGroup() : ?string
+    public function getGenprodpostinggroup() : ?string
     {
         return $this->getData(self::GEN_PROD_POSTING_GROUP);
     }
@@ -1056,7 +1056,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemDiscGroup
      * @return $this
      */
-    public function setItemDiscGroup(?string $ItemDiscGroup)
+    public function setItemdiscgroup(?string $ItemDiscGroup)
     {
         $this->setData(self::ITEM_DISC_GROUP, $ItemDiscGroup);
         return $this;
@@ -1065,7 +1065,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemDiscGroup() : ?string
+    public function getItemdiscgroup() : ?string
     {
         return $this->getData(self::ITEM_DISC_GROUP);
     }
@@ -1074,7 +1074,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $NoDiscountAllowed
      * @return $this
      */
-    public function setNoDiscountAllowed(?bool $NoDiscountAllowed)
+    public function setNodiscountallowed(?bool $NoDiscountAllowed)
     {
         $this->setData(self::NO_DISCOUNT_ALLOWED, $NoDiscountAllowed);
         return $this;
@@ -1083,7 +1083,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getNoDiscountAllowed() : ?bool
+    public function getNodiscountallowed() : ?bool
     {
         return $this->getData(self::NO_DISCOUNT_ALLOWED);
     }
@@ -1092,7 +1092,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $CardEntryNo
      * @return $this
      */
-    public function setCardEntryNo($CardEntryNo)
+    public function setCardentryno($CardEntryNo)
     {
         $this->setData(self::CARD_ENTRY_NO, $CardEntryNo);
         return $this;
@@ -1101,7 +1101,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getCardEntryNo()
+    public function getCardentryno()
     {
         return $this->getData(self::CARD_ENTRY_NO);
     }
@@ -1110,25 +1110,25 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CouponEANOrg
      * @return $this
      */
-    public function setCouponEANOrg(?string $CouponEANOrg)
+    public function setCouponeanorg(?string $CouponEANOrg)
     {
-        $this->setData(self::COUPON_E_A_N_ORG, $CouponEANOrg);
+        $this->setData(self::COUPON_EANORG, $CouponEANOrg);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getCouponEANOrg() : ?string
+    public function getCouponeanorg() : ?string
     {
-        return $this->getData(self::COUPON_E_A_N_ORG);
+        return $this->getData(self::COUPON_EANORG);
     }
 
     /**
      * @param ?bool $ItemNumberScanned
      * @return $this
      */
-    public function setItemNumberScanned(?bool $ItemNumberScanned)
+    public function setItemnumberscanned(?bool $ItemNumberScanned)
     {
         $this->setData(self::ITEM_NUMBER_SCANNED, $ItemNumberScanned);
         return $this;
@@ -1137,7 +1137,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getItemNumberScanned() : ?bool
+    public function getItemnumberscanned() : ?bool
     {
         return $this->getData(self::ITEM_NUMBER_SCANNED);
     }
@@ -1146,7 +1146,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $PriceinBarcode
      * @return $this
      */
-    public function setPriceinBarcode(?bool $PriceinBarcode)
+    public function setPriceinbarcode(?bool $PriceinBarcode)
     {
         $this->setData(self::PRICEIN_BARCODE, $PriceinBarcode);
         return $this;
@@ -1155,7 +1155,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPriceinBarcode() : ?bool
+    public function getPriceinbarcode() : ?bool
     {
         return $this->getData(self::PRICEIN_BARCODE);
     }
@@ -1164,7 +1164,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $PriceChange
      * @return $this
      */
-    public function setPriceChange(?bool $PriceChange)
+    public function setPricechange(?bool $PriceChange)
     {
         $this->setData(self::PRICE_CHANGE, $PriceChange);
         return $this;
@@ -1173,7 +1173,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPriceChange() : ?bool
+    public function getPricechange() : ?bool
     {
         return $this->getData(self::PRICE_CHANGE);
     }
@@ -1182,7 +1182,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $WeightmanuallyEntered
      * @return $this
      */
-    public function setWeightmanuallyEntered(?bool $WeightmanuallyEntered)
+    public function setWeightmanuallyentered(?bool $WeightmanuallyEntered)
     {
         $this->setData(self::WEIGHTMANUALLY_ENTERED, $WeightmanuallyEntered);
         return $this;
@@ -1191,7 +1191,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getWeightmanuallyEntered() : ?bool
+    public function getWeightmanuallyentered() : ?bool
     {
         return $this->getData(self::WEIGHTMANUALLY_ENTERED);
     }
@@ -1200,7 +1200,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ScaleItem
      * @return $this
      */
-    public function setScaleItem(?bool $ScaleItem)
+    public function setScaleitem(?bool $ScaleItem)
     {
         $this->setData(self::SCALE_ITEM, $ScaleItem);
         return $this;
@@ -1209,7 +1209,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getScaleItem() : ?bool
+    public function getScaleitem() : ?bool
     {
         return $this->getData(self::SCALE_ITEM);
     }
@@ -1218,7 +1218,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $QuantityinBarcode
      * @return $this
      */
-    public function setQuantityinBarcode(?bool $QuantityinBarcode)
+    public function setQuantityinbarcode(?bool $QuantityinBarcode)
     {
         $this->setData(self::QUANTITYIN_BARCODE, $QuantityinBarcode);
         return $this;
@@ -1227,7 +1227,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getQuantityinBarcode() : ?bool
+    public function getQuantityinbarcode() : ?bool
     {
         return $this->getData(self::QUANTITYIN_BARCODE);
     }
@@ -1236,7 +1236,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DispensePrinting
      * @return $this
      */
-    public function setDispensePrinting(?string $DispensePrinting)
+    public function setDispenseprinting(?string $DispensePrinting)
     {
         $this->setData(self::DISPENSE_PRINTING, $DispensePrinting);
         return $this;
@@ -1245,7 +1245,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDispensePrinting() : ?string
+    public function getDispenseprinting() : ?string
     {
         return $this->getData(self::DISPENSE_PRINTING);
     }
@@ -1254,7 +1254,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $LinkedNonotOrig
      * @return $this
      */
-    public function setLinkedNonotOrig(?bool $LinkedNonotOrig)
+    public function setLinkednonotorig(?bool $LinkedNonotOrig)
     {
         $this->setData(self::LINKED_NONOT_ORIG, $LinkedNonotOrig);
         return $this;
@@ -1263,7 +1263,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getLinkedNonotOrig() : ?bool
+    public function getLinkednonotorig() : ?bool
     {
         return $this->getData(self::LINKED_NONOT_ORIG);
     }
@@ -1272,7 +1272,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $OrigofaLinkedItemList
      * @return $this
      */
-    public function setOrigofaLinkedItemList(?bool $OrigofaLinkedItemList)
+    public function setOrigofalinkeditemlist(?bool $OrigofaLinkedItemList)
     {
         $this->setData(self::ORIGOFA_LINKED_ITEM_LIST, $OrigofaLinkedItemList);
         return $this;
@@ -1281,7 +1281,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getOrigofaLinkedItemList() : ?bool
+    public function getOrigofalinkeditemlist() : ?bool
     {
         return $this->getData(self::ORIGOFA_LINKED_ITEM_LIST);
     }
@@ -1290,7 +1290,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $PriceOverride
      * @return $this
      */
-    public function setPriceOverride(?bool $PriceOverride)
+    public function setPriceoverride(?bool $PriceOverride)
     {
         $this->setData(self::PRICE_OVERRIDE, $PriceOverride);
         return $this;
@@ -1299,7 +1299,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPriceOverride() : ?bool
+    public function getPriceoverride() : ?bool
     {
         return $this->getData(self::PRICE_OVERRIDE);
     }
@@ -1308,7 +1308,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ItemDeptNegative
      * @return $this
      */
-    public function setItemDeptNegative(?bool $ItemDeptNegative)
+    public function setItemdeptnegative(?bool $ItemDeptNegative)
     {
         $this->setData(self::ITEM_DEPT_NEGATIVE, $ItemDeptNegative);
         return $this;
@@ -1317,7 +1317,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getItemDeptNegative() : ?bool
+    public function getItemdeptnegative() : ?bool
     {
         return $this->getData(self::ITEM_DEPT_NEGATIVE);
     }
@@ -1326,7 +1326,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $CountasOne
      * @return $this
      */
-    public function setCountasOne(?bool $CountasOne)
+    public function setCountasone(?bool $CountasOne)
     {
         $this->setData(self::COUNTAS_ONE, $CountasOne);
         return $this;
@@ -1335,7 +1335,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getCountasOne() : ?bool
+    public function getCountasone() : ?bool
     {
         return $this->getData(self::COUNTAS_ONE);
     }
@@ -1344,7 +1344,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemPostingGroup
      * @return $this
      */
-    public function setItemPostingGroup(?string $ItemPostingGroup)
+    public function setItempostinggroup(?string $ItemPostingGroup)
     {
         $this->setData(self::ITEM_POSTING_GROUP, $ItemPostingGroup);
         return $this;
@@ -1353,7 +1353,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemPostingGroup() : ?string
+    public function getItempostinggroup() : ?string
     {
         return $this->getData(self::ITEM_POSTING_GROUP);
     }
@@ -1362,7 +1362,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $TotalRoundedAmt
      * @return $this
      */
-    public function setTotalRoundedAmt(?float $TotalRoundedAmt)
+    public function setTotalroundedamt(?float $TotalRoundedAmt)
     {
         $this->setData(self::TOTAL_ROUNDED_AMT, $TotalRoundedAmt);
         return $this;
@@ -1371,7 +1371,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalRoundedAmt() : ?float
+    public function getTotalroundedamt() : ?float
     {
         return $this->getData(self::TOTAL_ROUNDED_AMT);
     }
@@ -1380,43 +1380,43 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $OrgPriceIncVAT
      * @return $this
      */
-    public function setOrgPriceIncVAT(?float $OrgPriceIncVAT)
+    public function setOrgpriceincvat(?float $OrgPriceIncVAT)
     {
-        $this->setData(self::ORG_PRICE_INC_V_A_T, $OrgPriceIncVAT);
+        $this->setData(self::ORG_PRICE_INC_VAT, $OrgPriceIncVAT);
         return $this;
     }
 
     /**
      * @return ?float
      */
-    public function getOrgPriceIncVAT() : ?float
+    public function getOrgpriceincvat() : ?float
     {
-        return $this->getData(self::ORG_PRICE_INC_V_A_T);
+        return $this->getData(self::ORG_PRICE_INC_VAT);
     }
 
     /**
      * @param ?float $OrgPriceExcVAT
      * @return $this
      */
-    public function setOrgPriceExcVAT(?float $OrgPriceExcVAT)
+    public function setOrgpriceexcvat(?float $OrgPriceExcVAT)
     {
-        $this->setData(self::ORG_PRICE_EXC_V_A_T, $OrgPriceExcVAT);
+        $this->setData(self::ORG_PRICE_EXC_VAT, $OrgPriceExcVAT);
         return $this;
     }
 
     /**
      * @return ?float
      */
-    public function getOrgPriceExcVAT() : ?float
+    public function getOrgpriceexcvat() : ?float
     {
-        return $this->getData(self::ORG_PRICE_EXC_V_A_T);
+        return $this->getData(self::ORG_PRICE_EXC_VAT);
     }
 
     /**
      * @param ?string $SerialNo
      * @return $this
      */
-    public function setSerialNo(?string $SerialNo)
+    public function setSerialno(?string $SerialNo)
     {
         $this->setData(self::SERIAL_NO, $SerialNo);
         return $this;
@@ -1425,7 +1425,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSerialNo() : ?string
+    public function getSerialno() : ?string
     {
         return $this->getData(self::SERIAL_NO);
     }
@@ -1434,7 +1434,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LotNo
      * @return $this
      */
-    public function setLotNo(?string $LotNo)
+    public function setLotno(?string $LotNo)
     {
         $this->setData(self::LOT_NO, $LotNo);
         return $this;
@@ -1443,7 +1443,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLotNo() : ?string
+    public function getLotno() : ?string
     {
         return $this->getData(self::LOT_NO);
     }
@@ -1452,7 +1452,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExpirationDate
      * @return $this
      */
-    public function setExpirationDate(?string $ExpirationDate)
+    public function setExpirationdate(?string $ExpirationDate)
     {
         $this->setData(self::EXPIRATION_DATE, $ExpirationDate);
         return $this;
@@ -1461,7 +1461,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirationDate() : ?string
+    public function getExpirationdate() : ?string
     {
         return $this->getData(self::EXPIRATION_DATE);
     }
@@ -1470,7 +1470,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $OfferBlockedPoints
      * @return $this
      */
-    public function setOfferBlockedPoints(?bool $OfferBlockedPoints)
+    public function setOfferblockedpoints(?bool $OfferBlockedPoints)
     {
         $this->setData(self::OFFER_BLOCKED_POINTS, $OfferBlockedPoints);
         return $this;
@@ -1479,7 +1479,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getOfferBlockedPoints() : ?bool
+    public function getOfferblockedpoints() : ?bool
     {
         return $this->getData(self::OFFER_BLOCKED_POINTS);
     }
@@ -1488,7 +1488,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OrigfromInfocode
      * @return $this
      */
-    public function setOrigfromInfocode(?string $OrigfromInfocode)
+    public function setOrigfrominfocode(?string $OrigfromInfocode)
     {
         $this->setData(self::ORIGFROM_INFOCODE, $OrigfromInfocode);
         return $this;
@@ -1497,7 +1497,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrigfromInfocode() : ?string
+    public function getOrigfrominfocode() : ?string
     {
         return $this->getData(self::ORIGFROM_INFOCODE);
     }
@@ -1506,7 +1506,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OrigfromSubcode
      * @return $this
      */
-    public function setOrigfromSubcode(?string $OrigfromSubcode)
+    public function setOrigfromsubcode(?string $OrigfromSubcode)
     {
         $this->setData(self::ORIGFROM_SUBCODE, $OrigfromSubcode);
         return $this;
@@ -1515,7 +1515,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrigfromSubcode() : ?string
+    public function getOrigfromsubcode() : ?string
     {
         return $this->getData(self::ORIGFROM_SUBCODE);
     }
@@ -1524,7 +1524,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $InfocodeEntryLineNo
      * @return $this
      */
-    public function setInfocodeEntryLineNo($InfocodeEntryLineNo)
+    public function setInfocodeentrylineno($InfocodeEntryLineNo)
     {
         $this->setData(self::INFOCODE_ENTRY_LINE_NO, $InfocodeEntryLineNo);
         return $this;
@@ -1533,7 +1533,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getInfocodeEntryLineNo()
+    public function getInfocodeentrylineno()
     {
         return $this->getData(self::INFOCODE_ENTRY_LINE_NO);
     }
@@ -1542,7 +1542,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $InfocodeSelectedQty
      * @return $this
      */
-    public function setInfocodeSelectedQty(?float $InfocodeSelectedQty)
+    public function setInfocodeselectedqty(?float $InfocodeSelectedQty)
     {
         $this->setData(self::INFOCODE_SELECTED_QTY, $InfocodeSelectedQty);
         return $this;
@@ -1551,7 +1551,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getInfocodeSelectedQty() : ?float
+    public function getInfocodeselectedqty() : ?float
     {
         return $this->getData(self::INFOCODE_SELECTED_QTY);
     }
@@ -1560,7 +1560,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $ShiftedfromLineNo
      * @return $this
      */
-    public function setShiftedfromLineNo($ShiftedfromLineNo)
+    public function setShiftedfromlineno($ShiftedfromLineNo)
     {
         $this->setData(self::SHIFTEDFROM_LINE_NO, $ShiftedfromLineNo);
         return $this;
@@ -1569,7 +1569,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getShiftedfromLineNo()
+    public function getShiftedfromlineno()
     {
         return $this->getData(self::SHIFTEDFROM_LINE_NO);
     }
@@ -1578,7 +1578,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $SplitfromLineNoQty
      * @return $this
      */
-    public function setSplitfromLineNoQty(?float $SplitfromLineNoQty)
+    public function setSplitfromlinenoqty(?float $SplitfromLineNoQty)
     {
         $this->setData(self::SPLITFROM_LINE_NO_QTY, $SplitfromLineNoQty);
         return $this;
@@ -1587,7 +1587,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getSplitfromLineNoQty() : ?float
+    public function getSplitfromlinenoqty() : ?float
     {
         return $this->getData(self::SPLITFROM_LINE_NO_QTY);
     }
@@ -1596,7 +1596,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $SplitfromLineNo
      * @return $this
      */
-    public function setSplitfromLineNo($SplitfromLineNo)
+    public function setSplitfromlineno($SplitfromLineNo)
     {
         $this->setData(self::SPLITFROM_LINE_NO, $SplitfromLineNo);
         return $this;
@@ -1605,7 +1605,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getSplitfromLineNo()
+    public function getSplitfromlineno()
     {
         return $this->getData(self::SPLITFROM_LINE_NO);
     }
@@ -1614,7 +1614,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $DiscInfoLineNo
      * @return $this
      */
-    public function setDiscInfoLineNo($DiscInfoLineNo)
+    public function setDiscinfolineno($DiscInfoLineNo)
     {
         $this->setData(self::DISC_INFO_LINE_NO, $DiscInfoLineNo);
         return $this;
@@ -1623,7 +1623,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDiscInfoLineNo()
+    public function getDiscinfolineno()
     {
         return $this->getData(self::DISC_INFO_LINE_NO);
     }
@@ -1632,7 +1632,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $DiscountTriggered
      * @return $this
      */
-    public function setDiscountTriggered(?bool $DiscountTriggered)
+    public function setDiscounttriggered(?bool $DiscountTriggered)
     {
         $this->setData(self::DISCOUNT_TRIGGERED, $DiscountTriggered);
         return $this;
@@ -1641,7 +1641,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getDiscountTriggered() : ?bool
+    public function getDiscounttriggered() : ?bool
     {
         return $this->getData(self::DISCOUNT_TRIGGERED);
     }
@@ -1650,7 +1650,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QuantityDiscounted
      * @return $this
      */
-    public function setQuantityDiscounted(?float $QuantityDiscounted)
+    public function setQuantitydiscounted(?float $QuantityDiscounted)
     {
         $this->setData(self::QUANTITY_DISCOUNTED, $QuantityDiscounted);
         return $this;
@@ -1659,7 +1659,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantityDiscounted() : ?float
+    public function getQuantitydiscounted() : ?float
     {
         return $this->getData(self::QUANTITY_DISCOUNTED);
     }
@@ -1668,7 +1668,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PeriodicDiscType
      * @return $this
      */
-    public function setPeriodicDiscType(?string $PeriodicDiscType)
+    public function setPeriodicdisctype(?string $PeriodicDiscType)
     {
         $this->setData(self::PERIODIC_DISC_TYPE, $PeriodicDiscType);
         return $this;
@@ -1677,7 +1677,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPeriodicDiscType() : ?string
+    public function getPeriodicdisctype() : ?string
     {
         return $this->getData(self::PERIODIC_DISC_TYPE);
     }
@@ -1686,7 +1686,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PeriodicDiscGroup
      * @return $this
      */
-    public function setPeriodicDiscGroup(?string $PeriodicDiscGroup)
+    public function setPeriodicdiscgroup(?string $PeriodicDiscGroup)
     {
         $this->setData(self::PERIODIC_DISC_GROUP, $PeriodicDiscGroup);
         return $this;
@@ -1695,7 +1695,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPeriodicDiscGroup() : ?string
+    public function getPeriodicdiscgroup() : ?string
     {
         return $this->getData(self::PERIODIC_DISC_GROUP);
     }
@@ -1704,7 +1704,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $InfoCodeDiscDisable
      * @return $this
      */
-    public function setInfoCodeDiscDisable(?bool $InfoCodeDiscDisable)
+    public function setInfocodediscdisable(?bool $InfoCodeDiscDisable)
     {
         $this->setData(self::INFO_CODE_DISC_DISABLE, $InfoCodeDiscDisable);
         return $this;
@@ -1713,7 +1713,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getInfoCodeDiscDisable() : ?bool
+    public function getInfocodediscdisable() : ?bool
     {
         return $this->getData(self::INFO_CODE_DISC_DISABLE);
     }
@@ -1722,7 +1722,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $InfoCodeDisc
      * @return $this
      */
-    public function setInfoCodeDisc(?float $InfoCodeDisc)
+    public function setInfocodedisc(?float $InfoCodeDisc)
     {
         $this->setData(self::INFO_CODE_DISC, $InfoCodeDisc);
         return $this;
@@ -1731,7 +1731,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getInfoCodeDisc() : ?float
+    public function getInfocodedisc() : ?float
     {
         return $this->getData(self::INFO_CODE_DISC);
     }
@@ -1740,7 +1740,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $PeriodicDisc
      * @return $this
      */
-    public function setPeriodicDisc(?float $PeriodicDisc)
+    public function setPeriodicdisc(?float $PeriodicDisc)
     {
         $this->setData(self::PERIODIC_DISC, $PeriodicDisc);
         return $this;
@@ -1749,7 +1749,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPeriodicDisc() : ?float
+    public function getPeriodicdisc() : ?float
     {
         return $this->getData(self::PERIODIC_DISC);
     }
@@ -1758,7 +1758,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PromotionNo
      * @return $this
      */
-    public function setPromotionNo(?string $PromotionNo)
+    public function setPromotionno(?string $PromotionNo)
     {
         $this->setData(self::PROMOTION_NO, $PromotionNo);
         return $this;
@@ -1767,7 +1767,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPromotionNo() : ?string
+    public function getPromotionno() : ?string
     {
         return $this->getData(self::PROMOTION_NO);
     }
@@ -1776,7 +1776,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $MixMatchLineNo
      * @return $this
      */
-    public function setMixMatchLineNo($MixMatchLineNo)
+    public function setMixmatchlineno($MixMatchLineNo)
     {
         $this->setData(self::MIX_MATCH_LINE_NO, $MixMatchLineNo);
         return $this;
@@ -1785,7 +1785,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getMixMatchLineNo()
+    public function getMixmatchlineno()
     {
         return $this->getData(self::MIX_MATCH_LINE_NO);
     }
@@ -1794,7 +1794,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $LineDisc
      * @return $this
      */
-    public function setLineDisc(?float $LineDisc)
+    public function setLinedisc(?float $LineDisc)
     {
         $this->setData(self::LINE_DISC, $LineDisc);
         return $this;
@@ -1803,7 +1803,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getLineDisc() : ?float
+    public function getLinedisc() : ?float
     {
         return $this->getData(self::LINE_DISC);
     }
@@ -1812,7 +1812,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $TotalDisc
      * @return $this
      */
-    public function setTotalDisc(?float $TotalDisc)
+    public function setTotaldisc(?float $TotalDisc)
     {
         $this->setData(self::TOTAL_DISC, $TotalDisc);
         return $this;
@@ -1821,7 +1821,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalDisc() : ?float
+    public function getTotaldisc() : ?float
     {
         return $this->getData(self::TOTAL_DISC);
     }
@@ -1830,7 +1830,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $TotDiscInfoLineNo
      * @return $this
      */
-    public function setTotDiscInfoLineNo($TotDiscInfoLineNo)
+    public function setTotdiscinfolineno($TotDiscInfoLineNo)
     {
         $this->setData(self::TOT_DISC_INFO_LINE_NO, $TotDiscInfoLineNo);
         return $this;
@@ -1839,7 +1839,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTotDiscInfoLineNo()
+    public function getTotdiscinfolineno()
     {
         return $this->getData(self::TOT_DISC_INFO_LINE_NO);
     }
@@ -1848,7 +1848,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $TotalDiscAmount
      * @return $this
      */
-    public function setTotalDiscAmount(?float $TotalDiscAmount)
+    public function setTotaldiscamount(?float $TotalDiscAmount)
     {
         $this->setData(self::TOTAL_DISC_AMOUNT, $TotalDiscAmount);
         return $this;
@@ -1857,7 +1857,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalDiscAmount() : ?float
+    public function getTotaldiscamount() : ?float
     {
         return $this->getData(self::TOTAL_DISC_AMOUNT);
     }
@@ -1866,7 +1866,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $PeriodicDiscountAmount
      * @return $this
      */
-    public function setPeriodicDiscountAmount(?float $PeriodicDiscountAmount)
+    public function setPeriodicdiscountamount(?float $PeriodicDiscountAmount)
     {
         $this->setData(self::PERIODIC_DISCOUNT_AMOUNT, $PeriodicDiscountAmount);
         return $this;
@@ -1875,7 +1875,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPeriodicDiscountAmount() : ?float
+    public function getPeriodicdiscountamount() : ?float
     {
         return $this->getData(self::PERIODIC_DISCOUNT_AMOUNT);
     }
@@ -1884,7 +1884,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $DealLine
      * @return $this
      */
-    public function setDealLine(?bool $DealLine)
+    public function setDealline(?bool $DealLine)
     {
         $this->setData(self::DEAL_LINE, $DealLine);
         return $this;
@@ -1893,7 +1893,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getDealLine() : ?bool
+    public function getDealline() : ?bool
     {
         return $this->getData(self::DEAL_LINE);
     }
@@ -1902,7 +1902,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $DealModifierLineNo
      * @return $this
      */
-    public function setDealModifierLineNo($DealModifierLineNo)
+    public function setDealmodifierlineno($DealModifierLineNo)
     {
         $this->setData(self::DEAL_MODIFIER_LINE_NO, $DealModifierLineNo);
         return $this;
@@ -1911,7 +1911,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDealModifierLineNo()
+    public function getDealmodifierlineno()
     {
         return $this->getData(self::DEAL_MODIFIER_LINE_NO);
     }
@@ -1920,7 +1920,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $DealLineNo
      * @return $this
      */
-    public function setDealLineNo($DealLineNo)
+    public function setDeallineno($DealLineNo)
     {
         $this->setData(self::DEAL_LINE_NO, $DealLineNo);
         return $this;
@@ -1929,7 +1929,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDealLineNo()
+    public function getDeallineno()
     {
         return $this->getData(self::DEAL_LINE_NO);
     }
@@ -1938,7 +1938,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $DealTotalDiscAmt
      * @return $this
      */
-    public function setDealTotalDiscAmt(?float $DealTotalDiscAmt)
+    public function setDealtotaldiscamt(?float $DealTotalDiscAmt)
     {
         $this->setData(self::DEAL_TOTAL_DISC_AMT, $DealTotalDiscAmt);
         return $this;
@@ -1947,7 +1947,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDealTotalDiscAmt() : ?float
+    public function getDealtotaldiscamt() : ?float
     {
         return $this->getData(self::DEAL_TOTAL_DISC_AMT);
     }
@@ -1956,25 +1956,25 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $PromptedforIPO
      * @return $this
      */
-    public function setPromptedforIPO(?bool $PromptedforIPO)
+    public function setPromptedforipo(?bool $PromptedforIPO)
     {
-        $this->setData(self::PROMPTEDFOR_I_P_O, $PromptedforIPO);
+        $this->setData(self::PROMPTEDFOR_IPO, $PromptedforIPO);
         return $this;
     }
 
     /**
      * @return ?bool
      */
-    public function getPromptedforIPO() : ?bool
+    public function getPromptedforipo() : ?bool
     {
-        return $this->getData(self::PROMPTEDFOR_I_P_O);
+        return $this->getData(self::PROMPTEDFOR_IPO);
     }
 
     /**
      * @param ?float $CustomerPrice
      * @return $this
      */
-    public function setCustomerPrice(?float $CustomerPrice)
+    public function setCustomerprice(?float $CustomerPrice)
     {
         $this->setData(self::CUSTOMER_PRICE, $CustomerPrice);
         return $this;
@@ -1983,7 +1983,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCustomerPrice() : ?float
+    public function getCustomerprice() : ?float
     {
         return $this->getData(self::CUSTOMER_PRICE);
     }
@@ -1992,7 +1992,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $ItemPointOfferMemberPoints
      * @return $this
      */
-    public function setItemPointOfferMemberPoints($ItemPointOfferMemberPoints)
+    public function setItempointoffermemberpoints($ItemPointOfferMemberPoints)
     {
         $this->setData(self::ITEM_POINT_OFFER_MEMBER_POINTS, $ItemPointOfferMemberPoints);
         return $this;
@@ -2001,7 +2001,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getItemPointOfferMemberPoints()
+    public function getItempointoffermemberpoints()
     {
         return $this->getData(self::ITEM_POINT_OFFER_MEMBER_POINTS);
     }
@@ -2010,7 +2010,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $CustomerDisc
      * @return $this
      */
-    public function setCustomerDisc(?float $CustomerDisc)
+    public function setCustomerdisc(?float $CustomerDisc)
     {
         $this->setData(self::CUSTOMER_DISC, $CustomerDisc);
         return $this;
@@ -2019,7 +2019,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCustomerDisc() : ?float
+    public function getCustomerdisc() : ?float
     {
         return $this->getData(self::CUSTOMER_DISC);
     }
@@ -2028,7 +2028,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $CustomerQtyUsed
      * @return $this
      */
-    public function setCustomerQtyUsed(?float $CustomerQtyUsed)
+    public function setCustomerqtyused(?float $CustomerQtyUsed)
     {
         $this->setData(self::CUSTOMER_QTY_USED, $CustomerQtyUsed);
         return $this;
@@ -2037,7 +2037,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCustomerQtyUsed() : ?float
+    public function getCustomerqtyused() : ?float
     {
         return $this->getData(self::CUSTOMER_QTY_USED);
     }
@@ -2046,7 +2046,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $CouponQtyUsed
      * @return $this
      */
-    public function setCouponQtyUsed(?float $CouponQtyUsed)
+    public function setCouponqtyused(?float $CouponQtyUsed)
     {
         $this->setData(self::COUPON_QTY_USED, $CouponQtyUsed);
         return $this;
@@ -2055,7 +2055,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCouponQtyUsed() : ?float
+    public function getCouponqtyused() : ?float
     {
         return $this->getData(self::COUPON_QTY_USED);
     }
@@ -2064,7 +2064,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $CouponDiscountAmount
      * @return $this
      */
-    public function setCouponDiscountAmount(?float $CouponDiscountAmount)
+    public function setCoupondiscountamount(?float $CouponDiscountAmount)
     {
         $this->setData(self::COUPON_DISCOUNT_AMOUNT, $CouponDiscountAmount);
         return $this;
@@ -2073,7 +2073,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCouponDiscountAmount() : ?float
+    public function getCoupondiscountamount() : ?float
     {
         return $this->getData(self::COUPON_DISCOUNT_AMOUNT);
     }
@@ -2082,7 +2082,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ParentTransactionDocNo
      * @return $this
      */
-    public function setParentTransactionDocNo(?string $ParentTransactionDocNo)
+    public function setParenttransactiondocno(?string $ParentTransactionDocNo)
     {
         $this->setData(self::PARENT_TRANSACTION_DOC_NO, $ParentTransactionDocNo);
         return $this;
@@ -2091,7 +2091,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getParentTransactionDocNo() : ?string
+    public function getParenttransactiondocno() : ?string
     {
         return $this->getData(self::PARENT_TRANSACTION_DOC_NO);
     }
@@ -2100,7 +2100,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $ParentLine
      * @return $this
      */
-    public function setParentLine($ParentLine)
+    public function setParentline($ParentLine)
     {
         $this->setData(self::PARENT_LINE, $ParentLine);
         return $this;
@@ -2109,7 +2109,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getParentLine()
+    public function getParentline()
     {
         return $this->getData(self::PARENT_LINE);
     }
@@ -2118,7 +2118,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $RoundNo
      * @return $this
      */
-    public function setRoundNo($RoundNo)
+    public function setRoundno($RoundNo)
     {
         $this->setData(self::ROUND_NO, $RoundNo);
         return $this;
@@ -2127,7 +2127,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getRoundNo()
+    public function getRoundno()
     {
         return $this->getData(self::ROUND_NO);
     }
@@ -2136,7 +2136,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $GuestSeatNo
      * @return $this
      */
-    public function setGuestSeatNo($GuestSeatNo)
+    public function setGuestseatno($GuestSeatNo)
     {
         $this->setData(self::GUEST_SEAT_NO, $GuestSeatNo);
         return $this;
@@ -2145,7 +2145,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getGuestSeatNo()
+    public function getGuestseatno()
     {
         return $this->getData(self::GUEST_SEAT_NO);
     }
@@ -2172,7 +2172,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $GroupMarking
      * @return $this
      */
-    public function setGroupMarking($GroupMarking)
+    public function setGroupmarking($GroupMarking)
     {
         $this->setData(self::GROUP_MARKING, $GroupMarking);
         return $this;
@@ -2181,7 +2181,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getGroupMarking()
+    public function getGroupmarking()
     {
         return $this->getData(self::GROUP_MARKING);
     }
@@ -2190,7 +2190,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ParentCompression
      * @return $this
      */
-    public function setParentCompression(?string $ParentCompression)
+    public function setParentcompression(?string $ParentCompression)
     {
         $this->setData(self::PARENT_COMPRESSION, $ParentCompression);
         return $this;
@@ -2199,7 +2199,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getParentCompression() : ?string
+    public function getParentcompression() : ?string
     {
         return $this->getData(self::PARENT_COMPRESSION);
     }
@@ -2208,7 +2208,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $JournalCompression
      * @return $this
      */
-    public function setJournalCompression(?string $JournalCompression)
+    public function setJournalcompression(?string $JournalCompression)
     {
         $this->setData(self::JOURNAL_COMPRESSION, $JournalCompression);
         return $this;
@@ -2217,7 +2217,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getJournalCompression() : ?string
+    public function getJournalcompression() : ?string
     {
         return $this->getData(self::JOURNAL_COMPRESSION);
     }
@@ -2226,7 +2226,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $KitchenRouting
      * @return $this
      */
-    public function setKitchenRouting(?string $KitchenRouting)
+    public function setKitchenrouting(?string $KitchenRouting)
     {
         $this->setData(self::KITCHEN_ROUTING, $KitchenRouting);
         return $this;
@@ -2235,7 +2235,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getKitchenRouting() : ?string
+    public function getKitchenrouting() : ?string
     {
         return $this->getData(self::KITCHEN_ROUTING);
     }
@@ -2244,7 +2244,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $SplitOriginLineNo
      * @return $this
      */
-    public function setSplitOriginLineNo($SplitOriginLineNo)
+    public function setSplitoriginlineno($SplitOriginLineNo)
     {
         $this->setData(self::SPLIT_ORIGIN_LINE_NO, $SplitOriginLineNo);
         return $this;
@@ -2253,7 +2253,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getSplitOriginLineNo()
+    public function getSplitoriginlineno()
     {
         return $this->getData(self::SPLIT_ORIGIN_LINE_NO);
     }
@@ -2262,7 +2262,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ViewLineinJournal
      * @return $this
      */
-    public function setViewLineinJournal(?string $ViewLineinJournal)
+    public function setViewlineinjournal(?string $ViewLineinJournal)
     {
         $this->setData(self::VIEW_LINEIN_JOURNAL, $ViewLineinJournal);
         return $this;
@@ -2271,7 +2271,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getViewLineinJournal() : ?string
+    public function getViewlineinjournal() : ?string
     {
         return $this->getData(self::VIEW_LINEIN_JOURNAL);
     }
@@ -2280,7 +2280,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $SystemExcludefromOffers
      * @return $this
      */
-    public function setSystemExcludefromOffers(?bool $SystemExcludefromOffers)
+    public function setSystemExcludefromoffers(?bool $SystemExcludefromOffers)
     {
         $this->setData(self::SYSTEM_EXCLUDEFROM_OFFERS, $SystemExcludefromOffers);
         return $this;
@@ -2289,7 +2289,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSystemExcludefromOffers() : ?bool
+    public function getSystemExcludefromoffers() : ?bool
     {
         return $this->getData(self::SYSTEM_EXCLUDEFROM_OFFERS);
     }
@@ -2298,7 +2298,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $SystemUnchangableQuantity
      * @return $this
      */
-    public function setSystemUnchangableQuantity(?bool $SystemUnchangableQuantity)
+    public function setSystemUnchangablequantity(?bool $SystemUnchangableQuantity)
     {
         $this->setData(self::SYSTEM_UNCHANGABLE_QUANTITY, $SystemUnchangableQuantity);
         return $this;
@@ -2307,7 +2307,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSystemUnchangableQuantity() : ?bool
+    public function getSystemUnchangablequantity() : ?bool
     {
         return $this->getData(self::SYSTEM_UNCHANGABLE_QUANTITY);
     }
@@ -2316,7 +2316,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $SystemUnchangablePrice
      * @return $this
      */
-    public function setSystemUnchangablePrice(?bool $SystemUnchangablePrice)
+    public function setSystemUnchangableprice(?bool $SystemUnchangablePrice)
     {
         $this->setData(self::SYSTEM_UNCHANGABLE_PRICE, $SystemUnchangablePrice);
         return $this;
@@ -2325,7 +2325,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSystemUnchangablePrice() : ?bool
+    public function getSystemUnchangableprice() : ?bool
     {
         return $this->getData(self::SYSTEM_UNCHANGABLE_PRICE);
     }
@@ -2334,7 +2334,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $SystemUnchangableDiscounts
      * @return $this
      */
-    public function setSystemUnchangableDiscounts(?bool $SystemUnchangableDiscounts)
+    public function setSystemUnchangablediscounts(?bool $SystemUnchangableDiscounts)
     {
         $this->setData(self::SYSTEM_UNCHANGABLE_DISCOUNTS, $SystemUnchangableDiscounts);
         return $this;
@@ -2343,7 +2343,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSystemUnchangableDiscounts() : ?bool
+    public function getSystemUnchangablediscounts() : ?bool
     {
         return $this->getData(self::SYSTEM_UNCHANGABLE_DISCOUNTS);
     }
@@ -2352,7 +2352,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $SystemExcludefromVoid
      * @return $this
      */
-    public function setSystemExcludefromVoid(?bool $SystemExcludefromVoid)
+    public function setSystemExcludefromvoid(?bool $SystemExcludefromVoid)
     {
         $this->setData(self::SYSTEM_EXCLUDEFROM_VOID, $SystemExcludefromVoid);
         return $this;
@@ -2361,7 +2361,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSystemExcludefromVoid() : ?bool
+    public function getSystemExcludefromvoid() : ?bool
     {
         return $this->getData(self::SYSTEM_EXCLUDEFROM_VOID);
     }
@@ -2370,7 +2370,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $SystemUnchangableOffer
      * @return $this
      */
-    public function setSystemUnchangableOffer(?bool $SystemUnchangableOffer)
+    public function setSystemUnchangableoffer(?bool $SystemUnchangableOffer)
     {
         $this->setData(self::SYSTEM_UNCHANGABLE_OFFER, $SystemUnchangableOffer);
         return $this;
@@ -2379,7 +2379,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSystemUnchangableOffer() : ?bool
+    public function getSystemUnchangableoffer() : ?bool
     {
         return $this->getData(self::SYSTEM_UNCHANGABLE_OFFER);
     }
@@ -2388,7 +2388,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $SystemExcludefromRefund
      * @return $this
      */
-    public function setSystemExcludefromRefund(?bool $SystemExcludefromRefund)
+    public function setSystemExcludefromrefund(?bool $SystemExcludefromRefund)
     {
         $this->setData(self::SYSTEM_EXCLUDEFROM_REFUND, $SystemExcludefromRefund);
         return $this;
@@ -2397,7 +2397,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSystemExcludefromRefund() : ?bool
+    public function getSystemExcludefromrefund() : ?bool
     {
         return $this->getData(self::SYSTEM_EXCLUDEFROM_REFUND);
     }
@@ -2406,7 +2406,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $SystemBlockPromotionPrice
      * @return $this
      */
-    public function setSystemBlockPromotionPrice(?bool $SystemBlockPromotionPrice)
+    public function setSystemBlockpromotionprice(?bool $SystemBlockPromotionPrice)
     {
         $this->setData(self::SYSTEM_BLOCK_PROMOTION_PRICE, $SystemBlockPromotionPrice);
         return $this;
@@ -2415,7 +2415,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSystemBlockPromotionPrice() : ?bool
+    public function getSystemBlockpromotionprice() : ?bool
     {
         return $this->getData(self::SYSTEM_BLOCK_PROMOTION_PRICE);
     }
@@ -2424,7 +2424,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $SystemBlockPeriodicDiscount
      * @return $this
      */
-    public function setSystemBlockPeriodicDiscount(?bool $SystemBlockPeriodicDiscount)
+    public function setSystemBlockperiodicdiscount(?bool $SystemBlockPeriodicDiscount)
     {
         $this->setData(self::SYSTEM_BLOCK_PERIODIC_DISCOUNT, $SystemBlockPeriodicDiscount);
         return $this;
@@ -2433,7 +2433,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSystemBlockPeriodicDiscount() : ?bool
+    public function getSystemBlockperiodicdiscount() : ?bool
     {
         return $this->getData(self::SYSTEM_BLOCK_PERIODIC_DISCOUNT);
     }
@@ -2442,7 +2442,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TransDate
      * @return $this
      */
-    public function setTransDate(?string $TransDate)
+    public function setTransdate(?string $TransDate)
     {
         $this->setData(self::TRANS_DATE, $TransDate);
         return $this;
@@ -2451,25 +2451,25 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransDate() : ?string
+    public function getTransdate() : ?string
     {
         return $this->getData(self::TRANS_DATE);
     }
 
     /**
-     * @param time $TransTime
+     * @param ?string $TransTime
      * @return $this
      */
-    public function setTransTime($TransTime)
+    public function setTranstime(?string $TransTime)
     {
         $this->setData(self::TRANS_TIME, $TransTime);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTransTime()
+    public function getTranstime() : ?string
     {
         return $this->getData(self::TRANS_TIME);
     }
@@ -2496,7 +2496,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $PrepmtLineAmount
      * @return $this
      */
-    public function setPrepmtLineAmount(?float $PrepmtLineAmount)
+    public function setPrepmtlineamount(?float $PrepmtLineAmount)
     {
         $this->setData(self::PREPMT_LINE_AMOUNT, $PrepmtLineAmount);
         return $this;
@@ -2505,7 +2505,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPrepmtLineAmount() : ?float
+    public function getPrepmtlineamount() : ?float
     {
         return $this->getData(self::PREPMT_LINE_AMOUNT);
     }
@@ -2514,7 +2514,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $PrepaymentLine
      * @return $this
      */
-    public function setPrepaymentLine(?bool $PrepaymentLine)
+    public function setPrepaymentline(?bool $PrepaymentLine)
     {
         $this->setData(self::PREPAYMENT_LINE, $PrepaymentLine);
         return $this;
@@ -2523,7 +2523,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPrepaymentLine() : ?bool
+    public function getPrepaymentline() : ?bool
     {
         return $this->getData(self::PREPAYMENT_LINE);
     }
@@ -2532,7 +2532,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $PrepaymentVoided
      * @return $this
      */
-    public function setPrepaymentVoided(?bool $PrepaymentVoided)
+    public function setPrepaymentvoided(?bool $PrepaymentVoided)
     {
         $this->setData(self::PREPAYMENT_VOIDED, $PrepaymentVoided);
         return $this;
@@ -2541,7 +2541,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPrepaymentVoided() : ?bool
+    public function getPrepaymentvoided() : ?bool
     {
         return $this->getData(self::PREPAYMENT_VOIDED);
     }
@@ -2550,7 +2550,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CouponFunction
      * @return $this
      */
-    public function setCouponFunction(?string $CouponFunction)
+    public function setCouponfunction(?string $CouponFunction)
     {
         $this->setData(self::COUPON_FUNCTION, $CouponFunction);
         return $this;
@@ -2559,7 +2559,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCouponFunction() : ?string
+    public function getCouponfunction() : ?string
     {
         return $this->getData(self::COUPON_FUNCTION);
     }
@@ -2568,7 +2568,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CouponCode
      * @return $this
      */
-    public function setCouponCode(?string $CouponCode)
+    public function setCouponcode(?string $CouponCode)
     {
         $this->setData(self::COUPON_CODE, $CouponCode);
         return $this;
@@ -2577,7 +2577,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCouponCode() : ?string
+    public function getCouponcode() : ?string
     {
         return $this->getData(self::COUPON_CODE);
     }
@@ -2586,7 +2586,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $CouponAmount
      * @return $this
      */
-    public function setCouponAmount(?float $CouponAmount)
+    public function setCouponamount(?float $CouponAmount)
     {
         $this->setData(self::COUPON_AMOUNT, $CouponAmount);
         return $this;
@@ -2595,7 +2595,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCouponAmount() : ?float
+    public function getCouponamount() : ?float
     {
         return $this->getData(self::COUPON_AMOUNT);
     }
@@ -2604,7 +2604,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $CouponDiscount
      * @return $this
      */
-    public function setCouponDiscount(?float $CouponDiscount)
+    public function setCoupondiscount(?float $CouponDiscount)
     {
         $this->setData(self::COUPON_DISCOUNT, $CouponDiscount);
         return $this;
@@ -2613,7 +2613,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCouponDiscount() : ?float
+    public function getCoupondiscount() : ?float
     {
         return $this->getData(self::COUPON_DISCOUNT);
     }
@@ -2622,7 +2622,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ValidinTransaction
      * @return $this
      */
-    public function setValidinTransaction(?bool $ValidinTransaction)
+    public function setValidintransaction(?bool $ValidinTransaction)
     {
         $this->setData(self::VALIDIN_TRANSACTION, $ValidinTransaction);
         return $this;
@@ -2631,7 +2631,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getValidinTransaction() : ?bool
+    public function getValidintransaction() : ?bool
     {
         return $this->getData(self::VALIDIN_TRANSACTION);
     }
@@ -2640,7 +2640,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $NoofCouponstoPrint
      * @return $this
      */
-    public function setNoofCouponstoPrint($NoofCouponstoPrint)
+    public function setNoofcouponstoprint($NoofCouponstoPrint)
     {
         $this->setData(self::NOOF_COUPONSTO_PRINT, $NoofCouponstoPrint);
         return $this;
@@ -2649,7 +2649,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getNoofCouponstoPrint()
+    public function getNoofcouponstoprint()
     {
         return $this->getData(self::NOOF_COUPONSTO_PRINT);
     }
@@ -2658,7 +2658,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $AutomaticallyCreated
      * @return $this
      */
-    public function setAutomaticallyCreated(?bool $AutomaticallyCreated)
+    public function setAutomaticallycreated(?bool $AutomaticallyCreated)
     {
         $this->setData(self::AUTOMATICALLY_CREATED, $AutomaticallyCreated);
         return $this;
@@ -2667,7 +2667,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getAutomaticallyCreated() : ?bool
+    public function getAutomaticallycreated() : ?bool
     {
         return $this->getData(self::AUTOMATICALLY_CREATED);
     }
@@ -2676,7 +2676,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CouponBarcodeNo
      * @return $this
      */
-    public function setCouponBarcodeNo(?string $CouponBarcodeNo)
+    public function setCouponbarcodeno(?string $CouponBarcodeNo)
     {
         $this->setData(self::COUPON_BARCODE_NO, $CouponBarcodeNo);
         return $this;
@@ -2685,7 +2685,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCouponBarcodeNo() : ?string
+    public function getCouponbarcodeno() : ?string
     {
         return $this->getData(self::COUPON_BARCODE_NO);
     }
@@ -2694,7 +2694,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $FirstValidDate
      * @return $this
      */
-    public function setFirstValidDate(?string $FirstValidDate)
+    public function setFirstvaliddate(?string $FirstValidDate)
     {
         $this->setData(self::FIRST_VALID_DATE, $FirstValidDate);
         return $this;
@@ -2703,7 +2703,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFirstValidDate() : ?string
+    public function getFirstvaliddate() : ?string
     {
         return $this->getData(self::FIRST_VALID_DATE);
     }
@@ -2712,7 +2712,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LastValidDate
      * @return $this
      */
-    public function setLastValidDate(?string $LastValidDate)
+    public function setLastvaliddate(?string $LastValidDate)
     {
         $this->setData(self::LAST_VALID_DATE, $LastValidDate);
         return $this;
@@ -2721,7 +2721,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLastValidDate() : ?string
+    public function getLastvaliddate() : ?string
     {
         return $this->getData(self::LAST_VALID_DATE);
     }
@@ -2730,7 +2730,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CreatedorUsedbyOfferNo
      * @return $this
      */
-    public function setCreatedorUsedbyOfferNo(?string $CreatedorUsedbyOfferNo)
+    public function setCreatedorusedbyofferno(?string $CreatedorUsedbyOfferNo)
     {
         $this->setData(self::CREATEDOR_USEDBY_OFFER_NO, $CreatedorUsedbyOfferNo);
         return $this;
@@ -2739,7 +2739,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedorUsedbyOfferNo() : ?string
+    public function getCreatedorusedbyofferno() : ?string
     {
         return $this->getData(self::CREATEDOR_USEDBY_OFFER_NO);
     }
@@ -2748,7 +2748,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $CouponLinkedtoLineNo
      * @return $this
      */
-    public function setCouponLinkedtoLineNo($CouponLinkedtoLineNo)
+    public function setCouponlinkedtolineno($CouponLinkedtoLineNo)
     {
         $this->setData(self::COUPON_LINKEDTO_LINE_NO, $CouponLinkedtoLineNo);
         return $this;
@@ -2757,7 +2757,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getCouponLinkedtoLineNo()
+    public function getCouponlinkedtolineno()
     {
         return $this->getData(self::COUPON_LINKEDTO_LINE_NO);
     }
@@ -2784,7 +2784,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -2793,7 +2793,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }
@@ -2802,7 +2802,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $DiscountAmtForPrinting
      * @return $this
      */
-    public function setDiscountAmtForPrinting(?float $DiscountAmtForPrinting)
+    public function setDiscountamtforprinting(?float $DiscountAmtForPrinting)
     {
         $this->setData(self::DISCOUNT_AMT_FOR_PRINTING, $DiscountAmtForPrinting);
         return $this;
@@ -2811,7 +2811,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountAmtForPrinting() : ?float
+    public function getDiscountamtforprinting() : ?float
     {
         return $this->getData(self::DISCOUNT_AMT_FOR_PRINTING);
     }
@@ -2820,7 +2820,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $CouponAmtForPrinting
      * @return $this
      */
-    public function setCouponAmtForPrinting(?float $CouponAmtForPrinting)
+    public function setCouponamtforprinting(?float $CouponAmtForPrinting)
     {
         $this->setData(self::COUPON_AMT_FOR_PRINTING, $CouponAmtForPrinting);
         return $this;
@@ -2829,7 +2829,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCouponAmtForPrinting() : ?float
+    public function getCouponamtforprinting() : ?float
     {
         return $this->getData(self::COUPON_AMT_FOR_PRINTING);
     }
@@ -2838,7 +2838,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SalesType
      * @return $this
      */
-    public function setSalesType(?string $SalesType)
+    public function setSalestype(?string $SalesType)
     {
         $this->setData(self::SALES_TYPE, $SalesType);
         return $this;
@@ -2847,7 +2847,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalesType() : ?string
+    public function getSalestype() : ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
@@ -2856,7 +2856,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RestaurantMenuTypeCode
      * @return $this
      */
-    public function setRestaurantMenuTypeCode(?string $RestaurantMenuTypeCode)
+    public function setRestaurantmenutypecode(?string $RestaurantMenuTypeCode)
     {
         $this->setData(self::RESTAURANT_MENU_TYPE_CODE, $RestaurantMenuTypeCode);
         return $this;
@@ -2865,7 +2865,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRestaurantMenuTypeCode() : ?string
+    public function getRestaurantmenutypecode() : ?string
     {
         return $this->getData(self::RESTAURANT_MENU_TYPE_CODE);
     }
@@ -2874,7 +2874,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $RestaurantMenuType
      * @return $this
      */
-    public function setRestaurantMenuType($RestaurantMenuType)
+    public function setRestaurantmenutype($RestaurantMenuType)
     {
         $this->setData(self::RESTAURANT_MENU_TYPE, $RestaurantMenuType);
         return $this;
@@ -2883,7 +2883,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getRestaurantMenuType()
+    public function getRestaurantmenutype()
     {
         return $this->getData(self::RESTAURANT_MENU_TYPE);
     }
@@ -2892,7 +2892,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $ExcludedBomLineNo
      * @return $this
      */
-    public function setExcludedBomLineNo($ExcludedBomLineNo)
+    public function setExcludedbomlineno($ExcludedBomLineNo)
     {
         $this->setData(self::EXCLUDED_BOM_LINE_NO, $ExcludedBomLineNo);
         return $this;
@@ -2901,7 +2901,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getExcludedBomLineNo()
+    public function getExcludedbomlineno()
     {
         return $this->getData(self::EXCLUDED_BOM_LINE_NO);
     }
@@ -2910,7 +2910,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ExcludedBomItem
      * @return $this
      */
-    public function setExcludedBomItem(?bool $ExcludedBomItem)
+    public function setExcludedbomitem(?bool $ExcludedBomItem)
     {
         $this->setData(self::EXCLUDED_BOM_ITEM, $ExcludedBomItem);
         return $this;
@@ -2919,7 +2919,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getExcludedBomItem() : ?bool
+    public function getExcludedbomitem() : ?bool
     {
         return $this->getData(self::EXCLUDED_BOM_ITEM);
     }
@@ -2928,7 +2928,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $OrgPriceBeforeRounding
      * @return $this
      */
-    public function setOrgPriceBeforeRounding(?float $OrgPriceBeforeRounding)
+    public function setOrgpricebeforerounding(?float $OrgPriceBeforeRounding)
     {
         $this->setData(self::ORG_PRICE_BEFORE_ROUNDING, $OrgPriceBeforeRounding);
         return $this;
@@ -2937,7 +2937,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getOrgPriceBeforeRounding() : ?float
+    public function getOrgpricebeforerounding() : ?float
     {
         return $this->getData(self::ORG_PRICE_BEFORE_ROUNDING);
     }
@@ -2946,7 +2946,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $DealAddedAmount
      * @return $this
      */
-    public function setDealAddedAmount(?float $DealAddedAmount)
+    public function setDealaddedamount(?float $DealAddedAmount)
     {
         $this->setData(self::DEAL_ADDED_AMOUNT, $DealAddedAmount);
         return $this;
@@ -2955,7 +2955,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDealAddedAmount() : ?float
+    public function getDealaddedamount() : ?float
     {
         return $this->getData(self::DEAL_ADDED_AMOUNT);
     }
@@ -2964,7 +2964,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ParentItemNo
      * @return $this
      */
-    public function setParentItemNo(?string $ParentItemNo)
+    public function setParentitemno(?string $ParentItemNo)
     {
         $this->setData(self::PARENT_ITEM_NO, $ParentItemNo);
         return $this;
@@ -2973,7 +2973,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getParentItemNo() : ?string
+    public function getParentitemno() : ?string
     {
         return $this->getData(self::PARENT_ITEM_NO);
     }
@@ -2982,7 +2982,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $ProductionTimeMin
      * @return $this
      */
-    public function setProductionTimeMin(?float $ProductionTimeMin)
+    public function setProductiontimemin(?float $ProductionTimeMin)
     {
         $this->setData(self::PRODUCTION_TIME_MIN, $ProductionTimeMin);
         return $this;
@@ -2991,7 +2991,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getProductionTimeMin() : ?float
+    public function getProductiontimemin() : ?float
     {
         return $this->getData(self::PRODUCTION_TIME_MIN);
     }
@@ -3000,7 +3000,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $TimeModifiedMin
      * @return $this
      */
-    public function setTimeModifiedMin(?float $TimeModifiedMin)
+    public function setTimemodifiedmin(?float $TimeModifiedMin)
     {
         $this->setData(self::TIME_MODIFIED_MIN, $TimeModifiedMin);
         return $this;
@@ -3009,7 +3009,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTimeModifiedMin() : ?float
+    public function getTimemodifiedmin() : ?float
     {
         return $this->getData(self::TIME_MODIFIED_MIN);
     }
@@ -3018,7 +3018,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OrigTransStore
      * @return $this
      */
-    public function setOrigTransStore(?string $OrigTransStore)
+    public function setOrigtransstore(?string $OrigTransStore)
     {
         $this->setData(self::ORIG_TRANS_STORE, $OrigTransStore);
         return $this;
@@ -3027,7 +3027,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrigTransStore() : ?string
+    public function getOrigtransstore() : ?string
     {
         return $this->getData(self::ORIG_TRANS_STORE);
     }
@@ -3036,7 +3036,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OrigTransPos
      * @return $this
      */
-    public function setOrigTransPos(?string $OrigTransPos)
+    public function setOrigtranspos(?string $OrigTransPos)
     {
         $this->setData(self::ORIG_TRANS_POS, $OrigTransPos);
         return $this;
@@ -3045,7 +3045,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrigTransPos() : ?string
+    public function getOrigtranspos() : ?string
     {
         return $this->getData(self::ORIG_TRANS_POS);
     }
@@ -3054,7 +3054,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $OrigTransNo
      * @return $this
      */
-    public function setOrigTransNo($OrigTransNo)
+    public function setOrigtransno($OrigTransNo)
     {
         $this->setData(self::ORIG_TRANS_NO, $OrigTransNo);
         return $this;
@@ -3063,7 +3063,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getOrigTransNo()
+    public function getOrigtransno()
     {
         return $this->getData(self::ORIG_TRANS_NO);
     }
@@ -3072,7 +3072,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $OrigTransLineNo
      * @return $this
      */
-    public function setOrigTransLineNo($OrigTransLineNo)
+    public function setOrigtranslineno($OrigTransLineNo)
     {
         $this->setData(self::ORIG_TRANS_LINE_NO, $OrigTransLineNo);
         return $this;
@@ -3081,7 +3081,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getOrigTransLineNo()
+    public function getOrigtranslineno()
     {
         return $this->getData(self::ORIG_TRANS_LINE_NO);
     }
@@ -3090,7 +3090,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $RemainingQuantity
      * @return $this
      */
-    public function setRemainingQuantity(?float $RemainingQuantity)
+    public function setRemainingquantity(?float $RemainingQuantity)
     {
         $this->setData(self::REMAINING_QUANTITY, $RemainingQuantity);
         return $this;
@@ -3099,7 +3099,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getRemainingQuantity() : ?float
+    public function getRemainingquantity() : ?float
     {
         return $this->getData(self::REMAINING_QUANTITY);
     }
@@ -3108,7 +3108,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OrigPerDiscType
      * @return $this
      */
-    public function setOrigPerDiscType(?string $OrigPerDiscType)
+    public function setOrigperdisctype(?string $OrigPerDiscType)
     {
         $this->setData(self::ORIG_PER_DISC_TYPE, $OrigPerDiscType);
         return $this;
@@ -3117,7 +3117,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrigPerDiscType() : ?string
+    public function getOrigperdisctype() : ?string
     {
         return $this->getData(self::ORIG_PER_DISC_TYPE);
     }
@@ -3126,7 +3126,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OrigPerDiscGroup
      * @return $this
      */
-    public function setOrigPerDiscGroup(?string $OrigPerDiscGroup)
+    public function setOrigperdiscgroup(?string $OrigPerDiscGroup)
     {
         $this->setData(self::ORIG_PER_DISC_GROUP, $OrigPerDiscGroup);
         return $this;
@@ -3135,7 +3135,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrigPerDiscGroup() : ?string
+    public function getOrigperdiscgroup() : ?string
     {
         return $this->getData(self::ORIG_PER_DISC_GROUP);
     }
@@ -3144,7 +3144,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SafeType
      * @return $this
      */
-    public function setSafeType(?string $SafeType)
+    public function setSafetype(?string $SafeType)
     {
         $this->setData(self::SAFE_TYPE, $SafeType);
         return $this;
@@ -3153,7 +3153,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSafeType() : ?string
+    public function getSafetype() : ?string
     {
         return $this->getData(self::SAFE_TYPE);
     }
@@ -3162,7 +3162,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $BenefitItem
      * @return $this
      */
-    public function setBenefitItem(?bool $BenefitItem)
+    public function setBenefititem(?bool $BenefitItem)
     {
         $this->setData(self::BENEFIT_ITEM, $BenefitItem);
         return $this;
@@ -3171,7 +3171,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getBenefitItem() : ?bool
+    public function getBenefititem() : ?bool
     {
         return $this->getData(self::BENEFIT_ITEM);
     }
@@ -3198,7 +3198,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $RetailSpecialOrder
      * @return $this
      */
-    public function setRetailSpecialOrder(?bool $RetailSpecialOrder)
+    public function setRetailspecialorder(?bool $RetailSpecialOrder)
     {
         $this->setData(self::RETAIL_SPECIAL_ORDER, $RetailSpecialOrder);
         return $this;
@@ -3207,7 +3207,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getRetailSpecialOrder() : ?bool
+    public function getRetailspecialorder() : ?bool
     {
         return $this->getData(self::RETAIL_SPECIAL_ORDER);
     }
@@ -3216,7 +3216,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DeliveringMethod
      * @return $this
      */
-    public function setDeliveringMethod(?string $DeliveringMethod)
+    public function setDeliveringmethod(?string $DeliveringMethod)
     {
         $this->setData(self::DELIVERING_METHOD, $DeliveringMethod);
         return $this;
@@ -3225,7 +3225,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeliveringMethod() : ?string
+    public function getDeliveringmethod() : ?string
     {
         return $this->getData(self::DELIVERING_METHOD);
     }
@@ -3234,7 +3234,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VendorDeliversto
      * @return $this
      */
-    public function setVendorDeliversto(?string $VendorDeliversto)
+    public function setVendordeliversto(?string $VendorDeliversto)
     {
         $this->setData(self::VENDOR_DELIVERSTO, $VendorDeliversto);
         return $this;
@@ -3243,7 +3243,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVendorDeliversto() : ?string
+    public function getVendordeliversto() : ?string
     {
         return $this->getData(self::VENDOR_DELIVERSTO);
     }
@@ -3288,7 +3288,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DeliveryLocationCode
      * @return $this
      */
-    public function setDeliveryLocationCode(?string $DeliveryLocationCode)
+    public function setDeliverylocationcode(?string $DeliveryLocationCode)
     {
         $this->setData(self::DELIVERY_LOCATION_CODE, $DeliveryLocationCode);
         return $this;
@@ -3297,7 +3297,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeliveryLocationCode() : ?string
+    public function getDeliverylocationcode() : ?string
     {
         return $this->getData(self::DELIVERY_LOCATION_CODE);
     }
@@ -3306,7 +3306,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $SetLimitAmount
      * @return $this
      */
-    public function setSetLimitAmount(?float $SetLimitAmount)
+    public function setSetlimitamount(?float $SetLimitAmount)
     {
         $this->setData(self::SET_LIMIT_AMOUNT, $SetLimitAmount);
         return $this;
@@ -3315,7 +3315,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getSetLimitAmount() : ?float
+    public function getSetlimitamount() : ?float
     {
         return $this->getData(self::SET_LIMIT_AMOUNT);
     }
@@ -3324,18 +3324,18 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $SPOPrepayment
      * @return $this
      */
-    public function setSPOPrepayment(?float $SPOPrepayment)
+    public function setSpoprepayment(?float $SPOPrepayment)
     {
-        $this->setData(self::S_P_O_PREPAYMENT, $SPOPrepayment);
+        $this->setData(self::SPOPREPAYMENT, $SPOPrepayment);
         return $this;
     }
 
     /**
      * @return ?float
      */
-    public function getSPOPrepayment() : ?float
+    public function getSpoprepayment() : ?float
     {
-        return $this->getData(self::S_P_O_PREPAYMENT);
+        return $this->getData(self::SPOPREPAYMENT);
     }
 
     /**
@@ -3360,7 +3360,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $WhseProcess
      * @return $this
      */
-    public function setWhseProcess(?string $WhseProcess)
+    public function setWhseprocess(?string $WhseProcess)
     {
         $this->setData(self::WHSE_PROCESS, $WhseProcess);
         return $this;
@@ -3369,7 +3369,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getWhseProcess() : ?string
+    public function getWhseprocess() : ?string
     {
         return $this->getData(self::WHSE_PROCESS);
     }
@@ -3396,7 +3396,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DeliveryStatus
      * @return $this
      */
-    public function setDeliveryStatus(?string $DeliveryStatus)
+    public function setDeliverystatus(?string $DeliveryStatus)
     {
         $this->setData(self::DELIVERY_STATUS, $DeliveryStatus);
         return $this;
@@ -3405,7 +3405,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeliveryStatus() : ?string
+    public function getDeliverystatus() : ?string
     {
         return $this->getData(self::DELIVERY_STATUS);
     }
@@ -3414,25 +3414,25 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ConfigurationID
      * @return $this
      */
-    public function setConfigurationID(?string $ConfigurationID)
+    public function setConfigurationid(?string $ConfigurationID)
     {
-        $this->setData(self::CONFIGURATION_I_D, $ConfigurationID);
+        $this->setData(self::CONFIGURATION_ID, $ConfigurationID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getConfigurationID() : ?string
+    public function getConfigurationid() : ?string
     {
-        return $this->getData(self::CONFIGURATION_I_D);
+        return $this->getData(self::CONFIGURATION_ID);
     }
 
     /**
      * @param ?bool $MandatoryOptionsExist
      * @return $this
      */
-    public function setMandatoryOptionsExist(?bool $MandatoryOptionsExist)
+    public function setMandatoryoptionsexist(?bool $MandatoryOptionsExist)
     {
         $this->setData(self::MANDATORY_OPTIONS_EXIST, $MandatoryOptionsExist);
         return $this;
@@ -3441,7 +3441,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getMandatoryOptionsExist() : ?bool
+    public function getMandatoryoptionsexist() : ?bool
     {
         return $this->getData(self::MANDATORY_OPTIONS_EXIST);
     }
@@ -3450,7 +3450,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AddChargeOption
      * @return $this
      */
-    public function setAddChargeOption(?string $AddChargeOption)
+    public function setAddchargeoption(?string $AddChargeOption)
     {
         $this->setData(self::ADD_CHARGE_OPTION, $AddChargeOption);
         return $this;
@@ -3459,7 +3459,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddChargeOption() : ?string
+    public function getAddchargeoption() : ?string
     {
         return $this->getData(self::ADD_CHARGE_OPTION);
     }
@@ -3468,7 +3468,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DeliveryReferenceNo
      * @return $this
      */
-    public function setDeliveryReferenceNo(?string $DeliveryReferenceNo)
+    public function setDeliveryreferenceno(?string $DeliveryReferenceNo)
     {
         $this->setData(self::DELIVERY_REFERENCE_NO, $DeliveryReferenceNo);
         return $this;
@@ -3477,7 +3477,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeliveryReferenceNo() : ?string
+    public function getDeliveryreferenceno() : ?string
     {
         return $this->getData(self::DELIVERY_REFERENCE_NO);
     }
@@ -3486,25 +3486,25 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DeliveryUserID
      * @return $this
      */
-    public function setDeliveryUserID(?string $DeliveryUserID)
+    public function setDeliveryuserid(?string $DeliveryUserID)
     {
-        $this->setData(self::DELIVERY_USER_I_D, $DeliveryUserID);
+        $this->setData(self::DELIVERY_USER_ID, $DeliveryUserID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDeliveryUserID() : ?string
+    public function getDeliveryuserid() : ?string
     {
-        return $this->getData(self::DELIVERY_USER_I_D);
+        return $this->getData(self::DELIVERY_USER_ID);
     }
 
     /**
      * @param ?string $DeliveryDateTime
      * @return $this
      */
-    public function setDeliveryDateTime(?string $DeliveryDateTime)
+    public function setDeliverydatetime(?string $DeliveryDateTime)
     {
         $this->setData(self::DELIVERY_DATE_TIME, $DeliveryDateTime);
         return $this;
@@ -3513,7 +3513,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeliveryDateTime() : ?string
+    public function getDeliverydatetime() : ?string
     {
         return $this->getData(self::DELIVERY_DATE_TIME);
     }
@@ -3540,7 +3540,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OptionValueText
      * @return $this
      */
-    public function setOptionValueText(?string $OptionValueText)
+    public function setOptionvaluetext(?string $OptionValueText)
     {
         $this->setData(self::OPTION_VALUE_TEXT, $OptionValueText);
         return $this;
@@ -3549,7 +3549,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOptionValueText() : ?string
+    public function getOptionvaluetext() : ?string
     {
         return $this->getData(self::OPTION_VALUE_TEXT);
     }
@@ -3558,7 +3558,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $EstimatedDeliveryDate
      * @return $this
      */
-    public function setEstimatedDeliveryDate(?string $EstimatedDeliveryDate)
+    public function setEstimateddeliverydate(?string $EstimatedDeliveryDate)
     {
         $this->setData(self::ESTIMATED_DELIVERY_DATE, $EstimatedDeliveryDate);
         return $this;
@@ -3567,7 +3567,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEstimatedDeliveryDate() : ?string
+    public function getEstimateddeliverydate() : ?string
     {
         return $this->getData(self::ESTIMATED_DELIVERY_DATE);
     }
@@ -3576,7 +3576,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $NolaterthanDate
      * @return $this
      */
-    public function setNolaterthanDate(?string $NolaterthanDate)
+    public function setNolaterthandate(?string $NolaterthanDate)
     {
         $this->setData(self::NOLATERTHAN_DATE, $NolaterthanDate);
         return $this;
@@ -3585,7 +3585,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNolaterthanDate() : ?string
+    public function getNolaterthandate() : ?string
     {
         return $this->getData(self::NOLATERTHAN_DATE);
     }
@@ -3594,7 +3594,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $PaymentAtOrderEntryLimit
      * @return $this
      */
-    public function setPaymentAtOrderEntryLimit(?float $PaymentAtOrderEntryLimit)
+    public function setPaymentAtorderentryLimit(?float $PaymentAtOrderEntryLimit)
     {
         $this->setData(self::PAYMENT_AT_ORDER_ENTRY_LIMIT, $PaymentAtOrderEntryLimit);
         return $this;
@@ -3603,7 +3603,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPaymentAtOrderEntryLimit() : ?float
+    public function getPaymentAtorderentryLimit() : ?float
     {
         return $this->getData(self::PAYMENT_AT_ORDER_ENTRY_LIMIT);
     }
@@ -3612,7 +3612,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $PaymentAtDeliveryLimit
      * @return $this
      */
-    public function setPaymentAtDeliveryLimit(?float $PaymentAtDeliveryLimit)
+    public function setPaymentAtdeliveryLimit(?float $PaymentAtDeliveryLimit)
     {
         $this->setData(self::PAYMENT_AT_DELIVERY_LIMIT, $PaymentAtDeliveryLimit);
         return $this;
@@ -3621,7 +3621,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPaymentAtDeliveryLimit() : ?float
+    public function getPaymentAtdeliveryLimit() : ?float
     {
         return $this->getData(self::PAYMENT_AT_DELIVERY_LIMIT);
     }
@@ -3630,7 +3630,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ReturnPolicy
      * @return $this
      */
-    public function setReturnPolicy(?string $ReturnPolicy)
+    public function setReturnpolicy(?string $ReturnPolicy)
     {
         $this->setData(self::RETURN_POLICY, $ReturnPolicy);
         return $this;
@@ -3639,7 +3639,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReturnPolicy() : ?string
+    public function getReturnpolicy() : ?string
     {
         return $this->getData(self::RETURN_POLICY);
     }
@@ -3648,7 +3648,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $NonRefundAmount
      * @return $this
      */
-    public function setNonRefundAmount(?float $NonRefundAmount)
+    public function setNonrefundamount(?float $NonRefundAmount)
     {
         $this->setData(self::NON_REFUND_AMOUNT, $NonRefundAmount);
         return $this;
@@ -3657,7 +3657,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNonRefundAmount() : ?float
+    public function getNonrefundamount() : ?float
     {
         return $this->getData(self::NON_REFUND_AMOUNT);
     }
@@ -3666,7 +3666,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SourcingStatus
      * @return $this
      */
-    public function setSourcingStatus(?string $SourcingStatus)
+    public function setSourcingstatus(?string $SourcingStatus)
     {
         $this->setData(self::SOURCING_STATUS, $SourcingStatus);
         return $this;
@@ -3675,7 +3675,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourcingStatus() : ?string
+    public function getSourcingstatus() : ?string
     {
         return $this->getData(self::SOURCING_STATUS);
     }
@@ -3684,7 +3684,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $PaymentAtPurchaseOrderLimit
      * @return $this
      */
-    public function setPaymentAtPurchaseOrderLimit(?float $PaymentAtPurchaseOrderLimit)
+    public function setPaymentAtpurchaseorderLimit(?float $PaymentAtPurchaseOrderLimit)
     {
         $this->setData(self::PAYMENT_AT_PURCHASE_ORDER_LIMIT, $PaymentAtPurchaseOrderLimit);
         return $this;
@@ -3693,7 +3693,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPaymentAtPurchaseOrderLimit() : ?float
+    public function getPaymentAtpurchaseorderLimit() : ?float
     {
         return $this->getData(self::PAYMENT_AT_PURCHASE_ORDER_LIMIT);
     }
@@ -3702,25 +3702,25 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SPODocumentMethod
      * @return $this
      */
-    public function setSPODocumentMethod(?string $SPODocumentMethod)
+    public function setSpodocumentmethod(?string $SPODocumentMethod)
     {
-        $this->setData(self::S_P_O_DOCUMENT_METHOD, $SPODocumentMethod);
+        $this->setData(self::SPODOCUMENT_METHOD, $SPODocumentMethod);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getSPODocumentMethod() : ?string
+    public function getSpodocumentmethod() : ?string
     {
-        return $this->getData(self::S_P_O_DOCUMENT_METHOD);
+        return $this->getData(self::SPODOCUMENT_METHOD);
     }
 
     /**
      * @param ?string $StoreSalesLocation
      * @return $this
      */
-    public function setStoreSalesLocation(?string $StoreSalesLocation)
+    public function setStoresaleslocation(?string $StoreSalesLocation)
     {
         $this->setData(self::STORE_SALES_LOCATION, $StoreSalesLocation);
         return $this;
@@ -3729,7 +3729,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreSalesLocation() : ?string
+    public function getStoresaleslocation() : ?string
     {
         return $this->getData(self::STORE_SALES_LOCATION);
     }
@@ -3738,25 +3738,25 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SPOWhseLocation
      * @return $this
      */
-    public function setSPOWhseLocation(?string $SPOWhseLocation)
+    public function setSpowhselocation(?string $SPOWhseLocation)
     {
-        $this->setData(self::S_P_O_WHSE_LOCATION, $SPOWhseLocation);
+        $this->setData(self::SPOWHSE_LOCATION, $SPOWhseLocation);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getSPOWhseLocation() : ?string
+    public function getSpowhselocation() : ?string
     {
-        return $this->getData(self::S_P_O_WHSE_LOCATION);
+        return $this->getData(self::SPOWHSE_LOCATION);
     }
 
     /**
      * @param ?string $VendorNo
      * @return $this
      */
-    public function setVendorNo(?string $VendorNo)
+    public function setVendorno(?string $VendorNo)
     {
         $this->setData(self::VENDOR_NO, $VendorNo);
         return $this;
@@ -3765,7 +3765,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVendorNo() : ?string
+    public function getVendorno() : ?string
     {
         return $this->getData(self::VENDOR_NO);
     }
@@ -3774,7 +3774,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AdditionalChargeCode
      * @return $this
      */
-    public function setAdditionalChargeCode(?string $AdditionalChargeCode)
+    public function setAdditionalchargecode(?string $AdditionalChargeCode)
     {
         $this->setData(self::ADDITIONAL_CHARGE_CODE, $AdditionalChargeCode);
         return $this;
@@ -3783,7 +3783,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAdditionalChargeCode() : ?string
+    public function getAdditionalchargecode() : ?string
     {
         return $this->getData(self::ADDITIONAL_CHARGE_CODE);
     }
@@ -3792,7 +3792,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $IncludeInParentLine
      * @return $this
      */
-    public function setIncludeInParentLine(?bool $IncludeInParentLine)
+    public function setIncludeinparentline(?bool $IncludeInParentLine)
     {
         $this->setData(self::INCLUDE_IN_PARENT_LINE, $IncludeInParentLine);
         return $this;
@@ -3801,7 +3801,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getIncludeInParentLine() : ?bool
+    public function getIncludeinparentline() : ?bool
     {
         return $this->getData(self::INCLUDE_IN_PARENT_LINE);
     }
@@ -3810,7 +3810,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $AddChargeExists
      * @return $this
      */
-    public function setAddChargeExists(?bool $AddChargeExists)
+    public function setAddchargeexists(?bool $AddChargeExists)
     {
         $this->setData(self::ADD_CHARGE_EXISTS, $AddChargeExists);
         return $this;
@@ -3819,7 +3819,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getAddChargeExists() : ?bool
+    public function getAddchargeexists() : ?bool
     {
         return $this->getData(self::ADD_CHARGE_EXISTS);
     }
@@ -3828,7 +3828,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PaymentProfileCode
      * @return $this
      */
-    public function setPaymentProfileCode(?string $PaymentProfileCode)
+    public function setPaymentprofilecode(?string $PaymentProfileCode)
     {
         $this->setData(self::PAYMENT_PROFILE_CODE, $PaymentProfileCode);
         return $this;
@@ -3837,7 +3837,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPaymentProfileCode() : ?string
+    public function getPaymentprofilecode() : ?string
     {
         return $this->getData(self::PAYMENT_PROFILE_CODE);
     }
@@ -3846,7 +3846,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CancelPermitted
      * @return $this
      */
-    public function setCancelPermitted(?string $CancelPermitted)
+    public function setCancelpermitted(?string $CancelPermitted)
     {
         $this->setData(self::CANCEL_PERMITTED, $CancelPermitted);
         return $this;
@@ -3855,7 +3855,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCancelPermitted() : ?string
+    public function getCancelpermitted() : ?string
     {
         return $this->getData(self::CANCEL_PERMITTED);
     }
@@ -3864,7 +3864,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $AddChrgLinkedtoLine
      * @return $this
      */
-    public function setAddChrgLinkedtoLine($AddChrgLinkedtoLine)
+    public function setAddchrglinkedtoline($AddChrgLinkedtoLine)
     {
         $this->setData(self::ADD_CHRG_LINKEDTO_LINE, $AddChrgLinkedtoLine);
         return $this;
@@ -3873,7 +3873,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getAddChrgLinkedtoLine()
+    public function getAddchrglinkedtoline()
     {
         return $this->getData(self::ADD_CHRG_LINKEDTO_LINE);
     }
@@ -3882,7 +3882,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RetailChargeCode
      * @return $this
      */
-    public function setRetailChargeCode(?string $RetailChargeCode)
+    public function setRetailchargecode(?string $RetailChargeCode)
     {
         $this->setData(self::RETAIL_CHARGE_CODE, $RetailChargeCode);
         return $this;
@@ -3891,7 +3891,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRetailChargeCode() : ?string
+    public function getRetailchargecode() : ?string
     {
         return $this->getData(self::RETAIL_CHARGE_CODE);
     }
@@ -3900,7 +3900,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $SpecialOrderDepositEntry
      * @return $this
      */
-    public function setSpecialOrderDepositEntry(?bool $SpecialOrderDepositEntry)
+    public function setSpecialorderdepositentry(?bool $SpecialOrderDepositEntry)
     {
         $this->setData(self::SPECIAL_ORDER_DEPOSIT_ENTRY, $SpecialOrderDepositEntry);
         return $this;
@@ -3909,7 +3909,7 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSpecialOrderDepositEntry() : ?bool
+    public function getSpecialorderdepositentry() : ?bool
     {
         return $this->getData(self::SPECIAL_ORDER_DEPOSIT_ENTRY);
     }
@@ -3918,18 +3918,18 @@ class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CreatedbyStaffID
      * @return $this
      */
-    public function setCreatedbyStaffID(?string $CreatedbyStaffID)
+    public function setCreatedbystaffid(?string $CreatedbyStaffID)
     {
-        $this->setData(self::CREATEDBY_STAFF_I_D, $CreatedbyStaffID);
+        $this->setData(self::CREATEDBY_STAFF_ID, $CreatedbyStaffID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getCreatedbyStaffID() : ?string
+    public function getCreatedbystaffid() : ?string
     {
-        return $this->getData(self::CREATEDBY_STAFF_I_D);
+        return $this->getData(self::CREATEDBY_STAFF_ID);
     }
 }
 

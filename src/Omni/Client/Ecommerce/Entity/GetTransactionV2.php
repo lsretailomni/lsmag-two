@@ -26,13 +26,13 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
 
     public const TRANSACTION_NO = 'transactionNo';
 
-    public const GET_TRANSACTION_V2_X_M_L = 'getTransactionV2XML';
+    public const GET_TRANSACTION_V2_XML = 'getTransactionV2XML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -41,7 +41,7 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -50,7 +50,7 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -59,7 +59,7 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -68,7 +68,7 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
      * @param ?string $receiptNo
      * @return $this
      */
-    public function setReceiptNo(?string $receiptNo)
+    public function setReceiptno(?string $receiptNo)
     {
         $this->setData(self::RECEIPT_NO, $receiptNo);
         return $this;
@@ -77,7 +77,7 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getReceiptNo() : ?string
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -86,7 +86,7 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -95,7 +95,7 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -104,7 +104,7 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
      * @param ?string $posTerminalNo
      * @return $this
      */
-    public function setPosTerminalNo(?string $posTerminalNo)
+    public function setPosterminalno(?string $posTerminalNo)
     {
         $this->setData(self::POS_TERMINAL_NO, $posTerminalNo);
         return $this;
@@ -113,7 +113,7 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getPosTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
         return $this->getData(self::POS_TERMINAL_NO);
     }
@@ -122,7 +122,7 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
      * @param int $transactionNo
      * @return $this
      */
-    public function setTransactionNo($transactionNo)
+    public function setTransactionno($transactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $transactionNo);
         return $this;
@@ -131,7 +131,7 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -140,18 +140,18 @@ class GetTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements R
      * @param RootGetTransaction $getTransactionV2XML
      * @return $this
      */
-    public function setGetTransactionV2XML($getTransactionV2XML)
+    public function setGettransactionv2xml($getTransactionV2XML)
     {
-        $this->setData(self::GET_TRANSACTION_V2_X_M_L, $getTransactionV2XML);
+        $this->setData(self::GET_TRANSACTION_V2_XML, $getTransactionV2XML);
         return $this;
     }
 
     /**
      * @return RootGetTransaction
      */
-    public function getGetTransactionV2XML()
+    public function getGettransactionv2xml()
     {
-        return $this->getData(self::GET_TRANSACTION_V2_X_M_L);
+        return $this->getData(self::GET_TRANSACTION_V2_XML);
     }
 }
 

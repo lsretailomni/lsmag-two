@@ -22,7 +22,7 @@ class HierarchyValSched extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $HierarchyCode
      * @return $this
      */
-    public function setHierarchyCode(?string $HierarchyCode)
+    public function setHierarchycode(?string $HierarchyCode)
     {
         $this->setData(self::HIERARCHY_CODE, $HierarchyCode);
         return $this;
@@ -31,7 +31,7 @@ class HierarchyValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHierarchyCode() : ?string
+    public function getHierarchycode() : ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }

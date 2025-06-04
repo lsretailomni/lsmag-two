@@ -18,13 +18,13 @@ class GetHierarchyV2Result extends \Magento\Catalog\Model\AbstractModel implemen
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_HIERARCHY_V2_X_M_L = 'getHierarchyV2XML';
+    public const GET_HIERARCHY_V2_XML = 'getHierarchyV2XML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class GetHierarchyV2Result extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class GetHierarchyV2Result extends \Magento\Catalog\Model\AbstractModel implemen
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class GetHierarchyV2Result extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetHierarchyV2Result extends \Magento\Catalog\Model\AbstractModel implemen
      * @param RootGetHierarchyV2 $getHierarchyV2XML
      * @return $this
      */
-    public function setGetHierarchyV2XML($getHierarchyV2XML)
+    public function setGethierarchyv2xml($getHierarchyV2XML)
     {
-        $this->setData(self::GET_HIERARCHY_V2_X_M_L, $getHierarchyV2XML);
+        $this->setData(self::GET_HIERARCHY_V2_XML, $getHierarchyV2XML);
         return $this;
     }
 
     /**
      * @return RootGetHierarchyV2
      */
-    public function getGetHierarchyV2XML()
+    public function getGethierarchyv2xml()
     {
-        return $this->getData(self::GET_HIERARCHY_V2_X_M_L);
+        return $this->getData(self::GET_HIERARCHY_V2_XML);
     }
 
     /**

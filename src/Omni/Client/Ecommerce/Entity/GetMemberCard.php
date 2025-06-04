@@ -22,13 +22,13 @@ class GetMemberCard extends \Magento\Catalog\Model\AbstractModel implements Requ
 
     public const TOTAL_REMAINING_POINTS = 'totalRemainingPoints';
 
-    public const GET_MEMBER_CARD_X_M_L = 'getMemberCardXML';
+    public const GET_MEMBER_CARD_XML = 'getMemberCardXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -37,7 +37,7 @@ class GetMemberCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -46,7 +46,7 @@ class GetMemberCard extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -55,7 +55,7 @@ class GetMemberCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -64,7 +64,7 @@ class GetMemberCard extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $cardNo
      * @return $this
      */
-    public function setCardNo(?string $cardNo)
+    public function setCardno(?string $cardNo)
     {
         $this->setData(self::CARD_NO, $cardNo);
         return $this;
@@ -73,7 +73,7 @@ class GetMemberCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getCardNo() : ?string
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -82,7 +82,7 @@ class GetMemberCard extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints(?float $totalRemainingPoints)
+    public function setTotalremainingpoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
@@ -91,7 +91,7 @@ class GetMemberCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?float
      */
-    public function getTotalRemainingPoints() : ?float
+    public function getTotalremainingpoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
@@ -100,18 +100,18 @@ class GetMemberCard extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param RootGetMemberCard $getMemberCardXML
      * @return $this
      */
-    public function setGetMemberCardXML($getMemberCardXML)
+    public function setGetmembercardxml($getMemberCardXML)
     {
-        $this->setData(self::GET_MEMBER_CARD_X_M_L, $getMemberCardXML);
+        $this->setData(self::GET_MEMBER_CARD_XML, $getMemberCardXML);
         return $this;
     }
 
     /**
      * @return RootGetMemberCard
      */
-    public function getGetMemberCardXML()
+    public function getGetmembercardxml()
     {
-        return $this->getData(self::GET_MEMBER_CARD_X_M_L);
+        return $this->getData(self::GET_MEMBER_CARD_XML);
     }
 }
 

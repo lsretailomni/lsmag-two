@@ -60,7 +60,7 @@ class SPGProfileGet extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $SecurityCheckTrigger
      * @return $this
      */
-    public function setSecurityCheckTrigger(?string $SecurityCheckTrigger)
+    public function setSecuritychecktrigger(?string $SecurityCheckTrigger)
     {
         $this->setData(self::SECURITY_CHECK_TRIGGER, $SecurityCheckTrigger);
         return $this;
@@ -69,7 +69,7 @@ class SPGProfileGet extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getSecurityCheckTrigger() : ?string
+    public function getSecuritychecktrigger() : ?string
     {
         return $this->getData(self::SECURITY_CHECK_TRIGGER);
     }

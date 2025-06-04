@@ -50,7 +50,7 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DiscountType
      * @return $this
      */
-    public function setDiscountType(?string $DiscountType)
+    public function setDiscounttype(?string $DiscountType)
     {
         $this->setData(self::DISCOUNT_TYPE, $DiscountType);
         return $this;
@@ -59,7 +59,7 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDiscountType() : ?string
+    public function getDiscounttype() : ?string
     {
         return $this->getData(self::DISCOUNT_TYPE);
     }
@@ -68,7 +68,7 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DiscountNo
      * @return $this
      */
-    public function setDiscountNo(?string $DiscountNo)
+    public function setDiscountno(?string $DiscountNo)
     {
         $this->setData(self::DISCOUNT_NO, $DiscountNo);
         return $this;
@@ -77,7 +77,7 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDiscountNo() : ?string
+    public function getDiscountno() : ?string
     {
         return $this->getData(self::DISCOUNT_NO);
     }
@@ -104,7 +104,7 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OfferCategory
      * @return $this
      */
-    public function setOfferCategory(?string $OfferCategory)
+    public function setOffercategory(?string $OfferCategory)
     {
         $this->setData(self::OFFER_CATEGORY, $OfferCategory);
         return $this;
@@ -113,7 +113,7 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOfferCategory() : ?string
+    public function getOffercategory() : ?string
     {
         return $this->getData(self::OFFER_CATEGORY);
     }
@@ -122,7 +122,7 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PrimaryText
      * @return $this
      */
-    public function setPrimaryText(?string $PrimaryText)
+    public function setPrimarytext(?string $PrimaryText)
     {
         $this->setData(self::PRIMARY_TEXT, $PrimaryText);
         return $this;
@@ -131,7 +131,7 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrimaryText() : ?string
+    public function getPrimarytext() : ?string
     {
         return $this->getData(self::PRIMARY_TEXT);
     }
@@ -140,7 +140,7 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SecondaryText
      * @return $this
      */
-    public function setSecondaryText(?string $SecondaryText)
+    public function setSecondarytext(?string $SecondaryText)
     {
         $this->setData(self::SECONDARY_TEXT, $SecondaryText);
         return $this;
@@ -149,7 +149,7 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSecondaryText() : ?string
+    public function getSecondarytext() : ?string
     {
         return $this->getData(self::SECONDARY_TEXT);
     }
@@ -158,7 +158,7 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $EndingDate
      * @return $this
      */
-    public function setEndingDate(?string $EndingDate)
+    public function setEndingdate(?string $EndingDate)
     {
         $this->setData(self::ENDING_DATE, $EndingDate);
         return $this;
@@ -167,7 +167,7 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEndingDate() : ?string
+    public function getEndingdate() : ?string
     {
         return $this->getData(self::ENDING_DATE);
     }

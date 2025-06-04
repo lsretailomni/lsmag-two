@@ -20,13 +20,13 @@ class SendDocument extends \Magento\Catalog\Model\AbstractModel implements Reque
 
     public const ADD_ONLY = 'addOnly';
 
-    public const SEND_DOCUMENT_X_M_L = 'sendDocumentXML';
+    public const SEND_DOCUMENT_XML = 'sendDocumentXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class SendDocument extends \Magento\Catalog\Model\AbstractModel implements Reque
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class SendDocument extends \Magento\Catalog\Model\AbstractModel implements Reque
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class SendDocument extends \Magento\Catalog\Model\AbstractModel implements Reque
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class SendDocument extends \Magento\Catalog\Model\AbstractModel implements Reque
      * @param ?bool $addOnly
      * @return $this
      */
-    public function setAddOnly(?bool $addOnly)
+    public function setAddonly(?bool $addOnly)
     {
         $this->setData(self::ADD_ONLY, $addOnly);
         return $this;
@@ -71,7 +71,7 @@ class SendDocument extends \Magento\Catalog\Model\AbstractModel implements Reque
     /**
      * @return ?bool
      */
-    public function getAddOnly() : ?bool
+    public function getAddonly() : ?bool
     {
         return $this->getData(self::ADD_ONLY);
     }
@@ -80,18 +80,18 @@ class SendDocument extends \Magento\Catalog\Model\AbstractModel implements Reque
      * @param RootSendDocument $sendDocumentXML
      * @return $this
      */
-    public function setSendDocumentXML($sendDocumentXML)
+    public function setSenddocumentxml($sendDocumentXML)
     {
-        $this->setData(self::SEND_DOCUMENT_X_M_L, $sendDocumentXML);
+        $this->setData(self::SEND_DOCUMENT_XML, $sendDocumentXML);
         return $this;
     }
 
     /**
      * @return RootSendDocument
      */
-    public function getSendDocumentXML()
+    public function getSenddocumentxml()
     {
-        return $this->getData(self::SEND_DOCUMENT_X_M_L);
+        return $this->getData(self::SEND_DOCUMENT_XML);
     }
 }
 

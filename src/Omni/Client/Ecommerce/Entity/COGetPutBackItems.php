@@ -20,13 +20,13 @@ class COGetPutBackItems extends \Magento\Catalog\Model\AbstractModel implements 
 
     public const STORE_NO = 'storeNo';
 
-    public const C_O_GET_PUT_BACK_ITEMS_X_M_L = 'cOGetPutBackItemsXML';
+    public const COGET_PUT_BACK_ITEMS_XML = 'cOGetPutBackItemsXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class COGetPutBackItems extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class COGetPutBackItems extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class COGetPutBackItems extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class COGetPutBackItems extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -71,7 +71,7 @@ class COGetPutBackItems extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -80,18 +80,18 @@ class COGetPutBackItems extends \Magento\Catalog\Model\AbstractModel implements 
      * @param RootCOGetPutBackItems $cOGetPutBackItemsXML
      * @return $this
      */
-    public function setCOGetPutBackItemsXML($cOGetPutBackItemsXML)
+    public function setCogetputbackitemsxml($cOGetPutBackItemsXML)
     {
-        $this->setData(self::C_O_GET_PUT_BACK_ITEMS_X_M_L, $cOGetPutBackItemsXML);
+        $this->setData(self::COGET_PUT_BACK_ITEMS_XML, $cOGetPutBackItemsXML);
         return $this;
     }
 
     /**
      * @return RootCOGetPutBackItems
      */
-    public function getCOGetPutBackItemsXML()
+    public function getCogetputbackitemsxml()
     {
-        return $this->getData(self::C_O_GET_PUT_BACK_ITEMS_X_M_L);
+        return $this->getData(self::COGET_PUT_BACK_ITEMS_XML);
     }
 }
 

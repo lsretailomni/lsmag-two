@@ -36,7 +36,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
 
     public const PERSONALIZED_E_MAIL = 'PersonalizedE-Mail';
 
-    public const SEND_H_T_M_L = 'SendHTML';
+    public const SEND_HTML = 'SendHTML';
 
     /**
      * @param ?string $No
@@ -60,7 +60,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ContactNo
      * @return $this
      */
-    public function setContactNo(?string $ContactNo)
+    public function setContactno(?string $ContactNo)
     {
         $this->setData(self::CONTACT_NO, $ContactNo);
         return $this;
@@ -69,7 +69,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContactNo() : ?string
+    public function getContactno() : ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
@@ -78,7 +78,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PrimaryText
      * @return $this
      */
-    public function setPrimaryText(?string $PrimaryText)
+    public function setPrimarytext(?string $PrimaryText)
     {
         $this->setData(self::PRIMARY_TEXT, $PrimaryText);
         return $this;
@@ -87,7 +87,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrimaryText() : ?string
+    public function getPrimarytext() : ?string
     {
         return $this->getData(self::PRIMARY_TEXT);
     }
@@ -96,7 +96,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SecondaryText
      * @return $this
      */
-    public function setSecondaryText(?string $SecondaryText)
+    public function setSecondarytext(?string $SecondaryText)
     {
         $this->setData(self::SECONDARY_TEXT, $SecondaryText);
         return $this;
@@ -105,7 +105,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSecondaryText() : ?string
+    public function getSecondarytext() : ?string
     {
         return $this->getData(self::SECONDARY_TEXT);
     }
@@ -114,7 +114,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $WhenDisplay
      * @return $this
      */
-    public function setWhenDisplay(?string $WhenDisplay)
+    public function setWhendisplay(?string $WhenDisplay)
     {
         $this->setData(self::WHEN_DISPLAY, $WhenDisplay);
         return $this;
@@ -123,7 +123,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getWhenDisplay() : ?string
+    public function getWhendisplay() : ?string
     {
         return $this->getData(self::WHEN_DISPLAY);
     }
@@ -132,7 +132,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ValidFromDate
      * @return $this
      */
-    public function setValidFromDate(?string $ValidFromDate)
+    public function setValidfromdate(?string $ValidFromDate)
     {
         $this->setData(self::VALID_FROM_DATE, $ValidFromDate);
         return $this;
@@ -141,7 +141,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getValidFromDate() : ?string
+    public function getValidfromdate() : ?string
     {
         return $this->getData(self::VALID_FROM_DATE);
     }
@@ -150,7 +150,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ValidToDate
      * @return $this
      */
-    public function setValidToDate(?string $ValidToDate)
+    public function setValidtodate(?string $ValidToDate)
     {
         $this->setData(self::VALID_TO_DATE, $ValidToDate);
         return $this;
@@ -159,7 +159,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getValidToDate() : ?string
+    public function getValidtodate() : ?string
     {
         return $this->getData(self::VALID_TO_DATE);
     }
@@ -168,7 +168,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $MemberAttribute
      * @return $this
      */
-    public function setMemberAttribute(?string $MemberAttribute)
+    public function setMemberattribute(?string $MemberAttribute)
     {
         $this->setData(self::MEMBER_ATTRIBUTE, $MemberAttribute);
         return $this;
@@ -177,7 +177,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberAttribute() : ?string
+    public function getMemberattribute() : ?string
     {
         return $this->getData(self::MEMBER_ATTRIBUTE);
     }
@@ -186,7 +186,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $MemberAttributeValue
      * @return $this
      */
-    public function setMemberAttributeValue(?string $MemberAttributeValue)
+    public function setMemberattributevalue(?string $MemberAttributeValue)
     {
         $this->setData(self::MEMBER_ATTRIBUTE_VALUE, $MemberAttributeValue);
         return $this;
@@ -195,7 +195,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberAttributeValue() : ?string
+    public function getMemberattributevalue() : ?string
     {
         return $this->getData(self::MEMBER_ATTRIBUTE_VALUE);
     }
@@ -204,7 +204,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $WebLink
      * @return $this
      */
-    public function setWebLink(?string $WebLink)
+    public function setWeblink(?string $WebLink)
     {
         $this->setData(self::WEB_LINK, $WebLink);
         return $this;
@@ -213,7 +213,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getWebLink() : ?string
+    public function getWeblink() : ?string
     {
         return $this->getData(self::WEB_LINK);
     }
@@ -222,7 +222,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $EMailDisclaimer
      * @return $this
      */
-    public function setEMailDisclaimer(?string $EMailDisclaimer)
+    public function setEMaildisclaimer(?string $EMailDisclaimer)
     {
         $this->setData(self::E_MAIL_DISCLAIMER, $EMailDisclaimer);
         return $this;
@@ -231,7 +231,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEMailDisclaimer() : ?string
+    public function getEMaildisclaimer() : ?string
     {
         return $this->getData(self::E_MAIL_DISCLAIMER);
     }
@@ -240,7 +240,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $PersonalizedEMail
      * @return $this
      */
-    public function setPersonalizedEMail(?bool $PersonalizedEMail)
+    public function setPersonalizedeMail(?bool $PersonalizedEMail)
     {
         $this->setData(self::PERSONALIZED_E_MAIL, $PersonalizedEMail);
         return $this;
@@ -249,7 +249,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPersonalizedEMail() : ?bool
+    public function getPersonalizedeMail() : ?bool
     {
         return $this->getData(self::PERSONALIZED_E_MAIL);
     }
@@ -258,18 +258,18 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $SendHTML
      * @return $this
      */
-    public function setSendHTML(?bool $SendHTML)
+    public function setSendhtml(?bool $SendHTML)
     {
-        $this->setData(self::SEND_H_T_M_L, $SendHTML);
+        $this->setData(self::SEND_HTML, $SendHTML);
         return $this;
     }
 
     /**
      * @return ?bool
      */
-    public function getSendHTML() : ?bool
+    public function getSendhtml() : ?bool
     {
-        return $this->getData(self::SEND_H_T_M_L);
+        return $this->getData(self::SEND_HTML);
     }
 }
 

@@ -12,24 +12,24 @@ class RootSPGProfileTender extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootSPGProfileTender';
 
-    public const S_P_G_PROFILE_TENDER = 'SPGProfileTender';
+    public const SPGPROFILE_TENDER = 'SPGProfileTender';
 
     /**
      * @param SPGProfileTender $SPGProfileTender
      * @return $this
      */
-    public function setSPGProfileTender($SPGProfileTender)
+    public function setSpgprofiletender($SPGProfileTender)
     {
-        $this->setData(self::S_P_G_PROFILE_TENDER, $SPGProfileTender);
+        $this->setData(self::SPGPROFILE_TENDER, $SPGProfileTender);
         return $this;
     }
 
     /**
      * @return SPGProfileTender
      */
-    public function getSPGProfileTender()
+    public function getSpgprofiletender()
     {
-        return $this->getData(self::S_P_G_PROFILE_TENDER);
+        return $this->getData(self::SPGPROFILE_TENDER);
     }
 }
 

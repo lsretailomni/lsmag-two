@@ -18,13 +18,13 @@ class ItemSalesInfoResult extends \Magento\Catalog\Model\AbstractModel implement
 
     public const ERROR_TEXT = 'errorText';
 
-    public const ITEM_SALES_INFO_X_M_L = 'itemSalesInfoXML';
+    public const ITEM_SALES_INFO_XML = 'itemSalesInfoXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class ItemSalesInfoResult extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class ItemSalesInfoResult extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class ItemSalesInfoResult extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class ItemSalesInfoResult extends \Magento\Catalog\Model\AbstractModel implement
      * @param RootGetItemSalesInfo $itemSalesInfoXML
      * @return $this
      */
-    public function setItemSalesInfoXML($itemSalesInfoXML)
+    public function setItemsalesinfoxml($itemSalesInfoXML)
     {
-        $this->setData(self::ITEM_SALES_INFO_X_M_L, $itemSalesInfoXML);
+        $this->setData(self::ITEM_SALES_INFO_XML, $itemSalesInfoXML);
         return $this;
     }
 
     /**
      * @return RootGetItemSalesInfo
      */
-    public function getItemSalesInfoXML()
+    public function getItemsalesinfoxml()
     {
-        return $this->getData(self::ITEM_SALES_INFO_X_M_L);
+        return $this->getData(self::ITEM_SALES_INFO_XML);
     }
 
     /**

@@ -138,7 +138,7 @@ class HospReceiptInfo extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LargeValue
      * @return $this
      */
-    public function setLargeValue(?string $LargeValue)
+    public function setLargevalue(?string $LargeValue)
     {
         $this->setData(self::LARGE_VALUE, $LargeValue);
         return $this;
@@ -147,7 +147,7 @@ class HospReceiptInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLargeValue() : ?string
+    public function getLargevalue() : ?string
     {
         return $this->getData(self::LARGE_VALUE);
     }

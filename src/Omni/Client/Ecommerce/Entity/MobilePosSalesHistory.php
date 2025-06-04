@@ -38,13 +38,13 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const ITEM_CAT_FILTER = 'itemCatFilter';
 
-    public const MOBILE_POS_SALES_HISTORY_X_M_L = 'mobilePosSalesHistoryXML';
+    public const MOBILE_POS_SALES_HISTORY_XML = 'mobilePosSalesHistoryXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -53,7 +53,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -62,7 +62,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -71,7 +71,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -80,7 +80,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $searchType
      * @return $this
      */
-    public function setSearchType(?string $searchType)
+    public function setSearchtype(?string $searchType)
     {
         $this->setData(self::SEARCH_TYPE, $searchType);
         return $this;
@@ -89,7 +89,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getSearchType() : ?string
+    public function getSearchtype() : ?string
     {
         return $this->getData(self::SEARCH_TYPE);
     }
@@ -98,7 +98,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $searchKey
      * @return $this
      */
-    public function setSearchKey(?string $searchKey)
+    public function setSearchkey(?string $searchKey)
     {
         $this->setData(self::SEARCH_KEY, $searchKey);
         return $this;
@@ -107,7 +107,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getSearchKey() : ?string
+    public function getSearchkey() : ?string
     {
         return $this->getData(self::SEARCH_KEY);
     }
@@ -116,7 +116,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $storeFilter
      * @return $this
      */
-    public function setStoreFilter(?string $storeFilter)
+    public function setStorefilter(?string $storeFilter)
     {
         $this->setData(self::STORE_FILTER, $storeFilter);
         return $this;
@@ -125,7 +125,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getStoreFilter() : ?string
+    public function getStorefilter() : ?string
     {
         return $this->getData(self::STORE_FILTER);
     }
@@ -134,7 +134,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $terminalFilter
      * @return $this
      */
-    public function setTerminalFilter(?string $terminalFilter)
+    public function setTerminalfilter(?string $terminalFilter)
     {
         $this->setData(self::TERMINAL_FILTER, $terminalFilter);
         return $this;
@@ -143,7 +143,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getTerminalFilter() : ?string
+    public function getTerminalfilter() : ?string
     {
         return $this->getData(self::TERMINAL_FILTER);
     }
@@ -152,7 +152,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $transactionNoFilter
      * @return $this
      */
-    public function setTransactionNoFilter(?string $transactionNoFilter)
+    public function setTransactionnofilter(?string $transactionNoFilter)
     {
         $this->setData(self::TRANSACTION_NO_FILTER, $transactionNoFilter);
         return $this;
@@ -161,7 +161,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getTransactionNoFilter() : ?string
+    public function getTransactionnofilter() : ?string
     {
         return $this->getData(self::TRANSACTION_NO_FILTER);
     }
@@ -170,7 +170,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $dateFilter
      * @return $this
      */
-    public function setDateFilter(?string $dateFilter)
+    public function setDatefilter(?string $dateFilter)
     {
         $this->setData(self::DATE_FILTER, $dateFilter);
         return $this;
@@ -179,7 +179,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getDateFilter() : ?string
+    public function getDatefilter() : ?string
     {
         return $this->getData(self::DATE_FILTER);
     }
@@ -188,7 +188,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $itemFilter
      * @return $this
      */
-    public function setItemFilter(?string $itemFilter)
+    public function setItemfilter(?string $itemFilter)
     {
         $this->setData(self::ITEM_FILTER, $itemFilter);
         return $this;
@@ -197,7 +197,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getItemFilter() : ?string
+    public function getItemfilter() : ?string
     {
         return $this->getData(self::ITEM_FILTER);
     }
@@ -206,7 +206,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $descriptionFilter
      * @return $this
      */
-    public function setDescriptionFilter(?string $descriptionFilter)
+    public function setDescriptionfilter(?string $descriptionFilter)
     {
         $this->setData(self::DESCRIPTION_FILTER, $descriptionFilter);
         return $this;
@@ -215,7 +215,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getDescriptionFilter() : ?string
+    public function getDescriptionfilter() : ?string
     {
         return $this->getData(self::DESCRIPTION_FILTER);
     }
@@ -224,7 +224,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $itemProductGrFilter
      * @return $this
      */
-    public function setItemProductGrFilter(?string $itemProductGrFilter)
+    public function setItemproductgrfilter(?string $itemProductGrFilter)
     {
         $this->setData(self::ITEM_PRODUCT_GR_FILTER, $itemProductGrFilter);
         return $this;
@@ -233,7 +233,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getItemProductGrFilter() : ?string
+    public function getItemproductgrfilter() : ?string
     {
         return $this->getData(self::ITEM_PRODUCT_GR_FILTER);
     }
@@ -242,7 +242,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $itemCatFilter
      * @return $this
      */
-    public function setItemCatFilter(?string $itemCatFilter)
+    public function setItemcatfilter(?string $itemCatFilter)
     {
         $this->setData(self::ITEM_CAT_FILTER, $itemCatFilter);
         return $this;
@@ -251,7 +251,7 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getItemCatFilter() : ?string
+    public function getItemcatfilter() : ?string
     {
         return $this->getData(self::ITEM_CAT_FILTER);
     }
@@ -260,18 +260,18 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootMobilePosSalesHistory $mobilePosSalesHistoryXML
      * @return $this
      */
-    public function setMobilePosSalesHistoryXML($mobilePosSalesHistoryXML)
+    public function setMobilepossaleshistoryxml($mobilePosSalesHistoryXML)
     {
-        $this->setData(self::MOBILE_POS_SALES_HISTORY_X_M_L, $mobilePosSalesHistoryXML);
+        $this->setData(self::MOBILE_POS_SALES_HISTORY_XML, $mobilePosSalesHistoryXML);
         return $this;
     }
 
     /**
      * @return RootMobilePosSalesHistory
      */
-    public function getMobilePosSalesHistoryXML()
+    public function getMobilepossaleshistoryxml()
     {
-        return $this->getData(self::MOBILE_POS_SALES_HISTORY_X_M_L);
+        return $this->getData(self::MOBILE_POS_SALES_HISTORY_XML);
     }
 }
 

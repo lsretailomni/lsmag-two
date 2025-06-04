@@ -24,7 +24,7 @@ class IMDocumentPostResult extends \Magento\Catalog\Model\AbstractModel implemen
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class IMDocumentPostResult extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -60,7 +60,7 @@ class IMDocumentPostResult extends \Magento\Catalog\Model\AbstractModel implemen
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -69,7 +69,7 @@ class IMDocumentPostResult extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

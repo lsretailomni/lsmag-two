@@ -20,13 +20,13 @@ class GetVoucherEntries extends \Magento\Catalog\Model\AbstractModel implements 
 
     public const VOUCHER_NO = 'voucherNo';
 
-    public const GET_VOUCHER_ENTRIES_X_M_L = 'getVoucherEntriesXML';
+    public const GET_VOUCHER_ENTRIES_XML = 'getVoucherEntriesXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class GetVoucherEntries extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class GetVoucherEntries extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class GetVoucherEntries extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class GetVoucherEntries extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $voucherNo
      * @return $this
      */
-    public function setVoucherNo(?string $voucherNo)
+    public function setVoucherno(?string $voucherNo)
     {
         $this->setData(self::VOUCHER_NO, $voucherNo);
         return $this;
@@ -71,7 +71,7 @@ class GetVoucherEntries extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getVoucherNo() : ?string
+    public function getVoucherno() : ?string
     {
         return $this->getData(self::VOUCHER_NO);
     }
@@ -80,18 +80,18 @@ class GetVoucherEntries extends \Magento\Catalog\Model\AbstractModel implements 
      * @param RootGetVoucherEntries $getVoucherEntriesXML
      * @return $this
      */
-    public function setGetVoucherEntriesXML($getVoucherEntriesXML)
+    public function setGetvoucherentriesxml($getVoucherEntriesXML)
     {
-        $this->setData(self::GET_VOUCHER_ENTRIES_X_M_L, $getVoucherEntriesXML);
+        $this->setData(self::GET_VOUCHER_ENTRIES_XML, $getVoucherEntriesXML);
         return $this;
     }
 
     /**
      * @return RootGetVoucherEntries
      */
-    public function getGetVoucherEntriesXML()
+    public function getGetvoucherentriesxml()
     {
-        return $this->getData(self::GET_VOUCHER_ENTRIES_X_M_L);
+        return $this->getData(self::GET_VOUCHER_ENTRIES_XML);
     }
 }
 

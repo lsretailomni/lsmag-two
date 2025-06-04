@@ -18,13 +18,13 @@ class CustomerOrderStatusV2Result extends \Magento\Catalog\Model\AbstractModel i
 
     public const ERROR_TEXT = 'errorText';
 
-    public const CUSTOMER_ORDER_STATUS_V2_X_M_L = 'customerOrderStatusV2XML';
+    public const CUSTOMER_ORDER_STATUS_V2_XML = 'customerOrderStatusV2XML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class CustomerOrderStatusV2Result extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class CustomerOrderStatusV2Result extends \Magento\Catalog\Model\AbstractModel i
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class CustomerOrderStatusV2Result extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class CustomerOrderStatusV2Result extends \Magento\Catalog\Model\AbstractModel i
      * @param RootNodeName $customerOrderStatusV2XML
      * @return $this
      */
-    public function setCustomerOrderStatusV2XML($customerOrderStatusV2XML)
+    public function setCustomerorderstatusv2xml($customerOrderStatusV2XML)
     {
-        $this->setData(self::CUSTOMER_ORDER_STATUS_V2_X_M_L, $customerOrderStatusV2XML);
+        $this->setData(self::CUSTOMER_ORDER_STATUS_V2_XML, $customerOrderStatusV2XML);
         return $this;
     }
 
     /**
      * @return RootNodeName
      */
-    public function getCustomerOrderStatusV2XML()
+    public function getCustomerorderstatusv2xml()
     {
-        return $this->getData(self::CUSTOMER_ORDER_STATUS_V2_X_M_L);
+        return $this->getData(self::CUSTOMER_ORDER_STATUS_V2_XML);
     }
 
     /**

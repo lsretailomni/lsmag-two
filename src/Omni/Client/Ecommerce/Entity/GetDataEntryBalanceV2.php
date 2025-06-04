@@ -24,13 +24,13 @@ class GetDataEntryBalanceV2 extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const PIN = 'pin';
 
-    public const GET_DATA_ENTRY_BALANCE_X_M_L = 'getDataEntryBalanceXML';
+    public const GET_DATA_ENTRY_BALANCE_XML = 'getDataEntryBalanceXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -39,7 +39,7 @@ class GetDataEntryBalanceV2 extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -48,7 +48,7 @@ class GetDataEntryBalanceV2 extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -57,7 +57,7 @@ class GetDataEntryBalanceV2 extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -66,7 +66,7 @@ class GetDataEntryBalanceV2 extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $entryType
      * @return $this
      */
-    public function setEntryType(?string $entryType)
+    public function setEntrytype(?string $entryType)
     {
         $this->setData(self::ENTRY_TYPE, $entryType);
         return $this;
@@ -75,7 +75,7 @@ class GetDataEntryBalanceV2 extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getEntryType() : ?string
+    public function getEntrytype() : ?string
     {
         return $this->getData(self::ENTRY_TYPE);
     }
@@ -84,7 +84,7 @@ class GetDataEntryBalanceV2 extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $entryCode
      * @return $this
      */
-    public function setEntryCode(?string $entryCode)
+    public function setEntrycode(?string $entryCode)
     {
         $this->setData(self::ENTRY_CODE, $entryCode);
         return $this;
@@ -93,7 +93,7 @@ class GetDataEntryBalanceV2 extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getEntryCode() : ?string
+    public function getEntrycode() : ?string
     {
         return $this->getData(self::ENTRY_CODE);
     }
@@ -120,18 +120,18 @@ class GetDataEntryBalanceV2 extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootGetDataEntryBalance $getDataEntryBalanceXML
      * @return $this
      */
-    public function setGetDataEntryBalanceXML($getDataEntryBalanceXML)
+    public function setGetdataentrybalancexml($getDataEntryBalanceXML)
     {
-        $this->setData(self::GET_DATA_ENTRY_BALANCE_X_M_L, $getDataEntryBalanceXML);
+        $this->setData(self::GET_DATA_ENTRY_BALANCE_XML, $getDataEntryBalanceXML);
         return $this;
     }
 
     /**
      * @return RootGetDataEntryBalance
      */
-    public function getGetDataEntryBalanceXML()
+    public function getGetdataentrybalancexml()
     {
-        return $this->getData(self::GET_DATA_ENTRY_BALANCE_X_M_L);
+        return $this->getData(self::GET_DATA_ENTRY_BALANCE_XML);
     }
 }
 

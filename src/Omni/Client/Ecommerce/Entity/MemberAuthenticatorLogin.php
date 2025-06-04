@@ -16,15 +16,15 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
 
     public const AUTHENTICATOR = 'authenticator';
 
-    public const AUTHENTICATION_I_D = 'authenticationID';
+    public const AUTHENTICATION_ID = 'authenticationID';
 
-    public const DEVICE_I_D = 'deviceID';
+    public const DEVICE_ID = 'deviceID';
 
     public const DEVICE_FRIENDLY_NAME = 'deviceFriendlyName';
 
     public const TOTAL_REMAINING_POINTS = 'totalRemainingPoints';
 
-    public const MEMBER_AUTH_LOGIN_X_M_L = 'memberAuthLoginXML';
+    public const MEMBER_AUTH_LOGIN_XML = 'memberAuthLoginXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
@@ -52,43 +52,43 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
      * @param ?string $authenticationID
      * @return $this
      */
-    public function setAuthenticationID(?string $authenticationID)
+    public function setAuthenticationid(?string $authenticationID)
     {
-        $this->setData(self::AUTHENTICATION_I_D, $authenticationID);
+        $this->setData(self::AUTHENTICATION_ID, $authenticationID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getAuthenticationID() : ?string
+    public function getAuthenticationid() : ?string
     {
-        return $this->getData(self::AUTHENTICATION_I_D);
+        return $this->getData(self::AUTHENTICATION_ID);
     }
 
     /**
      * @param ?string $deviceID
      * @return $this
      */
-    public function setDeviceID(?string $deviceID)
+    public function setDeviceid(?string $deviceID)
     {
-        $this->setData(self::DEVICE_I_D, $deviceID);
+        $this->setData(self::DEVICE_ID, $deviceID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDeviceID() : ?string
+    public function getDeviceid() : ?string
     {
-        return $this->getData(self::DEVICE_I_D);
+        return $this->getData(self::DEVICE_ID);
     }
 
     /**
      * @param ?string $deviceFriendlyName
      * @return $this
      */
-    public function setDeviceFriendlyName(?string $deviceFriendlyName)
+    public function setDevicefriendlyname(?string $deviceFriendlyName)
     {
         $this->setData(self::DEVICE_FRIENDLY_NAME, $deviceFriendlyName);
         return $this;
@@ -97,7 +97,7 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getDeviceFriendlyName() : ?string
+    public function getDevicefriendlyname() : ?string
     {
         return $this->getData(self::DEVICE_FRIENDLY_NAME);
     }
@@ -106,7 +106,7 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
      * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints(?float $totalRemainingPoints)
+    public function setTotalremainingpoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
@@ -115,7 +115,7 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?float
      */
-    public function getTotalRemainingPoints() : ?float
+    public function getTotalremainingpoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
@@ -124,25 +124,25 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
      * @param RootMemberauthLogin $memberAuthLoginXML
      * @return $this
      */
-    public function setMemberAuthLoginXML($memberAuthLoginXML)
+    public function setMemberauthloginxml($memberAuthLoginXML)
     {
-        $this->setData(self::MEMBER_AUTH_LOGIN_X_M_L, $memberAuthLoginXML);
+        $this->setData(self::MEMBER_AUTH_LOGIN_XML, $memberAuthLoginXML);
         return $this;
     }
 
     /**
      * @return RootMemberauthLogin
      */
-    public function getMemberAuthLoginXML()
+    public function getMemberauthloginxml()
     {
-        return $this->getData(self::MEMBER_AUTH_LOGIN_X_M_L);
+        return $this->getData(self::MEMBER_AUTH_LOGIN_XML);
     }
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -151,7 +151,7 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -160,7 +160,7 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -169,7 +169,7 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

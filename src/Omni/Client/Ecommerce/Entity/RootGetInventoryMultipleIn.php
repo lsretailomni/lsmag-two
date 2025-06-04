@@ -18,7 +18,7 @@ class RootGetInventoryMultipleIn extends \Magento\Catalog\Model\AbstractModel
      * @param InventoryBufferIn $InventoryBufferIn
      * @return $this
      */
-    public function setInventoryBufferIn($InventoryBufferIn)
+    public function setInventorybufferin($InventoryBufferIn)
     {
         $this->setData(self::INVENTORY_BUFFER_IN, $InventoryBufferIn);
         return $this;
@@ -27,7 +27,7 @@ class RootGetInventoryMultipleIn extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return InventoryBufferIn
      */
-    public function getInventoryBufferIn()
+    public function getInventorybufferin()
     {
         return $this->getData(self::INVENTORY_BUFFER_IN);
     }

@@ -12,24 +12,24 @@ class RootSendASNScannedLines extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootSendASNScannedLines';
 
-    public const A_S_N_SCANNED_LINES = 'ASNScannedLines';
+    public const ASNSCANNED_LINES = 'ASNScannedLines';
 
     /**
      * @param ASNScannedLines $ASNScannedLines
      * @return $this
      */
-    public function setASNScannedLines($ASNScannedLines)
+    public function setAsnscannedlines($ASNScannedLines)
     {
-        $this->setData(self::A_S_N_SCANNED_LINES, $ASNScannedLines);
+        $this->setData(self::ASNSCANNED_LINES, $ASNScannedLines);
         return $this;
     }
 
     /**
      * @return ASNScannedLines
      */
-    public function getASNScannedLines()
+    public function getAsnscannedlines()
     {
-        return $this->getData(self::A_S_N_SCANNED_LINES);
+        return $this->getData(self::ASNSCANNED_LINES);
     }
 }
 

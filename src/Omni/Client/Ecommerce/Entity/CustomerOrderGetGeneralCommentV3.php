@@ -12,7 +12,7 @@ class CustomerOrderGetGeneralCommentV3 extends \Magento\Catalog\Model\AbstractMo
 {
     public const CLASS_NAME = 'CustomerOrderGetGeneralCommentV3';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const COMMENT = 'Comment';
 
@@ -20,18 +20,18 @@ class CustomerOrderGetGeneralCommentV3 extends \Magento\Catalog\Model\AbstractMo
      * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID(?string $DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDocumentID() : ?string
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**

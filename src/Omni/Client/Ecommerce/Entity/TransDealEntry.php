@@ -14,7 +14,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const TRANSACTION_NO = 'TransactionNo';
 
@@ -42,7 +42,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -51,7 +51,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -60,25 +60,25 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo(?string $POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -87,7 +87,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -96,7 +96,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -105,7 +105,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -114,7 +114,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DealNo
      * @return $this
      */
-    public function setDealNo(?string $DealNo)
+    public function setDealno(?string $DealNo)
     {
         $this->setData(self::DEAL_NO, $DealNo);
         return $this;
@@ -123,7 +123,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDealNo() : ?string
+    public function getDealno() : ?string
     {
         return $this->getData(self::DEAL_NO);
     }
@@ -132,7 +132,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $DealHeaderLineNo
      * @return $this
      */
-    public function setDealHeaderLineNo($DealHeaderLineNo)
+    public function setDealheaderlineno($DealHeaderLineNo)
     {
         $this->setData(self::DEAL_HEADER_LINE_NO, $DealHeaderLineNo);
         return $this;
@@ -141,7 +141,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDealHeaderLineNo()
+    public function getDealheaderlineno()
     {
         return $this->getData(self::DEAL_HEADER_LINE_NO);
     }
@@ -204,7 +204,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DealPriceListCode
      * @return $this
      */
-    public function setDealPriceListCode(?string $DealPriceListCode)
+    public function setDealpricelistcode(?string $DealPriceListCode)
     {
         $this->setData(self::DEAL_PRICE_LIST_CODE, $DealPriceListCode);
         return $this;
@@ -213,7 +213,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDealPriceListCode() : ?string
+    public function getDealpricelistcode() : ?string
     {
         return $this->getData(self::DEAL_PRICE_LIST_CODE);
     }
@@ -240,7 +240,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $TotalDealLineAddedAmt
      * @return $this
      */
-    public function setTotalDealLineAddedAmt(?float $TotalDealLineAddedAmt)
+    public function setTotaldeallineaddedamt(?float $TotalDealLineAddedAmt)
     {
         $this->setData(self::TOTAL_DEAL_LINE_ADDED_AMT, $TotalDealLineAddedAmt);
         return $this;
@@ -249,7 +249,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalDealLineAddedAmt() : ?float
+    public function getTotaldeallineaddedamt() : ?float
     {
         return $this->getData(self::TOTAL_DEAL_LINE_ADDED_AMT);
     }
@@ -258,7 +258,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $TotalDealModifierAddedAmt
      * @return $this
      */
-    public function setTotalDealModifierAddedAmt(?float $TotalDealModifierAddedAmt)
+    public function setTotaldealmodifieraddedamt(?float $TotalDealModifierAddedAmt)
     {
         $this->setData(self::TOTAL_DEAL_MODIFIER_ADDED_AMT, $TotalDealModifierAddedAmt);
         return $this;
@@ -267,7 +267,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalDealModifierAddedAmt() : ?float
+    public function getTotaldealmodifieraddedamt() : ?float
     {
         return $this->getData(self::TOTAL_DEAL_MODIFIER_ADDED_AMT);
     }

@@ -12,7 +12,7 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'CustomerOrderHeader';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const CREATED_AT_STORE = 'CreatedAtStore';
 
@@ -24,25 +24,25 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID(?string $DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDocumentID() : ?string
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
      * @param ?string $CreatedAtStore
      * @return $this
      */
-    public function setCreatedAtStore(?string $CreatedAtStore)
+    public function setCreatedatstore(?string $CreatedAtStore)
     {
         $this->setData(self::CREATED_AT_STORE, $CreatedAtStore);
         return $this;
@@ -51,7 +51,7 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedAtStore() : ?string
+    public function getCreatedatstore() : ?string
     {
         return $this->getData(self::CREATED_AT_STORE);
     }
@@ -60,7 +60,7 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $MemberCardNo
      * @return $this
      */
-    public function setMemberCardNo(?string $MemberCardNo)
+    public function setMembercardno(?string $MemberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $MemberCardNo);
         return $this;
@@ -69,7 +69,7 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberCardNo() : ?string
+    public function getMembercardno() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -78,7 +78,7 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ShipOrder
      * @return $this
      */
-    public function setShipOrder(?bool $ShipOrder)
+    public function setShiporder(?bool $ShipOrder)
     {
         $this->setData(self::SHIP_ORDER, $ShipOrder);
         return $this;
@@ -87,7 +87,7 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getShipOrder() : ?bool
+    public function getShiporder() : ?bool
     {
         return $this->getData(self::SHIP_ORDER);
     }

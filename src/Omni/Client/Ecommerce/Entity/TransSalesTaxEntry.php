@@ -14,7 +14,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const TRANSACTION_NO = 'TransactionNo';
 
@@ -58,7 +58,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -67,7 +67,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -76,25 +76,25 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo(?string $POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -103,7 +103,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -112,7 +112,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -121,7 +121,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
@@ -130,7 +130,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TaxAreaCode
      * @return $this
      */
-    public function setTaxAreaCode(?string $TaxAreaCode)
+    public function setTaxareacode(?string $TaxAreaCode)
     {
         $this->setData(self::TAX_AREA_CODE, $TaxAreaCode);
         return $this;
@@ -139,7 +139,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxAreaCode() : ?string
+    public function getTaxareacode() : ?string
     {
         return $this->getData(self::TAX_AREA_CODE);
     }
@@ -148,7 +148,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TaxJurisdictionCode
      * @return $this
      */
-    public function setTaxJurisdictionCode(?string $TaxJurisdictionCode)
+    public function setTaxjurisdictioncode(?string $TaxJurisdictionCode)
     {
         $this->setData(self::TAX_JURISDICTION_CODE, $TaxJurisdictionCode);
         return $this;
@@ -157,7 +157,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxJurisdictionCode() : ?string
+    public function getTaxjurisdictioncode() : ?string
     {
         return $this->getData(self::TAX_JURISDICTION_CODE);
     }
@@ -166,7 +166,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TaxGroupCode
      * @return $this
      */
-    public function setTaxGroupCode(?string $TaxGroupCode)
+    public function setTaxgroupcode(?string $TaxGroupCode)
     {
         $this->setData(self::TAX_GROUP_CODE, $TaxGroupCode);
         return $this;
@@ -175,7 +175,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxGroupCode() : ?string
+    public function getTaxgroupcode() : ?string
     {
         return $this->getData(self::TAX_GROUP_CODE);
     }
@@ -184,7 +184,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ExpenseCapitalize
      * @return $this
      */
-    public function setExpenseCapitalize(?bool $ExpenseCapitalize)
+    public function setExpensecapitalize(?bool $ExpenseCapitalize)
     {
         $this->setData(self::EXPENSE_CAPITALIZE, $ExpenseCapitalize);
         return $this;
@@ -193,7 +193,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getExpenseCapitalize() : ?bool
+    public function getExpensecapitalize() : ?bool
     {
         return $this->getData(self::EXPENSE_CAPITALIZE);
     }
@@ -202,7 +202,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TaxType
      * @return $this
      */
-    public function setTaxType(?string $TaxType)
+    public function setTaxtype(?string $TaxType)
     {
         $this->setData(self::TAX_TYPE, $TaxType);
         return $this;
@@ -211,7 +211,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxType() : ?string
+    public function getTaxtype() : ?string
     {
         return $this->getData(self::TAX_TYPE);
     }
@@ -220,7 +220,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $UseTax
      * @return $this
      */
-    public function setUseTax(?bool $UseTax)
+    public function setUsetax(?bool $UseTax)
     {
         $this->setData(self::USE_TAX, $UseTax);
         return $this;
@@ -229,7 +229,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getUseTax() : ?bool
+    public function getUsetax() : ?bool
     {
         return $this->getData(self::USE_TAX);
     }
@@ -256,7 +256,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $TaxLiable
      * @return $this
      */
-    public function setTaxLiable(?bool $TaxLiable)
+    public function setTaxliable(?bool $TaxLiable)
     {
         $this->setData(self::TAX_LIABLE, $TaxLiable);
         return $this;
@@ -265,7 +265,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getTaxLiable() : ?bool
+    public function getTaxliable() : ?bool
     {
         return $this->getData(self::TAX_LIABLE);
     }
@@ -292,7 +292,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $TaxPercentage
      * @return $this
      */
-    public function setTaxPercentage(?float $TaxPercentage)
+    public function setTaxpercentage(?float $TaxPercentage)
     {
         $this->setData(self::TAX_PERCENTAGE, $TaxPercentage);
         return $this;
@@ -301,7 +301,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTaxPercentage() : ?float
+    public function getTaxpercentage() : ?float
     {
         return $this->getData(self::TAX_PERCENTAGE);
     }
@@ -310,7 +310,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $TaxBaseAmount
      * @return $this
      */
-    public function setTaxBaseAmount(?float $TaxBaseAmount)
+    public function setTaxbaseamount(?float $TaxBaseAmount)
     {
         $this->setData(self::TAX_BASE_AMOUNT, $TaxBaseAmount);
         return $this;
@@ -319,7 +319,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTaxBaseAmount() : ?float
+    public function getTaxbaseamount() : ?float
     {
         return $this->getData(self::TAX_BASE_AMOUNT);
     }
@@ -328,7 +328,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $TaxAmount
      * @return $this
      */
-    public function setTaxAmount(?float $TaxAmount)
+    public function setTaxamount(?float $TaxAmount)
     {
         $this->setData(self::TAX_AMOUNT, $TaxAmount);
         return $this;
@@ -337,7 +337,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTaxAmount() : ?float
+    public function getTaxamount() : ?float
     {
         return $this->getData(self::TAX_AMOUNT);
     }
@@ -346,7 +346,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $TaxDifference
      * @return $this
      */
-    public function setTaxDifference(?float $TaxDifference)
+    public function setTaxdifference(?float $TaxDifference)
     {
         $this->setData(self::TAX_DIFFERENCE, $TaxDifference);
         return $this;
@@ -355,7 +355,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTaxDifference() : ?float
+    public function getTaxdifference() : ?float
     {
         return $this->getData(self::TAX_DIFFERENCE);
     }
@@ -364,7 +364,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AvaTaxJurisdiction
      * @return $this
      */
-    public function setAvaTaxJurisdiction(?string $AvaTaxJurisdiction)
+    public function setAvataxjurisdiction(?string $AvaTaxJurisdiction)
     {
         $this->setData(self::AVA_TAX_JURISDICTION, $AvaTaxJurisdiction);
         return $this;
@@ -373,7 +373,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAvaTaxJurisdiction() : ?string
+    public function getAvataxjurisdiction() : ?string
     {
         return $this->getData(self::AVA_TAX_JURISDICTION);
     }
@@ -382,7 +382,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AvaTaxName
      * @return $this
      */
-    public function setAvaTaxName(?string $AvaTaxName)
+    public function setAvataxname(?string $AvaTaxName)
     {
         $this->setData(self::AVA_TAX_NAME, $AvaTaxName);
         return $this;
@@ -391,7 +391,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAvaTaxName() : ?string
+    public function getAvataxname() : ?string
     {
         return $this->getData(self::AVA_TAX_NAME);
     }
@@ -400,7 +400,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AvaTaxCustomerUsageType
      * @return $this
      */
-    public function setAvaTaxCustomerUsageType(?string $AvaTaxCustomerUsageType)
+    public function setAvataxcustomerusagetype(?string $AvaTaxCustomerUsageType)
     {
         $this->setData(self::AVA_TAX_CUSTOMER_USAGE_TYPE, $AvaTaxCustomerUsageType);
         return $this;
@@ -409,7 +409,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAvaTaxCustomerUsageType() : ?string
+    public function getAvataxcustomerusagetype() : ?string
     {
         return $this->getData(self::AVA_TAX_CUSTOMER_USAGE_TYPE);
     }
@@ -418,7 +418,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -427,7 +427,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }

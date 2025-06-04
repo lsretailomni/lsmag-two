@@ -30,7 +30,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -39,7 +39,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -48,7 +48,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -57,7 +57,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -66,7 +66,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $cardNo
      * @return $this
      */
-    public function setCardNo(?string $cardNo)
+    public function setCardno(?string $cardNo)
     {
         $this->setData(self::CARD_NO, $cardNo);
         return $this;
@@ -75,7 +75,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getCardNo() : ?string
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -84,7 +84,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $accountNo
      * @return $this
      */
-    public function setAccountNo(?string $accountNo)
+    public function setAccountno(?string $accountNo)
     {
         $this->setData(self::ACCOUNT_NO, $accountNo);
         return $this;
@@ -93,7 +93,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getAccountNo() : ?string
+    public function getAccountno() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
@@ -102,7 +102,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $contactNo
      * @return $this
      */
-    public function setContactNo(?string $contactNo)
+    public function setContactno(?string $contactNo)
     {
         $this->setData(self::CONTACT_NO, $contactNo);
         return $this;
@@ -111,7 +111,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getContactNo() : ?string
+    public function getContactno() : ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
@@ -120,7 +120,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints(?float $totalRemainingPoints)
+    public function setTotalremainingpoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
@@ -129,7 +129,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?float
      */
-    public function getTotalRemainingPoints() : ?float
+    public function getTotalremainingpoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }

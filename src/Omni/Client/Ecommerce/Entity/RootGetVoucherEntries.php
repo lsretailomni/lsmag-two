@@ -18,7 +18,7 @@ class RootGetVoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param VoucherEntries $VoucherEntries
      * @return $this
      */
-    public function setVoucherEntries($VoucherEntries)
+    public function setVoucherentries($VoucherEntries)
     {
         $this->setData(self::VOUCHER_ENTRIES, $VoucherEntries);
         return $this;
@@ -27,7 +27,7 @@ class RootGetVoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return VoucherEntries
      */
-    public function getVoucherEntries()
+    public function getVoucherentries()
     {
         return $this->getData(self::VOUCHER_ENTRIES);
     }

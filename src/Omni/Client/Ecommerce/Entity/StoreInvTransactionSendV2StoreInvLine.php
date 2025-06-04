@@ -50,7 +50,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param int $WorksheetSeqNo
      * @return $this
      */
-    public function setWorksheetSeqNo($WorksheetSeqNo)
+    public function setWorksheetseqno($WorksheetSeqNo)
     {
         $this->setData(self::WORKSHEET_SEQ_NO, $WorksheetSeqNo);
         return $this;
@@ -59,7 +59,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return int
      */
-    public function getWorksheetSeqNo()
+    public function getWorksheetseqno()
     {
         return $this->getData(self::WORKSHEET_SEQ_NO);
     }
@@ -68,7 +68,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -77,7 +77,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -86,7 +86,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param ?string $TransactionNo
      * @return $this
      */
-    public function setTransactionNo(?string $TransactionNo)
+    public function setTransactionno(?string $TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -95,7 +95,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getTransactionNo() : ?string
+    public function getTransactionno() : ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -104,7 +104,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param int $TransactionLineNo
      * @return $this
      */
-    public function setTransactionLineNo($TransactionLineNo)
+    public function setTransactionlineno($TransactionLineNo)
     {
         $this->setData(self::TRANSACTION_LINE_NO, $TransactionLineNo);
         return $this;
@@ -113,7 +113,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return int
      */
-    public function getTransactionLineNo()
+    public function getTransactionlineno()
     {
         return $this->getData(self::TRANSACTION_LINE_NO);
     }
@@ -122,7 +122,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo(?string $ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
@@ -131,7 +131,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -176,7 +176,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param ?string $UnitofMeasureCode
      * @return $this
      */
-    public function setUnitofMeasureCode(?string $UnitofMeasureCode)
+    public function setUnitofmeasurecode(?string $UnitofMeasureCode)
     {
         $this->setData(self::UNITOF_MEASURE_CODE, $UnitofMeasureCode);
         return $this;
@@ -185,7 +185,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getUnitofMeasureCode() : ?string
+    public function getUnitofmeasurecode() : ?string
     {
         return $this->getData(self::UNITOF_MEASURE_CODE);
     }
@@ -194,7 +194,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -203,7 +203,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -212,7 +212,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param ?float $CompetitorPrice
      * @return $this
      */
-    public function setCompetitorPrice(?float $CompetitorPrice)
+    public function setCompetitorprice(?float $CompetitorPrice)
     {
         $this->setData(self::COMPETITOR_PRICE, $CompetitorPrice);
         return $this;
@@ -221,7 +221,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?float
      */
-    public function getCompetitorPrice() : ?float
+    public function getCompetitorprice() : ?float
     {
         return $this->getData(self::COMPETITOR_PRICE);
     }
@@ -230,7 +230,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param ?string $AreaCode
      * @return $this
      */
-    public function setAreaCode(?string $AreaCode)
+    public function setAreacode(?string $AreaCode)
     {
         $this->setData(self::AREA_CODE, $AreaCode);
         return $this;
@@ -239,7 +239,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getAreaCode() : ?string
+    public function getAreacode() : ?string
     {
         return $this->getData(self::AREA_CODE);
     }
@@ -248,7 +248,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param ?string $SerialNo
      * @return $this
      */
-    public function setSerialNo(?string $SerialNo)
+    public function setSerialno(?string $SerialNo)
     {
         $this->setData(self::SERIAL_NO, $SerialNo);
         return $this;
@@ -257,7 +257,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getSerialNo() : ?string
+    public function getSerialno() : ?string
     {
         return $this->getData(self::SERIAL_NO);
     }
@@ -266,7 +266,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param ?string $LotNo
      * @return $this
      */
-    public function setLotNo(?string $LotNo)
+    public function setLotno(?string $LotNo)
     {
         $this->setData(self::LOT_NO, $LotNo);
         return $this;
@@ -275,7 +275,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getLotNo() : ?string
+    public function getLotno() : ?string
     {
         return $this->getData(self::LOT_NO);
     }
@@ -284,7 +284,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param ?string $ExpirationDate
      * @return $this
      */
-    public function setExpirationDate(?string $ExpirationDate)
+    public function setExpirationdate(?string $ExpirationDate)
     {
         $this->setData(self::EXPIRATION_DATE, $ExpirationDate);
         return $this;
@@ -293,7 +293,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getExpirationDate() : ?string
+    public function getExpirationdate() : ?string
     {
         return $this->getData(self::EXPIRATION_DATE);
     }
@@ -302,7 +302,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param ?string $ReasonCode
      * @return $this
      */
-    public function setReasonCode(?string $ReasonCode)
+    public function setReasoncode(?string $ReasonCode)
     {
         $this->setData(self::REASON_CODE, $ReasonCode);
         return $this;
@@ -311,7 +311,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getReasonCode() : ?string
+    public function getReasoncode() : ?string
     {
         return $this->getData(self::REASON_CODE);
     }
@@ -320,7 +320,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param ?bool $EndOfTransaction
      * @return $this
      */
-    public function setEndOfTransaction(?bool $EndOfTransaction)
+    public function setEndoftransaction(?bool $EndOfTransaction)
     {
         $this->setData(self::END_OF_TRANSACTION, $EndOfTransaction);
         return $this;
@@ -329,7 +329,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?bool
      */
-    public function getEndOfTransaction() : ?bool
+    public function getEndoftransaction() : ?bool
     {
         return $this->getData(self::END_OF_TRANSACTION);
     }
@@ -338,7 +338,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
      * @param ?string $ScanDateTime
      * @return $this
      */
-    public function setScanDateTime(?string $ScanDateTime)
+    public function setScandatetime(?string $ScanDateTime)
     {
         $this->setData(self::SCAN_DATE_TIME, $ScanDateTime);
         return $this;
@@ -347,7 +347,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getScanDateTime() : ?string
+    public function getScandatetime() : ?string
     {
         return $this->getData(self::SCAN_DATE_TIME);
     }

@@ -18,13 +18,13 @@ class GetItemDocumentResult extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_ITEM_DOCUMENT_X_M_L = 'getItemDocumentXML';
+    public const GET_ITEM_DOCUMENT_XML = 'getItemDocumentXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class GetItemDocumentResult extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class GetItemDocumentResult extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class GetItemDocumentResult extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetItemDocumentResult extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootGetItemDocument $getItemDocumentXML
      * @return $this
      */
-    public function setGetItemDocumentXML($getItemDocumentXML)
+    public function setGetitemdocumentxml($getItemDocumentXML)
     {
-        $this->setData(self::GET_ITEM_DOCUMENT_X_M_L, $getItemDocumentXML);
+        $this->setData(self::GET_ITEM_DOCUMENT_XML, $getItemDocumentXML);
         return $this;
     }
 
     /**
      * @return RootGetItemDocument
      */
-    public function getGetItemDocumentXML()
+    public function getGetitemdocumentxml()
     {
-        return $this->getData(self::GET_ITEM_DOCUMENT_X_M_L);
+        return $this->getData(self::GET_ITEM_DOCUMENT_XML);
     }
 
     /**

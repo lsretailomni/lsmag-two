@@ -12,24 +12,24 @@ class RootCOMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCOMobilePickHeaders';
 
-    public const C_O_MOBILE_PICK_HEADERS = 'COMobilePickHeaders';
+    public const COMOBILE_PICK_HEADERS = 'COMobilePickHeaders';
 
     /**
      * @param COMobilePickHeaders $COMobilePickHeaders
      * @return $this
      */
-    public function setCOMobilePickHeaders($COMobilePickHeaders)
+    public function setComobilepickheaders($COMobilePickHeaders)
     {
-        $this->setData(self::C_O_MOBILE_PICK_HEADERS, $COMobilePickHeaders);
+        $this->setData(self::COMOBILE_PICK_HEADERS, $COMobilePickHeaders);
         return $this;
     }
 
     /**
      * @return COMobilePickHeaders
      */
-    public function getCOMobilePickHeaders()
+    public function getComobilepickheaders()
     {
-        return $this->getData(self::C_O_MOBILE_PICK_HEADERS);
+        return $this->getData(self::COMOBILE_PICK_HEADERS);
     }
 }
 

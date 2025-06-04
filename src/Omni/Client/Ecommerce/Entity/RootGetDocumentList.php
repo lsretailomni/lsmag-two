@@ -12,44 +12,44 @@ class RootGetDocumentList extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetDocumentList';
 
-    public const A_S_N_DELIVERY_DOCUMENT = 'ASNDeliveryDocument';
+    public const ASNDELIVERY_DOCUMENT = 'ASNDeliveryDocument';
 
-    public const P_O_S_TRANS_INV_HEADER = 'POSTrans.Inv.Header';
+    public const POSTRANS_INV_HEADER = 'POSTrans.Inv.Header';
 
     /**
      * @param ASNDeliveryDocument $ASNDeliveryDocument
      * @return $this
      */
-    public function setASNDeliveryDocument($ASNDeliveryDocument)
+    public function setAsndeliverydocument($ASNDeliveryDocument)
     {
-        $this->setData(self::A_S_N_DELIVERY_DOCUMENT, $ASNDeliveryDocument);
+        $this->setData(self::ASNDELIVERY_DOCUMENT, $ASNDeliveryDocument);
         return $this;
     }
 
     /**
      * @return ASNDeliveryDocument
      */
-    public function getASNDeliveryDocument()
+    public function getAsndeliverydocument()
     {
-        return $this->getData(self::A_S_N_DELIVERY_DOCUMENT);
+        return $this->getData(self::ASNDELIVERY_DOCUMENT);
     }
 
     /**
      * @param POSTrans.Inv.Header $POSTransInvHeader
      * @return $this
      */
-    public function setPOSTransInvHeader($POSTransInvHeader)
+    public function setPostransInvHeader($POSTransInvHeader)
     {
-        $this->setData(self::P_O_S_TRANS_INV_HEADER, $POSTransInvHeader);
+        $this->setData(self::POSTRANS_INV_HEADER, $POSTransInvHeader);
         return $this;
     }
 
     /**
      * @return POSTrans.Inv.Header
      */
-    public function getPOSTransInvHeader()
+    public function getPostransInvHeader()
     {
-        return $this->getData(self::P_O_S_TRANS_INV_HEADER);
+        return $this->getData(self::POSTRANS_INV_HEADER);
     }
 }
 

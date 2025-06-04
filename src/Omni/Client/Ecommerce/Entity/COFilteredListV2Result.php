@@ -18,13 +18,13 @@ class COFilteredListV2Result extends \Magento\Catalog\Model\AbstractModel implem
 
     public const ERROR_TEXT = 'errorText';
 
-    public const C_O_FILTERED_LIST_V2_X_M_L = 'cOFilteredListV2XML';
+    public const COFILTERED_LIST_V2_XML = 'cOFilteredListV2XML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class COFilteredListV2Result extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class COFilteredListV2Result extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class COFilteredListV2Result extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class COFilteredListV2Result extends \Magento\Catalog\Model\AbstractModel implem
      * @param RootCOFilteredListV2 $cOFilteredListV2XML
      * @return $this
      */
-    public function setCOFilteredListV2XML($cOFilteredListV2XML)
+    public function setCofilteredlistv2xml($cOFilteredListV2XML)
     {
-        $this->setData(self::C_O_FILTERED_LIST_V2_X_M_L, $cOFilteredListV2XML);
+        $this->setData(self::COFILTERED_LIST_V2_XML, $cOFilteredListV2XML);
         return $this;
     }
 
     /**
      * @return RootCOFilteredListV2
      */
-    public function getCOFilteredListV2XML()
+    public function getCofilteredlistv2xml()
     {
-        return $this->getData(self::C_O_FILTERED_LIST_V2_X_M_L);
+        return $this->getData(self::COFILTERED_LIST_V2_XML);
     }
 
     /**

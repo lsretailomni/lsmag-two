@@ -26,7 +26,7 @@ class MobilelPosGetLastReceiptNo extends \Magento\Catalog\Model\AbstractModel im
      * @param ?string $respondCode
      * @return $this
      */
-    public function setRespondCode(?string $respondCode)
+    public function setRespondcode(?string $respondCode)
     {
         $this->setData(self::RESPOND_CODE, $respondCode);
         return $this;
@@ -35,7 +35,7 @@ class MobilelPosGetLastReceiptNo extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getRespondCode() : ?string
+    public function getRespondcode() : ?string
     {
         return $this->getData(self::RESPOND_CODE);
     }
@@ -44,7 +44,7 @@ class MobilelPosGetLastReceiptNo extends \Magento\Catalog\Model\AbstractModel im
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class MobilelPosGetLastReceiptNo extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class MobilelPosGetLastReceiptNo extends \Magento\Catalog\Model\AbstractModel im
      * @param ?string $terminalNo
      * @return $this
      */
-    public function setTerminalNo(?string $terminalNo)
+    public function setTerminalno(?string $terminalNo)
     {
         $this->setData(self::TERMINAL_NO, $terminalNo);
         return $this;
@@ -71,7 +71,7 @@ class MobilelPosGetLastReceiptNo extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getTerminalNo() : ?string
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -80,7 +80,7 @@ class MobilelPosGetLastReceiptNo extends \Magento\Catalog\Model\AbstractModel im
      * @param ?string $lastReceiptNo
      * @return $this
      */
-    public function setLastReceiptNo(?string $lastReceiptNo)
+    public function setLastreceiptno(?string $lastReceiptNo)
     {
         $this->setData(self::LAST_RECEIPT_NO, $lastReceiptNo);
         return $this;
@@ -89,7 +89,7 @@ class MobilelPosGetLastReceiptNo extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getLastReceiptNo() : ?string
+    public function getLastreceiptno() : ?string
     {
         return $this->getData(self::LAST_RECEIPT_NO);
     }

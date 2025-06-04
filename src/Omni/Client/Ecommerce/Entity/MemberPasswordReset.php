@@ -18,7 +18,7 @@ class MemberPasswordReset extends \Magento\Catalog\Model\AbstractModel implement
 
     public const ERROR_TEXT = 'errorText';
 
-    public const LOGIN_I_D = 'loginID';
+    public const LOGIN_ID = 'loginID';
 
     public const EMAIL = 'email';
 
@@ -30,7 +30,7 @@ class MemberPasswordReset extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -39,7 +39,7 @@ class MemberPasswordReset extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -48,7 +48,7 @@ class MemberPasswordReset extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -57,7 +57,7 @@ class MemberPasswordReset extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -66,18 +66,18 @@ class MemberPasswordReset extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $loginID
      * @return $this
      */
-    public function setLoginID(?string $loginID)
+    public function setLoginid(?string $loginID)
     {
-        $this->setData(self::LOGIN_I_D, $loginID);
+        $this->setData(self::LOGIN_ID, $loginID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getLoginID() : ?string
+    public function getLoginid() : ?string
     {
-        return $this->getData(self::LOGIN_I_D);
+        return $this->getData(self::LOGIN_ID);
     }
 
     /**
@@ -120,7 +120,7 @@ class MemberPasswordReset extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $expiryOn
      * @return $this
      */
-    public function setExpiryOn(?string $expiryOn)
+    public function setExpiryon(?string $expiryOn)
     {
         $this->setData(self::EXPIRY_ON, $expiryOn);
         return $this;
@@ -129,7 +129,7 @@ class MemberPasswordReset extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getExpiryOn() : ?string
+    public function getExpiryon() : ?string
     {
         return $this->getData(self::EXPIRY_ON);
     }

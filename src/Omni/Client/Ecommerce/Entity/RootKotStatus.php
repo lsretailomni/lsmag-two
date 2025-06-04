@@ -14,13 +14,13 @@ class RootKotStatus extends \Magento\Catalog\Model\AbstractModel
 
     public const KOT_STATUS = 'KotStatus';
 
-    public const K_O_T_LINE = 'KOT_Line';
+    public const KOT_LINE = 'KOT_Line';
 
     /**
      * @param KotStatus $KotStatus
      * @return $this
      */
-    public function setKotStatus($KotStatus)
+    public function setKotstatus($KotStatus)
     {
         $this->setData(self::KOT_STATUS, $KotStatus);
         return $this;
@@ -29,7 +29,7 @@ class RootKotStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return KotStatus
      */
-    public function getKotStatus()
+    public function getKotstatus()
     {
         return $this->getData(self::KOT_STATUS);
     }
@@ -38,18 +38,18 @@ class RootKotStatus extends \Magento\Catalog\Model\AbstractModel
      * @param KOT_Line $KOTLine
      * @return $this
      */
-    public function setKOTLine($KOTLine)
+    public function setKotLine($KOTLine)
     {
-        $this->setData(self::K_O_T_LINE, $KOTLine);
+        $this->setData(self::KOT_LINE, $KOTLine);
         return $this;
     }
 
     /**
      * @return KOT_Line
      */
-    public function getKOTLine()
+    public function getKotLine()
     {
-        return $this->getData(self::K_O_T_LINE);
+        return $this->getData(self::KOT_LINE);
     }
 }
 

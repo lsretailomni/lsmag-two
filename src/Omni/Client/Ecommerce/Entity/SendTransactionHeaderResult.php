@@ -18,13 +18,13 @@ class SendTransactionHeaderResult extends \Magento\Catalog\Model\AbstractModel i
 
     public const ERROR_TEXT = 'errorText';
 
-    public const SEND_TRANSACTION_HEADER_X_M_L = 'sendTransactionHeaderXML';
+    public const SEND_TRANSACTION_HEADER_XML = 'sendTransactionHeaderXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class SendTransactionHeaderResult extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class SendTransactionHeaderResult extends \Magento\Catalog\Model\AbstractModel i
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class SendTransactionHeaderResult extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class SendTransactionHeaderResult extends \Magento\Catalog\Model\AbstractModel i
      * @param RootSendTransactionHeader $sendTransactionHeaderXML
      * @return $this
      */
-    public function setSendTransactionHeaderXML($sendTransactionHeaderXML)
+    public function setSendtransactionheaderxml($sendTransactionHeaderXML)
     {
-        $this->setData(self::SEND_TRANSACTION_HEADER_X_M_L, $sendTransactionHeaderXML);
+        $this->setData(self::SEND_TRANSACTION_HEADER_XML, $sendTransactionHeaderXML);
         return $this;
     }
 
     /**
      * @return RootSendTransactionHeader
      */
-    public function getSendTransactionHeaderXML()
+    public function getSendtransactionheaderxml()
     {
-        return $this->getData(self::SEND_TRANSACTION_HEADER_X_M_L);
+        return $this->getData(self::SEND_TRANSACTION_HEADER_XML);
     }
 
     /**

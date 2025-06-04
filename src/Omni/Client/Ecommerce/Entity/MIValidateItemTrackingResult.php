@@ -24,7 +24,7 @@ class MIValidateItemTrackingResult extends \Magento\Catalog\Model\AbstractModel 
      * @param ?bool $validTracking
      * @return $this
      */
-    public function setValidTracking(?bool $validTracking)
+    public function setValidtracking(?bool $validTracking)
     {
         $this->setData(self::VALID_TRACKING, $validTracking);
         return $this;
@@ -33,7 +33,7 @@ class MIValidateItemTrackingResult extends \Magento\Catalog\Model\AbstractModel 
     /**
      * @return ?bool
      */
-    public function getValidTracking() : ?bool
+    public function getValidtracking() : ?bool
     {
         return $this->getData(self::VALID_TRACKING);
     }
@@ -42,7 +42,7 @@ class MIValidateItemTrackingResult extends \Magento\Catalog\Model\AbstractModel 
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -51,7 +51,7 @@ class MIValidateItemTrackingResult extends \Magento\Catalog\Model\AbstractModel 
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -60,7 +60,7 @@ class MIValidateItemTrackingResult extends \Magento\Catalog\Model\AbstractModel 
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -69,7 +69,7 @@ class MIValidateItemTrackingResult extends \Magento\Catalog\Model\AbstractModel 
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

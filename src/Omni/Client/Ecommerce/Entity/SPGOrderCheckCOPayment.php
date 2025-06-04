@@ -24,7 +24,7 @@ class SPGOrderCheckCOPayment extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CardType
      * @return $this
      */
-    public function setCardType(?string $CardType)
+    public function setCardtype(?string $CardType)
     {
         $this->setData(self::CARD_TYPE, $CardType);
         return $this;
@@ -33,7 +33,7 @@ class SPGOrderCheckCOPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardType() : ?string
+    public function getCardtype() : ?string
     {
         return $this->getData(self::CARD_TYPE);
     }
@@ -42,7 +42,7 @@ class SPGOrderCheckCOPayment extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExternalRef
      * @return $this
      */
-    public function setExternalRef(?string $ExternalRef)
+    public function setExternalref(?string $ExternalRef)
     {
         $this->setData(self::EXTERNAL_REF, $ExternalRef);
         return $this;
@@ -51,7 +51,7 @@ class SPGOrderCheckCOPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalRef() : ?string
+    public function getExternalref() : ?string
     {
         return $this->getData(self::EXTERNAL_REF);
     }
@@ -60,7 +60,7 @@ class SPGOrderCheckCOPayment extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $PaymentAmount
      * @return $this
      */
-    public function setPaymentAmount(?float $PaymentAmount)
+    public function setPaymentamount(?float $PaymentAmount)
     {
         $this->setData(self::PAYMENT_AMOUNT, $PaymentAmount);
         return $this;
@@ -69,7 +69,7 @@ class SPGOrderCheckCOPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPaymentAmount() : ?float
+    public function getPaymentamount() : ?float
     {
         return $this->getData(self::PAYMENT_AMOUNT);
     }
@@ -78,7 +78,7 @@ class SPGOrderCheckCOPayment extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AutorizationCode
      * @return $this
      */
-    public function setAutorizationCode(?string $AutorizationCode)
+    public function setAutorizationcode(?string $AutorizationCode)
     {
         $this->setData(self::AUTORIZATION_CODE, $AutorizationCode);
         return $this;
@@ -87,7 +87,7 @@ class SPGOrderCheckCOPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAutorizationCode() : ?string
+    public function getAutorizationcode() : ?string
     {
         return $this->getData(self::AUTORIZATION_CODE);
     }

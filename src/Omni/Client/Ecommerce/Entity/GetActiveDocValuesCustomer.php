@@ -58,7 +58,7 @@ class GetActiveDocValuesCustomer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DateCreated
      * @return $this
      */
-    public function setDateCreated(?string $DateCreated)
+    public function setDatecreated(?string $DateCreated)
     {
         $this->setData(self::DATE_CREATED, $DateCreated);
         return $this;
@@ -67,7 +67,7 @@ class GetActiveDocValuesCustomer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateCreated() : ?string
+    public function getDatecreated() : ?string
     {
         return $this->getData(self::DATE_CREATED);
     }

@@ -54,7 +54,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -63,7 +63,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -90,7 +90,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $DiscountType
      * @return $this
      */
-    public function setDiscountType($DiscountType)
+    public function setDiscounttype($DiscountType)
     {
         $this->setData(self::DISCOUNT_TYPE, $DiscountType);
         return $this;
@@ -99,7 +99,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDiscountType()
+    public function getDiscounttype()
     {
         return $this->getData(self::DISCOUNT_TYPE);
     }
@@ -108,7 +108,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OfferNo
      * @return $this
      */
-    public function setOfferNo(?string $OfferNo)
+    public function setOfferno(?string $OfferNo)
     {
         $this->setData(self::OFFER_NO, $OfferNo);
         return $this;
@@ -117,7 +117,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOfferNo() : ?string
+    public function getOfferno() : ?string
     {
         return $this->getData(self::OFFER_NO);
     }
@@ -126,7 +126,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $PeriodicDiscType
      * @return $this
      */
-    public function setPeriodicDiscType($PeriodicDiscType)
+    public function setPeriodicdisctype($PeriodicDiscType)
     {
         $this->setData(self::PERIODIC_DISC_TYPE, $PeriodicDiscType);
         return $this;
@@ -135,7 +135,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getPeriodicDiscType()
+    public function getPeriodicdisctype()
     {
         return $this->getData(self::PERIODIC_DISC_TYPE);
     }
@@ -144,7 +144,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PeriodicDiscGroup
      * @return $this
      */
-    public function setPeriodicDiscGroup(?string $PeriodicDiscGroup)
+    public function setPeriodicdiscgroup(?string $PeriodicDiscGroup)
     {
         $this->setData(self::PERIODIC_DISC_GROUP, $PeriodicDiscGroup);
         return $this;
@@ -153,7 +153,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPeriodicDiscGroup() : ?string
+    public function getPeriodicdiscgroup() : ?string
     {
         return $this->getData(self::PERIODIC_DISC_GROUP);
     }
@@ -180,7 +180,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $DiscountPercent
      * @return $this
      */
-    public function setDiscountPercent(?float $DiscountPercent)
+    public function setDiscountpercent(?float $DiscountPercent)
     {
         $this->setData(self::DISCOUNT_PERCENT, $DiscountPercent);
         return $this;
@@ -189,7 +189,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountPercent() : ?float
+    public function getDiscountpercent() : ?float
     {
         return $this->getData(self::DISCOUNT_PERCENT);
     }
@@ -198,7 +198,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $DiscountAmount
      * @return $this
      */
-    public function setDiscountAmount(?float $DiscountAmount)
+    public function setDiscountamount(?float $DiscountAmount)
     {
         $this->setData(self::DISCOUNT_AMOUNT, $DiscountAmount);
         return $this;
@@ -207,7 +207,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountAmount() : ?float
+    public function getDiscountamount() : ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }

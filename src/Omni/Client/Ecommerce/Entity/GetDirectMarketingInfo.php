@@ -24,13 +24,13 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
 
     public const STORE_NO = 'storeNo';
 
-    public const LOAD_MEMBER_DIR_MARK_INFO_X_M_L = 'loadMemberDirMarkInfoXML';
+    public const LOAD_MEMBER_DIR_MARK_INFO_XML = 'loadMemberDirMarkInfoXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -39,7 +39,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -48,7 +48,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -57,7 +57,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -66,7 +66,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $cardId
      * @return $this
      */
-    public function setCardId(?string $cardId)
+    public function setCardid(?string $cardId)
     {
         $this->setData(self::CARD_ID, $cardId);
         return $this;
@@ -75,7 +75,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getCardId() : ?string
+    public function getCardid() : ?string
     {
         return $this->getData(self::CARD_ID);
     }
@@ -84,7 +84,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo(?string $itemNo)
+    public function setItemno(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
@@ -93,7 +93,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -102,7 +102,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -111,7 +111,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -120,18 +120,18 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
      * @param RootGetDirectMarketingInfo $loadMemberDirMarkInfoXML
      * @return $this
      */
-    public function setLoadMemberDirMarkInfoXML($loadMemberDirMarkInfoXML)
+    public function setLoadmemberdirmarkinfoxml($loadMemberDirMarkInfoXML)
     {
-        $this->setData(self::LOAD_MEMBER_DIR_MARK_INFO_X_M_L, $loadMemberDirMarkInfoXML);
+        $this->setData(self::LOAD_MEMBER_DIR_MARK_INFO_XML, $loadMemberDirMarkInfoXML);
         return $this;
     }
 
     /**
      * @return RootGetDirectMarketingInfo
      */
-    public function getLoadMemberDirMarkInfoXML()
+    public function getLoadmemberdirmarkinfoxml()
     {
-        return $this->getData(self::LOAD_MEMBER_DIR_MARK_INFO_X_M_L);
+        return $this->getData(self::LOAD_MEMBER_DIR_MARK_INFO_XML);
     }
 }
 

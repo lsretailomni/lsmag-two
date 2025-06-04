@@ -26,7 +26,7 @@ class SPGResetPasswordResult extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $resetCode
      * @return $this
      */
-    public function setResetCode(?string $resetCode)
+    public function setResetcode(?string $resetCode)
     {
         $this->setData(self::RESET_CODE, $resetCode);
         return $this;
@@ -35,7 +35,7 @@ class SPGResetPasswordResult extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getResetCode() : ?string
+    public function getResetcode() : ?string
     {
         return $this->getData(self::RESET_CODE);
     }
@@ -44,7 +44,7 @@ class SPGResetPasswordResult extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $newPassword
      * @return $this
      */
-    public function setNewPassword(?string $newPassword)
+    public function setNewpassword(?string $newPassword)
     {
         $this->setData(self::NEW_PASSWORD, $newPassword);
         return $this;
@@ -53,7 +53,7 @@ class SPGResetPasswordResult extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getNewPassword() : ?string
+    public function getNewpassword() : ?string
     {
         return $this->getData(self::NEW_PASSWORD);
     }
@@ -62,7 +62,7 @@ class SPGResetPasswordResult extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -71,7 +71,7 @@ class SPGResetPasswordResult extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -80,7 +80,7 @@ class SPGResetPasswordResult extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -89,7 +89,7 @@ class SPGResetPasswordResult extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

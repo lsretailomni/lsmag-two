@@ -24,7 +24,7 @@ class SPGProfileFeatureFlags extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ProfileCode
      * @return $this
      */
-    public function setProfileCode(?string $ProfileCode)
+    public function setProfilecode(?string $ProfileCode)
     {
         $this->setData(self::PROFILE_CODE, $ProfileCode);
         return $this;
@@ -33,7 +33,7 @@ class SPGProfileFeatureFlags extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getProfileCode() : ?string
+    public function getProfilecode() : ?string
     {
         return $this->getData(self::PROFILE_CODE);
     }
@@ -42,7 +42,7 @@ class SPGProfileFeatureFlags extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $FeatureId
      * @return $this
      */
-    public function setFeatureId(?string $FeatureId)
+    public function setFeatureid(?string $FeatureId)
     {
         $this->setData(self::FEATURE_ID, $FeatureId);
         return $this;
@@ -51,7 +51,7 @@ class SPGProfileFeatureFlags extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFeatureId() : ?string
+    public function getFeatureid() : ?string
     {
         return $this->getData(self::FEATURE_ID);
     }
@@ -78,7 +78,7 @@ class SPGProfileFeatureFlags extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $FeatureValue
      * @return $this
      */
-    public function setFeatureValue(?string $FeatureValue)
+    public function setFeaturevalue(?string $FeatureValue)
     {
         $this->setData(self::FEATURE_VALUE, $FeatureValue);
         return $this;
@@ -87,7 +87,7 @@ class SPGProfileFeatureFlags extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFeatureValue() : ?string
+    public function getFeaturevalue() : ?string
     {
         return $this->getData(self::FEATURE_VALUE);
     }

@@ -22,7 +22,7 @@ class PublishedOfferDetailLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OfferNo
      * @return $this
      */
-    public function setOfferNo(?string $OfferNo)
+    public function setOfferno(?string $OfferNo)
     {
         $this->setData(self::OFFER_NO, $OfferNo);
         return $this;
@@ -31,7 +31,7 @@ class PublishedOfferDetailLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOfferNo() : ?string
+    public function getOfferno() : ?string
     {
         return $this->getData(self::OFFER_NO);
     }
@@ -40,7 +40,7 @@ class PublishedOfferDetailLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -49,7 +49,7 @@ class PublishedOfferDetailLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }

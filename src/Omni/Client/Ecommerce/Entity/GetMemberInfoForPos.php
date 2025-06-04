@@ -22,13 +22,13 @@ class GetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel implement
 
     public const STORE_NO = 'storeNo';
 
-    public const GET_MEMBER_INFO_FOR_POS_X_M_L = 'getMemberInfoForPosXML';
+    public const GET_MEMBER_INFO_FOR_POS_XML = 'getMemberInfoForPosXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -37,7 +37,7 @@ class GetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -46,7 +46,7 @@ class GetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -55,7 +55,7 @@ class GetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -64,7 +64,7 @@ class GetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $cardNo
      * @return $this
      */
-    public function setCardNo(?string $cardNo)
+    public function setCardno(?string $cardNo)
     {
         $this->setData(self::CARD_NO, $cardNo);
         return $this;
@@ -73,7 +73,7 @@ class GetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getCardNo() : ?string
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -82,7 +82,7 @@ class GetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -91,7 +91,7 @@ class GetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -100,18 +100,18 @@ class GetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel implement
      * @param RootGetMemberInfoForPos $getMemberInfoForPosXML
      * @return $this
      */
-    public function setGetMemberInfoForPosXML($getMemberInfoForPosXML)
+    public function setGetmemberinfoforposxml($getMemberInfoForPosXML)
     {
-        $this->setData(self::GET_MEMBER_INFO_FOR_POS_X_M_L, $getMemberInfoForPosXML);
+        $this->setData(self::GET_MEMBER_INFO_FOR_POS_XML, $getMemberInfoForPosXML);
         return $this;
     }
 
     /**
      * @return RootGetMemberInfoForPos
      */
-    public function getGetMemberInfoForPosXML()
+    public function getGetmemberinfoforposxml()
     {
-        return $this->getData(self::GET_MEMBER_INFO_FOR_POS_X_M_L);
+        return $this->getData(self::GET_MEMBER_INFO_FOR_POS_XML);
     }
 }
 

@@ -12,7 +12,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'Staff';
 
-    public const I_D = 'ID';
+    public const ID = 'ID';
 
     public const PASSWORD = 'Password';
 
@@ -24,7 +24,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
 
     public const MANAGER_PRIVILEGES = 'Manager_Privileges';
 
-    public const X_Z_Y_REPORT_PRINTING = 'XZY-Report_Printing';
+    public const XZY_REPORT_PRINTING = 'XZY-Report_Printing';
 
     public const TENDER_DECLARATION = 'Tender_Declaration';
 
@@ -32,13 +32,13 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
 
     public const PRICE_OVERRIDE = 'Price_Override';
 
-    public const MAX_DISCOUNTTO_GIVE = 'Max._Discount_to_Give__';
+    public const MAX_DISCOUNT_TO_GIVE = 'Max._Discount_to_Give__';
 
     public const SUSPEND_TRANSACTION = 'Suspend_Transaction';
 
     public const MAX_TOTAL_DISCOUNT = 'Max._Total_Discount__';
 
-    public const OPEN_DRAWWITHOUT_SALE = 'Open_Draw._without_Sale';
+    public const OPEN_DRAW_WITHOUT_SALE = 'Open_Draw._without_Sale';
 
     public const FIRST_NAME = 'First_Name';
 
@@ -48,11 +48,11 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
 
     public const LAST_DATE_MODIFIED = 'Last_Date_Modified';
 
-    public const NAMEON_RECEIPT = 'Name_on_Receipt';
+    public const NAME_ON_RECEIPT = 'Name_on_Receipt';
 
     public const ADDRESS = 'Address';
 
-    public const ADDRESS2 = 'Address_2';
+    public const ADDRESS_2 = 'Address_2';
 
     public const CITY = 'City';
 
@@ -68,7 +68,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
 
     public const BLOCKED = 'Blocked';
 
-    public const DATETO_BE_BLOCKED = 'Date_to_Be_Blocked';
+    public const DATE_TO_BE_BLOCKED = 'Date_to_Be_Blocked';
 
     public const LEFT_HANDED = 'Left_Handed';
 
@@ -78,7 +78,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
 
     public const PERMISSION_GROUP = 'Permission_Group';
 
-    public const RETURNIN_TRANSACTION = 'Return_in_Transaction';
+    public const RETURN_IN_TRANSACTION = 'Return_in_Transaction';
 
     public const VOID_PREPAYMENT = 'Void_Prepayment';
 
@@ -102,21 +102,21 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
 
     public const DESIGN_DINING_TABLE_LAYOUT = 'Design_Dining_Table_Layout';
 
-    public const CONTINUEON_T_SERRORS = 'Continue_on_TS_errors';
+    public const CONTINUE_ON_TS_ERRORS = 'Continue_on_TS_errors';
 
     public const LAST_Z_REPORT = 'Last_Z-Report';
 
-    public const P_O_S_INTERFACE_PROFILE = 'POS_Interface_Profile';
+    public const POS_INTERFACE_PROFILE = 'POS_Interface_Profile';
 
-    public const P_O_S_STYLE_PROFILE = 'POSStyleProfile';
+    public const POSSTYLE_PROFILE = 'POSStyleProfile';
 
-    public const P_O_S_MENU_PROFILE = 'POSMenuProfile';
+    public const POSMENU_PROFILE = 'POSMenuProfile';
 
     public const LANGUAGE = 'Language';
 
     public const CREATE_CUSTOMERS = 'Create_Customers';
 
-    public const VIEW_SALESHISTORY = 'View_Sales_history';
+    public const VIEW_SALES_HISTORY = 'View_Sales_history';
 
     public const CUSTOMER_COMMENTS = 'Customer_Comments';
 
@@ -124,36 +124,36 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
 
     public const MAX_WARNING_COUNT = 'Max._Warning_Count';
 
-    public const SHOW_DIFFERENCEIN_WARNING = 'Show_Difference_in_Warning';
+    public const SHOW_DIFFERENCE_IN_WARNING = 'Show_Difference_in_Warning';
 
     public const ACTION_AFTER_DIFF_WARNING = 'Action_After_Diff._Warning';
 
-    public const C_I_D_REPORT_PRINTING_ALLOWED = 'CID-Report_Printing_Allowed';
+    public const CID_REPORT_PRINTING_ALLOWED = 'CID-Report_Printing_Allowed';
 
     public const SHOW_TRANS_AMOUNT = 'Show_Trans._Amount';
 
     public const UPDATE_CUSTOMERS = 'Update_Customers';
 
-    public const DISCOUNTFROM_PERM_GROUP = 'Discount_from_Perm._Group';
+    public const DISCOUNT_FROM_PERM_GROUP = 'Discount_from_Perm._Group';
 
-    public const MAX_DIFF_WARNFROM_PERM_GR = 'Max._Diff.Warn._from_Perm._Gr';
+    public const MAX_DIFF_WARN_FROM_PERM_GR = 'Max._Diff.Warn._from_Perm._Gr';
 
     /**
      * @param string $ID
      * @return $this
      */
-    public function setID($ID)
+    public function setId($ID)
     {
-        $this->setData(self::I_D, $ID);
+        $this->setData(self::ID, $ID);
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getID()
+    public function getId()
     {
-        return $this->getData(self::I_D);
+        return $this->getData(self::ID);
     }
 
     /**
@@ -250,18 +250,18 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $XZYReportPrinting
      * @return $this
      */
-    public function setXZYReportPrinting(?string $XZYReportPrinting)
+    public function setXzyReportPrinting(?string $XZYReportPrinting)
     {
-        $this->setData(self::X_Z_Y_REPORT_PRINTING, $XZYReportPrinting);
+        $this->setData(self::XZY_REPORT_PRINTING, $XZYReportPrinting);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getXZYReportPrinting() : ?string
+    public function getXzyReportPrinting() : ?string
     {
-        return $this->getData(self::X_Z_Y_REPORT_PRINTING);
+        return $this->getData(self::XZY_REPORT_PRINTING);
     }
 
     /**
@@ -324,7 +324,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function setMaxDiscountToGive(?float $MaxDiscounttoGive)
     {
-        $this->setData(self::MAX_DISCOUNTTO_GIVE, $MaxDiscounttoGive);
+        $this->setData(self::MAX_DISCOUNT_TO_GIVE, $MaxDiscounttoGive);
         return $this;
     }
 
@@ -333,7 +333,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function getMaxDiscountToGive() : ?float
     {
-        return $this->getData(self::MAX_DISCOUNTTO_GIVE);
+        return $this->getData(self::MAX_DISCOUNT_TO_GIVE);
     }
 
     /**
@@ -378,7 +378,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function setOpenDrawWithoutSale(?string $OpenDrawwithoutSale)
     {
-        $this->setData(self::OPEN_DRAWWITHOUT_SALE, $OpenDrawwithoutSale);
+        $this->setData(self::OPEN_DRAW_WITHOUT_SALE, $OpenDrawwithoutSale);
         return $this;
     }
 
@@ -387,7 +387,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function getOpenDrawWithoutSale() : ?string
     {
-        return $this->getData(self::OPEN_DRAWWITHOUT_SALE);
+        return $this->getData(self::OPEN_DRAW_WITHOUT_SALE);
     }
 
     /**
@@ -468,7 +468,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function setNameOnReceipt(?string $NameonReceipt)
     {
-        $this->setData(self::NAMEON_RECEIPT, $NameonReceipt);
+        $this->setData(self::NAME_ON_RECEIPT, $NameonReceipt);
         return $this;
     }
 
@@ -477,7 +477,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function getNameOnReceipt() : ?string
     {
-        return $this->getData(self::NAMEON_RECEIPT);
+        return $this->getData(self::NAME_ON_RECEIPT);
     }
 
     /**
@@ -504,7 +504,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function setAddress2(?string $Address2)
     {
-        $this->setData(self::ADDRESS2, $Address2);
+        $this->setData(self::ADDRESS_2, $Address2);
         return $this;
     }
 
@@ -513,7 +513,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function getAddress2() : ?string
     {
-        return $this->getData(self::ADDRESS2);
+        return $this->getData(self::ADDRESS_2);
     }
 
     /**
@@ -648,7 +648,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function setDateToBeBlocked(?string $DatetoBeBlocked)
     {
-        $this->setData(self::DATETO_BE_BLOCKED, $DatetoBeBlocked);
+        $this->setData(self::DATE_TO_BE_BLOCKED, $DatetoBeBlocked);
         return $this;
     }
 
@@ -657,7 +657,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function getDateToBeBlocked() : ?string
     {
-        return $this->getData(self::DATETO_BE_BLOCKED);
+        return $this->getData(self::DATE_TO_BE_BLOCKED);
     }
 
     /**
@@ -738,7 +738,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function setReturnInTransaction(?string $ReturninTransaction)
     {
-        $this->setData(self::RETURNIN_TRANSACTION, $ReturninTransaction);
+        $this->setData(self::RETURN_IN_TRANSACTION, $ReturninTransaction);
         return $this;
     }
 
@@ -747,7 +747,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function getReturnInTransaction() : ?string
     {
-        return $this->getData(self::RETURNIN_TRANSACTION);
+        return $this->getData(self::RETURN_IN_TRANSACTION);
     }
 
     /**
@@ -952,18 +952,18 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ContinueonTSerrors
      * @return $this
      */
-    public function setContinueOnTSErrors(?bool $ContinueonTSerrors)
+    public function setContinueOnTsErrors(?bool $ContinueonTSerrors)
     {
-        $this->setData(self::CONTINUEON_T_SERRORS, $ContinueonTSerrors);
+        $this->setData(self::CONTINUE_ON_TS_ERRORS, $ContinueonTSerrors);
         return $this;
     }
 
     /**
      * @return ?bool
      */
-    public function getContinueOnTSErrors() : ?bool
+    public function getContinueOnTsErrors() : ?bool
     {
-        return $this->getData(self::CONTINUEON_T_SERRORS);
+        return $this->getData(self::CONTINUE_ON_TS_ERRORS);
     }
 
     /**
@@ -988,54 +988,54 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSInterfaceProfile
      * @return $this
      */
-    public function setPOSInterfaceProfile(?string $POSInterfaceProfile)
+    public function setPosInterfaceProfile(?string $POSInterfaceProfile)
     {
-        $this->setData(self::P_O_S_INTERFACE_PROFILE, $POSInterfaceProfile);
+        $this->setData(self::POS_INTERFACE_PROFILE, $POSInterfaceProfile);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSInterfaceProfile() : ?string
+    public function getPosInterfaceProfile() : ?string
     {
-        return $this->getData(self::P_O_S_INTERFACE_PROFILE);
+        return $this->getData(self::POS_INTERFACE_PROFILE);
     }
 
     /**
      * @param ?string $POSStyleProfile
      * @return $this
      */
-    public function setPOSStyleProfile(?string $POSStyleProfile)
+    public function setPosstyleprofile(?string $POSStyleProfile)
     {
-        $this->setData(self::P_O_S_STYLE_PROFILE, $POSStyleProfile);
+        $this->setData(self::POSSTYLE_PROFILE, $POSStyleProfile);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSStyleProfile() : ?string
+    public function getPosstyleprofile() : ?string
     {
-        return $this->getData(self::P_O_S_STYLE_PROFILE);
+        return $this->getData(self::POSSTYLE_PROFILE);
     }
 
     /**
      * @param ?string $POSMenuProfile
      * @return $this
      */
-    public function setPOSMenuProfile(?string $POSMenuProfile)
+    public function setPosmenuprofile(?string $POSMenuProfile)
     {
-        $this->setData(self::P_O_S_MENU_PROFILE, $POSMenuProfile);
+        $this->setData(self::POSMENU_PROFILE, $POSMenuProfile);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSMenuProfile() : ?string
+    public function getPosmenuprofile() : ?string
     {
-        return $this->getData(self::P_O_S_MENU_PROFILE);
+        return $this->getData(self::POSMENU_PROFILE);
     }
 
     /**
@@ -1080,7 +1080,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function setViewSalesHistory(?string $ViewSaleshistory)
     {
-        $this->setData(self::VIEW_SALESHISTORY, $ViewSaleshistory);
+        $this->setData(self::VIEW_SALES_HISTORY, $ViewSaleshistory);
         return $this;
     }
 
@@ -1089,7 +1089,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function getViewSalesHistory() : ?string
     {
-        return $this->getData(self::VIEW_SALESHISTORY);
+        return $this->getData(self::VIEW_SALES_HISTORY);
     }
 
     /**
@@ -1152,7 +1152,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function setShowDifferenceInWarning(?string $ShowDifferenceinWarning)
     {
-        $this->setData(self::SHOW_DIFFERENCEIN_WARNING, $ShowDifferenceinWarning);
+        $this->setData(self::SHOW_DIFFERENCE_IN_WARNING, $ShowDifferenceinWarning);
         return $this;
     }
 
@@ -1161,7 +1161,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function getShowDifferenceInWarning() : ?string
     {
-        return $this->getData(self::SHOW_DIFFERENCEIN_WARNING);
+        return $this->getData(self::SHOW_DIFFERENCE_IN_WARNING);
     }
 
     /**
@@ -1186,18 +1186,18 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CIDReportPrintingAllowed
      * @return $this
      */
-    public function setCIDReportPrintingAllowed(?string $CIDReportPrintingAllowed)
+    public function setCidReportPrintingAllowed(?string $CIDReportPrintingAllowed)
     {
-        $this->setData(self::C_I_D_REPORT_PRINTING_ALLOWED, $CIDReportPrintingAllowed);
+        $this->setData(self::CID_REPORT_PRINTING_ALLOWED, $CIDReportPrintingAllowed);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getCIDReportPrintingAllowed() : ?string
+    public function getCidReportPrintingAllowed() : ?string
     {
-        return $this->getData(self::C_I_D_REPORT_PRINTING_ALLOWED);
+        return $this->getData(self::CID_REPORT_PRINTING_ALLOWED);
     }
 
     /**
@@ -1242,7 +1242,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function setDiscountFromPermGroup(?string $DiscountfromPermGroup)
     {
-        $this->setData(self::DISCOUNTFROM_PERM_GROUP, $DiscountfromPermGroup);
+        $this->setData(self::DISCOUNT_FROM_PERM_GROUP, $DiscountfromPermGroup);
         return $this;
     }
 
@@ -1251,7 +1251,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function getDiscountFromPermGroup() : ?string
     {
-        return $this->getData(self::DISCOUNTFROM_PERM_GROUP);
+        return $this->getData(self::DISCOUNT_FROM_PERM_GROUP);
     }
 
     /**
@@ -1260,7 +1260,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function setMaxDiffWarnFromPermGr(?string $MaxDiffWarnfromPermGr)
     {
-        $this->setData(self::MAX_DIFF_WARNFROM_PERM_GR, $MaxDiffWarnfromPermGr);
+        $this->setData(self::MAX_DIFF_WARN_FROM_PERM_GR, $MaxDiffWarnfromPermGr);
         return $this;
     }
 
@@ -1269,7 +1269,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
      */
     public function getMaxDiffWarnFromPermGr() : ?string
     {
-        return $this->getData(self::MAX_DIFF_WARNFROM_PERM_GR);
+        return $this->getData(self::MAX_DIFF_WARN_FROM_PERM_GR);
     }
 }
 

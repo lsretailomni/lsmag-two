@@ -48,9 +48,9 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const WEIGHT_ITEM = 'WeightItem';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
-    public const STAFF_I_D = 'StaffID';
+    public const STAFF_ID = 'StaffID';
 
     public const VARIANT_CODE = 'VariantCode';
 
@@ -64,9 +64,9 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const UNITOF_MEASURE = 'UnitofMeasure';
 
-    public const U_O_M_QUANTITY = 'UOMQuantity';
+    public const UOMQUANTITY = 'UOMQuantity';
 
-    public const U_O_M_PRICE = 'UOMPrice';
+    public const UOMPRICE = 'UOMPrice';
 
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
@@ -76,7 +76,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -85,7 +85,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -94,7 +94,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -103,7 +103,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -112,7 +112,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo(?string $ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
@@ -121,7 +121,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptNo() : ?string
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -130,7 +130,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $BarcodeNo
      * @return $this
      */
-    public function setBarcodeNo(?string $BarcodeNo)
+    public function setBarcodeno(?string $BarcodeNo)
     {
         $this->setData(self::BARCODE_NO, $BarcodeNo);
         return $this;
@@ -139,7 +139,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeNo() : ?string
+    public function getBarcodeno() : ?string
     {
         return $this->getData(self::BARCODE_NO);
     }
@@ -166,7 +166,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo(?string $ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
@@ -175,7 +175,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -202,7 +202,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TransactionStatus
      * @return $this
      */
-    public function setTransactionStatus(?string $TransactionStatus)
+    public function setTransactionstatus(?string $TransactionStatus)
     {
         $this->setData(self::TRANSACTION_STATUS, $TransactionStatus);
         return $this;
@@ -211,7 +211,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionStatus() : ?string
+    public function getTransactionstatus() : ?string
     {
         return $this->getData(self::TRANSACTION_STATUS);
     }
@@ -235,19 +235,19 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param time $Time
+     * @param ?string $Time
      * @return $this
      */
-    public function setTime($Time)
+    public function setTime(?string $Time)
     {
         $this->setData(self::TIME, $Time);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTime()
+    public function getTime() : ?string
     {
         return $this->getData(self::TIME);
     }
@@ -256,7 +256,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StatementNo
      * @return $this
      */
-    public function setStatementNo(?string $StatementNo)
+    public function setStatementno(?string $StatementNo)
     {
         $this->setData(self::STATEMENT_NO, $StatementNo);
         return $this;
@@ -265,7 +265,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementNo() : ?string
+    public function getStatementno() : ?string
     {
         return $this->getData(self::STATEMENT_NO);
     }
@@ -274,7 +274,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -283,7 +283,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -292,7 +292,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ItemNumberScanned
      * @return $this
      */
-    public function setItemNumberScanned(?bool $ItemNumberScanned)
+    public function setItemnumberscanned(?bool $ItemNumberScanned)
     {
         $this->setData(self::ITEM_NUMBER_SCANNED, $ItemNumberScanned);
         return $this;
@@ -301,7 +301,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getItemNumberScanned() : ?bool
+    public function getItemnumberscanned() : ?bool
     {
         return $this->getData(self::ITEM_NUMBER_SCANNED);
     }
@@ -310,7 +310,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $KeyboardItemEntry
      * @return $this
      */
-    public function setKeyboardItemEntry(?bool $KeyboardItemEntry)
+    public function setKeyboarditementry(?bool $KeyboardItemEntry)
     {
         $this->setData(self::KEYBOARD_ITEM_ENTRY, $KeyboardItemEntry);
         return $this;
@@ -319,7 +319,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getKeyboardItemEntry() : ?bool
+    public function getKeyboarditementry() : ?bool
     {
         return $this->getData(self::KEYBOARD_ITEM_ENTRY);
     }
@@ -328,7 +328,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $PriceinBarcode
      * @return $this
      */
-    public function setPriceinBarcode(?bool $PriceinBarcode)
+    public function setPriceinbarcode(?bool $PriceinBarcode)
     {
         $this->setData(self::PRICEIN_BARCODE, $PriceinBarcode);
         return $this;
@@ -337,7 +337,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPriceinBarcode() : ?bool
+    public function getPriceinbarcode() : ?bool
     {
         return $this->getData(self::PRICEIN_BARCODE);
     }
@@ -346,7 +346,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $WeightManuallyEntered
      * @return $this
      */
-    public function setWeightManuallyEntered(?bool $WeightManuallyEntered)
+    public function setWeightmanuallyentered(?bool $WeightManuallyEntered)
     {
         $this->setData(self::WEIGHT_MANUALLY_ENTERED, $WeightManuallyEntered);
         return $this;
@@ -355,7 +355,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getWeightManuallyEntered() : ?bool
+    public function getWeightmanuallyentered() : ?bool
     {
         return $this->getData(self::WEIGHT_MANUALLY_ENTERED);
     }
@@ -364,7 +364,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ScaleItem
      * @return $this
      */
-    public function setScaleItem(?bool $ScaleItem)
+    public function setScaleitem(?bool $ScaleItem)
     {
         $this->setData(self::SCALE_ITEM, $ScaleItem);
         return $this;
@@ -373,7 +373,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getScaleItem() : ?bool
+    public function getScaleitem() : ?bool
     {
         return $this->getData(self::SCALE_ITEM);
     }
@@ -382,7 +382,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $WeightItem
      * @return $this
      */
-    public function setWeightItem(?bool $WeightItem)
+    public function setWeightitem(?bool $WeightItem)
     {
         $this->setData(self::WEIGHT_ITEM, $WeightItem);
         return $this;
@@ -391,7 +391,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getWeightItem() : ?bool
+    public function getWeightitem() : ?bool
     {
         return $this->getData(self::WEIGHT_ITEM);
     }
@@ -400,43 +400,43 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo(?string $POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID(?string $StaffID)
+    public function setStaffid(?string $StaffID)
     {
-        $this->setData(self::STAFF_I_D, $StaffID);
+        $this->setData(self::STAFF_ID, $StaffID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getStaffID() : ?string
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -445,7 +445,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -454,7 +454,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SerialNo
      * @return $this
      */
-    public function setSerialNo(?string $SerialNo)
+    public function setSerialno(?string $SerialNo)
     {
         $this->setData(self::SERIAL_NO, $SerialNo);
         return $this;
@@ -463,7 +463,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSerialNo() : ?string
+    public function getSerialno() : ?string
     {
         return $this->getData(self::SERIAL_NO);
     }
@@ -472,7 +472,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LotNo
      * @return $this
      */
-    public function setLotNo(?string $LotNo)
+    public function setLotno(?string $LotNo)
     {
         $this->setData(self::LOT_NO, $LotNo);
         return $this;
@@ -481,7 +481,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLotNo() : ?string
+    public function getLotno() : ?string
     {
         return $this->getData(self::LOT_NO);
     }
@@ -490,7 +490,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExpirationDate
      * @return $this
      */
-    public function setExpirationDate(?string $ExpirationDate)
+    public function setExpirationdate(?string $ExpirationDate)
     {
         $this->setData(self::EXPIRATION_DATE, $ExpirationDate);
         return $this;
@@ -499,7 +499,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirationDate() : ?string
+    public function getExpirationdate() : ?string
     {
         return $this->getData(self::EXPIRATION_DATE);
     }
@@ -526,7 +526,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $UnitofMeasure
      * @return $this
      */
-    public function setUnitofMeasure(?string $UnitofMeasure)
+    public function setUnitofmeasure(?string $UnitofMeasure)
     {
         $this->setData(self::UNITOF_MEASURE, $UnitofMeasure);
         return $this;
@@ -535,7 +535,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitofMeasure() : ?string
+    public function getUnitofmeasure() : ?string
     {
         return $this->getData(self::UNITOF_MEASURE);
     }
@@ -544,43 +544,43 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $UOMQuantity
      * @return $this
      */
-    public function setUOMQuantity(?float $UOMQuantity)
+    public function setUomquantity(?float $UOMQuantity)
     {
-        $this->setData(self::U_O_M_QUANTITY, $UOMQuantity);
+        $this->setData(self::UOMQUANTITY, $UOMQuantity);
         return $this;
     }
 
     /**
      * @return ?float
      */
-    public function getUOMQuantity() : ?float
+    public function getUomquantity() : ?float
     {
-        return $this->getData(self::U_O_M_QUANTITY);
+        return $this->getData(self::UOMQUANTITY);
     }
 
     /**
      * @param ?float $UOMPrice
      * @return $this
      */
-    public function setUOMPrice(?float $UOMPrice)
+    public function setUomprice(?float $UOMPrice)
     {
-        $this->setData(self::U_O_M_PRICE, $UOMPrice);
+        $this->setData(self::UOMPRICE, $UOMPrice);
         return $this;
     }
 
     /**
      * @return ?float
      */
-    public function getUOMPrice() : ?float
+    public function getUomprice() : ?float
     {
-        return $this->getData(self::U_O_M_PRICE);
+        return $this->getData(self::UOMPRICE);
     }
 
     /**
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -589,7 +589,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }
@@ -598,7 +598,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SalesType
      * @return $this
      */
-    public function setSalesType(?string $SalesType)
+    public function setSalestype(?string $SalesType)
     {
         $this->setData(self::SALES_TYPE, $SalesType);
         return $this;
@@ -607,7 +607,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalesType() : ?string
+    public function getSalestype() : ?string
     {
         return $this->getData(self::SALES_TYPE);
     }

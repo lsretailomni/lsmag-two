@@ -18,13 +18,13 @@ class MobileGetProfilesResult extends \Magento\Catalog\Model\AbstractModel imple
 
     public const ERROR_TEXT = 'errorText';
 
-    public const MOBILE_GET_PROFILES_X_M_L = 'mobileGetProfilesXML';
+    public const MOBILE_GET_PROFILES_XML = 'mobileGetProfilesXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class MobileGetProfilesResult extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class MobileGetProfilesResult extends \Magento\Catalog\Model\AbstractModel imple
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class MobileGetProfilesResult extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class MobileGetProfilesResult extends \Magento\Catalog\Model\AbstractModel imple
      * @param RootMobileGetProfiles $mobileGetProfilesXML
      * @return $this
      */
-    public function setMobileGetProfilesXML($mobileGetProfilesXML)
+    public function setMobilegetprofilesxml($mobileGetProfilesXML)
     {
-        $this->setData(self::MOBILE_GET_PROFILES_X_M_L, $mobileGetProfilesXML);
+        $this->setData(self::MOBILE_GET_PROFILES_XML, $mobileGetProfilesXML);
         return $this;
     }
 
     /**
      * @return RootMobileGetProfiles
      */
-    public function getMobileGetProfilesXML()
+    public function getMobilegetprofilesxml()
     {
-        return $this->getData(self::MOBILE_GET_PROFILES_X_M_L);
+        return $this->getData(self::MOBILE_GET_PROFILES_XML);
     }
 
     /**

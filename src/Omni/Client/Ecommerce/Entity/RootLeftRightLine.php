@@ -18,7 +18,7 @@ class RootLeftRightLine extends \Magento\Catalog\Model\AbstractModel
      * @param LeftRightLine $LeftRightLine
      * @return $this
      */
-    public function setLeftRightLine($LeftRightLine)
+    public function setLeftrightline($LeftRightLine)
     {
         $this->setData(self::LEFT_RIGHT_LINE, $LeftRightLine);
         return $this;
@@ -27,7 +27,7 @@ class RootLeftRightLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return LeftRightLine
      */
-    public function getLeftRightLine()
+    public function getLeftrightline()
     {
         return $this->getData(self::LEFT_RIGHT_LINE);
     }

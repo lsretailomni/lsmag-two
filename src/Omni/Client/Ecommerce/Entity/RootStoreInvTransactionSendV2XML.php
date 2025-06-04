@@ -19,7 +19,7 @@ class RootStoreInvTransactionSendV2XML extends \Magento\Catalog\Model\AbstractMo
      * $StoreInvTransactionSendV2StoreInvLine
      * @return $this
      */
-    public function setStoreInvTransactionSendV2StoreInvLine($StoreInvTransactionSendV2StoreInvLine)
+    public function setStoreinvtransactionsendv2storeinvline($StoreInvTransactionSendV2StoreInvLine)
     {
         $this->setData(self::STORE_INV_TRANSACTION_SEND_V2_STORE_INV_LINE, $StoreInvTransactionSendV2StoreInvLine);
         return $this;
@@ -28,7 +28,7 @@ class RootStoreInvTransactionSendV2XML extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return StoreInvTransactionSendV2StoreInvLine
      */
-    public function getStoreInvTransactionSendV2StoreInvLine()
+    public function getStoreinvtransactionsendv2storeinvline()
     {
         return $this->getData(self::STORE_INV_TRANSACTION_SEND_V2_STORE_INV_LINE);
     }

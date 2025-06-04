@@ -14,7 +14,7 @@ class GetMemberCardTokenResult extends \Magento\Catalog\Model\AbstractModel impl
 {
     public const CLASS_NAME = 'GetMemberCardToken_Result';
 
-    public const GET_TOKEN_ENTRY_X_M_L = 'getTokenEntryXML';
+    public const GET_TOKEN_ENTRY_XML = 'getTokenEntryXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
@@ -24,25 +24,25 @@ class GetMemberCardTokenResult extends \Magento\Catalog\Model\AbstractModel impl
      * @param RootGetTokenEntryXML $getTokenEntryXML
      * @return $this
      */
-    public function setGetTokenEntryXML($getTokenEntryXML)
+    public function setGettokenentryxml($getTokenEntryXML)
     {
-        $this->setData(self::GET_TOKEN_ENTRY_X_M_L, $getTokenEntryXML);
+        $this->setData(self::GET_TOKEN_ENTRY_XML, $getTokenEntryXML);
         return $this;
     }
 
     /**
      * @return RootGetTokenEntryXML
      */
-    public function getGetTokenEntryXML()
+    public function getGettokenentryxml()
     {
-        return $this->getData(self::GET_TOKEN_ENTRY_X_M_L);
+        return $this->getData(self::GET_TOKEN_ENTRY_XML);
     }
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -51,7 +51,7 @@ class GetMemberCardTokenResult extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -60,7 +60,7 @@ class GetMemberCardTokenResult extends \Magento\Catalog\Model\AbstractModel impl
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -69,7 +69,7 @@ class GetMemberCardTokenResult extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

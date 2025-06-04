@@ -24,9 +24,9 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
 
     public const LINE_TYPE = 'LineType';
 
-    public const HOST_I_D = 'HostID';
+    public const HOST_ID = 'HostID';
 
-    public const PROFILE_I_D = 'ProfileID';
+    public const PROFILE_ID = 'ProfileID';
 
     public const TRANSACTION_TYPE = 'TransactionType';
 
@@ -36,9 +36,9 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
 
     public const HEIGHT = 'Height';
 
-    public const B_C_TYPE = 'BCType';
+    public const BCTYPE = 'BCType';
 
-    public const B_C_POS = 'BCPos';
+    public const BCPOS = 'BCPos';
 
     public const SET_BACK_PRINTING = 'SetBackPrinting';
 
@@ -46,7 +46,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -55,7 +55,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -64,7 +64,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param int $BufferIndex
      * @return $this
      */
-    public function setBufferIndex($BufferIndex)
+    public function setBufferindex($BufferIndex)
     {
         $this->setData(self::BUFFER_INDEX, $BufferIndex);
         return $this;
@@ -73,7 +73,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getBufferIndex()
+    public function getBufferindex()
     {
         return $this->getData(self::BUFFER_INDEX);
     }
@@ -82,7 +82,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param int $StationNo
      * @return $this
      */
-    public function setStationNo($StationNo)
+    public function setStationno($StationNo)
     {
         $this->setData(self::STATION_NO, $StationNo);
         return $this;
@@ -91,7 +91,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getStationNo()
+    public function getStationno()
     {
         return $this->getData(self::STATION_NO);
     }
@@ -100,7 +100,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param int $PageNo
      * @return $this
      */
-    public function setPageNo($PageNo)
+    public function setPageno($PageNo)
     {
         $this->setData(self::PAGE_NO, $PageNo);
         return $this;
@@ -109,7 +109,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getPageNo()
+    public function getPageno()
     {
         return $this->getData(self::PAGE_NO);
     }
@@ -118,7 +118,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param int $PrintedLineNo
      * @return $this
      */
-    public function setPrintedLineNo($PrintedLineNo)
+    public function setPrintedlineno($PrintedLineNo)
     {
         $this->setData(self::PRINTED_LINE_NO, $PrintedLineNo);
         return $this;
@@ -127,7 +127,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getPrintedLineNo()
+    public function getPrintedlineno()
     {
         return $this->getData(self::PRINTED_LINE_NO);
     }
@@ -136,7 +136,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LineType
      * @return $this
      */
-    public function setLineType(?string $LineType)
+    public function setLinetype(?string $LineType)
     {
         $this->setData(self::LINE_TYPE, $LineType);
         return $this;
@@ -145,7 +145,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLineType() : ?string
+    public function getLinetype() : ?string
     {
         return $this->getData(self::LINE_TYPE);
     }
@@ -154,43 +154,43 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $HostID
      * @return $this
      */
-    public function setHostID(?string $HostID)
+    public function setHostid(?string $HostID)
     {
-        $this->setData(self::HOST_I_D, $HostID);
+        $this->setData(self::HOST_ID, $HostID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getHostID() : ?string
+    public function getHostid() : ?string
     {
-        return $this->getData(self::HOST_I_D);
+        return $this->getData(self::HOST_ID);
     }
 
     /**
      * @param ?string $ProfileID
      * @return $this
      */
-    public function setProfileID(?string $ProfileID)
+    public function setProfileid(?string $ProfileID)
     {
-        $this->setData(self::PROFILE_I_D, $ProfileID);
+        $this->setData(self::PROFILE_ID, $ProfileID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getProfileID() : ?string
+    public function getProfileid() : ?string
     {
-        return $this->getData(self::PROFILE_I_D);
+        return $this->getData(self::PROFILE_ID);
     }
 
     /**
      * @param int $TransactionType
      * @return $this
      */
-    public function setTransactionType($TransactionType)
+    public function setTransactiontype($TransactionType)
     {
         $this->setData(self::TRANSACTION_TYPE, $TransactionType);
         return $this;
@@ -199,7 +199,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionType()
+    public function getTransactiontype()
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
@@ -262,43 +262,43 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $BCType
      * @return $this
      */
-    public function setBCType(?string $BCType)
+    public function setBctype(?string $BCType)
     {
-        $this->setData(self::B_C_TYPE, $BCType);
+        $this->setData(self::BCTYPE, $BCType);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getBCType() : ?string
+    public function getBctype() : ?string
     {
-        return $this->getData(self::B_C_TYPE);
+        return $this->getData(self::BCTYPE);
     }
 
     /**
      * @param int $BCPos
      * @return $this
      */
-    public function setBCPos($BCPos)
+    public function setBcpos($BCPos)
     {
-        $this->setData(self::B_C_POS, $BCPos);
+        $this->setData(self::BCPOS, $BCPos);
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getBCPos()
+    public function getBcpos()
     {
-        return $this->getData(self::B_C_POS);
+        return $this->getData(self::BCPOS);
     }
 
     /**
      * @param ?bool $SetBackPrinting
      * @return $this
      */
-    public function setSetBackPrinting(?bool $SetBackPrinting)
+    public function setSetbackprinting(?bool $SetBackPrinting)
     {
         $this->setData(self::SET_BACK_PRINTING, $SetBackPrinting);
         return $this;
@@ -307,7 +307,7 @@ class POSPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSetBackPrinting() : ?bool
+    public function getSetbackprinting() : ?bool
     {
         return $this->getData(self::SET_BACK_PRINTING);
     }

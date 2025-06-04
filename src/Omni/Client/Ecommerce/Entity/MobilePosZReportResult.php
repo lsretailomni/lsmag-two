@@ -18,15 +18,15 @@ class MobilePosZReportResult extends \Magento\Catalog\Model\AbstractModel implem
 
     public const ERROR_TEXT = 'errorText';
 
-    public const Z_REPORT_I_D = 'zReportID';
+    public const ZREPORT_ID = 'zReportID';
 
-    public const MOBILE_POS_Z_REPORT_X_M_L = 'mobilePosZReportXML';
+    public const MOBILE_POS_ZREPORT_XML = 'mobilePosZReportXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class MobilePosZReportResult extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class MobilePosZReportResult extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class MobilePosZReportResult extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,36 +62,36 @@ class MobilePosZReportResult extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $zReportID
      * @return $this
      */
-    public function setZReportID(?string $zReportID)
+    public function setZreportid(?string $zReportID)
     {
-        $this->setData(self::Z_REPORT_I_D, $zReportID);
+        $this->setData(self::ZREPORT_ID, $zReportID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getZReportID() : ?string
+    public function getZreportid() : ?string
     {
-        return $this->getData(self::Z_REPORT_I_D);
+        return $this->getData(self::ZREPORT_ID);
     }
 
     /**
      * @param RootMobilePosZReport $mobilePosZReportXML
      * @return $this
      */
-    public function setMobilePosZReportXML($mobilePosZReportXML)
+    public function setMobileposzreportxml($mobilePosZReportXML)
     {
-        $this->setData(self::MOBILE_POS_Z_REPORT_X_M_L, $mobilePosZReportXML);
+        $this->setData(self::MOBILE_POS_ZREPORT_XML, $mobilePosZReportXML);
         return $this;
     }
 
     /**
      * @return RootMobilePosZReport
      */
-    public function getMobilePosZReportXML()
+    public function getMobileposzreportxml()
     {
-        return $this->getData(self::MOBILE_POS_Z_REPORT_X_M_L);
+        return $this->getData(self::MOBILE_POS_ZREPORT_XML);
     }
 
     /**

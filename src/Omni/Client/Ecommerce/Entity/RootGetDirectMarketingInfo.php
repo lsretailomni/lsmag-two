@@ -32,7 +32,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
      * @param PublishedOffer $PublishedOffer
      * @return $this
      */
-    public function setPublishedOffer($PublishedOffer)
+    public function setPublishedoffer($PublishedOffer)
     {
         $this->setData(self::PUBLISHED_OFFER, $PublishedOffer);
         return $this;
@@ -41,7 +41,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return PublishedOffer
      */
-    public function getPublishedOffer()
+    public function getPublishedoffer()
     {
         return $this->getData(self::PUBLISHED_OFFER);
     }
@@ -50,7 +50,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
      * @param PublishedOfferImages $PublishedOfferImages
      * @return $this
      */
-    public function setPublishedOfferImages($PublishedOfferImages)
+    public function setPublishedofferimages($PublishedOfferImages)
     {
         $this->setData(self::PUBLISHED_OFFER_IMAGES, $PublishedOfferImages);
         return $this;
@@ -59,7 +59,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return PublishedOfferImages
      */
-    public function getPublishedOfferImages()
+    public function getPublishedofferimages()
     {
         return $this->getData(self::PUBLISHED_OFFER_IMAGES);
     }
@@ -68,7 +68,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
      * @param PublishedOfferDetailLine $PublishedOfferDetailLine
      * @return $this
      */
-    public function setPublishedOfferDetailLine($PublishedOfferDetailLine)
+    public function setPublishedofferdetailline($PublishedOfferDetailLine)
     {
         $this->setData(self::PUBLISHED_OFFER_DETAIL_LINE, $PublishedOfferDetailLine);
         return $this;
@@ -77,7 +77,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return PublishedOfferDetailLine
      */
-    public function getPublishedOfferDetailLine()
+    public function getPublishedofferdetailline()
     {
         return $this->getData(self::PUBLISHED_OFFER_DETAIL_LINE);
     }
@@ -86,7 +86,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
      * @param PublishedOfferDetailLineImages $PublishedOfferDetailLineImages
      * @return $this
      */
-    public function setPublishedOfferDetailLineImages($PublishedOfferDetailLineImages)
+    public function setPublishedofferdetaillineimages($PublishedOfferDetailLineImages)
     {
         $this->setData(self::PUBLISHED_OFFER_DETAIL_LINE_IMAGES, $PublishedOfferDetailLineImages);
         return $this;
@@ -95,7 +95,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return PublishedOfferDetailLineImages
      */
-    public function getPublishedOfferDetailLineImages()
+    public function getPublishedofferdetaillineimages()
     {
         return $this->getData(self::PUBLISHED_OFFER_DETAIL_LINE_IMAGES);
     }
@@ -104,7 +104,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
      * @param MemberCouponBuffer $MemberCouponBuffer
      * @return $this
      */
-    public function setMemberCouponBuffer($MemberCouponBuffer)
+    public function setMembercouponbuffer($MemberCouponBuffer)
     {
         $this->setData(self::MEMBER_COUPON_BUFFER, $MemberCouponBuffer);
         return $this;
@@ -113,7 +113,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberCouponBuffer
      */
-    public function getMemberCouponBuffer()
+    public function getMembercouponbuffer()
     {
         return $this->getData(self::MEMBER_COUPON_BUFFER);
     }
@@ -122,7 +122,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
      * @param MemberNotification $MemberNotification
      * @return $this
      */
-    public function setMemberNotification($MemberNotification)
+    public function setMembernotification($MemberNotification)
     {
         $this->setData(self::MEMBER_NOTIFICATION, $MemberNotification);
         return $this;
@@ -131,7 +131,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberNotification
      */
-    public function getMemberNotification()
+    public function getMembernotification()
     {
         return $this->getData(self::MEMBER_NOTIFICATION);
     }
@@ -140,7 +140,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
      * @param MemberNotificationImages $MemberNotificationImages
      * @return $this
      */
-    public function setMemberNotificationImages($MemberNotificationImages)
+    public function setMembernotificationimages($MemberNotificationImages)
     {
         $this->setData(self::MEMBER_NOTIFICATION_IMAGES, $MemberNotificationImages);
         return $this;
@@ -149,7 +149,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberNotificationImages
      */
-    public function getMemberNotificationImages()
+    public function getMembernotificationimages()
     {
         return $this->getData(self::MEMBER_NOTIFICATION_IMAGES);
     }
@@ -158,7 +158,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
      * @param PublishedOfferLine $PublishedOfferLine
      * @return $this
      */
-    public function setPublishedOfferLine($PublishedOfferLine)
+    public function setPublishedofferline($PublishedOfferLine)
     {
         $this->setData(self::PUBLISHED_OFFER_LINE, $PublishedOfferLine);
         return $this;
@@ -167,7 +167,7 @@ class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return PublishedOfferLine
      */
-    public function getPublishedOfferLine()
+    public function getPublishedofferline()
     {
         return $this->getData(self::PUBLISHED_OFFER_LINE);
     }

@@ -24,7 +24,7 @@ class COMobileUnlockLines extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class COMobileUnlockLines extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class COMobileUnlockLines extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class COMobileUnlockLines extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,7 +60,7 @@ class COMobileUnlockLines extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $terminalNo
      * @return $this
      */
-    public function setTerminalNo(?string $terminalNo)
+    public function setTerminalno(?string $terminalNo)
     {
         $this->setData(self::TERMINAL_NO, $terminalNo);
         return $this;
@@ -69,7 +69,7 @@ class COMobileUnlockLines extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getTerminalNo() : ?string
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }

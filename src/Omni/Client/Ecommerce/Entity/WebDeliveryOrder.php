@@ -70,7 +70,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OrderNo
      * @return $this
      */
-    public function setOrderNo(?string $OrderNo)
+    public function setOrderno(?string $OrderNo)
     {
         $this->setData(self::ORDER_NO, $OrderNo);
         return $this;
@@ -79,7 +79,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrderNo() : ?string
+    public function getOrderno() : ?string
     {
         return $this->getData(self::ORDER_NO);
     }
@@ -88,7 +88,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PhoneNo
      * @return $this
      */
-    public function setPhoneNo(?string $PhoneNo)
+    public function setPhoneno(?string $PhoneNo)
     {
         $this->setData(self::PHONE_NO, $PhoneNo);
         return $this;
@@ -97,7 +97,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPhoneNo() : ?string
+    public function getPhoneno() : ?string
     {
         return $this->getData(self::PHONE_NO);
     }
@@ -106,7 +106,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OrderDate
      * @return $this
      */
-    public function setOrderDate(?string $OrderDate)
+    public function setOrderdate(?string $OrderDate)
     {
         $this->setData(self::ORDER_DATE, $OrderDate);
         return $this;
@@ -115,7 +115,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrderDate() : ?string
+    public function getOrderdate() : ?string
     {
         return $this->getData(self::ORDER_DATE);
     }
@@ -124,7 +124,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ContactPickupTime
      * @return $this
      */
-    public function setContactPickupTime(?string $ContactPickupTime)
+    public function setContactpickuptime(?string $ContactPickupTime)
     {
         $this->setData(self::CONTACT_PICKUP_TIME, $ContactPickupTime);
         return $this;
@@ -133,7 +133,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContactPickupTime() : ?string
+    public function getContactpickuptime() : ?string
     {
         return $this->getData(self::CONTACT_PICKUP_TIME);
     }
@@ -142,7 +142,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StreetName
      * @return $this
      */
-    public function setStreetName(?string $StreetName)
+    public function setStreetname(?string $StreetName)
     {
         $this->setData(self::STREET_NAME, $StreetName);
         return $this;
@@ -151,7 +151,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStreetName() : ?string
+    public function getStreetname() : ?string
     {
         return $this->getData(self::STREET_NAME);
     }
@@ -160,7 +160,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StreetNo
      * @return $this
      */
-    public function setStreetNo(?string $StreetNo)
+    public function setStreetno(?string $StreetNo)
     {
         $this->setData(self::STREET_NO, $StreetNo);
         return $this;
@@ -169,7 +169,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStreetNo() : ?string
+    public function getStreetno() : ?string
     {
         return $this->getData(self::STREET_NO);
     }
@@ -178,7 +178,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AddressType
      * @return $this
      */
-    public function setAddressType(?string $AddressType)
+    public function setAddresstype(?string $AddressType)
     {
         $this->setData(self::ADDRESS_TYPE, $AddressType);
         return $this;
@@ -187,7 +187,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddressType() : ?string
+    public function getAddresstype() : ?string
     {
         return $this->getData(self::ADDRESS_TYPE);
     }
@@ -232,7 +232,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RestaurantNo
      * @return $this
      */
-    public function setRestaurantNo(?string $RestaurantNo)
+    public function setRestaurantno(?string $RestaurantNo)
     {
         $this->setData(self::RESTAURANT_NO, $RestaurantNo);
         return $this;
@@ -241,7 +241,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRestaurantNo() : ?string
+    public function getRestaurantno() : ?string
     {
         return $this->getData(self::RESTAURANT_NO);
     }
@@ -250,7 +250,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SalesType
      * @return $this
      */
-    public function setSalesType(?string $SalesType)
+    public function setSalestype(?string $SalesType)
     {
         $this->setData(self::SALES_TYPE, $SalesType);
         return $this;
@@ -259,7 +259,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalesType() : ?string
+    public function getSalestype() : ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
@@ -286,7 +286,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $BillToName
      * @return $this
      */
-    public function setBillToName(?string $BillToName)
+    public function setBilltoname(?string $BillToName)
     {
         $this->setData(self::BILL_TO_NAME, $BillToName);
         return $this;
@@ -295,7 +295,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBillToName() : ?string
+    public function getBilltoname() : ?string
     {
         return $this->getData(self::BILL_TO_NAME);
     }
@@ -304,7 +304,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PreOrder
      * @return $this
      */
-    public function setPreOrder(?string $PreOrder)
+    public function setPreorder(?string $PreOrder)
     {
         $this->setData(self::PRE_ORDER, $PreOrder);
         return $this;
@@ -313,7 +313,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPreOrder() : ?string
+    public function getPreorder() : ?string
     {
         return $this->getData(self::PRE_ORDER);
     }
@@ -322,7 +322,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TenderType
      * @return $this
      */
-    public function setTenderType(?string $TenderType)
+    public function setTendertype(?string $TenderType)
     {
         $this->setData(self::TENDER_TYPE, $TenderType);
         return $this;
@@ -331,25 +331,25 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTenderType() : ?string
+    public function getTendertype() : ?string
     {
         return $this->getData(self::TENDER_TYPE);
     }
 
     /**
-     * @param time $TimeCreated
+     * @param ?string $TimeCreated
      * @return $this
      */
-    public function setTimeCreated($TimeCreated)
+    public function setTimecreated(?string $TimeCreated)
     {
         $this->setData(self::TIME_CREATED, $TimeCreated);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTimeCreated()
+    public function getTimecreated() : ?string
     {
         return $this->getData(self::TIME_CREATED);
     }
@@ -358,7 +358,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DateCreated
      * @return $this
      */
-    public function setDateCreated(?string $DateCreated)
+    public function setDatecreated(?string $DateCreated)
     {
         $this->setData(self::DATE_CREATED, $DateCreated);
         return $this;
@@ -367,7 +367,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateCreated() : ?string
+    public function getDatecreated() : ?string
     {
         return $this->getData(self::DATE_CREATED);
     }
@@ -376,7 +376,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param int $OrderTypeOption
      * @return $this
      */
-    public function setOrderTypeOption($OrderTypeOption)
+    public function setOrdertypeoption($OrderTypeOption)
     {
         $this->setData(self::ORDER_TYPE_OPTION, $OrderTypeOption);
         return $this;
@@ -385,7 +385,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getOrderTypeOption()
+    public function getOrdertypeoption()
     {
         return $this->getData(self::ORDER_TYPE_OPTION);
     }
@@ -394,7 +394,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PostCode
      * @return $this
      */
-    public function setPostCode(?string $PostCode)
+    public function setPostcode(?string $PostCode)
     {
         $this->setData(self::POST_CODE, $PostCode);
         return $this;
@@ -403,7 +403,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPostCode() : ?string
+    public function getPostcode() : ?string
     {
         return $this->getData(self::POST_CODE);
     }
@@ -448,7 +448,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $GridCode
      * @return $this
      */
-    public function setGridCode(?string $GridCode)
+    public function setGridcode(?string $GridCode)
     {
         $this->setData(self::GRID_CODE, $GridCode);
         return $this;
@@ -457,7 +457,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGridCode() : ?string
+    public function getGridcode() : ?string
     {
         return $this->getData(self::GRID_CODE);
     }
@@ -466,7 +466,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param int $EstimatedProdTime
      * @return $this
      */
-    public function setEstimatedProdTime($EstimatedProdTime)
+    public function setEstimatedprodtime($EstimatedProdTime)
     {
         $this->setData(self::ESTIMATED_PROD_TIME, $EstimatedProdTime);
         return $this;
@@ -475,7 +475,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEstimatedProdTime()
+    public function getEstimatedprodtime()
     {
         return $this->getData(self::ESTIMATED_PROD_TIME);
     }
@@ -484,7 +484,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CompanyNo
      * @return $this
      */
-    public function setCompanyNo(?string $CompanyNo)
+    public function setCompanyno(?string $CompanyNo)
     {
         $this->setData(self::COMPANY_NO, $CompanyNo);
         return $this;
@@ -493,7 +493,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCompanyNo() : ?string
+    public function getCompanyno() : ?string
     {
         return $this->getData(self::COMPANY_NO);
     }
@@ -502,7 +502,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PreOrderPrintDateTime
      * @return $this
      */
-    public function setPreOrderPrintDateTime(?string $PreOrderPrintDateTime)
+    public function setPreorderprintdatetime(?string $PreOrderPrintDateTime)
     {
         $this->setData(self::PRE_ORDER_PRINT_DATE_TIME, $PreOrderPrintDateTime);
         return $this;
@@ -511,7 +511,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPreOrderPrintDateTime() : ?string
+    public function getPreorderprintdatetime() : ?string
     {
         return $this->getData(self::PRE_ORDER_PRINT_DATE_TIME);
     }
@@ -538,7 +538,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $TotalAmount
      * @return $this
      */
-    public function setTotalAmount(?float $TotalAmount)
+    public function setTotalamount(?float $TotalAmount)
     {
         $this->setData(self::TOTAL_AMOUNT, $TotalAmount);
         return $this;
@@ -547,7 +547,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalAmount() : ?float
+    public function getTotalamount() : ?float
     {
         return $this->getData(self::TOTAL_AMOUNT);
     }

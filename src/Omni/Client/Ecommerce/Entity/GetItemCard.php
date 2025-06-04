@@ -32,13 +32,13 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
 
     public const VIEW_CODE = 'viewCode';
 
-    public const LEFT_RIGHT_LINE_X_M_L = 'leftRightLineXML';
+    public const LEFT_RIGHT_LINE_XML = 'leftRightLineXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -47,7 +47,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -56,7 +56,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -65,7 +65,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -74,7 +74,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $terminalNo
      * @return $this
      */
-    public function setTerminalNo(?string $terminalNo)
+    public function setTerminalno(?string $terminalNo)
     {
         $this->setData(self::TERMINAL_NO, $terminalNo);
         return $this;
@@ -83,7 +83,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getTerminalNo() : ?string
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -92,7 +92,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -101,7 +101,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -110,7 +110,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $locationNo
      * @return $this
      */
-    public function setLocationNo(?string $locationNo)
+    public function setLocationno(?string $locationNo)
     {
         $this->setData(self::LOCATION_NO, $locationNo);
         return $this;
@@ -119,7 +119,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getLocationNo() : ?string
+    public function getLocationno() : ?string
     {
         return $this->getData(self::LOCATION_NO);
     }
@@ -128,7 +128,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo(?string $itemNo)
+    public function setItemno(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
@@ -137,7 +137,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -146,7 +146,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $variantCode
      * @return $this
      */
-    public function setVariantCode(?string $variantCode)
+    public function setVariantcode(?string $variantCode)
     {
         $this->setData(self::VARIANT_CODE, $variantCode);
         return $this;
@@ -155,7 +155,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -164,7 +164,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $barcodeNo
      * @return $this
      */
-    public function setBarcodeNo(?string $barcodeNo)
+    public function setBarcodeno(?string $barcodeNo)
     {
         $this->setData(self::BARCODE_NO, $barcodeNo);
         return $this;
@@ -173,7 +173,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getBarcodeNo() : ?string
+    public function getBarcodeno() : ?string
     {
         return $this->getData(self::BARCODE_NO);
     }
@@ -182,7 +182,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $viewCode
      * @return $this
      */
-    public function setViewCode(?string $viewCode)
+    public function setViewcode(?string $viewCode)
     {
         $this->setData(self::VIEW_CODE, $viewCode);
         return $this;
@@ -191,7 +191,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getViewCode() : ?string
+    public function getViewcode() : ?string
     {
         return $this->getData(self::VIEW_CODE);
     }
@@ -200,18 +200,18 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param RootLeftRightLine $leftRightLineXML
      * @return $this
      */
-    public function setLeftRightLineXML($leftRightLineXML)
+    public function setLeftrightlinexml($leftRightLineXML)
     {
-        $this->setData(self::LEFT_RIGHT_LINE_X_M_L, $leftRightLineXML);
+        $this->setData(self::LEFT_RIGHT_LINE_XML, $leftRightLineXML);
         return $this;
     }
 
     /**
      * @return RootLeftRightLine
      */
-    public function getLeftRightLineXML()
+    public function getLeftrightlinexml()
     {
-        return $this->getData(self::LEFT_RIGHT_LINE_X_M_L);
+        return $this->getData(self::LEFT_RIGHT_LINE_XML);
     }
 }
 

@@ -30,7 +30,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
 
     public const CLIENT_CITY = 'ClientCity';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const CLIENT_POST_CODE = 'ClientPostCode';
 
@@ -38,9 +38,9 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
 
     public const CLIENT_COUNTRY_REGION = 'ClientCountryRegion';
 
-    public const CREATED_ON_P_O_S_TERMNIAL = 'CreatedOnPOSTermnial';
+    public const CREATED_ON_POSTERMNIAL = 'CreatedOnPOSTermnial';
 
-    public const STAFF_I_D = 'StaffID';
+    public const STAFF_ID = 'StaffID';
 
     public const PICKUP_DATE = 'PickupDate';
 
@@ -68,17 +68,17 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
 
     public const QUEUE_COUNTER = 'QueueCounter';
 
-    public const Q_R_I_D = 'QRID';
+    public const QRID = 'QRID';
 
-    public const EXTERNAL_I_D = 'ExternalID';
+    public const EXTERNAL_ID = 'ExternalID';
 
-    public const Q_R_MESSAGE = 'QRMessage';
+    public const QRMESSAGE = 'QRMessage';
 
     /**
      * @param ?string $OrderNo
      * @return $this
      */
-    public function setOrderNo(?string $OrderNo)
+    public function setOrderno(?string $OrderNo)
     {
         $this->setData(self::ORDER_NO, $OrderNo);
         return $this;
@@ -87,7 +87,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrderNo() : ?string
+    public function getOrderno() : ?string
     {
         return $this->getData(self::ORDER_NO);
     }
@@ -96,7 +96,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClientEmail
      * @return $this
      */
-    public function setClientEmail(?string $ClientEmail)
+    public function setClientemail(?string $ClientEmail)
     {
         $this->setData(self::CLIENT_EMAIL, $ClientEmail);
         return $this;
@@ -105,7 +105,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientEmail() : ?string
+    public function getClientemail() : ?string
     {
         return $this->getData(self::CLIENT_EMAIL);
     }
@@ -114,7 +114,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClientPhoneNo
      * @return $this
      */
-    public function setClientPhoneNo(?string $ClientPhoneNo)
+    public function setClientphoneno(?string $ClientPhoneNo)
     {
         $this->setData(self::CLIENT_PHONE_NO, $ClientPhoneNo);
         return $this;
@@ -123,7 +123,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientPhoneNo() : ?string
+    public function getClientphoneno() : ?string
     {
         return $this->getData(self::CLIENT_PHONE_NO);
     }
@@ -132,7 +132,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClientAddress
      * @return $this
      */
-    public function setClientAddress(?string $ClientAddress)
+    public function setClientaddress(?string $ClientAddress)
     {
         $this->setData(self::CLIENT_ADDRESS, $ClientAddress);
         return $this;
@@ -141,7 +141,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientAddress() : ?string
+    public function getClientaddress() : ?string
     {
         return $this->getData(self::CLIENT_ADDRESS);
     }
@@ -150,7 +150,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClientName
      * @return $this
      */
-    public function setClientName(?string $ClientName)
+    public function setClientname(?string $ClientName)
     {
         $this->setData(self::CLIENT_NAME, $ClientName);
         return $this;
@@ -159,7 +159,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientName() : ?string
+    public function getClientname() : ?string
     {
         return $this->getData(self::CLIENT_NAME);
     }
@@ -168,7 +168,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClientStreetNo
      * @return $this
      */
-    public function setClientStreetNo(?string $ClientStreetNo)
+    public function setClientstreetno(?string $ClientStreetNo)
     {
         $this->setData(self::CLIENT_STREET_NO, $ClientStreetNo);
         return $this;
@@ -177,7 +177,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientStreetNo() : ?string
+    public function getClientstreetno() : ?string
     {
         return $this->getData(self::CLIENT_STREET_NO);
     }
@@ -186,7 +186,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -195,7 +195,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -204,7 +204,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClientAddress2
      * @return $this
      */
-    public function setClientAddress2(?string $ClientAddress2)
+    public function setClientaddress2(?string $ClientAddress2)
     {
         $this->setData(self::CLIENT_ADDRESS2, $ClientAddress2);
         return $this;
@@ -213,7 +213,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientAddress2() : ?string
+    public function getClientaddress2() : ?string
     {
         return $this->getData(self::CLIENT_ADDRESS2);
     }
@@ -222,7 +222,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClientCity
      * @return $this
      */
-    public function setClientCity(?string $ClientCity)
+    public function setClientcity(?string $ClientCity)
     {
         $this->setData(self::CLIENT_CITY, $ClientCity);
         return $this;
@@ -231,7 +231,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientCity() : ?string
+    public function getClientcity() : ?string
     {
         return $this->getData(self::CLIENT_CITY);
     }
@@ -240,25 +240,25 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo(?string $POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param ?string $ClientPostCode
      * @return $this
      */
-    public function setClientPostCode(?string $ClientPostCode)
+    public function setClientpostcode(?string $ClientPostCode)
     {
         $this->setData(self::CLIENT_POST_CODE, $ClientPostCode);
         return $this;
@@ -267,7 +267,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientPostCode() : ?string
+    public function getClientpostcode() : ?string
     {
         return $this->getData(self::CLIENT_POST_CODE);
     }
@@ -276,7 +276,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClientTerritoryCode
      * @return $this
      */
-    public function setClientTerritoryCode(?string $ClientTerritoryCode)
+    public function setClientterritorycode(?string $ClientTerritoryCode)
     {
         $this->setData(self::CLIENT_TERRITORY_CODE, $ClientTerritoryCode);
         return $this;
@@ -285,7 +285,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientTerritoryCode() : ?string
+    public function getClientterritorycode() : ?string
     {
         return $this->getData(self::CLIENT_TERRITORY_CODE);
     }
@@ -294,7 +294,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClientCountryRegion
      * @return $this
      */
-    public function setClientCountryRegion(?string $ClientCountryRegion)
+    public function setClientcountryregion(?string $ClientCountryRegion)
     {
         $this->setData(self::CLIENT_COUNTRY_REGION, $ClientCountryRegion);
         return $this;
@@ -303,7 +303,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientCountryRegion() : ?string
+    public function getClientcountryregion() : ?string
     {
         return $this->getData(self::CLIENT_COUNTRY_REGION);
     }
@@ -312,43 +312,43 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CreatedOnPOSTermnial
      * @return $this
      */
-    public function setCreatedOnPOSTermnial(?string $CreatedOnPOSTermnial)
+    public function setCreatedonpostermnial(?string $CreatedOnPOSTermnial)
     {
-        $this->setData(self::CREATED_ON_P_O_S_TERMNIAL, $CreatedOnPOSTermnial);
+        $this->setData(self::CREATED_ON_POSTERMNIAL, $CreatedOnPOSTermnial);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getCreatedOnPOSTermnial() : ?string
+    public function getCreatedonpostermnial() : ?string
     {
-        return $this->getData(self::CREATED_ON_P_O_S_TERMNIAL);
+        return $this->getData(self::CREATED_ON_POSTERMNIAL);
     }
 
     /**
      * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID(?string $StaffID)
+    public function setStaffid(?string $StaffID)
     {
-        $this->setData(self::STAFF_I_D, $StaffID);
+        $this->setData(self::STAFF_ID, $StaffID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getStaffID() : ?string
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
      * @param ?string $PickupDate
      * @return $this
      */
-    public function setPickupDate(?string $PickupDate)
+    public function setPickupdate(?string $PickupDate)
     {
         $this->setData(self::PICKUP_DATE, $PickupDate);
         return $this;
@@ -357,25 +357,25 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPickupDate() : ?string
+    public function getPickupdate() : ?string
     {
         return $this->getData(self::PICKUP_DATE);
     }
 
     /**
-     * @param time $PickupTime
+     * @param ?string $PickupTime
      * @return $this
      */
-    public function setPickupTime($PickupTime)
+    public function setPickuptime(?string $PickupTime)
     {
         $this->setData(self::PICKUP_TIME, $PickupTime);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getPickupTime()
+    public function getPickuptime() : ?string
     {
         return $this->getData(self::PICKUP_TIME);
     }
@@ -384,7 +384,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $KitchenStatus
      * @return $this
      */
-    public function setKitchenStatus(?string $KitchenStatus)
+    public function setKitchenstatus(?string $KitchenStatus)
     {
         $this->setData(self::KITCHEN_STATUS, $KitchenStatus);
         return $this;
@@ -393,7 +393,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getKitchenStatus() : ?string
+    public function getKitchenstatus() : ?string
     {
         return $this->getData(self::KITCHEN_STATUS);
     }
@@ -402,7 +402,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OrderStatus
      * @return $this
      */
-    public function setOrderStatus(?string $OrderStatus)
+    public function setOrderstatus(?string $OrderStatus)
     {
         $this->setData(self::ORDER_STATUS, $OrderStatus);
         return $this;
@@ -411,7 +411,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrderStatus() : ?string
+    public function getOrderstatus() : ?string
     {
         return $this->getData(self::ORDER_STATUS);
     }
@@ -420,7 +420,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $GrossAmount
      * @return $this
      */
-    public function setGrossAmount(?float $GrossAmount)
+    public function setGrossamount(?float $GrossAmount)
     {
         $this->setData(self::GROSS_AMOUNT, $GrossAmount);
         return $this;
@@ -429,7 +429,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getGrossAmount() : ?float
+    public function getGrossamount() : ?float
     {
         return $this->getData(self::GROSS_AMOUNT);
     }
@@ -438,7 +438,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SalesType
      * @return $this
      */
-    public function setSalesType(?string $SalesType)
+    public function setSalestype(?string $SalesType)
     {
         $this->setData(self::SALES_TYPE, $SalesType);
         return $this;
@@ -447,7 +447,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalesType() : ?string
+    public function getSalestype() : ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
@@ -456,7 +456,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PickupDateTime
      * @return $this
      */
-    public function setPickupDateTime(?string $PickupDateTime)
+    public function setPickupdatetime(?string $PickupDateTime)
     {
         $this->setData(self::PICKUP_DATE_TIME, $PickupDateTime);
         return $this;
@@ -465,7 +465,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPickupDateTime() : ?string
+    public function getPickupdatetime() : ?string
     {
         return $this->getData(self::PICKUP_DATE_TIME);
     }
@@ -474,7 +474,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ContactComment
      * @return $this
      */
-    public function setContactComment(?bool $ContactComment)
+    public function setContactcomment(?bool $ContactComment)
     {
         $this->setData(self::CONTACT_COMMENT, $ContactComment);
         return $this;
@@ -483,7 +483,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getContactComment() : ?bool
+    public function getContactcomment() : ?bool
     {
         return $this->getData(self::CONTACT_COMMENT);
     }
@@ -492,7 +492,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ContactCommentIcon
      * @return $this
      */
-    public function setContactCommentIcon(?string $ContactCommentIcon)
+    public function setContactcommenticon(?string $ContactCommentIcon)
     {
         $this->setData(self::CONTACT_COMMENT_ICON, $ContactCommentIcon);
         return $this;
@@ -501,7 +501,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContactCommentIcon() : ?string
+    public function getContactcommenticon() : ?string
     {
         return $this->getData(self::CONTACT_COMMENT_ICON);
     }
@@ -510,7 +510,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CustomerComment
      * @return $this
      */
-    public function setCustomerComment(?string $CustomerComment)
+    public function setCustomercomment(?string $CustomerComment)
     {
         $this->setData(self::CUSTOMER_COMMENT, $CustomerComment);
         return $this;
@@ -519,7 +519,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerComment() : ?string
+    public function getCustomercomment() : ?string
     {
         return $this->getData(self::CUSTOMER_COMMENT);
     }
@@ -528,7 +528,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param int $OrderProductionTimeInMin
      * @return $this
      */
-    public function setOrderProductionTimeInMin($OrderProductionTimeInMin)
+    public function setOrderproductiontimeinmin($OrderProductionTimeInMin)
     {
         $this->setData(self::ORDER_PRODUCTION_TIME_IN_MIN, $OrderProductionTimeInMin);
         return $this;
@@ -537,7 +537,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getOrderProductionTimeInMin()
+    public function getOrderproductiontimeinmin()
     {
         return $this->getData(self::ORDER_PRODUCTION_TIME_IN_MIN);
     }
@@ -546,7 +546,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $PreOrder
      * @return $this
      */
-    public function setPreOrder(?bool $PreOrder)
+    public function setPreorder(?bool $PreOrder)
     {
         $this->setData(self::PRE_ORDER, $PreOrder);
         return $this;
@@ -555,7 +555,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPreOrder() : ?bool
+    public function getPreorder() : ?bool
     {
         return $this->getData(self::PRE_ORDER);
     }
@@ -564,7 +564,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $QueueCounter
      * @return $this
      */
-    public function setQueueCounter(?string $QueueCounter)
+    public function setQueuecounter(?string $QueueCounter)
     {
         $this->setData(self::QUEUE_COUNTER, $QueueCounter);
         return $this;
@@ -573,7 +573,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getQueueCounter() : ?string
+    public function getQueuecounter() : ?string
     {
         return $this->getData(self::QUEUE_COUNTER);
     }
@@ -582,54 +582,54 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
      * @param int $QRID
      * @return $this
      */
-    public function setQRID($QRID)
+    public function setQrid($QRID)
     {
-        $this->setData(self::Q_R_I_D, $QRID);
+        $this->setData(self::QRID, $QRID);
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getQRID()
+    public function getQrid()
     {
-        return $this->getData(self::Q_R_I_D);
+        return $this->getData(self::QRID);
     }
 
     /**
      * @param ?string $ExternalID
      * @return $this
      */
-    public function setExternalID(?string $ExternalID)
+    public function setExternalid(?string $ExternalID)
     {
-        $this->setData(self::EXTERNAL_I_D, $ExternalID);
+        $this->setData(self::EXTERNAL_ID, $ExternalID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getExternalID() : ?string
+    public function getExternalid() : ?string
     {
-        return $this->getData(self::EXTERNAL_I_D);
+        return $this->getData(self::EXTERNAL_ID);
     }
 
     /**
      * @param ?string $QRMessage
      * @return $this
      */
-    public function setQRMessage(?string $QRMessage)
+    public function setQrmessage(?string $QRMessage)
     {
-        $this->setData(self::Q_R_MESSAGE, $QRMessage);
+        $this->setData(self::QRMESSAGE, $QRMessage);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getQRMessage() : ?string
+    public function getQrmessage() : ?string
     {
-        return $this->getData(self::Q_R_MESSAGE);
+        return $this->getData(self::QRMESSAGE);
     }
 }
 

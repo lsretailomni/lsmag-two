@@ -60,7 +60,7 @@ class ShippingAgent extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $InternetAddress
      * @return $this
      */
-    public function setInternetAddress(?string $InternetAddress)
+    public function setInternetaddress(?string $InternetAddress)
     {
         $this->setData(self::INTERNET_ADDRESS, $InternetAddress);
         return $this;
@@ -69,7 +69,7 @@ class ShippingAgent extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getInternetAddress() : ?string
+    public function getInternetaddress() : ?string
     {
         return $this->getData(self::INTERNET_ADDRESS);
     }
@@ -78,7 +78,7 @@ class ShippingAgent extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AccountNo
      * @return $this
      */
-    public function setAccountNo(?string $AccountNo)
+    public function setAccountno(?string $AccountNo)
     {
         $this->setData(self::ACCOUNT_NO, $AccountNo);
         return $this;
@@ -87,7 +87,7 @@ class ShippingAgent extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccountNo() : ?string
+    public function getAccountno() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }

@@ -22,15 +22,15 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
 
     public const APPLICATION_BUILD = 'applicationBuild';
 
-    public const L_S_RETAIL_VERSION = 'lSRetailVersion';
+    public const LSRETAIL_VERSION = 'lSRetailVersion';
 
-    public const L_S_RETAIL_COPYRIGHT = 'lSRetailCopyright';
+    public const LSRETAIL_COPYRIGHT = 'lSRetailCopyright';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -39,7 +39,7 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -48,7 +48,7 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -57,7 +57,7 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -66,7 +66,7 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $applicationVersion
      * @return $this
      */
-    public function setApplicationVersion(?string $applicationVersion)
+    public function setApplicationversion(?string $applicationVersion)
     {
         $this->setData(self::APPLICATION_VERSION, $applicationVersion);
         return $this;
@@ -75,7 +75,7 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getApplicationVersion() : ?string
+    public function getApplicationversion() : ?string
     {
         return $this->getData(self::APPLICATION_VERSION);
     }
@@ -84,7 +84,7 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $applicationBuild
      * @return $this
      */
-    public function setApplicationBuild(?string $applicationBuild)
+    public function setApplicationbuild(?string $applicationBuild)
     {
         $this->setData(self::APPLICATION_BUILD, $applicationBuild);
         return $this;
@@ -93,7 +93,7 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getApplicationBuild() : ?string
+    public function getApplicationbuild() : ?string
     {
         return $this->getData(self::APPLICATION_BUILD);
     }
@@ -102,36 +102,36 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $lSRetailVersion
      * @return $this
      */
-    public function setLSRetailVersion(?string $lSRetailVersion)
+    public function setLsretailversion(?string $lSRetailVersion)
     {
-        $this->setData(self::L_S_RETAIL_VERSION, $lSRetailVersion);
+        $this->setData(self::LSRETAIL_VERSION, $lSRetailVersion);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getLSRetailVersion() : ?string
+    public function getLsretailversion() : ?string
     {
-        return $this->getData(self::L_S_RETAIL_VERSION);
+        return $this->getData(self::LSRETAIL_VERSION);
     }
 
     /**
      * @param ?string $lSRetailCopyright
      * @return $this
      */
-    public function setLSRetailCopyright(?string $lSRetailCopyright)
+    public function setLsretailcopyright(?string $lSRetailCopyright)
     {
-        $this->setData(self::L_S_RETAIL_COPYRIGHT, $lSRetailCopyright);
+        $this->setData(self::LSRETAIL_COPYRIGHT, $lSRetailCopyright);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getLSRetailCopyright() : ?string
+    public function getLsretailcopyright() : ?string
     {
-        return $this->getData(self::L_S_RETAIL_COPYRIGHT);
+        return $this->getData(self::LSRETAIL_COPYRIGHT);
     }
 }
 

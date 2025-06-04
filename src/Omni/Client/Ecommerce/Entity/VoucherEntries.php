@@ -16,7 +16,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const TRANSACTION_NO = 'TransactionNo';
 
@@ -58,7 +58,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VoucherNo
      * @return $this
      */
-    public function setVoucherNo(?string $VoucherNo)
+    public function setVoucherno(?string $VoucherNo)
     {
         $this->setData(self::VOUCHER_NO, $VoucherNo);
         return $this;
@@ -67,7 +67,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVoucherNo() : ?string
+    public function getVoucherno() : ?string
     {
         return $this->getData(self::VOUCHER_NO);
     }
@@ -76,7 +76,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -85,7 +85,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -94,25 +94,25 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo(?string $POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -121,7 +121,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -130,7 +130,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -139,7 +139,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -184,7 +184,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $EntryType
      * @return $this
      */
-    public function setEntryType(?string $EntryType)
+    public function setEntrytype(?string $EntryType)
     {
         $this->setData(self::ENTRY_TYPE, $EntryType);
         return $this;
@@ -193,7 +193,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEntryType() : ?string
+    public function getEntrytype() : ?string
     {
         return $this->getData(self::ENTRY_TYPE);
     }
@@ -217,19 +217,19 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param time $Time
+     * @param ?string $Time
      * @return $this
      */
-    public function setTime($Time)
+    public function setTime(?string $Time)
     {
         $this->setData(self::TIME, $Time);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTime()
+    public function getTime() : ?string
     {
         return $this->getData(self::TIME);
     }
@@ -274,7 +274,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $RemainingAmountNow
      * @return $this
      */
-    public function setRemainingAmountNow(?float $RemainingAmountNow)
+    public function setRemainingamountnow(?float $RemainingAmountNow)
     {
         $this->setData(self::REMAINING_AMOUNT_NOW, $RemainingAmountNow);
         return $this;
@@ -283,7 +283,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getRemainingAmountNow() : ?float
+    public function getRemainingamountnow() : ?float
     {
         return $this->getData(self::REMAINING_AMOUNT_NOW);
     }
@@ -292,7 +292,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -301,7 +301,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }
@@ -310,7 +310,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $OneTimeRedemption
      * @return $this
      */
-    public function setOneTimeRedemption(?bool $OneTimeRedemption)
+    public function setOnetimeredemption(?bool $OneTimeRedemption)
     {
         $this->setData(self::ONE_TIME_REDEMPTION, $OneTimeRedemption);
         return $this;
@@ -319,7 +319,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getOneTimeRedemption() : ?bool
+    public function getOnetimeredemption() : ?bool
     {
         return $this->getData(self::ONE_TIME_REDEMPTION);
     }
@@ -328,7 +328,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $WriteOffAmount
      * @return $this
      */
-    public function setWriteOffAmount(?float $WriteOffAmount)
+    public function setWriteoffamount(?float $WriteOffAmount)
     {
         $this->setData(self::WRITE_OFF_AMOUNT, $WriteOffAmount);
         return $this;
@@ -337,7 +337,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getWriteOffAmount() : ?float
+    public function getWriteoffamount() : ?float
     {
         return $this->getData(self::WRITE_OFF_AMOUNT);
     }
@@ -346,7 +346,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VoucherType
      * @return $this
      */
-    public function setVoucherType(?string $VoucherType)
+    public function setVouchertype(?string $VoucherType)
     {
         $this->setData(self::VOUCHER_TYPE, $VoucherType);
         return $this;
@@ -355,7 +355,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVoucherType() : ?string
+    public function getVouchertype() : ?string
     {
         return $this->getData(self::VOUCHER_TYPE);
     }
@@ -364,7 +364,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode(?string $CurrencyCode)
+    public function setCurrencycode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
@@ -373,7 +373,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencyCode() : ?string
+    public function getCurrencycode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -382,7 +382,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $CurrencyFactor
      * @return $this
      */
-    public function setCurrencyFactor(?float $CurrencyFactor)
+    public function setCurrencyfactor(?float $CurrencyFactor)
     {
         $this->setData(self::CURRENCY_FACTOR, $CurrencyFactor);
         return $this;
@@ -391,7 +391,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCurrencyFactor() : ?float
+    public function getCurrencyfactor() : ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
     }
@@ -400,7 +400,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreCurrencyCode
      * @return $this
      */
-    public function setStoreCurrencyCode(?string $StoreCurrencyCode)
+    public function setStorecurrencycode(?string $StoreCurrencyCode)
     {
         $this->setData(self::STORE_CURRENCY_CODE, $StoreCurrencyCode);
         return $this;
@@ -409,7 +409,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreCurrencyCode() : ?string
+    public function getStorecurrencycode() : ?string
     {
         return $this->getData(self::STORE_CURRENCY_CODE);
     }
@@ -418,7 +418,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $AmountInStoreCurrency
      * @return $this
      */
-    public function setAmountInStoreCurrency(?float $AmountInStoreCurrency)
+    public function setAmountinstorecurrency(?float $AmountInStoreCurrency)
     {
         $this->setData(self::AMOUNT_IN_STORE_CURRENCY, $AmountInStoreCurrency);
         return $this;
@@ -427,7 +427,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmountInStoreCurrency() : ?float
+    public function getAmountinstorecurrency() : ?float
     {
         return $this->getData(self::AMOUNT_IN_STORE_CURRENCY);
     }

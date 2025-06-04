@@ -20,13 +20,13 @@ class GetStoreOpeningHours extends \Magento\Catalog\Model\AbstractModel implemen
 
     public const STORE_NO = 'storeNo';
 
-    public const GET_STORE_OPENING_HOURS_X_M_L = 'getStoreOpeningHoursXML';
+    public const GET_STORE_OPENING_HOURS_XML = 'getStoreOpeningHoursXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class GetStoreOpeningHours extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class GetStoreOpeningHours extends \Magento\Catalog\Model\AbstractModel implemen
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class GetStoreOpeningHours extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class GetStoreOpeningHours extends \Magento\Catalog\Model\AbstractModel implemen
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -71,7 +71,7 @@ class GetStoreOpeningHours extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -80,18 +80,18 @@ class GetStoreOpeningHours extends \Magento\Catalog\Model\AbstractModel implemen
      * @param RootGetStoreOpeningHours $getStoreOpeningHoursXML
      * @return $this
      */
-    public function setGetStoreOpeningHoursXML($getStoreOpeningHoursXML)
+    public function setGetstoreopeninghoursxml($getStoreOpeningHoursXML)
     {
-        $this->setData(self::GET_STORE_OPENING_HOURS_X_M_L, $getStoreOpeningHoursXML);
+        $this->setData(self::GET_STORE_OPENING_HOURS_XML, $getStoreOpeningHoursXML);
         return $this;
     }
 
     /**
      * @return RootGetStoreOpeningHours
      */
-    public function getGetStoreOpeningHoursXML()
+    public function getGetstoreopeninghoursxml()
     {
-        return $this->getData(self::GET_STORE_OPENING_HOURS_X_M_L);
+        return $this->getData(self::GET_STORE_OPENING_HOURS_XML);
     }
 }
 

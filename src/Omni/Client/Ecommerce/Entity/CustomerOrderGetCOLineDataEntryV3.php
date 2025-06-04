@@ -16,7 +16,7 @@ class CustomerOrderGetCOLineDataEntryV3 extends \Magento\Catalog\Model\AbstractM
 
     public const DATA_ENTRY_CODE = 'DataEntryCode';
 
-    public const P_I_N = 'PIN';
+    public const PIN = 'PIN';
 
     public const LINE_NO = 'LineNo';
 
@@ -24,7 +24,7 @@ class CustomerOrderGetCOLineDataEntryV3 extends \Magento\Catalog\Model\AbstractM
      * @param ?string $DataEntryType
      * @return $this
      */
-    public function setDataEntryType(?string $DataEntryType)
+    public function setDataentrytype(?string $DataEntryType)
     {
         $this->setData(self::DATA_ENTRY_TYPE, $DataEntryType);
         return $this;
@@ -33,7 +33,7 @@ class CustomerOrderGetCOLineDataEntryV3 extends \Magento\Catalog\Model\AbstractM
     /**
      * @return ?string
      */
-    public function getDataEntryType() : ?string
+    public function getDataentrytype() : ?string
     {
         return $this->getData(self::DATA_ENTRY_TYPE);
     }
@@ -42,7 +42,7 @@ class CustomerOrderGetCOLineDataEntryV3 extends \Magento\Catalog\Model\AbstractM
      * @param ?string $DataEntryCode
      * @return $this
      */
-    public function setDataEntryCode(?string $DataEntryCode)
+    public function setDataentrycode(?string $DataEntryCode)
     {
         $this->setData(self::DATA_ENTRY_CODE, $DataEntryCode);
         return $this;
@@ -51,7 +51,7 @@ class CustomerOrderGetCOLineDataEntryV3 extends \Magento\Catalog\Model\AbstractM
     /**
      * @return ?string
      */
-    public function getDataEntryCode() : ?string
+    public function getDataentrycode() : ?string
     {
         return $this->getData(self::DATA_ENTRY_CODE);
     }
@@ -60,25 +60,25 @@ class CustomerOrderGetCOLineDataEntryV3 extends \Magento\Catalog\Model\AbstractM
      * @param int $PIN
      * @return $this
      */
-    public function setPIN($PIN)
+    public function setPin($PIN)
     {
-        $this->setData(self::P_I_N, $PIN);
+        $this->setData(self::PIN, $PIN);
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getPIN()
+    public function getPin()
     {
-        return $this->getData(self::P_I_N);
+        return $this->getData(self::PIN);
     }
 
     /**
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -87,7 +87,7 @@ class CustomerOrderGetCOLineDataEntryV3 extends \Magento\Catalog\Model\AbstractM
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }

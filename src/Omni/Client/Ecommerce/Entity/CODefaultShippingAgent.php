@@ -22,7 +22,7 @@ class CODefaultShippingAgent extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -31,7 +31,7 @@ class CODefaultShippingAgent extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -40,7 +40,7 @@ class CODefaultShippingAgent extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShippingAgentCode
      * @return $this
      */
-    public function setShippingAgentCode(?string $ShippingAgentCode)
+    public function setShippingagentcode(?string $ShippingAgentCode)
     {
         $this->setData(self::SHIPPING_AGENT_CODE, $ShippingAgentCode);
         return $this;
@@ -49,7 +49,7 @@ class CODefaultShippingAgent extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingAgentCode() : ?string
+    public function getShippingagentcode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
@@ -58,7 +58,7 @@ class CODefaultShippingAgent extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AgentServiceCode
      * @return $this
      */
-    public function setAgentServiceCode(?string $AgentServiceCode)
+    public function setAgentservicecode(?string $AgentServiceCode)
     {
         $this->setData(self::AGENT_SERVICE_CODE, $AgentServiceCode);
         return $this;
@@ -67,7 +67,7 @@ class CODefaultShippingAgent extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAgentServiceCode() : ?string
+    public function getAgentservicecode() : ?string
     {
         return $this->getData(self::AGENT_SERVICE_CODE);
     }

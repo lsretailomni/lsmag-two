@@ -24,17 +24,17 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
 
     public const CONTACT_NO = 'contactNo';
 
-    public const LOGIN_I_D = 'loginID';
+    public const LOGIN_ID = 'loginID';
 
     public const EMAIL = 'email';
 
-    public const GET_MEMBER_CONTACT_X_M_L = 'getMemberContactXML';
+    public const GET_MEMBER_CONTACT_XML = 'getMemberContactXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -43,7 +43,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -52,7 +52,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -61,7 +61,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -70,7 +70,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $cardNo
      * @return $this
      */
-    public function setCardNo(?string $cardNo)
+    public function setCardno(?string $cardNo)
     {
         $this->setData(self::CARD_NO, $cardNo);
         return $this;
@@ -79,7 +79,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getCardNo() : ?string
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -88,7 +88,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $accountNo
      * @return $this
      */
-    public function setAccountNo(?string $accountNo)
+    public function setAccountno(?string $accountNo)
     {
         $this->setData(self::ACCOUNT_NO, $accountNo);
         return $this;
@@ -97,7 +97,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getAccountNo() : ?string
+    public function getAccountno() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
@@ -106,7 +106,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $contactNo
      * @return $this
      */
-    public function setContactNo(?string $contactNo)
+    public function setContactno(?string $contactNo)
     {
         $this->setData(self::CONTACT_NO, $contactNo);
         return $this;
@@ -115,7 +115,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getContactNo() : ?string
+    public function getContactno() : ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
@@ -124,18 +124,18 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $loginID
      * @return $this
      */
-    public function setLoginID(?string $loginID)
+    public function setLoginid(?string $loginID)
     {
-        $this->setData(self::LOGIN_I_D, $loginID);
+        $this->setData(self::LOGIN_ID, $loginID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getLoginID() : ?string
+    public function getLoginid() : ?string
     {
-        return $this->getData(self::LOGIN_I_D);
+        return $this->getData(self::LOGIN_ID);
     }
 
     /**
@@ -160,18 +160,18 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
      * @param RootGetMemberContact $getMemberContactXML
      * @return $this
      */
-    public function setGetMemberContactXML($getMemberContactXML)
+    public function setGetmembercontactxml($getMemberContactXML)
     {
-        $this->setData(self::GET_MEMBER_CONTACT_X_M_L, $getMemberContactXML);
+        $this->setData(self::GET_MEMBER_CONTACT_XML, $getMemberContactXML);
         return $this;
     }
 
     /**
      * @return RootGetMemberContact
      */
-    public function getGetMemberContactXML()
+    public function getGetmembercontactxml()
     {
-        return $this->getData(self::GET_MEMBER_CONTACT_X_M_L);
+        return $this->getData(self::GET_MEMBER_CONTACT_XML);
     }
 }
 

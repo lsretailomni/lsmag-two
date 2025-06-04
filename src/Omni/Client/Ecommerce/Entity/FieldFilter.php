@@ -22,7 +22,7 @@ class FieldFilter extends \Magento\Catalog\Model\AbstractModel
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -31,7 +31,7 @@ class FieldFilter extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
@@ -40,7 +40,7 @@ class FieldFilter extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $FieldName
      * @return $this
      */
-    public function setFieldName(?string $FieldName)
+    public function setFieldname(?string $FieldName)
     {
         $this->setData(self::FIELD_NAME, $FieldName);
         return $this;
@@ -49,7 +49,7 @@ class FieldFilter extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFieldName() : ?string
+    public function getFieldname() : ?string
     {
         return $this->getData(self::FIELD_NAME);
     }
@@ -58,7 +58,7 @@ class FieldFilter extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $FieldValue
      * @return $this
      */
-    public function setFieldValue(?string $FieldValue)
+    public function setFieldvalue(?string $FieldValue)
     {
         $this->setData(self::FIELD_VALUE, $FieldValue);
         return $this;
@@ -67,7 +67,7 @@ class FieldFilter extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFieldValue() : ?string
+    public function getFieldvalue() : ?string
     {
         return $this->getData(self::FIELD_VALUE);
     }

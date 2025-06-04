@@ -28,7 +28,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClubCode
      * @return $this
      */
-    public function setClubCode(?string $ClubCode)
+    public function setClubcode(?string $ClubCode)
     {
         $this->setData(self::CLUB_CODE, $ClubCode);
         return $this;
@@ -37,7 +37,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubCode() : ?string
+    public function getClubcode() : ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
@@ -46,7 +46,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClubDescription
      * @return $this
      */
-    public function setClubDescription(?string $ClubDescription)
+    public function setClubdescription(?string $ClubDescription)
     {
         $this->setData(self::CLUB_DESCRIPTION, $ClubDescription);
         return $this;
@@ -55,7 +55,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubDescription() : ?string
+    public function getClubdescription() : ?string
     {
         return $this->getData(self::CLUB_DESCRIPTION);
     }
@@ -64,7 +64,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CardNo
      * @return $this
      */
-    public function setCardNo(?string $CardNo)
+    public function setCardno(?string $CardNo)
     {
         $this->setData(self::CARD_NO, $CardNo);
         return $this;
@@ -73,7 +73,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardNo() : ?string
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -82,7 +82,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClubHolderName
      * @return $this
      */
-    public function setClubHolderName(?string $ClubHolderName)
+    public function setClubholdername(?string $ClubHolderName)
     {
         $this->setData(self::CLUB_HOLDER_NAME, $ClubHolderName);
         return $this;
@@ -91,7 +91,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubHolderName() : ?string
+    public function getClubholdername() : ?string
     {
         return $this->getData(self::CLUB_HOLDER_NAME);
     }
@@ -118,7 +118,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SystemId
      * @return $this
      */
-    public function setSystemId(?string $SystemId)
+    public function setSystemid(?string $SystemId)
     {
         $this->setData(self::SYSTEM_ID, $SystemId);
         return $this;
@@ -127,7 +127,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSystemId() : ?string
+    public function getSystemid() : ?string
     {
         return $this->getData(self::SYSTEM_ID);
     }

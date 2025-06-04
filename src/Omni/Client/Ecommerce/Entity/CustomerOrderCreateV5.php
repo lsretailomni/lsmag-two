@@ -18,15 +18,15 @@ class CustomerOrderCreateV5 extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const ERROR_TEXT = 'errorText';
 
-    public const CUSTOMER_ORDER_CREATE_V5_X_M_L = 'customerOrderCreateV5XML';
+    public const CUSTOMER_ORDER_CREATE_V5_XML = 'customerOrderCreateV5XML';
 
-    public const CUSTOMER_ORDER_I_D = 'customerOrderID';
+    public const CUSTOMER_ORDER_ID = 'customerOrderID';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class CustomerOrderCreateV5 extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class CustomerOrderCreateV5 extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class CustomerOrderCreateV5 extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,36 +62,36 @@ class CustomerOrderCreateV5 extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootCustomerOrderCreateV5 $customerOrderCreateV5XML
      * @return $this
      */
-    public function setCustomerOrderCreateV5XML($customerOrderCreateV5XML)
+    public function setCustomerordercreatev5xml($customerOrderCreateV5XML)
     {
-        $this->setData(self::CUSTOMER_ORDER_CREATE_V5_X_M_L, $customerOrderCreateV5XML);
+        $this->setData(self::CUSTOMER_ORDER_CREATE_V5_XML, $customerOrderCreateV5XML);
         return $this;
     }
 
     /**
      * @return RootCustomerOrderCreateV5
      */
-    public function getCustomerOrderCreateV5XML()
+    public function getCustomerordercreatev5xml()
     {
-        return $this->getData(self::CUSTOMER_ORDER_CREATE_V5_X_M_L);
+        return $this->getData(self::CUSTOMER_ORDER_CREATE_V5_XML);
     }
 
     /**
      * @param ?string $customerOrderID
      * @return $this
      */
-    public function setCustomerOrderID(?string $customerOrderID)
+    public function setCustomerorderid(?string $customerOrderID)
     {
-        $this->setData(self::CUSTOMER_ORDER_I_D, $customerOrderID);
+        $this->setData(self::CUSTOMER_ORDER_ID, $customerOrderID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getCustomerOrderID() : ?string
+    public function getCustomerorderid() : ?string
     {
-        return $this->getData(self::CUSTOMER_ORDER_I_D);
+        return $this->getData(self::CUSTOMER_ORDER_ID);
     }
 }
 

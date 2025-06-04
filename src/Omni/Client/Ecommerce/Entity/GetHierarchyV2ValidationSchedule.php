@@ -20,13 +20,13 @@ class GetHierarchyV2ValidationSchedule extends \Magento\Catalog\Model\AbstractMo
 
     public const STORE_NO = 'storeNo';
 
-    public const GET_HIERARCHY_V2_VALIDATION_SCHEDULE_X_M_L = 'getHierarchyV2ValidationScheduleXML';
+    public const GET_HIERARCHY_V2_VALIDATION_SCHEDULE_XML = 'getHierarchyV2ValidationScheduleXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class GetHierarchyV2ValidationSchedule extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class GetHierarchyV2ValidationSchedule extends \Magento\Catalog\Model\AbstractMo
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class GetHierarchyV2ValidationSchedule extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class GetHierarchyV2ValidationSchedule extends \Magento\Catalog\Model\AbstractMo
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -71,7 +71,7 @@ class GetHierarchyV2ValidationSchedule extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -80,18 +80,18 @@ class GetHierarchyV2ValidationSchedule extends \Magento\Catalog\Model\AbstractMo
      * @param RootGetHierarchyVal.Sched $getHierarchyV2ValidationScheduleXML
      * @return $this
      */
-    public function setGetHierarchyV2ValidationScheduleXML($getHierarchyV2ValidationScheduleXML)
+    public function setGethierarchyv2validationschedulexml($getHierarchyV2ValidationScheduleXML)
     {
-        $this->setData(self::GET_HIERARCHY_V2_VALIDATION_SCHEDULE_X_M_L, $getHierarchyV2ValidationScheduleXML);
+        $this->setData(self::GET_HIERARCHY_V2_VALIDATION_SCHEDULE_XML, $getHierarchyV2ValidationScheduleXML);
         return $this;
     }
 
     /**
      * @return RootGetHierarchyVal.Sched
      */
-    public function getGetHierarchyV2ValidationScheduleXML()
+    public function getGethierarchyv2validationschedulexml()
     {
-        return $this->getData(self::GET_HIERARCHY_V2_VALIDATION_SCHEDULE_X_M_L);
+        return $this->getData(self::GET_HIERARCHY_V2_VALIDATION_SCHEDULE_XML);
     }
 }
 

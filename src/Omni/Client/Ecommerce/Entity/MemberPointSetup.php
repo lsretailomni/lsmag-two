@@ -48,7 +48,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SchemeFilterType
      * @return $this
      */
-    public function setSchemeFilterType(?string $SchemeFilterType)
+    public function setSchemefiltertype(?string $SchemeFilterType)
     {
         $this->setData(self::SCHEME_FILTER_TYPE, $SchemeFilterType);
         return $this;
@@ -57,7 +57,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSchemeFilterType() : ?string
+    public function getSchemefiltertype() : ?string
     {
         return $this->getData(self::SCHEME_FILTER_TYPE);
     }
@@ -66,7 +66,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClubScheme
      * @return $this
      */
-    public function setClubScheme(?string $ClubScheme)
+    public function setClubscheme(?string $ClubScheme)
     {
         $this->setData(self::CLUB_SCHEME, $ClubScheme);
         return $this;
@@ -75,7 +75,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubScheme() : ?string
+    public function getClubscheme() : ?string
     {
         return $this->getData(self::CLUB_SCHEME);
     }
@@ -84,7 +84,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $FilterType
      * @return $this
      */
-    public function setFilterType(?string $FilterType)
+    public function setFiltertype(?string $FilterType)
     {
         $this->setData(self::FILTER_TYPE, $FilterType);
         return $this;
@@ -93,7 +93,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFilterType() : ?string
+    public function getFiltertype() : ?string
     {
         return $this->getData(self::FILTER_TYPE);
     }
@@ -102,7 +102,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $FilterCode
      * @return $this
      */
-    public function setFilterCode(?string $FilterCode)
+    public function setFiltercode(?string $FilterCode)
     {
         $this->setData(self::FILTER_CODE, $FilterCode);
         return $this;
@@ -111,7 +111,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFilterCode() : ?string
+    public function getFiltercode() : ?string
     {
         return $this->getData(self::FILTER_CODE);
     }
@@ -120,7 +120,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode(?string $CurrencyCode)
+    public function setCurrencycode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
@@ -129,7 +129,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencyCode() : ?string
+    public function getCurrencycode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -138,7 +138,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QtyAmountLimit
      * @return $this
      */
-    public function setQtyAmountLimit(?float $QtyAmountLimit)
+    public function setQtyamountlimit(?float $QtyAmountLimit)
     {
         $this->setData(self::QTY_AMOUNT_LIMIT, $QtyAmountLimit);
         return $this;
@@ -147,7 +147,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtyAmountLimit() : ?float
+    public function getQtyamountlimit() : ?float
     {
         return $this->getData(self::QTY_AMOUNT_LIMIT);
     }
@@ -156,7 +156,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $BaseCalculationon
      * @return $this
      */
-    public function setBaseCalculationon(?string $BaseCalculationon)
+    public function setBasecalculationon(?string $BaseCalculationon)
     {
         $this->setData(self::BASE_CALCULATIONON, $BaseCalculationon);
         return $this;
@@ -165,7 +165,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBaseCalculationon() : ?string
+    public function getBasecalculationon() : ?string
     {
         return $this->getData(self::BASE_CALCULATIONON);
     }
@@ -174,7 +174,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $UnitRate
      * @return $this
      */
-    public function setUnitRate(?float $UnitRate)
+    public function setUnitrate(?float $UnitRate)
     {
         $this->setData(self::UNIT_RATE, $UnitRate);
         return $this;
@@ -183,7 +183,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getUnitRate() : ?float
+    public function getUnitrate() : ?float
     {
         return $this->getData(self::UNIT_RATE);
     }
@@ -192,7 +192,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PointsType
      * @return $this
      */
-    public function setPointsType(?string $PointsType)
+    public function setPointstype(?string $PointsType)
     {
         $this->setData(self::POINTS_TYPE, $PointsType);
         return $this;
@@ -201,7 +201,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPointsType() : ?string
+    public function getPointstype() : ?string
     {
         return $this->getData(self::POINTS_TYPE);
     }
@@ -228,7 +228,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CustomerFilterType
      * @return $this
      */
-    public function setCustomerFilterType(?string $CustomerFilterType)
+    public function setCustomerfiltertype(?string $CustomerFilterType)
     {
         $this->setData(self::CUSTOMER_FILTER_TYPE, $CustomerFilterType);
         return $this;
@@ -237,7 +237,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerFilterType() : ?string
+    public function getCustomerfiltertype() : ?string
     {
         return $this->getData(self::CUSTOMER_FILTER_TYPE);
     }
@@ -246,7 +246,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CustomerFilterCode
      * @return $this
      */
-    public function setCustomerFilterCode(?string $CustomerFilterCode)
+    public function setCustomerfiltercode(?string $CustomerFilterCode)
     {
         $this->setData(self::CUSTOMER_FILTER_CODE, $CustomerFilterCode);
         return $this;
@@ -255,7 +255,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerFilterCode() : ?string
+    public function getCustomerfiltercode() : ?string
     {
         return $this->getData(self::CUSTOMER_FILTER_CODE);
     }
@@ -264,7 +264,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StartingDate
      * @return $this
      */
-    public function setStartingDate(?string $StartingDate)
+    public function setStartingdate(?string $StartingDate)
     {
         $this->setData(self::STARTING_DATE, $StartingDate);
         return $this;
@@ -273,7 +273,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStartingDate() : ?string
+    public function getStartingdate() : ?string
     {
         return $this->getData(self::STARTING_DATE);
     }
@@ -282,7 +282,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $EndingDate
      * @return $this
      */
-    public function setEndingDate(?string $EndingDate)
+    public function setEndingdate(?string $EndingDate)
     {
         $this->setData(self::ENDING_DATE, $EndingDate);
         return $this;
@@ -291,7 +291,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEndingDate() : ?string
+    public function getEndingdate() : ?string
     {
         return $this->getData(self::ENDING_DATE);
     }
@@ -300,7 +300,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClubCode
      * @return $this
      */
-    public function setClubCode(?string $ClubCode)
+    public function setClubcode(?string $ClubCode)
     {
         $this->setData(self::CLUB_CODE, $ClubCode);
         return $this;
@@ -309,7 +309,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubCode() : ?string
+    public function getClubcode() : ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
@@ -318,7 +318,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $FilterSubCode
      * @return $this
      */
-    public function setFilterSubCode(?string $FilterSubCode)
+    public function setFiltersubcode(?string $FilterSubCode)
     {
         $this->setData(self::FILTER_SUB_CODE, $FilterSubCode);
         return $this;
@@ -327,7 +327,7 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFilterSubCode() : ?string
+    public function getFiltersubcode() : ?string
     {
         return $this->getData(self::FILTER_SUB_CODE);
     }

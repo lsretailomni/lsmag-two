@@ -14,11 +14,11 @@ class GetASNDocumentList extends \Magento\Catalog\Model\AbstractModel implements
 {
     public const CLASS_NAME = 'GetASNDocumentList';
 
-    public const VENDOR_NOP = 'vendorNo_p';
+    public const VENDOR_NO_P = 'vendorNo_p';
 
-    public const LOCATION_CODEP = 'locationCode_p';
+    public const LOCATION_CODE_P = 'locationCode_p';
 
-    public const GET_A_S_N_DOCUMENT_LIST_X_M_L = 'getASNDocumentListXML';
+    public const GET_ASNDOCUMENT_LIST_XML = 'getASNDocumentListXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
@@ -28,61 +28,61 @@ class GetASNDocumentList extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $vendorNop
      * @return $this
      */
-    public function setVendorNoP(?string $vendorNop)
+    public function setVendornoP(?string $vendorNop)
     {
-        $this->setData(self::VENDOR_NOP, $vendorNop);
+        $this->setData(self::VENDOR_NO_P, $vendorNop);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getVendorNoP() : ?string
+    public function getVendornoP() : ?string
     {
-        return $this->getData(self::VENDOR_NOP);
+        return $this->getData(self::VENDOR_NO_P);
     }
 
     /**
      * @param ?string $locationCodep
      * @return $this
      */
-    public function setLocationCodeP(?string $locationCodep)
+    public function setLocationcodeP(?string $locationCodep)
     {
-        $this->setData(self::LOCATION_CODEP, $locationCodep);
+        $this->setData(self::LOCATION_CODE_P, $locationCodep);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getLocationCodeP() : ?string
+    public function getLocationcodeP() : ?string
     {
-        return $this->getData(self::LOCATION_CODEP);
+        return $this->getData(self::LOCATION_CODE_P);
     }
 
     /**
      * @param RootGetDocumentList $getASNDocumentListXML
      * @return $this
      */
-    public function setGetASNDocumentListXML($getASNDocumentListXML)
+    public function setGetasndocumentlistxml($getASNDocumentListXML)
     {
-        $this->setData(self::GET_A_S_N_DOCUMENT_LIST_X_M_L, $getASNDocumentListXML);
+        $this->setData(self::GET_ASNDOCUMENT_LIST_XML, $getASNDocumentListXML);
         return $this;
     }
 
     /**
      * @return RootGetDocumentList
      */
-    public function getGetASNDocumentListXML()
+    public function getGetasndocumentlistxml()
     {
-        return $this->getData(self::GET_A_S_N_DOCUMENT_LIST_X_M_L);
+        return $this->getData(self::GET_ASNDOCUMENT_LIST_XML);
     }
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -91,7 +91,7 @@ class GetASNDocumentList extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -100,7 +100,7 @@ class GetASNDocumentList extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -109,7 +109,7 @@ class GetASNDocumentList extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

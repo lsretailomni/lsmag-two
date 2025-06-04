@@ -22,7 +22,7 @@ class AttributeOptionValueV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AttributeCode
      * @return $this
      */
-    public function setAttributeCode(?string $AttributeCode)
+    public function setAttributecode(?string $AttributeCode)
     {
         $this->setData(self::ATTRIBUTE_CODE, $AttributeCode);
         return $this;
@@ -31,7 +31,7 @@ class AttributeOptionValueV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAttributeCode() : ?string
+    public function getAttributecode() : ?string
     {
         return $this->getData(self::ATTRIBUTE_CODE);
     }
@@ -58,7 +58,7 @@ class AttributeOptionValueV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OptionValue
      * @return $this
      */
-    public function setOptionValue(?string $OptionValue)
+    public function setOptionvalue(?string $OptionValue)
     {
         $this->setData(self::OPTION_VALUE, $OptionValue);
         return $this;
@@ -67,7 +67,7 @@ class AttributeOptionValueV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOptionValue() : ?string
+    public function getOptionvalue() : ?string
     {
         return $this->getData(self::OPTION_VALUE);
     }

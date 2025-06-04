@@ -20,7 +20,7 @@ class RootCOUpdatePayment extends \Magento\Catalog\Model\AbstractModel
      * @param CustomerOrderPayment $CustomerOrderPayment
      * @return $this
      */
-    public function setCustomerOrderPayment($CustomerOrderPayment)
+    public function setCustomerorderpayment($CustomerOrderPayment)
     {
         $this->setData(self::CUSTOMER_ORDER_PAYMENT, $CustomerOrderPayment);
         return $this;
@@ -29,7 +29,7 @@ class RootCOUpdatePayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CustomerOrderPayment
      */
-    public function getCustomerOrderPayment()
+    public function getCustomerorderpayment()
     {
         return $this->getData(self::CUSTOMER_ORDER_PAYMENT);
     }
@@ -38,7 +38,7 @@ class RootCOUpdatePayment extends \Magento\Catalog\Model\AbstractModel
      * @param CustomerOrderLine $CustomerOrderLine
      * @return $this
      */
-    public function setCustomerOrderLine($CustomerOrderLine)
+    public function setCustomerorderline($CustomerOrderLine)
     {
         $this->setData(self::CUSTOMER_ORDER_LINE, $CustomerOrderLine);
         return $this;
@@ -47,7 +47,7 @@ class RootCOUpdatePayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CustomerOrderLine
      */
-    public function getCustomerOrderLine()
+    public function getCustomerorderline()
     {
         return $this->getData(self::CUSTOMER_ORDER_LINE);
     }

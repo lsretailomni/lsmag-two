@@ -18,13 +18,13 @@ class SendTransactionV2Result extends \Magento\Catalog\Model\AbstractModel imple
 
     public const ERROR_TEXT = 'errorText';
 
-    public const SEND_TRANSACTION_V2_X_M_L = 'sendTransactionV2XML';
+    public const SEND_TRANSACTION_V2_XML = 'sendTransactionV2XML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class SendTransactionV2Result extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class SendTransactionV2Result extends \Magento\Catalog\Model\AbstractModel imple
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class SendTransactionV2Result extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class SendTransactionV2Result extends \Magento\Catalog\Model\AbstractModel imple
      * @param RootSendTransaction $sendTransactionV2XML
      * @return $this
      */
-    public function setSendTransactionV2XML($sendTransactionV2XML)
+    public function setSendtransactionv2xml($sendTransactionV2XML)
     {
-        $this->setData(self::SEND_TRANSACTION_V2_X_M_L, $sendTransactionV2XML);
+        $this->setData(self::SEND_TRANSACTION_V2_XML, $sendTransactionV2XML);
         return $this;
     }
 
     /**
      * @return RootSendTransaction
      */
-    public function getSendTransactionV2XML()
+    public function getSendtransactionv2xml()
     {
-        return $this->getData(self::SEND_TRANSACTION_V2_X_M_L);
+        return $this->getData(self::SEND_TRANSACTION_V2_XML);
     }
 
     /**

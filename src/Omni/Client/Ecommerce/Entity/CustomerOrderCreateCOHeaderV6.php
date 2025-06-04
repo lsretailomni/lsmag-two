@@ -12,7 +12,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'CustomerOrderCreateCOHeaderV6';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const MEMBER_CARD_NO = 'MemberCardNo';
 
@@ -66,7 +66,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
 
     public const SHIP_TO_HOUSE_APARTMENT_NO = 'ShipToHouseApartmentNo';
 
-    public const EXTERNAL_I_D = 'ExternalID';
+    public const EXTERNAL_ID = 'ExternalID';
 
     public const CREATED_AT_STORE = 'CreatedAtStore';
 
@@ -92,7 +92,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
 
     public const CREATED = 'Created';
 
-    public const CREATED_BY_P_O_S = 'CreatedByPOS';
+    public const CREATED_BY_POS = 'CreatedByPOS';
 
     public const PREPAYMENT_INVOICE_TYPE = 'PrepaymentInvoiceType';
 
@@ -100,25 +100,25 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID(?string $DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDocumentID() : ?string
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
      * @param ?string $MemberCardNo
      * @return $this
      */
-    public function setMemberCardNo(?string $MemberCardNo)
+    public function setMembercardno(?string $MemberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $MemberCardNo);
         return $this;
@@ -127,7 +127,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberCardNo() : ?string
+    public function getMembercardno() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -136,7 +136,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SourceType
      * @return $this
      */
-    public function setSourceType(?string $SourceType)
+    public function setSourcetype(?string $SourceType)
     {
         $this->setData(self::SOURCE_TYPE, $SourceType);
         return $this;
@@ -145,7 +145,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourceType() : ?string
+    public function getSourcetype() : ?string
     {
         return $this->getData(self::SOURCE_TYPE);
     }
@@ -154,7 +154,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CustomerNo
      * @return $this
      */
-    public function setCustomerNo(?string $CustomerNo)
+    public function setCustomerno(?string $CustomerNo)
     {
         $this->setData(self::CUSTOMER_NO, $CustomerNo);
         return $this;
@@ -163,7 +163,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerNo() : ?string
+    public function getCustomerno() : ?string
     {
         return $this->getData(self::CUSTOMER_NO);
     }
@@ -262,7 +262,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PostCode
      * @return $this
      */
-    public function setPostCode(?string $PostCode)
+    public function setPostcode(?string $PostCode)
     {
         $this->setData(self::POST_CODE, $PostCode);
         return $this;
@@ -271,7 +271,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPostCode() : ?string
+    public function getPostcode() : ?string
     {
         return $this->getData(self::POST_CODE);
     }
@@ -280,7 +280,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CountryRegionCode
      * @return $this
      */
-    public function setCountryRegionCode(?string $CountryRegionCode)
+    public function setCountryregioncode(?string $CountryRegionCode)
     {
         $this->setData(self::COUNTRY_REGION_CODE, $CountryRegionCode);
         return $this;
@@ -289,7 +289,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCountryRegionCode() : ?string
+    public function getCountryregioncode() : ?string
     {
         return $this->getData(self::COUNTRY_REGION_CODE);
     }
@@ -298,7 +298,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PhoneNo
      * @return $this
      */
-    public function setPhoneNo(?string $PhoneNo)
+    public function setPhoneno(?string $PhoneNo)
     {
         $this->setData(self::PHONE_NO, $PhoneNo);
         return $this;
@@ -307,7 +307,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPhoneNo() : ?string
+    public function getPhoneno() : ?string
     {
         return $this->getData(self::PHONE_NO);
     }
@@ -334,7 +334,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $HouseApartmentNo
      * @return $this
      */
-    public function setHouseApartmentNo(?string $HouseApartmentNo)
+    public function setHouseapartmentno(?string $HouseApartmentNo)
     {
         $this->setData(self::HOUSE_APARTMENT_NO, $HouseApartmentNo);
         return $this;
@@ -343,7 +343,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHouseApartmentNo() : ?string
+    public function getHouseapartmentno() : ?string
     {
         return $this->getData(self::HOUSE_APARTMENT_NO);
     }
@@ -352,7 +352,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $MobilePhoneNo
      * @return $this
      */
-    public function setMobilePhoneNo(?string $MobilePhoneNo)
+    public function setMobilephoneno(?string $MobilePhoneNo)
     {
         $this->setData(self::MOBILE_PHONE_NO, $MobilePhoneNo);
         return $this;
@@ -361,7 +361,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMobilePhoneNo() : ?string
+    public function getMobilephoneno() : ?string
     {
         return $this->getData(self::MOBILE_PHONE_NO);
     }
@@ -370,7 +370,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DaytimePhoneNo
      * @return $this
      */
-    public function setDaytimePhoneNo(?string $DaytimePhoneNo)
+    public function setDaytimephoneno(?string $DaytimePhoneNo)
     {
         $this->setData(self::DAYTIME_PHONE_NO, $DaytimePhoneNo);
         return $this;
@@ -379,7 +379,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDaytimePhoneNo() : ?string
+    public function getDaytimephoneno() : ?string
     {
         return $this->getData(self::DAYTIME_PHONE_NO);
     }
@@ -388,7 +388,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TerritoryCode
      * @return $this
      */
-    public function setTerritoryCode(?string $TerritoryCode)
+    public function setTerritorycode(?string $TerritoryCode)
     {
         $this->setData(self::TERRITORY_CODE, $TerritoryCode);
         return $this;
@@ -397,7 +397,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTerritoryCode() : ?string
+    public function getTerritorycode() : ?string
     {
         return $this->getData(self::TERRITORY_CODE);
     }
@@ -406,7 +406,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShipToName
      * @return $this
      */
-    public function setShipToName(?string $ShipToName)
+    public function setShiptoname(?string $ShipToName)
     {
         $this->setData(self::SHIP_TO_NAME, $ShipToName);
         return $this;
@@ -415,7 +415,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipToName() : ?string
+    public function getShiptoname() : ?string
     {
         return $this->getData(self::SHIP_TO_NAME);
     }
@@ -424,7 +424,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShipToAddress
      * @return $this
      */
-    public function setShipToAddress(?string $ShipToAddress)
+    public function setShiptoaddress(?string $ShipToAddress)
     {
         $this->setData(self::SHIP_TO_ADDRESS, $ShipToAddress);
         return $this;
@@ -433,7 +433,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipToAddress() : ?string
+    public function getShiptoaddress() : ?string
     {
         return $this->getData(self::SHIP_TO_ADDRESS);
     }
@@ -442,7 +442,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShipToAddress2
      * @return $this
      */
-    public function setShipToAddress2(?string $ShipToAddress2)
+    public function setShiptoaddress2(?string $ShipToAddress2)
     {
         $this->setData(self::SHIP_TO_ADDRESS2, $ShipToAddress2);
         return $this;
@@ -451,7 +451,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipToAddress2() : ?string
+    public function getShiptoaddress2() : ?string
     {
         return $this->getData(self::SHIP_TO_ADDRESS2);
     }
@@ -460,7 +460,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShipToCity
      * @return $this
      */
-    public function setShipToCity(?string $ShipToCity)
+    public function setShiptocity(?string $ShipToCity)
     {
         $this->setData(self::SHIP_TO_CITY, $ShipToCity);
         return $this;
@@ -469,7 +469,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipToCity() : ?string
+    public function getShiptocity() : ?string
     {
         return $this->getData(self::SHIP_TO_CITY);
     }
@@ -478,7 +478,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShipToCounty
      * @return $this
      */
-    public function setShipToCounty(?string $ShipToCounty)
+    public function setShiptocounty(?string $ShipToCounty)
     {
         $this->setData(self::SHIP_TO_COUNTY, $ShipToCounty);
         return $this;
@@ -487,7 +487,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipToCounty() : ?string
+    public function getShiptocounty() : ?string
     {
         return $this->getData(self::SHIP_TO_COUNTY);
     }
@@ -496,7 +496,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShipToPostCode
      * @return $this
      */
-    public function setShipToPostCode(?string $ShipToPostCode)
+    public function setShiptopostcode(?string $ShipToPostCode)
     {
         $this->setData(self::SHIP_TO_POST_CODE, $ShipToPostCode);
         return $this;
@@ -505,7 +505,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipToPostCode() : ?string
+    public function getShiptopostcode() : ?string
     {
         return $this->getData(self::SHIP_TO_POST_CODE);
     }
@@ -514,7 +514,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShipToCountryRegionCode
      * @return $this
      */
-    public function setShipToCountryRegionCode(?string $ShipToCountryRegionCode)
+    public function setShiptocountryregioncode(?string $ShipToCountryRegionCode)
     {
         $this->setData(self::SHIP_TO_COUNTRY_REGION_CODE, $ShipToCountryRegionCode);
         return $this;
@@ -523,7 +523,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipToCountryRegionCode() : ?string
+    public function getShiptocountryregioncode() : ?string
     {
         return $this->getData(self::SHIP_TO_COUNTRY_REGION_CODE);
     }
@@ -532,7 +532,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShipToPhoneNo
      * @return $this
      */
-    public function setShipToPhoneNo(?string $ShipToPhoneNo)
+    public function setShiptophoneno(?string $ShipToPhoneNo)
     {
         $this->setData(self::SHIP_TO_PHONE_NO, $ShipToPhoneNo);
         return $this;
@@ -541,7 +541,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipToPhoneNo() : ?string
+    public function getShiptophoneno() : ?string
     {
         return $this->getData(self::SHIP_TO_PHONE_NO);
     }
@@ -550,7 +550,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShipToEmail
      * @return $this
      */
-    public function setShipToEmail(?string $ShipToEmail)
+    public function setShiptoemail(?string $ShipToEmail)
     {
         $this->setData(self::SHIP_TO_EMAIL, $ShipToEmail);
         return $this;
@@ -559,7 +559,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipToEmail() : ?string
+    public function getShiptoemail() : ?string
     {
         return $this->getData(self::SHIP_TO_EMAIL);
     }
@@ -568,7 +568,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShipToHouseApartmentNo
      * @return $this
      */
-    public function setShipToHouseApartmentNo(?string $ShipToHouseApartmentNo)
+    public function setShiptohouseapartmentno(?string $ShipToHouseApartmentNo)
     {
         $this->setData(self::SHIP_TO_HOUSE_APARTMENT_NO, $ShipToHouseApartmentNo);
         return $this;
@@ -577,7 +577,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipToHouseApartmentNo() : ?string
+    public function getShiptohouseapartmentno() : ?string
     {
         return $this->getData(self::SHIP_TO_HOUSE_APARTMENT_NO);
     }
@@ -586,25 +586,25 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExternalID
      * @return $this
      */
-    public function setExternalID(?string $ExternalID)
+    public function setExternalid(?string $ExternalID)
     {
-        $this->setData(self::EXTERNAL_I_D, $ExternalID);
+        $this->setData(self::EXTERNAL_ID, $ExternalID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getExternalID() : ?string
+    public function getExternalid() : ?string
     {
-        return $this->getData(self::EXTERNAL_I_D);
+        return $this->getData(self::EXTERNAL_ID);
     }
 
     /**
      * @param ?string $CreatedAtStore
      * @return $this
      */
-    public function setCreatedAtStore(?string $CreatedAtStore)
+    public function setCreatedatstore(?string $CreatedAtStore)
     {
         $this->setData(self::CREATED_AT_STORE, $CreatedAtStore);
         return $this;
@@ -613,7 +613,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedAtStore() : ?string
+    public function getCreatedatstore() : ?string
     {
         return $this->getData(self::CREATED_AT_STORE);
     }
@@ -622,7 +622,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ShipOrder
      * @return $this
      */
-    public function setShipOrder(?bool $ShipOrder)
+    public function setShiporder(?bool $ShipOrder)
     {
         $this->setData(self::SHIP_ORDER, $ShipOrder);
         return $this;
@@ -631,7 +631,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getShipOrder() : ?bool
+    public function getShiporder() : ?bool
     {
         return $this->getData(self::SHIP_ORDER);
     }
@@ -640,7 +640,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RequestedDeliveryDate
      * @return $this
      */
-    public function setRequestedDeliveryDate(?string $RequestedDeliveryDate)
+    public function setRequesteddeliverydate(?string $RequestedDeliveryDate)
     {
         $this->setData(self::REQUESTED_DELIVERY_DATE, $RequestedDeliveryDate);
         return $this;
@@ -649,7 +649,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequestedDeliveryDate() : ?string
+    public function getRequesteddeliverydate() : ?string
     {
         return $this->getData(self::REQUESTED_DELIVERY_DATE);
     }
@@ -658,7 +658,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ScanPaygo
      * @return $this
      */
-    public function setScanPaygo(?bool $ScanPaygo)
+    public function setScanpaygo(?bool $ScanPaygo)
     {
         $this->setData(self::SCAN_PAYGO, $ScanPaygo);
         return $this;
@@ -667,7 +667,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getScanPaygo() : ?bool
+    public function getScanpaygo() : ?bool
     {
         return $this->getData(self::SCAN_PAYGO);
     }
@@ -676,7 +676,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $RoundingAmount
      * @return $this
      */
-    public function setRoundingAmount(?float $RoundingAmount)
+    public function setRoundingamount(?float $RoundingAmount)
     {
         $this->setData(self::ROUNDING_AMOUNT, $RoundingAmount);
         return $this;
@@ -685,7 +685,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getRoundingAmount() : ?float
+    public function getRoundingamount() : ?float
     {
         return $this->getData(self::ROUNDING_AMOUNT);
     }
@@ -694,7 +694,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShippingAgentCode
      * @return $this
      */
-    public function setShippingAgentCode(?string $ShippingAgentCode)
+    public function setShippingagentcode(?string $ShippingAgentCode)
     {
         $this->setData(self::SHIPPING_AGENT_CODE, $ShippingAgentCode);
         return $this;
@@ -703,7 +703,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingAgentCode() : ?string
+    public function getShippingagentcode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
@@ -712,7 +712,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShippingAgentServiceCode
      * @return $this
      */
-    public function setShippingAgentServiceCode(?string $ShippingAgentServiceCode)
+    public function setShippingagentservicecode(?string $ShippingAgentServiceCode)
     {
         $this->setData(self::SHIPPING_AGENT_SERVICE_CODE, $ShippingAgentServiceCode);
         return $this;
@@ -721,7 +721,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingAgentServiceCode() : ?string
+    public function getShippingagentservicecode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_SERVICE_CODE);
     }
@@ -730,7 +730,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SalesPersonCode
      * @return $this
      */
-    public function setSalesPersonCode(?string $SalesPersonCode)
+    public function setSalespersoncode(?string $SalesPersonCode)
     {
         $this->setData(self::SALES_PERSON_CODE, $SalesPersonCode);
         return $this;
@@ -739,7 +739,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalesPersonCode() : ?string
+    public function getSalespersoncode() : ?string
     {
         return $this->getData(self::SALES_PERSON_CODE);
     }
@@ -748,7 +748,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TaxAreaCode
      * @return $this
      */
-    public function setTaxAreaCode(?string $TaxAreaCode)
+    public function setTaxareacode(?string $TaxAreaCode)
     {
         $this->setData(self::TAX_AREA_CODE, $TaxAreaCode);
         return $this;
@@ -757,7 +757,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxAreaCode() : ?string
+    public function getTaxareacode() : ?string
     {
         return $this->getData(self::TAX_AREA_CODE);
     }
@@ -766,7 +766,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $TaxLiable
      * @return $this
      */
-    public function setTaxLiable(?bool $TaxLiable)
+    public function setTaxliable(?bool $TaxLiable)
     {
         $this->setData(self::TAX_LIABLE, $TaxLiable);
         return $this;
@@ -775,7 +775,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getTaxLiable() : ?bool
+    public function getTaxliable() : ?bool
     {
         return $this->getData(self::TAX_LIABLE);
     }
@@ -784,7 +784,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TaxExemptionNo
      * @return $this
      */
-    public function setTaxExemptionNo(?string $TaxExemptionNo)
+    public function setTaxexemptionno(?string $TaxExemptionNo)
     {
         $this->setData(self::TAX_EXEMPTION_NO, $TaxExemptionNo);
         return $this;
@@ -793,7 +793,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxExemptionNo() : ?string
+    public function getTaxexemptionno() : ?string
     {
         return $this->getData(self::TAX_EXEMPTION_NO);
     }
@@ -820,25 +820,25 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CreatedByPOS
      * @return $this
      */
-    public function setCreatedByPOS(?string $CreatedByPOS)
+    public function setCreatedbypos(?string $CreatedByPOS)
     {
-        $this->setData(self::CREATED_BY_P_O_S, $CreatedByPOS);
+        $this->setData(self::CREATED_BY_POS, $CreatedByPOS);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getCreatedByPOS() : ?string
+    public function getCreatedbypos() : ?string
     {
-        return $this->getData(self::CREATED_BY_P_O_S);
+        return $this->getData(self::CREATED_BY_POS);
     }
 
     /**
      * @param ?string $PrepaymentInvoiceType
      * @return $this
      */
-    public function setPrepaymentInvoiceType(?string $PrepaymentInvoiceType)
+    public function setPrepaymentinvoicetype(?string $PrepaymentInvoiceType)
     {
         $this->setData(self::PREPAYMENT_INVOICE_TYPE, $PrepaymentInvoiceType);
         return $this;
@@ -847,7 +847,7 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrepaymentInvoiceType() : ?string
+    public function getPrepaymentinvoicetype() : ?string
     {
         return $this->getData(self::PREPAYMENT_INVOICE_TYPE);
     }

@@ -12,7 +12,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'MemberDevice';
 
-    public const I_D = 'ID';
+    public const ID = 'ID';
 
     public const SECURITY_TOKEN = 'SecurityToken';
 
@@ -32,25 +32,25 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
      * @param string $ID
      * @return $this
      */
-    public function setID($ID)
+    public function setId($ID)
     {
-        $this->setData(self::I_D, $ID);
+        $this->setData(self::ID, $ID);
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getID()
+    public function getId()
     {
-        return $this->getData(self::I_D);
+        return $this->getData(self::ID);
     }
 
     /**
      * @param ?string $SecurityToken
      * @return $this
      */
-    public function setSecurityToken(?string $SecurityToken)
+    public function setSecuritytoken(?string $SecurityToken)
     {
         $this->setData(self::SECURITY_TOKEN, $SecurityToken);
         return $this;
@@ -59,7 +59,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSecurityToken() : ?string
+    public function getSecuritytoken() : ?string
     {
         return $this->getData(self::SECURITY_TOKEN);
     }
@@ -68,7 +68,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $FriendlyName
      * @return $this
      */
-    public function setFriendlyName(?string $FriendlyName)
+    public function setFriendlyname(?string $FriendlyName)
     {
         $this->setData(self::FRIENDLY_NAME, $FriendlyName);
         return $this;
@@ -77,7 +77,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFriendlyName() : ?string
+    public function getFriendlyname() : ?string
     {
         return $this->getData(self::FRIENDLY_NAME);
     }
@@ -104,7 +104,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ReasonBlocked
      * @return $this
      */
-    public function setReasonBlocked(?string $ReasonBlocked)
+    public function setReasonblocked(?string $ReasonBlocked)
     {
         $this->setData(self::REASON_BLOCKED, $ReasonBlocked);
         return $this;
@@ -113,7 +113,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasonBlocked() : ?string
+    public function getReasonblocked() : ?string
     {
         return $this->getData(self::REASON_BLOCKED);
     }
@@ -122,7 +122,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DateBlocked
      * @return $this
      */
-    public function setDateBlocked(?string $DateBlocked)
+    public function setDateblocked(?string $DateBlocked)
     {
         $this->setData(self::DATE_BLOCKED, $DateBlocked);
         return $this;
@@ -131,7 +131,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateBlocked() : ?string
+    public function getDateblocked() : ?string
     {
         return $this->getData(self::DATE_BLOCKED);
     }
@@ -140,7 +140,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $BlockedBy
      * @return $this
      */
-    public function setBlockedBy(?string $BlockedBy)
+    public function setBlockedby(?string $BlockedBy)
     {
         $this->setData(self::BLOCKED_BY, $BlockedBy);
         return $this;
@@ -149,7 +149,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBlockedBy() : ?string
+    public function getBlockedby() : ?string
     {
         return $this->getData(self::BLOCKED_BY);
     }
@@ -158,7 +158,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SystemId
      * @return $this
      */
-    public function setSystemId(?string $SystemId)
+    public function setSystemid(?string $SystemId)
     {
         $this->setData(self::SYSTEM_ID, $SystemId);
         return $this;
@@ -167,7 +167,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSystemId() : ?string
+    public function getSystemid() : ?string
     {
         return $this->getData(self::SYSTEM_ID);
     }

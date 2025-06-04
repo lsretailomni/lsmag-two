@@ -12,7 +12,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'ASNDeliveryDocument';
 
-    public const A_S_N_DOCUMENT_NO = 'ASNDocumentNo';
+    public const ASNDOCUMENT_NO = 'ASNDocumentNo';
 
     public const VENDOR_NO = 'VendorNo';
 
@@ -30,25 +30,25 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ASNDocumentNo
      * @return $this
      */
-    public function setASNDocumentNo(?string $ASNDocumentNo)
+    public function setAsndocumentno(?string $ASNDocumentNo)
     {
-        $this->setData(self::A_S_N_DOCUMENT_NO, $ASNDocumentNo);
+        $this->setData(self::ASNDOCUMENT_NO, $ASNDocumentNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getASNDocumentNo() : ?string
+    public function getAsndocumentno() : ?string
     {
-        return $this->getData(self::A_S_N_DOCUMENT_NO);
+        return $this->getData(self::ASNDOCUMENT_NO);
     }
 
     /**
      * @param ?string $VendorNo
      * @return $this
      */
-    public function setVendorNo(?string $VendorNo)
+    public function setVendorno(?string $VendorNo)
     {
         $this->setData(self::VENDOR_NO, $VendorNo);
         return $this;
@@ -57,7 +57,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVendorNo() : ?string
+    public function getVendorno() : ?string
     {
         return $this->getData(self::VENDOR_NO);
     }
@@ -66,7 +66,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VendorName
      * @return $this
      */
-    public function setVendorName(?string $VendorName)
+    public function setVendorname(?string $VendorName)
     {
         $this->setData(self::VENDOR_NAME, $VendorName);
         return $this;
@@ -75,7 +75,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVendorName() : ?string
+    public function getVendorname() : ?string
     {
         return $this->getData(self::VENDOR_NAME);
     }
@@ -84,7 +84,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TrustLevel
      * @return $this
      */
-    public function setTrustLevel(?string $TrustLevel)
+    public function setTrustlevel(?string $TrustLevel)
     {
         $this->setData(self::TRUST_LEVEL, $TrustLevel);
         return $this;
@@ -93,7 +93,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTrustLevel() : ?string
+    public function getTrustlevel() : ?string
     {
         return $this->getData(self::TRUST_LEVEL);
     }
@@ -102,7 +102,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $EstimatedArrivalDate
      * @return $this
      */
-    public function setEstimatedArrivalDate(?string $EstimatedArrivalDate)
+    public function setEstimatedarrivaldate(?string $EstimatedArrivalDate)
     {
         $this->setData(self::ESTIMATED_ARRIVAL_DATE, $EstimatedArrivalDate);
         return $this;
@@ -111,7 +111,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEstimatedArrivalDate() : ?string
+    public function getEstimatedarrivaldate() : ?string
     {
         return $this->getData(self::ESTIMATED_ARRIVAL_DATE);
     }
@@ -120,7 +120,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ManifestNo
      * @return $this
      */
-    public function setManifestNo(?string $ManifestNo)
+    public function setManifestno(?string $ManifestNo)
     {
         $this->setData(self::MANIFEST_NO, $ManifestNo);
         return $this;
@@ -129,7 +129,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getManifestNo() : ?string
+    public function getManifestno() : ?string
     {
         return $this->getData(self::MANIFEST_NO);
     }
@@ -138,7 +138,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DispatchNo
      * @return $this
      */
-    public function setDispatchNo(?string $DispatchNo)
+    public function setDispatchno(?string $DispatchNo)
     {
         $this->setData(self::DISPATCH_NO, $DispatchNo);
         return $this;
@@ -147,7 +147,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDispatchNo() : ?string
+    public function getDispatchno() : ?string
     {
         return $this->getData(self::DISPATCH_NO);
     }

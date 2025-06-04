@@ -14,11 +14,11 @@ class SetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
 {
     public const CLASS_NAME = 'SetTokenEntry';
 
-    public const CONTRACT_RECORD_IDP = 'contractRecordId_p';
+    public const CONTRACT_RECORD_ID_P = 'contractRecordId_p';
 
     public const MEMBER_CARD_NO = 'memberCardNo';
 
-    public const SET_TOKEN_ENTRY_X_M_L = 'setTokenEntryXML';
+    public const SET_TOKEN_ENTRY_XML = 'setTokenEntryXML';
 
     public const RESULT = 'result';
 
@@ -30,25 +30,25 @@ class SetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $contractRecordIdp
      * @return $this
      */
-    public function setContractRecordIdP(?string $contractRecordIdp)
+    public function setContractrecordidP(?string $contractRecordIdp)
     {
-        $this->setData(self::CONTRACT_RECORD_IDP, $contractRecordIdp);
+        $this->setData(self::CONTRACT_RECORD_ID_P, $contractRecordIdp);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getContractRecordIdP() : ?string
+    public function getContractrecordidP() : ?string
     {
-        return $this->getData(self::CONTRACT_RECORD_IDP);
+        return $this->getData(self::CONTRACT_RECORD_ID_P);
     }
 
     /**
      * @param ?string $memberCardNo
      * @return $this
      */
-    public function setMemberCardNo(?string $memberCardNo)
+    public function setMembercardno(?string $memberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $memberCardNo);
         return $this;
@@ -57,7 +57,7 @@ class SetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getMemberCardNo() : ?string
+    public function getMembercardno() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -66,18 +66,18 @@ class SetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param RootSetTokenEntry $setTokenEntryXML
      * @return $this
      */
-    public function setSetTokenEntryXML($setTokenEntryXML)
+    public function setSettokenentryxml($setTokenEntryXML)
     {
-        $this->setData(self::SET_TOKEN_ENTRY_X_M_L, $setTokenEntryXML);
+        $this->setData(self::SET_TOKEN_ENTRY_XML, $setTokenEntryXML);
         return $this;
     }
 
     /**
      * @return RootSetTokenEntry
      */
-    public function getSetTokenEntryXML()
+    public function getSettokenentryxml()
     {
-        return $this->getData(self::SET_TOKEN_ENTRY_X_M_L);
+        return $this->getData(self::SET_TOKEN_ENTRY_XML);
     }
 
     /**
@@ -102,7 +102,7 @@ class SetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -111,7 +111,7 @@ class SetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -120,7 +120,7 @@ class SetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -129,7 +129,7 @@ class SetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

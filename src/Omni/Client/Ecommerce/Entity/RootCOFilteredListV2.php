@@ -18,7 +18,7 @@ class RootCOFilteredListV2 extends \Magento\Catalog\Model\AbstractModel
      * @param CustomerOrderHeaderV2 $CustomerOrderHeaderV2
      * @return $this
      */
-    public function setCustomerOrderHeaderV2($CustomerOrderHeaderV2)
+    public function setCustomerorderheaderv2($CustomerOrderHeaderV2)
     {
         $this->setData(self::CUSTOMER_ORDER_HEADER_V2, $CustomerOrderHeaderV2);
         return $this;
@@ -27,7 +27,7 @@ class RootCOFilteredListV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CustomerOrderHeaderV2
      */
-    public function getCustomerOrderHeaderV2()
+    public function getCustomerorderheaderv2()
     {
         return $this->getData(self::CUSTOMER_ORDER_HEADER_V2);
     }

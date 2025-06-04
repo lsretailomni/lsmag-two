@@ -18,7 +18,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
 
     public const ERROR_TEXT = 'errorText';
 
-    public const P_O_S_TERMINAL_NO = 'pOSTerminalNo';
+    public const POSTERMINAL_NO = 'pOSTerminalNo';
 
     public const VALUE_TYPE = 'valueType';
 
@@ -30,13 +30,13 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
 
     public const LOCATION_NO = 'locationNo';
 
-    public const GET_ACTIVE_DOC_VALUES_X_M_L = 'getActiveDocValuesXML';
+    public const GET_ACTIVE_DOC_VALUES_XML = 'getActiveDocValuesXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -45,7 +45,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -54,7 +54,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -63,7 +63,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -72,25 +72,25 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $pOSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo(?string $pOSTerminalNo)
+    public function setPosterminalno(?string $pOSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $pOSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $pOSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param ?string $valueType
      * @return $this
      */
-    public function setValueType(?string $valueType)
+    public function setValuetype(?string $valueType)
     {
         $this->setData(self::VALUE_TYPE, $valueType);
         return $this;
@@ -99,7 +99,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getValueType() : ?string
+    public function getValuetype() : ?string
     {
         return $this->getData(self::VALUE_TYPE);
     }
@@ -108,7 +108,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $processType
      * @return $this
      */
-    public function setProcessType(?string $processType)
+    public function setProcesstype(?string $processType)
     {
         $this->setData(self::PROCESS_TYPE, $processType);
         return $this;
@@ -117,7 +117,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getProcessType() : ?string
+    public function getProcesstype() : ?string
     {
         return $this->getData(self::PROCESS_TYPE);
     }
@@ -126,7 +126,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $documentType
      * @return $this
      */
-    public function setDocumentType(?string $documentType)
+    public function setDocumenttype(?string $documentType)
     {
         $this->setData(self::DOCUMENT_TYPE, $documentType);
         return $this;
@@ -135,7 +135,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getDocumentType() : ?string
+    public function getDocumenttype() : ?string
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
@@ -144,7 +144,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -153,7 +153,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -162,7 +162,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $locationNo
      * @return $this
      */
-    public function setLocationNo(?string $locationNo)
+    public function setLocationno(?string $locationNo)
     {
         $this->setData(self::LOCATION_NO, $locationNo);
         return $this;
@@ -171,7 +171,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getLocationNo() : ?string
+    public function getLocationno() : ?string
     {
         return $this->getData(self::LOCATION_NO);
     }
@@ -180,18 +180,18 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
      * @param RootGetActiveDocValues $getActiveDocValuesXML
      * @return $this
      */
-    public function setGetActiveDocValuesXML($getActiveDocValuesXML)
+    public function setGetactivedocvaluesxml($getActiveDocValuesXML)
     {
-        $this->setData(self::GET_ACTIVE_DOC_VALUES_X_M_L, $getActiveDocValuesXML);
+        $this->setData(self::GET_ACTIVE_DOC_VALUES_XML, $getActiveDocValuesXML);
         return $this;
     }
 
     /**
      * @return RootGetActiveDocValues
      */
-    public function getGetActiveDocValuesXML()
+    public function getGetactivedocvaluesxml()
     {
-        return $this->getData(self::GET_ACTIVE_DOC_VALUES_X_M_L);
+        return $this->getData(self::GET_ACTIVE_DOC_VALUES_XML);
     }
 }
 

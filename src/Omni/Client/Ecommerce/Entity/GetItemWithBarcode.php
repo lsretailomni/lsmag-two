@@ -16,7 +16,7 @@ class GetItemWithBarcode extends \Magento\Catalog\Model\AbstractModel implements
 
     public const BARCODE_NO = 'barcodeNo';
 
-    public const LEFT_RIGHT_LINE_X_M_L = 'leftRightLineXML';
+    public const LEFT_RIGHT_LINE_XML = 'leftRightLineXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
@@ -28,7 +28,7 @@ class GetItemWithBarcode extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $barcodeNo
      * @return $this
      */
-    public function setBarcodeNo(?string $barcodeNo)
+    public function setBarcodeno(?string $barcodeNo)
     {
         $this->setData(self::BARCODE_NO, $barcodeNo);
         return $this;
@@ -37,7 +37,7 @@ class GetItemWithBarcode extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getBarcodeNo() : ?string
+    public function getBarcodeno() : ?string
     {
         return $this->getData(self::BARCODE_NO);
     }
@@ -46,25 +46,25 @@ class GetItemWithBarcode extends \Magento\Catalog\Model\AbstractModel implements
      * @param RootLeftRightLine $leftRightLineXML
      * @return $this
      */
-    public function setLeftRightLineXML($leftRightLineXML)
+    public function setLeftrightlinexml($leftRightLineXML)
     {
-        $this->setData(self::LEFT_RIGHT_LINE_X_M_L, $leftRightLineXML);
+        $this->setData(self::LEFT_RIGHT_LINE_XML, $leftRightLineXML);
         return $this;
     }
 
     /**
      * @return RootLeftRightLine
      */
-    public function getLeftRightLineXML()
+    public function getLeftrightlinexml()
     {
-        return $this->getData(self::LEFT_RIGHT_LINE_X_M_L);
+        return $this->getData(self::LEFT_RIGHT_LINE_XML);
     }
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -73,7 +73,7 @@ class GetItemWithBarcode extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -82,7 +82,7 @@ class GetItemWithBarcode extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -91,7 +91,7 @@ class GetItemWithBarcode extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -100,7 +100,7 @@ class GetItemWithBarcode extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $itemHtml
      * @return $this
      */
-    public function setItemHtml(?string $itemHtml)
+    public function setItemhtml(?string $itemHtml)
     {
         $this->setData(self::ITEM_HTML, $itemHtml);
         return $this;
@@ -109,7 +109,7 @@ class GetItemWithBarcode extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getItemHtml() : ?string
+    public function getItemhtml() : ?string
     {
         return $this->getData(self::ITEM_HTML);
     }

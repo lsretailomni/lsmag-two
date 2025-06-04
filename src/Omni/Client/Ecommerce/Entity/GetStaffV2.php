@@ -18,15 +18,15 @@ class GetStaffV2 extends \Magento\Catalog\Model\AbstractModel implements Request
 
     public const ERROR_TEXT = 'errorText';
 
-    public const STAFF_I_D = 'staffID';
+    public const STAFF_ID = 'staffID';
 
-    public const GET_STAFF_V2_X_M_L = 'getStaffV2XML';
+    public const GET_STAFF_V2_XML = 'getStaffV2XML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class GetStaffV2 extends \Magento\Catalog\Model\AbstractModel implements Request
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class GetStaffV2 extends \Magento\Catalog\Model\AbstractModel implements Request
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class GetStaffV2 extends \Magento\Catalog\Model\AbstractModel implements Request
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,36 +62,36 @@ class GetStaffV2 extends \Magento\Catalog\Model\AbstractModel implements Request
      * @param ?string $staffID
      * @return $this
      */
-    public function setStaffID(?string $staffID)
+    public function setStaffid(?string $staffID)
     {
-        $this->setData(self::STAFF_I_D, $staffID);
+        $this->setData(self::STAFF_ID, $staffID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getStaffID() : ?string
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
      * @param RootGetStaffV2 $getStaffV2XML
      * @return $this
      */
-    public function setGetStaffV2XML($getStaffV2XML)
+    public function setGetstaffv2xml($getStaffV2XML)
     {
-        $this->setData(self::GET_STAFF_V2_X_M_L, $getStaffV2XML);
+        $this->setData(self::GET_STAFF_V2_XML, $getStaffV2XML);
         return $this;
     }
 
     /**
      * @return RootGetStaffV2
      */
-    public function getGetStaffV2XML()
+    public function getGetstaffv2xml()
     {
-        return $this->getData(self::GET_STAFF_V2_X_M_L);
+        return $this->getData(self::GET_STAFF_V2_XML);
     }
 }
 

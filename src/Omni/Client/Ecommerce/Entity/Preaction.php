@@ -28,7 +28,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -37,7 +37,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
@@ -46,7 +46,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LocationGroupFilter
      * @return $this
      */
-    public function setLocationGroupFilter(?string $LocationGroupFilter)
+    public function setLocationgroupfilter(?string $LocationGroupFilter)
     {
         $this->setData(self::LOCATION_GROUP_FILTER, $LocationGroupFilter);
         return $this;
@@ -55,7 +55,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLocationGroupFilter() : ?string
+    public function getLocationgroupfilter() : ?string
     {
         return $this->getData(self::LOCATION_GROUP_FILTER);
     }
@@ -82,7 +82,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
      * @param int $TableNo
      * @return $this
      */
-    public function setTableNo($TableNo)
+    public function setTableno($TableNo)
     {
         $this->setData(self::TABLE_NO, $TableNo);
         return $this;
@@ -91,7 +91,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTableNo()
+    public function getTableno()
     {
         return $this->getData(self::TABLE_NO);
     }
@@ -100,7 +100,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $KeyValue
      * @return $this
      */
-    public function setKeyValue(?string $KeyValue)
+    public function setKeyvalue(?string $KeyValue)
     {
         $this->setData(self::KEY_VALUE, $KeyValue);
         return $this;
@@ -109,7 +109,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getKeyValue() : ?string
+    public function getKeyvalue() : ?string
     {
         return $this->getData(self::KEY_VALUE);
     }

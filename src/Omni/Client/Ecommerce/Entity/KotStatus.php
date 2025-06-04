@@ -22,13 +22,13 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
 
     public const KOT_PROD_TIME = 'KotProdTime';
 
-    public const ORDER_I_D = 'OrderID';
+    public const ORDER_ID = 'OrderID';
 
     /**
      * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo(?string $ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
@@ -37,7 +37,7 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptNo() : ?string
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -46,7 +46,7 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $KotNo
      * @return $this
      */
-    public function setKotNo(?string $KotNo)
+    public function setKotno(?string $KotNo)
     {
         $this->setData(self::KOT_NO, $KotNo);
         return $this;
@@ -55,7 +55,7 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getKotNo() : ?string
+    public function getKotno() : ?string
     {
         return $this->getData(self::KOT_NO);
     }
@@ -82,7 +82,7 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ConfirmedbyExp
      * @return $this
      */
-    public function setConfirmedbyExp(?bool $ConfirmedbyExp)
+    public function setConfirmedbyexp(?bool $ConfirmedbyExp)
     {
         $this->setData(self::CONFIRMEDBY_EXP, $ConfirmedbyExp);
         return $this;
@@ -91,7 +91,7 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getConfirmedbyExp() : ?bool
+    public function getConfirmedbyexp() : ?bool
     {
         return $this->getData(self::CONFIRMEDBY_EXP);
     }
@@ -100,7 +100,7 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $KotProdTime
      * @return $this
      */
-    public function setKotProdTime(?float $KotProdTime)
+    public function setKotprodtime(?float $KotProdTime)
     {
         $this->setData(self::KOT_PROD_TIME, $KotProdTime);
         return $this;
@@ -109,7 +109,7 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getKotProdTime() : ?float
+    public function getKotprodtime() : ?float
     {
         return $this->getData(self::KOT_PROD_TIME);
     }
@@ -118,18 +118,18 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OrderID
      * @return $this
      */
-    public function setOrderID(?string $OrderID)
+    public function setOrderid(?string $OrderID)
     {
-        $this->setData(self::ORDER_I_D, $OrderID);
+        $this->setData(self::ORDER_ID, $OrderID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getOrderID() : ?string
+    public function getOrderid() : ?string
     {
-        return $this->getData(self::ORDER_I_D);
+        return $this->getData(self::ORDER_ID);
     }
 }
 

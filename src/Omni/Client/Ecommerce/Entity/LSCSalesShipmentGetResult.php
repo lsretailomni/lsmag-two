@@ -18,13 +18,13 @@ class LSCSalesShipmentGetResult extends \Magento\Catalog\Model\AbstractModel imp
 
     public const ERROR_TEXT = 'errorText';
 
-    public const SALES_SHIPMENT_LIST_X_M_L = 'salesShipmentListXML';
+    public const SALES_SHIPMENT_LIST_XML = 'salesShipmentListXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class LSCSalesShipmentGetResult extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class LSCSalesShipmentGetResult extends \Magento\Catalog\Model\AbstractModel imp
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class LSCSalesShipmentGetResult extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class LSCSalesShipmentGetResult extends \Magento\Catalog\Model\AbstractModel imp
      * @param Root $salesShipmentListXML
      * @return $this
      */
-    public function setSalesShipmentListXML($salesShipmentListXML)
+    public function setSalesshipmentlistxml($salesShipmentListXML)
     {
-        $this->setData(self::SALES_SHIPMENT_LIST_X_M_L, $salesShipmentListXML);
+        $this->setData(self::SALES_SHIPMENT_LIST_XML, $salesShipmentListXML);
         return $this;
     }
 
     /**
      * @return Root
      */
-    public function getSalesShipmentListXML()
+    public function getSalesshipmentlistxml()
     {
-        return $this->getData(self::SALES_SHIPMENT_LIST_X_M_L);
+        return $this->getData(self::SALES_SHIPMENT_LIST_XML);
     }
 
     /**

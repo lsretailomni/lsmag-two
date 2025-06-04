@@ -18,7 +18,7 @@ class RootGetInventoryMultipleOut extends \Magento\Catalog\Model\AbstractModel
      * @param InventoryBufferOut $InventoryBufferOut
      * @return $this
      */
-    public function setInventoryBufferOut($InventoryBufferOut)
+    public function setInventorybufferout($InventoryBufferOut)
     {
         $this->setData(self::INVENTORY_BUFFER_OUT, $InventoryBufferOut);
         return $this;
@@ -27,7 +27,7 @@ class RootGetInventoryMultipleOut extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return InventoryBufferOut
      */
-    public function getInventoryBufferOut()
+    public function getInventorybufferout()
     {
         return $this->getData(self::INVENTORY_BUFFER_OUT);
     }

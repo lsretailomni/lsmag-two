@@ -16,7 +16,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
 
     public const GROUP_TYPE = 'GroupType';
 
-    public const CALENDAR_I_D = 'CalendarID';
+    public const CALENDAR_ID = 'CalendarID';
 
     public const LINE_TYPE = 'LineType';
 
@@ -42,7 +42,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CalendarType
      * @return $this
      */
-    public function setCalendarType(?string $CalendarType)
+    public function setCalendartype(?string $CalendarType)
     {
         $this->setData(self::CALENDAR_TYPE, $CalendarType);
         return $this;
@@ -51,7 +51,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCalendarType() : ?string
+    public function getCalendartype() : ?string
     {
         return $this->getData(self::CALENDAR_TYPE);
     }
@@ -60,7 +60,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $GroupType
      * @return $this
      */
-    public function setGroupType(?string $GroupType)
+    public function setGrouptype(?string $GroupType)
     {
         $this->setData(self::GROUP_TYPE, $GroupType);
         return $this;
@@ -69,7 +69,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGroupType() : ?string
+    public function getGrouptype() : ?string
     {
         return $this->getData(self::GROUP_TYPE);
     }
@@ -78,25 +78,25 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CalendarID
      * @return $this
      */
-    public function setCalendarID(?string $CalendarID)
+    public function setCalendarid(?string $CalendarID)
     {
-        $this->setData(self::CALENDAR_I_D, $CalendarID);
+        $this->setData(self::CALENDAR_ID, $CalendarID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getCalendarID() : ?string
+    public function getCalendarid() : ?string
     {
-        return $this->getData(self::CALENDAR_I_D);
+        return $this->getData(self::CALENDAR_ID);
     }
 
     /**
      * @param ?string $LineType
      * @return $this
      */
-    public function setLineType(?string $LineType)
+    public function setLinetype(?string $LineType)
     {
         $this->setData(self::LINE_TYPE, $LineType);
         return $this;
@@ -105,7 +105,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLineType() : ?string
+    public function getLinetype() : ?string
     {
         return $this->getData(self::LINE_TYPE);
     }
@@ -114,7 +114,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StartingDate
      * @return $this
      */
-    public function setStartingDate(?string $StartingDate)
+    public function setStartingdate(?string $StartingDate)
     {
         $this->setData(self::STARTING_DATE, $StartingDate);
         return $this;
@@ -123,7 +123,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStartingDate() : ?string
+    public function getStartingdate() : ?string
     {
         return $this->getData(self::STARTING_DATE);
     }
@@ -132,7 +132,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $EndingDate
      * @return $this
      */
-    public function setEndingDate(?string $EndingDate)
+    public function setEndingdate(?string $EndingDate)
     {
         $this->setData(self::ENDING_DATE, $EndingDate);
         return $this;
@@ -141,7 +141,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEndingDate() : ?string
+    public function getEndingdate() : ?string
     {
         return $this->getData(self::ENDING_DATE);
     }
@@ -150,7 +150,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $DayNo
      * @return $this
      */
-    public function setDayNo($DayNo)
+    public function setDayno($DayNo)
     {
         $this->setData(self::DAY_NO, $DayNo);
         return $this;
@@ -159,7 +159,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDayNo()
+    public function getDayno()
     {
         return $this->getData(self::DAY_NO);
     }
@@ -168,7 +168,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DayName
      * @return $this
      */
-    public function setDayName(?string $DayName)
+    public function setDayname(?string $DayName)
     {
         $this->setData(self::DAY_NAME, $DayName);
         return $this;
@@ -177,43 +177,43 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDayName() : ?string
+    public function getDayname() : ?string
     {
         return $this->getData(self::DAY_NAME);
     }
 
     /**
-     * @param time $TimeFrom
+     * @param ?string $TimeFrom
      * @return $this
      */
-    public function setTimeFrom($TimeFrom)
+    public function setTimefrom(?string $TimeFrom)
     {
         $this->setData(self::TIME_FROM, $TimeFrom);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTimeFrom()
+    public function getTimefrom() : ?string
     {
         return $this->getData(self::TIME_FROM);
     }
 
     /**
-     * @param time $TimeTo
+     * @param ?string $TimeTo
      * @return $this
      */
-    public function setTimeTo($TimeTo)
+    public function setTimeto(?string $TimeTo)
     {
         $this->setData(self::TIME_TO, $TimeTo);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTimeTo()
+    public function getTimeto() : ?string
     {
         return $this->getData(self::TIME_TO);
     }
@@ -222,7 +222,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $MidnightOpen
      * @return $this
      */
-    public function setMidnightOpen(?bool $MidnightOpen)
+    public function setMidnightopen(?bool $MidnightOpen)
     {
         $this->setData(self::MIDNIGHT_OPEN, $MidnightOpen);
         return $this;
@@ -231,7 +231,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getMidnightOpen() : ?bool
+    public function getMidnightopen() : ?bool
     {
         return $this->getData(self::MIDNIGHT_OPEN);
     }
@@ -240,7 +240,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $IncludeAllWeekDays
      * @return $this
      */
-    public function setIncludeAllWeekDays(?bool $IncludeAllWeekDays)
+    public function setIncludeallweekdays(?bool $IncludeAllWeekDays)
     {
         $this->setData(self::INCLUDE_ALL_WEEK_DAYS, $IncludeAllWeekDays);
         return $this;
@@ -249,7 +249,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getIncludeAllWeekDays() : ?bool
+    public function getIncludeallweekdays() : ?bool
     {
         return $this->getData(self::INCLUDE_ALL_WEEK_DAYS);
     }
@@ -258,7 +258,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ReasonClosed
      * @return $this
      */
-    public function setReasonClosed(?string $ReasonClosed)
+    public function setReasonclosed(?string $ReasonClosed)
     {
         $this->setData(self::REASON_CLOSED, $ReasonClosed);
         return $this;
@@ -267,7 +267,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasonClosed() : ?string
+    public function getReasonclosed() : ?string
     {
         return $this->getData(self::REASON_CLOSED);
     }

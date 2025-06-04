@@ -18,7 +18,7 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
 
     public const VARIANT_CODE = 'variantCode';
 
-    public const ITEM_TRACKING_I_D = 'itemTrackingID';
+    public const ITEM_TRACKING_ID = 'itemTrackingID';
 
     public const WORKSHEET_NO = 'worksheetNo';
 
@@ -32,7 +32,7 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo(?string $itemNo)
+    public function setItemno(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
@@ -41,7 +41,7 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -50,7 +50,7 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $variantCode
      * @return $this
      */
-    public function setVariantCode(?string $variantCode)
+    public function setVariantcode(?string $variantCode)
     {
         $this->setData(self::VARIANT_CODE, $variantCode);
         return $this;
@@ -59,7 +59,7 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -68,25 +68,25 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $itemTrackingID
      * @return $this
      */
-    public function setItemTrackingID(?string $itemTrackingID)
+    public function setItemtrackingid(?string $itemTrackingID)
     {
-        $this->setData(self::ITEM_TRACKING_I_D, $itemTrackingID);
+        $this->setData(self::ITEM_TRACKING_ID, $itemTrackingID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getItemTrackingID() : ?string
+    public function getItemtrackingid() : ?string
     {
-        return $this->getData(self::ITEM_TRACKING_I_D);
+        return $this->getData(self::ITEM_TRACKING_ID);
     }
 
     /**
      * @param int $worksheetNo
      * @return $this
      */
-    public function setWorksheetNo($worksheetNo)
+    public function setWorksheetno($worksheetNo)
     {
         $this->setData(self::WORKSHEET_NO, $worksheetNo);
         return $this;
@@ -95,7 +95,7 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return int
      */
-    public function getWorksheetNo()
+    public function getWorksheetno()
     {
         return $this->getData(self::WORKSHEET_NO);
     }
@@ -104,7 +104,7 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?bool $validTracking
      * @return $this
      */
-    public function setValidTracking(?bool $validTracking)
+    public function setValidtracking(?bool $validTracking)
     {
         $this->setData(self::VALID_TRACKING, $validTracking);
         return $this;
@@ -113,7 +113,7 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?bool
      */
-    public function getValidTracking() : ?bool
+    public function getValidtracking() : ?bool
     {
         return $this->getData(self::VALID_TRACKING);
     }
@@ -122,7 +122,7 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -131,7 +131,7 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -140,7 +140,7 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -149,7 +149,7 @@ class MIValidateItemTracking extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

@@ -12,9 +12,9 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'GetASNDocumentLinesXML';
 
-    public const A_S_N_DOCUMENT_NO = 'ASNDocumentNo';
+    public const ASNDOCUMENT_NO = 'ASNDocumentNo';
 
-    public const A_S_N_DOCUMENT_LINE_NO = 'ASNDocumentLineNo';
+    public const ASNDOCUMENT_LINE_NO = 'ASNDocumentLineNo';
 
     public const ITEM_NO = 'ItemNo';
 
@@ -34,43 +34,43 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ASNDocumentNo
      * @return $this
      */
-    public function setASNDocumentNo(?string $ASNDocumentNo)
+    public function setAsndocumentno(?string $ASNDocumentNo)
     {
-        $this->setData(self::A_S_N_DOCUMENT_NO, $ASNDocumentNo);
+        $this->setData(self::ASNDOCUMENT_NO, $ASNDocumentNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getASNDocumentNo() : ?string
+    public function getAsndocumentno() : ?string
     {
-        return $this->getData(self::A_S_N_DOCUMENT_NO);
+        return $this->getData(self::ASNDOCUMENT_NO);
     }
 
     /**
      * @param int $ASNDocumentLineNo
      * @return $this
      */
-    public function setASNDocumentLineNo($ASNDocumentLineNo)
+    public function setAsndocumentlineno($ASNDocumentLineNo)
     {
-        $this->setData(self::A_S_N_DOCUMENT_LINE_NO, $ASNDocumentLineNo);
+        $this->setData(self::ASNDOCUMENT_LINE_NO, $ASNDocumentLineNo);
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getASNDocumentLineNo()
+    public function getAsndocumentlineno()
     {
-        return $this->getData(self::A_S_N_DOCUMENT_LINE_NO);
+        return $this->getData(self::ASNDOCUMENT_LINE_NO);
     }
 
     /**
      * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo(?string $ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
@@ -79,7 +79,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -88,7 +88,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -97,7 +97,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -106,7 +106,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $BoxNo
      * @return $this
      */
-    public function setBoxNo(?string $BoxNo)
+    public function setBoxno(?string $BoxNo)
     {
         $this->setData(self::BOX_NO, $BoxNo);
         return $this;
@@ -115,7 +115,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBoxNo() : ?string
+    public function getBoxno() : ?string
     {
         return $this->getData(self::BOX_NO);
     }
@@ -124,7 +124,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $RemainingQty
      * @return $this
      */
-    public function setRemainingQty(?float $RemainingQty)
+    public function setRemainingqty(?float $RemainingQty)
     {
         $this->setData(self::REMAINING_QTY, $RemainingQty);
         return $this;
@@ -133,7 +133,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getRemainingQty() : ?float
+    public function getRemainingqty() : ?float
     {
         return $this->getData(self::REMAINING_QTY);
     }
@@ -142,7 +142,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $BatchLot
      * @return $this
      */
-    public function setBatchLot(?string $BatchLot)
+    public function setBatchlot(?string $BatchLot)
     {
         $this->setData(self::BATCH_LOT, $BatchLot);
         return $this;
@@ -151,7 +151,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBatchLot() : ?string
+    public function getBatchlot() : ?string
     {
         return $this->getData(self::BATCH_LOT);
     }
@@ -160,7 +160,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExpirationDate
      * @return $this
      */
-    public function setExpirationDate(?string $ExpirationDate)
+    public function setExpirationdate(?string $ExpirationDate)
     {
         $this->setData(self::EXPIRATION_DATE, $ExpirationDate);
         return $this;
@@ -169,7 +169,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirationDate() : ?string
+    public function getExpirationdate() : ?string
     {
         return $this->getData(self::EXPIRATION_DATE);
     }
@@ -178,7 +178,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TrustLevel
      * @return $this
      */
-    public function setTrustLevel(?string $TrustLevel)
+    public function setTrustlevel(?string $TrustLevel)
     {
         $this->setData(self::TRUST_LEVEL, $TrustLevel);
         return $this;
@@ -187,7 +187,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTrustLevel() : ?string
+    public function getTrustlevel() : ?string
     {
         return $this->getData(self::TRUST_LEVEL);
     }

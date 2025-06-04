@@ -28,7 +28,7 @@ class RootGetHierarchyValSched extends \Magento\Catalog\Model\AbstractModel
      * @param HierarchyVal.Sched $HierarchyValSched
      * @return $this
      */
-    public function setHierarchyValSched($HierarchyValSched)
+    public function setHierarchyvalSched($HierarchyValSched)
     {
         $this->setData(self::HIERARCHY_VAL_SCHED, $HierarchyValSched);
         return $this;
@@ -37,7 +37,7 @@ class RootGetHierarchyValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HierarchyVal.Sched
      */
-    public function getHierarchyValSched()
+    public function getHierarchyvalSched()
     {
         return $this->getData(self::HIERARCHY_VAL_SCHED);
     }
@@ -46,7 +46,7 @@ class RootGetHierarchyValSched extends \Magento\Catalog\Model\AbstractModel
      * @param HierarchyAttributeVal.Sched $HierarchyAttributeValSched
      * @return $this
      */
-    public function setHierarchyAttributeValSched($HierarchyAttributeValSched)
+    public function setHierarchyattributevalSched($HierarchyAttributeValSched)
     {
         $this->setData(self::HIERARCHY_ATTRIBUTE_VAL_SCHED, $HierarchyAttributeValSched);
         return $this;
@@ -55,7 +55,7 @@ class RootGetHierarchyValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HierarchyAttributeVal.Sched
      */
-    public function getHierarchyAttributeValSched()
+    public function getHierarchyattributevalSched()
     {
         return $this->getData(self::HIERARCHY_ATTRIBUTE_VAL_SCHED);
     }
@@ -64,7 +64,7 @@ class RootGetHierarchyValSched extends \Magento\Catalog\Model\AbstractModel
      * @param AttributeOptionValueVal.Sched $AttributeOptionValueValSched
      * @return $this
      */
-    public function setAttributeOptionValueValSched($AttributeOptionValueValSched)
+    public function setAttributeoptionvaluevalSched($AttributeOptionValueValSched)
     {
         $this->setData(self::ATTRIBUTE_OPTION_VALUE_VAL_SCHED, $AttributeOptionValueValSched);
         return $this;
@@ -73,7 +73,7 @@ class RootGetHierarchyValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return AttributeOptionValueVal.Sched
      */
-    public function getAttributeOptionValueValSched()
+    public function getAttributeoptionvaluevalSched()
     {
         return $this->getData(self::ATTRIBUTE_OPTION_VALUE_VAL_SCHED);
     }
@@ -82,7 +82,7 @@ class RootGetHierarchyValSched extends \Magento\Catalog\Model\AbstractModel
      * @param HierarchyNodesVal.Sched $HierarchyNodesValSched
      * @return $this
      */
-    public function setHierarchyNodesValSched($HierarchyNodesValSched)
+    public function setHierarchynodesvalSched($HierarchyNodesValSched)
     {
         $this->setData(self::HIERARCHY_NODES_VAL_SCHED, $HierarchyNodesValSched);
         return $this;
@@ -91,7 +91,7 @@ class RootGetHierarchyValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HierarchyNodesVal.Sched
      */
-    public function getHierarchyNodesValSched()
+    public function getHierarchynodesvalSched()
     {
         return $this->getData(self::HIERARCHY_NODES_VAL_SCHED);
     }
@@ -100,7 +100,7 @@ class RootGetHierarchyValSched extends \Magento\Catalog\Model\AbstractModel
      * @param HierarchyNodeImageVal.Sched $HierarchyNodeImageValSched
      * @return $this
      */
-    public function setHierarchyNodeImageValSched($HierarchyNodeImageValSched)
+    public function setHierarchynodeimagevalSched($HierarchyNodeImageValSched)
     {
         $this->setData(self::HIERARCHY_NODE_IMAGE_VAL_SCHED, $HierarchyNodeImageValSched);
         return $this;
@@ -109,7 +109,7 @@ class RootGetHierarchyValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HierarchyNodeImageVal.Sched
      */
-    public function getHierarchyNodeImageValSched()
+    public function getHierarchynodeimagevalSched()
     {
         return $this->getData(self::HIERARCHY_NODE_IMAGE_VAL_SCHED);
     }
@@ -118,7 +118,7 @@ class RootGetHierarchyValSched extends \Magento\Catalog\Model\AbstractModel
      * @param HierarchyDateVal.Sched $HierarchyDateValSched
      * @return $this
      */
-    public function setHierarchyDateValSched($HierarchyDateValSched)
+    public function setHierarchydatevalSched($HierarchyDateValSched)
     {
         $this->setData(self::HIERARCHY_DATE_VAL_SCHED, $HierarchyDateValSched);
         return $this;
@@ -127,7 +127,7 @@ class RootGetHierarchyValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HierarchyDateVal.Sched
      */
-    public function getHierarchyDateValSched()
+    public function getHierarchydatevalSched()
     {
         return $this->getData(self::HIERARCHY_DATE_VAL_SCHED);
     }

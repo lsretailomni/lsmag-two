@@ -20,13 +20,13 @@ class MobilePosRetSuspended extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const RECEIPT_NO = 'receiptNo';
 
-    public const MOBILE_TRANSACTION_X_M_L = 'mobileTransactionXML';
+    public const MOBILE_TRANSACTION_XML = 'mobileTransactionXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class MobilePosRetSuspended extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class MobilePosRetSuspended extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class MobilePosRetSuspended extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class MobilePosRetSuspended extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $receiptNo
      * @return $this
      */
-    public function setReceiptNo(?string $receiptNo)
+    public function setReceiptno(?string $receiptNo)
     {
         $this->setData(self::RECEIPT_NO, $receiptNo);
         return $this;
@@ -71,7 +71,7 @@ class MobilePosRetSuspended extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getReceiptNo() : ?string
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -80,18 +80,18 @@ class MobilePosRetSuspended extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootMobileTransaction $mobileTransactionXML
      * @return $this
      */
-    public function setMobileTransactionXML($mobileTransactionXML)
+    public function setMobiletransactionxml($mobileTransactionXML)
     {
-        $this->setData(self::MOBILE_TRANSACTION_X_M_L, $mobileTransactionXML);
+        $this->setData(self::MOBILE_TRANSACTION_XML, $mobileTransactionXML);
         return $this;
     }
 
     /**
      * @return RootMobileTransaction
      */
-    public function getMobileTransactionXML()
+    public function getMobiletransactionxml()
     {
-        return $this->getData(self::MOBILE_TRANSACTION_X_M_L);
+        return $this->getData(self::MOBILE_TRANSACTION_XML);
     }
 }
 

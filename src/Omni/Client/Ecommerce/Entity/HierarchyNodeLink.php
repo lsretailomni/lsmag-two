@@ -14,7 +14,7 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
 
     public const HIERARCHY_CODE = 'HierarchyCode';
 
-    public const NODE_I_D = 'NodeID';
+    public const NODE_ID = 'NodeID';
 
     public const TYPE = 'Type';
 
@@ -30,7 +30,7 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $HierarchyCode
      * @return $this
      */
-    public function setHierarchyCode(?string $HierarchyCode)
+    public function setHierarchycode(?string $HierarchyCode)
     {
         $this->setData(self::HIERARCHY_CODE, $HierarchyCode);
         return $this;
@@ -39,7 +39,7 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHierarchyCode() : ?string
+    public function getHierarchycode() : ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
@@ -48,18 +48,18 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $NodeID
      * @return $this
      */
-    public function setNodeID(?string $NodeID)
+    public function setNodeid(?string $NodeID)
     {
-        $this->setData(self::NODE_I_D, $NodeID);
+        $this->setData(self::NODE_ID, $NodeID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getNodeID() : ?string
+    public function getNodeid() : ?string
     {
-        return $this->getData(self::NODE_I_D);
+        return $this->getData(self::NODE_ID);
     }
 
     /**
@@ -120,7 +120,7 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemUnitofMeasure
      * @return $this
      */
-    public function setItemUnitofMeasure(?string $ItemUnitofMeasure)
+    public function setItemunitofmeasure(?string $ItemUnitofMeasure)
     {
         $this->setData(self::ITEM_UNITOF_MEASURE, $ItemUnitofMeasure);
         return $this;
@@ -129,7 +129,7 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemUnitofMeasure() : ?string
+    public function getItemunitofmeasure() : ?string
     {
         return $this->getData(self::ITEM_UNITOF_MEASURE);
     }
@@ -138,7 +138,7 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
      * @param int $SortOrder
      * @return $this
      */
-    public function setSortOrder($SortOrder)
+    public function setSortorder($SortOrder)
     {
         $this->setData(self::SORT_ORDER, $SortOrder);
         return $this;
@@ -147,7 +147,7 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getSortOrder()
+    public function getSortorder()
     {
         return $this->getData(self::SORT_ORDER);
     }

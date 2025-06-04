@@ -12,24 +12,24 @@ class RootMobilePosPrint extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootMobilePosPrint';
 
-    public const P_O_S_PRINT_BUFFER = 'POSPrintBuffer';
+    public const POSPRINT_BUFFER = 'POSPrintBuffer';
 
     /**
      * @param POSPrintBuffer $POSPrintBuffer
      * @return $this
      */
-    public function setPOSPrintBuffer($POSPrintBuffer)
+    public function setPosprintbuffer($POSPrintBuffer)
     {
-        $this->setData(self::P_O_S_PRINT_BUFFER, $POSPrintBuffer);
+        $this->setData(self::POSPRINT_BUFFER, $POSPrintBuffer);
         return $this;
     }
 
     /**
      * @return POSPrintBuffer
      */
-    public function getPOSPrintBuffer()
+    public function getPosprintbuffer()
     {
-        return $this->getData(self::P_O_S_PRINT_BUFFER);
+        return $this->getData(self::POSPRINT_BUFFER);
     }
 }
 

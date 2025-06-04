@@ -22,19 +22,19 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
 
     public const POS_TERMINAL = 'posTerminal';
 
-    public const STAFF_I_D = 'staffID';
+    public const STAFF_ID = 'staffID';
 
-    public const X_Z_REPORT = 'xZReport';
+    public const XZREPORT = 'xZReport';
 
-    public const Z_REPORT_I_D = 'zReportID';
+    public const ZREPORT_ID = 'zReportID';
 
-    public const MOBILE_POS_Z_REPORT_X_M_L = 'mobilePosZReportXML';
+    public const MOBILE_POS_ZREPORT_XML = 'mobilePosZReportXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -43,7 +43,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -52,7 +52,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -61,7 +61,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -70,7 +70,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -79,7 +79,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -88,7 +88,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
      * @param ?string $posTerminal
      * @return $this
      */
-    public function setPosTerminal(?string $posTerminal)
+    public function setPosterminal(?string $posTerminal)
     {
         $this->setData(self::POS_TERMINAL, $posTerminal);
         return $this;
@@ -97,7 +97,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getPosTerminal() : ?string
+    public function getPosterminal() : ?string
     {
         return $this->getData(self::POS_TERMINAL);
     }
@@ -106,72 +106,72 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
      * @param ?string $staffID
      * @return $this
      */
-    public function setStaffID(?string $staffID)
+    public function setStaffid(?string $staffID)
     {
-        $this->setData(self::STAFF_I_D, $staffID);
+        $this->setData(self::STAFF_ID, $staffID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getStaffID() : ?string
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
      * @param ?string $xZReport
      * @return $this
      */
-    public function setXZReport(?string $xZReport)
+    public function setXzreport(?string $xZReport)
     {
-        $this->setData(self::X_Z_REPORT, $xZReport);
+        $this->setData(self::XZREPORT, $xZReport);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getXZReport() : ?string
+    public function getXzreport() : ?string
     {
-        return $this->getData(self::X_Z_REPORT);
+        return $this->getData(self::XZREPORT);
     }
 
     /**
      * @param ?string $zReportID
      * @return $this
      */
-    public function setZReportID(?string $zReportID)
+    public function setZreportid(?string $zReportID)
     {
-        $this->setData(self::Z_REPORT_I_D, $zReportID);
+        $this->setData(self::ZREPORT_ID, $zReportID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getZReportID() : ?string
+    public function getZreportid() : ?string
     {
-        return $this->getData(self::Z_REPORT_I_D);
+        return $this->getData(self::ZREPORT_ID);
     }
 
     /**
      * @param RootMobilePosZReport $mobilePosZReportXML
      * @return $this
      */
-    public function setMobilePosZReportXML($mobilePosZReportXML)
+    public function setMobileposzreportxml($mobilePosZReportXML)
     {
-        $this->setData(self::MOBILE_POS_Z_REPORT_X_M_L, $mobilePosZReportXML);
+        $this->setData(self::MOBILE_POS_ZREPORT_XML, $mobilePosZReportXML);
         return $this;
     }
 
     /**
      * @return RootMobilePosZReport
      */
-    public function getMobilePosZReportXML()
+    public function getMobileposzreportxml()
     {
-        return $this->getData(self::MOBILE_POS_Z_REPORT_X_M_L);
+        return $this->getData(self::MOBILE_POS_ZREPORT_XML);
     }
 }
 

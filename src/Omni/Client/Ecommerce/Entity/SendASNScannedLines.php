@@ -14,7 +14,7 @@ class SendASNScannedLines extends \Magento\Catalog\Model\AbstractModel implement
 {
     public const CLASS_NAME = 'SendASNScannedLines';
 
-    public const SEND_A_S_N_SCANNED_LINES_X_M_L = 'sendASNScannedLinesXML';
+    public const SEND_ASNSCANNED_LINES_XML = 'sendASNScannedLinesXML';
 
     public const RESULT = 'result';
 
@@ -26,18 +26,18 @@ class SendASNScannedLines extends \Magento\Catalog\Model\AbstractModel implement
      * @param RootSendASNScannedLines $sendASNScannedLinesXML
      * @return $this
      */
-    public function setSendASNScannedLinesXML($sendASNScannedLinesXML)
+    public function setSendasnscannedlinesxml($sendASNScannedLinesXML)
     {
-        $this->setData(self::SEND_A_S_N_SCANNED_LINES_X_M_L, $sendASNScannedLinesXML);
+        $this->setData(self::SEND_ASNSCANNED_LINES_XML, $sendASNScannedLinesXML);
         return $this;
     }
 
     /**
      * @return RootSendASNScannedLines
      */
-    public function getSendASNScannedLinesXML()
+    public function getSendasnscannedlinesxml()
     {
-        return $this->getData(self::SEND_A_S_N_SCANNED_LINES_X_M_L);
+        return $this->getData(self::SEND_ASNSCANNED_LINES_XML);
     }
 
     /**
@@ -62,7 +62,7 @@ class SendASNScannedLines extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -71,7 +71,7 @@ class SendASNScannedLines extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -80,7 +80,7 @@ class SendASNScannedLines extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -89,7 +89,7 @@ class SendASNScannedLines extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

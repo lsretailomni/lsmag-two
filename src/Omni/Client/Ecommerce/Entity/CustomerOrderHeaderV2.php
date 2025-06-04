@@ -12,7 +12,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'CustomerOrderHeaderV2';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const CREATEDAT_STORE = 'CreatedatStore';
 
@@ -28,7 +28,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
 
     public const EMAIL = 'Email';
 
-    public const SHIP_ORDER_P_O_S_FLAG = 'ShipOrderPOSFlag';
+    public const SHIP_ORDER_POSFLAG = 'ShipOrderPOSFlag';
 
     public const TOTAL_AMOUNT = 'TotalAmount';
 
@@ -42,7 +42,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
 
     public const SHIP_ORDER = 'ShipOrder';
 
-    public const EXTERNAL_I_D = 'ExternalID';
+    public const EXTERNAL_ID = 'ExternalID';
 
     public const COMPRESSED_LINES_INT = 'CompressedLinesInt';
 
@@ -52,25 +52,25 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID(?string $DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDocumentID() : ?string
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
      * @param ?string $CreatedatStore
      * @return $this
      */
-    public function setCreatedatStore(?string $CreatedatStore)
+    public function setCreatedatstore(?string $CreatedatStore)
     {
         $this->setData(self::CREATEDAT_STORE, $CreatedatStore);
         return $this;
@@ -79,7 +79,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedatStore() : ?string
+    public function getCreatedatstore() : ?string
     {
         return $this->getData(self::CREATEDAT_STORE);
     }
@@ -106,7 +106,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $MemberCardNo
      * @return $this
      */
-    public function setMemberCardNo(?string $MemberCardNo)
+    public function setMembercardno(?string $MemberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $MemberCardNo);
         return $this;
@@ -115,7 +115,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberCardNo() : ?string
+    public function getMembercardno() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -124,7 +124,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $FullName
      * @return $this
      */
-    public function setFullName(?string $FullName)
+    public function setFullname(?string $FullName)
     {
         $this->setData(self::FULL_NAME, $FullName);
         return $this;
@@ -133,7 +133,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFullName() : ?string
+    public function getFullname() : ?string
     {
         return $this->getData(self::FULL_NAME);
     }
@@ -160,7 +160,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PhoneNo
      * @return $this
      */
-    public function setPhoneNo(?string $PhoneNo)
+    public function setPhoneno(?string $PhoneNo)
     {
         $this->setData(self::PHONE_NO, $PhoneNo);
         return $this;
@@ -169,7 +169,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPhoneNo() : ?string
+    public function getPhoneno() : ?string
     {
         return $this->getData(self::PHONE_NO);
     }
@@ -196,25 +196,25 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShipOrderPOSFlag
      * @return $this
      */
-    public function setShipOrderPOSFlag(?string $ShipOrderPOSFlag)
+    public function setShiporderposflag(?string $ShipOrderPOSFlag)
     {
-        $this->setData(self::SHIP_ORDER_P_O_S_FLAG, $ShipOrderPOSFlag);
+        $this->setData(self::SHIP_ORDER_POSFLAG, $ShipOrderPOSFlag);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getShipOrderPOSFlag() : ?string
+    public function getShiporderposflag() : ?string
     {
-        return $this->getData(self::SHIP_ORDER_P_O_S_FLAG);
+        return $this->getData(self::SHIP_ORDER_POSFLAG);
     }
 
     /**
      * @param ?float $TotalAmount
      * @return $this
      */
-    public function setTotalAmount(?float $TotalAmount)
+    public function setTotalamount(?float $TotalAmount)
     {
         $this->setData(self::TOTAL_AMOUNT, $TotalAmount);
         return $this;
@@ -223,7 +223,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalAmount() : ?float
+    public function getTotalamount() : ?float
     {
         return $this->getData(self::TOTAL_AMOUNT);
     }
@@ -232,7 +232,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $TotalQuantity
      * @return $this
      */
-    public function setTotalQuantity(?float $TotalQuantity)
+    public function setTotalquantity(?float $TotalQuantity)
     {
         $this->setData(self::TOTAL_QUANTITY, $TotalQuantity);
         return $this;
@@ -241,7 +241,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalQuantity() : ?float
+    public function getTotalquantity() : ?float
     {
         return $this->getData(self::TOTAL_QUANTITY);
     }
@@ -250,7 +250,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ProcessingStatus
      * @return $this
      */
-    public function setProcessingStatus(?string $ProcessingStatus)
+    public function setProcessingstatus(?string $ProcessingStatus)
     {
         $this->setData(self::PROCESSING_STATUS, $ProcessingStatus);
         return $this;
@@ -259,7 +259,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getProcessingStatus() : ?string
+    public function getProcessingstatus() : ?string
     {
         return $this->getData(self::PROCESSING_STATUS);
     }
@@ -268,7 +268,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StatusInt
      * @return $this
      */
-    public function setStatusInt(?string $StatusInt)
+    public function setStatusint(?string $StatusInt)
     {
         $this->setData(self::STATUS_INT, $StatusInt);
         return $this;
@@ -277,7 +277,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatusInt() : ?string
+    public function getStatusint() : ?string
     {
         return $this->getData(self::STATUS_INT);
     }
@@ -286,7 +286,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RequestedDeliveryDate
      * @return $this
      */
-    public function setRequestedDeliveryDate(?string $RequestedDeliveryDate)
+    public function setRequesteddeliverydate(?string $RequestedDeliveryDate)
     {
         $this->setData(self::REQUESTED_DELIVERY_DATE, $RequestedDeliveryDate);
         return $this;
@@ -295,7 +295,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequestedDeliveryDate() : ?string
+    public function getRequesteddeliverydate() : ?string
     {
         return $this->getData(self::REQUESTED_DELIVERY_DATE);
     }
@@ -304,7 +304,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ShipOrder
      * @return $this
      */
-    public function setShipOrder(?bool $ShipOrder)
+    public function setShiporder(?bool $ShipOrder)
     {
         $this->setData(self::SHIP_ORDER, $ShipOrder);
         return $this;
@@ -313,7 +313,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getShipOrder() : ?bool
+    public function getShiporder() : ?bool
     {
         return $this->getData(self::SHIP_ORDER);
     }
@@ -322,25 +322,25 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExternalID
      * @return $this
      */
-    public function setExternalID(?string $ExternalID)
+    public function setExternalid(?string $ExternalID)
     {
-        $this->setData(self::EXTERNAL_I_D, $ExternalID);
+        $this->setData(self::EXTERNAL_ID, $ExternalID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getExternalID() : ?string
+    public function getExternalid() : ?string
     {
-        return $this->getData(self::EXTERNAL_I_D);
+        return $this->getData(self::EXTERNAL_ID);
     }
 
     /**
      * @param ?bool $CompressedLinesInt
      * @return $this
      */
-    public function setCompressedLinesInt(?bool $CompressedLinesInt)
+    public function setCompressedlinesint(?bool $CompressedLinesInt)
     {
         $this->setData(self::COMPRESSED_LINES_INT, $CompressedLinesInt);
         return $this;
@@ -349,7 +349,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getCompressedLinesInt() : ?bool
+    public function getCompressedlinesint() : ?bool
     {
         return $this->getData(self::COMPRESSED_LINES_INT);
     }
@@ -358,7 +358,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PickType
      * @return $this
      */
-    public function setPickType(?string $PickType)
+    public function setPicktype(?string $PickType)
     {
         $this->setData(self::PICK_TYPE, $PickType);
         return $this;
@@ -367,7 +367,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPickType() : ?string
+    public function getPicktype() : ?string
     {
         return $this->getData(self::PICK_TYPE);
     }

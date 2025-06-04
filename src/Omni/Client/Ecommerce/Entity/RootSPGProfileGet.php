@@ -12,24 +12,24 @@ class RootSPGProfileGet extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootSPGProfileGet';
 
-    public const S_P_G_PROFILE_GET = 'SPGProfileGet';
+    public const SPGPROFILE_GET = 'SPGProfileGet';
 
     /**
      * @param SPGProfileGet $SPGProfileGet
      * @return $this
      */
-    public function setSPGProfileGet($SPGProfileGet)
+    public function setSpgprofileget($SPGProfileGet)
     {
-        $this->setData(self::S_P_G_PROFILE_GET, $SPGProfileGet);
+        $this->setData(self::SPGPROFILE_GET, $SPGProfileGet);
         return $this;
     }
 
     /**
      * @return SPGProfileGet
      */
-    public function getSPGProfileGet()
+    public function getSpgprofileget()
     {
-        return $this->getData(self::S_P_G_PROFILE_GET);
+        return $this->getData(self::SPGPROFILE_GET);
     }
 }
 

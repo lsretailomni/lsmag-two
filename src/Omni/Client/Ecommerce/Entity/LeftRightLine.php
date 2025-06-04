@@ -22,7 +22,7 @@ class LeftRightLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -31,7 +31,7 @@ class LeftRightLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
@@ -40,7 +40,7 @@ class LeftRightLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LeftLine
      * @return $this
      */
-    public function setLeftLine(?string $LeftLine)
+    public function setLeftline(?string $LeftLine)
     {
         $this->setData(self::LEFT_LINE, $LeftLine);
         return $this;
@@ -49,7 +49,7 @@ class LeftRightLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLeftLine() : ?string
+    public function getLeftline() : ?string
     {
         return $this->getData(self::LEFT_LINE);
     }
@@ -58,7 +58,7 @@ class LeftRightLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RightLine
      * @return $this
      */
-    public function setRightLine(?string $RightLine)
+    public function setRightline(?string $RightLine)
     {
         $this->setData(self::RIGHT_LINE, $RightLine);
         return $this;
@@ -67,7 +67,7 @@ class LeftRightLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRightLine() : ?string
+    public function getRightline() : ?string
     {
         return $this->getData(self::RIGHT_LINE);
     }

@@ -18,13 +18,13 @@ class GetReturnPolicyResult extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_RETURN_POLICY_X_M_L = 'getReturnPolicyXML';
+    public const GET_RETURN_POLICY_XML = 'getReturnPolicyXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class GetReturnPolicyResult extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class GetReturnPolicyResult extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class GetReturnPolicyResult extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetReturnPolicyResult extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootGetReturnPolicy $getReturnPolicyXML
      * @return $this
      */
-    public function setGetReturnPolicyXML($getReturnPolicyXML)
+    public function setGetreturnpolicyxml($getReturnPolicyXML)
     {
-        $this->setData(self::GET_RETURN_POLICY_X_M_L, $getReturnPolicyXML);
+        $this->setData(self::GET_RETURN_POLICY_XML, $getReturnPolicyXML);
         return $this;
     }
 
     /**
      * @return RootGetReturnPolicy
      */
-    public function getGetReturnPolicyXML()
+    public function getGetreturnpolicyxml()
     {
-        return $this->getData(self::GET_RETURN_POLICY_X_M_L);
+        return $this->getData(self::GET_RETURN_POLICY_XML);
     }
 
     /**

@@ -18,13 +18,13 @@ class GetMemberSalesHistoryResult extends \Magento\Catalog\Model\AbstractModel i
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_MEMBER_SALES_HISTORY_X_M_L = 'getMemberSalesHistoryXML';
+    public const GET_MEMBER_SALES_HISTORY_XML = 'getMemberSalesHistoryXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class GetMemberSalesHistoryResult extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class GetMemberSalesHistoryResult extends \Magento\Catalog\Model\AbstractModel i
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class GetMemberSalesHistoryResult extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetMemberSalesHistoryResult extends \Magento\Catalog\Model\AbstractModel i
      * @param RootGetMemberSalesHistory $getMemberSalesHistoryXML
      * @return $this
      */
-    public function setGetMemberSalesHistoryXML($getMemberSalesHistoryXML)
+    public function setGetmembersaleshistoryxml($getMemberSalesHistoryXML)
     {
-        $this->setData(self::GET_MEMBER_SALES_HISTORY_X_M_L, $getMemberSalesHistoryXML);
+        $this->setData(self::GET_MEMBER_SALES_HISTORY_XML, $getMemberSalesHistoryXML);
         return $this;
     }
 
     /**
      * @return RootGetMemberSalesHistory
      */
-    public function getGetMemberSalesHistoryXML()
+    public function getGetmembersaleshistoryxml()
     {
-        return $this->getData(self::GET_MEMBER_SALES_HISTORY_X_M_L);
+        return $this->getData(self::GET_MEMBER_SALES_HISTORY_XML);
     }
 
     /**

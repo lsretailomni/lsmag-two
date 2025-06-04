@@ -26,13 +26,13 @@ class GetTransaction extends \Magento\Catalog\Model\AbstractModel implements Req
 
     public const TRANSACTION_NO = 'transactionNo';
 
-    public const GET_TRANSACTION_X_M_L = 'getTransactionXML';
+    public const GET_TRANSACTION_XML = 'getTransactionXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -41,7 +41,7 @@ class GetTransaction extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -50,7 +50,7 @@ class GetTransaction extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -59,7 +59,7 @@ class GetTransaction extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -68,7 +68,7 @@ class GetTransaction extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $receiptNo
      * @return $this
      */
-    public function setReceiptNo(?string $receiptNo)
+    public function setReceiptno(?string $receiptNo)
     {
         $this->setData(self::RECEIPT_NO, $receiptNo);
         return $this;
@@ -77,7 +77,7 @@ class GetTransaction extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getReceiptNo() : ?string
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -86,7 +86,7 @@ class GetTransaction extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -95,7 +95,7 @@ class GetTransaction extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -104,7 +104,7 @@ class GetTransaction extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $posTerminalNo
      * @return $this
      */
-    public function setPosTerminalNo(?string $posTerminalNo)
+    public function setPosterminalno(?string $posTerminalNo)
     {
         $this->setData(self::POS_TERMINAL_NO, $posTerminalNo);
         return $this;
@@ -113,7 +113,7 @@ class GetTransaction extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getPosTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
         return $this->getData(self::POS_TERMINAL_NO);
     }
@@ -122,7 +122,7 @@ class GetTransaction extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param int $transactionNo
      * @return $this
      */
-    public function setTransactionNo($transactionNo)
+    public function setTransactionno($transactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $transactionNo);
         return $this;
@@ -131,7 +131,7 @@ class GetTransaction extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -140,18 +140,18 @@ class GetTransaction extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param RootGetTransaction $getTransactionXML
      * @return $this
      */
-    public function setGetTransactionXML($getTransactionXML)
+    public function setGettransactionxml($getTransactionXML)
     {
-        $this->setData(self::GET_TRANSACTION_X_M_L, $getTransactionXML);
+        $this->setData(self::GET_TRANSACTION_XML, $getTransactionXML);
         return $this;
     }
 
     /**
      * @return RootGetTransaction
      */
-    public function getGetTransactionXML()
+    public function getGettransactionxml()
     {
-        return $this->getData(self::GET_TRANSACTION_X_M_L);
+        return $this->getData(self::GET_TRANSACTION_XML);
     }
 }
 

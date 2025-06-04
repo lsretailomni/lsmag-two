@@ -18,7 +18,7 @@ class MobilePosGetDeviceIDResult extends \Magento\Catalog\Model\AbstractModel im
 
     public const ERROR_TEXT = 'errorText';
 
-    public const DEVICE_UNIQUE_I_D = 'deviceUniqueID';
+    public const DEVICE_UNIQUE_ID = 'deviceUniqueID';
 
     public const DEVICE_LICENSE_KEY = 'deviceLicenseKey';
 
@@ -26,7 +26,7 @@ class MobilePosGetDeviceIDResult extends \Magento\Catalog\Model\AbstractModel im
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class MobilePosGetDeviceIDResult extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class MobilePosGetDeviceIDResult extends \Magento\Catalog\Model\AbstractModel im
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class MobilePosGetDeviceIDResult extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,25 +62,25 @@ class MobilePosGetDeviceIDResult extends \Magento\Catalog\Model\AbstractModel im
      * @param ?string $deviceUniqueID
      * @return $this
      */
-    public function setDeviceUniqueID(?string $deviceUniqueID)
+    public function setDeviceuniqueid(?string $deviceUniqueID)
     {
-        $this->setData(self::DEVICE_UNIQUE_I_D, $deviceUniqueID);
+        $this->setData(self::DEVICE_UNIQUE_ID, $deviceUniqueID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDeviceUniqueID() : ?string
+    public function getDeviceuniqueid() : ?string
     {
-        return $this->getData(self::DEVICE_UNIQUE_I_D);
+        return $this->getData(self::DEVICE_UNIQUE_ID);
     }
 
     /**
      * @param ?string $deviceLicenseKey
      * @return $this
      */
-    public function setDeviceLicenseKey(?string $deviceLicenseKey)
+    public function setDevicelicensekey(?string $deviceLicenseKey)
     {
         $this->setData(self::DEVICE_LICENSE_KEY, $deviceLicenseKey);
         return $this;
@@ -89,7 +89,7 @@ class MobilePosGetDeviceIDResult extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getDeviceLicenseKey() : ?string
+    public function getDevicelicensekey() : ?string
     {
         return $this->getData(self::DEVICE_LICENSE_KEY);
     }

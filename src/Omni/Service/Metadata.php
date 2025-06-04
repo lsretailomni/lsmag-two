@@ -184,6 +184,12 @@ class Metadata
 
         if ($parentNode->localName == 'sequence') {
             $sequence                          = $this->parseSequence($parentNode, $complexType, $complexName);
+            if (isset($this->types[$sequence->getName()])) {
+                $before = $this->types[$sequence->getName()]->getDefinition();
+                $now = $sequence->getDefinition();
+                $merged = array_merge($before, $now);
+                $sequence->setDefinition($merged);
+            }
             $this->types[$sequence->getName()] = $sequence;
 
             $this->elements[$sequence->getName()] = new Element($sequence->getName(), $sequence->getName());
@@ -359,11 +365,17 @@ class Metadata
                 }
                 $properties[$propertyName] = $propertyType;
             }
+            $merged = $properties;
+            if (isset($this->entities[$entityName])) {
+                $before = $this->entities[$entityName]->getDefinition();
+                $now = $properties;
+                $merged = array_merge($before, $now);
+            }
             // @codingStandardsIgnoreLine
             $this->entities[$entityName] = new Entity(
                 $entityName,
                 $this->elements[$entityName],
-                $properties
+                $merged
             );
         }
     }

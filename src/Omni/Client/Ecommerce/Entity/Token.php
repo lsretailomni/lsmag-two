@@ -20,7 +20,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
 
     public const TOKEN_TYPE = 'TokenType';
 
-    public const P_S_P_I_D = 'PSPID';
+    public const PSPID = 'PSPID';
 
     public const CARD_MASK = 'CardMask';
 
@@ -34,15 +34,15 @@ class Token extends \Magento\Catalog\Model\AbstractModel
 
     public const INITIATOR_REASON = 'InitiatorReason';
 
-    public const TOKEN_I_D_EXTERNAL = 'TokenIDExternal';
+    public const TOKEN_IDEXTERNAL = 'TokenIDExternal';
 
     public const CARD_NUMBER = 'CardNumber';
 
     public const CARD_TYPE_NAME = 'CardTypeName';
 
-    public const CARD_ISSUER_I_D = 'CardIssuerID';
+    public const CARD_ISSUER_ID = 'CardIssuerID';
 
-    public const P_A_R = 'PAR';
+    public const PAR = 'PAR';
 
     public const ENTRY_NO = 'EntryNo';
 
@@ -56,7 +56,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AccountNo
      * @return $this
      */
-    public function setAccountNo(?string $AccountNo)
+    public function setAccountno(?string $AccountNo)
     {
         $this->setData(self::ACCOUNT_NO, $AccountNo);
         return $this;
@@ -65,7 +65,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccountNo() : ?string
+    public function getAccountno() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
@@ -74,7 +74,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TokenId
      * @return $this
      */
-    public function setTokenId(?string $TokenId)
+    public function setTokenid(?string $TokenId)
     {
         $this->setData(self::TOKEN_ID, $TokenId);
         return $this;
@@ -83,7 +83,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTokenId() : ?string
+    public function getTokenid() : ?string
     {
         return $this->getData(self::TOKEN_ID);
     }
@@ -92,7 +92,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TokenValue
      * @return $this
      */
-    public function setTokenValue(?string $TokenValue)
+    public function setTokenvalue(?string $TokenValue)
     {
         $this->setData(self::TOKEN_VALUE, $TokenValue);
         return $this;
@@ -101,7 +101,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTokenValue() : ?string
+    public function getTokenvalue() : ?string
     {
         return $this->getData(self::TOKEN_VALUE);
     }
@@ -110,7 +110,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TokenType
      * @return $this
      */
-    public function setTokenType(?string $TokenType)
+    public function setTokentype(?string $TokenType)
     {
         $this->setData(self::TOKEN_TYPE, $TokenType);
         return $this;
@@ -119,7 +119,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTokenType() : ?string
+    public function getTokentype() : ?string
     {
         return $this->getData(self::TOKEN_TYPE);
     }
@@ -128,25 +128,25 @@ class Token extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PSPID
      * @return $this
      */
-    public function setPSPID(?string $PSPID)
+    public function setPspid(?string $PSPID)
     {
-        $this->setData(self::P_S_P_I_D, $PSPID);
+        $this->setData(self::PSPID, $PSPID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPSPID() : ?string
+    public function getPspid() : ?string
     {
-        return $this->getData(self::P_S_P_I_D);
+        return $this->getData(self::PSPID);
     }
 
     /**
      * @param ?string $CardMask
      * @return $this
      */
-    public function setCardMask(?string $CardMask)
+    public function setCardmask(?string $CardMask)
     {
         $this->setData(self::CARD_MASK, $CardMask);
         return $this;
@@ -155,7 +155,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardMask() : ?string
+    public function getCardmask() : ?string
     {
         return $this->getData(self::CARD_MASK);
     }
@@ -164,7 +164,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExpiryDate
      * @return $this
      */
-    public function setExpiryDate(?string $ExpiryDate)
+    public function setExpirydate(?string $ExpiryDate)
     {
         $this->setData(self::EXPIRY_DATE, $ExpiryDate);
         return $this;
@@ -173,7 +173,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpiryDate() : ?string
+    public function getExpirydate() : ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
@@ -182,7 +182,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $DefaultToken
      * @return $this
      */
-    public function setDefaultToken(?bool $DefaultToken)
+    public function setDefaulttoken(?bool $DefaultToken)
     {
         $this->setData(self::DEFAULT_TOKEN, $DefaultToken);
         return $this;
@@ -191,7 +191,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getDefaultToken() : ?bool
+    public function getDefaulttoken() : ?bool
     {
         return $this->getData(self::DEFAULT_TOKEN);
     }
@@ -200,7 +200,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CreatedDateTime
      * @return $this
      */
-    public function setCreatedDateTime(?string $CreatedDateTime)
+    public function setCreateddatetime(?string $CreatedDateTime)
     {
         $this->setData(self::CREATED_DATE_TIME, $CreatedDateTime);
         return $this;
@@ -209,7 +209,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedDateTime() : ?string
+    public function getCreateddatetime() : ?string
     {
         return $this->getData(self::CREATED_DATE_TIME);
     }
@@ -236,7 +236,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $InitiatorReason
      * @return $this
      */
-    public function setInitiatorReason(?string $InitiatorReason)
+    public function setInitiatorreason(?string $InitiatorReason)
     {
         $this->setData(self::INITIATOR_REASON, $InitiatorReason);
         return $this;
@@ -245,7 +245,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getInitiatorReason() : ?string
+    public function getInitiatorreason() : ?string
     {
         return $this->getData(self::INITIATOR_REASON);
     }
@@ -254,25 +254,25 @@ class Token extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TokenIDExternal
      * @return $this
      */
-    public function setTokenIDExternal(?string $TokenIDExternal)
+    public function setTokenidexternal(?string $TokenIDExternal)
     {
-        $this->setData(self::TOKEN_I_D_EXTERNAL, $TokenIDExternal);
+        $this->setData(self::TOKEN_IDEXTERNAL, $TokenIDExternal);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getTokenIDExternal() : ?string
+    public function getTokenidexternal() : ?string
     {
-        return $this->getData(self::TOKEN_I_D_EXTERNAL);
+        return $this->getData(self::TOKEN_IDEXTERNAL);
     }
 
     /**
      * @param ?string $CardNumber
      * @return $this
      */
-    public function setCardNumber(?string $CardNumber)
+    public function setCardnumber(?string $CardNumber)
     {
         $this->setData(self::CARD_NUMBER, $CardNumber);
         return $this;
@@ -281,7 +281,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardNumber() : ?string
+    public function getCardnumber() : ?string
     {
         return $this->getData(self::CARD_NUMBER);
     }
@@ -290,7 +290,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CardTypeName
      * @return $this
      */
-    public function setCardTypeName(?string $CardTypeName)
+    public function setCardtypename(?string $CardTypeName)
     {
         $this->setData(self::CARD_TYPE_NAME, $CardTypeName);
         return $this;
@@ -299,7 +299,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardTypeName() : ?string
+    public function getCardtypename() : ?string
     {
         return $this->getData(self::CARD_TYPE_NAME);
     }
@@ -308,43 +308,43 @@ class Token extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CardIssuerID
      * @return $this
      */
-    public function setCardIssuerID(?string $CardIssuerID)
+    public function setCardissuerid(?string $CardIssuerID)
     {
-        $this->setData(self::CARD_ISSUER_I_D, $CardIssuerID);
+        $this->setData(self::CARD_ISSUER_ID, $CardIssuerID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getCardIssuerID() : ?string
+    public function getCardissuerid() : ?string
     {
-        return $this->getData(self::CARD_ISSUER_I_D);
+        return $this->getData(self::CARD_ISSUER_ID);
     }
 
     /**
      * @param ?string $PAR
      * @return $this
      */
-    public function setPAR(?string $PAR)
+    public function setPar(?string $PAR)
     {
-        $this->setData(self::P_A_R, $PAR);
+        $this->setData(self::PAR, $PAR);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPAR() : ?string
+    public function getPar() : ?string
     {
-        return $this->getData(self::P_A_R);
+        return $this->getData(self::PAR);
     }
 
     /**
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -353,7 +353,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
@@ -380,7 +380,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ContactNo
      * @return $this
      */
-    public function setContactNo(?string $ContactNo)
+    public function setContactno(?string $ContactNo)
     {
         $this->setData(self::CONTACT_NO, $ContactNo);
         return $this;
@@ -389,7 +389,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContactNo() : ?string
+    public function getContactno() : ?string
     {
         return $this->getData(self::CONTACT_NO);
     }

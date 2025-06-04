@@ -18,7 +18,7 @@ class RootGetStoreOpeningHours extends \Magento\Catalog\Model\AbstractModel
      * @param RetailCalendarLine $RetailCalendarLine
      * @return $this
      */
-    public function setRetailCalendarLine($RetailCalendarLine)
+    public function setRetailcalendarline($RetailCalendarLine)
     {
         $this->setData(self::RETAIL_CALENDAR_LINE, $RetailCalendarLine);
         return $this;
@@ -27,7 +27,7 @@ class RootGetStoreOpeningHours extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return RetailCalendarLine
      */
-    public function getRetailCalendarLine()
+    public function getRetailcalendarline()
     {
         return $this->getData(self::RETAIL_CALENDAR_LINE);
     }

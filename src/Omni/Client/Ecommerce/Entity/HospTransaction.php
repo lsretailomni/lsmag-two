@@ -36,7 +36,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
 
     public const GEN_BUS_POSTING_GROUP = 'GenBusPostingGroup';
 
-    public const V_A_T_BUS_POSTING_GROUP = 'VATBusPostingGroup';
+    public const VATBUS_POSTING_GROUP = 'VATBusPostingGroup';
 
     public const PRICE_GROUP_CODE = 'PriceGroupCode';
 
@@ -74,7 +74,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
 
     public const REFUNDED_FROM_STORE_NO = 'RefundedFromStoreNo';
 
-    public const REFUNDED_FROM_P_O_S_TERM_NO = 'RefundedFromPOSTermNo';
+    public const REFUNDED_FROM_POSTERM_NO = 'RefundedFromPOSTermNo';
 
     public const REFUNDED_FROM_TRANS_NO = 'RefundedFromTransNo';
 
@@ -120,7 +120,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreId
      * @return $this
      */
-    public function setStoreId(?string $StoreId)
+    public function setStoreid(?string $StoreId)
     {
         $this->setData(self::STORE_ID, $StoreId);
         return $this;
@@ -129,7 +129,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreId() : ?string
+    public function getStoreid() : ?string
     {
         return $this->getData(self::STORE_ID);
     }
@@ -138,7 +138,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TerminalId
      * @return $this
      */
-    public function setTerminalId(?string $TerminalId)
+    public function setTerminalid(?string $TerminalId)
     {
         $this->setData(self::TERMINAL_ID, $TerminalId);
         return $this;
@@ -147,7 +147,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTerminalId() : ?string
+    public function getTerminalid() : ?string
     {
         return $this->getData(self::TERMINAL_ID);
     }
@@ -156,7 +156,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StaffId
      * @return $this
      */
-    public function setStaffId(?string $StaffId)
+    public function setStaffid(?string $StaffId)
     {
         $this->setData(self::STAFF_ID, $StaffId);
         return $this;
@@ -165,7 +165,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffId() : ?string
+    public function getStaffid() : ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -174,7 +174,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionType
      * @return $this
      */
-    public function setTransactionType($TransactionType)
+    public function setTransactiontype($TransactionType)
     {
         $this->setData(self::TRANSACTION_TYPE, $TransactionType);
         return $this;
@@ -183,7 +183,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionType()
+    public function getTransactiontype()
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
@@ -192,7 +192,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param int $EntryStatus
      * @return $this
      */
-    public function setEntryStatus($EntryStatus)
+    public function setEntrystatus($EntryStatus)
     {
         $this->setData(self::ENTRY_STATUS, $EntryStatus);
         return $this;
@@ -201,7 +201,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryStatus()
+    public function getEntrystatus()
     {
         return $this->getData(self::ENTRY_STATUS);
     }
@@ -210,7 +210,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo(?string $ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
@@ -219,7 +219,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptNo() : ?string
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -228,7 +228,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -237,7 +237,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -246,7 +246,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TransDate
      * @return $this
      */
-    public function setTransDate(?string $TransDate)
+    public function setTransdate(?string $TransDate)
     {
         $this->setData(self::TRANS_DATE, $TransDate);
         return $this;
@@ -255,7 +255,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransDate() : ?string
+    public function getTransdate() : ?string
     {
         return $this->getData(self::TRANS_DATE);
     }
@@ -264,7 +264,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode(?string $CurrencyCode)
+    public function setCurrencycode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
@@ -273,7 +273,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencyCode() : ?string
+    public function getCurrencycode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -282,7 +282,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $CurrencyFactor
      * @return $this
      */
-    public function setCurrencyFactor(?float $CurrencyFactor)
+    public function setCurrencyfactor(?float $CurrencyFactor)
     {
         $this->setData(self::CURRENCY_FACTOR, $CurrencyFactor);
         return $this;
@@ -291,7 +291,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCurrencyFactor() : ?float
+    public function getCurrencyfactor() : ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
     }
@@ -300,7 +300,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $GenBusPostingGroup
      * @return $this
      */
-    public function setGenBusPostingGroup(?string $GenBusPostingGroup)
+    public function setGenbuspostinggroup(?string $GenBusPostingGroup)
     {
         $this->setData(self::GEN_BUS_POSTING_GROUP, $GenBusPostingGroup);
         return $this;
@@ -309,7 +309,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGenBusPostingGroup() : ?string
+    public function getGenbuspostinggroup() : ?string
     {
         return $this->getData(self::GEN_BUS_POSTING_GROUP);
     }
@@ -318,25 +318,25 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VATBusPostingGroup
      * @return $this
      */
-    public function setVATBusPostingGroup(?string $VATBusPostingGroup)
+    public function setVatbuspostinggroup(?string $VATBusPostingGroup)
     {
-        $this->setData(self::V_A_T_BUS_POSTING_GROUP, $VATBusPostingGroup);
+        $this->setData(self::VATBUS_POSTING_GROUP, $VATBusPostingGroup);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getVATBusPostingGroup() : ?string
+    public function getVatbuspostinggroup() : ?string
     {
-        return $this->getData(self::V_A_T_BUS_POSTING_GROUP);
+        return $this->getData(self::VATBUS_POSTING_GROUP);
     }
 
     /**
      * @param ?string $PriceGroupCode
      * @return $this
      */
-    public function setPriceGroupCode(?string $PriceGroupCode)
+    public function setPricegroupcode(?string $PriceGroupCode)
     {
         $this->setData(self::PRICE_GROUP_CODE, $PriceGroupCode);
         return $this;
@@ -345,7 +345,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPriceGroupCode() : ?string
+    public function getPricegroupcode() : ?string
     {
         return $this->getData(self::PRICE_GROUP_CODE);
     }
@@ -354,7 +354,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CustomerId
      * @return $this
      */
-    public function setCustomerId(?string $CustomerId)
+    public function setCustomerid(?string $CustomerId)
     {
         $this->setData(self::CUSTOMER_ID, $CustomerId);
         return $this;
@@ -363,7 +363,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerId() : ?string
+    public function getCustomerid() : ?string
     {
         return $this->getData(self::CUSTOMER_ID);
     }
@@ -372,7 +372,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CustDiscGroup
      * @return $this
      */
-    public function setCustDiscGroup(?string $CustDiscGroup)
+    public function setCustdiscgroup(?string $CustDiscGroup)
     {
         $this->setData(self::CUST_DISC_GROUP, $CustDiscGroup);
         return $this;
@@ -381,7 +381,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustDiscGroup() : ?string
+    public function getCustdiscgroup() : ?string
     {
         return $this->getData(self::CUST_DISC_GROUP);
     }
@@ -390,7 +390,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $MemberCardNo
      * @return $this
      */
-    public function setMemberCardNo(?string $MemberCardNo)
+    public function setMembercardno(?string $MemberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $MemberCardNo);
         return $this;
@@ -399,7 +399,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberCardNo() : ?string
+    public function getMembercardno() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -408,7 +408,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $MemberPriceGroupCode
      * @return $this
      */
-    public function setMemberPriceGroupCode(?string $MemberPriceGroupCode)
+    public function setMemberpricegroupcode(?string $MemberPriceGroupCode)
     {
         $this->setData(self::MEMBER_PRICE_GROUP_CODE, $MemberPriceGroupCode);
         return $this;
@@ -417,7 +417,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberPriceGroupCode() : ?string
+    public function getMemberpricegroupcode() : ?string
     {
         return $this->getData(self::MEMBER_PRICE_GROUP_CODE);
     }
@@ -426,7 +426,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $ManualTotalDiscPercent
      * @return $this
      */
-    public function setManualTotalDiscPercent(?float $ManualTotalDiscPercent)
+    public function setManualtotaldiscpercent(?float $ManualTotalDiscPercent)
     {
         $this->setData(self::MANUAL_TOTAL_DISC_PERCENT, $ManualTotalDiscPercent);
         return $this;
@@ -435,7 +435,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getManualTotalDiscPercent() : ?float
+    public function getManualtotaldiscpercent() : ?float
     {
         return $this->getData(self::MANUAL_TOTAL_DISC_PERCENT);
     }
@@ -444,7 +444,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $ManualTotalDiscAmount
      * @return $this
      */
-    public function setManualTotalDiscAmount(?float $ManualTotalDiscAmount)
+    public function setManualtotaldiscamount(?float $ManualTotalDiscAmount)
     {
         $this->setData(self::MANUAL_TOTAL_DISC_AMOUNT, $ManualTotalDiscAmount);
         return $this;
@@ -453,7 +453,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getManualTotalDiscAmount() : ?float
+    public function getManualtotaldiscamount() : ?float
     {
         return $this->getData(self::MANUAL_TOTAL_DISC_AMOUNT);
     }
@@ -462,7 +462,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SourceType
      * @return $this
      */
-    public function setSourceType(?string $SourceType)
+    public function setSourcetype(?string $SourceType)
     {
         $this->setData(self::SOURCE_TYPE, $SourceType);
         return $this;
@@ -471,7 +471,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourceType() : ?string
+    public function getSourcetype() : ?string
     {
         return $this->getData(self::SOURCE_TYPE);
     }
@@ -480,7 +480,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $NetAmount
      * @return $this
      */
-    public function setNetAmount(?float $NetAmount)
+    public function setNetamount(?float $NetAmount)
     {
         $this->setData(self::NET_AMOUNT, $NetAmount);
         return $this;
@@ -489,7 +489,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetAmount() : ?float
+    public function getNetamount() : ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
@@ -498,7 +498,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $GrossAmount
      * @return $this
      */
-    public function setGrossAmount(?float $GrossAmount)
+    public function setGrossamount(?float $GrossAmount)
     {
         $this->setData(self::GROSS_AMOUNT, $GrossAmount);
         return $this;
@@ -507,7 +507,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getGrossAmount() : ?float
+    public function getGrossamount() : ?float
     {
         return $this->getData(self::GROSS_AMOUNT);
     }
@@ -534,7 +534,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $LineDiscount
      * @return $this
      */
-    public function setLineDiscount(?float $LineDiscount)
+    public function setLinediscount(?float $LineDiscount)
     {
         $this->setData(self::LINE_DISCOUNT, $LineDiscount);
         return $this;
@@ -543,7 +543,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getLineDiscount() : ?float
+    public function getLinediscount() : ?float
     {
         return $this->getData(self::LINE_DISCOUNT);
     }
@@ -552,7 +552,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $TotalDiscount
      * @return $this
      */
-    public function setTotalDiscount(?float $TotalDiscount)
+    public function setTotaldiscount(?float $TotalDiscount)
     {
         $this->setData(self::TOTAL_DISCOUNT, $TotalDiscount);
         return $this;
@@ -561,7 +561,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalDiscount() : ?float
+    public function getTotaldiscount() : ?float
     {
         return $this->getData(self::TOTAL_DISCOUNT);
     }
@@ -570,7 +570,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $IncomeExpAmount
      * @return $this
      */
-    public function setIncomeExpAmount(?float $IncomeExpAmount)
+    public function setIncomeexpamount(?float $IncomeExpAmount)
     {
         $this->setData(self::INCOME_EXP_AMOUNT, $IncomeExpAmount);
         return $this;
@@ -579,7 +579,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getIncomeExpAmount() : ?float
+    public function getIncomeexpamount() : ?float
     {
         return $this->getData(self::INCOME_EXP_AMOUNT);
     }
@@ -606,7 +606,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $SaleIsReturnSale
      * @return $this
      */
-    public function setSaleIsReturnSale(?bool $SaleIsReturnSale)
+    public function setSaleisreturnsale(?bool $SaleIsReturnSale)
     {
         $this->setData(self::SALE_IS_RETURN_SALE, $SaleIsReturnSale);
         return $this;
@@ -615,7 +615,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSaleIsReturnSale() : ?bool
+    public function getSaleisreturnsale() : ?bool
     {
         return $this->getData(self::SALE_IS_RETURN_SALE);
     }
@@ -624,7 +624,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RefundedReceiptNo
      * @return $this
      */
-    public function setRefundedReceiptNo(?string $RefundedReceiptNo)
+    public function setRefundedreceiptno(?string $RefundedReceiptNo)
     {
         $this->setData(self::REFUNDED_RECEIPT_NO, $RefundedReceiptNo);
         return $this;
@@ -633,7 +633,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRefundedReceiptNo() : ?string
+    public function getRefundedreceiptno() : ?string
     {
         return $this->getData(self::REFUNDED_RECEIPT_NO);
     }
@@ -642,7 +642,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RefundedFromStoreNo
      * @return $this
      */
-    public function setRefundedFromStoreNo(?string $RefundedFromStoreNo)
+    public function setRefundedfromstoreno(?string $RefundedFromStoreNo)
     {
         $this->setData(self::REFUNDED_FROM_STORE_NO, $RefundedFromStoreNo);
         return $this;
@@ -651,7 +651,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRefundedFromStoreNo() : ?string
+    public function getRefundedfromstoreno() : ?string
     {
         return $this->getData(self::REFUNDED_FROM_STORE_NO);
     }
@@ -660,25 +660,25 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RefundedFromPOSTermNo
      * @return $this
      */
-    public function setRefundedFromPOSTermNo(?string $RefundedFromPOSTermNo)
+    public function setRefundedfrompostermno(?string $RefundedFromPOSTermNo)
     {
-        $this->setData(self::REFUNDED_FROM_P_O_S_TERM_NO, $RefundedFromPOSTermNo);
+        $this->setData(self::REFUNDED_FROM_POSTERM_NO, $RefundedFromPOSTermNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getRefundedFromPOSTermNo() : ?string
+    public function getRefundedfrompostermno() : ?string
     {
-        return $this->getData(self::REFUNDED_FROM_P_O_S_TERM_NO);
+        return $this->getData(self::REFUNDED_FROM_POSTERM_NO);
     }
 
     /**
      * @param int $RefundedFromTransNo
      * @return $this
      */
-    public function setRefundedFromTransNo($RefundedFromTransNo)
+    public function setRefundedfromtransno($RefundedFromTransNo)
     {
         $this->setData(self::REFUNDED_FROM_TRANS_NO, $RefundedFromTransNo);
         return $this;
@@ -687,7 +687,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getRefundedFromTransNo()
+    public function getRefundedfromtransno()
     {
         return $this->getData(self::REFUNDED_FROM_TRANS_NO);
     }
@@ -696,7 +696,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param int $TableNo
      * @return $this
      */
-    public function setTableNo($TableNo)
+    public function setTableno($TableNo)
     {
         $this->setData(self::TABLE_NO, $TableNo);
         return $this;
@@ -705,7 +705,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTableNo()
+    public function getTableno()
     {
         return $this->getData(self::TABLE_NO);
     }
@@ -714,7 +714,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param int $NoofCovers
      * @return $this
      */
-    public function setNoofCovers($NoofCovers)
+    public function setNoofcovers($NoofCovers)
     {
         $this->setData(self::NOOF_COVERS, $NoofCovers);
         return $this;
@@ -723,7 +723,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getNoofCovers()
+    public function getNoofcovers()
     {
         return $this->getData(self::NOOF_COVERS);
     }
@@ -732,7 +732,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DiningTblDescription
      * @return $this
      */
-    public function setDiningTblDescription(?string $DiningTblDescription)
+    public function setDiningtbldescription(?string $DiningTblDescription)
     {
         $this->setData(self::DINING_TBL_DESCRIPTION, $DiningTblDescription);
         return $this;
@@ -741,7 +741,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDiningTblDescription() : ?string
+    public function getDiningtbldescription() : ?string
     {
         return $this->getData(self::DINING_TBL_DESCRIPTION);
     }
@@ -750,7 +750,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param int $MaxSeatingCapacity
      * @return $this
      */
-    public function setMaxSeatingCapacity($MaxSeatingCapacity)
+    public function setMaxseatingcapacity($MaxSeatingCapacity)
     {
         $this->setData(self::MAX_SEATING_CAPACITY, $MaxSeatingCapacity);
         return $this;
@@ -759,7 +759,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getMaxSeatingCapacity()
+    public function getMaxseatingcapacity()
     {
         return $this->getData(self::MAX_SEATING_CAPACITY);
     }
@@ -768,7 +768,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SalesType
      * @return $this
      */
-    public function setSalesType(?string $SalesType)
+    public function setSalestype(?string $SalesType)
     {
         $this->setData(self::SALES_TYPE, $SalesType);
         return $this;
@@ -777,7 +777,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalesType() : ?string
+    public function getSalestype() : ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
@@ -786,7 +786,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $PointBalance
      * @return $this
      */
-    public function setPointBalance(?float $PointBalance)
+    public function setPointbalance(?float $PointBalance)
     {
         $this->setData(self::POINT_BALANCE, $PointBalance);
         return $this;
@@ -795,7 +795,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPointBalance() : ?float
+    public function getPointbalance() : ?float
     {
         return $this->getData(self::POINT_BALANCE);
     }
@@ -804,7 +804,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $PointsUsedInBasket
      * @return $this
      */
-    public function setPointsUsedInBasket(?float $PointsUsedInBasket)
+    public function setPointsusedinbasket(?float $PointsUsedInBasket)
     {
         $this->setData(self::POINTS_USED_IN_BASKET, $PointsUsedInBasket);
         return $this;
@@ -813,7 +813,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPointsUsedInBasket() : ?float
+    public function getPointsusedinbasket() : ?float
     {
         return $this->getData(self::POINTS_USED_IN_BASKET);
     }
@@ -822,7 +822,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $AmountRemaining
      * @return $this
      */
-    public function setAmountRemaining(?float $AmountRemaining)
+    public function setAmountremaining(?float $AmountRemaining)
     {
         $this->setData(self::AMOUNT_REMAINING, $AmountRemaining);
         return $this;
@@ -831,7 +831,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmountRemaining() : ?float
+    public function getAmountremaining() : ?float
     {
         return $this->getData(self::AMOUNT_REMAINING);
     }
@@ -840,7 +840,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $BasketInPoints
      * @return $this
      */
-    public function setBasketInPoints(?float $BasketInPoints)
+    public function setBasketinpoints(?float $BasketInPoints)
     {
         $this->setData(self::BASKET_IN_POINTS, $BasketInPoints);
         return $this;
@@ -849,7 +849,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getBasketInPoints() : ?float
+    public function getBasketinpoints() : ?float
     {
         return $this->getData(self::BASKET_IN_POINTS);
     }
@@ -858,7 +858,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $IssuedPoints
      * @return $this
      */
-    public function setIssuedPoints(?float $IssuedPoints)
+    public function setIssuedpoints(?float $IssuedPoints)
     {
         $this->setData(self::ISSUED_POINTS, $IssuedPoints);
         return $this;
@@ -867,7 +867,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getIssuedPoints() : ?float
+    public function getIssuedpoints() : ?float
     {
         return $this->getData(self::ISSUED_POINTS);
     }

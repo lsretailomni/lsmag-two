@@ -20,13 +20,13 @@ class COUpdatePayment extends \Magento\Catalog\Model\AbstractModel implements Re
 
     public const WEB_PRE_AUTH_NOT_AUTHORIZE = 'webPreAuthNotAuthorize';
 
-    public const C_O_UPDATE_PAYMENT_X_M_L = 'cOUpdatePaymentXML';
+    public const COUPDATE_PAYMENT_XML = 'cOUpdatePaymentXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class COUpdatePayment extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class COUpdatePayment extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class COUpdatePayment extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class COUpdatePayment extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?bool $webPreAuthNotAuthorize
      * @return $this
      */
-    public function setWebPreAuthNotAuthorize(?bool $webPreAuthNotAuthorize)
+    public function setWebpreauthnotauthorize(?bool $webPreAuthNotAuthorize)
     {
         $this->setData(self::WEB_PRE_AUTH_NOT_AUTHORIZE, $webPreAuthNotAuthorize);
         return $this;
@@ -71,7 +71,7 @@ class COUpdatePayment extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?bool
      */
-    public function getWebPreAuthNotAuthorize() : ?bool
+    public function getWebpreauthnotauthorize() : ?bool
     {
         return $this->getData(self::WEB_PRE_AUTH_NOT_AUTHORIZE);
     }
@@ -80,18 +80,18 @@ class COUpdatePayment extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param RootCOUpdatePayment $cOUpdatePaymentXML
      * @return $this
      */
-    public function setCOUpdatePaymentXML($cOUpdatePaymentXML)
+    public function setCoupdatepaymentxml($cOUpdatePaymentXML)
     {
-        $this->setData(self::C_O_UPDATE_PAYMENT_X_M_L, $cOUpdatePaymentXML);
+        $this->setData(self::COUPDATE_PAYMENT_XML, $cOUpdatePaymentXML);
         return $this;
     }
 
     /**
      * @return RootCOUpdatePayment
      */
-    public function getCOUpdatePaymentXML()
+    public function getCoupdatepaymentxml()
     {
-        return $this->getData(self::C_O_UPDATE_PAYMENT_X_M_L);
+        return $this->getData(self::COUPDATE_PAYMENT_XML);
     }
 }
 

@@ -16,7 +16,7 @@ class MemberAuthenticatorLoginResult extends \Magento\Catalog\Model\AbstractMode
 
     public const TOTAL_REMAINING_POINTS = 'totalRemainingPoints';
 
-    public const MEMBER_AUTH_LOGIN_X_M_L = 'memberAuthLoginXML';
+    public const MEMBER_AUTH_LOGIN_XML = 'memberAuthLoginXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
@@ -26,7 +26,7 @@ class MemberAuthenticatorLoginResult extends \Magento\Catalog\Model\AbstractMode
      * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints(?float $totalRemainingPoints)
+    public function setTotalremainingpoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
@@ -35,7 +35,7 @@ class MemberAuthenticatorLoginResult extends \Magento\Catalog\Model\AbstractMode
     /**
      * @return ?float
      */
-    public function getTotalRemainingPoints() : ?float
+    public function getTotalremainingpoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
@@ -44,25 +44,25 @@ class MemberAuthenticatorLoginResult extends \Magento\Catalog\Model\AbstractMode
      * @param RootMemberauthLogin $memberAuthLoginXML
      * @return $this
      */
-    public function setMemberAuthLoginXML($memberAuthLoginXML)
+    public function setMemberauthloginxml($memberAuthLoginXML)
     {
-        $this->setData(self::MEMBER_AUTH_LOGIN_X_M_L, $memberAuthLoginXML);
+        $this->setData(self::MEMBER_AUTH_LOGIN_XML, $memberAuthLoginXML);
         return $this;
     }
 
     /**
      * @return RootMemberauthLogin
      */
-    public function getMemberAuthLoginXML()
+    public function getMemberauthloginxml()
     {
-        return $this->getData(self::MEMBER_AUTH_LOGIN_X_M_L);
+        return $this->getData(self::MEMBER_AUTH_LOGIN_XML);
     }
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -71,7 +71,7 @@ class MemberAuthenticatorLoginResult extends \Magento\Catalog\Model\AbstractMode
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -80,7 +80,7 @@ class MemberAuthenticatorLoginResult extends \Magento\Catalog\Model\AbstractMode
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -89,7 +89,7 @@ class MemberAuthenticatorLoginResult extends \Magento\Catalog\Model\AbstractMode
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

@@ -14,9 +14,9 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
 
     public const HIERARCHY_CODE = 'HierarchyCode';
 
-    public const NODE_I_D = 'NodeID';
+    public const NODE_ID = 'NodeID';
 
-    public const PARENT_NODE_I_D = 'ParentNodeID';
+    public const PARENT_NODE_ID = 'ParentNodeID';
 
     public const DESCRIPTION = 'Description';
 
@@ -30,7 +30,7 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $HierarchyCode
      * @return $this
      */
-    public function setHierarchyCode(?string $HierarchyCode)
+    public function setHierarchycode(?string $HierarchyCode)
     {
         $this->setData(self::HIERARCHY_CODE, $HierarchyCode);
         return $this;
@@ -39,7 +39,7 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHierarchyCode() : ?string
+    public function getHierarchycode() : ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
@@ -48,36 +48,36 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $NodeID
      * @return $this
      */
-    public function setNodeID(?string $NodeID)
+    public function setNodeid(?string $NodeID)
     {
-        $this->setData(self::NODE_I_D, $NodeID);
+        $this->setData(self::NODE_ID, $NodeID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getNodeID() : ?string
+    public function getNodeid() : ?string
     {
-        return $this->getData(self::NODE_I_D);
+        return $this->getData(self::NODE_ID);
     }
 
     /**
      * @param ?string $ParentNodeID
      * @return $this
      */
-    public function setParentNodeID(?string $ParentNodeID)
+    public function setParentnodeid(?string $ParentNodeID)
     {
-        $this->setData(self::PARENT_NODE_I_D, $ParentNodeID);
+        $this->setData(self::PARENT_NODE_ID, $ParentNodeID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getParentNodeID() : ?string
+    public function getParentnodeid() : ?string
     {
-        return $this->getData(self::PARENT_NODE_I_D);
+        return $this->getData(self::PARENT_NODE_ID);
     }
 
     /**
@@ -120,7 +120,7 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
      * @param int $PresentationOrder
      * @return $this
      */
-    public function setPresentationOrder($PresentationOrder)
+    public function setPresentationorder($PresentationOrder)
     {
         $this->setData(self::PRESENTATION_ORDER, $PresentationOrder);
         return $this;
@@ -129,7 +129,7 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getPresentationOrder()
+    public function getPresentationorder()
     {
         return $this->getData(self::PRESENTATION_ORDER);
     }
@@ -138,7 +138,7 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $HasChildren
      * @return $this
      */
-    public function setHasChildren(?bool $HasChildren)
+    public function setHaschildren(?bool $HasChildren)
     {
         $this->setData(self::HAS_CHILDREN, $HasChildren);
         return $this;
@@ -147,7 +147,7 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getHasChildren() : ?bool
+    public function getHaschildren() : ?bool
     {
         return $this->getData(self::HAS_CHILDREN);
     }

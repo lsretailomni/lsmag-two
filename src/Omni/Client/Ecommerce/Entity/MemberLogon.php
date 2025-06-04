@@ -18,23 +18,23 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
 
     public const ERROR_TEXT = 'errorText';
 
-    public const LOGIN_I_D = 'loginID';
+    public const LOGIN_ID = 'loginID';
 
     public const PASSWORD = 'password';
 
-    public const DEVICE_I_D = 'deviceID';
+    public const DEVICE_ID = 'deviceID';
 
     public const DEVICE_FRIENDLY_NAME = 'deviceFriendlyName';
 
     public const TOTAL_REMAINING_POINTS = 'totalRemainingPoints';
 
-    public const MEMBER_LOGON_X_M_L = 'memberLogonXML';
+    public const MEMBER_LOGON_XML = 'memberLogonXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -43,7 +43,7 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -52,7 +52,7 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -61,7 +61,7 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -70,18 +70,18 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $loginID
      * @return $this
      */
-    public function setLoginID(?string $loginID)
+    public function setLoginid(?string $loginID)
     {
-        $this->setData(self::LOGIN_I_D, $loginID);
+        $this->setData(self::LOGIN_ID, $loginID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getLoginID() : ?string
+    public function getLoginid() : ?string
     {
-        return $this->getData(self::LOGIN_I_D);
+        return $this->getData(self::LOGIN_ID);
     }
 
     /**
@@ -106,25 +106,25 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $deviceID
      * @return $this
      */
-    public function setDeviceID(?string $deviceID)
+    public function setDeviceid(?string $deviceID)
     {
-        $this->setData(self::DEVICE_I_D, $deviceID);
+        $this->setData(self::DEVICE_ID, $deviceID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDeviceID() : ?string
+    public function getDeviceid() : ?string
     {
-        return $this->getData(self::DEVICE_I_D);
+        return $this->getData(self::DEVICE_ID);
     }
 
     /**
      * @param ?string $deviceFriendlyName
      * @return $this
      */
-    public function setDeviceFriendlyName(?string $deviceFriendlyName)
+    public function setDevicefriendlyname(?string $deviceFriendlyName)
     {
         $this->setData(self::DEVICE_FRIENDLY_NAME, $deviceFriendlyName);
         return $this;
@@ -133,7 +133,7 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getDeviceFriendlyName() : ?string
+    public function getDevicefriendlyname() : ?string
     {
         return $this->getData(self::DEVICE_FRIENDLY_NAME);
     }
@@ -142,7 +142,7 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints(?float $totalRemainingPoints)
+    public function setTotalremainingpoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
@@ -151,7 +151,7 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?float
      */
-    public function getTotalRemainingPoints() : ?float
+    public function getTotalremainingpoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
@@ -160,18 +160,18 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param RootMemberLogon $memberLogonXML
      * @return $this
      */
-    public function setMemberLogonXML($memberLogonXML)
+    public function setMemberlogonxml($memberLogonXML)
     {
-        $this->setData(self::MEMBER_LOGON_X_M_L, $memberLogonXML);
+        $this->setData(self::MEMBER_LOGON_XML, $memberLogonXML);
         return $this;
     }
 
     /**
      * @return RootMemberLogon
      */
-    public function getMemberLogonXML()
+    public function getMemberlogonxml()
     {
-        return $this->getData(self::MEMBER_LOGON_X_M_L);
+        return $this->getData(self::MEMBER_LOGON_XML);
     }
 }
 

@@ -32,9 +32,9 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const TIME = 'Time';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
-    public const STAFF_I_D = 'StaffID';
+    public const STAFF_ID = 'StaffID';
 
     public const NO = 'No';
 
@@ -74,7 +74,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -83,7 +83,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -92,7 +92,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -101,7 +101,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -110,7 +110,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TransactionType
      * @return $this
      */
-    public function setTransactionType(?string $TransactionType)
+    public function setTransactiontype(?string $TransactionType)
     {
         $this->setData(self::TRANSACTION_TYPE, $TransactionType);
         return $this;
@@ -119,7 +119,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionType() : ?string
+    public function getTransactiontype() : ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
@@ -128,7 +128,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -137,7 +137,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -182,7 +182,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $InfoAmt
      * @return $this
      */
-    public function setInfoAmt(?float $InfoAmt)
+    public function setInfoamt(?float $InfoAmt)
     {
         $this->setData(self::INFO_AMT, $InfoAmt);
         return $this;
@@ -191,7 +191,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getInfoAmt() : ?float
+    public function getInfoamt() : ?float
     {
         return $this->getData(self::INFO_AMT);
     }
@@ -200,7 +200,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TextType
      * @return $this
      */
-    public function setTextType(?string $TextType)
+    public function setTexttype(?string $TextType)
     {
         $this->setData(self::TEXT_TYPE, $TextType);
         return $this;
@@ -209,7 +209,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTextType() : ?string
+    public function getTexttype() : ?string
     {
         return $this->getData(self::TEXT_TYPE);
     }
@@ -233,19 +233,19 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param time $Time
+     * @param ?string $Time
      * @return $this
      */
-    public function setTime($Time)
+    public function setTime(?string $Time)
     {
         $this->setData(self::TIME, $Time);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTime()
+    public function getTime() : ?string
     {
         return $this->getData(self::TIME);
     }
@@ -254,36 +254,36 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo(?string $POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID(?string $StaffID)
+    public function setStaffid(?string $StaffID)
     {
-        $this->setData(self::STAFF_I_D, $StaffID);
+        $this->setData(self::STAFF_ID, $StaffID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getStaffID() : ?string
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
@@ -308,7 +308,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -317,7 +317,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -344,7 +344,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TypeofInput
      * @return $this
      */
-    public function setTypeofInput(?string $TypeofInput)
+    public function setTypeofinput(?string $TypeofInput)
     {
         $this->setData(self::TYPEOF_INPUT, $TypeofInput);
         return $this;
@@ -353,7 +353,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTypeofInput() : ?string
+    public function getTypeofinput() : ?string
     {
         return $this->getData(self::TYPEOF_INPUT);
     }
@@ -380,7 +380,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $EntryLineNo
      * @return $this
      */
-    public function setEntryLineNo($EntryLineNo)
+    public function setEntrylineno($EntryLineNo)
     {
         $this->setData(self::ENTRY_LINE_NO, $EntryLineNo);
         return $this;
@@ -389,7 +389,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryLineNo()
+    public function getEntrylineno()
     {
         return $this->getData(self::ENTRY_LINE_NO);
     }
@@ -398,7 +398,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $EntryVariantCode
      * @return $this
      */
-    public function setEntryVariantCode(?string $EntryVariantCode)
+    public function setEntryvariantcode(?string $EntryVariantCode)
     {
         $this->setData(self::ENTRY_VARIANT_CODE, $EntryVariantCode);
         return $this;
@@ -407,7 +407,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEntryVariantCode() : ?string
+    public function getEntryvariantcode() : ?string
     {
         return $this->getData(self::ENTRY_VARIANT_CODE);
     }
@@ -416,7 +416,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $EntryTriggerFunction
      * @return $this
      */
-    public function setEntryTriggerFunction(?string $EntryTriggerFunction)
+    public function setEntrytriggerfunction(?string $EntryTriggerFunction)
     {
         $this->setData(self::ENTRY_TRIGGER_FUNCTION, $EntryTriggerFunction);
         return $this;
@@ -425,7 +425,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEntryTriggerFunction() : ?string
+    public function getEntrytriggerfunction() : ?string
     {
         return $this->getData(self::ENTRY_TRIGGER_FUNCTION);
     }
@@ -434,7 +434,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $EntryTriggerCode
      * @return $this
      */
-    public function setEntryTriggerCode(?string $EntryTriggerCode)
+    public function setEntrytriggercode(?string $EntryTriggerCode)
     {
         $this->setData(self::ENTRY_TRIGGER_CODE, $EntryTriggerCode);
         return $this;
@@ -443,7 +443,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEntryTriggerCode() : ?string
+    public function getEntrytriggercode() : ?string
     {
         return $this->getData(self::ENTRY_TRIGGER_CODE);
     }
@@ -452,7 +452,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StatementNo
      * @return $this
      */
-    public function setStatementNo(?string $StatementNo)
+    public function setStatementno(?string $StatementNo)
     {
         $this->setData(self::STATEMENT_NO, $StatementNo);
         return $this;
@@ -461,7 +461,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementNo() : ?string
+    public function getStatementno() : ?string
     {
         return $this->getData(self::STATEMENT_NO);
     }
@@ -470,7 +470,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StatementCode
      * @return $this
      */
-    public function setStatementCode(?string $StatementCode)
+    public function setStatementcode(?string $StatementCode)
     {
         $this->setData(self::STATEMENT_CODE, $StatementCode);
         return $this;
@@ -479,7 +479,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementCode() : ?string
+    public function getStatementcode() : ?string
     {
         return $this->getData(self::STATEMENT_CODE);
     }
@@ -488,7 +488,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SourceCode
      * @return $this
      */
-    public function setSourceCode(?string $SourceCode)
+    public function setSourcecode(?string $SourceCode)
     {
         $this->setData(self::SOURCE_CODE, $SourceCode);
         return $this;
@@ -497,7 +497,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourceCode() : ?string
+    public function getSourcecode() : ?string
     {
         return $this->getData(self::SOURCE_CODE);
     }
@@ -506,7 +506,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SerialNo
      * @return $this
      */
-    public function setSerialNo(?string $SerialNo)
+    public function setSerialno(?string $SerialNo)
     {
         $this->setData(self::SERIAL_NO, $SerialNo);
         return $this;
@@ -515,7 +515,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSerialNo() : ?string
+    public function getSerialno() : ?string
     {
         return $this->getData(self::SERIAL_NO);
     }
@@ -524,7 +524,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $SelectedQuantity
      * @return $this
      */
-    public function setSelectedQuantity(?float $SelectedQuantity)
+    public function setSelectedquantity(?float $SelectedQuantity)
     {
         $this->setData(self::SELECTED_QUANTITY, $SelectedQuantity);
         return $this;
@@ -533,7 +533,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getSelectedQuantity() : ?float
+    public function getSelectedquantity() : ?float
     {
         return $this->getData(self::SELECTED_QUANTITY);
     }
@@ -578,7 +578,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -587,7 +587,7 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }

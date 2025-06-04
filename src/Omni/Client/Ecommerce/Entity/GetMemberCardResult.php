@@ -20,13 +20,13 @@ class GetMemberCardResult extends \Magento\Catalog\Model\AbstractModel implement
 
     public const TOTAL_REMAINING_POINTS = 'totalRemainingPoints';
 
-    public const GET_MEMBER_CARD_X_M_L = 'getMemberCardXML';
+    public const GET_MEMBER_CARD_XML = 'getMemberCardXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class GetMemberCardResult extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class GetMemberCardResult extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class GetMemberCardResult extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class GetMemberCardResult extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints(?float $totalRemainingPoints)
+    public function setTotalremainingpoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
@@ -71,7 +71,7 @@ class GetMemberCardResult extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?float
      */
-    public function getTotalRemainingPoints() : ?float
+    public function getTotalremainingpoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
@@ -80,18 +80,18 @@ class GetMemberCardResult extends \Magento\Catalog\Model\AbstractModel implement
      * @param RootGetMemberCard $getMemberCardXML
      * @return $this
      */
-    public function setGetMemberCardXML($getMemberCardXML)
+    public function setGetmembercardxml($getMemberCardXML)
     {
-        $this->setData(self::GET_MEMBER_CARD_X_M_L, $getMemberCardXML);
+        $this->setData(self::GET_MEMBER_CARD_XML, $getMemberCardXML);
         return $this;
     }
 
     /**
      * @return RootGetMemberCard
      */
-    public function getGetMemberCardXML()
+    public function getGetmembercardxml()
     {
-        return $this->getData(self::GET_MEMBER_CARD_X_M_L);
+        return $this->getData(self::GET_MEMBER_CARD_XML);
     }
 
     /**

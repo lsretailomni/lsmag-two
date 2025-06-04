@@ -16,7 +16,7 @@ class SetMemberCardToken extends \Magento\Catalog\Model\AbstractModel implements
 
     public const MEMBER_CARD_NO = 'memberCardNo';
 
-    public const SET_TOKEN_ENTRY_X_M_L = 'setTokenEntryXML';
+    public const SET_TOKEN_ENTRY_XML = 'setTokenEntryXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
@@ -26,7 +26,7 @@ class SetMemberCardToken extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $memberCardNo
      * @return $this
      */
-    public function setMemberCardNo(?string $memberCardNo)
+    public function setMembercardno(?string $memberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $memberCardNo);
         return $this;
@@ -35,7 +35,7 @@ class SetMemberCardToken extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getMemberCardNo() : ?string
+    public function getMembercardno() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -44,25 +44,25 @@ class SetMemberCardToken extends \Magento\Catalog\Model\AbstractModel implements
      * @param RootSetTokenEntry $setTokenEntryXML
      * @return $this
      */
-    public function setSetTokenEntryXML($setTokenEntryXML)
+    public function setSettokenentryxml($setTokenEntryXML)
     {
-        $this->setData(self::SET_TOKEN_ENTRY_X_M_L, $setTokenEntryXML);
+        $this->setData(self::SET_TOKEN_ENTRY_XML, $setTokenEntryXML);
         return $this;
     }
 
     /**
      * @return RootSetTokenEntry
      */
-    public function getSetTokenEntryXML()
+    public function getSettokenentryxml()
     {
-        return $this->getData(self::SET_TOKEN_ENTRY_X_M_L);
+        return $this->getData(self::SET_TOKEN_ENTRY_XML);
     }
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -71,7 +71,7 @@ class SetMemberCardToken extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -80,7 +80,7 @@ class SetMemberCardToken extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -89,7 +89,7 @@ class SetMemberCardToken extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

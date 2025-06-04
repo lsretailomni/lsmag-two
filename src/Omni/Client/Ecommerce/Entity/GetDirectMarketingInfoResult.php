@@ -18,13 +18,13 @@ class GetDirectMarketingInfoResult extends \Magento\Catalog\Model\AbstractModel 
 
     public const ERROR_TEXT = 'errorText';
 
-    public const LOAD_MEMBER_DIR_MARK_INFO_X_M_L = 'loadMemberDirMarkInfoXML';
+    public const LOAD_MEMBER_DIR_MARK_INFO_XML = 'loadMemberDirMarkInfoXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class GetDirectMarketingInfoResult extends \Magento\Catalog\Model\AbstractModel 
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class GetDirectMarketingInfoResult extends \Magento\Catalog\Model\AbstractModel 
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class GetDirectMarketingInfoResult extends \Magento\Catalog\Model\AbstractModel 
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetDirectMarketingInfoResult extends \Magento\Catalog\Model\AbstractModel 
      * @param RootGetDirectMarketingInfo $loadMemberDirMarkInfoXML
      * @return $this
      */
-    public function setLoadMemberDirMarkInfoXML($loadMemberDirMarkInfoXML)
+    public function setLoadmemberdirmarkinfoxml($loadMemberDirMarkInfoXML)
     {
-        $this->setData(self::LOAD_MEMBER_DIR_MARK_INFO_X_M_L, $loadMemberDirMarkInfoXML);
+        $this->setData(self::LOAD_MEMBER_DIR_MARK_INFO_XML, $loadMemberDirMarkInfoXML);
         return $this;
     }
 
     /**
      * @return RootGetDirectMarketingInfo
      */
-    public function getLoadMemberDirMarkInfoXML()
+    public function getLoadmemberdirmarkinfoxml()
     {
-        return $this->getData(self::LOAD_MEMBER_DIR_MARK_INFO_X_M_L);
+        return $this->getData(self::LOAD_MEMBER_DIR_MARK_INFO_XML);
     }
 
     /**

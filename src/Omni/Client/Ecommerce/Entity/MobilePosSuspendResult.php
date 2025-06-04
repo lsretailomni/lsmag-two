@@ -24,7 +24,7 @@ class MobilePosSuspendResult extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class MobilePosSuspendResult extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class MobilePosSuspendResult extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class MobilePosSuspendResult extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,7 +60,7 @@ class MobilePosSuspendResult extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $receiptNo
      * @return $this
      */
-    public function setReceiptNo(?string $receiptNo)
+    public function setReceiptno(?string $receiptNo)
     {
         $this->setData(self::RECEIPT_NO, $receiptNo);
         return $this;
@@ -69,7 +69,7 @@ class MobilePosSuspendResult extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getReceiptNo() : ?string
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }

@@ -26,13 +26,13 @@ class GetVendorCard extends \Magento\Catalog\Model\AbstractModel implements Requ
 
     public const VIEW = 'view';
 
-    public const LEFT_RIGHT_LINE_X_M_L = 'leftRightLineXML';
+    public const LEFT_RIGHT_LINE_XML = 'leftRightLineXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -41,7 +41,7 @@ class GetVendorCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -50,7 +50,7 @@ class GetVendorCard extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -59,7 +59,7 @@ class GetVendorCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -68,7 +68,7 @@ class GetVendorCard extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $terminalNo
      * @return $this
      */
-    public function setTerminalNo(?string $terminalNo)
+    public function setTerminalno(?string $terminalNo)
     {
         $this->setData(self::TERMINAL_NO, $terminalNo);
         return $this;
@@ -77,7 +77,7 @@ class GetVendorCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getTerminalNo() : ?string
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -86,7 +86,7 @@ class GetVendorCard extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -95,7 +95,7 @@ class GetVendorCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -104,7 +104,7 @@ class GetVendorCard extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $vendorNo
      * @return $this
      */
-    public function setVendorNo(?string $vendorNo)
+    public function setVendorno(?string $vendorNo)
     {
         $this->setData(self::VENDOR_NO, $vendorNo);
         return $this;
@@ -113,7 +113,7 @@ class GetVendorCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getVendorNo() : ?string
+    public function getVendorno() : ?string
     {
         return $this->getData(self::VENDOR_NO);
     }
@@ -140,18 +140,18 @@ class GetVendorCard extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param RootLeftRightLine $leftRightLineXML
      * @return $this
      */
-    public function setLeftRightLineXML($leftRightLineXML)
+    public function setLeftrightlinexml($leftRightLineXML)
     {
-        $this->setData(self::LEFT_RIGHT_LINE_X_M_L, $leftRightLineXML);
+        $this->setData(self::LEFT_RIGHT_LINE_XML, $leftRightLineXML);
         return $this;
     }
 
     /**
      * @return RootLeftRightLine
      */
-    public function getLeftRightLineXML()
+    public function getLeftrightlinexml()
     {
-        return $this->getData(self::LEFT_RIGHT_LINE_X_M_L);
+        return $this->getData(self::LEFT_RIGHT_LINE_XML);
     }
 }
 

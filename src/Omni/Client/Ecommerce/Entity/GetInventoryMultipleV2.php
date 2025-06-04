@@ -20,19 +20,19 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
 
     public const SOURCING_LOCATION_AVAILABILITY = 'sourcingLocationAvailability';
 
-    public const GET_INVENTORY_MULTIPLE_IN_X_M_L = 'getInventoryMultipleInXML';
+    public const GET_INVENTORY_MULTIPLE_IN_XML = 'getInventoryMultipleInXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_INVENTORY_MULTIPLE_OUT_X_M_L = 'getInventoryMultipleOutXML';
+    public const GET_INVENTORY_MULTIPLE_OUT_XML = 'getInventoryMultipleOutXML';
 
     /**
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -41,7 +41,7 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -50,7 +50,7 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $locationCode
      * @return $this
      */
-    public function setLocationCode(?string $locationCode)
+    public function setLocationcode(?string $locationCode)
     {
         $this->setData(self::LOCATION_CODE, $locationCode);
         return $this;
@@ -59,7 +59,7 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getLocationCode() : ?string
+    public function getLocationcode() : ?string
     {
         return $this->getData(self::LOCATION_CODE);
     }
@@ -68,7 +68,7 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?bool $sourcingLocationAvailability
      * @return $this
      */
-    public function setSourcingLocationAvailability(?bool $sourcingLocationAvailability)
+    public function setSourcinglocationavailability(?bool $sourcingLocationAvailability)
     {
         $this->setData(self::SOURCING_LOCATION_AVAILABILITY, $sourcingLocationAvailability);
         return $this;
@@ -77,7 +77,7 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?bool
      */
-    public function getSourcingLocationAvailability() : ?bool
+    public function getSourcinglocationavailability() : ?bool
     {
         return $this->getData(self::SOURCING_LOCATION_AVAILABILITY);
     }
@@ -86,25 +86,25 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
      * @param RootGetInventoryMultipleIn $getInventoryMultipleInXML
      * @return $this
      */
-    public function setGetInventoryMultipleInXML($getInventoryMultipleInXML)
+    public function setGetinventorymultipleinxml($getInventoryMultipleInXML)
     {
-        $this->setData(self::GET_INVENTORY_MULTIPLE_IN_X_M_L, $getInventoryMultipleInXML);
+        $this->setData(self::GET_INVENTORY_MULTIPLE_IN_XML, $getInventoryMultipleInXML);
         return $this;
     }
 
     /**
      * @return RootGetInventoryMultipleIn
      */
-    public function getGetInventoryMultipleInXML()
+    public function getGetinventorymultipleinxml()
     {
-        return $this->getData(self::GET_INVENTORY_MULTIPLE_IN_X_M_L);
+        return $this->getData(self::GET_INVENTORY_MULTIPLE_IN_XML);
     }
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -113,7 +113,7 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -122,7 +122,7 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -131,7 +131,7 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -140,18 +140,18 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
      * @param RootGetInventoryMultipleOut $getInventoryMultipleOutXML
      * @return $this
      */
-    public function setGetInventoryMultipleOutXML($getInventoryMultipleOutXML)
+    public function setGetinventorymultipleoutxml($getInventoryMultipleOutXML)
     {
-        $this->setData(self::GET_INVENTORY_MULTIPLE_OUT_X_M_L, $getInventoryMultipleOutXML);
+        $this->setData(self::GET_INVENTORY_MULTIPLE_OUT_XML, $getInventoryMultipleOutXML);
         return $this;
     }
 
     /**
      * @return RootGetInventoryMultipleOut
      */
-    public function getGetInventoryMultipleOutXML()
+    public function getGetinventorymultipleoutxml()
     {
-        return $this->getData(self::GET_INVENTORY_MULTIPLE_OUT_X_M_L);
+        return $this->getData(self::GET_INVENTORY_MULTIPLE_OUT_XML);
     }
 }
 

@@ -36,11 +36,19 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
 
     public const BLOCKEDBY = 'Blockedby';
 
+    public const DATE_CREATED = 'DateCreated';
+
+    public const CREATEDBY = 'Createdby';
+
+    public const NO_SERIES = 'NoSeries';
+
+    public const ALLOCATEDTO_STORE = 'AllocatedtoStore';
+
     /**
      * @param ?string $CardNo
      * @return $this
      */
-    public function setCardNo(?string $CardNo)
+    public function setCardno(?string $CardNo)
     {
         $this->setData(self::CARD_NO, $CardNo);
         return $this;
@@ -49,7 +57,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardNo() : ?string
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -76,7 +84,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $LinkedtoAccount
      * @return $this
      */
-    public function setLinkedtoAccount(?bool $LinkedtoAccount)
+    public function setLinkedtoaccount(?bool $LinkedtoAccount)
     {
         $this->setData(self::LINKEDTO_ACCOUNT, $LinkedtoAccount);
         return $this;
@@ -85,7 +93,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getLinkedtoAccount() : ?bool
+    public function getLinkedtoaccount() : ?bool
     {
         return $this->getData(self::LINKEDTO_ACCOUNT);
     }
@@ -94,7 +102,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClubCode
      * @return $this
      */
-    public function setClubCode(?string $ClubCode)
+    public function setClubcode(?string $ClubCode)
     {
         $this->setData(self::CLUB_CODE, $ClubCode);
         return $this;
@@ -103,7 +111,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubCode() : ?string
+    public function getClubcode() : ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
@@ -112,7 +120,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SchemeCode
      * @return $this
      */
-    public function setSchemeCode(?string $SchemeCode)
+    public function setSchemecode(?string $SchemeCode)
     {
         $this->setData(self::SCHEME_CODE, $SchemeCode);
         return $this;
@@ -121,7 +129,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSchemeCode() : ?string
+    public function getSchemecode() : ?string
     {
         return $this->getData(self::SCHEME_CODE);
     }
@@ -130,7 +138,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AccountNo
      * @return $this
      */
-    public function setAccountNo(?string $AccountNo)
+    public function setAccountno(?string $AccountNo)
     {
         $this->setData(self::ACCOUNT_NO, $AccountNo);
         return $this;
@@ -139,7 +147,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccountNo() : ?string
+    public function getAccountno() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
@@ -148,7 +156,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ContactNo
      * @return $this
      */
-    public function setContactNo(?string $ContactNo)
+    public function setContactno(?string $ContactNo)
     {
         $this->setData(self::CONTACT_NO, $ContactNo);
         return $this;
@@ -157,7 +165,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContactNo() : ?string
+    public function getContactno() : ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
@@ -166,7 +174,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $FirstDateUsed
      * @return $this
      */
-    public function setFirstDateUsed(?string $FirstDateUsed)
+    public function setFirstdateused(?string $FirstDateUsed)
     {
         $this->setData(self::FIRST_DATE_USED, $FirstDateUsed);
         return $this;
@@ -175,7 +183,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFirstDateUsed() : ?string
+    public function getFirstdateused() : ?string
     {
         return $this->getData(self::FIRST_DATE_USED);
     }
@@ -184,7 +192,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LastValidDate
      * @return $this
      */
-    public function setLastValidDate(?string $LastValidDate)
+    public function setLastvaliddate(?string $LastValidDate)
     {
         $this->setData(self::LAST_VALID_DATE, $LastValidDate);
         return $this;
@@ -193,7 +201,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLastValidDate() : ?string
+    public function getLastvaliddate() : ?string
     {
         return $this->getData(self::LAST_VALID_DATE);
     }
@@ -202,7 +210,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ReasonBlocked
      * @return $this
      */
-    public function setReasonBlocked(?string $ReasonBlocked)
+    public function setReasonblocked(?string $ReasonBlocked)
     {
         $this->setData(self::REASON_BLOCKED, $ReasonBlocked);
         return $this;
@@ -211,7 +219,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasonBlocked() : ?string
+    public function getReasonblocked() : ?string
     {
         return $this->getData(self::REASON_BLOCKED);
     }
@@ -220,7 +228,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DateBlocked
      * @return $this
      */
-    public function setDateBlocked(?string $DateBlocked)
+    public function setDateblocked(?string $DateBlocked)
     {
         $this->setData(self::DATE_BLOCKED, $DateBlocked);
         return $this;
@@ -229,7 +237,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateBlocked() : ?string
+    public function getDateblocked() : ?string
     {
         return $this->getData(self::DATE_BLOCKED);
     }
@@ -250,6 +258,78 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     public function getBlockedby() : ?string
     {
         return $this->getData(self::BLOCKEDBY);
+    }
+
+    /**
+     * @param ?string $DateCreated
+     * @return $this
+     */
+    public function setDatecreated(?string $DateCreated)
+    {
+        $this->setData(self::DATE_CREATED, $DateCreated);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getDatecreated() : ?string
+    {
+        return $this->getData(self::DATE_CREATED);
+    }
+
+    /**
+     * @param ?string $Createdby
+     * @return $this
+     */
+    public function setCreatedby(?string $Createdby)
+    {
+        $this->setData(self::CREATEDBY, $Createdby);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getCreatedby() : ?string
+    {
+        return $this->getData(self::CREATEDBY);
+    }
+
+    /**
+     * @param ?string $NoSeries
+     * @return $this
+     */
+    public function setNoseries(?string $NoSeries)
+    {
+        $this->setData(self::NO_SERIES, $NoSeries);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getNoseries() : ?string
+    {
+        return $this->getData(self::NO_SERIES);
+    }
+
+    /**
+     * @param ?string $AllocatedtoStore
+     * @return $this
+     */
+    public function setAllocatedtostore(?string $AllocatedtoStore)
+    {
+        $this->setData(self::ALLOCATEDTO_STORE, $AllocatedtoStore);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getAllocatedtostore() : ?string
+    {
+        return $this->getData(self::ALLOCATEDTO_STORE);
     }
 }
 

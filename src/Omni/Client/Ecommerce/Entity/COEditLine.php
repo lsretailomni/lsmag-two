@@ -12,7 +12,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'COEditLine';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const LINE_NO = 'LineNo';
 
@@ -48,7 +48,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
 
     public const VARIANT_DESCRIPTION = 'VariantDescription';
 
-    public const UO_M_DESCRIPTION = 'UoMDescription';
+    public const UO_MDESCRIPTION = 'UoMDescription';
 
     public const ORIGINAL_LINE_NO = 'OriginalLineNo';
 
@@ -68,7 +68,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
 
     public const QUANTITY_RECEIVED = 'QuantityReceived';
 
-    public const RETAIL_IMAGE_I_D = 'RetailImageID';
+    public const RETAIL_IMAGE_ID = 'RetailImageID';
 
     public const STORE_NO = 'StoreNo';
 
@@ -86,7 +86,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
 
     public const REQUESTED_DELIVERY_DATE = 'RequestedDeliveryDate';
 
-    public const EXTERNAL_I_D = 'ExternalID';
+    public const EXTERNAL_ID = 'ExternalID';
 
     public const BOX_NO = 'BoxNo';
 
@@ -120,25 +120,25 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID(?string $DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDocumentID() : ?string
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -147,7 +147,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -174,7 +174,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LineType
      * @return $this
      */
-    public function setLineType(?string $LineType)
+    public function setLinetype(?string $LineType)
     {
         $this->setData(self::LINE_TYPE, $LineType);
         return $this;
@@ -183,7 +183,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLineType() : ?string
+    public function getLinetype() : ?string
     {
         return $this->getData(self::LINE_TYPE);
     }
@@ -210,7 +210,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -219,7 +219,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -228,7 +228,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $UnitofMeasureCode
      * @return $this
      */
-    public function setUnitofMeasureCode(?string $UnitofMeasureCode)
+    public function setUnitofmeasurecode(?string $UnitofMeasureCode)
     {
         $this->setData(self::UNITOF_MEASURE_CODE, $UnitofMeasureCode);
         return $this;
@@ -237,7 +237,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitofMeasureCode() : ?string
+    public function getUnitofmeasurecode() : ?string
     {
         return $this->getData(self::UNITOF_MEASURE_CODE);
     }
@@ -246,7 +246,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $NetPrice
      * @return $this
      */
-    public function setNetPrice(?float $NetPrice)
+    public function setNetprice(?float $NetPrice)
     {
         $this->setData(self::NET_PRICE, $NetPrice);
         return $this;
@@ -255,7 +255,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetPrice() : ?float
+    public function getNetprice() : ?float
     {
         return $this->getData(self::NET_PRICE);
     }
@@ -300,7 +300,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $DiscountAmount
      * @return $this
      */
-    public function setDiscountAmount(?float $DiscountAmount)
+    public function setDiscountamount(?float $DiscountAmount)
     {
         $this->setData(self::DISCOUNT_AMOUNT, $DiscountAmount);
         return $this;
@@ -309,7 +309,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountAmount() : ?float
+    public function getDiscountamount() : ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
@@ -318,7 +318,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $DiscountPercent
      * @return $this
      */
-    public function setDiscountPercent(?float $DiscountPercent)
+    public function setDiscountpercent(?float $DiscountPercent)
     {
         $this->setData(self::DISCOUNT_PERCENT, $DiscountPercent);
         return $this;
@@ -327,7 +327,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountPercent() : ?float
+    public function getDiscountpercent() : ?float
     {
         return $this->getData(self::DISCOUNT_PERCENT);
     }
@@ -336,7 +336,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $NetAmount
      * @return $this
      */
-    public function setNetAmount(?float $NetAmount)
+    public function setNetamount(?float $NetAmount)
     {
         $this->setData(self::NET_AMOUNT, $NetAmount);
         return $this;
@@ -345,7 +345,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetAmount() : ?float
+    public function getNetamount() : ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
@@ -354,7 +354,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $VatAmount
      * @return $this
      */
-    public function setVatAmount(?float $VatAmount)
+    public function setVatamount(?float $VatAmount)
     {
         $this->setData(self::VAT_AMOUNT, $VatAmount);
         return $this;
@@ -363,7 +363,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getVatAmount() : ?float
+    public function getVatamount() : ?float
     {
         return $this->getData(self::VAT_AMOUNT);
     }
@@ -390,7 +390,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VatProdPostingGroup
      * @return $this
      */
-    public function setVatProdPostingGroup(?string $VatProdPostingGroup)
+    public function setVatprodpostinggroup(?string $VatProdPostingGroup)
     {
         $this->setData(self::VAT_PROD_POSTING_GROUP, $VatProdPostingGroup);
         return $this;
@@ -399,7 +399,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatProdPostingGroup() : ?string
+    public function getVatprodpostinggroup() : ?string
     {
         return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
@@ -408,7 +408,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemDescription
      * @return $this
      */
-    public function setItemDescription(?string $ItemDescription)
+    public function setItemdescription(?string $ItemDescription)
     {
         $this->setData(self::ITEM_DESCRIPTION, $ItemDescription);
         return $this;
@@ -417,7 +417,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemDescription() : ?string
+    public function getItemdescription() : ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
@@ -426,7 +426,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantDescription
      * @return $this
      */
-    public function setVariantDescription(?string $VariantDescription)
+    public function setVariantdescription(?string $VariantDescription)
     {
         $this->setData(self::VARIANT_DESCRIPTION, $VariantDescription);
         return $this;
@@ -435,7 +435,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantDescription() : ?string
+    public function getVariantdescription() : ?string
     {
         return $this->getData(self::VARIANT_DESCRIPTION);
     }
@@ -444,25 +444,25 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $UoMDescription
      * @return $this
      */
-    public function setUoMDescription(?string $UoMDescription)
+    public function setUomdescription(?string $UoMDescription)
     {
-        $this->setData(self::UO_M_DESCRIPTION, $UoMDescription);
+        $this->setData(self::UO_MDESCRIPTION, $UoMDescription);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getUoMDescription() : ?string
+    public function getUomdescription() : ?string
     {
-        return $this->getData(self::UO_M_DESCRIPTION);
+        return $this->getData(self::UO_MDESCRIPTION);
     }
 
     /**
      * @param int $OriginalLineNo
      * @return $this
      */
-    public function setOriginalLineNo($OriginalLineNo)
+    public function setOriginallineno($OriginalLineNo)
     {
         $this->setData(self::ORIGINAL_LINE_NO, $OriginalLineNo);
         return $this;
@@ -471,7 +471,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getOriginalLineNo()
+    public function getOriginallineno()
     {
         return $this->getData(self::ORIGINAL_LINE_NO);
     }
@@ -480,7 +480,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SourcingLocation
      * @return $this
      */
-    public function setSourcingLocation(?string $SourcingLocation)
+    public function setSourcinglocation(?string $SourcingLocation)
     {
         $this->setData(self::SOURCING_LOCATION, $SourcingLocation);
         return $this;
@@ -489,7 +489,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourcingLocation() : ?string
+    public function getSourcinglocation() : ?string
     {
         return $this->getData(self::SOURCING_LOCATION);
     }
@@ -498,7 +498,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $OrderReference
      * @return $this
      */
-    public function setOrderReference(?string $OrderReference)
+    public function setOrderreference(?string $OrderReference)
     {
         $this->setData(self::ORDER_REFERENCE, $OrderReference);
         return $this;
@@ -507,7 +507,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrderReference() : ?string
+    public function getOrderreference() : ?string
     {
         return $this->getData(self::ORDER_REFERENCE);
     }
@@ -516,7 +516,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $InventoryTransfer
      * @return $this
      */
-    public function setInventoryTransfer(?bool $InventoryTransfer)
+    public function setInventorytransfer(?bool $InventoryTransfer)
     {
         $this->setData(self::INVENTORY_TRANSFER, $InventoryTransfer);
         return $this;
@@ -525,7 +525,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getInventoryTransfer() : ?bool
+    public function getInventorytransfer() : ?bool
     {
         return $this->getData(self::INVENTORY_TRANSFER);
     }
@@ -534,7 +534,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $VendorSourcing
      * @return $this
      */
-    public function setVendorSourcing(?bool $VendorSourcing)
+    public function setVendorsourcing(?bool $VendorSourcing)
     {
         $this->setData(self::VENDOR_SOURCING, $VendorSourcing);
         return $this;
@@ -543,7 +543,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getVendorSourcing() : ?bool
+    public function getVendorsourcing() : ?bool
     {
         return $this->getData(self::VENDOR_SOURCING);
     }
@@ -552,7 +552,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LeadTime
      * @return $this
      */
-    public function setLeadTime(?string $LeadTime)
+    public function setLeadtime(?string $LeadTime)
     {
         $this->setData(self::LEAD_TIME, $LeadTime);
         return $this;
@@ -561,7 +561,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLeadTime() : ?string
+    public function getLeadtime() : ?string
     {
         return $this->getData(self::LEAD_TIME);
     }
@@ -570,7 +570,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $PrepaymentAmount
      * @return $this
      */
-    public function setPrepaymentAmount(?float $PrepaymentAmount)
+    public function setPrepaymentamount(?float $PrepaymentAmount)
     {
         $this->setData(self::PREPAYMENT_AMOUNT, $PrepaymentAmount);
         return $this;
@@ -579,7 +579,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPrepaymentAmount() : ?float
+    public function getPrepaymentamount() : ?float
     {
         return $this->getData(self::PREPAYMENT_AMOUNT);
     }
@@ -588,7 +588,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PurchaseOrderNo
      * @return $this
      */
-    public function setPurchaseOrderNo(?string $PurchaseOrderNo)
+    public function setPurchaseorderno(?string $PurchaseOrderNo)
     {
         $this->setData(self::PURCHASE_ORDER_NO, $PurchaseOrderNo);
         return $this;
@@ -597,7 +597,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPurchaseOrderNo() : ?string
+    public function getPurchaseorderno() : ?string
     {
         return $this->getData(self::PURCHASE_ORDER_NO);
     }
@@ -606,7 +606,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QuantityReceived
      * @return $this
      */
-    public function setQuantityReceived(?float $QuantityReceived)
+    public function setQuantityreceived(?float $QuantityReceived)
     {
         $this->setData(self::QUANTITY_RECEIVED, $QuantityReceived);
         return $this;
@@ -615,7 +615,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantityReceived() : ?float
+    public function getQuantityreceived() : ?float
     {
         return $this->getData(self::QUANTITY_RECEIVED);
     }
@@ -624,25 +624,25 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RetailImageID
      * @return $this
      */
-    public function setRetailImageID(?string $RetailImageID)
+    public function setRetailimageid(?string $RetailImageID)
     {
-        $this->setData(self::RETAIL_IMAGE_I_D, $RetailImageID);
+        $this->setData(self::RETAIL_IMAGE_ID, $RetailImageID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getRetailImageID() : ?string
+    public function getRetailimageid() : ?string
     {
-        return $this->getData(self::RETAIL_IMAGE_I_D);
+        return $this->getData(self::RETAIL_IMAGE_ID);
     }
 
     /**
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -651,7 +651,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -660,7 +660,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TerminalNo
      * @return $this
      */
-    public function setTerminalNo(?string $TerminalNo)
+    public function setTerminalno(?string $TerminalNo)
     {
         $this->setData(self::TERMINAL_NO, $TerminalNo);
         return $this;
@@ -669,7 +669,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTerminalNo() : ?string
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -678,7 +678,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CollectTimeLimit
      * @return $this
      */
-    public function setCollectTimeLimit(?string $CollectTimeLimit)
+    public function setCollecttimelimit(?string $CollectTimeLimit)
     {
         $this->setData(self::COLLECT_TIME_LIMIT, $CollectTimeLimit);
         return $this;
@@ -687,7 +687,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCollectTimeLimit() : ?string
+    public function getCollecttimelimit() : ?string
     {
         return $this->getData(self::COLLECT_TIME_LIMIT);
     }
@@ -696,7 +696,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ClickAndCollectLine
      * @return $this
      */
-    public function setClickAndCollectLine(?bool $ClickAndCollectLine)
+    public function setClickandcollectline(?bool $ClickAndCollectLine)
     {
         $this->setData(self::CLICK_AND_COLLECT_LINE, $ClickAndCollectLine);
         return $this;
@@ -705,7 +705,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getClickAndCollectLine() : ?bool
+    public function getClickandcollectline() : ?bool
     {
         return $this->getData(self::CLICK_AND_COLLECT_LINE);
     }
@@ -714,7 +714,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShippingAgentCode
      * @return $this
      */
-    public function setShippingAgentCode(?string $ShippingAgentCode)
+    public function setShippingagentcode(?string $ShippingAgentCode)
     {
         $this->setData(self::SHIPPING_AGENT_CODE, $ShippingAgentCode);
         return $this;
@@ -723,7 +723,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingAgentCode() : ?string
+    public function getShippingagentcode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
@@ -732,7 +732,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShippingAgentServiceCode
      * @return $this
      */
-    public function setShippingAgentServiceCode(?string $ShippingAgentServiceCode)
+    public function setShippingagentservicecode(?string $ShippingAgentServiceCode)
     {
         $this->setData(self::SHIPPING_AGENT_SERVICE_CODE, $ShippingAgentServiceCode);
         return $this;
@@ -741,7 +741,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingAgentServiceCode() : ?string
+    public function getShippingagentservicecode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_SERVICE_CODE);
     }
@@ -750,7 +750,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SourcingOrderType
      * @return $this
      */
-    public function setSourcingOrderType(?string $SourcingOrderType)
+    public function setSourcingordertype(?string $SourcingOrderType)
     {
         $this->setData(self::SOURCING_ORDER_TYPE, $SourcingOrderType);
         return $this;
@@ -759,7 +759,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourcingOrderType() : ?string
+    public function getSourcingordertype() : ?string
     {
         return $this->getData(self::SOURCING_ORDER_TYPE);
     }
@@ -768,7 +768,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RequestedDeliveryDate
      * @return $this
      */
-    public function setRequestedDeliveryDate(?string $RequestedDeliveryDate)
+    public function setRequesteddeliverydate(?string $RequestedDeliveryDate)
     {
         $this->setData(self::REQUESTED_DELIVERY_DATE, $RequestedDeliveryDate);
         return $this;
@@ -777,7 +777,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequestedDeliveryDate() : ?string
+    public function getRequesteddeliverydate() : ?string
     {
         return $this->getData(self::REQUESTED_DELIVERY_DATE);
     }
@@ -786,25 +786,25 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExternalID
      * @return $this
      */
-    public function setExternalID(?string $ExternalID)
+    public function setExternalid(?string $ExternalID)
     {
-        $this->setData(self::EXTERNAL_I_D, $ExternalID);
+        $this->setData(self::EXTERNAL_ID, $ExternalID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getExternalID() : ?string
+    public function getExternalid() : ?string
     {
-        return $this->getData(self::EXTERNAL_I_D);
+        return $this->getData(self::EXTERNAL_ID);
     }
 
     /**
      * @param ?string $BoxNo
      * @return $this
      */
-    public function setBoxNo(?string $BoxNo)
+    public function setBoxno(?string $BoxNo)
     {
         $this->setData(self::BOX_NO, $BoxNo);
         return $this;
@@ -813,7 +813,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBoxNo() : ?string
+    public function getBoxno() : ?string
     {
         return $this->getData(self::BOX_NO);
     }
@@ -822,7 +822,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ShipLine
      * @return $this
      */
-    public function setShipLine(?bool $ShipLine)
+    public function setShipline(?bool $ShipLine)
     {
         $this->setData(self::SHIP_LINE, $ShipLine);
         return $this;
@@ -831,7 +831,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getShipLine() : ?bool
+    public function getShipline() : ?bool
     {
         return $this->getData(self::SHIP_LINE);
     }
@@ -840,7 +840,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TaxGroupCode
      * @return $this
      */
-    public function setTaxGroupCode(?string $TaxGroupCode)
+    public function setTaxgroupcode(?string $TaxGroupCode)
     {
         $this->setData(self::TAX_GROUP_CODE, $TaxGroupCode);
         return $this;
@@ -849,7 +849,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxGroupCode() : ?string
+    public function getTaxgroupcode() : ?string
     {
         return $this->getData(self::TAX_GROUP_CODE);
     }
@@ -858,7 +858,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ValidateTaxParameter
      * @return $this
      */
-    public function setValidateTaxParameter(?bool $ValidateTaxParameter)
+    public function setValidatetaxparameter(?bool $ValidateTaxParameter)
     {
         $this->setData(self::VALIDATE_TAX_PARAMETER, $ValidateTaxParameter);
         return $this;
@@ -867,7 +867,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getValidateTaxParameter() : ?bool
+    public function getValidatetaxparameter() : ?bool
     {
         return $this->getData(self::VALIDATE_TAX_PARAMETER);
     }
@@ -876,7 +876,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ServiceItem
      * @return $this
      */
-    public function setServiceItem(?bool $ServiceItem)
+    public function setServiceitem(?bool $ServiceItem)
     {
         $this->setData(self::SERVICE_ITEM, $ServiceItem);
         return $this;
@@ -885,7 +885,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getServiceItem() : ?bool
+    public function getServiceitem() : ?bool
     {
         return $this->getData(self::SERVICE_ITEM);
     }
@@ -894,7 +894,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QtyPicked
      * @return $this
      */
-    public function setQtyPicked(?float $QtyPicked)
+    public function setQtypicked(?float $QtyPicked)
     {
         $this->setData(self::QTY_PICKED, $QtyPicked);
         return $this;
@@ -903,7 +903,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtyPicked() : ?float
+    public function getQtypicked() : ?float
     {
         return $this->getData(self::QTY_PICKED);
     }
@@ -912,7 +912,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QtyShortage
      * @return $this
      */
-    public function setQtyShortage(?float $QtyShortage)
+    public function setQtyshortage(?float $QtyShortage)
     {
         $this->setData(self::QTY_SHORTAGE, $QtyShortage);
         return $this;
@@ -921,7 +921,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtyShortage() : ?float
+    public function getQtyshortage() : ?float
     {
         return $this->getData(self::QTY_SHORTAGE);
     }
@@ -930,7 +930,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QtyCanceledInPicking
      * @return $this
      */
-    public function setQtyCanceledInPicking(?float $QtyCanceledInPicking)
+    public function setQtycanceledinpicking(?float $QtyCanceledInPicking)
     {
         $this->setData(self::QTY_CANCELED_IN_PICKING, $QtyCanceledInPicking);
         return $this;
@@ -939,7 +939,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtyCanceledInPicking() : ?float
+    public function getQtycanceledinpicking() : ?float
     {
         return $this->getData(self::QTY_CANCELED_IN_PICKING);
     }
@@ -948,7 +948,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QtyCollected
      * @return $this
      */
-    public function setQtyCollected(?float $QtyCollected)
+    public function setQtycollected(?float $QtyCollected)
     {
         $this->setData(self::QTY_COLLECTED, $QtyCollected);
         return $this;
@@ -957,7 +957,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtyCollected() : ?float
+    public function getQtycollected() : ?float
     {
         return $this->getData(self::QTY_COLLECTED);
     }
@@ -966,7 +966,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QtyCanceledInCollecting
      * @return $this
      */
-    public function setQtyCanceledInCollecting(?float $QtyCanceledInCollecting)
+    public function setQtycanceledincollecting(?float $QtyCanceledInCollecting)
     {
         $this->setData(self::QTY_CANCELED_IN_COLLECTING, $QtyCanceledInCollecting);
         return $this;
@@ -975,7 +975,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtyCanceledInCollecting() : ?float
+    public function getQtycanceledincollecting() : ?float
     {
         return $this->getData(self::QTY_CANCELED_IN_COLLECTING);
     }
@@ -984,7 +984,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $ToTransferInt
      * @return $this
      */
-    public function setToTransferInt(?float $ToTransferInt)
+    public function setTotransferint(?float $ToTransferInt)
     {
         $this->setData(self::TO_TRANSFER_INT, $ToTransferInt);
         return $this;
@@ -993,7 +993,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getToTransferInt() : ?float
+    public function getTotransferint() : ?float
     {
         return $this->getData(self::TO_TRANSFER_INT);
     }
@@ -1002,7 +1002,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CreatedByReceipt
      * @return $this
      */
-    public function setCreatedByReceipt(?string $CreatedByReceipt)
+    public function setCreatedbyreceipt(?string $CreatedByReceipt)
     {
         $this->setData(self::CREATED_BY_RECEIPT, $CreatedByReceipt);
         return $this;
@@ -1011,7 +1011,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedByReceipt() : ?string
+    public function getCreatedbyreceipt() : ?string
     {
         return $this->getData(self::CREATED_BY_RECEIPT);
     }
@@ -1020,7 +1020,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PrepaymentDocumentType
      * @return $this
      */
-    public function setPrepaymentDocumentType(?string $PrepaymentDocumentType)
+    public function setPrepaymentdocumenttype(?string $PrepaymentDocumentType)
     {
         $this->setData(self::PREPAYMENT_DOCUMENT_TYPE, $PrepaymentDocumentType);
         return $this;
@@ -1029,7 +1029,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrepaymentDocumentType() : ?string
+    public function getPrepaymentdocumenttype() : ?string
     {
         return $this->getData(self::PREPAYMENT_DOCUMENT_TYPE);
     }
@@ -1038,7 +1038,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PrepaymentDocumentNo
      * @return $this
      */
-    public function setPrepaymentDocumentNo(?string $PrepaymentDocumentNo)
+    public function setPrepaymentdocumentno(?string $PrepaymentDocumentNo)
     {
         $this->setData(self::PREPAYMENT_DOCUMENT_NO, $PrepaymentDocumentNo);
         return $this;
@@ -1047,7 +1047,7 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrepaymentDocumentNo() : ?string
+    public function getPrepaymentdocumentno() : ?string
     {
         return $this->getData(self::PREPAYMENT_DOCUMENT_NO);
     }

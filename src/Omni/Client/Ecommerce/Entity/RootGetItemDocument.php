@@ -12,24 +12,24 @@ class RootGetItemDocument extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetItemDocument';
 
-    public const P_O_S_TRANS_INV_HEADER = 'POSTrans.Inv.Header';
+    public const POSTRANS_INV_HEADER = 'POSTrans.Inv.Header';
 
     /**
      * @param POSTrans.Inv.Header $POSTransInvHeader
      * @return $this
      */
-    public function setPOSTransInvHeader($POSTransInvHeader)
+    public function setPostransInvHeader($POSTransInvHeader)
     {
-        $this->setData(self::P_O_S_TRANS_INV_HEADER, $POSTransInvHeader);
+        $this->setData(self::POSTRANS_INV_HEADER, $POSTransInvHeader);
         return $this;
     }
 
     /**
      * @return POSTrans.Inv.Header
      */
-    public function getPOSTransInvHeader()
+    public function getPostransInvHeader()
     {
-        return $this->getData(self::P_O_S_TRANS_INV_HEADER);
+        return $this->getData(self::POSTRANS_INV_HEADER);
     }
 }
 

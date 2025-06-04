@@ -20,7 +20,7 @@ class GetActionsFromRemoteDB extends \Magento\Catalog\Model\AbstractModel implem
 
     public const ENTRY_NO_TO = 'entryNoTo';
 
-    public const GET_ACTIONS_FROM_REMOTE_D_B_X_M_L = 'getActionsFromRemoteDBXML';
+    public const GET_ACTIONS_FROM_REMOTE_DBXML = 'getActionsFromRemoteDBXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
@@ -30,7 +30,7 @@ class GetActionsFromRemoteDB extends \Magento\Catalog\Model\AbstractModel implem
      * @param int $tableNo
      * @return $this
      */
-    public function setTableNo($tableNo)
+    public function setTableno($tableNo)
     {
         $this->setData(self::TABLE_NO, $tableNo);
         return $this;
@@ -39,7 +39,7 @@ class GetActionsFromRemoteDB extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return int
      */
-    public function getTableNo()
+    public function getTableno()
     {
         return $this->getData(self::TABLE_NO);
     }
@@ -48,7 +48,7 @@ class GetActionsFromRemoteDB extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $entryNoFrom
      * @return $this
      */
-    public function setEntryNoFrom(?string $entryNoFrom)
+    public function setEntrynofrom(?string $entryNoFrom)
     {
         $this->setData(self::ENTRY_NO_FROM, $entryNoFrom);
         return $this;
@@ -57,7 +57,7 @@ class GetActionsFromRemoteDB extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getEntryNoFrom() : ?string
+    public function getEntrynofrom() : ?string
     {
         return $this->getData(self::ENTRY_NO_FROM);
     }
@@ -66,7 +66,7 @@ class GetActionsFromRemoteDB extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $entryNoTo
      * @return $this
      */
-    public function setEntryNoTo(?string $entryNoTo)
+    public function setEntrynoto(?string $entryNoTo)
     {
         $this->setData(self::ENTRY_NO_TO, $entryNoTo);
         return $this;
@@ -75,7 +75,7 @@ class GetActionsFromRemoteDB extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getEntryNoTo() : ?string
+    public function getEntrynoto() : ?string
     {
         return $this->getData(self::ENTRY_NO_TO);
     }
@@ -84,25 +84,25 @@ class GetActionsFromRemoteDB extends \Magento\Catalog\Model\AbstractModel implem
      * @param RootGetActionsFromRemoteDBXML $getActionsFromRemoteDBXML
      * @return $this
      */
-    public function setGetActionsFromRemoteDBXML($getActionsFromRemoteDBXML)
+    public function setGetactionsfromremotedbxml($getActionsFromRemoteDBXML)
     {
-        $this->setData(self::GET_ACTIONS_FROM_REMOTE_D_B_X_M_L, $getActionsFromRemoteDBXML);
+        $this->setData(self::GET_ACTIONS_FROM_REMOTE_DBXML, $getActionsFromRemoteDBXML);
         return $this;
     }
 
     /**
      * @return RootGetActionsFromRemoteDBXML
      */
-    public function getGetActionsFromRemoteDBXML()
+    public function getGetactionsfromremotedbxml()
     {
-        return $this->getData(self::GET_ACTIONS_FROM_REMOTE_D_B_X_M_L);
+        return $this->getData(self::GET_ACTIONS_FROM_REMOTE_DBXML);
     }
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -111,7 +111,7 @@ class GetActionsFromRemoteDB extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -120,7 +120,7 @@ class GetActionsFromRemoteDB extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -129,7 +129,7 @@ class GetActionsFromRemoteDB extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

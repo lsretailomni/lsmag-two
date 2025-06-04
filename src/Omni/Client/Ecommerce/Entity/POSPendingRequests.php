@@ -14,9 +14,9 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
 
     public const REQUEST_STORE_NO = 'RequestStoreNo';
 
-    public const REQUEST_P_O_S_TERMINAL_NO = 'RequestPOSTerminalNo';
+    public const REQUEST_POSTERMINAL_NO = 'RequestPOSTerminalNo';
 
-    public const REQUEST_I_D = 'RequestID';
+    public const REQUEST_ID = 'RequestID';
 
     public const TABLE_NO = 'TableNo';
 
@@ -36,7 +36,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RequestStoreNo
      * @return $this
      */
-    public function setRequestStoreNo(?string $RequestStoreNo)
+    public function setRequeststoreno(?string $RequestStoreNo)
     {
         $this->setData(self::REQUEST_STORE_NO, $RequestStoreNo);
         return $this;
@@ -45,7 +45,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequestStoreNo() : ?string
+    public function getRequeststoreno() : ?string
     {
         return $this->getData(self::REQUEST_STORE_NO);
     }
@@ -54,43 +54,43 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RequestPOSTerminalNo
      * @return $this
      */
-    public function setRequestPOSTerminalNo(?string $RequestPOSTerminalNo)
+    public function setRequestposterminalno(?string $RequestPOSTerminalNo)
     {
-        $this->setData(self::REQUEST_P_O_S_TERMINAL_NO, $RequestPOSTerminalNo);
+        $this->setData(self::REQUEST_POSTERMINAL_NO, $RequestPOSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getRequestPOSTerminalNo() : ?string
+    public function getRequestposterminalno() : ?string
     {
-        return $this->getData(self::REQUEST_P_O_S_TERMINAL_NO);
+        return $this->getData(self::REQUEST_POSTERMINAL_NO);
     }
 
     /**
      * @param ?string $RequestID
      * @return $this
      */
-    public function setRequestID(?string $RequestID)
+    public function setRequestid(?string $RequestID)
     {
-        $this->setData(self::REQUEST_I_D, $RequestID);
+        $this->setData(self::REQUEST_ID, $RequestID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getRequestID() : ?string
+    public function getRequestid() : ?string
     {
-        return $this->getData(self::REQUEST_I_D);
+        return $this->getData(self::REQUEST_ID);
     }
 
     /**
      * @param int $TableNo
      * @return $this
      */
-    public function setTableNo($TableNo)
+    public function setTableno($TableNo)
     {
         $this->setData(self::TABLE_NO, $TableNo);
         return $this;
@@ -99,7 +99,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTableNo()
+    public function getTableno()
     {
         return $this->getData(self::TABLE_NO);
     }
@@ -108,7 +108,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PrimaryKey
      * @return $this
      */
-    public function setPrimaryKey(?string $PrimaryKey)
+    public function setPrimarykey(?string $PrimaryKey)
     {
         $this->setData(self::PRIMARY_KEY, $PrimaryKey);
         return $this;
@@ -117,7 +117,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrimaryKey() : ?string
+    public function getPrimarykey() : ?string
     {
         return $this->getData(self::PRIMARY_KEY);
     }
@@ -126,7 +126,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RequestParameter
      * @return $this
      */
-    public function setRequestParameter(?string $RequestParameter)
+    public function setRequestparameter(?string $RequestParameter)
     {
         $this->setData(self::REQUEST_PARAMETER, $RequestParameter);
         return $this;
@@ -135,7 +135,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequestParameter() : ?string
+    public function getRequestparameter() : ?string
     {
         return $this->getData(self::REQUEST_PARAMETER);
     }
@@ -144,7 +144,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RequestDateTime
      * @return $this
      */
-    public function setRequestDateTime(?string $RequestDateTime)
+    public function setRequestdatetime(?string $RequestDateTime)
     {
         $this->setData(self::REQUEST_DATE_TIME, $RequestDateTime);
         return $this;
@@ -153,7 +153,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequestDateTime() : ?string
+    public function getRequestdatetime() : ?string
     {
         return $this->getData(self::REQUEST_DATE_TIME);
     }
@@ -162,7 +162,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LastProcessDateTime
      * @return $this
      */
-    public function setLastProcessDateTime(?string $LastProcessDateTime)
+    public function setLastprocessdatetime(?string $LastProcessDateTime)
     {
         $this->setData(self::LAST_PROCESS_DATE_TIME, $LastProcessDateTime);
         return $this;
@@ -171,7 +171,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLastProcessDateTime() : ?string
+    public function getLastprocessdatetime() : ?string
     {
         return $this->getData(self::LAST_PROCESS_DATE_TIME);
     }
@@ -180,7 +180,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ErrorMessage
      * @return $this
      */
-    public function setErrorMessage(?string $ErrorMessage)
+    public function setErrormessage(?string $ErrorMessage)
     {
         $this->setData(self::ERROR_MESSAGE, $ErrorMessage);
         return $this;
@@ -189,7 +189,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getErrorMessage() : ?string
+    public function getErrormessage() : ?string
     {
         return $this->getData(self::ERROR_MESSAGE);
     }
@@ -198,7 +198,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -207,7 +207,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }

@@ -34,13 +34,13 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
 
     public const STOCK_DAYS = 'stockDays';
 
-    public const GET_ITEM_INVENTORY_X_M_L = 'getItemInventoryXML';
+    public const GET_ITEM_INVENTORY_XML = 'getItemInventoryXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -49,7 +49,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -58,7 +58,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -67,7 +67,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -76,7 +76,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
      * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo(?string $itemNo)
+    public function setItemno(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
@@ -85,7 +85,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -94,7 +94,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
      * @param ?string $variantCode
      * @return $this
      */
-    public function setVariantCode(?string $variantCode)
+    public function setVariantcode(?string $variantCode)
     {
         $this->setData(self::VARIANT_CODE, $variantCode);
         return $this;
@@ -103,7 +103,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -112,7 +112,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -121,7 +121,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -130,7 +130,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
      * @param ?string $locationCode
      * @return $this
      */
-    public function setLocationCode(?string $locationCode)
+    public function setLocationcode(?string $locationCode)
     {
         $this->setData(self::LOCATION_CODE, $locationCode);
         return $this;
@@ -139,7 +139,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getLocationCode() : ?string
+    public function getLocationcode() : ?string
     {
         return $this->getData(self::LOCATION_CODE);
     }
@@ -202,7 +202,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
      * @param int $stockDays
      * @return $this
      */
-    public function setStockDays($stockDays)
+    public function setStockdays($stockDays)
     {
         $this->setData(self::STOCK_DAYS, $stockDays);
         return $this;
@@ -211,7 +211,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return int
      */
-    public function getStockDays()
+    public function getStockdays()
     {
         return $this->getData(self::STOCK_DAYS);
     }
@@ -220,18 +220,18 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
      * @param RootGetItemInventory $getItemInventoryXML
      * @return $this
      */
-    public function setGetItemInventoryXML($getItemInventoryXML)
+    public function setGetiteminventoryxml($getItemInventoryXML)
     {
-        $this->setData(self::GET_ITEM_INVENTORY_X_M_L, $getItemInventoryXML);
+        $this->setData(self::GET_ITEM_INVENTORY_XML, $getItemInventoryXML);
         return $this;
     }
 
     /**
      * @return RootGetItemInventory
      */
-    public function getGetItemInventoryXML()
+    public function getGetiteminventoryxml()
     {
-        return $this->getData(self::GET_ITEM_INVENTORY_X_M_L);
+        return $this->getData(self::GET_ITEM_INVENTORY_XML);
     }
 }
 

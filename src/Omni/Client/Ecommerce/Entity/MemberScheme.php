@@ -86,7 +86,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StartingCardNo
      * @return $this
      */
-    public function setStartingCardNo(?string $StartingCardNo)
+    public function setStartingcardno(?string $StartingCardNo)
     {
         $this->setData(self::STARTING_CARD_NO, $StartingCardNo);
         return $this;
@@ -95,7 +95,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStartingCardNo() : ?string
+    public function getStartingcardno() : ?string
     {
         return $this->getData(self::STARTING_CARD_NO);
     }
@@ -104,7 +104,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param int $CardNoLength
      * @return $this
      */
-    public function setCardNoLength($CardNoLength)
+    public function setCardnolength($CardNoLength)
     {
         $this->setData(self::CARD_NO_LENGTH, $CardNoLength);
         return $this;
@@ -113,7 +113,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getCardNoLength()
+    public function getCardnolength()
     {
         return $this->getData(self::CARD_NO_LENGTH);
     }
@@ -122,7 +122,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $BarcodeMask
      * @return $this
      */
-    public function setBarcodeMask(?string $BarcodeMask)
+    public function setBarcodemask(?string $BarcodeMask)
     {
         $this->setData(self::BARCODE_MASK, $BarcodeMask);
         return $this;
@@ -131,7 +131,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeMask() : ?string
+    public function getBarcodemask() : ?string
     {
         return $this->getData(self::BARCODE_MASK);
     }
@@ -140,7 +140,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DefaultCustDiscGroup
      * @return $this
      */
-    public function setDefaultCustDiscGroup(?string $DefaultCustDiscGroup)
+    public function setDefaultcustdiscgroup(?string $DefaultCustDiscGroup)
     {
         $this->setData(self::DEFAULT_CUST_DISC_GROUP, $DefaultCustDiscGroup);
         return $this;
@@ -149,7 +149,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDefaultCustDiscGroup() : ?string
+    public function getDefaultcustdiscgroup() : ?string
     {
         return $this->getData(self::DEFAULT_CUST_DISC_GROUP);
     }
@@ -158,7 +158,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DefaultPriceGroup
      * @return $this
      */
-    public function setDefaultPriceGroup(?string $DefaultPriceGroup)
+    public function setDefaultpricegroup(?string $DefaultPriceGroup)
     {
         $this->setData(self::DEFAULT_PRICE_GROUP, $DefaultPriceGroup);
         return $this;
@@ -167,7 +167,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDefaultPriceGroup() : ?string
+    public function getDefaultpricegroup() : ?string
     {
         return $this->getData(self::DEFAULT_PRICE_GROUP);
     }
@@ -176,7 +176,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClubCode
      * @return $this
      */
-    public function setClubCode(?string $ClubCode)
+    public function setClubcode(?string $ClubCode)
     {
         $this->setData(self::CLUB_CODE, $ClubCode);
         return $this;
@@ -185,7 +185,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubCode() : ?string
+    public function getClubcode() : ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
@@ -194,7 +194,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param int $UpdateSequence
      * @return $this
      */
-    public function setUpdateSequence($UpdateSequence)
+    public function setUpdatesequence($UpdateSequence)
     {
         $this->setData(self::UPDATE_SEQUENCE, $UpdateSequence);
         return $this;
@@ -203,7 +203,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getUpdateSequence()
+    public function getUpdatesequence()
     {
         return $this->getData(self::UPDATE_SEQUENCE);
     }
@@ -212,7 +212,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $MinPointforUpgrade
      * @return $this
      */
-    public function setMinPointforUpgrade(?float $MinPointforUpgrade)
+    public function setMinpointforupgrade(?float $MinPointforUpgrade)
     {
         $this->setData(self::MIN_POINTFOR_UPGRADE, $MinPointforUpgrade);
         return $this;
@@ -221,7 +221,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getMinPointforUpgrade() : ?float
+    public function getMinpointforupgrade() : ?float
     {
         return $this->getData(self::MIN_POINTFOR_UPGRADE);
     }
@@ -230,7 +230,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $WhenCheckforUpgraded
      * @return $this
      */
-    public function setWhenCheckforUpgraded(?string $WhenCheckforUpgraded)
+    public function setWhencheckforupgraded(?string $WhenCheckforUpgraded)
     {
         $this->setData(self::WHEN_CHECKFOR_UPGRADED, $WhenCheckforUpgraded);
         return $this;
@@ -239,7 +239,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getWhenCheckforUpgraded() : ?string
+    public function getWhencheckforupgraded() : ?string
     {
         return $this->getData(self::WHEN_CHECKFOR_UPGRADED);
     }
@@ -248,7 +248,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param int $BufferDaysBeforeExpire
      * @return $this
      */
-    public function setBufferDaysBeforeExpire($BufferDaysBeforeExpire)
+    public function setBufferdaysbeforeexpire($BufferDaysBeforeExpire)
     {
         $this->setData(self::BUFFER_DAYS_BEFORE_EXPIRE, $BufferDaysBeforeExpire);
         return $this;
@@ -257,7 +257,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getBufferDaysBeforeExpire()
+    public function getBufferdaysbeforeexpire()
     {
         return $this->getData(self::BUFFER_DAYS_BEFORE_EXPIRE);
     }
@@ -266,7 +266,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $PointLimitforDowngrade
      * @return $this
      */
-    public function setPointLimitforDowngrade(?float $PointLimitforDowngrade)
+    public function setPointlimitfordowngrade(?float $PointLimitforDowngrade)
     {
         $this->setData(self::POINT_LIMITFOR_DOWNGRADE, $PointLimitforDowngrade);
         return $this;
@@ -275,7 +275,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPointLimitforDowngrade() : ?float
+    public function getPointlimitfordowngrade() : ?float
     {
         return $this->getData(self::POINT_LIMITFOR_DOWNGRADE);
     }
@@ -284,7 +284,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $NextScheme
      * @return $this
      */
-    public function setNextScheme(?string $NextScheme)
+    public function setNextscheme(?string $NextScheme)
     {
         $this->setData(self::NEXT_SCHEME, $NextScheme);
         return $this;
@@ -293,7 +293,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNextScheme() : ?string
+    public function getNextscheme() : ?string
     {
         return $this->getData(self::NEXT_SCHEME);
     }
@@ -302,7 +302,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $NextSchemeBenefits
      * @return $this
      */
-    public function setNextSchemeBenefits(?string $NextSchemeBenefits)
+    public function setNextschemebenefits(?string $NextSchemeBenefits)
     {
         $this->setData(self::NEXT_SCHEME_BENEFITS, $NextSchemeBenefits);
         return $this;
@@ -311,7 +311,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNextSchemeBenefits() : ?string
+    public function getNextschemebenefits() : ?string
     {
         return $this->getData(self::NEXT_SCHEME_BENEFITS);
     }
@@ -320,7 +320,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CardNoSeries
      * @return $this
      */
-    public function setCardNoSeries(?string $CardNoSeries)
+    public function setCardnoseries(?string $CardNoSeries)
     {
         $this->setData(self::CARD_NO_SERIES, $CardNoSeries);
         return $this;
@@ -329,7 +329,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardNoSeries() : ?string
+    public function getCardnoseries() : ?string
     {
         return $this->getData(self::CARD_NO_SERIES);
     }
@@ -338,7 +338,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExpirationPeriodType
      * @return $this
      */
-    public function setExpirationPeriodType(?string $ExpirationPeriodType)
+    public function setExpirationperiodtype(?string $ExpirationPeriodType)
     {
         $this->setData(self::EXPIRATION_PERIOD_TYPE, $ExpirationPeriodType);
         return $this;
@@ -347,7 +347,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirationPeriodType() : ?string
+    public function getExpirationperiodtype() : ?string
     {
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
     }

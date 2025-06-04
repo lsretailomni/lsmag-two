@@ -24,7 +24,7 @@ class SecurityCheckProfileResult extends \Magento\Catalog\Model\AbstractModel im
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class SecurityCheckProfileResult extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class SecurityCheckProfileResult extends \Magento\Catalog\Model\AbstractModel im
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class SecurityCheckProfileResult extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,7 +60,7 @@ class SecurityCheckProfileResult extends \Magento\Catalog\Model\AbstractModel im
      * @param ?bool $securityProfileExist
      * @return $this
      */
-    public function setSecurityProfileExist(?bool $securityProfileExist)
+    public function setSecurityprofileexist(?bool $securityProfileExist)
     {
         $this->setData(self::SECURITY_PROFILE_EXIST, $securityProfileExist);
         return $this;
@@ -69,7 +69,7 @@ class SecurityCheckProfileResult extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?bool
      */
-    public function getSecurityProfileExist() : ?bool
+    public function getSecurityprofileexist() : ?bool
     {
         return $this->getData(self::SECURITY_PROFILE_EXIST);
     }

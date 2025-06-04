@@ -34,7 +34,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $terminalNo
      * @return $this
      */
-    public function setTerminalNo(?string $terminalNo)
+    public function setTerminalno(?string $terminalNo)
     {
         $this->setData(self::TERMINAL_NO, $terminalNo);
         return $this;
@@ -43,7 +43,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getTerminalNo() : ?string
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -52,7 +52,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $requestType
      * @return $this
      */
-    public function setRequestType(?string $requestType)
+    public function setRequesttype(?string $requestType)
     {
         $this->setData(self::REQUEST_TYPE, $requestType);
         return $this;
@@ -61,7 +61,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getRequestType() : ?string
+    public function getRequesttype() : ?string
     {
         return $this->getData(self::REQUEST_TYPE);
     }
@@ -70,7 +70,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $postMethod
      * @return $this
      */
-    public function setPostMethod(?string $postMethod)
+    public function setPostmethod(?string $postMethod)
     {
         $this->setData(self::POST_METHOD, $postMethod);
         return $this;
@@ -79,7 +79,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getPostMethod() : ?string
+    public function getPostmethod() : ?string
     {
         return $this->getData(self::POST_METHOD);
     }
@@ -88,7 +88,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param int $documentType
      * @return $this
      */
-    public function setDocumentType($documentType)
+    public function setDocumenttype($documentType)
     {
         $this->setData(self::DOCUMENT_TYPE, $documentType);
         return $this;
@@ -97,7 +97,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return int
      */
-    public function getDocumentType()
+    public function getDocumenttype()
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
@@ -106,7 +106,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $documentNo
      * @return $this
      */
-    public function setDocumentNo(?string $documentNo)
+    public function setDocumentno(?string $documentNo)
     {
         $this->setData(self::DOCUMENT_NO, $documentNo);
         return $this;
@@ -115,7 +115,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getDocumentNo() : ?string
+    public function getDocumentno() : ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -124,7 +124,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -133,7 +133,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -160,7 +160,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -169,7 +169,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

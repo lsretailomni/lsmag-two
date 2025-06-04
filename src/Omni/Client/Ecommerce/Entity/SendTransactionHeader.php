@@ -20,13 +20,13 @@ class SendTransactionHeader extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const UPDATE_REPLICATION_COUNTER = 'updateReplicationCounter';
 
-    public const SEND_TRANSACTION_HEADER_X_M_L = 'sendTransactionHeaderXML';
+    public const SEND_TRANSACTION_HEADER_XML = 'sendTransactionHeaderXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class SendTransactionHeader extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class SendTransactionHeader extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class SendTransactionHeader extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class SendTransactionHeader extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?bool $updateReplicationCounter
      * @return $this
      */
-    public function setUpdateReplicationCounter(?bool $updateReplicationCounter)
+    public function setUpdatereplicationcounter(?bool $updateReplicationCounter)
     {
         $this->setData(self::UPDATE_REPLICATION_COUNTER, $updateReplicationCounter);
         return $this;
@@ -71,7 +71,7 @@ class SendTransactionHeader extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?bool
      */
-    public function getUpdateReplicationCounter() : ?bool
+    public function getUpdatereplicationcounter() : ?bool
     {
         return $this->getData(self::UPDATE_REPLICATION_COUNTER);
     }
@@ -80,18 +80,18 @@ class SendTransactionHeader extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootSendTransactionHeader $sendTransactionHeaderXML
      * @return $this
      */
-    public function setSendTransactionHeaderXML($sendTransactionHeaderXML)
+    public function setSendtransactionheaderxml($sendTransactionHeaderXML)
     {
-        $this->setData(self::SEND_TRANSACTION_HEADER_X_M_L, $sendTransactionHeaderXML);
+        $this->setData(self::SEND_TRANSACTION_HEADER_XML, $sendTransactionHeaderXML);
         return $this;
     }
 
     /**
      * @return RootSendTransactionHeader
      */
-    public function getSendTransactionHeaderXML()
+    public function getSendtransactionheaderxml()
     {
-        return $this->getData(self::SEND_TRANSACTION_HEADER_X_M_L);
+        return $this->getData(self::SEND_TRANSACTION_HEADER_XML);
     }
 }
 

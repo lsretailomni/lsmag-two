@@ -18,7 +18,7 @@ class RootMobileGetProfiles extends \Magento\Catalog\Model\AbstractModel
      * @param MemberAttribute $MemberAttribute
      * @return $this
      */
-    public function setMemberAttribute($MemberAttribute)
+    public function setMemberattribute($MemberAttribute)
     {
         $this->setData(self::MEMBER_ATTRIBUTE, $MemberAttribute);
         return $this;
@@ -27,7 +27,7 @@ class RootMobileGetProfiles extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberAttribute
      */
-    public function getMemberAttribute()
+    public function getMemberattribute()
     {
         return $this->getData(self::MEMBER_ATTRIBUTE);
     }

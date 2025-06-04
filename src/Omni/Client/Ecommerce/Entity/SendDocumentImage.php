@@ -36,7 +36,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -45,7 +45,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -54,7 +54,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -63,7 +63,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -72,7 +72,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
      * @param int $maskNo
      * @return $this
      */
-    public function setMaskNo($maskNo)
+    public function setMaskno($maskNo)
     {
         $this->setData(self::MASK_NO, $maskNo);
         return $this;
@@ -81,7 +81,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return int
      */
-    public function getMaskNo()
+    public function getMaskno()
     {
         return $this->getData(self::MASK_NO);
     }
@@ -90,7 +90,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $transactionNo
      * @return $this
      */
-    public function setTransactionNo(?string $transactionNo)
+    public function setTransactionno(?string $transactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $transactionNo);
         return $this;
@@ -99,7 +99,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getTransactionNo() : ?string
+    public function getTransactionno() : ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -108,7 +108,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
      * @param int $transactionLineNo
      * @return $this
      */
-    public function setTransactionLineNo($transactionLineNo)
+    public function setTransactionlineno($transactionLineNo)
     {
         $this->setData(self::TRANSACTION_LINE_NO, $transactionLineNo);
         return $this;
@@ -117,7 +117,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return int
      */
-    public function getTransactionLineNo()
+    public function getTransactionlineno()
     {
         return $this->getData(self::TRANSACTION_LINE_NO);
     }
@@ -126,7 +126,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
      * @param int $documentType
      * @return $this
      */
-    public function setDocumentType($documentType)
+    public function setDocumenttype($documentType)
     {
         $this->setData(self::DOCUMENT_TYPE, $documentType);
         return $this;
@@ -135,7 +135,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return int
      */
-    public function getDocumentType()
+    public function getDocumenttype()
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
@@ -144,7 +144,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $documentNo
      * @return $this
      */
-    public function setDocumentNo(?string $documentNo)
+    public function setDocumentno(?string $documentNo)
     {
         $this->setData(self::DOCUMENT_NO, $documentNo);
         return $this;
@@ -153,7 +153,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getDocumentNo() : ?string
+    public function getDocumentno() : ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -180,7 +180,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $imageDescription
      * @return $this
      */
-    public function setImageDescription(?string $imageDescription)
+    public function setImagedescription(?string $imageDescription)
     {
         $this->setData(self::IMAGE_DESCRIPTION, $imageDescription);
         return $this;
@@ -189,7 +189,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getImageDescription() : ?string
+    public function getImagedescription() : ?string
     {
         return $this->getData(self::IMAGE_DESCRIPTION);
     }

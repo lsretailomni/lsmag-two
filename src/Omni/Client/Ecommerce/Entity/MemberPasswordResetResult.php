@@ -26,7 +26,7 @@ class MemberPasswordResetResult extends \Magento\Catalog\Model\AbstractModel imp
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class MemberPasswordResetResult extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class MemberPasswordResetResult extends \Magento\Catalog\Model\AbstractModel imp
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class MemberPasswordResetResult extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -80,7 +80,7 @@ class MemberPasswordResetResult extends \Magento\Catalog\Model\AbstractModel imp
      * @param ?string $expiryOn
      * @return $this
      */
-    public function setExpiryOn(?string $expiryOn)
+    public function setExpiryon(?string $expiryOn)
     {
         $this->setData(self::EXPIRY_ON, $expiryOn);
         return $this;
@@ -89,7 +89,7 @@ class MemberPasswordResetResult extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getExpiryOn() : ?string
+    public function getExpiryon() : ?string
     {
         return $this->getData(self::EXPIRY_ON);
     }

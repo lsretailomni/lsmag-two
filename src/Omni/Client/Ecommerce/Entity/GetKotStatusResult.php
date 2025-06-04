@@ -18,13 +18,13 @@ class GetKotStatusResult extends \Magento\Catalog\Model\AbstractModel implements
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_KOT_STATUS_X_M_L = 'getKotStatusXML';
+    public const GET_KOT_STATUS_XML = 'getKotStatusXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class GetKotStatusResult extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class GetKotStatusResult extends \Magento\Catalog\Model\AbstractModel implements
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class GetKotStatusResult extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetKotStatusResult extends \Magento\Catalog\Model\AbstractModel implements
      * @param RootKotStatus $getKotStatusXML
      * @return $this
      */
-    public function setGetKotStatusXML($getKotStatusXML)
+    public function setGetkotstatusxml($getKotStatusXML)
     {
-        $this->setData(self::GET_KOT_STATUS_X_M_L, $getKotStatusXML);
+        $this->setData(self::GET_KOT_STATUS_XML, $getKotStatusXML);
         return $this;
     }
 
     /**
      * @return RootKotStatus
      */
-    public function getGetKotStatusXML()
+    public function getGetkotstatusxml()
     {
-        return $this->getData(self::GET_KOT_STATUS_X_M_L);
+        return $this->getData(self::GET_KOT_STATUS_XML);
     }
 
     /**

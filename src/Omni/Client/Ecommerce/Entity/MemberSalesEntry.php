@@ -26,7 +26,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NAME = 'StoreName';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const TRANSACTION_NO = 'TransactionNo';
 
@@ -42,7 +42,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -51,7 +51,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
@@ -60,7 +60,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $MemberAccountNo
      * @return $this
      */
-    public function setMemberAccountNo(?string $MemberAccountNo)
+    public function setMemberaccountno(?string $MemberAccountNo)
     {
         $this->setData(self::MEMBER_ACCOUNT_NO, $MemberAccountNo);
         return $this;
@@ -69,7 +69,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberAccountNo() : ?string
+    public function getMemberaccountno() : ?string
     {
         return $this->getData(self::MEMBER_ACCOUNT_NO);
     }
@@ -78,7 +78,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $MemberContactNo
      * @return $this
      */
-    public function setMemberContactNo(?string $MemberContactNo)
+    public function setMembercontactno(?string $MemberContactNo)
     {
         $this->setData(self::MEMBER_CONTACT_NO, $MemberContactNo);
         return $this;
@@ -87,7 +87,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberContactNo() : ?string
+    public function getMembercontactno() : ?string
     {
         return $this->getData(self::MEMBER_CONTACT_NO);
     }
@@ -96,7 +96,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $MemberCardNo
      * @return $this
      */
-    public function setMemberCardNo(?string $MemberCardNo)
+    public function setMembercardno(?string $MemberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $MemberCardNo);
         return $this;
@@ -105,7 +105,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberCardNo() : ?string
+    public function getMembercardno() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -114,7 +114,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SourceType
      * @return $this
      */
-    public function setSourceType(?string $SourceType)
+    public function setSourcetype(?string $SourceType)
     {
         $this->setData(self::SOURCE_TYPE, $SourceType);
         return $this;
@@ -123,7 +123,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourceType() : ?string
+    public function getSourcetype() : ?string
     {
         return $this->getData(self::SOURCE_TYPE);
     }
@@ -132,7 +132,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -141,7 +141,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -150,7 +150,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreName
      * @return $this
      */
-    public function setStoreName(?string $StoreName)
+    public function setStorename(?string $StoreName)
     {
         $this->setData(self::STORE_NAME, $StoreName);
         return $this;
@@ -159,7 +159,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreName() : ?string
+    public function getStorename() : ?string
     {
         return $this->getData(self::STORE_NAME);
     }
@@ -168,25 +168,25 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo(?string $POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -195,7 +195,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -204,7 +204,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DocumentNo
      * @return $this
      */
-    public function setDocumentNo(?string $DocumentNo)
+    public function setDocumentno(?string $DocumentNo)
     {
         $this->setData(self::DOCUMENT_NO, $DocumentNo);
         return $this;
@@ -213,7 +213,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentNo() : ?string
+    public function getDocumentno() : ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -258,7 +258,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $GrossAmount
      * @return $this
      */
-    public function setGrossAmount(?float $GrossAmount)
+    public function setGrossamount(?float $GrossAmount)
     {
         $this->setData(self::GROSS_AMOUNT, $GrossAmount);
         return $this;
@@ -267,7 +267,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getGrossAmount() : ?float
+    public function getGrossamount() : ?float
     {
         return $this->getData(self::GROSS_AMOUNT);
     }

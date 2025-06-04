@@ -20,13 +20,13 @@ class CreateHospOrderResult extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const HOSP_ORDER_RECEIPT_NO = 'hospOrderReceiptNo';
 
-    public const CREATE_HOSP_ORDER_X_M_L = 'createHospOrderXML';
+    public const CREATE_HOSP_ORDER_XML = 'createHospOrderXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class CreateHospOrderResult extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class CreateHospOrderResult extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class CreateHospOrderResult extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class CreateHospOrderResult extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $hospOrderReceiptNo
      * @return $this
      */
-    public function setHospOrderReceiptNo(?string $hospOrderReceiptNo)
+    public function setHosporderreceiptno(?string $hospOrderReceiptNo)
     {
         $this->setData(self::HOSP_ORDER_RECEIPT_NO, $hospOrderReceiptNo);
         return $this;
@@ -71,7 +71,7 @@ class CreateHospOrderResult extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getHospOrderReceiptNo() : ?string
+    public function getHosporderreceiptno() : ?string
     {
         return $this->getData(self::HOSP_ORDER_RECEIPT_NO);
     }
@@ -80,18 +80,18 @@ class CreateHospOrderResult extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootHospTransaction $createHospOrderXML
      * @return $this
      */
-    public function setCreateHospOrderXML($createHospOrderXML)
+    public function setCreatehosporderxml($createHospOrderXML)
     {
-        $this->setData(self::CREATE_HOSP_ORDER_X_M_L, $createHospOrderXML);
+        $this->setData(self::CREATE_HOSP_ORDER_XML, $createHospOrderXML);
         return $this;
     }
 
     /**
      * @return RootHospTransaction
      */
-    public function getCreateHospOrderXML()
+    public function getCreatehosporderxml()
     {
-        return $this->getData(self::CREATE_HOSP_ORDER_X_M_L);
+        return $this->getData(self::CREATE_HOSP_ORDER_XML);
     }
 
     /**

@@ -18,13 +18,13 @@ class GetDocumentListV2Result extends \Magento\Catalog\Model\AbstractModel imple
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_DOCUMENT_LIST_X_M_L = 'getDocumentListXML';
+    public const GET_DOCUMENT_LIST_XML = 'getDocumentListXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class GetDocumentListV2Result extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class GetDocumentListV2Result extends \Magento\Catalog\Model\AbstractModel imple
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class GetDocumentListV2Result extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetDocumentListV2Result extends \Magento\Catalog\Model\AbstractModel imple
      * @param RootGetDocumentList $getDocumentListXML
      * @return $this
      */
-    public function setGetDocumentListXML($getDocumentListXML)
+    public function setGetdocumentlistxml($getDocumentListXML)
     {
-        $this->setData(self::GET_DOCUMENT_LIST_X_M_L, $getDocumentListXML);
+        $this->setData(self::GET_DOCUMENT_LIST_XML, $getDocumentListXML);
         return $this;
     }
 
     /**
      * @return RootGetDocumentList
      */
-    public function getGetDocumentListXML()
+    public function getGetdocumentlistxml()
     {
-        return $this->getData(self::GET_DOCUMENT_LIST_X_M_L);
+        return $this->getData(self::GET_DOCUMENT_LIST_XML);
     }
 
     /**

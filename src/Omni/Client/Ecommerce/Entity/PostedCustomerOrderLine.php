@@ -12,7 +12,7 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'PostedCustomerOrderLine';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const ITEM_NUMBER = 'ItemNumber';
 
@@ -34,25 +34,25 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID(?string $DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDocumentID() : ?string
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
      * @param ?string $ItemNumber
      * @return $this
      */
-    public function setItemNumber(?string $ItemNumber)
+    public function setItemnumber(?string $ItemNumber)
     {
         $this->setData(self::ITEM_NUMBER, $ItemNumber);
         return $this;
@@ -61,7 +61,7 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemNumber() : ?string
+    public function getItemnumber() : ?string
     {
         return $this->getData(self::ITEM_NUMBER);
     }
@@ -70,7 +70,7 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemDescription
      * @return $this
      */
-    public function setItemDescription(?string $ItemDescription)
+    public function setItemdescription(?string $ItemDescription)
     {
         $this->setData(self::ITEM_DESCRIPTION, $ItemDescription);
         return $this;
@@ -79,7 +79,7 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemDescription() : ?string
+    public function getItemdescription() : ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
@@ -88,7 +88,7 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -97,7 +97,7 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -106,7 +106,7 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CollectTimeLimit
      * @return $this
      */
-    public function setCollectTimeLimit(?string $CollectTimeLimit)
+    public function setCollecttimelimit(?string $CollectTimeLimit)
     {
         $this->setData(self::COLLECT_TIME_LIMIT, $CollectTimeLimit);
         return $this;
@@ -115,7 +115,7 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCollectTimeLimit() : ?string
+    public function getCollecttimelimit() : ?string
     {
         return $this->getData(self::COLLECT_TIME_LIMIT);
     }
@@ -160,7 +160,7 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QtyCanceledInCollecting
      * @return $this
      */
-    public function setQtyCanceledInCollecting(?float $QtyCanceledInCollecting)
+    public function setQtycanceledincollecting(?float $QtyCanceledInCollecting)
     {
         $this->setData(self::QTY_CANCELED_IN_COLLECTING, $QtyCanceledInCollecting);
         return $this;
@@ -169,7 +169,7 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtyCanceledInCollecting() : ?float
+    public function getQtycanceledincollecting() : ?float
     {
         return $this->getData(self::QTY_CANCELED_IN_COLLECTING);
     }
@@ -178,7 +178,7 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QtyPutBack
      * @return $this
      */
-    public function setQtyPutBack(?float $QtyPutBack)
+    public function setQtyputback(?float $QtyPutBack)
     {
         $this->setData(self::QTY_PUT_BACK, $QtyPutBack);
         return $this;
@@ -187,7 +187,7 @@ class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtyPutBack() : ?float
+    public function getQtyputback() : ?float
     {
         return $this->getData(self::QTY_PUT_BACK);
     }

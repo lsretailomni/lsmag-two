@@ -20,13 +20,13 @@ class GetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel implements Req
 
     public const STORE_NO = 'storeNo';
 
-    public const GET_HIERARCHY_V2_X_M_L = 'getHierarchyV2XML';
+    public const GET_HIERARCHY_V2_XML = 'getHierarchyV2XML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class GetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class GetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class GetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class GetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -71,7 +71,7 @@ class GetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -80,18 +80,18 @@ class GetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param RootGetHierarchyV2 $getHierarchyV2XML
      * @return $this
      */
-    public function setGetHierarchyV2XML($getHierarchyV2XML)
+    public function setGethierarchyv2xml($getHierarchyV2XML)
     {
-        $this->setData(self::GET_HIERARCHY_V2_X_M_L, $getHierarchyV2XML);
+        $this->setData(self::GET_HIERARCHY_V2_XML, $getHierarchyV2XML);
         return $this;
     }
 
     /**
      * @return RootGetHierarchyV2
      */
-    public function getGetHierarchyV2XML()
+    public function getGethierarchyv2xml()
     {
-        return $this->getData(self::GET_HIERARCHY_V2_X_M_L);
+        return $this->getData(self::GET_HIERARCHY_V2_XML);
     }
 }
 

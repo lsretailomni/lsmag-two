@@ -24,7 +24,7 @@ class GetHospOrderEstimatedTimeResult extends \Magento\Catalog\Model\AbstractMod
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class GetHospOrderEstimatedTimeResult extends \Magento\Catalog\Model\AbstractMod
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class GetHospOrderEstimatedTimeResult extends \Magento\Catalog\Model\AbstractMod
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class GetHospOrderEstimatedTimeResult extends \Magento\Catalog\Model\AbstractMod
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,7 +60,7 @@ class GetHospOrderEstimatedTimeResult extends \Magento\Catalog\Model\AbstractMod
      * @param int $estimatedTime
      * @return $this
      */
-    public function setEstimatedTime($estimatedTime)
+    public function setEstimatedtime($estimatedTime)
     {
         $this->setData(self::ESTIMATED_TIME, $estimatedTime);
         return $this;
@@ -69,7 +69,7 @@ class GetHospOrderEstimatedTimeResult extends \Magento\Catalog\Model\AbstractMod
     /**
      * @return int
      */
-    public function getEstimatedTime()
+    public function getEstimatedtime()
     {
         return $this->getData(self::ESTIMATED_TIME);
     }

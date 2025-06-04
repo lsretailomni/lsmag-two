@@ -18,13 +18,13 @@ class COGetMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel implem
 
     public const ERROR_TEXT = 'errorText';
 
-    public const C_O_GET_MOBILE_PICK_HEADERS_X_M_L = 'cOGetMobilePickHeadersXML';
+    public const COGET_MOBILE_PICK_HEADERS_XML = 'cOGetMobilePickHeadersXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class COGetMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class COGetMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class COGetMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class COGetMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel implem
      * @param RootCOMobilePickHeaders $cOGetMobilePickHeadersXML
      * @return $this
      */
-    public function setCOGetMobilePickHeadersXML($cOGetMobilePickHeadersXML)
+    public function setCogetmobilepickheadersxml($cOGetMobilePickHeadersXML)
     {
-        $this->setData(self::C_O_GET_MOBILE_PICK_HEADERS_X_M_L, $cOGetMobilePickHeadersXML);
+        $this->setData(self::COGET_MOBILE_PICK_HEADERS_XML, $cOGetMobilePickHeadersXML);
         return $this;
     }
 
     /**
      * @return RootCOMobilePickHeaders
      */
-    public function getCOGetMobilePickHeadersXML()
+    public function getCogetmobilepickheadersxml()
     {
-        return $this->getData(self::C_O_GET_MOBILE_PICK_HEADERS_X_M_L);
+        return $this->getData(self::COGET_MOBILE_PICK_HEADERS_XML);
     }
 }
 

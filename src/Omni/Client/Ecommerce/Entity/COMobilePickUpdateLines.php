@@ -20,7 +20,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
 
     public const STORE_NO = 'StoreNo';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const LINE_NO = 'LineNo';
 
@@ -46,7 +46,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -55,7 +55,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
@@ -64,7 +64,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
      * @param ?string $TerminalNo
      * @return $this
      */
-    public function setTerminalNo(?string $TerminalNo)
+    public function setTerminalno(?string $TerminalNo)
     {
         $this->setData(self::TERMINAL_NO, $TerminalNo);
         return $this;
@@ -73,7 +73,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getTerminalNo() : ?string
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -82,7 +82,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -91,7 +91,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -100,25 +100,25 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
      * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID(?string $DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDocumentID() : ?string
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -127,7 +127,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -136,7 +136,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
      * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo(?string $ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
@@ -145,7 +145,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -154,7 +154,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -163,7 +163,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -190,7 +190,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
      * @param ?float $QuantityBase
      * @return $this
      */
-    public function setQuantityBase(?float $QuantityBase)
+    public function setQuantitybase(?float $QuantityBase)
     {
         $this->setData(self::QUANTITY_BASE, $QuantityBase);
         return $this;
@@ -199,7 +199,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?float
      */
-    public function getQuantityBase() : ?float
+    public function getQuantitybase() : ?float
     {
         return $this->getData(self::QUANTITY_BASE);
     }
@@ -226,7 +226,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
      * @param ?bool $NotInStock
      * @return $this
      */
-    public function setNotInStock(?bool $NotInStock)
+    public function setNotinstock(?bool $NotInStock)
     {
         $this->setData(self::NOT_IN_STOCK, $NotInStock);
         return $this;
@@ -235,7 +235,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?bool
      */
-    public function getNotInStock() : ?bool
+    public function getNotinstock() : ?bool
     {
         return $this->getData(self::NOT_IN_STOCK);
     }
@@ -244,7 +244,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
      * @param ?string $LineComment
      * @return $this
      */
-    public function setLineComment(?string $LineComment)
+    public function setLinecomment(?string $LineComment)
     {
         $this->setData(self::LINE_COMMENT, $LineComment);
         return $this;
@@ -253,7 +253,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getLineComment() : ?string
+    public function getLinecomment() : ?string
     {
         return $this->getData(self::LINE_COMMENT);
     }
@@ -262,7 +262,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
      * @param ?string $BoxNo
      * @return $this
      */
-    public function setBoxNo(?string $BoxNo)
+    public function setBoxno(?string $BoxNo)
     {
         $this->setData(self::BOX_NO, $BoxNo);
         return $this;
@@ -271,7 +271,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getBoxNo() : ?string
+    public function getBoxno() : ?string
     {
         return $this->getData(self::BOX_NO);
     }
@@ -280,7 +280,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
      * @param ?string $BoxLocation
      * @return $this
      */
-    public function setBoxLocation(?string $BoxLocation)
+    public function setBoxlocation(?string $BoxLocation)
     {
         $this->setData(self::BOX_LOCATION, $BoxLocation);
         return $this;
@@ -289,7 +289,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getBoxLocation() : ?string
+    public function getBoxlocation() : ?string
     {
         return $this->getData(self::BOX_LOCATION);
     }

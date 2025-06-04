@@ -32,13 +32,13 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
 
     public const VARIANT_DIMENSION1_CODE = 'variantDimension1Code';
 
-    public const GET_RETURN_POLICY_X_M_L = 'getReturnPolicyXML';
+    public const GET_RETURN_POLICY_XML = 'getReturnPolicyXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -47,7 +47,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -56,7 +56,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -65,7 +65,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -74,7 +74,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -83,7 +83,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -92,7 +92,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $storeGroupCode
      * @return $this
      */
-    public function setStoreGroupCode(?string $storeGroupCode)
+    public function setStoregroupcode(?string $storeGroupCode)
     {
         $this->setData(self::STORE_GROUP_CODE, $storeGroupCode);
         return $this;
@@ -101,7 +101,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getStoreGroupCode() : ?string
+    public function getStoregroupcode() : ?string
     {
         return $this->getData(self::STORE_GROUP_CODE);
     }
@@ -110,7 +110,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $itemCategoryCode
      * @return $this
      */
-    public function setItemCategoryCode(?string $itemCategoryCode)
+    public function setItemcategorycode(?string $itemCategoryCode)
     {
         $this->setData(self::ITEM_CATEGORY_CODE, $itemCategoryCode);
         return $this;
@@ -119,7 +119,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getItemCategoryCode() : ?string
+    public function getItemcategorycode() : ?string
     {
         return $this->getData(self::ITEM_CATEGORY_CODE);
     }
@@ -128,7 +128,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $retailProductCode
      * @return $this
      */
-    public function setRetailProductCode(?string $retailProductCode)
+    public function setRetailproductcode(?string $retailProductCode)
     {
         $this->setData(self::RETAIL_PRODUCT_CODE, $retailProductCode);
         return $this;
@@ -137,7 +137,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getRetailProductCode() : ?string
+    public function getRetailproductcode() : ?string
     {
         return $this->getData(self::RETAIL_PRODUCT_CODE);
     }
@@ -146,7 +146,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo(?string $itemNo)
+    public function setItemno(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
@@ -155,7 +155,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -164,7 +164,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $variantCode
      * @return $this
      */
-    public function setVariantCode(?string $variantCode)
+    public function setVariantcode(?string $variantCode)
     {
         $this->setData(self::VARIANT_CODE, $variantCode);
         return $this;
@@ -173,7 +173,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -182,7 +182,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $variantDimension1Code
      * @return $this
      */
-    public function setVariantDimension1Code(?string $variantDimension1Code)
+    public function setVariantdimension1code(?string $variantDimension1Code)
     {
         $this->setData(self::VARIANT_DIMENSION1_CODE, $variantDimension1Code);
         return $this;
@@ -191,7 +191,7 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getVariantDimension1Code() : ?string
+    public function getVariantdimension1code() : ?string
     {
         return $this->getData(self::VARIANT_DIMENSION1_CODE);
     }
@@ -200,18 +200,18 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param RootGetReturnPolicy $getReturnPolicyXML
      * @return $this
      */
-    public function setGetReturnPolicyXML($getReturnPolicyXML)
+    public function setGetreturnpolicyxml($getReturnPolicyXML)
     {
-        $this->setData(self::GET_RETURN_POLICY_X_M_L, $getReturnPolicyXML);
+        $this->setData(self::GET_RETURN_POLICY_XML, $getReturnPolicyXML);
         return $this;
     }
 
     /**
      * @return RootGetReturnPolicy
      */
-    public function getGetReturnPolicyXML()
+    public function getGetreturnpolicyxml()
     {
-        return $this->getData(self::GET_RETURN_POLICY_X_M_L);
+        return $this->getData(self::GET_RETURN_POLICY_XML);
     }
 }
 

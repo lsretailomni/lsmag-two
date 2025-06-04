@@ -18,7 +18,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const TOTAL_QTY = 'TotalQty';
 
@@ -32,7 +32,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
 
     public const DOCUMENT_MEMBER_NAME = 'DocumentMemberName';
 
-    public const P_R_COUNTING_HEADER_NO = 'PRCounting_HeaderNo';
+    public const PRCOUNTING_HEADER_NO = 'PRCounting_HeaderNo';
 
     public const EXPECTED_DATE = 'ExpectedDate';
 
@@ -50,7 +50,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TransactionNo
      * @return $this
      */
-    public function setTransactionNo(?string $TransactionNo)
+    public function setTransactionno(?string $TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -59,7 +59,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionNo() : ?string
+    public function getTransactionno() : ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -68,7 +68,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TransactionType
      * @return $this
      */
-    public function setTransactionType(?string $TransactionType)
+    public function setTransactiontype(?string $TransactionType)
     {
         $this->setData(self::TRANSACTION_TYPE, $TransactionType);
         return $this;
@@ -77,7 +77,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionType() : ?string
+    public function getTransactiontype() : ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
@@ -86,7 +86,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -95,7 +95,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -104,25 +104,25 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo(?string $POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param ?float $TotalQty
      * @return $this
      */
-    public function setTotalQty(?float $TotalQty)
+    public function setTotalqty(?float $TotalQty)
     {
         $this->setData(self::TOTAL_QTY, $TotalQty);
         return $this;
@@ -131,7 +131,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalQty() : ?float
+    public function getTotalqty() : ?float
     {
         return $this->getData(self::TOTAL_QTY);
     }
@@ -140,7 +140,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QtyLeft
      * @return $this
      */
-    public function setQtyLeft(?float $QtyLeft)
+    public function setQtyleft(?float $QtyLeft)
     {
         $this->setData(self::QTY_LEFT, $QtyLeft);
         return $this;
@@ -149,7 +149,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtyLeft() : ?float
+    public function getQtyleft() : ?float
     {
         return $this->getData(self::QTY_LEFT);
     }
@@ -158,7 +158,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DocumentMember
      * @return $this
      */
-    public function setDocumentMember(?string $DocumentMember)
+    public function setDocumentmember(?string $DocumentMember)
     {
         $this->setData(self::DOCUMENT_MEMBER, $DocumentMember);
         return $this;
@@ -167,7 +167,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentMember() : ?string
+    public function getDocumentmember() : ?string
     {
         return $this->getData(self::DOCUMENT_MEMBER);
     }
@@ -176,7 +176,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DocumentType
      * @return $this
      */
-    public function setDocumentType(?string $DocumentType)
+    public function setDocumenttype(?string $DocumentType)
     {
         $this->setData(self::DOCUMENT_TYPE, $DocumentType);
         return $this;
@@ -185,7 +185,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentType() : ?string
+    public function getDocumenttype() : ?string
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
@@ -194,7 +194,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DocumentNo
      * @return $this
      */
-    public function setDocumentNo(?string $DocumentNo)
+    public function setDocumentno(?string $DocumentNo)
     {
         $this->setData(self::DOCUMENT_NO, $DocumentNo);
         return $this;
@@ -203,7 +203,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentNo() : ?string
+    public function getDocumentno() : ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -212,7 +212,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DocumentMemberName
      * @return $this
      */
-    public function setDocumentMemberName(?string $DocumentMemberName)
+    public function setDocumentmembername(?string $DocumentMemberName)
     {
         $this->setData(self::DOCUMENT_MEMBER_NAME, $DocumentMemberName);
         return $this;
@@ -221,7 +221,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentMemberName() : ?string
+    public function getDocumentmembername() : ?string
     {
         return $this->getData(self::DOCUMENT_MEMBER_NAME);
     }
@@ -230,25 +230,25 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PRCountingHeaderNo
      * @return $this
      */
-    public function setPRCountingHeaderNo(?string $PRCountingHeaderNo)
+    public function setPrcountingHeaderno(?string $PRCountingHeaderNo)
     {
-        $this->setData(self::P_R_COUNTING_HEADER_NO, $PRCountingHeaderNo);
+        $this->setData(self::PRCOUNTING_HEADER_NO, $PRCountingHeaderNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPRCountingHeaderNo() : ?string
+    public function getPrcountingHeaderno() : ?string
     {
-        return $this->getData(self::P_R_COUNTING_HEADER_NO);
+        return $this->getData(self::PRCOUNTING_HEADER_NO);
     }
 
     /**
      * @param ?string $ExpectedDate
      * @return $this
      */
-    public function setExpectedDate(?string $ExpectedDate)
+    public function setExpecteddate(?string $ExpectedDate)
     {
         $this->setData(self::EXPECTED_DATE, $ExpectedDate);
         return $this;
@@ -257,7 +257,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpectedDate() : ?string
+    public function getExpecteddate() : ?string
     {
         return $this->getData(self::EXPECTED_DATE);
     }
@@ -266,7 +266,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param int $NoOfCheckedRounds
      * @return $this
      */
-    public function setNoOfCheckedRounds($NoOfCheckedRounds)
+    public function setNoOfcheckedrounds($NoOfCheckedRounds)
     {
         $this->setData(self::NO_OF_CHECKED_ROUNDS, $NoOfCheckedRounds);
         return $this;
@@ -275,7 +275,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getNoOfCheckedRounds()
+    public function getNoOfcheckedrounds()
     {
         return $this->getData(self::NO_OF_CHECKED_ROUNDS);
     }
@@ -284,7 +284,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $QuantityMethod
      * @return $this
      */
-    public function setQuantityMethod(?string $QuantityMethod)
+    public function setQuantitymethod(?string $QuantityMethod)
     {
         $this->setData(self::QUANTITY_METHOD, $QuantityMethod);
         return $this;
@@ -293,7 +293,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getQuantityMethod() : ?string
+    public function getQuantitymethod() : ?string
     {
         return $this->getData(self::QUANTITY_METHOD);
     }
@@ -302,7 +302,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QuickdefaultQuantity
      * @return $this
      */
-    public function setQuickdefaultQuantity(?float $QuickdefaultQuantity)
+    public function setQuickdefaultquantity(?float $QuickdefaultQuantity)
     {
         $this->setData(self::QUICKDEFAULT_QUANTITY, $QuickdefaultQuantity);
         return $this;
@@ -311,7 +311,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuickdefaultQuantity() : ?float
+    public function getQuickdefaultquantity() : ?float
     {
         return $this->getData(self::QUICKDEFAULT_QUANTITY);
     }
@@ -320,7 +320,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VendorTrustLevel
      * @return $this
      */
-    public function setVendorTrustLevel(?string $VendorTrustLevel)
+    public function setVendortrustlevel(?string $VendorTrustLevel)
     {
         $this->setData(self::VENDOR_TRUST_LEVEL, $VendorTrustLevel);
         return $this;
@@ -329,7 +329,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVendorTrustLevel() : ?string
+    public function getVendortrustlevel() : ?string
     {
         return $this->getData(self::VENDOR_TRUST_LEVEL);
     }
@@ -338,7 +338,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ValidateTrackingCode
      * @return $this
      */
-    public function setValidateTrackingCode(?bool $ValidateTrackingCode)
+    public function setValidatetrackingcode(?bool $ValidateTrackingCode)
     {
         $this->setData(self::VALIDATE_TRACKING_CODE, $ValidateTrackingCode);
         return $this;
@@ -347,7 +347,7 @@ class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getValidateTrackingCode() : ?bool
+    public function getValidatetrackingcode() : ?bool
     {
         return $this->getData(self::VALIDATE_TRACKING_CODE);
     }

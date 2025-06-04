@@ -20,13 +20,13 @@ class GetPosTransSuspList extends \Magento\Catalog\Model\AbstractModel implement
 
     public const STORE_NO = 'storeNo';
 
-    public const GET_POS_TRANS_SUSP_LIST_X_M_L = 'getPosTransSuspListXML';
+    public const GET_POS_TRANS_SUSP_LIST_XML = 'getPosTransSuspListXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class GetPosTransSuspList extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class GetPosTransSuspList extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class GetPosTransSuspList extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class GetPosTransSuspList extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -71,7 +71,7 @@ class GetPosTransSuspList extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -80,18 +80,18 @@ class GetPosTransSuspList extends \Magento\Catalog\Model\AbstractModel implement
      * @param RootGetPosTransSuspList $getPosTransSuspListXML
      * @return $this
      */
-    public function setGetPosTransSuspListXML($getPosTransSuspListXML)
+    public function setGetpostranssusplistxml($getPosTransSuspListXML)
     {
-        $this->setData(self::GET_POS_TRANS_SUSP_LIST_X_M_L, $getPosTransSuspListXML);
+        $this->setData(self::GET_POS_TRANS_SUSP_LIST_XML, $getPosTransSuspListXML);
         return $this;
     }
 
     /**
      * @return RootGetPosTransSuspList
      */
-    public function getGetPosTransSuspListXML()
+    public function getGetpostranssusplistxml()
     {
-        return $this->getData(self::GET_POS_TRANS_SUSP_LIST_X_M_L);
+        return $this->getData(self::GET_POS_TRANS_SUSP_LIST_XML);
     }
 }
 

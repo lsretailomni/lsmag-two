@@ -24,7 +24,7 @@ class ShippingAgentServices extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShippingAgentCode
      * @return $this
      */
-    public function setShippingAgentCode(?string $ShippingAgentCode)
+    public function setShippingagentcode(?string $ShippingAgentCode)
     {
         $this->setData(self::SHIPPING_AGENT_CODE, $ShippingAgentCode);
         return $this;
@@ -33,7 +33,7 @@ class ShippingAgentServices extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingAgentCode() : ?string
+    public function getShippingagentcode() : ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
@@ -78,7 +78,7 @@ class ShippingAgentServices extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShippingTime
      * @return $this
      */
-    public function setShippingTime(?string $ShippingTime)
+    public function setShippingtime(?string $ShippingTime)
     {
         $this->setData(self::SHIPPING_TIME, $ShippingTime);
         return $this;
@@ -87,7 +87,7 @@ class ShippingAgentServices extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingTime() : ?string
+    public function getShippingtime() : ?string
     {
         return $this->getData(self::SHIPPING_TIME);
     }

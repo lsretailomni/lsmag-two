@@ -22,15 +22,15 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
 
     public const MAIL_RECIPIENT = 'mailRecipient';
 
-    public const EXTERNAL_PRINTER_I_D = 'externalPrinterID';
+    public const EXTERNAL_PRINTER_ID = 'externalPrinterID';
 
-    public const MOBILE_POS_PRINT_X_M_L = 'mobilePosPrintXML';
+    public const MOBILE_POS_PRINT_XML = 'mobilePosPrintXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -39,7 +39,7 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -48,7 +48,7 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -57,7 +57,7 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -66,7 +66,7 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
      * @param ?string $printMethod
      * @return $this
      */
-    public function setPrintMethod(?string $printMethod)
+    public function setPrintmethod(?string $printMethod)
     {
         $this->setData(self::PRINT_METHOD, $printMethod);
         return $this;
@@ -75,7 +75,7 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getPrintMethod() : ?string
+    public function getPrintmethod() : ?string
     {
         return $this->getData(self::PRINT_METHOD);
     }
@@ -84,7 +84,7 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
      * @param ?string $mailRecipient
      * @return $this
      */
-    public function setMailRecipient(?string $mailRecipient)
+    public function setMailrecipient(?string $mailRecipient)
     {
         $this->setData(self::MAIL_RECIPIENT, $mailRecipient);
         return $this;
@@ -93,7 +93,7 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getMailRecipient() : ?string
+    public function getMailrecipient() : ?string
     {
         return $this->getData(self::MAIL_RECIPIENT);
     }
@@ -102,36 +102,36 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
      * @param ?string $externalPrinterID
      * @return $this
      */
-    public function setExternalPrinterID(?string $externalPrinterID)
+    public function setExternalprinterid(?string $externalPrinterID)
     {
-        $this->setData(self::EXTERNAL_PRINTER_I_D, $externalPrinterID);
+        $this->setData(self::EXTERNAL_PRINTER_ID, $externalPrinterID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getExternalPrinterID() : ?string
+    public function getExternalprinterid() : ?string
     {
-        return $this->getData(self::EXTERNAL_PRINTER_I_D);
+        return $this->getData(self::EXTERNAL_PRINTER_ID);
     }
 
     /**
      * @param RootMobilePosPrint $mobilePosPrintXML
      * @return $this
      */
-    public function setMobilePosPrintXML($mobilePosPrintXML)
+    public function setMobileposprintxml($mobilePosPrintXML)
     {
-        $this->setData(self::MOBILE_POS_PRINT_X_M_L, $mobilePosPrintXML);
+        $this->setData(self::MOBILE_POS_PRINT_XML, $mobilePosPrintXML);
         return $this;
     }
 
     /**
      * @return RootMobilePosPrint
      */
-    public function getMobilePosPrintXML()
+    public function getMobileposprintxml()
     {
-        return $this->getData(self::MOBILE_POS_PRINT_X_M_L);
+        return $this->getData(self::MOBILE_POS_PRINT_XML);
     }
 
     /**

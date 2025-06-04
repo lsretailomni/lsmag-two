@@ -26,7 +26,7 @@ class CancelHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class CancelHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class CancelHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class CancelHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class CancelHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $orderNo
      * @return $this
      */
-    public function setOrderNo(?string $orderNo)
+    public function setOrderno(?string $orderNo)
     {
         $this->setData(self::ORDER_NO, $orderNo);
         return $this;
@@ -71,7 +71,7 @@ class CancelHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getOrderNo() : ?string
+    public function getOrderno() : ?string
     {
         return $this->getData(self::ORDER_NO);
     }
@@ -80,7 +80,7 @@ class CancelHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -89,7 +89,7 @@ class CancelHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }

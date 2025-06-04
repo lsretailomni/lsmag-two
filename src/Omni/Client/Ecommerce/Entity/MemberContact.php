@@ -74,7 +74,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
 
     public const NO_SERIES = 'NoSeries';
 
-    public const EXTERNAL_I_D = 'ExternalID';
+    public const EXTERNAL_ID = 'ExternalID';
 
     public const EXTERNAL_SYSTEM = 'ExternalSystem';
 
@@ -88,13 +88,13 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
 
     public const SEARCH_E_MAIL = 'SearchE-Mail';
 
-    public const SEND_RECEIPTBY_EMAIL = 'SendReceiptbyE-mail';
+    public const SEND_RECEIPTBY_E_MAIL = 'SendReceiptbyE-mail';
 
     /**
      * @param ?string $AccountNo
      * @return $this
      */
-    public function setAccountNo(?string $AccountNo)
+    public function setAccountno(?string $AccountNo)
     {
         $this->setData(self::ACCOUNT_NO, $AccountNo);
         return $this;
@@ -103,7 +103,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccountNo() : ?string
+    public function getAccountno() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
@@ -112,7 +112,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ClubCode
      * @return $this
      */
-    public function setClubCode(?string $ClubCode)
+    public function setClubcode(?string $ClubCode)
     {
         $this->setData(self::CLUB_CODE, $ClubCode);
         return $this;
@@ -121,7 +121,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubCode() : ?string
+    public function getClubcode() : ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
@@ -130,7 +130,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SchemeCode
      * @return $this
      */
-    public function setSchemeCode(?string $SchemeCode)
+    public function setSchemecode(?string $SchemeCode)
     {
         $this->setData(self::SCHEME_CODE, $SchemeCode);
         return $this;
@@ -139,7 +139,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSchemeCode() : ?string
+    public function getSchemecode() : ?string
     {
         return $this->getData(self::SCHEME_CODE);
     }
@@ -148,7 +148,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ContactNo
      * @return $this
      */
-    public function setContactNo(?string $ContactNo)
+    public function setContactno(?string $ContactNo)
     {
         $this->setData(self::CONTACT_NO, $ContactNo);
         return $this;
@@ -157,7 +157,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContactNo() : ?string
+    public function getContactno() : ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
@@ -166,7 +166,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $MainContact
      * @return $this
      */
-    public function setMainContact(?bool $MainContact)
+    public function setMaincontact(?bool $MainContact)
     {
         $this->setData(self::MAIN_CONTACT, $MainContact);
         return $this;
@@ -175,7 +175,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getMainContact() : ?bool
+    public function getMaincontact() : ?bool
     {
         return $this->getData(self::MAIN_CONTACT);
     }
@@ -202,7 +202,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SearchName
      * @return $this
      */
-    public function setSearchName(?string $SearchName)
+    public function setSearchname(?string $SearchName)
     {
         $this->setData(self::SEARCH_NAME, $SearchName);
         return $this;
@@ -211,7 +211,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSearchName() : ?string
+    public function getSearchname() : ?string
     {
         return $this->getData(self::SEARCH_NAME);
     }
@@ -292,7 +292,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $HouseApartmentNo
      * @return $this
      */
-    public function setHouseApartmentNo(?string $HouseApartmentNo)
+    public function setHouseapartmentno(?string $HouseApartmentNo)
     {
         $this->setData(self::HOUSE_APARTMENT_NO, $HouseApartmentNo);
         return $this;
@@ -301,7 +301,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHouseApartmentNo() : ?string
+    public function getHouseapartmentno() : ?string
     {
         return $this->getData(self::HOUSE_APARTMENT_NO);
     }
@@ -310,7 +310,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PostCode
      * @return $this
      */
-    public function setPostCode(?string $PostCode)
+    public function setPostcode(?string $PostCode)
     {
         $this->setData(self::POST_CODE, $PostCode);
         return $this;
@@ -319,7 +319,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPostCode() : ?string
+    public function getPostcode() : ?string
     {
         return $this->getData(self::POST_CODE);
     }
@@ -346,7 +346,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $HomePage
      * @return $this
      */
-    public function setHomePage(?string $HomePage)
+    public function setHomepage(?string $HomePage)
     {
         $this->setData(self::HOME_PAGE, $HomePage);
         return $this;
@@ -355,7 +355,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHomePage() : ?string
+    public function getHomepage() : ?string
     {
         return $this->getData(self::HOME_PAGE);
     }
@@ -364,7 +364,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PhoneNo
      * @return $this
      */
-    public function setPhoneNo(?string $PhoneNo)
+    public function setPhoneno(?string $PhoneNo)
     {
         $this->setData(self::PHONE_NO, $PhoneNo);
         return $this;
@@ -373,7 +373,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPhoneNo() : ?string
+    public function getPhoneno() : ?string
     {
         return $this->getData(self::PHONE_NO);
     }
@@ -382,7 +382,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $MobilePhoneNo
      * @return $this
      */
-    public function setMobilePhoneNo(?string $MobilePhoneNo)
+    public function setMobilephoneno(?string $MobilePhoneNo)
     {
         $this->setData(self::MOBILE_PHONE_NO, $MobilePhoneNo);
         return $this;
@@ -391,7 +391,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMobilePhoneNo() : ?string
+    public function getMobilephoneno() : ?string
     {
         return $this->getData(self::MOBILE_PHONE_NO);
     }
@@ -400,7 +400,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TerritoryCode
      * @return $this
      */
-    public function setTerritoryCode(?string $TerritoryCode)
+    public function setTerritorycode(?string $TerritoryCode)
     {
         $this->setData(self::TERRITORY_CODE, $TerritoryCode);
         return $this;
@@ -409,7 +409,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTerritoryCode() : ?string
+    public function getTerritorycode() : ?string
     {
         return $this->getData(self::TERRITORY_CODE);
     }
@@ -472,7 +472,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DateofBirth
      * @return $this
      */
-    public function setDateofBirth(?string $DateofBirth)
+    public function setDateofbirth(?string $DateofBirth)
     {
         $this->setData(self::DATEOF_BIRTH, $DateofBirth);
         return $this;
@@ -481,7 +481,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateofBirth() : ?string
+    public function getDateofbirth() : ?string
     {
         return $this->getData(self::DATEOF_BIRTH);
     }
@@ -508,7 +508,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $MaritalStatus
      * @return $this
      */
-    public function setMaritalStatus(?string $MaritalStatus)
+    public function setMaritalstatus(?string $MaritalStatus)
     {
         $this->setData(self::MARITAL_STATUS, $MaritalStatus);
         return $this;
@@ -517,7 +517,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMaritalStatus() : ?string
+    public function getMaritalstatus() : ?string
     {
         return $this->getData(self::MARITAL_STATUS);
     }
@@ -544,7 +544,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ReasonBlocked
      * @return $this
      */
-    public function setReasonBlocked(?string $ReasonBlocked)
+    public function setReasonblocked(?string $ReasonBlocked)
     {
         $this->setData(self::REASON_BLOCKED, $ReasonBlocked);
         return $this;
@@ -553,7 +553,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasonBlocked() : ?string
+    public function getReasonblocked() : ?string
     {
         return $this->getData(self::REASON_BLOCKED);
     }
@@ -562,7 +562,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DateBlocked
      * @return $this
      */
-    public function setDateBlocked(?string $DateBlocked)
+    public function setDateblocked(?string $DateBlocked)
     {
         $this->setData(self::DATE_BLOCKED, $DateBlocked);
         return $this;
@@ -571,7 +571,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateBlocked() : ?string
+    public function getDateblocked() : ?string
     {
         return $this->getData(self::DATE_BLOCKED);
     }
@@ -598,7 +598,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CreatedDate
      * @return $this
      */
-    public function setCreatedDate(?string $CreatedDate)
+    public function setCreateddate(?string $CreatedDate)
     {
         $this->setData(self::CREATED_DATE, $CreatedDate);
         return $this;
@@ -607,7 +607,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedDate() : ?string
+    public function getCreateddate() : ?string
     {
         return $this->getData(self::CREATED_DATE);
     }
@@ -634,7 +634,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $NoSeries
      * @return $this
      */
-    public function setNoSeries(?string $NoSeries)
+    public function setNoseries(?string $NoSeries)
     {
         $this->setData(self::NO_SERIES, $NoSeries);
         return $this;
@@ -643,7 +643,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNoSeries() : ?string
+    public function getNoseries() : ?string
     {
         return $this->getData(self::NO_SERIES);
     }
@@ -652,25 +652,25 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExternalID
      * @return $this
      */
-    public function setExternalID(?string $ExternalID)
+    public function setExternalid(?string $ExternalID)
     {
-        $this->setData(self::EXTERNAL_I_D, $ExternalID);
+        $this->setData(self::EXTERNAL_ID, $ExternalID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getExternalID() : ?string
+    public function getExternalid() : ?string
     {
-        return $this->getData(self::EXTERNAL_I_D);
+        return $this->getData(self::EXTERNAL_ID);
     }
 
     /**
      * @param ?string $ExternalSystem
      * @return $this
      */
-    public function setExternalSystem(?string $ExternalSystem)
+    public function setExternalsystem(?string $ExternalSystem)
     {
         $this->setData(self::EXTERNAL_SYSTEM, $ExternalSystem);
         return $this;
@@ -679,7 +679,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalSystem() : ?string
+    public function getExternalsystem() : ?string
     {
         return $this->getData(self::EXTERNAL_SYSTEM);
     }
@@ -688,7 +688,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $FirstName
      * @return $this
      */
-    public function setFirstName(?string $FirstName)
+    public function setFirstname(?string $FirstName)
     {
         $this->setData(self::FIRST_NAME, $FirstName);
         return $this;
@@ -697,7 +697,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFirstName() : ?string
+    public function getFirstname() : ?string
     {
         return $this->getData(self::FIRST_NAME);
     }
@@ -706,7 +706,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $MiddleName
      * @return $this
      */
-    public function setMiddleName(?string $MiddleName)
+    public function setMiddlename(?string $MiddleName)
     {
         $this->setData(self::MIDDLE_NAME, $MiddleName);
         return $this;
@@ -715,7 +715,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMiddleName() : ?string
+    public function getMiddlename() : ?string
     {
         return $this->getData(self::MIDDLE_NAME);
     }
@@ -742,7 +742,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SalutationCode
      * @return $this
      */
-    public function setSalutationCode(?string $SalutationCode)
+    public function setSalutationcode(?string $SalutationCode)
     {
         $this->setData(self::SALUTATION_CODE, $SalutationCode);
         return $this;
@@ -751,7 +751,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalutationCode() : ?string
+    public function getSalutationcode() : ?string
     {
         return $this->getData(self::SALUTATION_CODE);
     }
@@ -760,7 +760,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SearchEMail
      * @return $this
      */
-    public function setSearchEMail(?string $SearchEMail)
+    public function setSearcheMail(?string $SearchEMail)
     {
         $this->setData(self::SEARCH_E_MAIL, $SearchEMail);
         return $this;
@@ -769,7 +769,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSearchEMail() : ?string
+    public function getSearcheMail() : ?string
     {
         return $this->getData(self::SEARCH_E_MAIL);
     }
@@ -778,18 +778,18 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SendReceiptbyEmail
      * @return $this
      */
-    public function setSendReceiptbyEMail(?string $SendReceiptbyEmail)
+    public function setSendreceiptbyeMail(?string $SendReceiptbyEmail)
     {
-        $this->setData(self::SEND_RECEIPTBY_EMAIL, $SendReceiptbyEmail);
+        $this->setData(self::SEND_RECEIPTBY_E_MAIL, $SendReceiptbyEmail);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getSendReceiptbyEMail() : ?string
+    public function getSendreceiptbyeMail() : ?string
     {
-        return $this->getData(self::SEND_RECEIPTBY_EMAIL);
+        return $this->getData(self::SEND_RECEIPTBY_E_MAIL);
     }
 }
 

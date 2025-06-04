@@ -20,7 +20,7 @@ class MemberAttributeValue extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AttributeCode
      * @return $this
      */
-    public function setAttributeCode(?string $AttributeCode)
+    public function setAttributecode(?string $AttributeCode)
     {
         $this->setData(self::ATTRIBUTE_CODE, $AttributeCode);
         return $this;
@@ -29,7 +29,7 @@ class MemberAttributeValue extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAttributeCode() : ?string
+    public function getAttributecode() : ?string
     {
         return $this->getData(self::ATTRIBUTE_CODE);
     }
@@ -38,7 +38,7 @@ class MemberAttributeValue extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AttributeValue
      * @return $this
      */
-    public function setAttributeValue(?string $AttributeValue)
+    public function setAttributevalue(?string $AttributeValue)
     {
         $this->setData(self::ATTRIBUTE_VALUE, $AttributeValue);
         return $this;
@@ -47,7 +47,7 @@ class MemberAttributeValue extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAttributeValue() : ?string
+    public function getAttributevalue() : ?string
     {
         return $this->getData(self::ATTRIBUTE_VALUE);
     }

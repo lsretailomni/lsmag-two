@@ -18,7 +18,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
 
     public const ERROR_TEXT = 'errorText';
 
-    public const H_H_T_I_D = 'hHT_ID';
+    public const HHT_ID = 'hHT_ID';
 
     public const VALUE_TYPE = 'value_Type';
 
@@ -30,21 +30,21 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
 
     public const LOCATION_CODE = 'location_Code';
 
-    public const ITEM_NO1 = 'item_No_1';
+    public const ITEM_NO_1 = 'item_No_1';
 
-    public const VARIANT1 = 'variant_1';
+    public const VARIANT_1 = 'variant_1';
 
-    public const ITEM_NO2 = 'item_No_2';
+    public const ITEM_NO_2 = 'item_No_2';
 
-    public const VARIANT2 = 'variant_2';
+    public const VARIANT_2 = 'variant_2';
 
-    public const GET_ITEM_DOCUMENT_X_M_L = 'getItemDocumentXML';
+    public const GET_ITEM_DOCUMENT_XML = 'getItemDocumentXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -53,7 +53,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -62,7 +62,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -71,7 +71,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -80,18 +80,18 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $hHTID
      * @return $this
      */
-    public function setHHTID(?string $hHTID)
+    public function setHhtId(?string $hHTID)
     {
-        $this->setData(self::H_H_T_I_D, $hHTID);
+        $this->setData(self::HHT_ID, $hHTID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getHHTID() : ?string
+    public function getHhtId() : ?string
     {
-        return $this->getData(self::H_H_T_I_D);
+        return $this->getData(self::HHT_ID);
     }
 
     /**
@@ -190,7 +190,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
      */
     public function setItemNo1(?string $itemNo1)
     {
-        $this->setData(self::ITEM_NO1, $itemNo1);
+        $this->setData(self::ITEM_NO_1, $itemNo1);
         return $this;
     }
 
@@ -199,7 +199,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
      */
     public function getItemNo1() : ?string
     {
-        return $this->getData(self::ITEM_NO1);
+        return $this->getData(self::ITEM_NO_1);
     }
 
     /**
@@ -208,7 +208,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
      */
     public function setVariant1(?string $variant1)
     {
-        $this->setData(self::VARIANT1, $variant1);
+        $this->setData(self::VARIANT_1, $variant1);
         return $this;
     }
 
@@ -217,7 +217,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
      */
     public function getVariant1() : ?string
     {
-        return $this->getData(self::VARIANT1);
+        return $this->getData(self::VARIANT_1);
     }
 
     /**
@@ -226,7 +226,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
      */
     public function setItemNo2(?string $itemNo2)
     {
-        $this->setData(self::ITEM_NO2, $itemNo2);
+        $this->setData(self::ITEM_NO_2, $itemNo2);
         return $this;
     }
 
@@ -235,7 +235,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
      */
     public function getItemNo2() : ?string
     {
-        return $this->getData(self::ITEM_NO2);
+        return $this->getData(self::ITEM_NO_2);
     }
 
     /**
@@ -244,7 +244,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
      */
     public function setVariant2(?string $variant2)
     {
-        $this->setData(self::VARIANT2, $variant2);
+        $this->setData(self::VARIANT_2, $variant2);
         return $this;
     }
 
@@ -253,25 +253,25 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
      */
     public function getVariant2() : ?string
     {
-        return $this->getData(self::VARIANT2);
+        return $this->getData(self::VARIANT_2);
     }
 
     /**
      * @param RootGetItemDocument $getItemDocumentXML
      * @return $this
      */
-    public function setGetItemDocumentXML($getItemDocumentXML)
+    public function setGetitemdocumentxml($getItemDocumentXML)
     {
-        $this->setData(self::GET_ITEM_DOCUMENT_X_M_L, $getItemDocumentXML);
+        $this->setData(self::GET_ITEM_DOCUMENT_XML, $getItemDocumentXML);
         return $this;
     }
 
     /**
      * @return RootGetItemDocument
      */
-    public function getGetItemDocumentXML()
+    public function getGetitemdocumentxml()
     {
-        return $this->getData(self::GET_ITEM_DOCUMENT_X_M_L);
+        return $this->getData(self::GET_ITEM_DOCUMENT_XML);
     }
 }
 

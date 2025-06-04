@@ -12,104 +12,104 @@ class RootCustomerOrderEdit extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCustomerOrderEdit';
 
-    public const C_O_EDIT_HEADER = 'COEditHeader';
+    public const COEDIT_HEADER = 'COEditHeader';
 
-    public const C_O_EDIT_LINE = 'COEditLine';
+    public const COEDIT_LINE = 'COEditLine';
 
-    public const C_O_EDIT_DISCOUNT_LINE = 'COEditDiscountLine';
+    public const COEDIT_DISCOUNT_LINE = 'COEditDiscountLine';
 
-    public const C_O_EDIT_PAYMENT = 'COEditPayment';
+    public const COEDIT_PAYMENT = 'COEditPayment';
 
-    public const C_O_EDIT_STATUS_LOG = 'COEditStatusLog';
+    public const COEDIT_STATUS_LOG = 'COEditStatusLog';
 
     /**
      * @param COEditHeader $COEditHeader
      * @return $this
      */
-    public function setCOEditHeader($COEditHeader)
+    public function setCoeditheader($COEditHeader)
     {
-        $this->setData(self::C_O_EDIT_HEADER, $COEditHeader);
+        $this->setData(self::COEDIT_HEADER, $COEditHeader);
         return $this;
     }
 
     /**
      * @return COEditHeader
      */
-    public function getCOEditHeader()
+    public function getCoeditheader()
     {
-        return $this->getData(self::C_O_EDIT_HEADER);
+        return $this->getData(self::COEDIT_HEADER);
     }
 
     /**
      * @param COEditLine $COEditLine
      * @return $this
      */
-    public function setCOEditLine($COEditLine)
+    public function setCoeditline($COEditLine)
     {
-        $this->setData(self::C_O_EDIT_LINE, $COEditLine);
+        $this->setData(self::COEDIT_LINE, $COEditLine);
         return $this;
     }
 
     /**
      * @return COEditLine
      */
-    public function getCOEditLine()
+    public function getCoeditline()
     {
-        return $this->getData(self::C_O_EDIT_LINE);
+        return $this->getData(self::COEDIT_LINE);
     }
 
     /**
      * @param COEditDiscountLine $COEditDiscountLine
      * @return $this
      */
-    public function setCOEditDiscountLine($COEditDiscountLine)
+    public function setCoeditdiscountline($COEditDiscountLine)
     {
-        $this->setData(self::C_O_EDIT_DISCOUNT_LINE, $COEditDiscountLine);
+        $this->setData(self::COEDIT_DISCOUNT_LINE, $COEditDiscountLine);
         return $this;
     }
 
     /**
      * @return COEditDiscountLine
      */
-    public function getCOEditDiscountLine()
+    public function getCoeditdiscountline()
     {
-        return $this->getData(self::C_O_EDIT_DISCOUNT_LINE);
+        return $this->getData(self::COEDIT_DISCOUNT_LINE);
     }
 
     /**
      * @param COEditPayment $COEditPayment
      * @return $this
      */
-    public function setCOEditPayment($COEditPayment)
+    public function setCoeditpayment($COEditPayment)
     {
-        $this->setData(self::C_O_EDIT_PAYMENT, $COEditPayment);
+        $this->setData(self::COEDIT_PAYMENT, $COEditPayment);
         return $this;
     }
 
     /**
      * @return COEditPayment
      */
-    public function getCOEditPayment()
+    public function getCoeditpayment()
     {
-        return $this->getData(self::C_O_EDIT_PAYMENT);
+        return $this->getData(self::COEDIT_PAYMENT);
     }
 
     /**
      * @param COEditStatusLog $COEditStatusLog
      * @return $this
      */
-    public function setCOEditStatusLog($COEditStatusLog)
+    public function setCoeditstatuslog($COEditStatusLog)
     {
-        $this->setData(self::C_O_EDIT_STATUS_LOG, $COEditStatusLog);
+        $this->setData(self::COEDIT_STATUS_LOG, $COEditStatusLog);
         return $this;
     }
 
     /**
      * @return COEditStatusLog
      */
-    public function getCOEditStatusLog()
+    public function getCoeditstatuslog()
     {
-        return $this->getData(self::C_O_EDIT_STATUS_LOG);
+        return $this->getData(self::COEDIT_STATUS_LOG);
     }
 }
 

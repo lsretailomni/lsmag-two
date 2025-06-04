@@ -20,7 +20,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
 
     public const PICKING_AREA = 'PickingArea';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const LINE_NO = 'LineNo';
 
@@ -34,13 +34,13 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
 
     public const UNIT_OF_MEASURE_CODE = 'UnitOfMeasureCode';
 
-    public const U_O_M_DESCRIPTION = 'UOMDescription';
+    public const UOMDESCRIPTION = 'UOMDescription';
 
     public const QUNTITY = 'Quntity';
 
     public const QUANTITY_BASE = 'QuantityBase';
 
-    public const RETAIL_IMAGE_I_D = 'RetailImageID';
+    public const RETAIL_IMAGE_ID = 'RetailImageID';
 
     public const SHELF = 'Shelf';
 
@@ -54,7 +54,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
 
     public const DIVISION = 'Division';
 
-    public const AMOUNT_L_C_Y = 'AmountLCY';
+    public const AMOUNT_LCY = 'AmountLCY';
 
     public const EXTERNAL_FIELD1 = 'ExternalField1';
 
@@ -66,7 +66,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -75,7 +75,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
@@ -84,7 +84,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TerminalNo
      * @return $this
      */
-    public function setTerminalNo(?string $TerminalNo)
+    public function setTerminalno(?string $TerminalNo)
     {
         $this->setData(self::TERMINAL_NO, $TerminalNo);
         return $this;
@@ -93,7 +93,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTerminalNo() : ?string
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -102,7 +102,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -111,7 +111,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -120,7 +120,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PickingArea
      * @return $this
      */
-    public function setPickingArea(?string $PickingArea)
+    public function setPickingarea(?string $PickingArea)
     {
         $this->setData(self::PICKING_AREA, $PickingArea);
         return $this;
@@ -129,7 +129,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPickingArea() : ?string
+    public function getPickingarea() : ?string
     {
         return $this->getData(self::PICKING_AREA);
     }
@@ -138,25 +138,25 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID(?string $DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDocumentID() : ?string
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -165,7 +165,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -174,7 +174,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo(?string $ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
@@ -183,7 +183,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -192,7 +192,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemDesctiption
      * @return $this
      */
-    public function setItemDesctiption(?string $ItemDesctiption)
+    public function setItemdesctiption(?string $ItemDesctiption)
     {
         $this->setData(self::ITEM_DESCTIPTION, $ItemDesctiption);
         return $this;
@@ -201,7 +201,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemDesctiption() : ?string
+    public function getItemdesctiption() : ?string
     {
         return $this->getData(self::ITEM_DESCTIPTION);
     }
@@ -210,7 +210,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -219,7 +219,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -228,7 +228,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantDesctiption
      * @return $this
      */
-    public function setVariantDesctiption(?string $VariantDesctiption)
+    public function setVariantdesctiption(?string $VariantDesctiption)
     {
         $this->setData(self::VARIANT_DESCTIPTION, $VariantDesctiption);
         return $this;
@@ -237,7 +237,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantDesctiption() : ?string
+    public function getVariantdesctiption() : ?string
     {
         return $this->getData(self::VARIANT_DESCTIPTION);
     }
@@ -246,7 +246,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $UnitOfMeasureCode
      * @return $this
      */
-    public function setUnitOfMeasureCode(?string $UnitOfMeasureCode)
+    public function setUnitofmeasurecode(?string $UnitOfMeasureCode)
     {
         $this->setData(self::UNIT_OF_MEASURE_CODE, $UnitOfMeasureCode);
         return $this;
@@ -255,7 +255,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitOfMeasureCode() : ?string
+    public function getUnitofmeasurecode() : ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
@@ -264,18 +264,18 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $UOMDescription
      * @return $this
      */
-    public function setUOMDescription(?string $UOMDescription)
+    public function setUomdescription(?string $UOMDescription)
     {
-        $this->setData(self::U_O_M_DESCRIPTION, $UOMDescription);
+        $this->setData(self::UOMDESCRIPTION, $UOMDescription);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getUOMDescription() : ?string
+    public function getUomdescription() : ?string
     {
-        return $this->getData(self::U_O_M_DESCRIPTION);
+        return $this->getData(self::UOMDESCRIPTION);
     }
 
     /**
@@ -300,7 +300,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QuantityBase
      * @return $this
      */
-    public function setQuantityBase(?float $QuantityBase)
+    public function setQuantitybase(?float $QuantityBase)
     {
         $this->setData(self::QUANTITY_BASE, $QuantityBase);
         return $this;
@@ -309,7 +309,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantityBase() : ?float
+    public function getQuantitybase() : ?float
     {
         return $this->getData(self::QUANTITY_BASE);
     }
@@ -318,18 +318,18 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RetailImageID
      * @return $this
      */
-    public function setRetailImageID(?string $RetailImageID)
+    public function setRetailimageid(?string $RetailImageID)
     {
-        $this->setData(self::RETAIL_IMAGE_I_D, $RetailImageID);
+        $this->setData(self::RETAIL_IMAGE_ID, $RetailImageID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getRetailImageID() : ?string
+    public function getRetailimageid() : ?string
     {
-        return $this->getData(self::RETAIL_IMAGE_I_D);
+        return $this->getData(self::RETAIL_IMAGE_ID);
     }
 
     /**
@@ -390,7 +390,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreSection
      * @return $this
      */
-    public function setStoreSection(?string $StoreSection)
+    public function setStoresection(?string $StoreSection)
     {
         $this->setData(self::STORE_SECTION, $StoreSection);
         return $this;
@@ -399,7 +399,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreSection() : ?string
+    public function getStoresection() : ?string
     {
         return $this->getData(self::STORE_SECTION);
     }
@@ -408,7 +408,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $RetailProductCode
      * @return $this
      */
-    public function setRetailProductCode(?string $RetailProductCode)
+    public function setRetailproductcode(?string $RetailProductCode)
     {
         $this->setData(self::RETAIL_PRODUCT_CODE, $RetailProductCode);
         return $this;
@@ -417,7 +417,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRetailProductCode() : ?string
+    public function getRetailproductcode() : ?string
     {
         return $this->getData(self::RETAIL_PRODUCT_CODE);
     }
@@ -444,25 +444,25 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $AmountLCY
      * @return $this
      */
-    public function setAmountLCY(?float $AmountLCY)
+    public function setAmountlcy(?float $AmountLCY)
     {
-        $this->setData(self::AMOUNT_L_C_Y, $AmountLCY);
+        $this->setData(self::AMOUNT_LCY, $AmountLCY);
         return $this;
     }
 
     /**
      * @return ?float
      */
-    public function getAmountLCY() : ?float
+    public function getAmountlcy() : ?float
     {
-        return $this->getData(self::AMOUNT_L_C_Y);
+        return $this->getData(self::AMOUNT_LCY);
     }
 
     /**
      * @param ?string $ExternalField1
      * @return $this
      */
-    public function setExternalField1(?string $ExternalField1)
+    public function setExternalfield1(?string $ExternalField1)
     {
         $this->setData(self::EXTERNAL_FIELD1, $ExternalField1);
         return $this;
@@ -471,7 +471,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalField1() : ?string
+    public function getExternalfield1() : ?string
     {
         return $this->getData(self::EXTERNAL_FIELD1);
     }
@@ -480,7 +480,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExternalField2
      * @return $this
      */
-    public function setExternalField2(?string $ExternalField2)
+    public function setExternalfield2(?string $ExternalField2)
     {
         $this->setData(self::EXTERNAL_FIELD2, $ExternalField2);
         return $this;
@@ -489,7 +489,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalField2() : ?string
+    public function getExternalfield2() : ?string
     {
         return $this->getData(self::EXTERNAL_FIELD2);
     }
@@ -498,7 +498,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExternalField3
      * @return $this
      */
-    public function setExternalField3(?string $ExternalField3)
+    public function setExternalfield3(?string $ExternalField3)
     {
         $this->setData(self::EXTERNAL_FIELD3, $ExternalField3);
         return $this;
@@ -507,7 +507,7 @@ class COMobilePickLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalField3() : ?string
+    public function getExternalfield3() : ?string
     {
         return $this->getData(self::EXTERNAL_FIELD3);
     }

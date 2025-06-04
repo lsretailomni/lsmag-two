@@ -42,7 +42,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -51,7 +51,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
@@ -60,7 +60,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $AllowCancel
      * @return $this
      */
-    public function setAllowCancel(?bool $AllowCancel)
+    public function setAllowcancel(?bool $AllowCancel)
     {
         $this->setData(self::ALLOW_CANCEL, $AllowCancel);
         return $this;
@@ -69,7 +69,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getAllowCancel() : ?bool
+    public function getAllowcancel() : ?bool
     {
         return $this->getData(self::ALLOW_CANCEL);
     }
@@ -78,7 +78,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $AllowModify
      * @return $this
      */
-    public function setAllowModify(?bool $AllowModify)
+    public function setAllowmodify(?bool $AllowModify)
     {
         $this->setData(self::ALLOW_MODIFY, $AllowModify);
         return $this;
@@ -87,7 +87,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getAllowModify() : ?bool
+    public function getAllowmodify() : ?bool
     {
         return $this->getData(self::ALLOW_MODIFY);
     }
@@ -114,7 +114,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItenNo
      * @return $this
      */
-    public function setItenNo(?string $ItenNo)
+    public function setItenno(?string $ItenNo)
     {
         $this->setData(self::ITEN_NO, $ItenNo);
         return $this;
@@ -123,7 +123,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItenNo() : ?string
+    public function getItenno() : ?string
     {
         return $this->getData(self::ITEN_NO);
     }
@@ -132,7 +132,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
      * @param int $ItemLineNo
      * @return $this
      */
-    public function setItemLineNo($ItemLineNo)
+    public function setItemlineno($ItemLineNo)
     {
         $this->setData(self::ITEM_LINE_NO, $ItemLineNo);
         return $this;
@@ -141,7 +141,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getItemLineNo()
+    public function getItemlineno()
     {
         return $this->getData(self::ITEM_LINE_NO);
     }
@@ -150,7 +150,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StatusCode
      * @return $this
      */
-    public function setStatusCode(?string $StatusCode)
+    public function setStatuscode(?string $StatusCode)
     {
         $this->setData(self::STATUS_CODE, $StatusCode);
         return $this;
@@ -159,7 +159,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatusCode() : ?string
+    public function getStatuscode() : ?string
     {
         return $this->getData(self::STATUS_CODE);
     }
@@ -186,7 +186,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $UnitOfMeasure
      * @return $this
      */
-    public function setUnitOfMeasure(?string $UnitOfMeasure)
+    public function setUnitofmeasure(?string $UnitOfMeasure)
     {
         $this->setData(self::UNIT_OF_MEASURE, $UnitOfMeasure);
         return $this;
@@ -195,7 +195,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitOfMeasure() : ?string
+    public function getUnitofmeasure() : ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE);
     }
@@ -204,7 +204,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -213,7 +213,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -222,7 +222,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StatusChanged
      * @return $this
      */
-    public function setStatusChanged(?string $StatusChanged)
+    public function setStatuschanged(?string $StatusChanged)
     {
         $this->setData(self::STATUS_CHANGED, $StatusChanged);
         return $this;
@@ -231,7 +231,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatusChanged() : ?string
+    public function getStatuschanged() : ?string
     {
         return $this->getData(self::STATUS_CHANGED);
     }
@@ -240,7 +240,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExtCode
      * @return $this
      */
-    public function setExtCode(?string $ExtCode)
+    public function setExtcode(?string $ExtCode)
     {
         $this->setData(self::EXT_CODE, $ExtCode);
         return $this;
@@ -249,7 +249,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtCode() : ?string
+    public function getExtcode() : ?string
     {
         return $this->getData(self::EXT_CODE);
     }

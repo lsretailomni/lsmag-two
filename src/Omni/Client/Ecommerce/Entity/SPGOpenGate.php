@@ -14,7 +14,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
 {
     public const CLASS_NAME = 'SPGOpenGate';
 
-    public const Q_R_CODE = 'qRCode';
+    public const QRCODE = 'qRCode';
 
     public const STORE_NO = 'storeNo';
 
@@ -36,25 +36,25 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $qRCode
      * @return $this
      */
-    public function setQRCode(?string $qRCode)
+    public function setQrcode(?string $qRCode)
     {
-        $this->setData(self::Q_R_CODE, $qRCode);
+        $this->setData(self::QRCODE, $qRCode);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getQRCode() : ?string
+    public function getQrcode() : ?string
     {
-        return $this->getData(self::Q_R_CODE);
+        return $this->getData(self::QRCODE);
     }
 
     /**
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -63,7 +63,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -72,7 +72,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $deviceLocation
      * @return $this
      */
-    public function setDeviceLocation(?string $deviceLocation)
+    public function setDevicelocation(?string $deviceLocation)
     {
         $this->setData(self::DEVICE_LOCATION, $deviceLocation);
         return $this;
@@ -81,7 +81,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getDeviceLocation() : ?string
+    public function getDevicelocation() : ?string
     {
         return $this->getData(self::DEVICE_LOCATION);
     }
@@ -90,7 +90,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $memberAccountNo
      * @return $this
      */
-    public function setMemberAccountNo(?string $memberAccountNo)
+    public function setMemberaccountno(?string $memberAccountNo)
     {
         $this->setData(self::MEMBER_ACCOUNT_NO, $memberAccountNo);
         return $this;
@@ -99,7 +99,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getMemberAccountNo() : ?string
+    public function getMemberaccountno() : ?string
     {
         return $this->getData(self::MEMBER_ACCOUNT_NO);
     }
@@ -108,7 +108,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?bool $exitWithoutShopping
      * @return $this
      */
-    public function setExitWithoutShopping(?bool $exitWithoutShopping)
+    public function setExitwithoutshopping(?bool $exitWithoutShopping)
     {
         $this->setData(self::EXIT_WITHOUT_SHOPPING, $exitWithoutShopping);
         return $this;
@@ -117,7 +117,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?bool
      */
-    public function getExitWithoutShopping() : ?bool
+    public function getExitwithoutshopping() : ?bool
     {
         return $this->getData(self::EXIT_WITHOUT_SHOPPING);
     }
@@ -126,7 +126,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?bool $isEntering
      * @return $this
      */
-    public function setIsEntering(?bool $isEntering)
+    public function setIsentering(?bool $isEntering)
     {
         $this->setData(self::IS_ENTERING, $isEntering);
         return $this;
@@ -135,7 +135,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?bool
      */
-    public function getIsEntering() : ?bool
+    public function getIsentering() : ?bool
     {
         return $this->getData(self::IS_ENTERING);
     }
@@ -144,7 +144,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?bool $returnValue
      * @return $this
      */
-    public function setReturnValue(?bool $returnValue)
+    public function setReturnvalue(?bool $returnValue)
     {
         $this->setData(self::RETURN_VALUE, $returnValue);
         return $this;
@@ -153,7 +153,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?bool
      */
-    public function getReturnValue() : ?bool
+    public function getReturnvalue() : ?bool
     {
         return $this->getData(self::RETURN_VALUE);
     }
@@ -162,7 +162,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -171,7 +171,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -180,7 +180,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -189,7 +189,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

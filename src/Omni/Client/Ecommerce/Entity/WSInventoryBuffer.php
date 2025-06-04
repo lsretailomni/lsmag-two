@@ -46,7 +46,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo(?string $ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
@@ -55,7 +55,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -64,7 +64,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -73,7 +73,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -82,7 +82,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LocationCode
      * @return $this
      */
-    public function setLocationCode(?string $LocationCode)
+    public function setLocationcode(?string $LocationCode)
     {
         $this->setData(self::LOCATION_CODE, $LocationCode);
         return $this;
@@ -91,7 +91,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLocationCode() : ?string
+    public function getLocationcode() : ?string
     {
         return $this->getData(self::LOCATION_CODE);
     }
@@ -100,7 +100,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $ActualInventory
      * @return $this
      */
-    public function setActualInventory(?float $ActualInventory)
+    public function setActualinventory(?float $ActualInventory)
     {
         $this->setData(self::ACTUAL_INVENTORY, $ActualInventory);
         return $this;
@@ -109,7 +109,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getActualInventory() : ?float
+    public function getActualinventory() : ?float
     {
         return $this->getData(self::ACTUAL_INVENTORY);
     }
@@ -118,7 +118,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param int $LeadTimeDays
      * @return $this
      */
-    public function setLeadTimeDays($LeadTimeDays)
+    public function setLeadtimedays($LeadTimeDays)
     {
         $this->setData(self::LEAD_TIME_DAYS, $LeadTimeDays);
         return $this;
@@ -127,7 +127,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLeadTimeDays()
+    public function getLeadtimedays()
     {
         return $this->getData(self::LEAD_TIME_DAYS);
     }
@@ -136,7 +136,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $BaseUnitOfMeasure
      * @return $this
      */
-    public function setBaseUnitOfMeasure(?string $BaseUnitOfMeasure)
+    public function setBaseunitofmeasure(?string $BaseUnitOfMeasure)
     {
         $this->setData(self::BASE_UNIT_OF_MEASURE, $BaseUnitOfMeasure);
         return $this;
@@ -145,7 +145,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBaseUnitOfMeasure() : ?string
+    public function getBaseunitofmeasure() : ?string
     {
         return $this->getData(self::BASE_UNIT_OF_MEASURE);
     }
@@ -154,7 +154,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -163,7 +163,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -190,7 +190,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $QtySoldnotPosted
      * @return $this
      */
-    public function setQtySoldnotPosted(?float $QtySoldnotPosted)
+    public function setQtysoldnotposted(?float $QtySoldnotPosted)
     {
         $this->setData(self::QTY_SOLDNOT_POSTED, $QtySoldnotPosted);
         return $this;
@@ -199,7 +199,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtySoldnotPosted() : ?float
+    public function getQtysoldnotposted() : ?float
     {
         return $this->getData(self::QTY_SOLDNOT_POSTED);
     }
@@ -262,7 +262,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $ExpectedStock
      * @return $this
      */
-    public function setExpectedStock(?float $ExpectedStock)
+    public function setExpectedstock(?float $ExpectedStock)
     {
         $this->setData(self::EXPECTED_STOCK, $ExpectedStock);
         return $this;
@@ -271,7 +271,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getExpectedStock() : ?float
+    public function getExpectedstock() : ?float
     {
         return $this->getData(self::EXPECTED_STOCK);
     }
@@ -280,7 +280,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $ReorderPoint
      * @return $this
      */
-    public function setReorderPoint(?float $ReorderPoint)
+    public function setReorderpoint(?float $ReorderPoint)
     {
         $this->setData(self::REORDER_POINT, $ReorderPoint);
         return $this;
@@ -289,7 +289,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getReorderPoint() : ?float
+    public function getReorderpoint() : ?float
     {
         return $this->getData(self::REORDER_POINT);
     }

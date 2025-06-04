@@ -12,7 +12,7 @@ class RootCOShippingAgentsInfoGetXML extends \Magento\Catalog\Model\AbstractMode
 {
     public const CLASS_NAME = 'RootCOShippingAgentsInfoGetXML';
 
-    public const C_O_DEFAULT_SHIPPING_AGENT = 'CODefaultShippingAgent';
+    public const CODEFAULT_SHIPPING_AGENT = 'CODefaultShippingAgent';
 
     public const SHIPPING_AGENT = 'ShippingAgent';
 
@@ -22,25 +22,25 @@ class RootCOShippingAgentsInfoGetXML extends \Magento\Catalog\Model\AbstractMode
      * @param CODefaultShippingAgent $CODefaultShippingAgent
      * @return $this
      */
-    public function setCODefaultShippingAgent($CODefaultShippingAgent)
+    public function setCodefaultshippingagent($CODefaultShippingAgent)
     {
-        $this->setData(self::C_O_DEFAULT_SHIPPING_AGENT, $CODefaultShippingAgent);
+        $this->setData(self::CODEFAULT_SHIPPING_AGENT, $CODefaultShippingAgent);
         return $this;
     }
 
     /**
      * @return CODefaultShippingAgent
      */
-    public function getCODefaultShippingAgent()
+    public function getCodefaultshippingagent()
     {
-        return $this->getData(self::C_O_DEFAULT_SHIPPING_AGENT);
+        return $this->getData(self::CODEFAULT_SHIPPING_AGENT);
     }
 
     /**
      * @param ShippingAgent $ShippingAgent
      * @return $this
      */
-    public function setShippingAgent($ShippingAgent)
+    public function setShippingagent($ShippingAgent)
     {
         $this->setData(self::SHIPPING_AGENT, $ShippingAgent);
         return $this;
@@ -49,7 +49,7 @@ class RootCOShippingAgentsInfoGetXML extends \Magento\Catalog\Model\AbstractMode
     /**
      * @return ShippingAgent
      */
-    public function getShippingAgent()
+    public function getShippingagent()
     {
         return $this->getData(self::SHIPPING_AGENT);
     }
@@ -58,7 +58,7 @@ class RootCOShippingAgentsInfoGetXML extends \Magento\Catalog\Model\AbstractMode
      * @param ShippingAgentServices $ShippingAgentServices
      * @return $this
      */
-    public function setShippingAgentServices($ShippingAgentServices)
+    public function setShippingagentservices($ShippingAgentServices)
     {
         $this->setData(self::SHIPPING_AGENT_SERVICES, $ShippingAgentServices);
         return $this;
@@ -67,7 +67,7 @@ class RootCOShippingAgentsInfoGetXML extends \Magento\Catalog\Model\AbstractMode
     /**
      * @return ShippingAgentServices
      */
-    public function getShippingAgentServices()
+    public function getShippingagentservices()
     {
         return $this->getData(self::SHIPPING_AGENT_SERVICES);
     }

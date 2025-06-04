@@ -14,7 +14,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const TRANSACTION_NO = 'TransactionNo';
 
@@ -42,7 +42,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -51,7 +51,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -60,25 +60,25 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo(?string $POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -87,7 +87,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -96,7 +96,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -105,7 +105,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -132,7 +132,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StatementNo
      * @return $this
      */
-    public function setStatementNo(?string $StatementNo)
+    public function setStatementno(?string $StatementNo)
     {
         $this->setData(self::STATEMENT_NO, $StatementNo);
         return $this;
@@ -141,7 +141,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementNo() : ?string
+    public function getStatementno() : ?string
     {
         return $this->getData(self::STATEMENT_NO);
     }
@@ -150,7 +150,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo(?string $ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
@@ -159,7 +159,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -168,7 +168,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -177,7 +177,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -222,7 +222,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SerialNo
      * @return $this
      */
-    public function setSerialNo(?string $SerialNo)
+    public function setSerialno(?string $SerialNo)
     {
         $this->setData(self::SERIAL_NO, $SerialNo);
         return $this;
@@ -231,7 +231,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSerialNo() : ?string
+    public function getSerialno() : ?string
     {
         return $this->getData(self::SERIAL_NO);
     }
@@ -240,7 +240,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LotNo
      * @return $this
      */
-    public function setLotNo(?string $LotNo)
+    public function setLotno(?string $LotNo)
     {
         $this->setData(self::LOT_NO, $LotNo);
         return $this;
@@ -249,7 +249,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLotNo() : ?string
+    public function getLotno() : ?string
     {
         return $this->getData(self::LOT_NO);
     }
@@ -258,7 +258,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -267,7 +267,7 @@ class TransSalesEntryStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }

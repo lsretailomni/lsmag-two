@@ -18,7 +18,7 @@ class RootSalesShipmentUpdate extends \Magento\Catalog\Model\AbstractModel
      * @param SalesShipmentHeader $SalesShipmentHeader
      * @return $this
      */
-    public function setSalesShipmentHeader($SalesShipmentHeader)
+    public function setSalesshipmentheader($SalesShipmentHeader)
     {
         $this->setData(self::SALES_SHIPMENT_HEADER, $SalesShipmentHeader);
         return $this;
@@ -27,7 +27,7 @@ class RootSalesShipmentUpdate extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return SalesShipmentHeader
      */
-    public function getSalesShipmentHeader()
+    public function getSalesshipmentheader()
     {
         return $this->getData(self::SALES_SHIPMENT_HEADER);
     }

@@ -18,7 +18,7 @@ class POSDataEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const CURRENCY_CODE = 'CurrencyCode';
 
-    public const P_I_N = 'PIN';
+    public const PIN = 'PIN';
 
     /**
      * @param ?float $Balance
@@ -42,7 +42,7 @@ class POSDataEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExpiryDate
      * @return $this
      */
-    public function setExpiryDate(?string $ExpiryDate)
+    public function setExpirydate(?string $ExpiryDate)
     {
         $this->setData(self::EXPIRY_DATE, $ExpiryDate);
         return $this;
@@ -51,7 +51,7 @@ class POSDataEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpiryDate() : ?string
+    public function getExpirydate() : ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
@@ -60,7 +60,7 @@ class POSDataEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode(?string $CurrencyCode)
+    public function setCurrencycode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
@@ -69,7 +69,7 @@ class POSDataEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencyCode() : ?string
+    public function getCurrencycode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -78,18 +78,18 @@ class POSDataEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $PIN
      * @return $this
      */
-    public function setPIN($PIN)
+    public function setPin($PIN)
     {
-        $this->setData(self::P_I_N, $PIN);
+        $this->setData(self::PIN, $PIN);
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getPIN()
+    public function getPin()
     {
-        return $this->getData(self::P_I_N);
+        return $this->getData(self::PIN);
     }
 }
 

@@ -62,7 +62,7 @@ class MemberAttribute extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AttributeType
      * @return $this
      */
-    public function setAttributeType(?string $AttributeType)
+    public function setAttributetype(?string $AttributeType)
     {
         $this->setData(self::ATTRIBUTE_TYPE, $AttributeType);
         return $this;
@@ -71,7 +71,7 @@ class MemberAttribute extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAttributeType() : ?string
+    public function getAttributetype() : ?string
     {
         return $this->getData(self::ATTRIBUTE_TYPE);
     }
@@ -80,7 +80,7 @@ class MemberAttribute extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DefaultValue
      * @return $this
      */
-    public function setDefaultValue(?string $DefaultValue)
+    public function setDefaultvalue(?string $DefaultValue)
     {
         $this->setData(self::DEFAULT_VALUE, $DefaultValue);
         return $this;
@@ -89,7 +89,7 @@ class MemberAttribute extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDefaultValue() : ?string
+    public function getDefaultvalue() : ?string
     {
         return $this->getData(self::DEFAULT_VALUE);
     }

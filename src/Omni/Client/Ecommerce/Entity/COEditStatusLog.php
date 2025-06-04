@@ -14,9 +14,9 @@ class COEditStatusLog extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const USER_I_D = 'UserID';
+    public const USER_ID = 'UserID';
 
-    public const STAFF_I_D = 'StaffID';
+    public const STAFF_ID = 'StaffID';
 
     public const TERMINAL_NO = 'TerminalNo';
 
@@ -28,7 +28,7 @@ class COEditStatusLog extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -37,7 +37,7 @@ class COEditStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -46,43 +46,43 @@ class COEditStatusLog extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $UserID
      * @return $this
      */
-    public function setUserID(?string $UserID)
+    public function setUserid(?string $UserID)
     {
-        $this->setData(self::USER_I_D, $UserID);
+        $this->setData(self::USER_ID, $UserID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getUserID() : ?string
+    public function getUserid() : ?string
     {
-        return $this->getData(self::USER_I_D);
+        return $this->getData(self::USER_ID);
     }
 
     /**
      * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID(?string $StaffID)
+    public function setStaffid(?string $StaffID)
     {
-        $this->setData(self::STAFF_I_D, $StaffID);
+        $this->setData(self::STAFF_ID, $StaffID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getStaffID() : ?string
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
      * @param ?string $TerminalNo
      * @return $this
      */
-    public function setTerminalNo(?string $TerminalNo)
+    public function setTerminalno(?string $TerminalNo)
     {
         $this->setData(self::TERMINAL_NO, $TerminalNo);
         return $this;
@@ -91,7 +91,7 @@ class COEditStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTerminalNo() : ?string
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -100,7 +100,7 @@ class COEditStatusLog extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -109,7 +109,7 @@ class COEditStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -118,7 +118,7 @@ class COEditStatusLog extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo(?string $ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
@@ -127,7 +127,7 @@ class COEditStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptNo() : ?string
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }

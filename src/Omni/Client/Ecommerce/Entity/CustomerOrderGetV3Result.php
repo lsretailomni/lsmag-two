@@ -18,7 +18,7 @@ class CustomerOrderGetV3Result extends \Magento\Catalog\Model\AbstractModel impl
 
     public const ERROR_TEXT = 'errorText';
 
-    public const CUSTOMER_ORDER_GET_V3_X_M_L = 'customerOrderGetV3XML';
+    public const CUSTOMER_ORDER_GET_V3_XML = 'customerOrderGetV3XML';
 
     public const POINTS_EARNED = 'pointsEarned';
 
@@ -28,7 +28,7 @@ class CustomerOrderGetV3Result extends \Magento\Catalog\Model\AbstractModel impl
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -37,7 +37,7 @@ class CustomerOrderGetV3Result extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -46,7 +46,7 @@ class CustomerOrderGetV3Result extends \Magento\Catalog\Model\AbstractModel impl
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -55,7 +55,7 @@ class CustomerOrderGetV3Result extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -64,25 +64,25 @@ class CustomerOrderGetV3Result extends \Magento\Catalog\Model\AbstractModel impl
      * @param RootCustomerOrderGetV3 $customerOrderGetV3XML
      * @return $this
      */
-    public function setCustomerOrderGetV3XML($customerOrderGetV3XML)
+    public function setCustomerordergetv3xml($customerOrderGetV3XML)
     {
-        $this->setData(self::CUSTOMER_ORDER_GET_V3_X_M_L, $customerOrderGetV3XML);
+        $this->setData(self::CUSTOMER_ORDER_GET_V3_XML, $customerOrderGetV3XML);
         return $this;
     }
 
     /**
      * @return RootCustomerOrderGetV3
      */
-    public function getCustomerOrderGetV3XML()
+    public function getCustomerordergetv3xml()
     {
-        return $this->getData(self::CUSTOMER_ORDER_GET_V3_X_M_L);
+        return $this->getData(self::CUSTOMER_ORDER_GET_V3_XML);
     }
 
     /**
      * @param ?float $pointsEarned
      * @return $this
      */
-    public function setPointsEarned(?float $pointsEarned)
+    public function setPointsearned(?float $pointsEarned)
     {
         $this->setData(self::POINTS_EARNED, $pointsEarned);
         return $this;
@@ -91,7 +91,7 @@ class CustomerOrderGetV3Result extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?float
      */
-    public function getPointsEarned() : ?float
+    public function getPointsearned() : ?float
     {
         return $this->getData(self::POINTS_EARNED);
     }
@@ -100,7 +100,7 @@ class CustomerOrderGetV3Result extends \Magento\Catalog\Model\AbstractModel impl
      * @param ?float $pointsUsed
      * @return $this
      */
-    public function setPointsUsed(?float $pointsUsed)
+    public function setPointsused(?float $pointsUsed)
     {
         $this->setData(self::POINTS_USED, $pointsUsed);
         return $this;
@@ -109,7 +109,7 @@ class CustomerOrderGetV3Result extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?float
      */
-    public function getPointsUsed() : ?float
+    public function getPointsused() : ?float
     {
         return $this->getData(self::POINTS_USED);
     }

@@ -26,7 +26,7 @@ class StoreInventoryLinesGet extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo(?string $ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
@@ -35,7 +35,7 @@ class StoreInventoryLinesGet extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -62,7 +62,7 @@ class StoreInventoryLinesGet extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?float $QuantityCalculated
      * @return $this
      */
-    public function setQuantityCalculated(?float $QuantityCalculated)
+    public function setQuantitycalculated(?float $QuantityCalculated)
     {
         $this->setData(self::QUANTITY_CALCULATED, $QuantityCalculated);
         return $this;
@@ -71,7 +71,7 @@ class StoreInventoryLinesGet extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?float
      */
-    public function getQuantityCalculated() : ?float
+    public function getQuantitycalculated() : ?float
     {
         return $this->getData(self::QUANTITY_CALCULATED);
     }
@@ -80,7 +80,7 @@ class StoreInventoryLinesGet extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $ScanDateTime
      * @return $this
      */
-    public function setScanDateTime(?string $ScanDateTime)
+    public function setScandatetime(?string $ScanDateTime)
     {
         $this->setData(self::SCAN_DATE_TIME, $ScanDateTime);
         return $this;
@@ -89,7 +89,7 @@ class StoreInventoryLinesGet extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getScanDateTime() : ?string
+    public function getScandatetime() : ?string
     {
         return $this->getData(self::SCAN_DATE_TIME);
     }

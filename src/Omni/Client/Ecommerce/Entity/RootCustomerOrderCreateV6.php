@@ -12,104 +12,104 @@ class RootCustomerOrderCreateV6 extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCustomerOrderCreateV6';
 
-    public const CUSTOMER_ORDER_CREATE_C_O_HEADER_V6 = 'CustomerOrderCreateCOHeaderV6';
+    public const CUSTOMER_ORDER_CREATE_COHEADER_V6 = 'CustomerOrderCreateCOHeaderV6';
 
-    public const CUSTOMER_ORDER_CREATE_C_O_LINE_V6 = 'CustomerOrderCreateCOLineV6';
+    public const CUSTOMER_ORDER_CREATE_COLINE_V6 = 'CustomerOrderCreateCOLineV6';
 
-    public const CUSTOMER_ORDER_CREATE_C_O_DISCOUNT_LINE_V6 = 'CustomerOrderCreateCODiscountLineV6';
+    public const CUSTOMER_ORDER_CREATE_CODISCOUNT_LINE_V6 = 'CustomerOrderCreateCODiscountLineV6';
 
-    public const CUSTOMER_ORDER_CREATE_C_O_PAYMENT_V6 = 'CustomerOrderCreateCOPaymentV6';
+    public const CUSTOMER_ORDER_CREATE_COPAYMENT_V6 = 'CustomerOrderCreateCOPaymentV6';
 
-    public const CUSTOMER_ORDER_CREATE_C_O_STATUS_LOG_V6 = 'CustomerOrderCreateCOStatusLogV6';
+    public const CUSTOMER_ORDER_CREATE_COSTATUS_LOG_V6 = 'CustomerOrderCreateCOStatusLogV6';
 
     /**
      * @param CustomerOrderCreateCOHeaderV6 $CustomerOrderCreateCOHeaderV6
      * @return $this
      */
-    public function setCustomerOrderCreateCOHeaderV6($CustomerOrderCreateCOHeaderV6)
+    public function setCustomerordercreatecoheaderv6($CustomerOrderCreateCOHeaderV6)
     {
-        $this->setData(self::CUSTOMER_ORDER_CREATE_C_O_HEADER_V6, $CustomerOrderCreateCOHeaderV6);
+        $this->setData(self::CUSTOMER_ORDER_CREATE_COHEADER_V6, $CustomerOrderCreateCOHeaderV6);
         return $this;
     }
 
     /**
      * @return CustomerOrderCreateCOHeaderV6
      */
-    public function getCustomerOrderCreateCOHeaderV6()
+    public function getCustomerordercreatecoheaderv6()
     {
-        return $this->getData(self::CUSTOMER_ORDER_CREATE_C_O_HEADER_V6);
+        return $this->getData(self::CUSTOMER_ORDER_CREATE_COHEADER_V6);
     }
 
     /**
      * @param CustomerOrderCreateCOLineV6 $CustomerOrderCreateCOLineV6
      * @return $this
      */
-    public function setCustomerOrderCreateCOLineV6($CustomerOrderCreateCOLineV6)
+    public function setCustomerordercreatecolinev6($CustomerOrderCreateCOLineV6)
     {
-        $this->setData(self::CUSTOMER_ORDER_CREATE_C_O_LINE_V6, $CustomerOrderCreateCOLineV6);
+        $this->setData(self::CUSTOMER_ORDER_CREATE_COLINE_V6, $CustomerOrderCreateCOLineV6);
         return $this;
     }
 
     /**
      * @return CustomerOrderCreateCOLineV6
      */
-    public function getCustomerOrderCreateCOLineV6()
+    public function getCustomerordercreatecolinev6()
     {
-        return $this->getData(self::CUSTOMER_ORDER_CREATE_C_O_LINE_V6);
+        return $this->getData(self::CUSTOMER_ORDER_CREATE_COLINE_V6);
     }
 
     /**
      * @param CustomerOrderCreateCODiscountLineV6 $CustomerOrderCreateCODiscountLineV6
      * @return $this
      */
-    public function setCustomerOrderCreateCODiscountLineV6($CustomerOrderCreateCODiscountLineV6)
+    public function setCustomerordercreatecodiscountlinev6($CustomerOrderCreateCODiscountLineV6)
     {
-        $this->setData(self::CUSTOMER_ORDER_CREATE_C_O_DISCOUNT_LINE_V6, $CustomerOrderCreateCODiscountLineV6);
+        $this->setData(self::CUSTOMER_ORDER_CREATE_CODISCOUNT_LINE_V6, $CustomerOrderCreateCODiscountLineV6);
         return $this;
     }
 
     /**
      * @return CustomerOrderCreateCODiscountLineV6
      */
-    public function getCustomerOrderCreateCODiscountLineV6()
+    public function getCustomerordercreatecodiscountlinev6()
     {
-        return $this->getData(self::CUSTOMER_ORDER_CREATE_C_O_DISCOUNT_LINE_V6);
+        return $this->getData(self::CUSTOMER_ORDER_CREATE_CODISCOUNT_LINE_V6);
     }
 
     /**
      * @param CustomerOrderCreateCOPaymentV6 $CustomerOrderCreateCOPaymentV6
      * @return $this
      */
-    public function setCustomerOrderCreateCOPaymentV6($CustomerOrderCreateCOPaymentV6)
+    public function setCustomerordercreatecopaymentv6($CustomerOrderCreateCOPaymentV6)
     {
-        $this->setData(self::CUSTOMER_ORDER_CREATE_C_O_PAYMENT_V6, $CustomerOrderCreateCOPaymentV6);
+        $this->setData(self::CUSTOMER_ORDER_CREATE_COPAYMENT_V6, $CustomerOrderCreateCOPaymentV6);
         return $this;
     }
 
     /**
      * @return CustomerOrderCreateCOPaymentV6
      */
-    public function getCustomerOrderCreateCOPaymentV6()
+    public function getCustomerordercreatecopaymentv6()
     {
-        return $this->getData(self::CUSTOMER_ORDER_CREATE_C_O_PAYMENT_V6);
+        return $this->getData(self::CUSTOMER_ORDER_CREATE_COPAYMENT_V6);
     }
 
     /**
      * @param CustomerOrderCreateCOStatusLogV6 $CustomerOrderCreateCOStatusLogV6
      * @return $this
      */
-    public function setCustomerOrderCreateCOStatusLogV6($CustomerOrderCreateCOStatusLogV6)
+    public function setCustomerordercreatecostatuslogv6($CustomerOrderCreateCOStatusLogV6)
     {
-        $this->setData(self::CUSTOMER_ORDER_CREATE_C_O_STATUS_LOG_V6, $CustomerOrderCreateCOStatusLogV6);
+        $this->setData(self::CUSTOMER_ORDER_CREATE_COSTATUS_LOG_V6, $CustomerOrderCreateCOStatusLogV6);
         return $this;
     }
 
     /**
      * @return CustomerOrderCreateCOStatusLogV6
      */
-    public function getCustomerOrderCreateCOStatusLogV6()
+    public function getCustomerordercreatecostatuslogv6()
     {
-        return $this->getData(self::CUSTOMER_ORDER_CREATE_C_O_STATUS_LOG_V6);
+        return $this->getData(self::CUSTOMER_ORDER_CREATE_COSTATUS_LOG_V6);
     }
 }
 

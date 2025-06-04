@@ -65,7 +65,6 @@ class ClientGenerate extends Command
         // $this->clean($baseDir);
         $odataGenerator = new OdataGenerator();
         $classMap = $odataGenerator->generate($entityDir, $operationDir, $this->getOmniDataHelper(), $output);
-
         foreach ($metadata->getEntities() as $entity) {
             if (array_search($entity->getName(), $restrictions) === false) {
                 $entityName = preg_replace('/[-._]/', '', $entity->getName());

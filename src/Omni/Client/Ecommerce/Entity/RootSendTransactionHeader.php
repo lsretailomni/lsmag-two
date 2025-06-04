@@ -18,7 +18,7 @@ class RootSendTransactionHeader extends \Magento\Catalog\Model\AbstractModel
      * @param TransactionHeader $TransactionHeader
      * @return $this
      */
-    public function setTransactionHeader($TransactionHeader)
+    public function setTransactionheader($TransactionHeader)
     {
         $this->setData(self::TRANSACTION_HEADER, $TransactionHeader);
         return $this;
@@ -27,7 +27,7 @@ class RootSendTransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return TransactionHeader
      */
-    public function getTransactionHeader()
+    public function getTransactionheader()
     {
         return $this->getData(self::TRANSACTION_HEADER);
     }

@@ -28,7 +28,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $respondCode
      * @return $this
      */
-    public function setRespondCode(?string $respondCode)
+    public function setRespondcode(?string $respondCode)
     {
         $this->setData(self::RESPOND_CODE, $respondCode);
         return $this;
@@ -37,7 +37,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getRespondCode() : ?string
+    public function getRespondcode() : ?string
     {
         return $this->getData(self::RESPOND_CODE);
     }
@@ -46,7 +46,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -55,7 +55,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -64,7 +64,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -73,7 +73,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -82,7 +82,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param int $displayOrder
      * @return $this
      */
-    public function setDisplayOrder($displayOrder)
+    public function setDisplayorder($displayOrder)
     {
         $this->setData(self::DISPLAY_ORDER, $displayOrder);
         return $this;
@@ -91,7 +91,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return int
      */
-    public function getDisplayOrder()
+    public function getDisplayorder()
     {
         return $this->getData(self::DISPLAY_ORDER);
     }
@@ -100,7 +100,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $storeImage
      * @return $this
      */
-    public function setStoreImage(?string $storeImage)
+    public function setStoreimage(?string $storeImage)
     {
         $this->setData(self::STORE_IMAGE, $storeImage);
         return $this;
@@ -109,7 +109,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getStoreImage() : ?string
+    public function getStoreimage() : ?string
     {
         return $this->getData(self::STORE_IMAGE);
     }

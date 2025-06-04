@@ -40,7 +40,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $PublishedOfferNo
      * @return $this
      */
-    public function setPublishedOfferNo(?string $PublishedOfferNo)
+    public function setPublishedofferno(?string $PublishedOfferNo)
     {
         $this->setData(self::PUBLISHED_OFFER_NO, $PublishedOfferNo);
         return $this;
@@ -49,7 +49,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPublishedOfferNo() : ?string
+    public function getPublishedofferno() : ?string
     {
         return $this->getData(self::PUBLISHED_OFFER_NO);
     }
@@ -58,7 +58,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DiscountType
      * @return $this
      */
-    public function setDiscountType(?string $DiscountType)
+    public function setDiscounttype(?string $DiscountType)
     {
         $this->setData(self::DISCOUNT_TYPE, $DiscountType);
         return $this;
@@ -67,7 +67,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDiscountType() : ?string
+    public function getDiscounttype() : ?string
     {
         return $this->getData(self::DISCOUNT_TYPE);
     }
@@ -76,7 +76,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DiscountNo
      * @return $this
      */
-    public function setDiscountNo(?string $DiscountNo)
+    public function setDiscountno(?string $DiscountNo)
     {
         $this->setData(self::DISCOUNT_NO, $DiscountNo);
         return $this;
@@ -85,7 +85,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDiscountNo() : ?string
+    public function getDiscountno() : ?string
     {
         return $this->getData(self::DISCOUNT_NO);
     }
@@ -94,7 +94,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $DiscountLineNo
      * @return $this
      */
-    public function setDiscountLineNo($DiscountLineNo)
+    public function setDiscountlineno($DiscountLineNo)
     {
         $this->setData(self::DISCOUNT_LINE_NO, $DiscountLineNo);
         return $this;
@@ -103,7 +103,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDiscountLineNo()
+    public function getDiscountlineno()
     {
         return $this->getData(self::DISCOUNT_LINE_NO);
     }
@@ -112,7 +112,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $DiscountLineType
      * @return $this
      */
-    public function setDiscountLineType($DiscountLineType)
+    public function setDiscountlinetype($DiscountLineType)
     {
         $this->setData(self::DISCOUNT_LINE_TYPE, $DiscountLineType);
         return $this;
@@ -121,7 +121,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDiscountLineType()
+    public function getDiscountlinetype()
     {
         return $this->getData(self::DISCOUNT_LINE_TYPE);
     }
@@ -130,7 +130,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DiscountLineId
      * @return $this
      */
-    public function setDiscountLineId(?string $DiscountLineId)
+    public function setDiscountlineid(?string $DiscountLineId)
     {
         $this->setData(self::DISCOUNT_LINE_ID, $DiscountLineId);
         return $this;
@@ -139,7 +139,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDiscountLineId() : ?string
+    public function getDiscountlineid() : ?string
     {
         return $this->getData(self::DISCOUNT_LINE_ID);
     }
@@ -148,7 +148,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DiscountLineDescription
      * @return $this
      */
-    public function setDiscountLineDescription(?string $DiscountLineDescription)
+    public function setDiscountlinedescription(?string $DiscountLineDescription)
     {
         $this->setData(self::DISCOUNT_LINE_DESCRIPTION, $DiscountLineDescription);
         return $this;
@@ -157,7 +157,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDiscountLineDescription() : ?string
+    public function getDiscountlinedescription() : ?string
     {
         return $this->getData(self::DISCOUNT_LINE_DESCRIPTION);
     }
@@ -166,7 +166,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantType
      * @return $this
      */
-    public function setVariantType(?string $VariantType)
+    public function setVarianttype(?string $VariantType)
     {
         $this->setData(self::VARIANT_TYPE, $VariantType);
         return $this;
@@ -175,7 +175,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantType() : ?string
+    public function getVarianttype() : ?string
     {
         return $this->getData(self::VARIANT_TYPE);
     }
@@ -184,7 +184,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -193,7 +193,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -220,7 +220,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $UnitOfMeasure
      * @return $this
      */
-    public function setUnitOfMeasure(?string $UnitOfMeasure)
+    public function setUnitofmeasure(?string $UnitOfMeasure)
     {
         $this->setData(self::UNIT_OF_MEASURE, $UnitOfMeasure);
         return $this;
@@ -229,7 +229,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitOfMeasure() : ?string
+    public function getUnitofmeasure() : ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE);
     }
@@ -238,7 +238,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $TableNo
      * @return $this
      */
-    public function setTableNo($TableNo)
+    public function setTableno($TableNo)
     {
         $this->setData(self::TABLE_NO, $TableNo);
         return $this;
@@ -247,7 +247,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTableNo()
+    public function getTableno()
     {
         return $this->getData(self::TABLE_NO);
     }

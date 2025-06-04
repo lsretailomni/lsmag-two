@@ -14,7 +14,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
 {
     public const CLASS_NAME = 'GetTokenEntry';
 
-    public const RECORD_IDP = 'recordId_p';
+    public const RECORD_ID_P = 'recordId_p';
 
     public const MEMBER_CARD_NO = 'memberCardNo';
 
@@ -32,25 +32,25 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $recordIdp
      * @return $this
      */
-    public function setRecordIdP(?string $recordIdp)
+    public function setRecordidP(?string $recordIdp)
     {
-        $this->setData(self::RECORD_IDP, $recordIdp);
+        $this->setData(self::RECORD_ID_P, $recordIdp);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getRecordIdP() : ?string
+    public function getRecordidP() : ?string
     {
-        return $this->getData(self::RECORD_IDP);
+        return $this->getData(self::RECORD_ID_P);
     }
 
     /**
      * @param ?string $memberCardNo
      * @return $this
      */
-    public function setMemberCardNo(?string $memberCardNo)
+    public function setMembercardno(?string $memberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $memberCardNo);
         return $this;
@@ -59,7 +59,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getMemberCardNo() : ?string
+    public function getMembercardno() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -68,7 +68,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $tokenId
      * @return $this
      */
-    public function setTokenId(?string $tokenId)
+    public function setTokenid(?string $tokenId)
     {
         $this->setData(self::TOKEN_ID, $tokenId);
         return $this;
@@ -77,7 +77,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getTokenId() : ?string
+    public function getTokenid() : ?string
     {
         return $this->getData(self::TOKEN_ID);
     }
@@ -86,7 +86,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $expiryDate
      * @return $this
      */
-    public function setExpiryDate(?string $expiryDate)
+    public function setExpirydate(?string $expiryDate)
     {
         $this->setData(self::EXPIRY_DATE, $expiryDate);
         return $this;
@@ -95,7 +95,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getExpiryDate() : ?string
+    public function getExpirydate() : ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
@@ -122,7 +122,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -131,7 +131,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -140,7 +140,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -149,7 +149,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

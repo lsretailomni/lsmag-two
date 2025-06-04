@@ -26,7 +26,7 @@ class SPGLogSecurityCheckResponseResult extends \Magento\Catalog\Model\AbstractM
      * @param ?string $orderId
      * @return $this
      */
-    public function setOrderId(?string $orderId)
+    public function setOrderid(?string $orderId)
     {
         $this->setData(self::ORDER_ID, $orderId);
         return $this;
@@ -35,7 +35,7 @@ class SPGLogSecurityCheckResponseResult extends \Magento\Catalog\Model\AbstractM
     /**
      * @return ?string
      */
-    public function getOrderId() : ?string
+    public function getOrderid() : ?string
     {
         return $this->getData(self::ORDER_ID);
     }
@@ -44,7 +44,7 @@ class SPGLogSecurityCheckResponseResult extends \Magento\Catalog\Model\AbstractM
      * @param ?bool $validationSuccessful
      * @return $this
      */
-    public function setValidationSuccessful(?bool $validationSuccessful)
+    public function setValidationsuccessful(?bool $validationSuccessful)
     {
         $this->setData(self::VALIDATION_SUCCESSFUL, $validationSuccessful);
         return $this;
@@ -53,7 +53,7 @@ class SPGLogSecurityCheckResponseResult extends \Magento\Catalog\Model\AbstractM
     /**
      * @return ?bool
      */
-    public function getValidationSuccessful() : ?bool
+    public function getValidationsuccessful() : ?bool
     {
         return $this->getData(self::VALIDATION_SUCCESSFUL);
     }
@@ -62,7 +62,7 @@ class SPGLogSecurityCheckResponseResult extends \Magento\Catalog\Model\AbstractM
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -71,7 +71,7 @@ class SPGLogSecurityCheckResponseResult extends \Magento\Catalog\Model\AbstractM
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -80,7 +80,7 @@ class SPGLogSecurityCheckResponseResult extends \Magento\Catalog\Model\AbstractM
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -89,7 +89,7 @@ class SPGLogSecurityCheckResponseResult extends \Magento\Catalog\Model\AbstractM
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

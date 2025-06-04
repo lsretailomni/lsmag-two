@@ -14,7 +14,7 @@ class GetASNDocumentListResult extends \Magento\Catalog\Model\AbstractModel impl
 {
     public const CLASS_NAME = 'GetASNDocumentList_Result';
 
-    public const GET_A_S_N_DOCUMENT_LIST_X_M_L = 'getASNDocumentListXML';
+    public const GET_ASNDOCUMENT_LIST_XML = 'getASNDocumentListXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
@@ -24,25 +24,25 @@ class GetASNDocumentListResult extends \Magento\Catalog\Model\AbstractModel impl
      * @param RootGetDocumentList $getASNDocumentListXML
      * @return $this
      */
-    public function setGetASNDocumentListXML($getASNDocumentListXML)
+    public function setGetasndocumentlistxml($getASNDocumentListXML)
     {
-        $this->setData(self::GET_A_S_N_DOCUMENT_LIST_X_M_L, $getASNDocumentListXML);
+        $this->setData(self::GET_ASNDOCUMENT_LIST_XML, $getASNDocumentListXML);
         return $this;
     }
 
     /**
      * @return RootGetDocumentList
      */
-    public function getGetASNDocumentListXML()
+    public function getGetasndocumentlistxml()
     {
-        return $this->getData(self::GET_A_S_N_DOCUMENT_LIST_X_M_L);
+        return $this->getData(self::GET_ASNDOCUMENT_LIST_XML);
     }
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -51,7 +51,7 @@ class GetASNDocumentListResult extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -60,7 +60,7 @@ class GetASNDocumentListResult extends \Magento\Catalog\Model\AbstractModel impl
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -69,7 +69,7 @@ class GetASNDocumentListResult extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

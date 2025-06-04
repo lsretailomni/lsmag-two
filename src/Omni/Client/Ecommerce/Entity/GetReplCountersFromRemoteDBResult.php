@@ -24,7 +24,7 @@ class GetReplCountersFromRemoteDBResult extends \Magento\Catalog\Model\AbstractM
      * @param ?string $replicationCounter
      * @return $this
      */
-    public function setReplicationCounter(?string $replicationCounter)
+    public function setReplicationcounter(?string $replicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $replicationCounter);
         return $this;
@@ -33,7 +33,7 @@ class GetReplCountersFromRemoteDBResult extends \Magento\Catalog\Model\AbstractM
     /**
      * @return ?string
      */
-    public function getReplicationCounter() : ?string
+    public function getReplicationcounter() : ?string
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }
@@ -42,7 +42,7 @@ class GetReplCountersFromRemoteDBResult extends \Magento\Catalog\Model\AbstractM
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -51,7 +51,7 @@ class GetReplCountersFromRemoteDBResult extends \Magento\Catalog\Model\AbstractM
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -60,7 +60,7 @@ class GetReplCountersFromRemoteDBResult extends \Magento\Catalog\Model\AbstractM
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -69,7 +69,7 @@ class GetReplCountersFromRemoteDBResult extends \Magento\Catalog\Model\AbstractM
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

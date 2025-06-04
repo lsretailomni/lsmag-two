@@ -18,17 +18,17 @@ class CustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel implement
 
     public const ERROR_TEXT = 'errorText';
 
-    public const CUSTOMER_ORDER_DOCUMENT_I_D = 'customerOrderDocumentID';
+    public const CUSTOMER_ORDER_DOCUMENT_ID = 'customerOrderDocumentID';
 
     public const SOURCE_TYPE = 'sourceType';
 
-    public const CUSTOMER_ORDER_CANCEL_X_M_L = 'customerOrderCancelXML';
+    public const CUSTOMER_ORDER_CANCEL_XML = 'customerOrderCancelXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -37,7 +37,7 @@ class CustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -46,7 +46,7 @@ class CustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -55,7 +55,7 @@ class CustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -64,25 +64,25 @@ class CustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $customerOrderDocumentID
      * @return $this
      */
-    public function setCustomerOrderDocumentID(?string $customerOrderDocumentID)
+    public function setCustomerorderdocumentid(?string $customerOrderDocumentID)
     {
-        $this->setData(self::CUSTOMER_ORDER_DOCUMENT_I_D, $customerOrderDocumentID);
+        $this->setData(self::CUSTOMER_ORDER_DOCUMENT_ID, $customerOrderDocumentID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getCustomerOrderDocumentID() : ?string
+    public function getCustomerorderdocumentid() : ?string
     {
-        return $this->getData(self::CUSTOMER_ORDER_DOCUMENT_I_D);
+        return $this->getData(self::CUSTOMER_ORDER_DOCUMENT_ID);
     }
 
     /**
      * @param int $sourceType
      * @return $this
      */
-    public function setSourceType($sourceType)
+    public function setSourcetype($sourceType)
     {
         $this->setData(self::SOURCE_TYPE, $sourceType);
         return $this;
@@ -91,7 +91,7 @@ class CustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return int
      */
-    public function getSourceType()
+    public function getSourcetype()
     {
         return $this->getData(self::SOURCE_TYPE);
     }
@@ -100,18 +100,18 @@ class CustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel implement
      * @param RootCustomerOrderCancel $customerOrderCancelXML
      * @return $this
      */
-    public function setCustomerOrderCancelXML($customerOrderCancelXML)
+    public function setCustomerordercancelxml($customerOrderCancelXML)
     {
-        $this->setData(self::CUSTOMER_ORDER_CANCEL_X_M_L, $customerOrderCancelXML);
+        $this->setData(self::CUSTOMER_ORDER_CANCEL_XML, $customerOrderCancelXML);
         return $this;
     }
 
     /**
      * @return RootCustomerOrderCancel
      */
-    public function getCustomerOrderCancelXML()
+    public function getCustomerordercancelxml()
     {
-        return $this->getData(self::CUSTOMER_ORDER_CANCEL_X_M_L);
+        return $this->getData(self::CUSTOMER_ORDER_CANCEL_XML);
     }
 }
 

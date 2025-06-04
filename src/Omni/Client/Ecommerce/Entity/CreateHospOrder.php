@@ -22,13 +22,13 @@ class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
 
     public const HOSP_ORDER_RECEIPT_NO = 'hospOrderReceiptNo';
 
-    public const CREATE_HOSP_ORDER_X_M_L = 'createHospOrderXML';
+    public const CREATE_HOSP_ORDER_XML = 'createHospOrderXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -37,7 +37,7 @@ class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -46,7 +46,7 @@ class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -55,7 +55,7 @@ class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -64,7 +64,7 @@ class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $menuType
      * @return $this
      */
-    public function setMenuType(?string $menuType)
+    public function setMenutype(?string $menuType)
     {
         $this->setData(self::MENU_TYPE, $menuType);
         return $this;
@@ -73,7 +73,7 @@ class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getMenuType() : ?string
+    public function getMenutype() : ?string
     {
         return $this->getData(self::MENU_TYPE);
     }
@@ -82,7 +82,7 @@ class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $hospOrderReceiptNo
      * @return $this
      */
-    public function setHospOrderReceiptNo(?string $hospOrderReceiptNo)
+    public function setHosporderreceiptno(?string $hospOrderReceiptNo)
     {
         $this->setData(self::HOSP_ORDER_RECEIPT_NO, $hospOrderReceiptNo);
         return $this;
@@ -91,7 +91,7 @@ class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getHospOrderReceiptNo() : ?string
+    public function getHosporderreceiptno() : ?string
     {
         return $this->getData(self::HOSP_ORDER_RECEIPT_NO);
     }
@@ -100,18 +100,18 @@ class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param RootHospTransaction $createHospOrderXML
      * @return $this
      */
-    public function setCreateHospOrderXML($createHospOrderXML)
+    public function setCreatehosporderxml($createHospOrderXML)
     {
-        $this->setData(self::CREATE_HOSP_ORDER_X_M_L, $createHospOrderXML);
+        $this->setData(self::CREATE_HOSP_ORDER_XML, $createHospOrderXML);
         return $this;
     }
 
     /**
      * @return RootHospTransaction
      */
-    public function getCreateHospOrderXML()
+    public function getCreatehosporderxml()
     {
-        return $this->getData(self::CREATE_HOSP_ORDER_X_M_L);
+        return $this->getData(self::CREATE_HOSP_ORDER_XML);
     }
 }
 

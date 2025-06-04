@@ -12,7 +12,7 @@ class CustomerOrderGetDeliveryCommentV3 extends \Magento\Catalog\Model\AbstractM
 {
     public const CLASS_NAME = 'CustomerOrderGetDeliveryCommentV3';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const COMMENT = 'Comment';
 
@@ -20,18 +20,18 @@ class CustomerOrderGetDeliveryCommentV3 extends \Magento\Catalog\Model\AbstractM
      * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID(?string $DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDocumentID() : ?string
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**

@@ -24,6 +24,8 @@ class MobileReceiptInfo extends \Magento\Catalog\Model\AbstractModel
 
     public const TYPE = 'Type';
 
+    public const LARGE_VALUE = 'LargeValue';
+
     /**
      * @param string $Id
      * @return $this
@@ -130,6 +132,24 @@ class MobileReceiptInfo extends \Magento\Catalog\Model\AbstractModel
     public function getType() : ?string
     {
         return $this->getData(self::TYPE);
+    }
+
+    /**
+     * @param ?string $LargeValue
+     * @return $this
+     */
+    public function setLargevalue(?string $LargeValue)
+    {
+        $this->setData(self::LARGE_VALUE, $LargeValue);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getLargevalue() : ?string
+    {
+        return $this->getData(self::LARGE_VALUE);
     }
 }
 

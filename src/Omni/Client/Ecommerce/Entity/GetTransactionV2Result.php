@@ -18,13 +18,13 @@ class GetTransactionV2Result extends \Magento\Catalog\Model\AbstractModel implem
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_TRANSACTION_V2_X_M_L = 'getTransactionV2XML';
+    public const GET_TRANSACTION_V2_XML = 'getTransactionV2XML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -33,7 +33,7 @@ class GetTransactionV2Result extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -42,7 +42,7 @@ class GetTransactionV2Result extends \Magento\Catalog\Model\AbstractModel implem
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class GetTransactionV2Result extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetTransactionV2Result extends \Magento\Catalog\Model\AbstractModel implem
      * @param RootGetTransaction $getTransactionV2XML
      * @return $this
      */
-    public function setGetTransactionV2XML($getTransactionV2XML)
+    public function setGettransactionv2xml($getTransactionV2XML)
     {
-        $this->setData(self::GET_TRANSACTION_V2_X_M_L, $getTransactionV2XML);
+        $this->setData(self::GET_TRANSACTION_V2_XML, $getTransactionV2XML);
         return $this;
     }
 
     /**
      * @return RootGetTransaction
      */
-    public function getGetTransactionV2XML()
+    public function getGettransactionv2xml()
     {
-        return $this->getData(self::GET_TRANSACTION_V2_X_M_L);
+        return $this->getData(self::GET_TRANSACTION_V2_XML);
     }
 
     /**

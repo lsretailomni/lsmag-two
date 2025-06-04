@@ -18,9 +18,9 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
-    public const STAFF_I_D = 'StaffID';
+    public const STAFF_ID = 'StaffID';
 
     public const ITEM_NO = 'ItemNo';
 
@@ -36,7 +36,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
 
     public const UNIT_OF_MEASURE = 'UnitOfMeasure';
 
-    public const U_O_M_QTY = 'UOMQty';
+    public const UOMQTY = 'UOMQty';
 
     public const ITEM_NO_SCANNED = 'ItemNoScanned';
 
@@ -58,7 +58,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TransactionNo
      * @return $this
      */
-    public function setTransactionNo(?string $TransactionNo)
+    public function setTransactionno(?string $TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -67,7 +67,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionNo() : ?string
+    public function getTransactionno() : ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -76,7 +76,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -85,7 +85,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -94,7 +94,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -103,7 +103,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -112,43 +112,43 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo(?string $POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID(?string $StaffID)
+    public function setStaffid(?string $StaffID)
     {
-        $this->setData(self::STAFF_I_D, $StaffID);
+        $this->setData(self::STAFF_ID, $StaffID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getStaffID() : ?string
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
      * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo(?string $ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
@@ -157,7 +157,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -166,7 +166,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -175,7 +175,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -184,7 +184,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $BarCodeNo
      * @return $this
      */
-    public function setBarCodeNo(?string $BarCodeNo)
+    public function setBarcodeno(?string $BarCodeNo)
     {
         $this->setData(self::BAR_CODE_NO, $BarCodeNo);
         return $this;
@@ -193,7 +193,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarCodeNo() : ?string
+    public function getBarcodeno() : ?string
     {
         return $this->getData(self::BAR_CODE_NO);
     }
@@ -202,7 +202,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemDescription
      * @return $this
      */
-    public function setItemDescription(?string $ItemDescription)
+    public function setItemdescription(?string $ItemDescription)
     {
         $this->setData(self::ITEM_DESCRIPTION, $ItemDescription);
         return $this;
@@ -211,7 +211,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemDescription() : ?string
+    public function getItemdescription() : ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
@@ -220,7 +220,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemDescription2
      * @return $this
      */
-    public function setItemDescription2(?string $ItemDescription2)
+    public function setItemdescription2(?string $ItemDescription2)
     {
         $this->setData(self::ITEM_DESCRIPTION2, $ItemDescription2);
         return $this;
@@ -229,7 +229,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemDescription2() : ?string
+    public function getItemdescription2() : ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION2);
     }
@@ -256,7 +256,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $UnitOfMeasure
      * @return $this
      */
-    public function setUnitOfMeasure(?string $UnitOfMeasure)
+    public function setUnitofmeasure(?string $UnitOfMeasure)
     {
         $this->setData(self::UNIT_OF_MEASURE, $UnitOfMeasure);
         return $this;
@@ -265,7 +265,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitOfMeasure() : ?string
+    public function getUnitofmeasure() : ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE);
     }
@@ -274,25 +274,25 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $UOMQty
      * @return $this
      */
-    public function setUOMQty(?float $UOMQty)
+    public function setUomqty(?float $UOMQty)
     {
-        $this->setData(self::U_O_M_QTY, $UOMQty);
+        $this->setData(self::UOMQTY, $UOMQty);
         return $this;
     }
 
     /**
      * @return ?float
      */
-    public function getUOMQty() : ?float
+    public function getUomqty() : ?float
     {
-        return $this->getData(self::U_O_M_QTY);
+        return $this->getData(self::UOMQTY);
     }
 
     /**
      * @param ?bool $ItemNoScanned
      * @return $this
      */
-    public function setItemNoScanned(?bool $ItemNoScanned)
+    public function setItemnoscanned(?bool $ItemNoScanned)
     {
         $this->setData(self::ITEM_NO_SCANNED, $ItemNoScanned);
         return $this;
@@ -301,7 +301,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getItemNoScanned() : ?bool
+    public function getItemnoscanned() : ?bool
     {
         return $this->getData(self::ITEM_NO_SCANNED);
     }
@@ -310,7 +310,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $KeyboardItemEntry
      * @return $this
      */
-    public function setKeyboardItemEntry(?bool $KeyboardItemEntry)
+    public function setKeyboarditementry(?bool $KeyboardItemEntry)
     {
         $this->setData(self::KEYBOARD_ITEM_ENTRY, $KeyboardItemEntry);
         return $this;
@@ -319,7 +319,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getKeyboardItemEntry() : ?bool
+    public function getKeyboarditementry() : ?bool
     {
         return $this->getData(self::KEYBOARD_ITEM_ENTRY);
     }
@@ -328,7 +328,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExtField1
      * @return $this
      */
-    public function setExtField1(?string $ExtField1)
+    public function setExtfield1(?string $ExtField1)
     {
         $this->setData(self::EXT_FIELD1, $ExtField1);
         return $this;
@@ -337,7 +337,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtField1() : ?string
+    public function getExtfield1() : ?string
     {
         return $this->getData(self::EXT_FIELD1);
     }
@@ -346,7 +346,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExtField2
      * @return $this
      */
-    public function setExtField2(?string $ExtField2)
+    public function setExtfield2(?string $ExtField2)
     {
         $this->setData(self::EXT_FIELD2, $ExtField2);
         return $this;
@@ -355,7 +355,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtField2() : ?string
+    public function getExtfield2() : ?string
     {
         return $this->getData(self::EXT_FIELD2);
     }
@@ -364,7 +364,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExtField3
      * @return $this
      */
-    public function setExtField3(?string $ExtField3)
+    public function setExtfield3(?string $ExtField3)
     {
         $this->setData(self::EXT_FIELD3, $ExtField3);
         return $this;
@@ -373,7 +373,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtField3() : ?string
+    public function getExtfield3() : ?string
     {
         return $this->getData(self::EXT_FIELD3);
     }
@@ -382,7 +382,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LotNo
      * @return $this
      */
-    public function setLotNo(?string $LotNo)
+    public function setLotno(?string $LotNo)
     {
         $this->setData(self::LOT_NO, $LotNo);
         return $this;
@@ -391,7 +391,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLotNo() : ?string
+    public function getLotno() : ?string
     {
         return $this->getData(self::LOT_NO);
     }
@@ -400,7 +400,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExpirationDate
      * @return $this
      */
-    public function setExpirationDate(?string $ExpirationDate)
+    public function setExpirationdate(?string $ExpirationDate)
     {
         $this->setData(self::EXPIRATION_DATE, $ExpirationDate);
         return $this;
@@ -409,7 +409,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirationDate() : ?string
+    public function getExpirationdate() : ?string
     {
         return $this->getData(self::EXPIRATION_DATE);
     }
@@ -418,7 +418,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SerialNo
      * @return $this
      */
-    public function setSerialNo(?string $SerialNo)
+    public function setSerialno(?string $SerialNo)
     {
         $this->setData(self::SERIAL_NO, $SerialNo);
         return $this;
@@ -427,7 +427,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSerialNo() : ?string
+    public function getSerialno() : ?string
     {
         return $this->getData(self::SERIAL_NO);
     }

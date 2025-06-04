@@ -102,7 +102,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ActionType
      * @return $this
      */
-    public function setActionType(?string $ActionType)
+    public function setActiontype(?string $ActionType)
     {
         $this->setData(self::ACTION_TYPE, $ActionType);
         return $this;
@@ -111,7 +111,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getActionType() : ?string
+    public function getActiontype() : ?string
     {
         return $this->getData(self::ACTION_TYPE);
     }
@@ -120,7 +120,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $LimitationType
      * @return $this
      */
-    public function setLimitationType(?string $LimitationType)
+    public function setLimitationtype(?string $LimitationType)
     {
         $this->setData(self::LIMITATION_TYPE, $LimitationType);
         return $this;
@@ -129,7 +129,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLimitationType() : ?string
+    public function getLimitationtype() : ?string
     {
         return $this->getData(self::LIMITATION_TYPE);
     }
@@ -138,7 +138,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $AttributeType
      * @return $this
      */
-    public function setAttributeType(?string $AttributeType)
+    public function setAttributetype(?string $AttributeType)
     {
         $this->setData(self::ATTRIBUTE_TYPE, $AttributeType);
         return $this;
@@ -147,7 +147,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAttributeType() : ?string
+    public function getAttributetype() : ?string
     {
         return $this->getData(self::ATTRIBUTE_TYPE);
     }

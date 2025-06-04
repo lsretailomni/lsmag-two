@@ -20,13 +20,13 @@ class MemberLogonResult extends \Magento\Catalog\Model\AbstractModel implements 
 
     public const TOTAL_REMAINING_POINTS = 'totalRemainingPoints';
 
-    public const MEMBER_LOGON_X_M_L = 'memberLogonXML';
+    public const MEMBER_LOGON_XML = 'memberLogonXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class MemberLogonResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class MemberLogonResult extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class MemberLogonResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class MemberLogonResult extends \Magento\Catalog\Model\AbstractModel implements 
      * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints(?float $totalRemainingPoints)
+    public function setTotalremainingpoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
@@ -71,7 +71,7 @@ class MemberLogonResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?float
      */
-    public function getTotalRemainingPoints() : ?float
+    public function getTotalremainingpoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
@@ -80,18 +80,18 @@ class MemberLogonResult extends \Magento\Catalog\Model\AbstractModel implements 
      * @param RootMemberLogon $memberLogonXML
      * @return $this
      */
-    public function setMemberLogonXML($memberLogonXML)
+    public function setMemberlogonxml($memberLogonXML)
     {
-        $this->setData(self::MEMBER_LOGON_X_M_L, $memberLogonXML);
+        $this->setData(self::MEMBER_LOGON_XML, $memberLogonXML);
         return $this;
     }
 
     /**
      * @return RootMemberLogon
      */
-    public function getMemberLogonXML()
+    public function getMemberlogonxml()
     {
-        return $this->getData(self::MEMBER_LOGON_X_M_L);
+        return $this->getData(self::MEMBER_LOGON_XML);
     }
 
     /**

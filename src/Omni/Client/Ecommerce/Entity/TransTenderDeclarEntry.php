@@ -20,7 +20,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const STATEMENT_CODE = 'StatementCode';
 
-    public const P_O_S_CURR_CODE = 'POSCurrCode';
+    public const POSCURR_CODE = 'POSCurrCode';
 
     public const CARD_NO = 'CardNo';
 
@@ -40,13 +40,15 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const SHIFT_DATE = 'ShiftDate';
 
-    public const STAFF_I_D = 'StaffID';
+    public const STAFF_ID = 'StaffID';
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const TRANSACTION_STATUS = 'TransactionStatus';
+
+    public const STATEMENT_NO_NOTUSED = 'StatementNoNOTUSED';
 
     public const BANK_AMOUNT_TENDERED = 'BankAmountTendered';
 
@@ -64,9 +66,9 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const REPLICATED = 'Replicated';
 
-    public const Z_REPORT_I_D = 'Z-ReportID';
+    public const Z_REPORT_ID = 'Z-ReportID';
 
-    public const Y_REPORT_I_D = 'Y-ReportID';
+    public const Y_REPORT_ID = 'Y-ReportID';
 
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
@@ -74,7 +76,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -83,7 +85,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -92,7 +94,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -101,7 +103,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -110,7 +112,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $SlipNo
      * @return $this
      */
-    public function setSlipNo(?string $SlipNo)
+    public function setSlipno(?string $SlipNo)
     {
         $this->setData(self::SLIP_NO, $SlipNo);
         return $this;
@@ -119,7 +121,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSlipNo() : ?string
+    public function getSlipno() : ?string
     {
         return $this->getData(self::SLIP_NO);
     }
@@ -128,7 +130,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StatementCode
      * @return $this
      */
-    public function setStatementCode(?string $StatementCode)
+    public function setStatementcode(?string $StatementCode)
     {
         $this->setData(self::STATEMENT_CODE, $StatementCode);
         return $this;
@@ -137,7 +139,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementCode() : ?string
+    public function getStatementcode() : ?string
     {
         return $this->getData(self::STATEMENT_CODE);
     }
@@ -146,25 +148,25 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSCurrCode
      * @return $this
      */
-    public function setPOSCurrCode(?string $POSCurrCode)
+    public function setPoscurrcode(?string $POSCurrCode)
     {
-        $this->setData(self::P_O_S_CURR_CODE, $POSCurrCode);
+        $this->setData(self::POSCURR_CODE, $POSCurrCode);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSCurrCode() : ?string
+    public function getPoscurrcode() : ?string
     {
-        return $this->getData(self::P_O_S_CURR_CODE);
+        return $this->getData(self::POSCURR_CODE);
     }
 
     /**
      * @param ?string $CardNo
      * @return $this
      */
-    public function setCardNo(?string $CardNo)
+    public function setCardno(?string $CardNo)
     {
         $this->setData(self::CARD_NO, $CardNo);
         return $this;
@@ -173,7 +175,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardNo() : ?string
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -182,7 +184,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TenderType
      * @return $this
      */
-    public function setTenderType(?string $TenderType)
+    public function setTendertype(?string $TenderType)
     {
         $this->setData(self::TENDER_TYPE, $TenderType);
         return $this;
@@ -191,7 +193,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTenderType() : ?string
+    public function getTendertype() : ?string
     {
         return $this->getData(self::TENDER_TYPE);
     }
@@ -200,7 +202,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $AmountTendered
      * @return $this
      */
-    public function setAmountTendered(?float $AmountTendered)
+    public function setAmounttendered(?float $AmountTendered)
     {
         $this->setData(self::AMOUNT_TENDERED, $AmountTendered);
         return $this;
@@ -209,7 +211,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmountTendered() : ?float
+    public function getAmounttendered() : ?float
     {
         return $this->getData(self::AMOUNT_TENDERED);
     }
@@ -218,7 +220,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode(?string $CurrencyCode)
+    public function setCurrencycode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
@@ -227,7 +229,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencyCode() : ?string
+    public function getCurrencycode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -236,7 +238,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $AmountinCurrency
      * @return $this
      */
-    public function setAmountinCurrency(?float $AmountinCurrency)
+    public function setAmountincurrency(?float $AmountinCurrency)
     {
         $this->setData(self::AMOUNTIN_CURRENCY, $AmountinCurrency);
         return $this;
@@ -245,7 +247,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmountinCurrency() : ?float
+    public function getAmountincurrency() : ?float
     {
         return $this->getData(self::AMOUNTIN_CURRENCY);
     }
@@ -269,19 +271,19 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param time $Time
+     * @param ?string $Time
      * @return $this
      */
-    public function setTime($Time)
+    public function setTime(?string $Time)
     {
         $this->setData(self::TIME, $Time);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTime()
+    public function getTime() : ?string
     {
         return $this->getData(self::TIME);
     }
@@ -290,7 +292,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShiftNo
      * @return $this
      */
-    public function setShiftNo(?string $ShiftNo)
+    public function setShiftno(?string $ShiftNo)
     {
         $this->setData(self::SHIFT_NO, $ShiftNo);
         return $this;
@@ -299,7 +301,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiftNo() : ?string
+    public function getShiftno() : ?string
     {
         return $this->getData(self::SHIFT_NO);
     }
@@ -308,7 +310,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ShiftDate
      * @return $this
      */
-    public function setShiftDate(?string $ShiftDate)
+    public function setShiftdate(?string $ShiftDate)
     {
         $this->setData(self::SHIFT_DATE, $ShiftDate);
         return $this;
@@ -317,7 +319,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiftDate() : ?string
+    public function getShiftdate() : ?string
     {
         return $this->getData(self::SHIFT_DATE);
     }
@@ -326,25 +328,25 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID(?string $StaffID)
+    public function setStaffid(?string $StaffID)
     {
-        $this->setData(self::STAFF_I_D, $StaffID);
+        $this->setData(self::STAFF_ID, $StaffID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getStaffID() : ?string
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -353,7 +355,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -362,25 +364,25 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo(?string $POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getPOSTerminalNo() : ?string
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param ?string $TransactionStatus
      * @return $this
      */
-    public function setTransactionStatus(?string $TransactionStatus)
+    public function setTransactionstatus(?string $TransactionStatus)
     {
         $this->setData(self::TRANSACTION_STATUS, $TransactionStatus);
         return $this;
@@ -389,16 +391,34 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionStatus() : ?string
+    public function getTransactionstatus() : ?string
     {
         return $this->getData(self::TRANSACTION_STATUS);
+    }
+
+    /**
+     * @param ?string $StatementNoNOTUSED
+     * @return $this
+     */
+    public function setStatementnonotused(?string $StatementNoNOTUSED)
+    {
+        $this->setData(self::STATEMENT_NO_NOTUSED, $StatementNoNOTUSED);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getStatementnonotused() : ?string
+    {
+        return $this->getData(self::STATEMENT_NO_NOTUSED);
     }
 
     /**
      * @param ?float $BankAmountTendered
      * @return $this
      */
-    public function setBankAmountTendered(?float $BankAmountTendered)
+    public function setBankamounttendered(?float $BankAmountTendered)
     {
         $this->setData(self::BANK_AMOUNT_TENDERED, $BankAmountTendered);
         return $this;
@@ -407,7 +427,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getBankAmountTendered() : ?float
+    public function getBankamounttendered() : ?float
     {
         return $this->getData(self::BANK_AMOUNT_TENDERED);
     }
@@ -416,7 +436,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $BankAmountinCurrency
      * @return $this
      */
-    public function setBankAmountinCurrency(?float $BankAmountinCurrency)
+    public function setBankamountincurrency(?float $BankAmountinCurrency)
     {
         $this->setData(self::BANK_AMOUNTIN_CURRENCY, $BankAmountinCurrency);
         return $this;
@@ -425,7 +445,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getBankAmountinCurrency() : ?float
+    public function getBankamountincurrency() : ?float
     {
         return $this->getData(self::BANK_AMOUNTIN_CURRENCY);
     }
@@ -434,7 +454,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $SafeAmountTendered
      * @return $this
      */
-    public function setSafeAmountTendered(?float $SafeAmountTendered)
+    public function setSafeamounttendered(?float $SafeAmountTendered)
     {
         $this->setData(self::SAFE_AMOUNT_TENDERED, $SafeAmountTendered);
         return $this;
@@ -443,7 +463,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getSafeAmountTendered() : ?float
+    public function getSafeamounttendered() : ?float
     {
         return $this->getData(self::SAFE_AMOUNT_TENDERED);
     }
@@ -452,7 +472,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $SafeAmountinCurrency
      * @return $this
      */
-    public function setSafeAmountinCurrency(?float $SafeAmountinCurrency)
+    public function setSafeamountincurrency(?float $SafeAmountinCurrency)
     {
         $this->setData(self::SAFE_AMOUNTIN_CURRENCY, $SafeAmountinCurrency);
         return $this;
@@ -461,7 +481,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getSafeAmountinCurrency() : ?float
+    public function getSafeamountincurrency() : ?float
     {
         return $this->getData(self::SAFE_AMOUNTIN_CURRENCY);
     }
@@ -470,7 +490,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $FixedFloatAmountTendered
      * @return $this
      */
-    public function setFixedFloatAmountTendered(?float $FixedFloatAmountTendered)
+    public function setFixedfloatamounttendered(?float $FixedFloatAmountTendered)
     {
         $this->setData(self::FIXED_FLOAT_AMOUNT_TENDERED, $FixedFloatAmountTendered);
         return $this;
@@ -479,7 +499,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getFixedFloatAmountTendered() : ?float
+    public function getFixedfloatamounttendered() : ?float
     {
         return $this->getData(self::FIXED_FLOAT_AMOUNT_TENDERED);
     }
@@ -488,7 +508,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $FixedFloatAmountinCurrency
      * @return $this
      */
-    public function setFixedFloatAmountinCurrency(?float $FixedFloatAmountinCurrency)
+    public function setFixedfloatamountincurrency(?float $FixedFloatAmountinCurrency)
     {
         $this->setData(self::FIXED_FLOAT_AMOUNTIN_CURRENCY, $FixedFloatAmountinCurrency);
         return $this;
@@ -497,7 +517,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getFixedFloatAmountinCurrency() : ?float
+    public function getFixedfloatamountincurrency() : ?float
     {
         return $this->getData(self::FIXED_FLOAT_AMOUNTIN_CURRENCY);
     }
@@ -542,43 +562,43 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ZReportID
      * @return $this
      */
-    public function setZReportID(?string $ZReportID)
+    public function setZReportid(?string $ZReportID)
     {
-        $this->setData(self::Z_REPORT_I_D, $ZReportID);
+        $this->setData(self::Z_REPORT_ID, $ZReportID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getZReportID() : ?string
+    public function getZReportid() : ?string
     {
-        return $this->getData(self::Z_REPORT_I_D);
+        return $this->getData(self::Z_REPORT_ID);
     }
 
     /**
      * @param ?string $YReportID
      * @return $this
      */
-    public function setYReportID(?string $YReportID)
+    public function setYReportid(?string $YReportID)
     {
-        $this->setData(self::Y_REPORT_I_D, $YReportID);
+        $this->setData(self::Y_REPORT_ID, $YReportID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getYReportID() : ?string
+    public function getYReportid() : ?string
     {
-        return $this->getData(self::Y_REPORT_I_D);
+        return $this->getData(self::Y_REPORT_ID);
     }
 
     /**
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -587,7 +607,7 @@ class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }

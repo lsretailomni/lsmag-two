@@ -34,7 +34,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $DocumentNo
      * @return $this
      */
-    public function setDocumentNo(?string $DocumentNo)
+    public function setDocumentno(?string $DocumentNo)
     {
         $this->setData(self::DOCUMENT_NO, $DocumentNo);
         return $this;
@@ -43,7 +43,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentNo() : ?string
+    public function getDocumentno() : ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -52,7 +52,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -61,7 +61,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -88,7 +88,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo(?string $ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
@@ -97,7 +97,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -106,7 +106,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -115,7 +115,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -142,7 +142,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $UnitOfMeasureCode
      * @return $this
      */
-    public function setUnitOfMeasureCode(?string $UnitOfMeasureCode)
+    public function setUnitofmeasurecode(?string $UnitOfMeasureCode)
     {
         $this->setData(self::UNIT_OF_MEASURE_CODE, $UnitOfMeasureCode);
         return $this;
@@ -151,7 +151,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitOfMeasureCode() : ?string
+    public function getUnitofmeasurecode() : ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
@@ -160,7 +160,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExpiryDate
      * @return $this
      */
-    public function setExpiryDate(?string $ExpiryDate)
+    public function setExpirydate(?string $ExpiryDate)
     {
         $this->setData(self::EXPIRY_DATE, $ExpiryDate);
         return $this;
@@ -169,7 +169,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpiryDate() : ?string
+    public function getExpirydate() : ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
@@ -178,7 +178,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $BatchOrLotNumber
      * @return $this
      */
-    public function setBatchOrLotNumber(?string $BatchOrLotNumber)
+    public function setBatchorlotnumber(?string $BatchOrLotNumber)
     {
         $this->setData(self::BATCH_OR_LOT_NUMBER, $BatchOrLotNumber);
         return $this;
@@ -187,7 +187,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBatchOrLotNumber() : ?string
+    public function getBatchorlotnumber() : ?string
     {
         return $this->getData(self::BATCH_OR_LOT_NUMBER);
     }

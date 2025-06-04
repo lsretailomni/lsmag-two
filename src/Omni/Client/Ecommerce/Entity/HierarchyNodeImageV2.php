@@ -22,7 +22,7 @@ class HierarchyNodeImageV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $KeyValue
      * @return $this
      */
-    public function setKeyValue(?string $KeyValue)
+    public function setKeyvalue(?string $KeyValue)
     {
         $this->setData(self::KEY_VALUE, $KeyValue);
         return $this;
@@ -31,7 +31,7 @@ class HierarchyNodeImageV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getKeyValue() : ?string
+    public function getKeyvalue() : ?string
     {
         return $this->getData(self::KEY_VALUE);
     }
@@ -40,7 +40,7 @@ class HierarchyNodeImageV2 extends \Magento\Catalog\Model\AbstractModel
      * @param int $DisplayOrder
      * @return $this
      */
-    public function setDisplayOrder($DisplayOrder)
+    public function setDisplayorder($DisplayOrder)
     {
         $this->setData(self::DISPLAY_ORDER, $DisplayOrder);
         return $this;
@@ -49,7 +49,7 @@ class HierarchyNodeImageV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDisplayOrder()
+    public function getDisplayorder()
     {
         return $this->getData(self::DISPLAY_ORDER);
     }
@@ -58,7 +58,7 @@ class HierarchyNodeImageV2 extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ImageId
      * @return $this
      */
-    public function setImageId(?string $ImageId)
+    public function setImageid(?string $ImageId)
     {
         $this->setData(self::IMAGE_ID, $ImageId);
         return $this;
@@ -67,7 +67,7 @@ class HierarchyNodeImageV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getImageId() : ?string
+    public function getImageid() : ?string
     {
         return $this->getData(self::IMAGE_ID);
     }

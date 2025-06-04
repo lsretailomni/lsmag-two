@@ -26,7 +26,7 @@ class DeleteMemberCardToken extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class DeleteMemberCardToken extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class DeleteMemberCardToken extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class DeleteMemberCardToken extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,7 +62,7 @@ class DeleteMemberCardToken extends \Magento\Catalog\Model\AbstractModel impleme
      * @param ?string $memberCardNo
      * @return $this
      */
-    public function setMemberCardNo(?string $memberCardNo)
+    public function setMembercardno(?string $memberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $memberCardNo);
         return $this;
@@ -71,7 +71,7 @@ class DeleteMemberCardToken extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getMemberCardNo() : ?string
+    public function getMembercardno() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }

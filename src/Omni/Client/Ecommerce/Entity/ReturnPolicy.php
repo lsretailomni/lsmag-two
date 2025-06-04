@@ -20,23 +20,23 @@ class ReturnPolicy extends \Magento\Catalog\Model\AbstractModel
 
     public const ITEM_NO = 'Item_No.';
 
-    public const VARIANT_DIMENSION1_CODE = 'Variant_Dimension_1_Code';
+    public const VARIANT_DIMENSION_1_CODE = 'Variant_Dimension_1_Code';
 
     public const VARIANT_CODE = 'Variant_Code';
 
     public const STORE_GROUP_CODE = 'Store_Group_Code';
 
-    public const REFUNDNOT_ALLOWED = 'Refund_not_Allowed';
+    public const REFUND_NOT_ALLOWED = 'Refund_not_Allowed';
 
     public const MANAGER_PRIVILEGES = 'Manager_Privileges';
 
     public const REFUND_PERIOD_LENGTH = 'Refund_Period_Length';
 
-    public const MESSAGE1 = 'Message_1';
+    public const MESSAGE_1 = 'Message_1';
 
-    public const MESSAGE2 = 'Message_2';
+    public const MESSAGE_2 = 'Message_2';
 
-    public const RETURN_POLICY_H_T_M_L = 'Return_Policy_HTML';
+    public const RETURN_POLICY_HTML = 'Return_Policy_HTML';
 
     /**
      * @param ?string $StoreNo
@@ -116,7 +116,7 @@ class ReturnPolicy extends \Magento\Catalog\Model\AbstractModel
      */
     public function setVariantDimension1Code(?string $VariantDimension1Code)
     {
-        $this->setData(self::VARIANT_DIMENSION1_CODE, $VariantDimension1Code);
+        $this->setData(self::VARIANT_DIMENSION_1_CODE, $VariantDimension1Code);
         return $this;
     }
 
@@ -125,7 +125,7 @@ class ReturnPolicy extends \Magento\Catalog\Model\AbstractModel
      */
     public function getVariantDimension1Code() : ?string
     {
-        return $this->getData(self::VARIANT_DIMENSION1_CODE);
+        return $this->getData(self::VARIANT_DIMENSION_1_CODE);
     }
 
     /**
@@ -170,7 +170,7 @@ class ReturnPolicy extends \Magento\Catalog\Model\AbstractModel
      */
     public function setRefundNotAllowed(?bool $RefundnotAllowed)
     {
-        $this->setData(self::REFUNDNOT_ALLOWED, $RefundnotAllowed);
+        $this->setData(self::REFUND_NOT_ALLOWED, $RefundnotAllowed);
         return $this;
     }
 
@@ -179,7 +179,7 @@ class ReturnPolicy extends \Magento\Catalog\Model\AbstractModel
      */
     public function getRefundNotAllowed() : ?bool
     {
-        return $this->getData(self::REFUNDNOT_ALLOWED);
+        return $this->getData(self::REFUND_NOT_ALLOWED);
     }
 
     /**
@@ -224,7 +224,7 @@ class ReturnPolicy extends \Magento\Catalog\Model\AbstractModel
      */
     public function setMessage1(?string $Message1)
     {
-        $this->setData(self::MESSAGE1, $Message1);
+        $this->setData(self::MESSAGE_1, $Message1);
         return $this;
     }
 
@@ -233,7 +233,7 @@ class ReturnPolicy extends \Magento\Catalog\Model\AbstractModel
      */
     public function getMessage1() : ?string
     {
-        return $this->getData(self::MESSAGE1);
+        return $this->getData(self::MESSAGE_1);
     }
 
     /**
@@ -242,7 +242,7 @@ class ReturnPolicy extends \Magento\Catalog\Model\AbstractModel
      */
     public function setMessage2(?string $Message2)
     {
-        $this->setData(self::MESSAGE2, $Message2);
+        $this->setData(self::MESSAGE_2, $Message2);
         return $this;
     }
 
@@ -251,25 +251,25 @@ class ReturnPolicy extends \Magento\Catalog\Model\AbstractModel
      */
     public function getMessage2() : ?string
     {
-        return $this->getData(self::MESSAGE2);
+        return $this->getData(self::MESSAGE_2);
     }
 
     /**
      * @param ?string $ReturnPolicyHTML
      * @return $this
      */
-    public function setReturnPolicyHTML(?string $ReturnPolicyHTML)
+    public function setReturnPolicyHtml(?string $ReturnPolicyHTML)
     {
-        $this->setData(self::RETURN_POLICY_H_T_M_L, $ReturnPolicyHTML);
+        $this->setData(self::RETURN_POLICY_HTML, $ReturnPolicyHTML);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getReturnPolicyHTML() : ?string
+    public function getReturnPolicyHtml() : ?string
     {
-        return $this->getData(self::RETURN_POLICY_H_T_M_L);
+        return $this->getData(self::RETURN_POLICY_HTML);
     }
 }
 

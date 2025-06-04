@@ -18,15 +18,15 @@ class LSCSalesShipmentGet extends \Magento\Catalog\Model\AbstractModel implement
 
     public const ERROR_TEXT = 'errorText';
 
-    public const DOCUMENT_I_D = 'documentID';
+    public const DOCUMENT_ID = 'documentID';
 
-    public const SALES_SHIPMENT_LIST_X_M_L = 'salesShipmentListXML';
+    public const SALES_SHIPMENT_LIST_XML = 'salesShipmentListXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -35,7 +35,7 @@ class LSCSalesShipmentGet extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -44,7 +44,7 @@ class LSCSalesShipmentGet extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -53,7 +53,7 @@ class LSCSalesShipmentGet extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -62,36 +62,36 @@ class LSCSalesShipmentGet extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $documentID
      * @return $this
      */
-    public function setDocumentID(?string $documentID)
+    public function setDocumentid(?string $documentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $documentID);
+        $this->setData(self::DOCUMENT_ID, $documentID);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getDocumentID() : ?string
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
      * @param Root $salesShipmentListXML
      * @return $this
      */
-    public function setSalesShipmentListXML($salesShipmentListXML)
+    public function setSalesshipmentlistxml($salesShipmentListXML)
     {
-        $this->setData(self::SALES_SHIPMENT_LIST_X_M_L, $salesShipmentListXML);
+        $this->setData(self::SALES_SHIPMENT_LIST_XML, $salesShipmentListXML);
         return $this;
     }
 
     /**
      * @return Root
      */
-    public function getSalesShipmentListXML()
+    public function getSalesshipmentlistxml()
     {
-        return $this->getData(self::SALES_SHIPMENT_LIST_X_M_L);
+        return $this->getData(self::SALES_SHIPMENT_LIST_XML);
     }
 }
 

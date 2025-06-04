@@ -24,7 +24,7 @@ class GetStoreImageResult extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $respondCode
      * @return $this
      */
-    public function setRespondCode(?string $respondCode)
+    public function setRespondcode(?string $respondCode)
     {
         $this->setData(self::RESPOND_CODE, $respondCode);
         return $this;
@@ -33,7 +33,7 @@ class GetStoreImageResult extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getRespondCode() : ?string
+    public function getRespondcode() : ?string
     {
         return $this->getData(self::RESPOND_CODE);
     }
@@ -42,7 +42,7 @@ class GetStoreImageResult extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -51,7 +51,7 @@ class GetStoreImageResult extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,7 +60,7 @@ class GetStoreImageResult extends \Magento\Catalog\Model\AbstractModel implement
      * @param ?string $storeImage
      * @return $this
      */
-    public function setStoreImage(?string $storeImage)
+    public function setStoreimage(?string $storeImage)
     {
         $this->setData(self::STORE_IMAGE, $storeImage);
         return $this;
@@ -69,7 +69,7 @@ class GetStoreImageResult extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getStoreImage() : ?string
+    public function getStoreimage() : ?string
     {
         return $this->getData(self::STORE_IMAGE);
     }

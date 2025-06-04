@@ -22,13 +22,13 @@ class GetCrossSelling extends \Magento\Catalog\Model\AbstractModel implements Re
 
     public const ITEM_NO = 'itemNo';
 
-    public const GET_CROSS_SELLING_X_M_L = 'getCrossSellingXML';
+    public const GET_CROSS_SELLING_XML = 'getCrossSellingXML';
 
     /**
      * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode(?string $responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
@@ -37,7 +37,7 @@ class GetCrossSelling extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getResponseCode() : ?string
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -46,7 +46,7 @@ class GetCrossSelling extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText(?string $errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
@@ -55,7 +55,7 @@ class GetCrossSelling extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getErrorText() : ?string
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -64,7 +64,7 @@ class GetCrossSelling extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo(?string $storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
@@ -73,7 +73,7 @@ class GetCrossSelling extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -82,7 +82,7 @@ class GetCrossSelling extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo(?string $itemNo)
+    public function setItemno(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
@@ -91,7 +91,7 @@ class GetCrossSelling extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -100,18 +100,18 @@ class GetCrossSelling extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param RootGetCrossSelling $getCrossSellingXML
      * @return $this
      */
-    public function setGetCrossSellingXML($getCrossSellingXML)
+    public function setGetcrosssellingxml($getCrossSellingXML)
     {
-        $this->setData(self::GET_CROSS_SELLING_X_M_L, $getCrossSellingXML);
+        $this->setData(self::GET_CROSS_SELLING_XML, $getCrossSellingXML);
         return $this;
     }
 
     /**
      * @return RootGetCrossSelling
      */
-    public function getGetCrossSellingXML()
+    public function getGetcrosssellingxml()
     {
-        return $this->getData(self::GET_CROSS_SELLING_X_M_L);
+        return $this->getData(self::GET_CROSS_SELLING_XML);
     }
 }
 

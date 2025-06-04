@@ -12,9 +12,9 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'FBPWSBuffer';
 
-    public const F_B_P_HEADER_NO = 'FBPHeaderNo';
+    public const FBPHEADER_NO = 'FBPHeaderNo';
 
-    public const F_B_P_DESCRIPTION = 'FBPDescription';
+    public const FBPDESCRIPTION = 'FBPDescription';
 
     public const QUANTITY = 'Quantity';
 
@@ -32,36 +32,36 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $FBPHeaderNo
      * @return $this
      */
-    public function setFBPHeaderNo(?string $FBPHeaderNo)
+    public function setFbpheaderno(?string $FBPHeaderNo)
     {
-        $this->setData(self::F_B_P_HEADER_NO, $FBPHeaderNo);
+        $this->setData(self::FBPHEADER_NO, $FBPHeaderNo);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getFBPHeaderNo() : ?string
+    public function getFbpheaderno() : ?string
     {
-        return $this->getData(self::F_B_P_HEADER_NO);
+        return $this->getData(self::FBPHEADER_NO);
     }
 
     /**
      * @param ?string $FBPDescription
      * @return $this
      */
-    public function setFBPDescription(?string $FBPDescription)
+    public function setFbpdescription(?string $FBPDescription)
     {
-        $this->setData(self::F_B_P_DESCRIPTION, $FBPDescription);
+        $this->setData(self::FBPDESCRIPTION, $FBPDescription);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getFBPDescription() : ?string
+    public function getFbpdescription() : ?string
     {
-        return $this->getData(self::F_B_P_DESCRIPTION);
+        return $this->getData(self::FBPDESCRIPTION);
     }
 
     /**
@@ -86,7 +86,7 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param int $QuanitytoTrigger
      * @return $this
      */
-    public function setQuanitytoTrigger($QuanitytoTrigger)
+    public function setQuanitytotrigger($QuanitytoTrigger)
     {
         $this->setData(self::QUANITYTO_TRIGGER, $QuanitytoTrigger);
         return $this;
@@ -95,7 +95,7 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getQuanitytoTrigger()
+    public function getQuanitytotrigger()
     {
         return $this->getData(self::QUANITYTO_TRIGGER);
     }
@@ -104,7 +104,7 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param int $NumberofUnusedCoupons
      * @return $this
      */
-    public function setNumberofUnusedCoupons($NumberofUnusedCoupons)
+    public function setNumberofunusedcoupons($NumberofUnusedCoupons)
     {
         $this->setData(self::NUMBEROF_UNUSED_COUPONS, $NumberofUnusedCoupons);
         return $this;
@@ -113,7 +113,7 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getNumberofUnusedCoupons()
+    public function getNumberofunusedcoupons()
     {
         return $this->getData(self::NUMBEROF_UNUSED_COUPONS);
     }
@@ -122,7 +122,7 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param int $NumberofNewCoupons
      * @return $this
      */
-    public function setNumberofNewCoupons($NumberofNewCoupons)
+    public function setNumberofnewcoupons($NumberofNewCoupons)
     {
         $this->setData(self::NUMBEROF_NEW_COUPONS, $NumberofNewCoupons);
         return $this;
@@ -131,7 +131,7 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getNumberofNewCoupons()
+    public function getNumberofnewcoupons()
     {
         return $this->getData(self::NUMBEROF_NEW_COUPONS);
     }
@@ -140,7 +140,7 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param int $NumberofBenefitCoupons
      * @return $this
      */
-    public function setNumberofBenefitCoupons($NumberofBenefitCoupons)
+    public function setNumberofbenefitcoupons($NumberofBenefitCoupons)
     {
         $this->setData(self::NUMBEROF_BENEFIT_COUPONS, $NumberofBenefitCoupons);
         return $this;
@@ -149,7 +149,7 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getNumberofBenefitCoupons()
+    public function getNumberofbenefitcoupons()
     {
         return $this->getData(self::NUMBEROF_BENEFIT_COUPONS);
     }
@@ -158,7 +158,7 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $CouponCode
      * @return $this
      */
-    public function setCouponCode(?string $CouponCode)
+    public function setCouponcode(?string $CouponCode)
     {
         $this->setData(self::COUPON_CODE, $CouponCode);
         return $this;
@@ -167,7 +167,7 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCouponCode() : ?string
+    public function getCouponcode() : ?string
     {
         return $this->getData(self::COUPON_CODE);
     }

@@ -24,7 +24,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
 
     public const ITEM_DESCRIPTION = 'ItemDescription';
 
-    public const ITEM_DESCRIPTION2 = 'ItemDescription_2';
+    public const ITEM_DESCRIPTION_2 = 'ItemDescription_2';
 
     public const QUANTITY = 'Quantity';
 
@@ -32,7 +32,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
 
     public const UNITOF_MEASURE = 'UnitofMeasure';
 
-    public const U_O_M_QTY = 'UOMQty.';
+    public const UOMQTY = 'UOMQty.';
 
     public const QUANTITY_BASE = 'QuantityBase';
 
@@ -56,7 +56,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $TransactionNo
      * @return $this
      */
-    public function setTransactionNo(?string $TransactionNo)
+    public function setTransactionno(?string $TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -65,7 +65,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionNo() : ?string
+    public function getTransactionno() : ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -74,7 +74,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -83,7 +83,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -92,7 +92,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
@@ -101,7 +101,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -110,7 +110,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo(?string $ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
@@ -119,7 +119,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemNo() : ?string
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -128,7 +128,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
@@ -137,7 +137,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantCode() : ?string
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -146,7 +146,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemDescription
      * @return $this
      */
-    public function setItemDescription(?string $ItemDescription)
+    public function setItemdescription(?string $ItemDescription)
     {
         $this->setData(self::ITEM_DESCRIPTION, $ItemDescription);
         return $this;
@@ -155,7 +155,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemDescription() : ?string
+    public function getItemdescription() : ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
@@ -164,18 +164,18 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ItemDescription2
      * @return $this
      */
-    public function setItemDescription2(?string $ItemDescription2)
+    public function setItemdescription2(?string $ItemDescription2)
     {
-        $this->setData(self::ITEM_DESCRIPTION2, $ItemDescription2);
+        $this->setData(self::ITEM_DESCRIPTION_2, $ItemDescription2);
         return $this;
     }
 
     /**
      * @return ?string
      */
-    public function getItemDescription2() : ?string
+    public function getItemdescription2() : ?string
     {
-        return $this->getData(self::ITEM_DESCRIPTION2);
+        return $this->getData(self::ITEM_DESCRIPTION_2);
     }
 
     /**
@@ -200,7 +200,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $OutstandingQty
      * @return $this
      */
-    public function setOutstandingQty(?float $OutstandingQty)
+    public function setOutstandingqty(?float $OutstandingQty)
     {
         $this->setData(self::OUTSTANDING_QTY, $OutstandingQty);
         return $this;
@@ -209,7 +209,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getOutstandingQty() : ?float
+    public function getOutstandingqty() : ?float
     {
         return $this->getData(self::OUTSTANDING_QTY);
     }
@@ -218,7 +218,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $UnitofMeasure
      * @return $this
      */
-    public function setUnitofMeasure(?string $UnitofMeasure)
+    public function setUnitofmeasure(?string $UnitofMeasure)
     {
         $this->setData(self::UNITOF_MEASURE, $UnitofMeasure);
         return $this;
@@ -227,7 +227,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitofMeasure() : ?string
+    public function getUnitofmeasure() : ?string
     {
         return $this->getData(self::UNITOF_MEASURE);
     }
@@ -236,25 +236,25 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $UOMQty
      * @return $this
      */
-    public function setUOMQty(?float $UOMQty)
+    public function setUomqty(?float $UOMQty)
     {
-        $this->setData(self::U_O_M_QTY, $UOMQty);
+        $this->setData(self::UOMQTY, $UOMQty);
         return $this;
     }
 
     /**
      * @return ?float
      */
-    public function getUOMQty() : ?float
+    public function getUomqty() : ?float
     {
-        return $this->getData(self::U_O_M_QTY);
+        return $this->getData(self::UOMQTY);
     }
 
     /**
      * @param ?float $QuantityBase
      * @return $this
      */
-    public function setQuantityBase(?float $QuantityBase)
+    public function setQuantitybase(?float $QuantityBase)
     {
         $this->setData(self::QUANTITY_BASE, $QuantityBase);
         return $this;
@@ -263,7 +263,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantityBase() : ?float
+    public function getQuantitybase() : ?float
     {
         return $this->getData(self::QUANTITY_BASE);
     }
@@ -272,7 +272,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?float $OutStandingQtyBase
      * @return $this
      */
-    public function setOutStandingQtyBase(?float $OutStandingQtyBase)
+    public function setOutstandingqtyBase(?float $OutStandingQtyBase)
     {
         $this->setData(self::OUT_STANDING_QTY_BASE, $OutStandingQtyBase);
         return $this;
@@ -281,7 +281,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getOutStandingQtyBase() : ?float
+    public function getOutstandingqtyBase() : ?float
     {
         return $this->getData(self::OUT_STANDING_QTY_BASE);
     }
@@ -290,7 +290,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VendorNo
      * @return $this
      */
-    public function setVendorNo(?string $VendorNo)
+    public function setVendorno(?string $VendorNo)
     {
         $this->setData(self::VENDOR_NO, $VendorNo);
         return $this;
@@ -299,7 +299,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVendorNo() : ?string
+    public function getVendorno() : ?string
     {
         return $this->getData(self::VENDOR_NO);
     }
@@ -308,7 +308,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VendorItemNo
      * @return $this
      */
-    public function setVendorItemNo(?string $VendorItemNo)
+    public function setVendoritemno(?string $VendorItemNo)
     {
         $this->setData(self::VENDOR_ITEM_NO, $VendorItemNo);
         return $this;
@@ -317,7 +317,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVendorItemNo() : ?string
+    public function getVendoritemno() : ?string
     {
         return $this->getData(self::VENDOR_ITEM_NO);
     }
@@ -326,7 +326,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $VendorItemCode
      * @return $this
      */
-    public function setVendorItemCode(?string $VendorItemCode)
+    public function setVendoritemcode(?string $VendorItemCode)
     {
         $this->setData(self::VENDOR_ITEM_CODE, $VendorItemCode);
         return $this;
@@ -335,7 +335,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVendorItemCode() : ?string
+    public function getVendoritemcode() : ?string
     {
         return $this->getData(self::VENDOR_ITEM_CODE);
     }
@@ -344,7 +344,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?bool $ReceiveConfirmScan
      * @return $this
      */
-    public function setReceiveConfirmScan(?bool $ReceiveConfirmScan)
+    public function setReceiveConfirmscan(?bool $ReceiveConfirmScan)
     {
         $this->setData(self::RECEIVE_CONFIRM_SCAN, $ReceiveConfirmScan);
         return $this;
@@ -353,7 +353,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getReceiveConfirmScan() : ?bool
+    public function getReceiveConfirmscan() : ?bool
     {
         return $this->getData(self::RECEIVE_CONFIRM_SCAN);
     }
@@ -362,7 +362,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExtField1
      * @return $this
      */
-    public function setExtField1(?string $ExtField1)
+    public function setExtfield1(?string $ExtField1)
     {
         $this->setData(self::EXT_FIELD1, $ExtField1);
         return $this;
@@ -371,7 +371,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtField1() : ?string
+    public function getExtfield1() : ?string
     {
         return $this->getData(self::EXT_FIELD1);
     }
@@ -380,7 +380,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExtField2
      * @return $this
      */
-    public function setExtField2(?string $ExtField2)
+    public function setExtfield2(?string $ExtField2)
     {
         $this->setData(self::EXT_FIELD2, $ExtField2);
         return $this;
@@ -389,7 +389,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtField2() : ?string
+    public function getExtfield2() : ?string
     {
         return $this->getData(self::EXT_FIELD2);
     }
@@ -398,7 +398,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
      * @param ?string $ExtField3
      * @return $this
      */
-    public function setExtField3(?string $ExtField3)
+    public function setExtfield3(?string $ExtField3)
     {
         $this->setData(self::EXT_FIELD3, $ExtField3);
         return $this;
@@ -407,7 +407,7 @@ class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtField3() : ?string
+    public function getExtfield3() : ?string
     {
         return $this->getData(self::EXT_FIELD3);
     }
