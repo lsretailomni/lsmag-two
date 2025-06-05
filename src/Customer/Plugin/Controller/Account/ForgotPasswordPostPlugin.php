@@ -102,14 +102,18 @@ class ForgotPasswordPostPlugin
                 try {
                     $search = $this->contactHelper->searchWithUsernameOrEmail($email);
 
-                    if ($search) {
+                    if ($search && $search->getLscMemberLoginCard()) {
                         $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
                         /** @var Customer $customer */
                         $customer = $this->customerFactory->create()
                             ->setWebsiteId($websiteId)
-                            ->loadByEmail($search->getEmail());
-                        $subject->getRequest()->setPostValue('email', $search->getEmail());
-                        $userName = ($customer->getData('lsr_username')) ?: $search->getUserName();
+                            ->loadByEmail($search->getLscMemberContact()->getEmail());
+                        $subject->getRequest()->setPostValue(
+                            'email',
+                            $search->getLscMemberContact()->getEmail()
+                        );
+                        $userName = ($customer->getData('lsr_username')) ?:
+                            $search->getLscMemberLoginCard()->getLoginId();
                         $result   = $this->contactHelper->forgotPassword($userName);
 
                         if ($result) {

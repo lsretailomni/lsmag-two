@@ -13,6 +13,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\MemberContactCreateResult as MemberContactC
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContactUpdateResult;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordChange;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordChangeResult as MemberPasswordChangeResponse;
+use Ls\Omni\Client\Ecommerce\Entity\MemberPasswordReset;
 use \Ls\Omni\Client\Ecommerce\Entity\RootMemberContactCreate;
 use \Ls\Omni\Client\Ecommerce\Entity\RootMemberLogon;
 use \Ls\Omni\Client\Ecommerce\Operation;
@@ -51,53 +52,21 @@ class ContactHelper extends AbstractHelperOmni
     /**
      * Search in central with username or email
      *
-     * @param array $param
-     * @return Entity\ArrayOfMemberContact|MemberContact[]|null
-     * @throws InvalidEnumException
-     * @throws LocalizedException
+     * @param string $param
+     * @return false|Entity\GetMemberContactInfo_GetMemberContactInfo|mixed|void|null
      */
-    public function searchWithUsernameOrEmail($param)
+    public function searchWithUsernameOrEmail(string $param)
     {
-        /** @var Operation\ContactGetById $request */
         // @codingStandardsIgnoreStart
         if (!$this->isValid($param)) {
             // LS Central only accept [a-zA-Z0-9-_@.] pattern of UserName
             if (!preg_match("/^[a-zA-Z0-9-_@.]*$/", $param)) {
                 return null;
             }
-            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-                $request = new Operation\ContactGet();
-                $search  = new Entity\ContactGet();
-            } else {
-                $request = new Operation\ContactSearch();
-                $search  = new Entity\ContactSearch();
-                $search->setMaxNumberOfRowsReturned(1);
-            }
-            // @codingStandardsIgnoreEnd
-            $search->setSearch($param);
-            // enabling this causes the segfault if ContactSearchType is in the classMap of the SoapClient
-            $search->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
-            try {
-                $response = $request->execute($search);
-                if ($response) {
-                    $contact_pos = $response->getContactGetResult();
-                }
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
-            }
-            if ($contact_pos instanceof Entity\ArrayOfMemberContact && !empty($contact_pos->getMemberContact())) {
-                if (is_array($contact_pos->getMemberContact())) {
-                    return $contact_pos->getMemberContact()[0];
-                } else {
-                    return $contact_pos->getMemberContact();
-                }
-            } elseif ($contact_pos instanceof MemberContact) {
-                return $contact_pos;
-            } else {
-                return null;
-            }
+
+            return $this->getCentralCustomerByUsername($param);
         } else {
-            return $this->search($param);
+            return $this->getCentralCustomerByEmail($param);
         }
     }
 
@@ -236,7 +205,7 @@ class ContactHelper extends AbstractHelperOmni
             LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_USERNAME_API_CALL,
             $this->lsr->getCurrentStoreId()
         )) {
-            $response = $this->getCentralCustomerBasedOnSearchType($username, 5);
+            $response = $this->getCentralCustomerByUsername($username);
 
             return $response &&
                 $response->getLscMemberLoginCard() &&
@@ -271,6 +240,17 @@ class ContactHelper extends AbstractHelperOmni
     public function getCentralCustomerByEmail(string $email)
     {
         return $this->getCentralCustomerBasedOnSearchType($email, 3);
+    }
+
+    /**
+     * Get customer from central based on username
+     *
+     * @param string $username
+     * @return false|Entity\GetMemberContactInfo_GetMemberContactInfo|mixed|null
+     */
+    public function getCentralCustomerByUsername(string $username)
+    {
+        return $this->getCentralCustomerBasedOnSearchType($username, 5);
     }
 
     /**
@@ -1180,54 +1160,54 @@ class ContactHelper extends AbstractHelperOmni
     /**
      * Forgot password
      *
-     * @param object $customer
-     * @return Entity\PasswordResetResponse|ResponseInterface|string|null
+     * @param string $userName
+     * @return string|null
      */
     public function forgotPassword($userName)
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request        = new Operation\PasswordReset();
-        $forgotPassword = new Entity\PasswordReset();
+        $operation = new Operation\MemberPasswordReset();
+        $operation->setOperationInput([
+            MemberPasswordReset::LOGIN_ID => $userName
+        ]);
         // @codingStandardsIgnoreEnd
 
-        $forgotPassword->setUserName($userName);
-        $forgotPassword->setEmail('');
-
         try {
-            $response = $request->execute($forgotPassword);
+            $response = $operation->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getPasswordResetResult() : $response;
+        return $response ? $response->getToken() : $response;
     }
 
     /**
      * Reset password
      *
-     * @param object $customer
-     * @param object $customer_post
-     * @return bool|Entity\PasswordChangeResponse|ResponseInterface|null
+     * @param Customer $customer
+     * @param array $customerPost
+     * @return MemberPasswordChangeResponse|NavException|NavObjectReferenceNotAnInstanceException|string
      */
-    public function resetPassword($customer, $customer_post)
+    public function resetPassword($customer, $customerPost)
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request       = new Operation\PasswordChange();
-        $resetpassword = new Entity\PasswordChange();
+        $memberPasswordChangeOperation        = new Operation\MemberPasswordChange();
+        $memberPasswordChangeOperation->setOperationInput([
+            MemberPasswordChange::LOGIN_ID => $customer->getLsrUsername(),
+            MemberPasswordChange::OLD_PASSWORD => '',
+            MemberPasswordChange::NEW_PASSWORD => $customerPost['password'],
+            MemberPasswordChange::TOKEN => $customer->getData('lsr_resetcode')
+        ]);
         // @codingStandardsIgnoreEnd
-        $resetpassword->setUserName($customer->getData('lsr_username'))
-            ->setToken($customer->getData('lsr_resetcode'))
-            ->setNewPassword($customer_post['password'])
-            ->setOldPassword('');
 
         try {
-            $response = $request->execute($resetpassword);
+            $response = $memberPasswordChangeOperation->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
-        return $response ? $response->getPasswordChangeResult() : $response;
+        return $response;
     }
 
     /**
