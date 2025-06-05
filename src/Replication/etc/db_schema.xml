@@ -2230,7 +2230,6 @@
     <column xsi:type="decimal" name="fraud_sort_field" scale="4" precision="20" nullable="true" comment="fraud_sort_field"/>
     <column xsi:type="text" name="home_phone_no" nullable="true" comment="home_phone_no"/>
     <column xsi:type="decimal" name="hourly_rate" scale="4" precision="20" nullable="true" comment="hourly_rate"/>
-    <column xsi:type="text" name="id" nullable="true" comment="id"/>
     <column xsi:type="boolean" name="inventory_active" default="0" nullable="true" comment="inventory_active"/>
     <column xsi:type="text" name="inventory_main_menu" nullable="true" comment="inventory_main_menu"/>
     <column xsi:type="text" name="language" nullable="true" comment="language"/>
@@ -2246,6 +2245,7 @@
     <column xsi:type="decimal" name="max_total_discount" scale="4" precision="20" nullable="true" comment="max_total_discount"/>
     <column xsi:type="int" name="max_warning_count" padding="11" nullable="true" comment="max_warning_count"/>
     <column xsi:type="text" name="name_on_receipt" nullable="true" comment="name_on_receipt"/>
+    <column xsi:type="text" name="nav_id" nullable="true" comment="nav_id"/>
     <column xsi:type="text" name="no_series" nullable="true" comment="no_series"/>
     <column xsi:type="int" name="open_din_tbl_locked_by_staff" padding="11" nullable="true" comment="open_din_tbl_locked_by_staff"/>
     <column xsi:type="int" name="open_draw_without_sale" padding="11" nullable="true" comment="open_draw_without_sale"/>
@@ -2717,11 +2717,11 @@
     <column xsi:type="boolean" name="fri_time_within_bounds" default="0" nullable="true" comment="fri_time_within_bounds"/>
     <column xsi:type="text" name="friday_ending_time" nullable="true" comment="friday_ending_time"/>
     <column xsi:type="text" name="friday_starting_time" nullable="true" comment="friday_starting_time"/>
-    <column xsi:type="varchar" name="id" length="200" nullable="true" comment="id"/>
     <column xsi:type="boolean" name="mon_end_time_after_midnight" default="0" nullable="true" comment="mon_end_time_after_midnight"/>
     <column xsi:type="boolean" name="mon_time_within_bounds" default="0" nullable="true" comment="mon_time_within_bounds"/>
     <column xsi:type="text" name="monday_ending_time" nullable="true" comment="monday_ending_time"/>
     <column xsi:type="text" name="monday_starting_time" nullable="true" comment="monday_starting_time"/>
+    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="nav_id"/>
     <column xsi:type="text" name="no_series" nullable="true" comment="no_series"/>
     <column xsi:type="text" name="offer_ending_time" nullable="true" comment="offer_ending_time"/>
     <column xsi:type="text" name="offer_starting_time" nullable="true" comment="offer_starting_time"/>
@@ -2767,8 +2767,8 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_lsc_validation_period_id"/>
     </constraint>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_VALIDATION_PERIOD_ID">
-      <column name="id"/>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_VALIDATION_PERIOD_NAVID">
+      <column name="nav_id"/>
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_VALIDATION_PERIOD_SCOPEID">
       <column name="scope_id"/>

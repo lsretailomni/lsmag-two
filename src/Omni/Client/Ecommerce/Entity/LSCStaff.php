@@ -11,7 +11,7 @@ use Magento\Catalog\Model\AbstractModel;
 
 class LSCStaff extends AbstractModel
 {
-    public const ID = 'ID';
+    public const NAV_ID = 'Nav Id';
     public const PASSWORD = 'Password';
     public const CHANGE_PASSWORD = 'Change Password';
     public const STORE_NO = 'Store No.';
@@ -99,7 +99,7 @@ class LSCStaff extends AbstractModel
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
     public static array $dbColumnsMapping = [
-	self::ID => 'id',
+	self::NAV_ID => 'nav_id',
 	self::PASSWORD => 'password',
 	self::CHANGE_PASSWORD => 'change_password',
 	self::STORE_NO => 'store_no',
@@ -193,14 +193,14 @@ class LSCStaff extends AbstractModel
     }
 
 
-    public function getId()
+    public function getNavId()
     {
-        return $this->getData(self::ID);
+        return $this->getData(self::NAV_ID);
     }
 
-    public function setId( $value)
+    public function setNavId( $value)
     {
-        return $this->setData(self::ID, $value);
+        return $this->setData(self::NAV_ID, $value);
     }
 
     public function getPassword(): ?string

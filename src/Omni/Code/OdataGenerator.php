@@ -629,7 +629,11 @@ class $entityClassName extends AbstractModel
 PHP;
         $mapping = '';
         foreach ($recordFields as $field) {
-            $optimizedFieldName = $this->formatGivenValue(ucwords(strtolower($field['FieldName'])));
+            $fieldName = $field['FieldName'];
+            if (strtolower($fieldName) == 'id') {
+                $fieldName = 'Nav Id';
+            }
+            $optimizedFieldName = $this->formatGivenValue(ucwords(strtolower($fieldName)));
             $constName = str_replace(
                 ' ',
                 '_',
@@ -639,10 +643,10 @@ PHP;
                 $constIndexName = str_replace(
                     ' ',
                     '',
-                    $field['FieldName']
+                    $fieldName
                 );
             } else {
-                $constIndexName = $field['FieldName'];
+                $constIndexName = $fieldName;
             }
             $columnName = strtolower($constName);
             $mapping .= "\n\tself::{$constName} => '{$columnName}',";
@@ -671,14 +675,16 @@ PHP;
         $entityClassCode .= "\n";
 
         foreach ($recordFields as $field) {
+            $fieldName = $field['FieldName'];
             $dataTypeRequired = true;
-            if (strtolower($field['FieldName']) == 'id') {
+            if (strtolower($fieldName) == 'id') {
                 $dataTypeRequired = false;
+                $fieldName = 'Nav Id';
             }
-            $fieldNameForMethodName = $this->formatGivenValue($field['FieldName'], ' ');
+            $fieldNameForMethodName = $this->formatGivenValue($fieldName, ' ');
             $fieldNameCapitalized = ucwords(strtolower($fieldNameForMethodName));
             $fieldNameCapitalized = str_replace(' ', '', $fieldNameCapitalized);
-            $fieldName = $this->formatGivenValue(ucwords(strtolower($field['FieldName'])));
+            $fieldName = $this->formatGivenValue(ucwords(strtolower($fieldName)));
             $constName = str_replace(' ', '_', strtoupper(preg_replace('/\B([A-Z])/', '_$1', $fieldName)));
 
             if ($recursive) {
@@ -890,10 +896,13 @@ class $entityClassName
                     {$entityName}::class
                 );
                 foreach (\$values as \$value) {
-                    if (\$entry->getData(\$fields[\$value['FieldIndex']]) === null) {
-                        \$entry->setData(\$fields[\$value['FieldIndex']], \$value['FieldValue']);
+                    \$fieldName = \$fields[\$value['FieldIndex']];
+                    if (strtolower(\$fieldName) == 'id') {
+                        \$fieldName = 'Nav Id';
                     }
-
+                    if (\$entry->getData(\$fieldName) === null) {
+                        \$entry->setData(\$fieldName, \$value['FieldValue']);
+                    }
                 }
                 \$results[] = \$entry;
             }
@@ -907,8 +916,12 @@ class $entityClassName
                 );
                 \$entry->setData('is_deleted', true);
                 foreach (\$values as \$value) {
-                    if (\$entry->getData(\$deletedFields[\$value['FieldIndex']]) === null) {
-                        \$entry->setData(\$deletedFields[\$value['FieldIndex']], \$value['FieldValue']);
+                    \$fieldName = \$deletedFields[\$value['FieldIndex']];
+                    if (strtolower(\$fieldName) == 'id') {
+                        \$fieldName = 'Nav Id';
+                    }
+                    if (\$entry->getData(\$fieldName) === null) {
+                        \$entry->setData(\$fieldName, \$value['FieldValue']);
                     }
                 }
                 \$results[] = \$entry;

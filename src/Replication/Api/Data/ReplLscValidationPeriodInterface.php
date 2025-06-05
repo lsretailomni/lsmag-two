@@ -12,9 +12,9 @@ interface ReplLscValidationPeriodInterface
 {
     public static function getDbColumnsMapping() : array;
 
-    public function getId();
+    public function getNavId();
 
-    public function setId($value);
+    public function setNavId($value);
 
     public function getDescription() : ?string;
 

@@ -11,7 +11,7 @@ use Magento\Catalog\Model\AbstractModel;
 
 class LSCValidationPeriod extends AbstractModel
 {
-    public const ID = 'ID';
+    public const NAV_ID = 'Nav Id';
     public const DESCRIPTION = 'Description';
     public const STARTING_DATE = 'Starting Date';
     public const ENDING_DATE = 'Ending Date';
@@ -57,7 +57,7 @@ class LSCValidationPeriod extends AbstractModel
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
     public static array $dbColumnsMapping = [
-	self::ID => 'id',
+	self::NAV_ID => 'nav_id',
 	self::DESCRIPTION => 'description',
 	self::STARTING_DATE => 'starting_date',
 	self::ENDING_DATE => 'ending_date',
@@ -109,14 +109,14 @@ class LSCValidationPeriod extends AbstractModel
     }
 
 
-    public function getId()
+    public function getNavId()
     {
-        return $this->getData(self::ID);
+        return $this->getData(self::NAV_ID);
     }
 
-    public function setId( $value)
+    public function setNavId( $value)
     {
-        return $this->setData(self::ID, $value);
+        return $this->setData(self::NAV_ID, $value);
     }
 
     public function getDescription(): ?string
