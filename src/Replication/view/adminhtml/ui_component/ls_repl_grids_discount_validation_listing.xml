@@ -100,7 +100,7 @@
                 </item>
             </argument>
         </column>
-        <column name="id" class="Ls\Replication\Ui\Component\Listing\Column\Stores">
+        <column name="nav_id" class="Ls\Replication\Ui\Component\Listing\Column\Stores">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>

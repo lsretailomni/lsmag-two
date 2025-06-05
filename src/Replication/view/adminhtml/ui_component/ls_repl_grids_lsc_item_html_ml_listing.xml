@@ -194,7 +194,7 @@
                 </item>
             </argument>
         </column>
-        <column name="html">
+        <column name="html" class="Ls\Replication\Ui\Component\Listing\Column\DecodeText">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
