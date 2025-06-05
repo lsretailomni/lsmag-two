@@ -118,11 +118,8 @@ abstract class AbstractOperation implements OperationInterface
         $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         try {
             $isDataObject = $requestInput instanceof DataObject;
-            $response = $client->{$operationName}(
-                $isDataObject ?
-                    $requestInput->getData() :
-                    $requestInput
-            );
+            $requestInput = $isDataObject ? $this->convertToArray($requestInput) : $requestInput;
+            $response = $client->{$operationName}($requestInput);
             if (is_object($response)) {
                 if ($isDataObject) {
                     $response = $this->convertSoapResponseToDataObject($response);
@@ -161,6 +158,35 @@ abstract class AbstractOperation implements OperationInterface
         return $response;
     }
     // @codingStandardsIgnoreEnd
+
+    /**
+     * Convert given nested object to flat array
+     *
+     * @param $object
+     * @return array|mixed
+     */
+    public function convertToArray($object)
+    {
+        if (!($object instanceof DataObject)) {
+            return [];
+        }
+
+        $data = $object->getData();
+
+        foreach ($data as $key => $value) {
+            if ($value instanceof DataObject) {
+                $data[$key] = $this->convertToArray($value);
+            } elseif (is_array($value)) {
+                $data[$key] = array_map(function ($item) {
+                    return $item instanceof DataObject
+                        ? $this->convertToArray($item)
+                        : $item;
+                }, $value);
+            }
+        }
+
+        return $data;
+    }
 
     /**
      * Convert soap object to data object
@@ -222,7 +248,10 @@ abstract class AbstractOperation implements OperationInterface
         $constants = $reflectedEntity->getConstants();
 
         foreach ($constants as $constantName => $constant) {
-            if ($constantName === 'CLASS_NAME') {
+            if ($constantName === 'CLASS_NAME' ||
+                $constantName == 'CUSTOM_ATTRIBUTES' ||
+                $constantName == 'EXTENSION_ATTRIBUTES_KEY'
+            ) {
                 continue;
             }
 
