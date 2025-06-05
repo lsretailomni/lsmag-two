@@ -638,7 +638,9 @@ abstract class AbstractReplicationTask
     public function fetchDataGivenStore($storeId)
     {
         $lsr = $this->getLsrModel();
+        $currentStoreId = $lsr->getStoreManagerObject()->getStore()->getId();
         $lsr->setStoreId($storeId);
+
         // Need to check if is_lsr is enabled on each store and only process the relevant store.
         if ($lsr->isLSR($storeId, $this->defaultScope)) {
             $this->rep_helper->updateConfigValue(
@@ -676,6 +678,8 @@ abstract class AbstractReplicationTask
         } else {
             $this->logger->debug('LS Retail validation failed for store id ' . $storeId);
         }
+
+        $lsr->setStoreId($currentStoreId);
     }
 
     /**

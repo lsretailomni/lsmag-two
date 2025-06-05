@@ -1106,7 +1106,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getStoreManagerObject()
     {
-
         return $this->storeManager;
     }
 

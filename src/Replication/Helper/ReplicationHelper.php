@@ -185,7 +185,7 @@ class ReplicationHelper extends AbstractHelper
             "LineNumber",
             "scope_id"
         ],
-        "ls_mag/replication/repl_lsc_validation_period" => ["id", "scope_id"],
+        "ls_mag/replication/repl_lsc_validation_period" => ["nav_id", "scope_id"],
         "ls_mag/replication/repl_lsc_wi_extd_variant_values" => [
             "code",
             "framework_code",

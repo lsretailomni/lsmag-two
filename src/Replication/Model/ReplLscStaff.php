@@ -29,14 +29,14 @@ class ReplLscStaff extends \Ls\Omni\Client\Ecommerce\Entity\LSCStaff implements 
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getId()
+    public function getNavId()
     {
-        return $this->getData(self::getDbColumnsMapping()[self::ID]);
+        return $this->getData(self::getDbColumnsMapping()[self::NAV_ID]);
     }
 
-    public function setId($value)
+    public function setNavId($value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::ID], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::NAV_ID], $value);
     }
 
     public function getPassword() : ?string

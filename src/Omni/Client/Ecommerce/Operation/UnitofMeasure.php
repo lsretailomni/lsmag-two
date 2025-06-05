@@ -98,10 +98,13 @@ class UnitofMeasure
                     \Ls\Omni\Client\Ecommerce\Entity\UnitofMeasure::class
                 );
                 foreach ($values as $value) {
-                    if ($entry->getData($fields[$value['FieldIndex']]) === null) {
-                        $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
+                    $fieldName = $fields[$value['FieldIndex']];
+                    if (strtolower($fieldName) == 'id') {
+                        $fieldName = 'Nav Id';
                     }
-
+                    if ($entry->getData($fieldName) === null) {
+                        $entry->setData($fieldName, $value['FieldValue']);
+                    }
                 }
                 $results[] = $entry;
             }
@@ -115,8 +118,12 @@ class UnitofMeasure
                 );
                 $entry->setData('is_deleted', true);
                 foreach ($values as $value) {
-                    if ($entry->getData($deletedFields[$value['FieldIndex']]) === null) {
-                        $entry->setData($deletedFields[$value['FieldIndex']], $value['FieldValue']);
+                    $fieldName = $deletedFields[$value['FieldIndex']];
+                    if (strtolower($fieldName) == 'id') {
+                        $fieldName = 'Nav Id';
+                    }
+                    if ($entry->getData($fieldName) === null) {
+                        $entry->setData($fieldName, $value['FieldValue']);
                     }
                 }
                 $results[] = $entry;

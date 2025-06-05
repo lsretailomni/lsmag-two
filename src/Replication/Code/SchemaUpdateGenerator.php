@@ -106,7 +106,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "IsDeleted"
         ],
         "ls_replication_repl_lsc_validation_period" => [
-            "id",
+            "nav_id",
             "scope_id",
             "processed",
             "is_updated",
