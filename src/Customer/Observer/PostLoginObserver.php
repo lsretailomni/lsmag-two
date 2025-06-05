@@ -2,46 +2,24 @@
 
 namespace Ls\Customer\Observer;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ContactSearchType;
 use \Ls\Omni\Exception\InvalidEnumException;
-use \Ls\Omni\Helper\ContactHelper;
-use \Ls\Core\Model\LSR;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Observer responsible for storing required values in customer session post authentication in case of service down
  */
-class PostLoginObserver implements ObserverInterface
+class PostLoginObserver extends AbstractOmniObserver
 {
-    /** @var ContactHelper */
-    private $contactHelper;
-
     /**
-     * @var LSR
-     */
-    private $lsr;
-
-    /**
-     * @param ContactHelper $contactHelper
-     * @param LSR $lsr
-     */
-    public function __construct(
-        ContactHelper $contactHelper,
-        LSR $lsr
-    ) {
-        $this->contactHelper = $contactHelper;
-        $this->lsr           = $lsr;
-    }
-
-    /**
-     * @inheritDoc
+     * Entry point for the observer
      *
      * @param Observer $observer
-     * @return $this|void
+     * @return $this
      * @throws LocalizedException
-     * @throws InvalidEnumException
+     * @throws InvalidEnumException|GuzzleException
      */
     public function execute(Observer $observer)
     {

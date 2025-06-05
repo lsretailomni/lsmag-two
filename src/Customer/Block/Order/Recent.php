@@ -99,14 +99,14 @@ class Recent extends Template
             $this->lsr->getCustomerIntegrationOnFrontend()
         )) {
             $response = [];
-            $orders   = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
-            if ($orders) {
-                try {
-                    $response = $orders;
-                } catch (Exception $e) {
-                    $this->_logger->error($e->getMessage());
-                }
-            }
+//            $orders   = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
+//            if ($orders) {
+//                try {
+//                    $response = $orders;
+//                } catch (Exception $e) {
+//                    $this->_logger->error($e->getMessage());
+//                }
+//            }
             return $response;
         }
 

@@ -3,65 +3,22 @@
 namespace Ls\Customer\Observer;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Model\Customer;
-use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Registry;
-use Psr\Log\LoggerInterface;
 
 /**
  * Observer responsible for customer registration
  */
-class RegisterObserver implements ObserverInterface
+class RegisterObserver extends AbstractOmniObserver
 {
-    /** @var ContactHelper $contactHelper */
-    private $contactHelper;
-    /** @var Registry $registry */
-    private $registry;
-    /** @var LoggerInterface $logger */
-    private $logger;
-    /** @var CustomerSession $customerSession */
-    private $customerSession;
-    /** @var \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel */
-    private $customerResourceModel;
-    /** @var LSR @var */
-    private $lsr;
-
     /**
-     * RegisterObserver constructor.
-     *
-     * @param ContactHelper $contactHelper
-     * @param Registry $registry
-     * @param LoggerInterface $logger
-     * @param CustomerSession $customerSession
-     * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
-     * @param LSR $LSR
-     */
-    public function __construct(
-        ContactHelper $contactHelper,
-        Registry $registry,
-        LoggerInterface $logger,
-        CustomerSession $customerSession,
-        \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
-        LSR $LSR
-    ) {
-        $this->contactHelper         = $contactHelper;
-        $this->registry              = $registry;
-        $this->logger                = $logger;
-        $this->customerSession       = $customerSession;
-        $this->customerResourceModel = $customerResourceModel;
-        $this->lsr                   = $LSR;
-    }
-
-    /**
-     * Observer execute
+     * Entry point for the observer
      *
      * @param Observer $observer
-     * @return $this|void
+     * @return $this
+     * @throws GuzzleException
      */
     public function execute(Observer $observer)
     {
@@ -69,8 +26,6 @@ class RegisterObserver implements ObserverInterface
             $session          = $this->customerSession;
             $customer         = $session->getCustomer();
             $additionalParams = $this->contactHelper->getValue();
-
-            /** @var Customer $customer */
 
             if (empty($customer->getId())) {
                 $customer = $this->contactHelper->getCustomerByEmail($additionalParams['email']);
@@ -103,9 +58,10 @@ class RegisterObserver implements ObserverInterface
                         $this->logger->error('Invalid Omni login or Omni password');
                         return $this;
                     } else {
+                        $loginResult = $this->contactHelper->flattenModel($loginResult);
                         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
                         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $loginResult);
-                        $this->contactHelper->updateBasketAndWishlistAfterLogin($loginResult);
+//                        $this->contactHelper->updateBasketAndWishlistAfterLogin($loginResult);
                     }
                 } else {
                     $customer->setData(

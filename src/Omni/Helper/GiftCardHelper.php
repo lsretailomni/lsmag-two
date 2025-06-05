@@ -19,24 +19,6 @@ use Magento\Framework\Filesystem;
  */
 class GiftCardHelper extends AbstractHelperOmni
 {
-
-    const SERVICE_TYPE = 'ecommerce';
-
-    /**
-     * @var CheckoutSession
-     */
-    public $checkoutSession;
-
-    /**
-     * @var Filesystem
-     */
-    public $filesystem;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
     /**
      * For getting gift card balance
      *

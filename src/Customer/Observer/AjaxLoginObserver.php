@@ -3,83 +3,27 @@
 namespace Ls\Customer\Observer;
 
 use Exception;
-use \Ls\Core\Model\LSR;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\Json;
-use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Json\Helper\Data;
-use Psr\Log\LoggerInterface;
 
 /**
  * Observer responsible for customer ajax login from checkout
  */
-class AjaxLoginObserver implements ObserverInterface
+class AjaxLoginObserver extends AbstractOmniObserver
 {
-
-    /** @var ContactHelper */
-    private $contactHelper;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var CustomerSession */
-    private $customerSession;
-
-    /** @var ActionFlag */
-    private $actionFlag;
-
-    /** @var Data $jsonhelper */
-    private $jsonhelper;
-
-    /** @var JsonFactory */
-    private $resultJsonFactory;
-
-    /** @var LSR */
-    private $lsr;
-
-    /**
-     * @param ContactHelper $contactHelper
-     * @param LoggerInterface $logger
-     * @param CustomerSession $customerSession
-     * @param Data $jsonhelper
-     * @param JsonFactory $resultJsonFactory
-     * @param ActionFlag $actionFlag
-     * @param LSR $LSR
-     */
-    public function __construct(
-        ContactHelper $contactHelper,
-        LoggerInterface $logger,
-        CustomerSession $customerSession,
-        Data $jsonhelper,
-        JsonFactory $resultJsonFactory,
-        ActionFlag $actionFlag,
-        LSR $LSR
-    ) {
-        $this->contactHelper     = $contactHelper;
-        $this->logger            = $logger;
-        $this->customerSession   = $customerSession;
-        $this->resultJsonFactory = $resultJsonFactory;
-        $this->jsonhelper        = $jsonhelper;
-        $this->actionFlag        = $actionFlag;
-        $this->lsr               = $LSR;
-    }
-
     /**
      * Entry point for the observer
      *
      * @param Observer $observer
      * @return $this|Json
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute(Observer $observer)
     {
@@ -88,7 +32,7 @@ class AjaxLoginObserver implements ObserverInterface
         $resultJson = $this->resultJsonFactory->create();
         // check if we have a data in request and request is Ajax.
         if ($request && $request->isXmlHttpRequest()) {
-            $credentials = $this->jsonhelper->jsonDecode($request->getContent());
+            $credentials = $this->jsonHelper->jsonDecode($request->getContent());
 
             if (!empty($credentials['username']) && !empty($credentials['password'])) {
                 $email     = $username = $credentials['username'];
@@ -162,7 +106,7 @@ class AjaxLoginObserver implements ObserverInterface
         $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
         $observer->getControllerAction()
             ->getResponse()
-            ->representJson($this->jsonhelper->jsonEncode($response));
+            ->representJson($this->jsonHelper->jsonEncode($response));
         return $this;
     }
 }

@@ -3,44 +3,35 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
-use Laminas\Validator\EmailAddress as ValidateEmailAddress;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
+use \Ls\Omni\Client\Ecommerce\Entity\ContactCreateParameters;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
+use \Ls\Omni\Client\Ecommerce\Entity\MemberContactCreateResult as MemberContactCreateResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\MemberContactUpdateResult;
+use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordChange;
+use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordChangeResult as MemberPasswordChangeResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\RootMemberContactCreate;
+use \Ls\Omni\Client\Ecommerce\Entity\RootMemberLogon;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\Ecommerce\Operation\GetMemberContactInfo_GetMemberContactInfo;
+use \Ls\Omni\Client\Ecommerce\Operation\MemberContactCreate;
+use \Ls\Omni\Client\Ecommerce\Operation\MemberContactUpdate;
+use \Ls\Omni\Client\Ecommerce\Operation\MemberLogon;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
-use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Customer\Api\AddressRepositoryInterface;
-use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Customer\Api\Data\AddressInterfaceFactory;
+use \Ls\Omni\Exception\NavException;
+use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
+use Magento\Catalog\Model\AbstractModel;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Api\Data\CustomerSearchResultsInterface;
-use Magento\Customer\Api\Data\GroupInterfaceFactory;
-use Magento\Customer\Api\Data\RegionInterfaceFactory;
-use Magento\Customer\Api\GroupRepositoryInterface;
-use Magento\Customer\Model\AccountConfirmation;
 use Magento\Customer\Model\Address;
-use Magento\Customer\Model\Authentication;
 use Magento\Customer\Model\Customer;
-use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\CustomerRegistry;
 use Magento\Customer\Model\Group;
-use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory as CustomerCollection;
 use Magento\Customer\Model\ResourceModel\Group\Collection;
-use Magento\Customer\Model\ResourceModel\Group\CollectionFactory;
-use Magento\Customer\Model\Session as CustomerSession;
-use Magento\Directory\Model\Country;
-use Magento\Directory\Model\CountryFactory;
-use Magento\Directory\Model\RegionFactory;
-use Magento\Framework\Api\FilterBuilder;
-use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
 use Magento\Framework\DataObject;
-use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\EmailNotConfirmedException;
 use Magento\Framework\Exception\InputException;
@@ -49,276 +40,14 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\ExpiredException;
 use Magento\Framework\Exception\State\InvalidTransitionException;
 use Magento\Framework\Exception\State\UserLockedException;
-use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Phrase;
-use Magento\Framework\Registry;
-use Magento\Framework\Session\SessionManagerInterface;
-use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\Store\Model\StoreManagerInterface;
-use Magento\Wishlist\Model\ResourceModel\Wishlist;
-use Magento\Wishlist\Model\WishlistFactory;
+use Zend_Log_Exception;
 
 /**
  * Helper functions for member contact
  */
-class ContactHelper extends AbstractHelper
+class ContactHelper extends AbstractHelperOmni
 {
-    const SERVICE_TYPE = 'ecommerce';
-
-    /** @var FilterBuilder */
-    public $filterBuilder;
-
-    /** @var SearchCriteriaBuilder */
-    public $searchCriteriaBuilder;
-
-    /** @var StoreManagerInterface */
-    public $storeManager;
-
-    /** @var CustomerRepositoryInterface */
-    public $customerRepository;
-
-    /** @var AddressInterfaceFactory */
-    public $addressFactory;
-
-    /** @var RegionInterfaceFactory */
-    public $regionFactory;
-
-    /** @var CustomerFactory */
-    public $customerFactory;
-
-    /** @var AddressRepositoryInterface */
-    public $addressRepository;
-
-    /** @var CustomerSession */
-    public $customerSession;
-
-    /** @var null */
-    public $ns = null;
-
-    /** @var CountryFactory */
-    public $countryFactory;
-
-    /** @var CollectionFactory */
-    public $customerGroupColl;
-
-    /** @var GroupRepositoryInterface */
-    public $groupRepository;
-
-    /** @var GroupInterfaceFactory */
-    public $groupInterfaceFactory;
-
-    /** @var  BasketHelper */
-    public $basketHelper;
-
-    /** @var \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel */
-    public $customerResourceModel;
-
-    /** @var Registry */
-    public $registry;
-
-    /** @var CheckoutSession */
-    public $checkoutSession;
-
-    /** @var Country */
-    public $country;
-
-    /** @var RegionFactory */
-    public $region;
-
-    /** @var ItemHelper * */
-    public $itemHelper;
-
-    /**
-     * @var \Magento\Wishlist\Model\Wishlist
-     */
-    public $wishlist;
-
-    /**
-     * @var \Magento\Wishlist\Model\Wishlist
-     */
-    public $wishlistFactory;
-    /**
-     * @var \Magento\Wishlist\Model\Wishlist
-     */
-    public $wishlistResourceModel;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    public $productRepository;
-
-    /**
-     * @var CustomerCollection
-     */
-    public $customerCollection;
-
-    /**
-     * @var EncryptorInterface
-     */
-    public $encryptorInterface;
-
-    /**
-     * @var ValidateEmailAddress
-     */
-    public $validateEmailAddress;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var DateTime
-     */
-    public $date;
-
-    /**
-     * @var CustomerRegistry
-     */
-    public $customerRegistry;
-
-    /**
-     * @var Authentication
-     */
-    public $authentication;
-
-    /**
-     * @var AccountConfirmation
-     */
-    public $accountConfirmation;
-
-    /**
-     * @var StockHelper
-     */
-    public $stockHelper;
-
-    /**
-     * @var SessionManagerInterface
-     */
-    public $session;
-
-    /**
-     * @var ManagerInterface
-     */
-    public $messageManager;
-
-    /**
-     * ContactHelper constructor.
-     * @param Context $context
-     * @param FilterBuilder $filterBuilder
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param StoreManagerInterface $storeManager
-     * @param AddressInterfaceFactory $addressFactory
-     * @param RegionInterfaceFactory $regionFactory
-     * @param AddressRepositoryInterface $addressRepository
-     * @param CustomerFactory $customerFactory
-     * @param CustomerSession $customerSession
-     * @param CountryFactory $countryFactory
-     * @param CollectionFactory $customerGroupColl
-     * @param GroupRepositoryInterface $groupRepository
-     * @param GroupInterfaceFactory $groupInterfaceFactory
-     * @param BasketHelper $basketHelper
-     * @param ItemHelper $itemHelper
-     * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
-     * @param CheckoutSession $checkoutSession
-     * @param SessionManagerInterface $session
-     * @param Registry $registry
-     * @param Country $country
-     * @param RegionFactory $region
-     * @param \Magento\Wishlist\Model\Wishlist $wishlist
-     * @param Wishlist $wishlistResourceModel
-     * @param WishlistFactory $wishlistFactory
-     * @param ProductRepositoryInterface $productRepository
-     * @param CustomerCollection $customerCollection
-     * @param EncryptorInterface $encryptorInterface
-     * @param ValidateEmailAddress $validateEmailAddress
-     * @param LSR $lsr
-     * @param DateTime $date
-     * @param CustomerRegistry $customerRegistry
-     * @param Authentication $authentication
-     * @param AccountConfirmation $accountConfirmation
-     * @param StockHelper $stockHelper
-     * @param ManagerInterface $messageManager
-     */
-    public function __construct(
-        Context $context,
-        FilterBuilder $filterBuilder,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        CustomerRepositoryInterface $customerRepository,
-        StoreManagerInterface $storeManager,
-        AddressInterfaceFactory $addressFactory,
-        RegionInterfaceFactory $regionFactory,
-        AddressRepositoryInterface $addressRepository,
-        CustomerFactory $customerFactory,
-        CustomerSession $customerSession,
-        CountryFactory $countryFactory,
-        CollectionFactory $customerGroupColl,
-        GroupRepositoryInterface $groupRepository,
-        GroupInterfaceFactory $groupInterfaceFactory,
-        BasketHelper $basketHelper,
-        ItemHelper $itemHelper,
-        \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
-        CheckoutSession $checkoutSession,
-        SessionManagerInterface $session,
-        Registry $registry,
-        Country $country,
-        RegionFactory $region,
-        \Magento\Wishlist\Model\Wishlist $wishlist,
-        Wishlist $wishlistResourceModel,
-        WishlistFactory $wishlistFactory,
-        ProductRepositoryInterface $productRepository,
-        CustomerCollection $customerCollection,
-        EncryptorInterface $encryptorInterface,
-        ValidateEmailAddress $validateEmailAddress,
-        LSR $lsr,
-        DateTime $date,
-        CustomerRegistry $customerRegistry,
-        Authentication $authentication,
-        AccountConfirmation $accountConfirmation,
-        StockHelper $stockHelper,
-        ManagerInterface $messageManager
-    ) {
-        $this->filterBuilder         = $filterBuilder;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->storeManager          = $storeManager;
-        $this->customerRepository    = $customerRepository;
-        $this->addressFactory        = $addressFactory;
-        $this->addressRepository     = $addressRepository;
-        $this->regionFactory         = $regionFactory;
-        $this->customerFactory       = $customerFactory;
-        $this->customerSession       = $customerSession;
-        $this->countryFactory        = $countryFactory;
-        $this->customerGroupColl     = $customerGroupColl;
-        $this->groupRepository       = $groupRepository;
-        $this->groupInterfaceFactory = $groupInterfaceFactory;
-        $this->basketHelper          = $basketHelper;
-        $this->itemHelper            = $itemHelper;
-        $this->customerResourceModel = $customerResourceModel;
-        $this->registry              = $registry;
-        $this->checkoutSession       = $checkoutSession;
-        $this->session               = $session;
-        $this->country               = $country;
-        $this->region                = $region;
-        $this->wishlist              = $wishlist;
-        $this->wishlistResourceModel = $wishlistResourceModel;
-        $this->wishlistFactory       = $wishlistFactory;
-        $this->productRepository     = $productRepository;
-        $this->customerCollection    = $customerCollection;
-        $this->encryptorInterface    = $encryptorInterface;
-        $this->validateEmailAddress  = $validateEmailAddress;
-        $this->lsr                   = $lsr;
-        $this->date                  = $date;
-        $this->customerRegistry      = $customerRegistry;
-        $this->authentication        = $authentication;
-        $this->accountConfirmation   = $accountConfirmation;
-        $this->stockHelper           = $stockHelper;
-        $this->messageManager        = $messageManager;
-        parent::__construct(
-            $context
-        );
-    }
-
     /**
      * Search in central with username or email
      *
@@ -387,15 +116,15 @@ class ContactHelper extends AbstractHelper
      * Search by email
      *
      * @param string $email
-     * @return MemberContact[]|null
-     * @throws InvalidEnumException
+     * @return Entity\GetMemberContactInfo_GetMemberContactInfo
      * @throws LocalizedException
      */
     public function search($email)
     {
-        $is_email = $this->isValid($email);
+        $response = null;
+        $isEmail = $this->isValid($email);
         // load customer data from magento customer database based on lsr_username if we didn't get an email
-        if (!$is_email) {
+        if (!$isEmail) {
             $filters = [
                 $this->filterBuilder
                     ->setField('lsr_username')
@@ -410,57 +139,17 @@ class ContactHelper extends AbstractHelper
                 /** @var Customer $customer */
                 $customer = $searchResults->getItems()[0];
                 if ($customer->getId()) {
-                    $is_email = true;
+                    $isEmail = true;
                     $email    = $customer->getData('email');
                 }
             }
         }
 
-        if ($is_email) {
-            /** @var Operation\ContactGetById $request */
-            // @codingStandardsIgnoreStart
-            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-                $request = new Operation\ContactGet();
-                $search  = new Entity\ContactGet();
-            } else {
-                $request = new Operation\ContactSearch();
-                $search  = new Entity\ContactSearch();
-                $search->setMaxNumberOfRowsReturned(1);
-            }
-            // @codingStandardsIgnoreEnd
-            $search->setSearch($email);
-
-            // enabling this causes the segfault if ContactSearchType is in the classMap of the SoapClient
-            $search->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
-
-            try {
-                $response = $request->execute($search);
-                if ($response) {
-                    if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-                        $contact_pos = $response->getContactGetResult();
-                    } else {
-                        $contact_pos = $response->getContactSearchResult();
-                    }
-                }
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
-            }
-        } else {
-            // we cannot search by username in Omni as the API does not offer this information. So we quit.
-            return null;
+        if ($isEmail) {
+            $response = $this->getCentralCustomerByEmail($email);
         }
 
-        if ($contact_pos instanceof Entity\ArrayOfMemberContact && !empty($contact_pos->getMemberContact())) {
-            if (is_array($contact_pos->getMemberContact())) {
-                return $contact_pos->getMemberContact()[0];
-            } else {
-                return $contact_pos->getMemberContact();
-            }
-        } elseif ($contact_pos instanceof MemberContact) {
-            return $contact_pos;
-        } else {
-            return null;
-        }
+        return $response;
     }
 
     /**
@@ -475,32 +164,37 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * Customer login
+     * RootMemberLogon
      *
      * @param string $user
      * @param string $pass
-     * @return Entity\LoginResponse|MemberContact|ResponseInterface|null
+     * @return RootMemberLogon|NavException|NavObjectReferenceNotAnInstanceException|AbstractModel|DataObject|string|null
      */
-    public function login($user, $pass)
+    public function login(string $user, string $pass)
     {
         // LS Central only accept [a-zA-Z0-9-_@.] pattern of UserName
         if (!preg_match("/^[a-zA-Z0-9-_@.]*$/", $user)) {
             return null;
         }
+
         $response = null;
-        // @codingStandardsIgnoreStart
-        $request = new Operation\Login();
-        $login   = new Entity\Login();
-        // @codingStandardsIgnoreEnd
-        $login->setUserName($user)
-            ->setPassword($pass);
+
+        $memberLogon = new MemberLogon();
+        $memberLogon->setOperationInput(
+            [
+                'loginID' => $user,
+                'password' => $pass,
+                'totalRemainingPoints' => 0
+            ]
+        );
+
         try {
-            $response = $request->execute($login);
+            $response = $memberLogon->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
-        return $response ? $response->getLoginResult() : $response;
+        return $response && !empty($response->getMemberlogonxml()->getData()) ? $response->getMemberlogonxml() : null;
     }
 
     /**
@@ -510,78 +204,101 @@ class ContactHelper extends AbstractHelper
      * @return bool
      * @throws InvalidEnumException
      */
-    public function isEmailExistInLsCentral($email)
+    public function isEmailExistInLsCentral(string $email)
+    {
+        $response = $this->getCentralCustomerByEmail($email);
+
+        return $response &&
+            $response->getLscMemberContact() &&
+            $response->getLscMemberContact()->getEmail() == $email;
+    }
+
+    /**
+     * Get customer from central based on email
+     *
+     * @param string $email
+     * @return false|Entity\GetMemberContactInfo_GetMemberContactInfo|mixed|null
+     */
+    public function getCentralCustomerByEmail(string $email)
     {
         $response = null;
-        // @codingStandardsIgnoreStart
-        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-            $request       = new Operation\ContactGet();
-            $contactSearch = new Entity\ContactGet();
-        } else {
-            $request       = new Operation\ContactSearch();
-            $contactSearch = new Entity\ContactSearch();
-        }
-        $contactSearch->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
-        $contactSearch->setSearch($email);
+        $contactSearchOperation = new GetMemberContactInfo_GetMemberContactInfo();
+        $contactSearchOperation->setOperationInput([
+            'contactSearchType' => 3,
+            'searchText' => $email,
+            'searchMethod' => 0,
+            'maxResultContacts' => 0,
+        ]);
         try {
-            $response = $request->execute($contactSearch);
+            $response = current($contactSearchOperation->execute()->getRecords());
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-            if (!empty($response) && !empty($response->getContactGetResult())) {
-                if ($response->getContactGetResult()->getEmail() === $email) {
-                    return true;
-                }
-            }
-        } else {
-            if (!empty($response) && !empty($response->getContactSearchResult())) {
-                foreach ($response->getContactSearchResult() as $contact) {
-                    if ($contact->getEmail() === $email) {
-                        return true;
-                    }
-                }
-            }
+
+        return $response;
+    }
+
+    /**
+     * Get customer from central based on cardId
+     *
+     * @param string $cardId
+     */
+    public function getCentralCustomerByCardId(string $cardId)
+    {
+        $response = null;
+        $contactSearchOperation = new GetMemberContactInfo_GetMemberContactInfo();
+        $contactSearchOperation->setOperationInput([
+            'contactSearchType' => 0,
+            'searchText' => $cardId,
+            'searchMethod' => 0,
+            'maxResultContacts' => 0,
+        ]);
+        try {
+            $response = current($contactSearchOperation->execute()->getRecords());
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
         }
-        return false;
+
+        return $response;
     }
 
     /**
      * Function to change password
      *
-     * @param $customer
-     * @param $customer_post
-     * @return bool|Entity\PasswordChangeResponse|ResponseInterface|null
+     * @param Customer $customer
+     * @param array $customerPost
+     * @return MemberPasswordChangeResponse|NavException|NavObjectReferenceNotAnInstanceException|null
      */
-    public function changePassword($customer, $customer_post)
+    public function changePassword(Customer $customer, array $customerPost)
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request        = new Operation\PasswordChange();
-        $changepassword = new Entity\PasswordChange();
+        $memberPasswordChangeOperation        = new Operation\MemberPasswordChange();
+        $memberPasswordChangeOperation->setOperationInput([
+            MemberPasswordChange::LOGIN_ID => $customer->getLsrUsername(),
+            MemberPasswordChange::OLD_PASSWORD => $customerPost['current_password'],
+            MemberPasswordChange::NEW_PASSWORD => $customerPost['password']
+        ]);
         // @codingStandardsIgnoreEnd
-        $changepassword->setUserName($customer->getData('lsr_username'))
-            ->setOldPassword($customer_post['current_password'])
-            ->setNewPassword($customer_post['password'])
-            ->setToken('');
 
         try {
-            $response = $request->execute($changepassword);
+            $response = $memberPasswordChangeOperation->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
-        return $response ? $response->getPasswordChangeResult() : $response;
+        return $response;
     }
 
     /**
      * Sync customer to Central after successful registration in magento.
+     *
      * If error response (other than timeout error) from Central it will block registration in magento.
      *
      * @param object $observer
      * @param object $session
      * @return $this
-     * @throws \Zend_Log_Exception
+     * @throws Zend_Log_Exception|GuzzleException
      */
     public function syncCustomerToCentral($observer, $session)
     {
@@ -627,20 +344,19 @@ class ContactHelper extends AbstractHelper
                 )) {
                     /** @var Entity\MemberContact $contact */
                     $contact = $this->contact($customer);
-                    if (is_object($contact) && $contact->getId()) {
+                    if ($contact && is_object($contact) && $contact->getContactid()) {
                         $customer                   = $this->setCustomerAttributesValues($contact, $customer);
                         $parameters['lsr_id']       = $customer->getLsrId();
                         $parameters['lsr_username'] = $customer->getLsrUsername();
                         $parameters['lsr_token']    = $customer->getLsrToken();
                         $parameters['lsr_cardid']   = $customer->getLsrCardid();
                         $parameters['group_id']     = $customer->getGroupId();
-                        $parameters['contact']      = $contact;
+                        $parameters['contact']      = $this->flattenModel($contact);
                     } else {
                         $this->_logger->info("Timeout error.");
                         $this->messageManager->addErrorMessage(
                             "Something went wrong during customer registration. Please try after sometime."
                         );
-
                     }
                 }
             }
@@ -707,7 +423,7 @@ class ContactHelper extends AbstractHelper
      *
      * @param string $username
      * @return bool
-     * @throws InvalidEnumException
+     * @throws InvalidEnumException|NoSuchEntityException
      */
     public function isUsernameExistInLsCentral($username)
     {
@@ -716,37 +432,24 @@ class ContactHelper extends AbstractHelper
             $this->lsr->getCurrentStoreId()
         )) {
             $response = null;
-            // @codingStandardsIgnoreStart
-            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-                $request       = new Operation\ContactGet();
-                $contactSearch = new Entity\ContactGet();
-            } else {
-                $request       = new Operation\ContactSearch();
-                $contactSearch = new Entity\ContactSearch();
-            }
-            $contactSearch->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
-            $contactSearch->setSearch($username);
+            $contactSearchOperation = new GetMemberContactInfo_GetMemberContactInfo();
+            $contactSearchOperation->setOperationInput([
+                'contactSearchType' => 5,
+                'searchText' => $username,
+                'searchMethod' => 0,
+                'maxResultContacts' => 0,
+            ]);
             try {
-                $response = $request->execute($contactSearch);
+                $response = current($contactSearchOperation->execute()->getRecords());
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
-            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-                if (!empty($response) && !empty($response->getContactGetResult())) {
-                    if ($response->getContactGetResult()->getUserName() === $username) {
-                        return true;
-                    }
-                }
-            } else {
-                if (!empty($response) && !empty($response->getContactSearchResult())) {
-                    foreach ($response->getContactSearchResult() as $contact) {
-                        if ($contact->getUserName() === $username) {
-                            return true;
-                        }
-                    }
-                }
-            }
+
+            return $response &&
+                $response->getLscMemberLoginCard() &&
+                $response->getLscMemberLoginCard()->getLoginId() == $username;
         }
+
         return false;
     }
 
@@ -754,61 +457,68 @@ class ContactHelper extends AbstractHelper
      * Sync customer to central
      *
      * @param Customer $customer
-     * @return Entity\ContactCreateResponse|MemberContact|ResponseInterface|null
-     * @throws InvalidEnumException
+     * @return MemberContactCreateResponse|NavException|NavObjectReferenceNotAnInstanceException|AbstractModel|DataObject|string
      */
     public function contact(Customer $customer)
     {
         $response = null;
         // @codingStandardsIgnoreStart
         $alternate_id  = 'LSM' . str_pad(sha1(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
-        $request       = new Operation\ContactCreate();
-        $contactCreate = new Entity\ContactCreate();
-        $contact       = new MemberContact();
+
         if (!empty($customer->getData('lsr_password'))) {
             $lsrPassword = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
         } else {
             $lsrPassword = null;
         }
         $password = (!empty($lsrPassword)) ? $lsrPassword : $customer->getData('password');
-        // @codingStandardsIgnoreEnd
-        $contact->setAlternateId($alternate_id)
-            ->setEmail($customer->getData('email'))
-            ->setFirstName($customer->getData('firstname'))
-            ->setLastName($customer->getData('lastname'))
-            ->setMiddleName($customer->getData('middlename') ? $customer->getData('middlename') : null)
-            ->setPassword($password)
-            ->setUserName($customer->getData('lsr_username'))
-            ->setAddresses([]);
+        $contactCreateParameters = [
+            ContactCreateParameters::EMAIL => $customer->getData('email'),
+            ContactCreateParameters::FIRST_NAME => $customer->getData('firstname'),
+            ContactCreateParameters::LAST_NAME => $customer->getData('lastname'),
+            ContactCreateParameters::EXTERNAL_ID => $alternate_id,
+            ContactCreateParameters::LOGIN_ID => $customer->getData('lsr_username'),
+            ContactCreateParameters::PASSWORD => $password,
+            ContactCreateParameters::GENDER => 0,
+            ContactCreateParameters::DEVICE_ID => 'WEB-'. $customer->getData('lsr_username'),
+        ];
 
         if (!empty($customer->getData('gender'))) {
-            $genderValue = '';
-            if ($customer->getData('gender') == 1) {
-                $genderValue = Entity\Enum\Gender::MALE;
-            } else {
-                if ($customer->getData('gender') == 2) {
-                    $genderValue = Entity\Enum\Gender::FEMALE;
-                } else {
-                    if ($customer->getData('gender') == 3) {
-                        $genderValue = Entity\Enum\Gender::UNKNOWN;
-                    }
-                }
-            }
-            $contact->setGender($genderValue);
+            $genderValue = $customer->getData('gender');
+            $contactCreateParameters[ContactCreateParameters::GENDER] = $genderValue;
         }
 
         if (!empty($customer->getData('dob'))) {
-            $dob = $this->date->date("Y-m-d\T00:00:00", $customer->getData('dob'));
-            $contact->setBirthDay($dob);
+            $dob = $this->dateTime->date("Y-m-d\T00:00:00", $customer->getData('dob'));
+            $contactCreateParameters[ContactCreateParameters::DATE_OF_BIRTH] = $dob;
         }
 
-        $contactCreate->setContact($contact);
+        $memberContactUpdateOperation = new MemberContactCreate();
+        $rootMemberContactCreate = $memberContactUpdateOperation->createInstance(
+            RootMemberContactCreate::class,
+            ['data' => [
+                'ContactCreateParameters' =>
+                    $memberContactUpdateOperation->createInstance(
+                        ContactCreateParameters::class,
+                        ['data' => $contactCreateParameters]
+                    ),
+            ]]
+        );
+        $memberContactCreateXml = $memberContactUpdateOperation->createInstance(
+            Entity\MemberContactCreate::class,
+            ['data' => [
+                'memberContactCreateXML' => $rootMemberContactCreate,
+                'totalRemainingPoints' => 0
+            ]]
+        );
+        $memberContactUpdateOperation->setRequest($memberContactCreateXml);
+
         try {
-            $response = $request->execute($contactCreate);
+            $response = $memberContactUpdateOperation->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getContactCreateResult() : $response;
+
+        return $response;
     }
 
     /**
@@ -902,7 +612,7 @@ class ContactHelper extends AbstractHelper
     /**
      * Set customer attribute values
      *
-     * @param MemberContact $contact
+     * @param mixed $contact
      * @param Customer $customer
      * @return mixed
      * @throws InputException
@@ -913,36 +623,27 @@ class ContactHelper extends AbstractHelper
     public function setCustomerAttributesValues($contact, $customer)
     {
         if (!is_array($contact)) {
-            $customer->setData('lsr_id', $contact->getId());
-            if (!empty($contact->getUserName())) {
-                $customer->setData('lsr_username', $contact->getUserName());
-            }
-            if (!empty($contact->getLoggedOnToDevice()) &&
-                !empty($contact->getLoggedOnToDevice()->getSecurityToken())) {
-                $token = $contact->getLoggedOnToDevice()->getSecurityToken();
-                $customer->setData('lsr_token', $token);
-            }
-            if (!empty($contact->getCards()) &&
-                !empty($contact->getCards()->getCard()[0]) &&
-                !empty($contact->getCards()->getCard()[0]->getId())) {
-                $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
-            }
-            if (!empty($contact->getAccount()) &&
-                !empty($contact->getAccount()->getScheme()) &&
-                !empty($contact->getAccount()->getScheme()->getId())) {
+            if ($contact instanceof Entity\GetMemberContactInfo_GetMemberContactInfo) {
                 $customerGroupId = $this->getCustomerGroupIdByName(
-                    $contact->getAccount()->getScheme()->getId()
+                    $contact->getLscMemberAccount()->getSchemeCode()
                 );
                 $customer->setGroupId($customerGroupId);
                 $this->customerSession->setCustomerGroupId($customerGroupId);
+                $customer->setData('lsr_id', $contact->getLscMemberContact()->getContactNo());
+                $customer->setData('lsr_cardid', $contact->getLscMemberLoginCard()->getCardNo());
+            } else {
+                $customerGroupId = $this->getCustomerGroupIdByName(
+                    $contact->getSchemeid()
+                );
+                $customer->setGroupId($customerGroupId);
+                $this->customerSession->setCustomerGroupId($customerGroupId);
+                $customer->setData('lsr_id', $contact->getContactid());
+                $customer->setData('lsr_cardid', $contact->getCardid());
             }
         } else {
             $customer->setData('lsr_id', $contact['lsr_id']);
             if (!empty($contact['lsr_username'])) {
                 $customer->setData('lsr_username', $contact['lsr_username']);
-            }
-            if (!empty($contact['lsr_token'])) {
-                $customer->setData('lsr_token', $contact['lsr_token']);
             }
             if (!empty($contact['lsr_cardid'])) {
                 $customer->setData('lsr_cardid', $contact['lsr_cardid']);
@@ -1078,7 +779,7 @@ class ContactHelper extends AbstractHelper
      *
      * Process customer login
      *
-     * @param MemberContact $result
+     * @param Entity\GetMemberContactInfo_GetMemberContactInfo $result
      * @param array $credentials
      * @param string $is_email
      * @throws AlreadyExistsException
@@ -1087,13 +788,14 @@ class ContactHelper extends AbstractHelper
      * @throws NoSuchEntityException
      * @throws InvalidTransitionException
      */
-    public function processCustomerLogin(MemberContact $result, $credentials, $is_email)
+    public function processCustomerLogin($result, $credentials, $is_email)
     {
+        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
         $filters = [
             $this->filterBuilder
                 ->setField('email')
                 ->setConditionType('eq')
-                ->setValue($result->getEmail())
+                ->setValue($result->getLscMemberContact()->getEmail())
                 ->create()
         ];
         $this->searchCriteriaBuilder->addFilters($filters);
@@ -1133,7 +835,6 @@ class ContactHelper extends AbstractHelper
         }
         $this->customerResourceModel->save($customer);
         $this->customerRegistry->remove($customer->getId());
-        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
         $this->basketHelper->unSetOneList();
         $this->basketHelper->unSetOneListCalculation();
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
@@ -1145,7 +846,7 @@ class ContactHelper extends AbstractHelper
     /**
      * Crete customer in Magento
      *
-     * @param MemberContact $contact
+     * @param Entity\GetMemberContactInfo_GetMemberContactInfo $contact
      * @param string $password
      * @return Customer
      * @throws Exception
@@ -1153,56 +854,53 @@ class ContactHelper extends AbstractHelper
      */
     public function createNewCustomerAgainstProvidedInformation($contact, $password)
     {
+        $memberContact = $contact->getLscMemberContact();
         // Create Customer to Magento
         $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-        $customer  = $this->customerFactory->create();
+        $customer = $this->customerFactory->create();
         try {
             $customer->setPassword($password)
                 ->setData('website_id', $websiteId)
-                ->setData('email', $contact->getEmail())
-                ->setData('firstname', $contact->getFirstName())
-                ->setData('lastname', $contact->getLastName())
-                ->setData('lsr_username', $contact->getUserName())
-                ->setData('lsr_id', $contact->getId())
-                ->setData('lsr_cardid', current($contact->getCards()->getCard())->getId());
+                ->setData('email', $memberContact->getEmail())
+                ->setData('firstname', $memberContact->getFirstName())
+                ->setData('lastname', $memberContact->getSurname())
+                ->setData('lsr_username', $contact->getLscMemberLoginCard()->getLoginId())
+                ->setData('lsr_id', $memberContact->getContactNo())
+                ->setData('lsr_cardid', $contact->getLscMemberLoginCard()->getCardNo());
             $this->customerResourceModel->save($customer);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         // Save Address
-        $addressesArray = $contact->getAddresses();
-        if (!empty($addressesArray)) {
-            $addressArray = $addressesArray->getAddress();
-            $addressInfo  = reset($addressArray);
-            if ($addressInfo instanceof Entity\Address && !empty($addressInfo->getCountry())) {
-                $address = $this->addressFactory->create();
-                $address->setCustomerId($customer->getId())
-                    ->setFirstname($contact->getFirstName())
-                    ->setLastname($contact->getLastName())
-                    ->setCountryId($this->getCountryId($addressInfo->getCountry()))
-                    ->setPostcode($addressInfo->getPostCode())
-                    ->setCity($addressInfo->getCity())
-                    ->setTelephone($addressInfo->getPhoneNumber())
-                    ->setStreet([$addressInfo->getAddress1(), $addressInfo->getAddress2()])
-                    ->setIsDefaultBilling('1')
-                    ->setIsDefaultShipping('1');
-                $regionName = $addressInfo->getCounty();
-                if (!empty($regionName)) {
-                    $regionDataFactory = $this->regionFactory->create();
-                    $address->setRegion($regionDataFactory->setRegion($regionName));
-                    $regionFactory = $this->region->create();
-                    $regionId      = $regionFactory->loadByName($regionName, $addressInfo->getCountry());
-                    if (!empty($regionId->getId())) {
-                        $address->setRegionId($regionId->getId());
-                    }
-                }
-                try {
-                    $this->addressRepository->save($address);
-                } catch (Exception $e) {
-                    $this->_logger->error($e->getMessage());
+        if (!empty($memberContact->getCountryRegionCode())) {
+            $address = $this->addressFactory->create();
+            $address->setCustomerId($customer->getId())
+                ->setFirstname($memberContact->getFirstName())
+                ->setLastname($memberContact->getSurname())
+                ->setCountryId($this->getCountryId($memberContact->getCountryRegionCode()))
+                ->setPostcode($memberContact->getPostCode())
+                ->setCity($memberContact->getCity())
+                ->setTelephone($memberContact->getPhoneno())
+                ->setStreet([$memberContact->getAddress(), $memberContact->getAddress2()])
+                ->setIsDefaultBilling('1')
+                ->setIsDefaultShipping('1');
+            $regionName = $memberContact->getCounty();
+            if (!empty($regionName)) {
+                $regionDataFactory = $this->regionFactory->create();
+                $address->setRegion($regionDataFactory->setRegion($regionName));
+                $regionFactory = $this->region->create();
+                $regionId = $regionFactory->loadByName($regionName, $memberContact->getCountry());
+                if (!empty($regionId->getId())) {
+                    $address->setRegionId($regionId->getId());
                 }
             }
+            try {
+                $this->addressRepository->save($address);
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
         }
+
         return $customer;
     }
 
@@ -1232,7 +930,7 @@ class ContactHelper extends AbstractHelper
     /**
      * Saving additional customer values
      *
-     * @param MemberContact $contact
+     * @param mixed $contact
      * @param Customer $customer
      * @return mixed
      * @throws InputException
@@ -1242,24 +940,18 @@ class ContactHelper extends AbstractHelper
      */
     public function setCustomerAdditionalValues($contact, $customer)
     {
-        if (!empty($contact->getBirthDay()) && $contact->getBirthDay() != '1753-01-01T00:00:00'
-            && $contact->getBirthDay() != '1900-01-01T00:00:00') {
-            $customer->setData('dob', $this->date->date("Y-m-d", strtotime($contact->getBirthDay())));
-        }
-        if (!empty($contact->getGender())) {
-            $genderValue = '';
-            if ($contact->getGender() == Entity\Enum\Gender::MALE) {
-                $genderValue = 1;
-            } else {
-                if ($contact->getGender() == Entity\Enum\Gender::FEMALE) {
-                    $genderValue = 2;
-                } else {
-                    if ($contact->getGender() == Entity\Enum\Gender::UNKNOWN) {
-                        $genderValue = 3;
-                    }
-                }
+        if ($contact instanceof Entity\GetMemberContactInfo_GetMemberContactInfo) {
+            $dob = $contact->getLscMemberContact()->getDateOfBirth();
+
+            if (!empty($dob) && $dob != '0001-01-01') {
+                $customer->setData('dob', $this->dateTime->date("Y-m-d", strtotime($dob)));
             }
-            $customer->setData('gender', $genderValue);
+
+            $gender = $contact->getLscMemberContact()->getContactGender();
+
+            if (!empty($gender)) {
+                $customer->setData('gender', $gender);
+            }
         }
 
         return $customer;
@@ -1568,41 +1260,70 @@ class ContactHelper extends AbstractHelper
     /**
      * Syncing updated customer information to central side
      *
-     * @param object $customer
-     * @param null $customerAddress
-     * @return Entity\ContactUpdateResponse|MemberContact|ResponseInterface|null
-     * @throws InvalidEnumException
+     * @param Customer $customer
+     * @param $customerAddress
+     * @return NavException|NavObjectReferenceNotAnInstanceException|MemberContactUpdateResult|DataObject|string|null
      */
     public function updateCustomerAccount($customer, $customerAddress = null)
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request       = new Operation\ContactUpdate();
-        $entity        = new Entity\ContactUpdate();
-        $memberContact = new MemberContact();
-        // @codingStandardsIgnoreEnd
+        $memberContactUpdateOperation = new MemberContactUpdate();
+        $contactCreateParameters = [
+            ContactCreateParameters::CONTACT_ID => $customer->getData('lsr_id'),
+            ContactCreateParameters::EMAIL => $customer->getData('email'),
+            ContactCreateParameters::FIRST_NAME => $customer->getData('firstname'),
+            ContactCreateParameters::LAST_NAME => $customer->getData('lastname'),
+            ContactCreateParameters::LOGIN_ID => $customer->getData('lsr_username'),
+            ContactCreateParameters::COUNTRY => $customerAddress->getData('country_id'),
+            ContactCreateParameters::CITY => $customerAddress->getData('city'),
+            ContactCreateParameters::PHONE => $customerAddress->getData('telephone'),
+            ContactCreateParameters::POST_CODE => $customerAddress->getData('postcode'),
+            ContactCreateParameters::ADDRESS1 => $customerAddress->getStreetLine(1),
+            ContactCreateParameters::ADDRESS2 => $customerAddress->getStreetLine(2),
+        ];
+
+        if ($loginContact = $this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT)) {
+            $accountId = $loginContact->getLscMemberAccount() ? $loginContact->getLscMemberAccount()->getNo() : '';
+            $contactCreateParameters[ContactCreateParameters::ACCOUNT_ID] = $accountId;
+        }
+
+        if (!empty($customer->getData('gender'))) {
+            $contactCreateParameters[ContactCreateParameters::GENDER] = $customer->getData('gender');
+        }
+
 
         if (!empty($customer->getData('dob'))) {
-            $dob = $this->date->date("Y-m-d\T00:00:00", strtotime($customer->getData('dob')));
-            $memberContact->setBirthDay($dob);
-        }
-        $memberContact->setFirstName($customer->getFirstname())
-            ->setGender($this->getGenderStringById($customer->getData('gender')))
-            ->setLastName($customer->getLastname())
-            ->setUserName($customer->getData('lsr_username'))
-            ->setEmail($customer->getEmail())
-            ->setMiddleName('  ')
-            ->setId($customer->getData('lsr_id'))
-            ->setCards($this->setCards($this->setCard($customer->getData('lsr_cardid'))));
-
-        if ($customerAddress instanceof Address) {
-            $memberContact->setAddresses($this->setAddresses($this->setAddress($customerAddress)));
+            $dob = $this->dateTime->date("Y-m-d", $customer->getData('dob'));
+            $contactCreateParameters[ContactCreateParameters::DATE_OF_BIRTH] = $dob;
         }
 
-        $entity->setContact($memberContact);
-        $response = $request->execute($entity);
+        $rootMemberContactCreate = $memberContactUpdateOperation->createInstance(
+            RootMemberContactCreate::class,
+            ['data' => [
+                'ContactCreateParameters' =>
+                    $memberContactUpdateOperation->createInstance(
+                        ContactCreateParameters::class,
+                        ['data' => $contactCreateParameters]
+                    ),
+            ]]
+        );
+        $memberContactCreateXml = $memberContactUpdateOperation->createInstance(
+            Entity\MemberContactUpdate::class,
+            ['data' => [
+                'memberContactUpdateXML' => $rootMemberContactCreate
+            ]]
+        );
+        $memberContactUpdateOperation->setRequest($memberContactCreateXml);
 
-        return $response ? $response->getResult() : $response;
+        try {
+            $response = $memberContactUpdateOperation->execute();
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        // @codingStandardsIgnoreEnd
+
+        return $response;
     }
 
     /**
@@ -2034,5 +1755,43 @@ class ContactHelper extends AbstractHelper
         }
 
         return $response;
+    }
+
+    /**
+     * Flat the given model into serializable array
+     *
+     * @param DataObject $model
+     * @return array
+     */
+    public function flattenModel(DataObject $model): array
+    {
+        $data = $model->getData();
+
+        foreach ($data as $key => $value) {
+            // Handle nested model
+            if ($value instanceof DataObject) {
+                $data[$key] = [
+                    '__is_model__' => true,
+                    '__class__' => get_class($value),
+                    'data' => $this->flattenModel($value),
+                ];
+            } elseif (is_array($value)) {
+                $data[$key] = array_map(function ($item) {
+                    if ($item instanceof DataObject) {
+                        return [
+                            '__is_model__' => true,
+                            '__class__' => get_class($item),
+                            'data' => $this->flattenModel($item),
+                        ];
+                    }
+                    return $item;
+                }, $value);
+            }
+        }
+
+        return [
+            '__class__' => get_class($model),
+            'data' => $data
+        ];
     }
 }

@@ -3,6 +3,7 @@
 namespace Ls\Customer\Plugin\Customer\Captcha\Observer;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Captcha\Observer\CheckUserCreateObserver;
@@ -85,13 +86,15 @@ class CheckUserCreate
      * @param object $result
      * @param Observer $observer
      * @return void
+     * @throws GuzzleException
      * @throws LocalizedException
      * @throws NoSuchEntityException
+     * @throws Zend_Log_Exception
      */
     public function afterExecute(
-        \Magento\Captcha\Observer\CheckUserCreateObserver $subject,
+        CheckUserCreateObserver $subject,
         object $result,
-        \Magento\Framework\Event\Observer $observer
+        Observer $observer
     ) {
         if (!$this->actionFlag->get('', ActionInterface::FLAG_NO_DISPATCH)) {
             $this->customerRegisterationOnCentral($observer);
@@ -104,7 +107,7 @@ class CheckUserCreate
      * @param Observer $observer
      * @return $this
      * @throws LocalizedException
-     * @throws NoSuchEntityException|Zend_Log_Exception
+     * @throws NoSuchEntityException|Zend_Log_Exception|GuzzleException
      */
     public function customerRegisterationOnCentral($observer)
     {
