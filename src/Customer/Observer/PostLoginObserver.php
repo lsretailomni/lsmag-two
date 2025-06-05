@@ -3,7 +3,6 @@
 namespace Ls\Customer\Observer;
 
 use GuzzleHttp\Exception\GuzzleException;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\ContactSearchType;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Exception\LocalizedException;
@@ -55,13 +54,10 @@ class PostLoginObserver extends AbstractOmniObserver
                     $this->lsr->getCustomerIntegrationOnFrontend()
                 )
             ) {
-                $contact = $this->contactHelper->getCustomerByUsernameOrEmailFromLsCentral(
-                    $customer->getEmail(),
-                    ContactSearchType::EMAIL
-                );
-                if (!empty($contact)) {
-                    $this->contactHelper->updateBasketAndWishlistAfterLogin($contact);
-                }
+                $contact = $this->contactHelper->getCentralCustomerByEmail($customer->getEmail());
+//                if (!empty($contact)) {
+//                    $this->contactHelper->updateBasketAndWishlistAfterLogin($contact);
+//                }
             } else {
                 $this->contactHelper->unsetBasketUpdateChecking();
             }

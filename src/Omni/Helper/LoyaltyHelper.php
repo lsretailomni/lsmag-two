@@ -4,6 +4,7 @@ namespace Ls\Omni\Helper;
 
 use Carbon\Carbon;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
@@ -316,7 +317,9 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Convert Point Rate into Values
      *
-     * @return float|Entity\GetPointRateResponse|ResponseInterface|null
+     * @param $storeId
+     * @return float|int|string|null
+     * @throws GuzzleException
      * @throws NoSuchEntityException
      */
     public function getPointRate($storeId = null)
@@ -325,8 +328,7 @@ class LoyaltyHelper extends AbstractHelperOmni
             $storeId = $this->lsr->getCurrentStoreId();
         }
 
-        $response = null;
-
+        $rate = 0;
         if ($this->lsr->isLSR($storeId) && $this->isEnabledLoyaltyPoints()) {
             $cacheId  = LSR::POINTRATE . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
@@ -334,31 +336,39 @@ class LoyaltyHelper extends AbstractHelperOmni
             if ($response !== false) {
                 return $this->formatValue($response);
             }
-            // @codingStandardsIgnoreStart
-            $request = new Operation\GetPointRate();
-            $entity  = new Entity\GetPointRate();
-            // @codingStandardsIgnoreEnd
+            $currencyCode = $this->lsr->getStoreCurrencyCode();
+            $response = current($this->dataHelper->fetchGivenTableData(
+                'Currency Exchange Rate',
+                '',
+                'Currency Code',
+                $currencyCode
+            ));
 
-            $currency = $this->lsr->getStoreCurrencyCode();
-            $entity->setCurrency($currency);
-
-            try {
-                $response = $request->execute($entity);
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
+            if (!empty($response['LSC POS Exchange Rate Amount']) &&
+                !empty($response['LSC POS Rel. Exch. Rate Amount'])
+            ) {
+                $rate = ((1 / $response['LSC POS Exchange Rate Amount']) * $response['LSC POS Rel. Exch. Rate Amount']);
+            } else {
+                if (!empty($response['Exchange Rate Amount']) &&
+                    !empty($response['Relational Exch. Rate Amount'])
+                ) {
+                    $rate = ((1 / $response['Exchange Rate Amount']) * $response['Relational Exch. Rate Amount']);
+                }
             }
-            if (!empty($response)) {
+
+            if (!empty($rate)) {
                 $this->cacheHelper->persistContentInCache(
                     $cacheId,
-                    $response->getResult(),
+                    $rate,
                     [Type::CACHE_TAG],
                     86400
                 );
 
-                return $this->formatValue($response->getResult());
+                return $rate;
             }
         }
-        return $response;
+
+        return $rate;
     }
 
     /**

@@ -57,6 +57,9 @@ class CacheHelper extends AbstractHelper
         if ($cachedContent) {
             // phpcs:disable Magento2.Security.InsecureFunction.FoundWithAlternative
             $cached = unserialize($cachedContent);
+            if (!is_array($cached)) {
+                return $cached;
+            }
             return $this->restoreModel($cached);
         }
 

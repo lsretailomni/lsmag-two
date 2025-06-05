@@ -198,6 +198,55 @@ class ContactHelper extends AbstractHelperOmni
     }
 
     /**
+     * Get customer from central based on given search type
+     *
+     * @param string $searchStr
+     * @param int $searchType
+     * @return false|Entity\GetMemberContactInfo_GetMemberContactInfo|mixed|null
+     */
+    public function getCentralCustomerBasedOnSearchType(string $searchStr, int $searchType)
+    {
+        $response = null;
+        $contactSearchOperation = new GetMemberContactInfo_GetMemberContactInfo();
+        $contactSearchOperation->setOperationInput([
+            'contactSearchType' => $searchType,
+            'searchText' => $searchStr,
+            'searchMethod' => 0,
+            'maxResultContacts' => 0,
+        ]);
+        try {
+            $response = current($contactSearchOperation->execute()->getRecords());
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return $response;
+    }
+
+    /**
+     * Check username exist in LS Central or not
+     *
+     * @param string $username
+     * @return bool
+     * @throws InvalidEnumException|NoSuchEntityException
+     */
+    public function isUsernameExistInLsCentral($username)
+    {
+        if ($this->lsr->getStoreConfig(
+            LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_USERNAME_API_CALL,
+            $this->lsr->getCurrentStoreId()
+        )) {
+            $response = $this->getCentralCustomerBasedOnSearchType($username, 5);
+
+            return $response &&
+                $response->getLscMemberLoginCard() &&
+                $response->getLscMemberLoginCard()->getLoginId() == $username;
+        }
+
+        return false;
+    }
+
+    /**
      * Check email exist in LS Central or not
      *
      * @param string $email
@@ -221,45 +270,18 @@ class ContactHelper extends AbstractHelperOmni
      */
     public function getCentralCustomerByEmail(string $email)
     {
-        $response = null;
-        $contactSearchOperation = new GetMemberContactInfo_GetMemberContactInfo();
-        $contactSearchOperation->setOperationInput([
-            'contactSearchType' => 3,
-            'searchText' => $email,
-            'searchMethod' => 0,
-            'maxResultContacts' => 0,
-        ]);
-        try {
-            $response = current($contactSearchOperation->execute()->getRecords());
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-
-        return $response;
+        return $this->getCentralCustomerBasedOnSearchType($email, 3);
     }
 
     /**
      * Get customer from central based on cardId
      *
      * @param string $cardId
+     * @return false|Entity\GetMemberContactInfo_GetMemberContactInfo|mixed|null
      */
     public function getCentralCustomerByCardId(string $cardId)
     {
-        $response = null;
-        $contactSearchOperation = new GetMemberContactInfo_GetMemberContactInfo();
-        $contactSearchOperation->setOperationInput([
-            'contactSearchType' => 0,
-            'searchText' => $cardId,
-            'searchMethod' => 0,
-            'maxResultContacts' => 0,
-        ]);
-        try {
-            $response = current($contactSearchOperation->execute()->getRecords());
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-
-        return $response;
+        return $this->getCentralCustomerBasedOnSearchType($cardId, 0);
     }
 
     /**
@@ -416,41 +438,6 @@ class ContactHelper extends AbstractHelperOmni
         } else {
             return false;
         }
-    }
-
-    /**
-     * Check username exist in LS Central or not
-     *
-     * @param string $username
-     * @return bool
-     * @throws InvalidEnumException|NoSuchEntityException
-     */
-    public function isUsernameExistInLsCentral($username)
-    {
-        if ($this->lsr->getStoreConfig(
-            LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_USERNAME_API_CALL,
-            $this->lsr->getCurrentStoreId()
-        )) {
-            $response = null;
-            $contactSearchOperation = new GetMemberContactInfo_GetMemberContactInfo();
-            $contactSearchOperation->setOperationInput([
-                'contactSearchType' => 5,
-                'searchText' => $username,
-                'searchMethod' => 0,
-                'maxResultContacts' => 0,
-            ]);
-            try {
-                $response = current($contactSearchOperation->execute()->getRecords());
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
-            }
-
-            return $response &&
-                $response->getLscMemberLoginCard() &&
-                $response->getLscMemberLoginCard()->getLoginId() == $username;
-        }
-
-        return false;
     }
 
     /**
