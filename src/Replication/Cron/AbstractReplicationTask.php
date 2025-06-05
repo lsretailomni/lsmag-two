@@ -4,10 +4,10 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Core\Model\LSR;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Replication\Logger\Logger;
+use \Ls\Core\Model\Data as LsHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
@@ -147,28 +147,27 @@ abstract class AbstractReplicationTask
     public function updateSuccessStatus($storeId = false)
     {
         $confPath = $this->getConfigPath();
-        if ($confPath == "ls_mag/replication/repl_attribute" ||
-            $confPath == "ls_mag/replication/repl_attribute_option_value") {
+
+        if ($confPath == ReplLscAttributeTask::CONFIG_PATH ||
+            $confPath == ReplLscAttributeOptionValueTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
-        } elseif ($confPath == "ls_mag/replication/repl_extended_variant_value") {
+        } elseif ($confPath == ReplLscWiExtdVariantValuesTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
-        } elseif ($confPath == "ls_mag/replication/repl_item_variant") {
+        } elseif ($confPath == ReplItemVariantTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT);
-        } elseif ($confPath == "ls_mag/replication/repl_hierarchy_node") {
+        } elseif ($confPath == ReplHierarchynodesviewTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_CATEGORY);
-        } elseif ($confPath == "ls_mag/replication/repl_discount") {
-            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_DISCOUNT);
-        } elseif ($confPath == "ls_mag/replication/repl_discount_setup") {
+        } elseif ($confPath == ReplPeriodicdiscviewTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP);
-        } elseif ($confPath == "ls_mag/replication/repl_discount_validation") {
+        } elseif ($confPath == ReplLscValidationPeriodTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_DISCOUNT_VALIDATION);
-        } elseif ($confPath == "ls_mag/replication/repl_item") {
+        } elseif ($confPath == ReplLscWiItemBufferTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_PRODUCT);
-        } elseif ($confPath == "ls_mag/replication/repl_hierarchy_leaf") {
+        } elseif ($confPath == ReplHierarchynodeslinkviewTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ITEM_UPDATES);
-        } elseif ($confPath == "ls_mag/replication/repl_vendor") {
+        } elseif ($confPath == ReplVendorTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_VENDOR);
-        } elseif ($confPath == "ls_mag/replication/repl_loy_vendor_item_mapping") {
+        } elseif ($confPath == ReplVendoritemviewTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE);
         }
     }
@@ -661,7 +660,6 @@ abstract class AbstractReplicationTask
                     return;
                 }
             }
-            $isFirstTime = true;
 
             $request = $this->makeRequest(
                 '',
@@ -674,7 +672,7 @@ abstract class AbstractReplicationTask
                 $lastKey
             );
 
-            $this->processResponseGivenRequest($request, $storeId, $isFirstTime);
+            $this->processResponseGivenRequest($request, $storeId);
         } else {
             $this->logger->debug('LS Retail validation failed for store id ' . $storeId);
         }
@@ -687,9 +685,8 @@ abstract class AbstractReplicationTask
      *
      * @param $request
      * @param $storeId
-     * @param $isFirstTime
      */
-    public function processResponseGivenRequest($request, $storeId, $isFirstTime = 1)
+    public function processResponseGivenRequest($request, $storeId)
     {
         try {
             $properties       = $this->getProperties();
@@ -752,14 +749,6 @@ abstract class AbstractReplicationTask
             $this->defaultScope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
         } else {
             $confPath = $this->getConfigPath();
-
-//            if ($confPath == ReplEcommDataTranslationTask::CONFIG_PATH ||
-//                $confPath == ReplEcommDataTranslationLangCodeTask::CONFIG_PATH ||
-//                $confPath == ReplEcommHtmlTranslationTask::CONFIG_PATH ||
-//                $confPath == ReplEcommDealHtmlTranslationTask::CONFIG_PATH
-//            ) {
-//                $this->defaultScope = ScopeInterface::SCOPE_STORES;
-//            }
             if ($confPath == ReplLscDataTranslationTask::CONFIG_PATH ||
                 $confPath == ReplLscItemHtmlMlTask::CONFIG_PATH
             ) {
