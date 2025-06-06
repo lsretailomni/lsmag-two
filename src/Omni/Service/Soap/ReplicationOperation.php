@@ -1,557 +1,583 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ls\Omni\Service\Soap;
 
-use \Ls\Core\Code\AbstractGenerator;
-use \Ls\Core\Model\LSR;
+use Ls\Core\Code\AbstractGenerator;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\ClassMap;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Module\Dir\Reader;
 use Magento\Framework\ObjectManagerInterface;
-use ReflectionClass;
-use ReflectionProperty;
 
 /**
- * Note  : There are lots of things wrong in this file, all needs to be done according to the Magento coding standards.
- *
- * Class ReplicationOperation
- * @package Ls\Omni\Service\Soap
- * @
+ * Handles code generation paths and metadata discovery for LS replication operations.
  */
 class ReplicationOperation extends Operation
 {
-    const BASE_API_NAMESPACE = 'Ls\Replication\Api';
-    const BASE_MODEL_NAMESPACE = 'Ls\Replication\Model';
-    const BASE_CRON_NAMESPACE = 'Ls\Replication\Cron';
-    const BASE_OMNI_NAMESPACE = 'Ls\Omni\Client\Ecommerce\Entity';
-    const BASE_OPERATION_NAMESPACE = 'Ls\Omni\Client\Ecommerce\Operation';
-
-    const KNOWN_RESULT_PROPERTIES = ['LastKey', 'MaxKey', 'RecordsRemaining'];
+    public const BASE_API_NAMESPACE        = 'Ls\\Replication\\Api';
+    public const BASE_MODEL_NAMESPACE      = 'Ls\\Replication\\Model';
+    public const BASE_CRON_NAMESPACE       = 'Ls\\Replication\\Cron';
+    public const BASE_OMNI_NAMESPACE       = 'Ls\\Omni\\Client\\Ecommerce\\Entity';
+    public const BASE_OPERATION_NAMESPACE  = 'Ls\\Omni\\Client\\Ecommerce\\Operation';
+    public const KNOWN_RESULT_PROPERTIES   = ['LastKey', 'MaxKey', 'RecordsRemaining'];
 
     /** @var string */
-    public $entity_name;
+    public string $entityName;
+
     /** @var string */
-    public $base_path;
+    public string $basePath;
 
     /**
      * @param string $name
      * @param Element $request
      * @param Element $response
+     * @throws \Exception
      */
     public function __construct(
-        $name,
+        string $name,
         Element $request,
         Element $response
     ) {
         parent::__construct($name, $request, $response);
-        $this->entity_name = $name;
-        $this->base_path   = $this->discoverBasePath();
+        $this->entityName = ClassMap::getClassMap()[$name] ?? $name;
+        $this->basePath   = $this->discoverBasePath();
     }
 
     /**
-     * @param Element $response
+     * Get Magento object manager
      *
-     * @return string
-     */
-    private function discoverEntity(Element $response)
-    {
-
-        $response_fqn = AbstractGenerator::fqn(self::BASE_OMNI_NAMESPACE, $response->getName());
-        // @codingStandardsIgnoreLine
-        $response_reflection = new ReflectionClass($response_fqn);
-        $result_docbblock    = $response_reflection->getMethod('getResult')->getDocComment();
-
-        preg_match('/@return\s(:?[\w]+)/', $result_docbblock, $matches);
-        $result_fqn = AbstractGenerator::fqn(self::BASE_OMNI_NAMESPACE, $matches[1]);
-        // @codingStandardsIgnoreLine
-        $result_reflection = new ReflectionClass($result_fqn);
-
-        $array_of = null;
-        foreach ($result_reflection->getProperties() as $array_of) {
-            // FILTER OUT THE MAIN ARRAY_OF ENTITY
-            if (array_search($array_of->getName(), self::KNOWN_RESULT_PROPERTIES) === false) {
-                break;
-            }
-        }
-        $array_of_docblock = $array_of->getDocComment();
-        preg_match('/@property\s(:?[\w]+)\s(:?\$[\w]+)/', $array_of_docblock, $matches);
-        $array_of_fqn = AbstractGenerator::fqn(self::BASE_OMNI_NAMESPACE, $matches[1]);
-        // @codingStandardsIgnoreLine
-        $array_of_reflection = new ReflectionClass($array_of_fqn);
-
-        // DRILL INTO THE MAIN ENTIY
-        $array_of_properties = $array_of_reflection->getProperties();
-        /** @var ReflectionProperty $main_entity */
-        $main_entity          = array_pop($array_of_properties);
-        $main_entity_docblock = $main_entity->getDocComment();
-        preg_match('/@property\s(:?[\w]+)\[\]\s(:?\$[\w]+)/', $main_entity_docblock, $matches);
-        $main_entity = $matches[1];
-
-        if ($main_entity == 'Item') {
-            return 'NavItem';
-        }
-
-        return $main_entity;
-    }
-
-    /**
      * @return ObjectManagerInterface
      */
-
-    private function getObjectManager()
+    private function getObjectManager(): ObjectManagerInterface
     {
         return ObjectManager::getInstance();
     }
 
     /**
+     * Get directory reader for Magento module paths
+     *
      * @return Reader
      */
-    private function getDirReader()
+    private function getDirReader(): Reader
     {
-        // @codingStandardsIgnoreLine
-        return $this->getObjectManager()->get('\Magento\Framework\Module\Dir\Reader');
+        return $this->getObjectManager()->get(Reader::class);
     }
 
     /**
+     * Discover base module path
+     *
      * @return string
      */
-    private function discoverBasePath()
+    private function discoverBasePath(): string
     {
-
         return $this->getDirReader()->getModuleDir('', 'Ls_Replication');
     }
 
     /**
+     * Get screaming snake case name for job
+     *
      * @return string
      */
-    public function getScreamingSnakeName()
+    public function getScreamingSnakeName(): string
     {
-        return str_replace('REPL_ECOMM_', '', $this->case_helper->toScreamingSnakeCase($this->name));
+        return str_replace('REPL_ECOMM_', '', $this->caseHelper->toScreamingSnakeCase($this->name));
     }
 
     /**
+     * Get entity ID field
+     *
      * @return string
      */
-    public function getEntityFieldId()
+    public function getEntityFieldId(): string
     {
-        return $this->entity_name . 'Id';
+        return $this->entityName . 'Id';
     }
 
     /**
+     * Get database column ID
+     *
      * @return string
      */
-    public function getTableColumnId()
+    public function getTableColumnId(): string
     {
         return $this->getTableName() . '_id';
     }
 
     /**
+     * Get database table name
+     *
      * @return string
      */
-    public function getTableName()
+    public function getTableName(): string
     {
-        return strtolower($this->case_helper->toSnakeCase($this->getModelName()));
+        return strtolower($this->caseHelper->toSnakeCase($this->getModelName()));
     }
 
     /**
+     * Get fully qualified name of Omni entity
+     *
      * @return string
      */
-    public function getOmniEntityFqn()
+    public function getOmniEntityFqn(): string
     {
-        $entity_name = $this->getEntityName();
-        if ($entity_name == 'NavItem') {
-            $entity_name = 'Item';
-        }
-
-        return AbstractGenerator::fqn(self::BASE_OMNI_NAMESPACE, $entity_name);
+        return ($this->getEntityName() === 'NavItem') ? 'Item' : $this->getEntityName();
     }
 
     /**
+     * Get current entity name
+     *
      * @return string
      */
-    public function getEntityName()
+    public function getEntityName(): string
     {
-        return $this->entity_name;
+        return $this->entityName;
     }
 
     /**
+     * Get generated model name
+     *
      * @return string
      */
-    public function getModelName()
+    public function getModelName(): string
     {
-        return 'Repl'. $this->getEntityName();
+        return 'Repl' . $this->getName(true);
     }
 
     /**
+     * Get fully qualified name of model
+     *
      * @return string
      */
-    public function getMainEntityFqn()
+    public function getMainEntityFqn(): string
     {
         return AbstractGenerator::fqn(self::BASE_MODEL_NAMESPACE, $this->getModelName());
     }
 
     /**
-     * @param bool $absolute
+     * Get model file path
      *
+     * @param bool $absolute
      * @return string
      */
-    public function getMainEntityPath($absolute = false)
+    public function getMainEntityPath(bool $absolute = false): string
     {
         return $this->getPath(AbstractGenerator::path('Model', $this->getModelName() . '.php'), $absolute);
     }
 
-    private function getPath($path, $absolute = false)
+    /**
+     * Build full or relative path
+     *
+     * @param string $path
+     * @param bool $absolute
+     * @return string
+     */
+    private function getPath(string $path, bool $absolute = false): string
     {
-        if ($absolute) {
-            $path = AbstractGenerator::path($this->base_path, $path);
-        }
-
-        return $path;
-    }
-
-    public function getOperationFqn()
-    {
-        return AbstractGenerator::fqn(self::BASE_OPERATION_NAMESPACE, $this->getName());
+        return $absolute ? AbstractGenerator::path($this->basePath, $path) : $path;
     }
 
     /**
+     * Get fully qualified name of operation
+     *
      * @return string
      */
-    public function getFactoryFqn()
+    public function getOperationFqn(): string
+    {
+        return AbstractGenerator::fqn(
+            self::BASE_OPERATION_NAMESPACE,
+            str_replace(' ', '', $this->formatGivenValue($this->getName()))
+        );
+    }
+
+    /**
+     * Get fully qualified name of model factory
+     *
+     * @return string
+     */
+    public function getFactoryFqn(): string
     {
         return AbstractGenerator::fqn(self::BASE_MODEL_NAMESPACE, $this->getFactoryName());
     }
 
     /**
+     * Get model factory class name
+     *
      * @return string
      */
-    public function getFactoryName()
+    public function getFactoryName(): string
     {
-        return $this->entity_name . 'Factory';
+        return $this->getModelName() . 'Factory';
     }
 
     /**
+     * Get interface FQN
+     *
      * @return string
      */
-    public function getInterfaceFqn()
+    public function getInterfaceFqn(): string
     {
         return AbstractGenerator::fqn(self::BASE_API_NAMESPACE, 'Data', $this->getInterfaceName());
     }
 
     /**
-     * @return string
-     */
-    public function getInterfaceName()
-    {
-        return 'Repl'. $this->entity_name . 'Interface';
-    }
-
-    /**
-     * @param bool $absolute
+     * Get interface class name
      *
      * @return string
      */
-    public function getInterfacePath($absolute = false)
+    public function getInterfaceName(): string
+    {
+        return $this->getModelName() . 'Interface';
+    }
+
+    /**
+     * Get interface path
+     *
+     * @param bool $absolute
+     * @return string
+     */
+    public function getInterfacePath(bool $absolute = false): string
+    {
+        return $this->getPath(AbstractGenerator::path('Api', 'Data', $this->getInterfaceName() . '.php'), $absolute);
+    }
+
+    /**
+     * Get schema update path
+     *
+     * @param bool $absolute
+     * @return string
+     */
+    public function getSchemaUpdatePath(bool $absolute = false): string
     {
         return $this->getPath(
-            AbstractGenerator::path('Api', 'Data', $this->getInterfaceName() . '.php'),
+            AbstractGenerator::path(
+                'Setup',
+                'UpgradeSchema',
+                $this->getInterfaceName() . '.php'
+            ),
             $absolute
         );
     }
 
     /**
-     * @param bool $absolute
+     * Get repository interface FQN
      *
      * @return string
      */
-    public function getSchemaUpdatePath($absolute = false)
-    {
-        return $this->getPath(
-            AbstractGenerator::path('Setup', 'UpgradeSchema', $this->getInterfaceName() . '.php'),
-            $absolute
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function getRepositoryInterfaceFqn()
+    public function getRepositoryInterfaceFqn(): string
     {
         return AbstractGenerator::fqn(self::BASE_API_NAMESPACE, $this->getRepositoryInterfaceName());
     }
 
     /**
-     * @return string
-     */
-    public function getRepositoryInterfaceName()
-    {
-        return $this->entity_name . 'RepositoryInterface';
-    }
-
-    /**
-     * @param bool $absolute
+     * Get repository interface name
      *
      * @return string
      */
-    public function getRepositoryInterfacePath($absolute = false)
+    public function getRepositoryInterfaceName(): string
     {
-        return $this->getPath(
-            AbstractGenerator::path('Api', $this->getRepositoryInterfaceName() . '.php'),
-            $absolute
-        );
+        return $this->getModelName() . 'RepositoryInterface';
     }
 
     /**
+     * Get repository interface file path
+     *
+     * @param bool $absolute
      * @return string
      */
-    public function getRepositoryInterfaceFactoryFqn()
+    public function getRepositoryInterfacePath(bool $absolute = false): string
+    {
+        return $this->getPath(AbstractGenerator::path('Api', $this->getRepositoryInterfaceName() . '.php'), $absolute);
+    }
+
+    /**
+     * Get repository factory FQN
+     *
+     * @return string
+     */
+    public function getRepositoryInterfaceFactoryFqn(): string
     {
         return AbstractGenerator::fqn(self::BASE_API_NAMESPACE, $this->getRepositoryInterfaceFactoryName());
     }
 
     /**
+     * Get repository factory name
+     *
      * @return string
      */
-    public function getRepositoryInterfaceFactoryName()
+    public function getRepositoryInterfaceFactoryName(): string
     {
-        return $this->entity_name . 'RepositoryInterfaceFactory';
+        return $this->entityName . 'RepositoryInterfaceFactory';
     }
 
     /**
+     * Get resource collection factory FQN
+     *
      * @return string
      */
-    public function getResourceCollectionFactoryFqn()
+    public function getResourceCollectionFactoryFqn(): string
     {
         return $this->getResourceCollectionFqn() . 'Factory';
     }
 
     /**
+     * Get resource collection FQN
+     *
      * @return string
      */
-    public function getResourceCollectionFqn()
+    public function getResourceCollectionFqn(): string
     {
         return AbstractGenerator::fqn($this->getResourceCollectionNamespace(), 'Collection');
     }
 
     /**
-     * @return string
-     */
-    public function getResourceCollectionNamespace()
-    {
-        return AbstractGenerator::fqn(self::BASE_MODEL_NAMESPACE, 'ResourceModel', $this->entity_name);
-    }
-
-    /**
-     * @param bool $absolute
+     * Get resource collection namespace
      *
      * @return string
      */
-    public function getResourceCollectionPath($absolute = false)
+    public function getResourceCollectionNamespace(): string
     {
-        $relative_path = AbstractGenerator::path('Model', 'ResourceModel', $this->entity_name, 'Collection.php');
-
-        return $this->getPath($relative_path, $absolute);
+        return AbstractGenerator::fqn(self::BASE_MODEL_NAMESPACE, 'ResourceModel', $this->getModelName());
     }
 
     /**
+     * Get resource collection path
+     *
+     * @param bool $absolute
      * @return string
      */
-    public function getResourceModelFqn()
+    public function getResourceCollectionPath(bool $absolute = false): string
     {
-        return AbstractGenerator::fqn(self::BASE_MODEL_NAMESPACE, 'ResourceModel', $this->getEntityName());
+        $path = AbstractGenerator::path('Model', 'ResourceModel', $this->getModelName(), 'Collection.php');
+        return $this->getPath($path, $absolute);
     }
 
     /**
-     * @param bool $absolute
+     * Get resource model FQN
      *
      * @return string
      */
-    public function getResourceModelPath($absolute = false)
+    public function getResourceModelFqn(): string
     {
-        $relative_path = AbstractGenerator::path('Model', 'ResourceModel', $this->getEntityName() . '.php');
-
-        return $this->getPath($relative_path, $absolute);
+        return AbstractGenerator::fqn(self::BASE_MODEL_NAMESPACE, 'ResourceModel', $this->getModelName());
     }
 
     /**
+     * Get resource model file path
+     *
+     * @param bool $absolute
      * @return string
      */
-    public function getRepositoryFqn()
+    public function getResourceModelPath(bool $absolute = false): string
+    {
+        $path = AbstractGenerator::path('Model', 'ResourceModel', $this->getModelName() . '.php');
+        return $this->getPath($path, $absolute);
+    }
+
+    /**
+     * Get repository class FQN
+     *
+     * @return string
+     */
+    public function getRepositoryFqn(): string
     {
         return AbstractGenerator::fqn(self::BASE_MODEL_NAMESPACE, $this->getRepositoryName());
     }
 
     /**
-     * @return string
-     */
-    public function getRepositoryName()
-    {
-        return $this->getEntityName() . 'Repository';
-    }
-
-    /**
-     * @return string
-     */
-    public function getRepositoryTestName()
-    {
-        return $this->getEntityName() . 'RepositoryTest';
-    }
-
-    /**
-     * @param bool $absolute
+     * Get repository class name
      *
      * @return string
      */
-    public function getRepositoryPath($absolute = false)
+    public function getRepositoryName(): string
     {
-        $relative_path = AbstractGenerator::path('Model', $this->getRepositoryName() . '.php');
-
-        return $this->getPath($relative_path, $absolute);
+        return $this->getModelName() . 'Repository';
     }
 
     /**
-     * @param bool $absolute
+     * Get test class name for repository
      *
      * @return string
      */
-    public function getRepositoryTestPath($absolute = false)
+    public function getRepositoryTestName(): string
     {
-        $relative_path = AbstractGenerator::path('Test', 'Unit', 'Model', $this->getRepositoryTestName() . '.php');
-
-        return $this->getPath($relative_path, $absolute);
+        return $this->getModelName() . 'RepositoryTest';
     }
 
     /**
+     * Get repository path
+     *
+     * @param bool $absolute
      * @return string
      */
-    public function getJobId()
+    public function getRepositoryPath(bool $absolute = false): string
     {
-        return join('_', ['replication', $this->getTableName()]);
+        $path = AbstractGenerator::path('Model', $this->getRepositoryName() . '.php');
+        return $this->getPath($path, $absolute);
     }
 
     /**
+     * Get repository test path
+     *
+     * @param bool $absolute
      * @return string
      */
-    public function getJobFqn()
+    public function getRepositoryTestPath(bool $absolute = false): string
+    {
+        $path = AbstractGenerator::path('Test', 'Unit', 'Model', $this->getRepositoryTestName() . '.php');
+        return $this->getPath($path, $absolute);
+    }
+
+    /**
+     * Get unique job ID
+     *
+     * @return string
+     */
+    public function getJobId(): string
+    {
+        return implode('_', ['replication', $this->getTableName()]);
+    }
+
+    /**
+     * Get cron job class FQN
+     *
+     * @return string
+     */
+    public function getJobFqn(): string
     {
         return AbstractGenerator::fqn(self::BASE_CRON_NAMESPACE, $this->getJobName());
     }
 
     /**
+     * Get cron job class name
+     *
      * @return string
      */
-    public function getJobName()
+    public function getJobName(): string
     {
-        return $this->getName() . "Task";
+        return $this->getModelName() . 'Task';
     }
 
     /**
+     * Get cron job namespace
+     *
      * @return string
      */
-    public function getJobNamespace()
+    public function getJobNamespace(): string
     {
         return self::BASE_CRON_NAMESPACE;
     }
 
     /**
+     * Get cron job file path
+     *
      * @param bool $absolute
+     * @return string
+     */
+    public function getJobPath(bool $absolute = false): string
+    {
+        return $this->getPath(AbstractGenerator::path('Cron', $this->getJobName() . '.php'), $absolute);
+    }
+
+    /**
+     * Get search results interface name
      *
      * @return string
      */
-    public function getJobPath($absolute = false)
+    public function getSearchInterfaceName(): string
     {
-        $relative_path = AbstractGenerator::path('Cron', $this->getJobName() . '.php');
-
-        return $this->getPath($relative_path, $absolute);
+        return $this->getModelName() . 'SearchResultsInterface';
     }
 
     /**
+     * Get search results interface FQN
+     *
      * @return string
      */
-    public function getSearchInterfaceName()
-    {
-        return $this->getEntityName() . 'SearchResultsInterface';
-    }
-
-    /**
-     * @return string
-     */
-    public function getSearchInterfaceFqn()
+    public function getSearchInterfaceFqn(): string
     {
         return AbstractGenerator::fqn(self::BASE_API_NAMESPACE, 'Data', $this->getSearchInterfaceName());
     }
 
+    /**
+     * Get search interface file path
+     *
+     * @param bool $absolute
+     * @return string
+     */
+    public function getSearchInterfacePath(bool $absolute = false): string
+    {
+        $path = AbstractGenerator::path('Api', 'Data', $this->getSearchInterfaceName() . '.php');
+        return $this->getPath($path, $absolute);
+    }
 
     /**
-     * @param bool $absolute
+     * Get search result model name
      *
      * @return string
      */
-    public function getSearchInterfacePath($absolute = false)
+    public function getSearchName(): string
     {
-        $relative_path = AbstractGenerator::path('Api', 'Data', $this->getSearchInterfaceName() . '.php');
-
-        return $this->getPath($relative_path, $absolute);
+        return $this->getModelName() . 'SearchResults';
     }
 
     /**
+     * Get search result model FQN
+     *
      * @return string
      */
-    public function getSearchName()
-    {
-        return $this->getEntityName() . 'SearchResults';
-    }
-
-    /**
-     * @return string
-     */
-    public function getSearchFqn()
+    public function getSearchFqn(): string
     {
         return AbstractGenerator::fqn(self::BASE_MODEL_NAMESPACE, $this->getSearchName());
     }
 
     /**
-     * @param bool $absolute
+     * Get search result file path
      *
+     * @param bool $absolute
      * @return string
      */
-    public function getSearchPath($absolute = false)
+    public function getSearchPath(bool $absolute = false): string
     {
-        $relative_path = AbstractGenerator::path('Model', $this->getSearchName() . '.php');
-
-        return $this->getPath($relative_path, $absolute);
+        $path = AbstractGenerator::path('Model', $this->getSearchName() . '.php');
+        return $this->getPath($path, $absolute);
     }
 
     /**
+     * Get search factory class name
+     *
      * @return string
      */
-    public function getSearchFactory()
+    public function getSearchFactory(): string
     {
-        //echo $this->getSearchName()."\n";
         return $this->getSearchName() . 'Factory';
     }
 
     /**
+     * Get search factory class FQN
+     *
      * @return string
      */
-    public function getSearchFactoryFqn()
+    public function getSearchFactoryFqn(): string
     {
         return AbstractGenerator::fqn(self::BASE_MODEL_NAMESPACE, $this->getSearchFactory());
     }
 
     /**
-     * Doing for those jobs where we have identical table and we want to use the same db table but different cron job.
+     * Get identifier for alternate jobs that use the same table
      *
-     * @param $jobName
-     * @return array|false|string|string[]
+     * @param string $jobName
+     * @return string|false
      */
-    public function getIdenticalTableCronJob($jobName)
+    public function getIdenticalTableCronJob(string $jobName): string|false
     {
-        $lsr                           = ObjectManager::getInstance()->get(LSR::class);
-        $identicalTableCroJobList      = $lsr->getStoreConfig(LSR::SC_REPLICATION_IDENTICAL_TABLE_WEB_SERVICE_LIST);
-        $identicalTableCroJobListArray = explode(',', $identicalTableCroJobList);
-        if (in_array($jobName, $identicalTableCroJobListArray)) {
-            return strtolower(str_replace('Ecomm_', '', $this->case_helper->toSnakeCase($jobName)));
-        }
-        return false;
+        $lsr = ObjectManager::getInstance()->get(LSR::class);
+        $config = $lsr->getStoreConfig(LSR::SC_REPLICATION_IDENTICAL_TABLE_WEB_SERVICE_LIST);
+        $jobList = explode(',', $config);
+
+        return in_array($jobName, $jobList)
+            ? strtolower(str_replace('Ecomm_', '', $this->caseHelper->toSnakeCase($jobName)))
+            : false;
     }
 }

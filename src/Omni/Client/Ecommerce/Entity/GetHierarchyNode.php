@@ -20,100 +20,100 @@ class GetHierarchyNode extends \Magento\Catalog\Model\AbstractModel implements R
 
     public const HIERARCHY_CODE = 'hierarchyCode';
 
-    public const NODE_I_D = 'nodeID';
+    public const NODE_ID = 'nodeID';
 
     public const STORE_NO = 'storeNo';
 
-    public const GET_HIERARCHY_NODE_IN_X_M_L = 'getHierarchyNodeInXML';
+    public const GET_HIERARCHY_NODE_IN_XML = 'getHierarchyNodeInXML';
 
-    public const GET_HIERARCHY_NODE_OUT_X_M_L = 'getHierarchyNodeOutXML';
+    public const GET_HIERARCHY_NODE_OUT_XML = 'getHierarchyNodeOutXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $hierarchyCode
+     * @param ?string $hierarchyCode
      * @return $this
      */
-    public function setHierarchyCode($hierarchyCode)
+    public function setHierarchycode(?string $hierarchyCode)
     {
         $this->setData(self::HIERARCHY_CODE, $hierarchyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getHierarchyCode()
+    public function getHierarchycode() : ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
 
     /**
-     * @param string $nodeID
+     * @param ?string $nodeID
      * @return $this
      */
-    public function setNodeID($nodeID)
+    public function setNodeid(?string $nodeID)
     {
-        $this->setData(self::NODE_I_D, $nodeID);
+        $this->setData(self::NODE_ID, $nodeID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNodeID()
+    public function getNodeid() : ?string
     {
-        return $this->getData(self::NODE_I_D);
+        return $this->getData(self::NODE_ID);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -122,36 +122,36 @@ class GetHierarchyNode extends \Magento\Catalog\Model\AbstractModel implements R
      * @param RootGetHierarchyNodeIn $getHierarchyNodeInXML
      * @return $this
      */
-    public function setGetHierarchyNodeInXML($getHierarchyNodeInXML)
+    public function setGethierarchynodeinxml($getHierarchyNodeInXML)
     {
-        $this->setData(self::GET_HIERARCHY_NODE_IN_X_M_L, $getHierarchyNodeInXML);
+        $this->setData(self::GET_HIERARCHY_NODE_IN_XML, $getHierarchyNodeInXML);
         return $this;
     }
 
     /**
      * @return RootGetHierarchyNodeIn
      */
-    public function getGetHierarchyNodeInXML()
+    public function getGethierarchynodeinxml()
     {
-        return $this->getData(self::GET_HIERARCHY_NODE_IN_X_M_L);
+        return $this->getData(self::GET_HIERARCHY_NODE_IN_XML);
     }
 
     /**
      * @param RootGetHierarchyNodeOut $getHierarchyNodeOutXML
      * @return $this
      */
-    public function setGetHierarchyNodeOutXML($getHierarchyNodeOutXML)
+    public function setGethierarchynodeoutxml($getHierarchyNodeOutXML)
     {
-        $this->setData(self::GET_HIERARCHY_NODE_OUT_X_M_L, $getHierarchyNodeOutXML);
+        $this->setData(self::GET_HIERARCHY_NODE_OUT_XML, $getHierarchyNodeOutXML);
         return $this;
     }
 
     /**
      * @return RootGetHierarchyNodeOut
      */
-    public function getGetHierarchyNodeOutXML()
+    public function getGethierarchynodeoutxml()
     {
-        return $this->getData(self::GET_HIERARCHY_NODE_OUT_X_M_L);
+        return $this->getData(self::GET_HIERARCHY_NODE_OUT_XML);
     }
 }
 

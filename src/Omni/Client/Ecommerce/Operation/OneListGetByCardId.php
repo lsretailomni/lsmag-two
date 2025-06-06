@@ -78,7 +78,7 @@ class OneListGetByCardId extends AbstractOperation
     /**
      * @return OneListGetByCardIdRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new OneListGetByCardIdRequest();

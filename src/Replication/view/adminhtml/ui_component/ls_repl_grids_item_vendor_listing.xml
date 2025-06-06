@@ -19,14 +19,14 @@
                 Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
             </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_item_vendor_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">repl_loy_vendor_item_mapping_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">repl_vendoritemview_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">repl_loy_vendor_item_mapping_id</item>
+                        <item name="indexField" xsi:type="string">repl_vendoritemview_id</item>
                     </item>
                 </item>
             </argument>
@@ -139,7 +139,7 @@
                 </item>
             </argument>
         </column>
-        <column name="NavManufacturerId">
+        <column name="vendorno">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -150,7 +150,7 @@
                 </item>
             </argument>
         </column>
-        <column name="NavManufacturerItemId">
+        <column name="vendoritemno">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -161,7 +161,7 @@
                 </item>
             </argument>
         </column>
-        <column name="NavProductId">
+        <column name="itemno">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

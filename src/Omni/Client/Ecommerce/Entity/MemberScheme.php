@@ -47,55 +47,55 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     public const EXPIRATION_PERIOD_TYPE = 'ExpirationPeriodType';
 
     /**
-     * @param string $Code
+     * @param ?string $Code
      * @return $this
      */
-    public function setCode($Code)
+    public function setCode(?string $Code)
     {
         $this->setData(self::CODE, $Code);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCode()
+    public function getCode() : ?string
     {
         return $this->getData(self::CODE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $StartingCardNo
+     * @param ?string $StartingCardNo
      * @return $this
      */
-    public function setStartingCardNo($StartingCardNo)
+    public function setStartingcardno(?string $StartingCardNo)
     {
         $this->setData(self::STARTING_CARD_NO, $StartingCardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStartingCardNo()
+    public function getStartingcardno() : ?string
     {
         return $this->getData(self::STARTING_CARD_NO);
     }
@@ -104,7 +104,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param int $CardNoLength
      * @return $this
      */
-    public function setCardNoLength($CardNoLength)
+    public function setCardnolength($CardNoLength)
     {
         $this->setData(self::CARD_NO_LENGTH, $CardNoLength);
         return $this;
@@ -113,79 +113,79 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getCardNoLength()
+    public function getCardnolength()
     {
         return $this->getData(self::CARD_NO_LENGTH);
     }
 
     /**
-     * @param string $BarcodeMask
+     * @param ?string $BarcodeMask
      * @return $this
      */
-    public function setBarcodeMask($BarcodeMask)
+    public function setBarcodemask(?string $BarcodeMask)
     {
         $this->setData(self::BARCODE_MASK, $BarcodeMask);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeMask()
+    public function getBarcodemask() : ?string
     {
         return $this->getData(self::BARCODE_MASK);
     }
 
     /**
-     * @param string $DefaultCustDiscGroup
+     * @param ?string $DefaultCustDiscGroup
      * @return $this
      */
-    public function setDefaultCustDiscGroup($DefaultCustDiscGroup)
+    public function setDefaultcustdiscgroup(?string $DefaultCustDiscGroup)
     {
         $this->setData(self::DEFAULT_CUST_DISC_GROUP, $DefaultCustDiscGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDefaultCustDiscGroup()
+    public function getDefaultcustdiscgroup() : ?string
     {
         return $this->getData(self::DEFAULT_CUST_DISC_GROUP);
     }
 
     /**
-     * @param string $DefaultPriceGroup
+     * @param ?string $DefaultPriceGroup
      * @return $this
      */
-    public function setDefaultPriceGroup($DefaultPriceGroup)
+    public function setDefaultpricegroup(?string $DefaultPriceGroup)
     {
         $this->setData(self::DEFAULT_PRICE_GROUP, $DefaultPriceGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDefaultPriceGroup()
+    public function getDefaultpricegroup() : ?string
     {
         return $this->getData(self::DEFAULT_PRICE_GROUP);
     }
 
     /**
-     * @param string $ClubCode
+     * @param ?string $ClubCode
      * @return $this
      */
-    public function setClubCode($ClubCode)
+    public function setClubcode(?string $ClubCode)
     {
         $this->setData(self::CLUB_CODE, $ClubCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubCode()
+    public function getClubcode() : ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
@@ -194,7 +194,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param int $UpdateSequence
      * @return $this
      */
-    public function setUpdateSequence($UpdateSequence)
+    public function setUpdatesequence($UpdateSequence)
     {
         $this->setData(self::UPDATE_SEQUENCE, $UpdateSequence);
         return $this;
@@ -203,43 +203,43 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getUpdateSequence()
+    public function getUpdatesequence()
     {
         return $this->getData(self::UPDATE_SEQUENCE);
     }
 
     /**
-     * @param float $MinPointforUpgrade
+     * @param ?float $MinPointforUpgrade
      * @return $this
      */
-    public function setMinPointforUpgrade($MinPointforUpgrade)
+    public function setMinpointforupgrade(?float $MinPointforUpgrade)
     {
         $this->setData(self::MIN_POINTFOR_UPGRADE, $MinPointforUpgrade);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getMinPointforUpgrade()
+    public function getMinpointforupgrade() : ?float
     {
         return $this->getData(self::MIN_POINTFOR_UPGRADE);
     }
 
     /**
-     * @param string $WhenCheckforUpgraded
+     * @param ?string $WhenCheckforUpgraded
      * @return $this
      */
-    public function setWhenCheckforUpgraded($WhenCheckforUpgraded)
+    public function setWhencheckforupgraded(?string $WhenCheckforUpgraded)
     {
         $this->setData(self::WHEN_CHECKFOR_UPGRADED, $WhenCheckforUpgraded);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getWhenCheckforUpgraded()
+    public function getWhencheckforupgraded() : ?string
     {
         return $this->getData(self::WHEN_CHECKFOR_UPGRADED);
     }
@@ -248,7 +248,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
      * @param int $BufferDaysBeforeExpire
      * @return $this
      */
-    public function setBufferDaysBeforeExpire($BufferDaysBeforeExpire)
+    public function setBufferdaysbeforeexpire($BufferDaysBeforeExpire)
     {
         $this->setData(self::BUFFER_DAYS_BEFORE_EXPIRE, $BufferDaysBeforeExpire);
         return $this;
@@ -257,97 +257,97 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getBufferDaysBeforeExpire()
+    public function getBufferdaysbeforeexpire()
     {
         return $this->getData(self::BUFFER_DAYS_BEFORE_EXPIRE);
     }
 
     /**
-     * @param float $PointLimitforDowngrade
+     * @param ?float $PointLimitforDowngrade
      * @return $this
      */
-    public function setPointLimitforDowngrade($PointLimitforDowngrade)
+    public function setPointlimitfordowngrade(?float $PointLimitforDowngrade)
     {
         $this->setData(self::POINT_LIMITFOR_DOWNGRADE, $PointLimitforDowngrade);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPointLimitforDowngrade()
+    public function getPointlimitfordowngrade() : ?float
     {
         return $this->getData(self::POINT_LIMITFOR_DOWNGRADE);
     }
 
     /**
-     * @param string $NextScheme
+     * @param ?string $NextScheme
      * @return $this
      */
-    public function setNextScheme($NextScheme)
+    public function setNextscheme(?string $NextScheme)
     {
         $this->setData(self::NEXT_SCHEME, $NextScheme);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNextScheme()
+    public function getNextscheme() : ?string
     {
         return $this->getData(self::NEXT_SCHEME);
     }
 
     /**
-     * @param string $NextSchemeBenefits
+     * @param ?string $NextSchemeBenefits
      * @return $this
      */
-    public function setNextSchemeBenefits($NextSchemeBenefits)
+    public function setNextschemebenefits(?string $NextSchemeBenefits)
     {
         $this->setData(self::NEXT_SCHEME_BENEFITS, $NextSchemeBenefits);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNextSchemeBenefits()
+    public function getNextschemebenefits() : ?string
     {
         return $this->getData(self::NEXT_SCHEME_BENEFITS);
     }
 
     /**
-     * @param string $CardNoSeries
+     * @param ?string $CardNoSeries
      * @return $this
      */
-    public function setCardNoSeries($CardNoSeries)
+    public function setCardnoseries(?string $CardNoSeries)
     {
         $this->setData(self::CARD_NO_SERIES, $CardNoSeries);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNoSeries()
+    public function getCardnoseries() : ?string
     {
         return $this->getData(self::CARD_NO_SERIES);
     }
 
     /**
-     * @param string $ExpirationPeriodType
+     * @param ?string $ExpirationPeriodType
      * @return $this
      */
-    public function setExpirationPeriodType($ExpirationPeriodType)
+    public function setExpirationperiodtype(?string $ExpirationPeriodType)
     {
         $this->setData(self::EXPIRATION_PERIOD_TYPE, $ExpirationPeriodType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExpirationPeriodType()
+    public function getExpirationperiodtype() : ?string
     {
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
     }

@@ -30,13 +30,13 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
 
     public const MEMBER_COUPON_BUFFER = 'MemberCouponBuffer';
 
-    public const F_B_P_W_S_BUFFER = 'FBPWSBuffer';
+    public const FBPWSBUFFER = 'FBPWSBuffer';
 
     /**
      * @param MembershipCard $MembershipCard
      * @return $this
      */
-    public function setMembershipCard($MembershipCard)
+    public function setMembershipcard($MembershipCard)
     {
         $this->setData(self::MEMBERSHIP_CARD, $MembershipCard);
         return $this;
@@ -45,7 +45,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MembershipCard
      */
-    public function getMembershipCard()
+    public function getMembershipcard()
     {
         return $this->getData(self::MEMBERSHIP_CARD);
     }
@@ -54,7 +54,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
      * @param MemberAccount $MemberAccount
      * @return $this
      */
-    public function setMemberAccount($MemberAccount)
+    public function setMemberaccount($MemberAccount)
     {
         $this->setData(self::MEMBER_ACCOUNT, $MemberAccount);
         return $this;
@@ -63,7 +63,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberAccount
      */
-    public function getMemberAccount()
+    public function getMemberaccount()
     {
         return $this->getData(self::MEMBER_ACCOUNT);
     }
@@ -72,7 +72,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
      * @param MemberContact $MemberContact
      * @return $this
      */
-    public function setMemberContact($MemberContact)
+    public function setMembercontact($MemberContact)
     {
         $this->setData(self::MEMBER_CONTACT, $MemberContact);
         return $this;
@@ -81,7 +81,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberContact
      */
-    public function getMemberContact()
+    public function getMembercontact()
     {
         return $this->getData(self::MEMBER_CONTACT);
     }
@@ -90,7 +90,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
      * @param MemberAttributeList $MemberAttributeList
      * @return $this
      */
-    public function setMemberAttributeList($MemberAttributeList)
+    public function setMemberattributelist($MemberAttributeList)
     {
         $this->setData(self::MEMBER_ATTRIBUTE_LIST, $MemberAttributeList);
         return $this;
@@ -99,7 +99,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberAttributeList
      */
-    public function getMemberAttributeList()
+    public function getMemberattributelist()
     {
         return $this->getData(self::MEMBER_ATTRIBUTE_LIST);
     }
@@ -108,7 +108,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
      * @param MemberClub $MemberClub
      * @return $this
      */
-    public function setMemberClub($MemberClub)
+    public function setMemberclub($MemberClub)
     {
         $this->setData(self::MEMBER_CLUB, $MemberClub);
         return $this;
@@ -117,7 +117,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberClub
      */
-    public function getMemberClub()
+    public function getMemberclub()
     {
         return $this->getData(self::MEMBER_CLUB);
     }
@@ -126,7 +126,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
      * @param MemberScheme $MemberScheme
      * @return $this
      */
-    public function setMemberScheme($MemberScheme)
+    public function setMemberscheme($MemberScheme)
     {
         $this->setData(self::MEMBER_SCHEME, $MemberScheme);
         return $this;
@@ -135,7 +135,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberScheme
      */
-    public function getMemberScheme()
+    public function getMemberscheme()
     {
         return $this->getData(self::MEMBER_SCHEME);
     }
@@ -144,7 +144,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
      * @param MemberManagementSetup $MemberManagementSetup
      * @return $this
      */
-    public function setMemberManagementSetup($MemberManagementSetup)
+    public function setMembermanagementsetup($MemberManagementSetup)
     {
         $this->setData(self::MEMBER_MANAGEMENT_SETUP, $MemberManagementSetup);
         return $this;
@@ -153,7 +153,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberManagementSetup
      */
-    public function getMemberManagementSetup()
+    public function getMembermanagementsetup()
     {
         return $this->getData(self::MEMBER_MANAGEMENT_SETUP);
     }
@@ -162,7 +162,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
      * @param MemberPointSetup $MemberPointSetup
      * @return $this
      */
-    public function setMemberPointSetup($MemberPointSetup)
+    public function setMemberpointsetup($MemberPointSetup)
     {
         $this->setData(self::MEMBER_POINT_SETUP, $MemberPointSetup);
         return $this;
@@ -171,7 +171,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberPointSetup
      */
-    public function getMemberPointSetup()
+    public function getMemberpointsetup()
     {
         return $this->getData(self::MEMBER_POINT_SETUP);
     }
@@ -180,7 +180,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
      * @param MemberCouponBuffer $MemberCouponBuffer
      * @return $this
      */
-    public function setMemberCouponBuffer($MemberCouponBuffer)
+    public function setMembercouponbuffer($MemberCouponBuffer)
     {
         $this->setData(self::MEMBER_COUPON_BUFFER, $MemberCouponBuffer);
         return $this;
@@ -189,7 +189,7 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberCouponBuffer
      */
-    public function getMemberCouponBuffer()
+    public function getMembercouponbuffer()
     {
         return $this->getData(self::MEMBER_COUPON_BUFFER);
     }
@@ -198,18 +198,18 @@ class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
      * @param FBPWSBuffer $FBPWSBuffer
      * @return $this
      */
-    public function setFBPWSBuffer($FBPWSBuffer)
+    public function setFbpwsbuffer($FBPWSBuffer)
     {
-        $this->setData(self::F_B_P_W_S_BUFFER, $FBPWSBuffer);
+        $this->setData(self::FBPWSBUFFER, $FBPWSBuffer);
         return $this;
     }
 
     /**
      * @return FBPWSBuffer
      */
-    public function getFBPWSBuffer()
+    public function getFbpwsbuffer()
     {
-        return $this->getData(self::F_B_P_W_S_BUFFER);
+        return $this->getData(self::FBPWSBUFFER);
     }
 }
 

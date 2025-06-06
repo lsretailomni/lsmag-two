@@ -12,24 +12,24 @@ class RootCOMobilePickLabel extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCOMobilePickLabel';
 
-    public const C_O_MOBILE_PICK_LABEL = 'COMobilePickLabel';
+    public const COMOBILE_PICK_LABEL = 'COMobilePickLabel';
 
     /**
      * @param COMobilePickLabel $COMobilePickLabel
      * @return $this
      */
-    public function setCOMobilePickLabel($COMobilePickLabel)
+    public function setComobilepicklabel($COMobilePickLabel)
     {
-        $this->setData(self::C_O_MOBILE_PICK_LABEL, $COMobilePickLabel);
+        $this->setData(self::COMOBILE_PICK_LABEL, $COMobilePickLabel);
         return $this;
     }
 
     /**
      * @return COMobilePickLabel
      */
-    public function getCOMobilePickLabel()
+    public function getComobilepicklabel()
     {
-        return $this->getData(self::C_O_MOBILE_PICK_LABEL);
+        return $this->getData(self::COMOBILE_PICK_LABEL);
     }
 }
 

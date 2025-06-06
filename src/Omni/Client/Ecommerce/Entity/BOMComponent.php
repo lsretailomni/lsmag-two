@@ -20,13 +20,29 @@ class BOMComponent extends AbstractModel
     public const LSC_EXCLUSION = 'LSC Exclusion';
     public const LSC_PRICE_ON_EXCLUSION = 'LSC Price on Exclusion';
 
+    public static array $dbColumnsMapping = [
+	self::PARENT_ITEM_NO => 'parent_item_no',
+	self::LINE_NO => 'line_no',
+	self::DESCRIPTION => 'description',
+	self::UNIT_OF_MEASURE_CODE => 'unit_of_measure_code',
+	self::QUANTITY_PER => 'quantity_per',
+	self::LSC_ITEM_NO => 'lsc_item_no',
+	self::LSC_EXCLUSION => 'lsc_exclusion',
+	self::LSC_PRICE_ON_EXCLUSION => 'lsc_price_on_exclusion',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getParentItemNo(): ?string
     {
         return $this->getData(self::PARENT_ITEM_NO);
     }
 
-    public function setParentItemNo(string $value)
+    public function setParentItemNo(?string $value)
     {
         return $this->setData(self::PARENT_ITEM_NO, $value);
     }
@@ -36,7 +52,7 @@ class BOMComponent extends AbstractModel
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value)
+    public function setLineNo(?int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
@@ -46,7 +62,7 @@ class BOMComponent extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -56,47 +72,47 @@ class BOMComponent extends AbstractModel
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
 
-    public function setUnitOfMeasureCode(string $value)
+    public function setUnitOfMeasureCode(?string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
 
-    public function getQuantityPer(): ?string
+    public function getQuantityPer(): ?float
     {
         return $this->getData(self::QUANTITY_PER);
     }
 
-    public function setQuantityPer(string $value)
+    public function setQuantityPer(?float $value)
     {
         return $this->setData(self::QUANTITY_PER, $value);
     }
 
-    public function getLSCItemNo(): ?string
+    public function getLscItemNo(): ?string
     {
         return $this->getData(self::LSC_ITEM_NO);
     }
 
-    public function setLSCItemNo(string $value)
+    public function setLscItemNo(?string $value)
     {
         return $this->setData(self::LSC_ITEM_NO, $value);
     }
 
-    public function getLSCExclusion(): ?string
+    public function getLscExclusion(): ?int
     {
         return $this->getData(self::LSC_EXCLUSION);
     }
 
-    public function setLSCExclusion(string $value)
+    public function setLscExclusion(?int $value)
     {
         return $this->setData(self::LSC_EXCLUSION, $value);
     }
 
-    public function getLSCPriceOnExclusion(): ?string
+    public function getLscPriceOnExclusion(): ?float
     {
         return $this->getData(self::LSC_PRICE_ON_EXCLUSION);
     }
 
-    public function setLSCPriceOnExclusion(string $value)
+    public function setLscPriceOnExclusion(?float $value)
     {
         return $this->setData(self::LSC_PRICE_ON_EXCLUSION, $value);
     }

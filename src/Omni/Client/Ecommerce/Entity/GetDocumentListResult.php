@@ -18,40 +18,40 @@ class GetDocumentListResult extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_DOCUMENT_LIST_X_M_L = 'getDocumentListXML';
+    public const GET_DOCUMENT_LIST_XML = 'getDocumentListXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetDocumentListResult extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootGetDocumentList $getDocumentListXML
      * @return $this
      */
-    public function setGetDocumentListXML($getDocumentListXML)
+    public function setGetdocumentlistxml($getDocumentListXML)
     {
-        $this->setData(self::GET_DOCUMENT_LIST_X_M_L, $getDocumentListXML);
+        $this->setData(self::GET_DOCUMENT_LIST_XML, $getDocumentListXML);
         return $this;
     }
 
     /**
      * @return RootGetDocumentList
      */
-    public function getGetDocumentListXML()
+    public function getGetdocumentlistxml()
     {
-        return $this->getData(self::GET_DOCUMENT_LIST_X_M_L);
+        return $this->getData(self::GET_DOCUMENT_LIST_XML);
     }
 
     /**

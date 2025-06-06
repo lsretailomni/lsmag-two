@@ -14,7 +14,7 @@ class COMobilePickLabel extends \Magento\Catalog\Model\AbstractModel
 
     public const ENTRY_NO = 'EntryNo';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const STORE_NO = 'StoreNo';
 
@@ -26,7 +26,7 @@ class COMobilePickLabel extends \Magento\Catalog\Model\AbstractModel
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -35,43 +35,43 @@ class COMobilePickLabel extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -80,7 +80,7 @@ class COMobilePickLabel extends \Magento\Catalog\Model\AbstractModel
      * @param int $NumberOfLabelsToPrint
      * @return $this
      */
-    public function setNumberOfLabelsToPrint($NumberOfLabelsToPrint)
+    public function setNumberoflabelstoprint($NumberOfLabelsToPrint)
     {
         $this->setData(self::NUMBER_OF_LABELS_TO_PRINT, $NumberOfLabelsToPrint);
         return $this;
@@ -89,25 +89,25 @@ class COMobilePickLabel extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getNumberOfLabelsToPrint()
+    public function getNumberoflabelstoprint()
     {
         return $this->getData(self::NUMBER_OF_LABELS_TO_PRINT);
     }
 
     /**
-     * @param string $BoxNo
+     * @param ?string $BoxNo
      * @return $this
      */
-    public function setBoxNo($BoxNo)
+    public function setBoxno(?string $BoxNo)
     {
         $this->setData(self::BOX_NO, $BoxNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBoxNo()
+    public function getBoxno() : ?string
     {
         return $this->getData(self::BOX_NO);
     }

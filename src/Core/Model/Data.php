@@ -281,7 +281,7 @@ class Data
             ) {
                 $this->cacheHelper->persistContentInCache(
                     $cacheId,
-                    $response->getData(),
+                    $response,
                     [Type::CACHE_TAG],
                     $this->getCommerceServiceHeartbeatTimeout()
                 );

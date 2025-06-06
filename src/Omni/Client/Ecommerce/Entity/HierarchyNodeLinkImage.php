@@ -21,19 +21,19 @@ class HierarchyNodeLinkImage extends \Magento\Catalog\Model\AbstractModel
     public const TABLE_NAME = 'TableName';
 
     /**
-     * @param string $KeyValue
+     * @param ?string $KeyValue
      * @return $this
      */
-    public function setKeyValue($KeyValue)
+    public function setKeyvalue(?string $KeyValue)
     {
         $this->setData(self::KEY_VALUE, $KeyValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getKeyValue()
+    public function getKeyvalue() : ?string
     {
         return $this->getData(self::KEY_VALUE);
     }
@@ -42,7 +42,7 @@ class HierarchyNodeLinkImage extends \Magento\Catalog\Model\AbstractModel
      * @param int $DisplayOrder
      * @return $this
      */
-    public function setDisplayOrder($DisplayOrder)
+    public function setDisplayorder($DisplayOrder)
     {
         $this->setData(self::DISPLAY_ORDER, $DisplayOrder);
         return $this;
@@ -51,43 +51,43 @@ class HierarchyNodeLinkImage extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDisplayOrder()
+    public function getDisplayorder()
     {
         return $this->getData(self::DISPLAY_ORDER);
     }
 
     /**
-     * @param string $ImageId
+     * @param ?string $ImageId
      * @return $this
      */
-    public function setImageId($ImageId)
+    public function setImageid(?string $ImageId)
     {
         $this->setData(self::IMAGE_ID, $ImageId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getImageId()
+    public function getImageid() : ?string
     {
         return $this->getData(self::IMAGE_ID);
     }
 
     /**
-     * @param string $TableName
+     * @param ?string $TableName
      * @return $this
      */
-    public function setTableName($TableName)
+    public function setTablename(?string $TableName)
     {
         $this->setData(self::TABLE_NAME, $TableName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTableName()
+    public function getTablename() : ?string
     {
         return $this->getData(self::TABLE_NAME);
     }

@@ -14,7 +14,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const TRANSACTION_NO = 'TransactionNo';
 
@@ -39,46 +39,46 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     public const TOTAL_DEAL_MODIFIER_ADDED_AMT = 'TotalDealModifierAddedAmt';
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -87,7 +87,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -96,7 +96,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -105,25 +105,25 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
 
     /**
-     * @param string $DealNo
+     * @param ?string $DealNo
      * @return $this
      */
-    public function setDealNo($DealNo)
+    public function setDealno(?string $DealNo)
     {
         $this->setData(self::DEAL_NO, $DealNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDealNo()
+    public function getDealno() : ?string
     {
         return $this->getData(self::DEAL_NO);
     }
@@ -132,7 +132,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $DealHeaderLineNo
      * @return $this
      */
-    public function setDealHeaderLineNo($DealHeaderLineNo)
+    public function setDealheaderlineno($DealHeaderLineNo)
     {
         $this->setData(self::DEAL_HEADER_LINE_NO, $DealHeaderLineNo);
         return $this;
@@ -141,133 +141,133 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDealHeaderLineNo()
+    public function getDealheaderlineno()
     {
         return $this->getData(self::DEAL_HEADER_LINE_NO);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param float $Amount
+     * @param ?float $Amount
      * @return $this
      */
-    public function setAmount($Amount)
+    public function setAmount(?float $Amount)
     {
         $this->setData(self::AMOUNT, $Amount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmount()
+    public function getAmount() : ?float
     {
         return $this->getData(self::AMOUNT);
     }
 
     /**
-     * @param float $Price
+     * @param ?float $Price
      * @return $this
      */
-    public function setPrice($Price)
+    public function setPrice(?float $Price)
     {
         $this->setData(self::PRICE, $Price);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPrice()
+    public function getPrice() : ?float
     {
         return $this->getData(self::PRICE);
     }
 
     /**
-     * @param string $DealPriceListCode
+     * @param ?string $DealPriceListCode
      * @return $this
      */
-    public function setDealPriceListCode($DealPriceListCode)
+    public function setDealpricelistcode(?string $DealPriceListCode)
     {
         $this->setData(self::DEAL_PRICE_LIST_CODE, $DealPriceListCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDealPriceListCode()
+    public function getDealpricelistcode() : ?string
     {
         return $this->getData(self::DEAL_PRICE_LIST_CODE);
     }
 
     /**
-     * @param date $Date
+     * @param ?string $Date
      * @return $this
      */
-    public function setDate($Date)
+    public function setDate(?string $Date)
     {
         $this->setData(self::DATE, $Date);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDate()
+    public function getDate() : ?string
     {
         return $this->getData(self::DATE);
     }
 
     /**
-     * @param float $TotalDealLineAddedAmt
+     * @param ?float $TotalDealLineAddedAmt
      * @return $this
      */
-    public function setTotalDealLineAddedAmt($TotalDealLineAddedAmt)
+    public function setTotaldeallineaddedamt(?float $TotalDealLineAddedAmt)
     {
         $this->setData(self::TOTAL_DEAL_LINE_ADDED_AMT, $TotalDealLineAddedAmt);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalDealLineAddedAmt()
+    public function getTotaldeallineaddedamt() : ?float
     {
         return $this->getData(self::TOTAL_DEAL_LINE_ADDED_AMT);
     }
 
     /**
-     * @param float $TotalDealModifierAddedAmt
+     * @param ?float $TotalDealModifierAddedAmt
      * @return $this
      */
-    public function setTotalDealModifierAddedAmt($TotalDealModifierAddedAmt)
+    public function setTotaldealmodifieraddedamt(?float $TotalDealModifierAddedAmt)
     {
         $this->setData(self::TOTAL_DEAL_MODIFIER_ADDED_AMT, $TotalDealModifierAddedAmt);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalDealModifierAddedAmt()
+    public function getTotaldealmodifieraddedamt() : ?float
     {
         return $this->getData(self::TOTAL_DEAL_MODIFIER_ADDED_AMT);
     }

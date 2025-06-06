@@ -38,7 +38,7 @@ class RootGetStaffV2 extends \Magento\Catalog\Model\AbstractModel
      * @param StaffStoreLink $StaffStoreLink
      * @return $this
      */
-    public function setStaffStoreLink($StaffStoreLink)
+    public function setStaffstorelink($StaffStoreLink)
     {
         $this->setData(self::STAFF_STORE_LINK, $StaffStoreLink);
         return $this;
@@ -47,7 +47,7 @@ class RootGetStaffV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return StaffStoreLink
      */
-    public function getStaffStoreLink()
+    public function getStaffstorelink()
     {
         return $this->getData(self::STAFF_STORE_LINK);
     }

@@ -45,289 +45,289 @@ class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
     public const FILTER_SUB_CODE = 'FilterSubCode';
 
     /**
-     * @param string $SchemeFilterType
+     * @param ?string $SchemeFilterType
      * @return $this
      */
-    public function setSchemeFilterType($SchemeFilterType)
+    public function setSchemefiltertype(?string $SchemeFilterType)
     {
         $this->setData(self::SCHEME_FILTER_TYPE, $SchemeFilterType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSchemeFilterType()
+    public function getSchemefiltertype() : ?string
     {
         return $this->getData(self::SCHEME_FILTER_TYPE);
     }
 
     /**
-     * @param string $ClubScheme
+     * @param ?string $ClubScheme
      * @return $this
      */
-    public function setClubScheme($ClubScheme)
+    public function setClubscheme(?string $ClubScheme)
     {
         $this->setData(self::CLUB_SCHEME, $ClubScheme);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubScheme()
+    public function getClubscheme() : ?string
     {
         return $this->getData(self::CLUB_SCHEME);
     }
 
     /**
-     * @param string $FilterType
+     * @param ?string $FilterType
      * @return $this
      */
-    public function setFilterType($FilterType)
+    public function setFiltertype(?string $FilterType)
     {
         $this->setData(self::FILTER_TYPE, $FilterType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFilterType()
+    public function getFiltertype() : ?string
     {
         return $this->getData(self::FILTER_TYPE);
     }
 
     /**
-     * @param string $FilterCode
+     * @param ?string $FilterCode
      * @return $this
      */
-    public function setFilterCode($FilterCode)
+    public function setFiltercode(?string $FilterCode)
     {
         $this->setData(self::FILTER_CODE, $FilterCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFilterCode()
+    public function getFiltercode() : ?string
     {
         return $this->getData(self::FILTER_CODE);
     }
 
     /**
-     * @param string $CurrencyCode
+     * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode($CurrencyCode)
+    public function setCurrencycode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCurrencyCode()
+    public function getCurrencycode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
 
     /**
-     * @param float $QtyAmountLimit
+     * @param ?float $QtyAmountLimit
      * @return $this
      */
-    public function setQtyAmountLimit($QtyAmountLimit)
+    public function setQtyamountlimit(?float $QtyAmountLimit)
     {
         $this->setData(self::QTY_AMOUNT_LIMIT, $QtyAmountLimit);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQtyAmountLimit()
+    public function getQtyamountlimit() : ?float
     {
         return $this->getData(self::QTY_AMOUNT_LIMIT);
     }
 
     /**
-     * @param string $BaseCalculationon
+     * @param ?string $BaseCalculationon
      * @return $this
      */
-    public function setBaseCalculationon($BaseCalculationon)
+    public function setBasecalculationon(?string $BaseCalculationon)
     {
         $this->setData(self::BASE_CALCULATIONON, $BaseCalculationon);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBaseCalculationon()
+    public function getBasecalculationon() : ?string
     {
         return $this->getData(self::BASE_CALCULATIONON);
     }
 
     /**
-     * @param float $UnitRate
+     * @param ?float $UnitRate
      * @return $this
      */
-    public function setUnitRate($UnitRate)
+    public function setUnitrate(?float $UnitRate)
     {
         $this->setData(self::UNIT_RATE, $UnitRate);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getUnitRate()
+    public function getUnitrate() : ?float
     {
         return $this->getData(self::UNIT_RATE);
     }
 
     /**
-     * @param string $PointsType
+     * @param ?string $PointsType
      * @return $this
      */
-    public function setPointsType($PointsType)
+    public function setPointstype(?string $PointsType)
     {
         $this->setData(self::POINTS_TYPE, $PointsType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPointsType()
+    public function getPointstype() : ?string
     {
         return $this->getData(self::POINTS_TYPE);
     }
 
     /**
-     * @param float $Points
+     * @param ?float $Points
      * @return $this
      */
-    public function setPoints($Points)
+    public function setPoints(?float $Points)
     {
         $this->setData(self::POINTS, $Points);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPoints()
+    public function getPoints() : ?float
     {
         return $this->getData(self::POINTS);
     }
 
     /**
-     * @param string $CustomerFilterType
+     * @param ?string $CustomerFilterType
      * @return $this
      */
-    public function setCustomerFilterType($CustomerFilterType)
+    public function setCustomerfiltertype(?string $CustomerFilterType)
     {
         $this->setData(self::CUSTOMER_FILTER_TYPE, $CustomerFilterType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCustomerFilterType()
+    public function getCustomerfiltertype() : ?string
     {
         return $this->getData(self::CUSTOMER_FILTER_TYPE);
     }
 
     /**
-     * @param string $CustomerFilterCode
+     * @param ?string $CustomerFilterCode
      * @return $this
      */
-    public function setCustomerFilterCode($CustomerFilterCode)
+    public function setCustomerfiltercode(?string $CustomerFilterCode)
     {
         $this->setData(self::CUSTOMER_FILTER_CODE, $CustomerFilterCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCustomerFilterCode()
+    public function getCustomerfiltercode() : ?string
     {
         return $this->getData(self::CUSTOMER_FILTER_CODE);
     }
 
     /**
-     * @param date $StartingDate
+     * @param ?string $StartingDate
      * @return $this
      */
-    public function setStartingDate($StartingDate)
+    public function setStartingdate(?string $StartingDate)
     {
         $this->setData(self::STARTING_DATE, $StartingDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getStartingDate()
+    public function getStartingdate() : ?string
     {
         return $this->getData(self::STARTING_DATE);
     }
 
     /**
-     * @param date $EndingDate
+     * @param ?string $EndingDate
      * @return $this
      */
-    public function setEndingDate($EndingDate)
+    public function setEndingdate(?string $EndingDate)
     {
         $this->setData(self::ENDING_DATE, $EndingDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getEndingDate()
+    public function getEndingdate() : ?string
     {
         return $this->getData(self::ENDING_DATE);
     }
 
     /**
-     * @param string $ClubCode
+     * @param ?string $ClubCode
      * @return $this
      */
-    public function setClubCode($ClubCode)
+    public function setClubcode(?string $ClubCode)
     {
         $this->setData(self::CLUB_CODE, $ClubCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubCode()
+    public function getClubcode() : ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
 
     /**
-     * @param string $FilterSubCode
+     * @param ?string $FilterSubCode
      * @return $this
      */
-    public function setFilterSubCode($FilterSubCode)
+    public function setFiltersubcode(?string $FilterSubCode)
     {
         $this->setData(self::FILTER_SUB_CODE, $FilterSubCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFilterSubCode()
+    public function getFiltersubcode() : ?string
     {
         return $this->getData(self::FILTER_SUB_CODE);
     }

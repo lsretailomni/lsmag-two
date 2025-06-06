@@ -23,73 +23,73 @@ class MobilelPosGetLastReceiptNo extends \Magento\Catalog\Model\AbstractModel im
     public const LAST_RECEIPT_NO = 'lastReceiptNo';
 
     /**
-     * @param string $respondCode
+     * @param ?string $respondCode
      * @return $this
      */
-    public function setRespondCode($respondCode)
+    public function setRespondcode(?string $respondCode)
     {
         $this->setData(self::RESPOND_CODE, $respondCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRespondCode()
+    public function getRespondcode() : ?string
     {
         return $this->getData(self::RESPOND_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $terminalNo
+     * @param ?string $terminalNo
      * @return $this
      */
-    public function setTerminalNo($terminalNo)
+    public function setTerminalno(?string $terminalNo)
     {
         $this->setData(self::TERMINAL_NO, $terminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalNo()
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
 
     /**
-     * @param string $lastReceiptNo
+     * @param ?string $lastReceiptNo
      * @return $this
      */
-    public function setLastReceiptNo($lastReceiptNo)
+    public function setLastreceiptno(?string $lastReceiptNo)
     {
         $this->setData(self::LAST_RECEIPT_NO, $lastReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLastReceiptNo()
+    public function getLastreceiptno() : ?string
     {
         return $this->getData(self::LAST_RECEIPT_NO);
     }

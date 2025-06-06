@@ -50,13 +50,59 @@ class ItemCategory extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public static array $dbColumnsMapping = [
+	self::CODE => 'code',
+	self::PARENT_CATEGORY => 'parent_category',
+	self::DESCRIPTION => 'description',
+	self::INDENTATION => 'indentation',
+	self::PRESENTATION_ORDER => 'presentation_order',
+	self::HAS_CHILDREN => 'has_children',
+	self::LAST_MODIFIED_DATE_TIME => 'last_modified_date_time',
+	self::DEFAULT_SUST_ACCOUNT => 'default_sust_account',
+	self::LSC_ITEM_NO_MISCELLANEOUS => 'lsc_item_no_miscellaneous',
+	self::LSC_NEGATIVE => 'lsc_negative',
+	self::LSC_NOT_DISCOUNTABLE => 'lsc_not_discountable',
+	self::LSC_ITEM_TEMPLATE_CODE => 'lsc_item_template_code',
+	self::LSC_DIFFERENCE_LCY => 'lsc_difference_lcy',
+	self::LSC_ITEM_HIERARCHY_VALUE => 'lsc_item_hierarchy_value',
+	self::LSC_POS_INVENTORY_LOOKUP => 'lsc_pos_inventory_lookup',
+	self::LSC_DEFAULT_PROFIT => 'lsc_default_profit',
+	self::LSC_DISPENSE_PRINTER_GROUP => 'lsc_dispense_printer_group',
+	self::LSC_DISPENSE_PRINT_SEQ_NO => 'lsc_dispense_print_seq_no',
+	self::LSC_DIVISION_CODE => 'lsc_division_code',
+	self::LSC_ITEM_ERROR_CHECK_CODE => 'lsc_item_error_check_code',
+	self::LSC_SUGGESTED_QTY_ON_POS => 'lsc_suggested_qty_on_pos',
+	self::LSC_PROFIT_GOAL => 'lsc_profit_goal',
+	self::LSC_BUYER_GROUP_CODE => 'lsc_buyer_group_code',
+	self::LSC_REPLEN_DATA_PROFILE => 'lsc_replen_data_profile',
+	self::LSC_BUYER_ID => 'lsc_buyer_id',
+	self::LSC_REPLEN_TRANSFER_RULE_CODE => 'lsc_replen_transfer_rule_code',
+	self::LSC_DEF_ITEM_DISTR_TYPE => 'lsc_def_item_distr_type',
+	self::LSC_DEF_ITEM_DISTR_CODE => 'lsc_def_item_distr_code',
+	self::LSC_EXCLUDE_FROM_REPLENISHMENT => 'lsc_exclude_from_replenishment',
+	self::LSC_EXCLUDE_FROM_OOS_CALC => 'lsc_exclude_from_oos_calc',
+	self::LSC_PHYS_INVT_COUNT_PER_CODE => 'lsc_phys_invt_count_per_code',
+	self::LSC_ALLOCATION_RULE_CODE => 'lsc_allocation_rule_code',
+	self::LSC_PLB_CATEGORY => 'lsc_plb_category',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -66,7 +112,7 @@ class ItemCategory extends AbstractModel
         return $this->getData(self::PARENT_CATEGORY);
     }
 
-    public function setParentCategory(string $value)
+    public function setParentCategory(?string $value)
     {
         return $this->setData(self::PARENT_CATEGORY, $value);
     }
@@ -76,7 +122,7 @@ class ItemCategory extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -86,7 +132,7 @@ class ItemCategory extends AbstractModel
         return $this->getData(self::INDENTATION);
     }
 
-    public function setIndentation(int $value)
+    public function setIndentation(?int $value)
     {
         return $this->setData(self::INDENTATION, $value);
     }
@@ -96,7 +142,7 @@ class ItemCategory extends AbstractModel
         return $this->getData(self::PRESENTATION_ORDER);
     }
 
-    public function setPresentationOrder(int $value)
+    public function setPresentationOrder(?int $value)
     {
         return $this->setData(self::PRESENTATION_ORDER, $value);
     }
@@ -106,17 +152,17 @@ class ItemCategory extends AbstractModel
         return $this->getData(self::HAS_CHILDREN);
     }
 
-    public function setHasChildren(bool $value)
+    public function setHasChildren(?bool $value)
     {
         return $this->setData(self::HAS_CHILDREN, $value);
     }
 
-    public function getLastModifiedDateTime(): ?\DateTime
+    public function getLastModifiedDateTime(): ?string
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
     }
 
-    public function setLastModifiedDateTime(\DateTime $value)
+    public function setLastModifiedDateTime(?string $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
@@ -126,307 +172,307 @@ class ItemCategory extends AbstractModel
         return $this->getData(self::DEFAULT_SUST_ACCOUNT);
     }
 
-    public function setDefaultSustAccount(string $value)
+    public function setDefaultSustAccount(?string $value)
     {
         return $this->setData(self::DEFAULT_SUST_ACCOUNT, $value);
     }
 
-    public function getLSCItemNoMiscellaneous(): ?string
+    public function getLscItemNoMiscellaneous(): ?string
     {
         return $this->getData(self::LSC_ITEM_NO_MISCELLANEOUS);
     }
 
-    public function setLSCItemNoMiscellaneous(string $value)
+    public function setLscItemNoMiscellaneous(?string $value)
     {
         return $this->setData(self::LSC_ITEM_NO_MISCELLANEOUS, $value);
     }
 
-    public function getLSCNegative(): ?bool
+    public function getLscNegative(): ?bool
     {
         return $this->getData(self::LSC_NEGATIVE);
     }
 
-    public function setLSCNegative(bool $value)
+    public function setLscNegative(?bool $value)
     {
         return $this->setData(self::LSC_NEGATIVE, $value);
     }
 
-    public function getLSCNotDiscountable(): ?bool
+    public function getLscNotDiscountable(): ?bool
     {
         return $this->getData(self::LSC_NOT_DISCOUNTABLE);
     }
 
-    public function setLSCNotDiscountable(bool $value)
+    public function setLscNotDiscountable(?bool $value)
     {
         return $this->setData(self::LSC_NOT_DISCOUNTABLE, $value);
     }
 
-    public function getLSCItemTemplateCode(): ?string
+    public function getLscItemTemplateCode(): ?string
     {
         return $this->getData(self::LSC_ITEM_TEMPLATE_CODE);
     }
 
-    public function setLSCItemTemplateCode(string $value)
+    public function setLscItemTemplateCode(?string $value)
     {
         return $this->setData(self::LSC_ITEM_TEMPLATE_CODE, $value);
     }
 
-    public function getLSCDifferenceLCY(): ?string
+    public function getLscDifferenceLcy(): ?float
     {
         return $this->getData(self::LSC_DIFFERENCE_LCY);
     }
 
-    public function setLSCDifferenceLCY(string $value)
+    public function setLscDifferenceLcy(?float $value)
     {
         return $this->setData(self::LSC_DIFFERENCE_LCY, $value);
     }
 
-    public function getLSCItemHierarchyValue(): ?string
+    public function getLscItemHierarchyValue(): ?string
     {
         return $this->getData(self::LSC_ITEM_HIERARCHY_VALUE);
     }
 
-    public function setLSCItemHierarchyValue(string $value)
+    public function setLscItemHierarchyValue(?string $value)
     {
         return $this->setData(self::LSC_ITEM_HIERARCHY_VALUE, $value);
     }
 
-    public function getLSCPOSInventoryLookup(): ?bool
+    public function getLscPosInventoryLookup(): ?bool
     {
         return $this->getData(self::LSC_POS_INVENTORY_LOOKUP);
     }
 
-    public function setLSCPOSInventoryLookup(bool $value)
+    public function setLscPosInventoryLookup(?bool $value)
     {
         return $this->setData(self::LSC_POS_INVENTORY_LOOKUP, $value);
     }
 
-    public function getLSCDefaultProfit(): ?string
+    public function getLscDefaultProfit(): ?float
     {
         return $this->getData(self::LSC_DEFAULT_PROFIT);
     }
 
-    public function setLSCDefaultProfit(string $value)
+    public function setLscDefaultProfit(?float $value)
     {
         return $this->setData(self::LSC_DEFAULT_PROFIT, $value);
     }
 
-    public function getLSCDispensePrinterGroup(): ?string
+    public function getLscDispensePrinterGroup(): ?string
     {
         return $this->getData(self::LSC_DISPENSE_PRINTER_GROUP);
     }
 
-    public function setLSCDispensePrinterGroup(string $value)
+    public function setLscDispensePrinterGroup(?string $value)
     {
         return $this->setData(self::LSC_DISPENSE_PRINTER_GROUP, $value);
     }
 
-    public function getLSCDispensePrintSeqNo(): ?int
+    public function getLscDispensePrintSeqNo(): ?int
     {
         return $this->getData(self::LSC_DISPENSE_PRINT_SEQ_NO);
     }
 
-    public function setLSCDispensePrintSeqNo(int $value)
+    public function setLscDispensePrintSeqNo(?int $value)
     {
         return $this->setData(self::LSC_DISPENSE_PRINT_SEQ_NO, $value);
     }
 
-    public function getLSCDivisionCode(): ?string
+    public function getLscDivisionCode(): ?string
     {
         return $this->getData(self::LSC_DIVISION_CODE);
     }
 
-    public function setLSCDivisionCode(string $value)
+    public function setLscDivisionCode(?string $value)
     {
         return $this->setData(self::LSC_DIVISION_CODE, $value);
     }
 
-    public function getLSCItemErrorCheckCode(): ?string
+    public function getLscItemErrorCheckCode(): ?string
     {
         return $this->getData(self::LSC_ITEM_ERROR_CHECK_CODE);
     }
 
-    public function setLSCItemErrorCheckCode(string $value)
+    public function setLscItemErrorCheckCode(?string $value)
     {
         return $this->setData(self::LSC_ITEM_ERROR_CHECK_CODE, $value);
     }
 
-    public function getLSCSuggestedQtyOnPOS(): ?string
+    public function getLscSuggestedQtyOnPos(): ?float
     {
         return $this->getData(self::LSC_SUGGESTED_QTY_ON_POS);
     }
 
-    public function setLSCSuggestedQtyOnPOS(string $value)
+    public function setLscSuggestedQtyOnPos(?float $value)
     {
         return $this->setData(self::LSC_SUGGESTED_QTY_ON_POS, $value);
     }
 
-    public function getLSCProfitGoal(): ?string
+    public function getLscProfitGoal(): ?float
     {
         return $this->getData(self::LSC_PROFIT_GOAL);
     }
 
-    public function setLSCProfitGoal(string $value)
+    public function setLscProfitGoal(?float $value)
     {
         return $this->setData(self::LSC_PROFIT_GOAL, $value);
     }
 
-    public function getLSCBuyerGroupCode(): ?string
+    public function getLscBuyerGroupCode(): ?string
     {
         return $this->getData(self::LSC_BUYER_GROUP_CODE);
     }
 
-    public function setLSCBuyerGroupCode(string $value)
+    public function setLscBuyerGroupCode(?string $value)
     {
         return $this->setData(self::LSC_BUYER_GROUP_CODE, $value);
     }
 
-    public function getLSCReplenDataProfile(): ?string
+    public function getLscReplenDataProfile(): ?string
     {
         return $this->getData(self::LSC_REPLEN_DATA_PROFILE);
     }
 
-    public function setLSCReplenDataProfile(string $value)
+    public function setLscReplenDataProfile(?string $value)
     {
         return $this->setData(self::LSC_REPLEN_DATA_PROFILE, $value);
     }
 
-    public function getLSCBuyerID(): ?string
+    public function getLscBuyerId(): ?string
     {
         return $this->getData(self::LSC_BUYER_ID);
     }
 
-    public function setLSCBuyerID(string $value)
+    public function setLscBuyerId(?string $value)
     {
         return $this->setData(self::LSC_BUYER_ID, $value);
     }
 
-    public function getLSCReplenTransferRuleCode(): ?string
+    public function getLscReplenTransferRuleCode(): ?string
     {
         return $this->getData(self::LSC_REPLEN_TRANSFER_RULE_CODE);
     }
 
-    public function setLSCReplenTransferRuleCode(string $value)
+    public function setLscReplenTransferRuleCode(?string $value)
     {
         return $this->setData(self::LSC_REPLEN_TRANSFER_RULE_CODE, $value);
     }
 
-    public function getLSCDefItemDistrType(): ?string
+    public function getLscDefItemDistrType(): ?int
     {
         return $this->getData(self::LSC_DEF_ITEM_DISTR_TYPE);
     }
 
-    public function setLSCDefItemDistrType(string $value)
+    public function setLscDefItemDistrType(?int $value)
     {
         return $this->setData(self::LSC_DEF_ITEM_DISTR_TYPE, $value);
     }
 
-    public function getLSCDefItemDistrCode(): ?string
+    public function getLscDefItemDistrCode(): ?string
     {
         return $this->getData(self::LSC_DEF_ITEM_DISTR_CODE);
     }
 
-    public function setLSCDefItemDistrCode(string $value)
+    public function setLscDefItemDistrCode(?string $value)
     {
         return $this->setData(self::LSC_DEF_ITEM_DISTR_CODE, $value);
     }
 
-    public function getLSCExcludeFromReplenishment(): ?bool
+    public function getLscExcludeFromReplenishment(): ?bool
     {
         return $this->getData(self::LSC_EXCLUDE_FROM_REPLENISHMENT);
     }
 
-    public function setLSCExcludeFromReplenishment(bool $value)
+    public function setLscExcludeFromReplenishment(?bool $value)
     {
         return $this->setData(self::LSC_EXCLUDE_FROM_REPLENISHMENT, $value);
     }
 
-    public function getLSCExcludeFromOOSCalc(): ?bool
+    public function getLscExcludeFromOosCalc(): ?bool
     {
         return $this->getData(self::LSC_EXCLUDE_FROM_OOS_CALC);
     }
 
-    public function setLSCExcludeFromOOSCalc(bool $value)
+    public function setLscExcludeFromOosCalc(?bool $value)
     {
         return $this->setData(self::LSC_EXCLUDE_FROM_OOS_CALC, $value);
     }
 
-    public function getLSCPhysInvtCountPerCode(): ?string
+    public function getLscPhysInvtCountPerCode(): ?string
     {
         return $this->getData(self::LSC_PHYS_INVT_COUNT_PER_CODE);
     }
 
-    public function setLSCPhysInvtCountPerCode(string $value)
+    public function setLscPhysInvtCountPerCode(?string $value)
     {
         return $this->setData(self::LSC_PHYS_INVT_COUNT_PER_CODE, $value);
     }
 
-    public function getLSCAllocationRuleCode(): ?string
+    public function getLscAllocationRuleCode(): ?string
     {
         return $this->getData(self::LSC_ALLOCATION_RULE_CODE);
     }
 
-    public function setLSCAllocationRuleCode(string $value)
+    public function setLscAllocationRuleCode(?string $value)
     {
         return $this->setData(self::LSC_ALLOCATION_RULE_CODE, $value);
     }
 
-    public function getLSCPLBCategory(): ?bool
+    public function getLscPlbCategory(): ?bool
     {
         return $this->getData(self::LSC_PLB_CATEGORY);
     }
 
-    public function setLSCPLBCategory(bool $value)
+    public function setLscPlbCategory(?bool $value)
     {
         return $this->setData(self::LSC_PLB_CATEGORY, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

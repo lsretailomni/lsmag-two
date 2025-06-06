@@ -18,44 +18,44 @@ class CustomerOrderEdit extends \Magento\Catalog\Model\AbstractModel implements 
 
     public const ERROR_TEXT = 'errorText';
 
-    public const CUSTOMER_ORDER_EDIT_X_M_L = 'customerOrderEditXML';
+    public const CUSTOMER_ORDER_EDIT_XML = 'customerOrderEditXML';
 
-    public const CUSTOMER_ORDER_I_D = 'customerOrderID';
+    public const CUSTOMER_ORDER_ID = 'customerOrderID';
 
     public const CO_EDIT_TYPE = 'coEditType';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -64,52 +64,52 @@ class CustomerOrderEdit extends \Magento\Catalog\Model\AbstractModel implements 
      * @param RootCustomerOrderEdit $customerOrderEditXML
      * @return $this
      */
-    public function setCustomerOrderEditXML($customerOrderEditXML)
+    public function setCustomerordereditxml($customerOrderEditXML)
     {
-        $this->setData(self::CUSTOMER_ORDER_EDIT_X_M_L, $customerOrderEditXML);
+        $this->setData(self::CUSTOMER_ORDER_EDIT_XML, $customerOrderEditXML);
         return $this;
     }
 
     /**
      * @return RootCustomerOrderEdit
      */
-    public function getCustomerOrderEditXML()
+    public function getCustomerordereditxml()
     {
-        return $this->getData(self::CUSTOMER_ORDER_EDIT_X_M_L);
+        return $this->getData(self::CUSTOMER_ORDER_EDIT_XML);
     }
 
     /**
-     * @param string $customerOrderID
+     * @param ?string $customerOrderID
      * @return $this
      */
-    public function setCustomerOrderID($customerOrderID)
+    public function setCustomerorderid(?string $customerOrderID)
     {
-        $this->setData(self::CUSTOMER_ORDER_I_D, $customerOrderID);
+        $this->setData(self::CUSTOMER_ORDER_ID, $customerOrderID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCustomerOrderID()
+    public function getCustomerorderid() : ?string
     {
-        return $this->getData(self::CUSTOMER_ORDER_I_D);
+        return $this->getData(self::CUSTOMER_ORDER_ID);
     }
 
     /**
-     * @param string $coEditType
+     * @param ?string $coEditType
      * @return $this
      */
-    public function setCoEditType($coEditType)
+    public function setCoedittype(?string $coEditType)
     {
         $this->setData(self::CO_EDIT_TYPE, $coEditType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCoEditType()
+    public function getCoedittype() : ?string
     {
         return $this->getData(self::CO_EDIT_TYPE);
     }

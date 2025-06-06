@@ -18,7 +18,7 @@ class MemberPasswordReset extends \Magento\Catalog\Model\AbstractModel implement
 
     public const ERROR_TEXT = 'errorText';
 
-    public const LOGIN_I_D = 'loginID';
+    public const LOGIN_ID = 'loginID';
 
     public const EMAIL = 'email';
 
@@ -27,109 +27,109 @@ class MemberPasswordReset extends \Magento\Catalog\Model\AbstractModel implement
     public const EXPIRY_ON = 'expiryOn';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $loginID
+     * @param ?string $loginID
      * @return $this
      */
-    public function setLoginID($loginID)
+    public function setLoginid(?string $loginID)
     {
-        $this->setData(self::LOGIN_I_D, $loginID);
+        $this->setData(self::LOGIN_ID, $loginID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLoginID()
+    public function getLoginid() : ?string
     {
-        return $this->getData(self::LOGIN_I_D);
+        return $this->getData(self::LOGIN_ID);
     }
 
     /**
-     * @param string $email
+     * @param ?string $email
      * @return $this
      */
-    public function setEmail($email)
+    public function setEmail(?string $email)
     {
         $this->setData(self::EMAIL, $email);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEmail()
+    public function getEmail() : ?string
     {
         return $this->getData(self::EMAIL);
     }
 
     /**
-     * @param string $token
+     * @param ?string $token
      * @return $this
      */
-    public function setToken($token)
+    public function setToken(?string $token)
     {
         $this->setData(self::TOKEN, $token);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getToken()
+    public function getToken() : ?string
     {
         return $this->getData(self::TOKEN);
     }
 
     /**
-     * @param string $expiryOn
+     * @param ?string $expiryOn
      * @return $this
      */
-    public function setExpiryOn($expiryOn)
+    public function setExpiryon(?string $expiryOn)
     {
         $this->setData(self::EXPIRY_ON, $expiryOn);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExpiryOn()
+    public function getExpiryon() : ?string
     {
         return $this->getData(self::EXPIRY_ON);
     }

@@ -14,6 +14,11 @@ use Psr\Log\LoggerInterface;
 class GuzzleClient
 {
     /**
+     * @var mixed
+     */
+    public $currentLogger = null;
+
+    /**
      * @param LoggerInterface $logger
      * @param OmniLogger $omniLogger
      * @param FlatReplicationLogger $flatReplicationLogger
@@ -53,6 +58,13 @@ class GuzzleClient
                 $token = $options['token'];
                 $headers['Authorization'] = 'Bearer ' . $token;
             }
+
+            if (str_starts_with($action, 'ODataRequest_')) {
+                $this->currentLogger = $this->flatReplicationLogger;
+            } else {
+                $this->currentLogger = $this->omniLogger;
+            }
+
             $handlerStack = HandlerStack::create();
             if ($this->lsr->getWebsiteConfig(LSR::SC_SERVICE_DEBUG, $this->lsr->getCurrentWebsiteId())) {
                 $handlerStack->push($this->getLoggingMiddleware());
@@ -117,7 +129,7 @@ class GuzzleClient
                 array $options
             ) use ($handler) {
                 $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
-                $this->omniLogger->debug(
+                $this->currentLogger->debug(
                     sprintf(
                         "==== REQUEST ==== %s ==== %s ====",
                         $requestTime->format("m-d-Y H:i:s.u"),
@@ -126,13 +138,13 @@ class GuzzleClient
                 );
                 $body = (string) $request->getBody();
                 if (!empty($body)) {
-                    $this->omniLogger->debug(sprintf('Request Body: %s ', $body));
+                    $this->currentLogger->debug(sprintf('Request Body: %s ', $body));
                 }
 
                 return $handler($request, $options)->then(
                     function (ResponseInterface $response) use ($requestTime, $request) {
                         $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
-                        $this->omniLogger->debug(
+                        $this->currentLogger->debug(
                             sprintf(
                                 "==== RESPONSE ==== %s ==== %s ==== %s",
                                 $responseTime->format("m-d-Y H:i:s.u"),
@@ -147,9 +159,9 @@ class GuzzleClient
                                 $outer = json_decode($body, true);
                                 $decoded = isset($outer['value']) ? json_decode($outer['value'], true) : $outer;
                                 $prettyJson = json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-                                $this->omniLogger->debug("Response Body:\n" . $prettyJson);
+                                $this->currentLogger->debug("Response Body:\n" . $prettyJson);
                             } else {
-                                $this->omniLogger->debug(sprintf('Response Body: %s', $body));
+                                $this->currentLogger->debug(sprintf('Response Body: %s', $body));
                             }
                         }
                         $timeElapsed = $requestTime->diff($responseTime);

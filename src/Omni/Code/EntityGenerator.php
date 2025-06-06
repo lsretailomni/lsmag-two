@@ -22,11 +22,15 @@ class EntityGenerator extends AbstractOmniGenerator
     /** @var array Mapping of data types to their equivalents */
     public $dataTypeEquivalences = [
         'decimal'    => 'float',
+        'boolean'    => 'bool',
         'long'       => 'int',
         'dateTime'   => 'string',
         'char'       => 'int',
         'guid'       => 'string',
         'StreamBody' => 'string',
+        'string'     => 'string',
+        'date'       => 'string',
+        'time'       => 'string',
     ];
 
     /** @var Entity */
@@ -58,6 +62,9 @@ class EntityGenerator extends AbstractOmniGenerator
         $element = $this->entity->getElement();
         $types = $this->metadata->getTypes();
         $classNameOptimized = preg_replace('/[-._]/', '', $this->entity->getName());
+        if ($classNameOptimized == 'ContactCreateParameters' || $classNameOptimized == 'WSInventoryBuffer') {
+            $x = 1;
+        }
         $this->class->setName($classNameOptimized);
         $this->class->setExtendedClass(AbstractModel::class);
         $this->class->setNamespaceName($entityNamespace);
@@ -94,20 +101,32 @@ class EntityGenerator extends AbstractOmniGenerator
             $typeDefinitionArray['scope'] = new ComplexTypeDefinition('scope', 'string', '0');
             $typeDefinitionArray['scope_id'] = new ComplexTypeDefinition('scope_id', 'int', '0');
         }
-
+        $formattedConstantsRegistry = [];
+        $i = 0;
         // Generate methods based on type definitions
         if ($typeDefinitionArray != null) {
             foreach ($typeDefinitionArray as $fieldName => $fieldType) {
                 $fieldDataType = $this->normalizeDataType($fieldType->getDataType()) . ($isArray ? '[]' : '');
-
-                // Sanitize field name for use in method names
-                $fieldNameOptimized = preg_replace('/[-._]/', '', $fieldName);
-                $fieldNameForMethodName = preg_replace('/[-._]/', ' ', $fieldName);
-                $fieldNameCapitalized = ucwords($fieldNameForMethodName);
+                $fieldNameOptimized = $this->formatGivenValue($fieldName);
+                $fieldNameForMethodName = $this->formatGivenValue($fieldName, ' ');
+                $fieldNameCapitalized = ucwords(strtolower($fieldNameForMethodName));
                 $fieldNameCapitalized = str_replace(' ', '', $fieldNameCapitalized);
+                $customFieldName = $this->formatGivenValue(ucwords($fieldName), ' ');
+                $constantName = str_replace(
+                    ' ',
+                    '_',
+                    strtoupper(preg_replace('/(?<=[a-z0-9])([A-Z])/', '_$1', $customFieldName))
+                );
+                $eqExists = array_key_exists($fieldType->getDataType(), $this->dataTypeEquivalences);
+                if (strtolower($fieldNameCapitalized) == 'id') {
+                    $eqExists = false;
+                }
 
-                // Create constant for the field
-                $constantName = strtoupper(preg_replace('/\B([A-Z])/', '_$1', $fieldNameOptimized));
+                if (isset($formattedConstantsRegistry[$constantName])) {
+                    $constantName .= '_'.$i;
+                    $fieldNameCapitalized .= '_'.$i;
+                }
+                $formattedConstantsRegistry[$constantName] = 1;
                 $this->class->addConstant($constantName, $fieldName);
 
                 // Check if the field is a restriction type
@@ -121,11 +140,21 @@ class EntityGenerator extends AbstractOmniGenerator
                 if (!$this->class->hasMethod($setMethodName)) {
                     $setMethod = new MethodGenerator();
                     $setMethod->setName($setMethodName);
-                    $setMethod->setParameter(ParameterGenerator::fromArray(['name' => $fieldNameOptimized]));
+                    $param = [
+                        'name' => $fieldNameOptimized
+                    ];
+                    if ($eqExists) {
+                        $param['type'] = '?'. $fieldDataType;
+                    }
+                    $setMethod->setParameter(
+                        ParameterGenerator::fromArray(
+                            $param
+                        )
+                    );
                     $setMethod->setDocBlock(
                         DocBlockGenerator::fromArray([
                             'tags' => [
-                                new Tag\ParamTag($fieldNameOptimized, [$fieldDataType]),
+                                new Tag\ParamTag($fieldNameOptimized, [$param['type'] ?? $fieldDataType]),
                                 new Tag\ReturnTag(['$this'])
                             ]
                         ])
@@ -191,15 +220,19 @@ CODE
                     $getMethod = new MethodGenerator();
                     $getMethod->setName($getMethodName)
                         ->setDocBlock(
-                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$fieldDataType])]])
+                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$param['type'] ?? $fieldDataType])]])
                         );
                     $getMethod->setBody(<<<CODE
 return \$this->getData(self::$constantName);
 CODE
                     );
+                    if ($eqExists) {
+                        $getMethod->setReturnType('?'. $fieldDataType);
+                    }
 
                     $this->class->addMethodFromGenerator($getMethod);
                 }
+                $i++;
             }
         }
 
@@ -265,5 +298,22 @@ CODE
     protected function normalizeDataType($dataType)
     {
         return array_key_exists($dataType, $this->dataTypeEquivalences) ? $this->dataTypeEquivalences[$dataType] : $dataType;
+    }
+
+    /**
+     * Get formatted value
+     *
+     * @param string $value
+     * @param string $replaceWith
+     * @return string
+     */
+    public function formatGivenValue(string $value, string $replaceWith = ''): string
+    {
+        // Step 1: Remove special characters
+        $cleaned = preg_replace('/[\/\[\]()$\-._%&]/', $replaceWith, $value);
+        // Step 2: Replace multiple spaces with a single space
+        $cleaned = preg_replace('/ {2,}/', ' ', $cleaned);
+
+        return trim($cleaned);
     }
 }

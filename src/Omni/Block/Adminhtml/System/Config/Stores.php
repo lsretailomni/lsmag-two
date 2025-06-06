@@ -12,11 +12,6 @@ use Magento\Framework\Exception\LocalizedException;
 class Stores extends Field
 {
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
      * @var string
      */
     // @codingStandardsIgnoreLine
@@ -29,11 +24,10 @@ class Stores extends Field
      * @param array $data
      */
     public function __construct(
-        Context $context,
-        LSR $lsr,
-        array $data = []
+        protected Context $context,
+        public LSR $lsr,
+        protected array $data = []
     ) {
-        $this->lsr = $lsr;
         parent::__construct($context, $data);
     }
 
@@ -61,6 +55,8 @@ class Stores extends Field
     }
 
     /**
+     * Get load store url
+     *
      * @return string
      */
     public function getAjaxUrl()
@@ -69,6 +65,8 @@ class Stores extends Field
     }
 
     /**
+     * Get load hierarchy url
+     *
      * @return string
      */
     public function getAjaxHierarchyUrl()
@@ -77,6 +75,8 @@ class Stores extends Field
     }
 
     /**
+     * Get load ajax url
+     *
      * @return string
      */
     public function getAjaxStoreTenderTypesUrl()
@@ -85,6 +85,8 @@ class Stores extends Field
     }
 
     /**
+     * Get website Id
+     *
      * @return mixed
      */
     public function getWebsiteId()
@@ -93,6 +95,8 @@ class Stores extends Field
     }
 
     /**
+     * Get button html
+     *
      * @return mixed
      * @throws LocalizedException
      */

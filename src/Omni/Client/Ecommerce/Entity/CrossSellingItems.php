@@ -15,19 +15,19 @@ class CrossSellingItems extends \Magento\Catalog\Model\AbstractModel
     public const ITEM_NO = 'ItemNo';
 
     /**
-     * @param string $ItemNo
+     * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo($ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }

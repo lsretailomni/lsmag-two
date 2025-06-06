@@ -14,7 +14,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const TRANSACTION_NO = 'TransactionNo';
 
@@ -43,46 +43,46 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -91,7 +91,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -100,7 +100,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -109,43 +109,43 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
 
     /**
-     * @param string $OfferType
+     * @param ?string $OfferType
      * @return $this
      */
-    public function setOfferType($OfferType)
+    public function setOffertype(?string $OfferType)
     {
         $this->setData(self::OFFER_TYPE, $OfferType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOfferType()
+    public function getOffertype() : ?string
     {
         return $this->getData(self::OFFER_TYPE);
     }
 
     /**
-     * @param string $OfferNo
+     * @param ?string $OfferNo
      * @return $this
      */
-    public function setOfferNo($OfferNo)
+    public function setOfferno(?string $OfferNo)
     {
         $this->setData(self::OFFER_NO, $OfferNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOfferNo()
+    public function getOfferno() : ?string
     {
         return $this->getData(self::OFFER_NO);
     }
@@ -154,7 +154,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $OfferLineNo
      * @return $this
      */
-    public function setOfferLineNo($OfferLineNo)
+    public function setOfferlineno($OfferLineNo)
     {
         $this->setData(self::OFFER_LINE_NO, $OfferLineNo);
         return $this;
@@ -163,133 +163,133 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getOfferLineNo()
+    public function getOfferlineno()
     {
         return $this->getData(self::OFFER_LINE_NO);
     }
 
     /**
-     * @param string $Type
+     * @param ?string $Type
      * @return $this
      */
-    public function setType($Type)
+    public function setType(?string $Type)
     {
         $this->setData(self::TYPE, $Type);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getType()
+    public function getType() : ?string
     {
         return $this->getData(self::TYPE);
     }
 
     /**
-     * @param string $No
+     * @param ?string $No
      * @return $this
      */
-    public function setNo($No)
+    public function setNo(?string $No)
     {
         $this->setData(self::NO, $No);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNo()
+    public function getNo() : ?string
     {
         return $this->getData(self::NO);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $ValueType
+     * @param ?string $ValueType
      * @return $this
      */
-    public function setValueType($ValueType)
+    public function setValuetype(?string $ValueType)
     {
         $this->setData(self::VALUE_TYPE, $ValueType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getValueType()
+    public function getValuetype() : ?string
     {
         return $this->getData(self::VALUE_TYPE);
     }
 
     /**
-     * @param float $Value
+     * @param ?float $Value
      * @return $this
      */
-    public function setValue($Value)
+    public function setValue(?float $Value)
     {
         $this->setData(self::VALUE, $Value);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getValue()
+    public function getValue() : ?float
     {
         return $this->getData(self::VALUE);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -298,7 +298,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -307,7 +307,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }

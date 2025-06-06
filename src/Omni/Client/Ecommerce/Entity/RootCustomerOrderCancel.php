@@ -12,7 +12,7 @@ class RootCustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCustomerOrderCancel';
 
-    public const CUSTOMER_ORDER_CANCEL_C_O_LINE = 'CustomerOrderCancelCOLine';
+    public const CUSTOMER_ORDER_CANCEL_COLINE = 'CustomerOrderCancelCOLine';
 
     public const CUSTOMER_ORDER_STATUS_LOG = 'CustomerOrderStatusLog';
 
@@ -20,25 +20,25 @@ class RootCustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel
      * @param CustomerOrderCancelCOLine $CustomerOrderCancelCOLine
      * @return $this
      */
-    public function setCustomerOrderCancelCOLine($CustomerOrderCancelCOLine)
+    public function setCustomerordercancelcoline($CustomerOrderCancelCOLine)
     {
-        $this->setData(self::CUSTOMER_ORDER_CANCEL_C_O_LINE, $CustomerOrderCancelCOLine);
+        $this->setData(self::CUSTOMER_ORDER_CANCEL_COLINE, $CustomerOrderCancelCOLine);
         return $this;
     }
 
     /**
      * @return CustomerOrderCancelCOLine
      */
-    public function getCustomerOrderCancelCOLine()
+    public function getCustomerordercancelcoline()
     {
-        return $this->getData(self::CUSTOMER_ORDER_CANCEL_C_O_LINE);
+        return $this->getData(self::CUSTOMER_ORDER_CANCEL_COLINE);
     }
 
     /**
      * @param CustomerOrderStatusLog $CustomerOrderStatusLog
      * @return $this
      */
-    public function setCustomerOrderStatusLog($CustomerOrderStatusLog)
+    public function setCustomerorderstatuslog($CustomerOrderStatusLog)
     {
         $this->setData(self::CUSTOMER_ORDER_STATUS_LOG, $CustomerOrderStatusLog);
         return $this;
@@ -47,7 +47,7 @@ class RootCustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CustomerOrderStatusLog
      */
-    public function getCustomerOrderStatusLog()
+    public function getCustomerorderstatuslog()
     {
         return $this->getData(self::CUSTOMER_ORDER_STATUS_LOG);
     }

@@ -78,7 +78,7 @@ class ReplEcommItemRecipe extends AbstractOperation
     /**
      * @return ReplEcommItemRecipeRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ReplEcommItemRecipeRequest();

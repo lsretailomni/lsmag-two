@@ -20,58 +20,58 @@ class MobilePosCalculateV2 extends \Magento\Catalog\Model\AbstractModel implemen
 
     public const STAFF_ID = 'staffId';
 
-    public const MOBILE_TRANSACTION_X_M_L_V2 = 'mobileTransactionXMLV2';
+    public const MOBILE_TRANSACTION_XMLV2 = 'mobileTransactionXMLV2';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $staffId
+     * @param ?string $staffId
      * @return $this
      */
-    public function setStaffId($staffId)
+    public function setStaffid(?string $staffId)
     {
         $this->setData(self::STAFF_ID, $staffId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffId()
+    public function getStaffid() : ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -80,18 +80,18 @@ class MobilePosCalculateV2 extends \Magento\Catalog\Model\AbstractModel implemen
      * @param Root $mobileTransactionXMLV2
      * @return $this
      */
-    public function setMobileTransactionXMLV2($mobileTransactionXMLV2)
+    public function setMobiletransactionxmlv2($mobileTransactionXMLV2)
     {
-        $this->setData(self::MOBILE_TRANSACTION_X_M_L_V2, $mobileTransactionXMLV2);
+        $this->setData(self::MOBILE_TRANSACTION_XMLV2, $mobileTransactionXMLV2);
         return $this;
     }
 
     /**
      * @return Root
      */
-    public function getMobileTransactionXMLV2()
+    public function getMobiletransactionxmlv2()
     {
-        return $this->getData(self::MOBILE_TRANSACTION_X_M_L_V2);
+        return $this->getData(self::MOBILE_TRANSACTION_XMLV2);
     }
 }
 

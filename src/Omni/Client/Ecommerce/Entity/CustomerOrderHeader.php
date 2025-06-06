@@ -12,7 +12,7 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'CustomerOrderHeader';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const CREATED_AT_STORE = 'CreatedAtStore';
 
@@ -21,73 +21,73 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
     public const SHIP_ORDER = 'ShipOrder';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
-     * @param string $CreatedAtStore
+     * @param ?string $CreatedAtStore
      * @return $this
      */
-    public function setCreatedAtStore($CreatedAtStore)
+    public function setCreatedatstore(?string $CreatedAtStore)
     {
         $this->setData(self::CREATED_AT_STORE, $CreatedAtStore);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCreatedAtStore()
+    public function getCreatedatstore() : ?string
     {
         return $this->getData(self::CREATED_AT_STORE);
     }
 
     /**
-     * @param string $MemberCardNo
+     * @param ?string $MemberCardNo
      * @return $this
      */
-    public function setMemberCardNo($MemberCardNo)
+    public function setMembercardno(?string $MemberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $MemberCardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberCardNo()
+    public function getMembercardno() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
 
     /**
-     * @param boolean $ShipOrder
+     * @param ?bool $ShipOrder
      * @return $this
      */
-    public function setShipOrder($ShipOrder)
+    public function setShiporder(?bool $ShipOrder)
     {
         $this->setData(self::SHIP_ORDER, $ShipOrder);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getShipOrder()
+    public function getShiporder() : ?bool
     {
         return $this->getData(self::SHIP_ORDER);
     }

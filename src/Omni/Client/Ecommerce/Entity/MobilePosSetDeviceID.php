@@ -20,116 +20,116 @@ class MobilePosSetDeviceID extends \Magento\Catalog\Model\AbstractModel implemen
 
     public const TERMINAL_NO = 'terminalNo';
 
-    public const APP_I_D = 'appID';
+    public const APP_ID = 'appID';
 
-    public const DEVICE_UNIQUE_I_D = 'deviceUniqueID';
+    public const DEVICE_UNIQUE_ID = 'deviceUniqueID';
 
     public const DEVICE_LICENSE_KEY = 'deviceLicenseKey';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $terminalNo
+     * @param ?string $terminalNo
      * @return $this
      */
-    public function setTerminalNo($terminalNo)
+    public function setTerminalno(?string $terminalNo)
     {
         $this->setData(self::TERMINAL_NO, $terminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalNo()
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
 
     /**
-     * @param string $appID
+     * @param ?string $appID
      * @return $this
      */
-    public function setAppID($appID)
+    public function setAppid(?string $appID)
     {
-        $this->setData(self::APP_I_D, $appID);
+        $this->setData(self::APP_ID, $appID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAppID()
+    public function getAppid() : ?string
     {
-        return $this->getData(self::APP_I_D);
+        return $this->getData(self::APP_ID);
     }
 
     /**
-     * @param string $deviceUniqueID
+     * @param ?string $deviceUniqueID
      * @return $this
      */
-    public function setDeviceUniqueID($deviceUniqueID)
+    public function setDeviceuniqueid(?string $deviceUniqueID)
     {
-        $this->setData(self::DEVICE_UNIQUE_I_D, $deviceUniqueID);
+        $this->setData(self::DEVICE_UNIQUE_ID, $deviceUniqueID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDeviceUniqueID()
+    public function getDeviceuniqueid() : ?string
     {
-        return $this->getData(self::DEVICE_UNIQUE_I_D);
+        return $this->getData(self::DEVICE_UNIQUE_ID);
     }
 
     /**
-     * @param string $deviceLicenseKey
+     * @param ?string $deviceLicenseKey
      * @return $this
      */
-    public function setDeviceLicenseKey($deviceLicenseKey)
+    public function setDevicelicensekey(?string $deviceLicenseKey)
     {
         $this->setData(self::DEVICE_LICENSE_KEY, $deviceLicenseKey);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDeviceLicenseKey()
+    public function getDevicelicensekey() : ?string
     {
         return $this->getData(self::DEVICE_LICENSE_KEY);
     }

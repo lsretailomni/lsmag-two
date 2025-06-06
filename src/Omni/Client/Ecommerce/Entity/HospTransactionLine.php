@@ -54,7 +54,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
 
     public const NET_AMOUNT = 'NetAmount';
 
-    public const T_A_X_AMOUNT = 'TAXAmount';
+    public const TAXAMOUNT = 'TAXAmount';
 
     public const VAT_BUS_POSTING_GROUP = 'VatBusPostingGroup';
 
@@ -88,23 +88,23 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
 
     public const EXTERNAL_ID = 'ExternalId';
 
-    public const E_F_T_CARD_NUMBER = 'EFTCardNumber';
+    public const EFTCARD_NUMBER = 'EFTCardNumber';
 
-    public const E_F_T_CARD_NAME = 'EFTCardName';
+    public const EFTCARD_NAME = 'EFTCardName';
 
-    public const E_F_T_AUTH_CODE = 'EFTAuthCode';
+    public const EFTAUTH_CODE = 'EFTAuthCode';
 
-    public const E_F_T_MESSAGE = 'EFTMessage';
+    public const EFTMESSAGE = 'EFTMessage';
 
-    public const E_F_T_VERIFICATION_METHOD = 'EFTVerificationMethod';
+    public const EFTVERIFICATION_METHOD = 'EFTVerificationMethod';
 
-    public const E_F_T_TRANSACTION_NO = 'EFTTransactionNo';
+    public const EFTTRANSACTION_NO = 'EFTTransactionNo';
 
-    public const E_F_T_AUTH_STATUS = 'EFTAuthStatus';
+    public const EFTAUTH_STATUS = 'EFTAuthStatus';
 
-    public const E_F_T_TRANS_TYPE = 'EFTTransType';
+    public const EFTTRANS_TYPE = 'EFTTransType';
 
-    public const E_F_T_DATE_TIME = 'EFTDateTime';
+    public const EFTDATE_TIME = 'EFTDateTime';
 
     public const EXTERNAL_LINE_NO = 'ExternalLineNo';
 
@@ -138,7 +138,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
 
     public const ORIG_TRANS_LINE_NO = 'OrigTransLineNo';
 
-    public const RETAIL_IMAGE_I_D = 'RetailImageID';
+    public const RETAIL_IMAGE_ID = 'RetailImageID';
 
     /**
      * @param string $Id
@@ -159,37 +159,37 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $StoreId
+     * @param ?string $StoreId
      * @return $this
      */
-    public function setStoreId($StoreId)
+    public function setStoreid(?string $StoreId)
     {
         $this->setData(self::STORE_ID, $StoreId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreId()
+    public function getStoreid() : ?string
     {
         return $this->getData(self::STORE_ID);
     }
 
     /**
-     * @param string $TerminalId
+     * @param ?string $TerminalId
      * @return $this
      */
-    public function setTerminalId($TerminalId)
+    public function setTerminalid(?string $TerminalId)
     {
         $this->setData(self::TERMINAL_ID, $TerminalId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalId()
+    public function getTerminalid() : ?string
     {
         return $this->getData(self::TERMINAL_ID);
     }
@@ -198,7 +198,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -207,7 +207,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -216,7 +216,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $EntryStatus
      * @return $this
      */
-    public function setEntryStatus($EntryStatus)
+    public function setEntrystatus($EntryStatus)
     {
         $this->setData(self::ENTRY_STATUS, $EntryStatus);
         return $this;
@@ -225,7 +225,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryStatus()
+    public function getEntrystatus()
     {
         return $this->getData(self::ENTRY_STATUS);
     }
@@ -234,7 +234,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineType
      * @return $this
      */
-    public function setLineType($LineType)
+    public function setLinetype($LineType)
     {
         $this->setData(self::LINE_TYPE, $LineType);
         return $this;
@@ -243,115 +243,115 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineType()
+    public function getLinetype()
     {
         return $this->getData(self::LINE_TYPE);
     }
 
     /**
-     * @param string $Number
+     * @param ?string $Number
      * @return $this
      */
-    public function setNumber($Number)
+    public function setNumber(?string $Number)
     {
         $this->setData(self::NUMBER, $Number);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNumber()
+    public function getNumber() : ?string
     {
         return $this->getData(self::NUMBER);
     }
 
     /**
-     * @param string $Barcode
+     * @param ?string $Barcode
      * @return $this
      */
-    public function setBarcode($Barcode)
+    public function setBarcode(?string $Barcode)
     {
         $this->setData(self::BARCODE, $Barcode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcode()
+    public function getBarcode() : ?string
     {
         return $this->getData(self::BARCODE);
     }
 
     /**
-     * @param string $CurrencyCode
+     * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode($CurrencyCode)
+    public function setCurrencycode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCurrencyCode()
+    public function getCurrencycode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
 
     /**
-     * @param float $CurrencyFactor
+     * @param ?float $CurrencyFactor
      * @return $this
      */
-    public function setCurrencyFactor($CurrencyFactor)
+    public function setCurrencyfactor(?float $CurrencyFactor)
     {
         $this->setData(self::CURRENCY_FACTOR, $CurrencyFactor);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getCurrencyFactor()
+    public function getCurrencyfactor() : ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $UomId
+     * @param ?string $UomId
      * @return $this
      */
-    public function setUomId($UomId)
+    public function setUomid(?string $UomId)
     {
         $this->setData(self::UOM_ID, $UomId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUomId()
+    public function getUomid() : ?string
     {
         return $this->getData(self::UOM_ID);
     }
@@ -360,7 +360,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $CouponFunction
      * @return $this
      */
-    public function setCouponFunction($CouponFunction)
+    public function setCouponfunction($CouponFunction)
     {
         $this->setData(self::COUPON_FUNCTION, $CouponFunction);
         return $this;
@@ -369,7 +369,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getCouponFunction()
+    public function getCouponfunction()
     {
         return $this->getData(self::COUPON_FUNCTION);
     }
@@ -378,7 +378,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $ValidInTransaction
      * @return $this
      */
-    public function setValidInTransaction($ValidInTransaction)
+    public function setValidintransaction($ValidInTransaction)
     {
         $this->setData(self::VALID_IN_TRANSACTION, $ValidInTransaction);
         return $this;
@@ -387,295 +387,295 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getValidInTransaction()
+    public function getValidintransaction()
     {
         return $this->getData(self::VALID_IN_TRANSACTION);
     }
 
     /**
-     * @param string $CouponCode
+     * @param ?string $CouponCode
      * @return $this
      */
-    public function setCouponCode($CouponCode)
+    public function setCouponcode(?string $CouponCode)
     {
         $this->setData(self::COUPON_CODE, $CouponCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCouponCode()
+    public function getCouponcode() : ?string
     {
         return $this->getData(self::COUPON_CODE);
     }
 
     /**
-     * @param float $NetPrice
+     * @param ?float $NetPrice
      * @return $this
      */
-    public function setNetPrice($NetPrice)
+    public function setNetprice(?float $NetPrice)
     {
         $this->setData(self::NET_PRICE, $NetPrice);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getNetPrice()
+    public function getNetprice() : ?float
     {
         return $this->getData(self::NET_PRICE);
     }
 
     /**
-     * @param float $Price
+     * @param ?float $Price
      * @return $this
      */
-    public function setPrice($Price)
+    public function setPrice(?float $Price)
     {
         $this->setData(self::PRICE, $Price);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPrice()
+    public function getPrice() : ?float
     {
         return $this->getData(self::PRICE);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param float $DiscountAmount
+     * @param ?float $DiscountAmount
      * @return $this
      */
-    public function setDiscountAmount($DiscountAmount)
+    public function setDiscountamount(?float $DiscountAmount)
     {
         $this->setData(self::DISCOUNT_AMOUNT, $DiscountAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountAmount()
+    public function getDiscountamount() : ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
     /**
-     * @param float $DiscountPercent
+     * @param ?float $DiscountPercent
      * @return $this
      */
-    public function setDiscountPercent($DiscountPercent)
+    public function setDiscountpercent(?float $DiscountPercent)
     {
         $this->setData(self::DISCOUNT_PERCENT, $DiscountPercent);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountPercent()
+    public function getDiscountpercent() : ?float
     {
         return $this->getData(self::DISCOUNT_PERCENT);
     }
 
     /**
-     * @param float $NetAmount
+     * @param ?float $NetAmount
      * @return $this
      */
-    public function setNetAmount($NetAmount)
+    public function setNetamount(?float $NetAmount)
     {
         $this->setData(self::NET_AMOUNT, $NetAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getNetAmount()
+    public function getNetamount() : ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
 
     /**
-     * @param float $TAXAmount
+     * @param ?float $TAXAmount
      * @return $this
      */
-    public function setTAXAmount($TAXAmount)
+    public function setTaxamount(?float $TAXAmount)
     {
-        $this->setData(self::T_A_X_AMOUNT, $TAXAmount);
+        $this->setData(self::TAXAMOUNT, $TAXAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTAXAmount()
+    public function getTaxamount() : ?float
     {
-        return $this->getData(self::T_A_X_AMOUNT);
+        return $this->getData(self::TAXAMOUNT);
     }
 
     /**
-     * @param string $VatBusPostingGroup
+     * @param ?string $VatBusPostingGroup
      * @return $this
      */
-    public function setVatBusPostingGroup($VatBusPostingGroup)
+    public function setVatbuspostinggroup(?string $VatBusPostingGroup)
     {
         $this->setData(self::VAT_BUS_POSTING_GROUP, $VatBusPostingGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVatBusPostingGroup()
+    public function getVatbuspostinggroup() : ?string
     {
         return $this->getData(self::VAT_BUS_POSTING_GROUP);
     }
 
     /**
-     * @param string $VatProdPostingGroup
+     * @param ?string $VatProdPostingGroup
      * @return $this
      */
-    public function setVatProdPostingGroup($VatProdPostingGroup)
+    public function setVatprodpostinggroup(?string $VatProdPostingGroup)
     {
         $this->setData(self::VAT_PROD_POSTING_GROUP, $VatProdPostingGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVatProdPostingGroup()
+    public function getVatprodpostinggroup() : ?string
     {
         return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
 
     /**
-     * @param string $GenBusPostingGroup
+     * @param ?string $GenBusPostingGroup
      * @return $this
      */
-    public function setGenBusPostingGroup($GenBusPostingGroup)
+    public function setGenbuspostinggroup(?string $GenBusPostingGroup)
     {
         $this->setData(self::GEN_BUS_POSTING_GROUP, $GenBusPostingGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getGenBusPostingGroup()
+    public function getGenbuspostinggroup() : ?string
     {
         return $this->getData(self::GEN_BUS_POSTING_GROUP);
     }
 
     /**
-     * @param string $GenProdPostingGroup
+     * @param ?string $GenProdPostingGroup
      * @return $this
      */
-    public function setGenProdPostingGroup($GenProdPostingGroup)
+    public function setGenprodpostinggroup(?string $GenProdPostingGroup)
     {
         $this->setData(self::GEN_PROD_POSTING_GROUP, $GenProdPostingGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getGenProdPostingGroup()
+    public function getGenprodpostinggroup() : ?string
     {
         return $this->getData(self::GEN_PROD_POSTING_GROUP);
     }
 
     /**
-     * @param float $ManualPrice
+     * @param ?float $ManualPrice
      * @return $this
      */
-    public function setManualPrice($ManualPrice)
+    public function setManualprice(?float $ManualPrice)
     {
         $this->setData(self::MANUAL_PRICE, $ManualPrice);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getManualPrice()
+    public function getManualprice() : ?float
     {
         return $this->getData(self::MANUAL_PRICE);
     }
 
     /**
-     * @param string $CardOrCustNo
+     * @param ?string $CardOrCustNo
      * @return $this
      */
-    public function setCardOrCustNo($CardOrCustNo)
+    public function setCardorcustno(?string $CardOrCustNo)
     {
         $this->setData(self::CARD_OR_CUST_NO, $CardOrCustNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardOrCustNo()
+    public function getCardorcustno() : ?string
     {
         return $this->getData(self::CARD_OR_CUST_NO);
     }
 
     /**
-     * @param float $ManualDiscountPercent
+     * @param ?float $ManualDiscountPercent
      * @return $this
      */
-    public function setManualDiscountPercent($ManualDiscountPercent)
+    public function setManualdiscountpercent(?float $ManualDiscountPercent)
     {
         $this->setData(self::MANUAL_DISCOUNT_PERCENT, $ManualDiscountPercent);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getManualDiscountPercent()
+    public function getManualdiscountpercent() : ?float
     {
         return $this->getData(self::MANUAL_DISCOUNT_PERCENT);
     }
 
     /**
-     * @param float $ManualDiscountAmount
+     * @param ?float $ManualDiscountAmount
      * @return $this
      */
-    public function setManualDiscountAmount($ManualDiscountAmount)
+    public function setManualdiscountamount(?float $ManualDiscountAmount)
     {
         $this->setData(self::MANUAL_DISCOUNT_AMOUNT, $ManualDiscountAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getManualDiscountAmount()
+    public function getManualdiscountamount() : ?float
     {
         return $this->getData(self::MANUAL_DISCOUNT_AMOUNT);
     }
@@ -684,7 +684,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $DiscInfoLine
      * @return $this
      */
-    public function setDiscInfoLine($DiscInfoLine)
+    public function setDiscinfoline($DiscInfoLine)
     {
         $this->setData(self::DISC_INFO_LINE, $DiscInfoLine);
         return $this;
@@ -693,7 +693,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDiscInfoLine()
+    public function getDiscinfoline()
     {
         return $this->getData(self::DISC_INFO_LINE);
     }
@@ -702,7 +702,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $TotalDiscInfoLine
      * @return $this
      */
-    public function setTotalDiscInfoLine($TotalDiscInfoLine)
+    public function setTotaldiscinfoline($TotalDiscInfoLine)
     {
         $this->setData(self::TOTAL_DISC_INFO_LINE, $TotalDiscInfoLine);
         return $this;
@@ -711,97 +711,97 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTotalDiscInfoLine()
+    public function getTotaldiscinfoline()
     {
         return $this->getData(self::TOTAL_DISC_INFO_LINE);
     }
 
     /**
-     * @param string $ItemDescription
+     * @param ?string $ItemDescription
      * @return $this
      */
-    public function setItemDescription($ItemDescription)
+    public function setItemdescription(?string $ItemDescription)
     {
         $this->setData(self::ITEM_DESCRIPTION, $ItemDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemDescription()
+    public function getItemdescription() : ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
 
     /**
-     * @param string $VariantDescription
+     * @param ?string $VariantDescription
      * @return $this
      */
-    public function setVariantDescription($VariantDescription)
+    public function setVariantdescription(?string $VariantDescription)
     {
         $this->setData(self::VARIANT_DESCRIPTION, $VariantDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantDescription()
+    public function getVariantdescription() : ?string
     {
         return $this->getData(self::VARIANT_DESCRIPTION);
     }
 
     /**
-     * @param string $UomDescription
+     * @param ?string $UomDescription
      * @return $this
      */
-    public function setUomDescription($UomDescription)
+    public function setUomdescription(?string $UomDescription)
     {
         $this->setData(self::UOM_DESCRIPTION, $UomDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUomDescription()
+    public function getUomdescription() : ?string
     {
         return $this->getData(self::UOM_DESCRIPTION);
     }
 
     /**
-     * @param string $TenderDescription
+     * @param ?string $TenderDescription
      * @return $this
      */
-    public function setTenderDescription($TenderDescription)
+    public function setTenderdescription(?string $TenderDescription)
     {
         $this->setData(self::TENDER_DESCRIPTION, $TenderDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTenderDescription()
+    public function getTenderdescription() : ?string
     {
         return $this->getData(self::TENDER_DESCRIPTION);
     }
 
     /**
-     * @param string $TransDate
+     * @param ?string $TransDate
      * @return $this
      */
-    public function setTransDate($TransDate)
+    public function setTransdate(?string $TransDate)
     {
         $this->setData(self::TRANS_DATE, $TransDate);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransDate()
+    public function getTransdate() : ?string
     {
         return $this->getData(self::TRANS_DATE);
     }
@@ -810,7 +810,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $ExternalId
      * @return $this
      */
-    public function setExternalId($ExternalId)
+    public function setExternalid($ExternalId)
     {
         $this->setData(self::EXTERNAL_ID, $ExternalId);
         return $this;
@@ -819,178 +819,178 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getExternalId()
+    public function getExternalid()
     {
         return $this->getData(self::EXTERNAL_ID);
     }
 
     /**
-     * @param string $EFTCardNumber
+     * @param ?string $EFTCardNumber
      * @return $this
      */
-    public function setEFTCardNumber($EFTCardNumber)
+    public function setEftcardnumber(?string $EFTCardNumber)
     {
-        $this->setData(self::E_F_T_CARD_NUMBER, $EFTCardNumber);
+        $this->setData(self::EFTCARD_NUMBER, $EFTCardNumber);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTCardNumber()
+    public function getEftcardnumber() : ?string
     {
-        return $this->getData(self::E_F_T_CARD_NUMBER);
+        return $this->getData(self::EFTCARD_NUMBER);
     }
 
     /**
-     * @param string $EFTCardName
+     * @param ?string $EFTCardName
      * @return $this
      */
-    public function setEFTCardName($EFTCardName)
+    public function setEftcardname(?string $EFTCardName)
     {
-        $this->setData(self::E_F_T_CARD_NAME, $EFTCardName);
+        $this->setData(self::EFTCARD_NAME, $EFTCardName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTCardName()
+    public function getEftcardname() : ?string
     {
-        return $this->getData(self::E_F_T_CARD_NAME);
+        return $this->getData(self::EFTCARD_NAME);
     }
 
     /**
-     * @param string $EFTAuthCode
+     * @param ?string $EFTAuthCode
      * @return $this
      */
-    public function setEFTAuthCode($EFTAuthCode)
+    public function setEftauthcode(?string $EFTAuthCode)
     {
-        $this->setData(self::E_F_T_AUTH_CODE, $EFTAuthCode);
+        $this->setData(self::EFTAUTH_CODE, $EFTAuthCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTAuthCode()
+    public function getEftauthcode() : ?string
     {
-        return $this->getData(self::E_F_T_AUTH_CODE);
+        return $this->getData(self::EFTAUTH_CODE);
     }
 
     /**
-     * @param string $EFTMessage
+     * @param ?string $EFTMessage
      * @return $this
      */
-    public function setEFTMessage($EFTMessage)
+    public function setEftmessage(?string $EFTMessage)
     {
-        $this->setData(self::E_F_T_MESSAGE, $EFTMessage);
+        $this->setData(self::EFTMESSAGE, $EFTMessage);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTMessage()
+    public function getEftmessage() : ?string
     {
-        return $this->getData(self::E_F_T_MESSAGE);
+        return $this->getData(self::EFTMESSAGE);
     }
 
     /**
      * @param int $EFTVerificationMethod
      * @return $this
      */
-    public function setEFTVerificationMethod($EFTVerificationMethod)
+    public function setEftverificationmethod($EFTVerificationMethod)
     {
-        $this->setData(self::E_F_T_VERIFICATION_METHOD, $EFTVerificationMethod);
+        $this->setData(self::EFTVERIFICATION_METHOD, $EFTVerificationMethod);
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getEFTVerificationMethod()
+    public function getEftverificationmethod()
     {
-        return $this->getData(self::E_F_T_VERIFICATION_METHOD);
+        return $this->getData(self::EFTVERIFICATION_METHOD);
     }
 
     /**
-     * @param string $EFTTransactionNo
+     * @param ?string $EFTTransactionNo
      * @return $this
      */
-    public function setEFTTransactionNo($EFTTransactionNo)
+    public function setEfttransactionno(?string $EFTTransactionNo)
     {
-        $this->setData(self::E_F_T_TRANSACTION_NO, $EFTTransactionNo);
+        $this->setData(self::EFTTRANSACTION_NO, $EFTTransactionNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTTransactionNo()
+    public function getEfttransactionno() : ?string
     {
-        return $this->getData(self::E_F_T_TRANSACTION_NO);
+        return $this->getData(self::EFTTRANSACTION_NO);
     }
 
     /**
      * @param int $EFTAuthStatus
      * @return $this
      */
-    public function setEFTAuthStatus($EFTAuthStatus)
+    public function setEftauthstatus($EFTAuthStatus)
     {
-        $this->setData(self::E_F_T_AUTH_STATUS, $EFTAuthStatus);
+        $this->setData(self::EFTAUTH_STATUS, $EFTAuthStatus);
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getEFTAuthStatus()
+    public function getEftauthstatus()
     {
-        return $this->getData(self::E_F_T_AUTH_STATUS);
+        return $this->getData(self::EFTAUTH_STATUS);
     }
 
     /**
      * @param int $EFTTransType
      * @return $this
      */
-    public function setEFTTransType($EFTTransType)
+    public function setEfttranstype($EFTTransType)
     {
-        $this->setData(self::E_F_T_TRANS_TYPE, $EFTTransType);
+        $this->setData(self::EFTTRANS_TYPE, $EFTTransType);
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getEFTTransType()
+    public function getEfttranstype()
     {
-        return $this->getData(self::E_F_T_TRANS_TYPE);
+        return $this->getData(self::EFTTRANS_TYPE);
     }
 
     /**
-     * @param string $EFTDateTime
+     * @param ?string $EFTDateTime
      * @return $this
      */
-    public function setEFTDateTime($EFTDateTime)
+    public function setEftdatetime(?string $EFTDateTime)
     {
-        $this->setData(self::E_F_T_DATE_TIME, $EFTDateTime);
+        $this->setData(self::EFTDATE_TIME, $EFTDateTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTDateTime()
+    public function getEftdatetime() : ?string
     {
-        return $this->getData(self::E_F_T_DATE_TIME);
+        return $this->getData(self::EFTDATE_TIME);
     }
 
     /**
      * @param int $ExternalLineNo
      * @return $this
      */
-    public function setExternalLineNo($ExternalLineNo)
+    public function setExternallineno($ExternalLineNo)
     {
         $this->setData(self::EXTERNAL_LINE_NO, $ExternalLineNo);
         return $this;
@@ -999,7 +999,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getExternalLineNo()
+    public function getExternallineno()
     {
         return $this->getData(self::EXTERNAL_LINE_NO);
     }
@@ -1008,7 +1008,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $DealItem
      * @return $this
      */
-    public function setDealItem($DealItem)
+    public function setDealitem($DealItem)
     {
         $this->setData(self::DEAL_ITEM, $DealItem);
         return $this;
@@ -1017,61 +1017,61 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDealItem()
+    public function getDealitem()
     {
         return $this->getData(self::DEAL_ITEM);
     }
 
     /**
-     * @param string $StaffId
+     * @param ?string $StaffId
      * @return $this
      */
-    public function setStaffId($StaffId)
+    public function setStaffid(?string $StaffId)
     {
         $this->setData(self::STAFF_ID, $StaffId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffId()
+    public function getStaffid() : ?string
     {
         return $this->getData(self::STAFF_ID);
     }
 
     /**
-     * @param string $SalesType
+     * @param ?string $SalesType
      * @return $this
      */
-    public function setSalesType($SalesType)
+    public function setSalestype(?string $SalesType)
     {
         $this->setData(self::SALES_TYPE, $SalesType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSalesType()
+    public function getSalestype() : ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
 
     /**
-     * @param string $PriceGroupCode
+     * @param ?string $PriceGroupCode
      * @return $this
      */
-    public function setPriceGroupCode($PriceGroupCode)
+    public function setPricegroupcode(?string $PriceGroupCode)
     {
         $this->setData(self::PRICE_GROUP_CODE, $PriceGroupCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPriceGroupCode()
+    public function getPricegroupcode() : ?string
     {
         return $this->getData(self::PRICE_GROUP_CODE);
     }
@@ -1080,7 +1080,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $RestMenuType
      * @return $this
      */
-    public function setRestMenuType($RestMenuType)
+    public function setRestmenutype($RestMenuType)
     {
         $this->setData(self::REST_MENU_TYPE, $RestMenuType);
         return $this;
@@ -1089,25 +1089,25 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getRestMenuType()
+    public function getRestmenutype()
     {
         return $this->getData(self::REST_MENU_TYPE);
     }
 
     /**
-     * @param string $RestMenuTypeCode
+     * @param ?string $RestMenuTypeCode
      * @return $this
      */
-    public function setRestMenuTypeCode($RestMenuTypeCode)
+    public function setRestmenutypecode(?string $RestMenuTypeCode)
     {
         $this->setData(self::REST_MENU_TYPE_CODE, $RestMenuTypeCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRestMenuTypeCode()
+    public function getRestmenutypecode() : ?string
     {
         return $this->getData(self::REST_MENU_TYPE_CODE);
     }
@@ -1116,7 +1116,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $GuestSeatNo
      * @return $this
      */
-    public function setGuestSeatNo($GuestSeatNo)
+    public function setGuestseatno($GuestSeatNo)
     {
         $this->setData(self::GUEST_SEAT_NO, $GuestSeatNo);
         return $this;
@@ -1125,7 +1125,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getGuestSeatNo()
+    public function getGuestseatno()
     {
         return $this->getData(self::GUEST_SEAT_NO);
     }
@@ -1134,7 +1134,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $KitchenRouting
      * @return $this
      */
-    public function setKitchenRouting($KitchenRouting)
+    public function setKitchenrouting($KitchenRouting)
     {
         $this->setData(self::KITCHEN_ROUTING, $KitchenRouting);
         return $this;
@@ -1143,7 +1143,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getKitchenRouting()
+    public function getKitchenrouting()
     {
         return $this->getData(self::KITCHEN_ROUTING);
     }
@@ -1152,7 +1152,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineKitchenStatus
      * @return $this
      */
-    public function setLineKitchenStatus($LineKitchenStatus)
+    public function setLinekitchenstatus($LineKitchenStatus)
     {
         $this->setData(self::LINE_KITCHEN_STATUS, $LineKitchenStatus);
         return $this;
@@ -1161,79 +1161,79 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineKitchenStatus()
+    public function getLinekitchenstatus()
     {
         return $this->getData(self::LINE_KITCHEN_STATUS);
     }
 
     /**
-     * @param string $LineKitchenStatusCode
+     * @param ?string $LineKitchenStatusCode
      * @return $this
      */
-    public function setLineKitchenStatusCode($LineKitchenStatusCode)
+    public function setLinekitchenstatuscode(?string $LineKitchenStatusCode)
     {
         $this->setData(self::LINE_KITCHEN_STATUS_CODE, $LineKitchenStatusCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLineKitchenStatusCode()
+    public function getLinekitchenstatuscode() : ?string
     {
         return $this->getData(self::LINE_KITCHEN_STATUS_CODE);
     }
 
     /**
-     * @param boolean $RecommendedItem
+     * @param ?bool $RecommendedItem
      * @return $this
      */
-    public function setRecommendedItem($RecommendedItem)
+    public function setRecommendeditem(?bool $RecommendedItem)
     {
         $this->setData(self::RECOMMENDED_ITEM, $RecommendedItem);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getRecommendedItem()
+    public function getRecommendeditem() : ?bool
     {
         return $this->getData(self::RECOMMENDED_ITEM);
     }
 
     /**
-     * @param string $OrigTransStore
+     * @param ?string $OrigTransStore
      * @return $this
      */
-    public function setOrigTransStore($OrigTransStore)
+    public function setOrigtransstore(?string $OrigTransStore)
     {
         $this->setData(self::ORIG_TRANS_STORE, $OrigTransStore);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOrigTransStore()
+    public function getOrigtransstore() : ?string
     {
         return $this->getData(self::ORIG_TRANS_STORE);
     }
 
     /**
-     * @param string $OrigTransPos
+     * @param ?string $OrigTransPos
      * @return $this
      */
-    public function setOrigTransPos($OrigTransPos)
+    public function setOrigtranspos(?string $OrigTransPos)
     {
         $this->setData(self::ORIG_TRANS_POS, $OrigTransPos);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOrigTransPos()
+    public function getOrigtranspos() : ?string
     {
         return $this->getData(self::ORIG_TRANS_POS);
     }
@@ -1242,7 +1242,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $OrigTransNo
      * @return $this
      */
-    public function setOrigTransNo($OrigTransNo)
+    public function setOrigtransno($OrigTransNo)
     {
         $this->setData(self::ORIG_TRANS_NO, $OrigTransNo);
         return $this;
@@ -1251,7 +1251,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getOrigTransNo()
+    public function getOrigtransno()
     {
         return $this->getData(self::ORIG_TRANS_NO);
     }
@@ -1260,7 +1260,7 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $OrigTransLineNo
      * @return $this
      */
-    public function setOrigTransLineNo($OrigTransLineNo)
+    public function setOrigtranslineno($OrigTransLineNo)
     {
         $this->setData(self::ORIG_TRANS_LINE_NO, $OrigTransLineNo);
         return $this;
@@ -1269,27 +1269,27 @@ class HospTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getOrigTransLineNo()
+    public function getOrigtranslineno()
     {
         return $this->getData(self::ORIG_TRANS_LINE_NO);
     }
 
     /**
-     * @param string $RetailImageID
+     * @param ?string $RetailImageID
      * @return $this
      */
-    public function setRetailImageID($RetailImageID)
+    public function setRetailimageid(?string $RetailImageID)
     {
-        $this->setData(self::RETAIL_IMAGE_I_D, $RetailImageID);
+        $this->setData(self::RETAIL_IMAGE_ID, $RetailImageID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRetailImageID()
+    public function getRetailimageid() : ?string
     {
-        return $this->getData(self::RETAIL_IMAGE_I_D);
+        return $this->getData(self::RETAIL_IMAGE_ID);
     }
 }
 

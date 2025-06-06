@@ -64,13 +64,73 @@ class LSCMemberSalesBuffer extends AbstractModel
     public const STORE_NO = 'Store No.';
     public const TERRITORY_CODE = 'Territory Code';
 
+    public static array $dbColumnsMapping = [
+	self::ADDRESS => 'address',
+	self::ADDRESS_2 => 'address_2',
+	self::CITY => 'city',
+	self::COUNTRYREGION_CODE => 'countryregion_code',
+	self::COUNTY => 'county',
+	self::CREATE_DATETIME => 'create_datetime',
+	self::CREATED_AT_STORE => 'created_at_store',
+	self::CUSTOMER_DOCUMENT_ID => 'customer_document_id',
+	self::CUSTOMER_NO => 'customer_no',
+	self::DATE_TIME => 'date_time',
+	self::DAYTIME_PHONE_NO => 'daytime_phone_no',
+	self::DISCOUNT_AMOUNT => 'discount_amount',
+	self::DOCUMENT_ID => 'document_id',
+	self::DOCUMENT_SOURCE_TYPE => 'document_source_type',
+	self::DOCUMENT_STATUS => 'document_status',
+	self::EMAIL => 'email',
+	self::ENTRY_NO => 'entry_no',
+	self::EXTERNAL_ID => 'external_id',
+	self::GROSS_AMOUNT => 'gross_amount',
+	self::HOUSEAPARTMENT_NO => 'houseapartment_no',
+	self::LSC_MEMBER_SALES_BUFFER => 'lsc_member_sales_buffer',
+	self::MEMBER_CARD_NO => 'member_card_no',
+	self::MOBILE_PHONE_NO => 'mobile_phone_no',
+	self::NAME => 'name',
+	self::NET_AMOUNT => 'net_amount',
+	self::NUMBER_OF_ITEMS => 'number_of_items',
+	self::NUMBER_OF_LINES => 'number_of_lines',
+	self::PHONE_NO => 'phone_no',
+	self::POINTS_REWARDED => 'points_rewarded',
+	self::POINTS_USED_IN_ORDER => 'points_used_in_order',
+	self::POS_TERMINAL_NO => 'pos_terminal_no',
+	self::POST_CODE => 'post_code',
+	self::POSTED => 'posted',
+	self::QUANTITY => 'quantity',
+	self::REFUND_RECEIPT_NO => 'refund_receipt_no',
+	self::SALE_IS_RETURN_SALE => 'sale_is_return_sale',
+	self::SHIPTO_ADDRESS => 'shipto_address',
+	self::SHIPTO_ADDRESS_2 => 'shipto_address_2',
+	self::SHIPTO_CITY => 'shipto_city',
+	self::SHIPTO_COUNTRYREGION_CODE => 'shipto_countryregion_code',
+	self::SHIPTO_COUNTY => 'shipto_county',
+	self::SHIPTO_EMAIL => 'shipto_email',
+	self::SHIPTO_HOUSEAPARTMENT_NO => 'shipto_houseapartment_no',
+	self::SHIPTO_NAME => 'shipto_name',
+	self::SHIPTO_PHONE_NO => 'shipto_phone_no',
+	self::SHIPTO_POST_CODE => 'shipto_post_code',
+	self::SHIPPING_AGENT_CODE => 'shipping_agent_code',
+	self::SHIPPING_AGENT_SERVICE_CODE => 'shipping_agent_service_code',
+	self::STORE_CURRENCY_CODE => 'store_currency_code',
+	self::STORE_NAME => 'store_name',
+	self::STORE_NO => 'store_no',
+	self::TERRITORY_CODE => 'territory_code',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getAddress(): ?string
     {
         return $this->getData(self::ADDRESS);
     }
 
-    public function setAddress(string $value)
+    public function setAddress(?string $value)
     {
         return $this->setData(self::ADDRESS, $value);
     }
@@ -80,7 +140,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::ADDRESS_2);
     }
 
-    public function setAddress2(string $value)
+    public function setAddress2(?string $value)
     {
         return $this->setData(self::ADDRESS_2, $value);
     }
@@ -90,7 +150,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::CITY);
     }
 
-    public function setCity(string $value)
+    public function setCity(?string $value)
     {
         return $this->setData(self::CITY, $value);
     }
@@ -100,7 +160,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::COUNTRYREGION_CODE);
     }
 
-    public function setCountryRegionCode(string $value)
+    public function setCountryRegionCode(?string $value)
     {
         return $this->setData(self::COUNTRYREGION_CODE, $value);
     }
@@ -110,17 +170,17 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::COUNTY);
     }
 
-    public function setCounty(string $value)
+    public function setCounty(?string $value)
     {
         return $this->setData(self::COUNTY, $value);
     }
 
-    public function getCreateDateTime(): ?\DateTime
+    public function getCreateDatetime(): ?string
     {
         return $this->getData(self::CREATE_DATETIME);
     }
 
-    public function setCreateDateTime(\DateTime $value)
+    public function setCreateDatetime(?string $value)
     {
         return $this->setData(self::CREATE_DATETIME, $value);
     }
@@ -130,17 +190,17 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::CREATED_AT_STORE);
     }
 
-    public function setCreatedAtStore(string $value)
+    public function setCreatedAtStore(?string $value)
     {
         return $this->setData(self::CREATED_AT_STORE, $value);
     }
 
-    public function getCustomerDocumentID(): ?string
+    public function getCustomerDocumentId(): ?string
     {
         return $this->getData(self::CUSTOMER_DOCUMENT_ID);
     }
 
-    public function setCustomerDocumentID(string $value)
+    public function setCustomerDocumentId(?string $value)
     {
         return $this->setData(self::CUSTOMER_DOCUMENT_ID, $value);
     }
@@ -150,17 +210,17 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::CUSTOMER_NO);
     }
 
-    public function setCustomerNo(string $value)
+    public function setCustomerNo(?string $value)
     {
         return $this->setData(self::CUSTOMER_NO, $value);
     }
 
-    public function getDateTime(): ?\DateTime
+    public function getDateTime(): ?string
     {
         return $this->getData(self::DATE_TIME);
     }
 
-    public function setDateTime(\DateTime $value)
+    public function setDateTime(?string $value)
     {
         return $this->setData(self::DATE_TIME, $value);
     }
@@ -170,47 +230,47 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::DAYTIME_PHONE_NO);
     }
 
-    public function setDaytimePhoneNo(string $value)
+    public function setDaytimePhoneNo(?string $value)
     {
         return $this->setData(self::DAYTIME_PHONE_NO, $value);
     }
 
-    public function getDiscountAmount(): ?string
+    public function getDiscountAmount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
-    public function setDiscountAmount(string $value)
+    public function setDiscountAmount(?float $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT, $value);
     }
 
-    public function getDocumentID(): ?string
+    public function getDocumentId(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
 
-    public function setDocumentID(string $value)
+    public function setDocumentId(?string $value)
     {
         return $this->setData(self::DOCUMENT_ID, $value);
     }
 
-    public function getDocumentSourceType(): ?string
+    public function getDocumentSourceType(): ?int
     {
         return $this->getData(self::DOCUMENT_SOURCE_TYPE);
     }
 
-    public function setDocumentSourceType(string $value)
+    public function setDocumentSourceType(?int $value)
     {
         return $this->setData(self::DOCUMENT_SOURCE_TYPE, $value);
     }
 
-    public function getDocumentStatus(): ?string
+    public function getDocumentStatus(): ?int
     {
         return $this->getData(self::DOCUMENT_STATUS);
     }
 
-    public function setDocumentStatus(string $value)
+    public function setDocumentStatus(?int $value)
     {
         return $this->setData(self::DOCUMENT_STATUS, $value);
     }
@@ -220,7 +280,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::EMAIL);
     }
 
-    public function setEmail(string $value)
+    public function setEmail(?string $value)
     {
         return $this->setData(self::EMAIL, $value);
     }
@@ -230,27 +290,27 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::ENTRY_NO);
     }
 
-    public function setEntryNo(int $value)
+    public function setEntryNo(?int $value)
     {
         return $this->setData(self::ENTRY_NO, $value);
     }
 
-    public function getExternalID(): ?string
+    public function getExternalId(): ?string
     {
         return $this->getData(self::EXTERNAL_ID);
     }
 
-    public function setExternalID(string $value)
+    public function setExternalId(?string $value)
     {
         return $this->setData(self::EXTERNAL_ID, $value);
     }
 
-    public function getGrossAmount(): ?string
+    public function getGrossAmount(): ?float
     {
         return $this->getData(self::GROSS_AMOUNT);
     }
 
-    public function setGrossAmount(string $value)
+    public function setGrossAmount(?float $value)
     {
         return $this->setData(self::GROSS_AMOUNT, $value);
     }
@@ -260,17 +320,17 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::HOUSEAPARTMENT_NO);
     }
 
-    public function setHouseApartmentNo(string $value)
+    public function setHouseApartmentNo(?string $value)
     {
         return $this->setData(self::HOUSEAPARTMENT_NO, $value);
     }
 
-    public function getLSCMemberSalesBuffer(): ?string
+    public function getLscMemberSalesBuffer(): ?string
     {
         return $this->getData(self::LSC_MEMBER_SALES_BUFFER);
     }
 
-    public function setLSCMemberSalesBuffer(string $value)
+    public function setLscMemberSalesBuffer(?string $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
     }
@@ -280,7 +340,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::MEMBER_CARD_NO);
     }
 
-    public function setMemberCardNo(string $value)
+    public function setMemberCardNo(?string $value)
     {
         return $this->setData(self::MEMBER_CARD_NO, $value);
     }
@@ -290,7 +350,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::MOBILE_PHONE_NO);
     }
 
-    public function setMobilePhoneNo(string $value)
+    public function setMobilePhoneNo(?string $value)
     {
         return $this->setData(self::MOBILE_PHONE_NO, $value);
     }
@@ -300,17 +360,17 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::NAME);
     }
 
-    public function setName(string $value)
+    public function setName(?string $value)
     {
         return $this->setData(self::NAME, $value);
     }
 
-    public function getNetAmount(): ?string
+    public function getNetAmount(): ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
 
-    public function setNetAmount(string $value)
+    public function setNetAmount(?float $value)
     {
         return $this->setData(self::NET_AMOUNT, $value);
     }
@@ -320,7 +380,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::NUMBER_OF_ITEMS);
     }
 
-    public function setNumberOfItems(int $value)
+    public function setNumberOfItems(?int $value)
     {
         return $this->setData(self::NUMBER_OF_ITEMS, $value);
     }
@@ -330,7 +390,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::NUMBER_OF_LINES);
     }
 
-    public function setNumberOfLines(int $value)
+    public function setNumberOfLines(?int $value)
     {
         return $this->setData(self::NUMBER_OF_LINES, $value);
     }
@@ -340,37 +400,37 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::PHONE_NO);
     }
 
-    public function setPhoneNo(string $value)
+    public function setPhoneNo(?string $value)
     {
         return $this->setData(self::PHONE_NO, $value);
     }
 
-    public function getPointsRewarded(): ?string
+    public function getPointsRewarded(): ?float
     {
         return $this->getData(self::POINTS_REWARDED);
     }
 
-    public function setPointsRewarded(string $value)
+    public function setPointsRewarded(?float $value)
     {
         return $this->setData(self::POINTS_REWARDED, $value);
     }
 
-    public function getPointsUsedInOrder(): ?string
+    public function getPointsUsedInOrder(): ?float
     {
         return $this->getData(self::POINTS_USED_IN_ORDER);
     }
 
-    public function setPointsUsedInOrder(string $value)
+    public function setPointsUsedInOrder(?float $value)
     {
         return $this->setData(self::POINTS_USED_IN_ORDER, $value);
     }
 
-    public function getPOSTerminalNo(): ?string
+    public function getPosTerminalNo(): ?string
     {
         return $this->getData(self::POS_TERMINAL_NO);
     }
 
-    public function setPOSTerminalNo(string $value)
+    public function setPosTerminalNo(?string $value)
     {
         return $this->setData(self::POS_TERMINAL_NO, $value);
     }
@@ -380,7 +440,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::POST_CODE);
     }
 
-    public function setPostCode(string $value)
+    public function setPostCode(?string $value)
     {
         return $this->setData(self::POST_CODE, $value);
     }
@@ -390,17 +450,17 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::POSTED);
     }
 
-    public function setPosted(bool $value)
+    public function setPosted(?bool $value)
     {
         return $this->setData(self::POSTED, $value);
     }
 
-    public function getQuantity(): ?string
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
-    public function setQuantity(string $value)
+    public function setQuantity(?float $value)
     {
         return $this->setData(self::QUANTITY, $value);
     }
@@ -410,7 +470,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::REFUND_RECEIPT_NO);
     }
 
-    public function setRefundReceiptNo(string $value)
+    public function setRefundReceiptNo(?string $value)
     {
         return $this->setData(self::REFUND_RECEIPT_NO, $value);
     }
@@ -420,7 +480,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::SALE_IS_RETURN_SALE);
     }
 
-    public function setSaleIsReturnSale(bool $value)
+    public function setSaleIsReturnSale(?bool $value)
     {
         return $this->setData(self::SALE_IS_RETURN_SALE, $value);
     }
@@ -430,7 +490,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::SHIPTO_ADDRESS);
     }
 
-    public function setShipToAddress(string $value)
+    public function setShipToAddress(?string $value)
     {
         return $this->setData(self::SHIPTO_ADDRESS, $value);
     }
@@ -440,7 +500,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::SHIPTO_ADDRESS_2);
     }
 
-    public function setShipToAddress2(string $value)
+    public function setShipToAddress2(?string $value)
     {
         return $this->setData(self::SHIPTO_ADDRESS_2, $value);
     }
@@ -450,7 +510,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::SHIPTO_CITY);
     }
 
-    public function setShipToCity(string $value)
+    public function setShipToCity(?string $value)
     {
         return $this->setData(self::SHIPTO_CITY, $value);
     }
@@ -460,7 +520,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::SHIPTO_COUNTRYREGION_CODE);
     }
 
-    public function setShipToCountryRegionCode(string $value)
+    public function setShipToCountryRegionCode(?string $value)
     {
         return $this->setData(self::SHIPTO_COUNTRYREGION_CODE, $value);
     }
@@ -470,7 +530,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::SHIPTO_COUNTY);
     }
 
-    public function setShipToCounty(string $value)
+    public function setShipToCounty(?string $value)
     {
         return $this->setData(self::SHIPTO_COUNTY, $value);
     }
@@ -480,7 +540,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::SHIPTO_EMAIL);
     }
 
-    public function setShipToEmail(string $value)
+    public function setShipToEmail(?string $value)
     {
         return $this->setData(self::SHIPTO_EMAIL, $value);
     }
@@ -490,7 +550,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::SHIPTO_HOUSEAPARTMENT_NO);
     }
 
-    public function setShipToHouseApartmentNo(string $value)
+    public function setShipToHouseApartmentNo(?string $value)
     {
         return $this->setData(self::SHIPTO_HOUSEAPARTMENT_NO, $value);
     }
@@ -500,7 +560,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::SHIPTO_NAME);
     }
 
-    public function setShipToName(string $value)
+    public function setShipToName(?string $value)
     {
         return $this->setData(self::SHIPTO_NAME, $value);
     }
@@ -510,7 +570,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::SHIPTO_PHONE_NO);
     }
 
-    public function setShipToPhoneNo(string $value)
+    public function setShipToPhoneNo(?string $value)
     {
         return $this->setData(self::SHIPTO_PHONE_NO, $value);
     }
@@ -520,7 +580,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::SHIPTO_POST_CODE);
     }
 
-    public function setShipToPostCode(string $value)
+    public function setShipToPostCode(?string $value)
     {
         return $this->setData(self::SHIPTO_POST_CODE, $value);
     }
@@ -530,7 +590,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
 
-    public function setShippingAgentCode(string $value)
+    public function setShippingAgentCode(?string $value)
     {
         return $this->setData(self::SHIPPING_AGENT_CODE, $value);
     }
@@ -540,7 +600,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::SHIPPING_AGENT_SERVICE_CODE);
     }
 
-    public function setShippingAgentServiceCode(string $value)
+    public function setShippingAgentServiceCode(?string $value)
     {
         return $this->setData(self::SHIPPING_AGENT_SERVICE_CODE, $value);
     }
@@ -550,7 +610,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::STORE_CURRENCY_CODE);
     }
 
-    public function setStoreCurrencyCode(string $value)
+    public function setStoreCurrencyCode(?string $value)
     {
         return $this->setData(self::STORE_CURRENCY_CODE, $value);
     }
@@ -560,7 +620,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::STORE_NAME);
     }
 
-    public function setStoreName(string $value)
+    public function setStoreName(?string $value)
     {
         return $this->setData(self::STORE_NAME, $value);
     }
@@ -570,7 +630,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -580,7 +640,7 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->getData(self::TERRITORY_CODE);
     }
 
-    public function setTerritoryCode(string $value)
+    public function setTerritoryCode(?string $value)
     {
         return $this->setData(self::TERRITORY_CODE, $value);
     }

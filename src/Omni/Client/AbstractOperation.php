@@ -4,6 +4,7 @@ namespace Ls\Omni\Client;
 
 use DOMDocument;
 use Exception;
+use Laminas\Code\Reflection\ClassReflection;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\NavException;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
@@ -16,19 +17,11 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\DataObject;
 use Magento\Framework\Session\SessionManagerInterface;
 use Psr\Log\LoggerInterface;
+use ReflectionException;
 use SoapFault;
 
-/**
- * Class AbstractOperation
- * @package Ls\Omni\Client
- */
 abstract class AbstractOperation implements OperationInterface
 {
-    /**
-     * @var string
-     */
-    private static $header = 'LSRETAIL-KEY';
-
     /**
      * @var ServiceType
      */
@@ -94,6 +87,8 @@ abstract class AbstractOperation implements OperationInterface
     }
 
     /**
+     * Get service type
+     *
      * @return ServiceType
      */
     public function getServiceType()
@@ -107,13 +102,14 @@ abstract class AbstractOperation implements OperationInterface
     /** If we change this then we need to change our generator classes in Client/Loyalty Folder as well. */
     // @codingStandardsIgnoreStart
     /**
-     * @param $operation_name
+     * @param $operationName
      * @return NavException|NavObjectReferenceNotAnInstanceException|string|null
      * @throws Exception
      */
-    public function makeRequest($operation_name)
+    public function makeRequest($operationName)
     {
-        $request_input = $this->getOperationInput();
+        $requestInput = $this->getRequest();
+        $this->enrichRequest($requestInput);
         $client        = $this->getClient();
         $response      = null;
         $lsr           = $this->objectManager->get("\Ls\Core\Model\LSR");
@@ -121,32 +117,29 @@ abstract class AbstractOperation implements OperationInterface
         //@codingStandardsIgnoreEnd
         $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         try {
-            $isDataObject = $request_input instanceof DataObject;
-            $response = $client->{$operation_name}(
-                $isDataObject ?
-                    $request_input->getData() :
-                    $request_input
-            );
+            $isDataObject = $requestInput instanceof DataObject;
+            $requestInput = $isDataObject ? $this->convertToArray($requestInput) : $requestInput;
+            $response = $client->{$operationName}($requestInput);
             if (is_object($response)) {
                 if ($isDataObject) {
                     $response = $this->convertSoapResponseToDataObject($response);
                 }
             }
 
-            if ($operation_name == 'OrderCreate') {
+            if ($operationName == 'OrderCreate') {
                 $lsr->setLicenseValidity("1");
             }
         } catch (SoapFault $e) {
             $navException = $this->parseException($e);
             $this->magentoLogger->critical($navException);
             if ($e->getMessage() != "") {
-                if ($e->faultcode == 's:Error' && $operation_name == 'OneListCalculate') {
+                if ($e->faultcode == 's:Error' && $operationName == 'OneListCalculate') {
                     $response = $e->getMessage();
-                } elseif ($e->getCode() == 504 && $operation_name == 'ContactCreate') {
+                } elseif ($e->getCode() == 504 && $operationName == 'ContactCreate') {
                     $response = null;
-                } elseif ($operation_name == 'Ping') {
+                } elseif ($operationName == 'Ping') {
                     throw new Exception('Unable to ping commerce service.');
-                } elseif ($operation_name == 'OrderCreate' &&
+                } elseif ($operationName == 'OrderCreate' &&
                     $e->faultcode == 's:GeneralErrorCode' &&
                     str_contains($e->faultstring, 'LS Central Ecom unit')
                 ) {
@@ -160,11 +153,40 @@ abstract class AbstractOperation implements OperationInterface
         }
         $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
 
-        $this->debugLog($operation_name, $requestTime, $responseTime, $lsr->getWebsiteId());
+        $this->debugLog($operationName, $requestTime, $responseTime, $lsr->getWebsiteId());
 
         return $response;
     }
     // @codingStandardsIgnoreEnd
+
+    /**
+     * Convert given nested object to flat array
+     *
+     * @param $object
+     * @return array|mixed
+     */
+    public function convertToArray($object)
+    {
+        if (!($object instanceof DataObject)) {
+            return [];
+        }
+
+        $data = $object->getData();
+
+        foreach ($data as $key => $value) {
+            if ($value instanceof DataObject) {
+                $data[$key] = $this->convertToArray($value);
+            } elseif (is_array($value)) {
+                $data[$key] = array_map(function ($item) {
+                    return $item instanceof DataObject
+                        ? $this->convertToArray($item)
+                        : $item;
+                }, $value);
+            }
+        }
+
+        return $data;
+    }
 
     /**
      * Convert soap object to data object
@@ -187,7 +209,7 @@ abstract class AbstractOperation implements OperationInterface
             }
         }
         $className = get_class($response);
-        $obj = new $className();
+        $obj = $this->objectManager->create($className);
 
         return $obj->addData($data);
     }
@@ -214,6 +236,34 @@ abstract class AbstractOperation implements OperationInterface
     }
 
     /**
+     * Replace null in missing parameters
+     *
+     * @param $requestInput
+     * @return void
+     * @throws ReflectionException
+     */
+    public function enrichRequest($requestInput)
+    {
+        $reflectedEntity = new ClassReflection($requestInput);
+        $constants = $reflectedEntity->getConstants();
+
+        foreach ($constants as $constantName => $constant) {
+            if ($constantName === 'CLASS_NAME' ||
+                $constantName == 'CUSTOM_ATTRIBUTES' ||
+                $constantName == 'EXTENSION_ATTRIBUTES_KEY'
+            ) {
+                continue;
+            }
+
+            if (!$requestInput->hasData($constant)) {
+                $requestInput->setData($constant, null);
+            }
+        }
+    }
+
+    /**
+     * Set token
+     *
      * @param string $token
      *
      * @return $this
@@ -226,6 +276,8 @@ abstract class AbstractOperation implements OperationInterface
     }
 
     /**
+     * Parse exception
+     *
      * @param SoapFault $exception
      * @return NavException|NavObjectReferenceNotAnInstanceException
      */
@@ -306,6 +358,8 @@ abstract class AbstractOperation implements OperationInterface
     }
 
     /**
+     * Format xml
+     *
      * @param $xmlString
      * @return string
      */

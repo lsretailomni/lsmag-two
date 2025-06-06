@@ -78,7 +78,7 @@ class ActivityGroupMemberRemove extends AbstractOperation
     /**
      * @return ActivityGroupMemberRemoveRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ActivityGroupMemberRemoveRequest();

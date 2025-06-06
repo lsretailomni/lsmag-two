@@ -18,7 +18,7 @@ class RootGetReturnPolicy extends \Magento\Catalog\Model\AbstractModel
      * @param ReturnPolicy $ReturnPolicy
      * @return $this
      */
-    public function setReturnPolicy($ReturnPolicy)
+    public function setReturnpolicy($ReturnPolicy)
     {
         $this->setData(self::RETURN_POLICY, $ReturnPolicy);
         return $this;
@@ -27,7 +27,7 @@ class RootGetReturnPolicy extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ReturnPolicy
      */
-    public function getReturnPolicy()
+    public function getReturnpolicy()
     {
         return $this->getData(self::RETURN_POLICY);
     }

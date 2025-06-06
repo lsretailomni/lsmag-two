@@ -12,24 +12,24 @@ class RootCOMobilePickLines extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCOMobilePickLines';
 
-    public const C_O_MOBILE_PICK_LINES = 'COMobilePickLines';
+    public const COMOBILE_PICK_LINES = 'COMobilePickLines';
 
     /**
      * @param COMobilePickLines $COMobilePickLines
      * @return $this
      */
-    public function setCOMobilePickLines($COMobilePickLines)
+    public function setComobilepicklines($COMobilePickLines)
     {
-        $this->setData(self::C_O_MOBILE_PICK_LINES, $COMobilePickLines);
+        $this->setData(self::COMOBILE_PICK_LINES, $COMobilePickLines);
         return $this;
     }
 
     /**
      * @return COMobilePickLines
      */
-    public function getCOMobilePickLines()
+    public function getComobilepicklines()
     {
-        return $this->getData(self::C_O_MOBILE_PICK_LINES);
+        return $this->getData(self::COMOBILE_PICK_LINES);
     }
 }
 

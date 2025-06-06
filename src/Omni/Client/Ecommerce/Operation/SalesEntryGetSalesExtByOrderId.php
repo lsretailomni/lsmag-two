@@ -78,7 +78,7 @@ class SalesEntryGetSalesExtByOrderId extends AbstractOperation
     /**
      * @return SalesEntryGetSalesExtByOrderIdRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new SalesEntryGetSalesExtByOrderIdRequest();

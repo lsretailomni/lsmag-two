@@ -18,40 +18,40 @@ class LSCCOShipAgentsInfoGetResult extends \Magento\Catalog\Model\AbstractModel 
 
     public const ERROR_TEXT = 'errorText';
 
-    public const C_O_SHIP_AGENTS_INFO_GET_X_M_L = 'cOShipAgentsInfoGetXML';
+    public const COSHIP_AGENTS_INFO_GET_XML = 'cOShipAgentsInfoGetXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class LSCCOShipAgentsInfoGetResult extends \Magento\Catalog\Model\AbstractModel 
      * @param RootCOShippingAgentsInfoGetXML $cOShipAgentsInfoGetXML
      * @return $this
      */
-    public function setCOShipAgentsInfoGetXML($cOShipAgentsInfoGetXML)
+    public function setCoshipagentsinfogetxml($cOShipAgentsInfoGetXML)
     {
-        $this->setData(self::C_O_SHIP_AGENTS_INFO_GET_X_M_L, $cOShipAgentsInfoGetXML);
+        $this->setData(self::COSHIP_AGENTS_INFO_GET_XML, $cOShipAgentsInfoGetXML);
         return $this;
     }
 
     /**
      * @return RootCOShippingAgentsInfoGetXML
      */
-    public function getCOShipAgentsInfoGetXML()
+    public function getCoshipagentsinfogetxml()
     {
-        return $this->getData(self::C_O_SHIP_AGENTS_INFO_GET_X_M_L);
+        return $this->getData(self::COSHIP_AGENTS_INFO_GET_XML);
     }
 
     /**

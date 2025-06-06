@@ -20,14 +20,14 @@
                 Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
             </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_country_code_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">repl_country_code_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">repl_countryview_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">repl_country_code_id</item>
+                        <item name="indexField" xsi:type="string">repl_countryview_id</item>
                     </item>
                 </item>
             </argument>
@@ -93,7 +93,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Name">
+        <column name="name">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -104,7 +104,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Code">
+        <column name="code">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -115,7 +115,7 @@
                 </item>
             </argument>
         </column>
-        <column name="CustomerNo">
+        <column name="lsc_web_store_customer_no">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -126,7 +126,7 @@
                 </item>
             </argument>
         </column>
-        <column name="TaxPostGroup">
+        <column name="taxpostgroup">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

@@ -23,13 +23,32 @@ class LSCBarcodeMaskSegment extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public static array $dbColumnsMapping = [
+	self::MASK_ENTRY_NO => 'mask_entry_no',
+	self::SEGMENT_NO => 'segment_no',
+	self::LENGTH => 'length',
+	self::TYPE => 'type',
+	self::DECIMALS => 'decimals',
+	self::CHAR => 'char',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getMaskEntryNo(): ?int
     {
         return $this->getData(self::MASK_ENTRY_NO);
     }
 
-    public function setMaskEntryNo(int $value)
+    public function setMaskEntryNo(?int $value)
     {
         return $this->setData(self::MASK_ENTRY_NO, $value);
     }
@@ -39,27 +58,27 @@ class LSCBarcodeMaskSegment extends AbstractModel
         return $this->getData(self::SEGMENT_NO);
     }
 
-    public function setSegmentNo(int $value)
+    public function setSegmentNo(?int $value)
     {
         return $this->setData(self::SEGMENT_NO, $value);
     }
 
-    public function getLength(): ?string
+    public function getLength(): ?float
     {
         return $this->getData(self::LENGTH);
     }
 
-    public function setLength(string $value)
+    public function setLength(?float $value)
     {
         return $this->setData(self::LENGTH, $value);
     }
 
-    public function getType(): ?string
+    public function getType(): ?int
     {
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value)
+    public function setType(?int $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -69,7 +88,7 @@ class LSCBarcodeMaskSegment extends AbstractModel
         return $this->getData(self::DECIMALS);
     }
 
-    public function setDecimals(int $value)
+    public function setDecimals(?int $value)
     {
         return $this->setData(self::DECIMALS, $value);
     }
@@ -79,57 +98,57 @@ class LSCBarcodeMaskSegment extends AbstractModel
         return $this->getData(self::CHAR);
     }
 
-    public function setChar(string $value)
+    public function setChar(?string $value)
     {
         return $this->setData(self::CHAR, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

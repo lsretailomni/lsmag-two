@@ -18,13 +18,27 @@ class LSCExtdVariantValues extends AbstractModel
     public const DIMENSION = 'Dimension';
     public const LOGICAL_ORDER = 'Logical Order';
 
+    public static array $dbColumnsMapping = [
+	self::FRAMEWORK_CODE => 'framework_code',
+	self::ITEM_NO => 'item_no',
+	self::CODE => 'code',
+	self::VALUE => 'value',
+	self::DIMENSION => 'dimension',
+	self::LOGICAL_ORDER => 'logical_order',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getFrameworkCode(): ?string
     {
         return $this->getData(self::FRAMEWORK_CODE);
     }
 
-    public function setFrameworkCode(string $value)
+    public function setFrameworkCode(?string $value)
     {
         return $this->setData(self::FRAMEWORK_CODE, $value);
     }
@@ -34,7 +48,7 @@ class LSCExtdVariantValues extends AbstractModel
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -44,7 +58,7 @@ class LSCExtdVariantValues extends AbstractModel
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -54,7 +68,7 @@ class LSCExtdVariantValues extends AbstractModel
         return $this->getData(self::VALUE);
     }
 
-    public function setValue(string $value)
+    public function setValue(?string $value)
     {
         return $this->setData(self::VALUE, $value);
     }
@@ -64,7 +78,7 @@ class LSCExtdVariantValues extends AbstractModel
         return $this->getData(self::DIMENSION);
     }
 
-    public function setDimension(int $value)
+    public function setDimension(?int $value)
     {
         return $this->setData(self::DIMENSION, $value);
     }
@@ -74,7 +88,7 @@ class LSCExtdVariantValues extends AbstractModel
         return $this->getData(self::LOGICAL_ORDER);
     }
 
-    public function setLogicalOrder(int $value)
+    public function setLogicalOrder(?int $value)
     {
         return $this->setData(self::LOGICAL_ORDER, $value);
     }

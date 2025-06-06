@@ -18,9 +18,9 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
-    public const STAFF_I_D = 'StaffID';
+    public const STAFF_ID = 'StaffID';
 
     public const DOCUMENT_MEMBER = 'DocumentMember';
 
@@ -30,204 +30,204 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
 
     public const DOCUMENT_MEMBER_NAME = 'DocumentMemberName';
 
-    public const P_R_COUNTING_HEADER_NO = 'PRCountingHeaderNo';
+    public const PRCOUNTING_HEADER_NO = 'PRCountingHeaderNo';
 
     public const EXPECTED_DATE = 'ExpectedDate';
 
     /**
-     * @param string $TransactionNo
+     * @param ?string $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno(?string $TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionNo()
+    public function getTransactionno() : ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
 
     /**
-     * @param string $TransactionType
+     * @param ?string $TransactionType
      * @return $this
      */
-    public function setTransactionType($TransactionType)
+    public function setTransactiontype(?string $TransactionType)
     {
         $this->setData(self::TRANSACTION_TYPE, $TransactionType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionType()
+    public function getTransactiontype() : ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
-     * @param string $StaffID
+     * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID($StaffID)
+    public function setStaffid(?string $StaffID)
     {
-        $this->setData(self::STAFF_I_D, $StaffID);
+        $this->setData(self::STAFF_ID, $StaffID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffID()
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
-     * @param string $DocumentMember
+     * @param ?string $DocumentMember
      * @return $this
      */
-    public function setDocumentMember($DocumentMember)
+    public function setDocumentmember(?string $DocumentMember)
     {
         $this->setData(self::DOCUMENT_MEMBER, $DocumentMember);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentMember()
+    public function getDocumentmember() : ?string
     {
         return $this->getData(self::DOCUMENT_MEMBER);
     }
 
     /**
-     * @param string $DocumentType
+     * @param ?string $DocumentType
      * @return $this
      */
-    public function setDocumentType($DocumentType)
+    public function setDocumenttype(?string $DocumentType)
     {
         $this->setData(self::DOCUMENT_TYPE, $DocumentType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentType()
+    public function getDocumenttype() : ?string
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
 
     /**
-     * @param string $DocumentNo
+     * @param ?string $DocumentNo
      * @return $this
      */
-    public function setDocumentNo($DocumentNo)
+    public function setDocumentno(?string $DocumentNo)
     {
         $this->setData(self::DOCUMENT_NO, $DocumentNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentNo()
+    public function getDocumentno() : ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
 
     /**
-     * @param string $DocumentMemberName
+     * @param ?string $DocumentMemberName
      * @return $this
      */
-    public function setDocumentMemberName($DocumentMemberName)
+    public function setDocumentmembername(?string $DocumentMemberName)
     {
         $this->setData(self::DOCUMENT_MEMBER_NAME, $DocumentMemberName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentMemberName()
+    public function getDocumentmembername() : ?string
     {
         return $this->getData(self::DOCUMENT_MEMBER_NAME);
     }
 
     /**
-     * @param string $PRCountingHeaderNo
+     * @param ?string $PRCountingHeaderNo
      * @return $this
      */
-    public function setPRCountingHeaderNo($PRCountingHeaderNo)
+    public function setPrcountingheaderno(?string $PRCountingHeaderNo)
     {
-        $this->setData(self::P_R_COUNTING_HEADER_NO, $PRCountingHeaderNo);
+        $this->setData(self::PRCOUNTING_HEADER_NO, $PRCountingHeaderNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPRCountingHeaderNo()
+    public function getPrcountingheaderno() : ?string
     {
-        return $this->getData(self::P_R_COUNTING_HEADER_NO);
+        return $this->getData(self::PRCOUNTING_HEADER_NO);
     }
 
     /**
-     * @param date $ExpectedDate
+     * @param ?string $ExpectedDate
      * @return $this
      */
-    public function setExpectedDate($ExpectedDate)
+    public function setExpecteddate(?string $ExpectedDate)
     {
         $this->setData(self::EXPECTED_DATE, $ExpectedDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getExpectedDate()
+    public function getExpecteddate() : ?string
     {
         return $this->getData(self::EXPECTED_DATE);
     }

@@ -22,76 +22,76 @@ class SendTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements 
 
     public const UPDATE_REPLICATION_COUNTER = 'updateReplicationCounter';
 
-    public const SEND_TRANSACTION_V2_X_M_L = 'sendTransactionV2XML';
+    public const SEND_TRANSACTION_V2_XML = 'sendTransactionV2XML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param boolean $addOnly
+     * @param ?bool $addOnly
      * @return $this
      */
-    public function setAddOnly($addOnly)
+    public function setAddonly(?bool $addOnly)
     {
         $this->setData(self::ADD_ONLY, $addOnly);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getAddOnly()
+    public function getAddonly() : ?bool
     {
         return $this->getData(self::ADD_ONLY);
     }
 
     /**
-     * @param boolean $updateReplicationCounter
+     * @param ?bool $updateReplicationCounter
      * @return $this
      */
-    public function setUpdateReplicationCounter($updateReplicationCounter)
+    public function setUpdatereplicationcounter(?bool $updateReplicationCounter)
     {
         $this->setData(self::UPDATE_REPLICATION_COUNTER, $updateReplicationCounter);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getUpdateReplicationCounter()
+    public function getUpdatereplicationcounter() : ?bool
     {
         return $this->getData(self::UPDATE_REPLICATION_COUNTER);
     }
@@ -100,18 +100,18 @@ class SendTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements 
      * @param RootSendTransaction $sendTransactionV2XML
      * @return $this
      */
-    public function setSendTransactionV2XML($sendTransactionV2XML)
+    public function setSendtransactionv2xml($sendTransactionV2XML)
     {
-        $this->setData(self::SEND_TRANSACTION_V2_X_M_L, $sendTransactionV2XML);
+        $this->setData(self::SEND_TRANSACTION_V2_XML, $sendTransactionV2XML);
         return $this;
     }
 
     /**
      * @return RootSendTransaction
      */
-    public function getSendTransactionV2XML()
+    public function getSendtransactionv2xml()
     {
-        return $this->getData(self::SEND_TRANSACTION_V2_X_M_L);
+        return $this->getData(self::SEND_TRANSACTION_V2_XML);
     }
 }
 

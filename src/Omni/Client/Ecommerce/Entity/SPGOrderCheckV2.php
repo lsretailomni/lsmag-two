@@ -14,7 +14,7 @@ class SPGOrderCheckV2 extends \Magento\Catalog\Model\AbstractModel implements Re
 {
     public const CLASS_NAME = 'SPGOrderCheckV2';
 
-    public const DOCUMENT_I_D = 'documentID';
+    public const DOCUMENT_ID = 'documentID';
 
     public const ORDER_PAID = 'orderPaid';
 
@@ -22,62 +22,62 @@ class SPGOrderCheckV2 extends \Magento\Catalog\Model\AbstractModel implements Re
 
     public const NUMBER_OF_ITEMS_TO_CHECK = 'numberOfItemsToCheck';
 
-    public const S_P_G_ORDER_CHECK_V2_X_M_L = 'sPGOrderCheckV2XML';
+    public const SPGORDER_CHECK_V2_XML = 'sPGOrderCheckV2XML';
 
     public const RESPONSE_CODE = 'responseCode';
 
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $documentID
+     * @param ?string $documentID
      * @return $this
      */
-    public function setDocumentID($documentID)
+    public function setDocumentid(?string $documentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $documentID);
+        $this->setData(self::DOCUMENT_ID, $documentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
-     * @param boolean $orderPaid
+     * @param ?bool $orderPaid
      * @return $this
      */
-    public function setOrderPaid($orderPaid)
+    public function setOrderpaid(?bool $orderPaid)
     {
         $this->setData(self::ORDER_PAID, $orderPaid);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getOrderPaid()
+    public function getOrderpaid() : ?bool
     {
         return $this->getData(self::ORDER_PAID);
     }
 
     /**
-     * @param boolean $doCheck
+     * @param ?bool $doCheck
      * @return $this
      */
-    public function setDoCheck($doCheck)
+    public function setDocheck(?bool $doCheck)
     {
         $this->setData(self::DO_CHECK, $doCheck);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getDoCheck()
+    public function getDocheck() : ?bool
     {
         return $this->getData(self::DO_CHECK);
     }
@@ -86,7 +86,7 @@ class SPGOrderCheckV2 extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param int $numberOfItemsToCheck
      * @return $this
      */
-    public function setNumberOfItemsToCheck($numberOfItemsToCheck)
+    public function setNumberofitemstocheck($numberOfItemsToCheck)
     {
         $this->setData(self::NUMBER_OF_ITEMS_TO_CHECK, $numberOfItemsToCheck);
         return $this;
@@ -95,7 +95,7 @@ class SPGOrderCheckV2 extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return int
      */
-    public function getNumberOfItemsToCheck()
+    public function getNumberofitemstocheck()
     {
         return $this->getData(self::NUMBER_OF_ITEMS_TO_CHECK);
     }
@@ -104,52 +104,52 @@ class SPGOrderCheckV2 extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param RootSPGOrderCheck $sPGOrderCheckV2XML
      * @return $this
      */
-    public function setSPGOrderCheckV2XML($sPGOrderCheckV2XML)
+    public function setSpgordercheckv2xml($sPGOrderCheckV2XML)
     {
-        $this->setData(self::S_P_G_ORDER_CHECK_V2_X_M_L, $sPGOrderCheckV2XML);
+        $this->setData(self::SPGORDER_CHECK_V2_XML, $sPGOrderCheckV2XML);
         return $this;
     }
 
     /**
      * @return RootSPGOrderCheck
      */
-    public function getSPGOrderCheckV2XML()
+    public function getSpgordercheckv2xml()
     {
-        return $this->getData(self::S_P_G_ORDER_CHECK_V2_X_M_L);
+        return $this->getData(self::SPGORDER_CHECK_V2_XML);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

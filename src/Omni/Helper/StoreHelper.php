@@ -8,6 +8,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
+use Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
@@ -15,6 +16,7 @@ use \Ls\Omni\Model\Cache\Type;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
@@ -93,38 +95,29 @@ class StoreHelper extends AbstractHelper
     /**
      * Getting sales type
      *
-     * @param $websiteId
-     * @param $webStore
-     * @param $baseUrl
-     * @param $lsKey
-     * @return array|bool|Entity\Store|Entity\StoreGetByIdResponse|ResponseInterface|null
+     * @param string $websiteId
+     * @return mixed|null
      */
-    public function getSalesType($websiteId = '', $webStore = null, $baseUrl = null, $lsKey = null)
+    public function getSalesType(string $websiteId = '')
     {
-        return $this->getStore($websiteId, $webStore, $baseUrl, $lsKey);
+        $storeDetails = $this->getStore($websiteId);
+
+        return $storeDetails->getLscSalesType();
     }
 
     /**
-     * Getting Store By Id
+     * Getting Store By id
      *
-     * @param $websiteId
-     * @param $webStore
-     * @param $baseUrl
-     * @param $lsKey
-     * @return array|bool|Entity\Store|Entity\StoreGetByIdResponse|ResponseInterface|null
+     * @param string $websiteId
+     * @param string|null $webStore
+     * @return array|bool|GetStores_GetStores|DataObject|mixed
      */
-    public function getStore($websiteId = '', $webStore = null, $baseUrl = null, $lsKey = null)
+    public function getStore(string $websiteId = '', ?string $webStore = null)
     {
         $response = [];
+
         if ($webStore == null) {
             $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
-        }
-        if ($baseUrl == null) {
-            $baseUrl = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $websiteId);
-        }
-
-        if ($lsKey == null) {
-            $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $websiteId);
         }
 
         try {
@@ -134,16 +127,13 @@ class StoreHelper extends AbstractHelper
             if ($cachedResponse) {
                 $response = $cachedResponse;
             } else {
-
                 // @codingStandardsIgnoreStart
-                $request   = new Entity\StoreGetById();
-                $operation = new Operation\StoreGetById($baseUrl);
-                $operation->setToken($lsKey);
+                $webStoreOperation = new Operation\GetStores_GetStores();
+                $webStoreOperation->setOperationInput(
+                    ['storeGetType' => '0', 'searchText' => $webStore, 'includeDetail' => false]
+                );
                 // @codingStandardsIgnoreEnd
-
-                $request->setStoreId($webStore);
-
-                $response = $operation->execute($request);
+                $response =  current($webStoreOperation->execute()->getRecords());
 
                 if (!empty($response)) {
                     $this->cacheHelper->persistContentInCache(
@@ -158,7 +148,8 @@ class StoreHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getResult() : $response;
+
+        return $response;
     }
 
     /**

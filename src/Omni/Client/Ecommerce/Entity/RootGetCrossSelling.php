@@ -18,7 +18,7 @@ class RootGetCrossSelling extends \Magento\Catalog\Model\AbstractModel
      * @param CrossSellingItems $CrossSellingItems
      * @return $this
      */
-    public function setCrossSellingItems($CrossSellingItems)
+    public function setCrosssellingitems($CrossSellingItems)
     {
         $this->setData(self::CROSS_SELLING_ITEMS, $CrossSellingItems);
         return $this;
@@ -27,7 +27,7 @@ class RootGetCrossSelling extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CrossSellingItems
      */
-    public function getCrossSellingItems()
+    public function getCrosssellingitems()
     {
         return $this->getData(self::CROSS_SELLING_ITEMS);
     }

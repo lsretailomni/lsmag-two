@@ -18,7 +18,7 @@ class RootGetMemberSalesHistory extends \Magento\Catalog\Model\AbstractModel
      * @param MemberSalesEntry $MemberSalesEntry
      * @return $this
      */
-    public function setMemberSalesEntry($MemberSalesEntry)
+    public function setMembersalesentry($MemberSalesEntry)
     {
         $this->setData(self::MEMBER_SALES_ENTRY, $MemberSalesEntry);
         return $this;
@@ -27,7 +27,7 @@ class RootGetMemberSalesHistory extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberSalesEntry
      */
-    public function getMemberSalesEntry()
+    public function getMembersalesentry()
     {
         return $this->getData(self::MEMBER_SALES_ENTRY);
     }

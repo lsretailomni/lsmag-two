@@ -20,7 +20,7 @@ class RootCOQtyAvailabilityInV2 extends \Magento\Catalog\Model\AbstractModel
      * @param CustomerOrderHeader $CustomerOrderHeader
      * @return $this
      */
-    public function setCustomerOrderHeader($CustomerOrderHeader)
+    public function setCustomerorderheader($CustomerOrderHeader)
     {
         $this->setData(self::CUSTOMER_ORDER_HEADER, $CustomerOrderHeader);
         return $this;
@@ -29,7 +29,7 @@ class RootCOQtyAvailabilityInV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CustomerOrderHeader
      */
-    public function getCustomerOrderHeader()
+    public function getCustomerorderheader()
     {
         return $this->getData(self::CUSTOMER_ORDER_HEADER);
     }
@@ -38,7 +38,7 @@ class RootCOQtyAvailabilityInV2 extends \Magento\Catalog\Model\AbstractModel
      * @param CustomerOrderLine $CustomerOrderLine
      * @return $this
      */
-    public function setCustomerOrderLine($CustomerOrderLine)
+    public function setCustomerorderline($CustomerOrderLine)
     {
         $this->setData(self::CUSTOMER_ORDER_LINE, $CustomerOrderLine);
         return $this;
@@ -47,7 +47,7 @@ class RootCOQtyAvailabilityInV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CustomerOrderLine
      */
-    public function getCustomerOrderLine()
+    public function getCustomerorderline()
     {
         return $this->getData(self::CUSTOMER_ORDER_LINE);
     }

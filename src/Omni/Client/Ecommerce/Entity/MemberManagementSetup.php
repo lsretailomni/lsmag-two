@@ -57,397 +57,397 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     public const BARCODE_ELEMENT8 = 'BarcodeElement8';
 
     /**
-     * @param string $Code
+     * @param ?string $Code
      * @return $this
      */
-    public function setCode($Code)
+    public function setCode(?string $Code)
     {
         $this->setData(self::CODE, $Code);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCode()
+    public function getCode() : ?string
     {
         return $this->getData(self::CODE);
     }
 
     /**
-     * @param string $CampaignNoSeries
+     * @param ?string $CampaignNoSeries
      * @return $this
      */
-    public function setCampaignNoSeries($CampaignNoSeries)
+    public function setCampaignnoseries(?string $CampaignNoSeries)
     {
         $this->setData(self::CAMPAIGN_NO_SERIES, $CampaignNoSeries);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCampaignNoSeries()
+    public function getCampaignnoseries() : ?string
     {
         return $this->getData(self::CAMPAIGN_NO_SERIES);
     }
 
     /**
-     * @param string $DiscountTrackingNoSeries
+     * @param ?string $DiscountTrackingNoSeries
      * @return $this
      */
-    public function setDiscountTrackingNoSeries($DiscountTrackingNoSeries)
+    public function setDiscounttrackingnoseries(?string $DiscountTrackingNoSeries)
     {
         $this->setData(self::DISCOUNT_TRACKING_NO_SERIES, $DiscountTrackingNoSeries);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDiscountTrackingNoSeries()
+    public function getDiscounttrackingnoseries() : ?string
     {
         return $this->getData(self::DISCOUNT_TRACKING_NO_SERIES);
     }
 
     /**
-     * @param string $MemberPointOfferNoSeries
+     * @param ?string $MemberPointOfferNoSeries
      * @return $this
      */
-    public function setMemberPointOfferNoSeries($MemberPointOfferNoSeries)
+    public function setMemberpointoffernoseries(?string $MemberPointOfferNoSeries)
     {
         $this->setData(self::MEMBER_POINT_OFFER_NO_SERIES, $MemberPointOfferNoSeries);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberPointOfferNoSeries()
+    public function getMemberpointoffernoseries() : ?string
     {
         return $this->getData(self::MEMBER_POINT_OFFER_NO_SERIES);
     }
 
     /**
-     * @param string $MissingAttributeHandling
+     * @param ?string $MissingAttributeHandling
      * @return $this
      */
-    public function setMissingAttributeHandling($MissingAttributeHandling)
+    public function setMissingattributehandling(?string $MissingAttributeHandling)
     {
         $this->setData(self::MISSING_ATTRIBUTE_HANDLING, $MissingAttributeHandling);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMissingAttributeHandling()
+    public function getMissingattributehandling() : ?string
     {
         return $this->getData(self::MISSING_ATTRIBUTE_HANDLING);
     }
 
     /**
-     * @param string $ReasonBlockingByAttribute
+     * @param ?string $ReasonBlockingByAttribute
      * @return $this
      */
-    public function setReasonBlockingByAttribute($ReasonBlockingByAttribute)
+    public function setReasonblockingbyattribute(?string $ReasonBlockingByAttribute)
     {
         $this->setData(self::REASON_BLOCKING_BY_ATTRIBUTE, $ReasonBlockingByAttribute);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReasonBlockingByAttribute()
+    public function getReasonblockingbyattribute() : ?string
     {
         return $this->getData(self::REASON_BLOCKING_BY_ATTRIBUTE);
     }
 
     /**
-     * @param string $ReasonCodesDevices
+     * @param ?string $ReasonCodesDevices
      * @return $this
      */
-    public function setReasonCodesDevices($ReasonCodesDevices)
+    public function setReasoncodesdevices(?string $ReasonCodesDevices)
     {
         $this->setData(self::REASON_CODES_DEVICES, $ReasonCodesDevices);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReasonCodesDevices()
+    public function getReasoncodesdevices() : ?string
     {
         return $this->getData(self::REASON_CODES_DEVICES);
     }
 
     /**
-     * @param string $AmountTypeforPointCalc
+     * @param ?string $AmountTypeforPointCalc
      * @return $this
      */
-    public function setAmountTypeforPointCalc($AmountTypeforPointCalc)
+    public function setAmounttypeforpointcalc(?string $AmountTypeforPointCalc)
     {
         $this->setData(self::AMOUNT_TYPEFOR_POINT_CALC, $AmountTypeforPointCalc);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAmountTypeforPointCalc()
+    public function getAmounttypeforpointcalc() : ?string
     {
         return $this->getData(self::AMOUNT_TYPEFOR_POINT_CALC);
     }
 
     /**
-     * @param string $MobileDefaultClubCode
+     * @param ?string $MobileDefaultClubCode
      * @return $this
      */
-    public function setMobileDefaultClubCode($MobileDefaultClubCode)
+    public function setMobiledefaultclubcode(?string $MobileDefaultClubCode)
     {
         $this->setData(self::MOBILE_DEFAULT_CLUB_CODE, $MobileDefaultClubCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMobileDefaultClubCode()
+    public function getMobiledefaultclubcode() : ?string
     {
         return $this->getData(self::MOBILE_DEFAULT_CLUB_CODE);
     }
 
     /**
-     * @param string $MobileCardNoSeries
+     * @param ?string $MobileCardNoSeries
      * @return $this
      */
-    public function setMobileCardNoSeries($MobileCardNoSeries)
+    public function setMobilecardnoseries(?string $MobileCardNoSeries)
     {
         $this->setData(self::MOBILE_CARD_NO_SERIES, $MobileCardNoSeries);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMobileCardNoSeries()
+    public function getMobilecardnoseries() : ?string
     {
         return $this->getData(self::MOBILE_CARD_NO_SERIES);
     }
 
     /**
-     * @param string $ExtraPrintSetup
+     * @param ?string $ExtraPrintSetup
      * @return $this
      */
-    public function setExtraPrintSetup($ExtraPrintSetup)
+    public function setExtraprintsetup(?string $ExtraPrintSetup)
     {
         $this->setData(self::EXTRA_PRINT_SETUP, $ExtraPrintSetup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExtraPrintSetup()
+    public function getExtraprintsetup() : ?string
     {
         return $this->getData(self::EXTRA_PRINT_SETUP);
     }
 
     /**
-     * @param string $BarcodeMask
+     * @param ?string $BarcodeMask
      * @return $this
      */
-    public function setBarcodeMask($BarcodeMask)
+    public function setBarcodemask(?string $BarcodeMask)
     {
         $this->setData(self::BARCODE_MASK, $BarcodeMask);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeMask()
+    public function getBarcodemask() : ?string
     {
         return $this->getData(self::BARCODE_MASK);
     }
 
     /**
-     * @param string $FirstValidDateFormula
+     * @param ?string $FirstValidDateFormula
      * @return $this
      */
-    public function setFirstValidDateFormula($FirstValidDateFormula)
+    public function setFirstvaliddateformula(?string $FirstValidDateFormula)
     {
         $this->setData(self::FIRST_VALID_DATE_FORMULA, $FirstValidDateFormula);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFirstValidDateFormula()
+    public function getFirstvaliddateformula() : ?string
     {
         return $this->getData(self::FIRST_VALID_DATE_FORMULA);
     }
 
     /**
-     * @param string $LastValidDateFormula
+     * @param ?string $LastValidDateFormula
      * @return $this
      */
-    public function setLastValidDateFormula($LastValidDateFormula)
+    public function setLastvaliddateformula(?string $LastValidDateFormula)
     {
         $this->setData(self::LAST_VALID_DATE_FORMULA, $LastValidDateFormula);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLastValidDateFormula()
+    public function getLastvaliddateformula() : ?string
     {
         return $this->getData(self::LAST_VALID_DATE_FORMULA);
     }
 
     /**
-     * @param string $BarcodeElement1
+     * @param ?string $BarcodeElement1
      * @return $this
      */
-    public function setBarcodeElement1($BarcodeElement1)
+    public function setBarcodeelement1(?string $BarcodeElement1)
     {
         $this->setData(self::BARCODE_ELEMENT1, $BarcodeElement1);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeElement1()
+    public function getBarcodeelement1() : ?string
     {
         return $this->getData(self::BARCODE_ELEMENT1);
     }
 
     /**
-     * @param string $BarcodeElement2
+     * @param ?string $BarcodeElement2
      * @return $this
      */
-    public function setBarcodeElement2($BarcodeElement2)
+    public function setBarcodeelement2(?string $BarcodeElement2)
     {
         $this->setData(self::BARCODE_ELEMENT2, $BarcodeElement2);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeElement2()
+    public function getBarcodeelement2() : ?string
     {
         return $this->getData(self::BARCODE_ELEMENT2);
     }
 
     /**
-     * @param string $BarcodeElement3
+     * @param ?string $BarcodeElement3
      * @return $this
      */
-    public function setBarcodeElement3($BarcodeElement3)
+    public function setBarcodeelement3(?string $BarcodeElement3)
     {
         $this->setData(self::BARCODE_ELEMENT3, $BarcodeElement3);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeElement3()
+    public function getBarcodeelement3() : ?string
     {
         return $this->getData(self::BARCODE_ELEMENT3);
     }
 
     /**
-     * @param string $BarcodeElement4
+     * @param ?string $BarcodeElement4
      * @return $this
      */
-    public function setBarcodeElement4($BarcodeElement4)
+    public function setBarcodeelement4(?string $BarcodeElement4)
     {
         $this->setData(self::BARCODE_ELEMENT4, $BarcodeElement4);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeElement4()
+    public function getBarcodeelement4() : ?string
     {
         return $this->getData(self::BARCODE_ELEMENT4);
     }
 
     /**
-     * @param string $BarcodeElement5
+     * @param ?string $BarcodeElement5
      * @return $this
      */
-    public function setBarcodeElement5($BarcodeElement5)
+    public function setBarcodeelement5(?string $BarcodeElement5)
     {
         $this->setData(self::BARCODE_ELEMENT5, $BarcodeElement5);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeElement5()
+    public function getBarcodeelement5() : ?string
     {
         return $this->getData(self::BARCODE_ELEMENT5);
     }
 
     /**
-     * @param string $BarcodeElement6
+     * @param ?string $BarcodeElement6
      * @return $this
      */
-    public function setBarcodeElement6($BarcodeElement6)
+    public function setBarcodeelement6(?string $BarcodeElement6)
     {
         $this->setData(self::BARCODE_ELEMENT6, $BarcodeElement6);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeElement6()
+    public function getBarcodeelement6() : ?string
     {
         return $this->getData(self::BARCODE_ELEMENT6);
     }
 
     /**
-     * @param string $BarcodeElement7
+     * @param ?string $BarcodeElement7
      * @return $this
      */
-    public function setBarcodeElement7($BarcodeElement7)
+    public function setBarcodeelement7(?string $BarcodeElement7)
     {
         $this->setData(self::BARCODE_ELEMENT7, $BarcodeElement7);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeElement7()
+    public function getBarcodeelement7() : ?string
     {
         return $this->getData(self::BARCODE_ELEMENT7);
     }
 
     /**
-     * @param string $BarcodeElement8
+     * @param ?string $BarcodeElement8
      * @return $this
      */
-    public function setBarcodeElement8($BarcodeElement8)
+    public function setBarcodeelement8(?string $BarcodeElement8)
     {
         $this->setData(self::BARCODE_ELEMENT8, $BarcodeElement8);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeElement8()
+    public function getBarcodeelement8() : ?string
     {
         return $this->getData(self::BARCODE_ELEMENT8);
     }

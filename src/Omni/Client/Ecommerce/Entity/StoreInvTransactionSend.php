@@ -18,40 +18,40 @@ class StoreInvTransactionSend extends \Magento\Catalog\Model\AbstractModel imple
 
     public const ERROR_TEXT = 'errorText';
 
-    public const STORE_INV_TRANSACTION_SEND_X_M_L = 'storeInvTransactionSendXML';
+    public const STORE_INV_TRANSACTION_SEND_XML = 'storeInvTransactionSendXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class StoreInvTransactionSend extends \Magento\Catalog\Model\AbstractModel imple
      * @param RootStoreInvTransactionSendXML $storeInvTransactionSendXML
      * @return $this
      */
-    public function setStoreInvTransactionSendXML($storeInvTransactionSendXML)
+    public function setStoreinvtransactionsendxml($storeInvTransactionSendXML)
     {
-        $this->setData(self::STORE_INV_TRANSACTION_SEND_X_M_L, $storeInvTransactionSendXML);
+        $this->setData(self::STORE_INV_TRANSACTION_SEND_XML, $storeInvTransactionSendXML);
         return $this;
     }
 
     /**
      * @return RootStoreInvTransactionSendXML
      */
-    public function getStoreInvTransactionSendXML()
+    public function getStoreinvtransactionsendxml()
     {
-        return $this->getData(self::STORE_INV_TRANSACTION_SEND_X_M_L);
+        return $this->getData(self::STORE_INV_TRANSACTION_SEND_XML);
     }
 }
 

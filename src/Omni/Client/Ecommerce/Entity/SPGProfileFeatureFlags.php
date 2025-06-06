@@ -21,73 +21,73 @@ class SPGProfileFeatureFlags extends \Magento\Catalog\Model\AbstractModel
     public const FEATURE_VALUE = 'FeatureValue';
 
     /**
-     * @param string $ProfileCode
+     * @param ?string $ProfileCode
      * @return $this
      */
-    public function setProfileCode($ProfileCode)
+    public function setProfilecode(?string $ProfileCode)
     {
         $this->setData(self::PROFILE_CODE, $ProfileCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getProfileCode()
+    public function getProfilecode() : ?string
     {
         return $this->getData(self::PROFILE_CODE);
     }
 
     /**
-     * @param string $FeatureId
+     * @param ?string $FeatureId
      * @return $this
      */
-    public function setFeatureId($FeatureId)
+    public function setFeatureid(?string $FeatureId)
     {
         $this->setData(self::FEATURE_ID, $FeatureId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFeatureId()
+    public function getFeatureid() : ?string
     {
         return $this->getData(self::FEATURE_ID);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $FeatureValue
+     * @param ?string $FeatureValue
      * @return $this
      */
-    public function setFeatureValue($FeatureValue)
+    public function setFeaturevalue(?string $FeatureValue)
     {
         $this->setData(self::FEATURE_VALUE, $FeatureValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFeatureValue()
+    public function getFeaturevalue() : ?string
     {
         return $this->getData(self::FEATURE_VALUE);
     }

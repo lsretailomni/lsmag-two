@@ -30,7 +30,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
      * @param LoginCardBuffer $LoginCardBuffer
      * @return $this
      */
-    public function setLoginCardBuffer($LoginCardBuffer)
+    public function setLogincardbuffer($LoginCardBuffer)
     {
         $this->setData(self::LOGIN_CARD_BUFFER, $LoginCardBuffer);
         return $this;
@@ -39,7 +39,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return LoginCardBuffer
      */
-    public function getLoginCardBuffer()
+    public function getLogincardbuffer()
     {
         return $this->getData(self::LOGIN_CARD_BUFFER);
     }
@@ -48,7 +48,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
      * @param MemberDevice $MemberDevice
      * @return $this
      */
-    public function setMemberDevice($MemberDevice)
+    public function setMemberdevice($MemberDevice)
     {
         $this->setData(self::MEMBER_DEVICE, $MemberDevice);
         return $this;
@@ -57,7 +57,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberDevice
      */
-    public function getMemberDevice()
+    public function getMemberdevice()
     {
         return $this->getData(self::MEMBER_DEVICE);
     }
@@ -66,7 +66,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
      * @param MembershipCard $MembershipCard
      * @return $this
      */
-    public function setMembershipCard($MembershipCard)
+    public function setMembershipcard($MembershipCard)
     {
         $this->setData(self::MEMBERSHIP_CARD, $MembershipCard);
         return $this;
@@ -75,7 +75,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MembershipCard
      */
-    public function getMembershipCard()
+    public function getMembershipcard()
     {
         return $this->getData(self::MEMBERSHIP_CARD);
     }
@@ -84,7 +84,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
      * @param MemberAccount $MemberAccount
      * @return $this
      */
-    public function setMemberAccount($MemberAccount)
+    public function setMemberaccount($MemberAccount)
     {
         $this->setData(self::MEMBER_ACCOUNT, $MemberAccount);
         return $this;
@@ -93,7 +93,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberAccount
      */
-    public function getMemberAccount()
+    public function getMemberaccount()
     {
         return $this->getData(self::MEMBER_ACCOUNT);
     }
@@ -102,7 +102,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
      * @param MemberContact $MemberContact
      * @return $this
      */
-    public function setMemberContact($MemberContact)
+    public function setMembercontact($MemberContact)
     {
         $this->setData(self::MEMBER_CONTACT, $MemberContact);
         return $this;
@@ -111,7 +111,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberContact
      */
-    public function getMemberContact()
+    public function getMembercontact()
     {
         return $this->getData(self::MEMBER_CONTACT);
     }
@@ -120,7 +120,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
      * @param MemberClub $MemberClub
      * @return $this
      */
-    public function setMemberClub($MemberClub)
+    public function setMemberclub($MemberClub)
     {
         $this->setData(self::MEMBER_CLUB, $MemberClub);
         return $this;
@@ -129,7 +129,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberClub
      */
-    public function getMemberClub()
+    public function getMemberclub()
     {
         return $this->getData(self::MEMBER_CLUB);
     }
@@ -138,7 +138,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
      * @param MemberAttributeList $MemberAttributeList
      * @return $this
      */
-    public function setMemberAttributeList($MemberAttributeList)
+    public function setMemberattributelist($MemberAttributeList)
     {
         $this->setData(self::MEMBER_ATTRIBUTE_LIST, $MemberAttributeList);
         return $this;
@@ -147,7 +147,7 @@ class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberAttributeList
      */
-    public function getMemberAttributeList()
+    public function getMemberattributelist()
     {
         return $this->getData(self::MEMBER_ATTRIBUTE_LIST);
     }

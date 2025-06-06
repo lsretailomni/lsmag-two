@@ -42,11 +42,11 @@ class TransPaymentEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const SHIFT_DATE = 'ShiftDate';
 
-    public const STAFF_I_D = 'StaffID';
+    public const STAFF_ID = 'StaffID';
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const TRANSACTION_STATUS = 'TransactionStatus';
 
@@ -68,17 +68,17 @@ class TransPaymentEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const QUANTITY = 'Quantity';
 
-    public const Z_REPORT_I_D = 'Z-ReportID';
+    public const Z_REPORT_ID = 'Z-ReportID';
 
-    public const TENDER_DECL_I_D = 'TenderDeclID';
+    public const TENDER_DECL_ID = 'TenderDeclID';
 
-    public const Y_REPORT_I_D = 'Y-ReportID';
+    public const Y_REPORT_ID = 'Y-ReportID';
 
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
     public const SAFETYPE = 'Safetype';
 
-    public const CREATEDBY_STAFF_I_D = 'CreatedbyStaffID';
+    public const CREATEDBY_STAFF_ID = 'CreatedbyStaffID';
 
     public const ORDER_NO = 'OrderNo';
 
@@ -86,7 +86,7 @@ class TransPaymentEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -95,7 +95,7 @@ class TransPaymentEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -104,7 +104,7 @@ class TransPaymentEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -113,421 +113,421 @@ class TransPaymentEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param string $StatementCode
+     * @param ?string $StatementCode
      * @return $this
      */
-    public function setStatementCode($StatementCode)
+    public function setStatementcode(?string $StatementCode)
     {
         $this->setData(self::STATEMENT_CODE, $StatementCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatementCode()
+    public function getStatementcode() : ?string
     {
         return $this->getData(self::STATEMENT_CODE);
     }
 
     /**
-     * @param string $CardNo
+     * @param ?string $CardNo
      * @return $this
      */
-    public function setCardNo($CardNo)
+    public function setCardno(?string $CardNo)
     {
         $this->setData(self::CARD_NO, $CardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNo()
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
 
     /**
-     * @param float $ExchangeRate
+     * @param ?float $ExchangeRate
      * @return $this
      */
-    public function setExchangeRate($ExchangeRate)
+    public function setExchangerate(?float $ExchangeRate)
     {
         $this->setData(self::EXCHANGE_RATE, $ExchangeRate);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getExchangeRate()
+    public function getExchangerate() : ?float
     {
         return $this->getData(self::EXCHANGE_RATE);
     }
 
     /**
-     * @param string $TenderType
+     * @param ?string $TenderType
      * @return $this
      */
-    public function setTenderType($TenderType)
+    public function setTendertype(?string $TenderType)
     {
         $this->setData(self::TENDER_TYPE, $TenderType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTenderType()
+    public function getTendertype() : ?string
     {
         return $this->getData(self::TENDER_TYPE);
     }
 
     /**
-     * @param float $AmountTendered
+     * @param ?float $AmountTendered
      * @return $this
      */
-    public function setAmountTendered($AmountTendered)
+    public function setAmounttendered(?float $AmountTendered)
     {
         $this->setData(self::AMOUNT_TENDERED, $AmountTendered);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmountTendered()
+    public function getAmounttendered() : ?float
     {
         return $this->getData(self::AMOUNT_TENDERED);
     }
 
     /**
-     * @param string $CurrencyCode
+     * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode($CurrencyCode)
+    public function setCurrencycode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCurrencyCode()
+    public function getCurrencycode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
 
     /**
-     * @param float $AmountinCurrency
+     * @param ?float $AmountinCurrency
      * @return $this
      */
-    public function setAmountinCurrency($AmountinCurrency)
+    public function setAmountincurrency(?float $AmountinCurrency)
     {
         $this->setData(self::AMOUNTIN_CURRENCY, $AmountinCurrency);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmountinCurrency()
+    public function getAmountincurrency() : ?float
     {
         return $this->getData(self::AMOUNTIN_CURRENCY);
     }
 
     /**
-     * @param string $CardorAccount
+     * @param ?string $CardorAccount
      * @return $this
      */
-    public function setCardorAccount($CardorAccount)
+    public function setCardoraccount(?string $CardorAccount)
     {
         $this->setData(self::CARDOR_ACCOUNT, $CardorAccount);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardorAccount()
+    public function getCardoraccount() : ?string
     {
         return $this->getData(self::CARDOR_ACCOUNT);
     }
 
     /**
-     * @param date $Date
+     * @param ?string $Date
      * @return $this
      */
-    public function setDate($Date)
+    public function setDate(?string $Date)
     {
         $this->setData(self::DATE, $Date);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDate()
+    public function getDate() : ?string
     {
         return $this->getData(self::DATE);
     }
 
     /**
-     * @param time $Time
+     * @param ?string $Time
      * @return $this
      */
-    public function setTime($Time)
+    public function setTime(?string $Time)
     {
         $this->setData(self::TIME, $Time);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTime()
+    public function getTime() : ?string
     {
         return $this->getData(self::TIME);
     }
 
     /**
-     * @param string $ShiftNo
+     * @param ?string $ShiftNo
      * @return $this
      */
-    public function setShiftNo($ShiftNo)
+    public function setShiftno(?string $ShiftNo)
     {
         $this->setData(self::SHIFT_NO, $ShiftNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getShiftNo()
+    public function getShiftno() : ?string
     {
         return $this->getData(self::SHIFT_NO);
     }
 
     /**
-     * @param date $ShiftDate
+     * @param ?string $ShiftDate
      * @return $this
      */
-    public function setShiftDate($ShiftDate)
+    public function setShiftdate(?string $ShiftDate)
     {
         $this->setData(self::SHIFT_DATE, $ShiftDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getShiftDate()
+    public function getShiftdate() : ?string
     {
         return $this->getData(self::SHIFT_DATE);
     }
 
     /**
-     * @param string $StaffID
+     * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID($StaffID)
+    public function setStaffid(?string $StaffID)
     {
-        $this->setData(self::STAFF_I_D, $StaffID);
+        $this->setData(self::STAFF_ID, $StaffID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffID()
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
-     * @param string $TransactionStatus
+     * @param ?string $TransactionStatus
      * @return $this
      */
-    public function setTransactionStatus($TransactionStatus)
+    public function setTransactionstatus(?string $TransactionStatus)
     {
         $this->setData(self::TRANSACTION_STATUS, $TransactionStatus);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionStatus()
+    public function getTransactionstatus() : ?string
     {
         return $this->getData(self::TRANSACTION_STATUS);
     }
 
     /**
-     * @param string $StatementNo
+     * @param ?string $StatementNo
      * @return $this
      */
-    public function setStatementNo($StatementNo)
+    public function setStatementno(?string $StatementNo)
     {
         $this->setData(self::STATEMENT_NO, $StatementNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatementNo()
+    public function getStatementno() : ?string
     {
         return $this->getData(self::STATEMENT_NO);
     }
 
     /**
-     * @param boolean $ManagersKeyLive
+     * @param ?bool $ManagersKeyLive
      * @return $this
      */
-    public function setManagersKeyLive($ManagersKeyLive)
+    public function setManagerskeylive(?bool $ManagersKeyLive)
     {
         $this->setData(self::MANAGERS_KEY_LIVE, $ManagersKeyLive);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getManagersKeyLive()
+    public function getManagerskeylive() : ?bool
     {
         return $this->getData(self::MANAGERS_KEY_LIVE);
     }
 
     /**
-     * @param boolean $ChangeLine
+     * @param ?bool $ChangeLine
      * @return $this
      */
-    public function setChangeLine($ChangeLine)
+    public function setChangeline(?bool $ChangeLine)
     {
         $this->setData(self::CHANGE_LINE, $ChangeLine);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getChangeLine()
+    public function getChangeline() : ?bool
     {
         return $this->getData(self::CHANGE_LINE);
     }
 
     /**
-     * @param float $Counter
+     * @param ?float $Counter
      * @return $this
      */
-    public function setCounter($Counter)
+    public function setCounter(?float $Counter)
     {
         $this->setData(self::COUNTER, $Counter);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getCounter()
+    public function getCounter() : ?float
     {
         return $this->getData(self::COUNTER);
     }
 
     /**
-     * @param date $TransDate
+     * @param ?string $TransDate
      * @return $this
      */
-    public function setTransDate($TransDate)
+    public function setTransdate(?string $TransDate)
     {
         $this->setData(self::TRANS_DATE, $TransDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getTransDate()
+    public function getTransdate() : ?string
     {
         return $this->getData(self::TRANS_DATE);
     }
 
     /**
-     * @param time $TransTime
+     * @param ?string $TransTime
      * @return $this
      */
-    public function setTransTime($TransTime)
+    public function setTranstime(?string $TransTime)
     {
         $this->setData(self::TRANS_TIME, $TransTime);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTransTime()
+    public function getTranstime() : ?string
     {
         return $this->getData(self::TRANS_TIME);
     }
@@ -536,7 +536,7 @@ class TransPaymentEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $MessageNo
      * @return $this
      */
-    public function setMessageNo($MessageNo)
+    public function setMessageno($MessageNo)
     {
         $this->setData(self::MESSAGE_NO, $MessageNo);
         return $this;
@@ -545,106 +545,106 @@ class TransPaymentEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getMessageNo()
+    public function getMessageno()
     {
         return $this->getData(self::MESSAGE_NO);
     }
 
     /**
-     * @param boolean $Replicated
+     * @param ?bool $Replicated
      * @return $this
      */
-    public function setReplicated($Replicated)
+    public function setReplicated(?bool $Replicated)
     {
         $this->setData(self::REPLICATED, $Replicated);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getReplicated()
+    public function getReplicated() : ?bool
     {
         return $this->getData(self::REPLICATED);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param string $ZReportID
+     * @param ?string $ZReportID
      * @return $this
      */
-    public function setZReportID($ZReportID)
+    public function setZReportid(?string $ZReportID)
     {
-        $this->setData(self::Z_REPORT_I_D, $ZReportID);
+        $this->setData(self::Z_REPORT_ID, $ZReportID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getZReportID()
+    public function getZReportid() : ?string
     {
-        return $this->getData(self::Z_REPORT_I_D);
+        return $this->getData(self::Z_REPORT_ID);
     }
 
     /**
-     * @param string $TenderDeclID
+     * @param ?string $TenderDeclID
      * @return $this
      */
-    public function setTenderDeclID($TenderDeclID)
+    public function setTenderdeclid(?string $TenderDeclID)
     {
-        $this->setData(self::TENDER_DECL_I_D, $TenderDeclID);
+        $this->setData(self::TENDER_DECL_ID, $TenderDeclID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTenderDeclID()
+    public function getTenderdeclid() : ?string
     {
-        return $this->getData(self::TENDER_DECL_I_D);
+        return $this->getData(self::TENDER_DECL_ID);
     }
 
     /**
-     * @param string $YReportID
+     * @param ?string $YReportID
      * @return $this
      */
-    public function setYReportID($YReportID)
+    public function setYReportid(?string $YReportID)
     {
-        $this->setData(self::Y_REPORT_I_D, $YReportID);
+        $this->setData(self::Y_REPORT_ID, $YReportID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getYReportID()
+    public function getYReportid() : ?string
     {
-        return $this->getData(self::Y_REPORT_I_D);
+        return $this->getData(self::Y_REPORT_ID);
     }
 
     /**
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -653,61 +653,61 @@ class TransPaymentEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }
 
     /**
-     * @param string $Safetype
+     * @param ?string $Safetype
      * @return $this
      */
-    public function setSafetype($Safetype)
+    public function setSafetype(?string $Safetype)
     {
         $this->setData(self::SAFETYPE, $Safetype);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSafetype()
+    public function getSafetype() : ?string
     {
         return $this->getData(self::SAFETYPE);
     }
 
     /**
-     * @param string $CreatedbyStaffID
+     * @param ?string $CreatedbyStaffID
      * @return $this
      */
-    public function setCreatedbyStaffID($CreatedbyStaffID)
+    public function setCreatedbystaffid(?string $CreatedbyStaffID)
     {
-        $this->setData(self::CREATEDBY_STAFF_I_D, $CreatedbyStaffID);
+        $this->setData(self::CREATEDBY_STAFF_ID, $CreatedbyStaffID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCreatedbyStaffID()
+    public function getCreatedbystaffid() : ?string
     {
-        return $this->getData(self::CREATEDBY_STAFF_I_D);
+        return $this->getData(self::CREATEDBY_STAFF_ID);
     }
 
     /**
-     * @param string $OrderNo
+     * @param ?string $OrderNo
      * @return $this
      */
-    public function setOrderNo($OrderNo)
+    public function setOrderno(?string $OrderNo)
     {
         $this->setData(self::ORDER_NO, $OrderNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOrderNo()
+    public function getOrderno() : ?string
     {
         return $this->getData(self::ORDER_NO);
     }

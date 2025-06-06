@@ -37,13 +37,46 @@ class VariantRegView extends AbstractModel
     public const BLOCK_SALE_ON_POS = 'Block Sale on POS';
     public const BLOCKED_ON_ECOMMERCE = 'Blocked on eCommerce';
 
+    public static array $dbColumnsMapping = [
+	self::ITEM_NO => 'item_no',
+	self::FRAMEWORK_CODE => 'framework_code',
+	self::VARIANT_DIMENSION_1 => 'variant_dimension_1',
+	self::VARIANT_DIMENSION_2 => 'variant_dimension_2',
+	self::VARIANT_DIMENSION_3 => 'variant_dimension_3',
+	self::VARIANT_DIMENSION_4 => 'variant_dimension_4',
+	self::VARIANT_DIMENSION_5 => 'variant_dimension_5',
+	self::VARIANT_DIMENSION_6 => 'variant_dimension_6',
+	self::VARIANT => 'variant',
+	self::BARCODE => 'barcode',
+	self::LOGICAL_ORDER => 'logical_order',
+	self::DIMENSION_1_WEIGHT => 'dimension_1_weight',
+	self::DIMENSION_2_WEIGHT => 'dimension_2_weight',
+	self::DIMENSION_3_WEIGHT => 'dimension_3_weight',
+	self::DIMENSION_4_WEIGHT => 'dimension_4_weight',
+	self::DIMENSION_5_WEIGHT => 'dimension_5_weight',
+	self::DIMENSION_6_WEIGHT => 'dimension_6_weight',
+	self::VARIANT_WEIGHT => 'variant_weight',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+	self::BLOCK_SALE_ON_POS => 'block_sale_on_pos',
+	self::BLOCKED_ON_ECOMMERCE => 'blocked_on_ecommerce',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -53,7 +86,7 @@ class VariantRegView extends AbstractModel
         return $this->getData(self::FRAMEWORK_CODE);
     }
 
-    public function setFrameworkCode(string $value)
+    public function setFrameworkCode(?string $value)
     {
         return $this->setData(self::FRAMEWORK_CODE, $value);
     }
@@ -63,7 +96,7 @@ class VariantRegView extends AbstractModel
         return $this->getData(self::VARIANT_DIMENSION_1);
     }
 
-    public function setVariantDimension1(string $value)
+    public function setVariantDimension1(?string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_1, $value);
     }
@@ -73,7 +106,7 @@ class VariantRegView extends AbstractModel
         return $this->getData(self::VARIANT_DIMENSION_2);
     }
 
-    public function setVariantDimension2(string $value)
+    public function setVariantDimension2(?string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_2, $value);
     }
@@ -83,7 +116,7 @@ class VariantRegView extends AbstractModel
         return $this->getData(self::VARIANT_DIMENSION_3);
     }
 
-    public function setVariantDimension3(string $value)
+    public function setVariantDimension3(?string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_3, $value);
     }
@@ -93,7 +126,7 @@ class VariantRegView extends AbstractModel
         return $this->getData(self::VARIANT_DIMENSION_4);
     }
 
-    public function setVariantDimension4(string $value)
+    public function setVariantDimension4(?string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_4, $value);
     }
@@ -103,7 +136,7 @@ class VariantRegView extends AbstractModel
         return $this->getData(self::VARIANT_DIMENSION_5);
     }
 
-    public function setVariantDimension5(string $value)
+    public function setVariantDimension5(?string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_5, $value);
     }
@@ -113,7 +146,7 @@ class VariantRegView extends AbstractModel
         return $this->getData(self::VARIANT_DIMENSION_6);
     }
 
-    public function setVariantDimension6(string $value)
+    public function setVariantDimension6(?string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_6, $value);
     }
@@ -123,7 +156,7 @@ class VariantRegView extends AbstractModel
         return $this->getData(self::VARIANT);
     }
 
-    public function setVariant(string $value)
+    public function setVariant(?string $value)
     {
         return $this->setData(self::VARIANT, $value);
     }
@@ -133,7 +166,7 @@ class VariantRegView extends AbstractModel
         return $this->getData(self::BARCODE);
     }
 
-    public function setBarcode(string $value)
+    public function setBarcode(?string $value)
     {
         return $this->setData(self::BARCODE, $value);
     }
@@ -143,147 +176,147 @@ class VariantRegView extends AbstractModel
         return $this->getData(self::LOGICAL_ORDER);
     }
 
-    public function setLogicalOrder(string $value)
+    public function setLogicalOrder(?string $value)
     {
         return $this->setData(self::LOGICAL_ORDER, $value);
     }
 
-    public function getDimension1Weight(): ?string
+    public function getDimension1Weight(): ?float
     {
         return $this->getData(self::DIMENSION_1_WEIGHT);
     }
 
-    public function setDimension1Weight(string $value)
+    public function setDimension1Weight(?float $value)
     {
         return $this->setData(self::DIMENSION_1_WEIGHT, $value);
     }
 
-    public function getDimension2Weight(): ?string
+    public function getDimension2Weight(): ?float
     {
         return $this->getData(self::DIMENSION_2_WEIGHT);
     }
 
-    public function setDimension2Weight(string $value)
+    public function setDimension2Weight(?float $value)
     {
         return $this->setData(self::DIMENSION_2_WEIGHT, $value);
     }
 
-    public function getDimension3Weight(): ?string
+    public function getDimension3Weight(): ?float
     {
         return $this->getData(self::DIMENSION_3_WEIGHT);
     }
 
-    public function setDimension3Weight(string $value)
+    public function setDimension3Weight(?float $value)
     {
         return $this->setData(self::DIMENSION_3_WEIGHT, $value);
     }
 
-    public function getDimension4Weight(): ?string
+    public function getDimension4Weight(): ?float
     {
         return $this->getData(self::DIMENSION_4_WEIGHT);
     }
 
-    public function setDimension4Weight(string $value)
+    public function setDimension4Weight(?float $value)
     {
         return $this->setData(self::DIMENSION_4_WEIGHT, $value);
     }
 
-    public function getDimension5Weight(): ?string
+    public function getDimension5Weight(): ?float
     {
         return $this->getData(self::DIMENSION_5_WEIGHT);
     }
 
-    public function setDimension5Weight(string $value)
+    public function setDimension5Weight(?float $value)
     {
         return $this->setData(self::DIMENSION_5_WEIGHT, $value);
     }
 
-    public function getDimension6Weight(): ?string
+    public function getDimension6Weight(): ?float
     {
         return $this->getData(self::DIMENSION_6_WEIGHT);
     }
 
-    public function setDimension6Weight(string $value)
+    public function setDimension6Weight(?float $value)
     {
         return $this->setData(self::DIMENSION_6_WEIGHT, $value);
     }
 
-    public function getVariantWeight(): ?string
+    public function getVariantWeight(): ?float
     {
         return $this->getData(self::VARIANT_WEIGHT);
     }
 
-    public function setVariantWeight(string $value)
+    public function setVariantWeight(?float $value)
     {
         return $this->setData(self::VARIANT_WEIGHT, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
-    public function getBlockSaleOnPOS(): ?bool
+    public function getBlockSaleOnPos(): ?bool
     {
         return $this->getData(self::BLOCK_SALE_ON_POS);
     }
 
-    public function setBlockSaleOnPOS(bool $value)
+    public function setBlockSaleOnPos(?bool $value)
     {
         return $this->setData(self::BLOCK_SALE_ON_POS, $value);
     }
 
-    public function getBlockedOnECommerce(): ?bool
+    public function getBlockedOnEcommerce(): ?bool
     {
         return $this->getData(self::BLOCKED_ON_ECOMMERCE);
     }
 
-    public function setBlockedOnECommerce(bool $value)
+    public function setBlockedOnEcommerce(?bool $value)
     {
         return $this->setData(self::BLOCKED_ON_ECOMMERCE, $value);
     }

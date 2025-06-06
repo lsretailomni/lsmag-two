@@ -20,7 +20,7 @@ class RootMemberContactCreate extends \Magento\Catalog\Model\AbstractModel
      * @param ContactCreateParameters $ContactCreateParameters
      * @return $this
      */
-    public function setContactCreateParameters($ContactCreateParameters)
+    public function setContactcreateparameters($ContactCreateParameters)
     {
         $this->setData(self::CONTACT_CREATE_PARAMETERS, $ContactCreateParameters);
         return $this;
@@ -29,7 +29,7 @@ class RootMemberContactCreate extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ContactCreateParameters
      */
-    public function getContactCreateParameters()
+    public function getContactcreateparameters()
     {
         return $this->getData(self::CONTACT_CREATE_PARAMETERS);
     }
@@ -38,7 +38,7 @@ class RootMemberContactCreate extends \Magento\Catalog\Model\AbstractModel
      * @param MemberAttributeValue $MemberAttributeValue
      * @return $this
      */
-    public function setMemberAttributeValue($MemberAttributeValue)
+    public function setMemberattributevalue($MemberAttributeValue)
     {
         $this->setData(self::MEMBER_ATTRIBUTE_VALUE, $MemberAttributeValue);
         return $this;
@@ -47,7 +47,7 @@ class RootMemberContactCreate extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberAttributeValue
      */
-    public function getMemberAttributeValue()
+    public function getMemberattributevalue()
     {
         return $this->getData(self::MEMBER_ATTRIBUTE_VALUE);
     }

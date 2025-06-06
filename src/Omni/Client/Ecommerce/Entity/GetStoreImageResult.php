@@ -21,55 +21,55 @@ class GetStoreImageResult extends \Magento\Catalog\Model\AbstractModel implement
     public const STORE_IMAGE = 'storeImage';
 
     /**
-     * @param string $respondCode
+     * @param ?string $respondCode
      * @return $this
      */
-    public function setRespondCode($respondCode)
+    public function setRespondcode(?string $respondCode)
     {
         $this->setData(self::RESPOND_CODE, $respondCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRespondCode()
+    public function getRespondcode() : ?string
     {
         return $this->getData(self::RESPOND_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $storeImage
+     * @param ?string $storeImage
      * @return $this
      */
-    public function setStoreImage($storeImage)
+    public function setStoreimage(?string $storeImage)
     {
         $this->setData(self::STORE_IMAGE, $storeImage);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreImage()
+    public function getStoreimage() : ?string
     {
         return $this->getData(self::STORE_IMAGE);
     }

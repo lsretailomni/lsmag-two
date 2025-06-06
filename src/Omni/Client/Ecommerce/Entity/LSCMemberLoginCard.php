@@ -14,13 +14,23 @@ class LSCMemberLoginCard extends AbstractModel
     public const LOGIN_ID = 'Login ID';
     public const CARD_NO = 'Card No.';
 
+    public static array $dbColumnsMapping = [
+	self::LOGIN_ID => 'login_id',
+	self::CARD_NO => 'card_no',
+    ];
 
-    public function getLoginID(): ?string
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
+
+    public function getLoginId(): ?string
     {
         return $this->getData(self::LOGIN_ID);
     }
 
-    public function setLoginID(string $value)
+    public function setLoginId(?string $value)
     {
         return $this->setData(self::LOGIN_ID, $value);
     }
@@ -30,7 +40,7 @@ class LSCMemberLoginCard extends AbstractModel
         return $this->getData(self::CARD_NO);
     }
 
-    public function setCardNo(string $value)
+    public function setCardNo(?string $value)
     {
         return $this->setData(self::CARD_NO, $value);
     }

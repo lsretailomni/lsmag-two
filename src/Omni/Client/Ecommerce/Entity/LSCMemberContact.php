@@ -65,13 +65,74 @@ class LSCMemberContact extends AbstractModel
     public const TERRITORY_CODE = 'Territory Code';
     public const SYSTEMID = '$systemId';
 
+    public static array $dbColumnsMapping = [
+	self::ACCOUNT_NO => 'account_no',
+	self::ADDRESS => 'address',
+	self::ADDRESS_2 => 'address_2',
+	self::BIRTHDAY => 'birthday',
+	self::BLOCKED => 'blocked',
+	self::BLOCKED_BY => 'blocked_by',
+	self::CITY => 'city',
+	self::CITY_SEARCH_INTERNAL => 'city_search_internal',
+	self::CLUB_CODE => 'club_code',
+	self::CONTACT_GENDER => 'contact_gender',
+	self::CONTACT_NO => 'contact_no',
+	self::COUNTRYREGION_CODE => 'countryregion_code',
+	self::COUNTY => 'county',
+	self::CREATED_BY => 'created_by',
+	self::CREATED_DATE => 'created_date',
+	self::DATE_BLOCKED => 'date_blocked',
+	self::DATE_OF_BIRTH => 'date_of_birth',
+	self::DEFAULT_TOKEN => 'default_token',
+	self::EMAIL => 'email',
+	self::EXPIRATION_PERIOD_TYPE => 'expiration_period_type',
+	self::EXTERNAL_ID => 'external_id',
+	self::EXTERNAL_SYSTEM => 'external_system',
+	self::FIRST_NAME => 'first_name',
+	self::GENDER => 'gender',
+	self::GUEST_TYPE => 'guest_type',
+	self::HOME_PAGE => 'home_page',
+	self::HOUSEAPARTMENT_NO => 'houseapartment_no',
+	self::LANGUAGE_CODE => 'language_code',
+	self::MAIN_CONTACT => 'main_contact',
+	self::MARITAL_STATUS => 'marital_status',
+	self::MEMBER_CARD_TEMPORARY => 'member_card_temporary',
+	self::MIDDLE_NAME => 'middle_name',
+	self::MOBILE_PHONE_NO => 'mobile_phone_no',
+	self::NAME => 'name',
+	self::NAME_2 => 'name_2',
+	self::NO_SERIES => 'no_series',
+	self::PHONE_NO => 'phone_no',
+	self::POST_CODE => 'post_code',
+	self::POST_CODE_SEARCH_INTERNAL => 'post_code_search_internal',
+	self::PRIVACY_BLOCKED => 'privacy_blocked',
+	self::REASON_BLOCKED => 'reason_blocked',
+	self::SALUTATION_CODE => 'salutation_code',
+	self::SCHEME_CODE => 'scheme_code',
+	self::SEARCH_EMAIL => 'search_email',
+	self::SEARCH_NAME => 'search_name',
+	self::SEND_RECEIPT_BY_EMAIL => 'send_receipt_by_email',
+	self::SURNAME => 'surname',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+	self::TERRITORY_CODE => 'territory_code',
+	self::SYSTEMID => 'systemid',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getAccountNo(): ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
 
-    public function setAccountNo(string $value)
+    public function setAccountNo(?string $value)
     {
         return $this->setData(self::ACCOUNT_NO, $value);
     }
@@ -81,7 +142,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::ADDRESS);
     }
 
-    public function setAddress(string $value)
+    public function setAddress(?string $value)
     {
         return $this->setData(self::ADDRESS, $value);
     }
@@ -91,7 +152,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::ADDRESS_2);
     }
 
-    public function setAddress2(string $value)
+    public function setAddress2(?string $value)
     {
         return $this->setData(self::ADDRESS_2, $value);
     }
@@ -101,7 +162,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::BIRTHDAY);
     }
 
-    public function setBirthday(string $value)
+    public function setBirthday(?string $value)
     {
         return $this->setData(self::BIRTHDAY, $value);
     }
@@ -111,7 +172,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(bool $value)
+    public function setBlocked(?bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
@@ -121,7 +182,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::BLOCKED_BY);
     }
 
-    public function setBlockedBy(string $value)
+    public function setBlockedBy(?string $value)
     {
         return $this->setData(self::BLOCKED_BY, $value);
     }
@@ -131,7 +192,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::CITY);
     }
 
-    public function setCity(string $value)
+    public function setCity(?string $value)
     {
         return $this->setData(self::CITY, $value);
     }
@@ -141,7 +202,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::CITY_SEARCH_INTERNAL);
     }
 
-    public function setCitySearchInternal(string $value)
+    public function setCitySearchInternal(?string $value)
     {
         return $this->setData(self::CITY_SEARCH_INTERNAL, $value);
     }
@@ -151,17 +212,17 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::CLUB_CODE);
     }
 
-    public function setClubCode(string $value)
+    public function setClubCode(?string $value)
     {
         return $this->setData(self::CLUB_CODE, $value);
     }
 
-    public function getContactGender(): ?string
+    public function getContactGender(): ?int
     {
         return $this->getData(self::CONTACT_GENDER);
     }
 
-    public function setContactGender(string $value)
+    public function setContactGender(?int $value)
     {
         return $this->setData(self::CONTACT_GENDER, $value);
     }
@@ -171,7 +232,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::CONTACT_NO);
     }
 
-    public function setContactNo(string $value)
+    public function setContactNo(?string $value)
     {
         return $this->setData(self::CONTACT_NO, $value);
     }
@@ -181,7 +242,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::COUNTRYREGION_CODE);
     }
 
-    public function setCountryRegionCode(string $value)
+    public function setCountryRegionCode(?string $value)
     {
         return $this->setData(self::COUNTRYREGION_CODE, $value);
     }
@@ -191,7 +252,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::COUNTY);
     }
 
-    public function setCounty(string $value)
+    public function setCounty(?string $value)
     {
         return $this->setData(self::COUNTY, $value);
     }
@@ -201,7 +262,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::CREATED_BY);
     }
 
-    public function setCreatedBy(string $value)
+    public function setCreatedBy(?string $value)
     {
         return $this->setData(self::CREATED_BY, $value);
     }
@@ -211,7 +272,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::CREATED_DATE);
     }
 
-    public function setCreatedDate(string $value)
+    public function setCreatedDate(?string $value)
     {
         return $this->setData(self::CREATED_DATE, $value);
     }
@@ -221,7 +282,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::DATE_BLOCKED);
     }
 
-    public function setDateBlocked(string $value)
+    public function setDateBlocked(?string $value)
     {
         return $this->setData(self::DATE_BLOCKED, $value);
     }
@@ -231,7 +292,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::DATE_OF_BIRTH);
     }
 
-    public function setDateOfBirth(string $value)
+    public function setDateOfBirth(?string $value)
     {
         return $this->setData(self::DATE_OF_BIRTH, $value);
     }
@@ -241,7 +302,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::DEFAULT_TOKEN);
     }
 
-    public function setDefaultToken(int $value)
+    public function setDefaultToken(?int $value)
     {
         return $this->setData(self::DEFAULT_TOKEN, $value);
     }
@@ -251,27 +312,27 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::EMAIL);
     }
 
-    public function setEMail(string $value)
+    public function setEMail(?string $value)
     {
         return $this->setData(self::EMAIL, $value);
     }
 
-    public function getExpirationPeriodType(): ?string
+    public function getExpirationPeriodType(): ?int
     {
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
     }
 
-    public function setExpirationPeriodType(string $value)
+    public function setExpirationPeriodType(?int $value)
     {
         return $this->setData(self::EXPIRATION_PERIOD_TYPE, $value);
     }
 
-    public function getExternalID(): ?string
+    public function getExternalId(): ?string
     {
         return $this->getData(self::EXTERNAL_ID);
     }
 
-    public function setExternalID(string $value)
+    public function setExternalId(?string $value)
     {
         return $this->setData(self::EXTERNAL_ID, $value);
     }
@@ -281,7 +342,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::EXTERNAL_SYSTEM);
     }
 
-    public function setExternalSystem(string $value)
+    public function setExternalSystem(?string $value)
     {
         return $this->setData(self::EXTERNAL_SYSTEM, $value);
     }
@@ -291,17 +352,17 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::FIRST_NAME);
     }
 
-    public function setFirstName(string $value)
+    public function setFirstName(?string $value)
     {
         return $this->setData(self::FIRST_NAME, $value);
     }
 
-    public function getGender(): ?string
+    public function getGender(): ?int
     {
         return $this->getData(self::GENDER);
     }
 
-    public function setGender(string $value)
+    public function setGender(?int $value)
     {
         return $this->setData(self::GENDER, $value);
     }
@@ -311,7 +372,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::GUEST_TYPE);
     }
 
-    public function setGuestType(string $value)
+    public function setGuestType(?string $value)
     {
         return $this->setData(self::GUEST_TYPE, $value);
     }
@@ -321,7 +382,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::HOME_PAGE);
     }
 
-    public function setHomePage(string $value)
+    public function setHomePage(?string $value)
     {
         return $this->setData(self::HOME_PAGE, $value);
     }
@@ -331,7 +392,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::HOUSEAPARTMENT_NO);
     }
 
-    public function setHouseApartmentNo(string $value)
+    public function setHouseApartmentNo(?string $value)
     {
         return $this->setData(self::HOUSEAPARTMENT_NO, $value);
     }
@@ -341,7 +402,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::LANGUAGE_CODE);
     }
 
-    public function setLanguageCode(string $value)
+    public function setLanguageCode(?string $value)
     {
         return $this->setData(self::LANGUAGE_CODE, $value);
     }
@@ -351,17 +412,17 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::MAIN_CONTACT);
     }
 
-    public function setMainContact(bool $value)
+    public function setMainContact(?bool $value)
     {
         return $this->setData(self::MAIN_CONTACT, $value);
     }
 
-    public function getMaritalStatus(): ?string
+    public function getMaritalStatus(): ?int
     {
         return $this->getData(self::MARITAL_STATUS);
     }
 
-    public function setMaritalStatus(string $value)
+    public function setMaritalStatus(?int $value)
     {
         return $this->setData(self::MARITAL_STATUS, $value);
     }
@@ -371,7 +432,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::MEMBER_CARD_TEMPORARY);
     }
 
-    public function setMemberCardTemporary(string $value)
+    public function setMemberCardTemporary(?string $value)
     {
         return $this->setData(self::MEMBER_CARD_TEMPORARY, $value);
     }
@@ -381,7 +442,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::MIDDLE_NAME);
     }
 
-    public function setMiddleName(string $value)
+    public function setMiddleName(?string $value)
     {
         return $this->setData(self::MIDDLE_NAME, $value);
     }
@@ -391,7 +452,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::MOBILE_PHONE_NO);
     }
 
-    public function setMobilePhoneNo(string $value)
+    public function setMobilePhoneNo(?string $value)
     {
         return $this->setData(self::MOBILE_PHONE_NO, $value);
     }
@@ -401,7 +462,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::NAME);
     }
 
-    public function setName(string $value)
+    public function setName(?string $value)
     {
         return $this->setData(self::NAME, $value);
     }
@@ -411,7 +472,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::NAME_2);
     }
 
-    public function setName2(string $value)
+    public function setName2(?string $value)
     {
         return $this->setData(self::NAME_2, $value);
     }
@@ -421,7 +482,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::NO_SERIES);
     }
 
-    public function setNoSeries(string $value)
+    public function setNoSeries(?string $value)
     {
         return $this->setData(self::NO_SERIES, $value);
     }
@@ -431,7 +492,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::PHONE_NO);
     }
 
-    public function setPhoneNo(string $value)
+    public function setPhoneNo(?string $value)
     {
         return $this->setData(self::PHONE_NO, $value);
     }
@@ -441,7 +502,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::POST_CODE);
     }
 
-    public function setPostCode(string $value)
+    public function setPostCode(?string $value)
     {
         return $this->setData(self::POST_CODE, $value);
     }
@@ -451,7 +512,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::POST_CODE_SEARCH_INTERNAL);
     }
 
-    public function setPostCodeSearchInternal(string $value)
+    public function setPostCodeSearchInternal(?string $value)
     {
         return $this->setData(self::POST_CODE_SEARCH_INTERNAL, $value);
     }
@@ -461,7 +522,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::PRIVACY_BLOCKED);
     }
 
-    public function setPrivacyBlocked(bool $value)
+    public function setPrivacyBlocked(?bool $value)
     {
         return $this->setData(self::PRIVACY_BLOCKED, $value);
     }
@@ -471,7 +532,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::REASON_BLOCKED);
     }
 
-    public function setReasonBlocked(string $value)
+    public function setReasonBlocked(?string $value)
     {
         return $this->setData(self::REASON_BLOCKED, $value);
     }
@@ -481,7 +542,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::SALUTATION_CODE);
     }
 
-    public function setSalutationCode(string $value)
+    public function setSalutationCode(?string $value)
     {
         return $this->setData(self::SALUTATION_CODE, $value);
     }
@@ -491,7 +552,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::SCHEME_CODE);
     }
 
-    public function setSchemeCode(string $value)
+    public function setSchemeCode(?string $value)
     {
         return $this->setData(self::SCHEME_CODE, $value);
     }
@@ -501,7 +562,7 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::SEARCH_EMAIL);
     }
 
-    public function setSearchEMail(string $value)
+    public function setSearchEMail(?string $value)
     {
         return $this->setData(self::SEARCH_EMAIL, $value);
     }
@@ -511,17 +572,17 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::SEARCH_NAME);
     }
 
-    public function setSearchName(string $value)
+    public function setSearchName(?string $value)
     {
         return $this->setData(self::SEARCH_NAME, $value);
     }
 
-    public function getSendReceiptByEMail(): ?string
+    public function getSendReceiptByEMail(): ?int
     {
         return $this->getData(self::SEND_RECEIPT_BY_EMAIL);
     }
 
-    public function setSendReceiptByEMail(string $value)
+    public function setSendReceiptByEMail(?int $value)
     {
         return $this->setData(self::SEND_RECEIPT_BY_EMAIL, $value);
     }
@@ -531,47 +592,47 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::SURNAME);
     }
 
-    public function setSurname(string $value)
+    public function setSurname(?string $value)
     {
         return $this->setData(self::SURNAME, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
@@ -581,17 +642,17 @@ class LSCMemberContact extends AbstractModel
         return $this->getData(self::TERRITORY_CODE);
     }
 
-    public function setTerritoryCode(string $value)
+    public function setTerritoryCode(?string $value)
     {
         return $this->setData(self::TERRITORY_CODE, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }

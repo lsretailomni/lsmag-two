@@ -16,13 +16,25 @@ class LSCSectionShelf extends AbstractModel
     public const CODE = 'Code';
     public const DESCRIPTION = 'Description';
 
+    public static array $dbColumnsMapping = [
+	self::STORE_NO => 'store_no',
+	self::SECTION_CODE => 'section_code',
+	self::CODE => 'code',
+	self::DESCRIPTION => 'description',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -32,7 +44,7 @@ class LSCSectionShelf extends AbstractModel
         return $this->getData(self::SECTION_CODE);
     }
 
-    public function setSectionCode(string $value)
+    public function setSectionCode(?string $value)
     {
         return $this->setData(self::SECTION_CODE, $value);
     }
@@ -42,7 +54,7 @@ class LSCSectionShelf extends AbstractModel
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -52,7 +64,7 @@ class LSCSectionShelf extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }

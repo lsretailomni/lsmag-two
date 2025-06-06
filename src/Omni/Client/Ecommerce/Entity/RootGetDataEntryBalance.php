@@ -12,24 +12,24 @@ class RootGetDataEntryBalance extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetDataEntryBalance';
 
-    public const P_O_S_DATA_ENTRY = 'POSDataEntry';
+    public const POSDATA_ENTRY = 'POSDataEntry';
 
     /**
      * @param POSDataEntry $POSDataEntry
      * @return $this
      */
-    public function setPOSDataEntry($POSDataEntry)
+    public function setPosdataentry($POSDataEntry)
     {
-        $this->setData(self::P_O_S_DATA_ENTRY, $POSDataEntry);
+        $this->setData(self::POSDATA_ENTRY, $POSDataEntry);
         return $this;
     }
 
     /**
      * @return POSDataEntry
      */
-    public function getPOSDataEntry()
+    public function getPosdataentry()
     {
-        return $this->getData(self::P_O_S_DATA_ENTRY);
+        return $this->getData(self::POSDATA_ENTRY);
     }
 }
 

@@ -18,7 +18,7 @@ class RootCustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel
      * @param CustomerOrderStatus $CustomerOrderStatus
      * @return $this
      */
-    public function setCustomerOrderStatus($CustomerOrderStatus)
+    public function setCustomerorderstatus($CustomerOrderStatus)
     {
         $this->setData(self::CUSTOMER_ORDER_STATUS, $CustomerOrderStatus);
         return $this;
@@ -27,7 +27,7 @@ class RootCustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CustomerOrderStatus
      */
-    public function getCustomerOrderStatus()
+    public function getCustomerorderstatus()
     {
         return $this->getData(self::CUSTOMER_ORDER_STATUS);
     }

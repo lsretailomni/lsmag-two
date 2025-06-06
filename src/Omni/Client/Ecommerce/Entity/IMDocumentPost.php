@@ -31,55 +31,55 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $terminalNo
+     * @param ?string $terminalNo
      * @return $this
      */
-    public function setTerminalNo($terminalNo)
+    public function setTerminalno(?string $terminalNo)
     {
         $this->setData(self::TERMINAL_NO, $terminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalNo()
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
 
     /**
-     * @param string $requestType
+     * @param ?string $requestType
      * @return $this
      */
-    public function setRequestType($requestType)
+    public function setRequesttype(?string $requestType)
     {
         $this->setData(self::REQUEST_TYPE, $requestType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRequestType()
+    public function getRequesttype() : ?string
     {
         return $this->getData(self::REQUEST_TYPE);
     }
 
     /**
-     * @param string $postMethod
+     * @param ?string $postMethod
      * @return $this
      */
-    public function setPostMethod($postMethod)
+    public function setPostmethod(?string $postMethod)
     {
         $this->setData(self::POST_METHOD, $postMethod);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPostMethod()
+    public function getPostmethod() : ?string
     {
         return $this->getData(self::POST_METHOD);
     }
@@ -88,7 +88,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
      * @param int $documentType
      * @return $this
      */
-    public function setDocumentType($documentType)
+    public function setDocumenttype($documentType)
     {
         $this->setData(self::DOCUMENT_TYPE, $documentType);
         return $this;
@@ -97,79 +97,79 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return int
      */
-    public function getDocumentType()
+    public function getDocumenttype()
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
 
     /**
-     * @param string $documentNo
+     * @param ?string $documentNo
      * @return $this
      */
-    public function setDocumentNo($documentNo)
+    public function setDocumentno(?string $documentNo)
     {
         $this->setData(self::DOCUMENT_NO, $documentNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentNo()
+    public function getDocumentno() : ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $response
+     * @param ?string $response
      * @return $this
      */
-    public function setResponse($response)
+    public function setResponse(?string $response)
     {
         $this->setData(self::RESPONSE, $response);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponse()
+    public function getResponse() : ?string
     {
         return $this->getData(self::RESPONSE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

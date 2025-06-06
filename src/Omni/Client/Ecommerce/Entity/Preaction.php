@@ -28,7 +28,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -37,43 +37,43 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
 
     /**
-     * @param string $LocationGroupFilter
+     * @param ?string $LocationGroupFilter
      * @return $this
      */
-    public function setLocationGroupFilter($LocationGroupFilter)
+    public function setLocationgroupfilter(?string $LocationGroupFilter)
     {
         $this->setData(self::LOCATION_GROUP_FILTER, $LocationGroupFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLocationGroupFilter()
+    public function getLocationgroupfilter() : ?string
     {
         return $this->getData(self::LOCATION_GROUP_FILTER);
     }
 
     /**
-     * @param string $Action
+     * @param ?string $Action
      * @return $this
      */
-    public function setAction($Action)
+    public function setAction(?string $Action)
     {
         $this->setData(self::ACTION, $Action);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAction()
+    public function getAction() : ?string
     {
         return $this->getData(self::ACTION);
     }
@@ -82,7 +82,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
      * @param int $TableNo
      * @return $this
      */
-    public function setTableNo($TableNo)
+    public function setTableno($TableNo)
     {
         $this->setData(self::TABLE_NO, $TableNo);
         return $this;
@@ -91,43 +91,43 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTableNo()
+    public function getTableno()
     {
         return $this->getData(self::TABLE_NO);
     }
 
     /**
-     * @param string $KeyValue
+     * @param ?string $KeyValue
      * @return $this
      */
-    public function setKeyValue($KeyValue)
+    public function setKeyvalue(?string $KeyValue)
     {
         $this->setData(self::KEY_VALUE, $KeyValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getKeyValue()
+    public function getKeyvalue() : ?string
     {
         return $this->getData(self::KEY_VALUE);
     }
 
     /**
-     * @param string $Batch
+     * @param ?string $Batch
      * @return $this
      */
-    public function setBatch($Batch)
+    public function setBatch(?string $Batch)
     {
         $this->setData(self::BATCH, $Batch);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBatch()
+    public function getBatch() : ?string
     {
         return $this->getData(self::BATCH);
     }

@@ -18,40 +18,40 @@ class COSetMobilePickLabel extends \Magento\Catalog\Model\AbstractModel implemen
 
     public const ERROR_TEXT = 'errorText';
 
-    public const C_O_SET_MOBILE_PICK_LABEL_X_M_L = 'cOSetMobilePickLabelXML';
+    public const COSET_MOBILE_PICK_LABEL_XML = 'cOSetMobilePickLabelXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class COSetMobilePickLabel extends \Magento\Catalog\Model\AbstractModel implemen
      * @param RootCOMobilePickLabel $cOSetMobilePickLabelXML
      * @return $this
      */
-    public function setCOSetMobilePickLabelXML($cOSetMobilePickLabelXML)
+    public function setCosetmobilepicklabelxml($cOSetMobilePickLabelXML)
     {
-        $this->setData(self::C_O_SET_MOBILE_PICK_LABEL_X_M_L, $cOSetMobilePickLabelXML);
+        $this->setData(self::COSET_MOBILE_PICK_LABEL_XML, $cOSetMobilePickLabelXML);
         return $this;
     }
 
     /**
      * @return RootCOMobilePickLabel
      */
-    public function getCOSetMobilePickLabelXML()
+    public function getCosetmobilepicklabelxml()
     {
-        return $this->getData(self::C_O_SET_MOBILE_PICK_LABEL_X_M_L);
+        return $this->getData(self::COSET_MOBILE_PICK_LABEL_XML);
     }
 }
 

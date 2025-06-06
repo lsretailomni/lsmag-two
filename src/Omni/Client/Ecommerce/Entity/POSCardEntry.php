@@ -14,7 +14,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const ENTRY_NO = 'EntryNo';
 
@@ -24,13 +24,13 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const RECEIPT_NO = 'ReceiptNo';
 
-    public const E_F_T_P_O_S_TERMINAL_NO = 'EFTPOSTerminalNo';
+    public const EFTPOSTERMINAL_NO = 'EFTPOSTerminalNo';
 
     public const TENDER_TYPE = 'TenderType';
 
     public const TRANSACTION_TYPE = 'TransactionType';
 
-    public const M_S_RINPUT = 'MSRinput';
+    public const MSRINPUT = 'MSRinput';
 
     public const DATE = 'Date';
 
@@ -56,43 +56,43 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const CARD_CLASS = 'CardClass';
 
-    public const E_F_T_MERCHANT_NO = 'EFTMerchantNo';
+    public const EFTMERCHANT_NO = 'EFTMerchantNo';
 
-    public const E_F_T_TERMINAL_I_D = 'EFTTerminalID';
+    public const EFTTERMINAL_ID = 'EFTTerminalID';
 
-    public const E_F_T_TRANS_NO = 'EFTTransNo';
+    public const EFTTRANS_NO = 'EFTTransNo';
 
-    public const E_F_T_TRANSACTION_I_D = 'EFTTransactionID';
+    public const EFTTRANSACTION_ID = 'EFTTransactionID';
 
-    public const E_F_T_ADDITIONAL_I_D = 'EFTAdditionalID';
+    public const EFTADDITIONAL_ID = 'EFTAdditionalID';
 
-    public const E_F_T_BATCH_NO = 'EFTBatchNo';
+    public const EFTBATCH_NO = 'EFTBatchNo';
 
     public const AUTH_SOURCE_CODE = 'AuthSourceCode';
 
-    public const E_F_T_TRANS_TIME = 'EFTTransTime';
+    public const EFTTRANS_TIME = 'EFTTransTime';
 
-    public const E_F_T_TRANS_DATE = 'EFTTransDate';
+    public const EFTTRANS_DATE = 'EFTTransDate';
 
     public const AMOUNT = 'Amount';
 
-    public const V_A_T = 'VAT';
+    public const VAT = 'VAT';
 
     public const CASHBACK = 'Cashback';
 
-    public const E_F_T_STORE_NO = 'EFTStoreNo';
+    public const EFTSTORE_NO = 'EFTStoreNo';
 
-    public const E_F_T_SERVER_NAME = 'EFTServerName';
+    public const EFTSERVER_NAME = 'EFTServerName';
 
-    public const E_F_T_VERIFICATION_METHOD = 'EFTVerificationMethod';
+    public const EFTVERIFICATION_METHOD = 'EFTVerificationMethod';
 
-    public const E_F_T_AUTHORIZATION_STATUS = 'EFTAuthorizationStatus';
+    public const EFTAUTHORIZATION_STATUS = 'EFTAuthorizationStatus';
 
-    public const E_F_T_TRANSACTION_TYPE = 'EFTTransactionType';
+    public const EFTTRANSACTION_TYPE = 'EFTTransactionType';
 
-    public const E_F_T_STAFF_I_D = 'EFTStaffID';
+    public const EFTSTAFF_ID = 'EFTStaffID';
 
-    public const E_F_T_DATE_TIME = 'EFTDateTime';
+    public const EFTDATE_TIME = 'EFTDateTime';
 
     public const EXTRA_DATA = 'ExtraData';
 
@@ -100,9 +100,9 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const VOIDED_ENTRY_NO = 'VoidedEntryNo';
 
-    public const VOIDED_E_F_T_TRANS_NO = 'VoidedEFTTransNo';
+    public const VOIDED_EFTTRANS_NO = 'VoidedEFTTransNo';
 
-    public const VOIDED_E_F_T_TRANSACTION_I_D = 'VoidedEFTTransactionID';
+    public const VOIDED_EFTTRANSACTION_ID = 'VoidedEFTTransactionID';
 
     public const ENCRYPTED = 'Encrypted';
 
@@ -111,46 +111,46 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -159,7 +159,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
@@ -168,7 +168,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -177,7 +177,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -186,7 +186,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -195,691 +195,691 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param string $EFTPOSTerminalNo
+     * @param ?string $EFTPOSTerminalNo
      * @return $this
      */
-    public function setEFTPOSTerminalNo($EFTPOSTerminalNo)
+    public function setEftposterminalno(?string $EFTPOSTerminalNo)
     {
-        $this->setData(self::E_F_T_P_O_S_TERMINAL_NO, $EFTPOSTerminalNo);
+        $this->setData(self::EFTPOSTERMINAL_NO, $EFTPOSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTPOSTerminalNo()
+    public function getEftposterminalno() : ?string
     {
-        return $this->getData(self::E_F_T_P_O_S_TERMINAL_NO);
+        return $this->getData(self::EFTPOSTERMINAL_NO);
     }
 
     /**
-     * @param string $TenderType
+     * @param ?string $TenderType
      * @return $this
      */
-    public function setTenderType($TenderType)
+    public function setTendertype(?string $TenderType)
     {
         $this->setData(self::TENDER_TYPE, $TenderType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTenderType()
+    public function getTendertype() : ?string
     {
         return $this->getData(self::TENDER_TYPE);
     }
 
     /**
-     * @param string $TransactionType
+     * @param ?string $TransactionType
      * @return $this
      */
-    public function setTransactionType($TransactionType)
+    public function setTransactiontype(?string $TransactionType)
     {
         $this->setData(self::TRANSACTION_TYPE, $TransactionType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionType()
+    public function getTransactiontype() : ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
 
     /**
-     * @param boolean $MSRinput
+     * @param ?bool $MSRinput
      * @return $this
      */
-    public function setMSRinput($MSRinput)
+    public function setMsrinput(?bool $MSRinput)
     {
-        $this->setData(self::M_S_RINPUT, $MSRinput);
+        $this->setData(self::MSRINPUT, $MSRinput);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getMSRinput()
+    public function getMsrinput() : ?bool
     {
-        return $this->getData(self::M_S_RINPUT);
+        return $this->getData(self::MSRINPUT);
     }
 
     /**
-     * @param date $Date
+     * @param ?string $Date
      * @return $this
      */
-    public function setDate($Date)
+    public function setDate(?string $Date)
     {
         $this->setData(self::DATE, $Date);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDate()
+    public function getDate() : ?string
     {
         return $this->getData(self::DATE);
     }
 
     /**
-     * @param time $Time
+     * @param ?string $Time
      * @return $this
      */
-    public function setTime($Time)
+    public function setTime(?string $Time)
     {
         $this->setData(self::TIME, $Time);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTime()
+    public function getTime() : ?string
     {
         return $this->getData(self::TIME);
     }
 
     /**
-     * @param boolean $AuthorisationOk
+     * @param ?bool $AuthorisationOk
      * @return $this
      */
-    public function setAuthorisationOk($AuthorisationOk)
+    public function setAuthorisationok(?bool $AuthorisationOk)
     {
         $this->setData(self::AUTHORISATION_OK, $AuthorisationOk);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getAuthorisationOk()
+    public function getAuthorisationok() : ?bool
     {
         return $this->getData(self::AUTHORISATION_OK);
     }
 
     /**
-     * @param boolean $Voided
+     * @param ?bool $Voided
      * @return $this
      */
-    public function setVoided($Voided)
+    public function setVoided(?bool $Voided)
     {
         $this->setData(self::VOIDED, $Voided);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getVoided()
+    public function getVoided() : ?bool
     {
         return $this->getData(self::VOIDED);
     }
 
     /**
-     * @param string $CardNumber
+     * @param ?string $CardNumber
      * @return $this
      */
-    public function setCardNumber($CardNumber)
+    public function setCardnumber(?string $CardNumber)
     {
         $this->setData(self::CARD_NUMBER, $CardNumber);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNumber()
+    public function getCardnumber() : ?string
     {
         return $this->getData(self::CARD_NUMBER);
     }
 
     /**
-     * @param string $CardType
+     * @param ?string $CardType
      * @return $this
      */
-    public function setCardType($CardType)
+    public function setCardtype(?string $CardType)
     {
         $this->setData(self::CARD_TYPE, $CardType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardType()
+    public function getCardtype() : ?string
     {
         return $this->getData(self::CARD_TYPE);
     }
 
     /**
-     * @param string $CardTypeName
+     * @param ?string $CardTypeName
      * @return $this
      */
-    public function setCardTypeName($CardTypeName)
+    public function setCardtypename(?string $CardTypeName)
     {
         $this->setData(self::CARD_TYPE_NAME, $CardTypeName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardTypeName()
+    public function getCardtypename() : ?string
     {
         return $this->getData(self::CARD_TYPE_NAME);
     }
 
     /**
-     * @param string $ExpiryDate
+     * @param ?string $ExpiryDate
      * @return $this
      */
-    public function setExpiryDate($ExpiryDate)
+    public function setExpirydate(?string $ExpiryDate)
     {
         $this->setData(self::EXPIRY_DATE, $ExpiryDate);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExpiryDate()
+    public function getExpirydate() : ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
 
     /**
-     * @param string $Authcode
+     * @param ?string $Authcode
      * @return $this
      */
-    public function setAuthcode($Authcode)
+    public function setAuthcode(?string $Authcode)
     {
         $this->setData(self::AUTHCODE, $Authcode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAuthcode()
+    public function getAuthcode() : ?string
     {
         return $this->getData(self::AUTHCODE);
     }
 
     /**
-     * @param string $Rescode
+     * @param ?string $Rescode
      * @return $this
      */
-    public function setRescode($Rescode)
+    public function setRescode(?string $Rescode)
     {
         $this->setData(self::RESCODE, $Rescode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRescode()
+    public function getRescode() : ?string
     {
         return $this->getData(self::RESCODE);
     }
 
     /**
-     * @param string $Message
+     * @param ?string $Message
      * @return $this
      */
-    public function setMessage($Message)
+    public function setMessage(?string $Message)
     {
         $this->setData(self::MESSAGE, $Message);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMessage()
+    public function getMessage() : ?string
     {
         return $this->getData(self::MESSAGE);
     }
 
     /**
-     * @param string $CardClass
+     * @param ?string $CardClass
      * @return $this
      */
-    public function setCardClass($CardClass)
+    public function setCardclass(?string $CardClass)
     {
         $this->setData(self::CARD_CLASS, $CardClass);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardClass()
+    public function getCardclass() : ?string
     {
         return $this->getData(self::CARD_CLASS);
     }
 
     /**
-     * @param string $EFTMerchantNo
+     * @param ?string $EFTMerchantNo
      * @return $this
      */
-    public function setEFTMerchantNo($EFTMerchantNo)
+    public function setEftmerchantno(?string $EFTMerchantNo)
     {
-        $this->setData(self::E_F_T_MERCHANT_NO, $EFTMerchantNo);
+        $this->setData(self::EFTMERCHANT_NO, $EFTMerchantNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTMerchantNo()
+    public function getEftmerchantno() : ?string
     {
-        return $this->getData(self::E_F_T_MERCHANT_NO);
+        return $this->getData(self::EFTMERCHANT_NO);
     }
 
     /**
-     * @param string $EFTTerminalID
+     * @param ?string $EFTTerminalID
      * @return $this
      */
-    public function setEFTTerminalID($EFTTerminalID)
+    public function setEftterminalid(?string $EFTTerminalID)
     {
-        $this->setData(self::E_F_T_TERMINAL_I_D, $EFTTerminalID);
+        $this->setData(self::EFTTERMINAL_ID, $EFTTerminalID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTTerminalID()
+    public function getEftterminalid() : ?string
     {
-        return $this->getData(self::E_F_T_TERMINAL_I_D);
+        return $this->getData(self::EFTTERMINAL_ID);
     }
 
     /**
-     * @param string $EFTTransNo
+     * @param ?string $EFTTransNo
      * @return $this
      */
-    public function setEFTTransNo($EFTTransNo)
+    public function setEfttransno(?string $EFTTransNo)
     {
-        $this->setData(self::E_F_T_TRANS_NO, $EFTTransNo);
+        $this->setData(self::EFTTRANS_NO, $EFTTransNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTTransNo()
+    public function getEfttransno() : ?string
     {
-        return $this->getData(self::E_F_T_TRANS_NO);
+        return $this->getData(self::EFTTRANS_NO);
     }
 
     /**
-     * @param string $EFTTransactionID
+     * @param ?string $EFTTransactionID
      * @return $this
      */
-    public function setEFTTransactionID($EFTTransactionID)
+    public function setEfttransactionid(?string $EFTTransactionID)
     {
-        $this->setData(self::E_F_T_TRANSACTION_I_D, $EFTTransactionID);
+        $this->setData(self::EFTTRANSACTION_ID, $EFTTransactionID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTTransactionID()
+    public function getEfttransactionid() : ?string
     {
-        return $this->getData(self::E_F_T_TRANSACTION_I_D);
+        return $this->getData(self::EFTTRANSACTION_ID);
     }
 
     /**
-     * @param string $EFTAdditionalID
+     * @param ?string $EFTAdditionalID
      * @return $this
      */
-    public function setEFTAdditionalID($EFTAdditionalID)
+    public function setEftadditionalid(?string $EFTAdditionalID)
     {
-        $this->setData(self::E_F_T_ADDITIONAL_I_D, $EFTAdditionalID);
+        $this->setData(self::EFTADDITIONAL_ID, $EFTAdditionalID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTAdditionalID()
+    public function getEftadditionalid() : ?string
     {
-        return $this->getData(self::E_F_T_ADDITIONAL_I_D);
+        return $this->getData(self::EFTADDITIONAL_ID);
     }
 
     /**
-     * @param string $EFTBatchNo
+     * @param ?string $EFTBatchNo
      * @return $this
      */
-    public function setEFTBatchNo($EFTBatchNo)
+    public function setEftbatchno(?string $EFTBatchNo)
     {
-        $this->setData(self::E_F_T_BATCH_NO, $EFTBatchNo);
+        $this->setData(self::EFTBATCH_NO, $EFTBatchNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTBatchNo()
+    public function getEftbatchno() : ?string
     {
-        return $this->getData(self::E_F_T_BATCH_NO);
+        return $this->getData(self::EFTBATCH_NO);
     }
 
     /**
-     * @param string $AuthSourceCode
+     * @param ?string $AuthSourceCode
      * @return $this
      */
-    public function setAuthSourceCode($AuthSourceCode)
+    public function setAuthsourcecode(?string $AuthSourceCode)
     {
         $this->setData(self::AUTH_SOURCE_CODE, $AuthSourceCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAuthSourceCode()
+    public function getAuthsourcecode() : ?string
     {
         return $this->getData(self::AUTH_SOURCE_CODE);
     }
 
     /**
-     * @param string $EFTTransTime
+     * @param ?string $EFTTransTime
      * @return $this
      */
-    public function setEFTTransTime($EFTTransTime)
+    public function setEfttranstime(?string $EFTTransTime)
     {
-        $this->setData(self::E_F_T_TRANS_TIME, $EFTTransTime);
+        $this->setData(self::EFTTRANS_TIME, $EFTTransTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTTransTime()
+    public function getEfttranstime() : ?string
     {
-        return $this->getData(self::E_F_T_TRANS_TIME);
+        return $this->getData(self::EFTTRANS_TIME);
     }
 
     /**
-     * @param string $EFTTransDate
+     * @param ?string $EFTTransDate
      * @return $this
      */
-    public function setEFTTransDate($EFTTransDate)
+    public function setEfttransdate(?string $EFTTransDate)
     {
-        $this->setData(self::E_F_T_TRANS_DATE, $EFTTransDate);
+        $this->setData(self::EFTTRANS_DATE, $EFTTransDate);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTTransDate()
+    public function getEfttransdate() : ?string
     {
-        return $this->getData(self::E_F_T_TRANS_DATE);
+        return $this->getData(self::EFTTRANS_DATE);
     }
 
     /**
-     * @param float $Amount
+     * @param ?float $Amount
      * @return $this
      */
-    public function setAmount($Amount)
+    public function setAmount(?float $Amount)
     {
         $this->setData(self::AMOUNT, $Amount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmount()
+    public function getAmount() : ?float
     {
         return $this->getData(self::AMOUNT);
     }
 
     /**
-     * @param float $VAT
+     * @param ?float $VAT
      * @return $this
      */
-    public function setVAT($VAT)
+    public function setVat(?float $VAT)
     {
-        $this->setData(self::V_A_T, $VAT);
+        $this->setData(self::VAT, $VAT);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getVAT()
+    public function getVat() : ?float
     {
-        return $this->getData(self::V_A_T);
+        return $this->getData(self::VAT);
     }
 
     /**
-     * @param float $Cashback
+     * @param ?float $Cashback
      * @return $this
      */
-    public function setCashback($Cashback)
+    public function setCashback(?float $Cashback)
     {
         $this->setData(self::CASHBACK, $Cashback);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getCashback()
+    public function getCashback() : ?float
     {
         return $this->getData(self::CASHBACK);
     }
 
     /**
-     * @param string $EFTStoreNo
+     * @param ?string $EFTStoreNo
      * @return $this
      */
-    public function setEFTStoreNo($EFTStoreNo)
+    public function setEftstoreno(?string $EFTStoreNo)
     {
-        $this->setData(self::E_F_T_STORE_NO, $EFTStoreNo);
+        $this->setData(self::EFTSTORE_NO, $EFTStoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTStoreNo()
+    public function getEftstoreno() : ?string
     {
-        return $this->getData(self::E_F_T_STORE_NO);
+        return $this->getData(self::EFTSTORE_NO);
     }
 
     /**
-     * @param string $EFTServerName
+     * @param ?string $EFTServerName
      * @return $this
      */
-    public function setEFTServerName($EFTServerName)
+    public function setEftservername(?string $EFTServerName)
     {
-        $this->setData(self::E_F_T_SERVER_NAME, $EFTServerName);
+        $this->setData(self::EFTSERVER_NAME, $EFTServerName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTServerName()
+    public function getEftservername() : ?string
     {
-        return $this->getData(self::E_F_T_SERVER_NAME);
+        return $this->getData(self::EFTSERVER_NAME);
     }
 
     /**
-     * @param string $EFTVerificationMethod
+     * @param ?string $EFTVerificationMethod
      * @return $this
      */
-    public function setEFTVerificationMethod($EFTVerificationMethod)
+    public function setEftverificationmethod(?string $EFTVerificationMethod)
     {
-        $this->setData(self::E_F_T_VERIFICATION_METHOD, $EFTVerificationMethod);
+        $this->setData(self::EFTVERIFICATION_METHOD, $EFTVerificationMethod);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTVerificationMethod()
+    public function getEftverificationmethod() : ?string
     {
-        return $this->getData(self::E_F_T_VERIFICATION_METHOD);
+        return $this->getData(self::EFTVERIFICATION_METHOD);
     }
 
     /**
-     * @param string $EFTAuthorizationStatus
+     * @param ?string $EFTAuthorizationStatus
      * @return $this
      */
-    public function setEFTAuthorizationStatus($EFTAuthorizationStatus)
+    public function setEftauthorizationstatus(?string $EFTAuthorizationStatus)
     {
-        $this->setData(self::E_F_T_AUTHORIZATION_STATUS, $EFTAuthorizationStatus);
+        $this->setData(self::EFTAUTHORIZATION_STATUS, $EFTAuthorizationStatus);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTAuthorizationStatus()
+    public function getEftauthorizationstatus() : ?string
     {
-        return $this->getData(self::E_F_T_AUTHORIZATION_STATUS);
+        return $this->getData(self::EFTAUTHORIZATION_STATUS);
     }
 
     /**
-     * @param string $EFTTransactionType
+     * @param ?string $EFTTransactionType
      * @return $this
      */
-    public function setEFTTransactionType($EFTTransactionType)
+    public function setEfttransactiontype(?string $EFTTransactionType)
     {
-        $this->setData(self::E_F_T_TRANSACTION_TYPE, $EFTTransactionType);
+        $this->setData(self::EFTTRANSACTION_TYPE, $EFTTransactionType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTTransactionType()
+    public function getEfttransactiontype() : ?string
     {
-        return $this->getData(self::E_F_T_TRANSACTION_TYPE);
+        return $this->getData(self::EFTTRANSACTION_TYPE);
     }
 
     /**
-     * @param string $EFTStaffID
+     * @param ?string $EFTStaffID
      * @return $this
      */
-    public function setEFTStaffID($EFTStaffID)
+    public function setEftstaffid(?string $EFTStaffID)
     {
-        $this->setData(self::E_F_T_STAFF_I_D, $EFTStaffID);
+        $this->setData(self::EFTSTAFF_ID, $EFTStaffID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTStaffID()
+    public function getEftstaffid() : ?string
     {
-        return $this->getData(self::E_F_T_STAFF_I_D);
+        return $this->getData(self::EFTSTAFF_ID);
     }
 
     /**
-     * @param string $EFTDateTime
+     * @param ?string $EFTDateTime
      * @return $this
      */
-    public function setEFTDateTime($EFTDateTime)
+    public function setEftdatetime(?string $EFTDateTime)
     {
-        $this->setData(self::E_F_T_DATE_TIME, $EFTDateTime);
+        $this->setData(self::EFTDATE_TIME, $EFTDateTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEFTDateTime()
+    public function getEftdatetime() : ?string
     {
-        return $this->getData(self::E_F_T_DATE_TIME);
+        return $this->getData(self::EFTDATE_TIME);
     }
 
     /**
-     * @param string $ExtraData
+     * @param ?string $ExtraData
      * @return $this
      */
-    public function setExtraData($ExtraData)
+    public function setExtradata(?string $ExtraData)
     {
         $this->setData(self::EXTRA_DATA, $ExtraData);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExtraData()
+    public function getExtradata() : ?string
     {
         return $this->getData(self::EXTRA_DATA);
     }
 
     /**
-     * @param string $VoidedSlipNo
+     * @param ?string $VoidedSlipNo
      * @return $this
      */
-    public function setVoidedSlipNo($VoidedSlipNo)
+    public function setVoidedslipno(?string $VoidedSlipNo)
     {
         $this->setData(self::VOIDED_SLIP_NO, $VoidedSlipNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVoidedSlipNo()
+    public function getVoidedslipno() : ?string
     {
         return $this->getData(self::VOIDED_SLIP_NO);
     }
@@ -888,7 +888,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $VoidedEntryNo
      * @return $this
      */
-    public function setVoidedEntryNo($VoidedEntryNo)
+    public function setVoidedentryno($VoidedEntryNo)
     {
         $this->setData(self::VOIDED_ENTRY_NO, $VoidedEntryNo);
         return $this;
@@ -897,79 +897,79 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getVoidedEntryNo()
+    public function getVoidedentryno()
     {
         return $this->getData(self::VOIDED_ENTRY_NO);
     }
 
     /**
-     * @param string $VoidedEFTTransNo
+     * @param ?string $VoidedEFTTransNo
      * @return $this
      */
-    public function setVoidedEFTTransNo($VoidedEFTTransNo)
+    public function setVoidedefttransno(?string $VoidedEFTTransNo)
     {
-        $this->setData(self::VOIDED_E_F_T_TRANS_NO, $VoidedEFTTransNo);
+        $this->setData(self::VOIDED_EFTTRANS_NO, $VoidedEFTTransNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVoidedEFTTransNo()
+    public function getVoidedefttransno() : ?string
     {
-        return $this->getData(self::VOIDED_E_F_T_TRANS_NO);
+        return $this->getData(self::VOIDED_EFTTRANS_NO);
     }
 
     /**
-     * @param string $VoidedEFTTransactionID
+     * @param ?string $VoidedEFTTransactionID
      * @return $this
      */
-    public function setVoidedEFTTransactionID($VoidedEFTTransactionID)
+    public function setVoidedefttransactionid(?string $VoidedEFTTransactionID)
     {
-        $this->setData(self::VOIDED_E_F_T_TRANSACTION_I_D, $VoidedEFTTransactionID);
+        $this->setData(self::VOIDED_EFTTRANSACTION_ID, $VoidedEFTTransactionID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVoidedEFTTransactionID()
+    public function getVoidedefttransactionid() : ?string
     {
-        return $this->getData(self::VOIDED_E_F_T_TRANSACTION_I_D);
+        return $this->getData(self::VOIDED_EFTTRANSACTION_ID);
     }
 
     /**
-     * @param boolean $Encrypted
+     * @param ?bool $Encrypted
      * @return $this
      */
-    public function setEncrypted($Encrypted)
+    public function setEncrypted(?bool $Encrypted)
     {
         $this->setData(self::ENCRYPTED, $Encrypted);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getEncrypted()
+    public function getEncrypted() : ?bool
     {
         return $this->getData(self::ENCRYPTED);
     }
 
     /**
-     * @param boolean $Replicated
+     * @param ?bool $Replicated
      * @return $this
      */
-    public function setReplicated($Replicated)
+    public function setReplicated(?bool $Replicated)
     {
         $this->setData(self::REPLICATED, $Replicated);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getReplicated()
+    public function getReplicated() : ?bool
     {
         return $this->getData(self::REPLICATED);
     }
@@ -978,7 +978,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -987,7 +987,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }

@@ -18,7 +18,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
 
     public const ERROR_TEXT = 'errorText';
 
-    public const H_H_T_I_D = 'hHT_ID';
+    public const HHT_ID = 'hHT_ID';
 
     public const VALUE_TYPE = 'value_Type';
 
@@ -30,248 +30,248 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
 
     public const LOCATION_CODE = 'location_Code';
 
-    public const ITEM_NO1 = 'item_No_1';
+    public const ITEM_NO_1 = 'item_No_1';
 
-    public const VARIANT1 = 'variant_1';
+    public const VARIANT_1 = 'variant_1';
 
-    public const ITEM_NO2 = 'item_No_2';
+    public const ITEM_NO_2 = 'item_No_2';
 
-    public const VARIANT2 = 'variant_2';
+    public const VARIANT_2 = 'variant_2';
 
-    public const GET_ITEM_DOCUMENT_X_M_L = 'getItemDocumentXML';
+    public const GET_ITEM_DOCUMENT_XML = 'getItemDocumentXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $hHTID
+     * @param ?string $hHTID
      * @return $this
      */
-    public function setHHTID($hHTID)
+    public function setHhtId(?string $hHTID)
     {
-        $this->setData(self::H_H_T_I_D, $hHTID);
+        $this->setData(self::HHT_ID, $hHTID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getHHTID()
+    public function getHhtId() : ?string
     {
-        return $this->getData(self::H_H_T_I_D);
+        return $this->getData(self::HHT_ID);
     }
 
     /**
-     * @param string $valueType
+     * @param ?string $valueType
      * @return $this
      */
-    public function setValueType($valueType)
+    public function setValueType(?string $valueType)
     {
         $this->setData(self::VALUE_TYPE, $valueType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getValueType()
+    public function getValueType() : ?string
     {
         return $this->getData(self::VALUE_TYPE);
     }
 
     /**
-     * @param string $value
+     * @param ?string $value
      * @return $this
      */
-    public function setValue($value)
+    public function setValue(?string $value)
     {
         $this->setData(self::VALUE, $value);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getValue()
+    public function getValue() : ?string
     {
         return $this->getData(self::VALUE);
     }
 
     /**
-     * @param string $processType
+     * @param ?string $processType
      * @return $this
      */
-    public function setProcessType($processType)
+    public function setProcessType(?string $processType)
     {
         $this->setData(self::PROCESS_TYPE, $processType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getProcessType()
+    public function getProcessType() : ?string
     {
         return $this->getData(self::PROCESS_TYPE);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreNo(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreNo() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $locationCode
+     * @param ?string $locationCode
      * @return $this
      */
-    public function setLocationCode($locationCode)
+    public function setLocationCode(?string $locationCode)
     {
         $this->setData(self::LOCATION_CODE, $locationCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLocationCode()
+    public function getLocationCode() : ?string
     {
         return $this->getData(self::LOCATION_CODE);
     }
 
     /**
-     * @param string $itemNo1
+     * @param ?string $itemNo1
      * @return $this
      */
-    public function setItemNo1($itemNo1)
+    public function setItemNo1(?string $itemNo1)
     {
-        $this->setData(self::ITEM_NO1, $itemNo1);
+        $this->setData(self::ITEM_NO_1, $itemNo1);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo1()
+    public function getItemNo1() : ?string
     {
-        return $this->getData(self::ITEM_NO1);
+        return $this->getData(self::ITEM_NO_1);
     }
 
     /**
-     * @param string $variant1
+     * @param ?string $variant1
      * @return $this
      */
-    public function setVariant1($variant1)
+    public function setVariant1(?string $variant1)
     {
-        $this->setData(self::VARIANT1, $variant1);
+        $this->setData(self::VARIANT_1, $variant1);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariant1()
+    public function getVariant1() : ?string
     {
-        return $this->getData(self::VARIANT1);
+        return $this->getData(self::VARIANT_1);
     }
 
     /**
-     * @param string $itemNo2
+     * @param ?string $itemNo2
      * @return $this
      */
-    public function setItemNo2($itemNo2)
+    public function setItemNo2(?string $itemNo2)
     {
-        $this->setData(self::ITEM_NO2, $itemNo2);
+        $this->setData(self::ITEM_NO_2, $itemNo2);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo2()
+    public function getItemNo2() : ?string
     {
-        return $this->getData(self::ITEM_NO2);
+        return $this->getData(self::ITEM_NO_2);
     }
 
     /**
-     * @param string $variant2
+     * @param ?string $variant2
      * @return $this
      */
-    public function setVariant2($variant2)
+    public function setVariant2(?string $variant2)
     {
-        $this->setData(self::VARIANT2, $variant2);
+        $this->setData(self::VARIANT_2, $variant2);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariant2()
+    public function getVariant2() : ?string
     {
-        return $this->getData(self::VARIANT2);
+        return $this->getData(self::VARIANT_2);
     }
 
     /**
      * @param RootGetItemDocument $getItemDocumentXML
      * @return $this
      */
-    public function setGetItemDocumentXML($getItemDocumentXML)
+    public function setGetitemdocumentxml($getItemDocumentXML)
     {
-        $this->setData(self::GET_ITEM_DOCUMENT_X_M_L, $getItemDocumentXML);
+        $this->setData(self::GET_ITEM_DOCUMENT_XML, $getItemDocumentXML);
         return $this;
     }
 
     /**
      * @return RootGetItemDocument
      */
-    public function getGetItemDocumentXML()
+    public function getGetitemdocumentxml()
     {
-        return $this->getData(self::GET_ITEM_DOCUMENT_X_M_L);
+        return $this->getData(self::GET_ITEM_DOCUMENT_XML);
     }
 }
 

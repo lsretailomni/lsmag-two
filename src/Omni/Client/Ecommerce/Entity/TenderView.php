@@ -30,13 +30,39 @@ class TenderView extends AbstractModel
     public const DRAWER_OPENS = 'Drawer Opens';
     public const DATEENTRYCODES = 'DateEntryCodes';
 
+    public static array $dbColumnsMapping = [
+	self::CODE => 'code',
+	self::STORE_NO => 'store_no',
+	self::DESCRIPTION => 'description',
+	self::FUNCTION => 'function',
+	self::VALID_ON_MOBILE_POS => 'valid_on_mobile_pos',
+	self::CHANGE_TEND_CODE => 'change_tend_code',
+	self::ABOVE_MIN_CHANGE_TENDER_TYPE => 'above_min_change_tender_type',
+	self::MIN_CHANGE => 'min_change',
+	self::ROUNDING => 'rounding',
+	self::ROUNDING_TO => 'rounding_to',
+	self::RETURNMINUS_ALLOWED => 'returnminus_allowed',
+	self::FOREIGN_CURRENCY => 'foreign_currency',
+	self::UNDERTENDER_ALLOWED => 'undertender_allowed',
+	self::OVERTENDER_ALLOWED => 'overtender_allowed',
+	self::OVERTENDER_MAX_AMT => 'overtender_max_amt',
+	self::COUNTING_REQUIRED => 'counting_required',
+	self::DRAWER_OPENS => 'drawer_opens',
+	self::DATEENTRYCODES => 'dateentrycodes',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -46,7 +72,7 @@ class TenderView extends AbstractModel
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -56,7 +82,7 @@ class TenderView extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -66,17 +92,17 @@ class TenderView extends AbstractModel
         return $this->getData(self::FUNCTION);
     }
 
-    public function setFunction(int $value)
+    public function setFunction(?int $value)
     {
         return $this->setData(self::FUNCTION, $value);
     }
 
-    public function getValidOnMobilePOS(): ?bool
+    public function getValidOnMobilePos(): ?bool
     {
         return $this->getData(self::VALID_ON_MOBILE_POS);
     }
 
-    public function setValidOnMobilePOS(bool $value)
+    public function setValidOnMobilePos(?bool $value)
     {
         return $this->setData(self::VALID_ON_MOBILE_POS, $value);
     }
@@ -86,7 +112,7 @@ class TenderView extends AbstractModel
         return $this->getData(self::CHANGE_TEND_CODE);
     }
 
-    public function setChangeTendCode(string $value)
+    public function setChangeTendCode(?string $value)
     {
         return $this->setData(self::CHANGE_TEND_CODE, $value);
     }
@@ -96,17 +122,17 @@ class TenderView extends AbstractModel
         return $this->getData(self::ABOVE_MIN_CHANGE_TENDER_TYPE);
     }
 
-    public function setAboveMinChangeTenderType(string $value)
+    public function setAboveMinChangeTenderType(?string $value)
     {
         return $this->setData(self::ABOVE_MIN_CHANGE_TENDER_TYPE, $value);
     }
 
-    public function getMinChange(): ?string
+    public function getMinChange(): ?float
     {
         return $this->getData(self::MIN_CHANGE);
     }
 
-    public function setMinChange(string $value)
+    public function setMinChange(?float $value)
     {
         return $this->setData(self::MIN_CHANGE, $value);
     }
@@ -116,17 +142,17 @@ class TenderView extends AbstractModel
         return $this->getData(self::ROUNDING);
     }
 
-    public function setRounding(int $value)
+    public function setRounding(?int $value)
     {
         return $this->setData(self::ROUNDING, $value);
     }
 
-    public function getRoundingTo(): ?string
+    public function getRoundingTo(): ?float
     {
         return $this->getData(self::ROUNDING_TO);
     }
 
-    public function setRoundingTo(string $value)
+    public function setRoundingTo(?float $value)
     {
         return $this->setData(self::ROUNDING_TO, $value);
     }
@@ -136,7 +162,7 @@ class TenderView extends AbstractModel
         return $this->getData(self::RETURNMINUS_ALLOWED);
     }
 
-    public function setReturnMinusAllowed(bool $value)
+    public function setReturnMinusAllowed(?bool $value)
     {
         return $this->setData(self::RETURNMINUS_ALLOWED, $value);
     }
@@ -146,7 +172,7 @@ class TenderView extends AbstractModel
         return $this->getData(self::FOREIGN_CURRENCY);
     }
 
-    public function setForeignCurrency(bool $value)
+    public function setForeignCurrency(?bool $value)
     {
         return $this->setData(self::FOREIGN_CURRENCY, $value);
     }
@@ -156,7 +182,7 @@ class TenderView extends AbstractModel
         return $this->getData(self::UNDERTENDER_ALLOWED);
     }
 
-    public function setUndertenderAllowed(bool $value)
+    public function setUndertenderAllowed(?bool $value)
     {
         return $this->setData(self::UNDERTENDER_ALLOWED, $value);
     }
@@ -166,17 +192,17 @@ class TenderView extends AbstractModel
         return $this->getData(self::OVERTENDER_ALLOWED);
     }
 
-    public function setOvertenderAllowed(bool $value)
+    public function setOvertenderAllowed(?bool $value)
     {
         return $this->setData(self::OVERTENDER_ALLOWED, $value);
     }
 
-    public function getOvertenderMaxAmt(): ?string
+    public function getOvertenderMaxAmt(): ?float
     {
         return $this->getData(self::OVERTENDER_MAX_AMT);
     }
 
-    public function setOvertenderMaxAmt(string $value)
+    public function setOvertenderMaxAmt(?float $value)
     {
         return $this->setData(self::OVERTENDER_MAX_AMT, $value);
     }
@@ -186,7 +212,7 @@ class TenderView extends AbstractModel
         return $this->getData(self::COUNTING_REQUIRED);
     }
 
-    public function setCountingRequired(bool $value)
+    public function setCountingRequired(?bool $value)
     {
         return $this->setData(self::COUNTING_REQUIRED, $value);
     }
@@ -196,17 +222,17 @@ class TenderView extends AbstractModel
         return $this->getData(self::DRAWER_OPENS);
     }
 
-    public function setDrawerOpens(bool $value)
+    public function setDrawerOpens(?bool $value)
     {
         return $this->setData(self::DRAWER_OPENS, $value);
     }
 
-    public function getDateEntryCodes(): ?string
+    public function getDateentrycodes(): ?string
     {
         return $this->getData(self::DATEENTRYCODES);
     }
 
-    public function setDateEntryCodes(string $value)
+    public function setDateentrycodes(?string $value)
     {
         return $this->setData(self::DATEENTRYCODES, $value);
     }

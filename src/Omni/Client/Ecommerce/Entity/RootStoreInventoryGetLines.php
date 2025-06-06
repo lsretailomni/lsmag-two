@@ -18,7 +18,7 @@ class RootStoreInventoryGetLines extends \Magento\Catalog\Model\AbstractModel
      * @param StoreInventoryLinesGet $StoreInventoryLinesGet
      * @return $this
      */
-    public function setStoreInventoryLinesGet($StoreInventoryLinesGet)
+    public function setStoreinventorylinesget($StoreInventoryLinesGet)
     {
         $this->setData(self::STORE_INVENTORY_LINES_GET, $StoreInventoryLinesGet);
         return $this;
@@ -27,7 +27,7 @@ class RootStoreInventoryGetLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return StoreInventoryLinesGet
      */
-    public function getStoreInventoryLinesGet()
+    public function getStoreinventorylinesget()
     {
         return $this->getData(self::STORE_INVENTORY_LINES_GET);
     }

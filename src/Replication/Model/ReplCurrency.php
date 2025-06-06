@@ -8,11 +8,10 @@
 
 namespace Ls\Replication\Model;
 
-use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\DataObject\IdentityInterface;
 use Ls\Replication\Api\Data\ReplCurrencyInterface;
 
-class ReplCurrency extends AbstractModel implements ReplCurrencyInterface, IdentityInterface
+class ReplCurrency extends \Ls\Omni\Client\Ecommerce\Entity\Currency implements ReplCurrencyInterface, IdentityInterface
 {
     public const CACHE_TAG = 'ls_replication_repl_currency';
 
@@ -20,514 +19,520 @@ class ReplCurrency extends AbstractModel implements ReplCurrencyInterface, Ident
 
     protected $_eventPrefix = 'ls_replication_repl_currency';
 
-    /**
-     * @property string $CurrencyCode
-     */
-    protected $CurrencyCode = null;
-
-    /**
-     * @property string $CurrencyPrefix
-     */
-    protected $CurrencyPrefix = null;
-
-    /**
-     * @property string $CurrencySuffix
-     */
-    protected $CurrencySuffix = null;
-
-    /**
-     * @property string $Description
-     */
-    protected $Description = null;
-
-    /**
-     * @property boolean $IsDeleted
-     */
-    protected $IsDeleted = null;
-
-    /**
-     * @property float $RoundOfAmount
-     */
-    protected $RoundOfAmount = null;
-
-    /**
-     * @property float $RoundOfSales
-     */
-    protected $RoundOfSales = null;
-
-    /**
-     * @property int $RoundOfTypeAmount
-     */
-    protected $RoundOfTypeAmount = null;
-
-    /**
-     * @property int $RoundOfTypeSales
-     */
-    protected $RoundOfTypeSales = null;
-
-    /**
-     * @property string $Symbol
-     */
-    protected $Symbol = null;
-
-    /**
-     * @property string $scope
-     */
-    protected $scope = null;
-
-    /**
-     * @property int $scope_id
-     */
-    protected $scope_id = null;
-
-    /**
-     * @property boolean $processed
-     */
-    protected $processed = null;
-
-    /**
-     * @property boolean $is_updated
-     */
-    protected $is_updated = null;
-
-    /**
-     * @property boolean $is_failed
-     */
-    protected $is_failed = null;
-
-    /**
-     * @property string $created_at
-     */
-    protected $created_at = null;
-
-    /**
-     * @property string $updated_at
-     */
-    protected $updated_at = null;
-
-    /**
-     * @property string $identity_value
-     */
-    protected $identity_value = null;
-
-    /**
-     * @property string $checksum
-     */
-    protected $checksum = null;
-
-    /**
-     * @property string $processed_at
-     */
-    protected $processed_at = null;
-
     public function _construct()
     {
-        $this->_init( 'Ls\Replication\Model\ResourceModel\ReplCurrency' );
+        $this->_init('Ls\Replication\Model\ResourceModel\ReplCurrency');
     }
 
     public function getIdentities()
     {
-        return [ self::CACHE_TAG . '_' . $this->getId() ];
+        return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    /**
-     * @param string $CurrencyCode
-     * @return $this
-     */
-    public function setCurrencyCode($CurrencyCode)
+    public function getCode() : ?string
     {
-        $this->setData( 'CurrencyCode', $CurrencyCode );
-        $this->CurrencyCode = $CurrencyCode;
-        $this->setDataChanges( TRUE );
+        return $this->getData(self::getDbColumnsMapping()[self::CODE]);
+    }
+
+    public function setCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
+    }
+
+    public function getLastDateModified() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED]);
+    }
+
+    public function setLastDateModified(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED], $value);
+    }
+
+    public function getLastDateAdjusted() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_ADJUSTED]);
+    }
+
+    public function setLastDateAdjusted(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_ADJUSTED], $value);
+    }
+
+    public function getIsoCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ISO_CODE]);
+    }
+
+    public function setIsoCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ISO_CODE], $value);
+    }
+
+    public function getIsoNumericCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ISO_NUMERIC_CODE]);
+    }
+
+    public function setIsoNumericCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ISO_NUMERIC_CODE], $value);
+    }
+
+    public function getUnrealizedGainsAcc() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNREALIZED_GAINS_ACC]);
+    }
+
+    public function setUnrealizedGainsAcc(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNREALIZED_GAINS_ACC], $value);
+    }
+
+    public function getRealizedGainsAcc() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::REALIZED_GAINS_ACC]);
+    }
+
+    public function setRealizedGainsAcc(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::REALIZED_GAINS_ACC], $value);
+    }
+
+    public function getUnrealizedLossesAcc() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNREALIZED_LOSSES_ACC]);
+    }
+
+    public function setUnrealizedLossesAcc(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNREALIZED_LOSSES_ACC], $value);
+    }
+
+    public function getRealizedLossesAcc() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::REALIZED_LOSSES_ACC]);
+    }
+
+    public function setRealizedLossesAcc(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::REALIZED_LOSSES_ACC], $value);
+    }
+
+    public function getInvoiceRoundingPrecision() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::INVOICE_ROUNDING_PRECISION]);
+    }
+
+    public function setInvoiceRoundingPrecision(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::INVOICE_ROUNDING_PRECISION], $value);
+    }
+
+    public function getInvoiceRoundingType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::INVOICE_ROUNDING_TYPE]);
+    }
+
+    public function setInvoiceRoundingType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::INVOICE_ROUNDING_TYPE], $value);
+    }
+
+    public function getAmountRoundingPrecision() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::AMOUNT_ROUNDING_PRECISION]);
+    }
+
+    public function setAmountRoundingPrecision(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::AMOUNT_ROUNDING_PRECISION], $value);
+    }
+
+    public function getUnitAmountRoundingPrecision() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNITAMOUNT_ROUNDING_PRECISION]);
+    }
+
+    public function setUnitAmountRoundingPrecision(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNITAMOUNT_ROUNDING_PRECISION], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getAmountDecimalPlaces() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::AMOUNT_DECIMAL_PLACES]);
+    }
+
+    public function setAmountDecimalPlaces(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::AMOUNT_DECIMAL_PLACES], $value);
+    }
+
+    public function getUnitAmountDecimalPlaces() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::UNITAMOUNT_DECIMAL_PLACES]);
+    }
+
+    public function setUnitAmountDecimalPlaces(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::UNITAMOUNT_DECIMAL_PLACES], $value);
+    }
+
+    public function getRealizedGLGainsAccount() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::REALIZED_GL_GAINS_ACCOUNT]);
+    }
+
+    public function setRealizedGLGainsAccount(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::REALIZED_GL_GAINS_ACCOUNT], $value);
+    }
+
+    public function getRealizedGLLossesAccount() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::REALIZED_GL_LOSSES_ACCOUNT]);
+    }
+
+    public function setRealizedGLLossesAccount(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::REALIZED_GL_LOSSES_ACCOUNT], $value);
+    }
+
+    public function getApplnRoundingPrecision() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::APPLN_ROUNDING_PRECISION]);
+    }
+
+    public function setApplnRoundingPrecision(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::APPLN_ROUNDING_PRECISION], $value);
+    }
+
+    public function getEmuCurrency() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EMU_CURRENCY]);
+    }
+
+    public function setEmuCurrency(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EMU_CURRENCY], $value);
+    }
+
+    public function getCurrencyFactor() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_FACTOR]);
+    }
+
+    public function setCurrencyFactor(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_FACTOR], $value);
+    }
+
+    public function getResidualGainsAccount() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RESIDUAL_GAINS_ACCOUNT]);
+    }
+
+    public function setResidualGainsAccount(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RESIDUAL_GAINS_ACCOUNT], $value);
+    }
+
+    public function getResidualLossesAccount() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::RESIDUAL_LOSSES_ACCOUNT]);
+    }
+
+    public function setResidualLossesAccount(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::RESIDUAL_LOSSES_ACCOUNT], $value);
+    }
+
+    public function getConvLcyRndgDebitAcc() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CONV_LCY_RNDG_DEBIT_ACC]);
+    }
+
+    public function setConvLcyRndgDebitAcc(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CONV_LCY_RNDG_DEBIT_ACC], $value);
+    }
+
+    public function getConvLcyRndgCreditAcc() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CONV_LCY_RNDG_CREDIT_ACC]);
+    }
+
+    public function setConvLcyRndgCreditAcc(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CONV_LCY_RNDG_CREDIT_ACC], $value);
+    }
+
+    public function getMaxVatDifferenceAllowed() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MAX_VAT_DIFFERENCE_ALLOWED]);
+    }
+
+    public function setMaxVatDifferenceAllowed(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MAX_VAT_DIFFERENCE_ALLOWED], $value);
+    }
+
+    public function getVatRoundingType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VAT_ROUNDING_TYPE]);
+    }
+
+    public function setVatRoundingType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VAT_ROUNDING_TYPE], $value);
+    }
+
+    public function getPaymentTolerance() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_TOLERANCE]);
+    }
+
+    public function setPaymentTolerance(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_TOLERANCE], $value);
+    }
+
+    public function getMaxPaymentToleranceAmount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MAX_PAYMENT_TOLERANCE_AMOUNT]);
+    }
+
+    public function setMaxPaymentToleranceAmount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MAX_PAYMENT_TOLERANCE_AMOUNT], $value);
+    }
+
+    public function getSymbol() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYMBOL]);
+    }
+
+    public function setSymbol(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYMBOL], $value);
+    }
+
+    public function getLastModifiedDateTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME]);
+    }
+
+    public function setLastModifiedDateTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME], $value);
+    }
+
+    public function getLscLowestAcceptDenomAmt() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_LOWEST_ACCEPT_DENOM_AMT]);
+    }
+
+    public function setLscLowestAcceptDenomAmt(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_LOWEST_ACCEPT_DENOM_AMT], $value);
+    }
+
+    public function getLscDenominationRoundingType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_DENOMINATION_ROUNDING_TYPE]);
+    }
+
+    public function setLscDenominationRoundingType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_DENOMINATION_ROUNDING_TYPE], $value);
+    }
+
+    public function getLscPosCurrencySymbol() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_CURRENCY_SYMBOL]);
+    }
+
+    public function setLscPosCurrencySymbol(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_POS_CURRENCY_SYMBOL], $value);
+    }
+
+    public function getLscPlacementOfCurrSymbol() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_PLACEMENT_OF_CURR_SYMBOL]);
+    }
+
+    public function setLscPlacementOfCurrSymbol(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_PLACEMENT_OF_CURR_SYMBOL], $value);
+    }
+
+    public function getLscFiscalPrinterId() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_FISCAL_PRINTER_ID]);
+    }
+
+    public function setLscFiscalPrinterId(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_FISCAL_PRINTER_ID], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
+    public function setProcessed(?bool $processed)
+    {
+        $this->setData('processed', $processed);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCurrencyCode()
+    public function getProcessed() : ?bool
     {
-        return $this->getData( 'CurrencyCode' );
+        return $this->getData('processed');
     }
 
-    /**
-     * @param string $CurrencyPrefix
-     * @return $this
-     */
-    public function setCurrencyPrefix($CurrencyPrefix)
+    public function setIsUpdated(?bool $is_updated)
     {
-        $this->setData( 'CurrencyPrefix', $CurrencyPrefix );
-        $this->CurrencyPrefix = $CurrencyPrefix;
-        $this->setDataChanges( TRUE );
+        $this->setData('is_updated', $is_updated);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCurrencyPrefix()
+    public function getIsUpdated() : ?bool
     {
-        return $this->getData( 'CurrencyPrefix' );
+        return $this->getData('is_updated');
     }
 
-    /**
-     * @param string $CurrencySuffix
-     * @return $this
-     */
-    public function setCurrencySuffix($CurrencySuffix)
+    public function setIsFailed(?bool $is_failed)
     {
-        $this->setData( 'CurrencySuffix', $CurrencySuffix );
-        $this->CurrencySuffix = $CurrencySuffix;
-        $this->setDataChanges( TRUE );
+        $this->setData('is_failed', $is_failed);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCurrencySuffix()
+    public function getIsFailed() : ?bool
     {
-        return $this->getData( 'CurrencySuffix' );
+        return $this->getData('is_failed');
     }
 
-    /**
-     * @param string $Description
-     * @return $this
-     */
-    public function setDescription($Description)
+    public function setCreatedAt(?string $created_at)
     {
-        $this->setData( 'Description', $Description );
-        $this->Description = $Description;
-        $this->setDataChanges( TRUE );
+        $this->setData('created_at', $created_at);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getCreatedAt() : ?string
     {
-        return $this->getData( 'Description' );
+        return $this->getData('created_at');
     }
 
-    /**
-     * @param boolean $IsDeleted
-     * @return $this
-     */
-    public function setIsDeleted($IsDeleted)
+    public function setUpdatedAt(?string $updated_at)
     {
-        $this->setData( 'IsDeleted', $IsDeleted );
-        $this->IsDeleted = $IsDeleted;
-        $this->setDataChanges( TRUE );
+        $this->setData('updated_at', $updated_at);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getIsDeleted()
+    public function getUpdatedAt() : ?string
     {
-        return $this->getData( 'IsDeleted' );
+        return $this->getData('updated_at');
     }
 
-    /**
-     * @param float $RoundOfAmount
-     * @return $this
-     */
-    public function setRoundOfAmount($RoundOfAmount)
+    public function setIdentityValue(?string $identity_value)
     {
-        $this->setData( 'RoundOfAmount', $RoundOfAmount );
-        $this->RoundOfAmount = $RoundOfAmount;
-        $this->setDataChanges( TRUE );
+        $this->setData('identity_value', $identity_value);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return float
-     */
-    public function getRoundOfAmount()
+    public function getIdentityValue() : ?string
     {
-        return $this->getData( 'RoundOfAmount' );
+        return $this->getData('identity_value');
     }
 
-    /**
-     * @param float $RoundOfSales
-     * @return $this
-     */
-    public function setRoundOfSales($RoundOfSales)
+    public function setChecksum(?string $checksum)
     {
-        $this->setData( 'RoundOfSales', $RoundOfSales );
-        $this->RoundOfSales = $RoundOfSales;
-        $this->setDataChanges( TRUE );
+        $this->setData('checksum', $checksum);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return float
-     */
-    public function getRoundOfSales()
+    public function getChecksum() : ?string
     {
-        return $this->getData( 'RoundOfSales' );
+        return $this->getData('checksum');
     }
 
-    /**
-     * @param int $RoundOfTypeAmount
-     * @return $this
-     */
-    public function setRoundOfTypeAmount($RoundOfTypeAmount)
+    public function setProcessedAt(?string $processed_at)
     {
-        $this->setData( 'RoundOfTypeAmount', $RoundOfTypeAmount );
-        $this->RoundOfTypeAmount = $RoundOfTypeAmount;
-        $this->setDataChanges( TRUE );
+        $this->setData('processed_at', $processed_at);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getRoundOfTypeAmount()
+    public function getProcessedAt() : ?string
     {
-        return $this->getData( 'RoundOfTypeAmount' );
-    }
-
-    /**
-     * @param int $RoundOfTypeSales
-     * @return $this
-     */
-    public function setRoundOfTypeSales($RoundOfTypeSales)
-    {
-        $this->setData( 'RoundOfTypeSales', $RoundOfTypeSales );
-        $this->RoundOfTypeSales = $RoundOfTypeSales;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRoundOfTypeSales()
-    {
-        return $this->getData( 'RoundOfTypeSales' );
-    }
-
-    /**
-     * @param string $Symbol
-     * @return $this
-     */
-    public function setSymbol($Symbol)
-    {
-        $this->setData( 'Symbol', $Symbol );
-        $this->Symbol = $Symbol;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSymbol()
-    {
-        return $this->getData( 'Symbol' );
-    }
-
-    /**
-     * @param string $scope
-     * @return $this
-     */
-    public function setScope($scope)
-    {
-        $this->setData( 'scope', $scope );
-        $this->scope = $scope;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getScope()
-    {
-        return $this->getData( 'scope' );
-    }
-
-    /**
-     * @param int $scope_id
-     * @return $this
-     */
-    public function setScopeId($scope_id)
-    {
-        $this->setData( 'scope_id', $scope_id );
-        $this->scope_id = $scope_id;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getScopeId()
-    {
-        return $this->getData( 'scope_id' );
-    }
-
-    /**
-     * @param boolean $processed
-     * @return $this
-     */
-    public function setProcessed($processed)
-    {
-        $this->setData( 'processed', $processed );
-        $this->processed = $processed;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getProcessed()
-    {
-        return $this->getData( 'processed' );
-    }
-
-    /**
-     * @param boolean $is_updated
-     * @return $this
-     */
-    public function setIsUpdated($is_updated)
-    {
-        $this->setData( 'is_updated', $is_updated );
-        $this->is_updated = $is_updated;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsUpdated()
-    {
-        return $this->getData( 'is_updated' );
-    }
-
-    /**
-     * @param boolean $is_failed
-     * @return $this
-     */
-    public function setIsFailed($is_failed)
-    {
-        $this->setData( 'is_failed', $is_failed );
-        $this->is_failed = $is_failed;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsFailed()
-    {
-        return $this->getData( 'is_failed' );
-    }
-
-    /**
-     * @param string $created_at
-     * @return $this
-     */
-    public function setCreatedAt($created_at)
-    {
-        $this->setData( 'created_at', $created_at );
-        $this->created_at = $created_at;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCreatedAt()
-    {
-        return $this->getData( 'created_at' );
-    }
-
-    /**
-     * @param string $updated_at
-     * @return $this
-     */
-    public function setUpdatedAt($updated_at)
-    {
-        $this->setData( 'updated_at', $updated_at );
-        $this->updated_at = $updated_at;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUpdatedAt()
-    {
-        return $this->getData( 'updated_at' );
-    }
-
-    /**
-     * @param string $identity_value
-     * @return $this
-     */
-    public function setIdentityValue($identity_value)
-    {
-        $this->setData( 'identity_value', $identity_value );
-        $this->identity_value = $identity_value;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIdentityValue()
-    {
-        return $this->getData( 'identity_value' );
-    }
-
-    /**
-     * @param string $checksum
-     * @return $this
-     */
-    public function setChecksum($checksum)
-    {
-        $this->setData( 'checksum', $checksum );
-        $this->checksum = $checksum;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getChecksum()
-    {
-        return $this->getData( 'checksum' );
-    }
-
-    /**
-     * @param string $processed_at
-     * @return $this
-     */
-    public function setProcessedAt($processed_at)
-    {
-        $this->setData( 'processed_at', $processed_at );
-        $this->processed_at = $processed_at;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getProcessedAt()
-    {
-        return $this->getData( 'processed_at' );
+        return $this->getData('processed_at');
     }
 }
 

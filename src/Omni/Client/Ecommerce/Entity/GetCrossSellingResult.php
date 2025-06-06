@@ -18,40 +18,40 @@ class GetCrossSellingResult extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_CROSS_SELLING_X_M_L = 'getCrossSellingXML';
+    public const GET_CROSS_SELLING_XML = 'getCrossSellingXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetCrossSellingResult extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootGetCrossSelling $getCrossSellingXML
      * @return $this
      */
-    public function setGetCrossSellingXML($getCrossSellingXML)
+    public function setGetcrosssellingxml($getCrossSellingXML)
     {
-        $this->setData(self::GET_CROSS_SELLING_X_M_L, $getCrossSellingXML);
+        $this->setData(self::GET_CROSS_SELLING_XML, $getCrossSellingXML);
         return $this;
     }
 
     /**
      * @return RootGetCrossSelling
      */
-    public function getGetCrossSellingXML()
+    public function getGetcrosssellingxml()
     {
-        return $this->getData(self::GET_CROSS_SELLING_X_M_L);
+        return $this->getData(self::GET_CROSS_SELLING_XML);
     }
 
     /**

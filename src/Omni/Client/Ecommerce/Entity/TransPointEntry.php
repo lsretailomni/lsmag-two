@@ -18,7 +18,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const DATE = 'Date';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const CARD_NO = 'CardNo';
 
@@ -39,127 +39,127 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param float $Points
+     * @param ?float $Points
      * @return $this
      */
-    public function setPoints($Points)
+    public function setPoints(?float $Points)
     {
         $this->setData(self::POINTS, $Points);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPoints()
+    public function getPoints() : ?float
     {
         return $this->getData(self::POINTS);
     }
 
     /**
-     * @param date $Date
+     * @param ?string $Date
      * @return $this
      */
-    public function setDate($Date)
+    public function setDate(?string $Date)
     {
         $this->setData(self::DATE, $Date);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDate()
+    public function getDate() : ?string
     {
         return $this->getData(self::DATE);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
-     * @param string $CardNo
+     * @param ?string $CardNo
      * @return $this
      */
-    public function setCardNo($CardNo)
+    public function setCardno(?string $CardNo)
     {
         $this->setData(self::CARD_NO, $CardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNo()
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
 
     /**
-     * @param string $EntryType
+     * @param ?string $EntryType
      * @return $this
      */
-    public function setEntryType($EntryType)
+    public function setEntrytype(?string $EntryType)
     {
         $this->setData(self::ENTRY_TYPE, $EntryType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEntryType()
+    public function getEntrytype() : ?string
     {
         return $this->getData(self::ENTRY_TYPE);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -168,7 +168,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -177,79 +177,79 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
 
     /**
-     * @param string $PointType
+     * @param ?string $PointType
      * @return $this
      */
-    public function setPointType($PointType)
+    public function setPointtype(?string $PointType)
     {
         $this->setData(self::POINT_TYPE, $PointType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPointType()
+    public function getPointtype() : ?string
     {
         return $this->getData(self::POINT_TYPE);
     }
 
     /**
-     * @param float $ValuePerPoint
+     * @param ?float $ValuePerPoint
      * @return $this
      */
-    public function setValuePerPoint($ValuePerPoint)
+    public function setValueperpoint(?float $ValuePerPoint)
     {
         $this->setData(self::VALUE_PER_POINT, $ValuePerPoint);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getValuePerPoint()
+    public function getValueperpoint() : ?float
     {
         return $this->getData(self::VALUE_PER_POINT);
     }
 
     /**
-     * @param float $DiscBenefitPoints
+     * @param ?float $DiscBenefitPoints
      * @return $this
      */
-    public function setDiscBenefitPoints($DiscBenefitPoints)
+    public function setDiscbenefitpoints(?float $DiscBenefitPoints)
     {
         $this->setData(self::DISC_BENEFIT_POINTS, $DiscBenefitPoints);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscBenefitPoints()
+    public function getDiscbenefitpoints() : ?float
     {
         return $this->getData(self::DISC_BENEFIT_POINTS);
     }
 
     /**
-     * @param float $TenderPoints
+     * @param ?float $TenderPoints
      * @return $this
      */
-    public function setTenderPoints($TenderPoints)
+    public function setTenderpoints(?float $TenderPoints)
     {
         $this->setData(self::TENDER_POINTS, $TenderPoints);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTenderPoints()
+    public function getTenderpoints() : ?float
     {
         return $this->getData(self::TENDER_POINTS);
     }
@@ -258,7 +258,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -267,7 +267,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }

@@ -22,116 +22,116 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
 
     public const APPLICATION_BUILD = 'applicationBuild';
 
-    public const L_S_RETAIL_VERSION = 'lSRetailVersion';
+    public const LSRETAIL_VERSION = 'lSRetailVersion';
 
-    public const L_S_RETAIL_COPYRIGHT = 'lSRetailCopyright';
+    public const LSRETAIL_COPYRIGHT = 'lSRetailCopyright';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $applicationVersion
+     * @param ?string $applicationVersion
      * @return $this
      */
-    public function setApplicationVersion($applicationVersion)
+    public function setApplicationversion(?string $applicationVersion)
     {
         $this->setData(self::APPLICATION_VERSION, $applicationVersion);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getApplicationVersion()
+    public function getApplicationversion() : ?string
     {
         return $this->getData(self::APPLICATION_VERSION);
     }
 
     /**
-     * @param string $applicationBuild
+     * @param ?string $applicationBuild
      * @return $this
      */
-    public function setApplicationBuild($applicationBuild)
+    public function setApplicationbuild(?string $applicationBuild)
     {
         $this->setData(self::APPLICATION_BUILD, $applicationBuild);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getApplicationBuild()
+    public function getApplicationbuild() : ?string
     {
         return $this->getData(self::APPLICATION_BUILD);
     }
 
     /**
-     * @param string $lSRetailVersion
+     * @param ?string $lSRetailVersion
      * @return $this
      */
-    public function setLSRetailVersion($lSRetailVersion)
+    public function setLsretailversion(?string $lSRetailVersion)
     {
-        $this->setData(self::L_S_RETAIL_VERSION, $lSRetailVersion);
+        $this->setData(self::LSRETAIL_VERSION, $lSRetailVersion);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLSRetailVersion()
+    public function getLsretailversion() : ?string
     {
-        return $this->getData(self::L_S_RETAIL_VERSION);
+        return $this->getData(self::LSRETAIL_VERSION);
     }
 
     /**
-     * @param string $lSRetailCopyright
+     * @param ?string $lSRetailCopyright
      * @return $this
      */
-    public function setLSRetailCopyright($lSRetailCopyright)
+    public function setLsretailcopyright(?string $lSRetailCopyright)
     {
-        $this->setData(self::L_S_RETAIL_COPYRIGHT, $lSRetailCopyright);
+        $this->setData(self::LSRETAIL_COPYRIGHT, $lSRetailCopyright);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLSRetailCopyright()
+    public function getLsretailcopyright() : ?string
     {
-        return $this->getData(self::L_S_RETAIL_COPYRIGHT);
+        return $this->getData(self::LSRETAIL_COPYRIGHT);
     }
 }
 

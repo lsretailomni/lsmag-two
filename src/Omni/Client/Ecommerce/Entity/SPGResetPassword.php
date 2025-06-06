@@ -25,91 +25,91 @@ class SPGResetPassword extends \Magento\Catalog\Model\AbstractModel implements R
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $emailAddress
+     * @param ?string $emailAddress
      * @return $this
      */
-    public function setEmailAddress($emailAddress)
+    public function setEmailaddress(?string $emailAddress)
     {
         $this->setData(self::EMAIL_ADDRESS, $emailAddress);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEmailAddress()
+    public function getEmailaddress() : ?string
     {
         return $this->getData(self::EMAIL_ADDRESS);
     }
 
     /**
-     * @param string $resetCode
+     * @param ?string $resetCode
      * @return $this
      */
-    public function setResetCode($resetCode)
+    public function setResetcode(?string $resetCode)
     {
         $this->setData(self::RESET_CODE, $resetCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResetCode()
+    public function getResetcode() : ?string
     {
         return $this->getData(self::RESET_CODE);
     }
 
     /**
-     * @param string $newPassword
+     * @param ?string $newPassword
      * @return $this
      */
-    public function setNewPassword($newPassword)
+    public function setNewpassword(?string $newPassword)
     {
         $this->setData(self::NEW_PASSWORD, $newPassword);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNewPassword()
+    public function getNewpassword() : ?string
     {
         return $this->getData(self::NEW_PASSWORD);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

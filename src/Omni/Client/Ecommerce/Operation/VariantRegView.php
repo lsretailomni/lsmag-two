@@ -55,12 +55,22 @@ class VariantRegView
             $recRef = [];
         }
 
+        $deletedRows = [];
+        if (isset($data['DataSet']['DataSetDel']['DynDataSet']['DataSetRows'])) {
+            $deletedRows = $data['DataSet']['DataSetDel']['DynDataSet']['DataSetRows'];
+        }
+
         if (isset($recRef['RecordFields'])) {
             $fieldsDefinition = $recRef['RecordFields'];
         } elseif (isset($recRef['DataSetFields'])) {
             $fieldsDefinition = $recRef['DataSetFields'];
         } else {
             $fieldsDefinition = [];
+        }
+
+        $deletedFieldsDefinition = [];
+        if (isset($data['DataSet']['DataSetDel']['DynDataSet']['DataSetFields'])) {
+            $deletedFieldsDefinition = $data['DataSet']['DataSetDel']['DynDataSet']['DataSetFields'];
         }
 
         if (isset($recRef['Records'])) {
@@ -75,6 +85,11 @@ class VariantRegView
         foreach ($fieldsDefinition as $field) {
             $fields[$field['FieldIndex']] = $field['FieldName'];
         }
+
+        foreach ($deletedFieldsDefinition as $field) {
+            $deletedFields[$field['FieldIndex']] = $field['FieldName'];
+        }
+
         $results = [];
         if (!empty($fields)) {
             foreach ($rows as $row) {
@@ -83,7 +98,33 @@ class VariantRegView
                     \Ls\Omni\Client\Ecommerce\Entity\VariantRegView::class
                 );
                 foreach ($values as $value) {
-                    $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
+                    $fieldName = $fields[$value['FieldIndex']];
+                    if (strtolower($fieldName) == 'id') {
+                        $fieldName = 'Nav Id';
+                    }
+                    if ($entry->getData($fieldName) === null) {
+                        $entry->setData($fieldName, $value['FieldValue']);
+                    }
+                }
+                $results[] = $entry;
+            }
+        }
+
+        if (!empty($deletedFields)) {
+            foreach ($deletedRows as $row) {
+                $values = $row['Fields'] ?? [];
+                $entry = $this->createInstance(
+                    \Ls\Omni\Client\Ecommerce\Entity\VariantRegView::class
+                );
+                $entry->setData('is_deleted', true);
+                foreach ($values as $value) {
+                    $fieldName = $deletedFields[$value['FieldIndex']];
+                    if (strtolower($fieldName) == 'id') {
+                        $fieldName = 'Nav Id';
+                    }
+                    if ($entry->getData($fieldName) === null) {
+                        $entry->setData($fieldName, $value['FieldValue']);
+                    }
                 }
                 $results[] = $entry;
             }

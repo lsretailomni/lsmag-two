@@ -26,143 +26,165 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
     public const UNIT_OF_MEASURE_CODE = 'UnitofMeasureCode';
     public const VARIANT_CODE = 'VariantCode';
 
+    public static array $dbColumnsMapping = [
+	self::DESCRIPTION => 'description',
+	self::DOCUMENT_NO => 'document_no',
+	self::LINE_NO => 'line_no',
+	self::LSC_MEMBER_SALES_BUFFER => 'lsc_member_sales_buffer',
+	self::LSC_MEMBER_SALES_DATA_ENTRY => 'lsc_member_sales_data_entry',
+	self::LSC_MEMBER_SALES_DOC_DISC_LINE => 'lsc_member_sales_doc_disc_line',
+	self::LSC_MEMBER_SALES_DOC_LINE => 'lsc_member_sales_doc_line',
+	self::NO => 'no',
+	self::QUANTITY => 'quantity',
+	self::SALES_SHIPMENT_HEADER => 'sales_shipment_header',
+	self::SALES_SHIPMENT_LINE => 'sales_shipment_line',
+	self::TYPE => 'type',
+	self::UNIT_OF_MEASURE_CODE => 'unit_of_measure_code',
+	self::VARIANT_CODE => 'variant_code',
+    ];
 
-    public function getDescription(): ?Text
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
+
+    public function getDescription()
     {
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(Text $value)
+    public function setDescription(?Text $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
 
-    public function getDocumentNo(): ?Code
+    public function getDocumentNo()
     {
         return $this->getData(self::DOCUMENT_NO);
     }
 
-    public function setDocumentNo(Code $value)
+    public function setDocumentNo(?Code $value)
     {
         return $this->setData(self::DOCUMENT_NO, $value);
     }
 
-    public function getLineNo(): ?Integer
+    public function getLineNo()
     {
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(Integer $value)
+    public function setLineNo(?Integer $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
 
-    public function getLSCMemberSalesBuffer(): ?LSCMemberSalesBuffer
+    public function getLscMemberSalesBuffer()
     {
         return $this->getData(self::LSC_MEMBER_SALES_BUFFER);
     }
 
-    public function setLSCMemberSalesBuffer(LSCMemberSalesBuffer $value)
+    public function setLscMemberSalesBuffer(?LSCMemberSalesBuffer $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
     }
 
-    public function getLSCMemberSalesDataEntry(): ?LSCMemberSalesDataEntry
+    public function getLscMemberSalesDataEntry()
     {
         return $this->getData(self::LSC_MEMBER_SALES_DATA_ENTRY);
     }
 
-    public function setLSCMemberSalesDataEntry(LSCMemberSalesDataEntry $value)
+    public function setLscMemberSalesDataEntry(?LSCMemberSalesDataEntry $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_DATA_ENTRY, $value);
     }
 
-    public function getLSCMemberSalesDocDiscLine(): ?LSCMemberSalesDocDiscLine
+    public function getLscMemberSalesDocDiscLine()
     {
         return $this->getData(self::LSC_MEMBER_SALES_DOC_DISC_LINE);
     }
 
-    public function setLSCMemberSalesDocDiscLine(LSCMemberSalesDocDiscLine $value)
+    public function setLscMemberSalesDocDiscLine(?LSCMemberSalesDocDiscLine $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_DOC_DISC_LINE, $value);
     }
 
-    public function getLSCMemberSalesDocLine(): ?array
+    public function getLscMemberSalesDocLine()
     {
         return $this->getData(self::LSC_MEMBER_SALES_DOC_LINE);
     }
 
-    public function setLSCMemberSalesDocLine(array $value)
+    public function setLscMemberSalesDocLine(?array $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
     }
 
-    public function getNo(): ?Code
+    public function getNo()
     {
         return $this->getData(self::NO);
     }
 
-    public function setNo(Code $value)
+    public function setNo(?Code $value)
     {
         return $this->setData(self::NO, $value);
     }
 
-    public function getQuantity(): ?Decimal
+    public function getQuantity()
     {
         return $this->getData(self::QUANTITY);
     }
 
-    public function setQuantity(Decimal $value)
+    public function setQuantity(?Decimal $value)
     {
         return $this->setData(self::QUANTITY, $value);
     }
 
-    public function getSalesShipmentHeader(): ?SalesShipmentHeader
+    public function getSalesShipmentHeader()
     {
         return $this->getData(self::SALES_SHIPMENT_HEADER);
     }
 
-    public function setSalesShipmentHeader(SalesShipmentHeader $value)
+    public function setSalesShipmentHeader(?SalesShipmentHeader $value)
     {
         return $this->setData(self::SALES_SHIPMENT_HEADER, $value);
     }
 
-    public function getSalesShipmentLine(): ?SalesShipmentLine
+    public function getSalesShipmentLine()
     {
         return $this->getData(self::SALES_SHIPMENT_LINE);
     }
 
-    public function setSalesShipmentLine(SalesShipmentLine $value)
+    public function setSalesShipmentLine(?SalesShipmentLine $value)
     {
         return $this->setData(self::SALES_SHIPMENT_LINE, $value);
     }
 
-    public function getType(): ?Option
+    public function getType()
     {
         return $this->getData(self::TYPE);
     }
 
-    public function setType(Option $value)
+    public function setType(?Option $value)
     {
         return $this->setData(self::TYPE, $value);
     }
 
-    public function getUnitOfMeasureCode(): ?Code
+    public function getUnitOfMeasureCode()
     {
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
 
-    public function setUnitOfMeasureCode(Code $value)
+    public function setUnitOfMeasureCode(?Code $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
 
-    public function getVariantCode(): ?Code
+    public function getVariantCode()
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(Code $value)
+    public function setVariantCode(?Code $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }

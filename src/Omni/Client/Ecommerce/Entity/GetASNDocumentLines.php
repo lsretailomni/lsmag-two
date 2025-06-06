@@ -14,82 +14,82 @@ class GetASNDocumentLines extends \Magento\Catalog\Model\AbstractModel implement
 {
     public const CLASS_NAME = 'GetASNDocumentLines';
 
-    public const A_S_N_DOCUMENT_NOP = 'aSNDocumentNo_p';
+    public const ASNDOCUMENT_NO_P = 'aSNDocumentNo_p';
 
-    public const GET_A_S_N_DOCUMENT_LINES_X_M_L = 'getASNDocumentLinesXML';
+    public const GET_ASNDOCUMENT_LINES_XML = 'getASNDocumentLinesXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $aSNDocumentNop
+     * @param ?string $aSNDocumentNop
      * @return $this
      */
-    public function setASNDocumentNoP($aSNDocumentNop)
+    public function setAsndocumentnoP(?string $aSNDocumentNop)
     {
-        $this->setData(self::A_S_N_DOCUMENT_NOP, $aSNDocumentNop);
+        $this->setData(self::ASNDOCUMENT_NO_P, $aSNDocumentNop);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getASNDocumentNoP()
+    public function getAsndocumentnoP() : ?string
     {
-        return $this->getData(self::A_S_N_DOCUMENT_NOP);
+        return $this->getData(self::ASNDOCUMENT_NO_P);
     }
 
     /**
      * @param RootGetDocumentLines $getASNDocumentLinesXML
      * @return $this
      */
-    public function setGetASNDocumentLinesXML($getASNDocumentLinesXML)
+    public function setGetasndocumentlinesxml($getASNDocumentLinesXML)
     {
-        $this->setData(self::GET_A_S_N_DOCUMENT_LINES_X_M_L, $getASNDocumentLinesXML);
+        $this->setData(self::GET_ASNDOCUMENT_LINES_XML, $getASNDocumentLinesXML);
         return $this;
     }
 
     /**
      * @return RootGetDocumentLines
      */
-    public function getGetASNDocumentLinesXML()
+    public function getGetasndocumentlinesxml()
     {
-        return $this->getData(self::GET_A_S_N_DOCUMENT_LINES_X_M_L);
+        return $this->getData(self::GET_ASNDOCUMENT_LINES_XML);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

@@ -20,7 +20,7 @@ class RootGetHierarchyNodeOut extends \Magento\Catalog\Model\AbstractModel
      * @param HierarchyNodeLink $HierarchyNodeLink
      * @return $this
      */
-    public function setHierarchyNodeLink($HierarchyNodeLink)
+    public function setHierarchynodelink($HierarchyNodeLink)
     {
         $this->setData(self::HIERARCHY_NODE_LINK, $HierarchyNodeLink);
         return $this;
@@ -29,7 +29,7 @@ class RootGetHierarchyNodeOut extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HierarchyNodeLink
      */
-    public function getHierarchyNodeLink()
+    public function getHierarchynodelink()
     {
         return $this->getData(self::HIERARCHY_NODE_LINK);
     }
@@ -38,7 +38,7 @@ class RootGetHierarchyNodeOut extends \Magento\Catalog\Model\AbstractModel
      * @param HierarchyNodeLinkImage $HierarchyNodeLinkImage
      * @return $this
      */
-    public function setHierarchyNodeLinkImage($HierarchyNodeLinkImage)
+    public function setHierarchynodelinkimage($HierarchyNodeLinkImage)
     {
         $this->setData(self::HIERARCHY_NODE_LINK_IMAGE, $HierarchyNodeLinkImage);
         return $this;
@@ -47,7 +47,7 @@ class RootGetHierarchyNodeOut extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HierarchyNodeLinkImage
      */
-    public function getHierarchyNodeLinkImage()
+    public function getHierarchynodelinkimage()
     {
         return $this->getData(self::HIERARCHY_NODE_LINK_IMAGE);
     }

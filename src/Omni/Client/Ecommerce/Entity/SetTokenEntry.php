@@ -14,11 +14,11 @@ class SetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
 {
     public const CLASS_NAME = 'SetTokenEntry';
 
-    public const CONTRACT_RECORD_IDP = 'contractRecordId_p';
+    public const CONTRACT_RECORD_ID_P = 'contractRecordId_p';
 
     public const MEMBER_CARD_NO = 'memberCardNo';
 
-    public const SET_TOKEN_ENTRY_X_M_L = 'setTokenEntryXML';
+    public const SET_TOKEN_ENTRY_XML = 'setTokenEntryXML';
 
     public const RESULT = 'result';
 
@@ -27,37 +27,37 @@ class SetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $contractRecordIdp
+     * @param ?string $contractRecordIdp
      * @return $this
      */
-    public function setContractRecordIdP($contractRecordIdp)
+    public function setContractrecordidP(?string $contractRecordIdp)
     {
-        $this->setData(self::CONTRACT_RECORD_IDP, $contractRecordIdp);
+        $this->setData(self::CONTRACT_RECORD_ID_P, $contractRecordIdp);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContractRecordIdP()
+    public function getContractrecordidP() : ?string
     {
-        return $this->getData(self::CONTRACT_RECORD_IDP);
+        return $this->getData(self::CONTRACT_RECORD_ID_P);
     }
 
     /**
-     * @param string $memberCardNo
+     * @param ?string $memberCardNo
      * @return $this
      */
-    public function setMemberCardNo($memberCardNo)
+    public function setMembercardno(?string $memberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $memberCardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberCardNo()
+    public function getMembercardno() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -66,70 +66,70 @@ class SetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param RootSetTokenEntry $setTokenEntryXML
      * @return $this
      */
-    public function setSetTokenEntryXML($setTokenEntryXML)
+    public function setSettokenentryxml($setTokenEntryXML)
     {
-        $this->setData(self::SET_TOKEN_ENTRY_X_M_L, $setTokenEntryXML);
+        $this->setData(self::SET_TOKEN_ENTRY_XML, $setTokenEntryXML);
         return $this;
     }
 
     /**
      * @return RootSetTokenEntry
      */
-    public function getSetTokenEntryXML()
+    public function getSettokenentryxml()
     {
-        return $this->getData(self::SET_TOKEN_ENTRY_X_M_L);
+        return $this->getData(self::SET_TOKEN_ENTRY_XML);
     }
 
     /**
-     * @param boolean $result
+     * @param ?bool $result
      * @return $this
      */
-    public function setResult($result)
+    public function setResult(?bool $result)
     {
         $this->setData(self::RESULT, $result);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getResult()
+    public function getResult() : ?bool
     {
         return $this->getData(self::RESULT);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

@@ -8,11 +8,10 @@
 
 namespace Ls\Replication\Model;
 
-use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\DataObject\IdentityInterface;
 use Ls\Replication\Api\Data\ReplUnitOfMeasureInterface;
 
-class ReplUnitOfMeasure extends AbstractModel implements ReplUnitOfMeasureInterface, IdentityInterface
+class ReplUnitOfMeasure extends \Ls\Omni\Client\Ecommerce\Entity\UnitofMeasure implements ReplUnitOfMeasureInterface, IdentityInterface
 {
     public const CACHE_TAG = 'ls_replication_repl_unit_of_measure';
 
@@ -20,389 +19,230 @@ class ReplUnitOfMeasure extends AbstractModel implements ReplUnitOfMeasureInterf
 
     protected $_eventPrefix = 'ls_replication_repl_unit_of_measure';
 
-    /**
-     * @property string $Description
-     */
-    protected $Description = null;
-
-    /**
-     * @property string $nav_id
-     */
-    protected $nav_id = null;
-
-    /**
-     * @property boolean $IsDeleted
-     */
-    protected $IsDeleted = null;
-
-    /**
-     * @property string $ShortDescription
-     */
-    protected $ShortDescription = null;
-
-    /**
-     * @property int $UnitDecimals
-     */
-    protected $UnitDecimals = null;
-
-    /**
-     * @property string $scope
-     */
-    protected $scope = null;
-
-    /**
-     * @property int $scope_id
-     */
-    protected $scope_id = null;
-
-    /**
-     * @property boolean $processed
-     */
-    protected $processed = null;
-
-    /**
-     * @property boolean $is_updated
-     */
-    protected $is_updated = null;
-
-    /**
-     * @property boolean $is_failed
-     */
-    protected $is_failed = null;
-
-    /**
-     * @property string $created_at
-     */
-    protected $created_at = null;
-
-    /**
-     * @property string $updated_at
-     */
-    protected $updated_at = null;
-
-    /**
-     * @property string $identity_value
-     */
-    protected $identity_value = null;
-
-    /**
-     * @property string $checksum
-     */
-    protected $checksum = null;
-
-    /**
-     * @property string $processed_at
-     */
-    protected $processed_at = null;
-
     public function _construct()
     {
-        $this->_init( 'Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure' );
+        $this->_init('Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure');
     }
 
     public function getIdentities()
     {
-        return [ self::CACHE_TAG . '_' . $this->getId() ];
+        return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    /**
-     * @param string $Description
-     * @return $this
-     */
-    public function setDescription($Description)
+    public function getCode() : ?string
     {
-        $this->setData( 'Description', $Description );
-        $this->Description = $Description;
-        $this->setDataChanges( TRUE );
+        return $this->getData(self::getDbColumnsMapping()[self::CODE]);
+    }
+
+    public function setCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getInternationalStandardCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::INTERNATIONAL_STANDARD_CODE]);
+    }
+
+    public function setInternationalStandardCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::INTERNATIONAL_STANDARD_CODE], $value);
+    }
+
+    public function getLastModifiedDateTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME]);
+    }
+
+    public function setLastModifiedDateTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME], $value);
+    }
+
+    public function getLscPosMinDenominator() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_MIN_DENOMINATOR]);
+    }
+
+    public function setLscPosMinDenominator(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_POS_MIN_DENOMINATOR], $value);
+    }
+
+    public function getLscWeightUnitOfMeasure() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_WEIGHT_UNIT_OF_MEASURE]);
+    }
+
+    public function setLscWeightUnitOfMeasure(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_WEIGHT_UNIT_OF_MEASURE], $value);
+    }
+
+    public function getSymbol() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYMBOL]);
+    }
+
+    public function setSymbol(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYMBOL], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function setProcessed(?bool $processed)
+    {
+        $this->setData('processed', $processed);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getProcessed() : ?bool
     {
-        return $this->getData( 'Description' );
+        return $this->getData('processed');
     }
 
-    /**
-     * @param string $nav_id
-     * @return $this
-     */
-    public function setNavId($nav_id)
+    public function setIsUpdated(?bool $is_updated)
     {
-        $this->setData( 'nav_id', $nav_id );
-        $this->nav_id = $nav_id;
-        $this->setDataChanges( TRUE );
+        $this->setData('is_updated', $is_updated);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getNavId()
+    public function getIsUpdated() : ?bool
     {
-        return $this->getData( 'nav_id' );
+        return $this->getData('is_updated');
     }
 
-    /**
-     * @param boolean $IsDeleted
-     * @return $this
-     */
-    public function setIsDeleted($IsDeleted)
+    public function setIsFailed(?bool $is_failed)
     {
-        $this->setData( 'IsDeleted', $IsDeleted );
-        $this->IsDeleted = $IsDeleted;
-        $this->setDataChanges( TRUE );
+        $this->setData('is_failed', $is_failed);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getIsDeleted()
+    public function getIsFailed() : ?bool
     {
-        return $this->getData( 'IsDeleted' );
+        return $this->getData('is_failed');
     }
 
-    /**
-     * @param string $ShortDescription
-     * @return $this
-     */
-    public function setShortDescription($ShortDescription)
+    public function setCreatedAt(?string $created_at)
     {
-        $this->setData( 'ShortDescription', $ShortDescription );
-        $this->ShortDescription = $ShortDescription;
-        $this->setDataChanges( TRUE );
+        $this->setData('created_at', $created_at);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getShortDescription()
+    public function getCreatedAt() : ?string
     {
-        return $this->getData( 'ShortDescription' );
+        return $this->getData('created_at');
     }
 
-    /**
-     * @param int $UnitDecimals
-     * @return $this
-     */
-    public function setUnitDecimals($UnitDecimals)
+    public function setUpdatedAt(?string $updated_at)
     {
-        $this->setData( 'UnitDecimals', $UnitDecimals );
-        $this->UnitDecimals = $UnitDecimals;
-        $this->setDataChanges( TRUE );
+        $this->setData('updated_at', $updated_at);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getUnitDecimals()
+    public function getUpdatedAt() : ?string
     {
-        return $this->getData( 'UnitDecimals' );
+        return $this->getData('updated_at');
     }
 
-    /**
-     * @param string $scope
-     * @return $this
-     */
-    public function setScope($scope)
+    public function setIdentityValue(?string $identity_value)
     {
-        $this->setData( 'scope', $scope );
-        $this->scope = $scope;
-        $this->setDataChanges( TRUE );
+        $this->setData('identity_value', $identity_value);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getScope()
+    public function getIdentityValue() : ?string
     {
-        return $this->getData( 'scope' );
+        return $this->getData('identity_value');
     }
 
-    /**
-     * @param int $scope_id
-     * @return $this
-     */
-    public function setScopeId($scope_id)
+    public function setChecksum(?string $checksum)
     {
-        $this->setData( 'scope_id', $scope_id );
-        $this->scope_id = $scope_id;
-        $this->setDataChanges( TRUE );
+        $this->setData('checksum', $checksum);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getScopeId()
+    public function getChecksum() : ?string
     {
-        return $this->getData( 'scope_id' );
+        return $this->getData('checksum');
     }
 
-    /**
-     * @param boolean $processed
-     * @return $this
-     */
-    public function setProcessed($processed)
+    public function setProcessedAt(?string $processed_at)
     {
-        $this->setData( 'processed', $processed );
-        $this->processed = $processed;
-        $this->setDataChanges( TRUE );
+        $this->setData('processed_at', $processed_at);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getProcessed()
+    public function getProcessedAt() : ?string
     {
-        return $this->getData( 'processed' );
-    }
-
-    /**
-     * @param boolean $is_updated
-     * @return $this
-     */
-    public function setIsUpdated($is_updated)
-    {
-        $this->setData( 'is_updated', $is_updated );
-        $this->is_updated = $is_updated;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsUpdated()
-    {
-        return $this->getData( 'is_updated' );
-    }
-
-    /**
-     * @param boolean $is_failed
-     * @return $this
-     */
-    public function setIsFailed($is_failed)
-    {
-        $this->setData( 'is_failed', $is_failed );
-        $this->is_failed = $is_failed;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsFailed()
-    {
-        return $this->getData( 'is_failed' );
-    }
-
-    /**
-     * @param string $created_at
-     * @return $this
-     */
-    public function setCreatedAt($created_at)
-    {
-        $this->setData( 'created_at', $created_at );
-        $this->created_at = $created_at;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCreatedAt()
-    {
-        return $this->getData( 'created_at' );
-    }
-
-    /**
-     * @param string $updated_at
-     * @return $this
-     */
-    public function setUpdatedAt($updated_at)
-    {
-        $this->setData( 'updated_at', $updated_at );
-        $this->updated_at = $updated_at;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUpdatedAt()
-    {
-        return $this->getData( 'updated_at' );
-    }
-
-    /**
-     * @param string $identity_value
-     * @return $this
-     */
-    public function setIdentityValue($identity_value)
-    {
-        $this->setData( 'identity_value', $identity_value );
-        $this->identity_value = $identity_value;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIdentityValue()
-    {
-        return $this->getData( 'identity_value' );
-    }
-
-    /**
-     * @param string $checksum
-     * @return $this
-     */
-    public function setChecksum($checksum)
-    {
-        $this->setData( 'checksum', $checksum );
-        $this->checksum = $checksum;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getChecksum()
-    {
-        return $this->getData( 'checksum' );
-    }
-
-    /**
-     * @param string $processed_at
-     * @return $this
-     */
-    public function setProcessedAt($processed_at)
-    {
-        $this->setData( 'processed_at', $processed_at );
-        $this->processed_at = $processed_at;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getProcessedAt()
-    {
-        return $this->getData( 'processed_at' );
+        return $this->getData('processed_at');
     }
 }
 

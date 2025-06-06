@@ -41,23 +41,60 @@ class LSCMemberSalesDocLine extends AbstractModel
     public const VARIANT_DESCRIPTION = 'Variant Description';
     public const VAT_AMOUNT = 'VAT Amount';
 
+    public static array $dbColumnsMapping = [
+	self::AMOUNT => 'amount',
+	self::AMOUNT_IN_CURRENCY => 'amount_in_currency',
+	self::CARD_OR_ACCOUNT => 'card_or_account',
+	self::CARD_TYPE => 'card_type',
+	self::CLICK_AND_COLLECT_LINE => 'click_and_collect_line',
+	self::CURRENCY_CODE => 'currency_code',
+	self::CURRENCY_FACTOR => 'currency_factor',
+	self::DESCRIPTION => 'description',
+	self::DISCOUNT => 'discount',
+	self::DISCOUNT_AMOUNT => 'discount_amount',
+	self::DOCUMENT_ID => 'document_id',
+	self::ENTRY_TYPE => 'entry_type',
+	self::EXTERNAL_ID => 'external_id',
+	self::IMAGE_ID => 'image_id',
+	self::LINE_NO => 'line_no',
+	self::NET_AMOUNT => 'net_amount',
+	self::NET_PRICE => 'net_price',
+	self::NUMBER => 'number',
+	self::PARENT_LINE => 'parent_line',
+	self::POS_TERMINAL_NO => 'pos_terminal_no',
+	self::PRICE => 'price',
+	self::QUANTITY => 'quantity',
+	self::STORE_NAME => 'store_name',
+	self::STORE_NO => 'store_no',
+	self::TRANSACTION_NO => 'transaction_no',
+	self::UNIT_OF_MEASURE => 'unit_of_measure',
+	self::VARIANT_CODE => 'variant_code',
+	self::VARIANT_DESCRIPTION => 'variant_description',
+	self::VAT_AMOUNT => 'vat_amount',
+    ];
 
-    public function getAmount(): ?string
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
+
+    public function getAmount(): ?float
     {
         return $this->getData(self::AMOUNT);
     }
 
-    public function setAmount(string $value)
+    public function setAmount(?float $value)
     {
         return $this->setData(self::AMOUNT, $value);
     }
 
-    public function getAmountInCurrency(): ?string
+    public function getAmountInCurrency(): ?float
     {
         return $this->getData(self::AMOUNT_IN_CURRENCY);
     }
 
-    public function setAmountInCurrency(string $value)
+    public function setAmountInCurrency(?float $value)
     {
         return $this->setData(self::AMOUNT_IN_CURRENCY, $value);
     }
@@ -67,7 +104,7 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::CARD_OR_ACCOUNT);
     }
 
-    public function setCardOrAccount(string $value)
+    public function setCardOrAccount(?string $value)
     {
         return $this->setData(self::CARD_OR_ACCOUNT, $value);
     }
@@ -77,7 +114,7 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::CARD_TYPE);
     }
 
-    public function setCardType(string $value)
+    public function setCardType(?string $value)
     {
         return $this->setData(self::CARD_TYPE, $value);
     }
@@ -87,7 +124,7 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::CLICK_AND_COLLECT_LINE);
     }
 
-    public function setClickAndCollectLine(bool $value)
+    public function setClickAndCollectLine(?bool $value)
     {
         return $this->setData(self::CLICK_AND_COLLECT_LINE, $value);
     }
@@ -97,17 +134,17 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value)
+    public function setCurrencyCode(?string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
 
-    public function getCurrencyFactor(): ?string
+    public function getCurrencyFactor(): ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
     }
 
-    public function setCurrencyFactor(string $value)
+    public function setCurrencyFactor(?float $value)
     {
         return $this->setData(self::CURRENCY_FACTOR, $value);
     }
@@ -117,57 +154,57 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
 
-    public function getDiscount(): ?string
+    public function getDiscount(): ?float
     {
         return $this->getData(self::DISCOUNT);
     }
 
-    public function setDiscount(string $value)
+    public function setDiscount(?float $value)
     {
         return $this->setData(self::DISCOUNT, $value);
     }
 
-    public function getDiscountAmount(): ?string
+    public function getDiscountAmount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
-    public function setDiscountAmount(string $value)
+    public function setDiscountAmount(?float $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT, $value);
     }
 
-    public function getDocumentID(): ?string
+    public function getDocumentId(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
 
-    public function setDocumentID(string $value)
+    public function setDocumentId(?string $value)
     {
         return $this->setData(self::DOCUMENT_ID, $value);
     }
 
-    public function getEntryType(): ?string
+    public function getEntryType(): ?int
     {
         return $this->getData(self::ENTRY_TYPE);
     }
 
-    public function setEntryType(string $value)
+    public function setEntryType(?int $value)
     {
         return $this->setData(self::ENTRY_TYPE, $value);
     }
 
-    public function getExternalID(): ?string
+    public function getExternalId(): ?string
     {
         return $this->getData(self::EXTERNAL_ID);
     }
 
-    public function setExternalID(string $value)
+    public function setExternalId(?string $value)
     {
         return $this->setData(self::EXTERNAL_ID, $value);
     }
@@ -177,7 +214,7 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::IMAGE_ID);
     }
 
-    public function setImageId(string $value)
+    public function setImageId(?string $value)
     {
         return $this->setData(self::IMAGE_ID, $value);
     }
@@ -187,27 +224,27 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value)
+    public function setLineNo(?int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
 
-    public function getNetAmount(): ?string
+    public function getNetAmount(): ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
 
-    public function setNetAmount(string $value)
+    public function setNetAmount(?float $value)
     {
         return $this->setData(self::NET_AMOUNT, $value);
     }
 
-    public function getNetPrice(): ?string
+    public function getNetPrice(): ?float
     {
         return $this->getData(self::NET_PRICE);
     }
 
-    public function setNetPrice(string $value)
+    public function setNetPrice(?float $value)
     {
         return $this->setData(self::NET_PRICE, $value);
     }
@@ -217,7 +254,7 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::NUMBER);
     }
 
-    public function setNumber(string $value)
+    public function setNumber(?string $value)
     {
         return $this->setData(self::NUMBER, $value);
     }
@@ -227,37 +264,37 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::PARENT_LINE);
     }
 
-    public function setParentLine(int $value)
+    public function setParentLine(?int $value)
     {
         return $this->setData(self::PARENT_LINE, $value);
     }
 
-    public function getPOSTerminalNo(): ?string
+    public function getPosTerminalNo(): ?string
     {
         return $this->getData(self::POS_TERMINAL_NO);
     }
 
-    public function setPOSTerminalNo(string $value)
+    public function setPosTerminalNo(?string $value)
     {
         return $this->setData(self::POS_TERMINAL_NO, $value);
     }
 
-    public function getPrice(): ?string
+    public function getPrice(): ?float
     {
         return $this->getData(self::PRICE);
     }
 
-    public function setPrice(string $value)
+    public function setPrice(?float $value)
     {
         return $this->setData(self::PRICE, $value);
     }
 
-    public function getQuantity(): ?string
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
-    public function setQuantity(string $value)
+    public function setQuantity(?float $value)
     {
         return $this->setData(self::QUANTITY, $value);
     }
@@ -267,7 +304,7 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::STORE_NAME);
     }
 
-    public function setStoreName(string $value)
+    public function setStoreName(?string $value)
     {
         return $this->setData(self::STORE_NAME, $value);
     }
@@ -277,7 +314,7 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -287,7 +324,7 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::TRANSACTION_NO);
     }
 
-    public function setTransactionNo(int $value)
+    public function setTransactionNo(?int $value)
     {
         return $this->setData(self::TRANSACTION_NO, $value);
     }
@@ -297,7 +334,7 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::UNIT_OF_MEASURE);
     }
 
-    public function setUnitOfMeasure(string $value)
+    public function setUnitOfMeasure(?string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
@@ -307,7 +344,7 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value)
+    public function setVariantCode(?string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -317,17 +354,17 @@ class LSCMemberSalesDocLine extends AbstractModel
         return $this->getData(self::VARIANT_DESCRIPTION);
     }
 
-    public function setVariantDescription(string $value)
+    public function setVariantDescription(?string $value)
     {
         return $this->setData(self::VARIANT_DESCRIPTION, $value);
     }
 
-    public function getVATAmount(): ?string
+    public function getVatAmount(): ?float
     {
         return $this->getData(self::VAT_AMOUNT);
     }
 
-    public function setVATAmount(string $value)
+    public function setVatAmount(?float $value)
     {
         return $this->setData(self::VAT_AMOUNT, $value);
     }

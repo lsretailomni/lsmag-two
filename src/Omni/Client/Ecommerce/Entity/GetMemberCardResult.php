@@ -20,58 +20,58 @@ class GetMemberCardResult extends \Magento\Catalog\Model\AbstractModel implement
 
     public const TOTAL_REMAINING_POINTS = 'totalRemainingPoints';
 
-    public const GET_MEMBER_CARD_X_M_L = 'getMemberCardXML';
+    public const GET_MEMBER_CARD_XML = 'getMemberCardXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param float $totalRemainingPoints
+     * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints($totalRemainingPoints)
+    public function setTotalremainingpoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalRemainingPoints()
+    public function getTotalremainingpoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
@@ -80,18 +80,18 @@ class GetMemberCardResult extends \Magento\Catalog\Model\AbstractModel implement
      * @param RootGetMemberCard $getMemberCardXML
      * @return $this
      */
-    public function setGetMemberCardXML($getMemberCardXML)
+    public function setGetmembercardxml($getMemberCardXML)
     {
-        $this->setData(self::GET_MEMBER_CARD_X_M_L, $getMemberCardXML);
+        $this->setData(self::GET_MEMBER_CARD_XML, $getMemberCardXML);
         return $this;
     }
 
     /**
      * @return RootGetMemberCard
      */
-    public function getGetMemberCardXML()
+    public function getGetmembercardxml()
     {
-        return $this->getData(self::GET_MEMBER_CARD_X_M_L);
+        return $this->getData(self::GET_MEMBER_CARD_XML);
     }
 
     /**

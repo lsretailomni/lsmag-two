@@ -78,7 +78,7 @@ class PushNotificationSave extends AbstractOperation
     /**
      * @return PushNotificationSaveRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new PushNotificationSaveRequest();

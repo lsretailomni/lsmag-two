@@ -51,12 +51,12 @@ class LoadStore extends Action
         ];
         $lsRetailLicenseIsActive = $lsRetailLicenseUnitEcomIsActive = $lsCentralVersion = '';
         try {
-            $baseUrl         = $this->getRequest()->getParam('baseUrl');
-            $scopeId         = $this->getRequest()->getParam('scopeId');
-            $tenant          = $this->getRequest()->getParam('tenant');
-            $clientId        = $this->getRequest()->getParam('client_id');
-            $clientSecret    = $this->getRequest()->getParam('client_secret');
-            $companyName     = $this->getRequest()->getParam('company_name');
+            $baseUrl = $this->getRequest()->getParam('baseUrl');
+            $scopeId = $this->getRequest()->getParam('scopeId');
+            $tenant = $this->getRequest()->getParam('tenant');
+            $clientId = $this->getRequest()->getParam('client_id');
+            $clientSecret = $this->getRequest()->getParam('client_secret');
+            $companyName = $this->getRequest()->getParam('company_name');
             $environmentName = $this->getRequest()->getParam('environment_name');
 
             $baseUrl = $this->helper->getBaseUrl($baseUrl);

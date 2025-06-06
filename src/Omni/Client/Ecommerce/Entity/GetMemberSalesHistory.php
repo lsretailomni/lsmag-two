@@ -26,94 +26,94 @@ class GetMemberSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const MAX_NO_OF_HEADERS = 'maxNoOfHeaders';
 
-    public const GET_MEMBER_SALES_HISTORY_X_M_L = 'getMemberSalesHistoryXML';
+    public const GET_MEMBER_SALES_HISTORY_XML = 'getMemberSalesHistoryXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $accountNo
+     * @param ?string $accountNo
      * @return $this
      */
-    public function setAccountNo($accountNo)
+    public function setAccountno(?string $accountNo)
     {
         $this->setData(self::ACCOUNT_NO, $accountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountNo()
+    public function getAccountno() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
 
     /**
-     * @param string $contactNo
+     * @param ?string $contactNo
      * @return $this
      */
-    public function setContactNo($contactNo)
+    public function setContactno(?string $contactNo)
     {
         $this->setData(self::CONTACT_NO, $contactNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactNo()
+    public function getContactno() : ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
 
     /**
-     * @param string $cardNo
+     * @param ?string $cardNo
      * @return $this
      */
-    public function setCardNo($cardNo)
+    public function setCardno(?string $cardNo)
     {
         $this->setData(self::CARD_NO, $cardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNo()
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -122,7 +122,7 @@ class GetMemberSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param int $maxNoOfHeaders
      * @return $this
      */
-    public function setMaxNoOfHeaders($maxNoOfHeaders)
+    public function setMaxnoofheaders($maxNoOfHeaders)
     {
         $this->setData(self::MAX_NO_OF_HEADERS, $maxNoOfHeaders);
         return $this;
@@ -131,7 +131,7 @@ class GetMemberSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return int
      */
-    public function getMaxNoOfHeaders()
+    public function getMaxnoofheaders()
     {
         return $this->getData(self::MAX_NO_OF_HEADERS);
     }
@@ -140,18 +140,18 @@ class GetMemberSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootGetMemberSalesHistory $getMemberSalesHistoryXML
      * @return $this
      */
-    public function setGetMemberSalesHistoryXML($getMemberSalesHistoryXML)
+    public function setGetmembersaleshistoryxml($getMemberSalesHistoryXML)
     {
-        $this->setData(self::GET_MEMBER_SALES_HISTORY_X_M_L, $getMemberSalesHistoryXML);
+        $this->setData(self::GET_MEMBER_SALES_HISTORY_XML, $getMemberSalesHistoryXML);
         return $this;
     }
 
     /**
      * @return RootGetMemberSalesHistory
      */
-    public function getGetMemberSalesHistoryXML()
+    public function getGetmembersaleshistoryxml()
     {
-        return $this->getData(self::GET_MEMBER_SALES_HISTORY_X_M_L);
+        return $this->getData(self::GET_MEMBER_SALES_HISTORY_XML);
     }
 }
 

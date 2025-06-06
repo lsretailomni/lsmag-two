@@ -12,7 +12,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'CustomerOrderPayment';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const STORE_NO = 'StoreNo';
 
@@ -38,9 +38,9 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
 
     public const INC_EXP_ACCOUNT_NO = 'IncExpAccountNo';
 
-    public const PRE_APPROVED_AMOUNT_L_C_Y = 'PreApprovedAmountLCY';
+    public const PRE_APPROVED_AMOUNT_LCY = 'PreApprovedAmountLCY';
 
-    public const FINALISED_AMOUNT_L_C_Y = 'FinalisedAmountLCY';
+    public const FINALISED_AMOUNT_LCY = 'FinalisedAmountLCY';
 
     public const LOYALTY_POINTPAYMENT = 'LoyaltyPointpayment';
 
@@ -59,37 +59,37 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     public const EXTERNAL_REFERENCE = 'ExternalReference';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -98,7 +98,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -107,367 +107,367 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
 
     /**
-     * @param float $PreApprovedAmount
+     * @param ?float $PreApprovedAmount
      * @return $this
      */
-    public function setPreApprovedAmount($PreApprovedAmount)
+    public function setPreapprovedamount(?float $PreApprovedAmount)
     {
         $this->setData(self::PRE_APPROVED_AMOUNT, $PreApprovedAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPreApprovedAmount()
+    public function getPreapprovedamount() : ?float
     {
         return $this->getData(self::PRE_APPROVED_AMOUNT);
     }
 
     /**
-     * @param float $FinalisedAmount
+     * @param ?float $FinalisedAmount
      * @return $this
      */
-    public function setFinalisedAmount($FinalisedAmount)
+    public function setFinalisedamount(?float $FinalisedAmount)
     {
         $this->setData(self::FINALISED_AMOUNT, $FinalisedAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getFinalisedAmount()
+    public function getFinalisedamount() : ?float
     {
         return $this->getData(self::FINALISED_AMOUNT);
     }
 
     /**
-     * @param string $TenderType
+     * @param ?string $TenderType
      * @return $this
      */
-    public function setTenderType($TenderType)
+    public function setTendertype(?string $TenderType)
     {
         $this->setData(self::TENDER_TYPE, $TenderType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTenderType()
+    public function getTendertype() : ?string
     {
         return $this->getData(self::TENDER_TYPE);
     }
 
     /**
-     * @param string $CardType
+     * @param ?string $CardType
      * @return $this
      */
-    public function setCardType($CardType)
+    public function setCardtype(?string $CardType)
     {
         $this->setData(self::CARD_TYPE, $CardType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardType()
+    public function getCardtype() : ?string
     {
         return $this->getData(self::CARD_TYPE);
     }
 
     /**
-     * @param string $CurrencyCode
+     * @param ?string $CurrencyCode
      * @return $this
      */
-    public function setCurrencyCode($CurrencyCode)
+    public function setCurrencycode(?string $CurrencyCode)
     {
         $this->setData(self::CURRENCY_CODE, $CurrencyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCurrencyCode()
+    public function getCurrencycode() : ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
 
     /**
-     * @param float $CurrencyFactor
+     * @param ?float $CurrencyFactor
      * @return $this
      */
-    public function setCurrencyFactor($CurrencyFactor)
+    public function setCurrencyfactor(?float $CurrencyFactor)
     {
         $this->setData(self::CURRENCY_FACTOR, $CurrencyFactor);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getCurrencyFactor()
+    public function getCurrencyfactor() : ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
     }
 
     /**
-     * @param string $AuthorisationCode
+     * @param ?string $AuthorisationCode
      * @return $this
      */
-    public function setAuthorisationCode($AuthorisationCode)
+    public function setAuthorisationcode(?string $AuthorisationCode)
     {
         $this->setData(self::AUTHORISATION_CODE, $AuthorisationCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAuthorisationCode()
+    public function getAuthorisationcode() : ?string
     {
         return $this->getData(self::AUTHORISATION_CODE);
     }
 
     /**
-     * @param date $PreApprovedValidDate
+     * @param ?string $PreApprovedValidDate
      * @return $this
      */
-    public function setPreApprovedValidDate($PreApprovedValidDate)
+    public function setPreapprovedvaliddate(?string $PreApprovedValidDate)
     {
         $this->setData(self::PRE_APPROVED_VALID_DATE, $PreApprovedValidDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getPreApprovedValidDate()
+    public function getPreapprovedvaliddate() : ?string
     {
         return $this->getData(self::PRE_APPROVED_VALID_DATE);
     }
 
     /**
-     * @param string $CardorCustomernumber
+     * @param ?string $CardorCustomernumber
      * @return $this
      */
-    public function setCardorCustomernumber($CardorCustomernumber)
+    public function setCardorcustomernumber(?string $CardorCustomernumber)
     {
         $this->setData(self::CARDOR_CUSTOMERNUMBER, $CardorCustomernumber);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardorCustomernumber()
+    public function getCardorcustomernumber() : ?string
     {
         return $this->getData(self::CARDOR_CUSTOMERNUMBER);
     }
 
     /**
-     * @param string $IncExpAccountNo
+     * @param ?string $IncExpAccountNo
      * @return $this
      */
-    public function setIncExpAccountNo($IncExpAccountNo)
+    public function setIncexpaccountno(?string $IncExpAccountNo)
     {
         $this->setData(self::INC_EXP_ACCOUNT_NO, $IncExpAccountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getIncExpAccountNo()
+    public function getIncexpaccountno() : ?string
     {
         return $this->getData(self::INC_EXP_ACCOUNT_NO);
     }
 
     /**
-     * @param float $PreApprovedAmountLCY
+     * @param ?float $PreApprovedAmountLCY
      * @return $this
      */
-    public function setPreApprovedAmountLCY($PreApprovedAmountLCY)
+    public function setPreapprovedamountlcy(?float $PreApprovedAmountLCY)
     {
-        $this->setData(self::PRE_APPROVED_AMOUNT_L_C_Y, $PreApprovedAmountLCY);
+        $this->setData(self::PRE_APPROVED_AMOUNT_LCY, $PreApprovedAmountLCY);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPreApprovedAmountLCY()
+    public function getPreapprovedamountlcy() : ?float
     {
-        return $this->getData(self::PRE_APPROVED_AMOUNT_L_C_Y);
+        return $this->getData(self::PRE_APPROVED_AMOUNT_LCY);
     }
 
     /**
-     * @param float $FinalisedAmountLCY
+     * @param ?float $FinalisedAmountLCY
      * @return $this
      */
-    public function setFinalisedAmountLCY($FinalisedAmountLCY)
+    public function setFinalisedamountlcy(?float $FinalisedAmountLCY)
     {
-        $this->setData(self::FINALISED_AMOUNT_L_C_Y, $FinalisedAmountLCY);
+        $this->setData(self::FINALISED_AMOUNT_LCY, $FinalisedAmountLCY);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getFinalisedAmountLCY()
+    public function getFinalisedamountlcy() : ?float
     {
-        return $this->getData(self::FINALISED_AMOUNT_L_C_Y);
+        return $this->getData(self::FINALISED_AMOUNT_LCY);
     }
 
     /**
-     * @param boolean $LoyaltyPointpayment
+     * @param ?bool $LoyaltyPointpayment
      * @return $this
      */
-    public function setLoyaltyPointpayment($LoyaltyPointpayment)
+    public function setLoyaltypointpayment(?bool $LoyaltyPointpayment)
     {
         $this->setData(self::LOYALTY_POINTPAYMENT, $LoyaltyPointpayment);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getLoyaltyPointpayment()
+    public function getLoyaltypointpayment() : ?bool
     {
         return $this->getData(self::LOYALTY_POINTPAYMENT);
     }
 
     /**
-     * @param boolean $DepositPayment
+     * @param ?bool $DepositPayment
      * @return $this
      */
-    public function setDepositPayment($DepositPayment)
+    public function setDepositpayment(?bool $DepositPayment)
     {
         $this->setData(self::DEPOSIT_PAYMENT, $DepositPayment);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getDepositPayment()
+    public function getDepositpayment() : ?bool
     {
         return $this->getData(self::DEPOSIT_PAYMENT);
     }
 
     /**
-     * @param string $PosTransReceiptNo
+     * @param ?string $PosTransReceiptNo
      * @return $this
      */
-    public function setPosTransReceiptNo($PosTransReceiptNo)
+    public function setPostransreceiptno(?string $PosTransReceiptNo)
     {
         $this->setData(self::POS_TRANS_RECEIPT_NO, $PosTransReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPosTransReceiptNo()
+    public function getPostransreceiptno() : ?string
     {
         return $this->getData(self::POS_TRANS_RECEIPT_NO);
     }
 
     /**
-     * @param string $Type
+     * @param ?string $Type
      * @return $this
      */
-    public function setType($Type)
+    public function setType(?string $Type)
     {
         $this->setData(self::TYPE, $Type);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getType()
+    public function getType() : ?string
     {
         return $this->getData(self::TYPE);
     }
 
     /**
-     * @param string $Created
+     * @param ?string $Created
      * @return $this
      */
-    public function setCreated($Created)
+    public function setCreated(?string $Created)
     {
         $this->setData(self::CREATED, $Created);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCreated()
+    public function getCreated() : ?string
     {
         return $this->getData(self::CREATED);
     }
 
     /**
-     * @param boolean $AuthorizationExpired
+     * @param ?bool $AuthorizationExpired
      * @return $this
      */
-    public function setAuthorizationExpired($AuthorizationExpired)
+    public function setAuthorizationexpired(?bool $AuthorizationExpired)
     {
         $this->setData(self::AUTHORIZATION_EXPIRED, $AuthorizationExpired);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getAuthorizationExpired()
+    public function getAuthorizationexpired() : ?bool
     {
         return $this->getData(self::AUTHORIZATION_EXPIRED);
     }
 
     /**
-     * @param string $TokenNo
+     * @param ?string $TokenNo
      * @return $this
      */
-    public function setTokenNo($TokenNo)
+    public function setTokenno(?string $TokenNo)
     {
         $this->setData(self::TOKEN_NO, $TokenNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTokenNo()
+    public function getTokenno() : ?string
     {
         return $this->getData(self::TOKEN_NO);
     }
 
     /**
-     * @param string $ExternalReference
+     * @param ?string $ExternalReference
      * @return $this
      */
-    public function setExternalReference($ExternalReference)
+    public function setExternalreference(?string $ExternalReference)
     {
         $this->setData(self::EXTERNAL_REFERENCE, $ExternalReference);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExternalReference()
+    public function getExternalreference() : ?string
     {
         return $this->getData(self::EXTERNAL_REFERENCE);
     }

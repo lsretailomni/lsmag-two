@@ -10,224 +10,202 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplCurrencyInterface
 {
-    /**
-     * @param string $CurrencyCode
-     * @return $this
-     */
-    public function setCurrencyCode($CurrencyCode);
+    public static function getDbColumnsMapping() : array;
 
-    /**
-     * @return string
-     */
-    public function getCurrencyCode();
+    public function getCode() : ?string;
 
-    /**
-     * @param string $CurrencyPrefix
-     * @return $this
-     */
-    public function setCurrencyPrefix($CurrencyPrefix);
+    public function setCode(?string $value);
 
-    /**
-     * @return string
-     */
-    public function getCurrencyPrefix();
+    public function getLastDateModified() : ?string;
 
-    /**
-     * @param string $CurrencySuffix
-     * @return $this
-     */
-    public function setCurrencySuffix($CurrencySuffix);
+    public function setLastDateModified(?string $value);
 
-    /**
-     * @return string
-     */
-    public function getCurrencySuffix();
+    public function getLastDateAdjusted() : ?string;
 
-    /**
-     * @param string $Description
-     * @return $this
-     */
-    public function setDescription($Description);
+    public function setLastDateAdjusted(?string $value);
 
-    /**
-     * @return string
-     */
-    public function getDescription();
+    public function getIsoCode() : ?string;
 
-    /**
-     * @param boolean $IsDeleted
-     * @return $this
-     */
-    public function setIsDeleted($IsDeleted);
+    public function setIsoCode(?string $value);
 
-    /**
-     * @return boolean
-     */
-    public function getIsDeleted();
+    public function getIsoNumericCode() : ?string;
 
-    /**
-     * @param float $RoundOfAmount
-     * @return $this
-     */
-    public function setRoundOfAmount($RoundOfAmount);
+    public function setIsoNumericCode(?string $value);
 
-    /**
-     * @return float
-     */
-    public function getRoundOfAmount();
+    public function getUnrealizedGainsAcc() : ?string;
 
-    /**
-     * @param float $RoundOfSales
-     * @return $this
-     */
-    public function setRoundOfSales($RoundOfSales);
+    public function setUnrealizedGainsAcc(?string $value);
 
-    /**
-     * @return float
-     */
-    public function getRoundOfSales();
+    public function getRealizedGainsAcc() : ?string;
 
-    /**
-     * @param int $RoundOfTypeAmount
-     * @return $this
-     */
-    public function setRoundOfTypeAmount($RoundOfTypeAmount);
+    public function setRealizedGainsAcc(?string $value);
 
-    /**
-     * @return int
-     */
-    public function getRoundOfTypeAmount();
+    public function getUnrealizedLossesAcc() : ?string;
 
-    /**
-     * @param int $RoundOfTypeSales
-     * @return $this
-     */
-    public function setRoundOfTypeSales($RoundOfTypeSales);
+    public function setUnrealizedLossesAcc(?string $value);
 
-    /**
-     * @return int
-     */
-    public function getRoundOfTypeSales();
+    public function getRealizedLossesAcc() : ?string;
 
-    /**
-     * @param string $Symbol
-     * @return $this
-     */
-    public function setSymbol($Symbol);
+    public function setRealizedLossesAcc(?string $value);
 
-    /**
-     * @return string
-     */
-    public function getSymbol();
+    public function getInvoiceRoundingPrecision() : ?float;
 
-    /**
-     * @param string $scope
-     * @return $this
-     */
-    public function setScope($scope);
+    public function setInvoiceRoundingPrecision(?float $value);
 
-    /**
-     * @return string
-     */
-    public function getScope();
+    public function getInvoiceRoundingType() : ?int;
 
-    /**
-     * @param int $scope_id
-     * @return $this
-     */
-    public function setScopeId($scope_id);
+    public function setInvoiceRoundingType(?int $value);
 
-    /**
-     * @return int
-     */
-    public function getScopeId();
+    public function getAmountRoundingPrecision() : ?float;
 
-    /**
-     * @param boolean $processed
-     * @return $this
-     */
-    public function setProcessed($processed);
+    public function setAmountRoundingPrecision(?float $value);
 
-    /**
-     * @return boolean
-     */
-    public function getProcessed();
+    public function getUnitAmountRoundingPrecision() : ?float;
 
-    /**
-     * @param boolean $is_updated
-     * @return $this
-     */
-    public function setIsUpdated($is_updated);
+    public function setUnitAmountRoundingPrecision(?float $value);
 
-    /**
-     * @return boolean
-     */
-    public function getIsUpdated();
+    public function getDescription() : ?string;
 
-    /**
-     * @param boolean $is_failed
-     * @return $this
-     */
-    public function setIsFailed($is_failed);
+    public function setDescription(?string $value);
 
-    /**
-     * @return boolean
-     */
-    public function getIsFailed();
+    public function getAmountDecimalPlaces() : ?string;
 
-    /**
-     * @param string $created_at
-     * @return $this
-     */
-    public function setCreatedAt($created_at);
+    public function setAmountDecimalPlaces(?string $value);
 
-    /**
-     * @return string
-     */
-    public function getCreatedAt();
+    public function getUnitAmountDecimalPlaces() : ?string;
 
-    /**
-     * @param string $updated_at
-     * @return $this
-     */
-    public function setUpdatedAt($updated_at);
+    public function setUnitAmountDecimalPlaces(?string $value);
 
-    /**
-     * @return string
-     */
-    public function getUpdatedAt();
+    public function getRealizedGLGainsAccount() : ?string;
 
-    /**
-     * @param string $identity_value
-     * @return $this
-     */
-    public function setIdentityValue($identity_value);
+    public function setRealizedGLGainsAccount(?string $value);
 
-    /**
-     * @return string
-     */
-    public function getIdentityValue();
+    public function getRealizedGLLossesAccount() : ?string;
 
-    /**
-     * @param string $checksum
-     * @return $this
-     */
-    public function setChecksum($checksum);
+    public function setRealizedGLLossesAccount(?string $value);
 
-    /**
-     * @return string
-     */
-    public function getChecksum();
+    public function getApplnRoundingPrecision() : ?float;
 
-    /**
-     * @param string $processed_at
-     * @return $this
-     */
-    public function setProcessedAt($processed_at);
+    public function setApplnRoundingPrecision(?float $value);
 
-    /**
-     * @return string
-     */
-    public function getProcessedAt();
+    public function getEmuCurrency() : ?bool;
+
+    public function setEmuCurrency(?bool $value);
+
+    public function getCurrencyFactor() : ?float;
+
+    public function setCurrencyFactor(?float $value);
+
+    public function getResidualGainsAccount() : ?string;
+
+    public function setResidualGainsAccount(?string $value);
+
+    public function getResidualLossesAccount() : ?string;
+
+    public function setResidualLossesAccount(?string $value);
+
+    public function getConvLcyRndgDebitAcc() : ?string;
+
+    public function setConvLcyRndgDebitAcc(?string $value);
+
+    public function getConvLcyRndgCreditAcc() : ?string;
+
+    public function setConvLcyRndgCreditAcc(?string $value);
+
+    public function getMaxVatDifferenceAllowed() : ?float;
+
+    public function setMaxVatDifferenceAllowed(?float $value);
+
+    public function getVatRoundingType() : ?int;
+
+    public function setVatRoundingType(?int $value);
+
+    public function getPaymentTolerance() : ?float;
+
+    public function setPaymentTolerance(?float $value);
+
+    public function getMaxPaymentToleranceAmount() : ?float;
+
+    public function setMaxPaymentToleranceAmount(?float $value);
+
+    public function getSymbol() : ?string;
+
+    public function setSymbol(?string $value);
+
+    public function getLastModifiedDateTime() : ?string;
+
+    public function setLastModifiedDateTime(?string $value);
+
+    public function getLscLowestAcceptDenomAmt() : ?float;
+
+    public function setLscLowestAcceptDenomAmt(?float $value);
+
+    public function getLscDenominationRoundingType() : ?int;
+
+    public function setLscDenominationRoundingType(?int $value);
+
+    public function getLscPosCurrencySymbol() : ?string;
+
+    public function setLscPosCurrencySymbol(?string $value);
+
+    public function getLscPlacementOfCurrSymbol() : ?int;
+
+    public function setLscPlacementOfCurrSymbol(?int $value);
+
+    public function getLscFiscalPrinterId() : ?int;
+
+    public function setLscFiscalPrinterId(?int $value);
+
+    public function getSystemid() : ?string;
+
+    public function setSystemid(?string $value);
+
+    public function getSystemcreatedat() : ?string;
+
+    public function setSystemcreatedat(?string $value);
+
+    public function getSystemcreatedby() : ?string;
+
+    public function setSystemcreatedby(?string $value);
+
+    public function getSystemmodifiedat() : ?string;
+
+    public function setSystemmodifiedat(?string $value);
+
+    public function getSystemmodifiedby() : ?string;
+
+    public function setSystemmodifiedby(?string $value);
+
+    public function setProcessed(?bool $processed);
+
+    public function getProcessed() : ?bool;
+
+    public function setIsUpdated(?bool $is_updated);
+
+    public function getIsUpdated() : ?bool;
+
+    public function setIsFailed(?bool $is_failed);
+
+    public function getIsFailed() : ?bool;
+
+    public function setCreatedAt(?string $created_at);
+
+    public function getCreatedAt() : ?string;
+
+    public function setUpdatedAt(?string $updated_at);
+
+    public function getUpdatedAt() : ?string;
+
+    public function setIdentityValue(?string $identity_value);
+
+    public function getIdentityValue() : ?string;
+
+    public function setChecksum(?string $checksum);
+
+    public function getChecksum() : ?string;
+
+    public function setProcessedAt(?string $processed_at);
+
+    public function getProcessedAt() : ?string;
 }
 

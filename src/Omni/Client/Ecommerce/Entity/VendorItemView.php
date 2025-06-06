@@ -15,33 +15,44 @@ class VendorItemView extends AbstractModel
     public const VENDORNO = 'VendorNo';
     public const VENDORITEMNO = 'VendorItemNo';
 
+    public static array $dbColumnsMapping = [
+	self::ITEMNO => 'itemno',
+	self::VENDORNO => 'vendorno',
+	self::VENDORITEMNO => 'vendoritemno',
+    ];
 
-    public function getItemNo(): ?string
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
+
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEMNO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemno(?string $value)
     {
         return $this->setData(self::ITEMNO, $value);
     }
 
-    public function getVendorNo(): ?string
+    public function getVendorno(): ?string
     {
         return $this->getData(self::VENDORNO);
     }
 
-    public function setVendorNo(string $value)
+    public function setVendorno(?string $value)
     {
         return $this->setData(self::VENDORNO, $value);
     }
 
-    public function getVendorItemNo(): ?string
+    public function getVendoritemno(): ?string
     {
         return $this->getData(self::VENDORITEMNO);
     }
 
-    public function setVendorItemNo(string $value)
+    public function setVendoritemno(?string $value)
     {
         return $this->setData(self::VENDORITEMNO, $value);
     }

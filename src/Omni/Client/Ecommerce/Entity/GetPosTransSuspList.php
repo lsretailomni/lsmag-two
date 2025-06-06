@@ -20,58 +20,58 @@ class GetPosTransSuspList extends \Magento\Catalog\Model\AbstractModel implement
 
     public const STORE_NO = 'storeNo';
 
-    public const GET_POS_TRANS_SUSP_LIST_X_M_L = 'getPosTransSuspListXML';
+    public const GET_POS_TRANS_SUSP_LIST_XML = 'getPosTransSuspListXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -80,18 +80,18 @@ class GetPosTransSuspList extends \Magento\Catalog\Model\AbstractModel implement
      * @param RootGetPosTransSuspList $getPosTransSuspListXML
      * @return $this
      */
-    public function setGetPosTransSuspListXML($getPosTransSuspListXML)
+    public function setGetpostranssusplistxml($getPosTransSuspListXML)
     {
-        $this->setData(self::GET_POS_TRANS_SUSP_LIST_X_M_L, $getPosTransSuspListXML);
+        $this->setData(self::GET_POS_TRANS_SUSP_LIST_XML, $getPosTransSuspListXML);
         return $this;
     }
 
     /**
      * @return RootGetPosTransSuspList
      */
-    public function getGetPosTransSuspListXML()
+    public function getGetpostranssusplistxml()
     {
-        return $this->getData(self::GET_POS_TRANS_SUSP_LIST_X_M_L);
+        return $this->getData(self::GET_POS_TRANS_SUSP_LIST_XML);
     }
 }
 

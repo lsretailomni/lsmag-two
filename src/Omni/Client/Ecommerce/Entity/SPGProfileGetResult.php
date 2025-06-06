@@ -14,11 +14,11 @@ class SPGProfileGetResult extends \Magento\Catalog\Model\AbstractModel implement
 {
     public const CLASS_NAME = 'SPGProfileGet_Result';
 
-    public const S_P_G_PROFILE_GET_X_M_L = 'sPGProfileGetXML';
+    public const SPGPROFILE_GET_XML = 'sPGProfileGetXML';
 
-    public const S_P_G_PROFILE_VALID_TENDER_X_M_L = 'sPGProfileValidTenderXML';
+    public const SPGPROFILE_VALID_TENDER_XML = 'sPGProfileValidTenderXML';
 
-    public const S_P_G_PROFILE_FEATURE_FLAGS_X_M_L = 'sPGProfileFeatureFlagsXML';
+    public const SPGPROFILE_FEATURE_FLAGS_XML = 'sPGProfileFeatureFlagsXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
@@ -28,88 +28,88 @@ class SPGProfileGetResult extends \Magento\Catalog\Model\AbstractModel implement
      * @param RootSPGProfileGet $sPGProfileGetXML
      * @return $this
      */
-    public function setSPGProfileGetXML($sPGProfileGetXML)
+    public function setSpgprofilegetxml($sPGProfileGetXML)
     {
-        $this->setData(self::S_P_G_PROFILE_GET_X_M_L, $sPGProfileGetXML);
+        $this->setData(self::SPGPROFILE_GET_XML, $sPGProfileGetXML);
         return $this;
     }
 
     /**
      * @return RootSPGProfileGet
      */
-    public function getSPGProfileGetXML()
+    public function getSpgprofilegetxml()
     {
-        return $this->getData(self::S_P_G_PROFILE_GET_X_M_L);
+        return $this->getData(self::SPGPROFILE_GET_XML);
     }
 
     /**
      * @param RootSPGProfileTender $sPGProfileValidTenderXML
      * @return $this
      */
-    public function setSPGProfileValidTenderXML($sPGProfileValidTenderXML)
+    public function setSpgprofilevalidtenderxml($sPGProfileValidTenderXML)
     {
-        $this->setData(self::S_P_G_PROFILE_VALID_TENDER_X_M_L, $sPGProfileValidTenderXML);
+        $this->setData(self::SPGPROFILE_VALID_TENDER_XML, $sPGProfileValidTenderXML);
         return $this;
     }
 
     /**
      * @return RootSPGProfileTender
      */
-    public function getSPGProfileValidTenderXML()
+    public function getSpgprofilevalidtenderxml()
     {
-        return $this->getData(self::S_P_G_PROFILE_VALID_TENDER_X_M_L);
+        return $this->getData(self::SPGPROFILE_VALID_TENDER_XML);
     }
 
     /**
      * @param RootSPGProfileFlags $sPGProfileFeatureFlagsXML
      * @return $this
      */
-    public function setSPGProfileFeatureFlagsXML($sPGProfileFeatureFlagsXML)
+    public function setSpgprofilefeatureflagsxml($sPGProfileFeatureFlagsXML)
     {
-        $this->setData(self::S_P_G_PROFILE_FEATURE_FLAGS_X_M_L, $sPGProfileFeatureFlagsXML);
+        $this->setData(self::SPGPROFILE_FEATURE_FLAGS_XML, $sPGProfileFeatureFlagsXML);
         return $this;
     }
 
     /**
      * @return RootSPGProfileFlags
      */
-    public function getSPGProfileFeatureFlagsXML()
+    public function getSpgprofilefeatureflagsxml()
     {
-        return $this->getData(self::S_P_G_PROFILE_FEATURE_FLAGS_X_M_L);
+        return $this->getData(self::SPGPROFILE_FEATURE_FLAGS_XML);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

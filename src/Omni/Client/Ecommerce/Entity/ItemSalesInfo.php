@@ -22,76 +22,76 @@ class ItemSalesInfo extends \Magento\Catalog\Model\AbstractModel implements Requ
 
     public const LOCATION_CODE = 'locationCode';
 
-    public const ITEM_SALES_INFO_X_M_L = 'itemSalesInfoXML';
+    public const ITEM_SALES_INFO_XML = 'itemSalesInfoXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $itemNo
+     * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo($itemNo)
+    public function setItemno(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $locationCode
+     * @param ?string $locationCode
      * @return $this
      */
-    public function setLocationCode($locationCode)
+    public function setLocationcode(?string $locationCode)
     {
         $this->setData(self::LOCATION_CODE, $locationCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLocationCode()
+    public function getLocationcode() : ?string
     {
         return $this->getData(self::LOCATION_CODE);
     }
@@ -100,18 +100,18 @@ class ItemSalesInfo extends \Magento\Catalog\Model\AbstractModel implements Requ
      * @param RootGetItemSalesInfo $itemSalesInfoXML
      * @return $this
      */
-    public function setItemSalesInfoXML($itemSalesInfoXML)
+    public function setItemsalesinfoxml($itemSalesInfoXML)
     {
-        $this->setData(self::ITEM_SALES_INFO_X_M_L, $itemSalesInfoXML);
+        $this->setData(self::ITEM_SALES_INFO_XML, $itemSalesInfoXML);
         return $this;
     }
 
     /**
      * @return RootGetItemSalesInfo
      */
-    public function getItemSalesInfoXML()
+    public function getItemsalesinfoxml()
     {
-        return $this->getData(self::ITEM_SALES_INFO_X_M_L);
+        return $this->getData(self::ITEM_SALES_INFO_XML);
     }
 }
 

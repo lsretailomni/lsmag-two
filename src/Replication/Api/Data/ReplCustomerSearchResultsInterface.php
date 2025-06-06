@@ -13,7 +13,6 @@ use Magento\Framework\Api\SearchResultsInterface;
 interface ReplCustomerSearchResultsInterface extends SearchResultsInterface
 {
     public function getItems();
-
     public function setItems(array $items);
 }
 

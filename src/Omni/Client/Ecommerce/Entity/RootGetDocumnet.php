@@ -12,44 +12,44 @@ class RootGetDocumnet extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetDocumnet';
 
-    public const GET_DOCUMENT_P_O_S_TRANS_INV_HEADER = 'GetDocumentPOSTransInvHeader';
+    public const GET_DOCUMENT_POSTRANS_INV_HEADER = 'GetDocumentPOSTransInvHeader';
 
-    public const P_O_S_TRANS_INV_LINES = 'POSTrans.Inv.Lines';
+    public const POSTRANS_INV_LINES = 'POSTrans.Inv.Lines';
 
     /**
      * @param GetDocumentPOSTransInvHeader $GetDocumentPOSTransInvHeader
      * @return $this
      */
-    public function setGetDocumentPOSTransInvHeader($GetDocumentPOSTransInvHeader)
+    public function setGetdocumentpostransinvheader($GetDocumentPOSTransInvHeader)
     {
-        $this->setData(self::GET_DOCUMENT_P_O_S_TRANS_INV_HEADER, $GetDocumentPOSTransInvHeader);
+        $this->setData(self::GET_DOCUMENT_POSTRANS_INV_HEADER, $GetDocumentPOSTransInvHeader);
         return $this;
     }
 
     /**
      * @return GetDocumentPOSTransInvHeader
      */
-    public function getGetDocumentPOSTransInvHeader()
+    public function getGetdocumentpostransinvheader()
     {
-        return $this->getData(self::GET_DOCUMENT_P_O_S_TRANS_INV_HEADER);
+        return $this->getData(self::GET_DOCUMENT_POSTRANS_INV_HEADER);
     }
 
     /**
      * @param POSTrans.Inv.Lines $POSTransInvLines
      * @return $this
      */
-    public function setPOSTransInvLines($POSTransInvLines)
+    public function setPostransInvLines($POSTransInvLines)
     {
-        $this->setData(self::P_O_S_TRANS_INV_LINES, $POSTransInvLines);
+        $this->setData(self::POSTRANS_INV_LINES, $POSTransInvLines);
         return $this;
     }
 
     /**
      * @return POSTrans.Inv.Lines
      */
-    public function getPOSTransInvLines()
+    public function getPostransInvLines()
     {
-        return $this->getData(self::P_O_S_TRANS_INV_LINES);
+        return $this->getData(self::POSTRANS_INV_LINES);
     }
 }
 

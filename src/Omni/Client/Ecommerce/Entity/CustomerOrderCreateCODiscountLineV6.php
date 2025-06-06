@@ -12,7 +12,7 @@ class CustomerOrderCreateCODiscountLineV6 extends \Magento\Catalog\Model\Abstrac
 {
     public const CLASS_NAME = 'CustomerOrderCreateCODiscountLineV6';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const LINE_NO = 'LineNo';
 
@@ -37,28 +37,28 @@ class CustomerOrderCreateCODiscountLineV6 extends \Magento\Catalog\Model\Abstrac
     public const SEQUENCE_FUNCTION = 'SequenceFunction';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -67,7 +67,7 @@ class CustomerOrderCreateCODiscountLineV6 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -76,7 +76,7 @@ class CustomerOrderCreateCODiscountLineV6 extends \Magento\Catalog\Model\Abstrac
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -85,7 +85,7 @@ class CustomerOrderCreateCODiscountLineV6 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
@@ -94,7 +94,7 @@ class CustomerOrderCreateCODiscountLineV6 extends \Magento\Catalog\Model\Abstrac
      * @param int $DiscountType
      * @return $this
      */
-    public function setDiscountType($DiscountType)
+    public function setDiscounttype($DiscountType)
     {
         $this->setData(self::DISCOUNT_TYPE, $DiscountType);
         return $this;
@@ -103,25 +103,25 @@ class CustomerOrderCreateCODiscountLineV6 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return int
      */
-    public function getDiscountType()
+    public function getDiscounttype()
     {
         return $this->getData(self::DISCOUNT_TYPE);
     }
 
     /**
-     * @param string $OfferNo
+     * @param ?string $OfferNo
      * @return $this
      */
-    public function setOfferNo($OfferNo)
+    public function setOfferno(?string $OfferNo)
     {
         $this->setData(self::OFFER_NO, $OfferNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOfferNo()
+    public function getOfferno() : ?string
     {
         return $this->getData(self::OFFER_NO);
     }
@@ -130,7 +130,7 @@ class CustomerOrderCreateCODiscountLineV6 extends \Magento\Catalog\Model\Abstrac
      * @param int $PeriodicDiscType
      * @return $this
      */
-    public function setPeriodicDiscType($PeriodicDiscType)
+    public function setPeriodicdisctype($PeriodicDiscType)
     {
         $this->setData(self::PERIODIC_DISC_TYPE, $PeriodicDiscType);
         return $this;
@@ -139,115 +139,115 @@ class CustomerOrderCreateCODiscountLineV6 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return int
      */
-    public function getPeriodicDiscType()
+    public function getPeriodicdisctype()
     {
         return $this->getData(self::PERIODIC_DISC_TYPE);
     }
 
     /**
-     * @param string $PeriodicDiscGroup
+     * @param ?string $PeriodicDiscGroup
      * @return $this
      */
-    public function setPeriodicDiscGroup($PeriodicDiscGroup)
+    public function setPeriodicdiscgroup(?string $PeriodicDiscGroup)
     {
         $this->setData(self::PERIODIC_DISC_GROUP, $PeriodicDiscGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPeriodicDiscGroup()
+    public function getPeriodicdiscgroup() : ?string
     {
         return $this->getData(self::PERIODIC_DISC_GROUP);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param float $DiscountPercent
+     * @param ?float $DiscountPercent
      * @return $this
      */
-    public function setDiscountPercent($DiscountPercent)
+    public function setDiscountpercent(?float $DiscountPercent)
     {
         $this->setData(self::DISCOUNT_PERCENT, $DiscountPercent);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountPercent()
+    public function getDiscountpercent() : ?float
     {
         return $this->getData(self::DISCOUNT_PERCENT);
     }
 
     /**
-     * @param float $DiscountAmount
+     * @param ?float $DiscountAmount
      * @return $this
      */
-    public function setDiscountAmount($DiscountAmount)
+    public function setDiscountamount(?float $DiscountAmount)
     {
         $this->setData(self::DISCOUNT_AMOUNT, $DiscountAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountAmount()
+    public function getDiscountamount() : ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
     /**
-     * @param string $SequenceCode
+     * @param ?string $SequenceCode
      * @return $this
      */
-    public function setSequenceCode($SequenceCode)
+    public function setSequencecode(?string $SequenceCode)
     {
         $this->setData(self::SEQUENCE_CODE, $SequenceCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSequenceCode()
+    public function getSequencecode() : ?string
     {
         return $this->getData(self::SEQUENCE_CODE);
     }
 
     /**
-     * @param string $SequenceFunction
+     * @param ?string $SequenceFunction
      * @return $this
      */
-    public function setSequenceFunction($SequenceFunction)
+    public function setSequencefunction(?string $SequenceFunction)
     {
         $this->setData(self::SEQUENCE_FUNCTION, $SequenceFunction);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSequenceFunction()
+    public function getSequencefunction() : ?string
     {
         return $this->getData(self::SEQUENCE_FUNCTION);
     }

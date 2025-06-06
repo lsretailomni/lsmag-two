@@ -78,7 +78,7 @@ class NotificationsUpdateStatus extends AbstractOperation
     /**
      * @return NotificationsUpdateStatusRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new NotificationsUpdateStatusRequest();

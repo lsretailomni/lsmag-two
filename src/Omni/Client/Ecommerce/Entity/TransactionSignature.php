@@ -14,7 +14,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const TRANSACTION_NO = 'TransactionNo';
 
@@ -45,46 +45,46 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -93,97 +93,97 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
 
     /**
-     * @param string $TransactionType
+     * @param ?string $TransactionType
      * @return $this
      */
-    public function setTransactionType($TransactionType)
+    public function setTransactiontype(?string $TransactionType)
     {
         $this->setData(self::TRANSACTION_TYPE, $TransactionType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionType()
+    public function getTransactiontype() : ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param date $TransDate
+     * @param ?string $TransDate
      * @return $this
      */
-    public function setTransDate($TransDate)
+    public function setTransdate(?string $TransDate)
     {
         $this->setData(self::TRANS_DATE, $TransDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getTransDate()
+    public function getTransdate() : ?string
     {
         return $this->getData(self::TRANS_DATE);
     }
 
     /**
-     * @param time $TransTime
+     * @param ?string $TransTime
      * @return $this
      */
-    public function setTransTime($TransTime)
+    public function setTranstime(?string $TransTime)
     {
         $this->setData(self::TRANS_TIME, $TransTime);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTransTime()
+    public function getTranstime() : ?string
     {
         return $this->getData(self::TRANS_TIME);
     }
 
     /**
-     * @param boolean $CreditSale
+     * @param ?bool $CreditSale
      * @return $this
      */
-    public function setCreditSale($CreditSale)
+    public function setCreditsale(?bool $CreditSale)
     {
         $this->setData(self::CREDIT_SALE, $CreditSale);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getCreditSale()
+    public function getCreditsale() : ?bool
     {
         return $this->getData(self::CREDIT_SALE);
     }
@@ -192,7 +192,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
      * @param int $CreditNo
      * @return $this
      */
-    public function setCreditNo($CreditNo)
+    public function setCreditno($CreditNo)
     {
         $this->setData(self::CREDIT_NO, $CreditNo);
         return $this;
@@ -201,25 +201,25 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getCreditNo()
+    public function getCreditno()
     {
         return $this->getData(self::CREDIT_NO);
     }
 
     /**
-     * @param boolean $Training
+     * @param ?bool $Training
      * @return $this
      */
-    public function setTraining($Training)
+    public function setTraining(?bool $Training)
     {
         $this->setData(self::TRAINING, $Training);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getTraining()
+    public function getTraining() : ?bool
     {
         return $this->getData(self::TRAINING);
     }
@@ -228,7 +228,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
      * @param int $TrainingNo
      * @return $this
      */
-    public function setTrainingNo($TrainingNo)
+    public function setTrainingno($TrainingNo)
     {
         $this->setData(self::TRAINING_NO, $TrainingNo);
         return $this;
@@ -237,79 +237,79 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTrainingNo()
+    public function getTrainingno()
     {
         return $this->getData(self::TRAINING_NO);
     }
 
     /**
-     * @param float $NetAmount
+     * @param ?float $NetAmount
      * @return $this
      */
-    public function setNetAmount($NetAmount)
+    public function setNetamount(?float $NetAmount)
     {
         $this->setData(self::NET_AMOUNT, $NetAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getNetAmount()
+    public function getNetamount() : ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
 
     /**
-     * @param float $Amount
+     * @param ?float $Amount
      * @return $this
      */
-    public function setAmount($Amount)
+    public function setAmount(?float $Amount)
     {
         $this->setData(self::AMOUNT, $Amount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmount()
+    public function getAmount() : ?float
     {
         return $this->getData(self::AMOUNT);
     }
 
     /**
-     * @param string $PrivateKeyVersion
+     * @param ?string $PrivateKeyVersion
      * @return $this
      */
-    public function setPrivateKeyVersion($PrivateKeyVersion)
+    public function setPrivatekeyversion(?string $PrivateKeyVersion)
     {
         $this->setData(self::PRIVATE_KEY_VERSION, $PrivateKeyVersion);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPrivateKeyVersion()
+    public function getPrivatekeyversion() : ?string
     {
         return $this->getData(self::PRIVATE_KEY_VERSION);
     }
 
     /**
-     * @param string $Signature
+     * @param ?string $Signature
      * @return $this
      */
-    public function setSignature($Signature)
+    public function setSignature(?string $Signature)
     {
         $this->setData(self::SIGNATURE, $Signature);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSignature()
+    public function getSignature() : ?string
     {
         return $this->getData(self::SIGNATURE);
     }
@@ -318,7 +318,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -327,7 +327,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }

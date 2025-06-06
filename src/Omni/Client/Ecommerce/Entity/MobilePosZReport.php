@@ -22,156 +22,156 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
 
     public const POS_TERMINAL = 'posTerminal';
 
-    public const STAFF_I_D = 'staffID';
+    public const STAFF_ID = 'staffID';
 
-    public const X_Z_REPORT = 'xZReport';
+    public const XZREPORT = 'xZReport';
 
-    public const Z_REPORT_I_D = 'zReportID';
+    public const ZREPORT_ID = 'zReportID';
 
-    public const MOBILE_POS_Z_REPORT_X_M_L = 'mobilePosZReportXML';
+    public const MOBILE_POS_ZREPORT_XML = 'mobilePosZReportXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $posTerminal
+     * @param ?string $posTerminal
      * @return $this
      */
-    public function setPosTerminal($posTerminal)
+    public function setPosterminal(?string $posTerminal)
     {
         $this->setData(self::POS_TERMINAL, $posTerminal);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPosTerminal()
+    public function getPosterminal() : ?string
     {
         return $this->getData(self::POS_TERMINAL);
     }
 
     /**
-     * @param string $staffID
+     * @param ?string $staffID
      * @return $this
      */
-    public function setStaffID($staffID)
+    public function setStaffid(?string $staffID)
     {
-        $this->setData(self::STAFF_I_D, $staffID);
+        $this->setData(self::STAFF_ID, $staffID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffID()
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
-     * @param string $xZReport
+     * @param ?string $xZReport
      * @return $this
      */
-    public function setXZReport($xZReport)
+    public function setXzreport(?string $xZReport)
     {
-        $this->setData(self::X_Z_REPORT, $xZReport);
+        $this->setData(self::XZREPORT, $xZReport);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getXZReport()
+    public function getXzreport() : ?string
     {
-        return $this->getData(self::X_Z_REPORT);
+        return $this->getData(self::XZREPORT);
     }
 
     /**
-     * @param string $zReportID
+     * @param ?string $zReportID
      * @return $this
      */
-    public function setZReportID($zReportID)
+    public function setZreportid(?string $zReportID)
     {
-        $this->setData(self::Z_REPORT_I_D, $zReportID);
+        $this->setData(self::ZREPORT_ID, $zReportID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getZReportID()
+    public function getZreportid() : ?string
     {
-        return $this->getData(self::Z_REPORT_I_D);
+        return $this->getData(self::ZREPORT_ID);
     }
 
     /**
      * @param RootMobilePosZReport $mobilePosZReportXML
      * @return $this
      */
-    public function setMobilePosZReportXML($mobilePosZReportXML)
+    public function setMobileposzreportxml($mobilePosZReportXML)
     {
-        $this->setData(self::MOBILE_POS_Z_REPORT_X_M_L, $mobilePosZReportXML);
+        $this->setData(self::MOBILE_POS_ZREPORT_XML, $mobilePosZReportXML);
         return $this;
     }
 
     /**
      * @return RootMobilePosZReport
      */
-    public function getMobilePosZReportXML()
+    public function getMobileposzreportxml()
     {
-        return $this->getData(self::MOBILE_POS_Z_REPORT_X_M_L);
+        return $this->getData(self::MOBILE_POS_ZREPORT_XML);
     }
 }
 

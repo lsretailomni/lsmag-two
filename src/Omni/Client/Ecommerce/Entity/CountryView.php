@@ -30,13 +30,39 @@ class CountryView extends AbstractModel
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
     public const TAXPOSTGROUP = 'TaxPostGroup';
 
+    public static array $dbColumnsMapping = [
+	self::CODE => 'code',
+	self::NAME => 'name',
+	self::ISO_CODE => 'iso_code',
+	self::ISO_NUMERIC_CODE => 'iso_numeric_code',
+	self::EU_COUNTRYREGION_CODE => 'eu_countryregion_code',
+	self::INTRASTAT_CODE => 'intrastat_code',
+	self::ADDRESS_FORMAT => 'address_format',
+	self::CONTACT_ADDRESS_FORMAT => 'contact_address_format',
+	self::VAT_SCHEME => 'vat_scheme',
+	self::LAST_MODIFIED_DATE_TIME => 'last_modified_date_time',
+	self::COUNTY_NAME => 'county_name',
+	self::LSC_WEB_STORE_CUSTOMER_NO => 'lsc_web_store_customer_no',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+	self::TAXPOSTGROUP => 'taxpostgroup',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -46,37 +72,37 @@ class CountryView extends AbstractModel
         return $this->getData(self::NAME);
     }
 
-    public function setName(string $value)
+    public function setName(?string $value)
     {
         return $this->setData(self::NAME, $value);
     }
 
-    public function getISOCode(): ?string
+    public function getIsoCode(): ?string
     {
         return $this->getData(self::ISO_CODE);
     }
 
-    public function setISOCode(string $value)
+    public function setIsoCode(?string $value)
     {
         return $this->setData(self::ISO_CODE, $value);
     }
 
-    public function getISONumericCode(): ?string
+    public function getIsoNumericCode(): ?string
     {
         return $this->getData(self::ISO_NUMERIC_CODE);
     }
 
-    public function setISONumericCode(string $value)
+    public function setIsoNumericCode(?string $value)
     {
         return $this->setData(self::ISO_NUMERIC_CODE, $value);
     }
 
-    public function getEUCountryRegionCode(): ?string
+    public function getEuCountryRegionCode(): ?string
     {
         return $this->getData(self::EU_COUNTRYREGION_CODE);
     }
 
-    public function setEUCountryRegionCode(string $value)
+    public function setEuCountryRegionCode(?string $value)
     {
         return $this->setData(self::EU_COUNTRYREGION_CODE, $value);
     }
@@ -86,47 +112,47 @@ class CountryView extends AbstractModel
         return $this->getData(self::INTRASTAT_CODE);
     }
 
-    public function setIntrastatCode(string $value)
+    public function setIntrastatCode(?string $value)
     {
         return $this->setData(self::INTRASTAT_CODE, $value);
     }
 
-    public function getAddressFormat(): ?string
+    public function getAddressFormat(): ?int
     {
         return $this->getData(self::ADDRESS_FORMAT);
     }
 
-    public function setAddressFormat(string $value)
+    public function setAddressFormat(?int $value)
     {
         return $this->setData(self::ADDRESS_FORMAT, $value);
     }
 
-    public function getContactAddressFormat(): ?string
+    public function getContactAddressFormat(): ?int
     {
         return $this->getData(self::CONTACT_ADDRESS_FORMAT);
     }
 
-    public function setContactAddressFormat(string $value)
+    public function setContactAddressFormat(?int $value)
     {
         return $this->setData(self::CONTACT_ADDRESS_FORMAT, $value);
     }
 
-    public function getVATScheme(): ?string
+    public function getVatScheme(): ?string
     {
         return $this->getData(self::VAT_SCHEME);
     }
 
-    public function setVATScheme(string $value)
+    public function setVatScheme(?string $value)
     {
         return $this->setData(self::VAT_SCHEME, $value);
     }
 
-    public function getLastModifiedDateTime(): ?\DateTime
+    public function getLastModifiedDateTime(): ?string
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
     }
 
-    public function setLastModifiedDateTime(\DateTime $value)
+    public function setLastModifiedDateTime(?string $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
@@ -136,77 +162,77 @@ class CountryView extends AbstractModel
         return $this->getData(self::COUNTY_NAME);
     }
 
-    public function setCountyName(string $value)
+    public function setCountyName(?string $value)
     {
         return $this->setData(self::COUNTY_NAME, $value);
     }
 
-    public function getLSCWebStoreCustomerNo(): ?string
+    public function getLscWebStoreCustomerNo(): ?string
     {
         return $this->getData(self::LSC_WEB_STORE_CUSTOMER_NO);
     }
 
-    public function setLSCWebStoreCustomerNo(string $value)
+    public function setLscWebStoreCustomerNo(?string $value)
     {
         return $this->setData(self::LSC_WEB_STORE_CUSTOMER_NO, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
-    public function getTaxPostGroup(): ?string
+    public function getTaxpostgroup(): ?string
     {
         return $this->getData(self::TAXPOSTGROUP);
     }
 
-    public function setTaxPostGroup(string $value)
+    public function setTaxpostgroup(?string $value)
     {
         return $this->setData(self::TAXPOSTGROUP, $value);
     }

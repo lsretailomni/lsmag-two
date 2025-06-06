@@ -22,13 +22,31 @@ class LSCMemberAccount extends AbstractModel
     public const STATUS = 'Status';
     public const ACCOUNT_TYPE = 'Account Type';
 
+    public static array $dbColumnsMapping = [
+	self::NO => 'no',
+	self::BLOCKED => 'blocked',
+	self::REASON_BLOCKED => 'reason_blocked',
+	self::DATE_BLOCKED => 'date_blocked',
+	self::BLOCKED_BY => 'blocked_by',
+	self::LINKED_TO_CUSTOMER_NO => 'linked_to_customer_no',
+	self::CLUB_CODE => 'club_code',
+	self::SCHEME_CODE => 'scheme_code',
+	self::STATUS => 'status',
+	self::ACCOUNT_TYPE => 'account_type',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getNo(): ?string
     {
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value)
+    public function setNo(?string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -38,7 +56,7 @@ class LSCMemberAccount extends AbstractModel
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(bool $value)
+    public function setBlocked(?bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
@@ -48,7 +66,7 @@ class LSCMemberAccount extends AbstractModel
         return $this->getData(self::REASON_BLOCKED);
     }
 
-    public function setReasonBlocked(string $value)
+    public function setReasonBlocked(?string $value)
     {
         return $this->setData(self::REASON_BLOCKED, $value);
     }
@@ -58,7 +76,7 @@ class LSCMemberAccount extends AbstractModel
         return $this->getData(self::DATE_BLOCKED);
     }
 
-    public function setDateBlocked(string $value)
+    public function setDateBlocked(?string $value)
     {
         return $this->setData(self::DATE_BLOCKED, $value);
     }
@@ -68,7 +86,7 @@ class LSCMemberAccount extends AbstractModel
         return $this->getData(self::BLOCKED_BY);
     }
 
-    public function setBlockedBy(string $value)
+    public function setBlockedBy(?string $value)
     {
         return $this->setData(self::BLOCKED_BY, $value);
     }
@@ -78,7 +96,7 @@ class LSCMemberAccount extends AbstractModel
         return $this->getData(self::LINKED_TO_CUSTOMER_NO);
     }
 
-    public function setLinkedToCustomerNo(string $value)
+    public function setLinkedToCustomerNo(?string $value)
     {
         return $this->setData(self::LINKED_TO_CUSTOMER_NO, $value);
     }
@@ -88,7 +106,7 @@ class LSCMemberAccount extends AbstractModel
         return $this->getData(self::CLUB_CODE);
     }
 
-    public function setClubCode(string $value)
+    public function setClubCode(?string $value)
     {
         return $this->setData(self::CLUB_CODE, $value);
     }
@@ -98,27 +116,27 @@ class LSCMemberAccount extends AbstractModel
         return $this->getData(self::SCHEME_CODE);
     }
 
-    public function setSchemeCode(string $value)
+    public function setSchemeCode(?string $value)
     {
         return $this->setData(self::SCHEME_CODE, $value);
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(string $value)
+    public function setStatus(?int $value)
     {
         return $this->setData(self::STATUS, $value);
     }
 
-    public function getAccountType(): ?string
+    public function getAccountType(): ?int
     {
         return $this->getData(self::ACCOUNT_TYPE);
     }
 
-    public function setAccountType(string $value)
+    public function setAccountType(?int $value)
     {
         return $this->setData(self::ACCOUNT_TYPE, $value);
     }

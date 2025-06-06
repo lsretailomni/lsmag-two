@@ -14,7 +14,7 @@ class ReplItemCategory extends AbstractDb
 {
     public function _construct()
     {
-        $this->_init( 'ls_replication_repl_item_category', 'repl_item_category_id' );
+        $this->_init('ls_replication_repl_item_category', 'repl_item_category_id');
     }
 }
 

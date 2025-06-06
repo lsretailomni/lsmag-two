@@ -18,40 +18,40 @@ class GetActiveDocValuesResult extends \Magento\Catalog\Model\AbstractModel impl
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_ACTIVE_DOC_VALUES_X_M_L = 'getActiveDocValuesXML';
+    public const GET_ACTIVE_DOC_VALUES_XML = 'getActiveDocValuesXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetActiveDocValuesResult extends \Magento\Catalog\Model\AbstractModel impl
      * @param RootGetActiveDocValues $getActiveDocValuesXML
      * @return $this
      */
-    public function setGetActiveDocValuesXML($getActiveDocValuesXML)
+    public function setGetactivedocvaluesxml($getActiveDocValuesXML)
     {
-        $this->setData(self::GET_ACTIVE_DOC_VALUES_X_M_L, $getActiveDocValuesXML);
+        $this->setData(self::GET_ACTIVE_DOC_VALUES_XML, $getActiveDocValuesXML);
         return $this;
     }
 
     /**
      * @return RootGetActiveDocValues
      */
-    public function getGetActiveDocValuesXML()
+    public function getGetactivedocvaluesxml()
     {
-        return $this->getData(self::GET_ACTIVE_DOC_VALUES_X_M_L);
+        return $this->getData(self::GET_ACTIVE_DOC_VALUES_XML);
     }
 
     /**

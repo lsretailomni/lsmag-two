@@ -14,7 +14,7 @@ class SendASNScannedLines extends \Magento\Catalog\Model\AbstractModel implement
 {
     public const CLASS_NAME = 'SendASNScannedLines';
 
-    public const SEND_A_S_N_SCANNED_LINES_X_M_L = 'sendASNScannedLinesXML';
+    public const SEND_ASNSCANNED_LINES_XML = 'sendASNScannedLinesXML';
 
     public const RESULT = 'result';
 
@@ -26,70 +26,70 @@ class SendASNScannedLines extends \Magento\Catalog\Model\AbstractModel implement
      * @param RootSendASNScannedLines $sendASNScannedLinesXML
      * @return $this
      */
-    public function setSendASNScannedLinesXML($sendASNScannedLinesXML)
+    public function setSendasnscannedlinesxml($sendASNScannedLinesXML)
     {
-        $this->setData(self::SEND_A_S_N_SCANNED_LINES_X_M_L, $sendASNScannedLinesXML);
+        $this->setData(self::SEND_ASNSCANNED_LINES_XML, $sendASNScannedLinesXML);
         return $this;
     }
 
     /**
      * @return RootSendASNScannedLines
      */
-    public function getSendASNScannedLinesXML()
+    public function getSendasnscannedlinesxml()
     {
-        return $this->getData(self::SEND_A_S_N_SCANNED_LINES_X_M_L);
+        return $this->getData(self::SEND_ASNSCANNED_LINES_XML);
     }
 
     /**
-     * @param string $result
+     * @param ?string $result
      * @return $this
      */
-    public function setResult($result)
+    public function setResult(?string $result)
     {
         $this->setData(self::RESULT, $result);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResult()
+    public function getResult() : ?string
     {
         return $this->getData(self::RESULT);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

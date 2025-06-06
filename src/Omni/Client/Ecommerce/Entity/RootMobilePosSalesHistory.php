@@ -18,7 +18,7 @@ class RootMobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel
      * @param MobileTransactionLine $MobileTransactionLine
      * @return $this
      */
-    public function setMobileTransactionLine($MobileTransactionLine)
+    public function setMobiletransactionline($MobileTransactionLine)
     {
         $this->setData(self::MOBILE_TRANSACTION_LINE, $MobileTransactionLine);
         return $this;
@@ -27,7 +27,7 @@ class RootMobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MobileTransactionLine
      */
-    public function getMobileTransactionLine()
+    public function getMobiletransactionline()
     {
         return $this->getData(self::MOBILE_TRANSACTION_LINE);
     }

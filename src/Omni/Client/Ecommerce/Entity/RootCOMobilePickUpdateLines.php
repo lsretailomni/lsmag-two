@@ -12,24 +12,24 @@ class RootCOMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCOMobilePickUpdateLines';
 
-    public const C_O_MOBILE_PICK_UPDATE_LINES = 'COMobilePickUpdateLines';
+    public const COMOBILE_PICK_UPDATE_LINES = 'COMobilePickUpdateLines';
 
     /**
      * @param COMobilePickUpdateLines $COMobilePickUpdateLines
      * @return $this
      */
-    public function setCOMobilePickUpdateLines($COMobilePickUpdateLines)
+    public function setComobilepickupdatelines($COMobilePickUpdateLines)
     {
-        $this->setData(self::C_O_MOBILE_PICK_UPDATE_LINES, $COMobilePickUpdateLines);
+        $this->setData(self::COMOBILE_PICK_UPDATE_LINES, $COMobilePickUpdateLines);
         return $this;
     }
 
     /**
      * @return COMobilePickUpdateLines
      */
-    public function getCOMobilePickUpdateLines()
+    public function getComobilepickupdatelines()
     {
-        return $this->getData(self::C_O_MOBILE_PICK_UPDATE_LINES);
+        return $this->getData(self::COMOBILE_PICK_UPDATE_LINES);
     }
 }
 

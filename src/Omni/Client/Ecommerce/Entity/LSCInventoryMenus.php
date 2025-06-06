@@ -24,13 +24,33 @@ class LSCInventoryMenus extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public static array $dbColumnsMapping = [
+	self::DEVICE_TYPE => 'device_type',
+	self::CODE => 'code',
+	self::STORE_NO => 'store_no',
+	self::DESCRIPTION => 'description',
+	self::TEXT => 'text',
+	self::BITMAP => 'bitmap',
+	self::MAIN_MENU => 'main_menu',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
 
-    public function getDeviceType(): ?string
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
+
+    public function getDeviceType(): ?int
     {
         return $this->getData(self::DEVICE_TYPE);
     }
 
-    public function setDeviceType(string $value)
+    public function setDeviceType(?int $value)
     {
         return $this->setData(self::DEVICE_TYPE, $value);
     }
@@ -40,7 +60,7 @@ class LSCInventoryMenus extends AbstractModel
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -50,7 +70,7 @@ class LSCInventoryMenus extends AbstractModel
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -60,7 +80,7 @@ class LSCInventoryMenus extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -70,7 +90,7 @@ class LSCInventoryMenus extends AbstractModel
         return $this->getData(self::TEXT);
     }
 
-    public function setText(string $value)
+    public function setText(?string $value)
     {
         return $this->setData(self::TEXT, $value);
     }
@@ -80,7 +100,7 @@ class LSCInventoryMenus extends AbstractModel
         return $this->getData(self::BITMAP);
     }
 
-    public function setBitmap(string $value)
+    public function setBitmap(?string $value)
     {
         return $this->setData(self::BITMAP, $value);
     }
@@ -90,57 +110,57 @@ class LSCInventoryMenus extends AbstractModel
         return $this->getData(self::MAIN_MENU);
     }
 
-    public function setMainMenu(bool $value)
+    public function setMainMenu(?bool $value)
     {
         return $this->setData(self::MAIN_MENU, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

@@ -19,19 +19,19 @@ class AttributeOptionValueValSched extends \Magento\Catalog\Model\AbstractModel
     public const OPTION_VALUE = 'OptionValue';
 
     /**
-     * @param string $AttributeCode
+     * @param ?string $AttributeCode
      * @return $this
      */
-    public function setAttributeCode($AttributeCode)
+    public function setAttributecode(?string $AttributeCode)
     {
         $this->setData(self::ATTRIBUTE_CODE, $AttributeCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAttributeCode()
+    public function getAttributecode() : ?string
     {
         return $this->getData(self::ATTRIBUTE_CODE);
     }
@@ -55,19 +55,19 @@ class AttributeOptionValueValSched extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param string $OptionValue
+     * @param ?string $OptionValue
      * @return $this
      */
-    public function setOptionValue($OptionValue)
+    public function setOptionvalue(?string $OptionValue)
     {
         $this->setData(self::OPTION_VALUE, $OptionValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOptionValue()
+    public function getOptionvalue() : ?string
     {
         return $this->getData(self::OPTION_VALUE);
     }

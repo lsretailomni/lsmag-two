@@ -12,7 +12,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'ASNDeliveryDocument';
 
-    public const A_S_N_DOCUMENT_NO = 'ASNDocumentNo';
+    public const ASNDOCUMENT_NO = 'ASNDocumentNo';
 
     public const VENDOR_NO = 'VendorNo';
 
@@ -27,127 +27,127 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     public const DISPATCH_NO = 'DispatchNo';
 
     /**
-     * @param string $ASNDocumentNo
+     * @param ?string $ASNDocumentNo
      * @return $this
      */
-    public function setASNDocumentNo($ASNDocumentNo)
+    public function setAsndocumentno(?string $ASNDocumentNo)
     {
-        $this->setData(self::A_S_N_DOCUMENT_NO, $ASNDocumentNo);
+        $this->setData(self::ASNDOCUMENT_NO, $ASNDocumentNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getASNDocumentNo()
+    public function getAsndocumentno() : ?string
     {
-        return $this->getData(self::A_S_N_DOCUMENT_NO);
+        return $this->getData(self::ASNDOCUMENT_NO);
     }
 
     /**
-     * @param string $VendorNo
+     * @param ?string $VendorNo
      * @return $this
      */
-    public function setVendorNo($VendorNo)
+    public function setVendorno(?string $VendorNo)
     {
         $this->setData(self::VENDOR_NO, $VendorNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVendorNo()
+    public function getVendorno() : ?string
     {
         return $this->getData(self::VENDOR_NO);
     }
 
     /**
-     * @param string $VendorName
+     * @param ?string $VendorName
      * @return $this
      */
-    public function setVendorName($VendorName)
+    public function setVendorname(?string $VendorName)
     {
         $this->setData(self::VENDOR_NAME, $VendorName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVendorName()
+    public function getVendorname() : ?string
     {
         return $this->getData(self::VENDOR_NAME);
     }
 
     /**
-     * @param string $TrustLevel
+     * @param ?string $TrustLevel
      * @return $this
      */
-    public function setTrustLevel($TrustLevel)
+    public function setTrustlevel(?string $TrustLevel)
     {
         $this->setData(self::TRUST_LEVEL, $TrustLevel);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTrustLevel()
+    public function getTrustlevel() : ?string
     {
         return $this->getData(self::TRUST_LEVEL);
     }
 
     /**
-     * @param string $EstimatedArrivalDate
+     * @param ?string $EstimatedArrivalDate
      * @return $this
      */
-    public function setEstimatedArrivalDate($EstimatedArrivalDate)
+    public function setEstimatedarrivaldate(?string $EstimatedArrivalDate)
     {
         $this->setData(self::ESTIMATED_ARRIVAL_DATE, $EstimatedArrivalDate);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEstimatedArrivalDate()
+    public function getEstimatedarrivaldate() : ?string
     {
         return $this->getData(self::ESTIMATED_ARRIVAL_DATE);
     }
 
     /**
-     * @param string $ManifestNo
+     * @param ?string $ManifestNo
      * @return $this
      */
-    public function setManifestNo($ManifestNo)
+    public function setManifestno(?string $ManifestNo)
     {
         $this->setData(self::MANIFEST_NO, $ManifestNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getManifestNo()
+    public function getManifestno() : ?string
     {
         return $this->getData(self::MANIFEST_NO);
     }
 
     /**
-     * @param string $DispatchNo
+     * @param ?string $DispatchNo
      * @return $this
      */
-    public function setDispatchNo($DispatchNo)
+    public function setDispatchno(?string $DispatchNo)
     {
         $this->setData(self::DISPATCH_NO, $DispatchNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDispatchNo()
+    public function getDispatchno() : ?string
     {
         return $this->getData(self::DISPATCH_NO);
     }

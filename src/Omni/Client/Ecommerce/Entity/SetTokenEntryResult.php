@@ -21,55 +21,55 @@ class SetTokenEntryResult extends \Magento\Catalog\Model\AbstractModel implement
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param boolean $result
+     * @param ?bool $result
      * @return $this
      */
-    public function setResult($result)
+    public function setResult(?bool $result)
     {
         $this->setData(self::RESULT, $result);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getResult()
+    public function getResult() : ?bool
     {
         return $this->getData(self::RESULT);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

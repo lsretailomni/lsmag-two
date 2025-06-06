@@ -29,145 +29,145 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
     public const ENDING_DATE = 'EndingDate';
 
     /**
-     * @param string $No
+     * @param ?string $No
      * @return $this
      */
-    public function setNo($No)
+    public function setNo(?string $No)
     {
         $this->setData(self::NO, $No);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNo()
+    public function getNo() : ?string
     {
         return $this->getData(self::NO);
     }
 
     /**
-     * @param string $DiscountType
+     * @param ?string $DiscountType
      * @return $this
      */
-    public function setDiscountType($DiscountType)
+    public function setDiscounttype(?string $DiscountType)
     {
         $this->setData(self::DISCOUNT_TYPE, $DiscountType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDiscountType()
+    public function getDiscounttype() : ?string
     {
         return $this->getData(self::DISCOUNT_TYPE);
     }
 
     /**
-     * @param string $DiscountNo
+     * @param ?string $DiscountNo
      * @return $this
      */
-    public function setDiscountNo($DiscountNo)
+    public function setDiscountno(?string $DiscountNo)
     {
         $this->setData(self::DISCOUNT_NO, $DiscountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDiscountNo()
+    public function getDiscountno() : ?string
     {
         return $this->getData(self::DISCOUNT_NO);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $OfferCategory
+     * @param ?string $OfferCategory
      * @return $this
      */
-    public function setOfferCategory($OfferCategory)
+    public function setOffercategory(?string $OfferCategory)
     {
         $this->setData(self::OFFER_CATEGORY, $OfferCategory);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOfferCategory()
+    public function getOffercategory() : ?string
     {
         return $this->getData(self::OFFER_CATEGORY);
     }
 
     /**
-     * @param string $PrimaryText
+     * @param ?string $PrimaryText
      * @return $this
      */
-    public function setPrimaryText($PrimaryText)
+    public function setPrimarytext(?string $PrimaryText)
     {
         $this->setData(self::PRIMARY_TEXT, $PrimaryText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPrimaryText()
+    public function getPrimarytext() : ?string
     {
         return $this->getData(self::PRIMARY_TEXT);
     }
 
     /**
-     * @param string $SecondaryText
+     * @param ?string $SecondaryText
      * @return $this
      */
-    public function setSecondaryText($SecondaryText)
+    public function setSecondarytext(?string $SecondaryText)
     {
         $this->setData(self::SECONDARY_TEXT, $SecondaryText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSecondaryText()
+    public function getSecondarytext() : ?string
     {
         return $this->getData(self::SECONDARY_TEXT);
     }
 
     /**
-     * @param date $EndingDate
+     * @param ?string $EndingDate
      * @return $this
      */
-    public function setEndingDate($EndingDate)
+    public function setEndingdate(?string $EndingDate)
     {
         $this->setData(self::ENDING_DATE, $EndingDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getEndingDate()
+    public function getEndingdate() : ?string
     {
         return $this->getData(self::ENDING_DATE);
     }

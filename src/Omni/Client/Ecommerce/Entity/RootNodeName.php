@@ -20,7 +20,7 @@ class RootNodeName extends \Magento\Catalog\Model\AbstractModel
      * @param CustomerOrderStatusLog $CustomerOrderStatusLog
      * @return $this
      */
-    public function setCustomerOrderStatusLog($CustomerOrderStatusLog)
+    public function setCustomerorderstatuslog($CustomerOrderStatusLog)
     {
         $this->setData(self::CUSTOMER_ORDER_STATUS_LOG, $CustomerOrderStatusLog);
         return $this;
@@ -29,7 +29,7 @@ class RootNodeName extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CustomerOrderStatusLog
      */
-    public function getCustomerOrderStatusLog()
+    public function getCustomerorderstatuslog()
     {
         return $this->getData(self::CUSTOMER_ORDER_STATUS_LOG);
     }
@@ -38,7 +38,7 @@ class RootNodeName extends \Magento\Catalog\Model\AbstractModel
      * @param CustomerOrderStatusLineLog $CustomerOrderStatusLineLog
      * @return $this
      */
-    public function setCustomerOrderStatusLineLog($CustomerOrderStatusLineLog)
+    public function setCustomerorderstatuslinelog($CustomerOrderStatusLineLog)
     {
         $this->setData(self::CUSTOMER_ORDER_STATUS_LINE_LOG, $CustomerOrderStatusLineLog);
         return $this;
@@ -47,7 +47,7 @@ class RootNodeName extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CustomerOrderStatusLineLog
      */
-    public function getCustomerOrderStatusLineLog()
+    public function getCustomerorderstatuslinelog()
     {
         return $this->getData(self::CUSTOMER_ORDER_STATUS_LINE_LOG);
     }

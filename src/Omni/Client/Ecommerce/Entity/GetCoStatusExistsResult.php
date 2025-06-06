@@ -21,61 +21,61 @@ class GetCoStatusExistsResult extends \Magento\Catalog\Model\AbstractModel imple
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param boolean $customerOrdersExist
+     * @param ?bool $customerOrdersExist
      * @return $this
      */
-    public function setCustomerOrdersExist($customerOrdersExist)
+    public function setCustomerordersexist(?bool $customerOrdersExist)
     {
         $this->setData(self::CUSTOMER_ORDERS_EXIST, $customerOrdersExist);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getCustomerOrdersExist()
+    public function getCustomerordersexist() : ?bool
     {
         return $this->getData(self::CUSTOMER_ORDERS_EXIST);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getResult()
     {

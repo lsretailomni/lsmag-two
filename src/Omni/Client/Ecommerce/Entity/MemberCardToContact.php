@@ -27,109 +27,109 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
     public const TOTAL_REMAINING_POINTS = 'totalRemainingPoints';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $cardNo
+     * @param ?string $cardNo
      * @return $this
      */
-    public function setCardNo($cardNo)
+    public function setCardno(?string $cardNo)
     {
         $this->setData(self::CARD_NO, $cardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNo()
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
 
     /**
-     * @param string $accountNo
+     * @param ?string $accountNo
      * @return $this
      */
-    public function setAccountNo($accountNo)
+    public function setAccountno(?string $accountNo)
     {
         $this->setData(self::ACCOUNT_NO, $accountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountNo()
+    public function getAccountno() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
 
     /**
-     * @param string $contactNo
+     * @param ?string $contactNo
      * @return $this
      */
-    public function setContactNo($contactNo)
+    public function setContactno(?string $contactNo)
     {
         $this->setData(self::CONTACT_NO, $contactNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactNo()
+    public function getContactno() : ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
 
     /**
-     * @param float $totalRemainingPoints
+     * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints($totalRemainingPoints)
+    public function setTotalremainingpoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalRemainingPoints()
+    public function getTotalremainingpoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }

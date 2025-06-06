@@ -14,9 +14,9 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const USER_I_D = 'UserID';
+    public const USER_ID = 'UserID';
 
-    public const STAFF_I_D = 'StaffID';
+    public const STAFF_ID = 'StaffID';
 
     public const TERMINAL_NO = 'TerminalNo';
 
@@ -24,7 +24,7 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
 
     public const RECEIPT_NO = 'ReceiptNo';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const STATUS_CODE = 'StatusCode';
 
@@ -33,73 +33,73 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
     public const EXT_CODE = 'ExtCode';
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $UserID
+     * @param ?string $UserID
      * @return $this
      */
-    public function setUserID($UserID)
+    public function setUserid(?string $UserID)
     {
-        $this->setData(self::USER_I_D, $UserID);
+        $this->setData(self::USER_ID, $UserID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUserID()
+    public function getUserid() : ?string
     {
-        return $this->getData(self::USER_I_D);
+        return $this->getData(self::USER_ID);
     }
 
     /**
-     * @param string $StaffID
+     * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID($StaffID)
+    public function setStaffid(?string $StaffID)
     {
-        $this->setData(self::STAFF_I_D, $StaffID);
+        $this->setData(self::STAFF_ID, $StaffID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffID()
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
-     * @param string $TerminalNo
+     * @param ?string $TerminalNo
      * @return $this
      */
-    public function setTerminalNo($TerminalNo)
+    public function setTerminalno(?string $TerminalNo)
     {
         $this->setData(self::TERMINAL_NO, $TerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalNo()
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -108,7 +108,7 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -117,97 +117,97 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
-     * @param string $StatusCode
+     * @param ?string $StatusCode
      * @return $this
      */
-    public function setStatusCode($StatusCode)
+    public function setStatuscode(?string $StatusCode)
     {
         $this->setData(self::STATUS_CODE, $StatusCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatusCode()
+    public function getStatuscode() : ?string
     {
         return $this->getData(self::STATUS_CODE);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $ExtCode
+     * @param ?string $ExtCode
      * @return $this
      */
-    public function setExtCode($ExtCode)
+    public function setExtcode(?string $ExtCode)
     {
         $this->setData(self::EXT_CODE, $ExtCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExtCode()
+    public function getExtcode() : ?string
     {
         return $this->getData(self::EXT_CODE);
     }

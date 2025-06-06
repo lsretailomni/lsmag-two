@@ -12,24 +12,24 @@ class RootGetPosTransSuspList extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetPosTransSuspList';
 
-    public const P_O_S_TRANSACTION = 'POSTransaction';
+    public const POSTRANSACTION = 'POSTransaction';
 
     /**
      * @param POSTransaction $POSTransaction
      * @return $this
      */
-    public function setPOSTransaction($POSTransaction)
+    public function setPostransaction($POSTransaction)
     {
-        $this->setData(self::P_O_S_TRANSACTION, $POSTransaction);
+        $this->setData(self::POSTRANSACTION, $POSTransaction);
         return $this;
     }
 
     /**
      * @return POSTransaction
      */
-    public function getPOSTransaction()
+    public function getPostransaction()
     {
-        return $this->getData(self::P_O_S_TRANSACTION);
+        return $this->getData(self::POSTRANSACTION);
     }
 }
 

@@ -16,13 +16,25 @@ class ItemUnitofMeasure extends AbstractModel
     public const QTY_PER_UNIT_OF_MEASURE = 'Qty. per Unit of Measure';
     public const LSC_ECOM_SELECTION = 'LSC Ecom Selection';
 
+    public static array $dbColumnsMapping = [
+	self::ITEM_NO => 'item_no',
+	self::CODE => 'code',
+	self::QTY_PER_UNIT_OF_MEASURE => 'qty_per_unit_of_measure',
+	self::LSC_ECOM_SELECTION => 'lsc_ecom_selection',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -32,27 +44,27 @@ class ItemUnitofMeasure extends AbstractModel
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
 
-    public function getQtyPerUnitOfMeasure(): ?string
+    public function getQtyPerUnitOfMeasure(): ?float
     {
         return $this->getData(self::QTY_PER_UNIT_OF_MEASURE);
     }
 
-    public function setQtyPerUnitOfMeasure(string $value)
+    public function setQtyPerUnitOfMeasure(?float $value)
     {
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }
 
-    public function getLSCEcomSelection(): ?string
+    public function getLscEcomSelection(): ?int
     {
         return $this->getData(self::LSC_ECOM_SELECTION);
     }
 
-    public function setLSCEcomSelection(string $value)
+    public function setLscEcomSelection(?int $value)
     {
         return $this->setData(self::LSC_ECOM_SELECTION, $value);
     }

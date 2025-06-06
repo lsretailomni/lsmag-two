@@ -18,40 +18,40 @@ class GetReturnPolicyResult extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_RETURN_POLICY_X_M_L = 'getReturnPolicyXML';
+    public const GET_RETURN_POLICY_XML = 'getReturnPolicyXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetReturnPolicyResult extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootGetReturnPolicy $getReturnPolicyXML
      * @return $this
      */
-    public function setGetReturnPolicyXML($getReturnPolicyXML)
+    public function setGetreturnpolicyxml($getReturnPolicyXML)
     {
-        $this->setData(self::GET_RETURN_POLICY_X_M_L, $getReturnPolicyXML);
+        $this->setData(self::GET_RETURN_POLICY_XML, $getReturnPolicyXML);
         return $this;
     }
 
     /**
      * @return RootGetReturnPolicy
      */
-    public function getGetReturnPolicyXML()
+    public function getGetreturnpolicyxml()
     {
-        return $this->getData(self::GET_RETURN_POLICY_X_M_L);
+        return $this->getData(self::GET_RETURN_POLICY_XML);
     }
 
     /**

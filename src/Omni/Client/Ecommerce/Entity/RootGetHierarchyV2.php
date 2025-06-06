@@ -26,7 +26,7 @@ class RootGetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel
      * @param HierarchyV2 $HierarchyV2
      * @return $this
      */
-    public function setHierarchyV2($HierarchyV2)
+    public function setHierarchyv2($HierarchyV2)
     {
         $this->setData(self::HIERARCHY_V2, $HierarchyV2);
         return $this;
@@ -35,7 +35,7 @@ class RootGetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HierarchyV2
      */
-    public function getHierarchyV2()
+    public function getHierarchyv2()
     {
         return $this->getData(self::HIERARCHY_V2);
     }
@@ -44,7 +44,7 @@ class RootGetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel
      * @param HierarchyAttributeV2 $HierarchyAttributeV2
      * @return $this
      */
-    public function setHierarchyAttributeV2($HierarchyAttributeV2)
+    public function setHierarchyattributev2($HierarchyAttributeV2)
     {
         $this->setData(self::HIERARCHY_ATTRIBUTE_V2, $HierarchyAttributeV2);
         return $this;
@@ -53,7 +53,7 @@ class RootGetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HierarchyAttributeV2
      */
-    public function getHierarchyAttributeV2()
+    public function getHierarchyattributev2()
     {
         return $this->getData(self::HIERARCHY_ATTRIBUTE_V2);
     }
@@ -62,7 +62,7 @@ class RootGetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel
      * @param AttributeOptionValueV2 $AttributeOptionValueV2
      * @return $this
      */
-    public function setAttributeOptionValueV2($AttributeOptionValueV2)
+    public function setAttributeoptionvaluev2($AttributeOptionValueV2)
     {
         $this->setData(self::ATTRIBUTE_OPTION_VALUE_V2, $AttributeOptionValueV2);
         return $this;
@@ -71,7 +71,7 @@ class RootGetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return AttributeOptionValueV2
      */
-    public function getAttributeOptionValueV2()
+    public function getAttributeoptionvaluev2()
     {
         return $this->getData(self::ATTRIBUTE_OPTION_VALUE_V2);
     }
@@ -80,7 +80,7 @@ class RootGetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel
      * @param HierarchyNodesV2 $HierarchyNodesV2
      * @return $this
      */
-    public function setHierarchyNodesV2($HierarchyNodesV2)
+    public function setHierarchynodesv2($HierarchyNodesV2)
     {
         $this->setData(self::HIERARCHY_NODES_V2, $HierarchyNodesV2);
         return $this;
@@ -89,7 +89,7 @@ class RootGetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HierarchyNodesV2
      */
-    public function getHierarchyNodesV2()
+    public function getHierarchynodesv2()
     {
         return $this->getData(self::HIERARCHY_NODES_V2);
     }
@@ -98,7 +98,7 @@ class RootGetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel
      * @param HierarchyNodeImageV2 $HierarchyNodeImageV2
      * @return $this
      */
-    public function setHierarchyNodeImageV2($HierarchyNodeImageV2)
+    public function setHierarchynodeimagev2($HierarchyNodeImageV2)
     {
         $this->setData(self::HIERARCHY_NODE_IMAGE_V2, $HierarchyNodeImageV2);
         return $this;
@@ -107,7 +107,7 @@ class RootGetHierarchyV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HierarchyNodeImageV2
      */
-    public function getHierarchyNodeImageV2()
+    public function getHierarchynodeimagev2()
     {
         return $this->getData(self::HIERARCHY_NODE_IMAGE_V2);
     }

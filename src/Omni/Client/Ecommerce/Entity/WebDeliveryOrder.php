@@ -67,307 +67,307 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     public const TOTAL_AMOUNT = 'TotalAmount';
 
     /**
-     * @param string $OrderNo
+     * @param ?string $OrderNo
      * @return $this
      */
-    public function setOrderNo($OrderNo)
+    public function setOrderno(?string $OrderNo)
     {
         $this->setData(self::ORDER_NO, $OrderNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOrderNo()
+    public function getOrderno() : ?string
     {
         return $this->getData(self::ORDER_NO);
     }
 
     /**
-     * @param string $PhoneNo
+     * @param ?string $PhoneNo
      * @return $this
      */
-    public function setPhoneNo($PhoneNo)
+    public function setPhoneno(?string $PhoneNo)
     {
         $this->setData(self::PHONE_NO, $PhoneNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPhoneNo()
+    public function getPhoneno() : ?string
     {
         return $this->getData(self::PHONE_NO);
     }
 
     /**
-     * @param date $OrderDate
+     * @param ?string $OrderDate
      * @return $this
      */
-    public function setOrderDate($OrderDate)
+    public function setOrderdate(?string $OrderDate)
     {
         $this->setData(self::ORDER_DATE, $OrderDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getOrderDate()
+    public function getOrderdate() : ?string
     {
         return $this->getData(self::ORDER_DATE);
     }
 
     /**
-     * @param string $ContactPickupTime
+     * @param ?string $ContactPickupTime
      * @return $this
      */
-    public function setContactPickupTime($ContactPickupTime)
+    public function setContactpickuptime(?string $ContactPickupTime)
     {
         $this->setData(self::CONTACT_PICKUP_TIME, $ContactPickupTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactPickupTime()
+    public function getContactpickuptime() : ?string
     {
         return $this->getData(self::CONTACT_PICKUP_TIME);
     }
 
     /**
-     * @param string $StreetName
+     * @param ?string $StreetName
      * @return $this
      */
-    public function setStreetName($StreetName)
+    public function setStreetname(?string $StreetName)
     {
         $this->setData(self::STREET_NAME, $StreetName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStreetName()
+    public function getStreetname() : ?string
     {
         return $this->getData(self::STREET_NAME);
     }
 
     /**
-     * @param string $StreetNo
+     * @param ?string $StreetNo
      * @return $this
      */
-    public function setStreetNo($StreetNo)
+    public function setStreetno(?string $StreetNo)
     {
         $this->setData(self::STREET_NO, $StreetNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStreetNo()
+    public function getStreetno() : ?string
     {
         return $this->getData(self::STREET_NO);
     }
 
     /**
-     * @param string $AddressType
+     * @param ?string $AddressType
      * @return $this
      */
-    public function setAddressType($AddressType)
+    public function setAddresstype(?string $AddressType)
     {
         $this->setData(self::ADDRESS_TYPE, $AddressType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAddressType()
+    public function getAddresstype() : ?string
     {
         return $this->getData(self::ADDRESS_TYPE);
     }
 
     /**
-     * @param string $Address2
+     * @param ?string $Address2
      * @return $this
      */
-    public function setAddress2($Address2)
+    public function setAddress2(?string $Address2)
     {
         $this->setData(self::ADDRESS2, $Address2);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAddress2()
+    public function getAddress2() : ?string
     {
         return $this->getData(self::ADDRESS2);
     }
 
     /**
-     * @param string $City
+     * @param ?string $City
      * @return $this
      */
-    public function setCity($City)
+    public function setCity(?string $City)
     {
         $this->setData(self::CITY, $City);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCity()
+    public function getCity() : ?string
     {
         return $this->getData(self::CITY);
     }
 
     /**
-     * @param string $RestaurantNo
+     * @param ?string $RestaurantNo
      * @return $this
      */
-    public function setRestaurantNo($RestaurantNo)
+    public function setRestaurantno(?string $RestaurantNo)
     {
         $this->setData(self::RESTAURANT_NO, $RestaurantNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRestaurantNo()
+    public function getRestaurantno() : ?string
     {
         return $this->getData(self::RESTAURANT_NO);
     }
 
     /**
-     * @param string $SalesType
+     * @param ?string $SalesType
      * @return $this
      */
-    public function setSalesType($SalesType)
+    public function setSalestype(?string $SalesType)
     {
         $this->setData(self::SALES_TYPE, $SalesType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSalesType()
+    public function getSalestype() : ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
 
     /**
-     * @param string $Name
+     * @param ?string $Name
      * @return $this
      */
-    public function setName($Name)
+    public function setName(?string $Name)
     {
         $this->setData(self::NAME, $Name);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getName()
+    public function getName() : ?string
     {
         return $this->getData(self::NAME);
     }
 
     /**
-     * @param string $BillToName
+     * @param ?string $BillToName
      * @return $this
      */
-    public function setBillToName($BillToName)
+    public function setBilltoname(?string $BillToName)
     {
         $this->setData(self::BILL_TO_NAME, $BillToName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBillToName()
+    public function getBilltoname() : ?string
     {
         return $this->getData(self::BILL_TO_NAME);
     }
 
     /**
-     * @param string $PreOrder
+     * @param ?string $PreOrder
      * @return $this
      */
-    public function setPreOrder($PreOrder)
+    public function setPreorder(?string $PreOrder)
     {
         $this->setData(self::PRE_ORDER, $PreOrder);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPreOrder()
+    public function getPreorder() : ?string
     {
         return $this->getData(self::PRE_ORDER);
     }
 
     /**
-     * @param string $TenderType
+     * @param ?string $TenderType
      * @return $this
      */
-    public function setTenderType($TenderType)
+    public function setTendertype(?string $TenderType)
     {
         $this->setData(self::TENDER_TYPE, $TenderType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTenderType()
+    public function getTendertype() : ?string
     {
         return $this->getData(self::TENDER_TYPE);
     }
 
     /**
-     * @param time $TimeCreated
+     * @param ?string $TimeCreated
      * @return $this
      */
-    public function setTimeCreated($TimeCreated)
+    public function setTimecreated(?string $TimeCreated)
     {
         $this->setData(self::TIME_CREATED, $TimeCreated);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTimeCreated()
+    public function getTimecreated() : ?string
     {
         return $this->getData(self::TIME_CREATED);
     }
 
     /**
-     * @param date $DateCreated
+     * @param ?string $DateCreated
      * @return $this
      */
-    public function setDateCreated($DateCreated)
+    public function setDatecreated(?string $DateCreated)
     {
         $this->setData(self::DATE_CREATED, $DateCreated);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDateCreated()
+    public function getDatecreated() : ?string
     {
         return $this->getData(self::DATE_CREATED);
     }
@@ -376,7 +376,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param int $OrderTypeOption
      * @return $this
      */
-    public function setOrderTypeOption($OrderTypeOption)
+    public function setOrdertypeoption($OrderTypeOption)
     {
         $this->setData(self::ORDER_TYPE_OPTION, $OrderTypeOption);
         return $this;
@@ -385,79 +385,79 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getOrderTypeOption()
+    public function getOrdertypeoption()
     {
         return $this->getData(self::ORDER_TYPE_OPTION);
     }
 
     /**
-     * @param string $PostCode
+     * @param ?string $PostCode
      * @return $this
      */
-    public function setPostCode($PostCode)
+    public function setPostcode(?string $PostCode)
     {
         $this->setData(self::POST_CODE, $PostCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPostCode()
+    public function getPostcode() : ?string
     {
         return $this->getData(self::POST_CODE);
     }
 
     /**
-     * @param string $Email
+     * @param ?string $Email
      * @return $this
      */
-    public function setEmail($Email)
+    public function setEmail(?string $Email)
     {
         $this->setData(self::EMAIL, $Email);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEmail()
+    public function getEmail() : ?string
     {
         return $this->getData(self::EMAIL);
     }
 
     /**
-     * @param string $Directions
+     * @param ?string $Directions
      * @return $this
      */
-    public function setDirections($Directions)
+    public function setDirections(?string $Directions)
     {
         $this->setData(self::DIRECTIONS, $Directions);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDirections()
+    public function getDirections() : ?string
     {
         return $this->getData(self::DIRECTIONS);
     }
 
     /**
-     * @param string $GridCode
+     * @param ?string $GridCode
      * @return $this
      */
-    public function setGridCode($GridCode)
+    public function setGridcode(?string $GridCode)
     {
         $this->setData(self::GRID_CODE, $GridCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getGridCode()
+    public function getGridcode() : ?string
     {
         return $this->getData(self::GRID_CODE);
     }
@@ -466,7 +466,7 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
      * @param int $EstimatedProdTime
      * @return $this
      */
-    public function setEstimatedProdTime($EstimatedProdTime)
+    public function setEstimatedprodtime($EstimatedProdTime)
     {
         $this->setData(self::ESTIMATED_PROD_TIME, $EstimatedProdTime);
         return $this;
@@ -475,79 +475,79 @@ class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEstimatedProdTime()
+    public function getEstimatedprodtime()
     {
         return $this->getData(self::ESTIMATED_PROD_TIME);
     }
 
     /**
-     * @param string $CompanyNo
+     * @param ?string $CompanyNo
      * @return $this
      */
-    public function setCompanyNo($CompanyNo)
+    public function setCompanyno(?string $CompanyNo)
     {
         $this->setData(self::COMPANY_NO, $CompanyNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCompanyNo()
+    public function getCompanyno() : ?string
     {
         return $this->getData(self::COMPANY_NO);
     }
 
     /**
-     * @param string $PreOrderPrintDateTime
+     * @param ?string $PreOrderPrintDateTime
      * @return $this
      */
-    public function setPreOrderPrintDateTime($PreOrderPrintDateTime)
+    public function setPreorderprintdatetime(?string $PreOrderPrintDateTime)
     {
         $this->setData(self::PRE_ORDER_PRINT_DATE_TIME, $PreOrderPrintDateTime);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPreOrderPrintDateTime()
+    public function getPreorderprintdatetime() : ?string
     {
         return $this->getData(self::PRE_ORDER_PRINT_DATE_TIME);
     }
 
     /**
-     * @param string $Comment
+     * @param ?string $Comment
      * @return $this
      */
-    public function setComment($Comment)
+    public function setComment(?string $Comment)
     {
         $this->setData(self::COMMENT, $Comment);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getComment()
+    public function getComment() : ?string
     {
         return $this->getData(self::COMMENT);
     }
 
     /**
-     * @param float $TotalAmount
+     * @param ?float $TotalAmount
      * @return $this
      */
-    public function setTotalAmount($TotalAmount)
+    public function setTotalamount(?float $TotalAmount)
     {
         $this->setData(self::TOTAL_AMOUNT, $TotalAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalAmount()
+    public function getTotalamount() : ?float
     {
         return $this->getData(self::TOTAL_AMOUNT);
     }

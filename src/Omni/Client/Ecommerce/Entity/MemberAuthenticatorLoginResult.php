@@ -16,26 +16,26 @@ class MemberAuthenticatorLoginResult extends \Magento\Catalog\Model\AbstractMode
 
     public const TOTAL_REMAINING_POINTS = 'totalRemainingPoints';
 
-    public const MEMBER_AUTH_LOGIN_X_M_L = 'memberAuthLoginXML';
+    public const MEMBER_AUTH_LOGIN_XML = 'memberAuthLoginXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param float $totalRemainingPoints
+     * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints($totalRemainingPoints)
+    public function setTotalremainingpoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalRemainingPoints()
+    public function getTotalremainingpoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
@@ -44,52 +44,52 @@ class MemberAuthenticatorLoginResult extends \Magento\Catalog\Model\AbstractMode
      * @param RootMemberauthLogin $memberAuthLoginXML
      * @return $this
      */
-    public function setMemberAuthLoginXML($memberAuthLoginXML)
+    public function setMemberauthloginxml($memberAuthLoginXML)
     {
-        $this->setData(self::MEMBER_AUTH_LOGIN_X_M_L, $memberAuthLoginXML);
+        $this->setData(self::MEMBER_AUTH_LOGIN_XML, $memberAuthLoginXML);
         return $this;
     }
 
     /**
      * @return RootMemberauthLogin
      */
-    public function getMemberAuthLoginXML()
+    public function getMemberauthloginxml()
     {
-        return $this->getData(self::MEMBER_AUTH_LOGIN_X_M_L);
+        return $this->getData(self::MEMBER_AUTH_LOGIN_XML);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

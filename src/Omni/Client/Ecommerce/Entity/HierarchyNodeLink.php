@@ -14,7 +14,7 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
 
     public const HIERARCHY_CODE = 'HierarchyCode';
 
-    public const NODE_I_D = 'NodeID';
+    public const NODE_ID = 'NodeID';
 
     public const TYPE = 'Type';
 
@@ -27,109 +27,109 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
     public const SORT_ORDER = 'SortOrder';
 
     /**
-     * @param string $HierarchyCode
+     * @param ?string $HierarchyCode
      * @return $this
      */
-    public function setHierarchyCode($HierarchyCode)
+    public function setHierarchycode(?string $HierarchyCode)
     {
         $this->setData(self::HIERARCHY_CODE, $HierarchyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getHierarchyCode()
+    public function getHierarchycode() : ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
 
     /**
-     * @param string $NodeID
+     * @param ?string $NodeID
      * @return $this
      */
-    public function setNodeID($NodeID)
+    public function setNodeid(?string $NodeID)
     {
-        $this->setData(self::NODE_I_D, $NodeID);
+        $this->setData(self::NODE_ID, $NodeID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNodeID()
+    public function getNodeid() : ?string
     {
-        return $this->getData(self::NODE_I_D);
+        return $this->getData(self::NODE_ID);
     }
 
     /**
-     * @param string $Type
+     * @param ?string $Type
      * @return $this
      */
-    public function setType($Type)
+    public function setType(?string $Type)
     {
         $this->setData(self::TYPE, $Type);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getType()
+    public function getType() : ?string
     {
         return $this->getData(self::TYPE);
     }
 
     /**
-     * @param string $No
+     * @param ?string $No
      * @return $this
      */
-    public function setNo($No)
+    public function setNo(?string $No)
     {
         $this->setData(self::NO, $No);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNo()
+    public function getNo() : ?string
     {
         return $this->getData(self::NO);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $ItemUnitofMeasure
+     * @param ?string $ItemUnitofMeasure
      * @return $this
      */
-    public function setItemUnitofMeasure($ItemUnitofMeasure)
+    public function setItemunitofmeasure(?string $ItemUnitofMeasure)
     {
         $this->setData(self::ITEM_UNITOF_MEASURE, $ItemUnitofMeasure);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemUnitofMeasure()
+    public function getItemunitofmeasure() : ?string
     {
         return $this->getData(self::ITEM_UNITOF_MEASURE);
     }
@@ -138,7 +138,7 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
      * @param int $SortOrder
      * @return $this
      */
-    public function setSortOrder($SortOrder)
+    public function setSortorder($SortOrder)
     {
         $this->setData(self::SORT_ORDER, $SortOrder);
         return $this;
@@ -147,7 +147,7 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getSortOrder()
+    public function getSortorder()
     {
         return $this->getData(self::SORT_ORDER);
     }

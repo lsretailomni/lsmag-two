@@ -12,7 +12,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'StaffStoreLink';
 
-    public const STAFF_I_D = 'StaffID';
+    public const STAFF_ID = 'StaffID';
 
     public const STAFF_FIRST_NAME = 'StaffFirstName';
 
@@ -26,11 +26,11 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
 
     public const PERMISSION_GROUP = 'PermissionGroup';
 
-    public const P_O_S_INTERFACE_PROFILE = 'POSInterfaceProfile';
+    public const POSINTERFACE_PROFILE = 'POSInterfaceProfile';
 
-    public const P_O_S_STYLE_PROFILE = 'POSStyleProfile';
+    public const POSSTYLE_PROFILE = 'POSStyleProfile';
 
-    public const P_O_S_MENU_PROFILE = 'POSMenuProfile';
+    public const POSMENU_PROFILE = 'POSMenuProfile';
 
     public const DELIVERY_DRIVER = 'DeliveryDriver';
 
@@ -49,217 +49,217 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     public const DEFAULT_STORE = 'DefaultStore';
 
     /**
-     * @param string $StaffID
+     * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID($StaffID)
+    public function setStaffid(?string $StaffID)
     {
-        $this->setData(self::STAFF_I_D, $StaffID);
+        $this->setData(self::STAFF_ID, $StaffID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffID()
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
-     * @param string $StaffFirstName
+     * @param ?string $StaffFirstName
      * @return $this
      */
-    public function setStaffFirstName($StaffFirstName)
+    public function setStafffirstname(?string $StaffFirstName)
     {
         $this->setData(self::STAFF_FIRST_NAME, $StaffFirstName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffFirstName()
+    public function getStafffirstname() : ?string
     {
         return $this->getData(self::STAFF_FIRST_NAME);
     }
 
     /**
-     * @param string $StaffLastName
+     * @param ?string $StaffLastName
      * @return $this
      */
-    public function setStaffLastName($StaffLastName)
+    public function setStafflastname(?string $StaffLastName)
     {
         $this->setData(self::STAFF_LAST_NAME, $StaffLastName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffLastName()
+    public function getStafflastname() : ?string
     {
         return $this->getData(self::STAFF_LAST_NAME);
     }
 
     /**
-     * @param string $StaffNameOnReceipt
+     * @param ?string $StaffNameOnReceipt
      * @return $this
      */
-    public function setStaffNameOnReceipt($StaffNameOnReceipt)
+    public function setStaffnameonreceipt(?string $StaffNameOnReceipt)
     {
         $this->setData(self::STAFF_NAME_ON_RECEIPT, $StaffNameOnReceipt);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffNameOnReceipt()
+    public function getStaffnameonreceipt() : ?string
     {
         return $this->getData(self::STAFF_NAME_ON_RECEIPT);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $StoreName
+     * @param ?string $StoreName
      * @return $this
      */
-    public function setStoreName($StoreName)
+    public function setStorename(?string $StoreName)
     {
         $this->setData(self::STORE_NAME, $StoreName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreName()
+    public function getStorename() : ?string
     {
         return $this->getData(self::STORE_NAME);
     }
 
     /**
-     * @param string $PermissionGroup
+     * @param ?string $PermissionGroup
      * @return $this
      */
-    public function setPermissionGroup($PermissionGroup)
+    public function setPermissiongroup(?string $PermissionGroup)
     {
         $this->setData(self::PERMISSION_GROUP, $PermissionGroup);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPermissionGroup()
+    public function getPermissiongroup() : ?string
     {
         return $this->getData(self::PERMISSION_GROUP);
     }
 
     /**
-     * @param string $POSInterfaceProfile
+     * @param ?string $POSInterfaceProfile
      * @return $this
      */
-    public function setPOSInterfaceProfile($POSInterfaceProfile)
+    public function setPosinterfaceprofile(?string $POSInterfaceProfile)
     {
-        $this->setData(self::P_O_S_INTERFACE_PROFILE, $POSInterfaceProfile);
+        $this->setData(self::POSINTERFACE_PROFILE, $POSInterfaceProfile);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSInterfaceProfile()
+    public function getPosinterfaceprofile() : ?string
     {
-        return $this->getData(self::P_O_S_INTERFACE_PROFILE);
+        return $this->getData(self::POSINTERFACE_PROFILE);
     }
 
     /**
-     * @param string $POSStyleProfile
+     * @param ?string $POSStyleProfile
      * @return $this
      */
-    public function setPOSStyleProfile($POSStyleProfile)
+    public function setPosstyleprofile(?string $POSStyleProfile)
     {
-        $this->setData(self::P_O_S_STYLE_PROFILE, $POSStyleProfile);
+        $this->setData(self::POSSTYLE_PROFILE, $POSStyleProfile);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSStyleProfile()
+    public function getPosstyleprofile() : ?string
     {
-        return $this->getData(self::P_O_S_STYLE_PROFILE);
+        return $this->getData(self::POSSTYLE_PROFILE);
     }
 
     /**
-     * @param string $POSMenuProfile
+     * @param ?string $POSMenuProfile
      * @return $this
      */
-    public function setPOSMenuProfile($POSMenuProfile)
+    public function setPosmenuprofile(?string $POSMenuProfile)
     {
-        $this->setData(self::P_O_S_MENU_PROFILE, $POSMenuProfile);
+        $this->setData(self::POSMENU_PROFILE, $POSMenuProfile);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSMenuProfile()
+    public function getPosmenuprofile() : ?string
     {
-        return $this->getData(self::P_O_S_MENU_PROFILE);
+        return $this->getData(self::POSMENU_PROFILE);
     }
 
     /**
-     * @param boolean $DeliveryDriver
+     * @param ?bool $DeliveryDriver
      * @return $this
      */
-    public function setDeliveryDriver($DeliveryDriver)
+    public function setDeliverydriver(?bool $DeliveryDriver)
     {
         $this->setData(self::DELIVERY_DRIVER, $DeliveryDriver);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getDeliveryDriver()
+    public function getDeliverydriver() : ?bool
     {
         return $this->getData(self::DELIVERY_DRIVER);
     }
 
     /**
-     * @param float $Float
+     * @param ?float $Float
      * @return $this
      */
-    public function setFloat($Float)
+    public function setFloat(?float $Float)
     {
         $this->setData(self::FLOAT, $Float);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getFloat()
+    public function getFloat() : ?float
     {
         return $this->getData(self::FLOAT);
     }
@@ -268,7 +268,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
      * @param int $CurrentTripNo
      * @return $this
      */
-    public function setCurrentTripNo($CurrentTripNo)
+    public function setCurrenttripno($CurrentTripNo)
     {
         $this->setData(self::CURRENT_TRIP_NO, $CurrentTripNo);
         return $this;
@@ -277,25 +277,25 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getCurrentTripNo()
+    public function getCurrenttripno()
     {
         return $this->getData(self::CURRENT_TRIP_NO);
     }
 
     /**
-     * @param boolean $OnCall
+     * @param ?bool $OnCall
      * @return $this
      */
-    public function setOnCall($OnCall)
+    public function setOncall(?bool $OnCall)
     {
         $this->setData(self::ON_CALL, $OnCall);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getOnCall()
+    public function getOncall() : ?bool
     {
         return $this->getData(self::ON_CALL);
     }
@@ -304,7 +304,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
      * @param int $OpenTripCounter
      * @return $this
      */
-    public function setOpenTripCounter($OpenTripCounter)
+    public function setOpentripcounter($OpenTripCounter)
     {
         $this->setData(self::OPEN_TRIP_COUNTER, $OpenTripCounter);
         return $this;
@@ -313,25 +313,25 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getOpenTripCounter()
+    public function getOpentripcounter()
     {
         return $this->getData(self::OPEN_TRIP_COUNTER);
     }
 
     /**
-     * @param string $DefaultSalesType
+     * @param ?string $DefaultSalesType
      * @return $this
      */
-    public function setDefaultSalesType($DefaultSalesType)
+    public function setDefaultsalestype(?string $DefaultSalesType)
     {
         $this->setData(self::DEFAULT_SALES_TYPE, $DefaultSalesType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDefaultSalesType()
+    public function getDefaultsalestype() : ?string
     {
         return $this->getData(self::DEFAULT_SALES_TYPE);
     }
@@ -340,7 +340,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
      * @param int $DefaultSequence
      * @return $this
      */
-    public function setDefaultSequence($DefaultSequence)
+    public function setDefaultsequence($DefaultSequence)
     {
         $this->setData(self::DEFAULT_SEQUENCE, $DefaultSequence);
         return $this;
@@ -349,25 +349,25 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDefaultSequence()
+    public function getDefaultsequence()
     {
         return $this->getData(self::DEFAULT_SEQUENCE);
     }
 
     /**
-     * @param boolean $DefaultStore
+     * @param ?bool $DefaultStore
      * @return $this
      */
-    public function setDefaultStore($DefaultStore)
+    public function setDefaultstore(?bool $DefaultStore)
     {
         $this->setData(self::DEFAULT_STORE, $DefaultStore);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getDefaultStore()
+    public function getDefaultstore() : ?bool
     {
         return $this->getData(self::DEFAULT_STORE);
     }

@@ -24,43 +24,63 @@ class LSCMobilePlu extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public static array $dbColumnsMapping = [
+	self::STOREID => 'storeid',
+	self::PAGEID => 'pageid',
+	self::PAGEINDEX => 'pageindex',
+	self::ITEMID => 'itemid',
+	self::DESCRIPTION => 'description',
+	self::RETAILIMAGEID => 'retailimageid',
+	self::IMAGEBLOB => 'imageblob',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
 
-    public function getStoreId(): ?string
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
+
+    public function getStoreid(): ?string
     {
         return $this->getData(self::STOREID);
     }
 
-    public function setStoreId(string $value)
+    public function setStoreid(?string $value)
     {
         return $this->setData(self::STOREID, $value);
     }
 
-    public function getPageId(): ?int
+    public function getPageid(): ?int
     {
         return $this->getData(self::PAGEID);
     }
 
-    public function setPageId(int $value)
+    public function setPageid(?int $value)
     {
         return $this->setData(self::PAGEID, $value);
     }
 
-    public function getPageIndex(): ?int
+    public function getPageindex(): ?int
     {
         return $this->getData(self::PAGEINDEX);
     }
 
-    public function setPageIndex(int $value)
+    public function setPageindex(?int $value)
     {
         return $this->setData(self::PAGEINDEX, $value);
     }
 
-    public function getItemId(): ?string
+    public function getItemid(): ?string
     {
         return $this->getData(self::ITEMID);
     }
 
-    public function setItemId(string $value)
+    public function setItemid(?string $value)
     {
         return $this->setData(self::ITEMID, $value);
     }
@@ -70,77 +90,77 @@ class LSCMobilePlu extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
 
-    public function getRetailImageId(): ?string
+    public function getRetailimageid(): ?string
     {
         return $this->getData(self::RETAILIMAGEID);
     }
 
-    public function setRetailImageId(string $value)
+    public function setRetailimageid(?string $value)
     {
         return $this->setData(self::RETAILIMAGEID, $value);
     }
 
-    public function getImageBlob(): ?string
+    public function getImageblob(): ?string
     {
         return $this->getData(self::IMAGEBLOB);
     }
 
-    public function setImageBlob(string $value)
+    public function setImageblob(?string $value)
     {
         return $this->setData(self::IMAGEBLOB, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

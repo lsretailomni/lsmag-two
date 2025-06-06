@@ -14,9 +14,9 @@ class CustomerOrderCreateCOStatusLogV5 extends \Magento\Catalog\Model\AbstractMo
 
     public const STORE_NO = 'StoreNo';
 
-    public const USER_I_D = 'UserID';
+    public const USER_ID = 'UserID';
 
-    public const STAFF_I_D = 'StaffID';
+    public const STAFF_ID = 'StaffID';
 
     public const TERMINAL_NO = 'TerminalNo';
 
@@ -25,73 +25,73 @@ class CustomerOrderCreateCOStatusLogV5 extends \Magento\Catalog\Model\AbstractMo
     public const RECEIPT_NO = 'ReceiptNo';
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $UserID
+     * @param ?string $UserID
      * @return $this
      */
-    public function setUserID($UserID)
+    public function setUserid(?string $UserID)
     {
-        $this->setData(self::USER_I_D, $UserID);
+        $this->setData(self::USER_ID, $UserID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUserID()
+    public function getUserid() : ?string
     {
-        return $this->getData(self::USER_I_D);
+        return $this->getData(self::USER_ID);
     }
 
     /**
-     * @param string $StaffID
+     * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID($StaffID)
+    public function setStaffid(?string $StaffID)
     {
-        $this->setData(self::STAFF_I_D, $StaffID);
+        $this->setData(self::STAFF_ID, $StaffID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffID()
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
-     * @param string $TerminalNo
+     * @param ?string $TerminalNo
      * @return $this
      */
-    public function setTerminalNo($TerminalNo)
+    public function setTerminalno(?string $TerminalNo)
     {
         $this->setData(self::TERMINAL_NO, $TerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalNo()
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -100,7 +100,7 @@ class CustomerOrderCreateCOStatusLogV5 extends \Magento\Catalog\Model\AbstractMo
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -109,25 +109,25 @@ class CustomerOrderCreateCOStatusLogV5 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }

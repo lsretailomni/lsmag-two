@@ -19,55 +19,55 @@ class GetActiveDocValuesCustomer extends \Magento\Catalog\Model\AbstractModel
     public const DATE_CREATED = 'DateCreated';
 
     /**
-     * @param string $No
+     * @param ?string $No
      * @return $this
      */
-    public function setNo($No)
+    public function setNo(?string $No)
     {
         $this->setData(self::NO, $No);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNo()
+    public function getNo() : ?string
     {
         return $this->getData(self::NO);
     }
 
     /**
-     * @param string $Name
+     * @param ?string $Name
      * @return $this
      */
-    public function setName($Name)
+    public function setName(?string $Name)
     {
         $this->setData(self::NAME, $Name);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getName()
+    public function getName() : ?string
     {
         return $this->getData(self::NAME);
     }
 
     /**
-     * @param date $DateCreated
+     * @param ?string $DateCreated
      * @return $this
      */
-    public function setDateCreated($DateCreated)
+    public function setDatecreated(?string $DateCreated)
     {
         $this->setData(self::DATE_CREATED, $DateCreated);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDateCreated()
+    public function getDatecreated() : ?string
     {
         return $this->getData(self::DATE_CREATED);
     }

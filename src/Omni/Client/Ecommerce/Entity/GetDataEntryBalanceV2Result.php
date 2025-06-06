@@ -18,40 +18,40 @@ class GetDataEntryBalanceV2Result extends \Magento\Catalog\Model\AbstractModel i
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_DATA_ENTRY_BALANCE_X_M_L = 'getDataEntryBalanceXML';
+    public const GET_DATA_ENTRY_BALANCE_XML = 'getDataEntryBalanceXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetDataEntryBalanceV2Result extends \Magento\Catalog\Model\AbstractModel i
      * @param RootGetDataEntryBalance $getDataEntryBalanceXML
      * @return $this
      */
-    public function setGetDataEntryBalanceXML($getDataEntryBalanceXML)
+    public function setGetdataentrybalancexml($getDataEntryBalanceXML)
     {
-        $this->setData(self::GET_DATA_ENTRY_BALANCE_X_M_L, $getDataEntryBalanceXML);
+        $this->setData(self::GET_DATA_ENTRY_BALANCE_XML, $getDataEntryBalanceXML);
         return $this;
     }
 
     /**
      * @return RootGetDataEntryBalance
      */
-    public function getGetDataEntryBalanceXML()
+    public function getGetdataentrybalancexml()
     {
-        return $this->getData(self::GET_DATA_ENTRY_BALANCE_X_M_L);
+        return $this->getData(self::GET_DATA_ENTRY_BALANCE_XML);
     }
 
     /**

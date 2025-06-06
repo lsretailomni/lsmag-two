@@ -1,12 +1,12 @@
 <?php
-// @codingStandardsIgnoreFile
+declare(strict_types=1);
 
 namespace Ls\Replication\Code;
 
 use Exception;
+use Laminas\Code\Generator\PropertyGenerator;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Core\Model\Data as LsHelper;
-use \Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Cron\AbstractReplicationTask;
 use \Ls\Replication\Helper\ReplicationHelper;
@@ -17,17 +17,18 @@ use Laminas\Code\Generator\MethodGenerator;
 use Laminas\Code\Generator\ParameterGenerator;
 
 /**
- * Class CronJobGenerator
- * @package Ls\Replication\Code
+ * Generator for replication cron job class.
  */
 class CronJobGenerator extends AbstractGenerator
 {
-
-    /** @var ReplicationOperation */
-    public $operation;
+    /**
+     * Replication operation instance.
+     *
+     * @var ReplicationOperation
+     */
+    public ReplicationOperation $operation;
 
     /**
-     * CronJobGenerator constructor.
      * @param ReplicationOperation $operation
      * @throws Exception
      */
@@ -38,117 +39,117 @@ class CronJobGenerator extends AbstractGenerator
     }
 
     /**
+     * Generate the cron job class content.
+     *
      * @return string
      */
-    public function generate()
+    public function generate(): string
     {
         $this->class->setName($this->operation->getJobName());
         $this->class->setNamespaceName($this->operation->getJobNamespace());
         $this->class->setExtendedClass(AbstractReplicationTask::class);
 
-        $this->class->addUse(Logger::class);
-        $this->class->addUse(ScopeConfigInterface::class);
-        $this->class->addUse(Config::class);
         $this->class->addUse(LsHelper::class, 'LsHelper');
-        $this->class->addUse(ReplicationHelper::class);
-        $this->class->addUse(ReplRequest::class);
-        $this->class->addUse($this->operation->getOperationFqn());
         $this->class->addUse($this->operation->getRepositoryInterfaceFqn(), $this->operation->getRepositoryName());
         $this->class->addUse($this->operation->getFactoryFqn());
         $this->class->addUse($this->operation->getInterfaceFqn());
+
         $tableName = $this->operation->getIdenticalTableCronJob($this->operation->getName());
-        if ($tableName) {
-            $jobCode   = 'replication_' . $tableName;
-        } else {
-            $tableName = $this->operation->getTableName();
-            $jobCode   = $this->operation->getJobId();
-        }
+        $jobCode = $tableName ? 'replication_' . $tableName : $this->operation->getJobId();
+        $tableName = $tableName ?: $this->operation->getTableName();
+
         $this->class->addConstant('JOB_CODE', $jobCode);
         $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$tableName}");
         $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$tableName}");
-        $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE',
-            "ls_mag/replication/last_execute_{$tableName}");
-        $this->class->addConstant('CONFIG_PATH_MAX_KEY',
-            "ls_mag/replication/max_key_{$tableName}");
-        $this->class->addConstant('CONFIG_PATH_APP_ID',
-            "ls_mag/replication/app_id_{$tableName}");
+        $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE', "ls_mag/replication/last_execute_{$tableName}");
+        $this->class->addConstant('CONFIG_PATH_LAST_ENTRY_NO', "ls_mag/replication/last_entry_no_{$tableName}");
 
-        $this->createProperty('repository', $this->operation->getRepositoryName());
-        $this->createProperty('factory', $this->operation->getFactoryName());
-        $this->createProperty('dataInterface', $this->operation->getInterfaceName());
+        $this->createProperty(
+            'repository',
+            $this->operation->getRepositoryName(),
+            [PropertyGenerator::FLAG_PROTECTED],
+            [],
+            true
+        );
+        $this->createProperty(
+            'factory',
+            $this->operation->getFactoryName(),
+            [PropertyGenerator::FLAG_PROTECTED],
+            [],
+            true
+        );
+        $this->createProperty(
+            'dataInterface',
+            $this->operation->getInterfaceName(),
+            [PropertyGenerator::FLAG_PROTECTED],
+            [],
+            true
+        );
 
-        $repository_name = $this->operation->getRepositoryName();
-        $factory_name    = $this->operation->getFactoryName();
-        $data_interface  = $this->operation->getInterfaceName();
+        $repositoryName = $this->operation->getRepositoryName();
+        $factoryName = $this->operation->getFactoryName();
+        $dataInterface = $this->operation->getInterfaceName();
 
         $this->class->addMethodFromGenerator($this->getConstructor());
         $this->class->addMethodFromGenerator($this->getMakeRequest());
         $this->class->addMethodFromGenerator($this->getConfigPath());
         $this->class->addMethodFromGenerator($this->getConfigPathStatus());
         $this->class->addMethodFromGenerator($this->getConfigPathLastExecute());
-        $this->class->addMethodFromGenerator($this->getConfigPathMaxKey());
-        $this->class->addMethodFromGenerator($this->getConfigPathAppId());
+        $this->class->addMethodFromGenerator($this->getConfigPathLastEntryNo());
         $this->class->addMethodFromGenerator($this->getMainEntity());
 
         $content = $this->file->generate();
 
+        // Cleanup generated file content
         $content = str_replace(
             'extends Ls\\Replication\\Cron\\AbstractReplicationTask',
             'extends AbstractReplicationTask',
             $content
         );
 
-        // removing slashes from the ScopeConfigInterface -- Same for all
-        $content = str_replace('\ScopeConfigInterface $scope_config', 'ScopeConfigInterface $scope_config', $content);
+        // Cleanup slashes from common type hints
+        $replaceMap = [
+            '\ScopeConfigInterface $scope_config' => 'ScopeConfigInterface $scope_config',
+            '\Config $resource_config' => 'Config $resource_config',
+            '\LsHelper $helper' => 'LsHelper $helper',
+            "\\{$factoryName} \$factory" => "{$factoryName} \$factory",
+            "\\{$repositoryName} \$repository" => "{$repositoryName} \$repository",
+            "\\{$dataInterface} \$dataInterface" => "{$dataInterface} \$dataInterface",
+            ": \\{$dataInterface}" => ": {$dataInterface}",
+            ": \\{$repositoryName}" => ": {$repositoryName}",
+            ": \\{$factoryName}" => ": {$factoryName}"
+        ];
 
-        // removing the slashes from \Config -- Same for All
-        $content = str_replace('\Config $resource_config', 'Config $resource_config', $content);
-
-        // removing the slashes from \Logger -- Same for All
-        $content = str_replace('\Logger $logger', 'Logger $logger', $content);
-
-        // removing the slashes from \LsHelper -- Same for All
-        $content = str_replace('\LsHelper $helper', 'LsHelper $helper', $content);
-
-        // removing the slashes from \ReplicationHelper -- Same for All
-        $content = str_replace('\ReplicationHelper $repHelper', 'ReplicationHelper $repHelper', $content);
-
-        // removing slashes from \$classnameFactory --- Dynamic different
-        $content = str_replace("\\{$factory_name} \$factory", "{$factory_name} \$factory", $content);
-
-        // removing slashes from \$classnameRepository --- Dynamic different
-        $content = str_replace("\\{$repository_name} \$repository", "{$repository_name} \$repository", $content);
-
-        // removing slashes from \$apiDataInterface --- Dynamic different
-        $content = str_replace("\\{$data_interface} \$data_interface", "{$data_interface} \$data_interface", $content);
-
-        // removing the slashes from \Config -- Same for All
-        return $content;
+        return str_replace(array_keys($replaceMap), array_values($replaceMap), $content);
     }
 
     /**
+     * Generate constructor method.
+     *
      * @return MethodGenerator
      */
-    private function getConstructor()
+    public function getConstructor(): MethodGenerator
     {
         $constructor = new MethodGenerator();
         $constructor->setName('__construct')
             ->setVisibility(MethodGenerator::FLAG_PUBLIC);
+
         $constructor->setParameters([
-            new ParameterGenerator('scope_config', 'ScopeConfigInterface'),
-            new ParameterGenerator('resource_config', 'Config'),
-            new ParameterGenerator('logger', 'Logger'),
+            new ParameterGenerator('scopeConfig', ScopeConfigInterface::class),
+            new ParameterGenerator('resourceConfig', Config::class),
+            new ParameterGenerator('logger', Logger::class),
             new ParameterGenerator('helper', 'LsHelper'),
-            new ParameterGenerator('repHelper', 'ReplicationHelper'),
+            new ParameterGenerator('repHelper', ReplicationHelper::class),
             new ParameterGenerator('factory', $this->operation->getFactoryName()),
             new ParameterGenerator('repository', $this->operation->getRepositoryName()),
-            new ParameterGenerator('data_interface', $this->operation->getInterfaceName())
+            new ParameterGenerator('dataInterface', $this->operation->getInterfaceName())
         ]);
-        $constructor->setBody(<<<CODE
-parent::__construct(\$scope_config, \$resource_config, \$logger, \$helper, \$repHelper);
-\$this->repository = \$repository;
-\$this->factory = \$factory;
-\$this->data_interface = \$data_interface;
+
+        $constructor->setBody(<<<'CODE'
+parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
+$this->repository = $repository;
+$this->factory = $factory;
+$this->dataInterface = $dataInterface;
 CODE
         );
 
@@ -156,114 +157,109 @@ CODE
     }
 
     /**
+     * Generate makeRequest method for building the replication request.
+     *
      * @return MethodGenerator
      */
-    private function getMakeRequest()
+    public function getMakeRequest(): MethodGenerator
     {
-        $make_request = new MethodGenerator();
-        $make_request->setName('makeRequest')
+        $makeRequest = new MethodGenerator();
+        $makeRequest->setName('makeRequest')
             ->setVisibility(MethodGenerator::FLAG_PROTECTED);
-        $make_request->setParameters([new ParameterGenerator('lastKey')]);
-        $make_request->setParameters([new ParameterGenerator('fullReplication', null, false)]);
-        // making batchSize dynamic and setting the default value to 100
-        $make_request->setParameters([new ParameterGenerator('batchSize', null, 100)]);
-        // setting storeId for those which require
-        $make_request->setParameters([new ParameterGenerator('storeId', null, '')]);
-        $make_request->setParameters([new ParameterGenerator('maxKey', null, '')]);
-        $make_request->setParameters([new ParameterGenerator('baseUrl', null, '')]);
-        $make_request->setParameters([new ParameterGenerator('appId', null, '')]);
-        $make_request->setBody(<<<CODE
-\$request = new {$this->operation->getName()}(\$baseUrl);
-\$request->getOperationInput()
-         ->setReplRequest( ( new ReplRequest() )->setBatchSize(\$batchSize)
-                                                ->setFullReplication(\$fullReplication)
-                                                ->setLastKey(\$lastKey)
-                                                ->setMaxKey(\$maxKey)
-                                                ->setStoreId(\$storeId)
-                                                ->setAppId(\$appId));
+        $makeRequest->setParameters([
+            new ParameterGenerator('baseUrl', 'string', ''),
+            new ParameterGenerator('connectionParams', 'array', []),
+            new ParameterGenerator('companyName', 'string', ''),
+            new ParameterGenerator('fullRepl', 'bool', false),
+            new ParameterGenerator('batchSize', 'int', 100),
+            new ParameterGenerator('storeNo', 'string', ''),
+            new ParameterGenerator('lastEntryNo', 'int', 0),
+            new ParameterGenerator('lastKey', 'string', '')
+        ]);
+
+        $makeRequest->setBody(<<<CODE
+\$request = new \\{$this->operation->getOperationFqn()}(\$baseUrl, \$connectionParams, \$companyName);
+\$request->setOperationInput([
+'storeNo' => \$storeNo,
+'batchSize' => \$batchSize,
+'fullRepl' => \$fullRepl,
+'lastEntryNo' => \$lastEntryNo,
+'lastKey' => \$lastKey
+]);
 return \$request;
 CODE
         );
 
-        return $make_request;
+        return $makeRequest;
     }
 
-    private function getConfigPath()
+    /**
+     * Get config path constant.
+     *
+     * @return MethodGenerator
+     */
+    public function getConfigPath(): MethodGenerator
     {
-        $config_path = new MethodGenerator();
-        $config_path->setName('getConfigPath')
-            ->setVisibility(MethodGenerator::FLAG_PROTECTED);
-        $config_path->setBody(<<<CODE
-return self::CONFIG_PATH;
-CODE
-        );
-
-        return $config_path;
+        return (new MethodGenerator())
+            ->setName('getConfigPath')
+            ->setVisibility(MethodGenerator::FLAG_PROTECTED)
+            ->setBody('return self::CONFIG_PATH;')
+            ->setReturnType('string');
     }
 
-    private function getConfigPathStatus()
+    /**
+     * Get status config path constant.
+     *
+     * @return MethodGenerator
+     */
+    public function getConfigPathStatus(): MethodGenerator
     {
-        $config_path = new MethodGenerator();
-        $config_path->setName('getConfigPathStatus')
-            ->setVisibility(MethodGenerator::FLAG_PROTECTED);
-        $config_path->setBody(<<<CODE
-return self::CONFIG_PATH_STATUS;
-CODE
-        );
-
-        return $config_path;
+        return (new MethodGenerator())
+            ->setName('getConfigPathStatus')
+            ->setVisibility(MethodGenerator::FLAG_PROTECTED)
+            ->setBody('return self::CONFIG_PATH_STATUS;')
+            ->setReturnType('string');
     }
 
-    private function getConfigPathLastExecute()
+    /**
+     * Get last execute config path constant.
+     *
+     * @return MethodGenerator
+     */
+    public function getConfigPathLastExecute(): MethodGenerator
     {
-        $config_path = new MethodGenerator();
-        $config_path->setName('getConfigPathLastExecute')
-            ->setVisibility(MethodGenerator::FLAG_PROTECTED);
-        $config_path->setBody(<<<CODE
-return self::CONFIG_PATH_LAST_EXECUTE;
-CODE
-        );
-
-        return $config_path;
+        return (new MethodGenerator())
+            ->setName('getConfigPathLastExecute')
+            ->setVisibility(MethodGenerator::FLAG_PROTECTED)
+            ->setBody('return self::CONFIG_PATH_LAST_EXECUTE;')
+            ->setReturnType('string');
     }
 
-    private function getConfigPathMaxKey()
+    /**
+     * Get last entry no config path constant.
+     *
+     * @return MethodGenerator
+     */
+    public function getConfigPathLastEntryNo(): MethodGenerator
     {
-        $config_path = new MethodGenerator();
-        $config_path->setName('getConfigPathMaxKey')
-            ->setVisibility(MethodGenerator::FLAG_PROTECTED);
-        $config_path->setBody(<<<CODE
-return self::CONFIG_PATH_MAX_KEY;
-CODE
-        );
-
-        return $config_path;
+        return (new MethodGenerator())
+            ->setName('getConfigPathLastEntryNo')
+            ->setVisibility(MethodGenerator::FLAG_PROTECTED)
+            ->setBody('return self::CONFIG_PATH_LAST_ENTRY_NO;')
+            ->setReturnType('string');
     }
 
-    private function getConfigPathAppId()
+    /**
+     * Get main entity reference.
+     *
+     * @return MethodGenerator
+     */
+    public function getMainEntity(): MethodGenerator
     {
-        $config_path = new MethodGenerator();
-        $config_path->setName('getConfigPathAppId')
-            ->setVisibility(MethodGenerator::FLAG_PROTECTED);
-        $config_path->setBody(<<<CODE
-return self::CONFIG_PATH_APP_ID;
-CODE
-        );
-
-        return $config_path;
-    }
-
-    private function getMainEntity()
-    {
-        $config_path = new MethodGenerator();
-        $config_path->setName('getMainEntity')
-            ->setVisibility(MethodGenerator::FLAG_PROTECTED);
-        $main_entity = $this->operation->getEntityName();
-        $config_path->setBody(<<<CODE
-return \$this->data_interface;
-CODE
-        );
-
-        return $config_path;
+        return (new MethodGenerator())
+            ->setName('getMainEntity')
+            ->setVisibility(MethodGenerator::FLAG_PROTECTED)
+            ->setBody('return $this->dataInterface;')
+            ->setReturnType($this->operation->getInterfaceName());
     }
 }

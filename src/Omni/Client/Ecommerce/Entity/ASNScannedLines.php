@@ -31,19 +31,19 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     public const BATCH_OR_LOT_NUMBER = 'BatchOrLotNumber';
 
     /**
-     * @param string $DocumentNo
+     * @param ?string $DocumentNo
      * @return $this
      */
-    public function setDocumentNo($DocumentNo)
+    public function setDocumentno(?string $DocumentNo)
     {
         $this->setData(self::DOCUMENT_NO, $DocumentNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentNo()
+    public function getDocumentno() : ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -52,7 +52,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -61,133 +61,133 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
 
     /**
-     * @param string $Barcode
+     * @param ?string $Barcode
      * @return $this
      */
-    public function setBarcode($Barcode)
+    public function setBarcode(?string $Barcode)
     {
         $this->setData(self::BARCODE, $Barcode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcode()
+    public function getBarcode() : ?string
     {
         return $this->getData(self::BARCODE);
     }
 
     /**
-     * @param string $ItemNo
+     * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo($ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param string $UnitOfMeasureCode
+     * @param ?string $UnitOfMeasureCode
      * @return $this
      */
-    public function setUnitOfMeasureCode($UnitOfMeasureCode)
+    public function setUnitofmeasurecode(?string $UnitOfMeasureCode)
     {
         $this->setData(self::UNIT_OF_MEASURE_CODE, $UnitOfMeasureCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnitOfMeasureCode()
+    public function getUnitofmeasurecode() : ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
 
     /**
-     * @param date $ExpiryDate
+     * @param ?string $ExpiryDate
      * @return $this
      */
-    public function setExpiryDate($ExpiryDate)
+    public function setExpirydate(?string $ExpiryDate)
     {
         $this->setData(self::EXPIRY_DATE, $ExpiryDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getExpiryDate()
+    public function getExpirydate() : ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
 
     /**
-     * @param string $BatchOrLotNumber
+     * @param ?string $BatchOrLotNumber
      * @return $this
      */
-    public function setBatchOrLotNumber($BatchOrLotNumber)
+    public function setBatchorlotnumber(?string $BatchOrLotNumber)
     {
         $this->setData(self::BATCH_OR_LOT_NUMBER, $BatchOrLotNumber);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBatchOrLotNumber()
+    public function getBatchorlotnumber() : ?string
     {
         return $this->getData(self::BATCH_OR_LOT_NUMBER);
     }

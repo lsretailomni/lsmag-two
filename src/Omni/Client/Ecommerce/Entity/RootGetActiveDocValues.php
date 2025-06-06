@@ -18,7 +18,7 @@ class RootGetActiveDocValues extends \Magento\Catalog\Model\AbstractModel
      * @param GetActiveDocValuesCustomer $GetActiveDocValuesCustomer
      * @return $this
      */
-    public function setGetActiveDocValuesCustomer($GetActiveDocValuesCustomer)
+    public function setGetactivedocvaluescustomer($GetActiveDocValuesCustomer)
     {
         $this->setData(self::GET_ACTIVE_DOC_VALUES_CUSTOMER, $GetActiveDocValuesCustomer);
         return $this;
@@ -27,7 +27,7 @@ class RootGetActiveDocValues extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return GetActiveDocValuesCustomer
      */
-    public function getGetActiveDocValuesCustomer()
+    public function getGetactivedocvaluescustomer()
     {
         return $this->getData(self::GET_ACTIVE_DOC_VALUES_CUSTOMER);
     }

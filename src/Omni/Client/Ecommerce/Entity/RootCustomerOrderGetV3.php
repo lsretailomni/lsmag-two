@@ -12,15 +12,15 @@ class RootCustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCustomerOrderGetV3';
 
-    public const CUSTOMER_ORDER_GET_C_O_HEADER_V3 = 'CustomerOrderGetCOHeaderV3';
+    public const CUSTOMER_ORDER_GET_COHEADER_V3 = 'CustomerOrderGetCOHeaderV3';
 
-    public const CUSTOMER_ORDER_GET_C_O_LINE_V3 = 'CustomerOrderGetCOLineV3';
+    public const CUSTOMER_ORDER_GET_COLINE_V3 = 'CustomerOrderGetCOLineV3';
 
-    public const CUSTOMER_ORDER_GET_C_O_LINE_DATA_ENTRY_V3 = 'CustomerOrderGetCOLineDataEntryV3';
+    public const CUSTOMER_ORDER_GET_COLINE_DATA_ENTRY_V3 = 'CustomerOrderGetCOLineDataEntryV3';
 
-    public const CUSTOMER_ORDER_GET_C_O_DISCOUNT_LINE_V3 = 'CustomerOrderGetCODiscountLineV3';
+    public const CUSTOMER_ORDER_GET_CODISCOUNT_LINE_V3 = 'CustomerOrderGetCODiscountLineV3';
 
-    public const CUSTOMER_ORDER_GET_C_O_PAYMENT_V3 = 'CustomerOrderGetCOPaymentV3';
+    public const CUSTOMER_ORDER_GET_COPAYMENT_V3 = 'CustomerOrderGetCOPaymentV3';
 
     public const CUSTOMER_ORDER_GET_SALES_SHIPMENT_HEADER_V3 = 'CustomerOrderGetSalesShipmentHeaderV3';
 
@@ -34,90 +34,90 @@ class RootCustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel
      * @param CustomerOrderGetCOHeaderV3 $CustomerOrderGetCOHeaderV3
      * @return $this
      */
-    public function setCustomerOrderGetCOHeaderV3($CustomerOrderGetCOHeaderV3)
+    public function setCustomerordergetcoheaderv3($CustomerOrderGetCOHeaderV3)
     {
-        $this->setData(self::CUSTOMER_ORDER_GET_C_O_HEADER_V3, $CustomerOrderGetCOHeaderV3);
+        $this->setData(self::CUSTOMER_ORDER_GET_COHEADER_V3, $CustomerOrderGetCOHeaderV3);
         return $this;
     }
 
     /**
      * @return CustomerOrderGetCOHeaderV3
      */
-    public function getCustomerOrderGetCOHeaderV3()
+    public function getCustomerordergetcoheaderv3()
     {
-        return $this->getData(self::CUSTOMER_ORDER_GET_C_O_HEADER_V3);
+        return $this->getData(self::CUSTOMER_ORDER_GET_COHEADER_V3);
     }
 
     /**
      * @param CustomerOrderGetCOLineV3 $CustomerOrderGetCOLineV3
      * @return $this
      */
-    public function setCustomerOrderGetCOLineV3($CustomerOrderGetCOLineV3)
+    public function setCustomerordergetcolinev3($CustomerOrderGetCOLineV3)
     {
-        $this->setData(self::CUSTOMER_ORDER_GET_C_O_LINE_V3, $CustomerOrderGetCOLineV3);
+        $this->setData(self::CUSTOMER_ORDER_GET_COLINE_V3, $CustomerOrderGetCOLineV3);
         return $this;
     }
 
     /**
      * @return CustomerOrderGetCOLineV3
      */
-    public function getCustomerOrderGetCOLineV3()
+    public function getCustomerordergetcolinev3()
     {
-        return $this->getData(self::CUSTOMER_ORDER_GET_C_O_LINE_V3);
+        return $this->getData(self::CUSTOMER_ORDER_GET_COLINE_V3);
     }
 
     /**
      * @param CustomerOrderGetCOLineDataEntryV3 $CustomerOrderGetCOLineDataEntryV3
      * @return $this
      */
-    public function setCustomerOrderGetCOLineDataEntryV3($CustomerOrderGetCOLineDataEntryV3)
+    public function setCustomerordergetcolinedataentryv3($CustomerOrderGetCOLineDataEntryV3)
     {
-        $this->setData(self::CUSTOMER_ORDER_GET_C_O_LINE_DATA_ENTRY_V3, $CustomerOrderGetCOLineDataEntryV3);
+        $this->setData(self::CUSTOMER_ORDER_GET_COLINE_DATA_ENTRY_V3, $CustomerOrderGetCOLineDataEntryV3);
         return $this;
     }
 
     /**
      * @return CustomerOrderGetCOLineDataEntryV3
      */
-    public function getCustomerOrderGetCOLineDataEntryV3()
+    public function getCustomerordergetcolinedataentryv3()
     {
-        return $this->getData(self::CUSTOMER_ORDER_GET_C_O_LINE_DATA_ENTRY_V3);
+        return $this->getData(self::CUSTOMER_ORDER_GET_COLINE_DATA_ENTRY_V3);
     }
 
     /**
      * @param CustomerOrderGetCODiscountLineV3 $CustomerOrderGetCODiscountLineV3
      * @return $this
      */
-    public function setCustomerOrderGetCODiscountLineV3($CustomerOrderGetCODiscountLineV3)
+    public function setCustomerordergetcodiscountlinev3($CustomerOrderGetCODiscountLineV3)
     {
-        $this->setData(self::CUSTOMER_ORDER_GET_C_O_DISCOUNT_LINE_V3, $CustomerOrderGetCODiscountLineV3);
+        $this->setData(self::CUSTOMER_ORDER_GET_CODISCOUNT_LINE_V3, $CustomerOrderGetCODiscountLineV3);
         return $this;
     }
 
     /**
      * @return CustomerOrderGetCODiscountLineV3
      */
-    public function getCustomerOrderGetCODiscountLineV3()
+    public function getCustomerordergetcodiscountlinev3()
     {
-        return $this->getData(self::CUSTOMER_ORDER_GET_C_O_DISCOUNT_LINE_V3);
+        return $this->getData(self::CUSTOMER_ORDER_GET_CODISCOUNT_LINE_V3);
     }
 
     /**
      * @param CustomerOrderGetCOPaymentV3 $CustomerOrderGetCOPaymentV3
      * @return $this
      */
-    public function setCustomerOrderGetCOPaymentV3($CustomerOrderGetCOPaymentV3)
+    public function setCustomerordergetcopaymentv3($CustomerOrderGetCOPaymentV3)
     {
-        $this->setData(self::CUSTOMER_ORDER_GET_C_O_PAYMENT_V3, $CustomerOrderGetCOPaymentV3);
+        $this->setData(self::CUSTOMER_ORDER_GET_COPAYMENT_V3, $CustomerOrderGetCOPaymentV3);
         return $this;
     }
 
     /**
      * @return CustomerOrderGetCOPaymentV3
      */
-    public function getCustomerOrderGetCOPaymentV3()
+    public function getCustomerordergetcopaymentv3()
     {
-        return $this->getData(self::CUSTOMER_ORDER_GET_C_O_PAYMENT_V3);
+        return $this->getData(self::CUSTOMER_ORDER_GET_COPAYMENT_V3);
     }
 
     /**
@@ -125,7 +125,7 @@ class RootCustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel
      * $CustomerOrderGetSalesShipmentHeaderV3
      * @return $this
      */
-    public function setCustomerOrderGetSalesShipmentHeaderV3($CustomerOrderGetSalesShipmentHeaderV3)
+    public function setCustomerordergetsalesshipmentheaderv3($CustomerOrderGetSalesShipmentHeaderV3)
     {
         $this->setData(self::CUSTOMER_ORDER_GET_SALES_SHIPMENT_HEADER_V3, $CustomerOrderGetSalesShipmentHeaderV3);
         return $this;
@@ -134,7 +134,7 @@ class RootCustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CustomerOrderGetSalesShipmentHeaderV3
      */
-    public function getCustomerOrderGetSalesShipmentHeaderV3()
+    public function getCustomerordergetsalesshipmentheaderv3()
     {
         return $this->getData(self::CUSTOMER_ORDER_GET_SALES_SHIPMENT_HEADER_V3);
     }
@@ -143,7 +143,7 @@ class RootCustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel
      * @param CustomerOrderGetGeneralCommentV3 $CustomerOrderGetGeneralCommentV3
      * @return $this
      */
-    public function setCustomerOrderGetGeneralCommentV3($CustomerOrderGetGeneralCommentV3)
+    public function setCustomerordergetgeneralcommentv3($CustomerOrderGetGeneralCommentV3)
     {
         $this->setData(self::CUSTOMER_ORDER_GET_GENERAL_COMMENT_V3, $CustomerOrderGetGeneralCommentV3);
         return $this;
@@ -152,7 +152,7 @@ class RootCustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CustomerOrderGetGeneralCommentV3
      */
-    public function getCustomerOrderGetGeneralCommentV3()
+    public function getCustomerordergetgeneralcommentv3()
     {
         return $this->getData(self::CUSTOMER_ORDER_GET_GENERAL_COMMENT_V3);
     }
@@ -161,7 +161,7 @@ class RootCustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel
      * @param CustomerOrderGetDeliveryCommentV3 $CustomerOrderGetDeliveryCommentV3
      * @return $this
      */
-    public function setCustomerOrderGetDeliveryCommentV3($CustomerOrderGetDeliveryCommentV3)
+    public function setCustomerordergetdeliverycommentv3($CustomerOrderGetDeliveryCommentV3)
     {
         $this->setData(self::CUSTOMER_ORDER_GET_DELIVERY_COMMENT_V3, $CustomerOrderGetDeliveryCommentV3);
         return $this;
@@ -170,7 +170,7 @@ class RootCustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CustomerOrderGetDeliveryCommentV3
      */
-    public function getCustomerOrderGetDeliveryCommentV3()
+    public function getCustomerordergetdeliverycommentv3()
     {
         return $this->getData(self::CUSTOMER_ORDER_GET_DELIVERY_COMMENT_V3);
     }
@@ -179,7 +179,7 @@ class RootCustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel
      * @param CustomerOrderGetSalesShipmentLineV3 $CustomerOrderGetSalesShipmentLineV3
      * @return $this
      */
-    public function setCustomerOrderGetSalesShipmentLineV3($CustomerOrderGetSalesShipmentLineV3)
+    public function setCustomerordergetsalesshipmentlinev3($CustomerOrderGetSalesShipmentLineV3)
     {
         $this->setData(self::CUSTOMER_ORDER_GET_SALES_SHIPMENT_LINE_V3, $CustomerOrderGetSalesShipmentLineV3);
         return $this;
@@ -188,7 +188,7 @@ class RootCustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return CustomerOrderGetSalesShipmentLineV3
      */
-    public function getCustomerOrderGetSalesShipmentLineV3()
+    public function getCustomerordergetsalesshipmentlinev3()
     {
         return $this->getData(self::CUSTOMER_ORDER_GET_SALES_SHIPMENT_LINE_V3);
     }

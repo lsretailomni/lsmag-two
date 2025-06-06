@@ -37,55 +37,55 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     public const TABLE_NO = 'TableNo';
 
     /**
-     * @param string $PublishedOfferNo
+     * @param ?string $PublishedOfferNo
      * @return $this
      */
-    public function setPublishedOfferNo($PublishedOfferNo)
+    public function setPublishedofferno(?string $PublishedOfferNo)
     {
         $this->setData(self::PUBLISHED_OFFER_NO, $PublishedOfferNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPublishedOfferNo()
+    public function getPublishedofferno() : ?string
     {
         return $this->getData(self::PUBLISHED_OFFER_NO);
     }
 
     /**
-     * @param string $DiscountType
+     * @param ?string $DiscountType
      * @return $this
      */
-    public function setDiscountType($DiscountType)
+    public function setDiscounttype(?string $DiscountType)
     {
         $this->setData(self::DISCOUNT_TYPE, $DiscountType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDiscountType()
+    public function getDiscounttype() : ?string
     {
         return $this->getData(self::DISCOUNT_TYPE);
     }
 
     /**
-     * @param string $DiscountNo
+     * @param ?string $DiscountNo
      * @return $this
      */
-    public function setDiscountNo($DiscountNo)
+    public function setDiscountno(?string $DiscountNo)
     {
         $this->setData(self::DISCOUNT_NO, $DiscountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDiscountNo()
+    public function getDiscountno() : ?string
     {
         return $this->getData(self::DISCOUNT_NO);
     }
@@ -94,7 +94,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $DiscountLineNo
      * @return $this
      */
-    public function setDiscountLineNo($DiscountLineNo)
+    public function setDiscountlineno($DiscountLineNo)
     {
         $this->setData(self::DISCOUNT_LINE_NO, $DiscountLineNo);
         return $this;
@@ -103,7 +103,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDiscountLineNo()
+    public function getDiscountlineno()
     {
         return $this->getData(self::DISCOUNT_LINE_NO);
     }
@@ -112,7 +112,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $DiscountLineType
      * @return $this
      */
-    public function setDiscountLineType($DiscountLineType)
+    public function setDiscountlinetype($DiscountLineType)
     {
         $this->setData(self::DISCOUNT_LINE_TYPE, $DiscountLineType);
         return $this;
@@ -121,115 +121,115 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDiscountLineType()
+    public function getDiscountlinetype()
     {
         return $this->getData(self::DISCOUNT_LINE_TYPE);
     }
 
     /**
-     * @param string $DiscountLineId
+     * @param ?string $DiscountLineId
      * @return $this
      */
-    public function setDiscountLineId($DiscountLineId)
+    public function setDiscountlineid(?string $DiscountLineId)
     {
         $this->setData(self::DISCOUNT_LINE_ID, $DiscountLineId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDiscountLineId()
+    public function getDiscountlineid() : ?string
     {
         return $this->getData(self::DISCOUNT_LINE_ID);
     }
 
     /**
-     * @param string $DiscountLineDescription
+     * @param ?string $DiscountLineDescription
      * @return $this
      */
-    public function setDiscountLineDescription($DiscountLineDescription)
+    public function setDiscountlinedescription(?string $DiscountLineDescription)
     {
         $this->setData(self::DISCOUNT_LINE_DESCRIPTION, $DiscountLineDescription);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDiscountLineDescription()
+    public function getDiscountlinedescription() : ?string
     {
         return $this->getData(self::DISCOUNT_LINE_DESCRIPTION);
     }
 
     /**
-     * @param string $VariantType
+     * @param ?string $VariantType
      * @return $this
      */
-    public function setVariantType($VariantType)
+    public function setVarianttype(?string $VariantType)
     {
         $this->setData(self::VARIANT_TYPE, $VariantType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantType()
+    public function getVarianttype() : ?string
     {
         return $this->getData(self::VARIANT_TYPE);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param boolean $Exclude
+     * @param ?bool $Exclude
      * @return $this
      */
-    public function setExclude($Exclude)
+    public function setExclude(?bool $Exclude)
     {
         $this->setData(self::EXCLUDE, $Exclude);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getExclude()
+    public function getExclude() : ?bool
     {
         return $this->getData(self::EXCLUDE);
     }
 
     /**
-     * @param string $UnitOfMeasure
+     * @param ?string $UnitOfMeasure
      * @return $this
      */
-    public function setUnitOfMeasure($UnitOfMeasure)
+    public function setUnitofmeasure(?string $UnitOfMeasure)
     {
         $this->setData(self::UNIT_OF_MEASURE, $UnitOfMeasure);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnitOfMeasure()
+    public function getUnitofmeasure() : ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE);
     }
@@ -238,7 +238,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
      * @param int $TableNo
      * @return $this
      */
-    public function setTableNo($TableNo)
+    public function setTableno($TableNo)
     {
         $this->setData(self::TABLE_NO, $TableNo);
         return $this;
@@ -247,7 +247,7 @@ class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTableNo()
+    public function getTableno()
     {
         return $this->getData(self::TABLE_NO);
     }

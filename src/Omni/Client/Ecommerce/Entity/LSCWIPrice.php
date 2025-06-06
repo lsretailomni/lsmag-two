@@ -29,13 +29,38 @@ class LSCWIPrice extends AbstractModel
     public const VARIANT_CODE = 'Variant Code';
     public const SYSTEMID = '$systemId';
 
+    public static array $dbColumnsMapping = [
+	self::CURRENCY_CODE => 'currency_code',
+	self::CUSTOMER_DISC_GROUP => 'customer_disc_group',
+	self::ITEM_NO => 'item_no',
+	self::LAST_MODIFY_DATE => 'last_modify_date',
+	self::LOYALTY_SCHEME_CODE => 'loyalty_scheme_code',
+	self::NET_UNIT_PRICE => 'net_unit_price',
+	self::OFFER_NO => 'offer_no',
+	self::QTY_PER_UNIT_OF_MEASURE => 'qty_per_unit_of_measure',
+	self::STORE_NO => 'store_no',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+	self::UNIT_OF_MEASURE_CODE => 'unit_of_measure_code',
+	self::UNIT_PRICE => 'unit_price',
+	self::VARIANT_CODE => 'variant_code',
+	self::SYSTEMID => 'systemid',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getCurrencyCode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value)
+    public function setCurrencyCode(?string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -45,7 +70,7 @@ class LSCWIPrice extends AbstractModel
         return $this->getData(self::CUSTOMER_DISC_GROUP);
     }
 
-    public function setCustomerDiscGroup(string $value)
+    public function setCustomerDiscGroup(?string $value)
     {
         return $this->setData(self::CUSTOMER_DISC_GROUP, $value);
     }
@@ -55,7 +80,7 @@ class LSCWIPrice extends AbstractModel
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -65,7 +90,7 @@ class LSCWIPrice extends AbstractModel
         return $this->getData(self::LAST_MODIFY_DATE);
     }
 
-    public function setLastModifyDate(string $value)
+    public function setLastModifyDate(?string $value)
     {
         return $this->setData(self::LAST_MODIFY_DATE, $value);
     }
@@ -75,17 +100,17 @@ class LSCWIPrice extends AbstractModel
         return $this->getData(self::LOYALTY_SCHEME_CODE);
     }
 
-    public function setLoyaltySchemeCode(string $value)
+    public function setLoyaltySchemeCode(?string $value)
     {
         return $this->setData(self::LOYALTY_SCHEME_CODE, $value);
     }
 
-    public function getNetUnitPrice(): ?string
+    public function getNetUnitPrice(): ?float
     {
         return $this->getData(self::NET_UNIT_PRICE);
     }
 
-    public function setNetUnitPrice(string $value)
+    public function setNetUnitPrice(?float $value)
     {
         return $this->setData(self::NET_UNIT_PRICE, $value);
     }
@@ -95,17 +120,17 @@ class LSCWIPrice extends AbstractModel
         return $this->getData(self::OFFER_NO);
     }
 
-    public function setOfferNo(string $value)
+    public function setOfferNo(?string $value)
     {
         return $this->setData(self::OFFER_NO, $value);
     }
 
-    public function getQtyPerUnitOfMeasure(): ?string
+    public function getQtyPerUnitOfMeasure(): ?float
     {
         return $this->getData(self::QTY_PER_UNIT_OF_MEASURE);
     }
 
-    public function setQtyPerUnitOfMeasure(string $value)
+    public function setQtyPerUnitOfMeasure(?float $value)
     {
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }
@@ -115,47 +140,47 @@ class LSCWIPrice extends AbstractModel
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
@@ -165,17 +190,17 @@ class LSCWIPrice extends AbstractModel
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
 
-    public function setUnitOfMeasureCode(string $value)
+    public function setUnitOfMeasureCode(?string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
 
-    public function getUnitPrice(): ?string
+    public function getUnitPrice(): ?float
     {
         return $this->getData(self::UNIT_PRICE);
     }
 
-    public function setUnitPrice(string $value)
+    public function setUnitPrice(?float $value)
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }
@@ -185,17 +210,17 @@ class LSCWIPrice extends AbstractModel
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value)
+    public function setVariantCode(?string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }

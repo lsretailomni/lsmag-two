@@ -43,73 +43,73 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     public const REORDER_POINT = 'ReorderPoint';
 
     /**
-     * @param string $ItemNo
+     * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo($ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $LocationCode
+     * @param ?string $LocationCode
      * @return $this
      */
-    public function setLocationCode($LocationCode)
+    public function setLocationcode(?string $LocationCode)
     {
         $this->setData(self::LOCATION_CODE, $LocationCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLocationCode()
+    public function getLocationcode() : ?string
     {
         return $this->getData(self::LOCATION_CODE);
     }
 
     /**
-     * @param float $ActualInventory
+     * @param ?float $ActualInventory
      * @return $this
      */
-    public function setActualInventory($ActualInventory)
+    public function setActualinventory(?float $ActualInventory)
     {
         $this->setData(self::ACTUAL_INVENTORY, $ActualInventory);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getActualInventory()
+    public function getActualinventory() : ?float
     {
         return $this->getData(self::ACTUAL_INVENTORY);
     }
@@ -118,7 +118,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
      * @param int $LeadTimeDays
      * @return $this
      */
-    public function setLeadTimeDays($LeadTimeDays)
+    public function setLeadtimedays($LeadTimeDays)
     {
         $this->setData(self::LEAD_TIME_DAYS, $LeadTimeDays);
         return $this;
@@ -127,169 +127,169 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLeadTimeDays()
+    public function getLeadtimedays()
     {
         return $this->getData(self::LEAD_TIME_DAYS);
     }
 
     /**
-     * @param string $BaseUnitOfMeasure
+     * @param ?string $BaseUnitOfMeasure
      * @return $this
      */
-    public function setBaseUnitOfMeasure($BaseUnitOfMeasure)
+    public function setBaseunitofmeasure(?string $BaseUnitOfMeasure)
     {
         $this->setData(self::BASE_UNIT_OF_MEASURE, $BaseUnitOfMeasure);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBaseUnitOfMeasure()
+    public function getBaseunitofmeasure() : ?string
     {
         return $this->getData(self::BASE_UNIT_OF_MEASURE);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param float $Inventory
+     * @param ?float $Inventory
      * @return $this
      */
-    public function setInventory($Inventory)
+    public function setInventory(?float $Inventory)
     {
         $this->setData(self::INVENTORY, $Inventory);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getInventory()
+    public function getInventory() : ?float
     {
         return $this->getData(self::INVENTORY);
     }
 
     /**
-     * @param float $QtySoldnotPosted
+     * @param ?float $QtySoldnotPosted
      * @return $this
      */
-    public function setQtySoldnotPosted($QtySoldnotPosted)
+    public function setQtysoldnotposted(?float $QtySoldnotPosted)
     {
         $this->setData(self::QTY_SOLDNOT_POSTED, $QtySoldnotPosted);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQtySoldnotPosted()
+    public function getQtysoldnotposted() : ?float
     {
         return $this->getData(self::QTY_SOLDNOT_POSTED);
     }
 
     /**
-     * @param string $Colour
+     * @param ?string $Colour
      * @return $this
      */
-    public function setColour($Colour)
+    public function setColour(?string $Colour)
     {
         $this->setData(self::COLOUR, $Colour);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getColour()
+    public function getColour() : ?string
     {
         return $this->getData(self::COLOUR);
     }
 
     /**
-     * @param string $Size
+     * @param ?string $Size
      * @return $this
      */
-    public function setSize($Size)
+    public function setSize(?string $Size)
     {
         $this->setData(self::SIZE, $Size);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSize()
+    public function getSize() : ?string
     {
         return $this->getData(self::SIZE);
     }
 
     /**
-     * @param string $Style
+     * @param ?string $Style
      * @return $this
      */
-    public function setStyle($Style)
+    public function setStyle(?string $Style)
     {
         $this->setData(self::STYLE, $Style);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStyle()
+    public function getStyle() : ?string
     {
         return $this->getData(self::STYLE);
     }
 
     /**
-     * @param float $ExpectedStock
+     * @param ?float $ExpectedStock
      * @return $this
      */
-    public function setExpectedStock($ExpectedStock)
+    public function setExpectedstock(?float $ExpectedStock)
     {
         $this->setData(self::EXPECTED_STOCK, $ExpectedStock);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getExpectedStock()
+    public function getExpectedstock() : ?float
     {
         return $this->getData(self::EXPECTED_STOCK);
     }
 
     /**
-     * @param float $ReorderPoint
+     * @param ?float $ReorderPoint
      * @return $this
      */
-    public function setReorderPoint($ReorderPoint)
+    public function setReorderpoint(?float $ReorderPoint)
     {
         $this->setData(self::REORDER_POINT, $ReorderPoint);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getReorderPoint()
+    public function getReorderpoint() : ?float
     {
         return $this->getData(self::REORDER_POINT);
     }

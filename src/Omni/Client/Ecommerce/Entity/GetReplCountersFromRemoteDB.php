@@ -28,7 +28,7 @@ class GetReplCountersFromRemoteDB extends \Magento\Catalog\Model\AbstractModel i
      * @param int $replTableId
      * @return $this
      */
-    public function setReplTableId($replTableId)
+    public function setRepltableid($replTableId)
     {
         $this->setData(self::REPL_TABLE_ID, $replTableId);
         return $this;
@@ -37,79 +37,79 @@ class GetReplCountersFromRemoteDB extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return int
      */
-    public function getReplTableId()
+    public function getRepltableid()
     {
         return $this->getData(self::REPL_TABLE_ID);
     }
 
     /**
-     * @param string $replCountFieldName
+     * @param ?string $replCountFieldName
      * @return $this
      */
-    public function setReplCountFieldName($replCountFieldName)
+    public function setReplcountfieldname(?string $replCountFieldName)
     {
         $this->setData(self::REPL_COUNT_FIELD_NAME, $replCountFieldName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReplCountFieldName()
+    public function getReplcountfieldname() : ?string
     {
         return $this->getData(self::REPL_COUNT_FIELD_NAME);
     }
 
     /**
-     * @param string $replicationCounter
+     * @param ?string $replicationCounter
      * @return $this
      */
-    public function setReplicationCounter($replicationCounter)
+    public function setReplicationcounter(?string $replicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $replicationCounter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter() : ?string
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

@@ -18,40 +18,40 @@ class StoreInventoryLinesGetResult extends \Magento\Catalog\Model\AbstractModel 
 
     public const ERROR_TEXT = 'errorText';
 
-    public const STORE_INVENTORY_LINES_GET_X_M_L = 'storeInventoryLinesGetXML';
+    public const STORE_INVENTORY_LINES_GET_XML = 'storeInventoryLinesGetXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class StoreInventoryLinesGetResult extends \Magento\Catalog\Model\AbstractModel 
      * @param RootStoreInventoryGetLines $storeInventoryLinesGetXML
      * @return $this
      */
-    public function setStoreInventoryLinesGetXML($storeInventoryLinesGetXML)
+    public function setStoreinventorylinesgetxml($storeInventoryLinesGetXML)
     {
-        $this->setData(self::STORE_INVENTORY_LINES_GET_X_M_L, $storeInventoryLinesGetXML);
+        $this->setData(self::STORE_INVENTORY_LINES_GET_XML, $storeInventoryLinesGetXML);
         return $this;
     }
 
     /**
      * @return RootStoreInventoryGetLines
      */
-    public function getStoreInventoryLinesGetXML()
+    public function getStoreinventorylinesgetxml()
     {
-        return $this->getData(self::STORE_INVENTORY_LINES_GET_X_M_L);
+        return $this->getData(self::STORE_INVENTORY_LINES_GET_XML);
     }
 
     /**

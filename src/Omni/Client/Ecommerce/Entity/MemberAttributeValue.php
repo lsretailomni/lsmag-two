@@ -17,37 +17,37 @@ class MemberAttributeValue extends \Magento\Catalog\Model\AbstractModel
     public const ATTRIBUTE_VALUE = 'AttributeValue';
 
     /**
-     * @param string $AttributeCode
+     * @param ?string $AttributeCode
      * @return $this
      */
-    public function setAttributeCode($AttributeCode)
+    public function setAttributecode(?string $AttributeCode)
     {
         $this->setData(self::ATTRIBUTE_CODE, $AttributeCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAttributeCode()
+    public function getAttributecode() : ?string
     {
         return $this->getData(self::ATTRIBUTE_CODE);
     }
 
     /**
-     * @param string $AttributeValue
+     * @param ?string $AttributeValue
      * @return $this
      */
-    public function setAttributeValue($AttributeValue)
+    public function setAttributevalue(?string $AttributeValue)
     {
         $this->setData(self::ATTRIBUTE_VALUE, $AttributeValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAttributeValue()
+    public function getAttributevalue() : ?string
     {
         return $this->getData(self::ATTRIBUTE_VALUE);
     }

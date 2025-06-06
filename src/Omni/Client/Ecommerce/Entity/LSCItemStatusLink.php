@@ -28,13 +28,37 @@ class LSCItemStatusLink extends AbstractModel
     public const BLOCKED_ON_ECOMMERCE = 'Blocked on eCommerce';
     public const BLOCK_SALES_RETURN = 'Block Sales Return';
 
+    public static array $dbColumnsMapping = [
+	self::ITEM_NO => 'item_no',
+	self::STATUS_CODE => 'status_code',
+	self::VARIANT_DIMENSION_1_CODE => 'variant_dimension_1_code',
+	self::VARIANT_CODE => 'variant_code',
+	self::STORE_GROUP_CODE => 'store_group_code',
+	self::LOCATION_CODE => 'location_code',
+	self::STARTING_DATE => 'starting_date',
+	self::BLOCK_SALE_ON_POS => 'block_sale_on_pos',
+	self::BLOCK_DISCOUNT => 'block_discount',
+	self::BLOCK_MANUAL_PRICE_CHANGE => 'block_manual_price_change',
+	self::BLOCK_NEGATIVE_ADJUSTMENT => 'block_negative_adjustment',
+	self::BLOCK_POSITIVE_ADJUSTMENT => 'block_positive_adjustment',
+	self::BLOCK_PERIODIC_DISCOUNT => 'block_periodic_discount',
+	self::BLOCK_PURCHASE_RETURN => 'block_purchase_return',
+	self::BLOCKED_ON_ECOMMERCE => 'blocked_on_ecommerce',
+	self::BLOCK_SALES_RETURN => 'block_sales_return',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -44,7 +68,7 @@ class LSCItemStatusLink extends AbstractModel
         return $this->getData(self::STATUS_CODE);
     }
 
-    public function setStatusCode(string $value)
+    public function setStatusCode(?string $value)
     {
         return $this->setData(self::STATUS_CODE, $value);
     }
@@ -54,7 +78,7 @@ class LSCItemStatusLink extends AbstractModel
         return $this->getData(self::VARIANT_DIMENSION_1_CODE);
     }
 
-    public function setVariantDimension1Code(string $value)
+    public function setVariantDimension1Code(?string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_1_CODE, $value);
     }
@@ -64,7 +88,7 @@ class LSCItemStatusLink extends AbstractModel
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value)
+    public function setVariantCode(?string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -74,7 +98,7 @@ class LSCItemStatusLink extends AbstractModel
         return $this->getData(self::STORE_GROUP_CODE);
     }
 
-    public function setStoreGroupCode(string $value)
+    public function setStoreGroupCode(?string $value)
     {
         return $this->setData(self::STORE_GROUP_CODE, $value);
     }
@@ -84,7 +108,7 @@ class LSCItemStatusLink extends AbstractModel
         return $this->getData(self::LOCATION_CODE);
     }
 
-    public function setLocationCode(string $value)
+    public function setLocationCode(?string $value)
     {
         return $this->setData(self::LOCATION_CODE, $value);
     }
@@ -94,17 +118,17 @@ class LSCItemStatusLink extends AbstractModel
         return $this->getData(self::STARTING_DATE);
     }
 
-    public function setStartingDate(string $value)
+    public function setStartingDate(?string $value)
     {
         return $this->setData(self::STARTING_DATE, $value);
     }
 
-    public function getBlockSaleOnPOS(): ?bool
+    public function getBlockSaleOnPos(): ?bool
     {
         return $this->getData(self::BLOCK_SALE_ON_POS);
     }
 
-    public function setBlockSaleOnPOS(bool $value)
+    public function setBlockSaleOnPos(?bool $value)
     {
         return $this->setData(self::BLOCK_SALE_ON_POS, $value);
     }
@@ -114,7 +138,7 @@ class LSCItemStatusLink extends AbstractModel
         return $this->getData(self::BLOCK_DISCOUNT);
     }
 
-    public function setBlockDiscount(bool $value)
+    public function setBlockDiscount(?bool $value)
     {
         return $this->setData(self::BLOCK_DISCOUNT, $value);
     }
@@ -124,7 +148,7 @@ class LSCItemStatusLink extends AbstractModel
         return $this->getData(self::BLOCK_MANUAL_PRICE_CHANGE);
     }
 
-    public function setBlockManualPriceChange(bool $value)
+    public function setBlockManualPriceChange(?bool $value)
     {
         return $this->setData(self::BLOCK_MANUAL_PRICE_CHANGE, $value);
     }
@@ -134,7 +158,7 @@ class LSCItemStatusLink extends AbstractModel
         return $this->getData(self::BLOCK_NEGATIVE_ADJUSTMENT);
     }
 
-    public function setBlockNegativeAdjustment(bool $value)
+    public function setBlockNegativeAdjustment(?bool $value)
     {
         return $this->setData(self::BLOCK_NEGATIVE_ADJUSTMENT, $value);
     }
@@ -144,7 +168,7 @@ class LSCItemStatusLink extends AbstractModel
         return $this->getData(self::BLOCK_POSITIVE_ADJUSTMENT);
     }
 
-    public function setBlockPositiveAdjustment(bool $value)
+    public function setBlockPositiveAdjustment(?bool $value)
     {
         return $this->setData(self::BLOCK_POSITIVE_ADJUSTMENT, $value);
     }
@@ -154,7 +178,7 @@ class LSCItemStatusLink extends AbstractModel
         return $this->getData(self::BLOCK_PERIODIC_DISCOUNT);
     }
 
-    public function setBlockPeriodicDiscount(bool $value)
+    public function setBlockPeriodicDiscount(?bool $value)
     {
         return $this->setData(self::BLOCK_PERIODIC_DISCOUNT, $value);
     }
@@ -164,17 +188,17 @@ class LSCItemStatusLink extends AbstractModel
         return $this->getData(self::BLOCK_PURCHASE_RETURN);
     }
 
-    public function setBlockPurchaseReturn(bool $value)
+    public function setBlockPurchaseReturn(?bool $value)
     {
         return $this->setData(self::BLOCK_PURCHASE_RETURN, $value);
     }
 
-    public function getBlockedOnECommerce(): ?bool
+    public function getBlockedOnEcommerce(): ?bool
     {
         return $this->getData(self::BLOCKED_ON_ECOMMERCE);
     }
 
-    public function setBlockedOnECommerce(bool $value)
+    public function setBlockedOnEcommerce(?bool $value)
     {
         return $this->setData(self::BLOCKED_ON_ECOMMERCE, $value);
     }
@@ -184,7 +208,7 @@ class LSCItemStatusLink extends AbstractModel
         return $this->getData(self::BLOCK_SALES_RETURN);
     }
 
-    public function setBlockSalesReturn(bool $value)
+    public function setBlockSalesReturn(?bool $value)
     {
         return $this->setData(self::BLOCK_SALES_RETURN, $value);
     }

@@ -14,7 +14,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
 {
     public const CLASS_NAME = 'GetTokenEntry';
 
-    public const RECORD_IDP = 'recordId_p';
+    public const RECORD_ID_P = 'recordId_p';
 
     public const MEMBER_CARD_NO = 'memberCardNo';
 
@@ -29,127 +29,127 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $recordIdp
+     * @param ?string $recordIdp
      * @return $this
      */
-    public function setRecordIdP($recordIdp)
+    public function setRecordidP(?string $recordIdp)
     {
-        $this->setData(self::RECORD_IDP, $recordIdp);
+        $this->setData(self::RECORD_ID_P, $recordIdp);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRecordIdP()
+    public function getRecordidP() : ?string
     {
-        return $this->getData(self::RECORD_IDP);
+        return $this->getData(self::RECORD_ID_P);
     }
 
     /**
-     * @param string $memberCardNo
+     * @param ?string $memberCardNo
      * @return $this
      */
-    public function setMemberCardNo($memberCardNo)
+    public function setMembercardno(?string $memberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $memberCardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberCardNo()
+    public function getMembercardno() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
 
     /**
-     * @param string $tokenId
+     * @param ?string $tokenId
      * @return $this
      */
-    public function setTokenId($tokenId)
+    public function setTokenid(?string $tokenId)
     {
         $this->setData(self::TOKEN_ID, $tokenId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTokenId()
+    public function getTokenid() : ?string
     {
         return $this->getData(self::TOKEN_ID);
     }
 
     /**
-     * @param date $expiryDate
+     * @param ?string $expiryDate
      * @return $this
      */
-    public function setExpiryDate($expiryDate)
+    public function setExpirydate(?string $expiryDate)
     {
         $this->setData(self::EXPIRY_DATE, $expiryDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getExpiryDate()
+    public function getExpirydate() : ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
 
     /**
-     * @param string $result
+     * @param ?string $result
      * @return $this
      */
-    public function setResult($result)
+    public function setResult(?string $result)
     {
         $this->setData(self::RESULT, $result);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResult()
+    public function getResult() : ?string
     {
         return $this->getData(self::RESULT);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

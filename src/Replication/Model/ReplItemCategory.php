@@ -8,11 +8,10 @@
 
 namespace Ls\Replication\Model;
 
-use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\DataObject\IdentityInterface;
 use Ls\Replication\Api\Data\ReplItemCategoryInterface;
 
-class ReplItemCategory extends AbstractModel implements ReplItemCategoryInterface, IdentityInterface
+class ReplItemCategory extends \Ls\Omni\Client\Ecommerce\Entity\ItemCategory implements ReplItemCategoryInterface, IdentityInterface
 {
     public const CACHE_TAG = 'ls_replication_repl_item_category';
 
@@ -20,339 +19,490 @@ class ReplItemCategory extends AbstractModel implements ReplItemCategoryInterfac
 
     protected $_eventPrefix = 'ls_replication_repl_item_category';
 
-    /**
-     * @property string $Description
-     */
-    protected $Description = null;
-
-    /**
-     * @property string $nav_id
-     */
-    protected $nav_id = null;
-
-    /**
-     * @property boolean $IsDeleted
-     */
-    protected $IsDeleted = null;
-
-    /**
-     * @property string $scope
-     */
-    protected $scope = null;
-
-    /**
-     * @property int $scope_id
-     */
-    protected $scope_id = null;
-
-    /**
-     * @property boolean $processed
-     */
-    protected $processed = null;
-
-    /**
-     * @property boolean $is_updated
-     */
-    protected $is_updated = null;
-
-    /**
-     * @property boolean $is_failed
-     */
-    protected $is_failed = null;
-
-    /**
-     * @property string $created_at
-     */
-    protected $created_at = null;
-
-    /**
-     * @property string $updated_at
-     */
-    protected $updated_at = null;
-
-    /**
-     * @property string $identity_value
-     */
-    protected $identity_value = null;
-
-    /**
-     * @property string $checksum
-     */
-    protected $checksum = null;
-
-    /**
-     * @property string $processed_at
-     */
-    protected $processed_at = null;
-
     public function _construct()
     {
-        $this->_init( 'Ls\Replication\Model\ResourceModel\ReplItemCategory' );
+        $this->_init('Ls\Replication\Model\ResourceModel\ReplItemCategory');
     }
 
     public function getIdentities()
     {
-        return [ self::CACHE_TAG . '_' . $this->getId() ];
+        return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    /**
-     * @param string $Description
-     * @return $this
-     */
-    public function setDescription($Description)
+    public function getCode() : ?string
     {
-        $this->setData( 'Description', $Description );
-        $this->Description = $Description;
-        $this->setDataChanges( TRUE );
+        return $this->getData(self::getDbColumnsMapping()[self::CODE]);
+    }
+
+    public function setCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
+    }
+
+    public function getParentCategory() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PARENT_CATEGORY]);
+    }
+
+    public function setParentCategory(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PARENT_CATEGORY], $value);
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
+    }
+
+    public function setDescription(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
+    }
+
+    public function getIndentation() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::INDENTATION]);
+    }
+
+    public function setIndentation(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::INDENTATION], $value);
+    }
+
+    public function getPresentationOrder() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRESENTATION_ORDER]);
+    }
+
+    public function setPresentationOrder(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRESENTATION_ORDER], $value);
+    }
+
+    public function getHasChildren() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::HAS_CHILDREN]);
+    }
+
+    public function setHasChildren(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::HAS_CHILDREN], $value);
+    }
+
+    public function getLastModifiedDateTime() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME]);
+    }
+
+    public function setLastModifiedDateTime(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME], $value);
+    }
+
+    public function getDefaultSustAccount() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_SUST_ACCOUNT]);
+    }
+
+    public function setDefaultSustAccount(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_SUST_ACCOUNT], $value);
+    }
+
+    public function getLscItemNoMiscellaneous() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_ITEM_NO_MISCELLANEOUS]);
+    }
+
+    public function setLscItemNoMiscellaneous(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_ITEM_NO_MISCELLANEOUS], $value);
+    }
+
+    public function getLscNegative() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_NEGATIVE]);
+    }
+
+    public function setLscNegative(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_NEGATIVE], $value);
+    }
+
+    public function getLscNotDiscountable() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_NOT_DISCOUNTABLE]);
+    }
+
+    public function setLscNotDiscountable(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_NOT_DISCOUNTABLE], $value);
+    }
+
+    public function getLscItemTemplateCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_ITEM_TEMPLATE_CODE]);
+    }
+
+    public function setLscItemTemplateCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_ITEM_TEMPLATE_CODE], $value);
+    }
+
+    public function getLscDifferenceLcy() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_DIFFERENCE_LCY]);
+    }
+
+    public function setLscDifferenceLcy(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_DIFFERENCE_LCY], $value);
+    }
+
+    public function getLscItemHierarchyValue() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_ITEM_HIERARCHY_VALUE]);
+    }
+
+    public function setLscItemHierarchyValue(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_ITEM_HIERARCHY_VALUE], $value);
+    }
+
+    public function getLscPosInventoryLookup() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_INVENTORY_LOOKUP]);
+    }
+
+    public function setLscPosInventoryLookup(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_POS_INVENTORY_LOOKUP], $value);
+    }
+
+    public function getLscDefaultProfit() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_DEFAULT_PROFIT]);
+    }
+
+    public function setLscDefaultProfit(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_DEFAULT_PROFIT], $value);
+    }
+
+    public function getLscDispensePrinterGroup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_DISPENSE_PRINTER_GROUP]);
+    }
+
+    public function setLscDispensePrinterGroup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_DISPENSE_PRINTER_GROUP], $value);
+    }
+
+    public function getLscDispensePrintSeqNo() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_DISPENSE_PRINT_SEQ_NO]);
+    }
+
+    public function setLscDispensePrintSeqNo(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_DISPENSE_PRINT_SEQ_NO], $value);
+    }
+
+    public function getLscDivisionCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_DIVISION_CODE]);
+    }
+
+    public function setLscDivisionCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_DIVISION_CODE], $value);
+    }
+
+    public function getLscItemErrorCheckCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_ITEM_ERROR_CHECK_CODE]);
+    }
+
+    public function setLscItemErrorCheckCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_ITEM_ERROR_CHECK_CODE], $value);
+    }
+
+    public function getLscSuggestedQtyOnPos() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_SUGGESTED_QTY_ON_POS]);
+    }
+
+    public function setLscSuggestedQtyOnPos(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_SUGGESTED_QTY_ON_POS], $value);
+    }
+
+    public function getLscProfitGoal() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_PROFIT_GOAL]);
+    }
+
+    public function setLscProfitGoal(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_PROFIT_GOAL], $value);
+    }
+
+    public function getLscBuyerGroupCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_BUYER_GROUP_CODE]);
+    }
+
+    public function setLscBuyerGroupCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_BUYER_GROUP_CODE], $value);
+    }
+
+    public function getLscReplenDataProfile() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_REPLEN_DATA_PROFILE]);
+    }
+
+    public function setLscReplenDataProfile(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_REPLEN_DATA_PROFILE], $value);
+    }
+
+    public function getLscBuyerId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_BUYER_ID]);
+    }
+
+    public function setLscBuyerId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_BUYER_ID], $value);
+    }
+
+    public function getLscReplenTransferRuleCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_REPLEN_TRANSFER_RULE_CODE]);
+    }
+
+    public function setLscReplenTransferRuleCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_REPLEN_TRANSFER_RULE_CODE], $value);
+    }
+
+    public function getLscDefItemDistrType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_DEF_ITEM_DISTR_TYPE]);
+    }
+
+    public function setLscDefItemDistrType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_DEF_ITEM_DISTR_TYPE], $value);
+    }
+
+    public function getLscDefItemDistrCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_DEF_ITEM_DISTR_CODE]);
+    }
+
+    public function setLscDefItemDistrCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_DEF_ITEM_DISTR_CODE], $value);
+    }
+
+    public function getLscExcludeFromReplenishment() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_EXCLUDE_FROM_REPLENISHMENT]);
+    }
+
+    public function setLscExcludeFromReplenishment(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_EXCLUDE_FROM_REPLENISHMENT], $value);
+    }
+
+    public function getLscExcludeFromOosCalc() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_EXCLUDE_FROM_OOS_CALC]);
+    }
+
+    public function setLscExcludeFromOosCalc(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_EXCLUDE_FROM_OOS_CALC], $value);
+    }
+
+    public function getLscPhysInvtCountPerCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_PHYS_INVT_COUNT_PER_CODE]);
+    }
+
+    public function setLscPhysInvtCountPerCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_PHYS_INVT_COUNT_PER_CODE], $value);
+    }
+
+    public function getLscAllocationRuleCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_ALLOCATION_RULE_CODE]);
+    }
+
+    public function setLscAllocationRuleCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_ALLOCATION_RULE_CODE], $value);
+    }
+
+    public function getLscPlbCategory() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_PLB_CATEGORY]);
+    }
+
+    public function setLscPlbCategory(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_PLB_CATEGORY], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+    }
+
+    public function getSystemcreatedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
+    }
+
+    public function setSystemcreatedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
+    }
+
+    public function getSystemcreatedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
+    }
+
+    public function setSystemcreatedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
+    }
+
+    public function getSystemmodifiedat() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
+    }
+
+    public function setSystemmodifiedat(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
+    }
+
+    public function getSystemmodifiedby() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
+    }
+
+    public function setSystemmodifiedby(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
+    }
+
+    public function setProcessed(?bool $processed)
+    {
+        $this->setData('processed', $processed);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getProcessed() : ?bool
     {
-        return $this->getData( 'Description' );
+        return $this->getData('processed');
     }
 
-    /**
-     * @param string $nav_id
-     * @return $this
-     */
-    public function setNavId($nav_id)
+    public function setIsUpdated(?bool $is_updated)
     {
-        $this->setData( 'nav_id', $nav_id );
-        $this->nav_id = $nav_id;
-        $this->setDataChanges( TRUE );
+        $this->setData('is_updated', $is_updated);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getNavId()
+    public function getIsUpdated() : ?bool
     {
-        return $this->getData( 'nav_id' );
+        return $this->getData('is_updated');
     }
 
-    /**
-     * @param boolean $IsDeleted
-     * @return $this
-     */
-    public function setIsDeleted($IsDeleted)
+    public function setIsFailed(?bool $is_failed)
     {
-        $this->setData( 'IsDeleted', $IsDeleted );
-        $this->IsDeleted = $IsDeleted;
-        $this->setDataChanges( TRUE );
+        $this->setData('is_failed', $is_failed);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getIsDeleted()
+    public function getIsFailed() : ?bool
     {
-        return $this->getData( 'IsDeleted' );
+        return $this->getData('is_failed');
     }
 
-    /**
-     * @param string $scope
-     * @return $this
-     */
-    public function setScope($scope)
+    public function setCreatedAt(?string $created_at)
     {
-        $this->setData( 'scope', $scope );
-        $this->scope = $scope;
-        $this->setDataChanges( TRUE );
+        $this->setData('created_at', $created_at);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getScope()
+    public function getCreatedAt() : ?string
     {
-        return $this->getData( 'scope' );
+        return $this->getData('created_at');
     }
 
-    /**
-     * @param int $scope_id
-     * @return $this
-     */
-    public function setScopeId($scope_id)
+    public function setUpdatedAt(?string $updated_at)
     {
-        $this->setData( 'scope_id', $scope_id );
-        $this->scope_id = $scope_id;
-        $this->setDataChanges( TRUE );
+        $this->setData('updated_at', $updated_at);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getScopeId()
+    public function getUpdatedAt() : ?string
     {
-        return $this->getData( 'scope_id' );
+        return $this->getData('updated_at');
     }
 
-    /**
-     * @param boolean $processed
-     * @return $this
-     */
-    public function setProcessed($processed)
+    public function setIdentityValue(?string $identity_value)
     {
-        $this->setData( 'processed', $processed );
-        $this->processed = $processed;
-        $this->setDataChanges( TRUE );
+        $this->setData('identity_value', $identity_value);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getProcessed()
+    public function getIdentityValue() : ?string
     {
-        return $this->getData( 'processed' );
+        return $this->getData('identity_value');
     }
 
-    /**
-     * @param boolean $is_updated
-     * @return $this
-     */
-    public function setIsUpdated($is_updated)
+    public function setChecksum(?string $checksum)
     {
-        $this->setData( 'is_updated', $is_updated );
-        $this->is_updated = $is_updated;
-        $this->setDataChanges( TRUE );
+        $this->setData('checksum', $checksum);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getIsUpdated()
+    public function getChecksum() : ?string
     {
-        return $this->getData( 'is_updated' );
+        return $this->getData('checksum');
     }
 
-    /**
-     * @param boolean $is_failed
-     * @return $this
-     */
-    public function setIsFailed($is_failed)
+    public function setProcessedAt(?string $processed_at)
     {
-        $this->setData( 'is_failed', $is_failed );
-        $this->is_failed = $is_failed;
-        $this->setDataChanges( TRUE );
+        $this->setData('processed_at', $processed_at);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getIsFailed()
+    public function getProcessedAt() : ?string
     {
-        return $this->getData( 'is_failed' );
-    }
-
-    /**
-     * @param string $created_at
-     * @return $this
-     */
-    public function setCreatedAt($created_at)
-    {
-        $this->setData( 'created_at', $created_at );
-        $this->created_at = $created_at;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCreatedAt()
-    {
-        return $this->getData( 'created_at' );
-    }
-
-    /**
-     * @param string $updated_at
-     * @return $this
-     */
-    public function setUpdatedAt($updated_at)
-    {
-        $this->setData( 'updated_at', $updated_at );
-        $this->updated_at = $updated_at;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUpdatedAt()
-    {
-        return $this->getData( 'updated_at' );
-    }
-
-    /**
-     * @param string $identity_value
-     * @return $this
-     */
-    public function setIdentityValue($identity_value)
-    {
-        $this->setData( 'identity_value', $identity_value );
-        $this->identity_value = $identity_value;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIdentityValue()
-    {
-        return $this->getData( 'identity_value' );
-    }
-
-    /**
-     * @param string $checksum
-     * @return $this
-     */
-    public function setChecksum($checksum)
-    {
-        $this->setData( 'checksum', $checksum );
-        $this->checksum = $checksum;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getChecksum()
-    {
-        return $this->getData( 'checksum' );
-    }
-
-    /**
-     * @param string $processed_at
-     * @return $this
-     */
-    public function setProcessedAt($processed_at)
-    {
-        $this->setData( 'processed_at', $processed_at );
-        $this->processed_at = $processed_at;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getProcessedAt()
-    {
-        return $this->getData( 'processed_at' );
+        return $this->getData('processed_at');
     }
 }
 

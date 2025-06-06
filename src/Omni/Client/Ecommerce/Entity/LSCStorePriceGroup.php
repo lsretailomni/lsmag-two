@@ -14,13 +14,23 @@ class LSCStorePriceGroup extends AbstractModel
     public const STORE = 'Store';
     public const PRICE_GROUP_CODE = 'Price Group Code';
 
+    public static array $dbColumnsMapping = [
+	self::STORE => 'store',
+	self::PRICE_GROUP_CODE => 'price_group_code',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getStore(): ?string
     {
         return $this->getData(self::STORE);
     }
 
-    public function setStore(string $value)
+    public function setStore(?string $value)
     {
         return $this->setData(self::STORE, $value);
     }
@@ -30,7 +40,7 @@ class LSCStorePriceGroup extends AbstractModel
         return $this->getData(self::PRICE_GROUP_CODE);
     }
 
-    public function setPriceGroupCode(string $value)
+    public function setPriceGroupCode(?string $value)
     {
         return $this->setData(self::PRICE_GROUP_CODE, $value);
     }

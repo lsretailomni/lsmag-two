@@ -34,166 +34,166 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
 
     public const STOCK_DAYS = 'stockDays';
 
-    public const GET_ITEM_INVENTORY_X_M_L = 'getItemInventoryXML';
+    public const GET_ITEM_INVENTORY_XML = 'getItemInventoryXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $itemNo
+     * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo($itemNo)
+    public function setItemno(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $variantCode
+     * @param ?string $variantCode
      * @return $this
      */
-    public function setVariantCode($variantCode)
+    public function setVariantcode(?string $variantCode)
     {
         $this->setData(self::VARIANT_CODE, $variantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $locationCode
+     * @param ?string $locationCode
      * @return $this
      */
-    public function setLocationCode($locationCode)
+    public function setLocationcode(?string $locationCode)
     {
         $this->setData(self::LOCATION_CODE, $locationCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLocationCode()
+    public function getLocationcode() : ?string
     {
         return $this->getData(self::LOCATION_CODE);
     }
 
     /**
-     * @param string $colour
+     * @param ?string $colour
      * @return $this
      */
-    public function setColour($colour)
+    public function setColour(?string $colour)
     {
         $this->setData(self::COLOUR, $colour);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getColour()
+    public function getColour() : ?string
     {
         return $this->getData(self::COLOUR);
     }
 
     /**
-     * @param string $size
+     * @param ?string $size
      * @return $this
      */
-    public function setSize($size)
+    public function setSize(?string $size)
     {
         $this->setData(self::SIZE, $size);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSize()
+    public function getSize() : ?string
     {
         return $this->getData(self::SIZE);
     }
 
     /**
-     * @param string $style
+     * @param ?string $style
      * @return $this
      */
-    public function setStyle($style)
+    public function setStyle(?string $style)
     {
         $this->setData(self::STYLE, $style);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStyle()
+    public function getStyle() : ?string
     {
         return $this->getData(self::STYLE);
     }
@@ -202,7 +202,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
      * @param int $stockDays
      * @return $this
      */
-    public function setStockDays($stockDays)
+    public function setStockdays($stockDays)
     {
         $this->setData(self::STOCK_DAYS, $stockDays);
         return $this;
@@ -211,7 +211,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return int
      */
-    public function getStockDays()
+    public function getStockdays()
     {
         return $this->getData(self::STOCK_DAYS);
     }
@@ -220,18 +220,18 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
      * @param RootGetItemInventory $getItemInventoryXML
      * @return $this
      */
-    public function setGetItemInventoryXML($getItemInventoryXML)
+    public function setGetiteminventoryxml($getItemInventoryXML)
     {
-        $this->setData(self::GET_ITEM_INVENTORY_X_M_L, $getItemInventoryXML);
+        $this->setData(self::GET_ITEM_INVENTORY_XML, $getItemInventoryXML);
         return $this;
     }
 
     /**
      * @return RootGetItemInventory
      */
-    public function getGetItemInventoryXML()
+    public function getGetiteminventoryxml()
     {
-        return $this->getData(self::GET_ITEM_INVENTORY_X_M_L);
+        return $this->getData(self::GET_ITEM_INVENTORY_XML);
     }
 }
 

@@ -18,140 +18,140 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
 
     public const ERROR_TEXT = 'errorText';
 
-    public const LOGIN_I_D = 'loginID';
+    public const LOGIN_ID = 'loginID';
 
     public const PASSWORD = 'password';
 
-    public const DEVICE_I_D = 'deviceID';
+    public const DEVICE_ID = 'deviceID';
 
     public const DEVICE_FRIENDLY_NAME = 'deviceFriendlyName';
 
     public const TOTAL_REMAINING_POINTS = 'totalRemainingPoints';
 
-    public const MEMBER_LOGON_X_M_L = 'memberLogonXML';
+    public const MEMBER_LOGON_XML = 'memberLogonXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $loginID
+     * @param ?string $loginID
      * @return $this
      */
-    public function setLoginID($loginID)
+    public function setLoginid(?string $loginID)
     {
-        $this->setData(self::LOGIN_I_D, $loginID);
+        $this->setData(self::LOGIN_ID, $loginID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLoginID()
+    public function getLoginid() : ?string
     {
-        return $this->getData(self::LOGIN_I_D);
+        return $this->getData(self::LOGIN_ID);
     }
 
     /**
-     * @param string $password
+     * @param ?string $password
      * @return $this
      */
-    public function setPassword($password)
+    public function setPassword(?string $password)
     {
         $this->setData(self::PASSWORD, $password);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPassword()
+    public function getPassword() : ?string
     {
         return $this->getData(self::PASSWORD);
     }
 
     /**
-     * @param string $deviceID
+     * @param ?string $deviceID
      * @return $this
      */
-    public function setDeviceID($deviceID)
+    public function setDeviceid(?string $deviceID)
     {
-        $this->setData(self::DEVICE_I_D, $deviceID);
+        $this->setData(self::DEVICE_ID, $deviceID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDeviceID()
+    public function getDeviceid() : ?string
     {
-        return $this->getData(self::DEVICE_I_D);
+        return $this->getData(self::DEVICE_ID);
     }
 
     /**
-     * @param string $deviceFriendlyName
+     * @param ?string $deviceFriendlyName
      * @return $this
      */
-    public function setDeviceFriendlyName($deviceFriendlyName)
+    public function setDevicefriendlyname(?string $deviceFriendlyName)
     {
         $this->setData(self::DEVICE_FRIENDLY_NAME, $deviceFriendlyName);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDeviceFriendlyName()
+    public function getDevicefriendlyname() : ?string
     {
         return $this->getData(self::DEVICE_FRIENDLY_NAME);
     }
 
     /**
-     * @param float $totalRemainingPoints
+     * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints($totalRemainingPoints)
+    public function setTotalremainingpoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalRemainingPoints()
+    public function getTotalremainingpoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
@@ -160,18 +160,18 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
      * @param RootMemberLogon $memberLogonXML
      * @return $this
      */
-    public function setMemberLogonXML($memberLogonXML)
+    public function setMemberlogonxml($memberLogonXML)
     {
-        $this->setData(self::MEMBER_LOGON_X_M_L, $memberLogonXML);
+        $this->setData(self::MEMBER_LOGON_XML, $memberLogonXML);
         return $this;
     }
 
     /**
      * @return RootMemberLogon
      */
-    public function getMemberLogonXML()
+    public function getMemberlogonxml()
     {
-        return $this->getData(self::MEMBER_LOGON_X_M_L);
+        return $this->getData(self::MEMBER_LOGON_XML);
     }
 }
 

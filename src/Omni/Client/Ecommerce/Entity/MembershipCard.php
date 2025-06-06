@@ -36,220 +36,300 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
 
     public const BLOCKEDBY = 'Blockedby';
 
+    public const DATE_CREATED = 'DateCreated';
+
+    public const CREATEDBY = 'Createdby';
+
+    public const NO_SERIES = 'NoSeries';
+
+    public const ALLOCATEDTO_STORE = 'AllocatedtoStore';
+
     /**
-     * @param string $CardNo
+     * @param ?string $CardNo
      * @return $this
      */
-    public function setCardNo($CardNo)
+    public function setCardno(?string $CardNo)
     {
         $this->setData(self::CARD_NO, $CardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNo()
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
 
     /**
-     * @param string $Status
+     * @param ?string $Status
      * @return $this
      */
-    public function setStatus($Status)
+    public function setStatus(?string $Status)
     {
         $this->setData(self::STATUS, $Status);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatus()
+    public function getStatus() : ?string
     {
         return $this->getData(self::STATUS);
     }
 
     /**
-     * @param boolean $LinkedtoAccount
+     * @param ?bool $LinkedtoAccount
      * @return $this
      */
-    public function setLinkedtoAccount($LinkedtoAccount)
+    public function setLinkedtoaccount(?bool $LinkedtoAccount)
     {
         $this->setData(self::LINKEDTO_ACCOUNT, $LinkedtoAccount);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getLinkedtoAccount()
+    public function getLinkedtoaccount() : ?bool
     {
         return $this->getData(self::LINKEDTO_ACCOUNT);
     }
 
     /**
-     * @param string $ClubCode
+     * @param ?string $ClubCode
      * @return $this
      */
-    public function setClubCode($ClubCode)
+    public function setClubcode(?string $ClubCode)
     {
         $this->setData(self::CLUB_CODE, $ClubCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubCode()
+    public function getClubcode() : ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
 
     /**
-     * @param string $SchemeCode
+     * @param ?string $SchemeCode
      * @return $this
      */
-    public function setSchemeCode($SchemeCode)
+    public function setSchemecode(?string $SchemeCode)
     {
         $this->setData(self::SCHEME_CODE, $SchemeCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSchemeCode()
+    public function getSchemecode() : ?string
     {
         return $this->getData(self::SCHEME_CODE);
     }
 
     /**
-     * @param string $AccountNo
+     * @param ?string $AccountNo
      * @return $this
      */
-    public function setAccountNo($AccountNo)
+    public function setAccountno(?string $AccountNo)
     {
         $this->setData(self::ACCOUNT_NO, $AccountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountNo()
+    public function getAccountno() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
 
     /**
-     * @param string $ContactNo
+     * @param ?string $ContactNo
      * @return $this
      */
-    public function setContactNo($ContactNo)
+    public function setContactno(?string $ContactNo)
     {
         $this->setData(self::CONTACT_NO, $ContactNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactNo()
+    public function getContactno() : ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
 
     /**
-     * @param date $FirstDateUsed
+     * @param ?string $FirstDateUsed
      * @return $this
      */
-    public function setFirstDateUsed($FirstDateUsed)
+    public function setFirstdateused(?string $FirstDateUsed)
     {
         $this->setData(self::FIRST_DATE_USED, $FirstDateUsed);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getFirstDateUsed()
+    public function getFirstdateused() : ?string
     {
         return $this->getData(self::FIRST_DATE_USED);
     }
 
     /**
-     * @param date $LastValidDate
+     * @param ?string $LastValidDate
      * @return $this
      */
-    public function setLastValidDate($LastValidDate)
+    public function setLastvaliddate(?string $LastValidDate)
     {
         $this->setData(self::LAST_VALID_DATE, $LastValidDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getLastValidDate()
+    public function getLastvaliddate() : ?string
     {
         return $this->getData(self::LAST_VALID_DATE);
     }
 
     /**
-     * @param string $ReasonBlocked
+     * @param ?string $ReasonBlocked
      * @return $this
      */
-    public function setReasonBlocked($ReasonBlocked)
+    public function setReasonblocked(?string $ReasonBlocked)
     {
         $this->setData(self::REASON_BLOCKED, $ReasonBlocked);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReasonBlocked()
+    public function getReasonblocked() : ?string
     {
         return $this->getData(self::REASON_BLOCKED);
     }
 
     /**
-     * @param date $DateBlocked
+     * @param ?string $DateBlocked
      * @return $this
      */
-    public function setDateBlocked($DateBlocked)
+    public function setDateblocked(?string $DateBlocked)
     {
         $this->setData(self::DATE_BLOCKED, $DateBlocked);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDateBlocked()
+    public function getDateblocked() : ?string
     {
         return $this->getData(self::DATE_BLOCKED);
     }
 
     /**
-     * @param string $Blockedby
+     * @param ?string $Blockedby
      * @return $this
      */
-    public function setBlockedby($Blockedby)
+    public function setBlockedby(?string $Blockedby)
     {
         $this->setData(self::BLOCKEDBY, $Blockedby);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBlockedby()
+    public function getBlockedby() : ?string
     {
         return $this->getData(self::BLOCKEDBY);
+    }
+
+    /**
+     * @param ?string $DateCreated
+     * @return $this
+     */
+    public function setDatecreated(?string $DateCreated)
+    {
+        $this->setData(self::DATE_CREATED, $DateCreated);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getDatecreated() : ?string
+    {
+        return $this->getData(self::DATE_CREATED);
+    }
+
+    /**
+     * @param ?string $Createdby
+     * @return $this
+     */
+    public function setCreatedby(?string $Createdby)
+    {
+        $this->setData(self::CREATEDBY, $Createdby);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getCreatedby() : ?string
+    {
+        return $this->getData(self::CREATEDBY);
+    }
+
+    /**
+     * @param ?string $NoSeries
+     * @return $this
+     */
+    public function setNoseries(?string $NoSeries)
+    {
+        $this->setData(self::NO_SERIES, $NoSeries);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getNoseries() : ?string
+    {
+        return $this->getData(self::NO_SERIES);
+    }
+
+    /**
+     * @param ?string $AllocatedtoStore
+     * @return $this
+     */
+    public function setAllocatedtostore(?string $AllocatedtoStore)
+    {
+        $this->setData(self::ALLOCATEDTO_STORE, $AllocatedtoStore);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getAllocatedtostore() : ?string
+    {
+        return $this->getData(self::ALLOCATEDTO_STORE);
     }
 }
 

@@ -18,40 +18,40 @@ class GetItemInventoryResult extends \Magento\Catalog\Model\AbstractModel implem
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_ITEM_INVENTORY_X_M_L = 'getItemInventoryXML';
+    public const GET_ITEM_INVENTORY_XML = 'getItemInventoryXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetItemInventoryResult extends \Magento\Catalog\Model\AbstractModel implem
      * @param RootGetItemInventory $getItemInventoryXML
      * @return $this
      */
-    public function setGetItemInventoryXML($getItemInventoryXML)
+    public function setGetiteminventoryxml($getItemInventoryXML)
     {
-        $this->setData(self::GET_ITEM_INVENTORY_X_M_L, $getItemInventoryXML);
+        $this->setData(self::GET_ITEM_INVENTORY_XML, $getItemInventoryXML);
         return $this;
     }
 
     /**
      * @return RootGetItemInventory
      */
-    public function getGetItemInventoryXML()
+    public function getGetiteminventoryxml()
     {
-        return $this->getData(self::GET_ITEM_INVENTORY_X_M_L);
+        return $this->getData(self::GET_ITEM_INVENTORY_XML);
     }
 
     /**

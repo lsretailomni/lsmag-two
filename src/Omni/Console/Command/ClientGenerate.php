@@ -53,8 +53,8 @@ class ClientGenerate extends Command
         $entityDir    = AbstractGenerator::path($baseDir, 'Entity');
         $fs     = new Filesystem();
         $cwd    = getcwd();
-        $wsdl   = Service::getUrl($this->type, $this->baseUrl);
-        $client = new Client($wsdl, $this->type);
+        $wsdl   = Service::getUrl($this->baseUrl, true);
+        $client = new Client($wsdl);
         try {
             $metadata     = $client->getMetadata();
         } catch (\Exception $e) {
@@ -65,7 +65,6 @@ class ClientGenerate extends Command
         // $this->clean($baseDir);
         $odataGenerator = new OdataGenerator();
         $classMap = $odataGenerator->generate($entityDir, $operationDir, $this->getOmniDataHelper(), $output);
-
         foreach ($metadata->getEntities() as $entity) {
             if (array_search($entity->getName(), $restrictions) === false) {
                 $entityName = preg_replace('/[-._]/', '', $entity->getName());

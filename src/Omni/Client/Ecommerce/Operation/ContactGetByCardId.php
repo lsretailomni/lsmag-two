@@ -78,7 +78,7 @@ class ContactGetByCardId extends AbstractOperation
     /**
      * @return ContactGetByCardIdRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ContactGetByCardIdRequest();

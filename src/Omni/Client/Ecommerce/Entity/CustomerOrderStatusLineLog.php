@@ -42,7 +42,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
      * @param int $EntryNo
      * @return $this
      */
-    public function setEntryNo($EntryNo)
+    public function setEntryno($EntryNo)
     {
         $this->setData(self::ENTRY_NO, $EntryNo);
         return $this;
@@ -51,79 +51,79 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getEntryNo()
+    public function getEntryno()
     {
         return $this->getData(self::ENTRY_NO);
     }
 
     /**
-     * @param boolean $AllowCancel
+     * @param ?bool $AllowCancel
      * @return $this
      */
-    public function setAllowCancel($AllowCancel)
+    public function setAllowcancel(?bool $AllowCancel)
     {
         $this->setData(self::ALLOW_CANCEL, $AllowCancel);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getAllowCancel()
+    public function getAllowcancel() : ?bool
     {
         return $this->getData(self::ALLOW_CANCEL);
     }
 
     /**
-     * @param boolean $AllowModify
+     * @param ?bool $AllowModify
      * @return $this
      */
-    public function setAllowModify($AllowModify)
+    public function setAllowmodify(?bool $AllowModify)
     {
         $this->setData(self::ALLOW_MODIFY, $AllowModify);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getAllowModify()
+    public function getAllowmodify() : ?bool
     {
         return $this->getData(self::ALLOW_MODIFY);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $ItenNo
+     * @param ?string $ItenNo
      * @return $this
      */
-    public function setItenNo($ItenNo)
+    public function setItenno(?string $ItenNo)
     {
         $this->setData(self::ITEN_NO, $ItenNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItenNo()
+    public function getItenno() : ?string
     {
         return $this->getData(self::ITEN_NO);
     }
@@ -132,7 +132,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
      * @param int $ItemLineNo
      * @return $this
      */
-    public function setItemLineNo($ItemLineNo)
+    public function setItemlineno($ItemLineNo)
     {
         $this->setData(self::ITEM_LINE_NO, $ItemLineNo);
         return $this;
@@ -141,133 +141,133 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getItemLineNo()
+    public function getItemlineno()
     {
         return $this->getData(self::ITEM_LINE_NO);
     }
 
     /**
-     * @param string $StatusCode
+     * @param ?string $StatusCode
      * @return $this
      */
-    public function setStatusCode($StatusCode)
+    public function setStatuscode(?string $StatusCode)
     {
         $this->setData(self::STATUS_CODE, $StatusCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatusCode()
+    public function getStatuscode() : ?string
     {
         return $this->getData(self::STATUS_CODE);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param string $UnitOfMeasure
+     * @param ?string $UnitOfMeasure
      * @return $this
      */
-    public function setUnitOfMeasure($UnitOfMeasure)
+    public function setUnitofmeasure(?string $UnitOfMeasure)
     {
         $this->setData(self::UNIT_OF_MEASURE, $UnitOfMeasure);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnitOfMeasure()
+    public function getUnitofmeasure() : ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $StatusChanged
+     * @param ?string $StatusChanged
      * @return $this
      */
-    public function setStatusChanged($StatusChanged)
+    public function setStatuschanged(?string $StatusChanged)
     {
         $this->setData(self::STATUS_CHANGED, $StatusChanged);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatusChanged()
+    public function getStatuschanged() : ?string
     {
         return $this->getData(self::STATUS_CHANGED);
     }
 
     /**
-     * @param string $ExtCode
+     * @param ?string $ExtCode
      * @return $this
      */
-    public function setExtCode($ExtCode)
+    public function setExtcode(?string $ExtCode)
     {
         $this->setData(self::EXT_CODE, $ExtCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getExtCode()
+    public function getExtcode() : ?string
     {
         return $this->getData(self::EXT_CODE);
     }
 
     /**
-     * @param float $Amount
+     * @param ?float $Amount
      * @return $this
      */
-    public function setAmount($Amount)
+    public function setAmount(?float $Amount)
     {
         $this->setData(self::AMOUNT, $Amount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getAmount()
+    public function getAmount() : ?float
     {
         return $this->getData(self::AMOUNT);
     }

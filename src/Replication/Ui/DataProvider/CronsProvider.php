@@ -27,6 +27,8 @@ use Psr\Log\LoggerInterface;
 class CronsProvider extends DataProvider implements DataProviderInterface
 {
     public $translationList = [
+        'repl_lsc_data_translation',
+        'repl_lsc_item_html_ml',
         'repl_data_translation',
         'repl_html_translation',
         'repl_data_translation_lang_code',

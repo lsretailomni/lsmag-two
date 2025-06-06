@@ -78,7 +78,7 @@ class ActivityTypesGet extends AbstractOperation
     /**
      * @return ActivityTypesGetRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ActivityTypesGetRequest();

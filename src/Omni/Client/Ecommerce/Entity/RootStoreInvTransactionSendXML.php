@@ -18,7 +18,7 @@ class RootStoreInvTransactionSendXML extends \Magento\Catalog\Model\AbstractMode
      * @param StoreInvTransactionSendStoreInvLine $StoreInvTransactionSendStoreInvLine
      * @return $this
      */
-    public function setStoreInvTransactionSendStoreInvLine($StoreInvTransactionSendStoreInvLine)
+    public function setStoreinvtransactionsendstoreinvline($StoreInvTransactionSendStoreInvLine)
     {
         $this->setData(self::STORE_INV_TRANSACTION_SEND_STORE_INV_LINE, $StoreInvTransactionSendStoreInvLine);
         return $this;
@@ -27,7 +27,7 @@ class RootStoreInvTransactionSendXML extends \Magento\Catalog\Model\AbstractMode
     /**
      * @return StoreInvTransactionSendStoreInvLine
      */
-    public function getStoreInvTransactionSendStoreInvLine()
+    public function getStoreinvtransactionsendstoreinvline()
     {
         return $this->getData(self::STORE_INV_TRANSACTION_SEND_STORE_INV_LINE);
     }

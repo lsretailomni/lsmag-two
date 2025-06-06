@@ -78,7 +78,7 @@ class OrderUpdatePayment extends AbstractOperation
     /**
      * @return OrderUpdatePaymentRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new OrderUpdatePaymentRequest();

@@ -3,101 +3,87 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="flat_replication">
         <!-- Most Important-->
-        <job name="repl_item" instance="Ls\Replication\Cron\ReplEcommItemsTask" method="execute">
+        <job name="repl_lsc_barcodes" instance="Ls\Replication\Cron\ReplLscBarcodesTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_price" instance="Ls\Replication\Cron\ReplEcommPricesTask" method="execute">
+        <job name="repl_variantregview" instance="Ls\Replication\Cron\ReplVariantregviewTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_inv_status" instance="Ls\Replication\Cron\ReplEcommInventoryStatusTask" method="execute">
+        <job name="repl_lsc_wi_extd_variant_values" instance="Ls\Replication\Cron\ReplLscWiExtdVariantValuesTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_barcode" instance="Ls\Replication\Cron\ReplEcommBarcodesTask" method="execute">
+        <job name="repl_item_variant" instance="Ls\Replication\Cron\ReplItemVariantTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_extended_variant_value" instance="Ls\Replication\Cron\ReplEcommExtendedVariantsTask"
-             method="execute">
+        <job name="repl_unit_of_measure" instance="Ls\Replication\Cron\ReplUnitOfMeasureTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_image_link" instance="Ls\Replication\Cron\ReplEcommImageLinksTask" method="execute">
+        <job name="repl_itemuomupdview" instance="Ls\Replication\Cron\ReplItemuomupdviewTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_item_variant_registration" instance="Ls\Replication\Cron\ReplEcommItemVariantRegistrationsTask"
-             method="execute">
+        <job name="repl_lsc_wi_price" instance="Ls\Replication\Cron\ReplLscWiPriceTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_item_variant" instance="Ls\Replication\Cron\ReplEcommItemVariantTask"
-             method="execute">
+        <job name="repl_lsc_inventory_lookup_table" instance="Ls\Replication\Cron\ReplLscInventoryLookupTableTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_unit_of_measure" instance="Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask"
-             method="execute">
+        <job name="repl_lsc_wi_item_buffer" instance="Ls\Replication\Cron\ReplLscWiItemBufferTask" method="execute">
             <schedule>*/2 * * * *</schedule>
-        </job>
-        <job name="repl_item_unit_of_measure" instance="Ls\Replication\Cron\ReplEcommItemUnitOfMeasuresTask"
-             method="execute">
-            <schedule>*/2 * * * *</schedule>
-        </job>
-        <job name="repl_hierarchy" instance="Ls\Replication\Cron\ReplEcommHierarchyTask" method="execute">
-            <schedule>0 10 * * *</schedule>
-        </job>
-        <job name="repl_hierarchy_node" instance="Ls\Replication\Cron\ReplEcommHierarchyNodeTask" method="execute">
-            <schedule>*/4 * * * *</schedule>
-        </job>
-        <job name="repl_hierarchy_leaf" instance="Ls\Replication\Cron\ReplEcommHierarchyLeafTask" method="execute">
-            <schedule>*/4 * * * *</schedule>
-        </job>
-        <job name="repl_attribute" instance="Ls\Replication\Cron\ReplEcommAttributeTask" method="execute">
-            <schedule>*/4 * * * *</schedule>
-        </job>
-        <job name="repl_attribute_value" instance="Ls\Replication\Cron\ReplEcommAttributeValueTask" method="execute">
-            <schedule>*/4 * * * *</schedule>
-        </job>
-        <job name="repl_attribute_option_value" instance="Ls\Replication\Cron\ReplEcommAttributeOptionValueTask"
-             method="execute">
-            <schedule>*/4 * * * *</schedule>
-        </job>
-        <job name="repl_discount" instance="Ls\Replication\Cron\ReplEcommDiscountsTask" method="execute">
-            <schedule>*/4 * * * *</schedule>
-        </job>
-        <job name="repl_discount_setup" instance="Ls\Replication\Cron\ReplEcommDiscountSetupTask" method="execute">
-            <schedule>*/4 * * * *</schedule>
-        </job>
-        <job name="repl_discount_validation" instance="Ls\Replication\Cron\ReplEcommDiscountValidationsTask"
-             method="execute">
-            <schedule>*/4 * * * *</schedule>
-        </job>
-        <job name="repl_data_translation" instance="Ls\Replication\Cron\ReplEcommDataTranslationTask" method="execute">
-            <schedule>*/15 * * * *</schedule>
-        </job>
-        <job name="repl_html_translation" instance="Ls\Replication\Cron\ReplEcommHtmlTranslationTask" method="execute">
-            <schedule>*/15 * * * *</schedule>
-        </job>
-        <job name="repl_data_translation_lang_code" instance="Ls\Replication\Cron\ReplEcommDataTranslationLangCodeTask"
-             method="execute">
-            <schedule>*/15 * * * *</schedule>
-        </job>
-        <job name="repl_store" instance="Ls\Replication\Cron\ReplEcommStoresTask" method="execute">
-            <schedule>*/15 * * * *</schedule>
         </job>
         <!-- Less Important-->
-        <job name="repl_vendor" instance="Ls\Replication\Cron\ReplEcommVendorTask" method="execute">
+        <job name="repl_lsc_attribute" instance="Ls\Replication\Cron\ReplLscAttributeTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_lsc_attribute_value" instance="Ls\Replication\Cron\ReplLscAttributeValueTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_lsc_attribute_option_value" instance="Ls\Replication\Cron\ReplLscAttributeOptionValueTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_hierarchyview" instance="Ls\Replication\Cron\ReplHierarchyviewTask" method="execute">
+            <schedule>0 10 * * *</schedule>
+        </job>
+        <job name="repl_hierarchynodesview" instance="Ls\Replication\Cron\ReplHierarchynodesviewTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_hierarchynodeslinkview" instance="Ls\Replication\Cron\ReplHierarchynodeslinkviewTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_periodicdiscview" instance="Ls\Replication\Cron\ReplPeriodicdiscviewTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_lsc_validation_period" instance="Ls\Replication\Cron\ReplLscValidationPeriodTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_lsc_retail_image_link" instance="Ls\Replication\Cron\ReplLscRetailImageLinkTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_vendor" instance="Ls\Replication\Cron\ReplVendorTask" method="execute">
             <schedule>0 1 * * *</schedule>
         </job>
-        <job name="repl_loy_vendor_item_mapping" instance="Ls\Replication\Cron\ReplEcommVendorItemMappingTask"
-             method="execute">
-            <schedule>0 2 * * *</schedule>
+        <job name="repl_vendoritemview" instance="Ls\Replication\Cron\ReplVendoritemviewTask" method="execute">
+            <schedule>0 1 * * *</schedule>
         </job>
-        <job name="repl_country_code" instance="Ls\Replication\Cron\ReplEcommCountryCodeTask"
-             method="execute">
-            <schedule>0 3 * * *</schedule>
+        <job name="repl_storeview" instance="Ls\Replication\Cron\ReplStoreviewTask" method="execute">
+            <schedule>/15 * * * *</schedule>
         </job>
-        <job name="repl_tax_setup" instance="Ls\Replication\Cron\ReplEcommTaxSetupTask" method="execute">
-            <schedule>0 4 * * *</schedule>
+        <job name="repl_countryview" instance="Ls\Replication\Cron\ReplCountryviewTask" method="execute">
+            <schedule>0 1 * * *</schedule>
         </job>
-        <job name="repl_store_tender_type" instance="Ls\Replication\Cron\ReplEcommStoreTenderTypesTask"
-             method="execute">
-            <schedule>0 5 * * *</schedule>
+        <job name="repl_vat_posting_setup" instance="Ls\Replication\Cron\ReplVatPostingSetupTask" method="execute">
+            <schedule>0 1 * * *</schedule>
+        </job>
+        <job name="repl_lsc_tender_type" instance="Ls\Replication\Cron\ReplLscTenderTypeTask" method="execute">
+            <schedule>0 1 * * *</schedule>
+        </job>
+        <job name="repl_lsc_data_translation" instance="Ls\Replication\Cron\ReplLscDataTranslationTask" method="execute">
+            <schedule>*/15 * * * *</schedule>
+        </job>
+        <job name="repl_data_translation_lang_code" instance="Ls\Replication\Cron\ReplDataTranslationLanguageCodeTask" method="execute">
+            <schedule>*/15 * * * *</schedule>
+        </job>
+        <job name="repl_lsc_item_html_ml" instance="Ls\Replication\Cron\ReplLscItemHtmlMlTask" method="execute">
+            <schedule>*/15 * * * *</schedule>
         </job>
     </group>
     <group id="replication">

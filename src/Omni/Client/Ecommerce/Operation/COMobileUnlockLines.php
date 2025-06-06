@@ -8,11 +8,8 @@
 
 namespace Ls\Omni\Client\Ecommerce\Operation;
 
-use Ls\Omni\Client\RequestInterface;
-use Ls\Omni\Client\ResponseInterface;
 use Ls\Omni\Client\AbstractOperation;
 use Ls\Omni\Service\Service as OmniService;
-use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
 use Ls\Omni\Client\Ecommerce\Entity\COMobileUnlockLines as COMobileUnlockLinesRequest;
@@ -24,84 +21,107 @@ class COMobileUnlockLines extends AbstractOperation
 
     public const SERVICE_TYPE = 'ecommerce';
 
+    /**
+     * @property OmniClient $client
+     */
+    public $client = null;
+
+    /**
+     * @property COMobileUnlockLinesRequest $request
+     */
+    public $request = null;
+
+    /**
+     * @property COMobileUnlockLinesResponse $response
+     */
+    public $response = null;
+
+    /**
+     * @property string $requestXml
+     */
+    public $requestXml = null;
+
+    /**
+     * @property string $responseXml
+     */
+    public $responseXml = null;
+
+    /**
+     * @property \Exception $error
+     */
+    public $error = null;
+
     public function __construct($baseUrl = '')
     {
-        $serviceType = new ServiceType( self::SERVICE_TYPE );
-        parent::__construct( $serviceType );
-        $url = OmniService::getUrl( $serviceType, $baseUrl );
-        $this->client = new OmniClient( $url, $serviceType );
-        $this->client->setClassmap( $this->getClassMap() );
+        parent::__construct();
+        $url = OmniService::getUrl($baseUrl, true);
+        $this->client = $this->createInstance(OmniClient::class, ['uri' => $url]);
+        $this->client->setClassmap($this->getClassMap());
     }
 
-/** @noinspection PhpDocSignatureInspection */
-    /**
-     * @param COMobileUnlockLinesRequest $request
-     * @return ResponseInterface|COMobileUnlockLinesResponse
-     */
-    public function execute(RequestInterface $request = null)
+    public function execute()
     {
-        if ( !is_null( $request ) ) {
-            $this->setRequest( $request );
-        }
-        return $this->makeRequest( self::OPERATION_NAME );
+        return $this->makeRequest(self::OPERATION_NAME);
     }
 
-    /**
-     * @return COMobileUnlockLinesRequest
-     */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
-        if ( is_null( $this->request ) ) {
-            $this->request = new COMobileUnlockLinesRequest();
-        }
-        return $this->request;
+        $this->setRequest(
+            $this->createInstance(
+                COMobileUnlockLinesRequest::class,
+                ['data' => $params]
+            )
+        );
+        $request = $this->getRequest();
+        return $request;
     }
 
-    /**
-     * @return array
-     */
+    public function createInstance(string $entityClassName = null, array $data = [])
+    {
+        return \Magento\Framework\App\ObjectManager::getInstance()->create($entityClassName, $data);
+    }
+
     public function getClassMap()
     {
         return ClassMap::getClassMap();
     }
 
-    public function isTokenized()
+    public function setClient(OmniClient $client)
     {
-        return FALSE;
-    }
-
-    public function setClient(\OmniClient $client)
-    {
+        $this->client = $client;
         return $this;
     }
 
-    public function getClient() : \OmniClient
+    public function getClient() : OmniClient
     {
         return $this->client;
     }
 
-    public function setRequest(\COMobileUnlockLinesRequest $request)
+    public function setRequest(COMobileUnlockLinesRequest $request)
     {
+        $this->request = $request;
         return $this;
     }
 
-    public function getRequest() : \COMobileUnlockLinesRequest
+    public function getRequest() : COMobileUnlockLinesRequest
     {
         return $this->request;
     }
 
-    public function setResponse(\COMobileUnlockLinesResponse $response)
+    public function setResponse(COMobileUnlockLinesResponse $response)
     {
+        $this->response = $response;
         return $this;
     }
 
-    public function getResponse() : \COMobileUnlockLinesResponse
+    public function getResponse() : COMobileUnlockLinesResponse
     {
         return $this->response;
     }
 
     public function setRequestXml(string $requestXml)
     {
+        $this->requestXml = $requestXml;
         return $this;
     }
 
@@ -112,6 +132,7 @@ class COMobileUnlockLines extends AbstractOperation
 
     public function setResponseXml(string $responseXml)
     {
+        $this->responseXml = $responseXml;
         return $this;
     }
 
@@ -122,6 +143,7 @@ class COMobileUnlockLines extends AbstractOperation
 
     public function setError(\Exception $error)
     {
+        $this->error = $error;
         return $this;
     }
 

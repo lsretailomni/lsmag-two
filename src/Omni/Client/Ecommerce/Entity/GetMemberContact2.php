@@ -24,134 +24,134 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
 
     public const CONTACT_NO = 'contactNo';
 
-    public const LOGIN_I_D = 'loginID';
+    public const LOGIN_ID = 'loginID';
 
     public const EMAIL = 'email';
 
-    public const GET_MEMBER_CONTACT_X_M_L = 'getMemberContactXML';
+    public const GET_MEMBER_CONTACT_XML = 'getMemberContactXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $cardNo
+     * @param ?string $cardNo
      * @return $this
      */
-    public function setCardNo($cardNo)
+    public function setCardno(?string $cardNo)
     {
         $this->setData(self::CARD_NO, $cardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNo()
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
 
     /**
-     * @param string $accountNo
+     * @param ?string $accountNo
      * @return $this
      */
-    public function setAccountNo($accountNo)
+    public function setAccountno(?string $accountNo)
     {
         $this->setData(self::ACCOUNT_NO, $accountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountNo()
+    public function getAccountno() : ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
 
     /**
-     * @param string $contactNo
+     * @param ?string $contactNo
      * @return $this
      */
-    public function setContactNo($contactNo)
+    public function setContactno(?string $contactNo)
     {
         $this->setData(self::CONTACT_NO, $contactNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactNo()
+    public function getContactno() : ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
 
     /**
-     * @param string $loginID
+     * @param ?string $loginID
      * @return $this
      */
-    public function setLoginID($loginID)
+    public function setLoginid(?string $loginID)
     {
-        $this->setData(self::LOGIN_I_D, $loginID);
+        $this->setData(self::LOGIN_ID, $loginID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLoginID()
+    public function getLoginid() : ?string
     {
-        return $this->getData(self::LOGIN_I_D);
+        return $this->getData(self::LOGIN_ID);
     }
 
     /**
-     * @param string $email
+     * @param ?string $email
      * @return $this
      */
-    public function setEmail($email)
+    public function setEmail(?string $email)
     {
         $this->setData(self::EMAIL, $email);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEmail()
+    public function getEmail() : ?string
     {
         return $this->getData(self::EMAIL);
     }
@@ -160,18 +160,18 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
      * @param RootGetMemberContact $getMemberContactXML
      * @return $this
      */
-    public function setGetMemberContactXML($getMemberContactXML)
+    public function setGetmembercontactxml($getMemberContactXML)
     {
-        $this->setData(self::GET_MEMBER_CONTACT_X_M_L, $getMemberContactXML);
+        $this->setData(self::GET_MEMBER_CONTACT_XML, $getMemberContactXML);
         return $this;
     }
 
     /**
      * @return RootGetMemberContact
      */
-    public function getGetMemberContactXML()
+    public function getGetmembercontactxml()
     {
-        return $this->getData(self::GET_MEMBER_CONTACT_X_M_L);
+        return $this->getData(self::GET_MEMBER_CONTACT_XML);
     }
 }
 

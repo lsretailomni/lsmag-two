@@ -14,7 +14,7 @@ class CustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel implement
 {
     public const CLASS_NAME = 'CustomerOrderStatus';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const ORDER_STATUS = 'OrderStatus';
 
@@ -27,28 +27,28 @@ class CustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel implement
     public const DOCUMENT_NO = 'DocumentNo';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
      * @param int $OrderStatus
      * @return $this
      */
-    public function setOrderStatus($OrderStatus)
+    public function setOrderstatus($OrderStatus)
     {
         $this->setData(self::ORDER_STATUS, $OrderStatus);
         return $this;
@@ -57,7 +57,7 @@ class CustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return int
      */
-    public function getOrderStatus()
+    public function getOrderstatus()
     {
         return $this->getData(self::ORDER_STATUS);
     }
@@ -66,7 +66,7 @@ class CustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel implement
      * @param int $ShippingStatus
      * @return $this
      */
-    public function setShippingStatus($ShippingStatus)
+    public function setShippingstatus($ShippingStatus)
     {
         $this->setData(self::SHIPPING_STATUS, $ShippingStatus);
         return $this;
@@ -75,7 +75,7 @@ class CustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return int
      */
-    public function getShippingStatus()
+    public function getShippingstatus()
     {
         return $this->getData(self::SHIPPING_STATUS);
     }
@@ -84,7 +84,7 @@ class CustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel implement
      * @param int $PaymentStatus
      * @return $this
      */
-    public function setPaymentStatus($PaymentStatus)
+    public function setPaymentstatus($PaymentStatus)
     {
         $this->setData(self::PAYMENT_STATUS, $PaymentStatus);
         return $this;
@@ -93,43 +93,43 @@ class CustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return int
      */
-    public function getPaymentStatus()
+    public function getPaymentstatus()
     {
         return $this->getData(self::PAYMENT_STATUS);
     }
 
     /**
-     * @param string $DocumentType
+     * @param ?string $DocumentType
      * @return $this
      */
-    public function setDocumentType($DocumentType)
+    public function setDocumenttype(?string $DocumentType)
     {
         $this->setData(self::DOCUMENT_TYPE, $DocumentType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentType()
+    public function getDocumenttype() : ?string
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
 
     /**
-     * @param string $DocumentNo
+     * @param ?string $DocumentNo
      * @return $this
      */
-    public function setDocumentNo($DocumentNo)
+    public function setDocumentno(?string $DocumentNo)
     {
         $this->setData(self::DOCUMENT_NO, $DocumentNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentNo()
+    public function getDocumentno() : ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }

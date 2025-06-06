@@ -17,37 +17,37 @@ class InventoryBufferIn extends \Magento\Catalog\Model\AbstractModel
     public const VARIANT = 'Variant';
 
     /**
-     * @param string $Number
+     * @param ?string $Number
      * @return $this
      */
-    public function setNumber($Number)
+    public function setNumber(?string $Number)
     {
         $this->setData(self::NUMBER, $Number);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNumber()
+    public function getNumber() : ?string
     {
         return $this->getData(self::NUMBER);
     }
 
     /**
-     * @param string $Variant
+     * @param ?string $Variant
      * @return $this
      */
-    public function setVariant($Variant)
+    public function setVariant(?string $Variant)
     {
         $this->setData(self::VARIANT, $Variant);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariant()
+    public function getVariant() : ?string
     {
         return $this->getData(self::VARIANT);
     }

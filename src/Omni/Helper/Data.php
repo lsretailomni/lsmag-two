@@ -800,6 +800,71 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Fetch given table data from central using web request 1.0
+     *
+     * @param string $tableName
+     * @param string $baseUrl
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function fetchGivenTableData(string $tableName, string $baseUrl = ''): array
+    {
+        $baseUrl = !empty($baseUrl) ? $baseUrl :
+            $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId());
+        $url = join('/', [$baseUrl, 'WS/Codeunit/RetailWebServices']);
+        $url = OmniService::getUrl($url);
+        $client = new OmniClient($url);
+
+        $requestXml = new \SimpleXMLElement('<Request/>');
+        $requestXml->addChild('Request_ID', 'GET_TABLE_DATA');
+        $requestBody = $requestXml->addChild('Request_Body');
+        $requestBody->addChild('Table_Name', $tableName);
+        $requestBody->addChild('Read_Direction', 'Forward');
+        $requestBody->addChild('Max_Number_Of_Records', '0');
+        $requestBody->addChild('Ignore_Extra_Fields', '1');
+
+        $params = [
+            'pxmlRequest' => $requestXml->asXML(),
+            'pxmlResponse' => '<Response/>'
+        ];
+        $response = $client->__call('WebRequest', [$params]);
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
+        $decoded = html_entity_decode($response->pxmlResponse ?? '');
+        $response = simplexml_load_string($decoded);
+
+        return $this->formatTableDataResponse($response);
+    }
+
+    /**
+     * Format table data into a flat array
+     *
+     * @param \SimpleXMLElement $response
+     * @return array
+     */
+    public function formatTableDataResponse(\SimpleXMLElement $response): array
+    {
+        $fieldMap = $records = [];
+
+        foreach ($response->Response_Body->WS_Table_Field_Buffer ?? [] as $field) {
+            $node = (string)($field->Node_Name ?? '');
+            $name = (string)($field->Field_Name ?? '');
+            if ($node && $name) {
+                $fieldMap[$node] = $name;
+            }
+        }
+
+        foreach ($response->Response_Body->Table_Data ?? [] as $row) {
+            $record = [];
+            foreach ($fieldMap as $node => $fieldName) {
+                $record[$fieldName] = isset($row->{$node}) ? (string)$row->{$node} : null;
+            }
+            $records[] = $record;
+        }
+
+        return $records;
+    }
+
+    /**
      * Update the config value
      * @param $value
      * @param $path

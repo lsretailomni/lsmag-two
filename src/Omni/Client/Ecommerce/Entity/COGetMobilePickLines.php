@@ -18,40 +18,40 @@ class COGetMobilePickLines extends \Magento\Catalog\Model\AbstractModel implemen
 
     public const ERROR_TEXT = 'errorText';
 
-    public const C_O_GET_MOBILE_PICK_LINES_X_M_L = 'cOGetMobilePickLinesXML';
+    public const COGET_MOBILE_PICK_LINES_XML = 'cOGetMobilePickLinesXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class COGetMobilePickLines extends \Magento\Catalog\Model\AbstractModel implemen
      * @param RootCOMobilePickLines $cOGetMobilePickLinesXML
      * @return $this
      */
-    public function setCOGetMobilePickLinesXML($cOGetMobilePickLinesXML)
+    public function setCogetmobilepicklinesxml($cOGetMobilePickLinesXML)
     {
-        $this->setData(self::C_O_GET_MOBILE_PICK_LINES_X_M_L, $cOGetMobilePickLinesXML);
+        $this->setData(self::COGET_MOBILE_PICK_LINES_XML, $cOGetMobilePickLinesXML);
         return $this;
     }
 
     /**
      * @return RootCOMobilePickLines
      */
-    public function getCOGetMobilePickLinesXML()
+    public function getCogetmobilepicklinesxml()
     {
-        return $this->getData(self::C_O_GET_MOBILE_PICK_LINES_X_M_L);
+        return $this->getData(self::COGET_MOBILE_PICK_LINES_XML);
     }
 }
 

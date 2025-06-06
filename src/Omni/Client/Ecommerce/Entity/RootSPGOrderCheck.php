@@ -12,64 +12,64 @@ class RootSPGOrderCheck extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootSPGOrderCheck';
 
-    public const S_P_G_ORDER_CHECK_C_O_LINE = 'SPGOrderCheckCOLine';
+    public const SPGORDER_CHECK_COLINE = 'SPGOrderCheckCOLine';
 
-    public const S_P_G_ORDER_CHECK_C_O_HEADER = 'SPGOrderCheckCOHeader';
+    public const SPGORDER_CHECK_COHEADER = 'SPGOrderCheckCOHeader';
 
-    public const S_P_G_ORDER_CHECK_C_O_PAYMENT = 'SPGOrderCheckCOPayment';
+    public const SPGORDER_CHECK_COPAYMENT = 'SPGOrderCheckCOPayment';
 
     /**
      * @param SPGOrderCheckCOLine $SPGOrderCheckCOLine
      * @return $this
      */
-    public function setSPGOrderCheckCOLine($SPGOrderCheckCOLine)
+    public function setSpgordercheckcoline($SPGOrderCheckCOLine)
     {
-        $this->setData(self::S_P_G_ORDER_CHECK_C_O_LINE, $SPGOrderCheckCOLine);
+        $this->setData(self::SPGORDER_CHECK_COLINE, $SPGOrderCheckCOLine);
         return $this;
     }
 
     /**
      * @return SPGOrderCheckCOLine
      */
-    public function getSPGOrderCheckCOLine()
+    public function getSpgordercheckcoline()
     {
-        return $this->getData(self::S_P_G_ORDER_CHECK_C_O_LINE);
+        return $this->getData(self::SPGORDER_CHECK_COLINE);
     }
 
     /**
      * @param SPGOrderCheckCOHeader $SPGOrderCheckCOHeader
      * @return $this
      */
-    public function setSPGOrderCheckCOHeader($SPGOrderCheckCOHeader)
+    public function setSpgordercheckcoheader($SPGOrderCheckCOHeader)
     {
-        $this->setData(self::S_P_G_ORDER_CHECK_C_O_HEADER, $SPGOrderCheckCOHeader);
+        $this->setData(self::SPGORDER_CHECK_COHEADER, $SPGOrderCheckCOHeader);
         return $this;
     }
 
     /**
      * @return SPGOrderCheckCOHeader
      */
-    public function getSPGOrderCheckCOHeader()
+    public function getSpgordercheckcoheader()
     {
-        return $this->getData(self::S_P_G_ORDER_CHECK_C_O_HEADER);
+        return $this->getData(self::SPGORDER_CHECK_COHEADER);
     }
 
     /**
      * @param SPGOrderCheckCOPayment $SPGOrderCheckCOPayment
      * @return $this
      */
-    public function setSPGOrderCheckCOPayment($SPGOrderCheckCOPayment)
+    public function setSpgordercheckcopayment($SPGOrderCheckCOPayment)
     {
-        $this->setData(self::S_P_G_ORDER_CHECK_C_O_PAYMENT, $SPGOrderCheckCOPayment);
+        $this->setData(self::SPGORDER_CHECK_COPAYMENT, $SPGOrderCheckCOPayment);
         return $this;
     }
 
     /**
      * @return SPGOrderCheckCOPayment
      */
-    public function getSPGOrderCheckCOPayment()
+    public function getSpgordercheckcopayment()
     {
-        return $this->getData(self::S_P_G_ORDER_CHECK_C_O_PAYMENT);
+        return $this->getData(self::SPGORDER_CHECK_COPAYMENT);
     }
 }
 

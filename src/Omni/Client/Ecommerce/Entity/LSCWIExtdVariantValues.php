@@ -37,13 +37,46 @@ class LSCWIExtdVariantValues extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public static array $dbColumnsMapping = [
+	self::ITEM_NO => 'item_no',
+	self::FRAMEWORK_CODE => 'framework_code',
+	self::VALUE_TYPE => 'value_type',
+	self::CODE => 'code',
+	self::DIMENSION => 'dimension',
+	self::VALUE => 'value',
+	self::DIMENSION_LINK => 'dimension_link',
+	self::EXTENSION => 'extension',
+	self::COMPARISON_VALUE => 'comparison_value',
+	self::SELECTION => 'selection',
+	self::LOGICAL_ORDER => 'logical_order',
+	self::VIEWING_COLOR => 'viewing_color',
+	self::DEFAULT_VARIANT_WEIGHT => 'default_variant_weight',
+	self::STATUS => 'status',
+	self::VALUE_DESCRIPTION => 'value_description',
+	self::ATTRIBUTE_1_VALUE => 'attribute_1_value',
+	self::ATTRIBUTE_2_VALUE => 'attribute_2_value',
+	self::ATTRIBUTE_3_VALUE => 'attribute_3_value',
+	self::DIMENSION_ORDER => 'dimension_order',
+	self::CODE_DESCRIPTION => 'code_description',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -53,17 +86,17 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::FRAMEWORK_CODE);
     }
 
-    public function setFrameworkCode(string $value)
+    public function setFrameworkCode(?string $value)
     {
         return $this->setData(self::FRAMEWORK_CODE, $value);
     }
 
-    public function getValueType(): ?string
+    public function getValueType(): ?int
     {
         return $this->getData(self::VALUE_TYPE);
     }
 
-    public function setValueType(string $value)
+    public function setValueType(?int $value)
     {
         return $this->setData(self::VALUE_TYPE, $value);
     }
@@ -73,7 +106,7 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -83,7 +116,7 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::DIMENSION);
     }
 
-    public function setDimension(int $value)
+    public function setDimension(?int $value)
     {
         return $this->setData(self::DIMENSION, $value);
     }
@@ -93,7 +126,7 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::VALUE);
     }
 
-    public function setValue(string $value)
+    public function setValue(?string $value)
     {
         return $this->setData(self::VALUE, $value);
     }
@@ -103,7 +136,7 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::DIMENSION_LINK);
     }
 
-    public function setDimensionLink(string $value)
+    public function setDimensionLink(?string $value)
     {
         return $this->setData(self::DIMENSION_LINK, $value);
     }
@@ -113,7 +146,7 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::EXTENSION);
     }
 
-    public function setExtension(string $value)
+    public function setExtension(?string $value)
     {
         return $this->setData(self::EXTENSION, $value);
     }
@@ -123,7 +156,7 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::COMPARISON_VALUE);
     }
 
-    public function setComparisonValue(string $value)
+    public function setComparisonValue(?string $value)
     {
         return $this->setData(self::COMPARISON_VALUE, $value);
     }
@@ -133,7 +166,7 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::SELECTION);
     }
 
-    public function setSelection(bool $value)
+    public function setSelection(?bool $value)
     {
         return $this->setData(self::SELECTION, $value);
     }
@@ -143,7 +176,7 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::LOGICAL_ORDER);
     }
 
-    public function setLogicalOrder(int $value)
+    public function setLogicalOrder(?int $value)
     {
         return $this->setData(self::LOGICAL_ORDER, $value);
     }
@@ -153,27 +186,27 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::VIEWING_COLOR);
     }
 
-    public function setViewingColor(int $value)
+    public function setViewingColor(?int $value)
     {
         return $this->setData(self::VIEWING_COLOR, $value);
     }
 
-    public function getDefaultVariantWeight(): ?string
+    public function getDefaultVariantWeight(): ?float
     {
         return $this->getData(self::DEFAULT_VARIANT_WEIGHT);
     }
 
-    public function setDefaultVariantWeight(string $value)
+    public function setDefaultVariantWeight(?float $value)
     {
         return $this->setData(self::DEFAULT_VARIANT_WEIGHT, $value);
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(string $value)
+    public function setStatus(?int $value)
     {
         return $this->setData(self::STATUS, $value);
     }
@@ -183,7 +216,7 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::VALUE_DESCRIPTION);
     }
 
-    public function setValueDescription(string $value)
+    public function setValueDescription(?string $value)
     {
         return $this->setData(self::VALUE_DESCRIPTION, $value);
     }
@@ -193,7 +226,7 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::ATTRIBUTE_1_VALUE);
     }
 
-    public function setAttribute1Value(string $value)
+    public function setAttribute1Value(?string $value)
     {
         return $this->setData(self::ATTRIBUTE_1_VALUE, $value);
     }
@@ -203,7 +236,7 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::ATTRIBUTE_2_VALUE);
     }
 
-    public function setAttribute2Value(string $value)
+    public function setAttribute2Value(?string $value)
     {
         return $this->setData(self::ATTRIBUTE_2_VALUE, $value);
     }
@@ -213,7 +246,7 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::ATTRIBUTE_3_VALUE);
     }
 
-    public function setAttribute3Value(string $value)
+    public function setAttribute3Value(?string $value)
     {
         return $this->setData(self::ATTRIBUTE_3_VALUE, $value);
     }
@@ -223,7 +256,7 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::DIMENSION_ORDER);
     }
 
-    public function setDimensionOrder(int $value)
+    public function setDimensionOrder(?int $value)
     {
         return $this->setData(self::DIMENSION_ORDER, $value);
     }
@@ -233,57 +266,57 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->getData(self::CODE_DESCRIPTION);
     }
 
-    public function setCodeDescription(string $value)
+    public function setCodeDescription(?string $value)
     {
         return $this->setData(self::CODE_DESCRIPTION, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

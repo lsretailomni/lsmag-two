@@ -22,76 +22,76 @@ class GetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel implement
 
     public const STORE_NO = 'storeNo';
 
-    public const GET_MEMBER_INFO_FOR_POS_X_M_L = 'getMemberInfoForPosXML';
+    public const GET_MEMBER_INFO_FOR_POS_XML = 'getMemberInfoForPosXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $cardNo
+     * @param ?string $cardNo
      * @return $this
      */
-    public function setCardNo($cardNo)
+    public function setCardno(?string $cardNo)
     {
         $this->setData(self::CARD_NO, $cardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardNo()
+    public function getCardno() : ?string
     {
         return $this->getData(self::CARD_NO);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -100,18 +100,18 @@ class GetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel implement
      * @param RootGetMemberInfoForPos $getMemberInfoForPosXML
      * @return $this
      */
-    public function setGetMemberInfoForPosXML($getMemberInfoForPosXML)
+    public function setGetmemberinfoforposxml($getMemberInfoForPosXML)
     {
-        $this->setData(self::GET_MEMBER_INFO_FOR_POS_X_M_L, $getMemberInfoForPosXML);
+        $this->setData(self::GET_MEMBER_INFO_FOR_POS_XML, $getMemberInfoForPosXML);
         return $this;
     }
 
     /**
      * @return RootGetMemberInfoForPos
      */
-    public function getGetMemberInfoForPosXML()
+    public function getGetmemberinfoforposxml()
     {
-        return $this->getData(self::GET_MEMBER_INFO_FOR_POS_X_M_L);
+        return $this->getData(self::GET_MEMBER_INFO_FOR_POS_XML);
     }
 }
 

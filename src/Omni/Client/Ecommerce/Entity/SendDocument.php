@@ -20,58 +20,58 @@ class SendDocument extends \Magento\Catalog\Model\AbstractModel implements Reque
 
     public const ADD_ONLY = 'addOnly';
 
-    public const SEND_DOCUMENT_X_M_L = 'sendDocumentXML';
+    public const SEND_DOCUMENT_XML = 'sendDocumentXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param boolean $addOnly
+     * @param ?bool $addOnly
      * @return $this
      */
-    public function setAddOnly($addOnly)
+    public function setAddonly(?bool $addOnly)
     {
         $this->setData(self::ADD_ONLY, $addOnly);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getAddOnly()
+    public function getAddonly() : ?bool
     {
         return $this->getData(self::ADD_ONLY);
     }
@@ -80,18 +80,18 @@ class SendDocument extends \Magento\Catalog\Model\AbstractModel implements Reque
      * @param RootSendDocument $sendDocumentXML
      * @return $this
      */
-    public function setSendDocumentXML($sendDocumentXML)
+    public function setSenddocumentxml($sendDocumentXML)
     {
-        $this->setData(self::SEND_DOCUMENT_X_M_L, $sendDocumentXML);
+        $this->setData(self::SEND_DOCUMENT_XML, $sendDocumentXML);
         return $this;
     }
 
     /**
      * @return RootSendDocument
      */
-    public function getSendDocumentXML()
+    public function getSenddocumentxml()
     {
-        return $this->getData(self::SEND_DOCUMENT_X_M_L);
+        return $this->getData(self::SEND_DOCUMENT_XML);
     }
 }
 

@@ -24,94 +24,94 @@ class StoreInventoryLinesGetV2 extends \Magento\Catalog\Model\AbstractModel impl
 
     public const ADD_CYCLE_COUNT_ITEMS = 'addCycleCountItems';
 
-    public const STORE_INVENTORY_LINES_GET_X_M_L = 'storeInventoryLinesGetXML';
+    public const STORE_INVENTORY_LINES_GET_XML = 'storeInventoryLinesGetXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $worksheetSeqNo
+     * @param ?string $worksheetSeqNo
      * @return $this
      */
-    public function setWorksheetSeqNo($worksheetSeqNo)
+    public function setWorksheetseqno(?string $worksheetSeqNo)
     {
         $this->setData(self::WORKSHEET_SEQ_NO, $worksheetSeqNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getWorksheetSeqNo()
+    public function getWorksheetseqno() : ?string
     {
         return $this->getData(self::WORKSHEET_SEQ_NO);
     }
 
     /**
-     * @param string $areaCode
+     * @param ?string $areaCode
      * @return $this
      */
-    public function setAreaCode($areaCode)
+    public function setAreacode(?string $areaCode)
     {
         $this->setData(self::AREA_CODE, $areaCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAreaCode()
+    public function getAreacode() : ?string
     {
         return $this->getData(self::AREA_CODE);
     }
 
     /**
-     * @param boolean $addCycleCountItems
+     * @param ?bool $addCycleCountItems
      * @return $this
      */
-    public function setAddCycleCountItems($addCycleCountItems)
+    public function setAddcyclecountitems(?bool $addCycleCountItems)
     {
         $this->setData(self::ADD_CYCLE_COUNT_ITEMS, $addCycleCountItems);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getAddCycleCountItems()
+    public function getAddcyclecountitems() : ?bool
     {
         return $this->getData(self::ADD_CYCLE_COUNT_ITEMS);
     }
@@ -120,18 +120,18 @@ class StoreInventoryLinesGetV2 extends \Magento\Catalog\Model\AbstractModel impl
      * @param RootStoreInventoryGetLines $storeInventoryLinesGetXML
      * @return $this
      */
-    public function setStoreInventoryLinesGetXML($storeInventoryLinesGetXML)
+    public function setStoreinventorylinesgetxml($storeInventoryLinesGetXML)
     {
-        $this->setData(self::STORE_INVENTORY_LINES_GET_X_M_L, $storeInventoryLinesGetXML);
+        $this->setData(self::STORE_INVENTORY_LINES_GET_XML, $storeInventoryLinesGetXML);
         return $this;
     }
 
     /**
      * @return RootStoreInventoryGetLines
      */
-    public function getStoreInventoryLinesGetXML()
+    public function getStoreinventorylinesgetxml()
     {
-        return $this->getData(self::STORE_INVENTORY_LINES_GET_X_M_L);
+        return $this->getData(self::STORE_INVENTORY_LINES_GET_XML);
     }
 }
 

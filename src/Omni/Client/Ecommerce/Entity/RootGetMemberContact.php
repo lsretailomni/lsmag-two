@@ -22,7 +22,7 @@ class RootGetMemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param MembershipCard $MembershipCard
      * @return $this
      */
-    public function setMembershipCard($MembershipCard)
+    public function setMembershipcard($MembershipCard)
     {
         $this->setData(self::MEMBERSHIP_CARD, $MembershipCard);
         return $this;
@@ -31,7 +31,7 @@ class RootGetMemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MembershipCard
      */
-    public function getMembershipCard()
+    public function getMembershipcard()
     {
         return $this->getData(self::MEMBERSHIP_CARD);
     }
@@ -40,7 +40,7 @@ class RootGetMemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param MemberContact $MemberContact
      * @return $this
      */
-    public function setMemberContact($MemberContact)
+    public function setMembercontact($MemberContact)
     {
         $this->setData(self::MEMBER_CONTACT, $MemberContact);
         return $this;
@@ -49,7 +49,7 @@ class RootGetMemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberContact
      */
-    public function getMemberContact()
+    public function getMembercontact()
     {
         return $this->getData(self::MEMBER_CONTACT);
     }
@@ -58,7 +58,7 @@ class RootGetMemberContact extends \Magento\Catalog\Model\AbstractModel
      * @param MemberClub $MemberClub
      * @return $this
      */
-    public function setMemberClub($MemberClub)
+    public function setMemberclub($MemberClub)
     {
         $this->setData(self::MEMBER_CLUB, $MemberClub);
         return $this;
@@ -67,7 +67,7 @@ class RootGetMemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MemberClub
      */
-    public function getMemberClub()
+    public function getMemberclub()
     {
         return $this->getData(self::MEMBER_CLUB);
     }

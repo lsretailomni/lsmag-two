@@ -28,7 +28,7 @@ class Root extends \Magento\Catalog\Model\AbstractModel
      * @param SalesShipmentHeader $SalesShipmentHeader
      * @return $this
      */
-    public function setSalesShipmentHeader($SalesShipmentHeader)
+    public function setSalesshipmentheader($SalesShipmentHeader)
     {
         $this->setData(self::SALES_SHIPMENT_HEADER, $SalesShipmentHeader);
         return $this;
@@ -37,7 +37,7 @@ class Root extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return SalesShipmentHeader
      */
-    public function getSalesShipmentHeader()
+    public function getSalesshipmentheader()
     {
         return $this->getData(self::SALES_SHIPMENT_HEADER);
     }
@@ -46,7 +46,7 @@ class Root extends \Magento\Catalog\Model\AbstractModel
      * @param MobileTransaction $MobileTransaction
      * @return $this
      */
-    public function setMobileTransaction($MobileTransaction)
+    public function setMobiletransaction($MobileTransaction)
     {
         $this->setData(self::MOBILE_TRANSACTION, $MobileTransaction);
         return $this;
@@ -55,7 +55,7 @@ class Root extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MobileTransaction
      */
-    public function getMobileTransaction()
+    public function getMobiletransaction()
     {
         return $this->getData(self::MOBILE_TRANSACTION);
     }
@@ -64,7 +64,7 @@ class Root extends \Magento\Catalog\Model\AbstractModel
      * @param MobileTransactionLine $MobileTransactionLine
      * @return $this
      */
-    public function setMobileTransactionLine($MobileTransactionLine)
+    public function setMobiletransactionline($MobileTransactionLine)
     {
         $this->setData(self::MOBILE_TRANSACTION_LINE, $MobileTransactionLine);
         return $this;
@@ -73,7 +73,7 @@ class Root extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MobileTransactionLine
      */
-    public function getMobileTransactionLine()
+    public function getMobiletransactionline()
     {
         return $this->getData(self::MOBILE_TRANSACTION_LINE);
     }
@@ -82,7 +82,7 @@ class Root extends \Magento\Catalog\Model\AbstractModel
      * @param MobileTransDiscountLine $MobileTransDiscountLine
      * @return $this
      */
-    public function setMobileTransDiscountLine($MobileTransDiscountLine)
+    public function setMobiletransdiscountline($MobileTransDiscountLine)
     {
         $this->setData(self::MOBILE_TRANS_DISCOUNT_LINE, $MobileTransDiscountLine);
         return $this;
@@ -91,7 +91,7 @@ class Root extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MobileTransDiscountLine
      */
-    public function getMobileTransDiscountLine()
+    public function getMobiletransdiscountline()
     {
         return $this->getData(self::MOBILE_TRANS_DISCOUNT_LINE);
     }
@@ -100,7 +100,7 @@ class Root extends \Magento\Catalog\Model\AbstractModel
      * @param MobileReceiptInfo $MobileReceiptInfo
      * @return $this
      */
-    public function setMobileReceiptInfo($MobileReceiptInfo)
+    public function setMobilereceiptinfo($MobileReceiptInfo)
     {
         $this->setData(self::MOBILE_RECEIPT_INFO, $MobileReceiptInfo);
         return $this;
@@ -109,7 +109,7 @@ class Root extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MobileReceiptInfo
      */
-    public function getMobileReceiptInfo()
+    public function getMobilereceiptinfo()
     {
         return $this->getData(self::MOBILE_RECEIPT_INFO);
     }
@@ -118,7 +118,7 @@ class Root extends \Magento\Catalog\Model\AbstractModel
      * @param MobileTransactionSubLine $MobileTransactionSubLine
      * @return $this
      */
-    public function setMobileTransactionSubLine($MobileTransactionSubLine)
+    public function setMobiletransactionsubline($MobileTransactionSubLine)
     {
         $this->setData(self::MOBILE_TRANSACTION_SUB_LINE, $MobileTransactionSubLine);
         return $this;
@@ -127,7 +127,7 @@ class Root extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return MobileTransactionSubLine
      */
-    public function getMobileTransactionSubLine()
+    public function getMobiletransactionsubline()
     {
         return $this->getData(self::MOBILE_TRANSACTION_SUB_LINE);
     }

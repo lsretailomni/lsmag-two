@@ -20,7 +20,7 @@ class TransHospitalityEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const ITEM_NO = 'ItemNo';
 
@@ -38,7 +38,7 @@ class TransHospitalityEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -47,7 +47,7 @@ class TransHospitalityEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -56,7 +56,7 @@ class TransHospitalityEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -65,97 +65,97 @@ class TransHospitalityEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
-     * @param string $ItemNo
+     * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo($ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $RestaurantMenuTypeCode
+     * @param ?string $RestaurantMenuTypeCode
      * @return $this
      */
-    public function setRestaurantMenuTypeCode($RestaurantMenuTypeCode)
+    public function setRestaurantmenutypecode(?string $RestaurantMenuTypeCode)
     {
         $this->setData(self::RESTAURANT_MENU_TYPE_CODE, $RestaurantMenuTypeCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRestaurantMenuTypeCode()
+    public function getRestaurantmenutypecode() : ?string
     {
         return $this->getData(self::RESTAURANT_MENU_TYPE_CODE);
     }
@@ -164,7 +164,7 @@ class TransHospitalityEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $RestaurantMenuType
      * @return $this
      */
-    public function setRestaurantMenuType($RestaurantMenuType)
+    public function setRestaurantmenutype($RestaurantMenuType)
     {
         $this->setData(self::RESTAURANT_MENU_TYPE, $RestaurantMenuType);
         return $this;
@@ -173,43 +173,43 @@ class TransHospitalityEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getRestaurantMenuType()
+    public function getRestaurantmenutype()
     {
         return $this->getData(self::RESTAURANT_MENU_TYPE);
     }
 
     /**
-     * @param string $OriginalReceiptNo
+     * @param ?string $OriginalReceiptNo
      * @return $this
      */
-    public function setOriginalReceiptNo($OriginalReceiptNo)
+    public function setOriginalreceiptno(?string $OriginalReceiptNo)
     {
         $this->setData(self::ORIGINAL_RECEIPT_NO, $OriginalReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOriginalReceiptNo()
+    public function getOriginalreceiptno() : ?string
     {
         return $this->getData(self::ORIGINAL_RECEIPT_NO);
     }
 
     /**
-     * @param boolean $Replicated
+     * @param ?bool $Replicated
      * @return $this
      */
-    public function setReplicated($Replicated)
+    public function setReplicated(?bool $Replicated)
     {
         $this->setData(self::REPLICATED, $Replicated);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getReplicated()
+    public function getReplicated() : ?bool
     {
         return $this->getData(self::REPLICATED);
     }
@@ -218,7 +218,7 @@ class TransHospitalityEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -227,7 +227,7 @@ class TransHospitalityEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }

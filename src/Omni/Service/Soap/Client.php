@@ -23,14 +23,15 @@ class Client extends LaminasSoapClient
     /** @var ServiceType */
     public $type;
 
+    public const SERVICE_TYPE = 'ecommerce';
+
     /**
      * @param Uri $uri
-     * @param ServiceType $type
      */
-    public function __construct(Uri $uri, ServiceType $type)
+    public function __construct(Uri $uri)
     {
         $this->url = $uri;
-        $this->type = $type;
+        $this->type = new ServiceType(self::SERVICE_TYPE);
 
         $this->execute();
     }

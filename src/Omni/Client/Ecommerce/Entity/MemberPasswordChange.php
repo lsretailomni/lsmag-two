@@ -18,7 +18,7 @@ class MemberPasswordChange extends \Magento\Catalog\Model\AbstractModel implemen
 
     public const ERROR_TEXT = 'errorText';
 
-    public const LOGIN_I_D = 'loginID';
+    public const LOGIN_ID = 'loginID';
 
     public const TOKEN = 'token';
 
@@ -27,109 +27,109 @@ class MemberPasswordChange extends \Magento\Catalog\Model\AbstractModel implemen
     public const NEW_PASSWORD = 'newPassword';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $loginID
+     * @param ?string $loginID
      * @return $this
      */
-    public function setLoginID($loginID)
+    public function setLoginid(?string $loginID)
     {
-        $this->setData(self::LOGIN_I_D, $loginID);
+        $this->setData(self::LOGIN_ID, $loginID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLoginID()
+    public function getLoginid() : ?string
     {
-        return $this->getData(self::LOGIN_I_D);
+        return $this->getData(self::LOGIN_ID);
     }
 
     /**
-     * @param string $token
+     * @param ?string $token
      * @return $this
      */
-    public function setToken($token)
+    public function setToken(?string $token)
     {
         $this->setData(self::TOKEN, $token);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getToken()
+    public function getToken() : ?string
     {
         return $this->getData(self::TOKEN);
     }
 
     /**
-     * @param string $oldPassword
+     * @param ?string $oldPassword
      * @return $this
      */
-    public function setOldPassword($oldPassword)
+    public function setOldpassword(?string $oldPassword)
     {
         $this->setData(self::OLD_PASSWORD, $oldPassword);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOldPassword()
+    public function getOldpassword() : ?string
     {
         return $this->getData(self::OLD_PASSWORD);
     }
 
     /**
-     * @param string $newPassword
+     * @param ?string $newPassword
      * @return $this
      */
-    public function setNewPassword($newPassword)
+    public function setNewpassword(?string $newPassword)
     {
         $this->setData(self::NEW_PASSWORD, $newPassword);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNewPassword()
+    public function getNewpassword() : ?string
     {
         return $this->getData(self::NEW_PASSWORD);
     }

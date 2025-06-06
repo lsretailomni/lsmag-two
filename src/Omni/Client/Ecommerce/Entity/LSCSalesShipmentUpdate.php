@@ -20,58 +20,58 @@ class LSCSalesShipmentUpdate extends \Magento\Catalog\Model\AbstractModel implem
 
     public const DOCUMENT_ID = 'documentId';
 
-    public const SALES_SHIPMENT_UPDATE_X_M_L = 'salesShipmentUpdateXML';
+    public const SALES_SHIPMENT_UPDATE_XML = 'salesShipmentUpdateXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $documentId
+     * @param ?string $documentId
      * @return $this
      */
-    public function setDocumentId($documentId)
+    public function setDocumentid(?string $documentId)
     {
         $this->setData(self::DOCUMENT_ID, $documentId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentId()
+    public function getDocumentid() : ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -80,18 +80,18 @@ class LSCSalesShipmentUpdate extends \Magento\Catalog\Model\AbstractModel implem
      * @param RootSalesShipmentUpdate $salesShipmentUpdateXML
      * @return $this
      */
-    public function setSalesShipmentUpdateXML($salesShipmentUpdateXML)
+    public function setSalesshipmentupdatexml($salesShipmentUpdateXML)
     {
-        $this->setData(self::SALES_SHIPMENT_UPDATE_X_M_L, $salesShipmentUpdateXML);
+        $this->setData(self::SALES_SHIPMENT_UPDATE_XML, $salesShipmentUpdateXML);
         return $this;
     }
 
     /**
      * @return RootSalesShipmentUpdate
      */
-    public function getSalesShipmentUpdateXML()
+    public function getSalesshipmentupdatexml()
     {
-        return $this->getData(self::SALES_SHIPMENT_UPDATE_X_M_L);
+        return $this->getData(self::SALES_SHIPMENT_UPDATE_XML);
     }
 }
 

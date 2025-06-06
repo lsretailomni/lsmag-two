@@ -20,44 +20,44 @@ class SPGOrderCheckResult extends \Magento\Catalog\Model\AbstractModel implement
 
     public const NUMBER_OF_ITEMS_TO_CHECK = 'numberOfItemsToCheck';
 
-    public const S_P_G_ORDER_CHECK_X_M_L = 'sPGOrderCheckXML';
+    public const SPGORDER_CHECK_XML = 'sPGOrderCheckXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param boolean $orderPaid
+     * @param ?bool $orderPaid
      * @return $this
      */
-    public function setOrderPaid($orderPaid)
+    public function setOrderpaid(?bool $orderPaid)
     {
         $this->setData(self::ORDER_PAID, $orderPaid);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getOrderPaid()
+    public function getOrderpaid() : ?bool
     {
         return $this->getData(self::ORDER_PAID);
     }
 
     /**
-     * @param boolean $doCheck
+     * @param ?bool $doCheck
      * @return $this
      */
-    public function setDoCheck($doCheck)
+    public function setDocheck(?bool $doCheck)
     {
         $this->setData(self::DO_CHECK, $doCheck);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getDoCheck()
+    public function getDocheck() : ?bool
     {
         return $this->getData(self::DO_CHECK);
     }
@@ -66,7 +66,7 @@ class SPGOrderCheckResult extends \Magento\Catalog\Model\AbstractModel implement
      * @param int $numberOfItemsToCheck
      * @return $this
      */
-    public function setNumberOfItemsToCheck($numberOfItemsToCheck)
+    public function setNumberofitemstocheck($numberOfItemsToCheck)
     {
         $this->setData(self::NUMBER_OF_ITEMS_TO_CHECK, $numberOfItemsToCheck);
         return $this;
@@ -75,7 +75,7 @@ class SPGOrderCheckResult extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return int
      */
-    public function getNumberOfItemsToCheck()
+    public function getNumberofitemstocheck()
     {
         return $this->getData(self::NUMBER_OF_ITEMS_TO_CHECK);
     }
@@ -84,58 +84,58 @@ class SPGOrderCheckResult extends \Magento\Catalog\Model\AbstractModel implement
      * @param RootSPGOrderCheck $sPGOrderCheckXML
      * @return $this
      */
-    public function setSPGOrderCheckXML($sPGOrderCheckXML)
+    public function setSpgordercheckxml($sPGOrderCheckXML)
     {
-        $this->setData(self::S_P_G_ORDER_CHECK_X_M_L, $sPGOrderCheckXML);
+        $this->setData(self::SPGORDER_CHECK_XML, $sPGOrderCheckXML);
         return $this;
     }
 
     /**
      * @return RootSPGOrderCheck
      */
-    public function getSPGOrderCheckXML()
+    public function getSpgordercheckxml()
     {
-        return $this->getData(self::S_P_G_ORDER_CHECK_X_M_L);
+        return $this->getData(self::SPGORDER_CHECK_XML);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getResult()
     {

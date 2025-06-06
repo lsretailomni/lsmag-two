@@ -24,94 +24,94 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
 
     public const STORE_NO = 'storeNo';
 
-    public const LOAD_MEMBER_DIR_MARK_INFO_X_M_L = 'loadMemberDirMarkInfoXML';
+    public const LOAD_MEMBER_DIR_MARK_INFO_XML = 'loadMemberDirMarkInfoXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $cardId
+     * @param ?string $cardId
      * @return $this
      */
-    public function setCardId($cardId)
+    public function setCardid(?string $cardId)
     {
         $this->setData(self::CARD_ID, $cardId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardId()
+    public function getCardid() : ?string
     {
         return $this->getData(self::CARD_ID);
     }
 
     /**
-     * @param string $itemNo
+     * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo($itemNo)
+    public function setItemno(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -120,18 +120,18 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
      * @param RootGetDirectMarketingInfo $loadMemberDirMarkInfoXML
      * @return $this
      */
-    public function setLoadMemberDirMarkInfoXML($loadMemberDirMarkInfoXML)
+    public function setLoadmemberdirmarkinfoxml($loadMemberDirMarkInfoXML)
     {
-        $this->setData(self::LOAD_MEMBER_DIR_MARK_INFO_X_M_L, $loadMemberDirMarkInfoXML);
+        $this->setData(self::LOAD_MEMBER_DIR_MARK_INFO_XML, $loadMemberDirMarkInfoXML);
         return $this;
     }
 
     /**
      * @return RootGetDirectMarketingInfo
      */
-    public function getLoadMemberDirMarkInfoXML()
+    public function getLoadmemberdirmarkinfoxml()
     {
-        return $this->getData(self::LOAD_MEMBER_DIR_MARK_INFO_X_M_L);
+        return $this->getData(self::LOAD_MEMBER_DIR_MARK_INFO_XML);
     }
 }
 

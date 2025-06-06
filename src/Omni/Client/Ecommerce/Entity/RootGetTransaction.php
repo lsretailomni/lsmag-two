@@ -26,7 +26,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
 
     public const TRANS_INVENTORY_ENTRY = 'TransInventoryEntry';
 
-    public const P_O_S_CARD_ENTRY = 'POSCardEntry';
+    public const POSCARD_ENTRY = 'POSCardEntry';
 
     public const TRANS_DISCOUNT_ENTRY = 'TransDiscountEntry';
 
@@ -42,7 +42,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param TransactionHeader $TransactionHeader
      * @return $this
      */
-    public function setTransactionHeader($TransactionHeader)
+    public function setTransactionheader($TransactionHeader)
     {
         $this->setData(self::TRANSACTION_HEADER, $TransactionHeader);
         return $this;
@@ -51,7 +51,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return TransactionHeader
      */
-    public function getTransactionHeader()
+    public function getTransactionheader()
     {
         return $this->getData(self::TRANSACTION_HEADER);
     }
@@ -60,7 +60,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param TransSalesEntry $TransSalesEntry
      * @return $this
      */
-    public function setTransSalesEntry($TransSalesEntry)
+    public function setTranssalesentry($TransSalesEntry)
     {
         $this->setData(self::TRANS_SALES_ENTRY, $TransSalesEntry);
         return $this;
@@ -69,7 +69,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return TransSalesEntry
      */
-    public function getTransSalesEntry()
+    public function getTranssalesentry()
     {
         return $this->getData(self::TRANS_SALES_ENTRY);
     }
@@ -78,7 +78,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param TransPaymentEntry $TransPaymentEntry
      * @return $this
      */
-    public function setTransPaymentEntry($TransPaymentEntry)
+    public function setTranspaymententry($TransPaymentEntry)
     {
         $this->setData(self::TRANS_PAYMENT_ENTRY, $TransPaymentEntry);
         return $this;
@@ -87,7 +87,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return TransPaymentEntry
      */
-    public function getTransPaymentEntry()
+    public function getTranspaymententry()
     {
         return $this->getData(self::TRANS_PAYMENT_ENTRY);
     }
@@ -96,7 +96,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param TransIncomeExpenseEntry $TransIncomeExpenseEntry
      * @return $this
      */
-    public function setTransIncomeExpenseEntry($TransIncomeExpenseEntry)
+    public function setTransincomeexpenseentry($TransIncomeExpenseEntry)
     {
         $this->setData(self::TRANS_INCOME_EXPENSE_ENTRY, $TransIncomeExpenseEntry);
         return $this;
@@ -105,7 +105,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return TransIncomeExpenseEntry
      */
-    public function getTransIncomeExpenseEntry()
+    public function getTransincomeexpenseentry()
     {
         return $this->getData(self::TRANS_INCOME_EXPENSE_ENTRY);
     }
@@ -114,7 +114,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param TransInfocodeEntry $TransInfocodeEntry
      * @return $this
      */
-    public function setTransInfocodeEntry($TransInfocodeEntry)
+    public function setTransinfocodeentry($TransInfocodeEntry)
     {
         $this->setData(self::TRANS_INFOCODE_ENTRY, $TransInfocodeEntry);
         return $this;
@@ -123,7 +123,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return TransInfocodeEntry
      */
-    public function getTransInfocodeEntry()
+    public function getTransinfocodeentry()
     {
         return $this->getData(self::TRANS_INFOCODE_ENTRY);
     }
@@ -132,7 +132,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param TransTenderDeclarEntry $TransTenderDeclarEntry
      * @return $this
      */
-    public function setTransTenderDeclarEntry($TransTenderDeclarEntry)
+    public function setTranstenderdeclarentry($TransTenderDeclarEntry)
     {
         $this->setData(self::TRANS_TENDER_DECLAR_ENTRY, $TransTenderDeclarEntry);
         return $this;
@@ -141,7 +141,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return TransTenderDeclarEntry
      */
-    public function getTransTenderDeclarEntry()
+    public function getTranstenderdeclarentry()
     {
         return $this->getData(self::TRANS_TENDER_DECLAR_ENTRY);
     }
@@ -150,7 +150,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param TransInventoryEntry $TransInventoryEntry
      * @return $this
      */
-    public function setTransInventoryEntry($TransInventoryEntry)
+    public function setTransinventoryentry($TransInventoryEntry)
     {
         $this->setData(self::TRANS_INVENTORY_ENTRY, $TransInventoryEntry);
         return $this;
@@ -159,7 +159,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return TransInventoryEntry
      */
-    public function getTransInventoryEntry()
+    public function getTransinventoryentry()
     {
         return $this->getData(self::TRANS_INVENTORY_ENTRY);
     }
@@ -168,25 +168,25 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param POSCardEntry $POSCardEntry
      * @return $this
      */
-    public function setPOSCardEntry($POSCardEntry)
+    public function setPoscardentry($POSCardEntry)
     {
-        $this->setData(self::P_O_S_CARD_ENTRY, $POSCardEntry);
+        $this->setData(self::POSCARD_ENTRY, $POSCardEntry);
         return $this;
     }
 
     /**
      * @return POSCardEntry
      */
-    public function getPOSCardEntry()
+    public function getPoscardentry()
     {
-        return $this->getData(self::P_O_S_CARD_ENTRY);
+        return $this->getData(self::POSCARD_ENTRY);
     }
 
     /**
      * @param TransDiscountEntry $TransDiscountEntry
      * @return $this
      */
-    public function setTransDiscountEntry($TransDiscountEntry)
+    public function setTransdiscountentry($TransDiscountEntry)
     {
         $this->setData(self::TRANS_DISCOUNT_ENTRY, $TransDiscountEntry);
         return $this;
@@ -195,7 +195,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return TransDiscountEntry
      */
-    public function getTransDiscountEntry()
+    public function getTransdiscountentry()
     {
         return $this->getData(self::TRANS_DISCOUNT_ENTRY);
     }
@@ -204,7 +204,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param TransDealEntry $TransDealEntry
      * @return $this
      */
-    public function setTransDealEntry($TransDealEntry)
+    public function setTransdealentry($TransDealEntry)
     {
         $this->setData(self::TRANS_DEAL_ENTRY, $TransDealEntry);
         return $this;
@@ -213,7 +213,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return TransDealEntry
      */
-    public function getTransDealEntry()
+    public function getTransdealentry()
     {
         return $this->getData(self::TRANS_DEAL_ENTRY);
     }
@@ -222,7 +222,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param TransPointEntry $TransPointEntry
      * @return $this
      */
-    public function setTransPointEntry($TransPointEntry)
+    public function setTranspointentry($TransPointEntry)
     {
         $this->setData(self::TRANS_POINT_ENTRY, $TransPointEntry);
         return $this;
@@ -231,7 +231,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return TransPointEntry
      */
-    public function getTransPointEntry()
+    public function getTranspointentry()
     {
         return $this->getData(self::TRANS_POINT_ENTRY);
     }
@@ -240,7 +240,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param TransHospitalityEntry $TransHospitalityEntry
      * @return $this
      */
-    public function setTransHospitalityEntry($TransHospitalityEntry)
+    public function setTranshospitalityentry($TransHospitalityEntry)
     {
         $this->setData(self::TRANS_HOSPITALITY_ENTRY, $TransHospitalityEntry);
         return $this;
@@ -249,7 +249,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return TransHospitalityEntry
      */
-    public function getTransHospitalityEntry()
+    public function getTranshospitalityentry()
     {
         return $this->getData(self::TRANS_HOSPITALITY_ENTRY);
     }
@@ -258,7 +258,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param TransSalesTaxEntry $TransSalesTaxEntry
      * @return $this
      */
-    public function setTransSalesTaxEntry($TransSalesTaxEntry)
+    public function setTranssalestaxentry($TransSalesTaxEntry)
     {
         $this->setData(self::TRANS_SALES_TAX_ENTRY, $TransSalesTaxEntry);
         return $this;
@@ -267,7 +267,7 @@ class RootGetTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return TransSalesTaxEntry
      */
-    public function getTransSalesTaxEntry()
+    public function getTranssalestaxentry()
     {
         return $this->getData(self::TRANS_SALES_TAX_ENTRY);
     }

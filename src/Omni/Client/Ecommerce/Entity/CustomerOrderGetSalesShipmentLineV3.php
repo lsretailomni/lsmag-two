@@ -12,7 +12,7 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
 {
     public const CLASS_NAME = 'CustomerOrderGetSalesShipmentLineV3';
 
-    public const DOCUMENT_I_D = 'DocumentID';
+    public const DOCUMENT_ID = 'DocumentID';
 
     public const LINE_NO = 'LineNo';
 
@@ -37,28 +37,28 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
     public const UNIT_VOLUME = 'UnitVolume';
 
     /**
-     * @param string $DocumentID
+     * @param ?string $DocumentID
      * @return $this
      */
-    public function setDocumentID($DocumentID)
+    public function setDocumentid(?string $DocumentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $DocumentID);
+        $this->setData(self::DOCUMENT_ID, $DocumentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -67,187 +67,187 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
 
     /**
-     * @param string $ItemNo
+     * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo($ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $Description
+     * @param ?string $Description
      * @return $this
      */
-    public function setDescription($Description)
+    public function setDescription(?string $Description)
     {
         $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param string $UnitOfMeasure
+     * @param ?string $UnitOfMeasure
      * @return $this
      */
-    public function setUnitOfMeasure($UnitOfMeasure)
+    public function setUnitofmeasure(?string $UnitOfMeasure)
     {
         $this->setData(self::UNIT_OF_MEASURE, $UnitOfMeasure);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnitOfMeasure()
+    public function getUnitofmeasure() : ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE);
     }
 
     /**
-     * @param date $PlannedDeliveryDate
+     * @param ?string $PlannedDeliveryDate
      * @return $this
      */
-    public function setPlannedDeliveryDate($PlannedDeliveryDate)
+    public function setPlanneddeliverydate(?string $PlannedDeliveryDate)
     {
         $this->setData(self::PLANNED_DELIVERY_DATE, $PlannedDeliveryDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getPlannedDeliveryDate()
+    public function getPlanneddeliverydate() : ?string
     {
         return $this->getData(self::PLANNED_DELIVERY_DATE);
     }
 
     /**
-     * @param date $PlannedShipmentDate
+     * @param ?string $PlannedShipmentDate
      * @return $this
      */
-    public function setPlannedShipmentDate($PlannedShipmentDate)
+    public function setPlannedshipmentdate(?string $PlannedShipmentDate)
     {
         $this->setData(self::PLANNED_SHIPMENT_DATE, $PlannedShipmentDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getPlannedShipmentDate()
+    public function getPlannedshipmentdate() : ?string
     {
         return $this->getData(self::PLANNED_SHIPMENT_DATE);
     }
 
     /**
-     * @param date $ShipmentDate
+     * @param ?string $ShipmentDate
      * @return $this
      */
-    public function setShipmentDate($ShipmentDate)
+    public function setShipmentdate(?string $ShipmentDate)
     {
         $this->setData(self::SHIPMENT_DATE, $ShipmentDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getShipmentDate()
+    public function getShipmentdate() : ?string
     {
         return $this->getData(self::SHIPMENT_DATE);
     }
 
     /**
-     * @param float $GrossWeight
+     * @param ?float $GrossWeight
      * @return $this
      */
-    public function setGrossWeight($GrossWeight)
+    public function setGrossweight(?float $GrossWeight)
     {
         $this->setData(self::GROSS_WEIGHT, $GrossWeight);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getGrossWeight()
+    public function getGrossweight() : ?float
     {
         return $this->getData(self::GROSS_WEIGHT);
     }
 
     /**
-     * @param float $NetWeight
+     * @param ?float $NetWeight
      * @return $this
      */
-    public function setNetWeight($NetWeight)
+    public function setNetweight(?float $NetWeight)
     {
         $this->setData(self::NET_WEIGHT, $NetWeight);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getNetWeight()
+    public function getNetweight() : ?float
     {
         return $this->getData(self::NET_WEIGHT);
     }
 
     /**
-     * @param float $UnitVolume
+     * @param ?float $UnitVolume
      * @return $this
      */
-    public function setUnitVolume($UnitVolume)
+    public function setUnitvolume(?float $UnitVolume)
     {
         $this->setData(self::UNIT_VOLUME, $UnitVolume);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getUnitVolume()
+    public function getUnitvolume() : ?float
     {
         return $this->getData(self::UNIT_VOLUME);
     }

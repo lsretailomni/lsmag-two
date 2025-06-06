@@ -16,26 +16,26 @@ class SetMemberCardToken extends \Magento\Catalog\Model\AbstractModel implements
 
     public const MEMBER_CARD_NO = 'memberCardNo';
 
-    public const SET_TOKEN_ENTRY_X_M_L = 'setTokenEntryXML';
+    public const SET_TOKEN_ENTRY_XML = 'setTokenEntryXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $memberCardNo
+     * @param ?string $memberCardNo
      * @return $this
      */
-    public function setMemberCardNo($memberCardNo)
+    public function setMembercardno(?string $memberCardNo)
     {
         $this->setData(self::MEMBER_CARD_NO, $memberCardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberCardNo()
+    public function getMembercardno() : ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -44,52 +44,52 @@ class SetMemberCardToken extends \Magento\Catalog\Model\AbstractModel implements
      * @param RootSetTokenEntry $setTokenEntryXML
      * @return $this
      */
-    public function setSetTokenEntryXML($setTokenEntryXML)
+    public function setSettokenentryxml($setTokenEntryXML)
     {
-        $this->setData(self::SET_TOKEN_ENTRY_X_M_L, $setTokenEntryXML);
+        $this->setData(self::SET_TOKEN_ENTRY_XML, $setTokenEntryXML);
         return $this;
     }
 
     /**
      * @return RootSetTokenEntry
      */
-    public function getSetTokenEntryXML()
+    public function getSettokenentryxml()
     {
-        return $this->getData(self::SET_TOKEN_ENTRY_X_M_L);
+        return $this->getData(self::SET_TOKEN_ENTRY_XML);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

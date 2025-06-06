@@ -78,7 +78,7 @@ class ProfilesGetByCardId extends AbstractOperation
     /**
      * @return ProfilesGetByCardIdRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ProfilesGetByCardIdRequest();

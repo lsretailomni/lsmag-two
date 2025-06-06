@@ -23,13 +23,32 @@ class LSCWIItemLocationBuffer extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public static array $dbColumnsMapping = [
+	self::ITEM_NO => 'item_no',
+	self::STORE_NO => 'store_no',
+	self::SECTION_CODE => 'section_code',
+	self::SECTION_DESCRIPTION => 'section_description',
+	self::SHELF_CODE => 'shelf_code',
+	self::SHELF_DESCRIPTION => 'shelf_description',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -39,7 +58,7 @@ class LSCWIItemLocationBuffer extends AbstractModel
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -49,7 +68,7 @@ class LSCWIItemLocationBuffer extends AbstractModel
         return $this->getData(self::SECTION_CODE);
     }
 
-    public function setSectionCode(string $value)
+    public function setSectionCode(?string $value)
     {
         return $this->setData(self::SECTION_CODE, $value);
     }
@@ -59,7 +78,7 @@ class LSCWIItemLocationBuffer extends AbstractModel
         return $this->getData(self::SECTION_DESCRIPTION);
     }
 
-    public function setSectionDescription(string $value)
+    public function setSectionDescription(?string $value)
     {
         return $this->setData(self::SECTION_DESCRIPTION, $value);
     }
@@ -69,7 +88,7 @@ class LSCWIItemLocationBuffer extends AbstractModel
         return $this->getData(self::SHELF_CODE);
     }
 
-    public function setShelfCode(string $value)
+    public function setShelfCode(?string $value)
     {
         return $this->setData(self::SHELF_CODE, $value);
     }
@@ -79,57 +98,57 @@ class LSCWIItemLocationBuffer extends AbstractModel
         return $this->getData(self::SHELF_DESCRIPTION);
     }
 
-    public function setShelfDescription(string $value)
+    public function setShelfDescription(?string $value)
     {
         return $this->setData(self::SHELF_DESCRIPTION, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

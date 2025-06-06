@@ -18,63 +18,77 @@ class GetStores_GetStores extends AbstractModel
     public const LSC_STORE_GROUP_SETUP = 'LSCStoreGroupSetup';
     public const LSC_STORE_PRICE_GROUP = 'LSCStorePriceGroup';
 
+    public static array $dbColumnsMapping = [
+	self::CODE => 'code',
+	self::DESCRIPTION => 'description',
+	self::LSC_SALES_TYPE => 'lsc_sales_type',
+	self::LSC_STORE => 'lsc_store',
+	self::LSC_STORE_GROUP_SETUP => 'lsc_store_group_setup',
+	self::LSC_STORE_PRICE_GROUP => 'lsc_store_price_group',
+    ];
 
-    public function getCode(): ?Code
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
+
+    public function getCode()
     {
         return $this->getData(self::CODE);
     }
 
-    public function setCode(Code $value)
+    public function setCode(?Code $value)
     {
         return $this->setData(self::CODE, $value);
     }
 
-    public function getDescription(): ?Text
+    public function getDescription()
     {
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(Text $value)
+    public function setDescription(?Text $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
 
-    public function getLSCSalesType(): ?array
+    public function getLscSalesType()
     {
         return $this->getData(self::LSC_SALES_TYPE);
     }
 
-    public function setLSCSalesType(array $value)
+    public function setLscSalesType(?array $value)
     {
         return $this->setData(self::LSC_SALES_TYPE, $value);
     }
 
-    public function getLSCStore(): ?array
+    public function getLscStore()
     {
         return $this->getData(self::LSC_STORE);
     }
 
-    public function setLSCStore(array $value)
+    public function setLscStore(?array $value)
     {
         return $this->setData(self::LSC_STORE, $value);
     }
 
-    public function getLSCStoreGroupSetup(): ?array
+    public function getLscStoreGroupSetup()
     {
         return $this->getData(self::LSC_STORE_GROUP_SETUP);
     }
 
-    public function setLSCStoreGroupSetup(array $value)
+    public function setLscStoreGroupSetup(?array $value)
     {
         return $this->setData(self::LSC_STORE_GROUP_SETUP, $value);
     }
 
-    public function getLSCStorePriceGroup(): ?array
+    public function getLscStorePriceGroup()
     {
         return $this->getData(self::LSC_STORE_PRICE_GROUP);
     }
 
-    public function setLSCStorePriceGroup(array $value)
+    public function setLscStorePriceGroup(?array $value)
     {
         return $this->setData(self::LSC_STORE_PRICE_GROUP, $value);
     }

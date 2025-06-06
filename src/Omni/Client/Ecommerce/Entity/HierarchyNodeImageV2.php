@@ -19,19 +19,19 @@ class HierarchyNodeImageV2 extends \Magento\Catalog\Model\AbstractModel
     public const IMAGE_ID = 'ImageId';
 
     /**
-     * @param string $KeyValue
+     * @param ?string $KeyValue
      * @return $this
      */
-    public function setKeyValue($KeyValue)
+    public function setKeyvalue(?string $KeyValue)
     {
         $this->setData(self::KEY_VALUE, $KeyValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getKeyValue()
+    public function getKeyvalue() : ?string
     {
         return $this->getData(self::KEY_VALUE);
     }
@@ -40,7 +40,7 @@ class HierarchyNodeImageV2 extends \Magento\Catalog\Model\AbstractModel
      * @param int $DisplayOrder
      * @return $this
      */
-    public function setDisplayOrder($DisplayOrder)
+    public function setDisplayorder($DisplayOrder)
     {
         $this->setData(self::DISPLAY_ORDER, $DisplayOrder);
         return $this;
@@ -49,25 +49,25 @@ class HierarchyNodeImageV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getDisplayOrder()
+    public function getDisplayorder()
     {
         return $this->getData(self::DISPLAY_ORDER);
     }
 
     /**
-     * @param string $ImageId
+     * @param ?string $ImageId
      * @return $this
      */
-    public function setImageId($ImageId)
+    public function setImageid(?string $ImageId)
     {
         $this->setData(self::IMAGE_ID, $ImageId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getImageId()
+    public function getImageid() : ?string
     {
         return $this->getData(self::IMAGE_ID);
     }

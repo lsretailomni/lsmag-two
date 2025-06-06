@@ -18,7 +18,7 @@ class RootGetHierarchyNodeIn extends \Magento\Catalog\Model\AbstractModel
      * @param HierarchyAttributeFilter $HierarchyAttributeFilter
      * @return $this
      */
-    public function setHierarchyAttributeFilter($HierarchyAttributeFilter)
+    public function setHierarchyattributefilter($HierarchyAttributeFilter)
     {
         $this->setData(self::HIERARCHY_ATTRIBUTE_FILTER, $HierarchyAttributeFilter);
         return $this;
@@ -27,7 +27,7 @@ class RootGetHierarchyNodeIn extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HierarchyAttributeFilter
      */
-    public function getHierarchyAttributeFilter()
+    public function getHierarchyattributefilter()
     {
         return $this->getData(self::HIERARCHY_ATTRIBUTE_FILTER);
     }

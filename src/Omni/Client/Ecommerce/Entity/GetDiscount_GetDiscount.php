@@ -14,56 +14,69 @@ class GetDiscount_GetDiscount extends AbstractModel
     public const LSC_PERIODIC_DISCOUNT = 'LSCPeriodicDiscount';
     public const LSC_PERIODIC_DISCOUNT_BENEFITS = 'LSCPeriodicDiscountBenefits';
     public const LSC_WI_DISCOUNTS = 'LSCWIDiscounts';
-    public const LSC_WI_MIX__MATCH_OFFER_EXT = 'LSCWIMix&MatchOfferExt';
+    public const LSC_WI_MIX_MATCH_OFFER_EXT = 'LSCWIMix&MatchOfferExt';
     public const LSC_WI_PRICE = 'LSCWIPrice';
 
+    public static array $dbColumnsMapping = [
+	self::LSC_PERIODIC_DISCOUNT => 'lsc_periodic_discount',
+	self::LSC_PERIODIC_DISCOUNT_BENEFITS => 'lsc_periodic_discount_benefits',
+	self::LSC_WI_DISCOUNTS => 'lsc_wi_discounts',
+	self::LSC_WI_MIX_MATCH_OFFER_EXT => 'lsc_wi_mix_match_offer_ext',
+	self::LSC_WI_PRICE => 'lsc_wi_price',
+    ];
 
-    public function getLSCPeriodicDiscount(): ?array
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
+
+    public function getLscPeriodicDiscount()
     {
         return $this->getData(self::LSC_PERIODIC_DISCOUNT);
     }
 
-    public function setLSCPeriodicDiscount(array $value)
+    public function setLscPeriodicDiscount(?array $value)
     {
         return $this->setData(self::LSC_PERIODIC_DISCOUNT, $value);
     }
 
-    public function getLSCPeriodicDiscountBenefits(): ?LSCPeriodicDiscountBenefits
+    public function getLscPeriodicDiscountBenefits()
     {
         return $this->getData(self::LSC_PERIODIC_DISCOUNT_BENEFITS);
     }
 
-    public function setLSCPeriodicDiscountBenefits(LSCPeriodicDiscountBenefits $value)
+    public function setLscPeriodicDiscountBenefits(?LSCPeriodicDiscountBenefits $value)
     {
         return $this->setData(self::LSC_PERIODIC_DISCOUNT_BENEFITS, $value);
     }
 
-    public function getLSCWIDiscounts(): ?LSCWIDiscounts
+    public function getLscWiDiscounts()
     {
         return $this->getData(self::LSC_WI_DISCOUNTS);
     }
 
-    public function setLSCWIDiscounts(LSCWIDiscounts $value)
+    public function setLscWiDiscounts(?LSCWIDiscounts $value)
     {
         return $this->setData(self::LSC_WI_DISCOUNTS, $value);
     }
 
-    public function getLSCWIMixMatchOfferExt(): ?array
+    public function getLscWiMixMatchOfferExt()
     {
-        return $this->getData(self::LSC_WI_MIX__MATCH_OFFER_EXT);
+        return $this->getData(self::LSC_WI_MIX_MATCH_OFFER_EXT);
     }
 
-    public function setLSCWIMixMatchOfferExt(array $value)
+    public function setLscWiMixMatchOfferExt(?array $value)
     {
-        return $this->setData(self::LSC_WI_MIX__MATCH_OFFER_EXT, $value);
+        return $this->setData(self::LSC_WI_MIX_MATCH_OFFER_EXT, $value);
     }
 
-    public function getLSCWIPrice(): ?LSCWIPrice
+    public function getLscWiPrice()
     {
         return $this->getData(self::LSC_WI_PRICE);
     }
 
-    public function setLSCWIPrice(LSCWIPrice $value)
+    public function setLscWiPrice(?LSCWIPrice $value)
     {
         return $this->setData(self::LSC_WI_PRICE, $value);
     }

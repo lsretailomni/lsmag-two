@@ -18,40 +18,40 @@ class GetDirectMarketingInfoResult extends \Magento\Catalog\Model\AbstractModel 
 
     public const ERROR_TEXT = 'errorText';
 
-    public const LOAD_MEMBER_DIR_MARK_INFO_X_M_L = 'loadMemberDirMarkInfoXML';
+    public const LOAD_MEMBER_DIR_MARK_INFO_XML = 'loadMemberDirMarkInfoXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetDirectMarketingInfoResult extends \Magento\Catalog\Model\AbstractModel 
      * @param RootGetDirectMarketingInfo $loadMemberDirMarkInfoXML
      * @return $this
      */
-    public function setLoadMemberDirMarkInfoXML($loadMemberDirMarkInfoXML)
+    public function setLoadmemberdirmarkinfoxml($loadMemberDirMarkInfoXML)
     {
-        $this->setData(self::LOAD_MEMBER_DIR_MARK_INFO_X_M_L, $loadMemberDirMarkInfoXML);
+        $this->setData(self::LOAD_MEMBER_DIR_MARK_INFO_XML, $loadMemberDirMarkInfoXML);
         return $this;
     }
 
     /**
      * @return RootGetDirectMarketingInfo
      */
-    public function getLoadMemberDirMarkInfoXML()
+    public function getLoadmemberdirmarkinfoxml()
     {
-        return $this->getData(self::LOAD_MEMBER_DIR_MARK_INFO_X_M_L);
+        return $this->getData(self::LOAD_MEMBER_DIR_MARK_INFO_XML);
     }
 
     /**

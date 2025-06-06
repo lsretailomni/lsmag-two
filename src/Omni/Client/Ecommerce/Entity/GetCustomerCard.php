@@ -26,112 +26,112 @@ class GetCustomerCard extends \Magento\Catalog\Model\AbstractModel implements Re
 
     public const VIEW = 'view';
 
-    public const LEFT_RIGHT_LINE_X_M_L = 'leftRightLineXML';
+    public const LEFT_RIGHT_LINE_XML = 'leftRightLineXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $terminalNo
+     * @param ?string $terminalNo
      * @return $this
      */
-    public function setTerminalNo($terminalNo)
+    public function setTerminalno(?string $terminalNo)
     {
         $this->setData(self::TERMINAL_NO, $terminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalNo()
+    public function getTerminalno() : ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $customerNo
+     * @param ?string $customerNo
      * @return $this
      */
-    public function setCustomerNo($customerNo)
+    public function setCustomerno(?string $customerNo)
     {
         $this->setData(self::CUSTOMER_NO, $customerNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCustomerNo()
+    public function getCustomerno() : ?string
     {
         return $this->getData(self::CUSTOMER_NO);
     }
 
     /**
-     * @param string $view
+     * @param ?string $view
      * @return $this
      */
-    public function setView($view)
+    public function setView(?string $view)
     {
         $this->setData(self::VIEW, $view);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getView()
+    public function getView() : ?string
     {
         return $this->getData(self::VIEW);
     }
@@ -140,18 +140,18 @@ class GetCustomerCard extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param RootLeftRightLine $leftRightLineXML
      * @return $this
      */
-    public function setLeftRightLineXML($leftRightLineXML)
+    public function setLeftrightlinexml($leftRightLineXML)
     {
-        $this->setData(self::LEFT_RIGHT_LINE_X_M_L, $leftRightLineXML);
+        $this->setData(self::LEFT_RIGHT_LINE_XML, $leftRightLineXML);
         return $this;
     }
 
     /**
      * @return RootLeftRightLine
      */
-    public function getLeftRightLineXML()
+    public function getLeftrightlinexml()
     {
-        return $this->getData(self::LEFT_RIGHT_LINE_X_M_L);
+        return $this->getData(self::LEFT_RIGHT_LINE_XML);
     }
 }
 

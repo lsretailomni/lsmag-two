@@ -12,24 +12,24 @@ class RootGetItemInventory extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetItemInventory';
 
-    public const W_S_INVENTORY_BUFFER = 'WSInventoryBuffer';
+    public const WSINVENTORY_BUFFER = 'WSInventoryBuffer';
 
     /**
      * @param WSInventoryBuffer $WSInventoryBuffer
      * @return $this
      */
-    public function setWSInventoryBuffer($WSInventoryBuffer)
+    public function setWsinventorybuffer($WSInventoryBuffer)
     {
-        $this->setData(self::W_S_INVENTORY_BUFFER, $WSInventoryBuffer);
+        $this->setData(self::WSINVENTORY_BUFFER, $WSInventoryBuffer);
         return $this;
     }
 
     /**
      * @return WSInventoryBuffer
      */
-    public function getWSInventoryBuffer()
+    public function getWsinventorybuffer()
     {
-        return $this->getData(self::W_S_INVENTORY_BUFFER);
+        return $this->getData(self::WSINVENTORY_BUFFER);
     }
 }
 

@@ -18,78 +18,78 @@ class MobilePosGetDeviceIDResult extends \Magento\Catalog\Model\AbstractModel im
 
     public const ERROR_TEXT = 'errorText';
 
-    public const DEVICE_UNIQUE_I_D = 'deviceUniqueID';
+    public const DEVICE_UNIQUE_ID = 'deviceUniqueID';
 
     public const DEVICE_LICENSE_KEY = 'deviceLicenseKey';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $deviceUniqueID
+     * @param ?string $deviceUniqueID
      * @return $this
      */
-    public function setDeviceUniqueID($deviceUniqueID)
+    public function setDeviceuniqueid(?string $deviceUniqueID)
     {
-        $this->setData(self::DEVICE_UNIQUE_I_D, $deviceUniqueID);
+        $this->setData(self::DEVICE_UNIQUE_ID, $deviceUniqueID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDeviceUniqueID()
+    public function getDeviceuniqueid() : ?string
     {
-        return $this->getData(self::DEVICE_UNIQUE_I_D);
+        return $this->getData(self::DEVICE_UNIQUE_ID);
     }
 
     /**
-     * @param string $deviceLicenseKey
+     * @param ?string $deviceLicenseKey
      * @return $this
      */
-    public function setDeviceLicenseKey($deviceLicenseKey)
+    public function setDevicelicensekey(?string $deviceLicenseKey)
     {
         $this->setData(self::DEVICE_LICENSE_KEY, $deviceLicenseKey);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDeviceLicenseKey()
+    public function getDevicelicensekey() : ?string
     {
         return $this->getData(self::DEVICE_LICENSE_KEY);
     }

@@ -48,9 +48,9 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const WEIGHT_ITEM = 'WeightItem';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
-    public const STAFF_I_D = 'StaffID';
+    public const STAFF_ID = 'StaffID';
 
     public const VARIANT_CODE = 'VariantCode';
 
@@ -64,9 +64,9 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const UNITOF_MEASURE = 'UnitofMeasure';
 
-    public const U_O_M_QUANTITY = 'UOMQuantity';
+    public const UOMQUANTITY = 'UOMQuantity';
 
-    public const U_O_M_PRICE = 'UOMPrice';
+    public const UOMPRICE = 'UOMPrice';
 
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
@@ -76,7 +76,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -85,7 +85,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -94,7 +94,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -103,484 +103,484 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param string $BarcodeNo
+     * @param ?string $BarcodeNo
      * @return $this
      */
-    public function setBarcodeNo($BarcodeNo)
+    public function setBarcodeno(?string $BarcodeNo)
     {
         $this->setData(self::BARCODE_NO, $BarcodeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcodeNo()
+    public function getBarcodeno() : ?string
     {
         return $this->getData(self::BARCODE_NO);
     }
 
     /**
-     * @param string $Epc
+     * @param ?string $Epc
      * @return $this
      */
-    public function setEpc($Epc)
+    public function setEpc(?string $Epc)
     {
         $this->setData(self::EPC, $Epc);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEpc()
+    public function getEpc() : ?string
     {
         return $this->getData(self::EPC);
     }
 
     /**
-     * @param string $ItemNo
+     * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo($ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param string $TransactionStatus
+     * @param ?string $TransactionStatus
      * @return $this
      */
-    public function setTransactionStatus($TransactionStatus)
+    public function setTransactionstatus(?string $TransactionStatus)
     {
         $this->setData(self::TRANSACTION_STATUS, $TransactionStatus);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionStatus()
+    public function getTransactionstatus() : ?string
     {
         return $this->getData(self::TRANSACTION_STATUS);
     }
 
     /**
-     * @param date $Date
+     * @param ?string $Date
      * @return $this
      */
-    public function setDate($Date)
+    public function setDate(?string $Date)
     {
         $this->setData(self::DATE, $Date);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getDate()
+    public function getDate() : ?string
     {
         return $this->getData(self::DATE);
     }
 
     /**
-     * @param time $Time
+     * @param ?string $Time
      * @return $this
      */
-    public function setTime($Time)
+    public function setTime(?string $Time)
     {
         $this->setData(self::TIME, $Time);
         return $this;
     }
 
     /**
-     * @return time
+     * @return ?string
      */
-    public function getTime()
+    public function getTime() : ?string
     {
         return $this->getData(self::TIME);
     }
 
     /**
-     * @param string $StatementNo
+     * @param ?string $StatementNo
      * @return $this
      */
-    public function setStatementNo($StatementNo)
+    public function setStatementno(?string $StatementNo)
     {
         $this->setData(self::STATEMENT_NO, $StatementNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStatementNo()
+    public function getStatementno() : ?string
     {
         return $this->getData(self::STATEMENT_NO);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param boolean $ItemNumberScanned
+     * @param ?bool $ItemNumberScanned
      * @return $this
      */
-    public function setItemNumberScanned($ItemNumberScanned)
+    public function setItemnumberscanned(?bool $ItemNumberScanned)
     {
         $this->setData(self::ITEM_NUMBER_SCANNED, $ItemNumberScanned);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getItemNumberScanned()
+    public function getItemnumberscanned() : ?bool
     {
         return $this->getData(self::ITEM_NUMBER_SCANNED);
     }
 
     /**
-     * @param boolean $KeyboardItemEntry
+     * @param ?bool $KeyboardItemEntry
      * @return $this
      */
-    public function setKeyboardItemEntry($KeyboardItemEntry)
+    public function setKeyboarditementry(?bool $KeyboardItemEntry)
     {
         $this->setData(self::KEYBOARD_ITEM_ENTRY, $KeyboardItemEntry);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getKeyboardItemEntry()
+    public function getKeyboarditementry() : ?bool
     {
         return $this->getData(self::KEYBOARD_ITEM_ENTRY);
     }
 
     /**
-     * @param boolean $PriceinBarcode
+     * @param ?bool $PriceinBarcode
      * @return $this
      */
-    public function setPriceinBarcode($PriceinBarcode)
+    public function setPriceinbarcode(?bool $PriceinBarcode)
     {
         $this->setData(self::PRICEIN_BARCODE, $PriceinBarcode);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getPriceinBarcode()
+    public function getPriceinbarcode() : ?bool
     {
         return $this->getData(self::PRICEIN_BARCODE);
     }
 
     /**
-     * @param boolean $WeightManuallyEntered
+     * @param ?bool $WeightManuallyEntered
      * @return $this
      */
-    public function setWeightManuallyEntered($WeightManuallyEntered)
+    public function setWeightmanuallyentered(?bool $WeightManuallyEntered)
     {
         $this->setData(self::WEIGHT_MANUALLY_ENTERED, $WeightManuallyEntered);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getWeightManuallyEntered()
+    public function getWeightmanuallyentered() : ?bool
     {
         return $this->getData(self::WEIGHT_MANUALLY_ENTERED);
     }
 
     /**
-     * @param boolean $ScaleItem
+     * @param ?bool $ScaleItem
      * @return $this
      */
-    public function setScaleItem($ScaleItem)
+    public function setScaleitem(?bool $ScaleItem)
     {
         $this->setData(self::SCALE_ITEM, $ScaleItem);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getScaleItem()
+    public function getScaleitem() : ?bool
     {
         return $this->getData(self::SCALE_ITEM);
     }
 
     /**
-     * @param boolean $WeightItem
+     * @param ?bool $WeightItem
      * @return $this
      */
-    public function setWeightItem($WeightItem)
+    public function setWeightitem(?bool $WeightItem)
     {
         $this->setData(self::WEIGHT_ITEM, $WeightItem);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getWeightItem()
+    public function getWeightitem() : ?bool
     {
         return $this->getData(self::WEIGHT_ITEM);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
-     * @param string $StaffID
+     * @param ?string $StaffID
      * @return $this
      */
-    public function setStaffID($StaffID)
+    public function setStaffid(?string $StaffID)
     {
-        $this->setData(self::STAFF_I_D, $StaffID);
+        $this->setData(self::STAFF_ID, $StaffID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffID()
+    public function getStaffid() : ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $SerialNo
+     * @param ?string $SerialNo
      * @return $this
      */
-    public function setSerialNo($SerialNo)
+    public function setSerialno(?string $SerialNo)
     {
         $this->setData(self::SERIAL_NO, $SerialNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSerialNo()
+    public function getSerialno() : ?string
     {
         return $this->getData(self::SERIAL_NO);
     }
 
     /**
-     * @param string $LotNo
+     * @param ?string $LotNo
      * @return $this
      */
-    public function setLotNo($LotNo)
+    public function setLotno(?string $LotNo)
     {
         $this->setData(self::LOT_NO, $LotNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLotNo()
+    public function getLotno() : ?string
     {
         return $this->getData(self::LOT_NO);
     }
 
     /**
-     * @param date $ExpirationDate
+     * @param ?string $ExpirationDate
      * @return $this
      */
-    public function setExpirationDate($ExpirationDate)
+    public function setExpirationdate(?string $ExpirationDate)
     {
         $this->setData(self::EXPIRATION_DATE, $ExpirationDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getExpirationDate()
+    public function getExpirationdate() : ?string
     {
         return $this->getData(self::EXPIRATION_DATE);
     }
 
     /**
-     * @param boolean $Replicated
+     * @param ?bool $Replicated
      * @return $this
      */
-    public function setReplicated($Replicated)
+    public function setReplicated(?bool $Replicated)
     {
         $this->setData(self::REPLICATED, $Replicated);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getReplicated()
+    public function getReplicated() : ?bool
     {
         return $this->getData(self::REPLICATED);
     }
 
     /**
-     * @param string $UnitofMeasure
+     * @param ?string $UnitofMeasure
      * @return $this
      */
-    public function setUnitofMeasure($UnitofMeasure)
+    public function setUnitofmeasure(?string $UnitofMeasure)
     {
         $this->setData(self::UNITOF_MEASURE, $UnitofMeasure);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnitofMeasure()
+    public function getUnitofmeasure() : ?string
     {
         return $this->getData(self::UNITOF_MEASURE);
     }
 
     /**
-     * @param float $UOMQuantity
+     * @param ?float $UOMQuantity
      * @return $this
      */
-    public function setUOMQuantity($UOMQuantity)
+    public function setUomquantity(?float $UOMQuantity)
     {
-        $this->setData(self::U_O_M_QUANTITY, $UOMQuantity);
+        $this->setData(self::UOMQUANTITY, $UOMQuantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getUOMQuantity()
+    public function getUomquantity() : ?float
     {
-        return $this->getData(self::U_O_M_QUANTITY);
+        return $this->getData(self::UOMQUANTITY);
     }
 
     /**
-     * @param float $UOMPrice
+     * @param ?float $UOMPrice
      * @return $this
      */
-    public function setUOMPrice($UOMPrice)
+    public function setUomprice(?float $UOMPrice)
     {
-        $this->setData(self::U_O_M_PRICE, $UOMPrice);
+        $this->setData(self::UOMPRICE, $UOMPrice);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getUOMPrice()
+    public function getUomprice() : ?float
     {
-        return $this->getData(self::U_O_M_PRICE);
+        return $this->getData(self::UOMPRICE);
     }
 
     /**
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -589,25 +589,25 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }
 
     /**
-     * @param string $SalesType
+     * @param ?string $SalesType
      * @return $this
      */
-    public function setSalesType($SalesType)
+    public function setSalestype(?string $SalesType)
     {
         $this->setData(self::SALES_TYPE, $SalesType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSalesType()
+    public function getSalestype() : ?string
     {
         return $this->getData(self::SALES_TYPE);
     }

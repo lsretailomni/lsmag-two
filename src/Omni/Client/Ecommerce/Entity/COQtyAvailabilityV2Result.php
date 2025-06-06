@@ -20,58 +20,58 @@ class COQtyAvailabilityV2Result extends \Magento\Catalog\Model\AbstractModel imp
 
     public const PREFERRED_SOURCING_LOCATION = 'preferredSourcingLocation';
 
-    public const C_O_QTY_AVAILABILITY_OUT_X_M_L = 'cOQtyAvailabilityOutXML';
+    public const COQTY_AVAILABILITY_OUT_XML = 'cOQtyAvailabilityOutXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $preferredSourcingLocation
+     * @param ?string $preferredSourcingLocation
      * @return $this
      */
-    public function setPreferredSourcingLocation($preferredSourcingLocation)
+    public function setPreferredsourcinglocation(?string $preferredSourcingLocation)
     {
         $this->setData(self::PREFERRED_SOURCING_LOCATION, $preferredSourcingLocation);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPreferredSourcingLocation()
+    public function getPreferredsourcinglocation() : ?string
     {
         return $this->getData(self::PREFERRED_SOURCING_LOCATION);
     }
@@ -80,18 +80,18 @@ class COQtyAvailabilityV2Result extends \Magento\Catalog\Model\AbstractModel imp
      * @param RootCOQtyAvailabilityExtOut $cOQtyAvailabilityOutXML
      * @return $this
      */
-    public function setCOQtyAvailabilityOutXML($cOQtyAvailabilityOutXML)
+    public function setCoqtyavailabilityoutxml($cOQtyAvailabilityOutXML)
     {
-        $this->setData(self::C_O_QTY_AVAILABILITY_OUT_X_M_L, $cOQtyAvailabilityOutXML);
+        $this->setData(self::COQTY_AVAILABILITY_OUT_XML, $cOQtyAvailabilityOutXML);
         return $this;
     }
 
     /**
      * @return RootCOQtyAvailabilityExtOut
      */
-    public function getCOQtyAvailabilityOutXML()
+    public function getCoqtyavailabilityoutxml()
     {
-        return $this->getData(self::C_O_QTY_AVAILABILITY_OUT_X_M_L);
+        return $this->getData(self::COQTY_AVAILABILITY_OUT_XML);
     }
 
     /**

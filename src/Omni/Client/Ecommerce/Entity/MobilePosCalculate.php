@@ -20,58 +20,58 @@ class MobilePosCalculate extends \Magento\Catalog\Model\AbstractModel implements
 
     public const STAFF_ID = 'staffId';
 
-    public const MOBILE_TRANSACTION_X_M_L = 'mobileTransactionXML';
+    public const MOBILE_TRANSACTION_XML = 'mobileTransactionXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $staffId
+     * @param ?string $staffId
      * @return $this
      */
-    public function setStaffId($staffId)
+    public function setStaffid(?string $staffId)
     {
         $this->setData(self::STAFF_ID, $staffId);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStaffId()
+    public function getStaffid() : ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -80,18 +80,18 @@ class MobilePosCalculate extends \Magento\Catalog\Model\AbstractModel implements
      * @param RootMobileTransaction $mobileTransactionXML
      * @return $this
      */
-    public function setMobileTransactionXML($mobileTransactionXML)
+    public function setMobiletransactionxml($mobileTransactionXML)
     {
-        $this->setData(self::MOBILE_TRANSACTION_X_M_L, $mobileTransactionXML);
+        $this->setData(self::MOBILE_TRANSACTION_XML, $mobileTransactionXML);
         return $this;
     }
 
     /**
      * @return RootMobileTransaction
      */
-    public function getMobileTransactionXML()
+    public function getMobiletransactionxml()
     {
-        return $this->getData(self::MOBILE_TRANSACTION_X_M_L);
+        return $this->getData(self::MOBILE_TRANSACTION_XML);
     }
 }
 

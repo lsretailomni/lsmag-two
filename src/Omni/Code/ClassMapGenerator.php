@@ -84,7 +84,7 @@ class ClassMapGenerator extends AbstractOmniGenerator
             $fqn = self::fqn(
                 $this->baseNamespace,
                 'Entity',
-                preg_replace('/[-._]/', '', $sanitizedName)
+                $sanitizedName
             );
 
             $fqn = str_replace('\\', '\\\\', $fqn);

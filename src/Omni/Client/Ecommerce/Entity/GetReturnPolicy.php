@@ -32,166 +32,166 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
 
     public const VARIANT_DIMENSION1_CODE = 'variantDimension1Code';
 
-    public const GET_RETURN_POLICY_X_M_L = 'getReturnPolicyXML';
+    public const GET_RETURN_POLICY_XML = 'getReturnPolicyXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $storeGroupCode
+     * @param ?string $storeGroupCode
      * @return $this
      */
-    public function setStoreGroupCode($storeGroupCode)
+    public function setStoregroupcode(?string $storeGroupCode)
     {
         $this->setData(self::STORE_GROUP_CODE, $storeGroupCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreGroupCode()
+    public function getStoregroupcode() : ?string
     {
         return $this->getData(self::STORE_GROUP_CODE);
     }
 
     /**
-     * @param string $itemCategoryCode
+     * @param ?string $itemCategoryCode
      * @return $this
      */
-    public function setItemCategoryCode($itemCategoryCode)
+    public function setItemcategorycode(?string $itemCategoryCode)
     {
         $this->setData(self::ITEM_CATEGORY_CODE, $itemCategoryCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemCategoryCode()
+    public function getItemcategorycode() : ?string
     {
         return $this->getData(self::ITEM_CATEGORY_CODE);
     }
 
     /**
-     * @param string $retailProductCode
+     * @param ?string $retailProductCode
      * @return $this
      */
-    public function setRetailProductCode($retailProductCode)
+    public function setRetailproductcode(?string $retailProductCode)
     {
         $this->setData(self::RETAIL_PRODUCT_CODE, $retailProductCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getRetailProductCode()
+    public function getRetailproductcode() : ?string
     {
         return $this->getData(self::RETAIL_PRODUCT_CODE);
     }
 
     /**
-     * @param string $itemNo
+     * @param ?string $itemNo
      * @return $this
      */
-    public function setItemNo($itemNo)
+    public function setItemno(?string $itemNo)
     {
         $this->setData(self::ITEM_NO, $itemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $variantCode
+     * @param ?string $variantCode
      * @return $this
      */
-    public function setVariantCode($variantCode)
+    public function setVariantcode(?string $variantCode)
     {
         $this->setData(self::VARIANT_CODE, $variantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param string $variantDimension1Code
+     * @param ?string $variantDimension1Code
      * @return $this
      */
-    public function setVariantDimension1Code($variantDimension1Code)
+    public function setVariantdimension1code(?string $variantDimension1Code)
     {
         $this->setData(self::VARIANT_DIMENSION1_CODE, $variantDimension1Code);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantDimension1Code()
+    public function getVariantdimension1code() : ?string
     {
         return $this->getData(self::VARIANT_DIMENSION1_CODE);
     }
@@ -200,18 +200,18 @@ class GetReturnPolicy extends \Magento\Catalog\Model\AbstractModel implements Re
      * @param RootGetReturnPolicy $getReturnPolicyXML
      * @return $this
      */
-    public function setGetReturnPolicyXML($getReturnPolicyXML)
+    public function setGetreturnpolicyxml($getReturnPolicyXML)
     {
-        $this->setData(self::GET_RETURN_POLICY_X_M_L, $getReturnPolicyXML);
+        $this->setData(self::GET_RETURN_POLICY_XML, $getReturnPolicyXML);
         return $this;
     }
 
     /**
      * @return RootGetReturnPolicy
      */
-    public function getGetReturnPolicyXML()
+    public function getGetreturnpolicyxml()
     {
-        return $this->getData(self::GET_RETURN_POLICY_X_M_L);
+        return $this->getData(self::GET_RETURN_POLICY_XML);
     }
 }
 

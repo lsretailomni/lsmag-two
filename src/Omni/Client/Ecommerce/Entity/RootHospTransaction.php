@@ -24,13 +24,13 @@ class RootHospTransaction extends \Magento\Catalog\Model\AbstractModel
 
     public const WEB_DELIVERY_ORDER = 'WebDeliveryOrder';
 
-    public const F_A_B_ORDER = 'FABOrder';
+    public const FABORDER = 'FABOrder';
 
     /**
      * @param HospTransaction $HospTransaction
      * @return $this
      */
-    public function setHospTransaction($HospTransaction)
+    public function setHosptransaction($HospTransaction)
     {
         $this->setData(self::HOSP_TRANSACTION, $HospTransaction);
         return $this;
@@ -39,7 +39,7 @@ class RootHospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HospTransaction
      */
-    public function getHospTransaction()
+    public function getHosptransaction()
     {
         return $this->getData(self::HOSP_TRANSACTION);
     }
@@ -48,7 +48,7 @@ class RootHospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param HospTransactionLine $HospTransactionLine
      * @return $this
      */
-    public function setHospTransactionLine($HospTransactionLine)
+    public function setHosptransactionline($HospTransactionLine)
     {
         $this->setData(self::HOSP_TRANSACTION_LINE, $HospTransactionLine);
         return $this;
@@ -57,7 +57,7 @@ class RootHospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HospTransactionLine
      */
-    public function getHospTransactionLine()
+    public function getHosptransactionline()
     {
         return $this->getData(self::HOSP_TRANSACTION_LINE);
     }
@@ -66,7 +66,7 @@ class RootHospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param HospTransDiscountLine $HospTransDiscountLine
      * @return $this
      */
-    public function setHospTransDiscountLine($HospTransDiscountLine)
+    public function setHosptransdiscountline($HospTransDiscountLine)
     {
         $this->setData(self::HOSP_TRANS_DISCOUNT_LINE, $HospTransDiscountLine);
         return $this;
@@ -75,7 +75,7 @@ class RootHospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HospTransDiscountLine
      */
-    public function getHospTransDiscountLine()
+    public function getHosptransdiscountline()
     {
         return $this->getData(self::HOSP_TRANS_DISCOUNT_LINE);
     }
@@ -84,7 +84,7 @@ class RootHospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param HospReceiptInfo $HospReceiptInfo
      * @return $this
      */
-    public function setHospReceiptInfo($HospReceiptInfo)
+    public function setHospreceiptinfo($HospReceiptInfo)
     {
         $this->setData(self::HOSP_RECEIPT_INFO, $HospReceiptInfo);
         return $this;
@@ -93,7 +93,7 @@ class RootHospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HospReceiptInfo
      */
-    public function getHospReceiptInfo()
+    public function getHospreceiptinfo()
     {
         return $this->getData(self::HOSP_RECEIPT_INFO);
     }
@@ -102,7 +102,7 @@ class RootHospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param HospTransactionSubLine $HospTransactionSubLine
      * @return $this
      */
-    public function setHospTransactionSubLine($HospTransactionSubLine)
+    public function setHosptransactionsubline($HospTransactionSubLine)
     {
         $this->setData(self::HOSP_TRANSACTION_SUB_LINE, $HospTransactionSubLine);
         return $this;
@@ -111,7 +111,7 @@ class RootHospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return HospTransactionSubLine
      */
-    public function getHospTransactionSubLine()
+    public function getHosptransactionsubline()
     {
         return $this->getData(self::HOSP_TRANSACTION_SUB_LINE);
     }
@@ -120,7 +120,7 @@ class RootHospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param WebDeliveryOrder $WebDeliveryOrder
      * @return $this
      */
-    public function setWebDeliveryOrder($WebDeliveryOrder)
+    public function setWebdeliveryorder($WebDeliveryOrder)
     {
         $this->setData(self::WEB_DELIVERY_ORDER, $WebDeliveryOrder);
         return $this;
@@ -129,7 +129,7 @@ class RootHospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return WebDeliveryOrder
      */
-    public function getWebDeliveryOrder()
+    public function getWebdeliveryorder()
     {
         return $this->getData(self::WEB_DELIVERY_ORDER);
     }
@@ -138,18 +138,18 @@ class RootHospTransaction extends \Magento\Catalog\Model\AbstractModel
      * @param FABOrder $FABOrder
      * @return $this
      */
-    public function setFABOrder($FABOrder)
+    public function setFaborder($FABOrder)
     {
-        $this->setData(self::F_A_B_ORDER, $FABOrder);
+        $this->setData(self::FABORDER, $FABOrder);
         return $this;
     }
 
     /**
      * @return FABOrder
      */
-    public function getFABOrder()
+    public function getFaborder()
     {
-        return $this->getData(self::F_A_B_ORDER);
+        return $this->getData(self::FABORDER);
     }
 }
 

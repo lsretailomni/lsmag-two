@@ -23,73 +23,73 @@ class BlockMemberAccount extends \Magento\Catalog\Model\AbstractModel implements
     public const MEMBERSHIP_CARD_NO = 'membershipCardNo';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $memberAccountNo
+     * @param ?string $memberAccountNo
      * @return $this
      */
-    public function setMemberAccountNo($memberAccountNo)
+    public function setMemberaccountno(?string $memberAccountNo)
     {
         $this->setData(self::MEMBER_ACCOUNT_NO, $memberAccountNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberAccountNo()
+    public function getMemberaccountno() : ?string
     {
         return $this->getData(self::MEMBER_ACCOUNT_NO);
     }
 
     /**
-     * @param string $membershipCardNo
+     * @param ?string $membershipCardNo
      * @return $this
      */
-    public function setMembershipCardNo($membershipCardNo)
+    public function setMembershipcardno(?string $membershipCardNo)
     {
         $this->setData(self::MEMBERSHIP_CARD_NO, $membershipCardNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMembershipCardNo()
+    public function getMembershipcardno() : ?string
     {
         return $this->getData(self::MEMBERSHIP_CARD_NO);
     }

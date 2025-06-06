@@ -448,6 +448,26 @@ class BaseODataRequest
         \$this->lastKey = (string)(\$data['lastKey'] ?? '');
         \$this->lastEntryNo = (int)(\$data['lastEntryNo'] ?? 0);
     }
+
+    public function getBatchSize(): int
+    {
+        return \$this->batchSize;
+    }
+
+    public function getFullRepl(): bool
+    {
+        return \$this->fullRepl;
+    }
+
+    public function getLastKey(): string
+    {
+        return \$this->lastKey;
+    }
+
+    public function getLastEntryNo(): int
+    {
+        return \$this->lastEntryNo;
+    }
 }
 PHP;
         $odataRequestBaseClassFileName = AbstractGenerator::path($entityDir, "BaseODataRequest.php");
@@ -489,6 +509,31 @@ class BaseODataResponse
         \$this->lastKey = (string)(\$data['lastKey'] ?? '');
         \$this->lastEntryNo = (int)(\$data['lastEntryNo'] ?? 0);
         \$this->endOfTable = (bool)(\$data['endOfTable'] ?? false);
+    }
+
+    public function getStatus(): string
+    {
+        return \$this->status;
+    }
+
+    public function getErrorText(): string
+    {
+        return \$this->errorText;
+    }
+
+    public function getLastKey(): string
+    {
+        return \$this->lastKey;
+    }
+
+    public function getLastEntryNo(): int
+    {
+        return \$this->lastEntryNo;
+    }
+
+    public function getEndOfTable(): bool
+    {
+        return \$this->endOfTable;
     }
 }
 PHP;
@@ -582,8 +627,13 @@ use Magento\Catalog\Model\AbstractModel;
 class $entityClassName extends AbstractModel
 {
 PHP;
+        $mapping = '';
         foreach ($recordFields as $field) {
-            $optimizedFieldName = $this->formatGivenValue(ucwords(strtolower($field['FieldName'])));
+            $fieldName = $field['FieldName'];
+            if (strtolower($fieldName) == 'id') {
+                $fieldName = 'Nav Id';
+            }
+            $optimizedFieldName = $this->formatGivenValue(ucwords(strtolower($fieldName)));
             $constName = str_replace(
                 ' ',
                 '_',
@@ -593,50 +643,72 @@ PHP;
                 $constIndexName = str_replace(
                     ' ',
                     '',
-                    $field['FieldName']
+                    $fieldName
                 );
             } else {
-                $constIndexName = $field['FieldName'];
+                $constIndexName = $fieldName;
             }
+            $columnName = strtolower($constName);
+            $mapping .= "\n\tself::{$constName} => '{$columnName}',";
 
             $entityClassCode .= <<<PHP
 
     public const {$constName} = '{$constIndexName}';
 PHP;
         }
+        $entityClassCode .= "\n";
+        $entityClassCode .= <<<PHP
+
+    public static array \$dbColumnsMapping = [{$mapping}
+    ];
+PHP;
 
         $entityClassCode .= "\n";
 
+        $entityClassCode .= <<<PHP
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::\$dbColumnsMapping;
+    }
+PHP;
+        $entityClassCode .= "\n";
+
         foreach ($recordFields as $field) {
-            if (strtolower($field['FieldName']) == 'id') {
-                continue;
+            $fieldName = $field['FieldName'];
+            $dataTypeRequired = true;
+            if (strtolower($fieldName) == 'id') {
+                $dataTypeRequired = false;
+                $fieldName = 'Nav Id';
             }
-            $fieldNameForMethodName = $this->formatGivenValue($field['FieldName'], ' ');
-            $fieldNameCapitalized = ucwords($fieldNameForMethodName);
+            $fieldNameForMethodName = $this->formatGivenValue($fieldName, ' ');
+            $fieldNameCapitalized = ucwords(strtolower($fieldNameForMethodName));
             $fieldNameCapitalized = str_replace(' ', '', $fieldNameCapitalized);
-            $fieldName = $this->formatGivenValue(ucwords(strtolower($field['FieldName'])));
+            $fieldName = $this->formatGivenValue(ucwords(strtolower($fieldName)));
             $constName = str_replace(' ', '_', strtoupper(preg_replace('/\B([A-Z])/', '_$1', $fieldName)));
 
             if ($recursive) {
                 $phpType = $field['FieldDataType'];
             } else {
                 $phpType = match (strtolower($field['FieldDataType'])) {
-                    'integer' => 'int',
-                    'datetime' => '\DateTime',
-                    'boolean' => 'bool',
+                    'integer', 'long', 'char', 'option' => 'int',
+                    'decimal'    => 'float',
+                    'boolean'    => 'bool',
                     default => 'string'
                 };
             }
 
+            $returnType = !$recursive && $dataTypeRequired ? ': ?'. $phpType : '';
+            $phpType = $dataTypeRequired ? '?'.$phpType : '';
             $entityClassCode .= <<<PHP
 
 
-    public function get$fieldNameCapitalized(): ?$phpType
+    public function get$fieldNameCapitalized()$returnType
     {
         return \$this->getData(self::{$constName});
     }
 
-    public function set$fieldNameCapitalized($phpType \$value)
+    public function set$fieldNameCapitalized({$phpType} \$value)
     {
         return \$this->setData(self::{$constName}, \$value);
     }
@@ -781,12 +853,22 @@ class $entityClassName
             \$recRef = [];
         }
 
+        \$deletedRows = [];
+        if (isset(\$data['DataSet']['DataSetDel']['DynDataSet']['DataSetRows'])) {
+            \$deletedRows = \$data['DataSet']['DataSetDel']['DynDataSet']['DataSetRows'];
+        }
+
         if (isset(\$recRef['RecordFields'])) {
             \$fieldsDefinition = \$recRef['RecordFields'];
         } elseif (isset(\$recRef['DataSetFields'])) {
             \$fieldsDefinition = \$recRef['DataSetFields'];
         } else {
             \$fieldsDefinition = [];
+        }
+
+        \$deletedFieldsDefinition = [];
+        if (isset(\$data['DataSet']['DataSetDel']['DynDataSet']['DataSetFields'])) {
+            \$deletedFieldsDefinition = \$data['DataSet']['DataSetDel']['DynDataSet']['DataSetFields'];
         }
 
         if (isset(\$recRef['Records'])) {
@@ -801,6 +883,11 @@ class $entityClassName
         foreach (\$fieldsDefinition as \$field) {
             \$fields[\$field['FieldIndex']] = \$field['FieldName'];
         }
+
+        foreach (\$deletedFieldsDefinition as \$field) {
+            \$deletedFields[\$field['FieldIndex']] = \$field['FieldName'];
+        }
+
         \$results = [];
         if (!empty(\$fields)) {
             foreach (\$rows as \$row) {
@@ -809,7 +896,33 @@ class $entityClassName
                     {$entityName}::class
                 );
                 foreach (\$values as \$value) {
-                    \$entry->setData(\$fields[\$value['FieldIndex']], \$value['FieldValue']);
+                    \$fieldName = \$fields[\$value['FieldIndex']];
+                    if (strtolower(\$fieldName) == 'id') {
+                        \$fieldName = 'Nav Id';
+                    }
+                    if (\$entry->getData(\$fieldName) === null) {
+                        \$entry->setData(\$fieldName, \$value['FieldValue']);
+                    }
+                }
+                \$results[] = \$entry;
+            }
+        }
+
+        if (!empty(\$deletedFields)) {
+            foreach (\$deletedRows as \$row) {
+                \$values = \$row['Fields'] ?? [];
+                \$entry = \$this->createInstance(
+                    {$entityName}::class
+                );
+                \$entry->setData('is_deleted', true);
+                foreach (\$values as \$value) {
+                    \$fieldName = \$deletedFields[\$value['FieldIndex']];
+                    if (strtolower(\$fieldName) == 'id') {
+                        \$fieldName = 'Nav Id';
+                    }
+                    if (\$entry->getData(\$fieldName) === null) {
+                        \$entry->setData(\$fieldName, \$value['FieldValue']);
+                    }
                 }
                 \$results[] = \$entry;
             }
@@ -1354,7 +1467,12 @@ PHP;
      */
     public function formatGivenValue(string $value, string $replaceWith = ''): string
     {
-        return trim(preg_replace('/[\/\[\]()$\-._%&]/', $replaceWith, $value));
+        // Step 1: Remove special characters
+        $cleaned = preg_replace('/[\/\[\]()$\-._%&]/', $replaceWith, $value);
+        // Step 2: Replace multiple spaces with a single space
+        $cleaned = preg_replace('/ {2,}/', ' ', $cleaned);
+
+        return trim($cleaned);
     }
 
     /**

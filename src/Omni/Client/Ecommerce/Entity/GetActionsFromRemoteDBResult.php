@@ -14,7 +14,7 @@ class GetActionsFromRemoteDBResult extends \Magento\Catalog\Model\AbstractModel 
 {
     public const CLASS_NAME = 'GetActionsFromRemoteDB_Result';
 
-    public const GET_ACTIONS_FROM_REMOTE_D_B_X_M_L = 'getActionsFromRemoteDBXML';
+    public const GET_ACTIONS_FROM_REMOTE_DBXML = 'getActionsFromRemoteDBXML';
 
     public const RESPONSE_CODE = 'responseCode';
 
@@ -24,52 +24,52 @@ class GetActionsFromRemoteDBResult extends \Magento\Catalog\Model\AbstractModel 
      * @param RootGetActionsFromRemoteDBXML $getActionsFromRemoteDBXML
      * @return $this
      */
-    public function setGetActionsFromRemoteDBXML($getActionsFromRemoteDBXML)
+    public function setGetactionsfromremotedbxml($getActionsFromRemoteDBXML)
     {
-        $this->setData(self::GET_ACTIONS_FROM_REMOTE_D_B_X_M_L, $getActionsFromRemoteDBXML);
+        $this->setData(self::GET_ACTIONS_FROM_REMOTE_DBXML, $getActionsFromRemoteDBXML);
         return $this;
     }
 
     /**
      * @return RootGetActionsFromRemoteDBXML
      */
-    public function getGetActionsFromRemoteDBXML()
+    public function getGetactionsfromremotedbxml()
     {
-        return $this->getData(self::GET_ACTIONS_FROM_REMOTE_D_B_X_M_L);
+        return $this->getData(self::GET_ACTIONS_FROM_REMOTE_DBXML);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

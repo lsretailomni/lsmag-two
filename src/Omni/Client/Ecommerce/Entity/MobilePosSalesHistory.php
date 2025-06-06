@@ -38,220 +38,220 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const ITEM_CAT_FILTER = 'itemCatFilter';
 
-    public const MOBILE_POS_SALES_HISTORY_X_M_L = 'mobilePosSalesHistoryXML';
+    public const MOBILE_POS_SALES_HISTORY_XML = 'mobilePosSalesHistoryXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $searchType
+     * @param ?string $searchType
      * @return $this
      */
-    public function setSearchType($searchType)
+    public function setSearchtype(?string $searchType)
     {
         $this->setData(self::SEARCH_TYPE, $searchType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSearchType()
+    public function getSearchtype() : ?string
     {
         return $this->getData(self::SEARCH_TYPE);
     }
 
     /**
-     * @param string $searchKey
+     * @param ?string $searchKey
      * @return $this
      */
-    public function setSearchKey($searchKey)
+    public function setSearchkey(?string $searchKey)
     {
         $this->setData(self::SEARCH_KEY, $searchKey);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSearchKey()
+    public function getSearchkey() : ?string
     {
         return $this->getData(self::SEARCH_KEY);
     }
 
     /**
-     * @param string $storeFilter
+     * @param ?string $storeFilter
      * @return $this
      */
-    public function setStoreFilter($storeFilter)
+    public function setStorefilter(?string $storeFilter)
     {
         $this->setData(self::STORE_FILTER, $storeFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreFilter()
+    public function getStorefilter() : ?string
     {
         return $this->getData(self::STORE_FILTER);
     }
 
     /**
-     * @param string $terminalFilter
+     * @param ?string $terminalFilter
      * @return $this
      */
-    public function setTerminalFilter($terminalFilter)
+    public function setTerminalfilter(?string $terminalFilter)
     {
         $this->setData(self::TERMINAL_FILTER, $terminalFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTerminalFilter()
+    public function getTerminalfilter() : ?string
     {
         return $this->getData(self::TERMINAL_FILTER);
     }
 
     /**
-     * @param string $transactionNoFilter
+     * @param ?string $transactionNoFilter
      * @return $this
      */
-    public function setTransactionNoFilter($transactionNoFilter)
+    public function setTransactionnofilter(?string $transactionNoFilter)
     {
         $this->setData(self::TRANSACTION_NO_FILTER, $transactionNoFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionNoFilter()
+    public function getTransactionnofilter() : ?string
     {
         return $this->getData(self::TRANSACTION_NO_FILTER);
     }
 
     /**
-     * @param string $dateFilter
+     * @param ?string $dateFilter
      * @return $this
      */
-    public function setDateFilter($dateFilter)
+    public function setDatefilter(?string $dateFilter)
     {
         $this->setData(self::DATE_FILTER, $dateFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDateFilter()
+    public function getDatefilter() : ?string
     {
         return $this->getData(self::DATE_FILTER);
     }
 
     /**
-     * @param string $itemFilter
+     * @param ?string $itemFilter
      * @return $this
      */
-    public function setItemFilter($itemFilter)
+    public function setItemfilter(?string $itemFilter)
     {
         $this->setData(self::ITEM_FILTER, $itemFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemFilter()
+    public function getItemfilter() : ?string
     {
         return $this->getData(self::ITEM_FILTER);
     }
 
     /**
-     * @param string $descriptionFilter
+     * @param ?string $descriptionFilter
      * @return $this
      */
-    public function setDescriptionFilter($descriptionFilter)
+    public function setDescriptionfilter(?string $descriptionFilter)
     {
         $this->setData(self::DESCRIPTION_FILTER, $descriptionFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDescriptionFilter()
+    public function getDescriptionfilter() : ?string
     {
         return $this->getData(self::DESCRIPTION_FILTER);
     }
 
     /**
-     * @param string $itemProductGrFilter
+     * @param ?string $itemProductGrFilter
      * @return $this
      */
-    public function setItemProductGrFilter($itemProductGrFilter)
+    public function setItemproductgrfilter(?string $itemProductGrFilter)
     {
         $this->setData(self::ITEM_PRODUCT_GR_FILTER, $itemProductGrFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemProductGrFilter()
+    public function getItemproductgrfilter() : ?string
     {
         return $this->getData(self::ITEM_PRODUCT_GR_FILTER);
     }
 
     /**
-     * @param string $itemCatFilter
+     * @param ?string $itemCatFilter
      * @return $this
      */
-    public function setItemCatFilter($itemCatFilter)
+    public function setItemcatfilter(?string $itemCatFilter)
     {
         $this->setData(self::ITEM_CAT_FILTER, $itemCatFilter);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemCatFilter()
+    public function getItemcatfilter() : ?string
     {
         return $this->getData(self::ITEM_CAT_FILTER);
     }
@@ -260,18 +260,18 @@ class MobilePosSalesHistory extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootMobilePosSalesHistory $mobilePosSalesHistoryXML
      * @return $this
      */
-    public function setMobilePosSalesHistoryXML($mobilePosSalesHistoryXML)
+    public function setMobilepossaleshistoryxml($mobilePosSalesHistoryXML)
     {
-        $this->setData(self::MOBILE_POS_SALES_HISTORY_X_M_L, $mobilePosSalesHistoryXML);
+        $this->setData(self::MOBILE_POS_SALES_HISTORY_XML, $mobilePosSalesHistoryXML);
         return $this;
     }
 
     /**
      * @return RootMobilePosSalesHistory
      */
-    public function getMobilePosSalesHistoryXML()
+    public function getMobilepossaleshistoryxml()
     {
-        return $this->getData(self::MOBILE_POS_SALES_HISTORY_X_M_L);
+        return $this->getData(self::MOBILE_POS_SALES_HISTORY_XML);
     }
 }
 

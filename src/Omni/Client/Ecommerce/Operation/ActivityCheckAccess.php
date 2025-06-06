@@ -78,7 +78,7 @@ class ActivityCheckAccess extends AbstractOperation
     /**
      * @return ActivityCheckAccessRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ActivityCheckAccessRequest();

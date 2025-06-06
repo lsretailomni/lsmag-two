@@ -18,40 +18,40 @@ class StoreInvTransactionSendV2 extends \Magento\Catalog\Model\AbstractModel imp
 
     public const ERROR_TEXT = 'errorText';
 
-    public const STORE_INV_TRANSACTION_SEND_V2_X_M_L = 'storeInvTransactionSendV2XML';
+    public const STORE_INV_TRANSACTION_SEND_V2_XML = 'storeInvTransactionSendV2XML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class StoreInvTransactionSendV2 extends \Magento\Catalog\Model\AbstractModel imp
      * @param RootStoreInvTransactionSendV2XML $storeInvTransactionSendV2XML
      * @return $this
      */
-    public function setStoreInvTransactionSendV2XML($storeInvTransactionSendV2XML)
+    public function setStoreinvtransactionsendv2xml($storeInvTransactionSendV2XML)
     {
-        $this->setData(self::STORE_INV_TRANSACTION_SEND_V2_X_M_L, $storeInvTransactionSendV2XML);
+        $this->setData(self::STORE_INV_TRANSACTION_SEND_V2_XML, $storeInvTransactionSendV2XML);
         return $this;
     }
 
     /**
      * @return RootStoreInvTransactionSendV2XML
      */
-    public function getStoreInvTransactionSendV2XML()
+    public function getStoreinvtransactionsendv2xml()
     {
-        return $this->getData(self::STORE_INV_TRANSACTION_SEND_V2_X_M_L);
+        return $this->getData(self::STORE_INV_TRANSACTION_SEND_V2_XML);
     }
 }
 

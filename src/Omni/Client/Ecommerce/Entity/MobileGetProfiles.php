@@ -18,100 +18,100 @@ class MobileGetProfiles extends \Magento\Catalog\Model\AbstractModel implements 
 
     public const ERROR_TEXT = 'errorText';
 
-    public const PROFILE_I_D = 'profileID';
+    public const PROFILE_ID = 'profileID';
 
-    public const CLUB_I_D = 'clubID';
+    public const CLUB_ID = 'clubID';
 
-    public const MOBILE_GET_PROFILES_X_M_L = 'mobileGetProfilesXML';
+    public const MOBILE_GET_PROFILES_XML = 'mobileGetProfilesXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $profileID
+     * @param ?string $profileID
      * @return $this
      */
-    public function setProfileID($profileID)
+    public function setProfileid(?string $profileID)
     {
-        $this->setData(self::PROFILE_I_D, $profileID);
+        $this->setData(self::PROFILE_ID, $profileID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getProfileID()
+    public function getProfileid() : ?string
     {
-        return $this->getData(self::PROFILE_I_D);
+        return $this->getData(self::PROFILE_ID);
     }
 
     /**
-     * @param string $clubID
+     * @param ?string $clubID
      * @return $this
      */
-    public function setClubID($clubID)
+    public function setClubid(?string $clubID)
     {
-        $this->setData(self::CLUB_I_D, $clubID);
+        $this->setData(self::CLUB_ID, $clubID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubID()
+    public function getClubid() : ?string
     {
-        return $this->getData(self::CLUB_I_D);
+        return $this->getData(self::CLUB_ID);
     }
 
     /**
      * @param RootMobileGetProfiles $mobileGetProfilesXML
      * @return $this
      */
-    public function setMobileGetProfilesXML($mobileGetProfilesXML)
+    public function setMobilegetprofilesxml($mobileGetProfilesXML)
     {
-        $this->setData(self::MOBILE_GET_PROFILES_X_M_L, $mobileGetProfilesXML);
+        $this->setData(self::MOBILE_GET_PROFILES_XML, $mobileGetProfilesXML);
         return $this;
     }
 
     /**
      * @return RootMobileGetProfiles
      */
-    public function getMobileGetProfilesXML()
+    public function getMobilegetprofilesxml()
     {
-        return $this->getData(self::MOBILE_GET_PROFILES_X_M_L);
+        return $this->getData(self::MOBILE_GET_PROFILES_XML);
     }
 }
 

@@ -20,7 +20,7 @@ class TransDiscountEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const STORE_NO = 'StoreNo';
 
-    public const P_O_S_TERMINAL_NO = 'POSTerminalNo';
+    public const POSTERMINAL_NO = 'POSTerminalNo';
 
     public const MEMBER_ATTRIBUTE = 'MemberAttribute';
 
@@ -48,7 +48,7 @@ class TransDiscountEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno($TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
@@ -57,7 +57,7 @@ class TransDiscountEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getTransactionNo()
+    public function getTransactionno()
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -66,7 +66,7 @@ class TransDiscountEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -75,223 +75,223 @@ class TransDiscountEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
 
     /**
-     * @param string $ReceiptNo
+     * @param ?string $ReceiptNo
      * @return $this
      */
-    public function setReceiptNo($ReceiptNo)
+    public function setReceiptno(?string $ReceiptNo)
     {
         $this->setData(self::RECEIPT_NO, $ReceiptNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReceiptNo()
+    public function getReceiptno() : ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
 
     /**
-     * @param string $StoreNo
+     * @param ?string $StoreNo
      * @return $this
      */
-    public function setStoreNo($StoreNo)
+    public function setStoreno(?string $StoreNo)
     {
         $this->setData(self::STORE_NO, $StoreNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
     /**
-     * @param string $POSTerminalNo
+     * @param ?string $POSTerminalNo
      * @return $this
      */
-    public function setPOSTerminalNo($POSTerminalNo)
+    public function setPosterminalno(?string $POSTerminalNo)
     {
-        $this->setData(self::P_O_S_TERMINAL_NO, $POSTerminalNo);
+        $this->setData(self::POSTERMINAL_NO, $POSTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPOSTerminalNo()
+    public function getPosterminalno() : ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POSTERMINAL_NO);
     }
 
     /**
-     * @param string $MemberAttribute
+     * @param ?string $MemberAttribute
      * @return $this
      */
-    public function setMemberAttribute($MemberAttribute)
+    public function setMemberattribute(?string $MemberAttribute)
     {
         $this->setData(self::MEMBER_ATTRIBUTE, $MemberAttribute);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberAttribute()
+    public function getMemberattribute() : ?string
     {
         return $this->getData(self::MEMBER_ATTRIBUTE);
     }
 
     /**
-     * @param string $MemberAttributeValue
+     * @param ?string $MemberAttributeValue
      * @return $this
      */
-    public function setMemberAttributeValue($MemberAttributeValue)
+    public function setMemberattributevalue(?string $MemberAttributeValue)
     {
         $this->setData(self::MEMBER_ATTRIBUTE_VALUE, $MemberAttributeValue);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getMemberAttributeValue()
+    public function getMemberattributevalue() : ?string
     {
         return $this->getData(self::MEMBER_ATTRIBUTE_VALUE);
     }
 
     /**
-     * @param string $TrackingNo
+     * @param ?string $TrackingNo
      * @return $this
      */
-    public function setTrackingNo($TrackingNo)
+    public function setTrackingno(?string $TrackingNo)
     {
         $this->setData(self::TRACKING_NO, $TrackingNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTrackingNo()
+    public function getTrackingno() : ?string
     {
         return $this->getData(self::TRACKING_NO);
     }
 
     /**
-     * @param string $OfferType
+     * @param ?string $OfferType
      * @return $this
      */
-    public function setOfferType($OfferType)
+    public function setOffertype(?string $OfferType)
     {
         $this->setData(self::OFFER_TYPE, $OfferType);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOfferType()
+    public function getOffertype() : ?string
     {
         return $this->getData(self::OFFER_TYPE);
     }
 
     /**
-     * @param string $OfferNo
+     * @param ?string $OfferNo
      * @return $this
      */
-    public function setOfferNo($OfferNo)
+    public function setOfferno(?string $OfferNo)
     {
         $this->setData(self::OFFER_NO, $OfferNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getOfferNo()
+    public function getOfferno() : ?string
     {
         return $this->getData(self::OFFER_NO);
     }
 
     /**
-     * @param float $DiscountAmount
+     * @param ?float $DiscountAmount
      * @return $this
      */
-    public function setDiscountAmount($DiscountAmount)
+    public function setDiscountamount(?float $DiscountAmount)
     {
         $this->setData(self::DISCOUNT_AMOUNT, $DiscountAmount);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getDiscountAmount()
+    public function getDiscountamount() : ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
     /**
-     * @param float $Points
+     * @param ?float $Points
      * @return $this
      */
-    public function setPoints($Points)
+    public function setPoints(?float $Points)
     {
         $this->setData(self::POINTS, $Points);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPoints()
+    public function getPoints() : ?float
     {
         return $this->getData(self::POINTS);
     }
 
     /**
-     * @param string $SequenceCode
+     * @param ?string $SequenceCode
      * @return $this
      */
-    public function setSequenceCode($SequenceCode)
+    public function setSequencecode(?string $SequenceCode)
     {
         $this->setData(self::SEQUENCE_CODE, $SequenceCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSequenceCode()
+    public function getSequencecode() : ?string
     {
         return $this->getData(self::SEQUENCE_CODE);
     }
 
     /**
-     * @param string $SequenceFunction
+     * @param ?string $SequenceFunction
      * @return $this
      */
-    public function setSequenceFunction($SequenceFunction)
+    public function setSequencefunction(?string $SequenceFunction)
     {
         $this->setData(self::SEQUENCE_FUNCTION, $SequenceFunction);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSequenceFunction()
+    public function getSequencefunction() : ?string
     {
         return $this->getData(self::SEQUENCE_FUNCTION);
     }
@@ -300,7 +300,7 @@ class TransDiscountEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $RecipeLineNo
      * @return $this
      */
-    public function setRecipeLineNo($RecipeLineNo)
+    public function setRecipelineno($RecipeLineNo)
     {
         $this->setData(self::RECIPE_LINE_NO, $RecipeLineNo);
         return $this;
@@ -309,7 +309,7 @@ class TransDiscountEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getRecipeLineNo()
+    public function getRecipelineno()
     {
         return $this->getData(self::RECIPE_LINE_NO);
     }
@@ -318,7 +318,7 @@ class TransDiscountEntry extends \Magento\Catalog\Model\AbstractModel
      * @param int $ReplicationCounter
      * @return $this
      */
-    public function setReplicationCounter($ReplicationCounter)
+    public function setReplicationcounter($ReplicationCounter)
     {
         $this->setData(self::REPLICATION_COUNTER, $ReplicationCounter);
         return $this;
@@ -327,7 +327,7 @@ class TransDiscountEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return int
      */
-    public function getReplicationCounter()
+    public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }

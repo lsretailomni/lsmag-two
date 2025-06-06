@@ -18,40 +18,40 @@ class GetMemberContact2Result extends \Magento\Catalog\Model\AbstractModel imple
 
     public const ERROR_TEXT = 'errorText';
 
-    public const GET_MEMBER_CONTACT_X_M_L = 'getMemberContactXML';
+    public const GET_MEMBER_CONTACT_XML = 'getMemberContactXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class GetMemberContact2Result extends \Magento\Catalog\Model\AbstractModel imple
      * @param RootGetMemberContact $getMemberContactXML
      * @return $this
      */
-    public function setGetMemberContactXML($getMemberContactXML)
+    public function setGetmembercontactxml($getMemberContactXML)
     {
-        $this->setData(self::GET_MEMBER_CONTACT_X_M_L, $getMemberContactXML);
+        $this->setData(self::GET_MEMBER_CONTACT_XML, $getMemberContactXML);
         return $this;
     }
 
     /**
      * @return RootGetMemberContact
      */
-    public function getGetMemberContactXML()
+    public function getGetmembercontactxml()
     {
-        return $this->getData(self::GET_MEMBER_CONTACT_X_M_L);
+        return $this->getData(self::GET_MEMBER_CONTACT_XML);
     }
 
     /**

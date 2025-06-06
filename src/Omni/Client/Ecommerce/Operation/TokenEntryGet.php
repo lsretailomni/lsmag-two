@@ -78,7 +78,7 @@ class TokenEntryGet extends AbstractOperation
     /**
      * @return TokenEntryGetRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new TokenEntryGetRequest();

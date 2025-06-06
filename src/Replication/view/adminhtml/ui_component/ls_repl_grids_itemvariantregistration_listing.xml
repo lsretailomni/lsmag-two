@@ -20,14 +20,14 @@
                 Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
             </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_itemvariantregistration_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">repl_item_variant_registration_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">repl_variantregview_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">repl_item_variant_registration_id</item>
+                        <item name="indexField" xsi:type="string">repl_variantregview_id</item>
                     </item>
                 </item>
             </argument>
@@ -94,7 +94,7 @@
                 </item>
             </argument>
         </column>
-        <column name="ItemId">
+        <column name="item_no">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -105,7 +105,7 @@
                 </item>
             </argument>
         </column>
-        <column name="BlockedOnECom">
+        <column name="blocked_on_ecommerce">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Ls\Replication\Model\BlockedStatus</item>
                 <item name="config" xsi:type="array">
@@ -163,7 +163,7 @@
                 </item>
             </argument>
         </column>
-        <column name="FrameworkCode">
+        <column name="framework_code">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -174,7 +174,7 @@
                 </item>
             </argument>
         </column>
-        <column name="VariantId">
+        <column name="variant">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -185,7 +185,7 @@
                 </item>
             </argument>
         </column>
-        <column name="VariantDimension1">
+        <column name="variant_dimension_1">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -196,7 +196,7 @@
                 </item>
             </argument>
         </column>
-        <column name="VariantDimension2">
+        <column name="variant_dimension_2">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -207,7 +207,7 @@
                 </item>
             </argument>
         </column>
-        <column name="VariantDimension3">
+        <column name="variant_dimension_3">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -218,7 +218,7 @@
                 </item>
             </argument>
         </column>
-        <column name="VariantDimension4">
+        <column name="variant_dimension_4">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -229,7 +229,7 @@
                 </item>
             </argument>
         </column>
-        <column name="VariantDimension5">
+        <column name="variant_dimension_5">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -240,7 +240,7 @@
                 </item>
             </argument>
         </column>
-        <column name="VariantDimension6">
+        <column name="variant_dimension_6">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

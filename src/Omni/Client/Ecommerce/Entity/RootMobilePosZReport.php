@@ -18,7 +18,7 @@ class RootMobilePosZReport extends \Magento\Catalog\Model\AbstractModel
      * @param PosPrintBuffer $PosPrintBuffer
      * @return $this
      */
-    public function setPosPrintBuffer($PosPrintBuffer)
+    public function setPosprintbuffer($PosPrintBuffer)
     {
         $this->setData(self::POS_PRINT_BUFFER, $PosPrintBuffer);
         return $this;
@@ -27,7 +27,7 @@ class RootMobilePosZReport extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return PosPrintBuffer
      */
-    public function getPosPrintBuffer()
+    public function getPosprintbuffer()
     {
         return $this->getData(self::POS_PRINT_BUFFER);
     }

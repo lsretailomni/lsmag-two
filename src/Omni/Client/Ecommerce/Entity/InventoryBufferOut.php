@@ -23,91 +23,91 @@ class InventoryBufferOut extends \Magento\Catalog\Model\AbstractModel
     public const INVENTORY = 'Inventory';
 
     /**
-     * @param string $Number
+     * @param ?string $Number
      * @return $this
      */
-    public function setNumber($Number)
+    public function setNumber(?string $Number)
     {
         $this->setData(self::NUMBER, $Number);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getNumber()
+    public function getNumber() : ?string
     {
         return $this->getData(self::NUMBER);
     }
 
     /**
-     * @param string $Variant
+     * @param ?string $Variant
      * @return $this
      */
-    public function setVariant($Variant)
+    public function setVariant(?string $Variant)
     {
         $this->setData(self::VARIANT, $Variant);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariant()
+    public function getVariant() : ?string
     {
         return $this->getData(self::VARIANT);
     }
 
     /**
-     * @param string $Store
+     * @param ?string $Store
      * @return $this
      */
-    public function setStore($Store)
+    public function setStore(?string $Store)
     {
         $this->setData(self::STORE, $Store);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStore()
+    public function getStore() : ?string
     {
         return $this->getData(self::STORE);
     }
 
     /**
-     * @param string $Location
+     * @param ?string $Location
      * @return $this
      */
-    public function setLocation($Location)
+    public function setLocation(?string $Location)
     {
         $this->setData(self::LOCATION, $Location);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLocation()
+    public function getLocation() : ?string
     {
         return $this->getData(self::LOCATION);
     }
 
     /**
-     * @param float $Inventory
+     * @param ?float $Inventory
      * @return $this
      */
-    public function setInventory($Inventory)
+    public function setInventory(?float $Inventory)
     {
         $this->setData(self::INVENTORY, $Inventory);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getInventory()
+    public function getInventory() : ?float
     {
         return $this->getData(self::INVENTORY);
     }

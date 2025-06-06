@@ -1,5 +1,6 @@
 <?php
 // @codingStandardsIgnoreFile
+declare(strict_types=1);
 
 namespace Ls\Replication\Code;
 
@@ -12,34 +13,32 @@ use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
-use Laminas\Code\Generator\ClassGenerator;
 use Laminas\Code\Generator\DocBlock\Tag\PropertyTag;
 use Laminas\Code\Generator\DocBlockGenerator;
-use Laminas\Code\Generator\FileGenerator;
 use Laminas\Code\Generator\MethodGenerator;
 use Laminas\Code\Generator\ParameterGenerator;
 use Laminas\Code\Generator\PropertyGenerator;
 
 /**
- * Class RepositoryGenerator
- * @package Ls\Replication\Code
+ * Generates a repository class for a given replication operation.
  */
 class RepositoryGenerator extends AbstractGenerator
 {
-    /** @var string */
-    public static $namespace = 'Ls\\Replication\\Model';
-
-    /** @var ReplicationOperation */
-    protected $operation;
-
-    /** @var FileGenerator */
-    protected $file;
-
-    /** @var ClassGenerator */
-    protected $class;
+    /**
+     * Namespace of the generated repository class.
+     *
+     * @var string
+     */
+    public static string $namespace = 'Ls\\Replication\\Model';
 
     /**
-     * RepositoryGenerator constructor.
+     * Replication operation instance.
+     *
+     * @var ReplicationOperation
+     */
+    public ReplicationOperation $operation;
+
+    /**
      * @param ReplicationOperation $operation
      * @throws Exception
      */
@@ -50,13 +49,17 @@ class RepositoryGenerator extends AbstractGenerator
     }
 
     /**
-     * @return mixed|string
+     * Generate the repository class content.
+     *
+     * @return string
+     * @throws Exception
      */
-    public function generate()
+    public function generate(): string
     {
-        $interface_name = $this->operation->getRepositoryInterfaceName();
-        $simple_name    = $this->operation->getEntityName();
-        $entity_name    = $this->operation->getEntityName();
+        $interfaceName = $this->operation->getRepositoryInterfaceName();
+        $simpleName    = $this->operation->getModelName();
+        $entityName    = $this->operation->getModelName();
+
         $this->class->setNamespaceName(self::$namespace);
         $this->class->addUse(CouldNotDeleteException::class);
         $this->class->addUse(CouldNotSaveException::class);
@@ -68,41 +71,31 @@ class RepositoryGenerator extends AbstractGenerator
         $this->class->addUse($this->operation->getRepositoryInterfaceFqn());
         $this->class->addUse($this->operation->getResourceCollectionFqn());
         $this->class->addUse($this->operation->getResourceCollectionFactoryFqn());
-        $this->class->addUse($this->operation->getRepositoryInterfaceFqn());
         $this->class->addUse($this->operation->getInterfaceFqn());
         $this->class->addUse($this->operation->getFactoryFqn());
         $this->class->addUse($this->operation->getSearchFactoryFqn());
 
         $this->class->setName($this->operation->getRepositoryName());
-        $this->class->setImplementedInterfaces([$interface_name]);
+        $this->class->setImplementedInterfaces([$interfaceName]);
 
-        $object_factory_property = new PropertyGenerator();
-        $object_factory_property->setName('object_factory');
-        $object_factory_property->setDefaultValue(null);
-        $object_factory_property->setVisibility(PropertyGenerator::VISIBILITY_PROTECTED);
-        $object_factory_property->setDocBlock(DocBlockGenerator::fromArray(
-            ['tags' => [new PropertyTag('object_factory', $simple_name . 'Factory')]]
-        ));
+        $objectFactory = new PropertyGenerator('objectFactory', null);
+        $objectFactory->setDocBlock(DocBlockGenerator::fromArray([
+            'tags' => [new PropertyTag('objectFactory', $simpleName . 'Factory')]
+        ]));
 
-        $collection_factory_property = new PropertyGenerator();
-        $collection_factory_property->setName('collection_factory');
-        $collection_factory_property->setDefaultValue(null);
-        $collection_factory_property->setVisibility(PropertyGenerator::VISIBILITY_PROTECTED);
-        $collection_factory_property->setDocBlock(DocBlockGenerator::fromArray(
-            ['tags' => [new PropertyTag('collection_factory', 'CollectionFactory')]]
-        ));
+        $collectionFactory = new PropertyGenerator('collectionFactory', null);
+        $collectionFactory->setDocBlock(DocBlockGenerator::fromArray([
+            'tags' => [new PropertyTag('collectionFactory', 'CollectionFactory')]
+        ]));
 
-        $result_factory_property = new PropertyGenerator();
-        $result_factory_property->setName('result_factory');
-        $result_factory_property->setDefaultValue(null);
-        $result_factory_property->setVisibility(PropertyGenerator::VISIBILITY_PROTECTED);
-        $result_factory_property->setDocBlock(DocBlockGenerator::fromArray(
-            ['tags' => [new PropertyTag('result_factory', $this->operation->getSearchFactory())]]
-        ));
+        $resultFactory = new PropertyGenerator('resultFactory', null);
+        $resultFactory->setDocBlock(DocBlockGenerator::fromArray([
+            'tags' => [new PropertyTag('resultFactory', $this->operation->getSearchFactory())]
+        ]));
 
-        $this->class->addPropertyFromGenerator($object_factory_property);
-        $this->class->addPropertyFromGenerator($collection_factory_property);
-        $this->class->addPropertyFromGenerator($result_factory_property);
+        $this->class->addPropertyFromGenerator($objectFactory);
+        $this->class->addPropertyFromGenerator($collectionFactory);
+        $this->class->addPropertyFromGenerator($resultFactory);
 
         $this->class->addMethodFromGenerator($this->getConstructorMethod());
         $this->class->addMethodFromGenerator($this->getGetListMethod());
@@ -112,62 +105,41 @@ class RepositoryGenerator extends AbstractGenerator
         $this->class->addMethodFromGenerator($this->getDeleteByIdMethod());
 
         $content = $this->file->generate();
+
         $content = str_replace(
             'Magento\\Framework\\Data\\SearchResultInterfaceFactory $result_factory',
-            'SearchResultInterfaceFactory $result_factory',
+            'SearchResultInterfaceFactory $resultFactory',
             $content
         );
-        $content = str_replace("implements \\$interface_name", "implements $interface_name", $content);
-        $content = str_replace(
-            "\\{$simple_name}Factory \$object_factory",
-            "{$simple_name}Factory \$object_factory",
-            $content
-        );
-
-        $content = str_replace(
-            "\\{$simple_name}SearchResultsFactory \$result_factory",
-            "{$simple_name}SearchResultsFactory \$result_factory",
-            $content
-        );
-
-        $content = str_replace("\\{$entity_name}Interface \$object", "{$entity_name}Interface \$object", $content);
-        $content = str_replace(
-            '\\CollectionFactory $collection_factory',
-            'CollectionFactory $collection_factory',
-            $content
-        );
-
-        $content = str_replace(
-            "\Magento\\Framework\\Api\\SearchCriteriaInterface \$criteria",
-            "SearchCriteriaInterface \$criteria",
-            $content
-        );
+        $content = str_replace("implements \\$interfaceName", "implements $interfaceName", $content);
+        $content = str_replace("\\{$simpleName}Factory \$objectFactory", "{$simpleName}Factory \$objectFactory", $content);
+        $content = str_replace("\\{$simpleName}SearchResultsFactory \$resultFactory", "{$simpleName}SearchResultsFactory \$resultFactory", $content);
+        $content = str_replace("\\{$entityName}Interface \$object", "{$entityName}Interface \$object", $content);
+        $content = str_replace('\\CollectionFactory $collectionFactory', 'CollectionFactory $collectionFactory', $content);
+        $content = str_replace('\Magento\Framework\Api\SearchCriteriaInterface $criteria', 'SearchCriteriaInterface $criteria', $content);
 
         return $content;
     }
 
     /**
+     * Generate constructor method.
+     *
      * @return MethodGenerator
      */
-    public function getConstructorMethod()
+    public function getConstructorMethod(): MethodGenerator
     {
-        $method = new MethodGenerator();
-        $method->setName('__construct');
-
+        $method = new MethodGenerator('__construct');
         $method->setParameters([
-            new ParameterGenerator(
-                'object_factory',
-                $this->operation->getEntityName() . 'Factory'
-            ),
-            new ParameterGenerator('collection_factory', 'CollectionFactory'),
-            new ParameterGenerator('result_factory', $this->operation->getSearchFactory())
+            new ParameterGenerator('objectFactory', $this->operation->getModelName() . 'Factory'),
+            new ParameterGenerator('collectionFactory', 'CollectionFactory'),
+            new ParameterGenerator('resultFactory', $this->operation->getSearchFactory())
         ]);
 
         $method->setBody(
             <<<CODE
-\$this->object_factory = \$object_factory;
-\$this->collection_factory = \$collection_factory;
-\$this->result_factory = \$result_factory;
+\$this->objectFactory = \$objectFactory;
+\$this->collectionFactory = \$collectionFactory;
+\$this->resultFactory = \$resultFactory;
 CODE
         );
 
@@ -175,51 +147,55 @@ CODE
     }
 
     /**
+     * Generate getList method.
+     *
      * @return MethodGenerator
      */
-    public function getGetListMethod()
+    public function getGetListMethod(): MethodGenerator
     {
-        $method = new MethodGenerator();
-        $method->setName('getList');
+        $method = new MethodGenerator('getList');
         $method->setParameters([new ParameterGenerator('criteria', SearchCriteriaInterface::class)]);
+
         $method->setBody(
             <<<CODE
 /** @var SearchResultInterface \$results */
-/** @noinspection PhpUndefinedMethodInspection */
-\$results = \$this->result_factory->create();
-\$results->setSearchCriteria( \$criteria );
+\$results = \$this->resultFactory->create();
+\$results->setSearchCriteria(\$criteria);
+
 /** @var Collection \$collection */
-/** @noinspection PhpUndefinedMethodInspection */
-\$collection = \$this->collection_factory->create();
-foreach ( \$criteria->getFilterGroups() as \$filter_group ) {
-    \$fields = [ ];
-    \$conditions = [ ];
-    foreach ( \$filter_group->getFilters() as \$filter ) {
-        \$condition = \$filter->getConditionType() ? \$filter->getConditionType() : 'eq';
+\$collection = \$this->collectionFactory->create();
+foreach (\$criteria->getFilterGroups() as \$filterGroup) {
+    \$fields = [];
+    \$conditions = [];
+    foreach (\$filterGroup->getFilters() as \$filter) {
+        \$condition = \$filter->getConditionType() ?: 'eq';
         \$fields[] = \$filter->getField();
-        \$conditions[] = [ \$condition => \$filter->getValue() ];
+        \$conditions[] = [\$condition => \$filter->getValue()];
     }
-    if ( \$fields ) {
-        \$collection->addFieldToFilter( \$fields, \$conditions );
+    if (\$fields) {
+        \$collection->addFieldToFilter(\$fields, \$conditions);
     }
 }
-\$results->setTotalCount( \$collection->getSize() );
-\$sort_orders = \$criteria->getSortOrders();
-if ( \$sort_orders ) {
-    /** @var SortOrder \$sort_order */
-    foreach ( \$sort_orders as \$sort_order ) {
-        \$collection->addOrder( \$sort_order->getField(),
-                               ( \$sort_order->getDirection() == SortOrder::SORT_ASC ) ? 'ASC' : 'DESC'
+\$results->setTotalCount(\$collection->getSize());
+
+\$sortOrders = \$criteria->getSortOrders();
+if (\$sortOrders) {
+    foreach (\$sortOrders as \$sortOrder) {
+        \$collection->addOrder(
+            \$sortOrder->getField(),
+            (\$sortOrder->getDirection() === SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
         );
     }
 }
-\$collection->setCurPage( \$criteria->getCurrentPage() );
-\$collection->setPageSize( \$criteria->getPageSize() );
-\$objects = [ ];
-foreach ( \$collection as \$object_model ) {
-    \$objects[] = \$object_model;
+
+\$collection->setCurPage(\$criteria->getCurrentPage());
+\$collection->setPageSize(\$criteria->getPageSize());
+
+\$objects = [];
+foreach (\$collection as \$objectModel) {
+    \$objects[] = \$objectModel;
 }
-\$results->setItems( \$objects );
+\$results->setItems(\$objects);
 
 return \$results;
 CODE
@@ -229,19 +205,21 @@ CODE
     }
 
     /**
+     * Generate save method.
+     *
      * @return MethodGenerator
      */
-    public function getSaveMethod()
+    public function getSaveMethod(): MethodGenerator
     {
-        $method = new MethodGenerator();
-        $method->setName('save');
+        $method = new MethodGenerator('save');
         $method->setParameters([new ParameterGenerator('object', $this->operation->getInterfaceName())]);
+
         $method->setBody(
             <<<CODE
 try {
     \$object->save();
-} catch ( Exception \$e ) {
-    throw new CouldNotSaveException( new Phrase( \$e->getMessage() ) );
+} catch (Exception \$e) {
+    throw new CouldNotSaveException(new Phrase(\$e->getMessage()));
 }
 
 return \$object;
@@ -252,19 +230,21 @@ CODE
     }
 
     /**
+     * Generate getById method.
+     *
      * @return MethodGenerator
      */
-    public function getGetByIdMethod()
+    public function getGetByIdMethod(): MethodGenerator
     {
-        $method = new MethodGenerator();
-        $method->setName('getById');
+        $method = new MethodGenerator('getById');
         $method->setParameters([new ParameterGenerator('id')]);
+
         $method->setBody(
             <<<CODE
-\$object = \$this->object_factory->create();
-\$object->load( \$id );
-if ( ! \$object->getId() ) {
-    throw new NoSuchEntityException( new Phrase( "Object with id '\$id' does not exist." ) );
+\$object = \$this->objectFactory->create();
+\$object->load(\$id);
+if (!\$object->getId()) {
+    throw new NoSuchEntityException(new Phrase("Object with id '\$id' does not exist."));
 }
 
 return \$object;
@@ -275,22 +255,24 @@ CODE
     }
 
     /**
+     * Generate delete method.
+     *
      * @return MethodGenerator
      */
-    public function getDeleteMethod()
+    public function getDeleteMethod(): MethodGenerator
     {
-        $method = new MethodGenerator();
-        $method->setName('delete');
+        $method = new MethodGenerator('delete');
         $method->setParameters([new ParameterGenerator('object', $this->operation->getInterfaceName())]);
+
         $method->setBody(
             <<<CODE
 try {
     \$object->delete();
-} catch ( Exception \$e) {
-    throw new CouldNotDeleteException( new Phrase( \$e->getMessage() ) );
+} catch (Exception \$e) {
+    throw new CouldNotDeleteException(new Phrase(\$e->getMessage()));
 }
 
-return TRUE;
+return true;
 CODE
         );
 
@@ -298,14 +280,16 @@ CODE
     }
 
     /**
+     * Generate deleteById method.
+     *
      * @return MethodGenerator
      */
-    public function getDeleteByIdMethod()
+    public function getDeleteByIdMethod(): MethodGenerator
     {
-        $method = new MethodGenerator();
-        $method->setName('deleteById');
+        $method = new MethodGenerator('deleteById');
         $method->setParameters([new ParameterGenerator('id')]);
-        $method->setBody('return $this->delete( $this->getById( $id ) );');
+
+        $method->setBody('return $this->delete($this->getById($id));');
 
         return $method;
     }

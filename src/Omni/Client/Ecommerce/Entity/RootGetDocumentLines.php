@@ -12,24 +12,24 @@ class RootGetDocumentLines extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetDocumentLines';
 
-    public const GET_A_S_N_DOCUMENT_LINES_X_M_L = 'GetASNDocumentLinesXML';
+    public const GET_ASNDOCUMENT_LINES_XML = 'GetASNDocumentLinesXML';
 
     /**
      * @param GetASNDocumentLinesXML $GetASNDocumentLinesXML
      * @return $this
      */
-    public function setGetASNDocumentLinesXML($GetASNDocumentLinesXML)
+    public function setGetasndocumentlinesxml($GetASNDocumentLinesXML)
     {
-        $this->setData(self::GET_A_S_N_DOCUMENT_LINES_X_M_L, $GetASNDocumentLinesXML);
+        $this->setData(self::GET_ASNDOCUMENT_LINES_XML, $GetASNDocumentLinesXML);
         return $this;
     }
 
     /**
      * @return GetASNDocumentLinesXML
      */
-    public function getGetASNDocumentLinesXML()
+    public function getGetasndocumentlinesxml()
     {
-        return $this->getData(self::GET_A_S_N_DOCUMENT_LINES_X_M_L);
+        return $this->getData(self::GET_ASNDOCUMENT_LINES_XML);
     }
 }
 

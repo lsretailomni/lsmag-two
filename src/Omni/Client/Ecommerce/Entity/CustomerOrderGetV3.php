@@ -20,102 +20,102 @@ class CustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel implements
 
     public const DOCUMENT_STATUS = 'documentStatus';
 
-    public const DOCUMENT_I_D = 'documentID';
+    public const DOCUMENT_ID = 'documentID';
 
     public const POS_TERMINAL_NO = 'posTerminalNo';
 
-    public const CUSTOMER_ORDER_GET_V3_X_M_L = 'customerOrderGetV3XML';
+    public const CUSTOMER_ORDER_GET_V3_XML = 'customerOrderGetV3XML';
 
     public const POINTS_EARNED = 'pointsEarned';
 
     public const POINTS_USED = 'pointsUsed';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $documentStatus
+     * @param ?string $documentStatus
      * @return $this
      */
-    public function setDocumentStatus($documentStatus)
+    public function setDocumentstatus(?string $documentStatus)
     {
         $this->setData(self::DOCUMENT_STATUS, $documentStatus);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentStatus()
+    public function getDocumentstatus() : ?string
     {
         return $this->getData(self::DOCUMENT_STATUS);
     }
 
     /**
-     * @param string $documentID
+     * @param ?string $documentID
      * @return $this
      */
-    public function setDocumentID($documentID)
+    public function setDocumentid(?string $documentID)
     {
-        $this->setData(self::DOCUMENT_I_D, $documentID);
+        $this->setData(self::DOCUMENT_ID, $documentID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getDocumentID()
+    public function getDocumentid() : ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
     /**
-     * @param string $posTerminalNo
+     * @param ?string $posTerminalNo
      * @return $this
      */
-    public function setPosTerminalNo($posTerminalNo)
+    public function setPosterminalno(?string $posTerminalNo)
     {
         $this->setData(self::POS_TERMINAL_NO, $posTerminalNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPosTerminalNo()
+    public function getPosterminalno() : ?string
     {
         return $this->getData(self::POS_TERMINAL_NO);
     }
@@ -124,52 +124,52 @@ class CustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel implements
      * @param RootCustomerOrderGetV3 $customerOrderGetV3XML
      * @return $this
      */
-    public function setCustomerOrderGetV3XML($customerOrderGetV3XML)
+    public function setCustomerordergetv3xml($customerOrderGetV3XML)
     {
-        $this->setData(self::CUSTOMER_ORDER_GET_V3_X_M_L, $customerOrderGetV3XML);
+        $this->setData(self::CUSTOMER_ORDER_GET_V3_XML, $customerOrderGetV3XML);
         return $this;
     }
 
     /**
      * @return RootCustomerOrderGetV3
      */
-    public function getCustomerOrderGetV3XML()
+    public function getCustomerordergetv3xml()
     {
-        return $this->getData(self::CUSTOMER_ORDER_GET_V3_X_M_L);
+        return $this->getData(self::CUSTOMER_ORDER_GET_V3_XML);
     }
 
     /**
-     * @param float $pointsEarned
+     * @param ?float $pointsEarned
      * @return $this
      */
-    public function setPointsEarned($pointsEarned)
+    public function setPointsearned(?float $pointsEarned)
     {
         $this->setData(self::POINTS_EARNED, $pointsEarned);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPointsEarned()
+    public function getPointsearned() : ?float
     {
         return $this->getData(self::POINTS_EARNED);
     }
 
     /**
-     * @param float $pointsUsed
+     * @param ?float $pointsUsed
      * @return $this
      */
-    public function setPointsUsed($pointsUsed)
+    public function setPointsused(?float $pointsUsed)
     {
         $this->setData(self::POINTS_USED, $pointsUsed);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPointsUsed()
+    public function getPointsused() : ?float
     {
         return $this->getData(self::POINTS_USED);
     }

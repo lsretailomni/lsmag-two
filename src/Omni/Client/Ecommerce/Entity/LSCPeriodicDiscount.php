@@ -25,8 +25,32 @@ class LSCPeriodicDiscount extends AbstractModel
     public const DISCOUNT_TYPE = 'Discount Type';
     public const VALIDATION_PERIOD_ID = 'Validation Period ID';
     public const DEAL_PRICE_VALUE = 'Deal Price Value';
-    public const DISCOUNT__VALUE = 'Discount % Value';
+    public const DISCOUNT_VALUE = 'Discount % Value';
     public const DISCOUNT_AMOUNT_VALUE = 'Discount Amount Value';
+
+    public static array $dbColumnsMapping = [
+	self::NO => 'no',
+	self::TYPE => 'type',
+	self::PRIORITY => 'priority',
+	self::DESCRIPTION => 'description',
+	self::POPUP_LINE_1 => 'popup_line_1',
+	self::POPUP_LINE_2 => 'popup_line_2',
+	self::POPUP_LINE_3 => 'popup_line_3',
+	self::STATUS => 'status',
+	self::PRICE_GROUP => 'price_group',
+	self::OFFER_TYPE => 'offer_type',
+	self::SALES_TYPE_FILTER => 'sales_type_filter',
+	self::DISCOUNT_TYPE => 'discount_type',
+	self::VALIDATION_PERIOD_ID => 'validation_period_id',
+	self::DEAL_PRICE_VALUE => 'deal_price_value',
+	self::DISCOUNT_VALUE => 'discount_value',
+	self::DISCOUNT_AMOUNT_VALUE => 'discount_amount_value',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
 
 
     public function getNo(): ?string
@@ -34,17 +58,17 @@ class LSCPeriodicDiscount extends AbstractModel
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value)
+    public function setNo(?string $value)
     {
         return $this->setData(self::NO, $value);
     }
 
-    public function getType(): ?string
+    public function getType(): ?int
     {
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value)
+    public function setType(?int $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -54,7 +78,7 @@ class LSCPeriodicDiscount extends AbstractModel
         return $this->getData(self::PRIORITY);
     }
 
-    public function setPriority(int $value)
+    public function setPriority(?int $value)
     {
         return $this->setData(self::PRIORITY, $value);
     }
@@ -64,7 +88,7 @@ class LSCPeriodicDiscount extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -74,7 +98,7 @@ class LSCPeriodicDiscount extends AbstractModel
         return $this->getData(self::POPUP_LINE_1);
     }
 
-    public function setPopUpLine1(string $value)
+    public function setPopUpLine1(?string $value)
     {
         return $this->setData(self::POPUP_LINE_1, $value);
     }
@@ -84,7 +108,7 @@ class LSCPeriodicDiscount extends AbstractModel
         return $this->getData(self::POPUP_LINE_2);
     }
 
-    public function setPopUpLine2(string $value)
+    public function setPopUpLine2(?string $value)
     {
         return $this->setData(self::POPUP_LINE_2, $value);
     }
@@ -94,17 +118,17 @@ class LSCPeriodicDiscount extends AbstractModel
         return $this->getData(self::POPUP_LINE_3);
     }
 
-    public function setPopUpLine3(string $value)
+    public function setPopUpLine3(?string $value)
     {
         return $this->setData(self::POPUP_LINE_3, $value);
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(string $value)
+    public function setStatus(?int $value)
     {
         return $this->setData(self::STATUS, $value);
     }
@@ -114,17 +138,17 @@ class LSCPeriodicDiscount extends AbstractModel
         return $this->getData(self::PRICE_GROUP);
     }
 
-    public function setPriceGroup(string $value)
+    public function setPriceGroup(?string $value)
     {
         return $this->setData(self::PRICE_GROUP, $value);
     }
 
-    public function getOfferType(): ?string
+    public function getOfferType(): ?int
     {
         return $this->getData(self::OFFER_TYPE);
     }
 
-    public function setOfferType(string $value)
+    public function setOfferType(?int $value)
     {
         return $this->setData(self::OFFER_TYPE, $value);
     }
@@ -134,57 +158,57 @@ class LSCPeriodicDiscount extends AbstractModel
         return $this->getData(self::SALES_TYPE_FILTER);
     }
 
-    public function setSalesTypeFilter(string $value)
+    public function setSalesTypeFilter(?string $value)
     {
         return $this->setData(self::SALES_TYPE_FILTER, $value);
     }
 
-    public function getDiscountType(): ?string
+    public function getDiscountType(): ?int
     {
         return $this->getData(self::DISCOUNT_TYPE);
     }
 
-    public function setDiscountType(string $value)
+    public function setDiscountType(?int $value)
     {
         return $this->setData(self::DISCOUNT_TYPE, $value);
     }
 
-    public function getValidationPeriodID(): ?string
+    public function getValidationPeriodId(): ?string
     {
         return $this->getData(self::VALIDATION_PERIOD_ID);
     }
 
-    public function setValidationPeriodID(string $value)
+    public function setValidationPeriodId(?string $value)
     {
         return $this->setData(self::VALIDATION_PERIOD_ID, $value);
     }
 
-    public function getDealPriceValue(): ?string
+    public function getDealPriceValue(): ?float
     {
         return $this->getData(self::DEAL_PRICE_VALUE);
     }
 
-    public function setDealPriceValue(string $value)
+    public function setDealPriceValue(?float $value)
     {
         return $this->setData(self::DEAL_PRICE_VALUE, $value);
     }
 
-    public function getDiscountValue(): ?string
+    public function getDiscountValue(): ?float
     {
-        return $this->getData(self::DISCOUNT__VALUE);
+        return $this->getData(self::DISCOUNT_VALUE);
     }
 
-    public function setDiscountValue(string $value)
+    public function setDiscountValue(?float $value)
     {
-        return $this->setData(self::DISCOUNT__VALUE, $value);
+        return $this->setData(self::DISCOUNT_VALUE, $value);
     }
 
-    public function getDiscountAmountValue(): ?string
+    public function getDiscountAmountValue(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT_VALUE);
     }
 
-    public function setDiscountAmountValue(string $value)
+    public function setDiscountAmountValue(?float $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT_VALUE, $value);
     }

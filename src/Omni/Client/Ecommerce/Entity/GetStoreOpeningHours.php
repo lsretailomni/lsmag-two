@@ -20,58 +20,58 @@ class GetStoreOpeningHours extends \Magento\Catalog\Model\AbstractModel implemen
 
     public const STORE_NO = 'storeNo';
 
-    public const GET_STORE_OPENING_HOURS_X_M_L = 'getStoreOpeningHoursXML';
+    public const GET_STORE_OPENING_HOURS_XML = 'getStoreOpeningHoursXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -80,18 +80,18 @@ class GetStoreOpeningHours extends \Magento\Catalog\Model\AbstractModel implemen
      * @param RootGetStoreOpeningHours $getStoreOpeningHoursXML
      * @return $this
      */
-    public function setGetStoreOpeningHoursXML($getStoreOpeningHoursXML)
+    public function setGetstoreopeninghoursxml($getStoreOpeningHoursXML)
     {
-        $this->setData(self::GET_STORE_OPENING_HOURS_X_M_L, $getStoreOpeningHoursXML);
+        $this->setData(self::GET_STORE_OPENING_HOURS_XML, $getStoreOpeningHoursXML);
         return $this;
     }
 
     /**
      * @return RootGetStoreOpeningHours
      */
-    public function getGetStoreOpeningHoursXML()
+    public function getGetstoreopeninghoursxml()
     {
-        return $this->getData(self::GET_STORE_OPENING_HOURS_X_M_L);
+        return $this->getData(self::GET_STORE_OPENING_HOURS_XML);
     }
 }
 

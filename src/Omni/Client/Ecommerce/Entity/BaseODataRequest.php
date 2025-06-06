@@ -21,4 +21,24 @@ class BaseODataRequest
         $this->lastKey = (string)($data['lastKey'] ?? '');
         $this->lastEntryNo = (int)($data['lastEntryNo'] ?? 0);
     }
+
+    public function getBatchSize(): int
+    {
+        return $this->batchSize;
+    }
+
+    public function getFullRepl(): bool
+    {
+        return $this->fullRepl;
+    }
+
+    public function getLastKey(): string
+    {
+        return $this->lastKey;
+    }
+
+    public function getLastEntryNo(): int
+    {
+        return $this->lastEntryNo;
+    }
 }

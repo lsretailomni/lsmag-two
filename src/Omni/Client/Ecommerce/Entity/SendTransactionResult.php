@@ -18,40 +18,40 @@ class SendTransactionResult extends \Magento\Catalog\Model\AbstractModel impleme
 
     public const ERROR_TEXT = 'errorText';
 
-    public const SEND_TRANSACTION_X_M_L = 'sendTransactionXML';
+    public const SEND_TRANSACTION_XML = 'sendTransactionXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -60,18 +60,18 @@ class SendTransactionResult extends \Magento\Catalog\Model\AbstractModel impleme
      * @param RootSendTransaction $sendTransactionXML
      * @return $this
      */
-    public function setSendTransactionXML($sendTransactionXML)
+    public function setSendtransactionxml($sendTransactionXML)
     {
-        $this->setData(self::SEND_TRANSACTION_X_M_L, $sendTransactionXML);
+        $this->setData(self::SEND_TRANSACTION_XML, $sendTransactionXML);
         return $this;
     }
 
     /**
      * @return RootSendTransaction
      */
-    public function getSendTransactionXML()
+    public function getSendtransactionxml()
     {
-        return $this->getData(self::SEND_TRANSACTION_X_M_L);
+        return $this->getData(self::SEND_TRANSACTION_XML);
     }
 
     /**

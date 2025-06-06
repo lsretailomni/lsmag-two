@@ -24,13 +24,33 @@ class LSCRetailImageLink extends AbstractModel
     public const TABLENAME = 'TableName';
     public const SYSTEMID = '$systemId';
 
+    public static array $dbColumnsMapping = [
+	self::DISPLAY_ORDER => 'display_order',
+	self::IMAGE_DESCRIPTION => 'image_description',
+	self::IMAGE_ID => 'image_id',
+	self::KEYVALUE => 'keyvalue',
+	self::LINK_TYPE => 'link_type',
+	self::RECORD_ID => 'record_id',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+	self::TABLENAME => 'tablename',
+	self::SYSTEMID => 'systemid',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getDisplayOrder(): ?int
     {
         return $this->getData(self::DISPLAY_ORDER);
     }
 
-    public function setDisplayOrder(int $value)
+    public function setDisplayOrder(?int $value)
     {
         return $this->setData(self::DISPLAY_ORDER, $value);
     }
@@ -40,7 +60,7 @@ class LSCRetailImageLink extends AbstractModel
         return $this->getData(self::IMAGE_DESCRIPTION);
     }
 
-    public function setImageDescription(string $value)
+    public function setImageDescription(?string $value)
     {
         return $this->setData(self::IMAGE_DESCRIPTION, $value);
     }
@@ -50,27 +70,27 @@ class LSCRetailImageLink extends AbstractModel
         return $this->getData(self::IMAGE_ID);
     }
 
-    public function setImageId(string $value)
+    public function setImageId(?string $value)
     {
         return $this->setData(self::IMAGE_ID, $value);
     }
 
-    public function getKeyValue(): ?string
+    public function getKeyvalue(): ?string
     {
         return $this->getData(self::KEYVALUE);
     }
 
-    public function setKeyValue(string $value)
+    public function setKeyvalue(?string $value)
     {
         return $this->setData(self::KEYVALUE, $value);
     }
 
-    public function getLinkType(): ?string
+    public function getLinkType(): ?int
     {
         return $this->getData(self::LINK_TYPE);
     }
 
-    public function setLinkType(string $value)
+    public function setLinkType(?int $value)
     {
         return $this->setData(self::LINK_TYPE, $value);
     }
@@ -80,67 +100,67 @@ class LSCRetailImageLink extends AbstractModel
         return $this->getData(self::RECORD_ID);
     }
 
-    public function setRecordId(string $value)
+    public function setRecordId(?string $value)
     {
         return $this->setData(self::RECORD_ID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
-    public function getTableName(): ?string
+    public function getTablename(): ?string
     {
         return $this->getData(self::TABLENAME);
     }
 
-    public function setTableName(string $value)
+    public function setTablename(?string $value)
     {
         return $this->setData(self::TABLENAME, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }

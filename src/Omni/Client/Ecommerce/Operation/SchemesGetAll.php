@@ -78,7 +78,7 @@ class SchemesGetAll extends AbstractOperation
     /**
      * @return SchemesGetAllRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new SchemesGetAllRequest();

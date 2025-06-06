@@ -78,7 +78,7 @@ class ImageGetById extends AbstractOperation
     /**
      * @return ImageGetByIdRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ImageGetByIdRequest();

@@ -78,7 +78,7 @@ class OrderStatusCheck extends AbstractOperation
     /**
      * @return OrderStatusCheckRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new OrderStatusCheckRequest();

@@ -25,19 +25,19 @@ class GetCoStatusExists extends \Magento\Catalog\Model\AbstractModel implements 
     public const ERROR_TEXT = 'errorText';
 
     /**
-     * @param string $storeNo
+     * @param ?string $storeNo
      * @return $this
      */
-    public function setStoreNo($storeNo)
+    public function setStoreno(?string $storeNo)
     {
         $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getStoreNo()
+    public function getStoreno() : ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -46,7 +46,7 @@ class GetCoStatusExists extends \Magento\Catalog\Model\AbstractModel implements 
      * @param int $customerOrderStatus
      * @return $this
      */
-    public function setCustomerOrderStatus($customerOrderStatus)
+    public function setCustomerorderstatus($customerOrderStatus)
     {
         $this->setData(self::CUSTOMER_ORDER_STATUS, $customerOrderStatus);
         return $this;
@@ -55,61 +55,61 @@ class GetCoStatusExists extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return int
      */
-    public function getCustomerOrderStatus()
+    public function getCustomerorderstatus()
     {
         return $this->getData(self::CUSTOMER_ORDER_STATUS);
     }
 
     /**
-     * @param boolean $customerOrdersExist
+     * @param ?bool $customerOrdersExist
      * @return $this
      */
-    public function setCustomerOrdersExist($customerOrdersExist)
+    public function setCustomerordersexist(?bool $customerOrdersExist)
     {
         $this->setData(self::CUSTOMER_ORDERS_EXIST, $customerOrdersExist);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getCustomerOrdersExist()
+    public function getCustomerordersexist() : ?bool
     {
         return $this->getData(self::CUSTOMER_ORDERS_EXIST);
     }
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

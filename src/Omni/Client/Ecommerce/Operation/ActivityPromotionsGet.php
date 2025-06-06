@@ -78,7 +78,7 @@ class ActivityPromotionsGet extends AbstractOperation
     /**
      * @return ActivityPromotionsGetRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ActivityPromotionsGetRequest();

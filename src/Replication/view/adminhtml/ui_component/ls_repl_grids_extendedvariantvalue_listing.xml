@@ -20,14 +20,14 @@
                 Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
             </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_extendedvariantvalue_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">repl_extended_variant_value_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">repl_lsc_wi_extd_variant_values_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">repl_extended_variant_value_id</item>
+                        <item name="indexField" xsi:type="string">repl_lsc_wi_extd_variant_values_id</item>
                     </item>
                 </item>
             </argument>
@@ -94,7 +94,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Code">
+        <column name="code">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -152,7 +152,7 @@
                 </item>
             </argument>
         </column>
-        <column name="DimensionLogicalOrder">
+        <column name="dimension_order">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -163,7 +163,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Dimensions">
+        <column name="dimension">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -174,7 +174,7 @@
                 </item>
             </argument>
         </column>
-        <column name="FrameworkCode">
+        <column name="framework_code">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -185,7 +185,7 @@
                 </item>
             </argument>
         </column>
-        <column name="ItemId">
+        <column name="item_no">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -196,7 +196,7 @@
                 </item>
             </argument>
         </column>
-        <column name="LogicalOrder">
+        <column name="logical_order">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -207,18 +207,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Timestamp">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Timestamp</item>
-                    <item name="sortOrder" xsi:type="number">11</item>
-                </item>
-            </argument>
-        </column>
-        <column name="Value">
+        <column name="value">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

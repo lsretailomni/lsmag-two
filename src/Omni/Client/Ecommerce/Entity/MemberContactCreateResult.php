@@ -18,160 +18,160 @@ class MemberContactCreateResult extends \Magento\Catalog\Model\AbstractModel imp
 
     public const ERROR_TEXT = 'errorText';
 
-    public const CLUB_I_D = 'clubID';
+    public const CLUB_ID = 'clubID';
 
-    public const SCHEME_I_D = 'schemeID';
+    public const SCHEME_ID = 'schemeID';
 
-    public const ACCOUNT_I_D = 'accountID';
+    public const ACCOUNT_ID = 'accountID';
 
-    public const CONTACT_I_D = 'contactID';
+    public const CONTACT_ID = 'contactID';
 
-    public const CARD_I_D = 'cardID';
+    public const CARD_ID = 'cardID';
 
     public const TOTAL_REMAINING_POINTS = 'totalRemainingPoints';
 
-    public const MEMBER_CONTACT_CREATE_X_M_L = 'memberContactCreateXML';
+    public const MEMBER_CONTACT_CREATE_XML = 'memberContactCreateXML';
 
     /**
-     * @param string $responseCode
+     * @param ?string $responseCode
      * @return $this
      */
-    public function setResponseCode($responseCode)
+    public function setResponsecode(?string $responseCode)
     {
         $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getResponseCode()
+    public function getResponsecode() : ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
 
     /**
-     * @param string $errorText
+     * @param ?string $errorText
      * @return $this
      */
-    public function setErrorText($errorText)
+    public function setErrortext(?string $errorText)
     {
         $this->setData(self::ERROR_TEXT, $errorText);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrortext() : ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
 
     /**
-     * @param string $clubID
+     * @param ?string $clubID
      * @return $this
      */
-    public function setClubID($clubID)
+    public function setClubid(?string $clubID)
     {
-        $this->setData(self::CLUB_I_D, $clubID);
+        $this->setData(self::CLUB_ID, $clubID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getClubID()
+    public function getClubid() : ?string
     {
-        return $this->getData(self::CLUB_I_D);
+        return $this->getData(self::CLUB_ID);
     }
 
     /**
-     * @param string $schemeID
+     * @param ?string $schemeID
      * @return $this
      */
-    public function setSchemeID($schemeID)
+    public function setSchemeid(?string $schemeID)
     {
-        $this->setData(self::SCHEME_I_D, $schemeID);
+        $this->setData(self::SCHEME_ID, $schemeID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSchemeID()
+    public function getSchemeid() : ?string
     {
-        return $this->getData(self::SCHEME_I_D);
+        return $this->getData(self::SCHEME_ID);
     }
 
     /**
-     * @param string $accountID
+     * @param ?string $accountID
      * @return $this
      */
-    public function setAccountID($accountID)
+    public function setAccountid(?string $accountID)
     {
-        $this->setData(self::ACCOUNT_I_D, $accountID);
+        $this->setData(self::ACCOUNT_ID, $accountID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAccountID()
+    public function getAccountid() : ?string
     {
-        return $this->getData(self::ACCOUNT_I_D);
+        return $this->getData(self::ACCOUNT_ID);
     }
 
     /**
-     * @param string $contactID
+     * @param ?string $contactID
      * @return $this
      */
-    public function setContactID($contactID)
+    public function setContactid(?string $contactID)
     {
-        $this->setData(self::CONTACT_I_D, $contactID);
+        $this->setData(self::CONTACT_ID, $contactID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContactID()
+    public function getContactid() : ?string
     {
-        return $this->getData(self::CONTACT_I_D);
+        return $this->getData(self::CONTACT_ID);
     }
 
     /**
-     * @param string $cardID
+     * @param ?string $cardID
      * @return $this
      */
-    public function setCardID($cardID)
+    public function setCardid(?string $cardID)
     {
-        $this->setData(self::CARD_I_D, $cardID);
+        $this->setData(self::CARD_ID, $cardID);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getCardID()
+    public function getCardid() : ?string
     {
-        return $this->getData(self::CARD_I_D);
+        return $this->getData(self::CARD_ID);
     }
 
     /**
-     * @param float $totalRemainingPoints
+     * @param ?float $totalRemainingPoints
      * @return $this
      */
-    public function setTotalRemainingPoints($totalRemainingPoints)
+    public function setTotalremainingpoints(?float $totalRemainingPoints)
     {
         $this->setData(self::TOTAL_REMAINING_POINTS, $totalRemainingPoints);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getTotalRemainingPoints()
+    public function getTotalremainingpoints() : ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
@@ -180,18 +180,18 @@ class MemberContactCreateResult extends \Magento\Catalog\Model\AbstractModel imp
      * @param RootMemberContactCreate $memberContactCreateXML
      * @return $this
      */
-    public function setMemberContactCreateXML($memberContactCreateXML)
+    public function setMembercontactcreatexml($memberContactCreateXML)
     {
-        $this->setData(self::MEMBER_CONTACT_CREATE_X_M_L, $memberContactCreateXML);
+        $this->setData(self::MEMBER_CONTACT_CREATE_XML, $memberContactCreateXML);
         return $this;
     }
 
     /**
      * @return RootMemberContactCreate
      */
-    public function getMemberContactCreateXML()
+    public function getMembercontactcreatexml()
     {
-        return $this->getData(self::MEMBER_CONTACT_CREATE_X_M_L);
+        return $this->getData(self::MEMBER_CONTACT_CREATE_XML);
     }
 
     /**

@@ -11,7 +11,7 @@ use Magento\Catalog\Model\AbstractModel;
 
 class LSCValidationPeriod extends AbstractModel
 {
-    public const ID = 'ID';
+    public const NAV_ID = 'Nav Id';
     public const DESCRIPTION = 'Description';
     public const STARTING_DATE = 'Starting Date';
     public const ENDING_DATE = 'Ending Date';
@@ -56,13 +56,75 @@ class LSCValidationPeriod extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public static array $dbColumnsMapping = [
+	self::NAV_ID => 'nav_id',
+	self::DESCRIPTION => 'description',
+	self::STARTING_DATE => 'starting_date',
+	self::ENDING_DATE => 'ending_date',
+	self::STARTING_TIME => 'starting_time',
+	self::ENDING_TIME => 'ending_time',
+	self::TIME_WITHIN_BOUNDS => 'time_within_bounds',
+	self::MONDAY_STARTING_TIME => 'monday_starting_time',
+	self::MONDAY_ENDING_TIME => 'monday_ending_time',
+	self::MON_TIME_WITHIN_BOUNDS => 'mon_time_within_bounds',
+	self::TUESDAY_STARTING_TIME => 'tuesday_starting_time',
+	self::TUESDAY_ENDING_TIME => 'tuesday_ending_time',
+	self::TUE_TIME_WITHIN_BOUNDS => 'tue_time_within_bounds',
+	self::WEDNESDAY_STARTING_TIME => 'wednesday_starting_time',
+	self::WEDNESDAY_ENDING_TIME => 'wednesday_ending_time',
+	self::WED_TIME_WITHIN_BOUNDS => 'wed_time_within_bounds',
+	self::THURSDAY_STARTING_TIME => 'thursday_starting_time',
+	self::THURSDAY_ENDING_TIME => 'thursday_ending_time',
+	self::THU_TIME_WITHIN_BOUNDS => 'thu_time_within_bounds',
+	self::FRIDAY_STARTING_TIME => 'friday_starting_time',
+	self::FRIDAY_ENDING_TIME => 'friday_ending_time',
+	self::FRI_TIME_WITHIN_BOUNDS => 'fri_time_within_bounds',
+	self::SATURDAY_STARTING_TIME => 'saturday_starting_time',
+	self::SATURDAY_ENDING_TIME => 'saturday_ending_time',
+	self::SAT_TIME_WITHIN_BOUNDS => 'sat_time_within_bounds',
+	self::SUNDAY_STARTING_TIME => 'sunday_starting_time',
+	self::SUNDAY_ENDING_TIME => 'sunday_ending_time',
+	self::SUN_TIME_WITHIN_BOUNDS => 'sun_time_within_bounds',
+	self::ENDING_TIME_AFTER_MIDNIGHT => 'ending_time_after_midnight',
+	self::MON_END_TIME_AFTER_MIDNIGHT => 'mon_end_time_after_midnight',
+	self::TUE_END_TIME_AFTER_MIDNIGHT => 'tue_end_time_after_midnight',
+	self::WED_END_TIME_AFTER_MIDNIGHT => 'wed_end_time_after_midnight',
+	self::THU_END_TIME_AFTER_MIDNIGHT => 'thu_end_time_after_midnight',
+	self::FRI_END_TIME_AFTER_MIDNIGHT => 'fri_end_time_after_midnight',
+	self::SAT_END_TIME_AFTER_MIDNIGHT => 'sat_end_time_after_midnight',
+	self::SUN_END_TIME_AFTER_MIDNIGHT => 'sun_end_time_after_midnight',
+	self::NO_SERIES => 'no_series',
+	self::OFFER_STARTING_TIME => 'offer_starting_time',
+	self::OFFER_ENDING_TIME => 'offer_ending_time',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
+
+    public function getNavId()
+    {
+        return $this->getData(self::NAV_ID);
+    }
+
+    public function setNavId( $value)
+    {
+        return $this->setData(self::NAV_ID, $value);
+    }
 
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -72,7 +134,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::STARTING_DATE);
     }
 
-    public function setStartingDate(string $value)
+    public function setStartingDate(?string $value)
     {
         return $this->setData(self::STARTING_DATE, $value);
     }
@@ -82,7 +144,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::ENDING_DATE);
     }
 
-    public function setEndingDate(string $value)
+    public function setEndingDate(?string $value)
     {
         return $this->setData(self::ENDING_DATE, $value);
     }
@@ -92,7 +154,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::STARTING_TIME);
     }
 
-    public function setStartingTime(string $value)
+    public function setStartingTime(?string $value)
     {
         return $this->setData(self::STARTING_TIME, $value);
     }
@@ -102,7 +164,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::ENDING_TIME);
     }
 
-    public function setEndingTime(string $value)
+    public function setEndingTime(?string $value)
     {
         return $this->setData(self::ENDING_TIME, $value);
     }
@@ -112,7 +174,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::TIME_WITHIN_BOUNDS);
     }
 
-    public function setTimeWithinBounds(bool $value)
+    public function setTimeWithinBounds(?bool $value)
     {
         return $this->setData(self::TIME_WITHIN_BOUNDS, $value);
     }
@@ -122,7 +184,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::MONDAY_STARTING_TIME);
     }
 
-    public function setMondayStartingTime(string $value)
+    public function setMondayStartingTime(?string $value)
     {
         return $this->setData(self::MONDAY_STARTING_TIME, $value);
     }
@@ -132,7 +194,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::MONDAY_ENDING_TIME);
     }
 
-    public function setMondayEndingTime(string $value)
+    public function setMondayEndingTime(?string $value)
     {
         return $this->setData(self::MONDAY_ENDING_TIME, $value);
     }
@@ -142,7 +204,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::MON_TIME_WITHIN_BOUNDS);
     }
 
-    public function setMonTimeWithinBounds(bool $value)
+    public function setMonTimeWithinBounds(?bool $value)
     {
         return $this->setData(self::MON_TIME_WITHIN_BOUNDS, $value);
     }
@@ -152,7 +214,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::TUESDAY_STARTING_TIME);
     }
 
-    public function setTuesdayStartingTime(string $value)
+    public function setTuesdayStartingTime(?string $value)
     {
         return $this->setData(self::TUESDAY_STARTING_TIME, $value);
     }
@@ -162,7 +224,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::TUESDAY_ENDING_TIME);
     }
 
-    public function setTuesdayEndingTime(string $value)
+    public function setTuesdayEndingTime(?string $value)
     {
         return $this->setData(self::TUESDAY_ENDING_TIME, $value);
     }
@@ -172,7 +234,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::TUE_TIME_WITHIN_BOUNDS);
     }
 
-    public function setTueTimeWithinBounds(bool $value)
+    public function setTueTimeWithinBounds(?bool $value)
     {
         return $this->setData(self::TUE_TIME_WITHIN_BOUNDS, $value);
     }
@@ -182,7 +244,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::WEDNESDAY_STARTING_TIME);
     }
 
-    public function setWednesdayStartingTime(string $value)
+    public function setWednesdayStartingTime(?string $value)
     {
         return $this->setData(self::WEDNESDAY_STARTING_TIME, $value);
     }
@@ -192,7 +254,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::WEDNESDAY_ENDING_TIME);
     }
 
-    public function setWednesdayEndingTime(string $value)
+    public function setWednesdayEndingTime(?string $value)
     {
         return $this->setData(self::WEDNESDAY_ENDING_TIME, $value);
     }
@@ -202,7 +264,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::WED_TIME_WITHIN_BOUNDS);
     }
 
-    public function setWedTimeWithinBounds(bool $value)
+    public function setWedTimeWithinBounds(?bool $value)
     {
         return $this->setData(self::WED_TIME_WITHIN_BOUNDS, $value);
     }
@@ -212,7 +274,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::THURSDAY_STARTING_TIME);
     }
 
-    public function setThursdayStartingTime(string $value)
+    public function setThursdayStartingTime(?string $value)
     {
         return $this->setData(self::THURSDAY_STARTING_TIME, $value);
     }
@@ -222,7 +284,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::THURSDAY_ENDING_TIME);
     }
 
-    public function setThursdayEndingTime(string $value)
+    public function setThursdayEndingTime(?string $value)
     {
         return $this->setData(self::THURSDAY_ENDING_TIME, $value);
     }
@@ -232,7 +294,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::THU_TIME_WITHIN_BOUNDS);
     }
 
-    public function setThuTimeWithinBounds(bool $value)
+    public function setThuTimeWithinBounds(?bool $value)
     {
         return $this->setData(self::THU_TIME_WITHIN_BOUNDS, $value);
     }
@@ -242,7 +304,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::FRIDAY_STARTING_TIME);
     }
 
-    public function setFridayStartingTime(string $value)
+    public function setFridayStartingTime(?string $value)
     {
         return $this->setData(self::FRIDAY_STARTING_TIME, $value);
     }
@@ -252,7 +314,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::FRIDAY_ENDING_TIME);
     }
 
-    public function setFridayEndingTime(string $value)
+    public function setFridayEndingTime(?string $value)
     {
         return $this->setData(self::FRIDAY_ENDING_TIME, $value);
     }
@@ -262,7 +324,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::FRI_TIME_WITHIN_BOUNDS);
     }
 
-    public function setFriTimeWithinBounds(bool $value)
+    public function setFriTimeWithinBounds(?bool $value)
     {
         return $this->setData(self::FRI_TIME_WITHIN_BOUNDS, $value);
     }
@@ -272,7 +334,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::SATURDAY_STARTING_TIME);
     }
 
-    public function setSaturdayStartingTime(string $value)
+    public function setSaturdayStartingTime(?string $value)
     {
         return $this->setData(self::SATURDAY_STARTING_TIME, $value);
     }
@@ -282,7 +344,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::SATURDAY_ENDING_TIME);
     }
 
-    public function setSaturdayEndingTime(string $value)
+    public function setSaturdayEndingTime(?string $value)
     {
         return $this->setData(self::SATURDAY_ENDING_TIME, $value);
     }
@@ -292,7 +354,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::SAT_TIME_WITHIN_BOUNDS);
     }
 
-    public function setSatTimeWithinBounds(bool $value)
+    public function setSatTimeWithinBounds(?bool $value)
     {
         return $this->setData(self::SAT_TIME_WITHIN_BOUNDS, $value);
     }
@@ -302,7 +364,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::SUNDAY_STARTING_TIME);
     }
 
-    public function setSundayStartingTime(string $value)
+    public function setSundayStartingTime(?string $value)
     {
         return $this->setData(self::SUNDAY_STARTING_TIME, $value);
     }
@@ -312,7 +374,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::SUNDAY_ENDING_TIME);
     }
 
-    public function setSundayEndingTime(string $value)
+    public function setSundayEndingTime(?string $value)
     {
         return $this->setData(self::SUNDAY_ENDING_TIME, $value);
     }
@@ -322,7 +384,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::SUN_TIME_WITHIN_BOUNDS);
     }
 
-    public function setSunTimeWithinBounds(bool $value)
+    public function setSunTimeWithinBounds(?bool $value)
     {
         return $this->setData(self::SUN_TIME_WITHIN_BOUNDS, $value);
     }
@@ -332,7 +394,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::ENDING_TIME_AFTER_MIDNIGHT);
     }
 
-    public function setEndingTimeAfterMidnight(bool $value)
+    public function setEndingTimeAfterMidnight(?bool $value)
     {
         return $this->setData(self::ENDING_TIME_AFTER_MIDNIGHT, $value);
     }
@@ -342,7 +404,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::MON_END_TIME_AFTER_MIDNIGHT);
     }
 
-    public function setMonEndTimeAfterMidnight(bool $value)
+    public function setMonEndTimeAfterMidnight(?bool $value)
     {
         return $this->setData(self::MON_END_TIME_AFTER_MIDNIGHT, $value);
     }
@@ -352,7 +414,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::TUE_END_TIME_AFTER_MIDNIGHT);
     }
 
-    public function setTueEndTimeAfterMidnight(bool $value)
+    public function setTueEndTimeAfterMidnight(?bool $value)
     {
         return $this->setData(self::TUE_END_TIME_AFTER_MIDNIGHT, $value);
     }
@@ -362,7 +424,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::WED_END_TIME_AFTER_MIDNIGHT);
     }
 
-    public function setWedEndTimeAfterMidnight(bool $value)
+    public function setWedEndTimeAfterMidnight(?bool $value)
     {
         return $this->setData(self::WED_END_TIME_AFTER_MIDNIGHT, $value);
     }
@@ -372,7 +434,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::THU_END_TIME_AFTER_MIDNIGHT);
     }
 
-    public function setThuEndTimeAfterMidnight(bool $value)
+    public function setThuEndTimeAfterMidnight(?bool $value)
     {
         return $this->setData(self::THU_END_TIME_AFTER_MIDNIGHT, $value);
     }
@@ -382,7 +444,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::FRI_END_TIME_AFTER_MIDNIGHT);
     }
 
-    public function setFriEndTimeAfterMidnight(bool $value)
+    public function setFriEndTimeAfterMidnight(?bool $value)
     {
         return $this->setData(self::FRI_END_TIME_AFTER_MIDNIGHT, $value);
     }
@@ -392,7 +454,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::SAT_END_TIME_AFTER_MIDNIGHT);
     }
 
-    public function setSatEndTimeAfterMidnight(bool $value)
+    public function setSatEndTimeAfterMidnight(?bool $value)
     {
         return $this->setData(self::SAT_END_TIME_AFTER_MIDNIGHT, $value);
     }
@@ -402,7 +464,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::SUN_END_TIME_AFTER_MIDNIGHT);
     }
 
-    public function setSunEndTimeAfterMidnight(bool $value)
+    public function setSunEndTimeAfterMidnight(?bool $value)
     {
         return $this->setData(self::SUN_END_TIME_AFTER_MIDNIGHT, $value);
     }
@@ -412,7 +474,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::NO_SERIES);
     }
 
-    public function setNoSeries(string $value)
+    public function setNoSeries(?string $value)
     {
         return $this->setData(self::NO_SERIES, $value);
     }
@@ -422,7 +484,7 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::OFFER_STARTING_TIME);
     }
 
-    public function setOfferStartingTime(string $value)
+    public function setOfferStartingTime(?string $value)
     {
         return $this->setData(self::OFFER_STARTING_TIME, $value);
     }
@@ -432,57 +494,57 @@ class LSCValidationPeriod extends AbstractModel
         return $this->getData(self::OFFER_ENDING_TIME);
     }
 
-    public function setOfferEndingTime(string $value)
+    public function setOfferEndingTime(?string $value)
     {
         return $this->setData(self::OFFER_ENDING_TIME, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

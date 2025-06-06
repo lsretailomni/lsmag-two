@@ -48,7 +48,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
      * @param int $WorksheetSeqNo
      * @return $this
      */
-    public function setWorksheetSeqNo($WorksheetSeqNo)
+    public function setWorksheetseqno($WorksheetSeqNo)
     {
         $this->setData(self::WORKSHEET_SEQ_NO, $WorksheetSeqNo);
         return $this;
@@ -57,7 +57,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return int
      */
-    public function getWorksheetSeqNo()
+    public function getWorksheetseqno()
     {
         return $this->getData(self::WORKSHEET_SEQ_NO);
     }
@@ -66,7 +66,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
      * @param int $LineNo
      * @return $this
      */
-    public function setLineNo($LineNo)
+    public function setLineno($LineNo)
     {
         $this->setData(self::LINE_NO, $LineNo);
         return $this;
@@ -75,25 +75,25 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return int
      */
-    public function getLineNo()
+    public function getLineno()
     {
         return $this->getData(self::LINE_NO);
     }
 
     /**
-     * @param string $TransactionNo
+     * @param ?string $TransactionNo
      * @return $this
      */
-    public function setTransactionNo($TransactionNo)
+    public function setTransactionno(?string $TransactionNo)
     {
         $this->setData(self::TRANSACTION_NO, $TransactionNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getTransactionNo()
+    public function getTransactionno() : ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -102,7 +102,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
      * @param int $TransactionLineNo
      * @return $this
      */
-    public function setTransactionLineNo($TransactionLineNo)
+    public function setTransactionlineno($TransactionLineNo)
     {
         $this->setData(self::TRANSACTION_LINE_NO, $TransactionLineNo);
         return $this;
@@ -111,223 +111,223 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return int
      */
-    public function getTransactionLineNo()
+    public function getTransactionlineno()
     {
         return $this->getData(self::TRANSACTION_LINE_NO);
     }
 
     /**
-     * @param string $ItemNo
+     * @param ?string $ItemNo
      * @return $this
      */
-    public function setItemNo($ItemNo)
+    public function setItemno(?string $ItemNo)
     {
         $this->setData(self::ITEM_NO, $ItemNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getItemNo()
+    public function getItemno() : ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
     /**
-     * @param string $Barcode
+     * @param ?string $Barcode
      * @return $this
      */
-    public function setBarcode($Barcode)
+    public function setBarcode(?string $Barcode)
     {
         $this->setData(self::BARCODE, $Barcode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getBarcode()
+    public function getBarcode() : ?string
     {
         return $this->getData(self::BARCODE);
     }
 
     /**
-     * @param float $Quantity
+     * @param ?float $Quantity
      * @return $this
      */
-    public function setQuantity($Quantity)
+    public function setQuantity(?float $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getQuantity()
+    public function getQuantity() : ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param string $UnitofMeasureCode
+     * @param ?string $UnitofMeasureCode
      * @return $this
      */
-    public function setUnitofMeasureCode($UnitofMeasureCode)
+    public function setUnitofmeasurecode(?string $UnitofMeasureCode)
     {
         $this->setData(self::UNITOF_MEASURE_CODE, $UnitofMeasureCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getUnitofMeasureCode()
+    public function getUnitofmeasurecode() : ?string
     {
         return $this->getData(self::UNITOF_MEASURE_CODE);
     }
 
     /**
-     * @param string $VariantCode
+     * @param ?string $VariantCode
      * @return $this
      */
-    public function setVariantCode($VariantCode)
+    public function setVariantcode(?string $VariantCode)
     {
         $this->setData(self::VARIANT_CODE, $VariantCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getVariantCode()
+    public function getVariantcode() : ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
 
     /**
-     * @param float $CompetitorPrice
+     * @param ?float $CompetitorPrice
      * @return $this
      */
-    public function setCompetitorPrice($CompetitorPrice)
+    public function setCompetitorprice(?float $CompetitorPrice)
     {
         $this->setData(self::COMPETITOR_PRICE, $CompetitorPrice);
         return $this;
     }
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getCompetitorPrice()
+    public function getCompetitorprice() : ?float
     {
         return $this->getData(self::COMPETITOR_PRICE);
     }
 
     /**
-     * @param string $AreaCode
+     * @param ?string $AreaCode
      * @return $this
      */
-    public function setAreaCode($AreaCode)
+    public function setAreacode(?string $AreaCode)
     {
         $this->setData(self::AREA_CODE, $AreaCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAreaCode()
+    public function getAreacode() : ?string
     {
         return $this->getData(self::AREA_CODE);
     }
 
     /**
-     * @param string $SerialNo
+     * @param ?string $SerialNo
      * @return $this
      */
-    public function setSerialNo($SerialNo)
+    public function setSerialno(?string $SerialNo)
     {
         $this->setData(self::SERIAL_NO, $SerialNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getSerialNo()
+    public function getSerialno() : ?string
     {
         return $this->getData(self::SERIAL_NO);
     }
 
     /**
-     * @param string $LotNo
+     * @param ?string $LotNo
      * @return $this
      */
-    public function setLotNo($LotNo)
+    public function setLotno(?string $LotNo)
     {
         $this->setData(self::LOT_NO, $LotNo);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getLotNo()
+    public function getLotno() : ?string
     {
         return $this->getData(self::LOT_NO);
     }
 
     /**
-     * @param date $ExpiryDate
+     * @param ?string $ExpiryDate
      * @return $this
      */
-    public function setExpiryDate($ExpiryDate)
+    public function setExpirydate(?string $ExpiryDate)
     {
         $this->setData(self::EXPIRY_DATE, $ExpiryDate);
         return $this;
     }
 
     /**
-     * @return date
+     * @return ?string
      */
-    public function getExpiryDate()
+    public function getExpirydate() : ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
 
     /**
-     * @param string $ReasonCode
+     * @param ?string $ReasonCode
      * @return $this
      */
-    public function setReasonCode($ReasonCode)
+    public function setReasoncode(?string $ReasonCode)
     {
         $this->setData(self::REASON_CODE, $ReasonCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getReasonCode()
+    public function getReasoncode() : ?string
     {
         return $this->getData(self::REASON_CODE);
     }
 
     /**
-     * @param boolean $EndOfTransaction
+     * @param ?bool $EndOfTransaction
      * @return $this
      */
-    public function setEndOfTransaction($EndOfTransaction)
+    public function setEndoftransaction(?bool $EndOfTransaction)
     {
         $this->setData(self::END_OF_TRANSACTION, $EndOfTransaction);
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return ?bool
      */
-    public function getEndOfTransaction()
+    public function getEndoftransaction() : ?bool
     {
         return $this->getData(self::END_OF_TRANSACTION);
     }

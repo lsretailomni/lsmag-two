@@ -78,7 +78,7 @@ class ItemsInStoreGet extends AbstractOperation
     /**
      * @return ItemsInStoreGetRequest
      */
-    public function & getOperationInput()
+    public function & setOperationInput(array $params = [])
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ItemsInStoreGetRequest();
