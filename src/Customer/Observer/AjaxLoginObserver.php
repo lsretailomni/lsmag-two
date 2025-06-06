@@ -4,7 +4,7 @@ namespace Ls\Customer\Observer;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\RootMemberLogon;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\Json;
@@ -35,8 +35,9 @@ class AjaxLoginObserver extends AbstractOmniObserver
             $credentials = $this->jsonHelper->jsonDecode($request->getContent());
 
             if (!empty($credentials['username']) && !empty($credentials['password'])) {
-                $email     = $username = $credentials['username'];
-                $is_email  = $this->contactHelper->isValid($username);
+                $email = $username = $credentials['username'];
+                $isEmail = $this->contactHelper->isValid($username);
+                $search = null;
                 if ($this->lsr->isLSR(
                     $this->lsr->getCurrentStoreId(),
                     false,
@@ -44,16 +45,16 @@ class AjaxLoginObserver extends AbstractOmniObserver
                 )) {
                     try {
                         // CASE FOR EMAIL LOGIN := TRANSLATION TO USERNAME
-                        if ($is_email) {
+                        if ($isEmail) {
                             $search = $this->contactHelper->search($username);
-                            $found  = $search !== null
-                                && ($search instanceof Entity\MemberContact)
-                                && !empty($search->getEmail());
+                            $found = $search !== null
+                                && !empty($search->getLscMemberContact())
+                                && !empty($search->getLscMemberContact()->getEmail());
                             if (!$found) {
                                 $message = __('Sorry. No account found with the provided email address');
                                 return $this->generateMessage($observer, $message, true);
                             }
-                            $username = $search->getUserName();
+                            $username = $search->getLscMemberLoginCard()->getLoginId();
                         }
                         $result = $this->contactHelper->login($username, $credentials['password']);
                         if ($result == false) {
@@ -61,15 +62,20 @@ class AjaxLoginObserver extends AbstractOmniObserver
                             return $this->generateMessage($observer, $message, true);
                         }
                         $response = [
-                            'errors'  => false,
+                            'errors' => false,
                             'message' => __('Omni login successful.')
                         ];
-                        if ($result instanceof Entity\MemberContact) {
+                        if ($result instanceof RootMemberLogon) {
+                            if ($isEmail === false && !$search) {
+                                $search = $this->contactHelper->search(
+                                    current($result->getMembercontact())->getEMail()
+                                );
+                            }
+                            $this->contactHelper->processCustomerLogin($search, $credentials, $isEmail);
                             /**
                              * Fetch customer related info from omni and create user in magento
                              */
-                            $this->contactHelper->processCustomerLogin($result, $credentials, $is_email);
-                            $this->contactHelper->updateBasketAndWishlistAfterLogin($result);
+//                            $this->contactHelper->updateBasketAndWishlistAfterLogin($result);
                             $this->customerSession->regenerateId();
                             $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
                             return $resultJson->setData($response);
@@ -82,7 +88,7 @@ class AjaxLoginObserver extends AbstractOmniObserver
                     }
                 } else {
                     $isAjax = true;
-                    $this->contactHelper->loginCustomerIfOmniServiceDown($is_email, $email, $request, $isAjax);
+                    $this->contactHelper->loginCustomerIfOmniServiceDown($isEmail, $email, $request, $isAjax);
                 }
             }
         }
@@ -100,7 +106,7 @@ class AjaxLoginObserver extends AbstractOmniObserver
     private function generateMessage(Observer $observer, $message, $isError = true)
     {
         $response = [
-            'errors'  => $isError,
+            'errors' => $isError,
             'message' => __($message)
         ];
         $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);

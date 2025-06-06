@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use \Ls\Omni\Client\Ecommerce\Entity\GetMemberCard;
 use \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
@@ -165,7 +166,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      * Get loyalty points available to customer
      *
      * @return int|Entity\CardGetPointBalanceResponse|ResponseInterface|null
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getLoyaltyPointsAvailableToCustomer()
     {
@@ -180,16 +181,18 @@ class LoyaltyHelper extends AbstractHelperOmni
 
         if ($cardId && $points == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             // @codingStandardsIgnoreStart
-            $request = new Operation\CardGetPointBalance();
-            $entity  = new Entity\CardGetPointBalance();
+            $operation = new Operation\GetMemberCard();
+            $operation->setOperationInput([
+                GetMemberCard::CARD_NO => $cardId,
+                GetMemberCard::TOTAL_REMAINING_POINTS => 0
+            ]);
             // @codingStandardsIgnoreEnd
-            $entity->setCardId($cardId);
             try {
-                $response = $request->execute($entity);
+                $response = $operation->execute();
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
-            $points = $response ? $response->getResult() : 0;
+            $points = $response ? $response->getTotalremainingpoints() : 0;
 
             $this->basketHelper->setMemberPointsInCheckoutSession($points);
         }

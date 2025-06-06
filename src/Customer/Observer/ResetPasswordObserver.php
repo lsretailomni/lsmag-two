@@ -4,18 +4,9 @@ namespace Ls\Customer\Observer;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use \Ls\Core\Model\LSR;
-use Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\ActionFlag;
-use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Message\ManagerInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Observer responsible for syncing customer password in case if it is reset
@@ -44,8 +35,8 @@ class ResetPasswordObserver extends AbstractOmniObserver
         )) {
             try {
                 $controller_action = $observer->getData('controller_action');
-                $post_param        = $controller_action->getRequest()->getParams();
-                $result            = null;
+                $post_param = $controller_action->getRequest()->getParams();
+                $result = null;
                 /**
                  * only have to continue if actual event does not throws any error
                  * from Magento/Customer/Controller/Account/ResetPasswordPost.php
@@ -55,10 +46,10 @@ class ResetPasswordObserver extends AbstractOmniObserver
                 $isFailed = $this->customerSession->getRpToken();
                 if (!$isFailed) {
                     $customerId = $observer->getRequest()->getQuery('id');
-                    $customer   =  $this->customerFactory->create()->load($customerId);
+                    $customer = $this->customerFactory->create()->load($customerId);
 
                     if ($customer) {
-                        $result   = $this->contactHelper->resetPassword($customer, $post_param);
+                        $result = $this->contactHelper->resetPassword($customer, $post_param);
                     }
                     if (!$result) {
                         $this->messageManager->addErrorMessage(

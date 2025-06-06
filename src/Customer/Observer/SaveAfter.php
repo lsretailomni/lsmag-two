@@ -4,20 +4,15 @@ namespace Ls\Customer\Observer;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Exception\InvalidEnumException;
-use Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Model\Customer;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\InvalidTransitionException;
-use Psr\Log\LoggerInterface;
-use Magento\Customer\Model\ResourceModel\Customer as CustomerResourceModel;
 
 /**
  * Observer responsible for observing customer_save_after
@@ -40,7 +35,7 @@ class SaveAfter extends AbstractOmniObserver
     {
         try {
             /** @var Customer $customer */
-            $customer        = $observer->getEvent()->getCustomer();
+            $customer = $observer->getEvent()->getCustomer();
             if (empty($customer->getData('ls_password'))) {
                 return $this;
             }
@@ -72,9 +67,8 @@ class SaveAfter extends AbstractOmniObserver
                     }
                     if (is_object($contact) && $contact->getId()) {
                         $customer = $this->contactHelper->setCustomerAttributesValues($contact, $customer);
-
                         $userName = $customer->getData('lsr_username');
-                        $result   = $this->contactHelper->forgotPassword($userName);
+                        $result = $this->contactHelper->forgotPassword($userName);
 
                         if ($result) {
                             $customer->setData('lsr_resetcode', $result);

@@ -54,7 +54,7 @@ class PostLoginObserver extends AbstractOmniObserver
                     $this->lsr->getCustomerIntegrationOnFrontend()
                 )
             ) {
-                $contact = $this->contactHelper->getCentralCustomerByEmail($customer->getEmail());
+//                $contact = $this->contactHelper->getCentralCustomerByEmail($customer->getEmail());
 //                if (!empty($contact)) {
 //                    $this->contactHelper->updateBasketAndWishlistAfterLogin($contact);
 //                }

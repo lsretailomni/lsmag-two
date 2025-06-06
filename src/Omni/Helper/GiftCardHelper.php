@@ -8,11 +8,8 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\GiftCard;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Model\Cache\Type;
-use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Currency;
-use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Filesystem;
 
 /**
  * Class GiftCardHelper for gift card support

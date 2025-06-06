@@ -44,7 +44,7 @@ class LoginObserver extends AbstractOmniObserver
                 try {
                     if ($isEmail) {
                         $search = $this->contactHelper->search($username);
-                        $found  = $search !== null
+                        $found = $search !== null
                             && !empty($search->getLscMemberContact())
                             && !empty($search->getLscMemberContact()->getEmail());
                         if (!$found) {

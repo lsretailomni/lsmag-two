@@ -24,59 +24,23 @@ use Zend_Log_Exception;
 class CheckUserCreate
 {
     /**
-     * @var LoggerInterface
-     */
-    private LoggerInterface $logger;
-    /**
-     * @var ContactHelper
-     */
-    private ContactHelper $contactHelper;
-    /**
-     * @var ManagerInterface
-     */
-    private ManagerInterface $messageManager;
-    /**
-     * @var CustomerSession
-     */
-    private CustomerSession $customerSession;
-    /**
-     * @var LSR
-     */
-    private LSR $lsr;
-    /**
-     * @var RedirectInterface
-     */
-    private RedirectInterface $redirectInterface;
-    /**
-     * @var ActionFlag
-     */
-    private ActionFlag $actionFlag;
-
-    /**
      * @param LoggerInterface $logger
      * @param ContactHelper $contactHelper
      * @param ManagerInterface $messageManager
      * @param CustomerSession $customerSession
      * @param RedirectInterface $redirectInterface
      * @param ActionFlag $actionFlag
-     * @param LSR $LSR
+     * @param LSR $lsr
      */
     public function __construct(
-        LoggerInterface $logger,
-        ContactHelper $contactHelper,
-        ManagerInterface $messageManager,
-        CustomerSession $customerSession,
-        RedirectInterface $redirectInterface,
-        ActionFlag $actionFlag,
-        LSR $LSR
+        public LoggerInterface $logger,
+        public ContactHelper $contactHelper,
+        public ManagerInterface $messageManager,
+        public CustomerSession $customerSession,
+        public RedirectInterface $redirectInterface,
+        public ActionFlag $actionFlag,
+        public LSR $lsr
     ) {
-        $this->logger            = $logger;
-        $this->contactHelper     = $contactHelper;
-        $this->messageManager    = $messageManager;
-        $this->customerSession   = $customerSession;
-        $this->redirectInterface = $redirectInterface;
-        $this->actionFlag        = $actionFlag;
-        $this->lsr               = $LSR;
     }
 
     /**

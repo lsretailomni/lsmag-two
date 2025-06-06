@@ -17,41 +17,6 @@ use Magento\Store\Model\StoreManagerInterface;
 class ForgotPasswordPostPlugin
 {
     /**
-     * @var CustomerFactory
-     */
-    public $customerFactory;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    public $storeManager;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var ContactHelper
-     */
-    public $contactHelper;
-
-    /**
-     * @var Customer
-     */
-    public $customerResourceModel;
-
-    /**
-     * @var RedirectFactory
-     */
-    public $resultRedirectFactory;
-
-    /**
-     * @var MessageManagerInterface
-     */
-    public $messageManager;
-
-    /**
      * @param CustomerFactory $customerFactory
      * @param StoreManagerInterface $storeManager
      * @param LSR $lsr
@@ -61,21 +26,14 @@ class ForgotPasswordPostPlugin
      * @param MessageManagerInterface $messageManager
      */
     public function __construct(
-        CustomerFactory $customerFactory,
-        StoreManagerInterface $storeManager,
-        LSR $lsr,
-        ContactHelper $contactHelper,
-        Customer $customerResourceModel,
-        RedirectFactory $resultRedirectFactory,
-        MessageManagerInterface $messageManager
+        public CustomerFactory $customerFactory,
+        public StoreManagerInterface $storeManager,
+        public LSR $lsr,
+        public ContactHelper $contactHelper,
+        public Customer $customerResourceModel,
+        public RedirectFactory $resultRedirectFactory,
+        public MessageManagerInterface $messageManager
     ) {
-        $this->customerFactory       = $customerFactory;
-        $this->storeManager          = $storeManager;
-        $this->lsr                   = $lsr;
-        $this->contactHelper         = $contactHelper;
-        $this->customerResourceModel = $customerResourceModel;
-        $this->resultRedirectFactory = $resultRedirectFactory;
-        $this->messageManager        = $messageManager;
     }
 
     /**
@@ -114,7 +72,7 @@ class ForgotPasswordPostPlugin
                         );
                         $userName = ($customer->getData('lsr_username')) ?:
                             $search->getLscMemberLoginCard()->getLoginId();
-                        $result   = $this->contactHelper->forgotPassword($userName);
+                        $result = $this->contactHelper->forgotPassword($userName);
 
                         if ($result) {
                             if (!$customer->getId()) {

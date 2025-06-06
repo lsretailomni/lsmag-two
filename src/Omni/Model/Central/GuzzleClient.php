@@ -7,6 +7,7 @@ use GuzzleHttp\HandlerStack;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Logger\FlatReplicationLogger;
 use \Ls\Replication\Logger\OmniLogger;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -43,7 +44,7 @@ class GuzzleClient
      * @param array $query
      * @param array $data
      * @return mixed|null
-     * @throws GuzzleException
+     * @throws GuzzleException|NoSuchEntityException
      */
     public function makeRequest($baseUrl, $action, $method, $type = 'odata', $options = [], $query = [], $data = [])
     {
@@ -51,6 +52,7 @@ class GuzzleClient
             'Accept' => 'application/json',
             'Content-Type' => 'application/json'
         ];
+        $timeout = $this->lsr->getOmniTimeout();
         try {
             $tenant = $options['tenant'];
             $environmentName = $options['environmentName'];
@@ -72,7 +74,7 @@ class GuzzleClient
 
             $client = new Client([
                 'base_uri' => $baseUrl,
-                'timeout'  => 10.0,
+                'timeout'  => $timeout,
                 'headers'  => $headers,
                 'handler'  => $handlerStack
             ]);
@@ -152,6 +154,14 @@ class GuzzleClient
                                 $response->getStatusCode()
                             )
                         );
+                        $timeElapsed = $requestTime->diff($responseTime);
+                        $seconds = $timeElapsed->s + $timeElapsed->f;
+                        $this->omniLogger->debug(
+                            sprintf(
+                                "==== Time Elapsed ==== %s ====  ====",
+                                $timeElapsed->format("%i minute(s) " . $seconds . " second(s)")
+                            )
+                        );
 
                         $body = (string) $response->getBody();
                         if (!empty($body)) {
@@ -164,14 +174,6 @@ class GuzzleClient
                                 $this->currentLogger->debug(sprintf('Response Body: %s', $body));
                             }
                         }
-                        $timeElapsed = $requestTime->diff($responseTime);
-                        $seconds = $timeElapsed->s + $timeElapsed->f;
-                        $this->omniLogger->debug(
-                            sprintf(
-                                "==== Time Elapsed ==== %s ====  ====",
-                                $timeElapsed->format("%i minute(s) " . $seconds . " second(s)")
-                            )
-                        );
 
                         return $response;
                     }

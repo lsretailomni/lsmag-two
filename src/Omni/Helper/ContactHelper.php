@@ -13,7 +13,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\MemberContactCreateResult as MemberContactC
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContactUpdateResult;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordChange;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordChangeResult as MemberPasswordChangeResponse;
-use Ls\Omni\Client\Ecommerce\Entity\MemberPasswordReset;
+use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordReset;
 use \Ls\Omni\Client\Ecommerce\Entity\RootMemberContactCreate;
 use \Ls\Omni\Client\Ecommerce\Entity\RootMemberLogon;
 use \Ls\Omni\Client\Ecommerce\Operation;

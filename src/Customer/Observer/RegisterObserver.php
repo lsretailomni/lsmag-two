@@ -23,8 +23,8 @@ class RegisterObserver extends AbstractOmniObserver
     public function execute(Observer $observer)
     {
         try {
-            $session          = $this->customerSession;
-            $customer         = $session->getCustomer();
+            $session = $this->customerSession;
+            $customer = $session->getCustomer();
             $additionalParams = $this->contactHelper->getValue();
 
             if (empty($customer->getId())) {

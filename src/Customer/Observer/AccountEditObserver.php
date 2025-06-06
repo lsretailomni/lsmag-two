@@ -26,9 +26,9 @@ class AccountEditObserver extends AbstractOmniObserver
             false,
             $this->lsr->getCustomerIntegrationOnFrontend()
         )) {
-            $controller_action  = $observer->getData('controller_action');
+            $controller_action = $observer->getData('controller_action');
             $customer_edit_post = $controller_action->getRequest()->getParams();
-            $customer           = $this->customerSession->getCustomer();
+            $customer = $this->customerSession->getCustomer();
             if (isset($customer_edit_post['change_password']) && $customer_edit_post['change_password']) {
                 if ($customer_edit_post['password'] == $customer_edit_post['password_confirmation']) {
                     $result = $this->contactHelper->changePassword($customer, $customer_edit_post);
