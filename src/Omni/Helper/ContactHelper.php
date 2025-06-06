@@ -309,15 +309,16 @@ class ContactHelper extends AbstractHelperOmni
             do {
                 $parameters['lsr_username'] = $this->generateRandomUsername();
             } while ($this->isUsernameExist($parameters['lsr_username']) ||
-            ($this->lsr->isLSR(
-                $this->lsr->getCurrentStoreId(),
-                false,
-                $this->lsr->getCustomerIntegrationOnFrontend()
-            ) && $this->isUsernameExistInLsCentral($parameters['lsr_username'])
+                ($this->lsr->isLSR(
+                    $this->lsr->getCurrentStoreId(),
+                    false,
+                    $this->lsr->getCustomerIntegrationOnFrontend()
+                ) &&
+                $this->isUsernameExistInLsCentral($parameters['lsr_username'])
             ));
             /** @var Customer $customer */
             $customer = $session->getCustomer();
-            $request  = $observer->getControllerAction()->getRequest();
+            $request = $observer->getControllerAction()->getRequest();
             $request->setPostValue('lsr_username', $parameters['lsr_username']);
             if (!empty($parameters['email']) && !empty($parameters['lsr_username'])
                 && !empty($parameters['password'])
@@ -327,10 +328,12 @@ class ContactHelper extends AbstractHelperOmni
                 $customer->setData('password', $parameters['password']);
                 $customer->setData('firstname', $parameters['firstname']);
                 $customer->setData('lastname', $parameters['lastname']);
-                $customer->setData('middlename', (array_key_exists(
+                $customer->setData(
                     'middlename',
-                    $parameters
-                ) && $parameters['middlename']) ? $parameters['middlename'] : null);
+                    (array_key_exists('middlename', $parameters)
+                        && $parameters['middlename']) ?
+                        $parameters['middlename'] : null
+                );
                 $customer->setData(
                     'gender',
                     (array_key_exists('gender', $parameters) && $parameters['gender']) ? $parameters['gender'] : null
@@ -347,13 +350,14 @@ class ContactHelper extends AbstractHelperOmni
                     /** @var Entity\MemberContact $contact */
                     $contact = $this->contact($customer);
                     if ($contact && is_object($contact) && $contact->getContactid()) {
-                        $customer                   = $this->setCustomerAttributesValues($contact, $customer);
-                        $parameters['lsr_id']       = $customer->getLsrId();
+                        $customer = $this->setCustomerAttributesValues($contact, $customer);
+                        $parameters['lsr_id'] = $customer->getLsrId();
+                        $parameters['lsr_account_id'] = $customer->getLsrAccountId();
                         $parameters['lsr_username'] = $customer->getLsrUsername();
-                        $parameters['lsr_token']    = $customer->getLsrToken();
-                        $parameters['lsr_cardid']   = $customer->getLsrCardid();
-                        $parameters['group_id']     = $customer->getGroupId();
-                        $parameters['contact']      = $this->flattenModel($contact);
+                        $parameters['lsr_token'] = $customer->getLsrToken();
+                        $parameters['lsr_cardid'] = $customer->getLsrCardid();
+                        $parameters['group_id'] = $customer->getGroupId();
+                        $parameters['contact'] = $this->flattenModel($contact);
                     } else {
                         $this->_logger->info("Timeout error.");
                         $this->messageManager->addErrorMessage(
@@ -485,7 +489,7 @@ class ContactHelper extends AbstractHelperOmni
             $this->_logger->error($e->getMessage());
         }
 
-        return $response;
+        return $response && !empty($response->getAccountid()) ? $response : null;
     }
 
     /**
@@ -597,6 +601,7 @@ class ContactHelper extends AbstractHelperOmni
                 $customer->setGroupId($customerGroupId);
                 $this->customerSession->setCustomerGroupId($customerGroupId);
                 $customer->setData('lsr_id', $contact->getLscMemberContact()->getContactNo());
+                $customer->setData('lsr_account_id', $contact->getLscMemberContact()->getAccountNo());
                 $customer->setData('lsr_cardid', $contact->getLscMemberLoginCard()->getCardNo());
             } else {
                 $customerGroupId = $this->getCustomerGroupIdByName(
@@ -605,10 +610,16 @@ class ContactHelper extends AbstractHelperOmni
                 $customer->setGroupId($customerGroupId);
                 $this->customerSession->setCustomerGroupId($customerGroupId);
                 $customer->setData('lsr_id', $contact->getContactid());
+                $customer->setData('lsr_account_id', $contact->getAccountid());
                 $customer->setData('lsr_cardid', $contact->getCardid());
             }
         } else {
-            $customer->setData('lsr_id', $contact['lsr_id']);
+            if (!empty($contact['lsr_id'])) {
+                $customer->setData('lsr_id', $contact['lsr_id']);
+            }
+            if (!empty($contact['lsr_account_id'])) {
+                $customer->setData('lsr_account_id', $contact['lsr_account_id']);
+            }
             if (!empty($contact['lsr_username'])) {
                 $customer->setData('lsr_username', $contact['lsr_username']);
             }
@@ -804,7 +815,7 @@ class ContactHelper extends AbstractHelperOmni
         $this->customerRegistry->remove($customer->getId());
         $this->basketHelper->unSetOneList();
         $this->basketHelper->unSetOneListCalculation();
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSR_ACCOUNT_ID, $customer->getData('lsr_account_id'));
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
         $this->customerSession->setCustomerAsLoggedIn($customer);
@@ -833,7 +844,8 @@ class ContactHelper extends AbstractHelperOmni
                 ->setData('lastname', $memberContact->getSurname())
                 ->setData('lsr_username', $contact->getLscMemberLoginCard()->getLoginId())
                 ->setData('lsr_id', $memberContact->getContactNo())
-                ->setData('lsr_cardid', $contact->getLscMemberLoginCard()->getCardNo());
+                ->setData('lsr_cardid', $contact->getLscMemberLoginCard()->getCardNo())
+                ->setData('lsr_account_id', $memberContact->getAccountNo());
             $this->customerResourceModel->save($customer);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -1060,18 +1072,23 @@ class ContactHelper extends AbstractHelperOmni
                 } while ($this->isUsernameExist($userName) && $this->isUsernameExistInLsCentral($userName));
                 $customer->setData('lsr_username', $userName);
             }
-            $contactEmail    = $this->getCustomerByUsernameOrEmailFromLsCentral(
-                $customer->getEmail(),
-                Entity\Enum\ContactSearchType::EMAIL
-            );
-            if (!empty($contactEmail)) {
-                $contact  = $contactEmail;
+            $contactEmail = $this->searchWithUsernameOrEmail($customer->getEmail());
+            if (!empty($contactEmail->getLscMemberLoginCard())) {
+                $card = !is_array($contactEmail->getLscMembershipCard()) ?
+                    $contactEmail->getLscMembershipCard() : current($contactEmail->getLscMembershipCard());
+                $contact = [
+                    'lsr_username' => $contactEmail->getLscMemberLoginCard()->getLoginId(),
+                    'lsr_cardid' => $card->getCardNo(),
+                    'lsr_id' => $card->getContactNo(),
+                    'lsr_account_id' => $contactEmail->getLscMemberContact()->getAccountNo(),
+                    'group_id' => $card->getClubCode()
+                ];
                 $password = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
                 if (!empty($password)) {
                     $customerPost['password'] = $password;
-                    $resetCode                = $this->forgotPassword($contact->getUsername());
+                    $resetCode = $this->forgotPassword($contactEmail->getLscMemberLoginCard()->getLoginId());
                     $customer->setData('lsr_resetcode', $resetCode);
-                    $customer->setData('lsr_username', $contact->getUsername());
+                    $customer->setData('lsr_username', $contactEmail->getLscMemberLoginCard()->getLoginId());
                     $this->resetPassword($customer, $customerPost);
                     $customer->setData('lsr_resetcode', null);
                 }
@@ -1079,31 +1096,9 @@ class ContactHelper extends AbstractHelperOmni
                 $contact = $this->contact($customer);
             }
 
-            if (is_object($contact) && $contact->getId()) {
-                if (!empty($contact->getLoggedOnToDevice())) {
-                    $token = $contact->getLoggedOnToDevice()->getSecurityToken();
-                    $customer->setData('lsr_token', $token);
-                }
-
-                $customer->setData('lsr_id', $contact->getId());
-                $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
-                $customer->setData('lsr_password', null);
-                if ($contact->getAccount()->getScheme()->getId()) {
-                    $customerGroupId = $this->getCustomerGroupIdByName(
-                        $contact->getAccount()->getScheme()->getId()
-                    );
-                    $customer->setGroupId($customerGroupId);
-                }
+            if ($contact) {
+                $customer = $this->setCustomerAttributesValues($contact, $customer);
                 $this->customerResourceModel->save($customer);
-                if (!empty($customer->getAddresses())) {
-                    $customerAddress = [];
-                    foreach ($customer->getAddresses() as $address) {
-                        if ($this->isBillingAddress($address)) {
-                            // We only saving one address for now
-                            $this->updateCustomerAccount($customer, $customerAddress);
-                        }
-                    }
-                }
                 return true;
             }
         } catch (Exception $e) {
@@ -1178,7 +1173,7 @@ class ContactHelper extends AbstractHelperOmni
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getToken() : $response;
+        return $response ? $response->getToken() : null;
     }
 
     /**
@@ -1229,7 +1224,7 @@ class ContactHelper extends AbstractHelperOmni
      *
      * @param Customer $customer
      * @param $customerAddress
-     * @return NavException|NavObjectReferenceNotAnInstanceException|MemberContactUpdateResult|DataObject|string|null
+     * @return NavException|NavObjectReferenceNotAnInstanceException|AbstractModel|DataObject|string|null
      */
     public function updateCustomerAccount($customer, $customerAddress = null)
     {
@@ -1238,6 +1233,7 @@ class ContactHelper extends AbstractHelperOmni
         $memberContactUpdateOperation = new MemberContactUpdate();
         $contactCreateParameters = [
             ContactCreateParameters::CONTACT_ID => $customer->getData('lsr_id'),
+            ContactCreateParameters::ACCOUNT_ID => $customer->getData('lsr_account_id'),
             ContactCreateParameters::EMAIL => $customer->getData('email'),
             ContactCreateParameters::FIRST_NAME => $customer->getData('firstname'),
             ContactCreateParameters::LAST_NAME => $customer->getData('lastname'),
@@ -1249,11 +1245,6 @@ class ContactHelper extends AbstractHelperOmni
             ContactCreateParameters::ADDRESS1 => $customerAddress->getStreetLine(1),
             ContactCreateParameters::ADDRESS2 => $customerAddress->getStreetLine(2),
         ];
-
-        if ($loginContact = $this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT)) {
-            $accountId = $loginContact->getLscMemberAccount() ? $loginContact->getLscMemberAccount()->getNo() : '';
-            $contactCreateParameters[ContactCreateParameters::ACCOUNT_ID] = $accountId;
-        }
 
         if (!empty($customer->getData('gender'))) {
             $contactCreateParameters[ContactCreateParameters::GENDER] = $customer->getData('gender');
@@ -1599,13 +1590,13 @@ class ContactHelper extends AbstractHelperOmni
     }
 
     /**
-     * Setting current security_token in customer session
+     * Setting current account_id in customer session
      *
-     * @param string $token
+     * @param string $accountId
      */
-    public function setSecurityTokenInCustomerSession($token)
+    public function setLsrAccountIdInCustomerSession($accountId)
     {
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $token);
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSR_ACCOUNT_ID, $accountId);
     }
 
     /**
@@ -1625,11 +1616,11 @@ class ContactHelper extends AbstractHelperOmni
     }
 
     /**
-     * Getting current security_token in customer session
+     * Getting current account_id in customer session
      */
-    public function getSecurityTokenFromCustomerSession()
+    public function getLsrAccountIdFromCustomerSession()
     {
-        return $this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN);
+        return $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSR_ACCOUNT_ID);
     }
 
     /**

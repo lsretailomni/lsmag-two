@@ -39,6 +39,7 @@ class AccountAddressObserver extends AbstractOmniObserver
                 $customerAddress->getCustomer()->setData('lsr_username', $customer->getData('lsr_username'));
                 $customerAddress->getCustomer()->setData('lsr_token', $customer->getData('lsr_token'));
                 $customerAddress->getCustomer()->setData('lsr_id', $customer->getData('lsr_id'));
+                $customerAddress->getCustomer()->setData('lsr_account_id', $customer->getData('lsr_account_id'));
                 $customerAddress->getCustomer()->setData('lsr_cardid', $customer->getData('lsr_cardid'));
             }
             // only process if the customer has any valid lsr_username

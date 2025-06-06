@@ -3,70 +3,42 @@
 namespace Ls\Customer\Controller\Adminhtml\Account;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Backend\App\Action;
 use Magento\Customer\Model\CustomerRegistry;
-use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Controller\Result\Redirect;
 use Magento\Store\Model\ScopeInterface;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class Sync
- * @package Ls\Omni\Controller\Adminhtml\Account
- */
 class Sync extends Action
 {
-    /**
-     * @var ContactHelper
-     */
-    public $contactHelper;
-
-    /**
-     * @var CustomerRegistry
-     */
-    public $customerRegistry;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /**
-     * @var ManagerInterface
-     */
-    public $messageManager;
-
     /**
      * Sync constructor.
      * @param Action\Context $context
      * @param ContactHelper $contactHelper
      * @param CustomerRegistry $customerRegistry
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param LoggerInterface $logger
      */
     public function __construct(
-        Action\Context $context,
-        ContactHelper $contactHelper,
-        CustomerRegistry $customerRegistry,
-        LSR $LSR,
-        LoggerInterface $logger
+        public Action\Context $context,
+        public ContactHelper $contactHelper,
+        public CustomerRegistry $customerRegistry,
+        public LSR $lsr,
+        public LoggerInterface $logger
     ) {
-        $this->contactHelper    = $contactHelper;
-        $this->customerRegistry = $customerRegistry;
-        $this->lsr              = $LSR;
-        $this->logger           = $logger;
-        $this->messageManager   = $context->getMessageManager();
         parent::__construct($context);
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
+     * Entry point for the controller
+     *
+     * Responsible to sync customer with central
+     *
+     * @return Redirect
+     * @throws GuzzleException
      */
     public function execute()
     {
@@ -76,14 +48,18 @@ class Sync extends Action
         try {
             $customer = $this->customerRegistry->retrieve($customerId);
             $this->lsr->setStoreId($customer->getStoreId());
+
             if ($this->lsr->isLSR($customer->getData('website_id'), ScopeInterface::SCOPE_WEBSITE)) {
                 $contact = $this->contactHelper->syncCustomerAndAddress($customer);
+
                 if ($contact) {
                     $this->messageManager->addSuccessMessage(
                         __('Customer request has been sent to LS Central successfully.')
                     );
                 } else {
-                    $this->messageManager->addErrorMessage(__('Something went wrong while creating a customer. Please refer log for details.'));
+                    $this->messageManager->addErrorMessage(
+                        __('Something went wrong while creating a customer. Please refer log for details.')
+                    );
                 }
             } else {
                 $this->messageManager->addErrorMessage(__('Omni service is down.'));
@@ -92,6 +68,7 @@ class Sync extends Action
             $this->logger->error($e->getMessage());
             $this->messageManager->addErrorMessage($e->getMessage());
         }
+
         return $resultRedirect;
     }
 }

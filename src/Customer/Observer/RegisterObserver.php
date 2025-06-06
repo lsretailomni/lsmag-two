@@ -46,9 +46,9 @@ class RegisterObserver extends AbstractOmniObserver
                         $this->customerResourceModel->save($customer);
                         $contact = $additionalParams['contact'];
                         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $contact);
-                        $session->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
-                        $session->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
-                        $session->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
+                        $this->contactHelper->setLsrAccountIdInCustomerSession($customer->getData('lsr_account_id'));
+                        $this->contactHelper->setLsrIdInCustomerSession($customer->getData('lsr_id'));
+                        $this->contactHelper->setCardIdInCustomerSession($customer->getData('lsr_cardid'));
                     }
                     $loginResult = $this->contactHelper->login(
                         $customer->getData('lsr_username'),

@@ -42,11 +42,12 @@ class PostLoginObserver extends AbstractOmniObserver
                 );
             }
 
-            if (!empty($customer->getData('lsr_token'))) {
-                $this->contactHelper->setSecurityTokenInCustomerSession(
-                    $customer->getData('lsr_token')
+            if (!empty($customer->getData('lsr_account_id'))) {
+                $this->contactHelper->setLsrAccountIdInCustomerSession(
+                    $customer->getData('lsr_account_id')
                 );
             }
+
             if (empty($this->contactHelper->getBasketUpdateChecking()) &&
                 $this->contactHelper->lsr->isLSR(
                     $this->contactHelper->lsr->getCurrentStoreId(),
