@@ -57,10 +57,7 @@ class SaveAfter extends AbstractOmniObserver
                     false,
                     $this->lsr->getCustomerIntegrationOnFrontend()
                 )) {
-                    $contact = $this->contactHelper->getCustomerByUsernameOrEmailFromLsCentral(
-                        $customer->getEmail(),
-                        Entity\Enum\ContactSearchType::EMAIL
-                    );
+                    $contact = $this->contactHelper->searchWithUsernameOrEmail($customer->getEmail());
                     /** @var Entity\MemberContact $contact */
                     if (empty($contact)) {
                         $contact = $this->contactHelper->contact($customer);

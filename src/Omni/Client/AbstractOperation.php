@@ -155,6 +155,19 @@ abstract class AbstractOperation implements OperationInterface
 
         $this->debugLog($operationName, $requestTime, $responseTime, $lsr->getWebsiteId());
 
+        if (!empty($this->getClient()->getLastRequest())) {
+            $this->setRequestXml($this->formatXML($this->getClient()->getLastRequest()));
+        }
+
+        if (!empty($this->getClient()->getLastResponse())) {
+            $this->setResponseXml($this->formatXML($this->getClient()->getLastResponse()));
+        }
+
+        if ($response) {
+            $this->setResponse($response);
+            $this->setError(new \Exception($response->getErrortext()));
+        }
+
         return $response;
     }
     // @codingStandardsIgnoreEnd

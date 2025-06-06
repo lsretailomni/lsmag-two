@@ -621,13 +621,20 @@ class Data extends AbstractHelper
      */
     public function omniPing($baseUrl = '', $connectionParams = [], $companyName = [])
     {
+        $response = null;
         $testConnectionOperation = new TestConnectionResponse(
             $baseUrl,
             $connectionParams,
             $companyName['company'] ?? ''
         );
 
-        return current($testConnectionOperation->execute()->getRecords());
+        try {
+            $response = $testConnectionOperation->execute();
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return $response && $response->getResponseCode() == "0000" ? current($response->getRecords()) : null;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Ls\Customer\Plugin\Controller\Account;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Api\CustomerMetadataInterface;
@@ -40,9 +41,9 @@ class ForgotPasswordPostPlugin
      * Around plugin to search and create customer in magento in case if needed
      *
      * @param ForgotPasswordPost $subject
-     * @param $proceed
+     * @param callable $proceed
      * @return Redirect|mixed
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)

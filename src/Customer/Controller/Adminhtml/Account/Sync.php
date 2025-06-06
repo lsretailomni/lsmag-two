@@ -15,7 +15,6 @@ use Psr\Log\LoggerInterface;
 class Sync extends Action
 {
     /**
-     * Sync constructor.
      * @param Action\Context $context
      * @param ContactHelper $contactHelper
      * @param CustomerRegistry $customerRegistry

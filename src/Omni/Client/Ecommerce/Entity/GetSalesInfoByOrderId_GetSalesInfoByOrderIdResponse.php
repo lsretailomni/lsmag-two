@@ -27,4 +27,14 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderIdResponse
     {
         return $this->records;
     }
+
+    public function getResponseCode(): string
+    {
+        return $this->responseCode;
+    }
+
+    public function getErrorText(): string
+    {
+        return $this->errorText;
+    }
 }

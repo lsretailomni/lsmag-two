@@ -8,9 +8,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\ContactCreateParameters;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
-use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContactCreateResult as MemberContactCreateResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\MemberContactUpdateResult;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordChange;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordChangeResult as MemberPasswordChangeResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordReset;
@@ -28,7 +26,6 @@ use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use Magento\Catalog\Model\AbstractModel;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Api\Data\CustomerSearchResultsInterface;
-use Magento\Customer\Model\Address;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\Group;
 use Magento\Customer\Model\ResourceModel\Group\Collection;
@@ -163,7 +160,7 @@ class ContactHelper extends AbstractHelperOmni
             $this->_logger->error($e->getMessage());
         }
 
-        return $response && !empty($response->getMemberlogonxml()->getData()) ? $response->getMemberlogonxml() : null;
+        return $response && $response->getResponsecode() == "0000" ? $response->getMemberlogonxml() : null;
     }
 
     /**
@@ -184,12 +181,12 @@ class ContactHelper extends AbstractHelperOmni
             'maxResultContacts' => 0,
         ]);
         try {
-            $response = current($contactSearchOperation->execute()->getRecords());
+            $response = $contactSearchOperation->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
-        return $response;
+        return $response && $response->getResponseCode() == "0000" ? current($response->getRecords()) : null;
     }
 
     /**
@@ -289,7 +286,7 @@ class ContactHelper extends AbstractHelperOmni
             $this->_logger->error($e->getMessage());
         }
 
-        return $response;
+        return $response && $response->getResponsecode() == "0000" ? $response : null;
     }
 
     /**
@@ -429,6 +426,7 @@ class ContactHelper extends AbstractHelperOmni
      *
      * @param Customer $customer
      * @return MemberContactCreateResponse|NavException|NavObjectReferenceNotAnInstanceException|AbstractModel|DataObject|string
+     * @throws NoSuchEntityException
      */
     public function contact(Customer $customer)
     {
@@ -442,6 +440,11 @@ class ContactHelper extends AbstractHelperOmni
             $lsrPassword = null;
         }
         $password = (!empty($lsrPassword)) ? $lsrPassword : $customer->getData('password');
+
+        if (empty($password)) {
+            $masterPassword = $this->lsr->getStoreConfig(LSR::SC_MASTER_PASSWORD, $this->lsr->getCurrentStoreId());
+            $password = $masterPassword;
+        }
         $contactCreateParameters = [
             ContactCreateParameters::EMAIL => $customer->getData('email'),
             ContactCreateParameters::FIRST_NAME => $customer->getData('firstname'),
@@ -489,68 +492,7 @@ class ContactHelper extends AbstractHelperOmni
             $this->_logger->error($e->getMessage());
         }
 
-        return $response && !empty($response->getAccountid()) ? $response : null;
-    }
-
-    /**
-     * Set customer addresss
-     *
-     * @param null $address
-     * @return Entity\ArrayOfAddress|null
-     */
-    public function setAddresses($address = null)
-    {
-        // @codingStandardsIgnoreLine
-        $addresses = new Entity\ArrayOfAddress();
-        // only process if the pass object in the instance of customer address
-        if ($address instanceof Entity\Address) {
-            $addresses->setAddress($address);
-            return $addresses;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Set address
-     *
-     * @param null $customerAddress
-     * @return Entity\Address|null
-     * @throws InvalidEnumException
-     */
-    private function setAddress($customerAddress = null)
-    {
-        // @codingStandardsIgnoreLine
-        $address = new Entity\Address();
-        // only process if the pass object in the instance of customer address
-        if ($customerAddress instanceof Address) {
-            $street = $customerAddress->getStreet();
-            // check if street is in the form of array or string
-            if (is_array($street)) {
-                // set address 1
-                $address->setAddress1($street[0]);
-                // check if the pass data are more than 1 then set address 2 as well
-                if (count($street) > 1) {
-                    $address->setAddress2($street[1]);
-                } else {
-                    $address->setAddress2('');
-                }
-            } else {
-                $address->setAddress1($street);
-                $address->setAddress2('');
-            }
-            $region = $customerAddress->getRegion() ? substr($customerAddress->getRegion(), 0, 30) : null;
-            $address->setCity($customerAddress->getCity())
-                ->setCountry($customerAddress->getCountryId())
-                ->setPostCode($customerAddress->getPostcode())
-                ->setPhoneNumber($customerAddress->getTelephone())
-                ->setType(Entity\Enum\AddressType::RESIDENTIAL);
-            $region ? $address->setCounty($region)
-                : $address->setCounty('');
-            return $address;
-        } else {
-            return null;
-        }
+        return $response && !empty($response->getResponsecode() == "0000") ? $response : null;
     }
 
     /**
@@ -815,9 +757,9 @@ class ContactHelper extends AbstractHelperOmni
         $this->customerRegistry->remove($customer->getId());
         $this->basketHelper->unSetOneList();
         $this->basketHelper->unSetOneListCalculation();
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSR_ACCOUNT_ID, $customer->getData('lsr_account_id'));
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
+        $this->setLsrAccountIdInCustomerSession($customer->getData('lsr_account_id'));
+        $this->setLsrIdInCustomerSession($customer->getData('lsr_id'));
+        $this->setCardIdInCustomerSession($customer->getData('lsr_cardid'));
         $this->customerSession->setCustomerAsLoggedIn($customer);
     }
 
@@ -1109,50 +1051,6 @@ class ContactHelper extends AbstractHelperOmni
     }
 
     /**
-     * Get customer by username or email from ls central
-     *
-     * @param $paramValue
-     * @param $type
-     * @return MemberContact|null
-     * @throws InvalidEnumException
-     */
-    public function getCustomerByUsernameOrEmailFromLsCentral($paramValue, $type)
-    {
-        $response = null;
-        $contact  = null;
-
-        // @codingStandardsIgnoreStart
-        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-            $request       = new Operation\ContactGet();
-            $contactSearch = new Entity\ContactGet();
-        } else {
-            $request       = new Operation\ContactSearch();
-            $contactSearch = new Entity\ContactSearch();
-            $contactSearch->setMaxNumberOfRowsReturned(1);
-        }
-        $contactSearch->setSearchType($type);
-        $contactSearch->setSearch($paramValue);
-        try {
-            $response = $request->execute($contactSearch);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-            if (!empty($response) && !empty($response->getContactGetResult())) {
-                return $response->getContactGetResult();
-            }
-        } else {
-            if (!empty($response) && !empty($response->getContactSearchResult())) {
-                foreach ($response->getContactSearchResult() as $contact) {
-                    return $contact;
-                }
-            }
-        }
-
-        return $contact;
-    }
-
-    /**
      * Forgot password
      *
      * @param string $userName
@@ -1173,7 +1071,7 @@ class ContactHelper extends AbstractHelperOmni
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getToken() : null;
+        return $response && $response->getResponsecode() == "0000" ? $response->getToken() : null;
     }
 
     /**
@@ -1187,7 +1085,7 @@ class ContactHelper extends AbstractHelperOmni
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $memberPasswordChangeOperation        = new Operation\MemberPasswordChange();
+        $memberPasswordChangeOperation = new Operation\MemberPasswordChange();
         $memberPasswordChangeOperation->setOperationInput([
             MemberPasswordChange::LOGIN_ID => $customer->getLsrUsername(),
             MemberPasswordChange::OLD_PASSWORD => '',
@@ -1202,7 +1100,7 @@ class ContactHelper extends AbstractHelperOmni
             $this->_logger->error($e->getMessage());
         }
 
-        return $response;
+        return $response && $response->getResponsecode() == "0000" ? $response : null;
     }
 
     /**
@@ -1281,45 +1179,7 @@ class ContactHelper extends AbstractHelperOmni
         }
         // @codingStandardsIgnoreEnd
 
-        return $response;
-    }
-
-    /**
-     * @param null $card
-     * @return Entity\ArrayOfCard|null
-     */
-    public function setCards($card = null)
-    {
-        // @codingStandardsIgnoreLine
-        $cards = new Entity\ArrayOfCard();
-        if ($card instanceof Entity\Card) {
-            $cards->setCard($card);
-            return $cards;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @param null $cardId
-     * @return Entity\Card|null
-     */
-    private function setCard($cardId = null)
-    {
-        // @codingStandardsIgnoreLine
-        $card = new Entity\Card();
-        $card->setId($cardId);
-        return $card;
-    }
-
-    /**
-     * @param $id
-     * @return string
-     */
-    public function getGenderStringById($id)
-    {
-        return ($id == 1) ? Entity\Enum\Gender::MALE :
-            (($id == 2) ? Entity\Enum\Gender::FEMALE : Entity\Enum\Gender::UNKNOWN);
+        return $response && $response->getResponsecode() == "0000" ? $response : null;
     }
 
     /**
