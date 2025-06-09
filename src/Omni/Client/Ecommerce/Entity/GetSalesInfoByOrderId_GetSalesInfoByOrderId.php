@@ -12,19 +12,19 @@ use Magento\Catalog\Model\AbstractModel;
 class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
 {
     public const DESCRIPTION = 'Description';
-    public const DOCUMENT_NO = 'DocumentNo.';
-    public const LINE_NO = 'LineNo.';
-    public const LSC_MEMBER_SALES_BUFFER = 'LSCMemberSalesBuffer';
-    public const LSC_MEMBER_SALES_DATA_ENTRY = 'LSCMemberSalesDataEntry';
-    public const LSC_MEMBER_SALES_DOC_DISC_LINE = 'LSCMemberSalesDocDiscLine';
-    public const LSC_MEMBER_SALES_DOC_LINE = 'LSCMemberSalesDocLine';
+    public const DOCUMENT_NO = 'Document No.';
+    public const LINE_NO = 'Line No.';
+    public const LSC_MEMBER_SALES_BUFFER = 'LSC Member Sales Buffer';
+    public const LSC_MEMBER_SALES_DATA_ENTRY = 'LSC Member Sales Data Entry';
+    public const LSC_MEMBER_SALES_DOC_DISC_LINE = 'LSC Member Sales Doc Disc Line';
+    public const LSC_MEMBER_SALES_DOC_LINE = 'LSC Member Sales Doc Line';
     public const NO = 'No.';
     public const QUANTITY = 'Quantity';
-    public const SALES_SHIPMENT_HEADER = 'SalesShipmentHeader';
-    public const SALES_SHIPMENT_LINE = 'SalesShipmentLine';
+    public const SALES_SHIPMENT_HEADER = 'Sales Shipment Header';
+    public const SALES_SHIPMENT_LINE = 'Sales Shipment Line';
     public const TYPE = 'Type';
-    public const UNIT_OF_MEASURE_CODE = 'UnitofMeasureCode';
-    public const VARIANT_CODE = 'VariantCode';
+    public const UNIT_OF_MEASURE_CODE = 'Unit of Measure Code';
+    public const VARIANT_CODE = 'Variant Code';
 
     public static array $dbColumnsMapping = [
 	self::DESCRIPTION => 'description',

@@ -46,16 +46,16 @@ class GetItem_GetItem
 
     public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\GetItem_GetItemResponse
     {
-        $requiredDataSetName = explode(',', 'Item,LSCItemStatusLink,LSCItemHTMLML,LSCRetailImageLink,LSCItemSpecialGroupLink,LSCItemSectionLocation,LSCSectionShelf,LSCStoreSection,LSCWIPrice,ItemUnitofMeasure,UnitofMeasure,LSCItemVariantRegistration,LSCExtdVariantValues,LSCAttribute,LSCAttributeValue,BOMComponent,LSCInfocode,LSCInformationSubcode,LSCTableSpecificInfocode');
+        $requiredDataSetName = explode(',', 'Item,LSC Item Status Link,LSC Item HTML ML,LSC Retail Image Link,LSC Item/Special Group Link,LSC Item Section Location,LSC Section Shelf,LSC Store Section,LSC WI Price,Item Unit of Measure,Unit of Measure,LSC Item Variant Registration,LSC Extd. Variant Values,LSC Attribute,LSC Attribute Value,BOM Component,LSC Infocode,LSC Information Subcode,LSC Table Specific Infocode');
         $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetItem_GetItem::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
-                $entityClassName = str_replace(' ', '', $dataSet);
+                $entityClassName = str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', $dataSet));
                 // Try flat response structure
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
                     $entity = $this->createInstance(
                         \Ls\Omni\Client\Ecommerce\Entity\GetItem_GetItem::class,
-                         ['data' => $data['Item,LSCItemStatusLink,LSCItemHTMLML,LSCRetailImageLink,LSCItemSpecialGroupLink,LSCItemSectionLocation,LSCSectionShelf,LSCStoreSection,LSCWIPrice,ItemUnitofMeasure,UnitofMeasure,LSCItemVariantRegistration,LSCExtdVariantValues,LSCAttribute,LSCAttributeValue,BOMComponent,LSCInfocode,LSCInformationSubcode,LSCTableSpecificInfocode']]
+                         ['data' => $data['Item,LSC Item Status Link,LSC Item HTML ML,LSC Retail Image Link,LSC Item/Special Group Link,LSC Item Section Location,LSC Section Shelf,LSC Store Section,LSC WI Price,Item Unit of Measure,Unit of Measure,LSC Item Variant Registration,LSC Extd. Variant Values,LSC Attribute,LSC Attribute Value,BOM Component,LSC Infocode,LSC Information Subcode,LSC Table Specific Infocode']]
                      );
 
                     return $this->createInstance(
@@ -93,7 +93,7 @@ class GetItem_GetItem
                         $entries[$index] = $entry;
                     }
                     if (!empty($entries)) {
-                        $finalEntry->setData($entityClassName, $count > 1 ? $entries : current($entries));
+                        $finalEntry->setData($dataSet, $count > 1 ? $entries : current($entries));
                     }
                 }
             }
@@ -136,7 +136,7 @@ class GetItem_GetItem
                 if (
                     is_array($data)
                     && isset($data['DataSetName'])
-                    && str_replace(' ', '',$data['DataSetName']) === $target
+                    && str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', $data['DataSetName'])) === $target
                 ) {
                     return $data;
                 }

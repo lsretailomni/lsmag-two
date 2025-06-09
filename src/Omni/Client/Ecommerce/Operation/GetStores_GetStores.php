@@ -46,16 +46,16 @@ class GetStores_GetStores
 
     public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresResponse
     {
-        $requiredDataSetName = explode(',', 'LSCStore,LSCStoreGroupSetup,LSCStorePriceGroup,LSCSalesType');
+        $requiredDataSetName = explode(',', 'LSC Store,LSC Store Group Setup,LSC Store Price Group,LSC Sales Type');
         $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
-                $entityClassName = str_replace(' ', '', $dataSet);
+                $entityClassName = str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', $dataSet));
                 // Try flat response structure
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
                     $entity = $this->createInstance(
                         \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores::class,
-                         ['data' => $data['LSCStore,LSCStoreGroupSetup,LSCStorePriceGroup,LSCSalesType']]
+                         ['data' => $data['LSC Store,LSC Store Group Setup,LSC Store Price Group,LSC Sales Type']]
                      );
 
                     return $this->createInstance(
@@ -93,7 +93,7 @@ class GetStores_GetStores
                         $entries[$index] = $entry;
                     }
                     if (!empty($entries)) {
-                        $finalEntry->setData($entityClassName, $count > 1 ? $entries : current($entries));
+                        $finalEntry->setData($dataSet, $count > 1 ? $entries : current($entries));
                     }
                 }
             }
@@ -136,7 +136,7 @@ class GetStores_GetStores
                 if (
                     is_array($data)
                     && isset($data['DataSetName'])
-                    && str_replace(' ', '',$data['DataSetName']) === $target
+                    && str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', $data['DataSetName'])) === $target
                 ) {
                     return $data;
                 }

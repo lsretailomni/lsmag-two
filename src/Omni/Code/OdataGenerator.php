@@ -272,7 +272,7 @@ class OdataGenerator
                     'FieldName' => $recordField['DataSetName'],
                     'FieldDataType' => $recordField['isAnArray'] ? 'array' : $entityClassName
                 ];
-                $dataSetName[] = $entityClassName;
+                $dataSetName[] = $recordField['DataSetName'];
                 $this->registerEntity(
                     $recordField['DataSetName'],
                     $entityClassName,
@@ -640,11 +640,12 @@ PHP;
                 strtoupper(preg_replace('/\B([A-Z])/', '_$1', $optimizedFieldName))
             );
             if ($recursive) {
-                $constIndexName = str_replace(
-                    ' ',
-                    '',
-                    $fieldName
-                );
+//                $constIndexName = str_replace(
+//                    ' ',
+//                    '',
+//                    $fieldName
+//                );
+                $constIndexName = $fieldName;
             } else {
                 $constIndexName = $fieldName;
             }
@@ -1227,7 +1228,7 @@ class $entityClassName
         \$finalEntry = \$this->createInstance({$entityFqcn}::class);
         if (is_array(\$requiredDataSetName)) {
             foreach (\$requiredDataSetName as \$dataSet) {
-                \$entityClassName = str_replace(' ', '', \$dataSet);
+                \$entityClassName = str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', \$dataSet));
                 // Try flat response structure
                 if (isset(\$data[\$dataSet]) && is_array(\$data[\$dataSet])) {
                     \$entity = \$this->createInstance(
@@ -1270,7 +1271,7 @@ class $entityClassName
                         \$entries[\$index] = \$entry;
                     }
                     if (!empty(\$entries)) {
-                        \$finalEntry->setData(\$entityClassName, \$count > 1 ? \$entries : current(\$entries));
+                        \$finalEntry->setData(\$dataSet, \$count > 1 ? \$entries : current(\$entries));
                     }
                 }
             }
@@ -1313,7 +1314,7 @@ class $entityClassName
                 if (
                     is_array(\$data)
                     && isset(\$data['DataSetName'])
-                    && str_replace(' ', '',\$data['DataSetName']) === \$target
+                    && str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', \$data['DataSetName'])) === \$target
                 ) {
                     return \$data;
                 }

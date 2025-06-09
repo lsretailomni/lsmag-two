@@ -11,29 +11,29 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetItem_GetItem extends AbstractModel
 {
-    public const BOM_COMPONENT = 'BOMComponent';
-    public const INFOCODE_CODE = 'InfocodeCode';
+    public const BOM_COMPONENT = 'BOM Component';
+    public const INFOCODE_CODE = 'Infocode Code';
     public const ITEM = 'Item';
-    public const ITEM_UNIT_OF_MEASURE = 'ItemUnitofMeasure';
-    public const LSC_ATTRIBUTE = 'LSCAttribute';
-    public const LSC_ATTRIBUTE_VALUE = 'LSCAttributeValue';
-    public const LSC_EXTD_VARIANT_VALUES = 'LSCExtd.VariantValues';
-    public const LSC_INFOCODE = 'LSCInfocode';
-    public const LSC_INFORMATION_SUBCODE = 'LSCInformationSubcode';
-    public const LSC_ITEM_HTML_ML = 'LSCItemHTMLML';
-    public const LSC_ITEM_SECTION_LOCATION = 'LSCItemSectionLocation';
-    public const LSC_ITEM_STATUS_LINK = 'LSCItemStatusLink';
-    public const LSC_ITEM_VARIANT_REGISTRATION = 'LSCItemVariantRegistration';
-    public const LSC_ITEMSPECIAL_GROUP_LINK = 'LSCItem/SpecialGroupLink';
-    public const LSC_RETAIL_IMAGE_LINK = 'LSCRetailImageLink';
-    public const LSC_SECTION_SHELF = 'LSCSectionShelf';
-    public const LSC_STORE_SECTION = 'LSCStoreSection';
-    public const LSC_TABLE_SPECIFIC_INFOCODE = 'LSCTableSpecificInfocode';
-    public const LSC_WI_PRICE = 'LSCWIPrice';
-    public const TABLE_ID = 'TableID';
-    public const UNIT_OF_MEASURE = 'UnitofMeasure';
-    public const USAGE_CATEGORY = 'UsageCategory';
-    public const USAGE_SUBCATEGORY = 'UsageSub-Category';
+    public const ITEM_UNIT_OF_MEASURE = 'Item Unit of Measure';
+    public const LSC_ATTRIBUTE = 'LSC Attribute';
+    public const LSC_ATTRIBUTE_VALUE = 'LSC Attribute Value';
+    public const LSC_EXTD_VARIANT_VALUES = 'LSC Extd. Variant Values';
+    public const LSC_INFOCODE = 'LSC Infocode';
+    public const LSC_INFORMATION_SUBCODE = 'LSC Information Subcode';
+    public const LSC_ITEM_HTML_ML = 'LSC Item HTML ML';
+    public const LSC_ITEM_SECTION_LOCATION = 'LSC Item Section Location';
+    public const LSC_ITEM_STATUS_LINK = 'LSC Item Status Link';
+    public const LSC_ITEM_VARIANT_REGISTRATION = 'LSC Item Variant Registration';
+    public const LSC_ITEMSPECIAL_GROUP_LINK = 'LSC Item/Special Group Link';
+    public const LSC_RETAIL_IMAGE_LINK = 'LSC Retail Image Link';
+    public const LSC_SECTION_SHELF = 'LSC Section Shelf';
+    public const LSC_STORE_SECTION = 'LSC Store Section';
+    public const LSC_TABLE_SPECIFIC_INFOCODE = 'LSC Table Specific Infocode';
+    public const LSC_WI_PRICE = 'LSC WI Price';
+    public const TABLE_ID = 'Table ID';
+    public const UNIT_OF_MEASURE = 'Unit of Measure';
+    public const USAGE_CATEGORY = 'Usage Category';
+    public const USAGE_SUBCATEGORY = 'Usage Sub-Category';
     public const VALUE = 'Value';
 
     public static array $dbColumnsMapping = [

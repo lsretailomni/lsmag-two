@@ -11,11 +11,11 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetDiscount_GetDiscount extends AbstractModel
 {
-    public const LSC_PERIODIC_DISCOUNT = 'LSCPeriodicDiscount';
-    public const LSC_PERIODIC_DISCOUNT_BENEFITS = 'LSCPeriodicDiscountBenefits';
-    public const LSC_WI_DISCOUNTS = 'LSCWIDiscounts';
-    public const LSC_WI_MIX_MATCH_OFFER_EXT = 'LSCWIMix&MatchOfferExt';
-    public const LSC_WI_PRICE = 'LSCWIPrice';
+    public const LSC_PERIODIC_DISCOUNT = 'LSC Periodic Discount';
+    public const LSC_PERIODIC_DISCOUNT_BENEFITS = 'LSC Periodic Discount Benefits';
+    public const LSC_WI_DISCOUNTS = 'LSC WI Discounts';
+    public const LSC_WI_MIX_MATCH_OFFER_EXT = 'LSC WI Mix & Match Offer Ext';
+    public const LSC_WI_PRICE = 'LSC WI Price';
 
     public static array $dbColumnsMapping = [
 	self::LSC_PERIODIC_DISCOUNT => 'lsc_periodic_discount',

@@ -13,10 +13,10 @@ class GetStores_GetStores extends AbstractModel
 {
     public const CODE = 'Code';
     public const DESCRIPTION = 'Description';
-    public const LSC_SALES_TYPE = 'LSCSalesType';
-    public const LSC_STORE = 'LSCStore';
-    public const LSC_STORE_GROUP_SETUP = 'LSCStoreGroupSetup';
-    public const LSC_STORE_PRICE_GROUP = 'LSCStorePriceGroup';
+    public const LSC_SALES_TYPE = 'LSC Sales Type';
+    public const LSC_STORE = 'LSC Store';
+    public const LSC_STORE_GROUP_SETUP = 'LSC Store Group Setup';
+    public const LSC_STORE_PRICE_GROUP = 'LSC Store Price Group';
 
     public static array $dbColumnsMapping = [
 	self::CODE => 'code',

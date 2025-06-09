@@ -11,19 +11,19 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
 {
-    public const DECIMAL_VALUE = 'DecimalValue';
-    public const FIELD_NAME = 'FieldName';
-    public const FIELD_NO = 'FieldNo.';
+    public const DECIMAL_VALUE = 'Decimal Value';
+    public const FIELD_NAME = 'Field Name';
+    public const FIELD_NO = 'Field No.';
     public const KEY = 'Key';
-    public const LSC_FLOWFIELD_BUFFER = 'LSCFlowFieldBuffer';
-    public const LSC_MEMBER_ACCOUNT = 'LSCMemberAccount';
-    public const LSC_MEMBER_CLUB = 'LSCMemberClub';
-    public const LSC_MEMBER_CONTACT = 'LSCMemberContact';
-    public const LSC_MEMBER_CONTACT_ATTR_LIST = 'LSCMemberContactAttr.List';
-    public const LSC_MEMBER_LOGIN_CARD = 'LSCMemberLoginCard';
-    public const LSC_MEMBER_SCHEME = 'LSCMemberScheme';
-    public const LSC_MEMBERSHIP_CARD = 'LSCMembershipCard';
-    public const TABLE_NO = 'TableNo.';
+    public const LSC_FLOWFIELD_BUFFER = 'LSC FlowField Buffer';
+    public const LSC_MEMBER_ACCOUNT = 'LSC Member Account';
+    public const LSC_MEMBER_CLUB = 'LSC Member Club';
+    public const LSC_MEMBER_CONTACT = 'LSC Member Contact';
+    public const LSC_MEMBER_CONTACT_ATTR_LIST = 'LSC Member Contact Attr. List';
+    public const LSC_MEMBER_LOGIN_CARD = 'LSC Member Login Card';
+    public const LSC_MEMBER_SCHEME = 'LSC Member Scheme';
+    public const LSC_MEMBERSHIP_CARD = 'LSC Membership Card';
+    public const TABLE_NO = 'Table No.';
 
     public static array $dbColumnsMapping = [
 	self::DECIMAL_VALUE => 'decimal_value',
