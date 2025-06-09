@@ -13,15 +13,19 @@ class InvoiceSender
 
     /**
      * @param $subject
+     * @param $proceed
      * @param Invoice $invoice
-     * @param false $forceSyncMode
-     * @return array
+     * @param $forceSyncMode
+     * @return mixed
      */
-    public function beforeSend($subject, Invoice $invoice, $forceSyncMode = false)
+    public function aroundSend($subject, $proceed, Invoice $invoice, $forceSyncMode = false)
     {
+        $incrementId = $invoice->getOrder()->getIncrementId();
         if (!empty($invoice->getOrder()->getDocumentId())) {
             $invoice->getOrder()->setIncrementId($invoice->getOrder()->getDocumentId());
         }
-        return [$invoice, $forceSyncMode];
+        $result = $proceed($invoice, $forceSyncMode);
+        $invoice->getOrder()->setIncrementId($incrementId);
+        return $result;
     }
 }
