@@ -3,7 +3,7 @@
 namespace Ls\Customer\Observer;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\ContactHelper;
+use Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;

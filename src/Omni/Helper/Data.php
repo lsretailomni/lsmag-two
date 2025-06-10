@@ -621,13 +621,20 @@ class Data extends AbstractHelper
      */
     public function omniPing($baseUrl = '', $connectionParams = [], $companyName = [])
     {
+        $response = null;
         $testConnectionOperation = new TestConnectionResponse(
             $baseUrl,
             $connectionParams,
             $companyName['company'] ?? ''
         );
 
-        return current($testConnectionOperation->execute()->getRecords());
+        try {
+            $response = $testConnectionOperation->execute();
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return $response && $response->getResponseCode() == "0000" ? current($response->getRecords()) : null;
     }
 
     /**
@@ -804,11 +811,17 @@ class Data extends AbstractHelper
      *
      * @param string $tableName
      * @param string $baseUrl
+     * @param string|null $filterFieldName
+     * @param string|null $filterValue
      * @return array
      * @throws NoSuchEntityException
      */
-    public function fetchGivenTableData(string $tableName, string $baseUrl = ''): array
-    {
+    public function fetchGivenTableData(
+        string $tableName,
+        string $baseUrl = '',
+        ?string $filterFieldName = null,
+        ?string $filterValue = null
+    ): array {
         $baseUrl = !empty($baseUrl) ? $baseUrl :
             $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId());
         $url = join('/', [$baseUrl, 'WS/Codeunit/RetailWebServices']);
@@ -822,6 +835,13 @@ class Data extends AbstractHelper
         $requestBody->addChild('Read_Direction', 'Forward');
         $requestBody->addChild('Max_Number_Of_Records', '0');
         $requestBody->addChild('Ignore_Extra_Fields', '1');
+
+        if ($filterFieldName && $filterValue) {
+            $filterBuffer = $requestBody->addChild('WS_Table_Filter_Buffer');
+            $filterBuffer->addChild('Field_Index', '1'); // adjust if dynamic
+            $filterBuffer->addChild('Field_Name', $filterFieldName);
+            $filterBuffer->addChild('Filter', $filterValue);
+        }
 
         $params = [
             'pxmlRequest' => $requestXml->asXML(),

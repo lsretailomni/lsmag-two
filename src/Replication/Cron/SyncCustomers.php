@@ -2,6 +2,7 @@
 
 namespace Ls\Replication\Cron;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\Data;
@@ -20,46 +21,8 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class SyncCustomers
 {
-    /**
-     * @var ReplicationHelper
-     */
-    public $replicationHelper;
-
-    /**
-     * @var Data
-     */
-    public $helper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
     /** @var StoreInterface $store */
     public $store;
-
-    /**
-     * @var ContactHelper
-     */
-    public $contactHelper;
-
-    /**
-     * @var ManagerInterface
-     */
-    public $eventManager;
-
-    /**
-     * @var CartRepositoryInterface
-     */
-    public $cartRepository;
-
-    /** @var StoreManagerInterface */
-    public $storeManager;
-
-    /**
-     * @var CustomerRegistry
-     */
-    public $customerRegistry;
 
     /**
      * @param LSR $lsr
@@ -72,23 +35,15 @@ class SyncCustomers
      * @param CustomerRegistry $customerRegistry
      */
     public function __construct(
-        LSR $lsr,
-        Data $helper,
-        ReplicationHelper $replicationHelper,
-        ContactHelper $contactHelper,
-        ManagerInterface $eventManager,
-        CartRepositoryInterface $cartRepository,
-        StoreManagerInterface $storeManager,
-        CustomerRegistry $customerRegistry
+        public LSR $lsr,
+        public Data $helper,
+        public ReplicationHelper $replicationHelper,
+        public ContactHelper $contactHelper,
+        public ManagerInterface $eventManager,
+        public CartRepositoryInterface $cartRepository,
+        public StoreManagerInterface $storeManager,
+        public CustomerRegistry $customerRegistry
     ) {
-        $this->lsr               = $lsr;
-        $this->helper            = $helper;
-        $this->replicationHelper = $replicationHelper;
-        $this->contactHelper     = $contactHelper;
-        $this->eventManager      = $eventManager;
-        $this->cartRepository    = $cartRepository;
-        $this->storeManager      = $storeManager;
-        $this->customerRegistry  = $customerRegistry;
     }
 
     /**
@@ -97,7 +52,7 @@ class SyncCustomers
      * @param $storeData
      * @return array|void
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute($storeData = null)
     {
@@ -151,7 +106,7 @@ class SyncCustomers
      * @param $storeData
      * @return array|null
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function executeManually($storeData = null)
     {

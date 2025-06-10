@@ -3,7 +3,7 @@
 namespace Ls\Omni\Plugin\Product;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Api\ReplLscWiExtdVariantValuesRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use Magento\Catalog\Model\Product;
@@ -18,41 +18,17 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class AttributeData
 {
     /**
-     * @var ReplExtendedVariantValueRepository
-     */
-    public $replExtendedVariantValueRepository;
-
-    /**
-     * @var ReplicationHelper
-     */
-    public $replicationHelper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var SortOrderBuilder
-     */
-    public $sortOrderBuilder;
-
-    /**
-     * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
+     * @param ReplLscWiExtdVariantValuesRepositoryInterface $replExtendedVariantValueRepository
      * @param ReplicationHelper $replicationHelper
      * @param LSR $lsr
      * @param SortOrderBuilder $sortOrderBuilder
      */
     public function __construct(
-        ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
-        ReplicationHelper $replicationHelper,
-        LSR $lsr,
-        SortOrderBuilder $sortOrderBuilder
+        public ReplLscWiExtdVariantValuesRepositoryInterface $replExtendedVariantValueRepository,
+        public ReplicationHelper $replicationHelper,
+        public LSR $lsr,
+        public SortOrderBuilder $sortOrderBuilder
     ) {
-        $this->replicationHelper                  = $replicationHelper;
-        $this->replExtendedVariantValueRepository = $replExtendedVariantValueRepository;
-        $this->lsr                                = $lsr;
-        $this->sortOrderBuilder                   = $sortOrderBuilder;
     }
 
     /**
@@ -81,9 +57,9 @@ class AttributeData
             $newOptionData                = [];
             $filters                      = [
                 ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
-                ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
+                ['field' => 'item_no', 'value' => $itemId, 'condition_type' => 'eq'],
                 [
-                    'field' => 'Code',
+                    'field' => 'code',
                     'value' => $defaultScopedAttributeObject->getDefaultFrontendLabel(),
                     'condition_type' => 'eq'
                 ]
@@ -91,7 +67,7 @@ class AttributeData
             $criteria                     = $this->replicationHelper->buildCriteriaForArrayFrontEnd($filters, -1);
             $sortOrder                    = $this
                 ->sortOrderBuilder
-                ->setField('LogicalOrder')
+                ->setField('logical_order')
                 ->setDirection('ASC')
                 ->create();
             $criteria->setSortOrders([$sortOrder]);

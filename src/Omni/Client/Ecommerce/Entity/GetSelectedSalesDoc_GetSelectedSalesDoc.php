@@ -12,18 +12,18 @@ use Magento\Catalog\Model\AbstractModel;
 class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
 {
     public const AMOUNT = 'Amount';
-    public const APPLIED_AMOUNT = 'AppliedAmount';
-    public const CREATED_BY_LINE_NO = 'CreatedbyLineNo.';
-    public const CURRENCY_CODE = 'CurrencyCode';
-    public const DATA_ENTRY_BALANCE = 'DataEntryBalance';
-    public const DATE_CREATED = 'DateCreated';
-    public const ENTRY_CODE = 'EntryCode';
-    public const ENTRY_TYPE = 'EntryType';
-    public const EXPIRING_DATE = 'ExpiringDate';
-    public const LSC_MEMBER_SALES_BUFFER = 'LSCMemberSalesBuffer';
-    public const LSC_MEMBER_SALES_DATA_ENTRY = 'LSCMemberSalesDataEntry';
-    public const LSC_MEMBER_SALES_DOC_DISC_LINE = 'LSCMemberSalesDocDiscLine';
-    public const LSC_MEMBER_SALES_DOC_LINE = 'LSCMemberSalesDocLine';
+    public const APPLIED_AMOUNT = 'Applied Amount';
+    public const CREATED_BY_LINE_NO = 'Created by Line No.';
+    public const CURRENCY_CODE = 'Currency Code';
+    public const DATA_ENTRY_BALANCE = 'Data Entry Balance';
+    public const DATE_CREATED = 'Date Created';
+    public const ENTRY_CODE = 'Entry Code';
+    public const ENTRY_TYPE = 'Entry Type';
+    public const EXPIRING_DATE = 'Expiring Date';
+    public const LSC_MEMBER_SALES_BUFFER = 'LSC Member Sales Buffer';
+    public const LSC_MEMBER_SALES_DATA_ENTRY = 'LSC Member Sales Data Entry';
+    public const LSC_MEMBER_SALES_DOC_DISC_LINE = 'LSC Member Sales Doc Disc Line';
+    public const LSC_MEMBER_SALES_DOC_LINE = 'LSC Member Sales Doc Line';
     public const PIN = 'PIN';
 
     public static array $dbColumnsMapping = [

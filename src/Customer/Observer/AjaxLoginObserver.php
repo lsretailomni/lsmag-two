@@ -3,83 +3,27 @@
 namespace Ls\Customer\Observer;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Model\Session as CustomerSession;
+use GuzzleHttp\Exception\GuzzleException;
+use \Ls\Omni\Client\Ecommerce\Entity\RootMemberLogon;
 use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\Json;
-use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Json\Helper\Data;
-use Psr\Log\LoggerInterface;
 
 /**
  * Observer responsible for customer ajax login from checkout
  */
-class AjaxLoginObserver implements ObserverInterface
+class AjaxLoginObserver extends AbstractOmniObserver
 {
-
-    /** @var ContactHelper */
-    private $contactHelper;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var CustomerSession */
-    private $customerSession;
-
-    /** @var ActionFlag */
-    private $actionFlag;
-
-    /** @var Data $jsonhelper */
-    private $jsonhelper;
-
-    /** @var JsonFactory */
-    private $resultJsonFactory;
-
-    /** @var LSR */
-    private $lsr;
-
-    /**
-     * @param ContactHelper $contactHelper
-     * @param LoggerInterface $logger
-     * @param CustomerSession $customerSession
-     * @param Data $jsonhelper
-     * @param JsonFactory $resultJsonFactory
-     * @param ActionFlag $actionFlag
-     * @param LSR $LSR
-     */
-    public function __construct(
-        ContactHelper $contactHelper,
-        LoggerInterface $logger,
-        CustomerSession $customerSession,
-        Data $jsonhelper,
-        JsonFactory $resultJsonFactory,
-        ActionFlag $actionFlag,
-        LSR $LSR
-    ) {
-        $this->contactHelper     = $contactHelper;
-        $this->logger            = $logger;
-        $this->customerSession   = $customerSession;
-        $this->resultJsonFactory = $resultJsonFactory;
-        $this->jsonhelper        = $jsonhelper;
-        $this->actionFlag        = $actionFlag;
-        $this->lsr               = $LSR;
-    }
-
     /**
      * Entry point for the observer
      *
      * @param Observer $observer
      * @return $this|Json
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute(Observer $observer)
     {
@@ -88,11 +32,12 @@ class AjaxLoginObserver implements ObserverInterface
         $resultJson = $this->resultJsonFactory->create();
         // check if we have a data in request and request is Ajax.
         if ($request && $request->isXmlHttpRequest()) {
-            $credentials = $this->jsonhelper->jsonDecode($request->getContent());
+            $credentials = $this->jsonHelper->jsonDecode($request->getContent());
 
             if (!empty($credentials['username']) && !empty($credentials['password'])) {
-                $email     = $username = $credentials['username'];
-                $is_email  = $this->contactHelper->isValid($username);
+                $email = $username = $credentials['username'];
+                $isEmail = $this->contactHelper->isValid($username);
+                $search = null;
                 if ($this->lsr->isLSR(
                     $this->lsr->getCurrentStoreId(),
                     false,
@@ -100,16 +45,16 @@ class AjaxLoginObserver implements ObserverInterface
                 )) {
                     try {
                         // CASE FOR EMAIL LOGIN := TRANSLATION TO USERNAME
-                        if ($is_email) {
+                        if ($isEmail) {
                             $search = $this->contactHelper->search($username);
-                            $found  = $search !== null
-                                && ($search instanceof Entity\MemberContact)
-                                && !empty($search->getEmail());
+                            $found = $search !== null
+                                && !empty($search->getLscMemberContact())
+                                && !empty($search->getLscMemberContact()->getEmail());
                             if (!$found) {
                                 $message = __('Sorry. No account found with the provided email address');
                                 return $this->generateMessage($observer, $message, true);
                             }
-                            $username = $search->getUserName();
+                            $username = $search->getLscMemberLoginCard()->getLoginId();
                         }
                         $result = $this->contactHelper->login($username, $credentials['password']);
                         if ($result == false) {
@@ -117,15 +62,20 @@ class AjaxLoginObserver implements ObserverInterface
                             return $this->generateMessage($observer, $message, true);
                         }
                         $response = [
-                            'errors'  => false,
+                            'errors' => false,
                             'message' => __('Omni login successful.')
                         ];
-                        if ($result instanceof Entity\MemberContact) {
+                        if ($result instanceof RootMemberLogon) {
+                            if ($isEmail === false && !$search) {
+                                $search = $this->contactHelper->search(
+                                    current($result->getMembercontact())->getEMail()
+                                );
+                            }
+                            $this->contactHelper->processCustomerLogin($search, $credentials, $isEmail);
                             /**
                              * Fetch customer related info from omni and create user in magento
                              */
-                            $this->contactHelper->processCustomerLogin($result, $credentials, $is_email);
-                            $this->contactHelper->updateBasketAndWishlistAfterLogin($result);
+//                            $this->contactHelper->updateBasketAndWishlistAfterLogin($result);
                             $this->customerSession->regenerateId();
                             $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
                             return $resultJson->setData($response);
@@ -138,7 +88,7 @@ class AjaxLoginObserver implements ObserverInterface
                     }
                 } else {
                     $isAjax = true;
-                    $this->contactHelper->loginCustomerIfOmniServiceDown($is_email, $email, $request, $isAjax);
+                    $this->contactHelper->loginCustomerIfOmniServiceDown($isEmail, $email, $request, $isAjax);
                 }
             }
         }
@@ -156,13 +106,13 @@ class AjaxLoginObserver implements ObserverInterface
     private function generateMessage(Observer $observer, $message, $isError = true)
     {
         $response = [
-            'errors'  => $isError,
+            'errors' => $isError,
             'message' => __($message)
         ];
         $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
         $observer->getControllerAction()
             ->getResponse()
-            ->representJson($this->jsonhelper->jsonEncode($response));
+            ->representJson($this->jsonHelper->jsonEncode($response));
         return $this;
     }
 }

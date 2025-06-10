@@ -2,6 +2,7 @@
 
 namespace Ls\Customer\Plugin\Customer;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ForgotPasswordResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
@@ -25,41 +26,20 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class AccountManagement
 {
-    /** @var ContactHelper */
-    private $contactHelper;
-
-    /** @var LSR @var */
-    private $lsr;
-
-    /** @var StoreManagerInterface */
-    private $storeManager;
-
-    /** @var CustomerFactory */
-    public $customerFactory;
-
-    /** @var Customer $customerResourceModel */
-    private $customerResourceModel;
-
     /**
-     * AccountManagement constructor.
      * @param ContactHelper $contactHelper
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param CustomerFactory $customerFactory
      * @param Customer $customerResourceModel
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        ContactHelper $contactHelper,
-        LSR $LSR,
-        CustomerFactory $customerFactory,
-        Customer $customerResourceModel,
-        StoreManagerInterface $storeManager
+        public ContactHelper $contactHelper,
+        public LSR $lsr,
+        public CustomerFactory $customerFactory,
+        public Customer $customerResourceModel,
+        public StoreManagerInterface $storeManager
     ) {
-        $this->contactHelper         = $contactHelper;
-        $this->lsr                   = $LSR;
-        $this->customerFactory       = $customerFactory;
-        $this->customerResourceModel = $customerResourceModel;
-        $this->storeManager          = $storeManager;
     }
 
     /**
@@ -99,7 +79,7 @@ class AccountManagement
      * @throws InvalidEnumException
      * @throws InvalidTransitionException
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function aroundAuthenticate(
         AccountManagementModel $subject,
@@ -117,7 +97,7 @@ class AccountManagement
             )) {
                 if ($isEmail) {
                     $search = $this->contactHelper->search($username);
-                    $found  = $search !== null
+                    $found = $search !== null
                         && ($search instanceof MemberContact)
                         && !empty($search->getEmail());
                     if (!$found) {
@@ -181,11 +161,11 @@ class AccountManagement
     ) {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $postParam ['password'] = $newPassword;
-            $websiteId              = $this->storeManager->getWebsite()->getWebsiteId();
-            $customer               = $this->customerFactory->create()
+            $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
+            $customer = $this->customerFactory->create()
                 ->setWebsiteId($websiteId)
                 ->loadByEmail($email);
-            $result                 = $this->contactHelper->resetPassword($customer, $postParam);
+            $result = $this->contactHelper->resetPassword($customer, $postParam);
             if (!$result) {
                 throw new InputException(__('Cannot set the customer\'s password'));
             }
@@ -224,8 +204,8 @@ class AccountManagement
                     $customer = $this->customerFactory->create()
                         ->setWebsiteId($websiteId)
                         ->loadByEmail($search->getEmail());
-                    $userName = ($customer->getData('lsr_username')) ?:$search->getUserName();
-                    $result   = $this->contactHelper->forgotPassword($userName);
+                    $userName = ($customer->getData('lsr_username')) ?: $search->getUserName();
+                    $result = $this->contactHelper->forgotPassword($userName);
                     if ($result) {
                         if (!$customer->getId()) {
                             // Check if customer is already created in magento or not.
@@ -272,9 +252,9 @@ class AccountManagement
         $newPassword
     ) {
         $customerEditPost['current_password'] = $currentPassword;
-        $customerEditPost['password']         = $newPassword;
-        $customer                             = $this->customerFactory->create()->load($customerId);
-        $result                               = $this->contactHelper->changePassword($customer, $customerEditPost);
+        $customerEditPost['password'] = $newPassword;
+        $customer = $this->customerFactory->create()->load($customerId);
+        $result = $this->contactHelper->changePassword($customer, $customerEditPost);
         if (empty($result)) {
             throw new AuthenticationException(
                 __('You have entered an invalid current password.')

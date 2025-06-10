@@ -295,6 +295,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SESSION_CUSTOMER_SECURITYTOKEN = 'lsr-s-c-st';
     const SESSION_CUSTOMER_CARDID = 'lsr-s-c-cid';
     const SESSION_CUSTOMER_LSRID = 'lsr-s-c-lid';
+    const SESSION_CUSTOMER_LSR_ACCOUNT_ID = 'lsr-s-c-aid';
     const SESSION_CART_ONELIST = 'lsr-s-c-onelist';
     const SESSION_CART_WISHLIST = 'lsr-s-c-wishlist';
     const SESSION_CHECKOUT_MEMBERPOINTS = 'member_points';

@@ -1,9 +1,9 @@
 <?php
-/** @var Dashboard $this */
+/** @var Dashboard $block */
 
 use \Ls\Customer\Block\Account\Dashboard;
 
-if ($account = $this->getMembersInfo()) : ?>
+if ($account = $block->getMembersInfo()) : ?>
     <div class="block block-club-info">
         <div class="block-title">
             <strong><?= __('Club Information'); ?></strong>
@@ -19,7 +19,7 @@ if ($account = $this->getMembersInfo()) : ?>
                             <?= __('Club Name:'); ?>
                         </h6>
                         <span>
-                            <?= $account->getScheme()->getClub()->getName(); ?>
+                            <?= $account->getLscMemberClub()->getDescription(); ?>
                         </span>
                     </div>
                     <div class="loyalty-point-earned">
@@ -27,11 +27,11 @@ if ($account = $this->getMembersInfo()) : ?>
                             <?= __('Loyalty Points Earned:'); ?>
                         </h6>
                         <span>
-                            <?= $account->getPointBalance(); ?>
+                            <?= $block->getLoyaltyPointsBalance($account); ?>
                         </span>
                     </div>
-                    <?php if($account->getPointBalance() &&
-                        ($expiry = $this->getPointBalanceExpiry($account))
+                    <?php if (!empty($block->getLoyaltyPointsBalance($account)) &&
+                        ($expiry = $block->getPointBalanceExpiry())
                     ): ?>
                     <div class="loyalty-points-expiry">
                         <h6 class='header-inline'>
@@ -48,7 +48,7 @@ if ($account = $this->getMembersInfo()) : ?>
                             <?= __('Loyalty Level:'); ?>
                         </h6>
                         <span>
-                            <?= $account->getScheme()->getDescription(); ?>
+                            <?= $account->getLscMemberScheme()->getDescription(); ?>
                         </span>
                     </div>
                 </div>
@@ -58,15 +58,18 @@ if ($account = $this->getMembersInfo()) : ?>
                     <strong> <span><?= __('Next Level'); ?> </span></strong>
                 </div>
                 <div class="box-content">
-                    <?php if ($account->getScheme()
-                        ->getNextScheme()
-                    ) : ?>
+                    <?php
+                    $nextScheme = $block->getNextScheme(
+                        $account->getLscMemberScheme()->getClubCode(),
+                        $account->getLscMemberScheme()->getUpdateSequence()
+                    );
+                    if ($nextScheme) : ?>
                         <div class="level">
                             <h6 class='header-inline'>
                                 <?= __('Level:'); ?>
                             </h6>
                             <span>
-                                <?= $account->getScheme()->getNextScheme()->getDescription(); ?>
+                                <?= $nextScheme['Description']; ?>
                             </span>
                         </div>
                         <div class="points-needed">
@@ -74,7 +77,7 @@ if ($account = $this->getMembersInfo()) : ?>
                                 <?= __('Points Needed:'); ?>
                             </h6>
                             <span>
-                                <?= $account->getScheme()->getPointsNeeded(); ?>
+                                <?= $nextScheme['Min. Point for Upgrade']; ?>
                             </span>
                         </div>
                         <div class="perks">
@@ -82,7 +85,7 @@ if ($account = $this->getMembersInfo()) : ?>
                                 <?= __('Benefits of Next Level:') ?>
                             </h6>
                             <span>
-                                <?= $account->getScheme()->getPerks(); ?>
+                                <?= $account->getLscMemberScheme()->getNextSchemeBenefits(); ?>
                             </span>
                         </div>
                     <?php else : ?>

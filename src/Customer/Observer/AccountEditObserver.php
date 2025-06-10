@@ -2,78 +2,22 @@
 
 namespace Ls\Customer\Observer;
 
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Model\Session as CustomerSession;
+use GuzzleHttp\Exception\GuzzleException;
 use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\ActionFlag;
-use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Message\ManagerInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Observer responsible for syncing customer password change
  */
-class AccountEditObserver implements ObserverInterface
+class AccountEditObserver extends AbstractOmniObserver
 {
-    /** @var ContactHelper $contactHelper */
-    private $contactHelper;
-
-    /** @var ManagerInterface $messageManager */
-    private $messageManager;
-
-    /** @var LoggerInterface $logger */
-    private $logger;
-
-    /** @var CustomerSession $customerSession */
-    private $customerSession;
-
-    /** @var ActionFlag */
-    private $actionFlag;
-
-    /** @var RedirectInterface */
-    private $redirectInterface;
-
-    /** @var LSR @var */
-    private $lsr;
-
     /**
-     * @param ContactHelper $contactHelper
-     * @param ManagerInterface $messageManager
-     * @param LoggerInterface $logger
-     * @param CustomerSession $customerSession
-     * @param RedirectInterface $redirectInterface
-     * @param ActionFlag $actionFlag
-     * @param LSR $LSR
-     */
-
-    public function __construct(
-        ContactHelper $contactHelper,
-        ManagerInterface $messageManager,
-        LoggerInterface $logger,
-        CustomerSession $customerSession,
-        RedirectInterface $redirectInterface,
-        ActionFlag $actionFlag,
-        LSR $LSR
-    ) {
-        $this->contactHelper     = $contactHelper;
-        $this->messageManager    = $messageManager;
-        $this->logger            = $logger;
-        $this->customerSession   = $customerSession;
-        $this->redirectInterface = $redirectInterface;
-        $this->actionFlag        = $actionFlag;
-        $this->lsr               = $LSR;
-    }
-
-    /**
-     * Customer Update Password through Omni End Point, currently we are only working on
-     * changing customer password and is not focusing on changing the customer account information.
+     * Entry point for the observer
+     *
      * @param Observer $observer
      * @return $this
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute(Observer $observer)
     {
@@ -82,9 +26,9 @@ class AccountEditObserver implements ObserverInterface
             false,
             $this->lsr->getCustomerIntegrationOnFrontend()
         )) {
-            $controller_action  = $observer->getData('controller_action');
+            $controller_action = $observer->getData('controller_action');
             $customer_edit_post = $controller_action->getRequest()->getParams();
-            $customer           = $this->customerSession->getCustomer();
+            $customer = $this->customerSession->getCustomer();
             if (isset($customer_edit_post['change_password']) && $customer_edit_post['change_password']) {
                 if ($customer_edit_post['password'] == $customer_edit_post['password_confirmation']) {
                     $result = $this->contactHelper->changePassword($customer, $customer_edit_post);

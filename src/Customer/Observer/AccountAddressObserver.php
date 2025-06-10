@@ -2,48 +2,25 @@
 
 namespace Ls\Customer\Observer;
 
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Exception\InvalidEnumException;
-use \Ls\Omni\Helper\ContactHelper;
+use GuzzleHttp\Exception\GuzzleException;
 use Magento\Customer\Model\Address;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Message\ManagerInterface;
 
 /**
  * Class AccountAddressObserver for adding and updating address
  */
-class AccountAddressObserver implements ObserverInterface
+class AccountAddressObserver extends AbstractOmniObserver
 {
-    /** @var ContactHelper $contactHelper */
-    private $contactHelper;
-
-    /** @var ManagerInterface $messageManager */
-    private $messageManager;
-
-    /** @var LSR @var */
-    private $lsr;
-
     /**
-     * @param ContactHelper $contactHelper
-     * @param ManagerInterface $messageManager
-     * @param LSR $lsr
-     */
-    public function __construct(
-        ContactHelper $contactHelper,
-        ManagerInterface $messageManager,
-        LSR $lsr
-    ) {
-        $this->contactHelper  = $contactHelper;
-        $this->messageManager = $messageManager;
-        $this->lsr            = $lsr;
-    }
-
-    /**
-     * @inheritDoc
+     * Entry point for the observer
+     *
+     * @param Observer $observer
+     * @return $this
+     * @throws GuzzleException
+     * @throws LocalizedException
      * @throws NoSuchEntityException
-     * @throws InvalidEnumException
      */
     public function execute(Observer $observer)
     {
@@ -62,6 +39,7 @@ class AccountAddressObserver implements ObserverInterface
                 $customerAddress->getCustomer()->setData('lsr_username', $customer->getData('lsr_username'));
                 $customerAddress->getCustomer()->setData('lsr_token', $customer->getData('lsr_token'));
                 $customerAddress->getCustomer()->setData('lsr_id', $customer->getData('lsr_id'));
+                $customerAddress->getCustomer()->setData('lsr_account_id', $customer->getData('lsr_account_id'));
                 $customerAddress->getCustomer()->setData('lsr_cardid', $customer->getData('lsr_cardid'));
             }
             // only process if the customer has any valid lsr_username

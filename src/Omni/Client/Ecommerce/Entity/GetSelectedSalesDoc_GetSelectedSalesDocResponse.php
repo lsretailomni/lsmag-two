@@ -27,4 +27,14 @@ class GetSelectedSalesDoc_GetSelectedSalesDocResponse
     {
         return $this->records;
     }
+
+    public function getResponseCode(): string
+    {
+        return $this->responseCode;
+    }
+
+    public function getErrorText(): string
+    {
+        return $this->errorText;
+    }
 }

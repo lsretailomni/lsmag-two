@@ -13,16 +13,6 @@ use Magento\Framework\DataObject;
  */
 class CacheHelper extends AbstractHelper
 {
-    /**
-     * @var Type
-     */
-    public $cache;
-
-    /**
-     * @var State
-     */
-    public $state;
-
     /** @var array */
     public $soapOptions = [
         'cache_wsdl'   => WSDL_CACHE_DISK,
@@ -36,13 +26,11 @@ class CacheHelper extends AbstractHelper
      * @param State $state
      */
     public function __construct(
-        Context $context,
-        Type $cache,
-        State $state
+        public Context $context,
+        public Type $cache,
+        public State $state
     ) {
         parent::__construct($context);
-        $this->cache = $cache;
-        $this->state = $state;
     }
 
     /**
@@ -57,6 +45,9 @@ class CacheHelper extends AbstractHelper
         if ($cachedContent) {
             // phpcs:disable Magento2.Security.InsecureFunction.FoundWithAlternative
             $cached = unserialize($cachedContent);
+            if (!is_array($cached)) {
+                return $cached;
+            }
             return $this->restoreModel($cached);
         }
 

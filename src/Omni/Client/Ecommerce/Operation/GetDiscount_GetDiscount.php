@@ -46,16 +46,16 @@ class GetDiscount_GetDiscount
 
     public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscountResponse
     {
-        $requiredDataSetName = explode(',', 'LSCWIDiscounts,LSCWIMixMatchOfferExt,LSCWIPrice,LSCPeriodicDiscount,LSCPeriodicDiscountBenefits');
+        $requiredDataSetName = explode(',', 'LSC WI Discounts,LSC WI Mix & Match Offer Ext,LSC WI Price,LSC Periodic Discount,LSC Periodic Discount Benefits');
         $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
-                $entityClassName = str_replace(' ', '', $dataSet);
+                $entityClassName = str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', $dataSet));
                 // Try flat response structure
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
                     $entity = $this->createInstance(
                         \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount::class,
-                         ['data' => $data['LSCWIDiscounts,LSCWIMixMatchOfferExt,LSCWIPrice,LSCPeriodicDiscount,LSCPeriodicDiscountBenefits']]
+                         ['data' => $data['LSC WI Discounts,LSC WI Mix & Match Offer Ext,LSC WI Price,LSC Periodic Discount,LSC Periodic Discount Benefits']]
                      );
 
                     return $this->createInstance(
@@ -93,7 +93,7 @@ class GetDiscount_GetDiscount
                         $entries[$index] = $entry;
                     }
                     if (!empty($entries)) {
-                        $finalEntry->setData($entityClassName, $count > 1 ? $entries : current($entries));
+                        $finalEntry->setData($dataSet, $count > 1 ? $entries : current($entries));
                     }
                 }
             }
@@ -136,7 +136,7 @@ class GetDiscount_GetDiscount
                 if (
                     is_array($data)
                     && isset($data['DataSetName'])
-                    && str_replace(' ', '',$data['DataSetName']) === $target
+                    && str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', $data['DataSetName'])) === $target
                 ) {
                     return $data;
                 }

@@ -3,75 +3,39 @@
 namespace Ls\Customer\Observer;
 
 use Exception;
-use \Ls\Core\Model\LSR;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Exception\InvalidEnumException;
-use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Model\Customer;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\InvalidTransitionException;
-use Psr\Log\LoggerInterface;
-use Magento\Customer\Model\ResourceModel\Customer as CustomerResourceModel;
 
 /**
- * Class RegisterObserver
- * Customer Registration Observer
+ * Observer responsible for observing customer_save_after
  */
-class SaveAfter implements ObserverInterface
+class SaveAfter extends AbstractOmniObserver
 {
-    /** @var ContactHelper $contactHelper */
-    private $contactHelper;
-
-    /** @var LoggerInterface $logger */
-    private $logger;
-
-    /** @var CustomerResourceModel $customerResourceModel */
-    private $customerResourceModel;
-
-    /** @var LSR @var */
-    private $lsr;
-
     /**
-     * SaveAfter constructor.
-     * @param ContactHelper $contactHelper
-     * @param LoggerInterface $logger
-     * @param CustomerResourceModel $customerResourceModel
-     * @param LSR $LSR
-     */
-    public function __construct(
-        ContactHelper $contactHelper,
-        LoggerInterface $logger,
-        CustomerResourceModel $customerResourceModel,
-        LSR $LSR
-    ) {
-        $this->contactHelper         = $contactHelper;
-        $this->logger                = $logger;
-        $this->customerResourceModel = $customerResourceModel;
-        $this->lsr                   = $LSR;
-    }
-
-    /**
-     * After saving customer
+     * Entry point for the observer
      *
      * @param Observer $observer
-     * @return $this|void
+     * @return $this
      * @throws InvalidEnumException
      * @throws AlreadyExistsException
      * @throws InputException
      * @throws LocalizedException
      * @throws NoSuchEntityException
-     * @throws InvalidTransitionException
+     * @throws InvalidTransitionException|GuzzleException
      */
     public function execute(Observer $observer)
     {
         try {
             /** @var Customer $customer */
-            $customer        = $observer->getEvent()->getCustomer();
+            $customer = $observer->getEvent()->getCustomer();
             if (empty($customer->getData('ls_password'))) {
                 return $this;
             }
@@ -93,19 +57,15 @@ class SaveAfter implements ObserverInterface
                     false,
                     $this->lsr->getCustomerIntegrationOnFrontend()
                 )) {
-                    $contact = $this->contactHelper->getCustomerByUsernameOrEmailFromLsCentral(
-                        $customer->getEmail(),
-                        Entity\Enum\ContactSearchType::EMAIL
-                    );
+                    $contact = $this->contactHelper->searchWithUsernameOrEmail($customer->getEmail());
                     /** @var Entity\MemberContact $contact */
                     if (empty($contact)) {
                         $contact = $this->contactHelper->contact($customer);
                     }
                     if (is_object($contact) && $contact->getId()) {
                         $customer = $this->contactHelper->setCustomerAttributesValues($contact, $customer);
-
                         $userName = $customer->getData('lsr_username');
-                        $result   = $this->contactHelper->forgotPassword($userName);
+                        $result = $this->contactHelper->forgotPassword($userName);
 
                         if ($result) {
                             $customer->setData('lsr_resetcode', $result);

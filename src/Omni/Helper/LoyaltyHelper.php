@@ -4,9 +4,12 @@ namespace Ls\Omni\Helper;
 
 use Carbon\Carbon;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use \Ls\Omni\Client\Ecommerce\Entity\GetMemberCard;
+use \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
@@ -163,7 +166,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      * Get loyalty points available to customer
      *
      * @return int|Entity\CardGetPointBalanceResponse|ResponseInterface|null
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getLoyaltyPointsAvailableToCustomer()
     {
@@ -178,16 +181,18 @@ class LoyaltyHelper extends AbstractHelperOmni
 
         if ($cardId && $points == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             // @codingStandardsIgnoreStart
-            $request = new Operation\CardGetPointBalance();
-            $entity  = new Entity\CardGetPointBalance();
+            $operation = new Operation\GetMemberCard();
+            $operation->setOperationInput([
+                GetMemberCard::CARD_NO => $cardId,
+                GetMemberCard::TOTAL_REMAINING_POINTS => 0
+            ]);
             // @codingStandardsIgnoreEnd
-            $entity->setCardId($cardId);
             try {
-                $response = $request->execute($entity);
+                $response = $operation->execute();
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
-            $points = $response ? $response->getResult() : 0;
+            $points = $response ? $response->getTotalremainingpoints() : 0;
 
             $this->basketHelper->setMemberPointsInCheckoutSession($points);
         }
@@ -198,29 +203,29 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * To get contact by card id
      *
-     * @return Entity\ContactGetByCardIdResponse|Entity\MemberContact|ResponseInterface|null
+     * @return GetMemberContactInfo_GetMemberContactInfo
      */
     public function getMemberInfo()
     {
-        $response = null;
         $customer = $this->customerSession->getCustomer();
         $cardId   = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         // if not set in session then get it from customer database.
         if (!$cardId) {
             $cardId = $customer->getData('lsr_cardid');
         }
-        // @codingStandardsIgnoreLine
-        $request = new Operation\ContactGetByCardId();
-        // @codingStandardsIgnoreLine
-        $entity = new Entity\ContactGetByCardId();
-        $entity->setCardId($cardId);
-        $entity->setNumberOfTransReturned(1);
-        try {
-            $response = $request->execute($entity);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        return $response ? $response->getResult() : $response;
+
+        return $this->contactHelper->getCentralCustomerByCardId($cardId);
+    }
+
+    /**
+     * Fetch all member schemes
+     *
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getSchemes()
+    {
+        return $this->dataHelper->fetchGivenTableData('LSC Member Scheme');
     }
 
     /**
@@ -231,10 +236,6 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function getPointBalanceExpirySum()
     {
-        if (version_compare($this->lsr->getOmniVersion(), '2023.06', '<')) {
-            return false;
-        }
-
         $totalEarnedPoints = 0;
         $totalRedemption   = 0;
         $totalExpiryPoints = 0;
@@ -249,12 +250,12 @@ class LoyaltyHelper extends AbstractHelperOmni
             $endDateTs   = Carbon::now()->addDays((int)$expiryInterval);
 
             foreach ($result as $res) {
-                $entryType      = $res->getEntryType();
-                $expirationDate = Carbon::parse($res->getExpirationDate());
-                if ($entryType == "Sales" && $expirationDate->between($startDateTs, $endDateTs, true)) {
-                    $totalEarnedPoints += $res->getPoints();
-                } elseif ($entryType == "Redemption" && $expirationDate->between($startDateTs, $endDateTs, true)) {
-                    $totalRedemption += $res->getPoints();
+                $entryType      = $res['Entry Type'];
+                $expirationDate = Carbon::parse($res['Expiration Date']);
+                if ($entryType == "0" && $expirationDate->between($startDateTs, $endDateTs, true)) {
+                    $totalEarnedPoints += $res['Points'];
+                } elseif ($entryType == "1" && $expirationDate->between($startDateTs, $endDateTs, true)) {
+                    $totalRedemption += $res['Points'];
                 }
             }
 
@@ -263,7 +264,6 @@ class LoyaltyHelper extends AbstractHelperOmni
             if ($totalEarnedPoints >= $totalRedemption) {
                 $totalExpiryPoints = $totalEarnedPoints - $totalRedemption;
             }
-
         }
 
         return $totalExpiryPoints;
@@ -272,28 +272,24 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * To fetch card point entry details
      *
-     * @return Entity\ArrayOfPointEntry|Entity\CardGetPointEntriesResponse|ResponseInterface|null
+     * @return array
+     * @throws NoSuchEntityException
      */
     public function getCardGetPointEntries()
     {
-        $response = null;
         $customer = $this->customerSession->getCustomer();
         $cardId   = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         // if not set in session then get it from customer database.
         if (!$cardId) {
             $cardId = $customer->getData('lsr_cardid');
         }
-        // @codingStandardsIgnoreLine
-        $request = new Operation\CardGetPointEntries();
-        // @codingStandardsIgnoreLine
-        $entity = new Entity\CardGetPointEntries();
-        $entity->setCardId($cardId);
-        try {
-            $response = $request->execute($entity);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        return $response ? $response->getResult() : $response;
+
+        return $this->dataHelper->fetchGivenTableData(
+            'LSC Member Point Entry',
+            '',
+            'Card No.',
+            $cardId
+        );
     }
 
     /**
@@ -324,7 +320,9 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Convert Point Rate into Values
      *
-     * @return float|Entity\GetPointRateResponse|ResponseInterface|null
+     * @param $storeId
+     * @return float|int|string|null
+     * @throws GuzzleException
      * @throws NoSuchEntityException
      */
     public function getPointRate($storeId = null)
@@ -333,8 +331,7 @@ class LoyaltyHelper extends AbstractHelperOmni
             $storeId = $this->lsr->getCurrentStoreId();
         }
 
-        $response = null;
-
+        $rate = 0;
         if ($this->lsr->isLSR($storeId) && $this->isEnabledLoyaltyPoints()) {
             $cacheId  = LSR::POINTRATE . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
@@ -342,31 +339,39 @@ class LoyaltyHelper extends AbstractHelperOmni
             if ($response !== false) {
                 return $this->formatValue($response);
             }
-            // @codingStandardsIgnoreStart
-            $request = new Operation\GetPointRate();
-            $entity  = new Entity\GetPointRate();
-            // @codingStandardsIgnoreEnd
+            $currencyCode = $this->lsr->getStoreCurrencyCode();
+            $response = current($this->dataHelper->fetchGivenTableData(
+                'Currency Exchange Rate',
+                '',
+                'Currency Code',
+                $currencyCode
+            ));
 
-            $currency = $this->lsr->getStoreCurrencyCode();
-            $entity->setCurrency($currency);
-
-            try {
-                $response = $request->execute($entity);
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
+            if (!empty($response['LSC POS Exchange Rate Amount']) &&
+                !empty($response['LSC POS Rel. Exch. Rate Amount'])
+            ) {
+                $rate = ((1 / $response['LSC POS Exchange Rate Amount']) * $response['LSC POS Rel. Exch. Rate Amount']);
+            } else {
+                if (!empty($response['Exchange Rate Amount']) &&
+                    !empty($response['Relational Exch. Rate Amount'])
+                ) {
+                    $rate = ((1 / $response['Exchange Rate Amount']) * $response['Relational Exch. Rate Amount']);
+                }
             }
-            if (!empty($response)) {
+
+            if (!empty($rate)) {
                 $this->cacheHelper->persistContentInCache(
                     $cacheId,
-                    $response->getResult(),
+                    $rate,
                     [Type::CACHE_TAG],
                     86400
                 );
 
-                return $this->formatValue($response->getResult());
+                return $rate;
             }
         }
-        return $response;
+
+        return $rate;
     }
 
     /**
