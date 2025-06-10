@@ -12,6 +12,9 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
+
+use \Ls\Omni\Client\Ecommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
+
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -662,19 +665,39 @@ class OrderHelper extends AbstractHelper
             return $response;
         }
         // @codingStandardsIgnoreStart
-        $request      = new Operation\SalesEntriesGetByCardId();
-        $orderHistory = new Entity\SalesEntriesGetByCardId();
-        // @codingStandardsIgnoreEnd
-        $orderHistory->setCardId($cardId);
-        if (!empty($maxNumberOfEntries)) {
-            $orderHistory->setMaxNumberOfEntries($maxNumberOfEntries);
-        }
+//        $request      = new Operation\SalesEntriesGetByCardId();
+//        $orderHistory = new Entity\SalesEntriesGetByCardId();
+//        // @codingStandardsIgnoreEnd
+//        $orderHistory->setCardId($cardId);
+//        if (!empty($maxNumberOfEntries)) {
+//            $orderHistory->setMaxNumberOfEntries($maxNumberOfEntries);
+//        }
+//        try {
+//            $response = $request->execute($orderHistory);
+//        } catch (Exception $e) {
+//            $this->_logger->error($e->getMessage());
+//        }
+
+        $getSalesHistory = new GetMemContSalesHist_GetMemContSalesHist();
+        $getSalesHistory->setOperationInput(
+            [
+                'memberCardNo' => $cardId,
+                'storeNo' => "",
+                'dateFilter' => "1990-01-01",
+                'dateGreaterThan'=> true,
+                'maxResultContacts'=> 0
+            ]
+        );
+
         try {
-            $response = $request->execute($orderHistory);
+            $response = $getSalesHistory->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getSalesEntriesGetByCardIdResult() : $response;
+        
+        //return $response;
+        
+        return $response ? $response->getRecords()[0]->getLSCMemberSalesBuffer() : $response;
     }
 
     /**
@@ -975,11 +998,11 @@ class OrderHelper extends AbstractHelper
      * @param $salesEntry
      * @return array|OrderInterface
      */
-    public function getOrderByDocumentId($salesEntry)
+    public function getOrderByDocumentId($documentId)
     {
         $order = [];
         try {
-            $documentId = $this->getDocumentIdGivenSalesEntry($salesEntry);
+            //$documentId = $this->getDocumentIdGivenSalesEntry($salesEntry);
 
             if (!empty($documentId)) {
                 $customerId = $this->customerSession->getCustomerId();
@@ -1404,5 +1427,23 @@ class OrderHelper extends AbstractHelper
         }
 
         return $priceCurrency->format($amount, false, 2, null, $currencyObject);
+    }
+
+    /**
+     * Get order status based on the provided ID type
+     *
+     * @param int $idType The type of ID to determine the order status
+     * @return string The corresponding order status based on the ID type
+     */
+    public function getOrderStatus($idType)
+    {
+        switch ($idType)
+        {
+            case 1:
+                return DocumentIdType::ORDER;
+            case 2:
+                return DocumentIdType::HOSP_ORDER;
+        }
+        return DocumentIdType::RECEIPT;
     }
 }

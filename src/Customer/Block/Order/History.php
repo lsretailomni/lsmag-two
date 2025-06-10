@@ -246,9 +246,9 @@ class History extends \Magento\Sales\Block\Order\History
      * @param $order
      * @return array|OrderInterface
      */
-    public function getOrderByDocumentId($order)
+    public function getOrderByDocumentId($documentId)
     {
-        return $this->orderHelper->getOrderByDocumentId($order);
+        return $this->orderHelper->getOrderByDocumentId($documentId);
     }
 
     /**

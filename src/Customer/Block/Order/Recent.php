@@ -6,6 +6,8 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
 use Ls\Omni\Client\Ecommerce\Entity\SalesEntriesGetByCardIdResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use Ls\Omni\Client\ResponseInterface;
@@ -99,14 +101,14 @@ class Recent extends Template
             $this->lsr->getCustomerIntegrationOnFrontend()
         )) {
             $response = [];
-//            $orders   = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
-//            if ($orders) {
-//                try {
-//                    $response = $orders;
-//                } catch (Exception $e) {
-//                    $this->_logger->error($e->getMessage());
-//                }
-//            }
+            $orders   = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
+            if ($orders) {
+                try {                    
+                    $response = $this->processOrderData($orders);
+                } catch (Exception $e) {
+                    $this->_logger->error($e->getMessage());
+                }
+            }
             return $response;
         }
 
@@ -118,6 +120,20 @@ class Recent extends Template
             $customerId,
             $sortOrder
         );
+    }
+
+    /**
+     * Get store currency code
+     * 
+     * If store currency code is not passed then get store currency code from LSR
+     * 
+     * @param $storeCurrencyCode
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getStoreCurrencyCode($storeCurrencyCode)
+    {
+        return ($storeCurrencyCode) ? $storeCurrencyCode : $this->lsr->getStoreCurrencyCode();
     }
 
     /**
@@ -166,30 +182,36 @@ class Recent extends Template
                     return $this->getUrl(
                         'customer/order/view',
                         [
-                            'order_id' => $order->getId()
+                            'order_id' => $order['Document ID']
                         ]
                     );
                 }
             }
 
-            if (!empty($magOrder) && !empty($order->getStoreCurrency())) {
-                if ($order->getStoreCurrency() != $magOrder->getOrderCurrencyCode()) {
-                    $order->setCustomerOrderNo(null);
+//            if (!empty($magOrder) && !empty($order->getStoreCurrency())) {
+//                if ($order->getStoreCurrency() != $magOrder->getOrderCurrencyCode()) {
+//                    $order->setCustomerOrderNo(null);
+//                }
+//            }
+            if (!empty($magOrder) && !empty($order['Store Currency Code'])) {
+                if ($order['Store Currency Code'] != $magOrder->getOrderCurrencyCode()) {
+                    //$order->setCustomerOrderNo(null);
+                    $order['Customer Order No'] = null;
                 }
             }
 
             return $this->getUrl(
                 'customer/order/view',
                 [
-                    'order_id' => $order->getIdType() == 'Order' && $order->getCustomerOrderNo() ?
-                        $order->getCustomerOrderNo() : $order->getId(),
-                    'type'     => $order->getIdType() == 'Order' && $order->getCustomerOrderNo() ?
-                        DocumentIdType::ORDER : $order->getIdType()
+                    'order_id' => $order['ID Type'] == 'Order' && $order['Document ID'] ?
+                        $order['Document ID'] : $magOrder->getIncrementId(),
+                    'type'     => $order['ID Type'] == 'Order' && $order['Document ID'] ?
+                        DocumentIdType::ORDER : $order['ID Type']
                 ]
             );
         }
 
-        return $this->getUrl('sales/order/view', ['order_id' => $order->getId()]);
+        return $this->getUrl('sales/order/view', ['order_id' => $order['Document ID']]);
     }
 
     /**
@@ -216,8 +238,8 @@ class Recent extends Template
             'customer/order/cancel',
             [
                 'magento_order_id' => $magentoOrder->getId(),
-                'central_order_id' => $centralOrder->getId(),
-                'id_type'          => $centralOrder->getIdType()
+                'central_order_id' => $centralOrder['Document ID'],
+                'id_type'          => $centralOrder['ID Type']
             ]
         ) : '';
     }
@@ -261,5 +283,21 @@ class Recent extends Template
     public function registerValueInRegistry($value)
     {
         $this->orderHelper->registerGivenValueInRegistry('current_mag_order', $value);
+    }
+    
+    public function processOrderData($orders)
+    {
+        foreach ($orders as $order) {
+            $order['Status'] = $this->orderHelper->getOrderStatus($_order['Document Source Type']);
+            
+            if($_order['Status'] == DocumentIdType::RECEIPT)
+            {
+                $_order['Status'] = SalesEntryStatus::COMPLETE;
+                $_order['ShippingStatus'] = ShippingStatus::SHIPPED; 
+                $_order['ClickAndCollectOrder'] = (is_null($_order['Customer Document ID']) || $_order['Customer Document ID'] === '') == false); 
+                
+            }
+                
+        }
     }
 }
