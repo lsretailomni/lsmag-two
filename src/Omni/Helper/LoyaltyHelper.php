@@ -1,18 +1,22 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Helper;
 
 use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
-use \Ls\Omni\Client\Ecommerce\Entity\GetMemberCard;
-use \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Omni\Model\Cache\Type;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use Ls\Omni\Client\Ecommerce\Entity\GetDirectMarketingInfoResult as GetDirectMarketingInfoResponse;
+use Ls\Omni\Client\Ecommerce\Entity\GetMemberCard;
+use Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
+use Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\Ecommerce\Operation\GetDirectMarketingInfo;
+use Ls\Omni\Client\Ecommerce\Operation\GetDiscount_GetDiscount;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Currency;
 use Magento\Framework\Exception\LocalizedException;
@@ -420,7 +424,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      *
      * @param int $loyaltyPoints
      * @return bool
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function isPointsAreValid($loyaltyPoints)
     {
@@ -433,22 +437,17 @@ class LoyaltyHelper extends AbstractHelperOmni
      * Fetch discounts
      *
      * @param string $itemId
-     * @param int $webStore
-     * @return bool|Entity\DiscountsGetResponse|Entity\ProactiveDiscount[]|ResponseInterface|null
+     * @param string $webStore
+     * @return bool|GetDiscount_GetDiscount|null
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
-    public function getProactiveDiscounts($itemId, $webStore)
+    public function getProactiveDiscounts(string $itemId, string $webStore)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $response = null;
-            // @codingStandardsIgnoreStart
-            $request = new Operation\DiscountsGet();
-            $entity  = new Entity\DiscountsGet();
-            $string  = new Entity\ArrayOfstring();
-            // @codingStandardsIgnoreEnd
             $storeId         = $this->lsr->getCurrentStoreId();
             $customerGroupId = $this->customerSession->getCustomerGroupId();
+            $customerGroup = $this->groupRepository->getById($customerGroupId)->getCode();
             $cacheItemId     = $itemId;
 
             if (is_array($itemId)) {
@@ -460,26 +459,34 @@ class LoyaltyHelper extends AbstractHelperOmni
                 $this->_logger->debug("Found proactive discounts from cache " . $cacheId);
                 return $response;
             }
-            $group = $this->groupRepository->getById($customerGroupId)->getCode();
-            $string->setString(is_array($itemId) ? $itemId : [$itemId]);
-            $entity->setStoreId($webStore)->setItemIds($string);
-            ($group != "NOT LOGGED IN") ? $entity->setLoyaltySchemeCode($group) : $entity->setLoyaltySchemeCode("");
+
+            // @codingStandardsIgnoreStart
+            $operation = new GetDiscount_GetDiscount();
+            $operation->setOperationInput([
+                'items' => $itemId,
+                'storeNo' => $webStore,
+                'schemeCode' => $customerGroup !== 'NOT LOGGED IN' ? $customerGroup : ''
+            ]);
+            // @codingStandardsIgnoreEnd
             try {
-                $response = $request->execute($entity);
+                $response = $operation->execute();
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
-            if (!empty($response) &&
-                !empty($response->getDiscountsGetResult())) {
+
+            if ($response && $response->getResponsecode() == '0000' &&
+                !empty(current($response->getRecords())->getData())
+            ) {
                 $this->cacheHelper->persistContentInCache(
                     $cacheId,
-                    $response->getDiscountsGetResult()->getProactiveDiscount(),
+                    current($response->getRecords()),
                     [Type::CACHE_TAG],
                     7200
                 );
-                return $response->getDiscountsGetResult()->getProactiveDiscount();
+
+                return current($response->getRecords());
             } else {
-                return $response;
+                return null;
             }
         } else {
             return null;
@@ -489,10 +496,11 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Get published offers for given card_id, store_id, item_id
      *
-     * @param int $cardId
-     * @param int $storeId
-     * @param string $itemId
-     * @return bool|Entity\PublishedOffer[]|Entity\PublishedOffersGetByCardIdResponse|ResponseInterface|null
+     * @param $cardId
+     * @param $storeId
+     * @param $itemId
+     * @return bool|GetDirectMarketingInfoResponse|null
+     * @throws GuzzleException
      * @throws NoSuchEntityException
      */
     public function getPublishedOffers($cardId, $storeId, $itemId = null)
@@ -508,31 +516,31 @@ class LoyaltyHelper extends AbstractHelperOmni
 
                 return $response;
             }
-
             // @codingStandardsIgnoreStart
-            $request = new Operation\PublishedOffersGetByCardId();
-            $entity  = new Entity\PublishedOffersGetByCardId();
-            // @codingStandardsIgnoreEnd
-            $entity->setCardId($cardId);
-            $entity->setItemId($itemId);
+            $operation = new GetDirectMarketingInfo();
+            $operation->setOperationInput([
+                Entity\GetDirectMarketingInfo::CARD_ID => $cardId,
+                Entity\GetDirectMarketingInfo::ITEM_NO => $itemId,
+                Entity\GetDirectMarketingInfo::STORE_NO => $storeId
+            ]);
             try {
-                $response = $request->execute($entity);
+                $response = $operation->execute();
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
-
-            if (!empty($response) &&
-                !empty($response->getPublishedOffersGetByCardIdResult())) {
+            // @codingStandardsIgnoreEnd
+            if ($response && $response->getResponsecode() == '0000') {
                 $this->cacheHelper->persistContentInCache(
                     $cacheId,
-                    $response->getPublishedOffersGetByCardIdResult()->getPublishedOffer(),
+                    $response->getLoadmemberdirmarkinfoxml(),
                     [Type::CACHE_TAG],
                     7200
                 );
-                return $response->getPublishedOffersGetByCardIdResult()->getPublishedOffer();
-            } else {
-                return $response;
+
+                return $response->getLoadmemberdirmarkinfoxml();
             }
+
+            return null;
         } else {
             return null;
         }
@@ -543,7 +551,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      *
      * @return array
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      *
      * phpcs:disable Generic.Metrics.NestingLevel.TooHigh
      */

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Helper;
 
@@ -722,10 +723,10 @@ class ItemHelper extends AbstractHelper
      * Get Ls Central Item Id by sku
      *
      * @param string $sku
-     * @return mixed
+     * @return string
      * @throws NoSuchEntityException
      */
-    public function getLsCentralItemIdBySku($sku)
+    public function getLsCentralItemIdBySku(string $sku): string
     {
         $product = $this->productRepository->get($sku);
         $itemId  = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
@@ -736,11 +737,11 @@ class ItemHelper extends AbstractHelper
     /**
      * Get product given sku
      *
-     * @param $sku
+     * @param string $sku
      * @return ProductInterface
      * @throws NoSuchEntityException
      */
-    public function getProductGivenSku($sku)
+    public function getProductGivenSku(string $sku): ProductInterface
     {
         return $this->productRepository->get($sku);
     }

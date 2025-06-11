@@ -11,18 +11,18 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetDiscount_GetDiscount extends AbstractModel
 {
-    public const LSC_PERIODIC_DISCOUNT = 'LSC Periodic Discount';
-    public const LSC_PERIODIC_DISCOUNT_BENEFITS = 'LSC Periodic Discount Benefits';
     public const LSC_WI_DISCOUNTS = 'LSC WI Discounts';
     public const LSC_WI_MIX_MATCH_OFFER_EXT = 'LSC WI Mix & Match Offer Ext';
     public const LSC_WI_PRICE = 'LSC WI Price';
+    public const LSC_PERIODIC_DISCOUNT = 'LSC Periodic Discount';
+    public const LSC_PERIODIC_DISCOUNT_BENEFITS = 'LSC Periodic Discount Benefits';
 
     public static array $dbColumnsMapping = [
-	self::LSC_PERIODIC_DISCOUNT => 'lsc_periodic_discount',
-	self::LSC_PERIODIC_DISCOUNT_BENEFITS => 'lsc_periodic_discount_benefits',
 	self::LSC_WI_DISCOUNTS => 'lsc_wi_discounts',
 	self::LSC_WI_MIX_MATCH_OFFER_EXT => 'lsc_wi_mix_match_offer_ext',
 	self::LSC_WI_PRICE => 'lsc_wi_price',
+	self::LSC_PERIODIC_DISCOUNT => 'lsc_periodic_discount',
+	self::LSC_PERIODIC_DISCOUNT_BENEFITS => 'lsc_periodic_discount_benefits',
     ];
 
     public static function getDbColumnsMapping(): array
@@ -30,26 +30,6 @@ class GetDiscount_GetDiscount extends AbstractModel
         return self::$dbColumnsMapping;
     }
 
-
-    public function getLscPeriodicDiscount()
-    {
-        return $this->getData(self::LSC_PERIODIC_DISCOUNT);
-    }
-
-    public function setLscPeriodicDiscount(?array $value)
-    {
-        return $this->setData(self::LSC_PERIODIC_DISCOUNT, $value);
-    }
-
-    public function getLscPeriodicDiscountBenefits()
-    {
-        return $this->getData(self::LSC_PERIODIC_DISCOUNT_BENEFITS);
-    }
-
-    public function setLscPeriodicDiscountBenefits(?LSCPeriodicDiscountBenefits $value)
-    {
-        return $this->setData(self::LSC_PERIODIC_DISCOUNT_BENEFITS, $value);
-    }
 
     public function getLscWiDiscounts()
     {
@@ -79,5 +59,25 @@ class GetDiscount_GetDiscount extends AbstractModel
     public function setLscWiPrice(?LSCWIPrice $value)
     {
         return $this->setData(self::LSC_WI_PRICE, $value);
+    }
+
+    public function getLscPeriodicDiscount()
+    {
+        return $this->getData(self::LSC_PERIODIC_DISCOUNT);
+    }
+
+    public function setLscPeriodicDiscount(?array $value)
+    {
+        return $this->setData(self::LSC_PERIODIC_DISCOUNT, $value);
+    }
+
+    public function getLscPeriodicDiscountBenefits()
+    {
+        return $this->getData(self::LSC_PERIODIC_DISCOUNT_BENEFITS);
+    }
+
+    public function setLscPeriodicDiscountBenefits(?LSCPeriodicDiscountBenefits $value)
+    {
+        return $this->setData(self::LSC_PERIODIC_DISCOUNT_BENEFITS, $value);
     }
 }

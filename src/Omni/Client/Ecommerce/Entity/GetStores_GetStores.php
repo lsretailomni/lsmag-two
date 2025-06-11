@@ -11,20 +11,28 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetStores_GetStores extends AbstractModel
 {
-    public const CODE = 'Code';
-    public const DESCRIPTION = 'Description';
-    public const LSC_SALES_TYPE = 'LSC Sales Type';
     public const LSC_STORE = 'LSC Store';
     public const LSC_STORE_GROUP_SETUP = 'LSC Store Group Setup';
     public const LSC_STORE_PRICE_GROUP = 'LSC Store Price Group';
+    public const LSC_SALES_TYPE = 'LSC Sales Type';
+    public const LSC_CO_SOURCING_LOCATIONS = 'LSC CO Sourcing Locations';
+    public const LSC_ATTRIBUTE = 'LSC Attribute';
+    public const LSC_ATTRIBUTE_VALUE = 'LSC Attribute Value';
+    public const LSC_RETAIL_IMAGE_LINK = 'LSC Retail Image Link';
+    public const LSC_RETAIL_CALENDAR_LINE = 'LSC Retail Calendar Line';
+    public const LSC_RTL_CALENDAR_GROUP_LINKING = 'LSC Rtl Calendar Group Linking';
 
     public static array $dbColumnsMapping = [
-	self::CODE => 'code',
-	self::DESCRIPTION => 'description',
-	self::LSC_SALES_TYPE => 'lsc_sales_type',
 	self::LSC_STORE => 'lsc_store',
 	self::LSC_STORE_GROUP_SETUP => 'lsc_store_group_setup',
 	self::LSC_STORE_PRICE_GROUP => 'lsc_store_price_group',
+	self::LSC_SALES_TYPE => 'lsc_sales_type',
+	self::LSC_CO_SOURCING_LOCATIONS => 'lsc_co_sourcing_locations',
+	self::LSC_ATTRIBUTE => 'lsc_attribute',
+	self::LSC_ATTRIBUTE_VALUE => 'lsc_attribute_value',
+	self::LSC_RETAIL_IMAGE_LINK => 'lsc_retail_image_link',
+	self::LSC_RETAIL_CALENDAR_LINE => 'lsc_retail_calendar_line',
+	self::LSC_RTL_CALENDAR_GROUP_LINKING => 'lsc_rtl_calendar_group_linking',
     ];
 
     public static function getDbColumnsMapping(): array
@@ -32,36 +40,6 @@ class GetStores_GetStores extends AbstractModel
         return self::$dbColumnsMapping;
     }
 
-
-    public function getCode()
-    {
-        return $this->getData(self::CODE);
-    }
-
-    public function setCode(?Code $value)
-    {
-        return $this->setData(self::CODE, $value);
-    }
-
-    public function getDescription()
-    {
-        return $this->getData(self::DESCRIPTION);
-    }
-
-    public function setDescription(?Text $value)
-    {
-        return $this->setData(self::DESCRIPTION, $value);
-    }
-
-    public function getLscSalesType()
-    {
-        return $this->getData(self::LSC_SALES_TYPE);
-    }
-
-    public function setLscSalesType(?array $value)
-    {
-        return $this->setData(self::LSC_SALES_TYPE, $value);
-    }
 
     public function getLscStore()
     {
@@ -91,5 +69,75 @@ class GetStores_GetStores extends AbstractModel
     public function setLscStorePriceGroup(?array $value)
     {
         return $this->setData(self::LSC_STORE_PRICE_GROUP, $value);
+    }
+
+    public function getLscSalesType()
+    {
+        return $this->getData(self::LSC_SALES_TYPE);
+    }
+
+    public function setLscSalesType(?array $value)
+    {
+        return $this->setData(self::LSC_SALES_TYPE, $value);
+    }
+
+    public function getLscCoSourcingLocations()
+    {
+        return $this->getData(self::LSC_CO_SOURCING_LOCATIONS);
+    }
+
+    public function setLscCoSourcingLocations(?array $value)
+    {
+        return $this->setData(self::LSC_CO_SOURCING_LOCATIONS, $value);
+    }
+
+    public function getLscAttribute()
+    {
+        return $this->getData(self::LSC_ATTRIBUTE);
+    }
+
+    public function setLscAttribute(?array $value)
+    {
+        return $this->setData(self::LSC_ATTRIBUTE, $value);
+    }
+
+    public function getLscAttributeValue()
+    {
+        return $this->getData(self::LSC_ATTRIBUTE_VALUE);
+    }
+
+    public function setLscAttributeValue(?array $value)
+    {
+        return $this->setData(self::LSC_ATTRIBUTE_VALUE, $value);
+    }
+
+    public function getLscRetailImageLink()
+    {
+        return $this->getData(self::LSC_RETAIL_IMAGE_LINK);
+    }
+
+    public function setLscRetailImageLink(?array $value)
+    {
+        return $this->setData(self::LSC_RETAIL_IMAGE_LINK, $value);
+    }
+
+    public function getLscRetailCalendarLine()
+    {
+        return $this->getData(self::LSC_RETAIL_CALENDAR_LINE);
+    }
+
+    public function setLscRetailCalendarLine(?array $value)
+    {
+        return $this->setData(self::LSC_RETAIL_CALENDAR_LINE, $value);
+    }
+
+    public function getLscRtlCalendarGroupLinking()
+    {
+        return $this->getData(self::LSC_RTL_CALENDAR_GROUP_LINKING);
+    }
+
+    public function setLscRtlCalendarGroupLinking(?array $value)
+    {
+        return $this->setData(self::LSC_RTL_CALENDAR_GROUP_LINKING, $value);
     }
 }

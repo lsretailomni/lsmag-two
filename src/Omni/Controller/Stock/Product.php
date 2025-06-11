@@ -1,13 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Controller\Stock;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Block\Stores\Stores;
 use \Ls\Omni\Helper\StockHelper;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -22,49 +23,25 @@ use Laminas\Json\Json as LaminasJson;
 class Product implements HttpPostActionInterface
 {
     /**
-     * @var Http
-     */
-    public $request;
-
-    /**
-     * @var StockHelper
-     */
-    public $stockHelper;
-
-    /**
-     * @var JsonFactory
-     */
-    public $resultJsonFactory;
-
-    /**
-     * @var PageFactory
-     */
-    public $resultPageFactory;
-
-    /**
-     * Product constructor.
-     * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param PageFactory $resultPageFactory
      * @param Http $request
      * @param StockHelper $stockHelper
      */
     public function __construct(
-        Context $context,
-        JsonFactory $resultJsonFactory,
-        PageFactory $resultPageFactory,
-        RequestInterface $request,
-        StockHelper $stockHelper
+        public JsonFactory $resultJsonFactory,
+        public PageFactory $resultPageFactory,
+        public RequestInterface $request,
+        public StockHelper $stockHelper
     ) {
-        $this->request           = $request;
-        $this->stockHelper       = $stockHelper;
-        $this->resultJsonFactory = $resultJsonFactory;
-        $this->resultPageFactory = $resultPageFactory;
     }
 
     /**
+     * Controller responsible for providing given item stock in all stores
+     *
      * @return ResponseInterface|Json|ResultInterface
      * @throws NoSuchEntityException
+     * @throws GuzzleException
      */
     public function execute()
     {

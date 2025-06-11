@@ -46,7 +46,7 @@ class GetStores_GetStores
 
     public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresResponse
     {
-        $requiredDataSetName = explode(',', 'LSC Store,LSC Store Group Setup,LSC Store Price Group,LSC Sales Type');
+        $requiredDataSetName = explode(',', 'LSC Store,LSC Store Group Setup,LSC Store Price Group,LSC Sales Type,LSC CO Sourcing Locations,LSC Attribute,LSC Attribute Value,LSC Retail Image Link,LSC Retail Calendar Line,LSC Rtl Calendar Group Linking');
         $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
@@ -55,7 +55,7 @@ class GetStores_GetStores
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
                     $entity = $this->createInstance(
                         \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores::class,
-                         ['data' => $data['LSC Store,LSC Store Group Setup,LSC Store Price Group,LSC Sales Type']]
+                         ['data' => $data['LSC Store,LSC Store Group Setup,LSC Store Price Group,LSC Sales Type,LSC CO Sourcing Locations,LSC Attribute,LSC Attribute Value,LSC Retail Image Link,LSC Retail Calendar Line,LSC Rtl Calendar Group Linking']]
                      );
 
                     return $this->createInstance(

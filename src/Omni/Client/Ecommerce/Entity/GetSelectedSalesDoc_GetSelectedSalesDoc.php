@@ -11,36 +11,16 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
 {
-    public const AMOUNT = 'Amount';
-    public const APPLIED_AMOUNT = 'Applied Amount';
-    public const CREATED_BY_LINE_NO = 'Created by Line No.';
-    public const CURRENCY_CODE = 'Currency Code';
-    public const DATA_ENTRY_BALANCE = 'Data Entry Balance';
-    public const DATE_CREATED = 'Date Created';
-    public const ENTRY_CODE = 'Entry Code';
-    public const ENTRY_TYPE = 'Entry Type';
-    public const EXPIRING_DATE = 'Expiring Date';
     public const LSC_MEMBER_SALES_BUFFER = 'LSC Member Sales Buffer';
-    public const LSC_MEMBER_SALES_DATA_ENTRY = 'LSC Member Sales Data Entry';
-    public const LSC_MEMBER_SALES_DOC_DISC_LINE = 'LSC Member Sales Doc Disc Line';
     public const LSC_MEMBER_SALES_DOC_LINE = 'LSC Member Sales Doc Line';
-    public const PIN = 'PIN';
+    public const LSC_MEMBER_SALES_DOC_DISC_LINE = 'LSC Member Sales Doc Disc Line';
+    public const LSC_MEMBER_SALES_DATA_ENTRY = 'LSC Member Sales Data Entry';
 
     public static array $dbColumnsMapping = [
-	self::AMOUNT => 'amount',
-	self::APPLIED_AMOUNT => 'applied_amount',
-	self::CREATED_BY_LINE_NO => 'created_by_line_no',
-	self::CURRENCY_CODE => 'currency_code',
-	self::DATA_ENTRY_BALANCE => 'data_entry_balance',
-	self::DATE_CREATED => 'date_created',
-	self::ENTRY_CODE => 'entry_code',
-	self::ENTRY_TYPE => 'entry_type',
-	self::EXPIRING_DATE => 'expiring_date',
 	self::LSC_MEMBER_SALES_BUFFER => 'lsc_member_sales_buffer',
-	self::LSC_MEMBER_SALES_DATA_ENTRY => 'lsc_member_sales_data_entry',
-	self::LSC_MEMBER_SALES_DOC_DISC_LINE => 'lsc_member_sales_doc_disc_line',
 	self::LSC_MEMBER_SALES_DOC_LINE => 'lsc_member_sales_doc_line',
-	self::PIN => 'pin',
+	self::LSC_MEMBER_SALES_DOC_DISC_LINE => 'lsc_member_sales_doc_disc_line',
+	self::LSC_MEMBER_SALES_DATA_ENTRY => 'lsc_member_sales_data_entry',
     ];
 
     public static function getDbColumnsMapping(): array
@@ -48,96 +28,6 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return self::$dbColumnsMapping;
     }
 
-
-    public function getAmount()
-    {
-        return $this->getData(self::AMOUNT);
-    }
-
-    public function setAmount(?Decimal $value)
-    {
-        return $this->setData(self::AMOUNT, $value);
-    }
-
-    public function getAppliedAmount()
-    {
-        return $this->getData(self::APPLIED_AMOUNT);
-    }
-
-    public function setAppliedAmount(?Decimal $value)
-    {
-        return $this->setData(self::APPLIED_AMOUNT, $value);
-    }
-
-    public function getCreatedByLineNo()
-    {
-        return $this->getData(self::CREATED_BY_LINE_NO);
-    }
-
-    public function setCreatedByLineNo(?Integer $value)
-    {
-        return $this->setData(self::CREATED_BY_LINE_NO, $value);
-    }
-
-    public function getCurrencyCode()
-    {
-        return $this->getData(self::CURRENCY_CODE);
-    }
-
-    public function setCurrencyCode(?Code $value)
-    {
-        return $this->setData(self::CURRENCY_CODE, $value);
-    }
-
-    public function getDataEntryBalance()
-    {
-        return $this->getData(self::DATA_ENTRY_BALANCE);
-    }
-
-    public function setDataEntryBalance(?Decimal $value)
-    {
-        return $this->setData(self::DATA_ENTRY_BALANCE, $value);
-    }
-
-    public function getDateCreated()
-    {
-        return $this->getData(self::DATE_CREATED);
-    }
-
-    public function setDateCreated(?Date $value)
-    {
-        return $this->setData(self::DATE_CREATED, $value);
-    }
-
-    public function getEntryCode()
-    {
-        return $this->getData(self::ENTRY_CODE);
-    }
-
-    public function setEntryCode(?Code $value)
-    {
-        return $this->setData(self::ENTRY_CODE, $value);
-    }
-
-    public function getEntryType()
-    {
-        return $this->getData(self::ENTRY_TYPE);
-    }
-
-    public function setEntryType(?Code $value)
-    {
-        return $this->setData(self::ENTRY_TYPE, $value);
-    }
-
-    public function getExpiringDate()
-    {
-        return $this->getData(self::EXPIRING_DATE);
-    }
-
-    public function setExpiringDate(?Date $value)
-    {
-        return $this->setData(self::EXPIRING_DATE, $value);
-    }
 
     public function getLscMemberSalesBuffer()
     {
@@ -147,26 +37,6 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
     public function setLscMemberSalesBuffer(?LSCMemberSalesBuffer $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
-    }
-
-    public function getLscMemberSalesDataEntry()
-    {
-        return $this->getData(self::LSC_MEMBER_SALES_DATA_ENTRY);
-    }
-
-    public function setLscMemberSalesDataEntry(?LSCMemberSalesDataEntry $value)
-    {
-        return $this->setData(self::LSC_MEMBER_SALES_DATA_ENTRY, $value);
-    }
-
-    public function getLscMemberSalesDocDiscLine()
-    {
-        return $this->getData(self::LSC_MEMBER_SALES_DOC_DISC_LINE);
-    }
-
-    public function setLscMemberSalesDocDiscLine(?LSCMemberSalesDocDiscLine $value)
-    {
-        return $this->setData(self::LSC_MEMBER_SALES_DOC_DISC_LINE, $value);
     }
 
     public function getLscMemberSalesDocLine()
@@ -179,13 +49,23 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
     }
 
-    public function getPin()
+    public function getLscMemberSalesDocDiscLine()
     {
-        return $this->getData(self::PIN);
+        return $this->getData(self::LSC_MEMBER_SALES_DOC_DISC_LINE);
     }
 
-    public function setPin(?Integer $value)
+    public function setLscMemberSalesDocDiscLine(?LSCMemberSalesDocDiscLine $value)
     {
-        return $this->setData(self::PIN, $value);
+        return $this->setData(self::LSC_MEMBER_SALES_DOC_DISC_LINE, $value);
+    }
+
+    public function getLscMemberSalesDataEntry()
+    {
+        return $this->getData(self::LSC_MEMBER_SALES_DATA_ENTRY);
+    }
+
+    public function setLscMemberSalesDataEntry(?LSCMemberSalesDataEntry $value)
+    {
+        return $this->setData(self::LSC_MEMBER_SALES_DATA_ENTRY, $value);
     }
 }

@@ -22,23 +22,41 @@ class LSCMemberSalesDataEntry extends AbstractModel
     public const EXPIRING_DATE = 'Expiring Date';
     public const PIN = 'PIN';
 
+    public static array $dbColumnsMapping = [
+	self::AMOUNT => 'amount',
+	self::APPLIED_AMOUNT => 'applied_amount',
+	self::CREATED_BY_LINE_NO => 'created_by_line_no',
+	self::CURRENCY_CODE => 'currency_code',
+	self::DATA_ENTRY_BALANCE => 'data_entry_balance',
+	self::DATE_CREATED => 'date_created',
+	self::ENTRY_CODE => 'entry_code',
+	self::ENTRY_TYPE => 'entry_type',
+	self::EXPIRING_DATE => 'expiring_date',
+	self::PIN => 'pin',
+    ];
 
-    public function getAmount(): ?string
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
+
+    public function getAmount(): ?float
     {
         return $this->getData(self::AMOUNT);
     }
 
-    public function setAmount(string $value)
+    public function setAmount(?float $value)
     {
         return $this->setData(self::AMOUNT, $value);
     }
 
-    public function getAppliedAmount(): ?string
+    public function getAppliedAmount(): ?float
     {
         return $this->getData(self::APPLIED_AMOUNT);
     }
 
-    public function setAppliedAmount(string $value)
+    public function setAppliedAmount(?float $value)
     {
         return $this->setData(self::APPLIED_AMOUNT, $value);
     }
@@ -48,7 +66,7 @@ class LSCMemberSalesDataEntry extends AbstractModel
         return $this->getData(self::CREATED_BY_LINE_NO);
     }
 
-    public function setCreatedByLineNo(int $value)
+    public function setCreatedByLineNo(?int $value)
     {
         return $this->setData(self::CREATED_BY_LINE_NO, $value);
     }
@@ -58,17 +76,17 @@ class LSCMemberSalesDataEntry extends AbstractModel
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value)
+    public function setCurrencyCode(?string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
 
-    public function getDataEntryBalance(): ?string
+    public function getDataEntryBalance(): ?float
     {
         return $this->getData(self::DATA_ENTRY_BALANCE);
     }
 
-    public function setDataEntryBalance(string $value)
+    public function setDataEntryBalance(?float $value)
     {
         return $this->setData(self::DATA_ENTRY_BALANCE, $value);
     }
@@ -78,7 +96,7 @@ class LSCMemberSalesDataEntry extends AbstractModel
         return $this->getData(self::DATE_CREATED);
     }
 
-    public function setDateCreated(string $value)
+    public function setDateCreated(?string $value)
     {
         return $this->setData(self::DATE_CREATED, $value);
     }
@@ -88,7 +106,7 @@ class LSCMemberSalesDataEntry extends AbstractModel
         return $this->getData(self::ENTRY_CODE);
     }
 
-    public function setEntryCode(string $value)
+    public function setEntryCode(?string $value)
     {
         return $this->setData(self::ENTRY_CODE, $value);
     }
@@ -98,7 +116,7 @@ class LSCMemberSalesDataEntry extends AbstractModel
         return $this->getData(self::ENTRY_TYPE);
     }
 
-    public function setEntryType(string $value)
+    public function setEntryType(?string $value)
     {
         return $this->setData(self::ENTRY_TYPE, $value);
     }
@@ -108,17 +126,17 @@ class LSCMemberSalesDataEntry extends AbstractModel
         return $this->getData(self::EXPIRING_DATE);
     }
 
-    public function setExpiringDate(string $value)
+    public function setExpiringDate(?string $value)
     {
         return $this->setData(self::EXPIRING_DATE, $value);
     }
 
-    public function getPIN(): ?int
+    public function getPin(): ?int
     {
         return $this->getData(self::PIN);
     }
 
-    public function setPIN(int $value)
+    public function setPin(?int $value)
     {
         return $this->setData(self::PIN, $value);
     }

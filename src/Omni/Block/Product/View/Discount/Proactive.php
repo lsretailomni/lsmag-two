@@ -1,15 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Product\View\Discount;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
-use \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount;
+use \Ls\Omni\Client\Ecommerce\Entity\LSCPeriodicDiscount;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
-use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\Ecommerce\Operation\GetDiscount_GetDiscount;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -30,66 +29,10 @@ use Psr\Log\LoggerInterface;
 
 class Proactive extends Template
 {
-    /** @var LSR */
-    public $lsr;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var ItemHelper
-     */
-    public $itemHelper;
-
-    /**
-     * @var CustomerFactory
-     */
-    public $customerFactory;
-
-    /** @var StoreManagerInterface */
-    public $storeManager;
-
-    /**
-     * @var TimezoneInterface
-     */
-    public $timeZoneInterface;
-
-    /**
-     * @var ScopeConfigInterface
-     */
-    public $scopeConfig;
-
-    /**
-     * @var UrlInterface
-     */
-    public $urlBuilder;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /**
-     * @var Data
-     */
-    public $catalogHelper;
-
     /**
      * @var null
      */
     public $product = null;
-
-    /**
-     * @var View
-     */
-    public $productBlock;
-
-    /**
-     * @var ContactHelper
-     */
-    public $contactHelper;
 
     /**
      * @param Template\Context $context
@@ -108,34 +51,22 @@ class Proactive extends Template
      * @param array $data
      */
     public function __construct(
-        Template\Context $context,
-        LSR $lsr,
-        LoyaltyHelper $loyaltyHelper,
-        ItemHelper $itemHelper,
-        ContactHelper $contactHelper,
-        CustomerFactory $customerFactory,
-        StoreManagerInterface $storeManager,
-        TimezoneInterface $timeZoneInterface,
-        ScopeConfigInterface $scopeConfig,
-        UrlInterface $urlBuilder,
-        LoggerInterface $logger,
-        Data $catalogHelper,
-        View $productBlock,
-        array $data = []
+        public Template\Context $context,
+        public LSR $lsr,
+        public LoyaltyHelper $loyaltyHelper,
+        public ItemHelper $itemHelper,
+        public ContactHelper $contactHelper,
+        public CustomerFactory $customerFactory,
+        public StoreManagerInterface $storeManager,
+        public TimezoneInterface $timeZoneInterface,
+        public ScopeConfigInterface $scopeConfig,
+        public UrlInterface $urlBuilder,
+        public LoggerInterface $logger,
+        public Data $catalogHelper,
+        public View $productBlock,
+        public array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->lsr               = $lsr;
-        $this->loyaltyHelper     = $loyaltyHelper;
-        $this->itemHelper        = $itemHelper;
-        $this->contactHelper     = $contactHelper;
-        $this->customerFactory   = $customerFactory;
-        $this->storeManager      = $storeManager;
-        $this->timeZoneInterface = $timeZoneInterface;
-        $this->scopeConfig       = $scopeConfig;
-        $this->urlBuilder        = $urlBuilder;
-        $this->logger            = $logger;
-        $this->catalogHelper     = $catalogHelper;
-        $this->productBlock      = $productBlock;
     }
 
     /**
@@ -155,30 +86,15 @@ class Proactive extends Template
      * Get proactive discounts
      *
      * @param string $itemId
-     * @return array|bool|DiscountsGetResponse|ProactiveDiscount[]|ResponseInterface
+     * @return GetDiscount_GetDiscount|array
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
-    public function getProactiveDiscounts($itemId)
+    public function getProactiveDiscounts(string $itemId)
     {
         $webStore = $this->lsr->getActiveWebStore();
-        if ($response = $this->loyaltyHelper->getProactiveDiscounts($itemId, $webStore)) {
-            if (!is_array($response)) {
-                $response = [$response];
-            }
-            $tempArray = [];
-            foreach ($response as $key => $responseData) {
-                $uniqueKey = $responseData->getId();
-                if (!in_array($uniqueKey, $tempArray, true)
-                    && !$responseData->getMemberAttribute()
-                    && !$responseData->getMemberAttributeValue()
-                ) {
-                    $tempArray[] = $uniqueKey;
-                    continue;
-                }
-                unset($response[$key]);
-            }
 
+        if ($response = $this->loyaltyHelper->getProactiveDiscounts($itemId, $webStore)) {
             return $response;
         }
 
@@ -188,10 +104,11 @@ class Proactive extends Template
     /**
      * Get all coupons
      *
-     * @param $itemId
+     * @param array $itemId
      * @return array
+     * @throws GuzzleException
      */
-    public function getCoupons($itemId)
+    public function getCoupons(array $itemId): array
     {
         try {
             $storeId = $this->lsr->getActiveWebStore();
@@ -200,14 +117,16 @@ class Proactive extends Template
                 $response = [];
 
                 foreach ($itemId as $id) {
-                    $publishedOffers = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $id);
+                    $rootGetDirectMarketingInfo = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $id);
 
-                    foreach ($publishedOffers as $publishedOffer) {
-                        if ($publishedOffer->getCode() == OfferDiscountType::COUPON ||
-                            $publishedOffer->getCode() == OfferDiscountType::PROMOTION ||
-                            $publishedOffer->getCode() == OfferDiscountType::DISCOUNT_OFFER
-                        ) {
-                            $response[$publishedOffer->getOfferId()] = $publishedOffer;
+                    if ($rootGetDirectMarketingInfo) {
+                        $publishedOffers = $rootGetDirectMarketingInfo->getPublishedoffer();
+
+                        foreach ($publishedOffers as $publishedOffer) {
+                            if ($publishedOffer->getDiscounttype() == "9"
+                            ) {
+                                $response[$publishedOffer->getNo()] = $publishedOffer;
+                            }
                         }
                     }
                 }
@@ -222,116 +141,193 @@ class Proactive extends Template
     }
 
     /**
-     * Get formatted description for discount
+     * Segregate different types of discounts
      *
-     * @param $itemId
-     * @param ProactiveDiscount $discount
-     * @return string
-     * @throws NoSuchEntityException
+     * @param \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts
+     * @return array
      */
-    // @codingStandardsIgnoreLine
-    public function getFormattedDescriptionDiscount(
-        $itemId,
-        ProactiveDiscount $discount
-    ) {
-        $description  = [];
-        $discountText = '';
+    public function getRelevantDiscountOffers(
+        \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts
+    ): array {
+        $discountOffers = $mixAndMatchOffers = $multibuyOffers = [];
+        $periodicDiscounts = $discounts->getLscPeriodicDiscount();
+        $periodicDiscounts = is_array($periodicDiscounts) ? $periodicDiscounts : [$periodicDiscounts];
+
+        foreach ($periodicDiscounts as $periodicDiscount) {
+            if ($periodicDiscount->getOfferType() == "2") {
+                $multibuyOffers[] = $periodicDiscount;
+            }
+
+            if ($periodicDiscount->getOfferType() == "3") {
+                $mixAndMatchOffers[] = $periodicDiscount;
+            }
+
+            if ($periodicDiscount->getOfferType() == "4") {
+                $discountOffers[] = $periodicDiscount;
+            }
+        }
+
+        return [$discountOffers, $mixAndMatchOffers, $multibuyOffers];
+    }
+
+    /**
+     * Get formatted description for discount offer
+     *
+     * @param LSCPeriodicDiscount $discount
+     * @return string
+     */
+    public function getFormattedDescriptionForDiscountOffer(LSCPeriodicDiscount $discount): string
+    {
+        $description = [];
 
         if ($discount->getDescription()) {
             $description[] = "<span class='discount-description'>" . $discount->getDescription() . '</span>';
         }
 
-        if (floatval($discount->getMinimumQuantity()) > 0 && $discount->getType() == ProactiveDiscountType::MULTIBUY) {
-            $description[] = "
+        if (floatval($discount->getDiscountValue()) > 0) {
+            $discountPercentage = number_format((float)$discount->getDiscountValue(), 2, '.', '');
+            $discountText = __('Avail %1 Off ', $discountPercentage . '%') . '';
+        }
+
+        if (!empty($discountText)) {
+            $description[] = "<span>" . $discountText . "</span>";
+        }
+
+        return implode('<br/>', $description);
+    }
+
+    /**
+     * Get formatted description for multi buy offer
+     *
+     * @param LSCPeriodicDiscount $multibuyOffer
+     * @param \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts
+     * @return string
+     */
+    public function getFormattedDescriptionForMultibuyOffer(
+        LSCPeriodicDiscount $multibuyOffer,
+        \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts
+    ): string {
+        $description = [];
+
+        if ($multibuyOffer->getDescription()) {
+            $description[] = "<span class='discount-description'>" . $multibuyOffer->getDescription() . '</span>';
+        }
+
+        foreach ($discounts->getLscWiDiscounts() as $discount) {
+            if ($discount->getOfferNo() !== $multibuyOffer->getNo()) {
+                continue;
+            }
+            $discountText = '';
+            if (floatval($discount->getMinimumQuantity()) > 0) {
+                $description[] = "
                 <span class='discount-min-qty-label discount-label'>" . __('Minimum Qty :') . "</span>
                 <span class='discount-min-qty-value discount-value'>" .
-                number_format(
-                    (float)$discount->getMinimumQuantity(),
-                    2,
-                    '.',
-                    ''
-                ) . '</span>';
+                    number_format(
+                        (float)$discount->getMinimumQuantity(),
+                        2,
+                        '.',
+                        ''
+                    ) . '</span>';
+            }
+
+            if (floatval($discount->getDiscount()) > 0) {
+                $discountPercentage = number_format((float)$discount->getDiscount(), 2, '.', '');
+                $discountText = __('Avail %1 Off ', $discountPercentage . '%') . '';
+            }
+
+            if (!empty($discountText)) {
+                $description[] = "<span>" . $discountText . "</span>";
+            }
         }
 
-        if (floatval($discount->getPercentage()) > 0) {
-            $discountPercentage = number_format((float)$discount->getPercentage(), 2, '.', '');
-            $discountText       = __('Avail %1 Off ', $discountPercentage . '%') . '';
+        return implode('<br/>', $description);
+    }
+
+    /**
+     * Get formatted description for mix & match offer
+     *
+     * @param LSCPeriodicDiscount $mixAndMatchOffer
+     * @param \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts
+     * @param string $itemId
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getFormattedDescriptionForMixAndMatchOffer(
+        LSCPeriodicDiscount $mixAndMatchOffer,
+        \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts,
+        string $itemId
+    ): string {
+        $description = $items = [];
+        $counter = 0;
+        $popupLink = $popupHtml = $discountText = '';
+        foreach ($discounts->getLscWiMixMatchOfferExt() as $discount) {
+            if ($discount->getOfferNo() == $mixAndMatchOffer->getNo() &&
+                $discount->getCustomerDiscGroup() == '--EXT--' &&
+                $discount->getItemNo() != $itemId
+            ) {
+                $items[] = $discount;
+            }
         }
-        if ($discount->getItemIds()) {
-            $itemIds = $discount->getItemIds()->getString();
+        if ($mixAndMatchOffer->getDescription()) {
+            $description[] = "<span class='discount-description'>" . $mixAndMatchOffer->getDescription() . '</span>';
+        }
 
-            if (!is_array($itemIds)) {
-                $itemIds = [$discount->getItemIds()->getString()];
-            }
-            $itemIds      = array_unique($itemIds);
+        if (floatval($mixAndMatchOffer->getDiscountValue()) > 0) {
+            $discountPercentage = number_format((float)$mixAndMatchOffer->getDiscountValue(), 2, '.', '');
+            $discountText = __('Avail %1 Off ', $discountPercentage . '%') . '';
+        }
 
-            if (!is_array($itemId)) {
-                $itemIds      = array_diff($itemIds, [$itemId]);
+        foreach ($items as $item) {
+            $productInfo = $this->itemHelper->getProductByIdentificationAttributes($item->getItemNo());
+            if ($this->getMixandMatchProductLimit() == $counter) {
+                break;
             }
-
-            $counter      = 0;
-            $popupLink    = '';
-            $popupHtml    = '';
-            $productsData = [];
-            $productHtml  = '';
-            if (!empty($itemIds)) {
-                $productsData = $this->itemHelper->getProductsInfoByItemIds($itemIds);
+            $priceHtml = '';
+            if ($counter == 0) {
+                $popupLink = "<a style='cursor:pointer' class='ls-click-product-promotion'
+                 data-id='" . $mixAndMatchOffer->getOfferNo() . "'>"
+                    . __('Click Here to see the items') . "</a>";
+                $popupHtml = "<div class='ls-discounts-popup-model'
+                id='ls-popup-model-" . $mixAndMatchOffer->getOfferNo() . "' style='display:none;'>";
             }
-            foreach ($productsData as $productInfo) {
-                if ($this->getMixandMatchProductLimit() == $counter) {
-                    break;
+            $productHtml = '';
+            if (!empty($productInfo)) {
+                $imageHtml = $this->productBlock->getImage(
+                    $productInfo,
+                    'product_base_image'
+                )
+                    ->toHtml();
+                if (!empty($productInfo->getFinalPrice())) {
+                    $priceHtml = $this->productBlock->getProductPrice($productInfo);
                 }
-                $priceHtml = '';
-                if ($counter == 0) {
-                    $popupLink = "<a style='cursor:pointer' class='ls-click-product-promotion'
-                     data-id='" . $discount->getId() . "'>"
-                        . __('Click Here to see the items') . "</a>";
-                    $popupHtml = "<div class='ls-discounts-popup-model'
-                    id='ls-popup-model-" . $discount->getId() . "' style='display:none;'>";
-                }
-                $productHtml = '';
-                if (!empty($productInfo)) {
-                    $imageHtml = $this->productBlock->getImage(
-                        $productInfo,
-                        'product_base_image'
-                    )
-                        ->toHtml();
-                    if (!empty($productInfo->getFinalPrice())) {
-                        $priceHtml = $this->productBlock->getProductPrice($productInfo);
-                    }
-                    if (!empty($productInfo->getProductUrl())) {
-                        if (!empty($productInfo->getName())) {
-                            $productName = $productInfo->getName();
-                            if ($counter == 0) {
-                                $productHtml = $popupHtml;
-                            }
-                            $productHtml   .= "<div class='item-popup'>";
-                            $productHtml   .= "<a  href = '" . $productInfo->getProductUrl() . "' class='product-link'
-                             target='_blank'>" . $imageHtml .
-                                "<div class='title'>" . $productName . '</div>';
-                            $productHtml   .= '</a>';
-                            $productHtml   .= $priceHtml . '</div>';
-                            $productData[] = $productHtml;
+                if (!empty($productInfo->getProductUrl())) {
+                    if (!empty($productInfo->getName())) {
+                        $productName = $productInfo->getName();
+                        if ($counter == 0) {
+                            $productHtml = $popupHtml;
                         }
+                        $productHtml .= "<div class='item-popup'>";
+                        $productHtml .= "<a  href = '" . $productInfo->getProductUrl() . "' class='product-link'
+                         target='_blank'>" . $imageHtml .
+                            "<div class='title'>" . $productName . '</div>';
+                        $productHtml .= '</a>';
+                        $productHtml .= $priceHtml . '</div>';
+                        $productData[] = $productHtml;
                     }
                 }
-                $counter++;
             }
-            if (!empty($discountText)) {
-                $discountText .= __('if Buy with any of these items: ') . $popupLink;
-            } else {
-                $discountText .= $popupLink;
-            }
-            if ($this->getMixandMatchProductLimit() != 0) {
-                $description[] = $discountText;
-                if (!empty($productsData)) {
-                    $description[] = implode(' ', $productData);
-                    $description[] = '</div>';
-                }
-            }
+            $counter++;
+        }
+        if (!empty($discountText)) {
+            $discountText .= __('if Buy with any of these items: ') . $popupLink;
         } else {
-            if (!empty($discountText)) {
-                $description[] = $discountText . "</span>";
+            $discountText .= $popupLink;
+        }
+        if ($this->getMixandMatchProductLimit() != 0) {
+            $description[] = $discountText;
+            if (!empty($productData)) {
+                $description[] = implode(' ', $productData);
+                $description[] = '</div>';
             }
         }
 
@@ -344,7 +340,7 @@ class Proactive extends Template
      * @return string
      * @throws NoSuchEntityException
      */
-    public function getMixandMatchProductLimit()
+    public function getMixandMatchProductLimit(): string
     {
         return $this->lsr->getStoreConfig(LSR::LS_DISCOUNT_MIXANDMATCH_LIMIT, $this->lsr->getCurrentStoreId());
     }
@@ -355,26 +351,26 @@ class Proactive extends Template
      * @param PublishedOffer $coupon
      * @return string
      */
-    public function getFormattedDescriptionCoupon(PublishedOffer $coupon)
+    public function getFormattedDescriptionForCoupon(PublishedOffer $coupon): string
     {
         $description = [];
         if ($coupon->getDescription()) {
             $description[] = "<span class='coupon-description'>" . $coupon->getDescription() . '</span>';
         }
-        if ($coupon->getDetails()) {
-            $description[] = "<span class='coupon-details'>" . $coupon->getDetails() . '</span>';
+        if ($coupon->getSecondarytext()) {
+            $description[] = "<span class='coupon-details'>" . $coupon->getSecondarytext() . '</span>';
         }
-        if ($coupon->getCode() != OfferDiscountType::PROMOTION) {
-            if ($coupon->getExpirationDate()) {
+        if ($coupon->getDiscounttype() == "9") {
+            if ($coupon->getEndingdate()) {
                 $description[] = "
         <span class='coupon-expiration-date-label discount-label'>" . __('Expiry :') . "</span>
         <span class='coupon-expiration-date-value discount-value'>" .
-                    $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . '</span>';
+                    $this->getFormattedOfferExpiryDate($coupon->getEndingdate()) . '</span>';
             }
-            if ($coupon->getOfferId() && $coupon->getCode() != OfferDiscountType::DISCOUNT_OFFER) {
+            if ($coupon->getDiscountno()) {
                 $description[] = "
         <span class='coupon-offer-id-label discount-label'>" . __('Coupon Code :') . "</span>
-        <span class='coupon-offer-id-value discount-value'>" . $coupon->getOfferId() . '</span>';
+        <span class='coupon-offer-id-value discount-value'>" . $coupon->getDiscountno() . '</span>';
             }
         }
 
@@ -384,10 +380,10 @@ class Proactive extends Template
     /**
      * Get formatted expiry date
      *
-     * @param $date
-     * @return string
+     * @param string $date
+     * @return string|null
      */
-    public function getFormattedOfferExpiryDate($date)
+    public function getFormattedOfferExpiryDate(string $date): ?string
     {
         try {
             return $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
@@ -407,7 +403,7 @@ class Proactive extends Template
      *
      * @return string
      */
-    public function getAjaxUrl()
+    public function getAjaxUrl(): string
     {
         return $this->urlBuilder->getUrl('omni/ajax/ProactiveDiscountsAndCoupons', []);
     }
@@ -417,7 +413,7 @@ class Proactive extends Template
      *
      * @return string|null
      */
-    public function getProductSku()
+    public function getProductSku(): ?string
     {
         $currentProduct = $this->getProduct();
         if (empty($currentProduct) || !$currentProduct->getId()) {
@@ -427,25 +423,11 @@ class Proactive extends Template
     }
 
     /**
-     * Check if discount block is enabled in the config
-     *
-     * @return string
-     * @throws NoSuchEntityException
-     */
-    public function isDiscountEnable()
-    {
-        return $this->lsr->getStoreConfig(
-            LSR::LS_DISCOUNT_SHOW_ON_PRODUCT,
-            $this->lsr->getCurrentStoreId()
-        );
-    }
-
-    /**
      * Get current product
      *
      * @return Product|null
      */
-    public function getProduct()
+    public function getProduct(): ?Product
     {
         if ($this->product === null) {
             $this->product = $this->catalogHelper->getProduct();
@@ -458,9 +440,9 @@ class Proactive extends Template
      * Check if commerce service is responding
      *
      * @return bool|null
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
-    public function isValid()
+    public function isValid(): ?bool
     {
         return $this->lsr->isLSR($this->lsr->getCurrentStoreId());
     }
@@ -469,10 +451,10 @@ class Proactive extends Template
      * Get Ls Central Item Id by sku
      *
      * @param string $sku
-     * @return mixed
+     * @return string
      * @throws NoSuchEntityException
      */
-    public function getLsCentralItemIdBySku($sku)
+    public function getLsCentralItemIdBySku(string $sku): string
     {
         return $this->itemHelper->getLsCentralItemIdBySku($sku);
     }
@@ -480,11 +462,11 @@ class Proactive extends Template
     /**
      * Get product given sku
      *
-     * @param $sku
+     * @param string $sku
      * @return ProductInterface
      * @throws NoSuchEntityException
      */
-    public function getProductGivenSku($sku)
+    public function getProductGivenSku(string $sku)
     {
         return $this->itemHelper->getProductGivenSku($sku);
     }

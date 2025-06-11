@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Helper;
 
@@ -6,12 +7,11 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
-use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
+use \Ls\Omni\Client\Ecommerce\Entity\RetailCalendarLine;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\Ecommerce\Operation\GetStoreOpeningHours;
 use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
 use \Ls\Omni\Client\Ecommerce\Operation\LSCTenderType;
-use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use \Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
 use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Model\Central\GuzzleClient;
@@ -255,47 +255,49 @@ class Data extends AbstractHelper
             if ($cachedResponse) {
                 $storeResults = $cachedResponse;
             } else {
-                // @codingStandardsIgnoreLine
-                $request = new StoreGetById();
-                $request->setOperationInput()->setStoreId($storeId);
-                $response     = $request->execute();
-                $storeResults = [];
+                $operation = new GetStoreOpeningHours();
+                $operation->setOperationInput([
+                   Entity\GetStoreOpeningHours::STORE_NO => $storeId,
+                ]);
+                $response = $operation->execute();
+                $storeResults = $response->getResponseCode() == "0000" ?
+                    $response->getGetstoreopeninghoursxml() : null;
 
-                if (!empty($response)) {
-                    $storeResults = $response->getResult()->getStoreHours()->getStoreHours();
-                    $this->cacheHelper->persistContentInCache(
-                        $cacheId,
-                        $storeResults,
-                        [Type::CACHE_TAG],
-                        86400
-                    );
-                }
+                $this->cacheHelper->persistContentInCache(
+                    $cacheId,
+                    $storeResults,
+                    [Type::CACHE_TAG],
+                    86400
+                );
             }
             $storeHours = [];
             $today      = $this->date->gmtDate("Y-m-d");
 
-            for ($i = 0; $i < 7; $i++) {
-                $current          = date("Y-m-d", strtotime($today) + ($i * 86400));
-                $currentDayOfWeek = date('w', strtotime($current));
+            if ($storeResults) {
+                for ($i = 0; $i < 7; $i++) {
+                    $current          = date("Y-m-d", strtotime($today) + ($i * 86400));
+                    $currentDayOfWeek = date('w', strtotime($current));
 
-                foreach ($storeResults as $key => $r) {
-                    if ((empty($r->getCalendarType()) ||
-                            $r->getCalendarType() == StoreHourCalendarType::OPENING_HOURS ||
-                            $r->getCalendarType() == StoreHourCalendarType::ALL) &&
-                        $r->getDayOfWeek() == $currentDayOfWeek &&
-                        $this->checkDateValidity($current, $r)) {
-                        $storeHours[$currentDayOfWeek][] = [
-                            'type'  => $r->getType(),
-                            'day'   => $r->getNameOfDay(),
-                            'open'  => $r->getOpenFrom() ?? '0001-01-01T00:00:00Z',
-                            'close' => $r->getOpenTo() ?? '0001-01-01T00:00:00Z'
-                        ];
+                    foreach ($storeResults->getRetailcalendarline() as $key => $r) {
+                        if ((empty($r->getCalendartype()) ||
+                                $r->getCalendartype() == "1" ||
+                                $r->getLinetype() == "0") &&
+                            $r->getDayno() == $currentDayOfWeek &&
+                            $this->checkDateValidity($current, $r)) {
+                            $storeHours[$currentDayOfWeek][] = [
+                                'type'  => $r->getLinetype(),
+                                'day'   => $r->getDayname(),
+                                'open'  => $r->getTimefrom() ?? '0001-01-01T00:00:00Z',
+                                'close' => $r->getTimeto() ?? '0001-01-01T00:00:00Z'
+                            ];
 
-                        unset($storeResults[$key]);
+                            unset($storeResults[$key]);
+                        }
                     }
                 }
+                $storeHours = $this->sortStoreTimeEntries($storeHours);
             }
-            $storeHours = $this->sortStoreTimeEntries($storeHours);
+
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -307,25 +309,35 @@ class Data extends AbstractHelper
      * Check date validity
      *
      * @param mixed $current
-     * @param StoreHours $storeHoursObj
+     * @param RetailCalendarLine $storeHoursObj
      * @return bool
      */
     public function checkDateValidity($current, $storeHoursObj)
     {
         $currentTimeStamp = strtotime($current);
+        $startingDate = $storeHoursObj->getStartingdate();
+        $endingDate = $storeHoursObj->getEndingdate();
 
-        if ($storeHoursObj->getStartDate() && $storeHoursObj->getEndDate()) {
-            $storeHoursObjStartDateTimeStamp = strtotime($storeHoursObj->getStartDate());
-            $storeHoursObjEndDateTimeStamp   = strtotime($storeHoursObj->getEndDate());
+        if ($startingDate == '0001-01-01') {
+            $startingDate = null;
+        }
+
+        if ($endingDate == '0001-01-01') {
+            $endingDate = null;
+        }
+
+        if ($startingDate && $endingDate) {
+            $storeHoursObjStartDateTimeStamp = strtotime($startingDate);
+            $storeHoursObjEndDateTimeStamp   = strtotime($endingDate);
             return $currentTimeStamp >= $storeHoursObjStartDateTimeStamp &&
                 $currentTimeStamp <= $storeHoursObjEndDateTimeStamp;
         } else {
-            if ($storeHoursObj->getStartDate() && !$storeHoursObj->getEndDate()) {
-                $storeHoursObjStartDateTimeStamp = strtotime($storeHoursObj->getStartDate());
+            if ($startingDate && !$endingDate) {
+                $storeHoursObjStartDateTimeStamp = strtotime($startingDate);
                 return $currentTimeStamp >= $storeHoursObjStartDateTimeStamp;
             } else {
-                $storeHoursObjEndDateTimeStamp = strtotime($storeHoursObj->getEndDate());
-                if (!$storeHoursObj->getStartDate() && $storeHoursObj->getEndDate()) {
+                $storeHoursObjEndDateTimeStamp = strtotime($endingDate);
+                if (!$startingDate && $endingDate) {
                     return $currentTimeStamp <= $storeHoursObjEndDateTimeStamp;
                 }
             }

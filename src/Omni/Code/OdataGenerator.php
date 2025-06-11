@@ -32,9 +32,9 @@ class OdataGenerator
     public array $allowedNonReplActions = [
         'GetStores_GetStores' => [
           'request' => [
-              'storeGetType' => '1',
-              'searchText' => '',
-              'includeDetail' => false
+              'storeGetType' => '3',
+              'searchText' => 'S0001',
+              'includeDetail' => true
           ],
           'response' => [
               'DataSetName' => ''
@@ -263,6 +263,9 @@ class OdataGenerator
         $dataSetNames = $dataSetName = [];
         foreach ($recordFields as $recordField) {
             if (isset($recordField['DataSetName'])) {
+                if ($recordField['DataSetName'] == 'LSC Rtl Calendar Group Linking') {
+                    $i = 1;
+                }
                 $entityClassName = $this->formatGivenValue(str_replace(
                     ' ',
                     '',
@@ -282,7 +285,7 @@ class OdataGenerator
         }
         $entityClassName = $action;
         $this->registerEntity(
-            $recordField['DataSetName'],
+            $entityClassName,
             $entityClassName,
             $dataSetNames,
             true

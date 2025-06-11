@@ -136,7 +136,7 @@ class Stores extends Template
                 $formattedTime .= "<td class='dayofweek'>" . $entry["day"] . "</td><td class='normal-hour'>";
             }
 
-            if ($entry['type'] == StoreHourOpeningType::NORMAL) {
+            if ($entry['type'] == "0") {
                 $formattedTime .= "<span>" .
                     date(
                         $hoursFormat,
@@ -145,7 +145,7 @@ class Stores extends Template
                         $hoursFormat,
                         $entryTimeStampClose
                     ) . "</span><br/>";
-            } elseif ($entry['type'] == StoreHourOpeningType::TEMPORARY) {
+            } elseif ($entry['type'] == "1") {
                 $formattedTime .= "<span class='special-hour'>" .
                     date(
                         $hoursFormat,

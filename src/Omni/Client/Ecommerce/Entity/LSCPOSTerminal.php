@@ -42,6 +42,7 @@ class LSCPOSTerminal extends AbstractModel
     public const PRINT_RECEIPT_FOR_NEG_ADJ = 'Print Receipt for Neg. Adj.';
     public const EFT_EMBEDDED_RECEIPT = 'EFT Embedded Receipt';
     public const USE_REFERENCED_REFUNDS = 'Use Referenced Refunds';
+    public const USE_REFUND_SELECTION = 'Use Refund Selection';
     public const LAST_DATE_MODIFIED = 'Last Date Modified';
     public const PRINT_RECEIPT_LOGO = 'Print Receipt Logo';
     public const PRINT_RECEIPT_BITMAP_NO = 'Print Receipt Bitmap No.';
@@ -165,6 +166,7 @@ class LSCPOSTerminal extends AbstractModel
 	self::PRINT_RECEIPT_FOR_NEG_ADJ => 'print_receipt_for_neg_adj',
 	self::EFT_EMBEDDED_RECEIPT => 'eft_embedded_receipt',
 	self::USE_REFERENCED_REFUNDS => 'use_referenced_refunds',
+	self::USE_REFUND_SELECTION => 'use_refund_selection',
 	self::LAST_DATE_MODIFIED => 'last_date_modified',
 	self::PRINT_RECEIPT_LOGO => 'print_receipt_logo',
 	self::PRINT_RECEIPT_BITMAP_NO => 'print_receipt_bitmap_no',
@@ -571,6 +573,16 @@ class LSCPOSTerminal extends AbstractModel
     public function setUseReferencedRefunds(?bool $value)
     {
         return $this->setData(self::USE_REFERENCED_REFUNDS, $value);
+    }
+
+    public function getUseRefundSelection(): ?bool
+    {
+        return $this->getData(self::USE_REFUND_SELECTION);
+    }
+
+    public function setUseRefundSelection(?bool $value)
+    {
+        return $this->setData(self::USE_REFUND_SELECTION, $value);
     }
 
     public function getLastDateModified(): ?string

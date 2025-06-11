@@ -23,7 +23,12 @@ $viewModel = $block->getViewModel();
     <script type="text/x-magento-init">
     {
         "#product_addtocart_form": {
-            "lsomni/stock": {}
+            "lsomni/stock": {
+                "googleMapApiKey": "<?= $viewModel->getGoogleMapsApiKey();?>",
+                "defaultLat": "<?= $viewModel->getDefaultLatitude();?>",
+                "defaultLong": "<?= $viewModel->getDefaultLongitude();?>",
+                "defaultZoom": "<?= $viewModel->getDefaultZoom();?>"
+            }
         }
     }
 
