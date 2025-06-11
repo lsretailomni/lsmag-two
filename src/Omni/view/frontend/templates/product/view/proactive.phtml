@@ -101,9 +101,10 @@ $discountOffers = $mixAndMatchDiscounts = $multibuyOffers = [];
         };
 
         $(".ls-click-product-promotion").on('click', function () {
-            var id = $(this).attr("data-id");
-            var popup = modal(options, $("#ls-popup-model-" + id));
-            $("#ls-popup-model-" + id).modal("openModal");
+            var id = $(this).attr("data-id"),
+                popEle = $("#ls-popup-model-" + id),
+                popup = modal(options, popEle);
+            popEle.modal("openModal");
         });
     });
 </script>
