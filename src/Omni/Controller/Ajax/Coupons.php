@@ -75,7 +75,7 @@ class Coupons implements HttpPostActionInterface
         $result     = $this->resultJsonFactory->create();
         $resultPage = $this->resultPageFactory->create();
         $block      = $resultPage->getLayout()
-            ->createBlock('Ls\Omni\Block\Cart\Coupons')
+            ->createBlock(\Ls\Omni\Block\Cart\Coupons::class)
             ->setTemplate('Ls_Omni::cart/coupons-listing.phtml')
             ->toHtml();
         $result->setData(['output' => $block]);

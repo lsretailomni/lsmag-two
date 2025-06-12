@@ -110,34 +110,7 @@ class Proactive extends Template
      */
     public function getCoupons(array $itemId): array
     {
-        try {
-            $storeId = $this->lsr->getActiveWebStore();
-            if (!empty($this->contactHelper->getCardIdFromCustomerSession())) {
-                $cardId    = $this->contactHelper->getCardIdFromCustomerSession();
-                $response = [];
-
-                foreach ($itemId as $id) {
-                    $rootGetDirectMarketingInfo = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $id);
-
-                    if ($rootGetDirectMarketingInfo) {
-                        $publishedOffers = $rootGetDirectMarketingInfo->getPublishedoffer();
-
-                        foreach ($publishedOffers as $publishedOffer) {
-                            if ($publishedOffer->getDiscounttype() == "9"
-                            ) {
-                                $response[$publishedOffer->getNo()] = $publishedOffer;
-                            }
-                        }
-                    }
-                }
-
-                return $response;
-            }
-        } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
-        }
-
-        return [];
+        return $this->loyaltyHelper->getAllCouponsGivenItems($itemId);
     }
 
     /**

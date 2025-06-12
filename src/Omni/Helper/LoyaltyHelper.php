@@ -8,10 +8,10 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Ls\Core\Model\LSR;
 use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
 use Ls\Omni\Client\Ecommerce\Entity\GetDirectMarketingInfoResult as GetDirectMarketingInfoResponse;
 use Ls\Omni\Client\Ecommerce\Entity\GetMemberCard;
 use Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
+use Ls\Omni\Client\Ecommerce\Entity\PublishedOfferLine;
 use Ls\Omni\Client\Ecommerce\Operation;
 use Ls\Omni\Client\Ecommerce\Operation\GetDirectMarketingInfo;
 use Ls\Omni\Client\Ecommerce\Operation\GetDiscount_GetDiscount;
@@ -21,7 +21,6 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Currency;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Quote\Model\Quote\Item;
 
 /**
  * Class LoyaltyHelper for handling loyalty points
@@ -496,14 +495,14 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Get published offers for given card_id, store_id, item_id
      *
-     * @param $cardId
-     * @param $storeId
-     * @param $itemId
+     * @param string $cardId
+     * @param string $storeId
+     * @param ?string $itemId
      * @return bool|GetDirectMarketingInfoResponse|null
      * @throws GuzzleException
      * @throws NoSuchEntityException
      */
-    public function getPublishedOffers($cardId, $storeId, $itemId = null)
+    public function getPublishedOffers(string $cardId, string $storeId, string $itemId = null)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $cacheId  = LSR::COUPONS;
@@ -547,6 +546,45 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
+     * Get all coupons
+     *
+     * @param array $itemId
+     * @return array
+     * @throws GuzzleException
+     */
+    public function getAllCouponsGivenItems(array $itemId): array
+    {
+        try {
+            $storeId = $this->lsr->getActiveWebStore();
+            if (!empty($this->contactHelper->getCardIdFromCustomerSession())) {
+                $cardId    = $this->contactHelper->getCardIdFromCustomerSession();
+                $response = [];
+
+                foreach ($itemId as $id) {
+                    $rootGetDirectMarketingInfo = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $id);
+
+                    if ($rootGetDirectMarketingInfo) {
+                        $publishedOffers = $rootGetDirectMarketingInfo->getPublishedoffer();
+
+                        foreach ($publishedOffers as $publishedOffer) {
+                            if ($publishedOffer->getDiscounttype() == "9"
+                            ) {
+                                $response[$publishedOffer->getNo()] = $publishedOffer;
+                            }
+                        }
+                    }
+                }
+
+                return $response;
+            }
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return [];
+    }
+
+    /**
      * Get available coupons for logged in customers
      *
      * @return array
@@ -569,10 +607,19 @@ class LoyaltyHelper extends AbstractHelperOmni
                 $customer   = $this->customerFactory->create()->load($customerId);
                 $cardId     = $customer->getLsrCardid();
             }
-            $publishedOffersObj = $this->getPublishedOffers($cardId, $storeId);
+            $rootGetDirectMarketingInfo = $this->getPublishedOffers($cardId, $storeId);
+            $requiredOffers = [];
+            if ($rootGetDirectMarketingInfo) {
+                $publishedOffers = $rootGetDirectMarketingInfo->getPublishedoffer();
+
+                foreach ($publishedOffers as $publishedOffer) {
+                    if ($publishedOffer->getDiscounttype() == "9") {
+                        $requiredOffers[$publishedOffer->getNo()] = $publishedOffer;
+                    }
+                }
+            }
             $itemsInCart        = $this->checkoutSession->getQuote()->getAllVisibleItems();
             $coupons            = $itemIdentifiers = [];
-            /** @var Item $item */
             foreach ($itemsInCart as $item) {
                 if ($item->getProductType() == \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE) {
                     $children = $item->getChildren();
@@ -594,22 +641,17 @@ class LoyaltyHelper extends AbstractHelperOmni
                 }
             }
 
-            if ($publishedOffersObj) {
-                foreach ($publishedOffersObj as $each) {
-                    $getPublishedOfferLineArray = $each->getOfferLines()->getPublishedOfferLine();
+            if (!empty($requiredOffers)) {
+                foreach ($requiredOffers as $each) {
+                    $offerNo = $each->getNo();
+                    $getPublishedOfferLineArray = $rootGetDirectMarketingInfo->getPublishedofferline();
 
-                    if ($each->getCode() == "Coupon" && $each->getOfferLines()) {
-                        foreach ($getPublishedOfferLineArray as $publishedOfferLine) {
-                            if ($this->itemExistsInCart($publishedOfferLine, $itemIdentifiers)) {
-                                $coupons[] = $each;
-                            }
-
-                            if ($publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::PRODUCT_GROUP
-                                || $publishedOfferLine->getLineType() == OfferDiscountLineType::ITEM_CATEGORY
-                                || $publishedOfferLine->getLineType() == OfferDiscountLineType::SPECIAL_GROUP
-                            ) {
-                                $coupons[] = $each;
-                            }
+                    foreach ($getPublishedOfferLineArray as $publishedOfferLine) {
+                        if ($publishedOfferLine->getPublishedofferno() == $offerNo &&
+                            $this->itemExistsInCart($publishedOfferLine, $itemIdentifiers)
+                            && !array_key_exists($offerNo, $coupons)
+                        ) {
+                            $coupons[$offerNo] = $each;
                         }
                     }
                 }
@@ -622,23 +664,23 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Item exists in cart
      *
-     * @param mixed $publishedOfferLine
+     * @param PublishedOfferLine $publishedOfferLine
      * @param array $itemIdentifiers
      * @return bool
      */
-    public function itemExistsInCart($publishedOfferLine, $itemIdentifiers)
+    public function itemExistsInCart(PublishedOfferLine $publishedOfferLine, array $itemIdentifiers): bool
     {
         $flag = false;
 
         foreach ($itemIdentifiers as $identifier) {
-            if ($publishedOfferLine->getId() == $identifier['itemId'] &&
+            if ($publishedOfferLine->getDiscountlineid() == $identifier['itemId'] &&
                 (
-                    $publishedOfferLine->getVariant() == $identifier['variantId'] ||
-                    $publishedOfferLine->getVariant() == ''
+                    $publishedOfferLine->getVariantcode() == $identifier['variantId'] ||
+                    $publishedOfferLine->getVariantcode() == ''
                 ) &&
                 (
-                    $publishedOfferLine->getUnitOfMeasure() == $identifier['uom'] ||
-                    ($publishedOfferLine->getUnitOfMeasure() == '' && $identifier['uom'] == $identifier['baseUom'])
+                    $publishedOfferLine->getUnitofmeasure() == $identifier['uom'] ||
+                    ($publishedOfferLine->getUnitofmeasure() == '' && $identifier['uom'] == $identifier['baseUom'])
                 )
             ) {
                 $flag = true;
