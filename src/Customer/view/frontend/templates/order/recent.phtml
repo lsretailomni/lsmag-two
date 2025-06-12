@@ -41,7 +41,7 @@ use Magento\Framework\Escaper;
                     <div class="table-wrapper orders-recent">
                         <table class="data table table-order-items recent" id="my-orders-table">
                             <caption class="table-caption"><?= /* @escapeNotVerified */
-                                $block->escapeHtml(__('Recent Orders2')) ?></caption>
+                                $block->escapeHtml(__('Recent Orders')) ?></caption>
                             <thead>
                             <tr>
                                 <th scope="col" class="col id"><?= /* @escapeNotVerified */
@@ -73,6 +73,7 @@ use Magento\Framework\Escaper;
                                 if ($magOrder) {
                                     $block->registerValueInRegistry($magOrder);
                                 }
+                                $storeCurrency = $block->getStoreCurrencyCode($_order['Store Currency Code']);
                                 ?>
                                 <tr>
                                     <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
@@ -87,14 +88,14 @@ use Magento\Framework\Escaper;
                                         class="col store-name"><?= $_order['Store Name'] ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Order Total')) ?>"
                                         class="col total"><?= /* @escapeNotVerified */
-                                        $storeCurrency = $block->getStoreCurrencyCode($_order['Store Currency Code']);
-                                        $block->getFormattedPrice($_order['Gross Amount'], $storeCurrency, $_orderF) ?></td>
+                                        
+                                        $block->getFormattedPrice($_order['Gross Amount'], $storeCurrency, $_order['IdType']) ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Status')) ?>"
                                         class="col status"><?= /* @escapeNotVerified */
                                         $_order['Status'] ?></td>
                                     <td data-th="<?= $escaper->escapeHtml(__('Actions')) ?>" class="col actions">
                                         <a href="<?= /* @escapeNotVerified */
-                                        $block->getViewUrl($_order, $magOrder) ?>" class="action view">
+                                        ($magOrder) ? $block->getViewUrl($_order, $magOrder) : $block->getViewUrl($_order) ?>" class="action view">
                                     <span><?= /* @escapeNotVerified */
                                         __('View Order') ?></span>
                                         </a>

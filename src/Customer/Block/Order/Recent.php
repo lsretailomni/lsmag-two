@@ -176,17 +176,17 @@ class Recent extends Template
             false,
             $this->lsr->getCustomerIntegrationOnFrontend()
         )) {
-            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
-                // This condition is added to support viewing of orders created by POS
-                if (!empty($magOrder)) {
-                    return $this->getUrl(
-                        'customer/order/view',
-                        [
-                            'order_id' => $order['Document ID']
-                        ]
-                    );
-                }
-            }
+//            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
+//                // This condition is added to support viewing of orders created by POS
+//                if (!empty($magOrder)) {
+//                    return $this->getUrl(
+//                        'customer/order/view',
+//                        [
+//                            'order_id' => $order['Document ID']
+//                        ]
+//                    );
+//                }
+//            }
 
 //            if (!empty($magOrder) && !empty($order->getStoreCurrency())) {
 //                if ($order->getStoreCurrency() != $magOrder->getOrderCurrencyCode()) {
@@ -203,10 +203,10 @@ class Recent extends Template
             return $this->getUrl(
                 'customer/order/view',
                 [
-                    'order_id' => $order['ID Type'] == 'Order' && $order['Document ID'] ?
-                        $order['Document ID'] : $magOrder->getIncrementId(),
-                    'type'     => $order['ID Type'] == 'Order' && $order['Document ID'] ?
-                        DocumentIdType::ORDER : $order['ID Type']
+                    'order_id' => $order['IdType'] == 'Order' && $order['Customer Document ID'] ?
+                        $order['Customer Document ID'] : $order['Document ID'],
+                    'type'     => $order['IdType'] == 'Order' && $order['Document ID'] ?
+                        DocumentIdType::ORDER : $order['IdType']
                 ]
             );
         }
@@ -284,20 +284,47 @@ class Recent extends Template
     {
         $this->orderHelper->registerGivenValueInRegistry('current_mag_order', $value);
     }
-    
+
+    /**
+     * Processes order data and updates fields based on order types and conditions.
+     *
+     * @param array $orders
+     * @return array 
+     */
     public function processOrderData($orders)
     {
         foreach ($orders as $order) {
-            $order['Status'] = $this->orderHelper->getOrderStatus($_order['Document Source Type']);
+            $order['IdType']          = $this->orderHelper->getOrderStatus($order['Document Source Type']);
+            $order['CustomerOrderNo'] = ($order['Customer Document ID']) ? $order['Customer Document ID'] : $order['Document ID'];
             
-            if($_order['Status'] == DocumentIdType::RECEIPT)
-            {
-                $_order['Status'] = SalesEntryStatus::COMPLETE;
-                $_order['ShippingStatus'] = ShippingStatus::SHIPPED; 
-                $_order['ClickAndCollectOrder'] = (is_null($_order['Customer Document ID']) || $_order['Customer Document ID'] === '') == false); 
-                
+            switch ($order['IdType']) {
+                case DocumentIdType::RECEIPT:
+                    $order['Status']               = SalesEntryStatus::COMPLETE;
+                    $order['ShippingStatus']       = ShippingStatus::SHIPPED;
+                    $order['ClickAndCollectOrder'] = (is_null($order['Customer Document ID']) || $order['Customer Document ID'] === '') == false;
+                    if((is_null($order['Ship-to Name']) || $order['Ship-to Name'] === '')) {
+                        $order['Ship-to Name']  = $order['Name'];
+                        $order['Ship-to Email'] = $order['Email'];
+                    }
+                    break;
+                case DocumentIdType::ORDER:
+                    $order['Status']               = $order['Sale Is Return Sale'] ? SalesEntryStatus::CANCELED : SalesEntryStatus::CREATED;
+                    $order['ShippingStatus']       = ShippingStatus::NOT_YET_SHIPPED;
+                    $order['CreateAtStoreId']      = $order['Store No.'];
+                    $order['ClickAndCollectOrder'] = "Need to implement";
+                    break;
+                case DocumentIdType::HOSP_ORDER:
+                    $order['CreateTime']           = $order['Date Time'];
+                    $order['CreateAtStoreId']      = $order['Store No.'];
+                    $order['Status']               = SalesEntryStatus::PROCESSING;
+                    $order['ShippingStatus']       = ShippingStatus::SHIPPIG_NOT_REQUIRED;
+                    if((is_null($order['Ship-to Name']) || $order['Ship-to Name'] === '')) {
+                        $order['Ship-to Name']  = $order['Name'];
+                        $order['Ship-to Email'] = $order['Email'];
+                    }
+                    break;
             }
-                
         }
+        return $orders;
     }
 }
