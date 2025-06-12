@@ -21,9 +21,12 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Phrase;
+use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -35,7 +38,7 @@ class Proactive extends Template
     public $product = null;
 
     /**
-     * @param Template\Context $context
+     * @param Context $context
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
      * @param ItemHelper $itemHelper
@@ -48,6 +51,7 @@ class Proactive extends Template
      * @param LoggerInterface $logger
      * @param Data $catalogHelper
      * @param View $productBlock
+     * @param Registry $registry
      * @param array $data
      */
     public function __construct(
@@ -64,6 +68,7 @@ class Proactive extends Template
         public LoggerInterface $logger,
         public Data $catalogHelper,
         public View $productBlock,
+        public Registry $registry,
         public array $data = []
     ) {
         parent::__construct($context, $data);
@@ -152,6 +157,7 @@ class Proactive extends Template
     public function getFormattedDescriptionForDiscountOffer(LSCPeriodicDiscount $discount): string
     {
         $description = [];
+        $additionalDetails = $this->getAdditionalInformation($discount);
 
         if ($discount->getDescription()) {
             $description[] = "<span class='discount-description'>" . $discount->getDescription() . '</span>';
@@ -166,7 +172,43 @@ class Proactive extends Template
             $description[] = "<span>" . $discountText . "</span>";
         }
 
+        if (!empty($additionalDetails)) {
+            $description[] = "<span>" . $additionalDetails . "</span>";
+        }
+
         return implode('<br/>', $description);
+    }
+
+    /**
+     * Get additional information for the offer
+     *
+     * @param LSCPeriodicDiscount $discount
+     * @return Phrase|string
+     */
+    public function getAdditionalInformation(LSCPeriodicDiscount $discount)
+    {
+        $publishedOffer = $this->registry->registry('lsr-c-po');
+        $publishedOffer = $this->contactHelper->restoreModel($publishedOffer);
+        $additionalDetails = '';
+
+        if (!empty($publishedOffer->getPublishedoffer())) {
+            foreach ($publishedOffer->getPublishedoffer() as $offer) {
+                if ($offer->getDiscountno() == $discount->getNo() &&
+                    !empty($offer->getData('MemberAttribute')) &&
+                    !empty($offer->getData('MemberAttributeValue'))
+                ) {
+                    $additionalDetails = __(
+                        'Applicable only if %1 is %2',
+                        $offer->getData('MemberAttribute'),
+                        $offer->getData('MemberAttributeValue')
+                    );
+
+                    break;
+                }
+            }
+        }
+
+        return $additionalDetails;
     }
 
     /**
@@ -180,6 +222,7 @@ class Proactive extends Template
         LSCPeriodicDiscount $multibuyOffer,
         \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts
     ): string {
+        $additionalDetails = $this->getAdditionalInformation($multibuyOffer);
         $description = [];
 
         if ($multibuyOffer->getDescription()) {
@@ -213,6 +256,10 @@ class Proactive extends Template
             }
         }
 
+        if (!empty($additionalDetails)) {
+            $description[] = "<span>" . $additionalDetails . "</span>";
+        }
+
         return implode('<br/>', $description);
     }
 
@@ -230,6 +277,7 @@ class Proactive extends Template
         \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts,
         string $itemId
     ): string {
+        $additionalDetails = $this->getAdditionalInformation($mixAndMatchOffer);
         $description = $items = [];
         $counter = 0;
         $popupLink = $popupHtml = $discountText = '';
@@ -302,6 +350,10 @@ class Proactive extends Template
                 $description[] = implode(' ', $productData);
                 $description[] = '</div>';
             }
+        }
+
+        if (!empty($additionalDetails)) {
+            $description[] = "<span>" . $additionalDetails . "</span>";
         }
 
         return implode('<br/>', $description);

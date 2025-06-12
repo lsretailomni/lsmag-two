@@ -6,17 +6,17 @@ namespace Ls\Omni\Helper;
 use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Entity\GetDirectMarketingInfoResult as GetDirectMarketingInfoResponse;
-use Ls\Omni\Client\Ecommerce\Entity\GetMemberCard;
-use Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
-use Ls\Omni\Client\Ecommerce\Entity\PublishedOfferLine;
-use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Omni\Client\Ecommerce\Operation\GetDirectMarketingInfo;
-use Ls\Omni\Client\Ecommerce\Operation\GetDiscount_GetDiscount;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Model\Cache\Type;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\GetDirectMarketingInfoResult as GetDirectMarketingInfoResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\GetMemberCard;
+use \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
+use \Ls\Omni\Client\Ecommerce\Entity\PublishedOfferLine;
+use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\Ecommerce\Operation\GetDirectMarketingInfo;
+use \Ls\Omni\Client\Ecommerce\Operation\GetDiscount_GetDiscount;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Currency;
 use Magento\Framework\Exception\LocalizedException;
@@ -448,10 +448,6 @@ class LoyaltyHelper extends AbstractHelperOmni
             $customerGroupId = $this->customerSession->getCustomerGroupId();
             $customerGroup = $this->groupRepository->getById($customerGroupId)->getCode();
             $cacheItemId     = $itemId;
-
-            if (is_array($itemId)) {
-                $cacheItemId = implode('_', $itemId);
-            }
             $cacheId  = LSR::PROACTIVE_DISCOUNTS . $cacheItemId . "_" . $customerGroupId . "_" . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
             if ($response) {
@@ -558,24 +554,25 @@ class LoyaltyHelper extends AbstractHelperOmni
             $storeId = $this->lsr->getActiveWebStore();
             if (!empty($this->contactHelper->getCardIdFromCustomerSession())) {
                 $cardId    = $this->contactHelper->getCardIdFromCustomerSession();
-                $response = [];
+                $coupons = [];
 
                 foreach ($itemId as $id) {
                     $rootGetDirectMarketingInfo = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $id);
-
+                    $results = $this->contactHelper->flattenModel($rootGetDirectMarketingInfo);
+                    $this->registry->unregister('lsr-c-po');
+                    $this->registry->register('lsr-c-po', $results);
                     if ($rootGetDirectMarketingInfo) {
                         $publishedOffers = $rootGetDirectMarketingInfo->getPublishedoffer();
 
                         foreach ($publishedOffers as $publishedOffer) {
-                            if ($publishedOffer->getDiscounttype() == "9"
-                            ) {
-                                $response[$publishedOffer->getNo()] = $publishedOffer;
+                            if ($publishedOffer->getDiscounttype() == "9") {
+                                $coupons[$publishedOffer->getNo()] = $publishedOffer;
                             }
                         }
                     }
                 }
 
-                return $response;
+                return $coupons;
             }
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());

@@ -31,6 +31,8 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\State;
+use Magento\Framework\DataObject;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Message\ManagerInterface;
@@ -167,6 +169,76 @@ class AbstractHelperOmni extends AbstractHelper
      */
     public function initialize(): void
     {
+    }
+
+    /**
+     * Flat the given model into serializable array
+     *
+     * @param DataObject $model
+     * @return array
+     */
+    public function flattenModel(DataObject $model): array
+    {
+        $data = $model->getData();
+
+        foreach ($data as $key => $value) {
+            // Handle nested model
+            if ($value instanceof DataObject) {
+                $data[$key] = [
+                    '__is_model__' => true,
+                    '__class__' => get_class($value),
+                    'data' => $this->flattenModel($value),
+                ];
+            } elseif (is_array($value)) {
+                $data[$key] = array_map(function ($item) {
+                    if ($item instanceof DataObject) {
+                        return [
+                            '__is_model__' => true,
+                            '__class__' => get_class($item),
+                            'data' => $this->flattenModel($item),
+                        ];
+                    }
+                    return $item;
+                }, $value);
+            }
+        }
+
+        return [
+            '__class__' => get_class($model),
+            'data' => $data
+        ];
+    }
+
+    /**
+     * Restore a model from a serialized array
+     *
+     * @param array $structure
+     * @return DataObject
+     */
+    public function restoreModel(array $structure): DataObject
+    {
+        $class = $structure['__class__'];
+        $rawData = $structure['data'];
+
+        foreach ($rawData as $key => $value) {
+            // Handle single nested model
+            if (is_array($value) && isset($value['__is_model__'])) {
+                $rawData[$key] = $this->restoreModel($value);
+            } elseif (is_array($value)) {
+                $rawData[$key] = array_map(function ($item) {
+                    if (is_array($item) && isset($item['__is_model__'])) {
+                        return $this->restoreModel($item);
+                    }
+                    return $item;
+                }, $value);
+            }
+        }
+
+        /** @var DataObject $model */
+        $model = \Magento\Framework\App\ObjectManager::getInstance()->create($class);
+        $model->setData($rawData['data'] ?? $rawData);
+
+        return $model;
     }
 
     /**

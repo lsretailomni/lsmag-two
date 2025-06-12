@@ -1574,42 +1574,4 @@ class ContactHelper extends AbstractHelperOmni
 
         return $response;
     }
-
-    /**
-     * Flat the given model into serializable array
-     *
-     * @param DataObject $model
-     * @return array
-     */
-    public function flattenModel(DataObject $model): array
-    {
-        $data = $model->getData();
-
-        foreach ($data as $key => $value) {
-            // Handle nested model
-            if ($value instanceof DataObject) {
-                $data[$key] = [
-                    '__is_model__' => true,
-                    '__class__' => get_class($value),
-                    'data' => $this->flattenModel($value),
-                ];
-            } elseif (is_array($value)) {
-                $data[$key] = array_map(function ($item) {
-                    if ($item instanceof DataObject) {
-                        return [
-                            '__is_model__' => true,
-                            '__class__' => get_class($item),
-                            'data' => $this->flattenModel($item),
-                        ];
-                    }
-                    return $item;
-                }, $value);
-            }
-        }
-
-        return [
-            '__class__' => get_class($model),
-            'data' => $data
-        ];
-    }
 }
