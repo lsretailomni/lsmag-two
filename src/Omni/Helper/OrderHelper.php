@@ -6,6 +6,8 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
@@ -654,8 +656,10 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * @param null $maxNumberOfEntries
-     * @return Entity\ArrayOfSalesEntry|Entity\SalesEntriesGetByCardIdResponse|ResponseInterface|null
+     * Get Current Customer Order History
+     * 
+     * @param $maxNumberOfEntries
+     * @return array|Entity\GetMemContSalesHist_GetMemContSalesHistResponse|null
      */
     public function getCurrentCustomerOrderHistory($maxNumberOfEntries = null)
     {
@@ -665,19 +669,6 @@ class OrderHelper extends AbstractHelper
             return $response;
         }
         // @codingStandardsIgnoreStart
-//        $request      = new Operation\SalesEntriesGetByCardId();
-//        $orderHistory = new Entity\SalesEntriesGetByCardId();
-//        // @codingStandardsIgnoreEnd
-//        $orderHistory->setCardId($cardId);
-//        if (!empty($maxNumberOfEntries)) {
-//            $orderHistory->setMaxNumberOfEntries($maxNumberOfEntries);
-//        }
-//        try {
-//            $response = $request->execute($orderHistory);
-//        } catch (Exception $e) {
-//            $this->_logger->error($e->getMessage());
-//        }
-
         $getSalesHistory = new GetMemContSalesHist_GetMemContSalesHist();
         $getSalesHistory->setOperationInput(
             [
@@ -694,9 +685,6 @@ class OrderHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        
-        //return $response;
-        
         return $response ? $response->getRecords()[0]->getLSCMemberSalesBuffer() : $response;
     }
 
@@ -1445,5 +1433,48 @@ class OrderHelper extends AbstractHelper
                 return DocumentIdType::HOSP_ORDER;
         }
         return DocumentIdType::RECEIPT;
+    }
+
+    /**
+     * Processes order data and updates fields based on order types and conditions.
+     *
+     * @param array $orders
+     * @return array
+     */
+    public function processOrderData($orders)
+    {
+        foreach ($orders as $order) {
+            $order['IdType']          = $this->getOrderStatus($order['Document Source Type']);
+            $order['CustomerOrderNo'] = ($order['Customer Document ID']) ? $order['Customer Document ID'] : $order['Document ID'];
+
+            switch ($order['IdType']) {
+                case DocumentIdType::RECEIPT:
+                    $order['Status']               = SalesEntryStatus::COMPLETE;
+                    $order['ShippingStatus']       = ShippingStatus::SHIPPED;
+                    $order['ClickAndCollectOrder'] = (is_null($order['Customer Document ID']) || $order['Customer Document ID'] === '') == false;
+                    if((is_null($order['Ship-to Name']) || $order['Ship-to Name'] === '')) {
+                        $order['Ship-to Name']  = $order['Name'];
+                        $order['Ship-to Email'] = $order['Email'];
+                    }
+                    break;
+                case DocumentIdType::ORDER:
+                    $order['Status']               = $order['Sale Is Return Sale'] ? SalesEntryStatus::CANCELED : SalesEntryStatus::CREATED;
+                    $order['ShippingStatus']       = ShippingStatus::NOT_YET_SHIPPED;
+                    $order['CreateAtStoreId']      = $order['Store No.'];
+                    $order['ClickAndCollectOrder'] = "Need to implement";
+                    break;
+                case DocumentIdType::HOSP_ORDER:
+                    $order['CreateTime']           = $order['Date Time'];
+                    $order['CreateAtStoreId']      = $order['Store No.'];
+                    $order['Status']               = SalesEntryStatus::PROCESSING;
+                    $order['ShippingStatus']       = ShippingStatus::SHIPPIG_NOT_REQUIRED;
+                    if((is_null($order['Ship-to Name']) || $order['Ship-to Name'] === '')) {
+                        $order['Ship-to Name']  = $order['Name'];
+                        $order['Ship-to Email'] = $order['Email'];
+                    }
+                    break;
+            }
+        }
+        return $orders;
     }
 }

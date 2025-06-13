@@ -1,9 +1,9 @@
 <?php
 // @codingStandardsIgnoreFile
 /** @var  $block History */
-$_orders    = $block->getOrderHistory();
-$orderExist = false;
-
+$_orders             = $block->getOrderHistory();
+$orderExist          = false;
+$magOrderIncrementId = "";
 use \Ls\Customer\Block\Order\History;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Core\Model\LSR;
@@ -11,8 +11,8 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
 <?= $block->getChildHtml('info') ?>
 <?php if ($_orders): ?>
     <?php
-    if ($_orders instanceof ArrayOfSalesEntry) {
-        $_orders = $_orders->getSalesEntry();
+    if (is_array($_orders)) {
+        //$_orders = $_orders->getSalesEntry();
         if (count($_orders) > 0) {
             $orderExist = true;
             ?>
@@ -40,35 +40,45 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                     </thead>
                     <tbody>
                     <?php foreach ($_orders as $_order):
-                        if (!$_order->getHasReturnSale() && $_order->getReturnSale()) {
+//                        if (!$_order->getHasReturnSale() && $_order->getReturnSale()) {
+//                            continue;
+//                        }
+//                        $magOrder = $block->getOrderByDocumentId($_order);
+//                        if ($magOrder) {
+//                            $block->registerValueInRegistry($magOrder);
+//                        }
+                        if (isset($_order['Sale Is Return Sale']) && $_order['Sale Is Return Sale']) {
                             continue;
                         }
-                        $magOrder = $block->getOrderByDocumentId($_order);
+
+                        $magOrder = $block->getOrderByDocumentId($_order['Document ID']);
                         if ($magOrder) {
                             $block->registerValueInRegistry($magOrder);
+                            $magOrderIncrementId = $magOrder->getIncrementId();
                         }
+                        $storeCurrency = $block->getStoreCurrencyCode($_order['Store Currency Code']);
                         ?>
                         <tr>
                             <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
                                 class="col id"><?= /* @escapeNotVerified */
-                                $_order->getCustomerOrderNo() ? $_order->getCustomerOrderNo() : $_order->getId() ?></td>
+                                $_order['Document ID'] ? $_order['Document ID'] : $magOrderIncrementId; ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
                                 class="col date">
-                                <span style="display:none;"><?= $block->getFormattedDateToTimeStamp($_order->getCreateTime()) ?></span>
-                                <?= /* @escapeNotVerified */ $block->getFormattedDate($_order->getCreateTime()) ?></td>
+                                <span style="display:none;"><?= $block->getFormattedDateToTimeStamp($_order['Date Time']) ?></span>
+                                <?= /* @escapeNotVerified */ $block->getFormattedDate($_order['Date Time']) ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>"
-                                class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : __('Not Applicable') ?></td>
+                                class="col shipping"><?= $_order['Ship-to Name'] ? $block->escapeHtml($_order['Ship-to Name']) : __('Not Applicable') ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Store Name')) ?>"
-                                class="col store-name"><?= $_order->getStoreName() ?></td>
+                                class="col store-name"><?= $_order['Store Name'] ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Total')) ?>"
                                 class="col total"><?= /* @escapeNotVerified */
-                                $block->getFormattedPrice($_order->getTotalAmount(), $_order->getStoreCurrency(), $_order->getStoreId(), $_order->getIdType()) ?></td>
+                                $block->getFormattedPrice($_order['Gross Amount'], $storeCurrency, $_order['IdType']) ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Status')) ?>"
                                 class="col status"><?= /* @escapeNotVerified */
-                                $_order->getStatus() ?></td>
+                                $_order['Status'] ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
                                 <a href="<?= /* @escapeNotVerified */
-                                $block->getViewUrl($_order, $magOrder) ?>" class="action view">
+                                ($magOrder) ? $block->getViewUrl($_order, $magOrder) : $block->getViewUrl($_order) ?>" class="action view">
                                 <span><?= /* @escapeNotVerified */
                                     __('View Order') ?></span>
                                 </a>

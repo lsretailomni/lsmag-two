@@ -15,8 +15,9 @@ use Magento\Framework\Escaper;
 ?>
 <div class="block block-dashboard-orders">
     <?php
-    $_orders    = $block->getOrderHistory();
-    $orderExist = false;
+    $_orders             = $block->getOrderHistory();
+    $orderExist          = false;
+    $magOrderIncrementId = "";
     ?>
     <div class="block-title order">
         <strong><?= /* @escapeNotVerified */
@@ -31,10 +32,9 @@ use Magento\Framework\Escaper;
     </div>
     <div class="block-content">
         <?= $block->getChildHtml() ?>
-        <?php if ($_orders && count($_orders) > 0): ?>
+        <?php if ($_orders): ?>
             <?php
-            if (!empty($_orders) && is_array($_orders)):
-                //$_orders = $_orders->getSalesEntry();
+            if (is_array($_orders)):
                 if (count($_orders) > 0):
                     $orderExist = true;
                     ?>
@@ -62,9 +62,6 @@ use Magento\Framework\Escaper;
                             </thead>
                             <tbody>
                             <?php foreach ($_orders as $i => $_order):
-//                                if (!$_order->getHasReturnSale() && $_order->getReturnSale()) {
-//                                    continue;
-//                                }
                                 if (isset($_order['Sale Is Return Sale']) && $_order['Sale Is Return Sale']) {
                                     continue;
                                 }
@@ -72,23 +69,23 @@ use Magento\Framework\Escaper;
                                 $magOrder = $block->getOrderByDocumentId($_order['Document ID']);
                                 if ($magOrder) {
                                     $block->registerValueInRegistry($magOrder);
+                                    $magOrderIncrementId = $magOrder->getIncrementId();
                                 }
                                 $storeCurrency = $block->getStoreCurrencyCode($_order['Store Currency Code']);
                                 ?>
                                 <tr>
                                     <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
                                         class="col id"><?= /* @escapeNotVerified */
-                                        $_order['Document ID'] ? $_order['Document ID'] : $magOrder->getIncrementId() ?></td>
+                                        $_order['Document ID'] ? $_order['Document ID'] : $magOrderIncrementId; ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
                                         class="col date"><?= /* @escapeNotVerified */
                                         $block->getFormattedDate($_order['Date Time']) ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>"
-                                        class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order['Ship-to Name']) : __('Not Applicable') ?></td>
+                                        class="col shipping"><?= $_order['Ship-to Name'] ? $block->escapeHtml($_order['Ship-to Name']) : __('Not Applicable') ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Store Name')) ?>"
                                         class="col store-name"><?= $_order['Store Name'] ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Order Total')) ?>"
-                                        class="col total"><?= /* @escapeNotVerified */
-                                        
+                                        class="col total"><?= /* @escapeNotVerified */                                        
                                         $block->getFormattedPrice($_order['Gross Amount'], $storeCurrency, $_order['IdType']) ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Status')) ?>"
                                         class="col status"><?= /* @escapeNotVerified */

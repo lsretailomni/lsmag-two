@@ -104,7 +104,7 @@ class History extends \Magento\Sales\Block\Order\History
             $orders   = $this->orderHelper->getCurrentCustomerOrderHistory();
             if ($orders) {
                 try {
-                    $response = $orders;
+                    $response = $this->orderHelper->processOrderData($orders);
                 } catch (Exception $e) {
                     $this->_logger->error($e->getMessage());
                 }
@@ -168,31 +168,20 @@ class History extends \Magento\Sales\Block\Order\History
             false,
             $this->lsr->getCustomerIntegrationOnFrontend()
         )) {
-            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
-                // This condition is added to support viewing of orders created by POS
-                if (!empty($magOrder)) {
-                    return $this->getUrl(
-                        'customer/order/view',
-                        [
-                            'order_id' => $order->getId()
-                        ]
-                    );
-                }
-            }
-
-            if (!empty($magOrder) && !empty($order->getStoreCurrency())) {
-                if ($order->getStoreCurrency() != $magOrder->getOrderCurrencyCode()) {
-                    $order->setCustomerOrderNo(null);
+            if (!empty($magOrder) && !empty($order['Store Currency Code'])) {
+                if ($order['Store Currency Code'] != $magOrder->getOrderCurrencyCode()) {
+                    //$order->setCustomerOrderNo(null);
+                    $order['Customer Order No'] = null;
                 }
             }
 
             return $this->getUrl(
                 'customer/order/view',
                 [
-                    'order_id' => $order->getIdType() == 'Order' && $order->getCustomerOrderNo() ?
-                        $order->getCustomerOrderNo() : $order->getId(),
-                    'type'     => $order->getIdType() == 'Order' && $order->getCustomerOrderNo() ?
-                        DocumentIdType::ORDER : $order->getIdType()
+                    'order_id' => $order['IdType'] == 'Order' && $order['Customer Document ID'] ?
+                        $order['Customer Document ID'] : $order['Document ID'],
+                    'type'     => $order['IdType'] == 'Order' && $order['Document ID'] ?
+                        DocumentIdType::ORDER : $order['IdType']
                 ]
             );
         }

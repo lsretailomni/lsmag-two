@@ -4,13 +4,11 @@ namespace Ls\Customer\Block\Order;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
-use Ls\Omni\Client\Ecommerce\Entity\SalesEntriesGetByCardIdResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntriesGetByCardIdResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -104,7 +102,7 @@ class Recent extends Template
             $orders   = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
             if ($orders) {
                 try {                    
-                    $response = $this->processOrderData($orders);
+                    $response = $this->orderHelper->processOrderData($orders);
                 } catch (Exception $e) {
                     $this->_logger->error($e->getMessage());
                 }
@@ -285,46 +283,5 @@ class Recent extends Template
         $this->orderHelper->registerGivenValueInRegistry('current_mag_order', $value);
     }
 
-    /**
-     * Processes order data and updates fields based on order types and conditions.
-     *
-     * @param array $orders
-     * @return array 
-     */
-    public function processOrderData($orders)
-    {
-        foreach ($orders as $order) {
-            $order['IdType']          = $this->orderHelper->getOrderStatus($order['Document Source Type']);
-            $order['CustomerOrderNo'] = ($order['Customer Document ID']) ? $order['Customer Document ID'] : $order['Document ID'];
-            
-            switch ($order['IdType']) {
-                case DocumentIdType::RECEIPT:
-                    $order['Status']               = SalesEntryStatus::COMPLETE;
-                    $order['ShippingStatus']       = ShippingStatus::SHIPPED;
-                    $order['ClickAndCollectOrder'] = (is_null($order['Customer Document ID']) || $order['Customer Document ID'] === '') == false;
-                    if((is_null($order['Ship-to Name']) || $order['Ship-to Name'] === '')) {
-                        $order['Ship-to Name']  = $order['Name'];
-                        $order['Ship-to Email'] = $order['Email'];
-                    }
-                    break;
-                case DocumentIdType::ORDER:
-                    $order['Status']               = $order['Sale Is Return Sale'] ? SalesEntryStatus::CANCELED : SalesEntryStatus::CREATED;
-                    $order['ShippingStatus']       = ShippingStatus::NOT_YET_SHIPPED;
-                    $order['CreateAtStoreId']      = $order['Store No.'];
-                    $order['ClickAndCollectOrder'] = "Need to implement";
-                    break;
-                case DocumentIdType::HOSP_ORDER:
-                    $order['CreateTime']           = $order['Date Time'];
-                    $order['CreateAtStoreId']      = $order['Store No.'];
-                    $order['Status']               = SalesEntryStatus::PROCESSING;
-                    $order['ShippingStatus']       = ShippingStatus::SHIPPIG_NOT_REQUIRED;
-                    if((is_null($order['Ship-to Name']) || $order['Ship-to Name'] === '')) {
-                        $order['Ship-to Name']  = $order['Name'];
-                        $order['Ship-to Email'] = $order['Email'];
-                    }
-                    break;
-            }
-        }
-        return $orders;
-    }
+    
 }
