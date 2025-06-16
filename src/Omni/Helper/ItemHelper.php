@@ -439,7 +439,7 @@ class ItemHelper extends AbstractHelper
         $quoteItemList = $quote->getAllVisibleItems();
 
         if (count($quoteItemList) && !empty($basketData)) {
-            $orderLines = $basketData->getOrderLines()->getOrderLine();
+            $orderLines = $basketData->getMobiletransactionline();
         }
 
         foreach ($quoteItemList as $quoteItem) {
@@ -459,7 +459,7 @@ class ItemHelper extends AbstractHelper
                         $child->getItemId() == $line->getId() :
                         $this->isSameItem($child, $line)
                     ) {
-                        $unitPrice = $line->getAmount() / $line->getQuantity();
+                        $unitPrice = ($line->getNetamount() + $line->getTaxamount()) / $line->getQuantity();
                         $this->setRelatedAmountsAgainstGivenQuoteItem($line, $child, $unitPrice, $type);
                         unset($orderLines[$index]);
                         break;
@@ -512,22 +512,23 @@ class ItemHelper extends AbstractHelper
     {
         if ($quote->getId()) {
             if (isset($basketData)) {
+                $mobileTransaction = current($basketData->getMobiletransaction());
                 $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
                 $giftCardAmount = $quote->getLsGiftCardAmountUsed();
                 $quote->getShippingAddress()
                     ->setGrandTotal(
-                        $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount
+                        $mobileTransaction->getGrossamount() - $giftCardAmount - $pointDiscount
                     );
             }
             $couponCode = $quote->getCouponCode();
             $quote->getShippingAddress()->setCouponCode($couponCode);
 
             if ($basketData) {
-                if (method_exists($basketData, 'getPointsRewarded')) {
-                    $quote->setLsPointsEarn($basketData->getPointsRewarded());
+                if (method_exists($mobileTransaction, 'getIssuedpoints')) {
+                    $quote->setLsPointsEarn($mobileTransaction->getIssuedpoints());
                 }
 
-                $quote->setLsDiscountAmount($basketData->getTotalDiscount());
+                $quote->setLsDiscountAmount($mobileTransaction->getLinediscount());
             }
 
             if ($type == 2) {
@@ -562,29 +563,29 @@ class ItemHelper extends AbstractHelper
         }
         $qtyEqual = $line->getQuantity() == $itemQty;
 
-        if ($line->getDiscountAmount() > 0) {
+        if ($line->getDiscountamount() > 0) {
             $customPrice = $unitPrice;
-            $lsDiscountAmount = $line->getDiscountAmount();
-        } elseif ($line->getAmount() != $quoteItem->getProduct()->getPrice()) {
+            $lsDiscountAmount = $line->getDiscountamount();
+        } elseif (($line->getNetamount() + $line->getTaxamount()) != $quoteItem->getProduct()->getPrice()) {
             $customPrice = $unitPrice;
         }
 
-        if ($line->getTaxAmount() > 0) {
-            $taxAmount = $qtyEqual ? $line->getTaxAmount() :
-                ($line->getTaxAmount() / $line->getQuantity()) * $itemQty;
+        if ($line->getTaxamount() > 0) {
+            $taxAmount = $qtyEqual ? $line->getTaxamount() :
+                ($line->getTaxamount() / $line->getQuantity()) * $itemQty;
         }
 
-        if ($line->getNetAmount() > 0) {
-            $netAmount = $qtyEqual ? $line->getNetAmount() :
-                ($line->getNetAmount() / $line->getQuantity()) * $itemQty;
+        if ($line->getNetamount() > 0) {
+            $netAmount = $qtyEqual ? $line->getNetamount() :
+                ($line->getNetamount() / $line->getQuantity()) * $itemQty;
         }
 
-        if ($line->getAmount() > 0) {
-            $amount = $qtyEqual ? $line->getAmount() :
-                ($line->getAmount() / $line->getQuantity()) * $itemQty;
+        if (($line->getNetamount() + $line->getTaxamount()) > 0) {
+            $amount = $qtyEqual ? ($line->getNetamount() + $line->getTaxamount()) :
+                (($line->getNetamount() + $line->getTaxamount()) / $line->getQuantity()) * $itemQty;
         }
 
-        $rowTotal       = $line->getNetPrice() * $line->getQuantity();
+        $rowTotal       = $line->getNetamount() * $line->getQuantity();
         $rowTotalIncTax = $line->getPrice() * $line->getQuantity();
 
         $quoteItem->setCustomPrice($customPrice)
@@ -783,8 +784,8 @@ class ItemHelper extends AbstractHelper
         $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
 
         return in_array($itemId, explode(',', $giftCardIdentifier)) ? $line->getId() == $quoteItem->getId() :
-            (($itemId == $line->getItemId() && $variantId == $line->getVariantId()) &&
-                ($uom == $line->getUomId() || (empty($line->getUomId()) && $uom == $baseUnitOfMeasure)));
+            (($itemId == $line->getNumber() && $variantId == $line->getVariantcode()) &&
+                ($uom == $line->getUomid() || (empty($line->getUomid()) && $uom == $baseUnitOfMeasure)));
     }
 
     /**

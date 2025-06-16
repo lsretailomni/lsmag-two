@@ -62,15 +62,16 @@ class SalesObserver implements ObserverInterface
             $basketData = $this->basketHelper->getBasketSessionValue();
 
             if (!empty($basketData)) {
-                $grandTotal = $basketData->getTotalAmount() + $total->getShippingInclTax()
+                $mobileTransaction = current($basketData->getMobiletransaction());
+                $grandTotal = $mobileTransaction->getGrossamount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;
-                $taxAmount  = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
-                $subTotal   = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
+                $taxAmount  = $mobileTransaction->getGrossamount() - $mobileTransaction->getNetamount();
+                $subTotal   = $mobileTransaction->getGrossamount() + $mobileTransaction->getLinediscount();
                 $total->setTaxAmount($taxAmount)
                     ->setBaseTaxAmount($this->basketHelper->itemHelper->convertToBaseCurrency($taxAmount))
-                    ->setSubtotal($basketData->getTotalNetAmount())
+                    ->setSubtotal($mobileTransaction->getNetamount())
                     ->setBaseSubtotal(
-                        $this->basketHelper->itemHelper->convertToBaseCurrency($basketData->getTotalNetAmount())
+                        $this->basketHelper->itemHelper->convertToBaseCurrency($mobileTransaction->getNetamount())
                     )
                     ->setSubtotalInclTax($subTotal)
                     ->setBaseSubtotalInclTax($this->basketHelper->itemHelper->convertToBaseCurrency($subTotal))

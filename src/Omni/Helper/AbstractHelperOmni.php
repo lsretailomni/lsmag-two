@@ -39,6 +39,7 @@ use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\ResourceModel\Quote;
 use Magento\Store\Model\StoreManagerInterface;
@@ -156,7 +157,8 @@ class AbstractHelperOmni extends AbstractHelper
         public CustomerRegistry $customerRegistry,
         public Authentication $authentication,
         public AccountConfirmation $accountConfirmation,
-        public ManagerInterface $messageManager
+        public ManagerInterface $messageManager,
+        public TimezoneInterface $timezone
     ) {
         parent::__construct($context);
         $this->initialize();
@@ -169,6 +171,11 @@ class AbstractHelperOmni extends AbstractHelper
      */
     public function initialize(): void
     {
+    }
+
+    public function createInstance(string $entityClassName = null, array $data = [])
+    {
+        return \Magento\Framework\App\ObjectManager::getInstance()->create($entityClassName, $data);
     }
 
     /**
