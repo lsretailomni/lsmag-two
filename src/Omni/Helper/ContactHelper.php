@@ -1201,6 +1201,7 @@ class ContactHelper extends AbstractHelperOmni
      * @throws LocalizedException
      * @throws NoSuchEntityException
      * @throws Exception
+     * @throws GuzzleException
      */
     public function updateBasketAndWishlistAfterLogin($result)
     {
@@ -1210,26 +1211,14 @@ class ContactHelper extends AbstractHelperOmni
             $this->stockHelper->validateQty($item->getQty(), $item, $quote, true);
         }
 
-        $oneListBasket = $this->getOneListTypeObject(
-            $result->getOneLists()->getOneList(),
-            Entity\Enum\ListType::BASKET
-        );
+        $cardNo = $result->getLscMembershipCard()->getCardNo();
         /** Update Basket to Omni */
         $this->updateBasketAfterLogin(
-            $oneListBasket,
-            $result->getCards()->getCard()[0]->getId()
+            null,
+            $cardNo
         );
-        $oneListWish = $this->getOneListTypeObject(
-            $result->getOneLists()->getOneList(),
-            Entity\Enum\ListType::WISH
-        );
-        if ($oneListWish) {
-            /** Update Wishlist to Omni */
-            $this->updateWishlistAfterLogin(
-                $oneListWish
-            );
-        }
-
+        /** Update Wishlist to Omni */
+        $this->eventManager->dispatch('controller_action_postdispatch_wishlist_index_update');
         $this->setBasketUpdateChecking();
     }
 
@@ -1259,11 +1248,11 @@ class ContactHelper extends AbstractHelperOmni
     /**
      * Update basket after login, if oneListBasket is null then recreate it
      *
-     * @param Entity\OneList $oneListBasket
+     * @param mixed $oneListBasket
      * @param string $cardId
      * @throws InvalidEnumException
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function updateBasketAfterLogin($oneListBasket, $cardId)
     {

@@ -141,6 +141,11 @@ class Proactive extends Template
             }
 
             if ($periodicDiscount->getOfferType() == "4") {
+                $additionalInformation = $this->getAdditionalInformation($periodicDiscount);
+
+                if (empty($this->contactHelper->getCardIdFromCustomerSession()) && !empty($additionalInformation)) {
+                    continue;
+                }
                 $discountOffers[] = $periodicDiscount;
             }
         }
@@ -188,10 +193,10 @@ class Proactive extends Template
     public function getAdditionalInformation(LSCPeriodicDiscount $discount)
     {
         $publishedOffer = $this->registry->registry('lsr-c-po');
-        $publishedOffer = $this->contactHelper->restoreModel($publishedOffer);
+        $publishedOffer = $publishedOffer ? $this->contactHelper->restoreModel($publishedOffer) : '';
         $additionalDetails = '';
 
-        if (!empty($publishedOffer->getPublishedoffer())) {
+        if ($publishedOffer && !empty($publishedOffer->getPublishedoffer())) {
             foreach ($publishedOffer->getPublishedoffer() as $offer) {
                 if ($offer->getDiscountno() == $discount->getNo() &&
                     !empty($offer->getData('MemberAttribute')) &&

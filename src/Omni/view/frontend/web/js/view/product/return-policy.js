@@ -14,8 +14,6 @@ define([
         _create: function () {
             var self = this;
 
-            this.element.validation();
-
             $(document).on('click', 'a.return-policy', function (e) {
                 e.preventDefault();
 

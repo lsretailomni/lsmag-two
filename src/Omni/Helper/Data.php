@@ -463,8 +463,9 @@ class Data extends AbstractHelper
                 }
                 $quote          = $this->cartRepository->get($this->checkoutSession->getQuoteId());
                 $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
-                $discountAmount = $basketData->getTotalDiscount();
-                $totalAmount    = $basketData->getTotalAmount() + $discountAmount + $shippingAmount;
+                $mobileTransaction = current($basketData->getMobiletransaction());
+                $discountAmount = $mobileTransaction->getLinediscount();
+                $totalAmount    = $mobileTransaction->getGrossamount() + $discountAmount + $shippingAmount;
 
                 $combinedTotalLoyalGiftCard    = $giftCardAmount + $loyaltyAmount;
                 $combinedDiscountPaymentAmount = $discountAmount + $combinedTotalLoyalGiftCard;

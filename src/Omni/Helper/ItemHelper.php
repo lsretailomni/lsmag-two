@@ -374,26 +374,25 @@ class ItemHelper extends AbstractHelper
         if ($orderData instanceof SalesEntry) {
             $orderLines     = $orderData->getLines();
             $discountsLines = $orderData->getDiscountLines();
-        } elseif ($orderData instanceof Order) {
-            $orderLines     = $orderData->getOrderLines();
-            $discountsLines = $orderData->getOrderDiscountLines()->getOrderDiscountLine();
+        } elseif ($orderData instanceof \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction) {
+            $orderLines     = $orderData->getMobiletransactionline();
+            $discountsLines = $orderData->getMobiletransdiscountline();
         }
 
         foreach ($orderLines as $line) {
             if ($this->isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                 if ($customPrice > 0 && $customPrice != null) {
                     foreach ($discountsLines as $orderDiscountLine) {
-                        if ($line->getLineNumber() == $orderDiscountLine->getLineNumber()) {
+                        if ($line->getLineno() == $orderDiscountLine->getLineno()) {
                             if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
                                 if (!$graphQlRequest) {
                                     $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
                                 } else {
                                     $discountInfo[] = [
                                         'description' => $orderDiscountLine->getDescription(),
-                                        'value'       => $orderDiscountLine->getDiscountAmount()
+                                        'value'       => $orderDiscountLine->getDiscountamount()
                                     ];
                                 }
-
                             }
                         }
                     }

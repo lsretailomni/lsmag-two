@@ -31,7 +31,6 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Magento\Framework\App\State;
 use Magento\Framework\DataObject;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Filesystem;
@@ -104,6 +103,8 @@ class AbstractHelperOmni extends AbstractHelper
      * @param Authentication $authentication
      * @param AccountConfirmation $accountConfirmation
      * @param ManagerInterface $messageManager
+     * @param TimezoneInterface $timezone
+     * @param \Magento\Framework\Event\ManagerInterface $eventManager
      */
     public function __construct(
         public Context $context,
@@ -158,7 +159,8 @@ class AbstractHelperOmni extends AbstractHelper
         public Authentication $authentication,
         public AccountConfirmation $accountConfirmation,
         public ManagerInterface $messageManager,
-        public TimezoneInterface $timezone
+        public TimezoneInterface $timezone,
+        public \Magento\Framework\Event\ManagerInterface $eventManager,
     ) {
         parent::__construct($context);
         $this->initialize();
