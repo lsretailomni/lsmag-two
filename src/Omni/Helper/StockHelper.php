@@ -14,14 +14,8 @@ use \Ls\Omni\Client\Ecommerce\Entity\RootGetInventoryMultipleIn;
 use \Ls\Omni\Client\Ecommerce\Entity\RootGetInventoryMultipleOut;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
-use Ls\Replication\Model\ResourceModel\ReplStoreview\Collection;
-use \Ls\Replication\Model\ResourceModel\ReplStoreview\CollectionFactory;
-use Magento\Catalog\Api\ProductRepositoryInterface;
+use \Ls\Replication\Model\ResourceModel\ReplStoreview\Collection;
 use Magento\Catalog\Model\Product\Type;
-use Magento\CatalogInventory\Model\Configuration;
-use Magento\CatalogInventory\Model\Stock\StockItemRepository;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote\Item;
@@ -29,62 +23,8 @@ use Magento\Quote\Model\Quote\Item;
 /**
  * Stock related operation helper
  */
-class StockHelper extends AbstractHelper
+class StockHelper extends AbstractHelperOmni
 {
-    /**
-     * @var ProductRepositoryInterface
-     */
-    public $productRepository;
-    /**
-     * @var CollectionFactory
-     */
-    public $storeCollectionFactory;
-
-    /** @var  LSR $lsr */
-    public $lsr;
-
-    /**
-     * @var ItemHelper
-     */
-    public $itemHelper;
-
-    /**
-     * @var Configuration
-     */
-    public $configuration;
-
-    /**
-     * @var StockItemRepository
-     */
-    public $stockItemRepository;
-
-    /**
-     * @param Context $context
-     * @param ProductRepositoryInterface $productRepository
-     * @param CollectionFactory $storeCollectionFactory
-     * @param LSR $lsr
-     * @param ItemHelper $itemHelper
-     * @param Configuration $configuration
-     * @param StockItemRepository $stockItemRepository
-     */
-    public function __construct(
-        Context                    $context,
-        ProductRepositoryInterface $productRepository,
-        CollectionFactory          $storeCollectionFactory,
-        LSR                        $lsr,
-        ItemHelper                 $itemHelper,
-        Configuration              $configuration,
-        StockItemRepository        $stockItemRepository
-    ) {
-        $this->productRepository = $productRepository;
-        $this->storeCollectionFactory = $storeCollectionFactory;
-        $this->lsr = $lsr;
-        $this->itemHelper = $itemHelper;
-        $this->configuration = $configuration;
-        $this->stockItemRepository = $stockItemRepository;
-        parent::__construct($context);
-    }
-
     /**
      * Getting items stock in store
      *
@@ -225,7 +165,7 @@ class StockHelper extends AbstractHelper
     public function getItemsStockInStoreFromSourcingLocation(string $storeId, array $items)
     {
         // @codingStandardsIgnoreStart
-        $operation = new Operation\GetInventoryMultipleV2();
+        $operation = $this->createInstance(Operation\GetInventoryMultipleV2::class);
         $itemsCollection = [];
         foreach ($items as $item) {
             $payload = [];

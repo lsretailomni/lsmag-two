@@ -9,6 +9,7 @@ use \Ls\Omni\Helper\BasketHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Wishlist\Model\Wishlist;
 
@@ -37,6 +38,7 @@ class WishlistObserver implements ObserverInterface
      * @param Observer $observer
      * @return $this
      * @throws NoSuchEntityException|GuzzleException|InvalidEnumException
+     * @throws AlreadyExistsException
      */
     public function execute(Observer $observer)
     {
@@ -54,7 +56,7 @@ class WishlistObserver implements ObserverInterface
             if (!empty($wishlistItems)) {
                 $oneList = $this->basketHelper->fetchCurrentCustomerWishlist();
                 $oneList = $this->basketHelper->addProductToExistingWishlist($oneList, $wishlistItems);
-                $this->basketHelper->update($oneList);
+                $this->basketHelper->update($oneList, 2);
             }
         }
 

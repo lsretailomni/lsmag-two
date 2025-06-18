@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Helper;
 
@@ -144,8 +145,7 @@ class ContactHelper extends AbstractHelperOmni
         }
 
         $response = null;
-
-        $memberLogon = new MemberLogon();
+        $memberLogon = $this->createInstance(MemberLogon::class);
         $memberLogon->setOperationInput(
             [
                 'loginID' => $user,
@@ -173,7 +173,7 @@ class ContactHelper extends AbstractHelperOmni
     public function getCentralCustomerBasedOnSearchType(string $searchStr, int $searchType)
     {
         $response = null;
-        $contactSearchOperation = new GetMemberContactInfo_GetMemberContactInfo();
+        $contactSearchOperation = $this->createInstance(GetMemberContactInfo_GetMemberContactInfo::class);
         $contactSearchOperation->setOperationInput([
             'contactSearchType' => $searchType,
             'searchText' => $searchStr,
@@ -272,7 +272,7 @@ class ContactHelper extends AbstractHelperOmni
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $memberPasswordChangeOperation        = new Operation\MemberPasswordChange();
+        $memberPasswordChangeOperation = $this->createInstance(Operation\MemberPasswordChange::class);
         $memberPasswordChangeOperation->setOperationInput([
             MemberPasswordChange::LOGIN_ID => $customer->getLsrUsername(),
             MemberPasswordChange::OLD_PASSWORD => $customerPost['current_password'],
@@ -432,7 +432,7 @@ class ContactHelper extends AbstractHelperOmni
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $alternate_id  = 'LSM' . str_pad(sha1(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
+        $alternate_id = 'LSM' . str_pad(sha1(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
 
         if (!empty($customer->getData('lsr_password'))) {
             $lsrPassword = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
@@ -453,7 +453,7 @@ class ContactHelper extends AbstractHelperOmni
             ContactCreateParameters::LOGIN_ID => $customer->getData('lsr_username'),
             ContactCreateParameters::PASSWORD => $password,
             ContactCreateParameters::GENDER => 0,
-            ContactCreateParameters::DEVICE_ID => 'WEB-'. $customer->getData('lsr_username'),
+            ContactCreateParameters::DEVICE_ID => 'WEB-' . $customer->getData('lsr_username'),
         ];
 
         if (!empty($customer->getData('gender'))) {
@@ -466,7 +466,7 @@ class ContactHelper extends AbstractHelperOmni
             $contactCreateParameters[ContactCreateParameters::DATE_OF_BIRTH] = $dob;
         }
 
-        $memberContactUpdateOperation = new MemberContactCreate();
+        $memberContactUpdateOperation = $this->createInstance(MemberContactCreate::class);
         $rootMemberContactCreate = $memberContactUpdateOperation->createInstance(
             RootMemberContactCreate::class,
             ['data' => [
@@ -1060,7 +1060,7 @@ class ContactHelper extends AbstractHelperOmni
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $operation = new Operation\MemberPasswordReset();
+        $operation = $this->createInstance(Operation\MemberPasswordReset::class);
         $operation->setOperationInput([
             MemberPasswordReset::LOGIN_ID => $userName
         ]);
@@ -1085,7 +1085,7 @@ class ContactHelper extends AbstractHelperOmni
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $memberPasswordChangeOperation = new Operation\MemberPasswordChange();
+        $memberPasswordChangeOperation = $this->createInstance(Operation\MemberPasswordChange::class);
         $memberPasswordChangeOperation->setOperationInput([
             MemberPasswordChange::LOGIN_ID => $customer->getLsrUsername(),
             MemberPasswordChange::OLD_PASSWORD => '',
@@ -1128,7 +1128,7 @@ class ContactHelper extends AbstractHelperOmni
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $memberContactUpdateOperation = new MemberContactUpdate();
+        $memberContactUpdateOperation = $this->createInstance(MemberContactUpdate::class);
         $contactCreateParameters = [
             ContactCreateParameters::CONTACT_ID => $customer->getData('lsr_id'),
             ContactCreateParameters::ACCOUNT_ID => $customer->getData('lsr_account_id'),
@@ -1257,44 +1257,13 @@ class ContactHelper extends AbstractHelperOmni
     public function updateBasketAfterLogin($oneListBasket, $cardId)
     {
         $quote = $this->checkoutSession->getQuote();
-        if (!is_array($oneListBasket) &&
-            $oneListBasket instanceof Entity\OneList && $oneListBasket->getId() != '') {
-            // If customer has previously one list created then get
-            // that and sync the current information with that
-            // store the onelist returned from Omni into Magento session.
-            $this->customerSession->setData(LSR::SESSION_CART_ONELIST, $oneListBasket);
 
-            // update items from quote to basket.
-            $oneList = $this->basketHelper->setOneListQuote($quote, $oneListBasket);
-
-            // update the onelist to Omni.
-            $this->basketHelper->update($oneList);
-            $this->itemHelper->setDiscountedPricesForItems(
-                $quote,
-                $this->basketHelper->getBasketSessionValue()
-            );
-        } elseif ($this->customerSession->getData(LSR::SESSION_CART_ONELIST)) {
-            // if customer already has onelist created then update
-            // the list to get the information with user.
-            $oneListBasket = $this->customerSession->getData(LSR::SESSION_CART_ONELIST);
-
-            //Update onelist in Omni with user data.
-            $oneListBasket->setCardId($cardId)
-                ->setDescription('OneList Magento')
-                ->setListType(Entity\Enum\ListType::BASKET);
-            // update items from quote to basket.
-            $oneList = $this->basketHelper->setOneListQuote($quote, $oneListBasket);
-            // update the onelist to Omni.
-            $this->basketHelper->update($oneList);
-            $this->itemHelper->setDiscountedPricesForItems(
-                $quote,
-                $this->basketHelper->getBasketSessionValue()
-            );
-        } elseif (!empty($quote->getAllItems())) {
+        if (!empty($quote->getAllItems())) {
             // get the onelist or if not exist then create new one with empty data of customer.
             $oneList = $this->basketHelper->get();
             $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
             $this->basketHelper->update($oneList);
+            $quote = $this->basketHelper->getCurrentQuote();
             $this->itemHelper->setDiscountedPricesForItems(
                 $quote,
                 $this->basketHelper->getBasketSessionValue()

@@ -45,14 +45,14 @@ class Product implements HttpPostActionInterface
      */
     public function execute()
     {
-        $result     = $this->resultJsonFactory->create();
+        $result = $this->resultJsonFactory->create();
         $resultPage = $this->resultPageFactory->create();
         // @codingStandardsIgnoreStart
-        $notAvailableNoticeTitle   = __("Notice");
+        $notAvailableNoticeTitle = __("Notice");
         $notAvailableNoticeContent = __("This item is only available online.");
         // @codingStandardsIgnoreEnd
         if ($this->request->isAjax()) {
-            $productSku      = $this->request->getParam('sku');
+            $productSku = $this->request->getParam('sku');
             $simpleProductId = $this->request->getParam('id');
 
             $customResponse = $this->stockHelper->fetchAllStoresItemInStockPlusApplyJoin($simpleProductId, $productSku);
@@ -62,15 +62,15 @@ class Product implements HttpPostActionInterface
                 ->setData('data', $customResponse)
                 ->toHtml();
 
-            $stores               = $customResponse->toArray();
+            $stores = $customResponse->toArray();
             $stores['storesInfo'] = $storesData;
-            $encodedStores        = LaminasJson::encode($stores);
+            $encodedStores = LaminasJson::encode($stores);
 
             $result = $result->setData(
                 [
-                    'title'   => $notAvailableNoticeTitle,
+                    'title' => $notAvailableNoticeTitle,
                     'content' => $notAvailableNoticeContent,
-                    'stocks'  => $encodedStores,
+                    'stocks' => $encodedStores,
                 ]
             );
         }

@@ -14,217 +14,22 @@ use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
 use \Ls\Omni\Client\Ecommerce\Operation\LSCTenderType;
 use \Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
 use \Ls\Omni\Model\Cache\Type;
-use \Ls\Omni\Model\Central\GuzzleClient;
-use \Ls\Omni\Model\Central\TokenRequestService;
 use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
-use \Ls\Replication\Api\ReplStoreRepositoryInterface;
-use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
-use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Config\Storage\WriterInterface;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
-use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Filesystem\DirectoryList;
-use Magento\Framework\Filesystem\Driver\File;
 use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
-use Magento\Framework\Message\ManagerInterface;
-use Magento\Framework\Session\SessionManagerInterface;
-use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\Quote\Api\CartRepositoryInterface;
-use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
-use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Store\Model\ScopeInterface;
-use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Helper class that is used on multiple areas
  */
-class Data extends AbstractHelper
+class Data extends AbstractHelperOmni
 {
-    /** @var ReplStoreRepositoryInterface */
-    public $storeRepository;
-
-    /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
-    public $searchCriteriaBuilder;
-
-    /**
-     * @var SessionManagerInterface
-     */
-    public $session;
-
-    /**
-     * @var CheckoutSession
-     */
-    public $checkoutSession;
-
-    /** @var ManagerInterface */
-    public $messageManager;
-
-    /**
-     * @var \Magento\Framework\Pricing\Helper\Data
-     */
-    public $priceHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var CartRepositoryInterface
-     */
-    public $cartRepository;
-
-    /**
-     * @var CacheHelper
-     */
-    public $cacheHelper;
-
-    /**
-     * @var DateTime
-     */
-    public $date;
-
-    /**
-     * @var WriterInterface
-     */
-    public $configWriter;
-
-    /**
-     * @var DirectoryList
-     */
-    public $directoryList;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var ReplStoreTenderTypeRepositoryInterface
-     */
-    public $replStoreTenderTypeRepository;
-    /**
-     * @var GetCartForUser
-     */
-    public GetCartForUser $getCartForUser;
-    /**
-     * @var MaskedQuoteIdToQuoteIdInterface
-     */
-    public MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId;
-    /**
-     * @var StockHelper
-     */
-    public StockHelper $stockHelper;
-
-    /**
-     * @var File
-     */
-    public File $fileSystemDriver;
-
-    /**
-     * @var GuzzleClient
-     */
-    public $guzzleClient;
-
-    /**
-     * @var TokenRequestService
-     */
-    public $tokenRequestService;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    public $storeManager;
-
-    /**
-     * @var RequestInterface
-     */
-    public $request;
-
-    /**
-     * @param Context $context
-     * @param ReplStoreRepositoryInterface $storeRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param SessionManagerInterface $session
-     * @param CheckoutSession $checkoutSession
-     * @param ManagerInterface $messageManager
-     * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
-     * @param LoyaltyHelper $loyaltyHelper
-     * @param CartRepositoryInterface $cartRepository
-     * @param CacheHelper $cacheHelper
-     * @param LSR $lsr
-     * @param DateTime $date
-     * @param WriterInterface $configWriter
-     * @param DirectoryList $directoryList
-     * @param StockHelper $stockHelper
-     * @param GetCartForUser $getCartForUser
-     * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
-     * @param ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository
-     * @param File $fileSystemDriver
-     * @param GuzzleClient $guzzleClient
-     * @param StoreManagerInterface $storeManager
-     * @param TokenRequestService $tokenRequestService
-     * @param RequestInterface $request
-     */
-    public function __construct(
-        Context                                $context,
-        ReplStoreRepositoryInterface           $storeRepository,
-        SearchCriteriaBuilder                  $searchCriteriaBuilder,
-        SessionManagerInterface                $session,
-        CheckoutSession                        $checkoutSession,
-        ManagerInterface                       $messageManager,
-        \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        LoyaltyHelper                          $loyaltyHelper,
-        CartRepositoryInterface                $cartRepository,
-        CacheHelper                            $cacheHelper,
-        LSR                                    $lsr,
-        DateTime                               $date,
-        WriterInterface                        $configWriter,
-        DirectoryList                          $directoryList,
-        StockHelper                            $stockHelper,
-        GetCartForUser                         $getCartForUser,
-        MaskedQuoteIdToQuoteIdInterface        $maskedQuoteIdToQuoteId,
-        ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository,
-        File                                   $fileSystemDriver,
-        GuzzleClient                           $guzzleClient,
-        StoreManagerInterface                  $storeManager,
-        TokenRequestService                    $tokenRequestService,
-        RequestInterface                       $request,
-    ) {
-        $this->storeRepository               = $storeRepository;
-        $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
-        $this->session                       = $session;
-        $this->checkoutSession               = $checkoutSession;
-        $this->messageManager                = $messageManager;
-        $this->priceHelper                   = $priceHelper;
-        $this->cartRepository                = $cartRepository;
-        $this->loyaltyHelper                 = $loyaltyHelper;
-        $this->cacheHelper                   = $cacheHelper;
-        $this->lsr                           = $lsr;
-        $this->date                          = $date;
-        $this->configWriter                  = $configWriter;
-        $this->directoryList                 = $directoryList;
-        $this->maskedQuoteIdToQuoteId        = $maskedQuoteIdToQuoteId;
-        $this->getCartForUser                = $getCartForUser;
-        $this->stockHelper                   = $stockHelper;
-        $this->replStoreTenderTypeRepository = $storeTenderTypeRepository;
-        $this->fileSystemDriver              = $fileSystemDriver;
-        $this->guzzleClient                  = $guzzleClient;
-        $this->storeManager                  = $storeManager;
-        $this->tokenRequestService           = $tokenRequestService;
-        $this->request                       = $request;
-        parent::__construct($context);
-    }
-
     /**
      * @param $storeId
      * @return mixed
@@ -255,7 +60,7 @@ class Data extends AbstractHelper
             if ($cachedResponse) {
                 $storeResults = $cachedResponse;
             } else {
-                $operation = new GetStoreOpeningHours();
+                $operation = $this->createInstance(GetStoreOpeningHours::class);
                 $operation->setOperationInput([
                    Entity\GetStoreOpeningHours::STORE_NO => $storeId,
                 ]);
@@ -271,7 +76,7 @@ class Data extends AbstractHelper
                 );
             }
             $storeHours = [];
-            $today      = $this->date->gmtDate("Y-m-d");
+            $today      = $this->dateTime->gmtDate("Y-m-d");
 
             if ($storeResults) {
                 for ($i = 0; $i < 7; $i++) {
@@ -635,10 +440,13 @@ class Data extends AbstractHelper
     public function omniPing($baseUrl = '', $connectionParams = [], $companyName = [])
     {
         $response = null;
-        $testConnectionOperation = new TestConnectionResponse(
-            $baseUrl,
-            $connectionParams,
-            $companyName['company'] ?? ''
+        $testConnectionOperation = $this->createInstance(
+            TestConnectionResponse::class,
+            [
+                'baseUrl' => $baseUrl,
+                'connectionParams' => $connectionParams,
+                'companyName' => $companyName['company'] ?? ''
+            ]
         );
 
         try {
@@ -657,7 +465,7 @@ class Data extends AbstractHelper
      */
     public function fetchWebStores()
     {
-        $webStoreOperation = new Operation\GetStores_GetStores();
+        $webStoreOperation = $this->createInstance(Operation\GetStores_GetStores::class);
         $webStoreOperation->setOperationInput(
             ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
         );
@@ -677,7 +485,7 @@ class Data extends AbstractHelper
             LSR::SC_SERVICE_STORE,
             $this->getScopeId()
         );
-        $hierarchyOperation = new HierarchyView();
+        $hierarchyOperation = $this->createInstance(HierarchyView::class);
         $hierarchyOperation->setOperationInput(
             [
                 'storeNo' => $storeCode,
@@ -703,7 +511,7 @@ class Data extends AbstractHelper
             LSR::SC_SERVICE_STORE,
             $this->getScopeId()
         );
-        $tenderTypeOperation = new LSCTenderType();
+        $tenderTypeOperation = $this->createInstance(LSCTenderType::class);
         $tenderTypeOperation->setOperationInput(
             [
                 'storeNo' => $storeCode,
@@ -824,23 +632,21 @@ class Data extends AbstractHelper
      *
      * @param string $tableName
      * @param string $baseUrl
-     * @param string|null $filterFieldName
-     * @param string|null $filterValue
+     * @param array $filters
      * @return array
      * @throws NoSuchEntityException
      */
     public function fetchGivenTableData(
         string $tableName,
         string $baseUrl = '',
-        ?string $filterFieldName = null,
-        ?string $filterValue = null
+        array $filters = []
     ): array {
         $baseUrl = !empty($baseUrl) ? $baseUrl :
             $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId());
         $baseUrl = 'http://10.213.0.5:9047/LscNextMajor';
         $url = join('/', [$baseUrl, 'WS/Codeunit/RetailWebServices']);
         $url = OmniService::getUrl($url);
-        $client = new OmniClient($url);
+        $client = $this->createInstance(OmniClient::class, ['uri' => $url]);
 
         $requestXml = new \SimpleXMLElement('<Request/>');
         $requestXml->addChild('Request_ID', 'GET_TABLE_DATA');
@@ -849,12 +655,17 @@ class Data extends AbstractHelper
         $requestBody->addChild('Read_Direction', 'Forward');
         $requestBody->addChild('Max_Number_Of_Records', '0');
         $requestBody->addChild('Ignore_Extra_Fields', '1');
+        foreach ($filters as $i => $filter) {
+            ++$i;
+            $filterFieldName = $filter['filterName'] ?? null;
+            $filterValue = $filter['filterValue'] ?? null;
 
-        if ($filterFieldName && $filterValue) {
-            $filterBuffer = $requestBody->addChild('WS_Table_Filter_Buffer');
-            $filterBuffer->addChild('Field_Index', '1'); // adjust if dynamic
-            $filterBuffer->addChild('Field_Name', $filterFieldName);
-            $filterBuffer->addChild('Filter', $filterValue);
+            if ($filterFieldName && $filterValue) {
+                $filterBuffer = $requestBody->addChild('WS_Table_Filter_Buffer');
+                $filterBuffer->addChild('Field_Index', (string) $i); // adjust if dynamic
+                $filterBuffer->addChild('Field_Name', $filterFieldName);
+                $filterBuffer->addChild('Filter', $filterValue);
+            }
         }
 
         $params = [
@@ -1123,7 +934,7 @@ class Data extends AbstractHelper
         $service_type = new ServiceType(Operation\ReplEcommStoreTenderTypes::SERVICE_TYPE);
         $url          = OmniService::getUrl($service_type, $baseUrl);
         $client       = new OmniClient($url, $service_type);
-        $request      = new Operation\ReplEcommStoreTenderTypes();
+        $request      = $this->createInstance(Operation\ReplEcommStoreTenderTypes::class);
         $request->setClient($client);
         $request->setToken($lsKey);
         $client->setClassmap($request->getClassMap());

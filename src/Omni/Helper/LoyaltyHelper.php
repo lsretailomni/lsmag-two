@@ -176,15 +176,15 @@ class LoyaltyHelper extends AbstractHelperOmni
         $cardId = $this->contactHelper->getCardIdFromCustomerSession();
         if (!$cardId) { //fetch card id from customer object if session value not available
             $customerId = $this->customerSession->getCustomerId();
-            $customer   = $this->customerFactory->create()->load($customerId);
-            $cardId     = $customer->getLsrCardid();
+            $customer = $this->customerFactory->create()->load($customerId);
+            $cardId = $customer->getLsrCardid();
         }
-        $points   = $this->basketHelper->getMemberPointsFromCheckoutSession();
+        $points = $this->basketHelper->getMemberPointsFromCheckoutSession();
         $response = null;
 
         if ($cardId && $points == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             // @codingStandardsIgnoreStart
-            $operation = new Operation\GetMemberCard();
+            $operation = $this->createInstance(Operation\GetMemberCard::class);
             $operation->setOperationInput([
                 GetMemberCard::CARD_NO => $cardId,
                 GetMemberCard::TOTAL_REMAINING_POINTS => 0
@@ -211,7 +211,7 @@ class LoyaltyHelper extends AbstractHelperOmni
     public function getMemberInfo()
     {
         $customer = $this->customerSession->getCustomer();
-        $cardId   = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         // if not set in session then get it from customer database.
         if (!$cardId) {
             $cardId = $customer->getData('lsr_cardid');
@@ -240,20 +240,20 @@ class LoyaltyHelper extends AbstractHelperOmni
     public function getPointBalanceExpirySum()
     {
         $totalEarnedPoints = 0;
-        $totalRedemption   = 0;
+        $totalRedemption = 0;
         $totalExpiryPoints = 0;
-        $result            = $this->getCardGetPointEntries();
-        $expiryInterval    = $this->lsr->getStoreConfig(
+        $result = $this->getCardGetPointEntries();
+        $expiryInterval = $this->lsr->getStoreConfig(
             LSR::SC_LOYALTY_POINTS_EXPIRY_NOTIFICATION_INTERVAL,
             $this->lsr->getCurrentStoreId()
         );
 
         if ($result) {
             $startDateTs = Carbon::now();
-            $endDateTs   = Carbon::now()->addDays((int)$expiryInterval);
+            $endDateTs = Carbon::now()->addDays((int)$expiryInterval);
 
             foreach ($result as $res) {
-                $entryType      = $res['Entry Type'];
+                $entryType = $res['Entry Type'];
                 $expirationDate = Carbon::parse($res['Expiration Date']);
                 if ($entryType == "0" && $expirationDate->between($startDateTs, $endDateTs, true)) {
                     $totalEarnedPoints += $res['Points'];
@@ -281,7 +281,7 @@ class LoyaltyHelper extends AbstractHelperOmni
     public function getCardGetPointEntries()
     {
         $customer = $this->customerSession->getCustomer();
-        $cardId   = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         // if not set in session then get it from customer database.
         if (!$cardId) {
             $cardId = $customer->getData('lsr_cardid');
@@ -290,16 +290,20 @@ class LoyaltyHelper extends AbstractHelperOmni
         return $this->dataHelper->fetchGivenTableData(
             'LSC Member Point Entry',
             '',
-            'Card No.',
-            $cardId
+            [
+                [
+                    'filterName' => 'Card No.',
+                    'filterValue' => $cardId
+                ]
+            ]
         );
     }
 
     /**
-     * To get memeber points
+     * To get member points
      *
      * @return int|null
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getMemberPoints()
     {
@@ -336,7 +340,7 @@ class LoyaltyHelper extends AbstractHelperOmni
 
         $rate = 0;
         if ($this->lsr->isLSR($storeId) && $this->isEnabledLoyaltyPoints()) {
-            $cacheId  = LSR::POINTRATE . $storeId;
+            $cacheId = LSR::POINTRATE . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($response !== false) {
@@ -346,8 +350,12 @@ class LoyaltyHelper extends AbstractHelperOmni
             $response = current($this->dataHelper->fetchGivenTableData(
                 'Currency Exchange Rate',
                 '',
-                'Currency Code',
-                $currencyCode
+                [
+                    [
+                        'filterName' => 'Currency Code',
+                        'filterValue' => $currencyCode
+                    ]
+                ]
             ));
 
             if (!empty($response['LSC POS Exchange Rate Amount']) &&
@@ -408,7 +416,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      * @param float $grandTotal
      * @param int $loyaltyPoints
      * @return bool
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function isPointsLimitValid($grandTotal, $loyaltyPoints)
     {
@@ -444,11 +452,11 @@ class LoyaltyHelper extends AbstractHelperOmni
     public function getProactiveDiscounts(string $itemId, string $webStore)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $storeId         = $this->lsr->getCurrentStoreId();
+            $storeId = $this->lsr->getCurrentStoreId();
             $customerGroupId = $this->customerSession->getCustomerGroupId();
             $customerGroup = $this->groupRepository->getById($customerGroupId)->getCode();
-            $cacheItemId     = $itemId;
-            $cacheId  = LSR::PROACTIVE_DISCOUNTS . $cacheItemId . "_" . $customerGroupId . "_" . $storeId;
+            $cacheItemId = $itemId;
+            $cacheId = LSR::PROACTIVE_DISCOUNTS . $cacheItemId . "_" . $customerGroupId . "_" . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
             if ($response) {
                 $this->_logger->debug("Found proactive discounts from cache " . $cacheId);
@@ -456,7 +464,7 @@ class LoyaltyHelper extends AbstractHelperOmni
             }
 
             // @codingStandardsIgnoreStart
-            $operation = new GetDiscount_GetDiscount();
+            $operation = $this->createInstance(GetDiscount_GetDiscount::class);
             $operation->setOperationInput([
                 'items' => $itemId,
                 'storeNo' => $webStore,
@@ -501,9 +509,9 @@ class LoyaltyHelper extends AbstractHelperOmni
     public function getPublishedOffers(string $cardId, string $storeId, string $itemId = null)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $cacheId  = LSR::COUPONS;
-            $cacheId  = $itemId ? $cacheId . $itemId . '_' : $cacheId;
-            $cacheId  .= $cardId . "_" . $storeId;
+            $cacheId = LSR::COUPONS;
+            $cacheId = $itemId ? $cacheId . $itemId . '_' : $cacheId;
+            $cacheId .= $cardId . "_" . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($response) {
@@ -512,7 +520,7 @@ class LoyaltyHelper extends AbstractHelperOmni
                 return $response;
             }
             // @codingStandardsIgnoreStart
-            $operation = new GetDirectMarketingInfo();
+            $operation = $this->createInstance(GetDirectMarketingInfo::class);
             $operation->setOperationInput([
                 Entity\GetDirectMarketingInfo::CARD_ID => $cardId,
                 Entity\GetDirectMarketingInfo::ITEM_NO => $itemId,
@@ -552,7 +560,7 @@ class LoyaltyHelper extends AbstractHelperOmni
     {
         try {
             $storeId = $this->lsr->getActiveWebStore();
-            $cardId    = $this->contactHelper->getCardIdFromCustomerSession() ?? '';
+            $cardId = $this->contactHelper->getCardIdFromCustomerSession() ?? '';
             $coupons = [];
 
             foreach ($itemId as $id) {
@@ -596,11 +604,11 @@ class LoyaltyHelper extends AbstractHelperOmni
             $this->lsr->getBasketIntegrationOnFrontend()
         )) {
             $storeId = $this->lsr->getActiveWebStore();
-            $cardId  = $this->contactHelper->getCardIdFromCustomerSession();
+            $cardId = $this->contactHelper->getCardIdFromCustomerSession();
             if (!$cardId) { //fetch card id from customer object if session value not available
                 $customerId = $this->customerSession->getCustomerId();
-                $customer   = $this->customerFactory->create()->load($customerId);
-                $cardId     = $customer->getLsrCardid();
+                $customer = $this->customerFactory->create()->load($customerId);
+                $cardId = $customer->getLsrCardid();
             }
             $rootGetDirectMarketingInfo = $this->getPublishedOffers($cardId, $storeId);
             $requiredOffers = [];
@@ -613,8 +621,8 @@ class LoyaltyHelper extends AbstractHelperOmni
                     }
                 }
             }
-            $itemsInCart        = $this->checkoutSession->getQuote()->getAllVisibleItems();
-            $coupons            = $itemIdentifiers = [];
+            $itemsInCart = $this->checkoutSession->getQuote()->getAllVisibleItems();
+            $coupons = $itemIdentifiers = [];
             foreach ($itemsInCart as $item) {
                 if ($item->getProductType() == \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE) {
                     $children = $item->getChildren();
@@ -628,10 +636,10 @@ class LoyaltyHelper extends AbstractHelperOmni
                         $child->getProductId()
                     );
                     $itemIdentifiers[] = [
-                        'itemId'    => $itemId,
+                        'itemId' => $itemId,
                         'variantId' => $variantId,
-                        'uom'       => $uom,
-                        'baseUom'   => $baseUom
+                        'uom' => $uom,
+                        'baseUom' => $baseUom
                     ];
                 }
             }
