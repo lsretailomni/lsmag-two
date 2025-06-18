@@ -42,28 +42,40 @@ class Info extends AbstractOrderBlock
      */
     public function getFormattedAddress(bool $isBillingAddress = false)
     {
-        $order = $this->getOrder();
-        if ($isBillingAddress) {
-            $orderAddress = $this->orderHelper->getParameterValues($order, "ContactAddress");
-        } else {
-            $orderAddress = $this->orderHelper->getParameterValues($order, "ShipToAddress");
-        }
+        $order   = $this->getOrder();
         $address = '';
-        if (!empty($orderAddress) && !empty($orderAddress->getCountry())) {
-            $address .= $order->getShipToName() ? $order->getShipToName() . '<br/>' : '';
-            $address .= $orderAddress->getAddress1() ? $orderAddress->getAddress1() . '<br/>' : '';
-            $address .= $orderAddress->getAddress2() ? $orderAddress->getAddress2() . '<br/>' : '';
-            $address .= $orderAddress->getCity() ? $orderAddress->getCity() . ', ' : '';
-            $address .= $orderAddress->getStateProvinceRegion() ? $orderAddress->getStateProvinceRegion() . ', ' : '';
-            $address .= $orderAddress->getPostCode() ? $orderAddress->getPostCode() . '<br/>' : '';
-            $address .= $this->getCountryName($orderAddress->getCountry()) ?
-                $this->getCountryName($orderAddress->getCountry()) . '<br/>' : '';
-            /** TODO update with Address Phone Number */
-            $address .= $orderAddress->getPhoneNumber() ?
-                "<a href='tel:" . $orderAddress->getPhoneNumber() . "'>"
-                . $orderAddress->getPhoneNumber() . '</a>' : '';
-
+        if ($isBillingAddress) {
+            if (!empty($order->getAddress()) && !empty($order->getCountryRegionCode())) {
+                $address .= $order->getName() ? $order->getName() . '<br/>' : '';
+                $address .= $order->getAddress() ? $order->getAddress() . '<br/>' : '';
+                $address .= $order->getAddress2() ? $order->getAddress2() . '<br/>' : '';
+                $address .= $order->getCity() ? $order->getCity() . ', ' : '';
+                $address .= $order->getCounty() ? $order->getCounty() . ', ' : '';
+                $address .= $order->getPostCode() ? $order->getPostCode() . '<br/>' : '';
+                $address .= $this->getCountryName($order->getCountryRegionCode()) ?
+                    $this->getCountryName($order->getCountryRegionCode()) . '<br/>' : '';
+                /** TODO update with Address Phone Number */
+                $address .= $order->getPhoneNo() ?
+                    "<a href='tel:" . $order->getPhoneNo() . "'>"
+                    . $order->getPhoneNo() . '</a>' : '';
+            }
+        } else {
+            if (!empty($order->getShipToName()) && !empty($order->getCountryRegionCode())) {
+                $address .= $order->getShipToName() ? $order->getShipToName() . '<br/>' : '';
+                $address .= $order->getShipToAddress() ? $order->getShipToAddress() . '<br/>' : '';
+                $address .= $order->getShipToAddress2() ? $order->getShipToAddress2() . '<br/>' : '';
+                $address .= $order->getShipToCity() ? $order->getShipToCity() . ', ' : '';
+                $address .= $order->getShipToCounty() ? $order->getShipToCounty() . ', ' : '';
+                $address .= $order->getShipToPostCode() ? $order->getShipToPostCode() . '<br/>' : '';
+                $address .= $this->getCountryName($order->getShipToCountryRegionCode()) ?
+                    $this->getCountryName($order->getShipToCountryRegionCode()) . '<br/>' : '';
+                /** TODO update with Address Phone Number */
+                $address .= $order->getShipToPhoneNo() ?
+                    "<a href='tel:" . $order->getShipToPhoneNo() . "'>"
+                    . $order->getShipToPhoneNo() . '</a>' : '';
+            }            
         }
+        
         return $address;
     }
 
@@ -85,7 +97,7 @@ class Info extends AbstractOrderBlock
     {
         $order = $this->getOrder();
         if ($order) {
-            $customerOrderNo = $this->orderHelper->getParameterValues($order, "CustomerOrderNo");
+            $customerOrderNo = $this->orderHelper->getParameterValues($order, "Document ID");
             $orderId         = $customerOrderNo ?: $this->orderHelper->getParameterValues($order, "Id");
 
             if (!empty($customerOrderNo)) {
@@ -125,6 +137,13 @@ class Info extends AbstractOrderBlock
      */
     public function getClickAndCollectOrder()
     {
+        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
+        foreach ($lineItemObj as $key => $lines) {
+            if ($key != "LSCMemberSalesBuffer")
+                continue;
+
+            $totalNetAmount = $this->orderHelper->getParameterValues($lines, "Net Amount");
+        }
         return $this->orderHelper->getParameterValues($this->getOrder(), "ClickAndCollectOrder");
     }
 
@@ -135,7 +154,7 @@ class Info extends AbstractOrderBlock
      */
     public function getDocRegistraionTime()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "DocumentRegTime");
+        return $this->orderHelper->getParameterValues($this->getOrder(), "Date Time");
     }
 
     /**
@@ -254,8 +273,12 @@ class Info extends AbstractOrderBlock
             $orderTransactions = [$orderTransactions];
         }
 
-        foreach ($orderTransactions as $transaction) {
-            $points += (float)$transaction->getPointsRewarded();
+        foreach ($orderTransactions as $key => $transaction) {
+            if ($key != "LSCMemberSalesBuffer")
+                continue;
+            
+            $pointsRewarded = $this->orderHelper->getParameterValues($transaction, "Points Rewarded");            
+            $points         += (float)$pointsRewarded;
         }
 
         return number_format((float)$points, 2, '.', '');

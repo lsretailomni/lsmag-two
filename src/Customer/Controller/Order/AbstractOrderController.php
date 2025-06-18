@@ -91,7 +91,7 @@ class AbstractOrderController
         if ($this->request->getParam('order_id')) {
             $orderId = $this->request->getParam('order_id');
             $type    = $this->request->getParam('type');
-
+            
             if (empty($type)) {
                 $type = DocumentIdType::ORDER;
             }
@@ -103,7 +103,8 @@ class AbstractOrderController
 
                 return $redirect;
             }
-            $this->setHasReturnSales($response);
+            //Need to review later
+            //$this->setHasReturnSales($response);
 
             if (is_array($response)) {
                 $response = current($response);

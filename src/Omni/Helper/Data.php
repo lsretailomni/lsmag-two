@@ -1075,7 +1075,7 @@ class Data extends AbstractHelper
             $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $scopeId);
         }
 
-        if ($this->lsr->validateBaseUrl($baseUrl, $scopeId) && $storeId != '') {
+        if ($this->lsr->validateBaseUrl($baseUrl, [], [], $scopeId) && $storeId != '') {
             try {
                 $request = $this->formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId);
                 $result  = $request->execute();

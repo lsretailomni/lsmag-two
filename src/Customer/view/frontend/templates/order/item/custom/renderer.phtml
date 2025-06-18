@@ -9,13 +9,13 @@
 $_item           = $block->getItem();
 $checkIsShipment = $block->checkIsShipment();
 $discountInfo    = $block->getItemDiscountLines();
-$sku             = $block->getSku();
+$sku             = $_item->getNumber();
 if (!empty($_item->getVariantId())) {
-    $sku .= '-' . $_item->getVariantId();
+    $sku .= '-' . $_item->getVariantCode();
 }
 
 if (!empty($_item->getUomId())) {
-    $sku .= '-' . $_item->getUomId();
+    $sku .= '-' . $_item->getUnitOfMeasure();
 }
 
 use \Ls\Customer\Block\Order\Item\Custom\Renderer; ?>
@@ -24,7 +24,7 @@ $_item->getItemId() ?>">
     <td class="col name" data-th="<?= /* @noEscape */
     __('Product Name') ?>">
         <strong class="product name product-item-name"><?= /* @noEscape */
-            $_item->getItemDescription() ?></strong>
+            $_item->getDescription() //$_item->getItemDescription() ?></strong>
         <?php if (!empty($_item->getVariantDescription())): ?>
             <p><?= /* @noEscape */
                 $_item->getVariantDescription() ?></p>

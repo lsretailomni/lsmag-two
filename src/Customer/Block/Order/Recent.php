@@ -174,26 +174,8 @@ class Recent extends Template
             false,
             $this->lsr->getCustomerIntegrationOnFrontend()
         )) {
-//            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
-//                // This condition is added to support viewing of orders created by POS
-//                if (!empty($magOrder)) {
-//                    return $this->getUrl(
-//                        'customer/order/view',
-//                        [
-//                            'order_id' => $order['Document ID']
-//                        ]
-//                    );
-//                }
-//            }
-
-//            if (!empty($magOrder) && !empty($order->getStoreCurrency())) {
-//                if ($order->getStoreCurrency() != $magOrder->getOrderCurrencyCode()) {
-//                    $order->setCustomerOrderNo(null);
-//                }
-//            }
             if (!empty($magOrder) && !empty($order['Store Currency Code'])) {
                 if ($order['Store Currency Code'] != $magOrder->getOrderCurrencyCode()) {
-                    //$order->setCustomerOrderNo(null);
                     $order['Customer Order No'] = null;
                 }
             }

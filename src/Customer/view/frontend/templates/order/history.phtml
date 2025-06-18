@@ -12,7 +12,6 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
 <?php if ($_orders): ?>
     <?php
     if (is_array($_orders)) {
-        //$_orders = $_orders->getSalesEntry();
         if (count($_orders) > 0) {
             $orderExist = true;
             ?>
@@ -40,18 +39,11 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                     </thead>
                     <tbody>
                     <?php foreach ($_orders as $_order):
-//                        if (!$_order->getHasReturnSale() && $_order->getReturnSale()) {
-//                            continue;
-//                        }
-//                        $magOrder = $block->getOrderByDocumentId($_order);
-//                        if ($magOrder) {
-//                            $block->registerValueInRegistry($magOrder);
-//                        }
                         if (isset($_order['Sale Is Return Sale']) && $_order['Sale Is Return Sale']) {
                             continue;
                         }
 
-                        $magOrder = $block->getOrderByDocumentId($_order['Document ID']);
+                        $magOrder = $block->getOrderByDocumentId($_order);
                         if ($magOrder) {
                             $block->registerValueInRegistry($magOrder);
                             $magOrderIncrementId = $magOrder->getIncrementId();
