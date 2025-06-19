@@ -183,7 +183,7 @@ class ItemHelper extends AbstractHelperOmni
      * @param $basketData
      * @param int $type
      * @throws AlreadyExistsException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function compareQuoteItemsWithOrderLinesAndSetRelatedAmounts(&$quote, $basketData, $type = 1)
     {

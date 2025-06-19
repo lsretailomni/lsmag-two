@@ -539,7 +539,7 @@ class BasketHelper extends AbstractHelperOmni
         }
         $oneList->getMobiletransaction()
             ->setCurrencycode($this->lsr->getStoreCurrencyCode())
-            ->setCurrencyfactor($this->loyaltyHelper->getPointRate());
+            ->setCurrencyfactor((float)$this->loyaltyHelper->getPointRate());
         $operation = $this->createInstance(EcomCalculateBasket::class);
         $operation->setOperationInput(
             [Entity\EcomCalculateBasket::MOBILE_TRANSACTION_XML => $oneList]
