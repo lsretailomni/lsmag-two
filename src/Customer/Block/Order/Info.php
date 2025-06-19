@@ -137,14 +137,17 @@ class Info extends AbstractOrderBlock
      */
     public function getClickAndCollectOrder()
     {
-        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
+        $clickAndCollectOrder = null;
+        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder(true);
         foreach ($lineItemObj as $key => $lines) {
-            if ($key != "LSCMemberSalesBuffer")
+            if ($key == "LSCMemberSalesBuffer")
                 continue;
-
-            $totalNetAmount = $this->orderHelper->getParameterValues($lines, "Net Amount");
+            forEach ($lines as $line) {
+                $clickAndCollectOrder = ($line->getClickAndCollectLine() && is_null($clickAndCollectOrder)) ? $line->getClickAndCollectLine() : null;
+            }
+            
         }
-        return $this->orderHelper->getParameterValues($this->getOrder(), "ClickAndCollectOrder");
+        return $clickAndCollectOrder;
     }
 
     /**
@@ -217,9 +220,10 @@ class Info extends AbstractOrderBlock
                  * i-e Refunds etc, but we only need to show Payment Type
                  * whose type == Payment and Pre Authorization
                  */
-                if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
-                    || $line->getType() === PaymentType::NONE) {
-                    $tenderTypeId = $line->getTenderType();
+//                if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
+//                    || $line->getType() === PaymentType::NONE) {
+                 if($line->getEntryType() == 1) {
+                    $tenderTypeId = $line->getNumber();
                     if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
                         $method    = $tenderTypeMapping[$tenderTypeId];
                         $methods[] = __($method);
@@ -237,7 +241,7 @@ class Info extends AbstractOrderBlock
             }
 
             $methods = array_unique($methods);
-            if (empty($paymentLines->getSalesEntryPayment())) {
+            if (empty($paymentLines)) {
                 $magOrder = $this->getMagOrder();
                 if ($magOrder != null) {
                     $magPaymentMethod = $this->getMagOrder()->getPayment()->getMethodInstance()->getTitle();
@@ -257,7 +261,19 @@ class Info extends AbstractOrderBlock
      */
     public function getOrderPayments()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "Payments");
+        $paymentLines = [];
+        $orderTransactions = $this->getOrder(true);
+        foreach ($orderTransactions as $key => $lines) {
+            if ($key == "LSCMemberSalesBuffer") {
+                continue;
+            }
+            foreach ($lines as $line) {
+                if($line->getEntryType() == 1) {
+                    $paymentLines[] = $line;
+                }
+            }
+        }
+        return $paymentLines;
     }
 
     /**

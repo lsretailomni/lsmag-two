@@ -21,6 +21,7 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
+use \Ls\Replication\Api\ReplLscTenderTypeRepositoryInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -109,7 +110,7 @@ class Data extends AbstractHelper
     public $lsr;
 
     /**
-     * @var ReplStoreTenderTypeRepositoryInterface
+     * @var ReplLscTenderTypeRepositoryInterface
      */
     public $replStoreTenderTypeRepository;
     /**
@@ -168,7 +169,7 @@ class Data extends AbstractHelper
      * @param StockHelper $stockHelper
      * @param GetCartForUser $getCartForUser
      * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
-     * @param ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository
+     * @param ReplLscTenderTypeRepositoryInterface $storeTenderTypeRepository
      * @param File $fileSystemDriver
      * @param GuzzleClient $guzzleClient
      * @param StoreManagerInterface $storeManager
@@ -193,7 +194,7 @@ class Data extends AbstractHelper
         StockHelper                            $stockHelper,
         GetCartForUser                         $getCartForUser,
         MaskedQuoteIdToQuoteIdInterface        $maskedQuoteIdToQuoteId,
-        ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository,
+        ReplLscTenderTypeRepositoryInterface   $storeTenderTypeRepository,
         File                                   $fileSystemDriver,
         GuzzleClient                           $guzzleClient,
         StoreManagerInterface                  $storeManager,
@@ -1021,7 +1022,7 @@ class Data extends AbstractHelper
         }
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
-                $storeTenderTypes[$storeTenderType->getTenderTypeId()] = $storeTenderType->getName();
+                $storeTenderTypes[$storeTenderType->getCode()] = $storeTenderType->getDescription();
             }
         }
 
