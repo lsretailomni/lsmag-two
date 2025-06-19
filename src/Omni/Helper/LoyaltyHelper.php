@@ -565,10 +565,11 @@ class LoyaltyHelper extends AbstractHelperOmni
 
             foreach ($itemId as $id) {
                 $rootGetDirectMarketingInfo = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $id);
-                $results = $this->contactHelper->flattenModel($rootGetDirectMarketingInfo);
-                $this->registry->unregister('lsr-c-po');
-                $this->registry->register('lsr-c-po', $results);
+
                 if ($rootGetDirectMarketingInfo) {
+                    $results = $this->contactHelper->flattenModel($rootGetDirectMarketingInfo);
+                    $this->registry->unregister('lsr-c-po');
+                    $this->registry->register('lsr-c-po', $results);
                     $publishedOffers = $rootGetDirectMarketingInfo->getPublishedoffer();
 
                     foreach ($publishedOffers as $publishedOffer) {
