@@ -301,7 +301,7 @@ class ItemHelper extends AbstractHelperOmni
      * @param $quoteItem
      * @param $unitPrice
      * @param int $type
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function setRelatedAmountsAgainstGivenQuoteItem($line, &$quoteItem, $unitPrice, $type = 1)
     {
