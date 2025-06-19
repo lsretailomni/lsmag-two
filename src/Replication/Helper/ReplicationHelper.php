@@ -1091,18 +1091,37 @@ class ReplicationHelper extends AbstractHelper
      */
     public function buildCriteriaGetDeletedOnly(array $filters, $pagesize = 100)
     {
-        $criteria = $this->searchCriteriaBuilder;
+        $this->searchCriteriaBuilder->setPageSize($pagesize);
         if (!empty($filters)) {
             foreach ($filters as $filter) {
-                $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
+                $this->searchCriteriaBuilder->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
             }
         }
-        $criteria->addFilter('IsDeleted', 1, 'eq');
-        $criteria->addFilter('is_updated', 1, 'eq');
-        if ($pagesize != -1) {
-            $criteria->setPageSize($pagesize);
-        }
-        return $criteria->create();
+        $this->searchCriteriaBuilder->addFilter('IsDeleted', 1, 'eq');
+
+        $orFilters = [];
+
+        $filter1 = $this->filterBuilder
+            ->setField('is_updated')
+            ->setValue(1)
+            ->setConditionType('eq')
+            ->create();
+        $orFilters[] = $filter1;
+
+        $filter2 = $this->filterBuilder
+            ->setField('processed')
+            ->setValue(0)
+            ->setConditionType('eq')
+            ->create();
+        $orFilters[] = $filter2;
+
+        $filterGroup = $this->filterGroupBuilder
+            ->setFilters($orFilters)
+            ->create();
+
+        $this->searchCriteriaBuilder->setFilterGroups([$filterGroup]);
+
+        return $this->searchCriteriaBuilder->create();
     }
 
     /**
