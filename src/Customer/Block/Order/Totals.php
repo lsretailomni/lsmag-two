@@ -53,12 +53,7 @@ class Totals extends AbstractOrderBlock
     {
         $grandTotal     = $this->getGrandTotal();
         $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        foreach ($lineItemObj as $key => $lines) {
-            if ($key != "LSCMemberSalesBuffer")
-                continue;
-
-            $totalNetAmount = $this->orderHelper->getParameterValues($lines, "Net Amount");
-        }
+        $totalNetAmount = $this->orderHelper->getFilterValues($lineItemObj, "Net Amount", "LSCMemberSalesBuffer");        
         
         return ($grandTotal - $totalNetAmount);
     }
@@ -84,12 +79,7 @@ class Totals extends AbstractOrderBlock
     public function getGrandTotal()
     {
         $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        foreach ($lineItemObj as $key => $lines) {
-            if ($key != "LSCMemberSalesBuffer")
-                continue;
-
-            return $this->orderHelper->getParameterValues($lines, "Gross Amount");
-        }
+        return $this->orderHelper->getFilterValues($lineItemObj, "Gross Amount", "LSCMemberSalesBuffer");       
     }
 
     /**
@@ -104,18 +94,13 @@ class Totals extends AbstractOrderBlock
 
     /**
      * To fetch TotalDiscount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     *
-     * @return mixed
+     * 
+     * @return null
      */
     public function getTotalDiscount()
     {
         $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        foreach ($lineItemObj as $key => $lines) {
-            if ($key != "LSCMemberSalesBuffer")
-                continue;
-
-            return $this->orderHelper->getParameterValues($lines, "Discount Amount");
-        }
+        return $this->orderHelper->getFilterValues($lineItemObj, "Discount Amount", "LSCMemberSalesBuffer");
     }
 
     /**

@@ -289,14 +289,7 @@ class Info extends AbstractOrderBlock
             $orderTransactions = [$orderTransactions];
         }
 
-        foreach ($orderTransactions as $key => $transaction) {
-            if ($key != "LSCMemberSalesBuffer")
-                continue;
-            
-            $pointsRewarded = $this->orderHelper->getParameterValues($transaction, "Points Rewarded");            
-            $points         += (float)$pointsRewarded;
-        }
-
+        $points += $this->orderHelper->getFilterValues($orderTransactions, "Points Rewarded", "LSCMemberSalesBuffer");        
         return number_format((float)$points, 2, '.', '');
     }
 

@@ -415,6 +415,22 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * @param $orderObj
+     * @param $param
+     * @param $filterKey
+     * @return void
+     */
+    public function getFilterValues($orderObj, $param, $filterKey)
+    {
+        foreach ($orderObj as $key => $lines) {
+            if ($key != $filterKey) {
+                continue;
+            }
+            return $this->getParameterValues($lines, $param);
+        }
+    }
+
+    /**
      * Fetch node values based on the parameter passed
      * @param $orderObj
      * @param $param
