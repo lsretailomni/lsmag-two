@@ -14,6 +14,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Helper\Data;
 
 use \Ls\Omni\Client\Ecommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
 use \Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
@@ -89,7 +90,8 @@ class OrderHelper extends AbstractHelper
         public StoreManagerInterface $storeManager,
         public StoreHelper $storeHelper,
         public CurrencyFactory $currencyFactory,
-        public ConfigInterface $config
+        public ConfigInterface $config,
+        public Data $dataHelper
     ) {
         parent::__construct($context);        
     }
@@ -561,7 +563,11 @@ class OrderHelper extends AbstractHelper
             return $response;
         }
         // @codingStandardsIgnoreStart
-        $getSalesHistory = new GetMemContSalesHist_GetMemContSalesHist();
+        $getSalesHistory = $this->dataHelper->createInstance(
+            GetMemContSalesHist_GetMemContSalesHist::class,
+            []
+        );
+
         $getSalesHistory->setOperationInput(
             [
                 'memberCardNo' => $cardId,
@@ -610,7 +616,11 @@ class OrderHelper extends AbstractHelper
         $response = null;
         $typeId   = $this->getOrderTypeId($type);
         // @codingStandardsIgnoreStart
-        $request = new GetSelectedSalesDoc_GetSelectedSalesDoc();
+        $request = $this->dataHelper->createInstance(
+            GetSelectedSalesDoc_GetSelectedSalesDoc::class,
+            []
+        );
+
         $request->setOperationInput(
             [
                 'documentSourceType' => $typeId,

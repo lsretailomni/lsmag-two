@@ -22,6 +22,7 @@ use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
 use \Ls\Replication\Api\ReplLscTenderTypeRepositoryInterface;
+use Magento\Framework\App\ObjectManager;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -1197,5 +1198,17 @@ class Data extends AbstractHelper
     public function getScopeId()
     {
         return $this->request->getParam('website') ?? $this->storeManager->getStore()->getWebsiteId();
+    }
+
+    /**
+     * Create new instance of given class name
+     *
+     * @param string|null $entityClassName
+     * @param array $data
+     * @return mixed
+     */
+    public function createInstance(string $entityClassName = null, array $data = [])
+    {
+        return ObjectManager::getInstance()->create($entityClassName, $data);
     }
 }
