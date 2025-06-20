@@ -20,39 +20,6 @@ use Magento\Framework\View\Result\PageFactory;
 class AbstractOrderController
 {
     /**
-     * @var ManagerInterface
-     */
-    public $messageManager;
-
-    /**
-     * @var ResultFactory
-     */
-    public $resultRedirect;
-
-    /** @var PageFactory */
-    public $resultPageFactory;
-
-    /**
-     * @var Http $request
-     */
-    public $request;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var ResultFactory
-     */
-    public $resultFactory;
-
-    /**
-     * @var UrlInterface
-     */
-    public $url;
-
-    /**
      * @param PageFactory $resultPageFactory
      * @param Http $request
      * @param OrderHelper $orderHelper
@@ -62,21 +29,14 @@ class AbstractOrderController
      * @param UrlInterface $url
      */
     public function __construct(
-        PageFactory $resultPageFactory,
-        Http $request,
-        OrderHelper $orderHelper,
-        ResultFactory $result,
-        ManagerInterface $messageManager,
-        ResultFactory $resultFactory,
-        UrlInterface $url
+        public PageFactory $resultPageFactory,
+        public Http $request,
+        public OrderHelper $orderHelper,
+        public ResultFactory $result,
+        public ManagerInterface $messageManager,
+        public ResultFactory $resultFactory,
+        public UrlInterface $url
     ) {
-        $this->resultRedirect    = $result;
-        $this->messageManager    = $messageManager;
-        $this->request           = $request;
-        $this->orderHelper       = $orderHelper;
-        $this->resultPageFactory = $resultPageFactory;
-        $this->resultFactory     = $resultFactory;
-        $this->url               = $url;
     }
 
     /**

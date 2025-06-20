@@ -25,37 +25,8 @@ use Magento\Framework\Api\SortOrderBuilder;
 class Recent extends Template
 {
     /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var PriceCurrencyInterface
-     */
-    public $priceCurrency;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    public $searchCriteriaBuilder;
-
-    /**
-     * @var CustomerSession
-     */
-    public $customerSession;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var SortOrderBuilder
-     */
-    public $sortOrderBuilder;
-
-    /**
-     * Recent constructor.
+     *  Recent constructor.
+     * 
      * @param Context $context
      * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
@@ -66,22 +37,16 @@ class Recent extends Template
      * @param array $data
      */
     public function __construct(
-        Context $context,
-        OrderHelper $orderHelper,
-        PriceCurrencyInterface $priceCurrency,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        SortOrderBuilder $sortOrderBuilder,
-        CustomerSession $customerSession,
-        LSR $LSR,
+        public Context $context,
+        public OrderHelper $orderHelper,
+        public PriceCurrencyInterface $priceCurrency,
+        public SearchCriteriaBuilder $searchCriteriaBuilder,
+        public SortOrderBuilder $sortOrderBuilder,
+        public CustomerSession $customerSession,
+        public LSR $lsr,
         array $data = []
     ) {
-        parent::__construct($context, $data);
-        $this->orderHelper           = $orderHelper;
-        $this->priceCurrency         = $priceCurrency;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->sortOrderBuilder      = $sortOrderBuilder;
-        $this->customerSession       = $customerSession;
-        $this->lsr                   = $LSR;
+        parent::__construct($context, $data);        
     }
 
     /**

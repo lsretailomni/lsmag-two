@@ -46,97 +46,11 @@ use Magento\Directory\Model\CurrencyFactory;
  */
 class OrderHelper extends AbstractHelper
 {
-
-    /** @var Model\Order $order */
-    public $order;
-
-    /** @var BasketHelper $basketHelper */
-    public $basketHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var GiftCardHelper
-     */
-    public $giftCardHelper;
-
-    /**
-     * @var StoreHelper
-     */
-    public $storeHelper;
-
-    /**
-     * @var CustomerSession
-     */
-    public $customerSession;
-
-    /**
-     * @var CheckoutSession
-     */
-    public $checkoutSession;
-
-    /**
-     * @var Model\OrderRepository
-     */
-    public $orderRepository;
-
-    /** @var  LSR $lsr */
-    public $lsr;
-
-    /**
-     * @var Order
-     */
-    public $orderResourceModel;
-
-    /**
-     * @var array
-     */
-    public $tendertypesArray = [];
-
-    /**
-     * @var Json
-     */
-    public $json;
-
-    /**
-     * @var DateTime
-     */
-    public $dateTime;
-
-    /**
-     * @var TimezoneInterface
-     */
-    public $timezoneInterface;
-
-    /**
-     * @var Registry
-     */
-    public Registry $registry;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    public $storeManager;
-
-    /**
-     * @var CurrencyFactory
-     */
-    public $currencyFactory;
-
     /**
      * @var mixed
-     */
+    */
     public $currentOrder;
-
-    /**
-     *
-     * @var ConfigInterface
-     */
-    public $config;
-
+    
     /**
      * @param Context $context
      * @param Model\Order $order
@@ -158,43 +72,26 @@ class OrderHelper extends AbstractHelper
      * @param ConfigInterface $config
      */
     public function __construct(
-        Context $context,
-        Model\Order $order,
-        BasketHelper $basketHelper,
-        LoyaltyHelper $loyaltyHelper,
-        GiftCardHelper $giftCardHelper,
-        Model\OrderRepository $orderRepository,
-        CustomerSession $customerSession,
-        CheckoutSession $checkoutSession,
-        LSR $lsr,
-        Order $orderResourceModel,
-        Json $json,
-        Registry $registry,
-        DateTime $dateTime,
-        TimezoneInterface $timezoneInterface,
-        StoreManagerInterface $storeManager,
-        StoreHelper $storeHelper,
-        CurrencyFactory $currencyFactory,
-        ConfigInterface $config
+        public Context $context,
+        public Model\Order $order,
+        public BasketHelper $basketHelper,
+        public LoyaltyHelper $loyaltyHelper,
+        public GiftCardHelper $giftCardHelper,
+        public Model\OrderRepository $orderRepository,
+        public CustomerSession $customerSession,
+        public CheckoutSession $checkoutSession,
+        public LSR $lsr,
+        public Order $orderResourceModel,
+        public Json $json,
+        public Registry $registry,
+        public DateTime $dateTime,
+        public TimezoneInterface $timezoneInterface,
+        public StoreManagerInterface $storeManager,
+        public StoreHelper $storeHelper,
+        public CurrencyFactory $currencyFactory,
+        public ConfigInterface $config
     ) {
-        parent::__construct($context);
-        $this->order              = $order;
-        $this->basketHelper       = $basketHelper;
-        $this->loyaltyHelper      = $loyaltyHelper;
-        $this->giftCardHelper     = $giftCardHelper;
-        $this->orderRepository    = $orderRepository;
-        $this->customerSession    = $customerSession;
-        $this->checkoutSession    = $checkoutSession;
-        $this->lsr                = $lsr;
-        $this->orderResourceModel = $orderResourceModel;
-        $this->json               = $json;
-        $this->registry           = $registry;
-        $this->dateTime           = $dateTime;
-        $this->timezoneInterface  = $timezoneInterface;
-        $this->storeManager       = $storeManager;
-        $this->storeHelper        = $storeHelper;
-        $this->currencyFactory    = $currencyFactory;
-        $this->config             = $config;
+        parent::__construct($context);        
     }
 
     /**

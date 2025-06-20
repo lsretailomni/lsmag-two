@@ -50,107 +50,6 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class Data extends AbstractHelper
 {
-    /** @var ReplStoreRepositoryInterface */
-    public $storeRepository;
-
-    /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
-    public $searchCriteriaBuilder;
-
-    /**
-     * @var SessionManagerInterface
-     */
-    public $session;
-
-    /**
-     * @var CheckoutSession
-     */
-    public $checkoutSession;
-
-    /** @var ManagerInterface */
-    public $messageManager;
-
-    /**
-     * @var \Magento\Framework\Pricing\Helper\Data
-     */
-    public $priceHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var CartRepositoryInterface
-     */
-    public $cartRepository;
-
-    /**
-     * @var CacheHelper
-     */
-    public $cacheHelper;
-
-    /**
-     * @var DateTime
-     */
-    public $date;
-
-    /**
-     * @var WriterInterface
-     */
-    public $configWriter;
-
-    /**
-     * @var DirectoryList
-     */
-    public $directoryList;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var ReplLscTenderTypeRepositoryInterface
-     */
-    public $replStoreTenderTypeRepository;
-    /**
-     * @var GetCartForUser
-     */
-    public GetCartForUser $getCartForUser;
-    /**
-     * @var MaskedQuoteIdToQuoteIdInterface
-     */
-    public MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId;
-    /**
-     * @var StockHelper
-     */
-    public StockHelper $stockHelper;
-
-    /**
-     * @var File
-     */
-    public File $fileSystemDriver;
-
-    /**
-     * @var GuzzleClient
-     */
-    public $guzzleClient;
-
-    /**
-     * @var TokenRequestService
-     */
-    public $tokenRequestService;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    public $storeManager;
-
-    /**
-     * @var RequestInterface
-     */
-    public $request;
-
     /**
      * @param Context $context
      * @param ReplStoreRepositoryInterface $storeRepository
@@ -177,52 +76,30 @@ class Data extends AbstractHelper
      * @param RequestInterface $request
      */
     public function __construct(
-        Context                                $context,
-        ReplStoreRepositoryInterface           $storeRepository,
-        SearchCriteriaBuilder                  $searchCriteriaBuilder,
-        SessionManagerInterface                $session,
-        CheckoutSession                        $checkoutSession,
-        ManagerInterface                       $messageManager,
-        \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        LoyaltyHelper                          $loyaltyHelper,
-        CartRepositoryInterface                $cartRepository,
-        CacheHelper                            $cacheHelper,
-        LSR                                    $lsr,
-        DateTime                               $date,
-        WriterInterface                        $configWriter,
-        DirectoryList                          $directoryList,
-        StockHelper                            $stockHelper,
-        GetCartForUser                         $getCartForUser,
-        MaskedQuoteIdToQuoteIdInterface        $maskedQuoteIdToQuoteId,
-        ReplLscTenderTypeRepositoryInterface   $storeTenderTypeRepository,
-        File                                   $fileSystemDriver,
-        GuzzleClient                           $guzzleClient,
-        StoreManagerInterface                  $storeManager,
-        TokenRequestService                    $tokenRequestService,
-        RequestInterface                       $request,
+        public Context                                $context,
+        public ReplStoreRepositoryInterface           $storeRepository,
+        public SearchCriteriaBuilder                  $searchCriteriaBuilder,
+        public SessionManagerInterface                $session,
+        public CheckoutSession                        $checkoutSession,
+        public ManagerInterface                       $messageManager,
+        public \Magento\Framework\Pricing\Helper\Data $priceHelper,
+        public LoyaltyHelper                          $loyaltyHelper,
+        public CartRepositoryInterface                $cartRepository,
+        public CacheHelper                            $cacheHelper,
+        public LSR                                    $lsr,
+        public DateTime                               $date,
+        public WriterInterface                        $configWriter,
+        public DirectoryList                          $directoryList,
+        public StockHelper                            $stockHelper,
+        public GetCartForUser                         $getCartForUser,
+        public MaskedQuoteIdToQuoteIdInterface        $maskedQuoteIdToQuoteId,
+        public ReplLscTenderTypeRepositoryInterface   $storeTenderTypeRepository,
+        public File                                   $fileSystemDriver,
+        public GuzzleClient                           $guzzleClient,
+        public StoreManagerInterface                  $storeManager,
+        public TokenRequestService                    $tokenRequestService,
+        public RequestInterface                       $request,
     ) {
-        $this->storeRepository               = $storeRepository;
-        $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
-        $this->session                       = $session;
-        $this->checkoutSession               = $checkoutSession;
-        $this->messageManager                = $messageManager;
-        $this->priceHelper                   = $priceHelper;
-        $this->cartRepository                = $cartRepository;
-        $this->loyaltyHelper                 = $loyaltyHelper;
-        $this->cacheHelper                   = $cacheHelper;
-        $this->lsr                           = $lsr;
-        $this->date                          = $date;
-        $this->configWriter                  = $configWriter;
-        $this->directoryList                 = $directoryList;
-        $this->maskedQuoteIdToQuoteId        = $maskedQuoteIdToQuoteId;
-        $this->getCartForUser                = $getCartForUser;
-        $this->stockHelper                   = $stockHelper;
-        $this->replStoreTenderTypeRepository = $storeTenderTypeRepository;
-        $this->fileSystemDriver              = $fileSystemDriver;
-        $this->guzzleClient                  = $guzzleClient;
-        $this->storeManager                  = $storeManager;
-        $this->tokenRequestService           = $tokenRequestService;
-        $this->request                       = $request;
         parent::__construct($context);
     }
 

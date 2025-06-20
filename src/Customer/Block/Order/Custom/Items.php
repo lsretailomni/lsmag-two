@@ -15,40 +15,21 @@ use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
  */
 class Items extends AbstractItems
 {
-    /** @var  LSR $lsr */
-    public $lsr;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-    /**
-     * @var CollectionFactory|mixed|null
-     */
-    public $itemCollectionFactory;
-
-    /**
-     * @var Collection|null
-     */
-    private $itemCollection;
-
     /**
      * @param Context $context
      * @param LSR $lsr
      * @param OrderHelper $orderHelper
+     * @param CollectionFactory $itemCollectionFactory
      * @param array $data
      */
     public function __construct(
-        Context $context,
-        LSR $lsr,
-        OrderHelper $orderHelper,
-        CollectionFactory $itemCollectionFactory,
+        public Context $context,
+        public LSR $lsr,
+        public OrderHelper $orderHelper,
+        public CollectionFactory $itemCollectionFactory,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->lsr                   = $lsr;
-        $this->orderHelper           = $orderHelper;
-        $this->itemCollectionFactory = $itemCollectionFactory;
     }
 
     /**
