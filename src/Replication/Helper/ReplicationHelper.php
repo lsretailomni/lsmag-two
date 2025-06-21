@@ -3,6 +3,7 @@
 namespace Ls\Replication\Helper;
 
 use Exception;
+use http\QueryString;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemType;
@@ -1101,14 +1102,14 @@ class ReplicationHelper extends AbstractHelper
 
         $orFilters = [];
 
-        $filter1 = $this->filterBuilder
+        $filter1     = $this->filterBuilder
             ->setField('is_updated')
             ->setValue(1)
             ->setConditionType('eq')
             ->create();
         $orFilters[] = $filter1;
 
-        $filter2 = $this->filterBuilder
+        $filter2     = $this->filterBuilder
             ->setField('processed')
             ->setValue(0)
             ->setConditionType('eq')
@@ -4006,28 +4007,44 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * Get products based on receipe ID
-     * 
+     * Get products based on receipe ID and Sku
+     *
      * @param $lsModifierRecipeIds
+     * @param null $sku
      * @return Collection
      */
-    public function getProductsByRecipeId($lsModifierRecipeIds)
+    public function getProductsByRecipeId($lsModifierRecipeIds, $sku = null)
     {
         $connection = $this->resource->getConnection();
-        $productOptionTable = $connection->getTableName('catalog_product_option');
+
+        $productOptionTable   = $connection->getTableName('catalog_product_option');
+        $optionTypeValueTable = $connection->getTableName('catalog_product_option_type_value');
 
         $collection = $this->productCollectionFactory->create();
         $collection->addAttributeToSelect('*');
 
-        $collection->getSelect()->join(
+        $select = $collection->getSelect();
+
+        $select->join(
             ['cpo' => $productOptionTable],
             'e.entity_id = cpo.product_id',
             []
-        )->where('cpo.ls_modifier_recipe_id IN (?)', $lsModifierRecipeIds);
+        );
+
+        // Add where condition for recipe ID
+        $select->where('cpo.ls_modifier_recipe_id IN (?)', $lsModifierRecipeIds);
+
+        if (!empty($sku)) {
+            $select->join(
+                ['optv' => $optionTypeValueTable],
+                'cpo.option_id = optv.option_id',
+                []
+            )->where('optv.sku = ?', $sku);
+        }
 
         $query = $collection->getSelect()->__toString();
 
         return $collection;
     }
-    
+
 }
