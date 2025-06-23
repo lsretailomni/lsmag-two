@@ -31,36 +31,13 @@ class StockHelper extends AbstractHelperOmni
      * @param $storeId
      * @param $parentProductId
      * @param $childProductId
-     * @return InventoryResponse[]|null
-     * @throws NoSuchEntityException
+     * @return null|RootGetInventoryMultipleOut
      */
-    public function getItemStockInStore($storeId, $parentProductId, $childProductId)
+    public function getItemStockInStore(string $storeId, string $parentProductId, string $childProductId)
     {
-        if ($this->checkVersion()) {
-            $items[] = ['parent' => $parentProductId, 'child' => $childProductId];
-            return $this->getItemsStockInStoreFromSourcingLocation($storeId, $items);
-        }
+        $items[] = ['parent' => $parentProductId, 'child' => $childProductId];
 
-        $response = null;
-        $request = new Operation\ItemsInStockGet();
-        $itemStock = new Entity\ItemsInStockGet();
-        if (!empty($parentProductId) && !empty($childProductId)) {
-            $itemStock->setItemId($parentProductId)->
-            setVariantId($childProductId)->setStoreId($storeId);
-        } else {
-            $itemStock->setItemId($parentProductId)->setStoreId($storeId);
-        }
-        try {
-            $response = $request->execute($itemStock);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        if (!empty($response) &&
-            !empty($response->getItemsInStockGetResult()) &&
-            !empty($response->getItemsInStockGetResult()->getInventoryResponse())) {
-            return $response->getItemsInStockGetResult()->getInventoryResponse();
-        }
-        return null;
+        return $this->getItemsStockInStoreFromSourcingLocation($storeId, $items);
     }
 
     /**
@@ -68,12 +45,12 @@ class StockHelper extends AbstractHelperOmni
      *
      * Get stock for all the given items in given store
      *
-     * @param $items
-     * @param $storeId
+     * @param array $items
+     * @param string $storeId
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getGivenItemsStockInGivenStore($items, $storeId = '')
+    public function getGivenItemsStockInGivenStore(array $items, string $storeId = '')
     {
         $stockCollection = $stockItems = [];
         $useManageStockConfiguration = $this->configuration->getManageStock();
@@ -489,17 +466,17 @@ class StockHelper extends AbstractHelperOmni
     /**
      * Update Stock Collection
      *
-     * @param array $response
+     * @param RootGetInventoryMultipleOut $response
      * @param array $stockCollection
      * @return mixed
      */
-    public function updateStockCollection($response, $stockCollection)
+    public function updateStockCollection(RootGetInventoryMultipleOut $response, array $stockCollection)
     {
-        foreach ($response as $item) {
-            $actualQty = ceil($item->getQtyInventory());
+        foreach ($response->getInventorybufferout() as $item) {
+            $actualQty = ceil($item->getInventory());
 
             foreach ($stockCollection as &$values) {
-                if ($values['item_id'] == $item->getItemId() && $values['variant_id'] == $item->getVariantId()) {
+                if ($values['item_id'] == $item->getNumber() && $values['variant_id'] == $item->getVariant()) {
                     if ($actualQty > 0) {
                         $values['status'] = '1';
                         $values['display'] = __('This item is available');

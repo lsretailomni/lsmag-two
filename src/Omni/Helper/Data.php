@@ -54,7 +54,7 @@ class Data extends AbstractHelperOmni
     {
         $storeHours = null;
         try {
-            $cacheId        = LSR::STORE_HOURS . $storeId;
+            $cacheId = LSR::STORE_HOURS . $storeId;
             $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($cachedResponse) {
@@ -62,7 +62,7 @@ class Data extends AbstractHelperOmni
             } else {
                 $operation = $this->createInstance(GetStoreOpeningHours::class);
                 $operation->setOperationInput([
-                   Entity\GetStoreOpeningHours::STORE_NO => $storeId,
+                    Entity\GetStoreOpeningHours::STORE_NO => $storeId,
                 ]);
                 $response = $operation->execute();
                 $storeResults = $response->getResponseCode() == "0000" ?
@@ -76,11 +76,11 @@ class Data extends AbstractHelperOmni
                 );
             }
             $storeHours = [];
-            $today      = $this->dateTime->gmtDate("Y-m-d");
+            $today = $this->dateTime->gmtDate("Y-m-d");
 
             if ($storeResults) {
                 for ($i = 0; $i < 7; $i++) {
-                    $current          = date("Y-m-d", strtotime($today) + ($i * 86400));
+                    $current = date("Y-m-d", strtotime($today) + ($i * 86400));
                     $currentDayOfWeek = date('w', strtotime($current));
 
                     foreach ($storeResults->getRetailcalendarline() as $key => $r) {
@@ -90,9 +90,9 @@ class Data extends AbstractHelperOmni
                             $r->getDayno() == $currentDayOfWeek &&
                             $this->checkDateValidity($current, $r)) {
                             $storeHours[$currentDayOfWeek][] = [
-                                'type'  => $r->getLinetype(),
-                                'day'   => $r->getDayname(),
-                                'open'  => $r->getTimefrom() ?? '0001-01-01T00:00:00Z',
+                                'type' => $r->getLinetype(),
+                                'day' => $r->getDayname(),
+                                'open' => $r->getTimefrom() ?? '0001-01-01T00:00:00Z',
                                 'close' => $r->getTimeto() ?? '0001-01-01T00:00:00Z'
                             ];
 
