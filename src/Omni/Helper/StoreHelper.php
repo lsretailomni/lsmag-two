@@ -6,12 +6,9 @@ namespace Ls\Omni\Helper;
 use Carbon\CarbonInterval;
 use Carbon\CarbonPeriod;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
 use \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\DataObject;
@@ -144,6 +141,7 @@ class StoreHelper extends AbstractHelperOmni
      * Getting store hours
      *
      * @param array $storeHours
+     * @param ?int $calendarType
      * @return array
      * @throws NoSuchEntityException
      */
@@ -219,8 +217,10 @@ class StoreHelper extends AbstractHelperOmni
      * For getting date and timeslots option
      *
      * @param array $storeHours
+     * @param ?int $calendarType
      * @return array
      * @throws NoSuchEntityException
+     * @throws GuzzleException
      */
     public function formatDateTimeSlotsValues($storeHours, $calendarType = null)
     {
@@ -255,8 +255,9 @@ class StoreHelper extends AbstractHelperOmni
      * Get date time slots
      *
      * @param array $storeHours
+     * @param ?int $calendarType
      * @return array
-     * @throws Exception
+     * @throws NoSuchEntityException
      */
     public function getDateTimeSlotsValues($storeHours, $calendarType)
     {

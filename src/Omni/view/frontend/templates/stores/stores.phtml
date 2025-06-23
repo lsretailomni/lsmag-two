@@ -13,7 +13,6 @@ if (array_key_exists("data", $block->getData())) {
 } else {
     $collection = $block->getStores();
 }
-$sql = $collection->getSelect()->__toString();
 $counter = 0;
 $apiKey  = $block->getStoreMapKey();
 

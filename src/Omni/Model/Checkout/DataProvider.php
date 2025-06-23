@@ -6,8 +6,8 @@ use GuzzleHttp\Exception\GuzzleException;
 use Laminas\Json\Json;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Block\Stores\Stores;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
-use Ls\Omni\Client\Ecommerce\Entity\RootGetInventoryMultipleOut;
+use \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores;
+use \Ls\Omni\Client\Ecommerce\Entity\RootGetInventoryMultipleOut;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\StockHelper;
@@ -117,7 +117,7 @@ class DataProvider implements ConfigProviderInterface
                     'lng' => (float)$defaultLongitude,
                     'zoom' => (int)$defaultZoom,
                     'stores' => $encodedStores,
-                    'available_store_only' => $this->availableStoresOnlyEnabled()
+                    'available_store_only' => (bool)$this->availableStoresOnlyEnabled()
                 ];
             }
 
@@ -208,7 +208,7 @@ class DataProvider implements ConfigProviderInterface
      *
      * Get all click and collect stores
      *
-     * @return Collection|null
+     * @return Collection
      * @throws NoSuchEntityException
      */
     public function getRequiredStores()
@@ -227,7 +227,7 @@ class DataProvider implements ConfigProviderInterface
      *
      * @return void
      * @throws InvalidEnumException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function setRespectiveTimeSlotsInCheckoutSession()
     {
@@ -255,11 +255,12 @@ class DataProvider implements ConfigProviderInterface
     /**
      * Get relevant store hours
      *
-     * @param null $calendarType
-     * @param null $allStores
+     * @param ?int $calendarType
+     * @param ?GetStores_GetStores $allStores
      * @return array
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
+     * @throws GuzzleException
      */
     public function getRelevantStoreHours($calendarType = null, $allStores = null)
     {
@@ -268,26 +269,52 @@ class DataProvider implements ConfigProviderInterface
         if ($allStores == null) {
             $allStores = $this->storeHelper->getAllStoresFromCentral();
         }
-        $requiredStores = $calendarLines = [];
 
         foreach (!empty($allStores->getLscStore()) ?  $allStores->getLscStore() : [] as $store) {
             if ($store->getClickAndCollect() || $store->getWebStore()) {
-                $requiredStores[] = $store->getNo();
-            }
-        }
+                $calendarLines = $extraCalendarLines = [];
+                foreach (!empty($allStores->getLscRetailCalendarLine()) ?
+                    $allStores->getLscRetailCalendarLine() : [] as $calendarLine) {
 
-        foreach (!empty($allStores->getLscRetailCalendarLine()) ?
-            $allStores->getLscRetailCalendarLine() : [] as $calendarLine) {
-            if (in_array($calendarLine->getCalendarid(), $requiredStores)) {
-                $calendarLines[$calendarLine->getCalendarid()][] = $calendarLine;
-            }
-        }
+                    if ($store->getNo() == $calendarLine->getCalendarId() &&
+                        (!$calendarType || $calendarType == $calendarLine->getCalendarType()
+                    )) {
+                        $calendarLines[] = $calendarLine;
+                    }
+                }
 
-        foreach ($calendarLines as $storeId => $calendarLine) {
-            $storeHoursArray[$storeId] = $this->storeHelper->formatDateTimeSlotsValues(
-                $calendarLine,
-                $calendarType
-            );
+                if (!empty($calendarLines)) {
+                    $storeHoursArray[$store->getNo()] = $this->storeHelper->formatDateTimeSlotsValues(
+                        $calendarLines,
+                        $calendarType
+                    );
+                }
+
+                if (empty($storeHoursArray[$store->getNo()])) {
+                    foreach (!empty($allStores->getLscRtlCalendarGroupLinking()) ?
+                        $allStores->getLscRtlCalendarGroupLinking() : [] as $storeLink) {
+                        if ($store->getNo() == $storeLink->getStoreNo() && !empty($storeLink->getCalendarId())) {
+                            $currentCalendarType = $storeLink->getCalendarType();
+                            $currentCalendarId =  $storeLink->getCalendarId();
+                            foreach (!empty($allStores->getLscRetailCalendarLine()) ?
+                                $allStores->getLscRetailCalendarLine() : [] as $calendarLine) {
+                                if ((!$calendarType || $calendarType == $calendarLine->getCalendarType()) &&
+                                    $calendarLine->getCalendarType() == $currentCalendarType &&
+                                    $calendarLine->getCalendarId() == $currentCalendarId
+                                ) {
+                                    $extraCalendarLines[] = $calendarLine;
+                                }
+                            }
+                            if (!empty($extraCalendarLines)) {
+                                $storeHoursArray[$store->getNo()] = $this->storeHelper->formatDateTimeSlotsValues(
+                                    $extraCalendarLines,
+                                    $calendarType
+                                );
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         return $storeHoursArray;
@@ -298,7 +325,7 @@ class DataProvider implements ConfigProviderInterface
      *
      * Available Stores only enabled
      *
-     * @return mixed
+     * @return string
      * @throws NoSuchEntityException
      */
     public function availableStoresOnlyEnabled()
@@ -433,11 +460,11 @@ class DataProvider implements ConfigProviderInterface
     /**
      * Get selected click and collect stores Data
      *
-     * @param $responseItems
+     * @param array $responseItems
      * @return Collection
      * @throws NoSuchEntityException
      */
-    public function getSelectedClickAndCollectStoresData($responseItems)
+    public function getSelectedClickAndCollectStoresData(array $responseItems)
     {
         return $this->storeCollectionFactory
             ->create()
