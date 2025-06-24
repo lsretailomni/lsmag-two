@@ -14,13 +14,23 @@ class LSCSalesType extends AbstractModel
     public const CODE = 'Code';
     public const DESCRIPTION = 'Description';
 
+    public static array $dbColumnsMapping = [
+	self::CODE => 'code',
+	self::DESCRIPTION => 'description',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -30,7 +40,7 @@ class LSCSalesType extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }

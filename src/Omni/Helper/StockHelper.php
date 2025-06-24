@@ -1,21 +1,21 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Helper;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\GetInventoryMultipleV2;
+use \Ls\Omni\Client\Ecommerce\Entity\InventoryBufferIn;
 use \Ls\Omni\Client\Ecommerce\Entity\InventoryResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\RootGetInventoryMultipleIn;
+use \Ls\Omni\Client\Ecommerce\Entity\RootGetInventoryMultipleOut;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
-use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
-use Magento\Catalog\Api\ProductRepositoryInterface;
+use \Ls\Replication\Model\ResourceModel\ReplStoreview\Collection;
 use Magento\Catalog\Model\Product\Type;
-use Magento\CatalogInventory\Model\Configuration;
-use Magento\CatalogInventory\Model\Stock\StockItemRepository;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote\Item;
@@ -23,62 +23,8 @@ use Magento\Quote\Model\Quote\Item;
 /**
  * Stock related operation helper
  */
-class StockHelper extends AbstractHelper
+class StockHelper extends AbstractHelperOmni
 {
-    /**
-     * @var ProductRepositoryInterface
-     */
-    public $productRepository;
-    /**
-     * @var CollectionFactory
-     */
-    public $storeCollectionFactory;
-
-    /** @var  LSR $lsr */
-    public $lsr;
-
-    /**
-     * @var ItemHelper
-     */
-    public $itemHelper;
-
-    /**
-     * @var Configuration
-     */
-    public $configuration;
-
-    /**
-     * @var StockItemRepository
-     */
-    public $stockItemRepository;
-
-    /**
-     * @param Context $context
-     * @param ProductRepositoryInterface $productRepository
-     * @param CollectionFactory $storeCollectionFactory
-     * @param LSR $lsr
-     * @param ItemHelper $itemHelper
-     * @param Configuration $configuration
-     * @param StockItemRepository $stockItemRepository
-     */
-    public function __construct(
-        Context                    $context,
-        ProductRepositoryInterface $productRepository,
-        CollectionFactory          $storeCollectionFactory,
-        LSR                        $lsr,
-        ItemHelper                 $itemHelper,
-        Configuration              $configuration,
-        StockItemRepository        $stockItemRepository
-    ) {
-        $this->productRepository = $productRepository;
-        $this->storeCollectionFactory = $storeCollectionFactory;
-        $this->lsr = $lsr;
-        $this->itemHelper = $itemHelper;
-        $this->configuration = $configuration;
-        $this->stockItemRepository = $stockItemRepository;
-        parent::__construct($context);
-    }
-
     /**
      * Getting items stock in store
      *
@@ -212,46 +158,46 @@ class StockHelper extends AbstractHelper
      *
      * For sourcing location of inventory
      *
-     * @param $storeId
-     * @param $items
-     * @return InventoryResponse[]|null
+     * @param string $storeId
+     * @param array $items
+     * @return null|RootGetInventoryMultipleOut
      */
-    public function getItemsStockInStoreFromSourcingLocation($storeId, $items)
+    public function getItemsStockInStoreFromSourcingLocation(string $storeId, array $items)
     {
-        $response = null;
-        $request = new Operation\ItemsInStoreGetEx();
-        $itemStock = new Entity\ItemsInStoreGetEx();
-        $itemStock->setStoreId($storeId);
-        $itemStock->setUseSourcingLocation(true);
-        $itemStock->setLocationId('');
+        // @codingStandardsIgnoreStart
+        $operation = $this->createInstance(Operation\GetInventoryMultipleV2::class);
+        $itemsCollection = [];
         foreach ($items as $item) {
-            $inventoryRequest = new Entity\InventoryRequest();
+            $payload = [];
             $itemId = reset($item);
             $variantId = end($item);
+            $payload[InventoryBufferIn::NUMBER] = $itemId;
             if (!empty($itemId) && !empty($variantId)) {
-                $inventoryRequest->setItemId($itemId)->setVariantId($variantId);
-            } else {
-                $inventoryRequest->setItemId($itemId);
+                $payload[InventoryBufferIn::VARIANT] = $variantId;
             }
-            $inventoryRequestCollection[] = $inventoryRequest;
-        }
-        if (!empty($inventoryRequestCollection)) {
-            $inventoryRequestArray = new Entity\ArrayOfInventoryRequest();
-            $inventoryRequestArray->setInventoryRequest($inventoryRequestCollection);
-            $itemStock->setItems($inventoryRequestArray);
-            try {
-                $response = $request->execute($itemStock);
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
-            }
-            if (!empty($response) &&
-                !empty($response->getItemsInStoreGetExResult()) &&
-                !empty($response->getItemsInStoreGetExResult()->getInventoryResponse())) {
-                return $response->getItemsInStoreGetExResult()->getInventoryResponse();
-            }
+
+            $item = $operation->createInstance(
+                InventoryBufferIn::class,
+                ['data' => $payload]
+            );
+            $itemsCollection[] = $item;
         }
 
-        return null;
+        $getInventoryMultipleInXML = $operation->createInstance(
+            RootGetInventoryMultipleIn::class,
+            ['data' => [RootGetInventoryMultipleIn::INVENTORY_BUFFER_IN => $itemsCollection]]
+        );
+
+        $operation->setOperationInput([
+            GetInventoryMultipleV2::STORE_NO => $storeId,
+            GetInventoryMultipleV2::SOURCING_LOCATION_AVAILABILITY => 1,
+            GetInventoryMultipleV2::GET_INVENTORY_MULTIPLE_IN_XML => $getInventoryMultipleInXML,
+        ]);
+        $response = $operation->execute();
+        // @codingStandardsIgnoreEnd
+
+        return $response && !empty($response->getResponsecode() == "0000") ?
+            $response->getGetinventorymultipleoutxml() : null;
     }
 
     /**
@@ -301,13 +247,13 @@ class StockHelper extends AbstractHelper
      *
      * @param string $simpleProductId
      * @param string $itemId
-     * @return InventoryResponse[]
+     * @return RootGetInventoryMultipleOut|null
      * @throws NoSuchEntityException
+     * @throws GuzzleException
      */
-    public function getAllStoresItemInStock($simpleProductId, $itemId)
+    public function getAllStoresItemInStock(string $simpleProductId, string $itemId)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-
             $simpleProductSku = '';
 
             if (!empty($simpleProductId)) {
@@ -315,26 +261,9 @@ class StockHelper extends AbstractHelper
                     ->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
             }
 
-            if ($this->checkVersion()) {
-                $items[] = ['parent' => $itemId, 'child' => $simpleProductSku];
-                return $this->getItemsStockInStoreFromSourcingLocation('', $items);
-            }
+            $items[] = ['parent' => $itemId, 'child' => $simpleProductSku];
 
-            $response = null;
-            // @codingStandardsIgnoreStart
-            $request = new Operation\ItemsInStockGet();
-            $itemStock = new Entity\ItemsInStockGet();
-            // @codingStandardsIgnoreEnd
-
-            $itemStock->setItemId($itemId)->setVariantId($simpleProductSku);
-            try {
-                $response = $request->execute($itemStock);
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
-            }
-
-            return $response ?
-                $response->getItemsInStockGetResult() : $response;
+            return $this->getItemsStockInStoreFromSourcingLocation('', $items);
         } else {
             return null;
         }
@@ -343,14 +272,14 @@ class StockHelper extends AbstractHelper
     /**
      * Get given stores information from repl store table
      *
-     * @param $storesNavIds
+     * @param array $storesNavIds
      * @return Collection
      * @throws NoSuchEntityException
      */
-    public function getAllStoresFromReplTable($storesNavIds)
+    public function getAllStoresFromReplTable(array $storesNavIds): Collection
     {
         $stores = $this->storeCollectionFactory->create()
-            ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
+            ->addFieldToFilter('no', ['in' => $storesNavIds])
             ->addFieldToFilter(
                 'scope_id',
                 ['eq' => !$this->lsr->isSSM() ?
@@ -360,7 +289,7 @@ class StockHelper extends AbstractHelper
         $displayStores = $this->lsr->getStoreConfig(LSR::SC_CART_DISPLAY_STORES);
 
         if (!$displayStores) {
-            $stores->addFieldToFilter('ClickAndCollect', 1);
+            $stores->addFieldToFilter('click_and_collect', 1);
         }
 
         return $stores;
@@ -372,9 +301,9 @@ class StockHelper extends AbstractHelper
      * @param string $simpleProductId
      * @param string $productSku
      * @return Collection
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
-    public function fetchAllStoresItemInStockPlusApplyJoin($simpleProductId, $productSku)
+    public function fetchAllStoresItemInStockPlusApplyJoin(string $simpleProductId, string $productSku): Collection
     {
         $itemId = $this->itemHelper->getLsCentralItemIdBySku($productSku);
         $storesNavId = [];
@@ -384,16 +313,11 @@ class StockHelper extends AbstractHelper
         );
 
         if ($response !== null) {
-            if (!is_array($response)) {
-                $response = $response->getInventoryResponse();
-            }
-
-            foreach ($response as $each) {
-                if ($each->getQtyInventory() > 0) {
-                    $storesNavId[] = $each->getStoreId();
+            foreach ($response->getInventorybufferout() as $each) {
+                if ($each->getInventory() > 0) {
+                    $storesNavId[] = $each->getStore();
                 }
             }
-
         }
 
         return $this->getAllStoresFromReplTable(

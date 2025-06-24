@@ -2,12 +2,14 @@
 
 namespace Ls\Omni\Observer;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Wishlist\Model\Wishlist;
 
@@ -16,38 +18,18 @@ use Magento\Wishlist\Model\Wishlist;
  */
 class WishlistObserver implements ObserverInterface
 {
-    /** @var BasketHelper */
-    private $basketHelper;
-
-    /** @var CustomerSession $customerSession */
-    private $customerSession;
-
-    /**
-     * @var LSR
-     */
-    private $lsr;
-
-    /**
-     * @var Wishlist
-     */
-    private $wishlist;
-
     /**
      * @param BasketHelper $basketHelper
      * @param CustomerSession $customerSession
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param Wishlist $wishlist
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        CustomerSession $customerSession,
-        LSR $LSR,
-        Wishlist $wishlist
+        public BasketHelper $basketHelper,
+        public CustomerSession $customerSession,
+        public LSR $lsr,
+        public Wishlist $wishlist
     ) {
-        $this->basketHelper    = $basketHelper;
-        $this->customerSession = $customerSession;
-        $this->lsr             = $LSR;
-        $this->wishlist        = $wishlist;
     }
 
     /**
@@ -55,7 +37,8 @@ class WishlistObserver implements ObserverInterface
      *
      * @param Observer $observer
      * @return $this
-     * @throws NoSuchEntityException|InvalidEnumException
+     * @throws NoSuchEntityException|GuzzleException|InvalidEnumException
+     * @throws AlreadyExistsException
      */
     public function execute(Observer $observer)
     {
@@ -68,11 +51,15 @@ class WishlistObserver implements ObserverInterface
             $this->lsr->getOrderIntegrationOnFrontend()
         )) {
             $customerId = $this->customerSession->getCustomer()->getId();
-            $wishlist   = $this->wishlist->loadByCustomerId($customerId)->getItemCollection();
-            $oneList    = $this->basketHelper->fetchCurrentCustomerWishlist();
-            $oneList    = $this->basketHelper->addProductToExistingWishlist($oneList, $wishlist);
-            $this->basketHelper->updateWishlistAtOmni($oneList);
+            $wishlistItems = $this->wishlist->loadByCustomerId($customerId)->getItemCollection()->getItems();
+
+            if (!empty($wishlistItems)) {
+                $oneList = $this->basketHelper->fetchCurrentCustomerWishlist();
+                $oneList = $this->basketHelper->addProductToExistingWishlist($oneList, $wishlistItems);
+                $this->basketHelper->update($oneList, 2);
+            }
         }
+
         return $this;
     }
 }

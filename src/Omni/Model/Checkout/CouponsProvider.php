@@ -3,6 +3,7 @@
 namespace Ls\Omni\Model\Checkout;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -10,50 +11,14 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class CouponsProvider implements ConfigProviderInterface
 {
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /** @var StoreManagerInterface */
-    public $storeManager;
-
-    /**
-     * @var TimezoneInterface
-     */
-    public $timeZoneInterface;
-
-    /**
-     * @var ScopeConfigInterface
-     */
-    public $scopeConfig;
-
-    /**
-     * @var Proxy
-     */
-    public $customerSession;
-
-    /**
-     * @var Proxy
-     */
-    public $checkoutSession;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
     /**
      * @param CustomerSession $customerSession
      * @param CheckoutSession $checkoutSession
@@ -65,46 +30,49 @@ class CouponsProvider implements ConfigProviderInterface
      * @param LSR $lsr
      */
     public function __construct(
-        CustomerSession $customerSession,
-        CheckoutSession $checkoutSession,
-        StoreManagerInterface $storeManager,
-        TimezoneInterface $timeZoneInterface,
-        ScopeConfigInterface $scopeConfig,
-        LoyaltyHelper $loyaltyHelper,
-        LoggerInterface $logger,
-        LSR $lsr
+        public CustomerSession $customerSession,
+        public CheckoutSession $checkoutSession,
+        public StoreManagerInterface $storeManager,
+        public TimezoneInterface $timeZoneInterface,
+        public ScopeConfigInterface $scopeConfig,
+        public LoyaltyHelper $loyaltyHelper,
+        public LoggerInterface $logger,
+        public LSR $lsr
     ) {
-        $this->customerSession   = $customerSession;
-        $this->checkoutSession   = $checkoutSession;
-        $this->loyaltyHelper     = $loyaltyHelper;
-        $this->storeManager      = $storeManager;
-        $this->timeZoneInterface = $timeZoneInterface;
-        $this->scopeConfig       = $scopeConfig;
-        $this->logger            = $logger;
-        $this->lsr               = $lsr;
     }
 
-    public function getConfig()
+    /**
+     * Retrieve assoc array of checkout configuration
+     *
+     * @return array
+     * @throws GuzzleException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function getConfig(): array
     {
         $additionalVariables['coupons'] = $this->getAvailableCoupons();
+
         return $additionalVariables;
     }
 
     /**
+     * Get all available coupons applicable on cart items
+     *
      * @return array
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException|GuzzleException
      */
-    public function getAvailableCoupons()
+    public function getAvailableCoupons(): array
     {
         $coupons = [];
         if ($this->isCustomerLoggedIn()) {
             $coupons = $this->loyaltyHelper->getAvailableCouponsForLoggedInCustomers();
             foreach ($coupons as &$coupon) {
-                $each                    = $coupon;
-                $coupon                  = [];
-                $coupon["discount_code"] = $each->getOfferId();
-                $coupon["description"]   = $this->getFormattedDescription($each);
+                $each = $coupon;
+                $coupon = [];
+                $coupon["discount_code"] = $each->getDiscountno();
+                $coupon["description"] = $this->getFormattedDescription($each);
             }
         }
 
@@ -112,42 +80,68 @@ class CouponsProvider implements ConfigProviderInterface
     }
 
     /**
+     * Check if customer is logged in
+     *
      * @return bool
      */
-    public function isCustomerLoggedIn()
+    public function isCustomerLoggedIn(): bool
     {
         return $this->customerSession->isLoggedIn();
     }
 
     /**
+     * Get formatted description
+     *
      * @param PublishedOffer $coupon
      * @return string
      */
-    public function getFormattedDescription(PublishedOffer $coupon)
+    public function getFormattedDescription(PublishedOffer $coupon): string
     {
-        $description = (($coupon->getOfferId()) ? "<span class='coupon-code'>" . $coupon->getOfferId() . "</span><br/>" : "") .
-            (($coupon->getDescription()) ? "<span class='coupon-description'>" . $coupon->getDescription() . "</span><br/>" : "") .
-            (($coupon->getDetails()) ? "<span class='coupon-detail'>" . $coupon->getDetails() . "</span><br/>" : "") .
-            (($this->getFormattedOfferExpiryDate($coupon->getExpirationDate())) ? "<span class='coupon-expiry'>" . __("Valid till") . "&nbsp" . $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . "</span>" : "");
+        $description = '';
+
+        if ($coupon->getDiscountno()) {
+            $description .= "<span class='coupon-code'>" . $coupon->getDiscountno() . "</span><br/>";
+        }
+
+        if ($coupon->getDescription()) {
+            $description .= "<span class='coupon-description'>" . $coupon->getDescription() . "</span><br/>";
+        }
+
+        if ($coupon->getSecondarytext()) {
+            $description .= "<span class='coupon-detail'>" . $coupon->getSecondarytext() . "</span><br/>";
+        }
+
+        $expiryDate = $this->getFormattedOfferExpiryDate($coupon->getEndingdate());
+        if ($expiryDate) {
+            $description .= "<span class='coupon-expiry'>" . __("Valid till") . "&nbsp;" . $expiryDate . "</span>";
+        }
+
         return $description;
     }
 
     /**
-     * @param $date
+     * Get formatted offer expiry date
+     *
+     * @param string $date
      * @return string
      */
-    public function getFormattedOfferExpiryDate($date)
+    public function getFormattedOfferExpiryDate(string $date): string
     {
         $offerExpiryDate = "";
         try {
-            $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
-                LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                $this->lsr->getCurrentStoreId()
-            ));
+            $expiryDate = new \DateTimeImmutable($date);
+
+            $offerExpiryDate = $this->timeZoneInterface->date($expiryDate)->format(
+                $this->scopeConfig->getValue(
+                    LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
+                    ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                    $this->lsr->getCurrentStoreId()
+                )
+            );
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
+
         return $offerExpiryDate;
     }
 }

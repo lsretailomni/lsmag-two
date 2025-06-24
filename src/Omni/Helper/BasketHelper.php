@@ -1,25 +1,27 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Helper;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\MobileTransaction;
+use \Ls\Omni\Client\Ecommerce\Entity\MobileTransactionLine;
 use \Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
+use \Ls\Omni\Client\Ecommerce\Operation\EcomCalculateBasket;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Model\Product\Type;
-use Magento\Catalog\Pricing\Price\FinalPrice;
-use Magento\Catalog\Pricing\Price\RegularPrice;
-use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
 use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Item;
 
@@ -30,7 +32,7 @@ use Magento\Quote\Model\Quote\Item;
 class BasketHelper extends AbstractHelperOmni
 {
     /** @var null|string */
-    public $store_id = null;
+    public $storeId = null;
 
     /** @var string */
     public string $couponCode = '';
@@ -52,92 +54,39 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * Compared a OneList with a quote and returns an array which contains
-     * the items present only in the quote and only in the OneList (basket)
-     * @param Entity\OneList $oneList
-     * @param Quote $quote
-     * @return array
-     */
-    public function compare(Entity\OneList $oneList, Quote $quote)
-    {
-        /** @var Entity\OneListItem[] $onlyInOneList */
-        /** @var Entity\OneListItem[] $onlyInQuote */
-        $onlyInOneList = [];
-        $onlyInQuote   = [];
-
-        /** @var Item[] $quoteItems */
-        $cache      = [];
-        $quoteItems = $quote->getAllVisibleItems();
-
-        /** @var Entity\OneListItem[] $oneListItems */
-        $oneListItems = !($oneList->getItems()->getOneListItem() == null)
-            ? $oneList->getItems()->getOneListItem()
-            : [];
-
-        foreach ($oneListItems as $oneListItem) {
-            $found = false;
-
-            foreach ($quoteItems as $quoteItem) {
-                $isConfigurable = $quoteItem->getProductType()
-                    == Configurable::TYPE_CODE;
-                if (isset($cache[$quoteItem->getId()]) || $isConfigurable) {
-                    continue;
-                }
-                // @codingStandardsIgnoreStart
-                $productLsrId = $this->productFactory->create()
-                    ->load($quoteItem->getProduct()->getId())
-                    ->getData('lsr_id');
-                // @codingStandardsIgnoreEnd
-                $quote_has_item = $productLsrId == $oneListItem->getItem()->getId();
-                $qi_qty         = $quoteItem->getData('qty');
-                $item_qty       = (int)($oneListItem->getQuantity());
-                $match          = $quote_has_item && ($qi_qty == $item_qty);
-
-                if ($match) {
-                    $cache[$quoteItem->getId()] = $found = true;
-                    break;
-                }
-            }
-
-            // if found is still false, the item is not present in the quote
-            if (!$found) {
-                $onlyInOneList[] = $oneListItem;
-            }
-        }
-
-        foreach ($quoteItems as $quoteItem) {
-            $isConfigurable = $quoteItem->getProductType()
-                == Configurable::TYPE_CODE;
-
-            // if the item is in the cache, it is present in the oneList and the quote
-            if (isset($cache[$quoteItem->getId()]) || $isConfigurable) {
-                continue;
-            }
-            $onlyInQuote[] = $quoteItem;
-        }
-
-        return [$onlyInQuote, $onlyInOneList];
-    }
-
-    /**
      * This function is overriding in hospitality module
      *
      * Populating items in the oneList from magneto quote
+     *
      * @param Quote $quote
-     * @param Entity\OneList $oneList
-     * @return Entity\OneList
-     * @throws NoSuchEntityException
+     * @param RootMobileTransaction $oneList
+     * @return RootMobileTransaction
+     * @throws NoSuchEntityException|LocalizedException
      */
-    public function setOneListQuote(Quote $quote, Entity\OneList $oneList)
+    public function setOneListQuote(Quote $quote, RootMobileTransaction $oneList)
     {
         $quoteItems = $quote->getAllVisibleItems();
 
-        // @codingStandardsIgnoreLine
-        $items = new Entity\ArrayOfOneListItem();
+        return $this->setGivenItemsInGivenOneList($oneList, $quoteItems);
+    }
 
+    /**
+     * Set given items in given one list
+     *
+     * @param RootMobileTransaction $oneList
+     * @param array $items
+     * @return RootMobileTransaction
+     * @throws NoSuchEntityException|LocalizedException
+     */
+    public function setGivenItemsInGivenOneList(RootMobileTransaction $oneList, array $items)
+    {
         $itemsArray = [];
 
-        foreach ($quoteItems as $quoteItem) {
+        $transactionId = $oneList->getMobiletransaction()
+            ->getId();
+        $storeCode = $this->getDefaultWebStore();
+        foreach ($items as $lineNumber => $quoteItem) {
+            $lineNumber = (++$lineNumber) * 10000;
             $children = [];
             $isBundle = 0;
             if ($quoteItem->getProductType() == Type::TYPE_BUNDLE) {
@@ -151,7 +100,7 @@ class BasketHelper extends AbstractHelperOmni
                 if ($child->getProduct()->isInStock()) {
                     list($itemId, $variantId, $uom, $barCode) =
                         $this->itemHelper->getItemAttributesGivenQuoteItem($child);
-                    $match              = false;
+                    $match = false;
                     $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
 
                     if (in_array($itemId, explode(',', $giftCardIdentifier))) {
@@ -185,28 +134,89 @@ class BasketHelper extends AbstractHelperOmni
                             $quoteItem->getData('qty');
                         $amount = $this->itemHelper->convertToCurrentStoreCurrency($quoteItem->getPrice() * $qty);
                         // @codingStandardsIgnoreLine
-                        $list_item = (new Entity\OneListItem())
-                            ->setQuantity($qty)
-                            ->setItemId($itemId)
-                            ->setId($child->getItemId())
-                            ->setBarcodeId($barCode)
-                            ->setVariantId($variantId)
-                            ->setUnitOfMeasureId($uom)
-                            ->setAmount($amount)
-                            ->setPrice($price)
-                            ->setImmutable(true);
-
-                        $itemsArray[] = $list_item;
+//                        $list_item = (new Entity\OneListItem())
+//                            ->setQuantity($qty)
+//                            ->setItemId($itemId)
+//                            ->setId($child->getItemId())
+//                            ->setBarcodeId($barCode)
+//                            ->setVariantId($variantId)
+//                            ->setUnitOfMeasureId($uom)
+//                            ->setAmount($amount)
+//                            ->setPrice($price)
+//                            ->setImmutable(true);
+                        $listItem = $this->createInstance(
+                            MobileTransactionLine::class,
+                            [
+                                'data' => [
+                                    MobileTransactionLine::ID => $transactionId,
+                                    MobileTransactionLine::LINE_NO => $lineNumber,
+                                    MobileTransactionLine::STORE_ID => $storeCode,
+                                    MobileTransactionLine::QUANTITY => $qty,
+                                    MobileTransactionLine::NUMBER => $itemId,
+                                    MobileTransactionLine::VARIANT_CODE => $variantId,
+                                    MobileTransactionLine::UOM_ID => $uom,
+                                    MobileTransactionLine::PRICE => $price,
+                                    MobileTransactionLine::NET_AMOUNT => $amount,
+                                    MobileTransactionLine::TRANS_DATE => $this->getCompatibleDateTime(),
+                                    MobileTransactionLine::CURRENCY_FACTOR => 1
+                                ]
+                            ]
+                        );
+                        $itemsArray[] = $listItem;
                     }
                 }
             }
         }
-        $items->setOneListItem($itemsArray);
+        $oneList->setMobiletransactionline($itemsArray);
 
-        $oneList->setItems($items)
-            ->setPublishedOffers($this->_offers());
+        return $oneList;
+    }
 
-        $this->setOneListInCustomerSession($oneList);
+    /**
+     * Generating commerce services wishlist from magento wishlist
+     *
+     * @param RootMobileTransaction $oneList
+     * @param array $wishlistItems
+     * @return RootMobileTransaction
+     * @throws NoSuchEntityException
+     */
+    public function addProductToExistingWishlist(RootMobileTransaction $oneList, array $wishlistItems)
+    {
+        $transactionId = $oneList->getMobiletransaction()
+            ->getId();
+        $itemsArray = [];
+        $storeCode = $this->getDefaultWebStore();
+        foreach ($wishlistItems as $lineNumber => $item) {
+            $lineNumber = (++$lineNumber) * 10000;
+            if ($item->getOptionByCode('simple_product')) {
+                $product = $item->getOptionByCode('simple_product')->getProduct();
+            } else {
+                $product = $item->getProduct();
+            }
+            list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
+                $product->getSku()
+            );
+            $qty = $item->getData('qty');
+            $listItem = $this->createInstance(
+                MobileTransactionLine::class,
+                [
+                    'data' => [
+                        MobileTransactionLine::ID => $transactionId,
+                        MobileTransactionLine::LINE_NO => $lineNumber,
+                        MobileTransactionLine::STORE_ID => $storeCode,
+                        MobileTransactionLine::QUANTITY => $qty,
+                        MobileTransactionLine::NUMBER => $itemId,
+                        MobileTransactionLine::VARIANT_CODE => $variantId,
+                        MobileTransactionLine::UOM_ID => $uom,
+                        MobileTransactionLine::TRANS_DATE => $this->getCompatibleDateTime(),
+                        MobileTransactionLine::CURRENCY_FACTOR => 1
+                    ]
+                ]
+            );
+
+            $itemsArray[] = $listItem;
+        }
+        $oneList->setMobiletransactionline($itemsArray);
 
         return $oneList;
     }
@@ -316,168 +326,23 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * Generating commerce services wishlist from magento wishlist
+     * Get configured store code for the current scope
      *
-     * @param Entity\OneList $oneList
-     * @param $wishlistItems
-     * @return Entity\OneList
-     * @throws NoSuchEntityException
-     */
-    public function addProductToExistingWishlist(Entity\OneList $oneList, $wishlistItems)
-    {
-        // @codingStandardsIgnoreLine
-        $items      = new Entity\ArrayOfOneListItem();
-        $itemsArray = [];
-
-        foreach ($wishlistItems as $item) {
-            if ($item->getOptionByCode('simple_product')) {
-                $product = $item->getOptionByCode('simple_product')->getProduct();
-            } else {
-                $product = $item->getProduct();
-            }
-            list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
-                $product->getSku()
-            );
-            $qty = $item->getData('qty');
-            // @codingStandardsIgnoreLine
-            $list_item = (new Entity\OneListItem())
-                ->setQuantity($qty)
-                ->setItemId($itemId)
-                ->setId('')
-                ->setBarcodeId($barCode)
-                ->setVariantId($variantId)
-                ->setUnitOfMeasureId($uom);
-
-            $itemsArray[] = $list_item;
-        }
-        $items->setOneListItem($itemsArray);
-        $oneList->setItems($items);
-
-        return $oneList;
-    }
-
-    /**
-     * @param Entity\OneList $oneList
-     * @return bool
-     */
-    public function delete(Entity\OneList $oneList)
-    {
-        // @codingStandardsIgnoreLine
-        $entity = new Entity\OneListDeleteById();
-
-        $entity->setOneListId($oneList->getId());
-        // @codingStandardsIgnoreLine
-        $request = new Operation\OneListDeleteById();
-
-        /** @var  Entity\OneListDeleteByIdResponse $response */
-        $response = $request->execute($entity);
-
-        return $response ? $response->getOneListDeleteByIdResult() : false;
-    }
-
-    /**
-     * @param Entity\OneList $oneList
-     * @return bool|Entity\OneList
-     * @throws NoSuchEntityException
-     */
-    // @codingStandardsIgnoreLine
-
-    public function updateWishlistAtOmni(Entity\OneList $oneList)
-    {
-        return $this->saveWishlistToOmni($oneList);
-    }
-
-    /**
-     * @param Entity\OneList $list
-     * @return bool|Entity\OneList
-     * @throws NoSuchEntityException
-     */
-    public function saveWishlistToOmni(Entity\OneList $list)
-    {
-        // @codingStandardsIgnoreLine
-        $operation = new Operation\OneListSave();
-
-        $list->setStoreId($this->getDefaultWebStore());
-
-        // @codingStandardsIgnoreLine
-        $request = (new Entity\OneListSave())
-            ->setOneList($list)
-            ->setCalculate(true);
-
-        /** @var Entity\OneListSaveResponse $response */
-        $response = $operation->execute($request);
-        if ($response) {
-            $this->setWishListInCustomerSession($response->getOneListSaveResult());
-            return $response->getOneListSaveResult();
-        }
-        return false;
-    }
-
-    /**
      * @return string|null
      * @throws NoSuchEntityException
      */
     public function getDefaultWebStore()
     {
-        if ($this->store_id == null) {
-            $this->store_id = $this->lsr->getActiveWebStore();
+        if ($this->storeId == null) {
+            $this->storeId = $this->lsr->getActiveWebStore();
         }
 
-        return $this->store_id;
+        return $this->storeId;
     }
 
     /**
-     * @param Entity\OneList $oneList
-     * @return bool|Entity\OrderAvailabilityResponse|Entity\OrderCheckAvailabilityResponse|ResponseInterface
-     * @throws NoSuchEntityException
-     */
-    public function availability(Entity\OneList $oneList)
-    {
-        $oneListItems = $oneList->getItems();
-        $response     = false;
-
-        if (!($oneListItems->getOneListItem() == null)) {
-            $array = [];
-
-            $count = 1;
-
-            foreach ($oneListItems->getOneListItem() as $listItem) {
-                $variant = $listItem->getVariant();
-                $uom     = !($listItem->getUom() == null) ? $listItem->getUom()[0]->getId() : null;
-                // @codingStandardsIgnoreLine
-                $line    = (new Entity\OrderLineAvailability())
-                    ->setItemId($listItem->getItem()->getId())
-                    ->setLineType(Entity\Enum\LineType::ITEM)
-                    ->setUomId($uom)
-                    ->setLineNumber($count++)
-                    ->setQuantity($listItem->getQuantity())
-                    ->setVariantId(($variant == null) ? null : $variant->getId());
-                $array[] = $line;
-                unset($line);
-            }
-            // @codingStandardsIgnoreStart
-            $lines = new Entity\ArrayOfOrderLineAvailability();
-            $lines->setOrderLineAvailability($array);
-
-            $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
-
-            $request = (new Entity\OrderAvailabilityRequest())
-                ->setStoreId($this->getDefaultWebStore())
-                ->setCardId($cardId)
-                ->setSourceType(Entity\Enum\SourceType::STANDARD)
-                ->setItemNumberType(Entity\Enum\ItemNumberType::ITEM_NO)
-                ->setOrderLineAvailabilityRequests($lines);
-            $entity  = new Entity\OrderCheckAvailability();
-            $entity->setRequest($request);
-            $operation = new Operation\OrderCheckAvailability();
-            // @codingStandardsIgnoreEnd
-            $response = $operation->execute($entity);
-        }
-
-        return $response ? $response->getOrderCheckAvailabilityResult() : $response;
-    }
-
-    /**
+     * Get coupon code
+     *
      * @return string
      * @throws Exception
      */
@@ -494,22 +359,23 @@ class BasketHelper extends AbstractHelperOmni
 
     /**
      * Send coupon code to basket calculation
-     * @param $couponCode
-     * @return Entity\OneListCalculateResponse|Phrase|string|null
+     *
+     * @param string $couponCode
+     * @return Phrase|string|null
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      * @throws LocalizedException
      * @throws Exception
+     * @throws GuzzleException
      */
-    public function setCouponCode($couponCode)
+    public function setCouponCode(string $couponCode)
     {
         $couponCode = trim($couponCode);
+
         if ($couponCode == "") {
             $this->couponCode = '';
             $this->setCouponQuote("");
-            $this->update(
-                $this->get()
-            );
+            $this->fetchUpdatedBasket();
             $this->itemHelper->setDiscountedPricesForItems(
                 $this->checkoutSession->getQuote(),
                 $this->getBasketSessionValue()
@@ -518,10 +384,8 @@ class BasketHelper extends AbstractHelperOmni
             return null;
         }
         $this->couponCode = $couponCode;
-        $status           = $this->update(
-            $this->get()
-        );
-
+        $status = $this->fetchUpdatedBasket();
+        $mobileTransDiscountLines = $status ? $status->getMobiletransdiscountline() : [];
         $checkCouponAmount = $this->dataHelper->orderBalanceCheck(
             $this->checkoutSession->getQuote()->getLsGiftCardNo(),
             $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed(),
@@ -532,19 +396,19 @@ class BasketHelper extends AbstractHelperOmni
 
         if (!is_object($status) || $checkCouponAmount) {
             $this->couponCode = '';
-            $this->update(
-                $this->get()
-            );
+            $this->fetchUpdatedBasket();
             $this->setCouponQuote($this->couponCode);
             $status = __("Coupon Code is not valid");
+
             if ($checkCouponAmount) {
                 $status = $checkCouponAmount;
             }
+
             return $status;
-        } elseif (!empty($status->getOrderDiscountLines()->getOrderDiscountLine())) {
-            if (is_array($status->getOrderDiscountLines()->getOrderDiscountLine())) {
-                foreach ($status->getOrderDiscountLines()->getOrderDiscountLine() as $orderDiscountLine) {
-                    if ($orderDiscountLine->getDiscountType() == 'Coupon') {
+        } elseif (!empty($mobileTransDiscountLines)) {
+            if (is_array($mobileTransDiscountLines)) {
+                foreach ($mobileTransDiscountLines as $orderDiscountLine) {
+                    if ($orderDiscountLine->getDiscounttype() == '12') {
                         $status = "success";
                         $this->itemHelper->setDiscountedPricesForItems(
                             $this->checkoutSession->getQuote(),
@@ -553,16 +417,8 @@ class BasketHelper extends AbstractHelperOmni
                         $this->setCouponQuote($this->couponCode);
                     }
                 }
-            } else {
-                if ($status->getOrderDiscountLines()->getOrderDiscountLine()->getDiscountType() == 'Coupon') {
-                    $status = "success";
-                    $this->itemHelper->setDiscountedPricesForItems(
-                        $this->checkoutSession->getQuote(),
-                        $this->getBasketSessionValue()
-                    );
-                    $this->setCouponQuote($this->couponCode);
-                }
             }
+
             if (is_object($status)) {
                 $status = __("Coupon Code is not valid for these item(s)");
             }
@@ -575,10 +431,12 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * @param $couponCode
+     * Set coupon inside quote
+     *
+     * @param string $couponCode
      * @throws Exception
      */
-    public function setCouponQuote($couponCode)
+    public function setCouponQuote(string $couponCode)
     {
         try {
             $cartQuote = $this->cart->getQuote();
@@ -594,56 +452,52 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * @param Entity\OneList $oneList
-     * @return Entity\OneListCalculateResponse|Order
+     * Fetch updated basket
+     *
+     * @return RootMobileTransaction|null
+     * @throws GuzzleException
      * @throws InvalidEnumException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|AlreadyExistsException|LocalizedException
      */
-    public function update(Entity\OneList $oneList)
+    public function fetchUpdatedBasket()
     {
-        return $this->calculate($oneList);
+        $quote = $this->getCurrentQuote();
+        $oneList = $this->basketHelper->setOneListQuote($quote, $this->get());
+
+        return $this->update($oneList);
     }
 
     /**
-     * @param Entity\OneList $list
-     * @return bool|Entity\OneList
+     * Sync basket with central
+     *
+     * @param RootMobileTransaction $oneList
+     * @param int $type
+     * @return RootMobileTransaction|null
+     * @throws AlreadyExistsException
+     * @throws GuzzleException
+     * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function saveToOmni(Entity\OneList $list)
+    public function update(RootMobileTransaction $oneList, int $type = 1)
     {
-        // @codingStandardsIgnoreLine
-        $operation = new Operation\OneListSave();
-        $list->setStoreId($this->getDefaultWebStore());
+        $oneListCalculation = $this->calculate($oneList);
 
-        if (version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
-            $list->setSalesType(LSR::SALE_TYPE_POS);
-        }
-        try {
-            // @codingStandardsIgnoreLine
-            $request = (new Entity\OneListSave())
-                ->setOneList($list)
-                ->setCalculate(true);
-            /** @var Entity\OneListSaveResponse $response */
-            $response = $operation->execute($request);
-            if ($response) {
-                $this->setOneListInCustomerSession($response->getOneListSaveResult());
-                return $response->getOneListSaveResult();
-            }
-        } catch (Exception $e) {
-            $this->_logger->critical($e->getMessage());
+        if ($oneListCalculation && $type == 1) {
+            $this->setOneListCalculationInCheckoutSession($oneListCalculation);
         }
 
-        return false;
+        return $oneListCalculation;
     }
 
     /**
      * This function is overriding in hospitality module
-     * @param Entity\OneList $oneList
-     * @return Entity\OneListCalculateResponse|Entity\Order
+     *
+     * @param RootMobileTransaction $oneList
+     * @return RootMobileTransaction|null
      * @throws InvalidEnumException|NoSuchEntityException
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
-    public function calculate(Entity\OneList $oneList)
+    public function calculate(RootMobileTransaction $oneList)
     {
         if (!$this->lsr->isLSR(
             $this->lsr->getCurrentStoreId(),
@@ -658,89 +512,41 @@ class BasketHelper extends AbstractHelperOmni
             return null;
         }
 
-        $storeId = $this->getDefaultWebStore();
-        $cardId  = $oneList->getCardId();
-
-        /** @var Entity\ArrayOfOneListItem $oneListItems */
-        $oneListItems = $oneList->getItems();
-
-        /** @var Entity\OneListCalculateResponse $response */
-        $response = null;
-
-        try {
-            if (!($oneListItems->getOneListItem() == null)) {
-                /** @var Entity\OneListItem || Entity\OneListItem[] $listItems */
-                $listItems = $oneListItems->getOneListItem();
-
-                if (!is_array($listItems)) {
-                    /** Entity\ArrayOfOneListItem $items */
-                    // @codingStandardsIgnoreLine
-                    $items = new Entity\ArrayOfOneListItem();
-                    $items->setOneListItem($listItems);
-                    $listItems = $items;
-                }
-                // @codingStandardsIgnoreStart
-                $oneListRequest = (new Entity\OneList())
-                    ->setCardId($cardId)
-                    ->setListType(Entity\Enum\ListType::BASKET)
-                    ->setItems($listItems)
-                    ->setStoreId($storeId);
-
-                if (version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
-                    $oneListRequest
-                        ->setIsHospitality(false)
-                        ->setSalesType(LSR::SALE_TYPE_POS);
-                }
-
-                if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
-                    $oneListRequest->setShipToCountryCode($oneList->getShipToCountryCode());
-                }
-
-                if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
-                    $oneListRequest->setCurrencyFactor($this->loyaltyHelper->getPointRate());
-                    $oneListRequest->setCurrency($this->lsr->getStoreCurrencyCode());
-                }
-
-                /** @var Entity\OneListCalculate $entity */
-                if ($this->getCouponCode() != "" and $this->getCouponCode() != null) {
-                    $offer  = new Entity\OneListPublishedOffer();
-                    $offers = new Entity\ArrayOfOneListPublishedOffer();
-                    $offers->setOneListPublishedOffer($offer);
-                    $offer->setId($this->getCouponCode());
-                    $offer->setType("Coupon");
-                    $oneListRequest->setPublishedOffers($offers);
-                } else {
-                    $oneListRequest->setPublishedOffers($this->_offers());
-                }
-
-                $entity = new Entity\OneListCalculate();
-                $entity->setOneList($oneListRequest);
-                $request = new Operation\OneListCalculate();
-                // @codingStandardsIgnoreEnd
-
-                /** @var  Entity\OneListCalculateResponse $response */
-                $response = $request->execute($entity);
-            }
-        } catch (Exception $e) {
-            $this->_logger->critical($e->getMessage());
+        if ($this->getCouponCode() != "" && $this->getCouponCode() != null) {
+            $mobileTransactionLines = $oneList->getMobiletransactionline();
+            $lineNumber = (count($mobileTransactionLines) + 1) * 10000;
+            $transactionId = $oneList->getMobiletransaction()
+                ->getId();
+            $storeCode = $this->getDefaultWebStore();
+            $listItem = $this->createInstance(
+                MobileTransactionLine::class,
+                [
+                    'data' => [
+                        MobileTransactionLine::ID => $transactionId,
+                        MobileTransactionLine::LINE_NO => $lineNumber,
+                        MobileTransactionLine::STORE_ID => $storeCode,
+                        MobileTransactionLine::QUANTITY => 1,
+                        MobileTransactionLine::NUMBER => $this->getCouponCode(),
+                        MobileTransactionLine::BARCODE => $this->getCouponCode(),
+                        MobileTransactionLine::TRANS_DATE => $this->getCompatibleDateTime(),
+                        MobileTransactionLine::CURRENCY_FACTOR => 1,
+                        MobileTransactionLine::LINE_TYPE => 6
+                    ]
+                ]
+            );
+            $mobileTransactionLines[] = $listItem;
+            $oneList->setMobiletransactionline($mobileTransactionLines);
         }
-        if (($response === null)) {
-            // @codingStandardsIgnoreLine
-            $oneListCalResponse = new Entity\OneListCalculateResponse();
-            $this->setOneListCalculationInCheckoutSession($response);
-            return $oneListCalResponse->getResult();
-        }
-        if ($response && property_exists($response, "OneListCalculateResult")) {
-            // @codingStandardsIgnoreLine
-            $this->setOneListCalculationInCheckoutSession($response->getResult());
-            return $response->getResult();
-        }
-        if (is_object($response)) {
-            $this->setOneListCalculationInCheckoutSession($response->getResult());
-            return $response->getResult();
-        } else {
-            return $response;
-        }
+        $oneList->getMobiletransaction()
+            ->setCurrencycode($this->lsr->getStoreCurrencyCode())
+            ->setCurrencyfactor((float)$this->loyaltyHelper->getPointRate());
+        $operation = $this->createInstance(EcomCalculateBasket::class);
+        $operation->setOperationInput(
+            [Entity\EcomCalculateBasket::MOBILE_TRANSACTION_XML => $oneList]
+        );
+        $response = $operation->execute();
+
+        return $response && $response->getResponsecode() == "0000" ? $response->getMobiletransactionxml() : null;
     }
 
     /**
@@ -766,7 +572,7 @@ class BasketHelper extends AbstractHelperOmni
             }
         }
         $webStore       = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
-        $this->store_id = $webStore;
+        $this->storeId = $webStore;
         // @codingStandardsIgnoreStart
         /** @var Entity\OneList $list */
         $list = (new Entity\OneList())
@@ -782,126 +588,67 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * @param null $id
-     * @return array|bool|Entity\OneList|Entity\OneList[]|mixed|null
-     * @throws InvalidEnumException
+     * Get basket wrapper
+     *
+     * @return RootMobileTransaction
      * @throws NoSuchEntityException
      */
-    public function get($id = null)
+    public function get(): RootMobileTransaction
     {
-        /** @var Entity\OneList $list */
-        $list = null;
-
-        //check if onelist is created and stored in session. if it is, than return it.
-        if ($this->getOneListFromCustomerSession()) {
-            if ($id) {
-                if ($id == $this->getOneListFromCustomerSession()->getId()) {
-                    return $this->getOneListFromCustomerSession();
-                }
-            } else {
-                return $this->getOneListFromCustomerSession();
-            }
-        }
-
-        /** @var Entity\MemberContact $loginContact */
-        // For logged in users check if onelist is already stored in registry.
-        if ($loginContact = $this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT)) {
-            try {
-                if ($loginContact->getOneLists()->getOneList() instanceof Entity\OneList) {
-                    $this->setOneListInCustomerSession($loginContact->getOneLists()->getOneList());
-                    return $loginContact->getOneLists()->getOneList();
-                } else {
-                    if ($loginContact->getOneLists() instanceof Entity\ArrayOfOneList) {
-                        foreach ($loginContact->getOneLists()->getOneList() as $oneList) {
-                            if ($oneList->getListType() == Entity\Enum\ListType::BASKET
-                                && $oneList->getStoreId() == $this->getDefaultWebStore()
-                            ) {
-                                $this->setOneListInCustomerSession($oneList);
-
-                                return $oneList;
-                            }
-                        }
-                    }
-                }
-            } catch (Exception $e) {
-                $this->_logger->critical($e);
-            }
-        }
-        if ($id) {
-            try {
-                $entity = new Entity\OneListGetById();
-                $entity->setId($id);
-                $entity->setIncludeLines(true);
-                $request  = new Operation\OneListGetById();
-                $response = $request->execute($entity);
-                return $response->getOneListGetByIdResult();
-            } catch (Exception $e) {
-                $this->_logger->critical($e);
-            }
-        }
-
-        /** If no list found from customer session or registered user then get from omni */
-        if ($list == null) {
-            return $this->fetchFromOmni();
-        }
-        return null;
+        return $this->fetchFromOmni();
     }
 
     /**
-     * @return array|bool|Entity\OneList|Entity\OneList[]|mixed
-     * @throws InvalidEnumException|NoSuchEntityException
+     * Fetch new basket
+     *
+     * @return RootMobileTransaction
+     * @throws NoSuchEntityException
      */
-    public function fetchFromOmni()
+    public function fetchFromOmni(): RootMobileTransaction
     {
         // if guest, then empty card id
         $cardId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) == null)
             ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
 
-        $store_id = $this->getDefaultWebStore();
+        $storeCode = $this->getDefaultWebStore();
 
         /**
          * only those users who either does not have onelist created or
          * is guest user will come up here so for them lets create a new one.
          * for those lets create new list with no items and the existing offers and coupons
          */
+        $mobileTransaction = $this->createInstance(
+            MobileTransaction::class,
+            [
+                'data' => [
+                    MobileTransaction::ID => $this->generateGuid(),
+                    MobileTransaction::TRANS_DATE => $this->getCompatibleDateTime(),
+                    MobileTransaction::TRANSACTION_TYPE => 2,
+                    MobileTransaction::SOURCE_TYPE => 1,
+                    MobileTransaction::SALES_TYPE => 'POS',
+                    MobileTransaction::MEMBER_CARD_NO => $cardId,
+                    MobileTransaction::STORE_ID => $storeCode
+                ]
+            ]
+        );
 
-        // @codingStandardsIgnoreStart
-        $list = (new Entity\OneList())
-            ->setCardId($cardId)
-            ->setDescription('OneList Magento')
-            ->setListType(Entity\Enum\ListType::BASKET)
-            ->setItems(new Entity\ArrayOfOneListItem())
-            ->setPublishedOffers($this->_offers())
-            ->setStoreId($store_id);
-        // @codingStandardsIgnoreEnd
-
-        if ($this->lsr->isEnabled() && version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
-            $list->setSalesType(LSR::SALE_TYPE_POS);
-        }
-
-        return $list;
+        return $this->createInstance(
+            RootMobileTransaction::class,
+            ['data' => [
+                RootMobileTransaction::MOBILE_TRANSACTION => $mobileTransaction
+            ]]
+        );
     }
 
     /**
-     * @return Entity\OneList|mixed
-     * @throws InvalidEnumException|NoSuchEntityException
+     * Get wishlist wrapper
+     *
+     * @return RootMobileTransaction
+     * @throws NoSuchEntityException
      */
-    public function fetchCurrentCustomerWishlist()
+    public function fetchCurrentCustomerWishlist(): RootMobileTransaction
     {
-        //check if onelist is created and stored in session. if it is, than return it.
-        if ($this->getWishListFromCustomerSession()) {
-            return $this->getWishListFromCustomerSession();
-        }
-        $cardId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) == null)
-            ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
-
-        $store_id = $this->getDefaultWebStore();
-        return (new Entity\OneList())
-            ->setCardId($cardId)
-            ->setDescription('List ' . $cardId)
-            ->setListType(Entity\Enum\ListType::WISH)
-            ->setItems(new Entity\ArrayOfOneListItem())
-            ->setStoreId($store_id);
+        return $this->fetchFromOmni();
     }
 
     /**
@@ -909,12 +656,13 @@ class BasketHelper extends AbstractHelperOmni
      *
      * Get Correct Item Row Total for mini-cart after comparison
      *
-     * @param $item
+     * @param Item $item
      * @return string
+     * @throws GuzzleException
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function getItemRowTotal($item)
+    public function getItemRowTotal(Item $item)
     {
         if ($item->getProductType() == Type::TYPE_BUNDLE) {
             $rowTotal = $this->getRowTotalBundleProduct($item);
@@ -925,12 +673,13 @@ class BasketHelper extends AbstractHelperOmni
             );
             $rowTotal   = $item->getRowTotalInclTax();
             $basketData = $this->getOneListCalculation();
-            $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+            $orderLines = $basketData ? $basketData->getMobiletransactionline() : [];
 
             foreach ($orderLines as $line) {
                 if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                    $rowTotal = $line->getQuantity() == $item->getQty() ? $line->getAmount()
-                        : ($line->getAmount() / $line->getQuantity()) * $item->getQty();
+                    $rowTotal = $line->getQuantity() == $item->getQty() ?
+                        ($line->getNetamount() + $line->getTaxamount()) :
+                        (($line->getNetamount() + $line->getTaxamount()) / $line->getQuantity()) * $item->getQty();
                     break;
                 }
             }
@@ -947,7 +696,7 @@ class BasketHelper extends AbstractHelperOmni
      * @param $item
      * @return string
      * @throws InvalidEnumException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getPrice($item)
     {
@@ -978,19 +727,20 @@ class BasketHelper extends AbstractHelperOmni
      *
      * Get item row discount
      *
-     * @param $item
+     * @param Item $item
      * @param array $lines
      * @return float|int
+     * @throws GuzzleException
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function getItemRowDiscount($item, $lines = [])
+    public function getItemRowDiscount(Item $item, array $lines = [])
     {
         $rowDiscount = $bundleProduct = 0;
 
         if (empty($lines)) {
             $basketData = $this->getOneListCalculation();
-            $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+            $orderLines = $basketData ? $basketData->getMobiletransactionline() : [];
         } else {
             $orderLines = $lines;
         }
@@ -1004,11 +754,11 @@ class BasketHelper extends AbstractHelperOmni
         foreach ($children as $child) {
             foreach ($orderLines as $index => $line) {
                 if (is_numeric($line->getId()) ?
-                    ($child->getItemId() == $line->getId() && $line->getDiscountAmount() > 0) :
-                    ($this->itemHelper->isSameItem($child, $line) && $line->getDiscountAmount() > 0)
+                    ($child->getItemId() == $line->getId() && $line->getDiscountamount() > 0) :
+                    ($this->itemHelper->isSameItem($child, $line) && $line->getDiscountamount() > 0)
                 ) {
                     $qty         = !empty($lines) ? $item->getQtyOrdered() : $item->getQty();
-                    $rowDiscount += $line->getQuantity() == $qty ? $line->getDiscountAmount()
+                    $rowDiscount += $line->getQuantity() == $qty ? $line->getDiscountamount()
                         : ($line->getDiscountAmount() / $line->getQuantity()) * $qty;
                     unset($orderLines[$index]);
 
@@ -1042,8 +792,11 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * @return mixed
+     * Get basket calculation stored in quote
+     *
+     * @return RootMobileTransaction|null
      * @throws InvalidEnumException|NoSuchEntityException
+     * @throws GuzzleException
      */
     public function getOneListCalculation()
     {
@@ -1064,9 +817,9 @@ class BasketHelper extends AbstractHelperOmni
      * Calculate oneList to sync order from admin/cron
      *
      * @param $order
-     * @return Order
+     * @return RootMobileTransaction|null
      * @throws InvalidEnumException
-     * @throws LocalizedException
+     * @throws LocalizedException|GuzzleException
      */
     public function calculateOneListFromOrder($order)
     {
@@ -1154,20 +907,18 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Updating basket from Central and storing response
      *
-     * @param $oneList
+     * @param RootMobileTransaction $oneList
      * @param $quote
-     * @return OneListCalculateResponse|Order|null
+     * @return RootMobileTransaction|null
      * @throws AlreadyExistsException
      * @throws InvalidEnumException
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function updateBasketAndSaveTotals($oneList, $quote)
     {
-        if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
-            $country = $quote->getShippingAddress()->getCountryId();
-            $oneList->setShipToCountryCode($country);
-        }
+        $country = $quote->getShippingAddress()->getCountryId();
+        $oneList->getMobiletransaction()->setShiptocountryregioncode($country);
 
         $basketData = $this->update($oneList);
         $quote = $this->getCurrentQuote();
@@ -1346,7 +1097,7 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Get current active quote
      *
-     * @return \Magento\Quote\Api\Data\CartInterface
+     * @return CartInterface
      * @throws NoSuchEntityException
      */
     public function getCurrentQuote()
@@ -1364,14 +1115,15 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Set basket calculation into current quote
      *
-     * @param $calculation
+     * @param mixed $calculation
      * @return void
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|AlreadyExistsException
      */
     public function setOneListCalculationInCheckoutSession($calculation)
     {
         $quote = $this->getCurrentQuote();
         if ($quote) {
+            $calculation = $calculation ? $this->flattenModel($calculation) : null;
             // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
             $quote->setBasketResponse($calculation ? serialize($calculation) : null);
             $this->quoteResourceModel->save($quote);
@@ -1393,7 +1145,7 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Get basket calculation from current quote
      *
-     * @return mixed
+     * @return RootMobileTransaction|null
      * @throws NoSuchEntityException
      */
     public function getOneListCalculationFromCheckoutSession()
@@ -1406,7 +1158,7 @@ class BasketHelper extends AbstractHelperOmni
 
         $basketData = $quote->getBasketResponse();
         // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
-        return ($basketData) ? unserialize($basketData) : $basketData;
+        return ($basketData) ? $this->restoreModel(unserialize($basketData)) : $basketData;
     }
 
     /**

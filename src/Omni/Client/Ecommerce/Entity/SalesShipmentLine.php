@@ -20,13 +20,29 @@ class SalesShipmentLine extends AbstractModel
     public const UNIT_OF_MEASURE_CODE = 'Unit of Measure Code';
     public const QUANTITY = 'Quantity';
 
+    public static array $dbColumnsMapping = [
+	self::DOCUMENT_NO => 'document_no',
+	self::LINE_NO => 'line_no',
+	self::TYPE => 'type',
+	self::NO => 'no',
+	self::DESCRIPTION => 'description',
+	self::VARIANT_CODE => 'variant_code',
+	self::UNIT_OF_MEASURE_CODE => 'unit_of_measure_code',
+	self::QUANTITY => 'quantity',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getDocumentNo(): ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
 
-    public function setDocumentNo(string $value)
+    public function setDocumentNo(?string $value)
     {
         return $this->setData(self::DOCUMENT_NO, $value);
     }
@@ -36,17 +52,17 @@ class SalesShipmentLine extends AbstractModel
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value)
+    public function setLineNo(?int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
 
-    public function getType(): ?string
+    public function getType(): ?int
     {
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value)
+    public function setType(?int $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -56,7 +72,7 @@ class SalesShipmentLine extends AbstractModel
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value)
+    public function setNo(?string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -66,7 +82,7 @@ class SalesShipmentLine extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -76,7 +92,7 @@ class SalesShipmentLine extends AbstractModel
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value)
+    public function setVariantCode(?string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -86,17 +102,17 @@ class SalesShipmentLine extends AbstractModel
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
 
-    public function setUnitOfMeasureCode(string $value)
+    public function setUnitOfMeasureCode(?string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
 
-    public function getQuantity(): ?string
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
-    public function setQuantity(string $value)
+    public function setQuantity(?float $value)
     {
         return $this->setData(self::QUANTITY, $value);
     }

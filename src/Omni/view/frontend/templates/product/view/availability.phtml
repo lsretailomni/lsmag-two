@@ -1,9 +1,8 @@
 <?php
 // @codingStandardsIgnoreFile
-use Ls\Omni\ViewModel\GeneralViewModel;
 use Magento\Framework\View\Element\Template;
 
-/** @var $viewModel GeneralViewModel */
+/** @var $viewModel \Ls\Omni\ViewModel\GeneralViewModel */
 /** @var $block Template */
 $viewModel = $block->getViewModel();
 ?>
@@ -14,16 +13,21 @@ $viewModel = $block->getViewModel();
     </div>
     <div id="map-canvas"></div>
     <script type="text/javascript">
-        var googleMapApiKey = "<?php echo $viewModel->getGoogleMapsApiKey();?>";
-        var defaultLat = "<?php echo $viewModel->getDefaultLatitude();?>";
-        var defaultLong = "<?php echo $viewModel->getDefaultLongitude();?>";
-        var defaultZoom = "<?php echo $viewModel->getDefaultZoom();?>";
+        var googleMapApiKey = "<?= $viewModel->getGoogleMapsApiKey();?>",
+            defaultLat = "<?= $viewModel->getDefaultLatitude();?>",
+            defaultLong = "<?= $viewModel->getDefaultLongitude();?>",
+            defaultZoom = "<?= $viewModel->getDefaultZoom();?>";
     </script>
 
     <script type="text/x-magento-init">
     {
         "#product_addtocart_form": {
-            "lsomni/stock": {}
+            "lsomni/stock": {
+                "googleMapApiKey": "<?= $viewModel->getGoogleMapsApiKey();?>",
+                "defaultLat": "<?= $viewModel->getDefaultLatitude();?>",
+                "defaultLong": "<?= $viewModel->getDefaultLongitude();?>",
+                "defaultZoom": "<?= $viewModel->getDefaultZoom();?>"
+            }
         }
     }
 

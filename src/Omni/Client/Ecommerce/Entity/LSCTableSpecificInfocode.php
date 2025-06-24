@@ -17,13 +17,26 @@ class LSCTableSpecificInfocode extends AbstractModel
     public const USAGE_CATEGORY = 'Usage Category';
     public const USAGE_SUBCATEGORY = 'Usage Sub-Category';
 
+    public static array $dbColumnsMapping = [
+	self::TABLE_ID => 'table_id',
+	self::VALUE => 'value',
+	self::INFOCODE_CODE => 'infocode_code',
+	self::USAGE_CATEGORY => 'usage_category',
+	self::USAGE_SUBCATEGORY => 'usage_subcategory',
+    ];
 
-    public function getTableID(): ?int
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
+
+    public function getTableId(): ?int
     {
         return $this->getData(self::TABLE_ID);
     }
 
-    public function setTableID(int $value)
+    public function setTableId(?int $value)
     {
         return $this->setData(self::TABLE_ID, $value);
     }
@@ -33,7 +46,7 @@ class LSCTableSpecificInfocode extends AbstractModel
         return $this->getData(self::VALUE);
     }
 
-    public function setValue(string $value)
+    public function setValue(?string $value)
     {
         return $this->setData(self::VALUE, $value);
     }
@@ -43,27 +56,27 @@ class LSCTableSpecificInfocode extends AbstractModel
         return $this->getData(self::INFOCODE_CODE);
     }
 
-    public function setInfocodeCode(string $value)
+    public function setInfocodeCode(?string $value)
     {
         return $this->setData(self::INFOCODE_CODE, $value);
     }
 
-    public function getUsageCategory(): ?string
+    public function getUsageCategory(): ?int
     {
         return $this->getData(self::USAGE_CATEGORY);
     }
 
-    public function setUsageCategory(string $value)
+    public function setUsageCategory(?int $value)
     {
         return $this->setData(self::USAGE_CATEGORY, $value);
     }
 
-    public function getUsageSubCategory(): ?string
+    public function getUsageSubCategory(): ?int
     {
         return $this->getData(self::USAGE_SUBCATEGORY);
     }
 
-    public function setUsageSubCategory(string $value)
+    public function setUsageSubCategory(?int $value)
     {
         return $this->setData(self::USAGE_SUBCATEGORY, $value);
     }

@@ -1,121 +1,122 @@
 define([
     'jquery',
-    'mage/validation',
-    'lsomni/map-loader',
     'mage/url',
-    'ko',
+    'lsomni/map-loader',
     'Magento_Ui/js/modal/modal',
-    'Magento_Ui/js/modal/alert'
-], function ($, _, MapLoader, url, ko, modal, alert) {
+    'Magento_Ui/js/modal/alert',
+    'mage/validation'
+], function ($, urlBuilder, MapLoader, modal, alert) {
     'use strict';
 
-    function initializer(config, node) {
-        var dataForm = $(node);
-        var ignore = null;
-        $(document).on("click", "a.checkavailability", function () {
-            var validOrNotValid = dataForm.validation('isValid'); //validates form and returns boolean
-            if (validOrNotValid) {
-                var formData = dataForm.data();
-                var sku = formData.productSku;
-                var selectedSimpleProductId = $("input[name=selected_configurable_option]").val();
-                var controllerUrl = getBaseUrl("omni/stock/product" + "?sku=" + sku + "&id=" + selectedSimpleProductId);
+    $.widget('lsomni.stock', {
+        options: {
+            googleMapApiKey: '',
+            defaultLat: '',
+            defaultLong: '',
+            defaultZoom: ''
+        },
+
+        _create: function () {
+            this.bindEvents();
+        },
+
+        bindEvents: function () {
+            var self = this;
+
+            $(document).on('click', 'a.checkavailability', function () {
+                if (!self.element.validation('isValid')) {
+                    return false;
+                }
+
+                var formData = self.element.data(),
+                    sku = formData.productSku,
+                    selectedSimpleProductId = $("input[name=selected_configurable_option]").val(),
+                    requestUrl = urlBuilder.build("omni/stock/product?sku=" + sku + "&id=" + selectedSimpleProductId);
+
                 $.ajax({
-                    url: controllerUrl,
+                    url: requestUrl,
                     type: 'POST',
-                    dataType: "json",
-                    beforeSend: function () {
-                        $('body').loader('show');
-                    },
-                    complete: function () {
-                        $('body').loader('hide');
-                    },
+                    dataType: 'json',
+                    showLoader: true,
                     success: function (data) {
                         var stores = $.parseJSON(data.stocks);
                         if (stores.totalRecords > 0) {
-                            getPopUp(stores).openModal();
+                            self.getPopup(stores).openModal();
                         } else {
                             alert({
                                 title: data.title,
-                                content: data.content,
-                                actions: {
-                                    always: function () {
-                                    }
-                                }
+                                content: data.content
                             });
                         }
                     },
-                    error: function (xhr) { // if error occured
-                        console.log(xhr.statusText + xhr.responseText);
+                    error: function (xhr) {
+                        console.error(xhr.statusText, xhr.responseText);
                     }
                 });
-            }
-            return false;
-        });
-    }
 
-    function getPopUp(stores) {
-        var self = this,
-            buttons;
-
-        if (!popUp) {
-            MapLoader.done($.proxy(initMap(stores), this)).fail(function () {
-                console.error("ERROR: Google maps library failed to load");
+                return false;
             });
-            var popUp = modal({
-                'responsive': true,
-                'innerScroll': true,
-                'buttons': [],
-                'type': 'slide',
-                'modalClass': 'mc_cac_map',
-                closed: function () {
-                    getPopUp(stores);
-                }
-            }, $('#map-canvas'));
-        }
-        return popUp;
-    }
+        },
 
-    function getBaseUrl(param) {
-        return url.build(param);
-    }
+        getPopup: function (stores) {
+            var self = this;
 
-    function initMap(stores) {
-        var self = this;
-        var myLatLng = {
-            lat: parseFloat(defaultLat),
-            lng: parseFloat(defaultLong)
-        };
-        var map = new google.maps.Map(document.getElementById('map-canvas'), {
-            zoom: parseInt(defaultZoom),
-            center: myLatLng
-        });
-        var infoWindow = new google.maps.InfoWindow();
+            if (!this.popup) {
+                MapLoader.done(function () {
+                    self.initMap(stores);
+                }).fail(function () {
+                    console.error("Google Maps failed to load.");
+                });
 
-        $.each(stores.items, function (index, store) {
+                this.popup = modal({
+                    responsive: true,
+                    innerScroll: true,
+                    modalClass: 'mc_cac_map',
+                    buttons: [],
+                    type: 'slide'
+                }, $('#map-canvas'));
+            }
 
-            var latitude = parseFloat(store.Latitute),
-                longitude = parseFloat(store.Longitude),
-                latLng = new google.maps.LatLng(latitude, longitude),
-                marker = new google.maps.Marker({
+            return this.popup;
+        },
+
+        initMap: function (stores) {
+            var self = this,
+                center = {
+                    lat: parseFloat(self.options.defaultLat),
+                    lng: parseFloat(self.options.defaultLong)
+                },
+                map = new google.maps.Map(document.getElementById('map-canvas'), {
+                    zoom: parseInt(self.options.defaultZoom),
+                    center: center
+                }),
+                infoWindow = new google.maps.InfoWindow();
+
+            $.each(stores.items, function (index, store) {
+                var latLng = {
+                    lat: parseFloat(store.latitude),
+                    lng: parseFloat(store.longitude)
+                };
+
+                var marker = new google.maps.Marker({
                     position: latLng,
                     map: map,
-                    title: store.Name
+                    title: store.name
                 });
 
-            (function (marker, store) {
-                google.maps.event.addListener(marker, 'click', function (e) {
-                    if (store.State == null) {
-                        store.State = "";
-                    }
-                    var storeInfo = $(stores.storesInfo).find('#store-' + store.nav_id).html();
-                    infoWindow.setContent('<div class="omni-stores-index "><div class="stores-maps-container"><div class="store-map-plus-info-container info-window">' + storeInfo + '</div></div></div>');
+                google.maps.event.addListener(marker, 'click', function () {
+                    var storeInfo = $(stores.storesInfo).find('#store-' + store.no).html();
+                    infoWindow.setContent(
+                        '<div class="omni-stores-index">' +
+                        '<div class="stores-maps-container">' +
+                        '<div class="store-map-plus-info-container info-window">' +
+                        storeInfo + '</div></div></div>'
+                    );
                     infoWindow.open(map, marker);
                 });
-            })(marker, store);
-        });
-    }
+            });
+        }
+    });
 
-    return function (config, node) {
-        initializer(config, node);
-    }
+    return $.lsomni.stock;
 });

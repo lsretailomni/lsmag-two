@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\ViewModel;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use Magento\Catalog\Helper\Data;
 use Magento\Catalog\Model\Product;
@@ -10,16 +12,6 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 class GeneralViewModel implements ArgumentInterface
 {
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var Data
-     */
-    public $catalogHelper;
-
     /**
      * @var null
      */
@@ -30,20 +22,18 @@ class GeneralViewModel implements ArgumentInterface
      * @param Data $catalogHelper
      */
     public function __construct(
-        LSR $lsr,
-        Data $catalogHelper
+        public LSR $lsr,
+        public Data $catalogHelper
     ) {
-        $this->lsr = $lsr;
-        $this->catalogHelper = $catalogHelper;
     }
 
     /**
      * Get default google map api key from config
      *
-     * @return string
+     * @return string|null
      * @throws NoSuchEntityException
      */
-    public function getGoogleMapsApiKey()
+    public function getGoogleMapsApiKey(): ?string
     {
         return $this->lsr->getGoogleMapsApiKey();
     }
@@ -54,7 +44,7 @@ class GeneralViewModel implements ArgumentInterface
      * @return string
      * @throws NoSuchEntityException
      */
-    public function getDefaultLatitude()
+    public function getDefaultLatitude(): string
     {
         return $this->lsr->getDefaultLatitude();
     }
@@ -65,7 +55,7 @@ class GeneralViewModel implements ArgumentInterface
      * @return string
      * @throws NoSuchEntityException
      */
-    public function getDefaultLongitude()
+    public function getDefaultLongitude(): string
     {
         return $this->lsr->getDefaultLongitude();
     }
@@ -76,29 +66,9 @@ class GeneralViewModel implements ArgumentInterface
      * @return string
      * @throws NoSuchEntityException
      */
-    public function getDefaultZoom()
+    public function getDefaultZoom(): string
     {
         return $this->lsr->getDefaultZoom();
-    }
-
-    /**
-     * Get configured app_id
-     *
-     * @return mixed
-     */
-    public function getAppId()
-    {
-        return $this->lsr->getAppId();
-    }
-
-    /**
-     * Get configured rest_api_key
-     *
-     * @return mixed
-     */
-    public function getRestApiKey()
-    {
-        return $this->lsr->getRestApiKey();
     }
 
     /**
@@ -106,7 +76,7 @@ class GeneralViewModel implements ArgumentInterface
      *
      * @return bool
      */
-    public function isPushNotificationsEnabled()
+    public function isPushNotificationsEnabled(): bool
     {
         return $this->lsr->isPushNotificationsEnabled();
     }
@@ -115,9 +85,9 @@ class GeneralViewModel implements ArgumentInterface
      * Check if commerce is responding
      *
      * @return bool|null
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
-    public function isValid()
+    public function isValid(): ?bool
     {
         return $this->lsr->isLSR($this->lsr->getCurrentStoreId()) &&
             !in_array(
@@ -131,7 +101,7 @@ class GeneralViewModel implements ArgumentInterface
      *
      * @return Product|null
      */
-    public function getProduct()
+    public function getProduct(): ?Product
     {
         if ($this->product === null) {
             $this->product = $this->catalogHelper->getProduct();

@@ -803,6 +803,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * Get default google map api key from config
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -817,6 +818,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * Get default latitude from config
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -831,6 +833,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * Get default longitude from config
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -845,6 +848,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * Get default default zoom from config
+     *
      * @return string
      * @throws NoSuchEntityException
      */

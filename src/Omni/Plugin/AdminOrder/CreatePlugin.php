@@ -93,7 +93,7 @@ class CreatePlugin
             if ($this->lsr->isLSR($quote->getStoreId())) {
                 $couponCode = $quote->getCouponCode();
                 $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $quote->getStore()->getWebsiteId());
-                $this->basketHelper->store_id = $webStore;
+                $this->basketHelper->storeId = $webStore;
                 /** @var OneList|null $oneList */
                 $oneList = $this->basketHelper->getOneListAdmin(
                     $quote->getCustomerEmail(),

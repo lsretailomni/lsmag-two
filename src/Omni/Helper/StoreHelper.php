@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Helper;
 
@@ -8,40 +9,20 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
-use Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores;
+use \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Model\Cache\Type;
-use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 /**
  * Store Helper function
  *
  */
-class StoreHelper extends AbstractHelper
+class StoreHelper extends AbstractHelperOmni
 {
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var Data
-     */
-    public $dataHelper;
-
-    /**
-     * @var DateTime
-     */
-    public $dateTime;
-
     /**
      * @var $pickupDateFormat
      */
@@ -51,46 +32,6 @@ class StoreHelper extends AbstractHelper
      * @var $pickupTimeFormat
      */
     public $pickupTimeFormat;
-
-    /** @var TimezoneInterface */
-    public $timezone;
-
-    /**
-     * @var CacheHelper
-     */
-    private CacheHelper $cacheHelper;
-
-    /**
-     * @var CollectionFactory
-     */
-    public $storeCollectionFactory;
-
-    /**
-     * @param Context $context
-     * @param Data $dataHelper
-     * @param DateTime $dateTime
-     * @param LSR $lsr
-     * @param TimezoneInterface $timezone
-     * @param CacheHelper $cacheHelper
-     * @param CollectionFactory $storeCollectionFactory
-     */
-    public function __construct(
-        Context $context,
-        Data $dataHelper,
-        DateTime $dateTime,
-        LSR $lsr,
-        TimezoneInterface $timezone,
-        CacheHelper $cacheHelper,
-        CollectionFactory $storeCollectionFactory
-    ) {
-        parent::__construct($context);
-        $this->lsr                    = $lsr;
-        $this->dataHelper             = $dataHelper;
-        $this->dateTime               = $dateTime;
-        $this->timezone               = $timezone;
-        $this->cacheHelper            = $cacheHelper;
-        $this->storeCollectionFactory = $storeCollectionFactory;
-    }
 
     /**
      * Getting sales type
@@ -121,19 +62,19 @@ class StoreHelper extends AbstractHelper
         }
 
         try {
-            $cacheId        = LSR::STORE . $webStore;
+            $cacheId = LSR::STORE . $webStore;
             $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($cachedResponse) {
                 $response = $cachedResponse;
             } else {
                 // @codingStandardsIgnoreStart
-                $webStoreOperation = new Operation\GetStores_GetStores();
+                $webStoreOperation = $this->createInstance(Operation\GetStores_GetStores::class);
                 $webStoreOperation->setOperationInput(
                     ['storeGetType' => '0', 'searchText' => $webStore, 'includeDetail' => false]
                 );
                 // @codingStandardsIgnoreEnd
-                $response =  current($webStoreOperation->execute()->getRecords());
+                $response = current($webStoreOperation->execute()->getRecords());
 
                 if (!empty($response)) {
                     $this->cacheHelper->persistContentInCache(

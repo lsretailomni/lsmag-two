@@ -1,26 +1,37 @@
 define([
-    "jquery",
-    "jquery/ui",
-    "OwlCarousel"
+    'jquery',
+    'jquery/ui'
 ], function ($) {
-    "use strict";
-    return function main(config, element) {
-        var $element = $(element);
-        var ajaxUrl = config.ajaxUrl;
-        var currentProduct = config.currentProduct;
-        $(document).ready(function () {
+    'use strict';
+
+    $.widget('lsomni.proactiveDiscounts', {
+        options: {
+            ajaxUrl: '',
+            currentProduct: ''
+        },
+
+        _create: function () {
+            var self = this;
+
+            // Delay to ensure other components render first
             setTimeout(function () {
                 $.ajax({
-                    context: '#ls-discounts',
-                    url: ajaxUrl,
-                    type: "GET",
-                    data: {currentProduct: currentProduct}
-                }).done(function (data) {
-                    $('#ls-discounts').html(data.output);
-                    $('#ls-discounts').find('.proactive-discounts-container').trigger('contentUpdated');
-                    return true;
+                    url: self.options.ajaxUrl,
+                    type: 'GET',
+                    data: {
+                        currentProduct: self.options.currentProduct
+                    },
+                    success: function (response) {
+                        $('#ls-discounts').html(response.output);
+                        $('#ls-discounts .proactive-discounts-container').trigger('contentUpdated');
+                    },
+                    error: function (xhr) {
+                        console.error('Discount load error:', xhr.statusText, xhr.responseText);
+                    }
                 });
             }, 2000);
-        });
-    };
+        }
+    });
+
+    return $.lsomni.proactiveDiscounts;
 });
