@@ -1091,18 +1091,37 @@ class ReplicationHelper extends AbstractHelper
      */
     public function buildCriteriaGetDeletedOnly(array $filters, $pagesize = 100)
     {
-        $criteria = $this->searchCriteriaBuilder;
+        $this->searchCriteriaBuilder->setPageSize($pagesize);
         if (!empty($filters)) {
             foreach ($filters as $filter) {
-                $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
+                $this->searchCriteriaBuilder->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
             }
         }
-        $criteria->addFilter('IsDeleted', 1, 'eq');
-        $criteria->addFilter('is_updated', 1, 'eq');
-        if ($pagesize != -1) {
-            $criteria->setPageSize($pagesize);
-        }
-        return $criteria->create();
+        $this->searchCriteriaBuilder->addFilter('IsDeleted', 1, 'eq');
+
+        $orFilters = [];
+
+        $filter1     = $this->filterBuilder
+            ->setField('is_updated')
+            ->setValue(1)
+            ->setConditionType('eq')
+            ->create();
+        $orFilters[] = $filter1;
+
+        $filter2     = $this->filterBuilder
+            ->setField('processed')
+            ->setValue(0)
+            ->setConditionType('eq')
+            ->create();
+        $orFilters[] = $filter2;
+
+        $filterGroup = $this->filterGroupBuilder
+            ->setFilters($orFilters)
+            ->create();
+
+        $this->searchCriteriaBuilder->setFilterGroups([$filterGroup]);
+
+        return $this->searchCriteriaBuilder->create();
     }
 
     /**
@@ -3987,28 +4006,44 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * Get products based on receipe ID
-     * 
+     * Get products based on receipe ID and Sku
+     *
      * @param $lsModifierRecipeIds
+     * @param null $sku
      * @return Collection
      */
-    public function getProductsByRecipeId($lsModifierRecipeIds)
+    public function getProductsByRecipeId($lsModifierRecipeIds, $sku = null)
     {
         $connection = $this->resource->getConnection();
-        $productOptionTable = $connection->getTableName('catalog_product_option');
+
+        $productOptionTable   = $connection->getTableName('catalog_product_option');
+        $optionTypeValueTable = $connection->getTableName('catalog_product_option_type_value');
 
         $collection = $this->productCollectionFactory->create();
         $collection->addAttributeToSelect('*');
 
-        $collection->getSelect()->join(
+        $select = $collection->getSelect();
+
+        $select->join(
             ['cpo' => $productOptionTable],
             'e.entity_id = cpo.product_id',
             []
-        )->where('cpo.ls_modifier_recipe_id IN (?)', $lsModifierRecipeIds);
+        );
+
+        // Add where condition for recipe ID
+        $select->where('cpo.ls_modifier_recipe_id IN (?)', $lsModifierRecipeIds);
+
+        if (!empty($sku)) {
+            $select->join(
+                ['optv' => $optionTypeValueTable],
+                'cpo.option_id = optv.option_id',
+                []
+            )->where('optv.sku = ?', $sku);
+        }
 
         $query = $collection->getSelect()->__toString();
 
         return $collection;
     }
-    
+
 }
