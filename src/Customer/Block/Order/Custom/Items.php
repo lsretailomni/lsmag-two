@@ -53,6 +53,9 @@ class Items extends AbstractItems
         }
 
         $orderLines = $order['LSCMemberSalesDocLine'];
+        if (!is_array($orderLines)) {
+            $orderLines = [$orderLines];
+        }
         $options = [];
         $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
         foreach ($orderLines as $key => $line) {

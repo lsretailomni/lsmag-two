@@ -39,7 +39,7 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                     </thead>
                     <tbody>
                     <?php foreach ($_orders as $_order):
-                        if (isset($_order['Sale Is Return Sale']) && $_order['Sale Is Return Sale']) {
+                        if ($_order->getgetSaleIsReturnSale()) {
                             continue;
                         }
 
@@ -48,23 +48,23 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                             $block->registerValueInRegistry($magOrder);
                             $magOrderIncrementId = $magOrder->getIncrementId();
                         }
-                        $storeCurrency = $block->getStoreCurrencyCode($_order['Store Currency Code']);
+                        $storeCurrency = $block->getStoreCurrencyCode($_order->getStoreCurrencyCode());
                         ?>
                         <tr>
                             <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
                                 class="col id"><?= /* @escapeNotVerified */
-                                $_order['Document ID'] ? $_order['Document ID'] : $magOrderIncrementId; ?></td>
+                                $_order->getDocumentId() ? $_order->getDocumentId() : $magOrderIncrementId; ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
                                 class="col date">
-                                <span style="display:none;"><?= $block->getFormattedDateToTimeStamp($_order['Date Time']) ?></span>
-                                <?= /* @escapeNotVerified */ $block->getFormattedDate($_order['Date Time']) ?></td>
+                                <span style="display:none;"><?= $block->getFormattedDateToTimeStamp($_order->getDateTime()) ?></span>
+                                <?= /* @escapeNotVerified */ $block->getFormattedDate($_order->getDateTime()) ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>"
-                                class="col shipping"><?= $_order['Ship-to Name'] ? $block->escapeHtml($_order['Ship-to Name']) : __('Not Applicable') ?></td>
+                                class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : __('Not Applicable') ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Store Name')) ?>"
-                                class="col store-name"><?= $_order['Store Name'] ?></td>
+                                class="col store-name"><?= $_order->getStoreName() ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Total')) ?>"
                                 class="col total"><?= /* @escapeNotVerified */
-                                $block->getFormattedPrice($_order['Gross Amount'], $storeCurrency, $_order['IdType']) ?></td>
+                                $block->getFormattedPrice($_order->getGrossAmount(), $storeCurrency, $_order['IdType']) ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Status')) ?>"
                                 class="col status"><?= /* @escapeNotVerified */
                                 $_order['Status'] ?></td>

@@ -60,6 +60,10 @@ class Dashboard extends Template
     {
         $lscFlowFieldsBuffer = $account->getLscFlowfieldBuffer();
         $balance = 0;
+        
+        if (!$lscFlowFieldsBuffer) {
+            return $balance;
+        }
 
         foreach ($lscFlowFieldsBuffer as $field) {
             if ($field->getData('Field Name') === 'Balance') {

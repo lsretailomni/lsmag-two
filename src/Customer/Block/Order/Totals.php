@@ -52,8 +52,8 @@ class Totals extends AbstractOrderBlock
     public function getTotalTax()
     {
         $grandTotal     = $this->getGrandTotal();
-        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        $totalNetAmount = $this->orderHelper->getFilterValues($lineItemObj, "Net Amount", "LSCMemberSalesBuffer");        
+        $lineItemObj    = ($this->getItems()) ? $this->getItems() : $this->getOrder();
+        $totalNetAmount = $this->orderHelper->getFilterValues($lineItemObj, "Net Amount", "LSCMemberSalesBuffer");
         
         return ($grandTotal - $totalNetAmount);
     }
@@ -79,7 +79,7 @@ class Totals extends AbstractOrderBlock
     public function getGrandTotal()
     {
         $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        return $this->orderHelper->getFilterValues($lineItemObj, "Gross Amount", "LSCMemberSalesBuffer");       
+        return $this->orderHelper->getFilterValues($lineItemObj, "Gross Amount", "LSCMemberSalesBuffer");
     }
 
     /**
@@ -94,7 +94,7 @@ class Totals extends AbstractOrderBlock
 
     /**
      * To fetch TotalDiscount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * 
+     *
      * @return null
      */
     public function getTotalDiscount()
@@ -113,18 +113,25 @@ class Totals extends AbstractOrderBlock
     {
         $orderLines = $this->getLines();
         $fee        = 0;
+        if (!is_array($orderLines)) {
+            $orderLines = [$orderLines];
+        }
         foreach ($orderLines as $key => $lines) {
-            if($key == "LSCMemberSalesBuffer")
+            if ($key != "LSCMemberSalesDocLine") {
                 continue;
+            }
+            if (!is_array($lines)) {
+                $lines = [$lines];
+            }
             foreach ($lines as $line) {
                 if ($line->getNumber() == $this->lsr->getStoreConfig(
-                        LSR::LSR_SHIPMENT_ITEM_ID,
-                        $this->lsr->getCurrentStoreId()
-                    )) {
+                    LSR::LSR_SHIPMENT_ITEM_ID,
+                    $this->lsr->getCurrentStoreId()
+                )) {
                     $fee = $line->getAmount();
                     break;
                 }
-            }            
+            }
         }
         return $fee;
     }
@@ -159,9 +166,12 @@ class Totals extends AbstractOrderBlock
         $loyaltyInfo       = [];
         $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping();
         if ($paymentLines) {
+            if(!is_array($paymentLines)) {
+                $paymentLines = [$paymentLines];
+            }
             foreach ($paymentLines as $line) {
-                if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
-                    || $line->getType() === PaymentType::NONE) {
+                if ($line->getEntryType() == 1 && ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
+                    || $line->getType() === PaymentType::NONE)) {
                     $tenderTypeId = $line->getTenderType();
                     if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
                         $method    = $tenderTypeMapping[$tenderTypeId];

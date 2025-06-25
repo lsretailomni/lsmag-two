@@ -3,8 +3,6 @@
 namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
@@ -73,7 +71,7 @@ class Info extends AbstractOrderBlock
                 $address .= $order->getShipToPhoneNo() ?
                     "<a href='tel:" . $order->getShipToPhoneNo() . "'>"
                     . $order->getShipToPhoneNo() . '</a>' : '';
-            }            
+            }
         }
         
         return $address;
@@ -81,6 +79,7 @@ class Info extends AbstractOrderBlock
 
     /**
      * Get country name by country code
+     * 
      * @param $countryCode
      * @return string
      */
@@ -123,6 +122,7 @@ class Info extends AbstractOrderBlock
     /**
      * To fetch Status value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
      * depending on the structure of SalesEntry node
+     *
      * @return mixed
      */
     public function getOrderStatus()
@@ -133,6 +133,7 @@ class Info extends AbstractOrderBlock
     /**
      * To fetch ClickAndCollectOrder value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
      * depending on the structure of SalesEntry node
+     *
      * @return mixed
      */
     public function getClickAndCollectOrder()
@@ -140,10 +141,16 @@ class Info extends AbstractOrderBlock
         $clickAndCollectOrder = null;
         $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder(true);
         foreach ($lineItemObj as $key => $lines) {
-            if ($key == "LSCMemberSalesBuffer")
+            if ($key != "LSCMemberSalesDocLine") {
                 continue;
-            forEach ($lines as $line) {
-                $clickAndCollectOrder = ($line->getClickAndCollectLine() && is_null($clickAndCollectOrder)) ? $line->getClickAndCollectLine() : null;
+            }
+            if (!is_array($lines)) {
+                $lines = [$lines];
+            }
+            foreach ($lines as $line) {
+                $clickAndCollectOrder = ($line->getClickAndCollectLine() && $clickAndCollectOrder === null) ?
+                    $line->getClickAndCollectLine() :
+                    null;
             }
             
         }
@@ -222,7 +229,7 @@ class Info extends AbstractOrderBlock
                  */
 //                if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
 //                    || $line->getType() === PaymentType::NONE) {
-                 if($line->getEntryType() == 1) {
+                if ($line->getEntryType() == 1) {
                     $tenderTypeId = $line->getNumber();
                     if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
                         $method    = $tenderTypeMapping[$tenderTypeId];
@@ -264,11 +271,14 @@ class Info extends AbstractOrderBlock
         $paymentLines = [];
         $orderTransactions = $this->getOrder(true);
         foreach ($orderTransactions as $key => $lines) {
-            if ($key == "LSCMemberSalesBuffer") {
+            if ($key != "LSCMemberSalesDocLine") {
                 continue;
             }
+            if (!is_array($lines)) {
+                $lines = [$lines];
+            }
             foreach ($lines as $line) {
-                if($line->getEntryType() == 1) {
+                if ($line->getEntryType() == 1) {
                     $paymentLines[] = $line;
                 }
             }
@@ -289,7 +299,7 @@ class Info extends AbstractOrderBlock
             $orderTransactions = [$orderTransactions];
         }
 
-        $points += $this->orderHelper->getFilterValues($orderTransactions, "Points Rewarded", "LSCMemberSalesBuffer");        
+        $points += $this->orderHelper->getFilterValues($orderTransactions, "Points Rewarded", "LSCMemberSalesBuffer");
         return number_format((float)$points, 2, '.', '');
     }
 

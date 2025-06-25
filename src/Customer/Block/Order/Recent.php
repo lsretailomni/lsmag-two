@@ -26,7 +26,7 @@ class Recent extends Template
 {
     /**
      *  Recent constructor.
-     * 
+     *
      * @param Context $context
      * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
@@ -46,7 +46,7 @@ class Recent extends Template
         public LSR $lsr,
         array $data = []
     ) {
-        parent::__construct($context, $data);        
+        parent::__construct($context, $data);
     }
 
     /**
@@ -66,7 +66,7 @@ class Recent extends Template
             $response = [];
             $orders   = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
             if ($orders) {
-                try {                    
+                try {
                     $response = $this->orderHelper->processOrderData($orders);
                 } catch (Exception $e) {
                     $this->_logger->error($e->getMessage());
@@ -87,9 +87,9 @@ class Recent extends Template
 
     /**
      * Get store currency code
-     * 
+     *
      * If store currency code is not passed then get store currency code from LSR
-     * 
+     *
      * @param $storeCurrencyCode
      * @return string
      * @throws NoSuchEntityException
@@ -229,6 +229,4 @@ class Recent extends Template
     {
         $this->orderHelper->registerGivenValueInRegistry('current_mag_order', $value);
     }
-
-    
 }

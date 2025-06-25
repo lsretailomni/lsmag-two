@@ -14,11 +14,8 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Omni\Helper\Data;
-
 use \Ls\Omni\Client\Ecommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
 use \Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
-
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -49,7 +46,7 @@ class OrderHelper extends AbstractHelper
 {
     /**
      * @var mixed
-    */
+     */
     public $currentOrder;
     
     /**
@@ -93,7 +90,7 @@ class OrderHelper extends AbstractHelper
         public ConfigInterface $config,
         public Data $dataHelper
     ) {
-        parent::__construct($context);        
+        parent::__construct($context);
     }
 
     /**
@@ -439,7 +436,7 @@ class OrderHelper extends AbstractHelper
     public function getParameterValues($orderObj, $param)
     {
         $value    = null;
-        if(array_key_exists($param, $orderObj->getData())) {
+        if (array_key_exists($param, $orderObj->getData())) {
             $value = $orderObj->getData($param);
         }
         return $value;
@@ -567,7 +564,7 @@ class OrderHelper extends AbstractHelper
 
     /**
      * Get Current Customer Order History
-     * 
+     *
      * @param $maxNumberOfEntries
      * @return array|Entity\GetMemContSalesHist_GetMemContSalesHistResponse|null
      */
@@ -599,7 +596,7 @@ class OrderHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getRecords()[0]->getLSCMemberSalesBuffer() : $response;
+        return $response && $response->getResponseCode() == "0000" ? $response->getRecords()[0]->getLSCMemberSalesBuffer() : $response;
     }
 
     /**
@@ -650,7 +647,7 @@ class OrderHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getRecords()[0]->getData() : $response;
+        return $response && $response->getResponsecode() == "0000" ? $response->getRecords()[0]->getData() : $response;
     }
 
     /**
@@ -770,6 +767,7 @@ class OrderHelper extends AbstractHelper
 
     /**
      * Validate if the order using CardId
+     *
      * @param $order
      * @return bool
      */
@@ -842,6 +840,7 @@ class OrderHelper extends AbstractHelper
 
     /**
      * Set LS Central order details in registry.
+     *
      * @param $order
      */
     public function setOrderInRegistry($order)
@@ -907,8 +906,8 @@ class OrderHelper extends AbstractHelper
     /**
      * Get respective magento order given commerce service sales entry
      *
-     * @param $salesEntry
-     * @return array|OrderInterface
+     * @param $response
+     * @return array|false|mixed
      */
     public function getOrderByDocumentId($response)
     {
@@ -1317,7 +1316,7 @@ class OrderHelper extends AbstractHelper
         if (empty($currency) && empty($storeId) && empty($orderType) && $this->currentOrder) {
             if (is_array($this->currentOrder)) {
                 foreach ($this->currentOrder as $order) {
-                    if(!is_array($order)) {
+                    if (!is_array($order)) {
                         $currency  = $order->getStoreCurrencyCode();
                         $orderType = $order->getDocumentSourceType();
                         $orderType = $this->getOrderType($orderType);
@@ -1353,8 +1352,7 @@ class OrderHelper extends AbstractHelper
      */
     public function getOrderType($idType)
     {
-        switch ($idType)
-        {
+        switch ($idType) {
             case 1:
                 return DocumentIdType::ORDER;
             case 2:
@@ -1365,7 +1363,7 @@ class OrderHelper extends AbstractHelper
 
     /**
      * Get order status based on document source type
-     * 
+     *
      * @param $orderObj
      * @return string
      */
@@ -1393,8 +1391,7 @@ class OrderHelper extends AbstractHelper
      */
     public function getOrderTypeId($type)
     {
-        switch ($type)
-        {
+        switch ($type) {
             case DocumentIdType::ORDER:
                 return 1;
             case DocumentIdType::HOSP_ORDER:
@@ -1413,25 +1410,28 @@ class OrderHelper extends AbstractHelper
      */
     public function processOrderData($orders)
     {
-        if(!is_array($orders)) {
+        if (!is_array($orders)) {
             $orders = [$orders];
         }
         foreach ($orders as $order) {
             $order['IdType']          = $this->getOrderType($order['Document Source Type']);
-            $order['CustomerOrderNo'] = ($order['Customer Document ID']) ? $order['Customer Document ID'] : $order['Document ID'];
+            $order['CustomerOrderNo'] = ($order['Customer Document ID']) ?:
+                $order['Document ID'];
 
             switch ($order['IdType']) {
                 case DocumentIdType::RECEIPT: //Receipt
                     $order['Status']               = SalesEntryStatus::COMPLETE;
                     $order['ShippingStatus']       = ShippingStatus::SHIPPED;
-                    $order['ClickAndCollectOrder'] = (is_null($order['Customer Document ID']) || $order['Customer Document ID'] === '') == false;
-                    if((is_null($order['Ship-to Name']) || $order['Ship-to Name'] === '')) {
+                    $order['ClickAndCollectOrder'] = ($order['Customer Document ID'] === null ||
+                            $order['Customer Document ID'] === '') == false;
+                    if (($order['Ship-to Name'] === null || $order['Ship-to Name'] === '')) {
                         $order['Ship-to Name']  = $order['Name'];
                         $order['Ship-to Email'] = $order['Email'];
                     }
                     break;
                 case DocumentIdType::ORDER: //Order
-                    $order['Status']               = $order['Sale Is Return Sale'] ? SalesEntryStatus::CANCELED : SalesEntryStatus::CREATED;
+                    $order['Status']               = $order['Sale Is Return Sale'] ?
+                        SalesEntryStatus::CANCELED : SalesEntryStatus::CREATED;
                     $order['ShippingStatus']       = ShippingStatus::NOT_YET_SHIPPED;
                     $order['CreateAtStoreId']      = $order['Store No.'];
                     $order['ClickAndCollectOrder'] = "Need to implement";
@@ -1441,7 +1441,7 @@ class OrderHelper extends AbstractHelper
                     $order['CreateAtStoreId']      = $order['Store No.'];
                     $order['Status']               = SalesEntryStatus::PROCESSING;
                     $order['ShippingStatus']       = ShippingStatus::SHIPPIG_NOT_REQUIRED;
-                    if((is_null($order['Ship-to Name']) || $order['Ship-to Name'] === '')) {
+                    if ($order['Ship-to Name'] === null || $order['Ship-to Name'] === '') {
                         $order['Ship-to Name']  = $order['Name'];
                         $order['Ship-to Email'] = $order['Email'];
                     }
