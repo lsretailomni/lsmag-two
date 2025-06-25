@@ -91,7 +91,7 @@ class AbstractOrderController
     public function fetchAndSetCurrentOrderInRegistry($orderId, $type)
     {
         $response = $this->orderHelper->fetchOrder($orderId, $type);
-
+        
         if ($response) {
             $this->orderHelper->setOrderInRegistry($response);
         }

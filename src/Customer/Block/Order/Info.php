@@ -127,7 +127,7 @@ class Info extends AbstractOrderBlock
      */
     public function getOrderStatus()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "Status");
+        return $this->orderHelper->getOrderStatus($this->getOrder());
     }
 
     /**

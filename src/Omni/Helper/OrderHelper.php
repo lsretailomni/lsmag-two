@@ -1364,6 +1364,28 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Get order status based on document source type
+     * 
+     * @param $orderObj
+     * @return string
+     */
+    public function getOrderStatus($orderObj)
+    {
+        $sourceType = $this->getParameterValues($orderObj, "Document Source Type");
+        $orderType  = $this->getOrderType($sourceType);
+        switch ($orderType) {
+            case DocumentIdType::RECEIPT: //Receipt
+                return SalesEntryStatus::COMPLETE;
+            case DocumentIdType::ORDER: //Order
+                return $orderObj->getSaleIsReturnSale() ? SalesEntryStatus::CANCELED : SalesEntryStatus::CREATED;
+            case DocumentIdType::HOSP_ORDER: //HOSP ORDER
+                return SalesEntryStatus::PROCESSING;
+            default:
+                return SalesEntryStatus::CREATED;
+        }
+    }
+
+    /**
      * Get order type based on the provided ID type
      *
      * @param int $idType The type of ID to determine the order status
@@ -1391,12 +1413,15 @@ class OrderHelper extends AbstractHelper
      */
     public function processOrderData($orders)
     {
+        if(!is_array($orders)) {
+            $orders = [$orders];
+        }
         foreach ($orders as $order) {
             $order['IdType']          = $this->getOrderType($order['Document Source Type']);
             $order['CustomerOrderNo'] = ($order['Customer Document ID']) ? $order['Customer Document ID'] : $order['Document ID'];
 
             switch ($order['IdType']) {
-                case 0: //Receipt
+                case DocumentIdType::RECEIPT: //Receipt
                     $order['Status']               = SalesEntryStatus::COMPLETE;
                     $order['ShippingStatus']       = ShippingStatus::SHIPPED;
                     $order['ClickAndCollectOrder'] = (is_null($order['Customer Document ID']) || $order['Customer Document ID'] === '') == false;
@@ -1405,13 +1430,13 @@ class OrderHelper extends AbstractHelper
                         $order['Ship-to Email'] = $order['Email'];
                     }
                     break;
-                case 1: //Order
+                case DocumentIdType::ORDER: //Order
                     $order['Status']               = $order['Sale Is Return Sale'] ? SalesEntryStatus::CANCELED : SalesEntryStatus::CREATED;
                     $order['ShippingStatus']       = ShippingStatus::NOT_YET_SHIPPED;
                     $order['CreateAtStoreId']      = $order['Store No.'];
                     $order['ClickAndCollectOrder'] = "Need to implement";
                     break;
-                case 2: //HOSP ORDER
+                case DocumentIdType::HOSP_ORDER: //HOSP ORDER
                     $order['CreateTime']           = $order['Date Time'];
                     $order['CreateAtStoreId']      = $order['Store No.'];
                     $order['Status']               = SalesEntryStatus::PROCESSING;
