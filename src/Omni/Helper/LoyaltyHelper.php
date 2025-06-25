@@ -56,18 +56,28 @@ class LoyaltyHelper extends AbstractHelperOmni
     {
         $response = null;
         $customer = $this->customerSession->getCustomer();
+        $cardId   = $customer->getData('lsr_cardid');
         // @codingStandardsIgnoreLine
-        $request = new Operation\PublishedOffersGetByCardId();
+        //$request = new Operation\PublishedOffersGetByCardId();
+        //$entity = new Entity\PublishedOffersGetByCardId();
+        //$entity->setCardId($customer->getData('lsr_cardid'));
+        //$entity->setItemId('');
+        
+        $operation = $this->createInstance(GetDirectMarketingInfo::class);
+        $operation->setOperationInput([
+            Entity\GetDirectMarketingInfo::CARD_ID => $cardId,
+//            Entity\GetDirectMarketingInfo::ITEM_NO => $itemId,
+//            Entity\GetDirectMarketingInfo::STORE_NO => $storeId
+        ]);
         // @codingStandardsIgnoreLine
-        $entity = new Entity\PublishedOffersGetByCardId();
-        $entity->setCardId($customer->getData('lsr_cardid'));
-        $entity->setItemId('');
+
         try {
-            $response = $request->execute($entity);
+            $response = $operation->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getResult() : $response;
+        
+        return $response && $response->getResponsecode() == '0000' ? $response->getLoadmemberdirmarkinfoxml() : null;
     }
 
     /**

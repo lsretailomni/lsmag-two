@@ -7,18 +7,18 @@ use \Ls\Customer\Block\Loyalty\Offers;
 $should_use_block = false;
 $type             = $this->getType();
 $offers           = $this->getOffers();
-$total            = is_array($offers) ? count($offers) : 0;
+$total            = is_array($offers->getPublishedOfferLine()) ? count($offers->getPublishedOfferLine()) : 0;
 $c                = 0;
 ?>
 <div class="coupons-view">
     <?php if ($should_use_block) : ?>
         <?php echo $this->getStaticBlock(); ?>
     <?php else : ?>
-        <?php if (is_array($offers) && $total > 0) : ?>
+        <?php if (is_array($offers->getPublishedOfferLine()) && $total > 0) : ?>
             <ul class=" coupons-grid">
-                <?php foreach ($offers as $offer) : ?>
+                <?php foreach ($offers->getPublishedOfferLine() as $offer) : ?>
                     <?php
-                    $offerProductCategory = $this->getOfferProductCategoryLink($offer->getOfferLines()->getPublishedOfferLine());
+                    $offerProductCategory = $this->getOfferProductCategoryLink($offer);
                     if (!empty($offerProductCategory)) {
                         $c++;
                         $images = $this->fetchImages($offer);

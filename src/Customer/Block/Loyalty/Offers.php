@@ -119,8 +119,33 @@ class Offers extends Template
      */
     public function getOffers()
     {
+        $offersArr = [];
         $result = $this->loyaltyHelper->getOffers();
-        return ($result) ? $result->getPublishedOffer() : '';
+        
+        $publishedOffers = $result->getPublishedOffer();
+        foreach ($publishedOffers as $pubOffer) {
+            $offersArr[$pubOffer->getNo()]['Offer']  = $pubOffer;
+        }
+
+        $publishedOffersImages = $result->getPublishedOfferImages();
+        foreach ($publishedOffersImages as $pubOfferImage) {
+            $offerKey = $pubOfferImage->getKeyValue();
+            if (array_key_exists($offerKey, $offersArr)) {
+                $offersArr[$offerKey]['ImageId'] = $pubOfferImage;
+            }
+        }
+
+        $publishedOffersLines = $result->getPublishedOfferLine();
+        foreach ($publishedOffersLines as $pubOfferLine) {
+            $offerKey = $pubOfferLine->getPublishedOfferNo();
+            if (array_key_exists($offerKey, $offersArr)) {
+                $offersArr[$offerKey]['OfferLines'][] = $pubOfferLine;
+            }
+        }
+        
+        return $result;
+        
+        //return ($result) ? $result->getPublishedOffer() : '';
     }
 
     /**
