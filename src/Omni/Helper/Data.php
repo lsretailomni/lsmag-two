@@ -703,6 +703,7 @@ class Data extends AbstractHelper
     ): array {
         $baseUrl = !empty($baseUrl) ? $baseUrl :
             $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId());
+        $baseUrl = 'http://10.213.0.5:9047/LscNextMajor';
         $url = join('/', [$baseUrl, 'WS/Codeunit/RetailWebServices']);
         $url = OmniService::getUrl($url);
         $client = new OmniClient($url);
