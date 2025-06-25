@@ -310,6 +310,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const SESSION_CHECKOUT_DELIVERY_HOURS = 'delivery_hours';
 
+    const SESSION_CHECKOUT_GIFT_CARD = 'gift_card';
+
     // WORKFLOW
     const W_TYPE = 'T';
     const W_PAYLOAD = 'P';

@@ -55,23 +55,23 @@ class Cart
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             try {
                 $discountAmountTextMessage = __("Save");
-                $items                     = $quote->getAllVisibleItems();
+                $items = $quote->getAllVisibleItems();
                 if (is_array($result['items'])) {
                     foreach ($result['items'] as $key => $itemAsArray) {
                         if ($item = $this->findItemById($itemAsArray['item_id'], $items)) {
                             $lineDiscount = $this->basketHelper->getItemRowDiscount($item);
-                            $customPrice  = $this->basketHelper->getItemRowTotal($item);
+                            $customPrice = $this->basketHelper->getItemRowTotal($item);
                             $item->setCustomPrice($customPrice);
                             $item->setDiscountAmount($lineDiscount);
                             $this->itemPriceRenderer->setItem($item);
                             $this->itemPriceRenderer->setTemplate(
                                 'Magento_Tax::checkout/cart/item/price/sidebar.phtml'
                             );
-                            $originalPrice  = '';
+                            $originalPrice = '';
                             $discountAmount = '';
                             if ($item->getDiscountAmount() > 0) {
                                 $discountAmount = $this->checkoutHelper->formatPrice($item->getDiscountAmount());
-                                $originalPrice  = $item->getProductType() == Type::TYPE_BUNDLE ?
+                                $originalPrice = $item->getProductType() == Type::TYPE_BUNDLE ?
                                     $item->getRowTotal() :
                                     $this->basketHelper->itemHelper->convertToCurrentStoreCurrency(
                                         $item->getProduct()->getPrice() * $item->getQty()
@@ -83,11 +83,11 @@ class Cart
                             }
 
                             $item->setPriceInclTax($customPrice);
-                            $result['items'][$key]['lsPriceOriginal']  = ($originalPrice != "") ?
+                            $result['items'][$key]['lsPriceOriginal'] = ($originalPrice != "") ?
                                 $this->checkoutHelper->formatPrice($originalPrice) : $originalPrice;
                             $result['items'][$key]['lsDiscountAmount'] = ($discountAmount != "") ?
                                 '(' . __($discountAmountTextMessage) . ' ' . $discountAmount . ')' : $discountAmount;
-                            $result['items'][$key]['product_price']    = $this->itemPriceRenderer->toHtml();
+                            $result['items'][$key]['product_price'] = $this->itemPriceRenderer->toHtml();
                         }
                     }
                 }
@@ -97,7 +97,7 @@ class Cart
         } else {
             if (is_array($result['items'])) {
                 foreach ($result['items'] as $key => $itemAsArray) {
-                    $result['items'][$key]['lsPriceOriginal']  = "";
+                    $result['items'][$key]['lsPriceOriginal'] = "";
                     $result['items'][$key]['lsDiscountAmount'] = "";
                 }
             }

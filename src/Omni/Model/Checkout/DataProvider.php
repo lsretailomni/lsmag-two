@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\Checkout;
 
@@ -148,7 +149,7 @@ class DataProvider implements ConfigProviderInterface
 
         $config['ls_enabled'] = (bool)$this->lsr->isEnabled();
 
-        $config['gift_card_pin_enable'] = (bool)$this->giftCardHelper->isPinCodeFieldEnable();
+        $config['gift_card_pin_enable'] = $this->giftCardHelper->isPinCodeFieldEnable();
 
         return $config;
     }

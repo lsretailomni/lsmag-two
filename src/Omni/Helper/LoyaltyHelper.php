@@ -327,26 +327,31 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Convert Point Rate into Values
      *
-     * @param $storeId
+     * @param string $storeId
+     * @param string $currencyCode
      * @return float|int|string|null
      * @throws GuzzleException
      * @throws NoSuchEntityException
      */
-    public function getPointRate($storeId = null)
+    public function getPointRate($storeId = null, $currencyCode = null)
     {
         if (!$storeId) {
             $storeId = $this->lsr->getCurrentStoreId();
         }
 
+        if (!$currencyCode) {
+            $currencyCode = $this->lsr->getStoreCurrencyCode();
+        }
+
         $rate = 0;
         if ($this->lsr->isLSR($storeId) && $this->isEnabledLoyaltyPoints()) {
-            $cacheId = LSR::POINTRATE . $storeId;
+            $cacheId = LSR::POINTRATE . $storeId . '_' . $currencyCode;
             $response = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($response !== false) {
                 return $this->formatValue($response);
             }
-            $currencyCode = $this->lsr->getStoreCurrencyCode();
+
             $response = current($this->dataHelper->fetchGivenTableData(
                 'Currency Exchange Rate',
                 '',
@@ -700,27 +705,27 @@ class LoyaltyHelper extends AbstractHelperOmni
      *
      * @param string $area
      * @return string
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function isLoyaltyPointsEnabled($area)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == "cart") {
                 return $this->lsr->getStoreConfig(
-                        LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS,
-                        $this->lsr->getCurrentStoreId()
-                    ) && $this->lsr->getStoreConfig(
-                        LSR::LS_LOYALTYPOINTS_SHOW_ON_CART,
-                        $this->lsr->getCurrentStoreId()
-                    );
-            }
-            return $this->lsr->getStoreConfig(
                     LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS,
                     $this->lsr->getCurrentStoreId()
                 ) && $this->lsr->getStoreConfig(
-                    LSR::LS_LOYALTYPOINTS_SHOW_ON_CHECKOUT,
+                    LSR::LS_LOYALTYPOINTS_SHOW_ON_CART,
                     $this->lsr->getCurrentStoreId()
                 );
+            }
+            return $this->lsr->getStoreConfig(
+                LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS,
+                $this->lsr->getCurrentStoreId()
+            ) && $this->lsr->getStoreConfig(
+                LSR::LS_LOYALTYPOINTS_SHOW_ON_CHECKOUT,
+                $this->lsr->getCurrentStoreId()
+            );
         } else {
             return false;
         }

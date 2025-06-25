@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\Tax\Sales\Total\Quote;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
@@ -24,50 +25,12 @@ use Magento\Store\Model\StoreManagerInterface;
 class Discount extends \Magento\SalesRule\Model\Quote\Discount
 {
     /**
-     * Discount calculation object
-     *
-     * @var Validator
-     */
-    public $calculator;
-
-    /**
-     * Core event manager proxy
-     *
-     * @var ManagerInterface
-     */
-    public $eventManager = null;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    public $storeManager;
-
-    /**
-     * @var PriceCurrencyInterface
-     */
-    public $priceCurrency;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /** @var CheckoutSession $checkoutSession */
-    public $checkoutSession;
-
-    /**
      * @param ManagerInterface $eventManager
      * @param StoreManagerInterface $storeManager
      * @param Validator $validator
      * @param PriceCurrencyInterface $priceCurrency
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
-     * @param CheckoutSession $checkoutSession
      * @param RuleDiscountInterfaceFactory|null $discountInterfaceFactory
      * @param DiscountDataInterfaceFactory|null $discountDataInterfaceFactory
      */
@@ -76,9 +39,8 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         StoreManagerInterface $storeManager,
         Validator $validator,
         PriceCurrencyInterface $priceCurrency,
-        BasketHelper $basketHelper,
-        LoyaltyHelper $loyaltyHelper,
-        CheckoutSession $checkoutSession,
+        public BasketHelper $basketHelper,
+        public LoyaltyHelper $loyaltyHelper,
         RuleDiscountInterfaceFactory $discountInterfaceFactory = null,
         DiscountDataInterfaceFactory $discountDataInterfaceFactory = null
     ) {
@@ -90,13 +52,6 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             $discountInterfaceFactory,
             $discountDataInterfaceFactory
         );
-        $this->eventManager = $eventManager;
-        $this->calculator = $validator;
-        $this->storeManager = $storeManager;
-        $this->priceCurrency = $priceCurrency;
-        $this->basketHelper = $basketHelper;
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->checkoutSession = $checkoutSession;
     }
 
     /**
@@ -106,7 +61,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
      * @param ShippingAssignmentInterface $shippingAssignment
      * @param Total $total
      * @return $this|AbstractTotal
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function collect(
         Quote $quote,
@@ -115,7 +70,8 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
     ) {
         $lsr = $this->basketHelper->getLsrModel();
 
-        if (!$lsr->isLSR($lsr->getCurrentStoreId(),
+        if (!$lsr->isLSR(
+            $lsr->getCurrentStoreId(),
             false,
             $lsr->getBasketIntegrationOnFrontend()
         )) {
@@ -142,13 +98,14 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
      * @param Quote $quote
      * @param Total $total
      * @return array|null
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function fetch(Quote $quote, Total $total)
     {
         $lsr = $this->basketHelper->getLsrModel();
 
-        if (!$lsr->isLSR($lsr->getCurrentStoreId(),
+        if (!$lsr->isLSR(
+            $lsr->getCurrentStoreId(),
             false,
             $lsr->getBasketIntegrationOnFrontend()
         )) {
@@ -156,11 +113,11 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         }
 
         $result = null;
-        $amount = $this->getTotalDiscount($quote);
+        $amount = $this->getTotalDiscount();
         $title = __('Discount');
         if ($amount < 0) {
             $result = [
-                'code'  => $this->getCode(),
+                'code' => $this->getCode(),
                 'title' => $title,
                 'value' => $amount
             ];
@@ -178,45 +135,32 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
     }
 
     /**
-     * @param Total $total
-     */
-    public function clearValues(Total $total)
-    {
-        $total->setTotalAmount('subtotal', 0);
-        $total->setBaseTotalAmount('subtotal', 0);
-        $total->setTotalAmount('tax', 0);
-        $total->setBaseTotalAmount('tax', 0);
-        $total->setTotalAmount('discount_tax_compensation', 0);
-        $total->setBaseTotalAmount('discount_tax_compensation', 0);
-        $total->setTotalAmount('shipping_discount_tax_compensation', 0);
-        $total->setBaseTotalAmount('shipping_discount_tax_compensation', 0);
-        $total->setSubtotalInclTax(0);
-        $total->setBaseSubtotalInclTax(0);
-        $total->addTotalAmount('discount', 0);
-    }
-
-    /**
-     * @param $quote
+     * Get total discount from central basket response
+     *
      * @return float|int
+     * @throws NoSuchEntityException
      */
-    public function getTotalDiscount($quote)
+    public function getTotalDiscount()
     {
         $amount = 0;
         $basketData = $this->basketHelper->getBasketSessionValue();
-        if (isset($basketData) && !empty($basketData)) {
-            $amount = -$basketData->getTotalDiscount();
+
+        if (!empty($basketData) && !empty($basketData->getMobiletransaction())) {
+            $amount = -current((array)$basketData->getMobiletransaction())->getLineDiscount();
         }
+
         return $amount;
     }
 
     /**
-     * @param $quote
+     * Get gift card & loyalty points discount
+     *
+     * @param Quote $quote
      * @return float|int
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
-    public function getGiftCardLoyaltyDiscount($quote)
+    public function getGiftCardLoyaltyDiscount(Quote $quote)
     {
-        $amount = 0;
         $pointDiscount = 0;
         if ($quote->getLsPointsSpent() > 0) {
             $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
@@ -225,7 +169,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             }
         }
         $giftCardAmount = $quote->getLsGiftCardAmountUsed();
-        $amount = -$pointDiscount - $giftCardAmount;
-        return $amount;
+
+        return -$pointDiscount - $giftCardAmount;
     }
 }

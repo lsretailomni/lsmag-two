@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\RetailCalendarLine;
+use Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\Ecommerce\Operation\GetStoreOpeningHours;
 use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
@@ -223,21 +224,32 @@ class Data extends AbstractHelperOmni
 
     /**
      * Validating total on gift card or loyalty points
-     * @param $giftCardAmount
-     * @param $loyaltyPoints
-     * @param $basketData
+     *
+     * @param float $giftCardAmount
+     * @param float $loyaltyPoints
+     * @param RootMobileTransaction $basketData
      * @return float|int
+     * @throws GuzzleException
      */
     public function getOrderBalance($giftCardAmount, $loyaltyPoints, $basketData)
     {
-        $loyaltyAmount = 0;
+        $loyaltyAmount = $grossAmount = 0;
         try {
             if ($loyaltyPoints > 0) {
                 $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
             }
+
+            if (!empty($basketData) &&
+                is_array($basketData->getMobiletransaction()) &&
+                !empty($basketData->getMobiletransaction())
+            ) {
+                $mobileTransaction = current((array)$basketData->getMobiletransaction());
+                $grossAmount = $mobileTransaction->getGrossamount();
+            }
+
             $quote = $this->cartRepository->get($this->checkoutSession->getQuoteId());
-            if (!empty($basketData)) {
-                $totalAmount = $basketData->getTotalAmount() + $quote->getShippingAddress()->getShippingInclTax();
+            if (!empty($basketData) && !empty($basketData->getMobiletransaction())) {
+                $totalAmount = $grossAmount + $quote->getShippingAddress()->getShippingInclTax();
             } else {
                 $totalAmount = $quote->getGrandTotal();
             }
@@ -740,9 +752,9 @@ class Data extends AbstractHelperOmni
     }
 
     /**
-     * @param $area
+     * @param string $area
      * @return string
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function isCouponsEnabled($area)
     {
