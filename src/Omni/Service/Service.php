@@ -57,7 +57,6 @@ class Service
      */
     public function getOmniBaseUrl($magentoStoreId = '')
     {
-        return 'http://10.213.0.5:9047/LscNextMajor';
         // Initialize the ObjectManager instance
         $objectManager = ObjectManager::getInstance();
 

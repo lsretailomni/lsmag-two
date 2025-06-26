@@ -47,10 +47,8 @@ class Client extends LaminasSoapClient
         $cacheHelper = ObjectManager::getInstance()->get(CacheHelper::class);
         $soapOptions = $cacheHelper->getWsdlOptions();
         $token       = $this->getToken();
-//        $opts        = ['http' => ['header' => "Authorization: Bearer " . $token, 'timeout' => $this->getTimeout()]];
+        $opts        = ['http' => ['header' => "Authorization: Bearer " . $token, 'timeout' => $this->getTimeout()]];
         // @codingStandardsIgnoreStart
-        $opts        = ['http' => ['header' => "Authorization: Basic " . 'b21uaWRldjp1c2hGbWs5SENRdDJKYUpkYzhxYTNtNXEwOXI1WDI5YzZzRDRxcjlaK3A0PQ==', 'timeout' => $this->getTimeout()]];
-
         $context                       = stream_context_create($opts);
         $soapOptions['stream_context'] = $context;
         $this->url->setQuery([
