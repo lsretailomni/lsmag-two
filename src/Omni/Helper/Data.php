@@ -655,6 +655,7 @@ class Data extends AbstractHelperOmni
     ): array {
         $baseUrl = !empty($baseUrl) ? $baseUrl :
             $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId());
+        $baseUrl = 'http://10.213.0.5:9047/LscNextMajor';
         $url = join('/', [$baseUrl, 'WS/Codeunit/RetailWebServices']);
         $url = OmniService::getUrl($url);
         $client = $this->createInstance(OmniClient::class, ['uri' => $url]);
@@ -683,9 +684,45 @@ class Data extends AbstractHelperOmni
             'pxmlRequest' => $requestXml->asXML(),
             'pxmlResponse' => '<Response/>'
         ];
+
+        $requestTime = \DateTime::createFromFormat(
+            'U.u',
+            number_format(microtime(true), 6, '.', '')
+        );
+        $this->omniLogger->debug(
+            sprintf(
+                "==== REQUEST ==== %s ==== %s ====",
+                $requestTime->format("m-d-Y H:i:s.u"),
+                $url
+            )
+        );
+        $body = $requestXml->asXML();
+        if (!empty($body)) {
+            $this->omniLogger->debug(sprintf('Request Body: %s ', $body));
+        }
+
         $response = $client->__call('WebRequest', [$params]);
+
+        $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+        $this->omniLogger->debug(
+            sprintf(
+                "==== RESPONSE ==== %s ==== %s",
+                $responseTime->format("m-d-Y H:i:s.u"),
+                $url,
+            )
+        );
+        $timeElapsed = $requestTime->diff($responseTime);
+        $seconds = $timeElapsed->s + $timeElapsed->f;
+        $this->omniLogger->debug(
+            sprintf(
+                "==== Time Elapsed ==== %s ====  ====",
+                $timeElapsed->format("%i minute(s) " . $seconds . " second(s)")
+            )
+        );
+
         // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
         $decoded = html_entity_decode($response->pxmlResponse ?? '');
+        $this->omniLogger->debug("Response Body:\n" . $decoded);
         $response = simplexml_load_string($decoded);
 
         return $this->formatTableDataResponse($response);

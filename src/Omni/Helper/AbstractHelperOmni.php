@@ -214,6 +214,7 @@ class AbstractHelperOmni extends AbstractHelper
         public GuzzleClient $guzzleClient,
         public TokenRequestService $tokenRequestService,
         public RequestInterface $request,
+        public \Ls\Replication\Logger\OmniLogger $omniLogger
     ) {
         parent::__construct($context);
         $this->initialize();

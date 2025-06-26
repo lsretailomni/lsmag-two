@@ -53,22 +53,13 @@ class Dashboard extends Template
     /**
      * Get loyalty points balance
      *
-     * @param $account
-     * @return int
+     * @return float
+     * @throws GuzzleException
+     * @throws NoSuchEntityException
      */
-    public function getLoyaltyPointsBalance($account)
+    public function getLoyaltyPointsBalance()
     {
-        $lscFlowFieldsBuffer = $account->getLscFlowfieldBuffer();
-        $balance = 0;
-
-        foreach ($lscFlowFieldsBuffer as $field) {
-            if ($field->getData('Field Name') === 'Balance') {
-                $balance = $field->getData('Decimal Value');
-                break;
-            }
-        }
-
-        return $balance;
+        return $this->loyaltyHelper->getLoyaltyPointsAvailableToCustomer();
     }
 
     /**
