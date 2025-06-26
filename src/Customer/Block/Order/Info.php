@@ -3,6 +3,7 @@
 namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\LSCMemberSalesBuffer;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
@@ -40,7 +41,7 @@ class Info extends AbstractOrderBlock
      */
     public function getFormattedAddress(bool $isBillingAddress = false)
     {
-        $order   = $this->getOrder();
+        $order   = $this->getLscMemberSalesBuffer();
         $address = '';
         if ($isBillingAddress) {
             if (!empty($order->getAddress()) && !empty($order->getCountryRegionCode())) {
@@ -73,13 +74,13 @@ class Info extends AbstractOrderBlock
                     . $order->getShipToPhoneNo() . '</a>' : '';
             }
         }
-        
+
         return $address;
     }
 
     /**
      * Get country name by country code
-     * 
+     *
      * @param $countryCode
      * @return string
      */
@@ -94,7 +95,7 @@ class Info extends AbstractOrderBlock
      */
     protected function _prepareLayout()
     {
-        $order = $this->getOrder();
+        $order = $this->getLscMemberSalesBuffer();
         if ($order) {
             $customerOrderNo = $this->orderHelper->getParameterValues($order, "Document ID");
             $orderId         = $customerOrderNo ?: $this->orderHelper->getParameterValues($order, "Id");
@@ -127,19 +128,20 @@ class Info extends AbstractOrderBlock
      */
     public function getOrderStatus()
     {
-        return $this->orderHelper->getOrderStatus($this->getOrder());
+        return $this->orderHelper->getOrderStatus($this->getLscMemberSalesBuffer());
     }
 
     /**
      * To fetch ClickAndCollectOrder value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
+     *
+     * Depending on the structure of SalesEntry node
      *
      * @return mixed
      */
     public function getClickAndCollectOrder()
     {
         $clickAndCollectOrder = null;
-        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder(true);
+        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder(true)->getData();
         foreach ($lineItemObj as $key => $lines) {
             if ($key != "LSCMemberSalesDocLine") {
                 continue;
@@ -152,7 +154,7 @@ class Info extends AbstractOrderBlock
                     $line->getClickAndCollectLine() :
                     null;
             }
-            
+
         }
         return $clickAndCollectOrder;
     }
@@ -164,7 +166,19 @@ class Info extends AbstractOrderBlock
      */
     public function getDocRegistraionTime()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "Date Time");
+        return $this->orderHelper->getParameterValues($this->getLscMemberSalesBuffer(), "Date Time");
+    }
+
+    /**
+     * Get order details
+     *
+     * @return LSCMemberSalesBuffer
+     */
+    public function getLscMemberSalesBuffer()
+    {
+        $order = $this->getOrder();
+
+        return $order->getLscMemberSalesBuffer();
     }
 
     /**
@@ -196,12 +210,12 @@ class Info extends AbstractOrderBlock
     public function getRequestedDeliveryDate()
     {
         $format                = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
-        $requestedDeliveryDate = $this->getOrder()->getRequestedDeliveryDate();
+        $requestedDeliveryDate = $this->getLscMemberSalesBuffer()->getRequestedDeliveryDate();
 
         if ($requestedDeliveryDate && $requestedDeliveryDate != '0001-01-01T00:00:00') {
             return $this->orderHelper->getDateTimeObject()->date(
                 $format,
-                $this->getOrder()->getRequestedDeliveryDate()
+                $this->getLscMemberSalesBuffer()->getRequestedDeliveryDate()
             );
         }
 
@@ -263,13 +277,15 @@ class Info extends AbstractOrderBlock
 
     /**
      * To fetch Payments value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
-     * @return string|null
+     *
+     * Depending on the structure of SalesEntry node
+     *
+     * @return array
      */
     public function getOrderPayments()
     {
         $paymentLines = [];
-        $orderTransactions = $this->getOrder(true);
+        $orderTransactions = $this->getOrder(true)->getData();
         foreach ($orderTransactions as $key => $lines) {
             if ($key != "LSCMemberSalesDocLine") {
                 continue;
@@ -292,7 +308,7 @@ class Info extends AbstractOrderBlock
      */
     public function getFormattedLoyaltyPoints()
     {
-        $orderTransactions = $this->getOrder(true);
+        $orderTransactions = $this->getOrder(true)->getData();
         $points            = 0;
 
         if (!is_array($orderTransactions)) {

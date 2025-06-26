@@ -2,26 +2,29 @@
 
 namespace Ls\Omni\Helper;
 
+use DomDocument;
+use DOMXPath;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
-use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
-use \Ls\Omni\Client\Ecommerce\Operation\LSCTenderType;
-use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
-use \Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
-use \Ls\Omni\Model\Cache\Type;
-use \Ls\Omni\Model\Central\GuzzleClient;
-use \Ls\Omni\Model\Central\TokenRequestService;
-use \Ls\Omni\Service\Service as OmniService;
-use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Service\Soap\Client as OmniClient;
-use \Ls\Replication\Api\ReplStoreRepositoryInterface;
-use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
-use \Ls\Replication\Api\ReplLscTenderTypeRepositoryInterface;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
+use Ls\Omni\Client\Ecommerce\Entity\StoreHours;
+use Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
+use Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
+use Ls\Omni\Client\Ecommerce\Operation\LSCTenderType;
+use Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
+use Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
+use Ls\Omni\Model\Cache\Type;
+use Ls\Omni\Model\Central\GuzzleClient;
+use Ls\Omni\Model\Central\TokenRequestService;
+use Ls\Omni\Service\Service as OmniService;
+use Ls\Omni\Service\ServiceType;
+use Ls\Omni\Service\Soap\Client as OmniClient;
+use Ls\Replication\Api\ReplStoreRepositoryInterface;
+use Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
+use Ls\Replication\Api\ReplLscTenderTypeRepositoryInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -37,14 +40,17 @@ use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Phrase;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
 use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
 use Magento\Sales\Model\Order\Creditmemo;
+use Magento\Sales\Model\Order\Invoice\Item;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use SimpleXMLElement;
 
 /**
  * Helper class that is used on multiple areas
@@ -100,6 +106,7 @@ class Data extends AbstractHelper
         public StoreManagerInterface                  $storeManager,
         public TokenRequestService                    $tokenRequestService,
         public RequestInterface                       $request,
+        public ReplLscTenderTypeRepositoryInterface $replStoreTenderTypeRepository
     ) {
         parent::__construct($context);
     }
@@ -317,7 +324,7 @@ class Data extends AbstractHelper
      * @param $loyaltyPoints
      * @param $basketData
      * @param bool $showMessage
-     * @return \Magento\Framework\Phrase|string
+     * @return Phrase|string
      */
     public function orderBalanceCheck($giftCardNo, $giftCardAmount, $loyaltyPoints, $basketData, $showMessage = true)
     {
@@ -658,7 +665,7 @@ class Data extends AbstractHelper
      * @param array $connectionParams
      * @param array $query
      * @param array $data
-     * @return \DOMXPath
+     * @return DOMXPath
      * @throws GuzzleException|NoSuchEntityException
      */
     public function fetchOdataV4Xml($baseUrl = '', $connectionParams = [], $query = [], $data = [])
@@ -675,11 +682,11 @@ class Data extends AbstractHelper
             $data
         );
 
-        $dom = new \DomDocument('1.0');
+        $dom = new DomDocument('1.0');
         $dom->loadXML($response);
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput       = true;
-        $xpath = new \DOMXPath($dom);
+        $xpath = new DOMXPath($dom);
         $xpath->registerNamespace('edm', 'http://docs.oasis-open.org/odata/ns/edm');
 
         return $xpath;
@@ -708,7 +715,7 @@ class Data extends AbstractHelper
         $url = OmniService::getUrl($url);
         $client = new OmniClient($url);
 
-        $requestXml = new \SimpleXMLElement('<Request/>');
+        $requestXml = new SimpleXMLElement('<Request/>');
         $requestXml->addChild('Request_ID', 'GET_TABLE_DATA');
         $requestBody = $requestXml->addChild('Request_Body');
         $requestBody->addChild('Table_Name', $tableName);
@@ -738,10 +745,10 @@ class Data extends AbstractHelper
     /**
      * Format table data into a flat array
      *
-     * @param \SimpleXMLElement $response
+     * @param SimpleXMLElement $response
      * @return array
      */
-    public function formatTableDataResponse(\SimpleXMLElement $response): array
+    public function formatTableDataResponse(SimpleXMLElement $response): array
     {
         $fieldMap = $records = [];
 
@@ -843,7 +850,7 @@ class Data extends AbstractHelper
             $invoiceCreditMemo->setLsPointsEarn($pointsEarn);
             $invoiceCreditMemo->setLsDiscountAmount($lsDiscountAmount);
             $allVisibleItems = $invoiceCreditMemo->getOrder()->getAllVisibleItems();
-            /** @var $item \Magento\Sales\Model\Order\Invoice\Item */
+            /** @var $item Item */
             foreach ($allVisibleItems as $item) {
                 if (!$item->getParentItem()) {
                     $totalItemsQuantities = $totalItemsQuantities + $item->getQtyOrdered();
@@ -889,16 +896,18 @@ class Data extends AbstractHelper
      * Get Tender type id mapping
      *
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getTenderTypesPaymentMapping()
     {
-        $storeTenderTypes     = [];
-        $scopeId              = $this->lsr->getCurrentWebsiteId();
+        $storeTenderTypes = [];
+        $scopeId = $this->lsr->getCurrentWebsiteId();
         $storeTenderTypeArray = $this->getTenderTypes($scopeId);
+
         if (empty($storeTenderTypeArray)) {
             $storeTenderTypeArray = $this->getTenderTypesDirectly($scopeId);
         }
+
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[$storeTenderType->getCode()] = $storeTenderType->getDescription();
@@ -932,41 +941,23 @@ class Data extends AbstractHelper
     /**
      * Getting tender types directly through API
      *
-     * @param $scopeId
-     * @param null $storeId
-     * @param null $baseUrl
-     * @param null $lsKey
+     * @param string $scopeId
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
-    public function getTenderTypesDirectly($scopeId, $storeId = null, $baseUrl = null, $lsKey = null)
+    public function getTenderTypesDirectly($scopeId)
     {
         $result = null;
 
-        if ($baseUrl == null) {
-            $baseUrl = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $scopeId);
-        }
+        $storeId = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $scopeId);
 
-        if ($storeId == null) {
-            $storeId = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $scopeId);
-        }
-
-        if ($lsKey == null) {
-            $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $scopeId);
-        }
-
-        if ($this->lsr->validateBaseUrl($baseUrl, [], [], $scopeId) && $storeId != '') {
+        if ($this->lsr->validateBaseUrl('', [], [], $scopeId) && $storeId != '') {
             try {
-                $request = $this->formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId);
-                $result  = $request->execute();
-
-                if ($result != null) {
-                    $result = $result->getResult()->getStoreTenderTypes()->getReplStoreTenderType();
-                }
+                $operation = $this->formulateTenderTypesRequest($storeId);
+                $result = $operation->execute()->getRecords();
             } catch (Exception $e) {
                 $this->_logger->critical($e->getMessage());
             }
-
         }
 
         return $result;
@@ -977,32 +968,26 @@ class Data extends AbstractHelper
      *
      * Formulate Tender Types Request
      *
-     * @param $baseUrl
-     * @param $lsKey
-     * @param $storeId
-     * @param $scopeId
-     * @return Operation\ReplEcommStoreTenderTypes
+     * @param string $storeId
+     * @return LSCTenderType
      */
-    public function formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId)
+    public function formulateTenderTypesRequest($storeId)
     {
-        //@codingStandardsIgnoreStart
-        $service_type = new ServiceType(Operation\ReplEcommStoreTenderTypes::SERVICE_TYPE);
-        $url          = OmniService::getUrl($service_type, $baseUrl);
-        $client       = new OmniClient($url, $service_type);
-        $request      = new Operation\ReplEcommStoreTenderTypes();
-        $request->setClient($client);
-        $request->setToken($lsKey);
-        $client->setClassmap($request->getClassMap());
-        $request->setOperationInput()->setReplRequest(
-            (new Entity\ReplRequest())
-                ->setBatchSize(1000)
-                ->setFullReplication(1)
-                ->setLastKey('')
-                ->setStoreId($storeId)
+        $tenderTypeOperation = $this->createInstance(
+            LSCTenderType::class,
+            []
         );
-        //@codingStandardsIgnoreEnd
+        $tenderTypeOperation->setOperationInput(
+            [
+                'storeNo' => $storeId,
+                'batchSize' => 100,
+                'fullRepl' => true,
+                'lastKey' => '',
+                'lastEntryNo' => 0
+            ]
+        );
 
-        return $request;
+        return $tenderTypeOperation;
     }
 
     /**

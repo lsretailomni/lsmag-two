@@ -10,24 +10,21 @@ $_item           = $block->getItem();
 $checkIsShipment = $block->checkIsShipment();
 $discountInfo    = $block->getItemDiscountLines();
 $sku             = $_item->getNumber();
-if (!empty($_item->getVariantId())) {
+if (!empty($_item->getVariantCode())) {
     $sku .= '-' . $_item->getVariantCode();
 }
 
-if (!empty($_item->getUomId())) {
+if (!empty($_item->getUnitOfMeasure())) {
     $sku .= '-' . $_item->getUnitOfMeasure();
 }
 
 use \Ls\Customer\Block\Order\Item\Custom\Renderer; ?>
 <tr id="order-item-row-<?= /* @noEscape */
 $_item->getItemId() ?>">
-    <td class="col name" data-th="<?= /* @noEscape */
-    __('Product Name') ?>">
-        <strong class="product name product-item-name"><?= /* @noEscape */
-            $_item->getDescription() //$_item->getItemDescription() ?></strong>
-        <?php if (!empty($_item->getVariantDescription())): ?>
-            <p><?= /* @noEscape */
-                $_item->getVariantDescription() ?></p>
+    <td class="col name" data-th="<?= /* @noEscape */ __('Product Name') ?>">
+        <strong class="product name product-item-name"><?= /* @noEscape */ $_item->getDescription() ?></strong>
+        <?php if (!empty($_item->getVariantDescription() && $_item->getVariantDescription() !== $_item->getDescription())): ?>
+            <p><?= /* @noEscape */ $_item->getVariantDescription() ?></p>
         <?php endif; ?>
         <?php if ($_options = $block->getItemOptions()): ?>
             <dl class="item-options">
@@ -54,16 +51,12 @@ $_item->getItemId() ?>">
             </dl>
         <?php endif; ?>
         <?php if (!empty($discountInfo)): ?>
-            <p><strong><?= /* @noEscape */
-                    $discountInfo[0]; ?></strong></p>
+            <p><strong><?= /* @noEscape */ $discountInfo[0]; ?></strong></p>
         <?php endif; ?>
     </td>
-    <td class="col sku" data-th="<?= /* @noEscape */
-    __('SKU') ?>"><?= /* @noEscape */
-        $sku ?></td>
+    <td class="col sku" data-th="<?= /* @noEscape */ __('SKU') ?>"><?= /* @noEscape */ $sku ?></td>
     <?php if (!$checkIsShipment): ?>
-        <td class="col price" data-th="<?= /* @noEscape */
-        __('Price') ?>">
+        <td class="col price" data-th="<?= /* @noEscape */ __('Price') ?>">
             <?php if (!empty($_item->getDiscountAmount()) && $_item->getDiscountAmount() > 0): ?>
                 <?= /* @noEscape */
                 $block->getFormattedPrice($_item->getAmount()); ?>
@@ -82,16 +75,12 @@ $_item->getItemId() ?>">
             <?php endif; ?>
         </td>
     <?php endif; ?>
-    <td class="col qty" data-th="<?= /* @noEscape */
-    __('Qty') ?>">
-        <?= /* @noEscape */
-        $block->getFormattedQty($_item->getQuantity()); ?>
+    <td class="col qty" data-th="<?= /* @noEscape */ __('Qty') ?>">
+        <?= /* @noEscape */ $block->getFormattedQty($_item->getQuantity()); ?>
     </td>
     <?php if (!$checkIsShipment): ?>
-        <td class="col subtotal" data-th="<?= /* @noEscape */
-        __('Subtotal') ?>">
-            <?= /* @noEscape */
-             $block->getFormattedPrice($_item->getAmount()); ?>
+        <td class="col subtotal" data-th="<?= /* @noEscape */ __('Subtotal') ?>">
+            <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()); ?>
         </td>
     <?php endif; ?>
 </tr>

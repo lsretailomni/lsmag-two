@@ -48,7 +48,12 @@ class OrderHelper extends AbstractHelper
      * @var mixed
      */
     public $currentOrder;
-    
+
+    /**
+     * @var array
+     */
+    public $tendertypesArray = [];
+
     /**
      * @param Context $context
      * @param Model\Order $order
@@ -68,6 +73,7 @@ class OrderHelper extends AbstractHelper
      * @param StoreHelper $storeHelper
      * @param CurrencyFactory $currencyFactory
      * @param ConfigInterface $config
+     * @param Data $dataHelper
      */
     public function __construct(
         public Context $context,
@@ -640,14 +646,14 @@ class OrderHelper extends AbstractHelper
                 'documentID' => $docId
             ]
         );
-        
+
         // @codingStandardsIgnoreEnd
         try {
             $response = $request->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response && $response->getResponsecode() == "0000" ? $response->getRecords()[0]->getData() : $response;
+        return $response && $response->getResponsecode() == "0000" ? current((array) $response->getRecords()) : null;
     }
 
     /**
@@ -774,10 +780,11 @@ class OrderHelper extends AbstractHelper
     public function isAuthorizedForOrder(
         $order
     ) {
-        $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
-        $order       = $this->getOrder();
-        $orderCardId = $order->getData('Member Card No.');
-        
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $order = $this->getOrder();
+        $orderLscMemberSalesBuffer = $order->getLscMemberSalesBuffer();
+        $orderCardId = $orderLscMemberSalesBuffer->getMemberCardNo();
+
         if ($cardId == $orderCardId) {
             return true;
         }
@@ -1321,7 +1328,7 @@ class OrderHelper extends AbstractHelper
                         $orderType = $order->getDocumentSourceType();
                         $orderType = $this->getOrderType($orderType);
                     }
-                    
+
                 }
             } else {
                 $currency  = $this->currentOrder->getStoreCurrency();

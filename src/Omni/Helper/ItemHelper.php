@@ -285,9 +285,9 @@ class ItemHelper extends AbstractHelper
         $discountInfo = [];
         try {
             if ($type == 2) {
-                $itemId            = $item->getItemId();
-                $variantId         = $item->getVariantId();
-                $uom               = $item->getUomId();
+                $itemId            = $item->getNumber();
+                $variantId         = $item->getVariantCode();
+                $uom               = $item->getUnitOfMeasure();
                 $baseUnitOfMeasure = "";
                 $customPrice       = $item->getDiscountAmount();
                 $this->getDiscountInfo(
@@ -370,9 +370,10 @@ class ItemHelper extends AbstractHelper
         $graphQlRequest = 0
     ) {
         $orderLines = $discountsLines = [];
-        if ($orderData instanceof SalesEntry) {
-            $orderLines     = $orderData->getLines();
-            $discountsLines = $orderData->getDiscountLines();
+        if ($orderData instanceof \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDoc) {
+            $orderLines     = $orderData->getLscMemberSalesDocLine();
+            $discountsLines = !is_array($orderData->getLscMemberSalesDocDiscLine()) ?
+                [$orderData->getLscMemberSalesDocDiscLine()] : $orderData->getLscMemberSalesDocDiscLine();
         } elseif ($orderData instanceof Order) {
             $orderLines     = $orderData->getOrderLines();
             $discountsLines = $orderData->getOrderDiscountLines()->getOrderDiscountLine();
@@ -382,13 +383,22 @@ class ItemHelper extends AbstractHelper
             if ($this->isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                 if ($customPrice > 0 && $customPrice != null) {
                     foreach ($discountsLines as $orderDiscountLine) {
-                        if ($line->getLineNumber() == $orderDiscountLine->getLineNumber()) {
-                            if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
+                        if ($line->getLineNo() == $orderDiscountLine->getDocumentLineNo()) {
+                            $offerDescription = !empty($orderDiscountLine->getDescription()) ?
+                                $orderDiscountLine->getDescription() :
+                                $orderDiscountLine->getOfferNo();
+
+                            if (empty($offerDescription)) {
+                                $offerDescription = __('Discounted');
+                            }
+
+                            $offerDescription .= '<br />';
+                            if (!in_array($offerDescription, $discountInfo)) {
                                 if (!$graphQlRequest) {
-                                    $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
+                                    $discountInfo[] = $offerDescription;
                                 } else {
                                     $discountInfo[] = [
-                                        'description' => $orderDiscountLine->getDescription(),
+                                        'description' => $offerDescription,
                                         'value'       => $orderDiscountLine->getDiscountAmount()
                                     ];
                                 }
@@ -782,8 +792,9 @@ class ItemHelper extends AbstractHelper
         $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
 
         return in_array($itemId, explode(',', $giftCardIdentifier)) ? $line->getId() == $quoteItem->getId() :
-            (($itemId == $line->getItemId() && $variantId == $line->getVariantId()) &&
-                ($uom == $line->getUomId() || (empty($line->getUomId()) && $uom == $baseUnitOfMeasure)));
+            (($itemId == $line->getNumber() && $variantId == $line->getVariantCode()) &&
+                ($uom == $line->getUnitOfMeasure() || (empty($line->getUnitOfMeasure()) &&
+                        $uom == $baseUnitOfMeasure)));
     }
 
     /**

@@ -3,12 +3,10 @@
 namespace Ls\Customer\Block\Order;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntriesGetByCardIdResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -33,7 +31,7 @@ class Recent extends Template
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SortOrderBuilder $sortOrderBuilder
      * @param CustomerSession $customerSession
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
@@ -52,8 +50,8 @@ class Recent extends Template
     /**
      * Get recent order history
      *
-     * @return array|ArrayOfSalesEntry|SalesEntriesGetByCardIdResponse|ResponseInterface|null
-     * @throws NoSuchEntityException
+     * @return array|null
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getOrderHistory()
     {

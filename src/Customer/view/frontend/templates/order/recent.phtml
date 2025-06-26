@@ -11,7 +11,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Core\Model\LSR;
 use Magento\Framework\Data\Helper\PostHelper;
 use Magento\Framework\Escaper;
-
+$orderCount = 0;
 ?>
 <div class="block block-dashboard-orders">
     <?php
@@ -62,10 +62,15 @@ use Magento\Framework\Escaper;
                             </thead>
                             <tbody>
                             <?php foreach ($_orders as $i => $_order):
+                                if ($orderCount == LSR::MAX_RECENT_ORDER) {
+                                    break;
+                                }
+
+
                                 if ($_order->getgetSaleIsReturnSale()) {
                                     continue;
                                 }
-                                
+
                                 $magOrder = $block->getOrderByDocumentId($_order);
                                 if ($magOrder) {
                                     $block->registerValueInRegistry($magOrder);
@@ -85,7 +90,7 @@ use Magento\Framework\Escaper;
                                     <td data-th="<?= $block->escapeHtml(__('Store Name')) ?>"
                                         class="col store-name"><?= $_order->getStoreName() ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Order Total')) ?>"
-                                        class="col total"><?= /* @escapeNotVerified */                                        
+                                        class="col total"><?= /* @escapeNotVerified */
                                         $block->getFormattedPrice($_order->getGrossAmount(), $storeCurrency, $_order['IdType']) ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Status')) ?>"
                                         class="col status"><?= /* @escapeNotVerified */
@@ -129,6 +134,7 @@ use Magento\Framework\Escaper;
                                         <?php endif; ?>
                                     </td>
                                 </tr>
+                            <?php ++$orderCount; ?>
                             <?php endforeach; ?>
                             </tbody>
                         </table>
