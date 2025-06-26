@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Adminhtml\System\Config;
 
@@ -12,28 +13,21 @@ use Magento\Framework\Exception\LocalizedException;
 class AutopopulateButton extends Field
 {
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
      * @var string
      */
     // @codingStandardsIgnoreLine
     protected $_template = 'Ls_Omni::system/config/auto-populate-btn.phtml';
 
     /**
-     * Stores constructor.
      * @param Context $context
      * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
         Context $context,
-        LSR $lsr,
+        public LSR $lsr,
         array $data = []
     ) {
-        $this->lsr = $lsr;
         parent::__construct($context, $data);
     }
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Adminhtml\System\Config;
 
@@ -12,23 +13,16 @@ use Magento\Store\Model\ScopeInterface;
 class License extends Field
 {
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
      * @param Context $context
      * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
         Context $context,
-        LSR $lsr,
+        public LSR $lsr,
         array $data = []
     ) {
         parent::__construct($context, $data);
-
-        $this->lsr = $lsr;
     }
 
     /**

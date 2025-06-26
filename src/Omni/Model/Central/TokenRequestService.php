@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Ls\Omni\Model\Central;
 
 use Ls\Core\Model\LSR;
@@ -8,23 +10,11 @@ use Psr\Log\LoggerInterface;
 class TokenRequestService
 {
     /**
-     * @var Curl
-     */
-    public $curl;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /**
      * @param Curl $curl
      * @param LoggerInterface $logger
      */
-    public function __construct(Curl $curl, LoggerInterface $logger)
+    public function __construct(public Curl $curl, public LoggerInterface $logger)
     {
-        $this->curl = $curl;
-        $this->logger = $logger;
     }
 
     /**

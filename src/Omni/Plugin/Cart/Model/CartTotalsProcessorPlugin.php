@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Cart\Model;
 
@@ -10,25 +11,13 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class CartTotalsProcessorPlugin
 {
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
      * @param LoyaltyHelper $loyaltyHelper
      * @param LSR $lsr
      */
     public function __construct(
-        LoyaltyHelper $loyaltyHelper,
-        LSR $lsr
+        public LoyaltyHelper $loyaltyHelper,
+        public LSR $lsr
     ) {
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->lsr           = $lsr;
     }
 
     /**

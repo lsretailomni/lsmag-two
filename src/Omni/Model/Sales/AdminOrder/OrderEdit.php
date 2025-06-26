@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\Sales\AdminOrder;
 
@@ -27,49 +28,19 @@ use Psr\Log\LoggerInterface;
 class OrderEdit
 {
     /**
-     * @var OrderHelper
-     */
-    private $orderHelper;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var LSR
-     */
-    private $lsr;
-
-    /**
-     * @var ItemHelper
-     */
-    private $itemHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
      * @param OrderHelper $orderHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
-        OrderHelper $orderHelper,
-        ItemHelper $itemHelper,
-        LoggerInterface $logger,
-        LSR $LSR,
-        LoyaltyHelper $loyaltyHelper,
+        public OrderHelper $orderHelper,
+        public ItemHelper $itemHelper,
+        public LoggerInterface $logger,
+        public LSR $lsr,
+        public LoyaltyHelper $loyaltyHelper,
     ) {
-        $this->orderHelper = $orderHelper;
-        $this->itemHelper  = $itemHelper;
-        $this->logger      = $logger;
-        $this->lsr         = $LSR;
-        $this->loyaltyHelper = $loyaltyHelper;
     }
 
     /**

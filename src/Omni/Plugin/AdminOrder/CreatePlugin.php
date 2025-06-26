@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\AdminOrder;
 
@@ -18,57 +19,21 @@ use Psr\Log\LoggerInterface;
 class CreatePlugin
 {
     /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /**
-     * @var ItemHelper
-     */
-    private $itemHelper;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var LSR
-     */
-    private $lsr;
-
-    /**
-     * @var Data
-     */
-    private $data;
-
-    /**
-     * @var OrderHelper
-     */
-    private $orderHelper;
-
-    /**
      * @param BasketHelper $basketHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param Data $data
      * @param OrderHelper $orderHelper
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        ItemHelper $itemHelper,
-        LoggerInterface $logger,
-        LSR $LSR,
-        Data $data,
-        OrderHelper $orderHelper
+        public BasketHelper $basketHelper,
+        public ItemHelper $itemHelper,
+        public LoggerInterface $logger,
+        public LSR $lsr,
+        public Data $data,
+        public OrderHelper $orderHelper
     ) {
-        $this->basketHelper = $basketHelper;
-        $this->itemHelper   = $itemHelper;
-        $this->logger       = $logger;
-        $this->lsr          = $LSR;
-        $this->data         = $data;
-        $this->orderHelper  = $orderHelper;
     }
 
     /**

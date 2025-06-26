@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
@@ -21,50 +23,20 @@ use Psr\Log\LoggerInterface;
  */
 class OrderObserver implements ObserverInterface
 {
-    /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /**
-     * @var OrderHelper
-     */
-    private $orderHelper;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var Order
-     */
-    private $orderResourceModel;
-
-    /**
-     * @var LSR
-     */
-    private $lsr;
-
     /***
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
      * @param LoggerInterface $logger
      * @param Order $orderResourceModel
-     * @param LSR $LSR
+     * @param LSR $lsr
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        OrderHelper $orderHelper,
-        LoggerInterface $logger,
-        Order $orderResourceModel,
-        LSR $LSR
+        public BasketHelper $basketHelper,
+        public OrderHelper $orderHelper,
+        public LoggerInterface $logger,
+        public Order $orderResourceModel,
+        public LSR $lsr
     ) {
-        $this->basketHelper       = $basketHelper;
-        $this->orderHelper        = $orderHelper;
-        $this->logger             = $logger;
-        $this->orderResourceModel = $orderResourceModel;
-        $this->lsr                = $LSR;
     }
 
     /**
@@ -76,7 +48,7 @@ class OrderObserver implements ObserverInterface
      * @throws InputException
      * @throws NoSuchEntityException
      * @throws InvalidEnumException
-     * @throws LocalizedException
+     * @throws LocalizedException|GuzzleException
      * phpcs:disable Generic.Metrics.NestingLevel.TooHigh
      */
     public function execute(Observer $observer)

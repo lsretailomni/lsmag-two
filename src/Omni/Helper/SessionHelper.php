@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Helper;
 
@@ -11,29 +12,9 @@ use Magento\Framework\Filesystem;
 use Magento\Framework\Session\Config;
 use Magento\Framework\Session\SaveHandler;
 
-/**
- * Class SessionHelper
- * @package Ls\Omni\Helper
- */
 class SessionHelper extends AbstractHelper
 {
     /**
-     * @var SaveHandler
-     */
-    public $sessionHandler;
-
-    /**
-     * @var DeploymentConfig
-     */
-    public $deploymentConfig;
-
-    /**
-     * @var Filesystem
-     */
-    public $fileSystem;
-
-    /**
-     * SessionHelper constructor.
      * @param Context $context
      * @param SaveHandler $sessionHandler
      * @param DeploymentConfig $deploymentConfig
@@ -41,18 +22,16 @@ class SessionHelper extends AbstractHelper
      */
     public function __construct(
         Context $context,
-        SaveHandler $sessionHandler,
-        DeploymentConfig $deploymentConfig,
-        Filesystem $fileSystem
+        public SaveHandler $sessionHandler,
+        public DeploymentConfig $deploymentConfig,
+        public Filesystem $fileSystem
     ) {
-        $this->sessionHandler   = $sessionHandler;
-        $this->deploymentConfig = $deploymentConfig;
-        $this->fileSystem       = $fileSystem;
         parent::__construct($context);
     }
 
     /**
      * Resolving php session files locking problem when use session save method files in ajax requests
+     *
      * @param $sessionName
      * @throws FileSystemException
      */

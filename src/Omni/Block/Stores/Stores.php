@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Stores;
 
@@ -19,29 +20,6 @@ use Psr\Log\LoggerInterface;
 class Stores extends Template
 {
     /**
-     * @var CollectionFactory
-     */
-    public $replStoreFactory;
-    /**
-     * @var ScopeConfigInterface
-     */
-    public $scopeConfig;
-    /**
-     * @var Data
-     */
-    public $storeHoursHelper;
-    /**
-     * @var Data
-     */
-    public $logger;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * Stores Constructor.
      * @param Template\Context $context
      * @param CollectionFactory $replStoreCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
@@ -51,17 +29,12 @@ class Stores extends Template
      */
     public function __construct(
         Template\Context $context,
-        CollectionFactory $replStoreCollectionFactory,
-        ScopeConfigInterface $scopeConfig,
-        Data $storeHoursHelper,
-        LSR $lsr,
-        LoggerInterface $logger
+        public CollectionFactory $replStoreCollectionFactory,
+        public ScopeConfigInterface $scopeConfig,
+        public Data $storeHoursHelper,
+        public LSR $lsr,
+        public LoggerInterface $logger
     ) {
-        $this->replStoreFactory = $replStoreCollectionFactory;
-        $this->scopeConfig      = $scopeConfig;
-        $this->storeHoursHelper = $storeHoursHelper;
-        $this->lsr              = $lsr;
-        $this->logger           = $logger;
         parent::__construct($context);
     }
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Code;
 
@@ -13,9 +14,6 @@ abstract class AbstractOmniGenerator extends CoreGenerator
     /** @var ServiceType $serviceType */
     public $serviceType;
 
-    /** @var Metadata $metadata */
-    public $metadata;
-
     /** @var string $baseNamespace */
     public $baseNamespace;
 
@@ -26,13 +24,12 @@ abstract class AbstractOmniGenerator extends CoreGenerator
      * @param Metadata $metadata
      * @throws Exception
      */
-    public function __construct(Metadata $metadata)
+    public function __construct(public Metadata $metadata)
     {
         // Call the parent constructor to initialize the base generator class.
         parent::__construct();
 
         // Initialize the properties with values from the provided metadata.
-        $this->metadata = $metadata;
         $this->serviceType = $metadata->getClient()->getServiceType();
 
         // Build the base namespace based on the service type.

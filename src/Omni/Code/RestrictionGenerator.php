@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Code;
 
@@ -24,18 +25,14 @@ class RestrictionGenerator extends AbstractOmniGenerator
         'dateTime' => 'string',
     ];
 
-    /** @var Restriction */
-    private $restriction;
-
     /**
      * @param Restriction $restriction
      * @param Metadata $metadata
      * @throws Exception
      */
-    public function __construct(Restriction $restriction, Metadata $metadata)
+    public function __construct(public Restriction $restriction, Metadata $metadata)
     {
         parent::__construct($metadata);
-        $this->restriction = $restriction;
         $this->caseHelperFactory = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_PASCAL_CASE);
     }
 

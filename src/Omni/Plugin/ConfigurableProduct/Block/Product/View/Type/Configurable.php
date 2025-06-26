@@ -1,13 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\ConfigurableProduct\Block\Product\View\Type;
 
 use Ls\Core\Model\LSR;
 
-/**
- * Class Configurable
- * @package Ls\Omni\Plugin\ConfigurableProduct\Block\Product\View\Type
- */
 class Configurable
 {
     public function afterGetJsonConfig(

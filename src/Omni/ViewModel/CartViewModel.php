@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\ViewModel;
 
@@ -13,41 +14,17 @@ use Psr\Log\LoggerInterface;
 class CartViewModel implements ArgumentInterface
 {
     /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
-     * @var ItemHelper
-     */
-    public $itemHelper;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /**
-     * @var PriceCurrencyInterface
-     */
-    public $priceCurrency;
-
-    /**
      * @param BasketHelper $basketHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
      * @param PriceCurrencyInterface $priceCurrency
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        ItemHelper $itemHelper,
-        LoggerInterface $logger,
-        PriceCurrencyInterface $priceCurrency
+        public BasketHelper $basketHelper,
+        public ItemHelper $itemHelper,
+        public LoggerInterface $logger,
+        public PriceCurrencyInterface $priceCurrency
     ) {
-        $this->itemHelper = $itemHelper;
-        $this->basketHelper = $basketHelper;
-        $this->logger = $logger;
-        $this->priceCurrency = $priceCurrency;
     }
 
     /**

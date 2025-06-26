@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 // @codingStandardsIgnoreFile
 namespace Ls\Omni\Code;
 
@@ -33,18 +35,14 @@ class EntityGenerator extends AbstractOmniGenerator
         'time'       => 'string',
     ];
 
-    /** @var Entity */
-    private $entity;
-
     /**
      * @param Entity $entity
      * @param Metadata $metadata
      * @throws Exception
      */
-    public function __construct(Entity $entity, Metadata $metadata)
+    public function __construct(public Entity $entity, Metadata $metadata)
     {
         parent::__construct($metadata);
-        $this->entity = $entity;
     }
 
     /**

@@ -1,45 +1,35 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Order;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Template\Context;
 
-/**
- * Class Totals
- * @package Ls\Omni\Block\Order
- */
 class Totals extends AbstractBlock
 {
-
     /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * Totals constructor.
      * @param Context $context
      * @param LoyaltyHelper $loyaltyHelper
      * @param array $data
      */
     public function __construct(
         Context $context,
-        LoyaltyHelper $loyaltyHelper,
+        public LoyaltyHelper $loyaltyHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->loyaltyHelper = $loyaltyHelper;
     }
 
     /**
      * Initialize order totals array for email
      *
      * @return $this
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function initTotals()
     {

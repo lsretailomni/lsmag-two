@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer;
 
@@ -24,32 +25,6 @@ use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
 class DataAssignObserver implements ObserverInterface
 {
     /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-    /**
-     * @var StoreHelper
-     */
-    private StoreHelper $storeHelper;
-    /**
-     * @var Http
-     */
-    private Http $request;
-    /**
-     * @var LSR
-     */
-    private LSR $lsr;
-    /**
-     * @var QuoteIdToMaskedQuoteIdInterface
-     */
-    private $quoteIdToMaskedQuoteId;
-
-    /**
      * @param Data $helper
      * @param BasketHelper $basketHelper
      * @param StoreHelper $storeHelper
@@ -58,19 +33,13 @@ class DataAssignObserver implements ObserverInterface
      * @param QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
      */
     public function __construct(
-        Data $helper,
-        BasketHelper $basketHelper,
-        StoreHelper $storeHelper,
-        Http $request,
-        LSR $lsr,
-        QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
+        public Data $helper,
+        public BasketHelper $basketHelper,
+        public StoreHelper $storeHelper,
+        public Http $request,
+        public LSR $lsr,
+        public QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
     ) {
-        $this->helper                 = $helper;
-        $this->basketHelper           = $basketHelper;
-        $this->storeHelper            = $storeHelper;
-        $this->request                = $request;
-        $this->lsr                    = $lsr;
-        $this->quoteIdToMaskedQuoteId = $quoteIdToMaskedQuoteId;
     }
 
     /***

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 
 namespace Ls\Omni\Model\System\Backend;
 
@@ -11,19 +13,9 @@ use Magento\Framework\Model\Context;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
 
-/**
- * Class ExtensionVersion
- * @package Ls\Omni\Model\System\Backend
- */
 class ExtensionVersion extends Value
 {
     /**
-     * @var Data
-     */
-    public $helper;
-
-    /**
-     * ExtensionVersion constructor.
      * @param Context $context
      * @param Registry $registry
      * @param ScopeConfigInterface $config
@@ -38,13 +30,11 @@ class ExtensionVersion extends Value
         Registry $registry,
         ScopeConfigInterface $config,
         TypeListInterface $cacheTypeList,
-        Data $helper,
+        public Data $helper,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
     ) {
-        $this->helper = $helper;
-
         parent::__construct(
             $context,
             $registry,

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer\Adminhtml;
 
@@ -14,25 +15,13 @@ use Magento\Framework\Event\ObserverInterface;
 class SalesObserver implements ObserverInterface
 {
     /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    private $loyaltyHelper;
-
-    /**
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        LoyaltyHelper $loyaltyHelper
+        public BasketHelper $basketHelper,
+        public LoyaltyHelper $loyaltyHelper
     ) {
-        $this->basketHelper  = $basketHelper;
-        $this->loyaltyHelper = $loyaltyHelper;
     }
 
     /**

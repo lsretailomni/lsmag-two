@@ -76,7 +76,7 @@ class GiftCardHelper extends AbstractHelperOmni
      */
     public function isGiftCardExpired(Entity\POSDataEntry $giftCardResponse)
     {
-        if (!$giftCardResponse->getExpirydate()) {
+        if ($giftCardResponse->getExpirydate() == '0001-01-01') {
             return false;
         }
         $date = new \DateTime($giftCardResponse->getExpirydate());

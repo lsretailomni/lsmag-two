@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\Api;
 
@@ -13,46 +14,18 @@ use Psr\Log\LoggerInterface;
 
 class PointsManagement implements PointsManagementInterface
 {
-
     /**
-     * @var CartRepositoryInterface
-     */
-    protected $cartRepository;
-
-    /**
-     * Cart total repository.
-     *
-     * @var CartTotalRepositoryInterface
-     */
-    protected $cartTotalRepository;
-
-    /**
-     * @var CheckoutSession
-     */
-    protected $checkoutSession;
-
-    /**
-     * @var LoggerInterface
-     */
-    private LoggerInterface $logger;
-
-    /**
-     * PointsManagement constructor.
      * @param CartRepositoryInterface $cartRepository
      * @param CartTotalRepositoryInterface $cartTotalRepository
      * @param CheckoutSession $checkoutSession
      * @param LoggerInterface $logger
      */
     public function __construct(
-        CartRepositoryInterface $cartRepository,
-        CartTotalRepositoryInterface $cartTotalRepository,
-        CheckoutSession $checkoutSession,
-        LoggerInterface $logger
+        public CartRepositoryInterface $cartRepository,
+        public CartTotalRepositoryInterface $cartTotalRepository,
+        public CheckoutSession $checkoutSession,
+        public LoggerInterface $logger
     ) {
-        $this->cartRepository      = $cartRepository;
-        $this->cartTotalRepository = $cartTotalRepository;
-        $this->checkoutSession     = $checkoutSession;
-        $this->logger              = $logger;
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Console\Command;
 
@@ -32,7 +33,6 @@ class ClientPing extends Command
      * @param OutputInterface $output The output interface for displaying results
      *
      * @return int Return code (0 indicates success)
-     * @throws GuzzleException
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
