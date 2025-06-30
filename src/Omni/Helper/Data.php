@@ -6,25 +6,22 @@ use DomDocument;
 use DOMXPath;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
-use Ls\Omni\Client\Ecommerce\Entity\StoreHours;
-use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
-use Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
-use Ls\Omni\Client\Ecommerce\Operation\LSCTenderType;
-use Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
-use Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
-use Ls\Omni\Model\Cache\Type;
-use Ls\Omni\Model\Central\GuzzleClient;
-use Ls\Omni\Model\Central\TokenRequestService;
-use Ls\Omni\Service\Service as OmniService;
-use Ls\Omni\Service\ServiceType;
-use Ls\Omni\Service\Soap\Client as OmniClient;
-use Ls\Replication\Api\ReplStoreRepositoryInterface;
-use Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
-use Ls\Replication\Api\ReplLscTenderTypeRepositoryInterface;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
+use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
+use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
+use \Ls\Omni\Client\Ecommerce\Operation\LSCTenderType;
+use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
+use \Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
+use \Ls\Omni\Model\Cache\Type;
+use \Ls\Omni\Model\Central\GuzzleClient;
+use \Ls\Omni\Model\Central\TokenRequestService;
+use \Ls\Omni\Service\Service as OmniService;
+use \Ls\Omni\Service\Soap\Client as OmniClient;
+use \Ls\Replication\Api\ReplStoreRepositoryInterface;
+use \Ls\Replication\Api\ReplLscTenderTypeRepositoryInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -81,31 +78,32 @@ class Data extends AbstractHelper
      * @param StoreManagerInterface $storeManager
      * @param TokenRequestService $tokenRequestService
      * @param RequestInterface $request
+     * @param ReplLscTenderTypeRepositoryInterface $replStoreTenderTypeRepository
      */
     public function __construct(
-        public Context                                $context,
-        public ReplStoreRepositoryInterface           $storeRepository,
-        public SearchCriteriaBuilder                  $searchCriteriaBuilder,
-        public SessionManagerInterface                $session,
-        public CheckoutSession                        $checkoutSession,
-        public ManagerInterface                       $messageManager,
+        public Context $context,
+        public ReplStoreRepositoryInterface $storeRepository,
+        public SearchCriteriaBuilder $searchCriteriaBuilder,
+        public SessionManagerInterface $session,
+        public CheckoutSession $checkoutSession,
+        public ManagerInterface $messageManager,
         public \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        public LoyaltyHelper                          $loyaltyHelper,
-        public CartRepositoryInterface                $cartRepository,
-        public CacheHelper                            $cacheHelper,
-        public LSR                                    $lsr,
-        public DateTime                               $date,
-        public WriterInterface                        $configWriter,
-        public DirectoryList                          $directoryList,
-        public StockHelper                            $stockHelper,
-        public GetCartForUser                         $getCartForUser,
-        public MaskedQuoteIdToQuoteIdInterface        $maskedQuoteIdToQuoteId,
-        public ReplLscTenderTypeRepositoryInterface   $storeTenderTypeRepository,
-        public File                                   $fileSystemDriver,
-        public GuzzleClient                           $guzzleClient,
-        public StoreManagerInterface                  $storeManager,
-        public TokenRequestService                    $tokenRequestService,
-        public RequestInterface                       $request,
+        public LoyaltyHelper $loyaltyHelper,
+        public CartRepositoryInterface $cartRepository,
+        public CacheHelper $cacheHelper,
+        public LSR $lsr,
+        public DateTime $date,
+        public WriterInterface $configWriter,
+        public DirectoryList $directoryList,
+        public StockHelper $stockHelper,
+        public GetCartForUser $getCartForUser,
+        public MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
+        public ReplLscTenderTypeRepositoryInterface $storeTenderTypeRepository,
+        public File $fileSystemDriver,
+        public GuzzleClient $guzzleClient,
+        public StoreManagerInterface $storeManager,
+        public TokenRequestService $tokenRequestService,
+        public RequestInterface $request,
         public ReplLscTenderTypeRepositoryInterface $replStoreTenderTypeRepository
     ) {
         parent::__construct($context);
@@ -296,6 +294,7 @@ class Data extends AbstractHelper
      * @param $loyaltyPoints
      * @param $basketData
      * @return float|int
+     * @throws GuzzleException
      */
     public function getOrderBalance($giftCardAmount, $loyaltyPoints, $basketData)
     {
@@ -325,6 +324,7 @@ class Data extends AbstractHelper
      * @param $basketData
      * @param bool $showMessage
      * @return Phrase|string
+     * @throws GuzzleException
      */
     public function orderBalanceCheck($giftCardNo, $giftCardAmount, $loyaltyPoints, $basketData, $showMessage = true)
     {
