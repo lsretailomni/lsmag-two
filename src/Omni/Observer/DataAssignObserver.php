@@ -77,7 +77,7 @@ class DataAssignObserver implements ObserverInterface
         if (!$errorMessage &&
             $quote->getShippingAddress()->getShippingMethod() == "clickandcollect_clickandcollect"
         ) {
-            $maskedCartId = $this->quoteIdToMaskedQuoteId->execute($quote->getId());
+            $maskedCartId = $this->quoteIdToMaskedQuoteId->execute((int) $quote->getId());
 
             $errorMessage = $this->validateClickAndCollectOrder(
                 $quote,

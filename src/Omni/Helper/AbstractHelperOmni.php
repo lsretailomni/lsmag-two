@@ -9,6 +9,7 @@ use \Ls\Omni\Model\Central\GuzzleClient;
 use \Ls\Omni\Model\Central\TokenRequestService;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
+use Ls\Replication\Logger\OmniLogger;
 use \Ls\Replication\Model\ResourceModel\ReplStoreview\CollectionFactory as ReplStoreCollection;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -49,9 +50,11 @@ use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem\Driver\File;
+use Magento\Framework\Locale\ConfigInterface;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 use Magento\Framework\Registry;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
@@ -60,6 +63,8 @@ use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
 use Magento\Quote\Model\ResourceModel\Quote;
 use Magento\Quote\Model\ResourceModel\Quote\Item;
 use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
+use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Model\Order;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Wishlist\Model\ResourceModel\Wishlist;
 use Magento\Wishlist\Model\WishlistFactory;
@@ -141,6 +146,12 @@ class AbstractHelperOmni extends AbstractHelper
      * @param GuzzleClient $guzzleClient
      * @param TokenRequestService $tokenRequestService
      * @param RequestInterface $request
+     * @param OmniLogger $omniLogger
+     * @param Order $order
+     * @param OrderRepositoryInterface $orderRepository
+     * @param \Magento\Sales\Model\ResourceModel\Order $orderResourceModel
+     * @param Json $json
+     * @param ConfigInterface $config
      */
     public function __construct(
         public Context $context,
@@ -214,7 +225,12 @@ class AbstractHelperOmni extends AbstractHelper
         public GuzzleClient $guzzleClient,
         public TokenRequestService $tokenRequestService,
         public RequestInterface $request,
-        public \Ls\Replication\Logger\OmniLogger $omniLogger
+        public OmniLogger $omniLogger,
+        public Order $order,
+        public OrderRepositoryInterface $orderRepository,
+        public \Magento\Sales\Model\ResourceModel\Order $orderResourceModel,
+        public Json $json,
+        public ConfigInterface $config
     ) {
         parent::__construct($context);
         $this->initialize();

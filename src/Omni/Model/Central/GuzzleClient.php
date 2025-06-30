@@ -50,6 +50,7 @@ class GuzzleClient
      */
     public function makeRequest($baseUrl, $action, $method, $type = 'odata', $options = [], $query = [], $data = [])
     {
+        $baseUrl = 'http://10.213.0.5:9048/LscNextMajor/';
         $headers = [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json'
@@ -61,6 +62,7 @@ class GuzzleClient
             if (!empty($options['token'])) {
                 $token = $options['token'];
                 $headers['Authorization'] = 'Bearer ' . $token;
+                $headers['Authorization'] = 'Basic ' . 'b21uaWRldjp1c2hGbWs5SENRdDJKYUpkYzhxYTNtNXEwOXI1WDI5YzZzRDRxcjlaK3A0PQ==';
             }
 
             if (str_starts_with($action, 'ODataRequest_')) {
@@ -83,6 +85,7 @@ class GuzzleClient
             $type = $type == 'odata' ? 'ODataV4' : 'WS/Codeunit';
 
             $endpoint = 'V2.0/' . $tenant . '/' . $environmentName . '/' . $type . '/' . $action;
+            $endpoint = $type . '/' . $action;
             if ($method == 'POST') {
                 if (!empty($query)) {
                     $payload['query'] = $query;

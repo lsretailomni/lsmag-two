@@ -4,8 +4,13 @@ declare(strict_types=1);
 namespace Ls\Omni\Helper;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCODiscountLineV6;
+use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOHeaderV6;
+use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOLineV6;
+use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOPaymentV6;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
@@ -16,181 +21,29 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Locale\ConfigInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Customer\Model\Session as CustomerSession;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Registry;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model;
-use Magento\Sales\Model\OrderRepository;
-use Magento\Sales\Model\ResourceModel\Order;
-use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Sales\Model\Order;
 use Magento\Store\Model\ScopeInterface;
-use Magento\Store\Model\StoreManagerInterface;
-use Magento\Directory\Model\CurrencyFactory;
 
 /**
  * Useful helper functions for order
  *
  */
-class OrderHelper extends AbstractHelper
+class OrderHelper extends AbstractHelperOmni
 {
-
-    /** @var Model\Order $order */
-    public $order;
-
-    /** @var BasketHelper $basketHelper */
-    public $basketHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var GiftCardHelper
-     */
-    public $giftCardHelper;
-
-    /**
-     * @var StoreHelper
-     */
-    public $storeHelper;
-
-    /**
-     * @var CustomerSession
-     */
-    public $customerSession;
-
-    /**
-     * @var CheckoutSession
-     */
-    public $checkoutSession;
-
-    /**
-     * @var Model\OrderRepository
-     */
-    public $orderRepository;
-
-    /** @var  LSR $lsr */
-    public $lsr;
-
-    /**
-     * @var Order
-     */
-    public $orderResourceModel;
-
     /**
      * @var array
      */
     public $tendertypesArray = [];
 
     /**
-     * @var Json
-     */
-    public $json;
-
-    /**
-     * @var DateTime
-     */
-    public $dateTime;
-
-    /**
-     * @var TimezoneInterface
-     */
-    public $timezoneInterface;
-
-    /**
-     * @var Registry
-     */
-    public Registry $registry;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    public $storeManager;
-
-    /**
-     * @var CurrencyFactory
-     */
-    public $currencyFactory;
-
-    /**
      * @var mixed
      */
     public $currentOrder;
-
-    /**
-     *
-     * @var ConfigInterface
-     */
-    public $config;
-
-    /**
-     * @param Context $context
-     * @param Model\Order $order
-     * @param BasketHelper $basketHelper
-     * @param LoyaltyHelper $loyaltyHelper
-     * @param GiftCardHelper $giftCardHelper
-     * @param OrderRepository $orderRepository
-     * @param CustomerSession $customerSession
-     * @param CheckoutSession $checkoutSession
-     * @param LSR $lsr
-     * @param Order $orderResourceModel
-     * @param Json $json
-     * @param Registry $registry
-     * @param DateTime $dateTime
-     * @param TimezoneInterface $timezoneInterface
-     * @param StoreManagerInterface $storeManager
-     * @param StoreHelper $storeHelper
-     * @param CurrencyFactory $currencyFactory
-     * @param ConfigInterface $config
-     */
-    public function __construct(
-        Context $context,
-        Model\Order $order,
-        BasketHelper $basketHelper,
-        LoyaltyHelper $loyaltyHelper,
-        GiftCardHelper $giftCardHelper,
-        Model\OrderRepository $orderRepository,
-        CustomerSession $customerSession,
-        CheckoutSession $checkoutSession,
-        LSR $lsr,
-        Order $orderResourceModel,
-        Json $json,
-        Registry $registry,
-        DateTime $dateTime,
-        TimezoneInterface $timezoneInterface,
-        StoreManagerInterface $storeManager,
-        StoreHelper $storeHelper,
-        CurrencyFactory $currencyFactory,
-        ConfigInterface $config
-    ) {
-        parent::__construct($context);
-        $this->order              = $order;
-        $this->basketHelper       = $basketHelper;
-        $this->loyaltyHelper      = $loyaltyHelper;
-        $this->giftCardHelper     = $giftCardHelper;
-        $this->orderRepository    = $orderRepository;
-        $this->customerSession    = $customerSession;
-        $this->checkoutSession    = $checkoutSession;
-        $this->lsr                = $lsr;
-        $this->orderResourceModel = $orderResourceModel;
-        $this->json               = $json;
-        $this->registry           = $registry;
-        $this->dateTime           = $dateTime;
-        $this->timezoneInterface  = $timezoneInterface;
-        $this->storeManager       = $storeManager;
-        $this->storeHelper        = $storeHelper;
-        $this->currencyFactory    = $currencyFactory;
-        $this->config             = $config;
-    }
 
     /**
      * @param $orderId
@@ -205,6 +58,9 @@ class OrderHelper extends AbstractHelper
 
     /**
      * This function is overriding in hospitality module
+     *
+     * Preparing order to sync with central
+     *
      * @param Model\Order $order
      * @param $oneListCalculateResponse
      * @return Entity\OrderCreate
@@ -212,8 +68,18 @@ class OrderHelper extends AbstractHelper
     public function prepareOrder(Model\Order $order, $oneListCalculateResponse)
     {
         try {
-            $storeId       = $oneListCalculateResponse->getStoreId();
-            $cardId        = $oneListCalculateResponse->getCardId();
+//            $request = new Entity\OrderCreate();
+
+            $rootCustomerOrderCreate = $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\RootCustomerOrderCreateV6::class
+            );
+
+            $customerOrderCreateCoHeader = $this->createInstance(
+                CustomerOrderCreateCOHeaderV6::class
+            );
+
+            $storeId       = current((array)$oneListCalculateResponse->getMobiletransaction())->getStoreid();
+            $cardId        = current((array)$oneListCalculateResponse->getMobiletransaction())->getMembercardno();
             $customerEmail = $order->getCustomerEmail();
             $customerName  = $order->getBillingAddress()->getFirstname() . ' ' .
                 $order->getBillingAddress()->getLastname();
@@ -242,66 +108,165 @@ class OrderHelper extends AbstractHelper
                 $isClickCollect = $carrierCode == 'clickandcollect';
             }
 
-            /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
-            $orderPaymentArrayObject = $this->setOrderPayments($order, $cardId);
+            $orderPayments = $this->setOrderPayments(
+                $order,
+                $cardId,
+                $isClickCollect ? $order->getPickupStore() : $storeId
+            );
+            $rootCustomerOrderCreate->setCustomerordercreatecopaymentv6($orderPayments);
 
-            //if the shipping address is empty, we use the contact address as shipping address.
-            $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;
-            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) :
-                $contactAddress;
+//            //if the shipping address is empty, we use the contact address as shipping address.
+//            $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;
+//            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) :
+//                $contactAddress;
 
-            $oneListCalculateResponse
-                ->setId($order->getIncrementId())
-                ->setContactId($contactId)
-                ->setCardId($cardId)
-                ->setEmail($customerEmail)
-                ->setShipToEmail($customerEmail)
-                ->setContactName($customerName)
-                ->setShipToName($shipToName)
-                ->setContactAddress($contactAddress)
-                ->setShipToAddress($shipToAddress)
-                ->setStoreId($storeId);
+//            $oneListCalculateResponse
+//                ->setId($order->getIncrementId())
+//                ->setContactId($contactId)
+//                ->setCardId($cardId)
+//                ->setEmail($customerEmail)
+//                ->setShipToEmail($customerEmail)
+//                ->setContactName($customerName)
+//                ->setShipToName($shipToName)
+//                ->setContactAddress($contactAddress)
+//                ->setShipToAddress($shipToAddress)
+//                ->setStoreId($storeId);
+            $customerOrderCreateCoHeader->addData(
+                [
+                    CustomerOrderCreateCOHeaderV6::MEMBER_CARD_NO => $cardId,
+                    CustomerOrderCreateCOHeaderV6::SOURCE_TYPE => 1,
+                    CustomerOrderCreateCOHeaderV6::CUSTOMER_NO => 44090,
+                    CustomerOrderCreateCOHeaderV6::NAME => $customerName,
+                    CustomerOrderCreateCOHeaderV6::ADDRESS => $order->getBillingAddress()->getStreetLine(1),
+                    CustomerOrderCreateCOHeaderV6::ADDRESS2 => $order->getBillingAddress()->getStreetLine(2),
+                    CustomerOrderCreateCOHeaderV6::CITY => $order->getBillingAddress()->getCity(),
+                    CustomerOrderCreateCOHeaderV6::COUNTY => $order->getBillingAddress()->getRegion(),
+                    CustomerOrderCreateCOHeaderV6::POST_CODE => $order->getBillingAddress()->getPostcode(),
+                    CustomerOrderCreateCOHeaderV6::COUNTRY_REGION_CODE => $order->getBillingAddress()->getCountryId(),
+                    CustomerOrderCreateCOHeaderV6::PHONE_NO => $order->getBillingAddress()->getTelephone(),
+                    CustomerOrderCreateCOHeaderV6::EMAIL => $customerEmail,
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_NAME => $shipToName,
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_ADDRESS => $order->getShippingAddress()->getStreetLine(1),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_ADDRESS2 => $order->getShippingAddress()->getStreetLine(2),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_CITY => $order->getShippingAddress()->getCity(),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_COUNTY => $order->getShippingAddress()->getRegion(),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_POST_CODE => $order->getShippingAddress()->getPostcode(),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_COUNTRY_REGION_CODE =>
+                        $order->getShippingAddress()->getCountryId(),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_PHONE_NO => $order->getShippingAddress()->getTelephone(),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_EMAIL => $customerEmail,
+                    CustomerOrderCreateCOHeaderV6::EXTERNAL_ID => $order->getIncrementId(),
+                    CustomerOrderCreateCOHeaderV6::CREATED_AT_STORE => $storeId,
+                    CustomerOrderCreateCOHeaderV6::SHIP_ORDER => !$isClickCollect,
+                ]
+            );
+//            if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
+//                $oneListCalculateResponse->setCurrencyFactor($this->loyaltyHelper->getPointRate($order->getStoreId()));
+//                $oneListCalculateResponse->setCurrency($order->getOrderCurrencyCode());
+//            }
 
-            if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
-                $oneListCalculateResponse->setCurrencyFactor($this->loyaltyHelper->getPointRate($order->getStoreId()));
-                $oneListCalculateResponse->setCurrency($order->getOrderCurrencyCode());
-            }
+//            if ($isClickCollect) {
+//                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
+//            } else {
+             if (!$isClickCollect) {
+//                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
+                 //TODO need to fix the length issue once LS Central allow more then 10 characters.
+                 $carrierCode = ($carrierCode) ? substr($carrierCode, 0, 10) : "";
+//                 $oneListCalculateResponse->setShippingAgentCode($carrierCode);
+                 $method = ($method) ? substr($method, 0, 10) : "";
+//                 $oneListCalculateResponse->setShippingAgentServiceCode($method);
+                 $customerOrderCreateCoHeader->addData([
+                     CustomerOrderCreateCOHeaderV6::SHIPPING_AGENT_CODE => $carrierCode,
+                     CustomerOrderCreateCOHeaderV6::SHIPPING_AGENT_SERVICE_CODE => $method
+                 ]);
+             }
 
-            if ($isClickCollect) {
-                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
-            } else {
-                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
-                //TODO need to fix the length issue once LS Central allow more then 10 characters.
-                $carrierCode = ($carrierCode) ? substr($carrierCode, 0, 10) : "";
-                $oneListCalculateResponse->setShippingAgentCode($carrierCode);
-                $method = ($method) ? substr($method, 0, 10) : "";
-                $oneListCalculateResponse->setShippingAgentServiceCode($method);
-            }
+//            }
             $pickupDateTimeslot = $order->getPickupDateTimeslot();
             if (!empty($pickupDateTimeslot)) {
                 $dateTimeFormat = "Y-m-d\T" . "H:i:00";
                 $pickupDateTime = $this->dateTime->date($dateTimeFormat, $pickupDateTimeslot);
-                $oneListCalculateResponse->setRequestedDeliveryDate($pickupDateTime);
+                $customerOrderCreateCoHeader->addData([
+                    CustomerOrderCreateCOHeaderV6::REQUESTED_DELIVERY_DATE => $pickupDateTime
+                ]);
+//                $oneListCalculateResponse->setRequestedDeliveryDate($pickupDateTime);
             }
-            $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
+            $rootCustomerOrderCreate->setCustomerordercreatecoheaderv6($customerOrderCreateCoHeader);
+//            $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
             //For click and collect.
-            if ($isClickCollect) {
-                $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
+//            if ($isClickCollect) {
+//                $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
+//            }
+//            $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+            $orderLinesArray = $oneListCalculateResponse->getMobiletransactionline();
+            $customerOrderCoLines = [];
+            foreach ($oneListCalculateResponse->getMobiletransactionline() ?? [] as $id => $orderLine) {
+                if ($orderLine->getLinetype() == 0) {
+                    $customerOrderCoLine = $this->createInstance(
+                        CustomerOrderCreateCOLineV6::class
+                    );
+
+                    $customerOrderCoLine->addData([
+                        CustomerOrderCreateCOLineV6::LINE_NO => $orderLine->getLineno(),
+                        CustomerOrderCreateCOLineV6::LINE_TYPE => $orderLine->getLinetype(),
+                        CustomerOrderCreateCOLineV6::NUMBER => $orderLine->getNumber(),
+                        CustomerOrderCreateCOLineV6::VARIANT_CODE => $orderLine->getVariantcode(),
+                        CustomerOrderCreateCOLineV6::UNITOF_MEASURE_CODE => $orderLine->getUomid(),
+                        CustomerOrderCreateCOLineV6::NET_PRICE => $orderLine->getNetprice(),
+                        CustomerOrderCreateCOLineV6::PRICE => $orderLine->getPrice(),
+                        CustomerOrderCreateCOLineV6::QUANTITY => $orderLine->getQuantity(),
+                        CustomerOrderCreateCOLineV6::DISCOUNT_AMOUNT => $orderLine->getDiscountamount(),
+                        CustomerOrderCreateCOLineV6::DISCOUNT_PERCENT => $orderLine->getDiscountpercent(),
+                        CustomerOrderCreateCOLineV6::NET_AMOUNT => $orderLine->getNetamount(),
+                        CustomerOrderCreateCOLineV6::VAT_AMOUNT => $orderLine->getTaxamount(),
+                        CustomerOrderCreateCOLineV6::AMOUNT => $orderLine->getNetamount() + $orderLine->getTaxamount(),
+                        CustomerOrderCreateCOLineV6::CLICK_AND_COLLECT => $isClickCollect,
+                        CustomerOrderCreateCOLineV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId,
+                        CustomerOrderCreateCOLineV6::EXTERNAL_ID => $id,
+                    ]);
+
+                    $customerOrderCoLines[] = $customerOrderCoLine;
+                }
             }
-            $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+
+            $customerOrderDiscountCoLines = [];
+
+            foreach ($oneListCalculateResponse->getMobiletransdiscountline() ?? [] as $id => $orderDiscountLine) {
+                $customerOrderDiscountCoLine = $this->createInstance(
+                    CustomerOrderCreateCODiscountLineV6::class
+                );
+
+                $customerOrderDiscountCoLine->addData([
+                    CustomerOrderCreateCODiscountLineV6::LINE_NO => $orderDiscountLine->getLineno(),
+                    CustomerOrderCreateCODiscountLineV6::ENTRY_NO => $orderDiscountLine->getNo(),
+                    CustomerOrderCreateCODiscountLineV6::OFFER_NO => $orderDiscountLine->getOfferno(),
+                    CustomerOrderCreateCODiscountLineV6::PERIODIC_DISC_TYPE =>
+                        $orderDiscountLine->getPeriodicdisctype(),
+                    CustomerOrderCreateCODiscountLineV6::PERIODIC_DISC_GROUP =>
+                        $orderDiscountLine->getPeriodicdiscgroup(),
+                    CustomerOrderCreateCODiscountLineV6::DESCRIPTION => $orderDiscountLine->getDescription(),
+                    CustomerOrderCreateCODiscountLineV6::DISCOUNT_PERCENT => $orderDiscountLine->getDiscountpercent(),
+                    CustomerOrderCreateCODiscountLineV6::DISCOUNT_AMOUNT => $orderDiscountLine->getDiscountamount(),
+                ]);
+
+                $customerOrderDiscountCoLines[] = $customerOrderDiscountCoLine;
+            }
             //For click and collect we need to remove shipment charge orderline
             //For flat shipment it will set the correct shipment value into the order
-            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
+//            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
             // @codingStandardsIgnoreLine
-            $request = new Entity\OrderCreate();
 
-            if (version_compare($this->lsr->getOmniVersion($order->getStoreId()), '2023.05.1', '>=')) {
-                $request->setReturnOrderIdOnly(true);
-            }
+            $rootCustomerOrderCreate
+                ->setCustomerordercreatecolinev6($customerOrderCoLines)
+                ->setCustomerordercreatecodiscountlinev6($customerOrderDiscountCoLines);
+//            if (version_compare($this->lsr->getOmniVersion($order->getStoreId()), '2023.05.1', '>=')) {
+//                $request->setReturnOrderIdOnly(true);
+//            }
 
-            $oneListCalculateResponse->setOrderLines($orderLinesArray);
-            $request->setRequest($oneListCalculateResponse);
-            return $request;
+//            $oneListCalculateResponse->setOrderLines($orderLinesArray);
+//            $request->setRequest($oneListCalculateResponse);
+//            return $request;
+            return $rootCustomerOrderCreate;
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -473,9 +438,17 @@ class OrderHelper extends AbstractHelper
      */
     public function placeOrder($request)
     {
+        $operation = $this->createInstance(
+            \Ls\Omni\Client\Ecommerce\Operation\CustomerOrderCreateV6::class,
+        );
+
+        $operation->setOperationInput(
+            [\Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateV6::CUSTOMER_ORDER_CREATE_V6_XML => $request]
+        );
+
         // @codingStandardsIgnoreLine
-        $operation = new Operation\OrderCreate();
-        $response  = $operation->execute($request);
+//        $operation = new Operation\OrderCreate();
+        $response  = $operation->execute();
         // @codingStandardsIgnoreLine
         return $response;
     }
@@ -532,12 +505,17 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * @param Model\Order $order
+     * Set required payment methods for the order
+     *
+     * @param Order $order
      * @param $cardId
-     * @return Entity\ArrayOfOrderPayment
-     * @throws InvalidEnumException
+     * @param $storeId
+     * @return array
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws GuzzleException
      */
-    public function setOrderPayments(Model\Order $order, $cardId)
+    public function setOrderPayments(Model\Order $order, $cardId, $storeId)
     {
         $transId          = $order->getPayment()->getLastTransId();
         $ccType           = $order->getPayment()->getCcType() ? substr($order->getPayment()->getCcType(), 0, 10) : '';
@@ -548,7 +526,7 @@ class OrderHelper extends AbstractHelper
 
         $orderPaymentArray = [];
         // @codingStandardsIgnoreStart
-        $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
+//        $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
         // @codingStandardsIgnoreEnd
         //TODO change it to $paymentMethod->isOffline() == false when order edit option available for offline payments.
         $paymentCode  = $order->getPayment()->getMethodInstance()->getCode();
@@ -556,86 +534,151 @@ class OrderHelper extends AbstractHelper
 
         $noOrderPayment = $this->paymentLineNotRequiredPaymentMethods($order);
 
+        $shippingMethod = $order->getShippingMethod(true);
+        $isClickCollect = false;
+
+        if ($shippingMethod !== null) {
+            $carrierCode    = $shippingMethod->getData('carrier_code');
+            $isClickCollect = $carrierCode == 'clickandcollect';
+        }
+        $lineNumber = 10000;
         if (!in_array($paymentCode, $noOrderPayment)) {
             // @codingStandardsIgnoreStart
-            $orderPayment = new Entity\OrderPayment();
+            $orderPayment = $this->createInstance(CustomerOrderCreateCOPaymentV6::class);
+            $orderPayment->addData(
+                [
+                    CustomerOrderCreateCOPaymentV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId,
+                    CustomerOrderCreateCOPaymentV6::LINE_NO  => $lineNumber,
+                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT => $order->getGrandTotal(),
+                    CustomerOrderCreateCOPaymentV6::TENDER_TYPE => $tenderTypeId,
+                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_VALID_DATE => $preApprovedDate,
+                    CustomerOrderCreateCOPaymentV6::EXTERNAL_REFERENCE => $order->getIncrementId(),
+                    CustomerOrderCreateCOPaymentV6::CURRENCY_CODE => $order->getOrderCurrency()->getCurrencyCode(),
+                    CustomerOrderCreateCOPaymentV6::CURRENCY_FACTOR => 1,
+                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT_LCY => $order->getGrandTotal() * 1
+                ]
+            );
             // @codingStandardsIgnoreEnd
             //default values for all payment typoes.
-            $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
-                ->setCurrencyFactor(1)
-                ->setLineNumber('1')
-                ->setExternalReference($order->getIncrementId())
-                ->setAmount($order->getGrandTotal());
+//            $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
+//                ->setCurrencyFactor(1)
+//                ->setLineNumber('1')
+//                ->setExternalReference($order->getIncrementId())
+//                ->setAmount($order->getGrandTotal());
             // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
             if (!empty($transId)) {
-                $orderPayment->setCardType($ccType);
-                $orderPayment->setCardNumber($cardNumber);
-                $orderPayment->setTokenNumber($transId);
+                $orderPayment->addData(
+                    [
+                        CustomerOrderCreateCOPaymentV6::CARD_TYPE => $ccType,
+                        CustomerOrderCreateCOPaymentV6::CARDOR_CUSTOMERNUMBER => $cardNumber,
+                        CustomerOrderCreateCOPaymentV6::TOKEN_NO => $transId,
+                    ]
+                );
+//                $orderPayment->setCardType($ccType);
+//                $orderPayment->setCardNumber($cardNumber);
+//                $orderPayment->setTokenNumber($transId);
                 if (!empty($paidAmount)) {
-                    $orderPayment->setPaymentType(Entity\Enum\PaymentType::PAYMENT);
+                    $orderPayment->setType('1');
                 } else {
                     if (!empty($authorizedAmount)) {
-                        $orderPayment->setPaymentType(Entity\Enum\PaymentType::PRE_AUTHORIZATION);
+                        $orderPayment->setType('2');
                     } else {
-                        $orderPayment->setPaymentType(Entity\Enum\PaymentType::NONE);
+                        $orderPayment->setType('0');
                     }
                 }
             }
 
-            $orderPayment->setTenderType($tenderTypeId);
-            $orderPayment->setPreApprovedValidDate($preApprovedDate);
+//            $orderPayment->setTenderType($tenderTypeId);
+//            $orderPayment->setPreApprovedValidDate($preApprovedDate);
             $orderPaymentArray[] = $orderPayment;
+            $lineNumber += 10000;
         }
 
         if ($order->getLsPointsSpent()) {
             $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
             $pointRate    = $this->loyaltyHelper->getPointRate();
-            // @codingStandardsIgnoreStart
-            $orderPaymentLoyalty = new Entity\OrderPayment();
-            // @codingStandardsIgnoreEnd
-            //default values for all payment types.
-            $orderPaymentLoyalty->setCurrencyCode('LOY')
-                ->setCurrencyFactor($pointRate)
-                ->setLineNumber('2')
-                ->setCardNumber($cardId)
-                ->setExternalReference($order->getIncrementId())
-                ->setAmount($order->getLsPointsSpent())
-                ->setPreApprovedValidDate($preApprovedDate)
-                ->setPaymentType(Entity\Enum\PaymentType::PAYMENT)
-                ->setTenderType($tenderTypeId);
-            $orderPaymentArray[] = $orderPaymentLoyalty;
+//            // @codingStandardsIgnoreStart
+//            $orderPaymentLoyalty = new Entity\OrderPayment();
+//            // @codingStandardsIgnoreEnd
+//            //default values for all payment types.
+//            $orderPaymentLoyalty->setCurrencyCode('LOY')
+//                ->setCurrencyFactor($pointRate)
+//                ->setLineNumber('2')
+//                ->setCardNumber($cardId)
+//                ->setExternalReference($order->getIncrementId())
+//                ->setAmount($order->getLsPointsSpent())
+//                ->setPreApprovedValidDate($preApprovedDate)
+//                ->setPaymentType(Entity\Enum\PaymentType::PAYMENT)
+//                ->setTenderType($tenderTypeId);
+
+            $orderPayment = $this->createInstance(CustomerOrderCreateCOPaymentV6::class);
+            $orderPayment->addData(
+                [
+                    CustomerOrderCreateCOPaymentV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId,
+                    CustomerOrderCreateCOPaymentV6::LINE_NO  => $lineNumber,
+                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT => $order->getLsPointsSpent(),
+                    CustomerOrderCreateCOPaymentV6::TENDER_TYPE => $tenderTypeId,
+                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_VALID_DATE => $preApprovedDate,
+                    CustomerOrderCreateCOPaymentV6::EXTERNAL_REFERENCE => $order->getIncrementId(),
+                    CustomerOrderCreateCOPaymentV6::CURRENCY_CODE => 'LOY',
+                    CustomerOrderCreateCOPaymentV6::CURRENCY_FACTOR => $pointRate,
+                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT_LCY => $order->getLsPointsSpent() * $pointRate,
+                    CustomerOrderCreateCOPaymentV6::CARDOR_CUSTOMERNUMBER => $cardId,
+                    CustomerOrderCreateCOPaymentV6::TYPE => '1',
+                ]
+            );
+            $orderPaymentArray[] = $orderPayment;
+            $lineNumber += 10000;
         }
 
         if ($order->getLsGiftCardAmountUsed()) {
             $tenderTypeId   = $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
-            $currencyFactor = 0;
-            if (version_compare(
-                $this->lsr->getCentralVersion($this->lsr->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES),
-                '25',
-                '<'
-            )) {
-                $currencyFactor = 1;
-            }
+//            $currencyFactor = 0;
+//            if (version_compare(
+//                $this->lsr->getCentralVersion($this->lsr->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES),
+//                '25',
+//                '<'
+//            )) {
+//                $currencyFactor = 1;
+//            }
             $giftCardCurrencyCode = $order->getOrderCurrency()->getCurrencyCode();
             // @codingStandardsIgnoreStart
-            $orderPaymentGiftCard = new Entity\OrderPayment();
-            // @codingStandardsIgnoreEnd
-            //default values for all payment typoes.
-            $orderPaymentGiftCard
-                ->setCurrencyFactor($currencyFactor)
-                ->setCurrencyCode($giftCardCurrencyCode)
-                ->setAmount($order->getLsGiftCardAmountUsed())
-                ->setLineNumber('3')
-                ->setCardNumber($order->getLsGiftCardNo())
-                ->setAuthorizationCode($order->getLsGiftCardPin())
-                ->setExternalReference($order->getIncrementId())
-                ->setPreApprovedValidDate($preApprovedDate)
-                ->setTenderType($tenderTypeId)
-                ->setPaymentType(Entity\Enum\PaymentType::PAYMENT);
-            $orderPaymentArray[] = $orderPaymentGiftCard;
+//            $orderPaymentGiftCard = new Entity\OrderPayment();
+//            // @codingStandardsIgnoreEnd
+//            //default values for all payment typoes.
+//            $orderPaymentGiftCard
+//                ->setCurrencyFactor($currencyFactor)
+//                ->setCurrencyCode($giftCardCurrencyCode)
+//                ->setAmount($order->getLsGiftCardAmountUsed())
+//                ->setLineNumber('3')
+//                ->setCardNumber($order->getLsGiftCardNo())
+//                ->setAuthorizationCode($order->getLsGiftCardPin())
+//                ->setExternalReference($order->getIncrementId())
+//                ->setPreApprovedValidDate($preApprovedDate)
+//                ->setTenderType($tenderTypeId)
+//                ->setPaymentType(Entity\Enum\PaymentType::PAYMENT);
+
+            $orderPayment = $this->createInstance(CustomerOrderCreateCOPaymentV6::class);
+            $orderPayment->addData(
+                [
+                    CustomerOrderCreateCOPaymentV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId,
+                    CustomerOrderCreateCOPaymentV6::LINE_NO  => $lineNumber,
+                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT => $order->getLsGiftCardAmountUsed(),
+                    CustomerOrderCreateCOPaymentV6::TENDER_TYPE => $tenderTypeId,
+                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_VALID_DATE => $preApprovedDate,
+                    CustomerOrderCreateCOPaymentV6::EXTERNAL_REFERENCE => $order->getIncrementId(),
+                    CustomerOrderCreateCOPaymentV6::CURRENCY_CODE => $giftCardCurrencyCode,
+                    CustomerOrderCreateCOPaymentV6::CURRENCY_FACTOR => 0,
+                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT_LCY => 0,
+                    CustomerOrderCreateCOPaymentV6::AUTHORIZATION_CODE => $order->getLsGiftCardPin(),
+                    CustomerOrderCreateCOPaymentV6::CARDOR_CUSTOMERNUMBER => $order->getLsGiftCardNo(),
+                    CustomerOrderCreateCOPaymentV6::TYPE => '1',
+                ]
+            );
+            $orderPaymentArray[] = $orderPayment;
         }
 
-        return $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
+        return $orderPaymentArray;
     }
 
     /**
@@ -1313,7 +1356,7 @@ class OrderHelper extends AbstractHelper
     {
         try {
             $format   = 'd/m/y h:i:s A';
-            $dateTime = $this->timezoneInterface->date($date)->format($format);
+            $dateTime = $this->timezone->date($date)->format($format);
 
             return $dateTime;
         } catch (\Exception $e) {
