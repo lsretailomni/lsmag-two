@@ -864,7 +864,7 @@ class OrderHelper extends AbstractHelper
      */
     public function setCurrentMagOrderInRegistry($salesEntry)
     {
-        $order = $this->getOrderByDocumentId($salesEntry);
+        $order = $this->getOrderByDocumentId($salesEntry->getLscMemberSalesBuffer()->getDocumentId());
         $this->registerGivenValueInRegistry('current_mag_order', $order);
     }
 
@@ -916,11 +916,11 @@ class OrderHelper extends AbstractHelper
      * @param $response
      * @return array|false|mixed
      */
-    public function getOrderByDocumentId($response)
+    public function getOrderByDocumentId($documentId)
     {
         $order = [];
         try {
-            $documentId = $response->getData('Document ID');
+            //$documentId = $response->getLscMemberSalesBuffer()->getData('Document ID');
 
             if (!empty($documentId)) {
                 $customerId = $this->customerSession->getCustomerId();

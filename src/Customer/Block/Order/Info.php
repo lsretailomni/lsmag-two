@@ -140,23 +140,11 @@ class Info extends AbstractOrderBlock
      */
     public function getClickAndCollectOrder()
     {
-        $clickAndCollectOrder = null;
-        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder(true)->getData();
-        foreach ($lineItemObj as $key => $lines) {
-            if ($key != "LSCMemberSalesDocLine") {
-                continue;
-            }
-            if (!is_array($lines)) {
-                $lines = [$lines];
-            }
-            foreach ($lines as $line) {
-                $clickAndCollectOrder = ($line->getClickAndCollectLine() && $clickAndCollectOrder === null) ?
-                    $line->getClickAndCollectLine() :
-                    null;
-            }
-
+        $order = $this->getLscMemberSalesBuffer();
+        if ($order->getCreatedAtStore() !== $order->getStoreNo()) {
+            return true;
         }
-        return $clickAndCollectOrder;
+        return false;
     }
 
     /**

@@ -136,9 +136,9 @@ class Renderer extends DefaultRenderer
                     list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                         $orderItem->getSku()
                     );
-                    if ($itemId == $centralItem->getItemId() &&
-                        $variantId == $centralItem->getVariantId() &&
-                        $uom == $centralItem->getUomId()
+                    if ($itemId == $centralItem->getNumber() &&
+                        $variantId == $centralItem->getVariantCode() &&
+                        $uom == $centralItem->getUnitOfMeasure()
                     ) {
                         $magentoOrderItem = $orderItem;
                         break;

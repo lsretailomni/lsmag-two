@@ -115,6 +115,9 @@ class Totals extends AbstractOrderBlock
     {
         $orderLines = $this->getLines();
         $fee        = 0;
+        if (!is_array($orderLines)) {
+            $orderLines = [$orderLines];
+        }
         foreach ($orderLines as $line) {
             if ($line->getNumber() ==
                 $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $this->lsr->getCurrentStoreId())) {

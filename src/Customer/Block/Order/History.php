@@ -93,10 +93,25 @@ class History extends \Magento\Sales\Block\Order\History
      * @param $storeId
      * @param $orderType
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function getFormattedPrice($amount, $currency = null, $storeId = null, $orderType = null)
     {
         return $this->orderHelper->getPriceWithCurrency($this->priceCurrency, $amount, $currency, $storeId, $orderType);
+    }
+
+    /**
+     * Get store currency code
+     *
+     * If store currency code is not passed then get store currency code from LSR
+     *
+     * @param $storeCurrencyCode
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getStoreCurrencyCode($storeCurrencyCode)
+    {
+        return ($storeCurrencyCode) ? $storeCurrencyCode : $this->lsr->getStoreCurrencyCode();
     }
 
     /**

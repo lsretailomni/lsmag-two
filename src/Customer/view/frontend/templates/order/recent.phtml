@@ -71,7 +71,7 @@ $orderCount = 0;
                                     continue;
                                 }
 
-                                $magOrder = $block->getOrderByDocumentId($_order);
+                                $magOrder = $block->getOrderByDocumentId($_order->getDocumentId());
                                 if ($magOrder) {
                                     $block->registerValueInRegistry($magOrder);
                                     $magOrderIncrementId = $magOrder->getIncrementId();
@@ -91,7 +91,7 @@ $orderCount = 0;
                                         class="col store-name"><?= $_order->getStoreName() ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Order Total')) ?>"
                                         class="col total"><?= /* @escapeNotVerified */
-                                        $block->getFormattedPrice($_order->getGrossAmount(), $storeCurrency, $_order['IdType']) ?></td>
+                                        $block->getFormattedPrice($_order->getGrossAmount(), $storeCurrency, "",$_order['IdType']) ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Status')) ?>"
                                         class="col status"><?= /* @escapeNotVerified */
                                         $_order['Status'] ?></td>

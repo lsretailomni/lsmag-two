@@ -19,14 +19,14 @@ class Items extends AbstractItems
      * @param Context $context
      * @param LSR $lsr
      * @param OrderHelper $orderHelper
-     * @param CollectionFactory $itemCollection
+     * @param CollectionFactory $itemCollectionFactory
      * @param array $data
      */
     public function __construct(
         public Context $context,
         public LSR $lsr,
         public OrderHelper $orderHelper,
-        public CollectionFactory $itemCollection,
+        public CollectionFactory $itemCollectionFactory,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -49,7 +49,7 @@ class Items extends AbstractItems
                     $magentoOrder = null;
                 }
             }
-            return $this->itemCollection->getItems();
+            return $this->itemCollectionFactory->getItems();
         }
 
         $orderLines = $order->getLscMemberSalesDocLine();
