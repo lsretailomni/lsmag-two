@@ -371,7 +371,8 @@ class ItemHelper extends AbstractHelper
     ) {
         $orderLines = $discountsLines = [];
         if ($orderData instanceof \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDoc) {
-            $orderLines     = $orderData->getLscMemberSalesDocLine();
+            $orderLines     = !is_array($orderData->getLscMemberSalesDocLine()) ?
+                [$orderData->getLscMemberSalesDocLine()] : $orderData->getLscMemberSalesDocLine() ;
             $discountsLines = !is_array($orderData->getLscMemberSalesDocDiscLine()) ?
                 [$orderData->getLscMemberSalesDocDiscLine()] : $orderData->getLscMemberSalesDocDiscLine();
         } elseif ($orderData instanceof Order) {
