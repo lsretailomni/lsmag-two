@@ -26,6 +26,7 @@ class Items extends AbstractItems
         public Context $context,
         public LSR $lsr,
         public OrderHelper $orderHelper,
+        public Collection $itemCollection,
         public CollectionFactory $itemCollectionFactory,
         array $data = []
     ) {
@@ -49,7 +50,7 @@ class Items extends AbstractItems
                     $magentoOrder = null;
                 }
             }
-            return $this->itemCollectionFactory->getItems();
+            return $this->itemCollection->getItems();
         }
 
         $orderLines = $order->getLscMemberSalesDocLine();

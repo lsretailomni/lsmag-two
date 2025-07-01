@@ -84,7 +84,7 @@ class ItemRenderer implements ArgumentInterface
 
         if ($currentOrder) {
             if (empty($this->lines)) {
-                $this->lines = $currentOrder->getLines()->getSalesEntryLine();
+                $this->lines = $currentOrder->getLscMemberSalesDocLine();
             }
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $orderItem->getSku()

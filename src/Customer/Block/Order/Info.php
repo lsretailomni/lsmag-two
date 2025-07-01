@@ -170,6 +170,26 @@ class Info extends AbstractOrderBlock
     }
 
     /**
+     * Check to see if current order is click and collect
+     *
+     * @return bool
+     */
+    public function isClickAndCollectOrder()
+    {
+        $order = $this->getOrder();
+        $isCc = false;
+
+        foreach ($order->getLscMemberSalesDocLine() ?? [] as $line) {
+            if ($line->getClickAndCollectLine()) {
+                $isCc = true;
+                break;
+            }
+        }
+
+        return $isCc;
+    }
+
+    /**
      * Get selected shipment method for the order, use the one in magento if available
      *
      * @return Phrase|string
