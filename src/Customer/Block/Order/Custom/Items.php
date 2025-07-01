@@ -67,7 +67,7 @@ class Items extends AbstractItems
                     $line->setAmount($line->getAmount() + $orderLine->getAmount());
                 }
             }
-            if ($line->getParentLine() != 0) {
+            if ($line->getLineNo() != $line->getParentLine()) {
                 unset($orderLines[$key]);
             }
             if ($line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
