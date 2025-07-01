@@ -140,11 +140,7 @@ class Info extends AbstractOrderBlock
      */
     public function getClickAndCollectOrder()
     {
-        $order = $this->getLscMemberSalesBuffer();
-        if ($order->getCreatedAtStore() !== $order->getStoreNo()) {
-            return true;
-        }
-        return false;
+        return $this->isClickAndCollectOrder();
     }
 
     /**
