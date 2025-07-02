@@ -11,8 +11,11 @@ use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCODiscountLineV6;
 use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOHeaderV6;
 use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOLineV6;
 use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOPaymentV6;
+use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateV6;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
+use Ls\Omni\Client\Ecommerce\Entity\RootCustomerOrderCreateV6;
+use Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
@@ -62,26 +65,25 @@ class OrderHelper extends AbstractHelperOmni
      * Preparing order to sync with central
      *
      * @param Model\Order $order
-     * @param $oneListCalculateResponse
-     * @return Entity\OrderCreate
+     * @param RootMobileTransaction $oneListCalculateResponse
+     * @return RootCustomerOrderCreateV6
+     * @throws GuzzleException
      */
-    public function prepareOrder(Model\Order $order, $oneListCalculateResponse)
+    public function prepareOrder(Model\Order $order, RootMobileTransaction $oneListCalculateResponse)
     {
         try {
-//            $request = new Entity\OrderCreate();
-
             $rootCustomerOrderCreate = $this->createInstance(
-                \Ls\Omni\Client\Ecommerce\Entity\RootCustomerOrderCreateV6::class
+                RootCustomerOrderCreateV6::class
             );
 
             $customerOrderCreateCoHeader = $this->createInstance(
                 CustomerOrderCreateCOHeaderV6::class
             );
 
-            $storeId       = current((array)$oneListCalculateResponse->getMobiletransaction())->getStoreid();
-            $cardId        = current((array)$oneListCalculateResponse->getMobiletransaction())->getMembercardno();
+            $storeId = current((array)$oneListCalculateResponse->getMobiletransaction())->getStoreid();
+            $cardId = current((array)$oneListCalculateResponse->getMobiletransaction())->getMembercardno();
             $customerEmail = $order->getCustomerEmail();
-            $customerName  = $order->getBillingAddress()->getFirstname() . ' ' .
+            $customerName = $order->getBillingAddress()->getFirstname() . ' ' .
                 $order->getBillingAddress()->getLastname();
 
             if ($order->getShippingAddress()) {
@@ -91,20 +93,15 @@ class OrderHelper extends AbstractHelperOmni
                 $shipToName = $customerName;
             }
 
-            if ($this->customerSession->isLoggedIn()) {
-                $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
-            } else {
-                $contactId = '';
-            }
             $shippingMethod = $order->getShippingMethod(true);
             //TODO work on condition
             $isClickCollect = false;
-            $carrierCode    = '';
-            $method         = '';
+            $carrierCode = '';
+            $method = '';
 
             if ($shippingMethod !== null) {
-                $carrierCode    = $shippingMethod->getData('carrier_code');
-                $method         = $shippingMethod->getData('method');
+                $carrierCode = $shippingMethod->getData('carrier_code');
+                $method = $shippingMethod->getData('method');
                 $isClickCollect = $carrierCode == 'clickandcollect';
             }
 
@@ -115,22 +112,7 @@ class OrderHelper extends AbstractHelperOmni
             );
             $rootCustomerOrderCreate->setCustomerordercreatecopaymentv6($orderPayments);
 
-//            //if the shipping address is empty, we use the contact address as shipping address.
-//            $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;
-//            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) :
-//                $contactAddress;
-
-//            $oneListCalculateResponse
-//                ->setId($order->getIncrementId())
-//                ->setContactId($contactId)
-//                ->setCardId($cardId)
-//                ->setEmail($customerEmail)
-//                ->setShipToEmail($customerEmail)
-//                ->setContactName($customerName)
-//                ->setShipToName($shipToName)
-//                ->setContactAddress($contactAddress)
-//                ->setShipToAddress($shipToAddress)
-//                ->setStoreId($storeId);
+            //if the shipping address is empty, we use the contact address as shipping address.
             $customerOrderCreateCoHeader->addData(
                 [
                     CustomerOrderCreateCOHeaderV6::MEMBER_CARD_NO => $cardId,
@@ -146,42 +128,43 @@ class OrderHelper extends AbstractHelperOmni
                     CustomerOrderCreateCOHeaderV6::PHONE_NO => $order->getBillingAddress()->getTelephone(),
                     CustomerOrderCreateCOHeaderV6::EMAIL => $customerEmail,
                     CustomerOrderCreateCOHeaderV6::SHIP_TO_NAME => $shipToName,
-                    CustomerOrderCreateCOHeaderV6::SHIP_TO_ADDRESS => $order->getShippingAddress()->getStreetLine(1),
-                    CustomerOrderCreateCOHeaderV6::SHIP_TO_ADDRESS2 => $order->getShippingAddress()->getStreetLine(2),
-                    CustomerOrderCreateCOHeaderV6::SHIP_TO_CITY => $order->getShippingAddress()->getCity(),
-                    CustomerOrderCreateCOHeaderV6::SHIP_TO_COUNTY => $order->getShippingAddress()->getRegion(),
-                    CustomerOrderCreateCOHeaderV6::SHIP_TO_POST_CODE => $order->getShippingAddress()->getPostcode(),
-                    CustomerOrderCreateCOHeaderV6::SHIP_TO_COUNTRY_REGION_CODE =>
-                        $order->getShippingAddress()->getCountryId(),
-                    CustomerOrderCreateCOHeaderV6::SHIP_TO_PHONE_NO => $order->getShippingAddress()->getTelephone(),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_ADDRESS => $order->getShippingAddress() ?
+                        $order->getShippingAddress()->getStreetLine(1) :
+                        $order->getBillingAddress()->getStreetLine(1),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_ADDRESS2 => $order->getShippingAddress() ?
+                        $order->getShippingAddress()->getStreetLine(2) :
+                        $order->getBillingAddress()->getStreetLine(2),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_CITY => $order->getShippingAddress() ?
+                        $order->getShippingAddress()->getCity() :
+                        $order->getBillingAddress()->getCity(),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_COUNTY => $order->getShippingAddress() ?
+                        $order->getShippingAddress()->getRegion() :
+                        $order->getBillingAddress()->getRegion(),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_POST_CODE => $order->getShippingAddress() ?
+                        $order->getShippingAddress()->getPostcode() :
+                        $order->getBillingAddress()->getPostcode(),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_COUNTRY_REGION_CODE => $order->getShippingAddress() ?
+                        $order->getShippingAddress()->getCountryId() :
+                        $order->getBillingAddress()->getCountryId(),
+                    CustomerOrderCreateCOHeaderV6::SHIP_TO_PHONE_NO => $order->getShippingAddress() ?
+                        $order->getShippingAddress()->getTelephone() :
+                        $order->getBillingAddress()->getTelephone(),
                     CustomerOrderCreateCOHeaderV6::SHIP_TO_EMAIL => $customerEmail,
                     CustomerOrderCreateCOHeaderV6::EXTERNAL_ID => $order->getIncrementId(),
                     CustomerOrderCreateCOHeaderV6::CREATED_AT_STORE => $storeId,
                     CustomerOrderCreateCOHeaderV6::SHIP_ORDER => !$isClickCollect,
                 ]
             );
-//            if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
-//                $oneListCalculateResponse->setCurrencyFactor($this->loyaltyHelper->getPointRate($order->getStoreId()));
-//                $oneListCalculateResponse->setCurrency($order->getOrderCurrencyCode());
-//            }
+            if (!$isClickCollect) {
+                //TODO need to fix the length issue once LS Central allow more then 10 characters.
+                $carrierCode = ($carrierCode) ? substr($carrierCode, 0, 10) : "";
+                $method = ($method) ? substr($method, 0, 10) : "";
+                $customerOrderCreateCoHeader->addData([
+                    CustomerOrderCreateCOHeaderV6::SHIPPING_AGENT_CODE => $carrierCode,
+                    CustomerOrderCreateCOHeaderV6::SHIPPING_AGENT_SERVICE_CODE => $method
+                ]);
+            }
 
-//            if ($isClickCollect) {
-//                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
-//            } else {
-             if (!$isClickCollect) {
-//                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
-                 //TODO need to fix the length issue once LS Central allow more then 10 characters.
-                 $carrierCode = ($carrierCode) ? substr($carrierCode, 0, 10) : "";
-//                 $oneListCalculateResponse->setShippingAgentCode($carrierCode);
-                 $method = ($method) ? substr($method, 0, 10) : "";
-//                 $oneListCalculateResponse->setShippingAgentServiceCode($method);
-                 $customerOrderCreateCoHeader->addData([
-                     CustomerOrderCreateCOHeaderV6::SHIPPING_AGENT_CODE => $carrierCode,
-                     CustomerOrderCreateCOHeaderV6::SHIPPING_AGENT_SERVICE_CODE => $method
-                 ]);
-             }
-
-//            }
             $pickupDateTimeslot = $order->getPickupDateTimeslot();
             if (!empty($pickupDateTimeslot)) {
                 $dateTimeFormat = "Y-m-d\T" . "H:i:00";
@@ -189,17 +172,10 @@ class OrderHelper extends AbstractHelperOmni
                 $customerOrderCreateCoHeader->addData([
                     CustomerOrderCreateCOHeaderV6::REQUESTED_DELIVERY_DATE => $pickupDateTime
                 ]);
-//                $oneListCalculateResponse->setRequestedDeliveryDate($pickupDateTime);
             }
             $rootCustomerOrderCreate->setCustomerordercreatecoheaderv6($customerOrderCreateCoHeader);
-//            $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
-            //For click and collect.
-//            if ($isClickCollect) {
-//                $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
-//            }
-//            $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
-            $orderLinesArray = $oneListCalculateResponse->getMobiletransactionline();
             $customerOrderCoLines = [];
+
             foreach ($oneListCalculateResponse->getMobiletransactionline() ?? [] as $id => $orderLine) {
                 if ($orderLine->getLinetype() == 0) {
                     $customerOrderCoLine = $this->createInstance(
@@ -253,19 +229,12 @@ class OrderHelper extends AbstractHelperOmni
             }
             //For click and collect we need to remove shipment charge orderline
             //For flat shipment it will set the correct shipment value into the order
-//            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
+            $customerOrderCoLines = $this->updateShippingAmount($customerOrderCoLines, $order, $storeId);
             // @codingStandardsIgnoreLine
 
             $rootCustomerOrderCreate
                 ->setCustomerordercreatecolinev6($customerOrderCoLines)
                 ->setCustomerordercreatecodiscountlinev6($customerOrderDiscountCoLines);
-//            if (version_compare($this->lsr->getOmniVersion($order->getStoreId()), '2023.05.1', '>=')) {
-//                $request->setReturnOrderIdOnly(true);
-//            }
-
-//            $oneListCalculateResponse->setOrderLines($orderLinesArray);
-//            $request->setRequest($oneListCalculateResponse);
-//            return $request;
             return $rootCustomerOrderCreate;
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -386,36 +355,56 @@ class OrderHelper extends AbstractHelperOmni
 
     /**
      * Update shipping amount to shipment order line
-     * @param $orderLines
-     * @param $order
-     * @return mixed
-     * @throws InvalidEnumException
+     *
+     * @param array $customerOrderCoLines
+     * @param Order $order
+     * @param string $storeCode
+     * @return array
      */
-    public function updateShippingAmount($orderLines, $order)
+    public function updateShippingAmount($customerOrderCoLines, Model\Order $order, string $storeCode)
     {
-        $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
+        $shipmentFeeId = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
         $shipmentTaxPercent = $this->getShipmentTaxPercent($order->getStore());
-        $shippingAmount     = $order->getShippingInclTax();
+        $shippingAmount = $order->getShippingInclTax();
 
         if (isset($shipmentTaxPercent) && $shippingAmount > 0) {
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
-            $netPrice        = $shippingAmount / $netPriceFormula;
-            $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
+            $netPrice = (float)$shippingAmount / $netPriceFormula;
+            $taxAmount = (float)number_format(($shippingAmount - $netPrice), 2);
             // @codingStandardsIgnoreLine
-            $shipmentOrderLine = new Entity\OrderLine();
-            $shipmentOrderLine->setPrice($shippingAmount)
-                ->setAmount($shippingAmount)
-                ->setNetPrice($netPrice)
-                ->setNetAmount($netPrice)
-                ->setTaxAmount($taxAmount)
-                ->setItemId($shipmentFeeId)
-                ->setLineType(Entity\Enum\LineType::ITEM)
-                ->setQuantity(1)
-                ->setDiscountAmount($order->getShippingDiscountAmount());
-            array_push($orderLines, $shipmentOrderLine);
+            /*            $shipmentOrderLine = new Entity\OrderLine();
+                        $shipmentOrderLine->setPrice($shippingAmount)
+                            ->setAmount($shippingAmount)
+                            ->setNetPrice($netPrice)
+                            ->setNetAmount($netPrice)
+                            ->setTaxAmount($taxAmount)
+                            ->setItemId($shipmentFeeId)
+                            ->setLineType(Entity\Enum\LineType::ITEM)
+                            ->setQuantity(1)
+                            ->setDiscountAmount($order->getShippingDiscountAmount());*/
+            $orderLine = end($customerOrderCoLines);
+            $lineNumber = $orderLine->getLineno();
+            $lineNumber++;
+            $customerOrderCoLine = $this->createInstance(
+                CustomerOrderCreateCOLineV6::class
+            );
+
+            $customerOrderCoLine->addData([
+                CustomerOrderCreateCOLineV6::LINE_NO => $lineNumber,
+                CustomerOrderCreateCOLineV6::LINE_TYPE => 0,
+                CustomerOrderCreateCOLineV6::NUMBER => $shipmentFeeId,
+                CustomerOrderCreateCOLineV6::NET_PRICE => $netPrice,
+                CustomerOrderCreateCOLineV6::PRICE => $shippingAmount,
+                CustomerOrderCreateCOLineV6::QUANTITY => 1,
+                CustomerOrderCreateCOLineV6::NET_AMOUNT => $netPrice,
+                CustomerOrderCreateCOLineV6::VAT_AMOUNT => $taxAmount,
+                CustomerOrderCreateCOLineV6::AMOUNT => $netPrice + $taxAmount,
+                CustomerOrderCreateCOLineV6::STORE_NO => $storeCode
+            ]);
+            $customerOrderCoLines[] = $customerOrderCoLine;
         }
 
-        return $orderLines;
+        return $customerOrderCoLines;
     }
 
     /**
@@ -433,24 +422,23 @@ class OrderHelper extends AbstractHelperOmni
 
     /**
      * This function is overriding in hospitality module
-     * @param $request
+     *
+     * Making Order Create request to Central
+     *
+     * @param RootCustomerOrderCreateV6 $request
      * @return Entity\OrderCreateResponse|ResponseInterface
      */
-    public function placeOrder($request)
+    public function placeOrder(RootCustomerOrderCreateV6 $request)
     {
         $operation = $this->createInstance(
-            \Ls\Omni\Client\Ecommerce\Operation\CustomerOrderCreateV6::class,
+            Operation\CustomerOrderCreateV6::class,
         );
 
         $operation->setOperationInput(
-            [\Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateV6::CUSTOMER_ORDER_CREATE_V6_XML => $request]
+            [CustomerOrderCreateV6::CUSTOMER_ORDER_CREATE_V6_XML => $request]
         );
 
-        // @codingStandardsIgnoreLine
-//        $operation = new Operation\OrderCreate();
-        $response  = $operation->execute();
-        // @codingStandardsIgnoreLine
-        return $response;
+        return $operation->execute();
     }
 
     /**
@@ -525,9 +513,6 @@ class OrderHelper extends AbstractHelperOmni
         $preApprovedDate  = date('Y-m-d', strtotime('+1 years'));
 
         $orderPaymentArray = [];
-        // @codingStandardsIgnoreStart
-//        $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
-        // @codingStandardsIgnoreEnd
         //TODO change it to $paymentMethod->isOffline() == false when order edit option available for offline payments.
         $paymentCode  = $order->getPayment()->getMethodInstance()->getCode();
         $tenderTypeId = $this->getPaymentTenderTypeId($paymentCode);
