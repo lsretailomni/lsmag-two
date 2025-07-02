@@ -3,6 +3,7 @@
 namespace Ls\Omni\Block\Cart;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -20,27 +21,6 @@ use Magento\Framework\View\Element\Template\Context;
  */
 class Coupons extends Coupon
 {
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var Magento\Framework\Stdlib\DateTime\TimezoneInterface
-     */
-    public $timeZoneInterface;
-
-    /**
-     * @var Magento\Framework\App\Config\ScopeConfigInterface
-     */
-    public $scopeConfig;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
     /**
      * Coupons constructor.
      * @param Context $context
@@ -53,23 +33,21 @@ class Coupons extends Coupon
      * @param array $data
      */
     public function __construct(
-        Context $context,
-        CustomerSession $customerSession,
-        CheckoutSession $checkoutSession,
-        TimezoneInterface $timeZoneInterface,
-        ScopeConfigInterface $scopeConfig,
-        LSR $lsr,
-        LoyaltyHelper $loyaltyHelper,
+        public Context $context,
+        public CustomerSession $customerSession,
+        public CheckoutSession $checkoutSession,
+        public TimezoneInterface $timeZoneInterface,
+        public ScopeConfigInterface $scopeConfig,
+        public LSR $lsr,
+        public LoyaltyHelper $loyaltyHelper,
         array $data = []
     ) {
-        $this->loyaltyHelper     = $loyaltyHelper;
-        $this->timeZoneInterface = $timeZoneInterface;
-        $this->scopeConfig       = $scopeConfig;
-        $this->lsr               = $lsr;
         parent::__construct($context, $customerSession, $checkoutSession, $data);
     }
 
     /**
+     * Check to see if customer is logged in
+     *
      * @return bool
      */
     public function isCustomerLoggedIn()
@@ -78,61 +56,90 @@ class Coupons extends Coupon
     }
 
     /**
+     * Get available coupons applicable to items in the cart
+     *
      * @return array
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
-    public function getAvailableCoupons()
+    public function getAvailableCoupons(): array
     {
         return $this->loyaltyHelper->getAvailableCouponsForLoggedInCustomers();
     }
 
     /**
+     * Get formatted description
+     *
      * @param PublishedOffer $coupon
      * @return string
      */
-    public function getFormattedDescription(PublishedOffer $coupon)
+    public function getFormattedDescription(PublishedOffer $coupon): string
     {
-        return "<div class='coupon-description-wrapper'>" .
-            (($coupon->getOfferId()) ? "<span class='coupon-code'>" . $coupon->getOfferId() . "</span><br/>" : "") .
-            (($coupon->getDescription()) ? "<span class='coupon-description'>" . $coupon->getDescription() . "</span><br/>" : "") .
-            (($coupon->getDetails()) ? "<span class='coupon-detail'>" . $coupon->getDetails() . "</span><br/>" : "") .
-            (($this->getFormattedOfferExpiryDate($coupon->getExpirationDate())) ? "<span class='coupon-expiry'>" . __("Valid till") . "&nbsp" . $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . "</span>" : "") .
-            "</div>";
+        $description = '';
+
+        if ($coupon->getDiscountno()) {
+            $description .= "<span class='coupon-code'>" . $coupon->getDiscountno() . "</span><br/>";
+        }
+
+        if ($coupon->getDescription()) {
+            $description .= "<span class='coupon-description'>" . $coupon->getDescription() . "</span><br/>";
+        }
+
+        if ($coupon->getSecondarytext()) {
+            $description .= "<span class='coupon-detail'>" . $coupon->getSecondarytext() . "</span><br/>";
+        }
+
+        $expiryDate = $this->getFormattedOfferExpiryDate($coupon->getEndingdate());
+        if ($expiryDate) {
+            $description .= "<span class='coupon-expiry'>" . __("Valid till") . "&nbsp;" . $expiryDate . "</span>";
+        }
+
+        return $description;
     }
 
     /**
-     * @param $date
+     * Get formatted offer expiry date
+     *
+     * @param string $date
      * @return string
      */
-    public function getFormattedOfferExpiryDate($date)
+    public function getFormattedOfferExpiryDate(string $date): string
     {
         $offerExpiryDate = "";
         try {
-            $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
-                LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                $this->lsr->getCurrentStoreId()
-            ));
+            $expiryDate = new \DateTimeImmutable($date);
+
+            $offerExpiryDate = $this->timeZoneInterface->date($expiryDate)->format(
+                $this->scopeConfig->getValue(
+                    LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
+                    ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                    $this->lsr->getCurrentStoreId()
+                )
+            );
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+
         return $offerExpiryDate;
     }
 
     /**
+     * Get ajax url for coupons
+     *
      * @return string
      */
-    public function getAjaxUrl()
+    public function getAjaxUrl(): string
     {
         return $this->getUrl('omni/ajax/coupons');
     }
 
     /**
-     * @return string
+     * Is coupon enabled
+     *
+     * @return bool
      * @throws NoSuchEntityException
      */
-    public function isCouponEnable()
+    public function isCouponEnabled(): bool
     {
         return ($this->lsr->getStoreConfig(
             LSR::LS_ENABLE_COUPON_ELEMENTS,

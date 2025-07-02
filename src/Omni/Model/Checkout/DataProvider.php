@@ -11,8 +11,8 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Omni\Helper\GiftCardHelper;
-use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
-use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplStoreview\Collection;
+use \Ls\Replication\Model\ResourceModel\ReplStoreview\CollectionFactory;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Checkout\Model\Session;
@@ -278,7 +278,7 @@ class DataProvider implements ConfigProviderInterface
                 !$this->lsr->isSSM() ?
                     $this->lsr->getCurrentWebsiteId() :
                     $this->lsr->getAdminStore()->getWebsiteId()
-            )->addFieldToFilter('ClickAndCollect', 1);
+            )->addFieldToFilter('click_and_collect', 1);
     }
 
     /**
@@ -376,7 +376,7 @@ class DataProvider implements ConfigProviderInterface
         $clickNCollectStoresIds = [];
 
         foreach ($storesData->getItems() as $storeData) {
-            $clickNCollectStoresIds[] = $storeData->getNavId();
+            $clickNCollectStoresIds[] = $storeData->getNo();
         }
 
         return $clickNCollectStoresIds;
@@ -392,7 +392,7 @@ class DataProvider implements ConfigProviderInterface
     {
         if (!empty($response)) {
             foreach ($response as $index => $item) {
-                if (!in_array($item->getStoreId(), $clickNCollectStoresIds)) {
+                if ($item && !in_array($item->getStoreId(), $clickNCollectStoresIds)) {
                     unset($response[$index]);
                 }
             }

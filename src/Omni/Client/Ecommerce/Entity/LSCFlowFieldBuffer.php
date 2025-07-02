@@ -17,13 +17,26 @@ class LSCFlowFieldBuffer extends AbstractModel
     public const FIELD_NAME = 'Field Name';
     public const DECIMAL_VALUE = 'Decimal Value';
 
+    public static array $dbColumnsMapping = [
+	self::TABLE_NO => 'table_no',
+	self::KEY => 'key',
+	self::FIELD_NO => 'field_no',
+	self::FIELD_NAME => 'field_name',
+	self::DECIMAL_VALUE => 'decimal_value',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 
     public function getTableNo(): ?int
     {
         return $this->getData(self::TABLE_NO);
     }
 
-    public function setTableNo(int $value)
+    public function setTableNo(?int $value)
     {
         return $this->setData(self::TABLE_NO, $value);
     }
@@ -33,7 +46,7 @@ class LSCFlowFieldBuffer extends AbstractModel
         return $this->getData(self::KEY);
     }
 
-    public function setKey(string $value)
+    public function setKey(?string $value)
     {
         return $this->setData(self::KEY, $value);
     }
@@ -43,7 +56,7 @@ class LSCFlowFieldBuffer extends AbstractModel
         return $this->getData(self::FIELD_NO);
     }
 
-    public function setFieldNo(int $value)
+    public function setFieldNo(?int $value)
     {
         return $this->setData(self::FIELD_NO, $value);
     }
@@ -53,17 +66,17 @@ class LSCFlowFieldBuffer extends AbstractModel
         return $this->getData(self::FIELD_NAME);
     }
 
-    public function setFieldName(string $value)
+    public function setFieldName(?string $value)
     {
         return $this->setData(self::FIELD_NAME, $value);
     }
 
-    public function getDecimalValue(): ?string
+    public function getDecimalValue(): ?float
     {
         return $this->getData(self::DECIMAL_VALUE);
     }
 
-    public function setDecimalValue(string $value)
+    public function setDecimalValue(?float $value)
     {
         return $this->setData(self::DECIMAL_VALUE, $value);
     }

@@ -2,27 +2,39 @@ define([
     'jquery',
     'mage/validation',
     'mage/url',
-    'ko',
     'Magento_Ui/js/modal/modal',
     'Magento_Ui/js/modal/alert',
     'mage/translate'
-], function ($, _, url, ko, modal, alert, $t) {
+], function ($, validation, urlBuilder, modal, alert, $t) {
     'use strict';
 
-    function initializer(config, node) {
-        var dataForm = $(node);
-        var ignore = null;
-        $(document).on("click", "a.return-policy", function () {
-            var validOrNotValid = dataForm.validation('isValid'); //validates form and returns boolean
-            if (validOrNotValid) {
-                var formData = dataForm.data();
-                var itemId = formData.productSku;
-                var variantId = $("input[name=selected_configurable_option]").val();
-                var controllerUrl = getBaseUrl("rest/V1/get-return-policy" + "?itemId=" + itemId + "&variantId=" + variantId + "&storeId=");
+    $.widget('lsomni.returnPolicy', {
+        options: {},
+
+        _create: function () {
+            var self = this;
+
+            $(document).on('click', 'a.return-policy', function (e) {
+                e.preventDefault();
+
+                if (!self.element.validation('isValid')) {
+                    return false;
+                }
+
+                var formData = self.element.data(),
+                    itemId = formData.productSku,
+                    variantId = $("input[name=selected_configurable_option]").val(),
+                    controllerUrl = self.buildUrl(
+                        "rest/V1/get-return-policy" +
+                        "?itemId=" + encodeURIComponent(itemId) +
+                        "&variantId=" + encodeURIComponent(variantId) +
+                        "&storeId="
+                    );
+
                 $.ajax({
                     url: controllerUrl,
                     type: 'POST',
-                    dataType: "json",
+                    dataType: 'json',
                     beforeSend: function () {
                         $('body').loader('show');
                     },
@@ -30,53 +42,42 @@ define([
                         $('body').loader('hide');
                     },
                     success: function (data) {
-                        if (data != null && data != '') {
+                        if (data) {
                             $('#ls-return-policy').html(data);
-                            getPopUp(data).openModal();
+                            self.getPopup().openModal();
                         } else {
                             alert({
                                 title: $t("Not Found"),
-                                content: $t("Return Policy not found"),
-                                actions: {
-                                    always: function () {
-                                    }
-                                }
+                                content: $t("Return Policy not found")
                             });
                         }
                     },
-                    error: function (xhr) { // if error occured
-                        console.log(xhr.statusText + xhr.responseText);
+                    error: function (xhr) {
+                        console.error(xhr.statusText, xhr.responseText);
                     }
                 });
+
+                return false;
+            });
+        },
+
+        getPopup: function () {
+            if (!this.popup) {
+                this.popup = modal({
+                    responsive: true,
+                    innerScroll: true,
+                    modalClass: 'return-policy-content',
+                    buttons: [],
+                    type: 'popup'
+                }, $('#ls-return-policy'));
             }
-            return false;
-        });
-    }
+            return this.popup;
+        },
 
-    function getPopUp() {
-        var self = this,
-            buttons;
-
-        if (!popUp) {
-            var popUp = modal({
-                'responsive': true,
-                'innerScroll': true,
-                'buttons': [],
-                'type': 'popup',
-                'modalClass': 'return-policy-content',
-                closed: function () {
-                    getPopUp();
-                }
-            }, $('#ls-return-policy'));
+        buildUrl: function (path) {
+            return urlBuilder.build(path);
         }
-        return popUp;
-    }
+    });
 
-    function getBaseUrl(param) {
-        return url.build(param);
-    }
-
-    return function (config, node) {
-        initializer(config, node);
-    }
+    return $.lsomni.returnPolicy;
 });

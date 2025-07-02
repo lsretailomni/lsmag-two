@@ -4,9 +4,9 @@
 
 use \Ls\Omni\Block\Cart\Coupons;
 
-$enabled = $block->isCouponEnable();
-if ($enabled) {
-    ?>
+$enabled = $block->isCouponEnabled();
+?>
+<?php if ($enabled) :?>
     <div id="ls-coupons">
         <div class="loader">
             <img src="<?= /* @escapeNotVerified */
@@ -24,10 +24,10 @@ if ($enabled) {
         {
             "*": {
                 "Ls_Omni/js/view/checkout/cart/coupons": {
-                    "ajaxUrl": "<?php echo $ajaxUrl; ?>"
+                    "ajaxUrl": "<?= $ajaxUrl; ?>"
                 }
             }
         }
 
     </script>
-<?php }
+<?php endif;?>

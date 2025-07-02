@@ -50,7 +50,7 @@ class TestConnectionResponse
         $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\TestConnectionResponse::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
-                $entityClassName = str_replace(' ', '', $dataSet);
+                $entityClassName = str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', $dataSet));
                 // Try flat response structure
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
                     $entity = $this->createInstance(
@@ -93,7 +93,7 @@ class TestConnectionResponse
                         $entries[$index] = $entry;
                     }
                     if (!empty($entries)) {
-                        $finalEntry->setData($entityClassName, $count > 1 ? $entries : current($entries));
+                        $finalEntry->setData($dataSet, $count > 1 ? $entries : current($entries));
                     }
                 }
             }
@@ -136,7 +136,7 @@ class TestConnectionResponse
                 if (
                     is_array($data)
                     && isset($data['DataSetName'])
-                    && str_replace(' ', '',$data['DataSetName']) === $target
+                    && str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', $data['DataSetName'])) === $target
                 ) {
                     return $data;
                 }

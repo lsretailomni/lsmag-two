@@ -46,16 +46,16 @@ class GetMemberContactInfo_GetMemberContactInfo
 
     public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse
     {
-        $requiredDataSetName = explode(',', 'LSCMemberContact,LSCMembershipCard,LSCMemberLoginCard,LSCMemberAccount,LSCMemberScheme,LSCMemberClub,LSCMemberContactAttrList,LSCFlowFieldBuffer');
+        $requiredDataSetName = explode(',', 'LSC Member Contact,LSC Membership Card,LSC Member Login Card,LSC Member Account,LSC Member Scheme,LSC Member Club,LSC Member Contact Attr. List,LSC FlowField Buffer');
         $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
-                $entityClassName = str_replace(' ', '', $dataSet);
+                $entityClassName = str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', $dataSet));
                 // Try flat response structure
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
                     $entity = $this->createInstance(
                         \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo::class,
-                         ['data' => $data['LSCMemberContact,LSCMembershipCard,LSCMemberLoginCard,LSCMemberAccount,LSCMemberScheme,LSCMemberClub,LSCMemberContactAttrList,LSCFlowFieldBuffer']]
+                         ['data' => $data['LSC Member Contact,LSC Membership Card,LSC Member Login Card,LSC Member Account,LSC Member Scheme,LSC Member Club,LSC Member Contact Attr. List,LSC FlowField Buffer']]
                      );
 
                     return $this->createInstance(
@@ -93,7 +93,7 @@ class GetMemberContactInfo_GetMemberContactInfo
                         $entries[$index] = $entry;
                     }
                     if (!empty($entries)) {
-                        $finalEntry->setData($entityClassName, $count > 1 ? $entries : current($entries));
+                        $finalEntry->setData($dataSet, $count > 1 ? $entries : current($entries));
                     }
                 }
             }
@@ -136,7 +136,7 @@ class GetMemberContactInfo_GetMemberContactInfo
                 if (
                     is_array($data)
                     && isset($data['DataSetName'])
-                    && str_replace(' ', '',$data['DataSetName']) === $target
+                    && str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', $data['DataSetName'])) === $target
                 ) {
                     return $data;
                 }

@@ -12,4 +12,12 @@ use Magento\Catalog\Model\AbstractModel;
 class LSCPeriodicDiscountBenefits extends AbstractModel
 {
 
+    public static array $dbColumnsMapping = [
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
+
 }

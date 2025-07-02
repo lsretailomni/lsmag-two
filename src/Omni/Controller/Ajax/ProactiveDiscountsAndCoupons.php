@@ -1,13 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Controller\Ajax;
 
 use \Ls\Omni\Block\Product\View\Discount\Proactive;
 use \Ls\Omni\Helper\SessionHelper;
-use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\ResultInterface;
@@ -17,34 +16,7 @@ use Magento\Framework\Controller\Result\RedirectFactory;
 
 class ProactiveDiscountsAndCoupons implements HttpGetActionInterface
 {
-
     /**
-     * @var PageFactory
-     */
-    public $resultPageFactory;
-
-    /**
-     * @var JsonFactory
-     */
-    public $resultJsonFactory;
-
-    /**
-     * @var RedirectFactory
-     */
-    public $resultRedirectFactory;
-
-    /**
-     * @var SessionHelper
-     */
-    public $sessionHelper;
-
-    /**
-     * @var RequestInterface
-     */
-    public RequestInterface $request;
-
-    /**
-     * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
      * @param RedirectFactory $resultRedirectFactory
@@ -52,24 +24,18 @@ class ProactiveDiscountsAndCoupons implements HttpGetActionInterface
      * @param RequestInterface $request
      */
     public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory,
-        JsonFactory $resultJsonFactory,
-        RedirectFactory $resultRedirectFactory,
-        SessionHelper $sessionHelper,
-        RequestInterface $request
+        public PageFactory $resultPageFactory,
+        public JsonFactory $resultJsonFactory,
+        public RedirectFactory $resultRedirectFactory,
+        public SessionHelper $sessionHelper,
+        public RequestInterface $request
     ) {
-        $this->resultPageFactory     = $resultPageFactory;
-        $this->resultJsonFactory     = $resultJsonFactory;
-        $this->resultRedirectFactory = $resultRedirectFactory;
-        $this->sessionHelper         = $sessionHelper;
-        $this->request               = $request;
     }
 
     /**
      * Entry point for this controller
      *
-     * @return ResponseInterface|Json|ResultInterface
+     * @return Json|ResultInterface
      * @throws FileSystemException
      */
     public function execute()
@@ -81,12 +47,12 @@ class ProactiveDiscountsAndCoupons implements HttpGetActionInterface
             return $resultRedirect;
         }
         $this->sessionHelper->newSessionHandler("lsproactivediscounts");
-        $result            = $this->resultJsonFactory->create();
-        $resultPage        = $this->resultPageFactory->create();
+        $result = $this->resultJsonFactory->create();
+        $resultPage = $this->resultPageFactory->create();
         $currentProductSku = $this->request->getParam('currentProduct');
-        $data              = ['productSku' => $currentProductSku];
+        $data = ['productSku' => $currentProductSku];
 
-        $block             = $resultPage->getLayout()
+        $block = $resultPage->getLayout()
             ->createBlock(Proactive::class)
             ->setTemplate('Ls_Omni::product/view/proactive.phtml')
             ->setData('data', $data)

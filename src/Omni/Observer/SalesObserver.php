@@ -2,11 +2,13 @@
 
 namespace Ls\Omni\Observer;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Customer\Model\Address\AbstractAddress;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
@@ -42,16 +44,18 @@ class SalesObserver implements ObserverInterface
      * @param Observer $observer
      * @return $this
      * @throws NoSuchEntityException
+     * @throws GuzzleException
+     * @throws LocalizedException
      */
     public function execute(Observer $observer)
     {
-        $event              = $observer->getEvent();
-        $quote              = $event->getQuote();
+        $event = $observer->getEvent();
+        $quote = $event->getQuote();
         $shippingAssignment = $event->getShippingAssignment();
-        $addressType        = $shippingAssignment->getShipping()->getAddress()->getAddressType();
-        $total              = $event->getTotal();
-        $pointDiscount      = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-        $giftCardAmount     = $quote->getLsGiftCardAmountUsed();
+        $addressType = $shippingAssignment->getShipping()->getAddress()->getAddressType();
+        $total = $event->getTotal();
+        $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+        $giftCardAmount = $quote->getLsGiftCardAmountUsed();
 
         if ($pointDiscount > 0.001) {
             $quote->setLsPointsDiscount($pointDiscount);
@@ -62,15 +66,16 @@ class SalesObserver implements ObserverInterface
             $basketData = $this->basketHelper->getBasketSessionValue();
 
             if (!empty($basketData)) {
-                $grandTotal = $basketData->getTotalAmount() + $total->getShippingInclTax()
+                $mobileTransaction = current($basketData->getMobiletransaction());
+                $grandTotal = $mobileTransaction->getGrossamount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;
-                $taxAmount  = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
-                $subTotal   = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
+                $taxAmount = $mobileTransaction->getGrossamount() - $mobileTransaction->getNetamount();
+                $subTotal = $mobileTransaction->getGrossamount() + $mobileTransaction->getLinediscount();
                 $total->setTaxAmount($taxAmount)
                     ->setBaseTaxAmount($this->basketHelper->itemHelper->convertToBaseCurrency($taxAmount))
-                    ->setSubtotal($basketData->getTotalNetAmount())
+                    ->setSubtotal($mobileTransaction->getNetamount())
                     ->setBaseSubtotal(
-                        $this->basketHelper->itemHelper->convertToBaseCurrency($basketData->getTotalNetAmount())
+                        $this->basketHelper->itemHelper->convertToBaseCurrency($mobileTransaction->getNetamount())
                     )
                     ->setSubtotalInclTax($subTotal)
                     ->setBaseSubtotalInclTax($this->basketHelper->itemHelper->convertToBaseCurrency($subTotal))

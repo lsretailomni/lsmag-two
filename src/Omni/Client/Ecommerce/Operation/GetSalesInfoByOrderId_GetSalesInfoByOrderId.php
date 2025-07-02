@@ -46,16 +46,16 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId
 
     public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdResponse
     {
-        $requiredDataSetName = explode(',', 'LSCMemberSalesBuffer,LSCMemberSalesDocLine,LSCMemberSalesDocDiscLine,LSCMemberSalesDataEntry,SalesShipmentHeader,SalesShipmentLine');
+        $requiredDataSetName = explode(',', 'LSC Member Sales Buffer,LSC Member Sales Doc Line,LSC Member Sales Doc Disc Line,LSC Member Sales Data Entry,Sales Shipment Header,Sales Shipment Line');
         $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
-                $entityClassName = str_replace(' ', '', $dataSet);
+                $entityClassName = str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', $dataSet));
                 // Try flat response structure
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
                     $entity = $this->createInstance(
                         \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId::class,
-                         ['data' => $data['LSCMemberSalesBuffer,LSCMemberSalesDocLine,LSCMemberSalesDocDiscLine,LSCMemberSalesDataEntry,SalesShipmentHeader,SalesShipmentLine']]
+                         ['data' => $data['LSC Member Sales Buffer,LSC Member Sales Doc Line,LSC Member Sales Doc Disc Line,LSC Member Sales Data Entry,Sales Shipment Header,Sales Shipment Line']]
                      );
 
                     return $this->createInstance(
@@ -93,7 +93,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId
                         $entries[$index] = $entry;
                     }
                     if (!empty($entries)) {
-                        $finalEntry->setData($entityClassName, $count > 1 ? $entries : current($entries));
+                        $finalEntry->setData($dataSet, $count > 1 ? $entries : current($entries));
                     }
                 }
             }
@@ -136,7 +136,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId
                 if (
                     is_array($data)
                     && isset($data['DataSetName'])
-                    && str_replace(' ', '',$data['DataSetName']) === $target
+                    && str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', $data['DataSetName'])) === $target
                 ) {
                     return $data;
                 }

@@ -11,15 +11,24 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetMemContSalesHist_GetMemContSalesHist extends AbstractModel
 {
-    public const LSC_MEMBER_SALES_BUFFER = 'LSCMemberSalesBuffer';
+    public const LSC_MEMBER_SALES_BUFFER = 'LSC Member Sales Buffer';
+
+    public static array $dbColumnsMapping = [
+	self::LSC_MEMBER_SALES_BUFFER => 'lsc_member_sales_buffer',
+    ];
+
+    public static function getDbColumnsMapping(): array
+    {
+        return self::$dbColumnsMapping;
+    }
 
 
-    public function getLSCMemberSalesBuffer(): ?array
+    public function getLscMemberSalesBuffer()
     {
         return $this->getData(self::LSC_MEMBER_SALES_BUFFER);
     }
 
-    public function setLSCMemberSalesBuffer(array $value)
+    public function setLscMemberSalesBuffer(?array $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
     }

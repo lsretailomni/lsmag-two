@@ -34,6 +34,7 @@ class StoreView extends AbstractModel
     public const LCY_CODE = 'LCY Code';
     public const STORE_GROUP_CODES = 'Store Group Codes';
     public const PRICE_GROUP_CODES = 'Price Group Codes';
+    public const SALES_TYPE_FILTER = 'Sales Type Filter';
 
     public static array $dbColumnsMapping = [
 	self::NO => 'no',
@@ -59,6 +60,7 @@ class StoreView extends AbstractModel
 	self::LCY_CODE => 'lcy_code',
 	self::STORE_GROUP_CODES => 'store_group_codes',
 	self::PRICE_GROUP_CODES => 'price_group_codes',
+	self::SALES_TYPE_FILTER => 'sales_type_filter',
     ];
 
     public static function getDbColumnsMapping(): array
@@ -295,5 +297,15 @@ class StoreView extends AbstractModel
     public function setPriceGroupCodes(?string $value)
     {
         return $this->setData(self::PRICE_GROUP_CODES, $value);
+    }
+
+    public function getSalesTypeFilter(): ?string
+    {
+        return $this->getData(self::SALES_TYPE_FILTER);
+    }
+
+    public function setSalesTypeFilter(?string $value)
+    {
+        return $this->setData(self::SALES_TYPE_FILTER, $value);
     }
 }

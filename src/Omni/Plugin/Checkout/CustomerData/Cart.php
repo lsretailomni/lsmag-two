@@ -3,6 +3,7 @@
 namespace Ls\Omni\Plugin\Checkout\CustomerData;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
@@ -20,42 +21,6 @@ use Psr\Log\LoggerInterface;
 class Cart
 {
     /**
-     * @var CheckoutSession
-     */
-    public $checkoutSession;
-
-    /**
-     * @var $checkoutHelper
-     */
-    public $checkoutHelper;
-
-    /**
-     * @var Data
-     */
-    public $data;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /**
-     * @var Renderer
-     */
-    public $itemPriceRenderer;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * Cart constructor.
      * @param CheckoutSession $checkoutSession
      * @param \Magento\Checkout\Helper\Data $checkoutHelper
      * @param Data $data
@@ -65,28 +30,23 @@ class Cart
      * @param LSR $lsr
      */
     public function __construct(
-        CheckoutSession $checkoutSession,
-        \Magento\Checkout\Helper\Data $checkoutHelper,
-        Data $data,
-        BasketHelper $basketHelper,
-        LoggerInterface $logger,
-        Renderer $itemPriceRenderer,
-        LSR $lsr
+        public CheckoutSession $checkoutSession,
+        public \Magento\Checkout\Helper\Data $checkoutHelper,
+        public Data $data,
+        public BasketHelper $basketHelper,
+        public LoggerInterface $logger,
+        public Renderer $itemPriceRenderer,
+        public LSR $lsr
     ) {
-        $this->checkoutSession   = $checkoutSession;
-        $this->checkoutHelper    = $checkoutHelper;
-        $this->data              = $data;
-        $this->basketHelper      = $basketHelper;
-        $this->logger            = $logger;
-        $this->itemPriceRenderer = $itemPriceRenderer;
-        $this->lsr               = $lsr;
     }
 
     /**
+     * After plugin to set price, discount, row_total in minicart
+     *
      * @param \Magento\Checkout\CustomerData\Cart $subject
      * @param array $result
      * @return array
-     * @throws NoSuchEntityException|LocalizedException
+     * @throws NoSuchEntityException|LocalizedException|GuzzleException
      */
     public function afterGetSectionData(\Magento\Checkout\CustomerData\Cart $subject, array $result)
     {
@@ -112,10 +72,14 @@ class Cart
                             if ($item->getDiscountAmount() > 0) {
                                 $discountAmount = $this->checkoutHelper->formatPrice($item->getDiscountAmount());
                                 $originalPrice  = $item->getProductType() == Type::TYPE_BUNDLE ?
-                                    $item->getRowTotal() : $this->basketHelper->itemHelper->convertToCurrentStoreCurrency(
+                                    $item->getRowTotal() :
+                                    $this->basketHelper->itemHelper->convertToCurrentStoreCurrency(
                                         $item->getProduct()->getPrice() * $item->getQty()
                                     );
-                                $originalPrice = $this->basketHelper->getPriceAddingCustomOptions($item, $originalPrice);
+                                $originalPrice = $this->basketHelper->getPriceAddingCustomOptions(
+                                    $item,
+                                    $originalPrice
+                                );
                             }
 
                             $item->setPriceInclTax($customPrice);

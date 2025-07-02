@@ -11,36 +11,20 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
 {
-    public const DESCRIPTION = 'Description';
-    public const DOCUMENT_NO = 'DocumentNo.';
-    public const LINE_NO = 'LineNo.';
-    public const LSC_MEMBER_SALES_BUFFER = 'LSCMemberSalesBuffer';
-    public const LSC_MEMBER_SALES_DATA_ENTRY = 'LSCMemberSalesDataEntry';
-    public const LSC_MEMBER_SALES_DOC_DISC_LINE = 'LSCMemberSalesDocDiscLine';
-    public const LSC_MEMBER_SALES_DOC_LINE = 'LSCMemberSalesDocLine';
-    public const NO = 'No.';
-    public const QUANTITY = 'Quantity';
-    public const SALES_SHIPMENT_HEADER = 'SalesShipmentHeader';
-    public const SALES_SHIPMENT_LINE = 'SalesShipmentLine';
-    public const TYPE = 'Type';
-    public const UNIT_OF_MEASURE_CODE = 'UnitofMeasureCode';
-    public const VARIANT_CODE = 'VariantCode';
+    public const LSC_MEMBER_SALES_BUFFER = 'LSC Member Sales Buffer';
+    public const LSC_MEMBER_SALES_DOC_LINE = 'LSC Member Sales Doc Line';
+    public const LSC_MEMBER_SALES_DOC_DISC_LINE = 'LSC Member Sales Doc Disc Line';
+    public const LSC_MEMBER_SALES_DATA_ENTRY = 'LSC Member Sales Data Entry';
+    public const SALES_SHIPMENT_HEADER = 'Sales Shipment Header';
+    public const SALES_SHIPMENT_LINE = 'Sales Shipment Line';
 
     public static array $dbColumnsMapping = [
-	self::DESCRIPTION => 'description',
-	self::DOCUMENT_NO => 'document_no',
-	self::LINE_NO => 'line_no',
 	self::LSC_MEMBER_SALES_BUFFER => 'lsc_member_sales_buffer',
-	self::LSC_MEMBER_SALES_DATA_ENTRY => 'lsc_member_sales_data_entry',
-	self::LSC_MEMBER_SALES_DOC_DISC_LINE => 'lsc_member_sales_doc_disc_line',
 	self::LSC_MEMBER_SALES_DOC_LINE => 'lsc_member_sales_doc_line',
-	self::NO => 'no',
-	self::QUANTITY => 'quantity',
+	self::LSC_MEMBER_SALES_DOC_DISC_LINE => 'lsc_member_sales_doc_disc_line',
+	self::LSC_MEMBER_SALES_DATA_ENTRY => 'lsc_member_sales_data_entry',
 	self::SALES_SHIPMENT_HEADER => 'sales_shipment_header',
 	self::SALES_SHIPMENT_LINE => 'sales_shipment_line',
-	self::TYPE => 'type',
-	self::UNIT_OF_MEASURE_CODE => 'unit_of_measure_code',
-	self::VARIANT_CODE => 'variant_code',
     ];
 
     public static function getDbColumnsMapping(): array
@@ -48,36 +32,6 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return self::$dbColumnsMapping;
     }
 
-
-    public function getDescription()
-    {
-        return $this->getData(self::DESCRIPTION);
-    }
-
-    public function setDescription(?Text $value)
-    {
-        return $this->setData(self::DESCRIPTION, $value);
-    }
-
-    public function getDocumentNo()
-    {
-        return $this->getData(self::DOCUMENT_NO);
-    }
-
-    public function setDocumentNo(?Code $value)
-    {
-        return $this->setData(self::DOCUMENT_NO, $value);
-    }
-
-    public function getLineNo()
-    {
-        return $this->getData(self::LINE_NO);
-    }
-
-    public function setLineNo(?Integer $value)
-    {
-        return $this->setData(self::LINE_NO, $value);
-    }
 
     public function getLscMemberSalesBuffer()
     {
@@ -87,26 +41,6 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
     public function setLscMemberSalesBuffer(?LSCMemberSalesBuffer $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
-    }
-
-    public function getLscMemberSalesDataEntry()
-    {
-        return $this->getData(self::LSC_MEMBER_SALES_DATA_ENTRY);
-    }
-
-    public function setLscMemberSalesDataEntry(?LSCMemberSalesDataEntry $value)
-    {
-        return $this->setData(self::LSC_MEMBER_SALES_DATA_ENTRY, $value);
-    }
-
-    public function getLscMemberSalesDocDiscLine()
-    {
-        return $this->getData(self::LSC_MEMBER_SALES_DOC_DISC_LINE);
-    }
-
-    public function setLscMemberSalesDocDiscLine(?LSCMemberSalesDocDiscLine $value)
-    {
-        return $this->setData(self::LSC_MEMBER_SALES_DOC_DISC_LINE, $value);
     }
 
     public function getLscMemberSalesDocLine()
@@ -119,24 +53,24 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
     }
 
-    public function getNo()
+    public function getLscMemberSalesDocDiscLine()
     {
-        return $this->getData(self::NO);
+        return $this->getData(self::LSC_MEMBER_SALES_DOC_DISC_LINE);
     }
 
-    public function setNo(?Code $value)
+    public function setLscMemberSalesDocDiscLine(?LSCMemberSalesDocDiscLine $value)
     {
-        return $this->setData(self::NO, $value);
+        return $this->setData(self::LSC_MEMBER_SALES_DOC_DISC_LINE, $value);
     }
 
-    public function getQuantity()
+    public function getLscMemberSalesDataEntry()
     {
-        return $this->getData(self::QUANTITY);
+        return $this->getData(self::LSC_MEMBER_SALES_DATA_ENTRY);
     }
 
-    public function setQuantity(?Decimal $value)
+    public function setLscMemberSalesDataEntry(?LSCMemberSalesDataEntry $value)
     {
-        return $this->setData(self::QUANTITY, $value);
+        return $this->setData(self::LSC_MEMBER_SALES_DATA_ENTRY, $value);
     }
 
     public function getSalesShipmentHeader()
@@ -157,35 +91,5 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
     public function setSalesShipmentLine(?SalesShipmentLine $value)
     {
         return $this->setData(self::SALES_SHIPMENT_LINE, $value);
-    }
-
-    public function getType()
-    {
-        return $this->getData(self::TYPE);
-    }
-
-    public function setType(?Option $value)
-    {
-        return $this->setData(self::TYPE, $value);
-    }
-
-    public function getUnitOfMeasureCode()
-    {
-        return $this->getData(self::UNIT_OF_MEASURE_CODE);
-    }
-
-    public function setUnitOfMeasureCode(?Code $value)
-    {
-        return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
-    }
-
-    public function getVariantCode()
-    {
-        return $this->getData(self::VARIANT_CODE);
-    }
-
-    public function setVariantCode(?Code $value)
-    {
-        return $this->setData(self::VARIANT_CODE, $value);
     }
 }

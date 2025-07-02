@@ -32,9 +32,9 @@ class OdataGenerator
     public array $allowedNonReplActions = [
         'GetStores_GetStores' => [
           'request' => [
-              'storeGetType' => '1',
-              'searchText' => '',
-              'includeDetail' => false
+              'storeGetType' => '3',
+              'searchText' => 'S0001',
+              'includeDetail' => true
           ],
           'response' => [
               'DataSetName' => ''
@@ -263,6 +263,9 @@ class OdataGenerator
         $dataSetNames = $dataSetName = [];
         foreach ($recordFields as $recordField) {
             if (isset($recordField['DataSetName'])) {
+                if ($recordField['DataSetName'] == 'LSC Rtl Calendar Group Linking') {
+                    $i = 1;
+                }
                 $entityClassName = $this->formatGivenValue(str_replace(
                     ' ',
                     '',
@@ -272,7 +275,7 @@ class OdataGenerator
                     'FieldName' => $recordField['DataSetName'],
                     'FieldDataType' => $recordField['isAnArray'] ? 'array' : $entityClassName
                 ];
-                $dataSetName[] = $entityClassName;
+                $dataSetName[] = $recordField['DataSetName'];
                 $this->registerEntity(
                     $recordField['DataSetName'],
                     $entityClassName,
@@ -282,7 +285,7 @@ class OdataGenerator
         }
         $entityClassName = $action;
         $this->registerEntity(
-            $recordField['DataSetName'],
+            $entityClassName,
             $entityClassName,
             $dataSetNames,
             true
@@ -640,11 +643,12 @@ PHP;
                 strtoupper(preg_replace('/\B([A-Z])/', '_$1', $optimizedFieldName))
             );
             if ($recursive) {
-                $constIndexName = str_replace(
-                    ' ',
-                    '',
-                    $fieldName
-                );
+//                $constIndexName = str_replace(
+//                    ' ',
+//                    '',
+//                    $fieldName
+//                );
+                $constIndexName = $fieldName;
             } else {
                 $constIndexName = $fieldName;
             }
@@ -1227,7 +1231,7 @@ class $entityClassName
         \$finalEntry = \$this->createInstance({$entityFqcn}::class);
         if (is_array(\$requiredDataSetName)) {
             foreach (\$requiredDataSetName as \$dataSet) {
-                \$entityClassName = str_replace(' ', '', \$dataSet);
+                \$entityClassName = str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', \$dataSet));
                 // Try flat response structure
                 if (isset(\$data[\$dataSet]) && is_array(\$data[\$dataSet])) {
                     \$entity = \$this->createInstance(
@@ -1270,7 +1274,7 @@ class $entityClassName
                         \$entries[\$index] = \$entry;
                     }
                     if (!empty(\$entries)) {
-                        \$finalEntry->setData(\$entityClassName, \$count > 1 ? \$entries : current(\$entries));
+                        \$finalEntry->setData(\$dataSet, \$count > 1 ? \$entries : current(\$entries));
                     }
                 }
             }
@@ -1313,7 +1317,7 @@ class $entityClassName
                 if (
                     is_array(\$data)
                     && isset(\$data['DataSetName'])
-                    && str_replace(' ', '',\$data['DataSetName']) === \$target
+                    && str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', \$data['DataSetName'])) === \$target
                 ) {
                     return \$data;
                 }

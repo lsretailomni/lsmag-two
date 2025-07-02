@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Helper;
 
@@ -8,107 +9,32 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
-use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
+use \Ls\Omni\Client\Ecommerce\Entity\RetailCalendarLine;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\Ecommerce\Operation\GetStoreOpeningHours;
 use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
 use \Ls\Omni\Client\Ecommerce\Operation\LSCTenderType;
-use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use \Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
 use \Ls\Omni\Model\Cache\Type;
-use \Ls\Omni\Model\Central\GuzzleClient;
-use \Ls\Omni\Model\Central\TokenRequestService;
 use \Ls\Omni\Service\Service as OmniService;
+use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
-use \Ls\Replication\Api\ReplStoreRepositoryInterface;
-use \Ls\Replication\Api\ReplLscTenderTypeRepositoryInterface;
-use Magento\Framework\App\ObjectManager;
-use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Config\Storage\WriterInterface;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
-use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Filesystem\DirectoryList;
-use Magento\Framework\Filesystem\Driver\File;
 use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
-use Magento\Framework\Message\ManagerInterface;
-use Magento\Framework\Phrase;
-use Magento\Framework\Session\SessionManagerInterface;
-use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\Quote\Api\CartRepositoryInterface;
-use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
-use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
-use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Sales\Model\Order\Invoice\Item;
+use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Store\Model\ScopeInterface;
-use Magento\Store\Model\StoreManagerInterface;
-use SimpleXMLElement;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Phrase;
 
 /**
  * Helper class that is used on multiple areas
  */
-class Data extends AbstractHelper
+class Data extends AbstractHelperOmni
 {
-    /**
-     * @param Context $context
-     * @param ReplStoreRepositoryInterface $storeRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param SessionManagerInterface $session
-     * @param CheckoutSession $checkoutSession
-     * @param ManagerInterface $messageManager
-     * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
-     * @param LoyaltyHelper $loyaltyHelper
-     * @param CartRepositoryInterface $cartRepository
-     * @param CacheHelper $cacheHelper
-     * @param LSR $lsr
-     * @param DateTime $date
-     * @param WriterInterface $configWriter
-     * @param DirectoryList $directoryList
-     * @param StockHelper $stockHelper
-     * @param GetCartForUser $getCartForUser
-     * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
-     * @param ReplLscTenderTypeRepositoryInterface $storeTenderTypeRepository
-     * @param File $fileSystemDriver
-     * @param GuzzleClient $guzzleClient
-     * @param StoreManagerInterface $storeManager
-     * @param TokenRequestService $tokenRequestService
-     * @param RequestInterface $request
-     * @param ReplLscTenderTypeRepositoryInterface $replStoreTenderTypeRepository
-     */
-    public function __construct(
-        public Context $context,
-        public ReplStoreRepositoryInterface $storeRepository,
-        public SearchCriteriaBuilder $searchCriteriaBuilder,
-        public SessionManagerInterface $session,
-        public CheckoutSession $checkoutSession,
-        public ManagerInterface $messageManager,
-        public \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        public LoyaltyHelper $loyaltyHelper,
-        public CartRepositoryInterface $cartRepository,
-        public CacheHelper $cacheHelper,
-        public LSR $lsr,
-        public DateTime $date,
-        public WriterInterface $configWriter,
-        public DirectoryList $directoryList,
-        public StockHelper $stockHelper,
-        public GetCartForUser $getCartForUser,
-        public MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
-        public ReplLscTenderTypeRepositoryInterface $storeTenderTypeRepository,
-        public File $fileSystemDriver,
-        public GuzzleClient $guzzleClient,
-        public StoreManagerInterface $storeManager,
-        public TokenRequestService $tokenRequestService,
-        public RequestInterface $request,
-        public ReplLscTenderTypeRepositoryInterface $replStoreTenderTypeRepository
-    ) {
-        parent::__construct($context);
-    }
-
     /**
      * @param $storeId
      * @return mixed
@@ -139,47 +65,49 @@ class Data extends AbstractHelper
             if ($cachedResponse) {
                 $storeResults = $cachedResponse;
             } else {
-                // @codingStandardsIgnoreLine
-                $request = new StoreGetById();
-                $request->setOperationInput()->setStoreId($storeId);
-                $response     = $request->execute();
-                $storeResults = [];
+                $operation = $this->createInstance(GetStoreOpeningHours::class);
+                $operation->setOperationInput([
+                    Entity\GetStoreOpeningHours::STORE_NO => $storeId,
+                ]);
+                $response = $operation->execute();
+                $storeResults = $response->getResponseCode() == "0000" ?
+                    $response->getGetstoreopeninghoursxml() : null;
 
-                if (!empty($response)) {
-                    $storeResults = $response->getResult()->getStoreHours()->getStoreHours();
-                    $this->cacheHelper->persistContentInCache(
-                        $cacheId,
-                        $storeResults,
-                        [Type::CACHE_TAG],
-                        86400
-                    );
-                }
+                $this->cacheHelper->persistContentInCache(
+                    $cacheId,
+                    $storeResults,
+                    [Type::CACHE_TAG],
+                    86400
+                );
             }
             $storeHours = [];
-            $today      = $this->date->gmtDate("Y-m-d");
+            $today      = $this->dateTime->gmtDate("Y-m-d");
 
-            for ($i = 0; $i < 7; $i++) {
-                $current          = date("Y-m-d", strtotime($today) + ($i * 86400));
-                $currentDayOfWeek = date('w', strtotime($current));
+            if ($storeResults) {
+                for ($i = 0; $i < 7; $i++) {
+                    $current          = date("Y-m-d", strtotime($today) + ($i * 86400));
+                    $currentDayOfWeek = date('w', strtotime($current));
 
-                foreach ($storeResults as $key => $r) {
-                    if ((empty($r->getCalendarType()) ||
-                            $r->getCalendarType() == StoreHourCalendarType::OPENING_HOURS ||
-                            $r->getCalendarType() == StoreHourCalendarType::ALL) &&
-                        $r->getDayOfWeek() == $currentDayOfWeek &&
-                        $this->checkDateValidity($current, $r)) {
-                        $storeHours[$currentDayOfWeek][] = [
-                            'type'  => $r->getType(),
-                            'day'   => $r->getNameOfDay(),
-                            'open'  => $r->getOpenFrom() ?? '0001-01-01T00:00:00Z',
-                            'close' => $r->getOpenTo() ?? '0001-01-01T00:00:00Z'
-                        ];
+                    foreach ($storeResults->getRetailcalendarline() as $key => $r) {
+                        if ((empty($r->getCalendartype()) ||
+                                $r->getCalendartype() == "1" ||
+                                $r->getLinetype() == "0") &&
+                            $r->getDayno() == $currentDayOfWeek &&
+                            $this->checkDateValidity($current, $r)) {
+                            $storeHours[$currentDayOfWeek][] = [
+                                'type'  => $r->getLinetype(),
+                                'day'   => $r->getDayname(),
+                                'open'  => $r->getTimefrom() ?? '0001-01-01T00:00:00Z',
+                                'close' => $r->getTimeto() ?? '0001-01-01T00:00:00Z'
+                            ];
 
-                        unset($storeResults[$key]);
+                            unset($storeResults[$key]);
+                        }
                     }
                 }
+                $storeHours = $this->sortStoreTimeEntries($storeHours);
             }
-            $storeHours = $this->sortStoreTimeEntries($storeHours);
+
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -191,25 +119,35 @@ class Data extends AbstractHelper
      * Check date validity
      *
      * @param mixed $current
-     * @param StoreHours $storeHoursObj
+     * @param RetailCalendarLine $storeHoursObj
      * @return bool
      */
     public function checkDateValidity($current, $storeHoursObj)
     {
         $currentTimeStamp = strtotime($current);
+        $startingDate = $storeHoursObj->getStartingdate();
+        $endingDate = $storeHoursObj->getEndingdate();
 
-        if ($storeHoursObj->getStartDate() && $storeHoursObj->getEndDate()) {
-            $storeHoursObjStartDateTimeStamp = strtotime($storeHoursObj->getStartDate());
-            $storeHoursObjEndDateTimeStamp   = strtotime($storeHoursObj->getEndDate());
+        if ($startingDate == '0001-01-01') {
+            $startingDate = null;
+        }
+
+        if ($endingDate == '0001-01-01') {
+            $endingDate = null;
+        }
+
+        if ($startingDate && $endingDate) {
+            $storeHoursObjStartDateTimeStamp = strtotime($startingDate);
+            $storeHoursObjEndDateTimeStamp   = strtotime($endingDate);
             return $currentTimeStamp >= $storeHoursObjStartDateTimeStamp &&
                 $currentTimeStamp <= $storeHoursObjEndDateTimeStamp;
         } else {
-            if ($storeHoursObj->getStartDate() && !$storeHoursObj->getEndDate()) {
-                $storeHoursObjStartDateTimeStamp = strtotime($storeHoursObj->getStartDate());
+            if ($startingDate && !$endingDate) {
+                $storeHoursObjStartDateTimeStamp = strtotime($startingDate);
                 return $currentTimeStamp >= $storeHoursObjStartDateTimeStamp;
             } else {
-                $storeHoursObjEndDateTimeStamp = strtotime($storeHoursObj->getEndDate());
-                if (!$storeHoursObj->getStartDate() && $storeHoursObj->getEndDate()) {
+                $storeHoursObjEndDateTimeStamp = strtotime($endingDate);
+                if (!$startingDate && $endingDate) {
                     return $currentTimeStamp <= $storeHoursObjEndDateTimeStamp;
                 }
             }
@@ -294,7 +232,6 @@ class Data extends AbstractHelper
      * @param $loyaltyPoints
      * @param $basketData
      * @return float|int
-     * @throws GuzzleException
      */
     public function getOrderBalance($giftCardAmount, $loyaltyPoints, $basketData)
     {
@@ -324,7 +261,6 @@ class Data extends AbstractHelper
      * @param $basketData
      * @param bool $showMessage
      * @return Phrase|string
-     * @throws GuzzleException
      */
     public function orderBalanceCheck($giftCardNo, $giftCardAmount, $loyaltyPoints, $basketData, $showMessage = true)
     {
@@ -337,8 +273,9 @@ class Data extends AbstractHelper
                 }
                 $quote          = $this->cartRepository->get($this->checkoutSession->getQuoteId());
                 $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
-                $discountAmount = $basketData->getTotalDiscount();
-                $totalAmount    = $basketData->getTotalAmount() + $discountAmount + $shippingAmount;
+                $mobileTransaction = current($basketData->getMobiletransaction());
+                $discountAmount = $mobileTransaction->getLinediscount();
+                $totalAmount    = $mobileTransaction->getGrossamount() + $discountAmount + $shippingAmount;
 
                 $combinedTotalLoyalGiftCard    = $giftCardAmount + $loyaltyAmount;
                 $combinedDiscountPaymentAmount = $discountAmount + $combinedTotalLoyalGiftCard;
@@ -508,10 +445,13 @@ class Data extends AbstractHelper
     public function omniPing($baseUrl = '', $connectionParams = [], $companyName = [])
     {
         $response = null;
-        $testConnectionOperation = new TestConnectionResponse(
-            $baseUrl,
-            $connectionParams,
-            $companyName['company'] ?? ''
+        $testConnectionOperation = $this->createInstance(
+            TestConnectionResponse::class,
+            [
+                'baseUrl' => $baseUrl,
+                'connectionParams' => $connectionParams,
+                'companyName' => $companyName['company'] ?? ''
+            ]
         );
 
         try {
@@ -530,7 +470,7 @@ class Data extends AbstractHelper
      */
     public function fetchWebStores()
     {
-        $webStoreOperation = new Operation\GetStores_GetStores();
+        $webStoreOperation = $this->createInstance(Operation\GetStores_GetStores::class);
         $webStoreOperation->setOperationInput(
             ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
         );
@@ -550,7 +490,7 @@ class Data extends AbstractHelper
             LSR::SC_SERVICE_STORE,
             $this->getScopeId()
         );
-        $hierarchyOperation = new HierarchyView();
+        $hierarchyOperation = $this->createInstance(HierarchyView::class);
         $hierarchyOperation->setOperationInput(
             [
                 'storeNo' => $storeCode,
@@ -576,7 +516,7 @@ class Data extends AbstractHelper
             LSR::SC_SERVICE_STORE,
             $this->getScopeId()
         );
-        $tenderTypeOperation = new LSCTenderType();
+        $tenderTypeOperation = $this->createInstance(LSCTenderType::class);
         $tenderTypeOperation->setOperationInput(
             [
                 'storeNo' => $storeCode,
@@ -697,22 +637,20 @@ class Data extends AbstractHelper
      *
      * @param string $tableName
      * @param string $baseUrl
-     * @param string|null $filterFieldName
-     * @param string|null $filterValue
+     * @param array $filters
      * @return array
      * @throws NoSuchEntityException
      */
     public function fetchGivenTableData(
         string $tableName,
         string $baseUrl = '',
-        ?string $filterFieldName = null,
-        ?string $filterValue = null
+        array $filters = []
     ): array {
         $baseUrl = !empty($baseUrl) ? $baseUrl :
             $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId());
         $url = join('/', [$baseUrl, 'WS/Codeunit/RetailWebServices']);
         $url = OmniService::getUrl($url);
-        $client = new OmniClient($url);
+        $client = $this->createInstance(OmniClient::class, ['uri' => $url]);
 
         $requestXml = new SimpleXMLElement('<Request/>');
         $requestXml->addChild('Request_ID', 'GET_TABLE_DATA');
@@ -721,12 +659,17 @@ class Data extends AbstractHelper
         $requestBody->addChild('Read_Direction', 'Forward');
         $requestBody->addChild('Max_Number_Of_Records', '0');
         $requestBody->addChild('Ignore_Extra_Fields', '1');
+        foreach ($filters as $i => $filter) {
+            ++$i;
+            $filterFieldName = $filter['filterName'] ?? null;
+            $filterValue = $filter['filterValue'] ?? null;
 
-        if ($filterFieldName && $filterValue) {
-            $filterBuffer = $requestBody->addChild('WS_Table_Filter_Buffer');
-            $filterBuffer->addChild('Field_Index', '1'); // adjust if dynamic
-            $filterBuffer->addChild('Field_Name', $filterFieldName);
-            $filterBuffer->addChild('Filter', $filterValue);
+            if ($filterFieldName && $filterValue) {
+                $filterBuffer = $requestBody->addChild('WS_Table_Filter_Buffer');
+                $filterBuffer->addChild('Field_Index', (string) $i); // adjust if dynamic
+                $filterBuffer->addChild('Field_Name', $filterFieldName);
+                $filterBuffer->addChild('Filter', $filterValue);
+            }
         }
 
         $params = [
@@ -810,21 +753,21 @@ class Data extends AbstractHelper
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == "cart") {
                 return ($this->lsr->getStoreConfig(
-                    LSR::LS_ENABLE_COUPON_ELEMENTS,
-                    $this->lsr->getCurrentStoreId()
-                ) && $this->lsr->getStoreConfig(
-                    LSR::LS_COUPONS_SHOW_ON_CART,
-                    $this->lsr->getCurrentStoreId()
-                )
+                        LSR::LS_ENABLE_COUPON_ELEMENTS,
+                        $this->lsr->getCurrentStoreId()
+                    ) && $this->lsr->getStoreConfig(
+                        LSR::LS_COUPONS_SHOW_ON_CART,
+                        $this->lsr->getCurrentStoreId()
+                    )
                 );
             }
             return ($this->lsr->getStoreConfig(
-                LSR::LS_ENABLE_COUPON_ELEMENTS,
-                $this->lsr->getCurrentStoreId()
-            ) && $this->lsr->getStoreConfig(
-                LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
-                $this->lsr->getCurrentStoreId()
-            )
+                    LSR::LS_ENABLE_COUPON_ELEMENTS,
+                    $this->lsr->getCurrentStoreId()
+                ) && $this->lsr->getStoreConfig(
+                    LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
+                    $this->lsr->getCurrentStoreId()
+                )
             );
         } else {
             return false;
@@ -899,14 +842,12 @@ class Data extends AbstractHelper
      */
     public function getTenderTypesPaymentMapping()
     {
-        $storeTenderTypes = [];
-        $scopeId = $this->lsr->getCurrentWebsiteId();
+        $storeTenderTypes     = [];
+        $scopeId              = $this->lsr->getCurrentWebsiteId();
         $storeTenderTypeArray = $this->getTenderTypes($scopeId);
-
         if (empty($storeTenderTypeArray)) {
             $storeTenderTypeArray = $this->getTenderTypesDirectly($scopeId);
         }
-
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[$storeTenderType->getCode()] = $storeTenderType->getDescription();
@@ -941,7 +882,6 @@ class Data extends AbstractHelper
      * Getting tender types directly through API
      *
      * @param string $scopeId
-     * @return array
      * @throws NoSuchEntityException|GuzzleException
      */
     public function getTenderTypesDirectly($scopeId)
@@ -1184,6 +1124,7 @@ class Data extends AbstractHelper
     {
         return $this->request->getParam('website') ?? $this->storeManager->getStore()->getWebsiteId();
     }
+
 
     /**
      * Create new instance of given class name
