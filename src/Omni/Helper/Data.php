@@ -10,7 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\RetailCalendarLine;
-use Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
+use \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\Ecommerce\Operation\GetStoreOpeningHours;
 use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
@@ -18,7 +18,6 @@ use \Ls\Omni\Client\Ecommerce\Operation\LSCTenderType;
 use \Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
 use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Service\Service as OmniService;
-use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -30,6 +29,7 @@ use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Phrase;
+use SimpleXMLElement;
 
 /**
  * Helper class that is used on multiple areas

@@ -374,17 +374,6 @@ class OrderHelper extends AbstractHelperOmni
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice = (float)$shippingAmount / $netPriceFormula;
             $taxAmount = (float)number_format(($shippingAmount - $netPrice), 2);
-            // @codingStandardsIgnoreLine
-            /*            $shipmentOrderLine = new Entity\OrderLine();
-                        $shipmentOrderLine->setPrice($shippingAmount)
-                            ->setAmount($shippingAmount)
-                            ->setNetPrice($netPrice)
-                            ->setNetAmount($netPrice)
-                            ->setTaxAmount($taxAmount)
-                            ->setItemId($shipmentFeeId)
-                            ->setLineType(Entity\Enum\LineType::ITEM)
-                            ->setQuantity(1)
-                            ->setDiscountAmount($order->getShippingDiscountAmount());*/
             $orderLine = end($customerOrderCoLines);
             $lineNumber = $orderLine->getLineno();
             $lineNumber++;
