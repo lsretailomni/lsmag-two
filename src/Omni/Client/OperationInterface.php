@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Ls\Omni\Client;
 
 use Magento\Catalog\Model\AbstractModel;

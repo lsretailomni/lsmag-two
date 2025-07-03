@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\InventoryCatalog;
 
@@ -13,33 +14,15 @@ use Magento\InventoryCatalogApi\Model\GetSkusByProductIdsInterface;
 class GetParentSkusOfChildrenSkus
 {
     /**
-     * @var Relation
-     */
-    private $productRelationResource;
-
-    /**
-     * @var GetProductIdsBySkusInterface
-     */
-    private $getProductIdsBySkus;
-
-    /**
-     * @var GetSkusByProductIdsInterface
-     */
-    private $getSkusByProductIds;
-
-    /**
      * @param Relation $productRelationResource
      * @param GetProductIdsBySkusInterface $getProductIdsBySkus
      * @param GetSkusByProductIdsInterface $getSkusByProductIds
      */
     public function __construct(
-        Relation $productRelationResource,
-        GetProductIdsBySkusInterface $getProductIdsBySkus,
-        GetSkusByProductIdsInterface $getSkusByProductIds
+        public Relation $productRelationResource,
+        public GetProductIdsBySkusInterface $getProductIdsBySkus,
+        public GetSkusByProductIdsInterface $getSkusByProductIds
     ) {
-        $this->productRelationResource = $productRelationResource;
-        $this->getProductIdsBySkus     = $getProductIdsBySkus;
-        $this->getSkusByProductIds     = $getSkusByProductIds;
     }
 
     /**

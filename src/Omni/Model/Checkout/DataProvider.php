@@ -1,11 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\Checkout;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Laminas\Json\Json;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Block\Stores\Stores;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
+use \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores;
+use \Ls\Omni\Client\Ecommerce\Entity\RootGetInventoryMultipleOut;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\StockHelper;
@@ -28,55 +31,11 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class DataProvider implements ConfigProviderInterface
 {
-    const XPATH_MAPS_API_KEY = 'omni_clickandcollect/general/maps_api_key';
-    const XPATH_DEFAULT_LATITUDE = 'omni_clickandcollect/general/default_latitude';
-    const XPATH_DEFAULT_LONGITUDE = 'omni_clickandcollect/general/default_longitude';
-    const XPATH_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
-    const XPATH_CHECKOUT_ITEM_AVAILABILITY = 'omni_clickandcollect/checkout/items_availability';
-
-    /** @var StoreManagerInterface */
-    public $storeManager;
-
-    /** @var CollectionFactory */
-    public $storeCollectionFactory;
-
-    /** @var ScopeConfigInterface */
-    public $scopeConfig;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var Session
-     */
-    public $checkoutSession;
-
-    /**
-     * @var StockHelper
-     */
-    public $stockHelper;
-
-    /**
-     * @var StoreHelper
-     */
-    public $storeHelper;
-
-    /**
-     * @var GiftCardHelper
-     */
-    public $giftCardHelper;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
-     * @var LayoutFactory
-     */
-    public $layoutFactory;
+    public const XPATH_MAPS_API_KEY = 'omni_clickandcollect/general/maps_api_key';
+    public const XPATH_DEFAULT_LATITUDE = 'omni_clickandcollect/general/default_latitude';
+    public const XPATH_DEFAULT_LONGITUDE = 'omni_clickandcollect/general/default_longitude';
+    public const XPATH_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
+    public const XPATH_CHECKOUT_ITEM_AVAILABILITY = 'omni_clickandcollect/checkout/items_availability';
 
     /**
      * @param StoreManagerInterface $storeManager
@@ -91,27 +50,17 @@ class DataProvider implements ConfigProviderInterface
      * @param LayoutFactory $layoutFactory
      */
     public function __construct(
-        StoreManagerInterface $storeManager,
-        CollectionFactory $storeCollectionFactory,
-        ScopeConfigInterface $scopeConfig,
-        LSR $lsr,
-        Session $checkoutSession,
-        StockHelper $stockHelper,
-        StoreHelper $storeHelper,
-        GiftCardHelper $giftCardHelper,
-        BasketHelper $basketHelper,
-        LayoutFactory $layoutFactory
+        public StoreManagerInterface $storeManager,
+        public CollectionFactory $storeCollectionFactory,
+        public ScopeConfigInterface $scopeConfig,
+        public LSR $lsr,
+        public Session $checkoutSession,
+        public StockHelper $stockHelper,
+        public StoreHelper $storeHelper,
+        public GiftCardHelper $giftCardHelper,
+        public BasketHelper $basketHelper,
+        public LayoutFactory $layoutFactory
     ) {
-        $this->storeManager           = $storeManager;
-        $this->storeCollectionFactory = $storeCollectionFactory;
-        $this->scopeConfig            = $scopeConfig;
-        $this->lsr                    = $lsr;
-        $this->checkoutSession        = $checkoutSession;
-        $this->stockHelper            = $stockHelper;
-        $this->storeHelper            = $storeHelper;
-        $this->giftCardHelper         = $giftCardHelper;
-        $this->basketHelper           = $basketHelper;
-        $this->layoutFactory          = $layoutFactory;
     }
 
     /**
@@ -120,7 +69,7 @@ class DataProvider implements ConfigProviderInterface
      * This function is overriding in hospitality module
      *
      * @return array
-     * @throws NoSuchEntityException|LocalizedException|InvalidEnumException
+     * @throws NoSuchEntityException|LocalizedException|InvalidEnumException|GuzzleException
      */
     public function getConfig()
     {
@@ -130,46 +79,46 @@ class DataProvider implements ConfigProviderInterface
             $clickAndCollectEnabled = $this->lsr->getClickCollectEnabled();
 
             if ($clickAndCollectEnabled) {
-                $store                = $this->getStoreId();
-                $mapsApiKey           = $this->scopeConfig->getValue(
+                $store = $this->getStoreId();
+                $mapsApiKey = $this->scopeConfig->getValue(
                     self::XPATH_MAPS_API_KEY,
                     ScopeInterface::SCOPE_STORE,
                     $store
                 );
-                $defaultLatitude      = $this->scopeConfig->getValue(
+                $defaultLatitude = $this->scopeConfig->getValue(
                     self::XPATH_DEFAULT_LATITUDE,
                     ScopeInterface::SCOPE_STORE,
                     $store
                 );
-                $defaultLongitude     = $this->scopeConfig->getValue(
+                $defaultLongitude = $this->scopeConfig->getValue(
                     self::XPATH_DEFAULT_LONGITUDE,
                     ScopeInterface::SCOPE_STORE,
                     $store
                 );
-                $defaultZoom          = $this->scopeConfig->getValue(
+                $defaultZoom = $this->scopeConfig->getValue(
                     self::XPATH_DEFAULT_ZOOM,
                     ScopeInterface::SCOPE_STORE,
                     $store
                 );
 
-                $storesResponse       = $this->getStores();
-                $layout               = $this->layoutFactory->create();
-                $storesData           = $layout->createBlock(Stores::class)
+                $storesResponse = $this->getStores();
+                $layout = $this->layoutFactory->create();
+                $storesData = $layout->createBlock(Stores::class)
                     ->setTemplate('Ls_Omni::stores/stores.phtml')
                     ->setData('data', $storesResponse)
                     ->setData('storeHours', 0)
                     ->toHtml();
                 $stores = $storesResponse ? $storesResponse->toArray() : [];
                 $stores['storesInfo'] = $storesData;
-                $encodedStores        = Json::encode($stores);
+                $encodedStores = Json::encode($stores);
 
                 $config['shipping']['select_store'] = [
-                    'maps_api_key'         => $mapsApiKey,
-                    'lat'                  => (float)$defaultLatitude,
-                    'lng'                  => (float)$defaultLongitude,
-                    'zoom'                 => (int)$defaultZoom,
-                    'stores'               => $encodedStores,
-                    'available_store_only' => $this->availableStoresOnlyEnabled()
+                    'maps_api_key' => $mapsApiKey,
+                    'lat' => (float)$defaultLatitude,
+                    'lng' => (float)$defaultLongitude,
+                    'zoom' => (int)$defaultZoom,
+                    'stores' => $encodedStores,
+                    'available_store_only' => (bool)$this->availableStoresOnlyEnabled()
                 ];
             }
 
@@ -177,7 +126,7 @@ class DataProvider implements ConfigProviderInterface
                 $this->setRespectiveTimeSlotsInCheckoutSession();
             }
 
-            $enabled              = $this->lsr->isPickupTimeslotsEnabled();
+            $enabled = $this->lsr->isPickupTimeslotsEnabled();
             $deliveryHoursEnabled = $this->lsr->isDeliveryTimeslotsEnabled();
 
             if (empty($this->basketHelper->getStorePickUpHoursFromCheckoutSession()) || !$clickAndCollectEnabled) {
@@ -188,11 +137,11 @@ class DataProvider implements ConfigProviderInterface
                 $deliveryHoursEnabled = 0;
             }
             $config['shipping']['pickup_date_timeslots'] = [
-                'options'                => $this->basketHelper->getStorePickUpHoursFromCheckoutSession(),
-                'enabled'                => $enabled,
-                'current_web_store'      => $this->lsr->getActiveWebStore(),
-                'store_type'             => 0,
-                'delivery_hours'         => $this->basketHelper->getDeliveryHoursFromCheckoutSession(),
+                'options' => $this->basketHelper->getStorePickUpHoursFromCheckoutSession(),
+                'enabled' => $enabled,
+                'current_web_store' => $this->lsr->getActiveWebStore(),
+                'store_type' => 0,
+                'delivery_hours' => $this->basketHelper->getDeliveryHoursFromCheckoutSession(),
                 'delivery_hours_enabled' => $deliveryHoursEnabled
             ];
             $config['coupons_display'] = $this->isCouponsDisplayEnabled();
@@ -200,7 +149,7 @@ class DataProvider implements ConfigProviderInterface
 
         $config['ls_enabled'] = (bool)$this->lsr->isEnabled();
 
-        $config['gift_card_pin_enable'] = (bool)$this->giftCardHelper->isPinCodeFieldEnable();
+        $config['gift_card_pin_enable'] = $this->giftCardHelper->isPinCodeFieldEnable();
 
         return $config;
     }
@@ -209,7 +158,7 @@ class DataProvider implements ConfigProviderInterface
      * Is valid
      *
      * @return bool|null
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function isValid()
     {
@@ -244,14 +193,7 @@ class DataProvider implements ConfigProviderInterface
         $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
         list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
 
-        if ($response) {
-            if (is_object($response)) {
-                if (!is_array($response->getInventoryResponse())) {
-                    $response = [$response->getInventoryResponse()];
-                } else {
-                    $response = $response->getInventoryResponse();
-                }
-            }
+        if ($response && !empty($response->getInventorybufferout())) {
 
             $clickNCollectStoresIds = $this->getClickAndCollectStoreIds($storesData);
             $this->filterClickAndCollectStores($response, $clickNCollectStoresIds);
@@ -267,7 +209,7 @@ class DataProvider implements ConfigProviderInterface
      *
      * Get all click and collect stores
      *
-     * @return Collection|null
+     * @return Collection
      * @throws NoSuchEntityException
      */
     public function getRequiredStores()
@@ -286,16 +228,12 @@ class DataProvider implements ConfigProviderInterface
      *
      * @return void
      * @throws InvalidEnumException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function setRespectiveTimeSlotsInCheckoutSession()
     {
         if ($this->lsr->isPickupTimeslotsEnabled() || $this->lsr->isDeliveryTimeslotsEnabled()) {
-            $allStores = $this->storeHelper->getAllStores(
-                !$this->lsr->isSSM() ?
-                    $this->lsr->getCurrentStoreId() :
-                    $this->lsr->getAdminStore()->getId()
-            );
+            $allStores = $this->storeHelper->getAllStoresFromCentral();
 
             if ($this->lsr->isPickupTimeslotsEnabled()) {
                 $storeHoursArray = $this->getRelevantStoreHours(null, $allStores);
@@ -306,7 +244,7 @@ class DataProvider implements ConfigProviderInterface
             }
 
             if ($this->lsr->isDeliveryTimeslotsEnabled()) {
-                $deliveryHoursArray = $this->getRelevantStoreHours(StoreHourCalendarType::RECEIVING, $allStores);
+                $deliveryHoursArray = $this->getRelevantStoreHours(2, $allStores);
 
                 if (!empty($deliveryHoursArray)) {
                     $this->basketHelper->setDeliveryHoursInCheckoutSession($deliveryHoursArray);
@@ -318,30 +256,65 @@ class DataProvider implements ConfigProviderInterface
     /**
      * Get relevant store hours
      *
-     * @param null $calendarType
-     * @param null $allStores
+     * @param ?int $calendarType
+     * @param ?GetStores_GetStores $allStores
      * @return array
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
+     * @throws GuzzleException
      */
     public function getRelevantStoreHours($calendarType = null, $allStores = null)
     {
         $storeHoursArray = [];
 
         if ($allStores == null) {
-            $allStores = $this->storeHelper->getAllStores(
-                !$this->lsr->isSSM() ?
-                    $this->getStoreId() :
-                    $this->lsr->getAdminStore()->getId()
-            );
+            $allStores = $this->storeHelper->getAllStoresFromCentral();
         }
 
-        foreach ($allStores as $store) {
-            if ($store->getIsClickAndCollect() || $store->getIsWebStore()) {
-                $storeHoursArray[$store->getId()] = $this->storeHelper->formatDateTimeSlotsValues(
-                    $store->getStoreHours(),
-                    $calendarType
-                );
+        foreach (!empty($allStores->getLscStore()) ?  $allStores->getLscStore() : [] as $store) {
+            if ($store->getClickAndCollect() || $store->getWebStore()) {
+                $calendarLines = $extraCalendarLines = [];
+                foreach (!empty($allStores->getLscRetailCalendarLine()) ?
+                    $allStores->getLscRetailCalendarLine() : [] as $calendarLine) {
+
+                    if ($store->getNo() == $calendarLine->getCalendarId() &&
+                        (!$calendarType || $calendarType == $calendarLine->getCalendarType()
+                    )) {
+                        $calendarLines[] = $calendarLine;
+                    }
+                }
+
+                if (!empty($calendarLines)) {
+                    $storeHoursArray[$store->getNo()] = $this->storeHelper->formatDateTimeSlotsValues(
+                        $calendarLines,
+                        $calendarType
+                    );
+                }
+
+                if (empty($storeHoursArray[$store->getNo()])) {
+                    foreach (!empty($allStores->getLscRtlCalendarGroupLinking()) ?
+                        $allStores->getLscRtlCalendarGroupLinking() : [] as $storeLink) {
+                        if ($store->getNo() == $storeLink->getStoreNo() && !empty($storeLink->getCalendarId())) {
+                            $currentCalendarType = $storeLink->getCalendarType();
+                            $currentCalendarId =  $storeLink->getCalendarId();
+                            foreach (!empty($allStores->getLscRetailCalendarLine()) ?
+                                $allStores->getLscRetailCalendarLine() : [] as $calendarLine) {
+                                if ((!$calendarType || $calendarType == $calendarLine->getCalendarType()) &&
+                                    $calendarLine->getCalendarType() == $currentCalendarType &&
+                                    $calendarLine->getCalendarId() == $currentCalendarId
+                                ) {
+                                    $extraCalendarLines[] = $calendarLine;
+                                }
+                            }
+                            if (!empty($extraCalendarLines)) {
+                                $storeHoursArray[$store->getNo()] = $this->storeHelper->formatDateTimeSlotsValues(
+                                    $extraCalendarLines,
+                                    $calendarType
+                                );
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -353,7 +326,7 @@ class DataProvider implements ConfigProviderInterface
      *
      * Available Stores only enabled
      *
-     * @return mixed
+     * @return string
      * @throws NoSuchEntityException
      */
     public function availableStoresOnlyEnabled()
@@ -368,10 +341,10 @@ class DataProvider implements ConfigProviderInterface
     /**
      * Get click and collect store ids
      *
-     * @param $storesData
+     * @param Collection $storesData
      * @return array
      */
-    public function getClickAndCollectStoreIds($storesData)
+    public function getClickAndCollectStoreIds(Collection $storesData)
     {
         $clickNCollectStoresIds = [];
 
@@ -385,29 +358,31 @@ class DataProvider implements ConfigProviderInterface
     /**
      * Filter Click And Collect Stores
      *
-     * @param $response
-     * @param $clickNCollectStoresIds
+     * @param RootGetInventoryMultipleOut $response
+     * @param array $clickNCollectStoresIds
      */
-    public function filterClickAndCollectStores(&$response, $clickNCollectStoresIds)
+    public function filterClickAndCollectStores(&$response, array $clickNCollectStoresIds)
     {
-        if (!empty($response)) {
-            foreach ($response as $index => $item) {
-                if ($item && !in_array($item->getStoreId(), $clickNCollectStoresIds)) {
-                    unset($response[$index]);
-                }
+        $inventoryRecords = $response->getInventorybufferout();
+
+        foreach ($inventoryRecords as $index => $item) {
+            if ($item && !in_array($item->getStore(), $clickNCollectStoresIds)) {
+                unset($inventoryRecords[$index]);
             }
         }
+
+        $response->setInventorybufferout($inventoryRecords);
     }
 
     /**
      * Filter Stores on the basis of quantity
      *
-     * @param $response
-     * @param $items
+     * @param RootGetInventoryMultipleOut $response
+     * @param array $items
      * @return mixed
      * @throws NoSuchEntityException
      */
-    public function filterStoresOnTheBasisOfQty($response, $items)
+    public function filterStoresOnTheBasisOfQty(RootGetInventoryMultipleOut $response, array $items)
     {
         foreach ($items as $item) {
             $children = [];
@@ -426,12 +401,12 @@ class DataProvider implements ConfigProviderInterface
                     $itemQty = $itemQty * $uomQty;
                 }
                 if ($response) {
-                    foreach ($response as $responseItem) {
-                        if ($responseItem->getItemId() == $parentProductSku &&
-                            $responseItem->getVariantId() == $childProductSku &&
-                            ceil($responseItem->getQtyInventory()) < $itemQty
+                    foreach ($response->getInventorybufferout() as $responseItem) {
+                        if ($responseItem->getNumber() == $parentProductSku &&
+                            $responseItem->getVariant() == $childProductSku &&
+                            ceil($responseItem->getInventory()) < $itemQty
                         ) {
-                            $this->removeAllOccurrenceOfGivenStore($response, $responseItem->getStoreId());
+                            $this->removeAllOccurrenceOfGivenStore($response, $responseItem->getStore());
                         }
                     }
                 }
@@ -450,30 +425,34 @@ class DataProvider implements ConfigProviderInterface
     /**
      * Remove all occurrence of given store
      *
-     * @param $response
-     * @param $storeId
+     * @param RootGetInventoryMultipleOut $response
+     * @param string $storeId
      */
-    public function removeAllOccurrenceOfGivenStore(&$response, $storeId)
+    public function removeAllOccurrenceOfGivenStore(&$response, string $storeId)
     {
-        foreach ($response as $index => $responseItem) {
-            if ($responseItem->getStoreId() == $storeId) {
-                unset($response[$index]);
+        $inventoryRecords = $response->getInventorybufferout();
+
+        foreach ($inventoryRecords as $index => $responseItem) {
+            if ($responseItem->getStore() == $storeId) {
+                unset($inventoryRecords[$index]);
             }
         }
+
+        $response->setInventorybufferout($inventoryRecords);
     }
 
     /**
      * Get all response items with inventory available
      *
-     * @param $response
+     * @param RootGetInventoryMultipleOut $response
      * @return array
      */
-    public function getAllResponseItemsWithInventoryAvailable($response)
+    public function getAllResponseItemsWithInventoryAvailable(RootGetInventoryMultipleOut $response)
     {
         $responseItems = [];
 
-        foreach ($response as $responseItem) {
-            $responseItems[] = $responseItem->getStoreId();
+        foreach ($response->getInventorybufferout() as $responseItem) {
+            $responseItems[] = $responseItem->getStore();
         }
 
         return array_unique($responseItems);
@@ -482,11 +461,11 @@ class DataProvider implements ConfigProviderInterface
     /**
      * Get selected click and collect stores Data
      *
-     * @param $responseItems
+     * @param array $responseItems
      * @return Collection
      * @throws NoSuchEntityException
      */
-    public function getSelectedClickAndCollectStoresData($responseItems)
+    public function getSelectedClickAndCollectStoresData(array $responseItems)
     {
         return $this->storeCollectionFactory
             ->create()
@@ -496,7 +475,7 @@ class DataProvider implements ConfigProviderInterface
                     $this->lsr->getCurrentWebsiteId() :
                     $this->lsr->getAdminStore()->getWebsiteId()
             )
-            ->addFieldToFilter('nav_id', ['in' => $responseItems]);
+            ->addFieldToFilter('no', ['in' => $responseItems]);
     }
 
     /**
@@ -508,9 +487,9 @@ class DataProvider implements ConfigProviderInterface
     public function isCouponsDisplayEnabled()
     {
         return ($this->lsr->getStoreConfig(
-                LSR::LS_ENABLE_COUPON_ELEMENTS,
-                $this->lsr->getCurrentStoreId()
-            ) &&
+            LSR::LS_ENABLE_COUPON_ELEMENTS,
+            $this->lsr->getCurrentStoreId()
+        ) &&
             $this->lsr->getStoreConfig(
                 LSR::LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT,
                 $this->lsr->getCurrentStoreId()

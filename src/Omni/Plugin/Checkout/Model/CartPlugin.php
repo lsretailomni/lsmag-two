@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\StockHelper;
 use Magento\Framework\Exception\LocalizedException;
@@ -12,26 +14,14 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class CartPlugin
 {
-
-    /** @var StockHelper */
-    private $stockHelper;
-
     /**
-     * @var LSR
-     */
-    private $lsr;
-
-    /**
-     * CartPlugin constructor.
      * @param StockHelper $stockHelper
-     * @param LSR $LSR
+     * @param LSR $lsr
      */
     public function __construct(
-        StockHelper $stockHelper,
-        LSR $LSR
+        public StockHelper $stockHelper,
+        public LSR $lsr
     ) {
-        $this->stockHelper     = $stockHelper;
-        $this->lsr             = $LSR;
     }
 
     /**
@@ -42,7 +32,7 @@ class CartPlugin
      * @param $data
      * @return $this
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function afterUpdateItems($subject, $result, $data)
     {

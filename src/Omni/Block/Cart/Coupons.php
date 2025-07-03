@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Cart;
 
@@ -16,13 +17,9 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\View\Element\Template\Context;
 
-/**
- * @api
- */
 class Coupons extends Coupon
 {
     /**
-     * Coupons constructor.
      * @param Context $context
      * @param CustomerSession $customerSession
      * @param CheckoutSession $checkoutSession

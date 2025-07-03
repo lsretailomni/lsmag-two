@@ -337,7 +337,7 @@ class ItemHelper extends AbstractHelperOmni
                 (($line->getNetamount() + $line->getTaxamount()) / $line->getQuantity()) * $itemQty;
         }
 
-        $rowTotal = $line->getNetamount();
+        $rowTotal       = $line->getNetamount();
         $rowTotalIncTax = $line->getPrice() * $line->getQuantity();
 
         $quoteItem
@@ -429,16 +429,16 @@ class ItemHelper extends AbstractHelperOmni
     public function getComparisonValues($sku, $parentId = '')
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku', $sku, 'eq')->create();
-        $productList = $this->productRepository->getList($searchCriteria)->getItems();
+        $productList    = $this->productRepository->getList($searchCriteria)->getItems();
         if (!empty($productList)) {
             /** @var Product $product */
-            $product = array_pop($productList);
-            $itemId = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
-            $variantId = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
-            $uom = $product->getData('uom');
-            $barCode = $product->getData('barcode');
-            $uomQty = $product->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
-            $baseUom = null;
+            $product   = array_pop($productList);
+            $itemId    = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+            $variantId = ($product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE))?:"";
+            $uom       = $product->getData('uom');
+            $barCode   = $product->getData('barcode');
+            $uomQty    = $product->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+            $baseUom   = null;
 
             if ($parentId != '') {
                 $parentProduct = $this->productRepository->getById($parentId);

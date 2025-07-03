@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\Invoice\Total;
 
@@ -12,22 +13,14 @@ use Magento\Sales\Model\Order\Invoice\Total\AbstractTotal;
  */
 class GiftCardLoyaltyPoints extends AbstractTotal
 {
-
     /**
-     * @var Helper
-     */
-    private $helper;
-
-    /**
-     * GiftCardLoyaltyPoints constructor.
      * @param Helper $helper
      * @param array $data
      */
     public function __construct(
-        Helper $helper,
+        public Helper $helper,
         array $data = []
     ) {
-        $this->helper = $helper;
         parent::__construct(
             $data
         );

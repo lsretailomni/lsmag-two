@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Api;
 
@@ -14,17 +15,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class ShippingInformationManagementInterfacePlugin
 {
     /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /**
      * @param BasketHelper $basketHelper
      */
     public function __construct(
-        BasketHelper $basketHelper
+        public BasketHelper $basketHelper
     ) {
-        $this->basketHelper = $basketHelper;
     }
 
     /**

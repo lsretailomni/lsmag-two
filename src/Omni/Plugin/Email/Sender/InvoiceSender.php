@@ -1,16 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Email\Sender;
 
 use Magento\Sales\Model\Order\Invoice;
 
-/**
- * Class InvoiceSender
- * @package Ls\Omni\Plugin\Email\Sender
- */
 class InvoiceSender
 {
-
     /**
      * @param $subject
      * @param Invoice $invoice

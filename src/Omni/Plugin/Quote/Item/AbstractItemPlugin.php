@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Quote\Item;
 
@@ -10,18 +11,13 @@ use Magento\Quote\Model\Quote\Item\AbstractItem;
  */
 class AbstractItemPlugin
 {
-    /**
-     * @var CheckoutSession
-     */
-    private $checkoutSession;
 
     /**
      * @param CheckoutSession $checkoutSession
      */
     public function __construct(
-        CheckoutSession $checkoutSession
+        public CheckoutSession $checkoutSession
     ) {
-        $this->checkoutSession = $checkoutSession;
     }
 
     /**

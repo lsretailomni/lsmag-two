@@ -1,13 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Email\Sender;
 
 use Magento\Sales\Model\Order;
 
-/**
- * Class OrderSender
- * @package Ls\Omni\Plugin\Email\Sender
- */
 class OrderSender
 {
 

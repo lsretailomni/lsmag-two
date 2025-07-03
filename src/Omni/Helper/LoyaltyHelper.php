@@ -9,7 +9,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\GetDirectMarketingInfoResult as GetDirectMarketingInfoResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\GetMemberCard;
 use \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOfferLine;
 use \Ls\Omni\Client\Ecommerce\Operation;
@@ -27,26 +26,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class LoyaltyHelper extends AbstractHelperOmni
 {
-    /**
-     * To fetch all profiles
-     *
-     * @return Entity\ArrayOfProfile|Entity\ProfilesGetAllResponse|ResponseInterface|null
-     */
-    public function getAllProfiles()
-    {
-        $response = null;
-        // @codingStandardsIgnoreStart
-        $request = new Operation\ProfilesGetAll();
-        $entity  = new Entity\ProfilesGetAll();
-        // @codingStandardsIgnoreEnd
-        try {
-            $response = $request->execute($entity);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        return $response ? $response->getResult() : $response;
-    }
-
     /**
      * To get all customer offers
      *
@@ -146,30 +125,11 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
-     * To convert points to values
-     *
-     * @return float|int
-     * @throws NoSuchEntityException
-     */
-    public function convertPointsIntoValues()
-    {
-        $points        = $pointRate = $value = 0;
-        $memberProfile = $this->getMemberInfo();
-        $pointRate     = $this->getPointRate();
-        if ($memberProfile != null && $pointRate != null) {
-            $points = $memberProfile->getAccount()->getPointBalance();
-            $value  = $points * $pointRate;
-            return $value;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
      * Get loyalty points available to customer
      *
-     * @return int|Entity\CardGetPointBalanceResponse|ResponseInterface|null
-     * @throws NoSuchEntityException|GuzzleException
+     * @return float
+     * @throws GuzzleException
+     * @throws NoSuchEntityException
      */
     public function getLoyaltyPointsAvailableToCustomer()
     {
@@ -180,27 +140,16 @@ class LoyaltyHelper extends AbstractHelperOmni
             $cardId = $customer->getLsrCardid();
         }
         $points = $this->basketHelper->getMemberPointsFromCheckoutSession();
-        $response = null;
 
         if ($cardId && $points == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            // @codingStandardsIgnoreStart
-            $operation = $this->createInstance(Operation\GetMemberCard::class);
-            $operation->setOperationInput([
-                GetMemberCard::CARD_NO => $cardId,
-                GetMemberCard::TOTAL_REMAINING_POINTS => 0
-            ]);
-            // @codingStandardsIgnoreEnd
-            try {
-                $response = $operation->execute();
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
+            if ($response = $this->contactHelper->getGivenMemberCard($cardId)) {
+                $points = $response->getTotalremainingpoints() ?? 0.0;
             }
-            $points = $response ? $response->getTotalremainingpoints() : 0;
 
             $this->basketHelper->setMemberPointsInCheckoutSession($points);
         }
 
-        return $points ?? 0;
+        return $points ?? 0.0;
     }
 
     /**
@@ -327,26 +276,31 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Convert Point Rate into Values
      *
-     * @param $storeId
+     * @param string $storeId
+     * @param string $currencyCode
      * @return float|int|string|null
      * @throws GuzzleException
      * @throws NoSuchEntityException
      */
-    public function getPointRate($storeId = null)
+    public function getPointRate($storeId = null, $currencyCode = null)
     {
         if (!$storeId) {
             $storeId = $this->lsr->getCurrentStoreId();
         }
 
+        if (!$currencyCode) {
+            $currencyCode = $this->lsr->getStoreCurrencyCode();
+        }
+
         $rate = 0;
         if ($this->lsr->isLSR($storeId) && $this->isEnabledLoyaltyPoints()) {
-            $cacheId = LSR::POINTRATE . $storeId;
+            $cacheId = LSR::POINTRATE . $storeId . '_' . $currencyCode;
             $response = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($response !== false) {
                 return $this->formatValue($response);
             }
-            $currencyCode = $this->lsr->getStoreCurrencyCode();
+
             $response = current($this->dataHelper->fetchGivenTableData(
                 'Currency Exchange Rate',
                 '',
@@ -700,27 +654,27 @@ class LoyaltyHelper extends AbstractHelperOmni
      *
      * @param string $area
      * @return string
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function isLoyaltyPointsEnabled($area)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == "cart") {
                 return $this->lsr->getStoreConfig(
-                        LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS,
-                        $this->lsr->getCurrentStoreId()
-                    ) && $this->lsr->getStoreConfig(
-                        LSR::LS_LOYALTYPOINTS_SHOW_ON_CART,
-                        $this->lsr->getCurrentStoreId()
-                    );
-            }
-            return $this->lsr->getStoreConfig(
                     LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS,
                     $this->lsr->getCurrentStoreId()
                 ) && $this->lsr->getStoreConfig(
-                    LSR::LS_LOYALTYPOINTS_SHOW_ON_CHECKOUT,
+                    LSR::LS_LOYALTYPOINTS_SHOW_ON_CART,
                     $this->lsr->getCurrentStoreId()
                 );
+            }
+            return $this->lsr->getStoreConfig(
+                LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS,
+                $this->lsr->getCurrentStoreId()
+            ) && $this->lsr->getStoreConfig(
+                LSR::LS_LOYALTYPOINTS_SHOW_ON_CHECKOUT,
+                $this->lsr->getCurrentStoreId()
+            );
         } else {
             return false;
         }

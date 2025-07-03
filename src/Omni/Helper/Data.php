@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\RetailCalendarLine;
+use Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\Ecommerce\Operation\GetStoreOpeningHours;
 use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
@@ -54,7 +55,7 @@ class Data extends AbstractHelperOmni
     {
         $storeHours = null;
         try {
-            $cacheId        = LSR::STORE_HOURS . $storeId;
+            $cacheId = LSR::STORE_HOURS . $storeId;
             $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($cachedResponse) {
@@ -62,7 +63,7 @@ class Data extends AbstractHelperOmni
             } else {
                 $operation = $this->createInstance(GetStoreOpeningHours::class);
                 $operation->setOperationInput([
-                   Entity\GetStoreOpeningHours::STORE_NO => $storeId,
+                    Entity\GetStoreOpeningHours::STORE_NO => $storeId,
                 ]);
                 $response = $operation->execute();
                 $storeResults = $response->getResponseCode() == "0000" ?
@@ -76,11 +77,11 @@ class Data extends AbstractHelperOmni
                 );
             }
             $storeHours = [];
-            $today      = $this->dateTime->gmtDate("Y-m-d");
+            $today = $this->dateTime->gmtDate("Y-m-d");
 
             if ($storeResults) {
                 for ($i = 0; $i < 7; $i++) {
-                    $current          = date("Y-m-d", strtotime($today) + ($i * 86400));
+                    $current = date("Y-m-d", strtotime($today) + ($i * 86400));
                     $currentDayOfWeek = date('w', strtotime($current));
 
                     foreach ($storeResults->getRetailcalendarline() as $key => $r) {
@@ -90,9 +91,9 @@ class Data extends AbstractHelperOmni
                             $r->getDayno() == $currentDayOfWeek &&
                             $this->checkDateValidity($current, $r)) {
                             $storeHours[$currentDayOfWeek][] = [
-                                'type'  => $r->getLinetype(),
-                                'day'   => $r->getDayname(),
-                                'open'  => $r->getTimefrom() ?? '0001-01-01T00:00:00Z',
+                                'type' => $r->getLinetype(),
+                                'day' => $r->getDayname(),
+                                'open' => $r->getTimefrom() ?? '0001-01-01T00:00:00Z',
                                 'close' => $r->getTimeto() ?? '0001-01-01T00:00:00Z'
                             ];
 
@@ -223,21 +224,32 @@ class Data extends AbstractHelperOmni
 
     /**
      * Validating total on gift card or loyalty points
-     * @param $giftCardAmount
-     * @param $loyaltyPoints
-     * @param $basketData
+     *
+     * @param float $giftCardAmount
+     * @param float $loyaltyPoints
+     * @param RootMobileTransaction $basketData
      * @return float|int
+     * @throws GuzzleException
      */
     public function getOrderBalance($giftCardAmount, $loyaltyPoints, $basketData)
     {
-        $loyaltyAmount = 0;
+        $loyaltyAmount = $grossAmount = 0;
         try {
             if ($loyaltyPoints > 0) {
                 $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
             }
+
+            if (!empty($basketData) &&
+                is_array($basketData->getMobiletransaction()) &&
+                !empty($basketData->getMobiletransaction())
+            ) {
+                $mobileTransaction = current((array)$basketData->getMobiletransaction());
+                $grossAmount = $mobileTransaction->getGrossamount();
+            }
+
             $quote = $this->cartRepository->get($this->checkoutSession->getQuoteId());
-            if (!empty($basketData)) {
-                $totalAmount = $basketData->getTotalAmount() + $quote->getShippingAddress()->getShippingInclTax();
+            if (!empty($basketData) && !empty($basketData->getMobiletransaction())) {
+                $totalAmount = $grossAmount + $quote->getShippingAddress()->getShippingInclTax();
             } else {
                 $totalAmount = $quote->getGrandTotal();
             }
@@ -671,9 +683,45 @@ class Data extends AbstractHelperOmni
             'pxmlRequest' => $requestXml->asXML(),
             'pxmlResponse' => '<Response/>'
         ];
+
+        $requestTime = \DateTime::createFromFormat(
+            'U.u',
+            number_format(microtime(true), 6, '.', '')
+        );
+        $this->omniLogger->debug(
+            sprintf(
+                "==== REQUEST ==== %s ==== %s ====",
+                $requestTime->format("m-d-Y H:i:s.u"),
+                $url
+            )
+        );
+        $body = $requestXml->asXML();
+        if (!empty($body)) {
+            $this->omniLogger->debug(sprintf('Request Body: %s ', $body));
+        }
+
         $response = $client->__call('WebRequest', [$params]);
+
+        $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+        $this->omniLogger->debug(
+            sprintf(
+                "==== RESPONSE ==== %s ==== %s",
+                $responseTime->format("m-d-Y H:i:s.u"),
+                $url,
+            )
+        );
+        $timeElapsed = $requestTime->diff($responseTime);
+        $seconds = $timeElapsed->s + $timeElapsed->f;
+        $this->omniLogger->debug(
+            sprintf(
+                "==== Time Elapsed ==== %s ====  ====",
+                $timeElapsed->format("%i minute(s) " . $seconds . " second(s)")
+            )
+        );
+
         // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
         $decoded = html_entity_decode($response->pxmlResponse ?? '');
+        $this->omniLogger->debug("Response Body:\n" . $decoded);
         $response = simplexml_load_string($decoded);
 
         return $this->formatTableDataResponse($response);
@@ -739,9 +787,9 @@ class Data extends AbstractHelperOmni
     }
 
     /**
-     * @param $area
+     * @param string $area
      * @return string
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function isCouponsEnabled($area)
     {

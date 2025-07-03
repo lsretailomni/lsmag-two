@@ -1,11 +1,7 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Service\Soap;
-
-/**
- * Class RestrictionDefinition
- * @package Ls\Omni\Service\Soap
- */
 class RestrictionDefinition
 {
     /** @var string */

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Service;
 
@@ -20,8 +21,6 @@ class Metadata
 {
     public const ARRAY_REGEX = '/ArrayOf/';
 
-    /** @var Client */
-    public $client;
     /** @var bool */
     public $withReplication;
     /** @var Operation[] */
@@ -75,9 +74,8 @@ class Metadata
      * @param Client $client
      * @param bool $withReplication
      */
-    public function __construct(Client $client, $withReplication = false)
+    public function __construct(public Client $client, $withReplication = false)
     {
-        $this->client          = $client;
         $this->wsdl            = $this->client->getWsdlXml();
         $this->xpath           = new DOMXPath($this->wsdl);
         $this->withReplication = $withReplication;

@@ -30,7 +30,7 @@
                        data-bind="valueUpdate: 'afterkeydown', event: { keyup : check }">
                 <!-- ko foreach: getStores() -->
                 <a class='dropdown-content-wrapper'
-                   data-bind="html: $data.Name, click: $parent.clicked.bind($data)"></a>
+                   data-bind="html: $data.name, click: $parent.clicked.bind($data)"></a>
                 <!--/ko-->
             </div>
         </div>
