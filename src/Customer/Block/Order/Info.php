@@ -3,8 +3,7 @@
 namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
+use \Ls\Omni\Client\Ecommerce\Entity\LSCMemberSalesBuffer;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
@@ -42,33 +41,46 @@ class Info extends AbstractOrderBlock
      */
     public function getFormattedAddress(bool $isBillingAddress = false)
     {
-        $order = $this->getOrder();
-        if ($isBillingAddress) {
-            $orderAddress = $this->orderHelper->getParameterValues($order, "ContactAddress");
-        } else {
-            $orderAddress = $this->orderHelper->getParameterValues($order, "ShipToAddress");
-        }
+        $order   = $this->getLscMemberSalesBuffer();
         $address = '';
-        if (!empty($orderAddress) && !empty($orderAddress->getCountry())) {
-            $address .= $order->getShipToName() ? $order->getShipToName() . '<br/>' : '';
-            $address .= $orderAddress->getAddress1() ? $orderAddress->getAddress1() . '<br/>' : '';
-            $address .= $orderAddress->getAddress2() ? $orderAddress->getAddress2() . '<br/>' : '';
-            $address .= $orderAddress->getCity() ? $orderAddress->getCity() . ', ' : '';
-            $address .= $orderAddress->getStateProvinceRegion() ? $orderAddress->getStateProvinceRegion() . ', ' : '';
-            $address .= $orderAddress->getPostCode() ? $orderAddress->getPostCode() . '<br/>' : '';
-            $address .= $this->getCountryName($orderAddress->getCountry()) ?
-                $this->getCountryName($orderAddress->getCountry()) . '<br/>' : '';
-            /** TODO update with Address Phone Number */
-            $address .= $orderAddress->getPhoneNumber() ?
-                "<a href='tel:" . $orderAddress->getPhoneNumber() . "'>"
-                . $orderAddress->getPhoneNumber() . '</a>' : '';
-
+        if ($isBillingAddress) {
+            if (!empty($order->getAddress()) && !empty($order->getCountryRegionCode())) {
+                $address .= $order->getName() ? $order->getName() . '<br/>' : '';
+                $address .= $order->getAddress() ? $order->getAddress() . '<br/>' : '';
+                $address .= $order->getAddress2() ? $order->getAddress2() . '<br/>' : '';
+                $address .= $order->getCity() ? $order->getCity() . ', ' : '';
+                $address .= $order->getCounty() ? $order->getCounty() . ', ' : '';
+                $address .= $order->getPostCode() ? $order->getPostCode() . '<br/>' : '';
+                $address .= $this->getCountryName($order->getCountryRegionCode()) ?
+                    $this->getCountryName($order->getCountryRegionCode()) . '<br/>' : '';
+                /** TODO update with Address Phone Number */
+                $address .= $order->getPhoneNo() ?
+                    "<a href='tel:" . $order->getPhoneNo() . "'>"
+                    . $order->getPhoneNo() . '</a>' : '';
+            }
+        } else {
+            if (!empty($order->getShipToName()) && !empty($order->getCountryRegionCode())) {
+                $address .= $order->getShipToName() ? $order->getShipToName() . '<br/>' : '';
+                $address .= $order->getShipToAddress() ? $order->getShipToAddress() . '<br/>' : '';
+                $address .= $order->getShipToAddress2() ? $order->getShipToAddress2() . '<br/>' : '';
+                $address .= $order->getShipToCity() ? $order->getShipToCity() . ', ' : '';
+                $address .= $order->getShipToCounty() ? $order->getShipToCounty() . ', ' : '';
+                $address .= $order->getShipToPostCode() ? $order->getShipToPostCode() . '<br/>' : '';
+                $address .= $this->getCountryName($order->getShipToCountryRegionCode()) ?
+                    $this->getCountryName($order->getShipToCountryRegionCode()) . '<br/>' : '';
+                /** TODO update with Address Phone Number */
+                $address .= $order->getShipToPhoneNo() ?
+                    "<a href='tel:" . $order->getShipToPhoneNo() . "'>"
+                    . $order->getShipToPhoneNo() . '</a>' : '';
+            }
         }
+
         return $address;
     }
 
     /**
      * Get country name by country code
+     *
      * @param $countryCode
      * @return string
      */
@@ -83,9 +95,9 @@ class Info extends AbstractOrderBlock
      */
     protected function _prepareLayout()
     {
-        $order = $this->getOrder();
+        $order = $this->getLscMemberSalesBuffer();
         if ($order) {
-            $customerOrderNo = $this->orderHelper->getParameterValues($order, "CustomerOrderNo");
+            $customerOrderNo = $this->orderHelper->getParameterValues($order, "Document ID");
             $orderId         = $customerOrderNo ?: $this->orderHelper->getParameterValues($order, "Id");
 
             if (!empty($customerOrderNo)) {
@@ -111,21 +123,24 @@ class Info extends AbstractOrderBlock
     /**
      * To fetch Status value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
      * depending on the structure of SalesEntry node
+     *
      * @return mixed
      */
     public function getOrderStatus()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "Status");
+        return $this->orderHelper->getOrderStatus($this->getLscMemberSalesBuffer());
     }
 
     /**
      * To fetch ClickAndCollectOrder value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
+     *
+     * Depending on the structure of SalesEntry node
+     *
      * @return mixed
      */
     public function getClickAndCollectOrder()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "ClickAndCollectOrder");
+        return $this->isClickAndCollectOrder();
     }
 
     /**
@@ -135,7 +150,42 @@ class Info extends AbstractOrderBlock
      */
     public function getDocRegistraionTime()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "DocumentRegTime");
+        return $this->orderHelper->getParameterValues($this->getLscMemberSalesBuffer(), "Date Time");
+    }
+
+    /**
+     * Get order details
+     *
+     * @return LSCMemberSalesBuffer
+     */
+    public function getLscMemberSalesBuffer()
+    {
+        $order = $this->getOrder();
+
+        return $order->getLscMemberSalesBuffer();
+    }
+
+    /**
+     * Check to see if current order is click and collect
+     *
+     * @return bool
+     */
+    public function isClickAndCollectOrder()
+    {
+        $order = $this->getOrder();
+        $isCc = false;
+        $lines = !is_array($order->getLscMemberSalesDocLine()) ?
+            [$order->getLscMemberSalesDocLine()] :
+            $order->getLscMemberSalesDocLine();
+
+        foreach ($lines as $line) {
+            if ($line->getClickAndCollectLine()) {
+                $isCc = true;
+                break;
+            }
+        }
+
+        return $isCc;
     }
 
     /**
@@ -167,12 +217,12 @@ class Info extends AbstractOrderBlock
     public function getRequestedDeliveryDate()
     {
         $format                = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
-        $requestedDeliveryDate = $this->getOrder()->getRequestedDeliveryDate();
+        $requestedDeliveryDate = $this->getLscMemberSalesBuffer()->getRequestedDeliveryDate();
 
         if ($requestedDeliveryDate && $requestedDeliveryDate != '0001-01-01T00:00:00') {
             return $this->orderHelper->getDateTimeObject()->date(
                 $format,
-                $this->getOrder()->getRequestedDeliveryDate()
+                $this->getLscMemberSalesBuffer()->getRequestedDeliveryDate()
             );
         }
 
@@ -198,9 +248,10 @@ class Info extends AbstractOrderBlock
                  * i-e Refunds etc, but we only need to show Payment Type
                  * whose type == Payment and Pre Authorization
                  */
-                if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
-                    || $line->getType() === PaymentType::NONE) {
-                    $tenderTypeId = $line->getTenderType();
+//                if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
+//                    || $line->getType() === PaymentType::NONE) {
+                if ($line->getEntryType() == 1) {
+                    $tenderTypeId = $line->getNumber();
                     if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
                         $method    = $tenderTypeMapping[$tenderTypeId];
                         $methods[] = __($method);
@@ -218,7 +269,7 @@ class Info extends AbstractOrderBlock
             }
 
             $methods = array_unique($methods);
-            if (empty($paymentLines->getSalesEntryPayment())) {
+            if (empty($paymentLines)) {
                 $magOrder = $this->getMagOrder();
                 if ($magOrder != null) {
                     $magPaymentMethod = $this->getMagOrder()->getPayment()->getMethodInstance()->getTitle();
@@ -233,12 +284,29 @@ class Info extends AbstractOrderBlock
 
     /**
      * To fetch Payments value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
-     * @return string|null
+     *
+     * Depending on the structure of SalesEntry node
+     *
+     * @return array
      */
     public function getOrderPayments()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "Payments");
+        $paymentLines = [];
+        $orderTransactions = $this->getOrder(true)->getData();
+        foreach ($orderTransactions as $key => $lines) {
+            if ($key != "LSCMemberSalesDocLine") {
+                continue;
+            }
+            if (!is_array($lines)) {
+                $lines = [$lines];
+            }
+            foreach ($lines as $line) {
+                if ($line->getEntryType() == 1) {
+                    $paymentLines[] = $line;
+                }
+            }
+        }
+        return $paymentLines;
     }
 
     /**
@@ -247,17 +315,14 @@ class Info extends AbstractOrderBlock
      */
     public function getFormattedLoyaltyPoints()
     {
-        $orderTransactions = $this->getOrder(true);
+        $orderTransactions = $this->getOrder(true)->getData();
         $points            = 0;
 
         if (!is_array($orderTransactions)) {
             $orderTransactions = [$orderTransactions];
         }
 
-        foreach ($orderTransactions as $transaction) {
-            $points += (float)$transaction->getPointsRewarded();
-        }
-
+        $points += $this->orderHelper->getFilterValues($orderTransactions, "Points Rewarded", "LSCMemberSalesBuffer");
         return number_format((float)$points, 2, '.', '');
     }
 

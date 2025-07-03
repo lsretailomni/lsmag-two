@@ -7,12 +7,16 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\Ecommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
+use \Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -41,96 +45,15 @@ use Magento\Directory\Model\CurrencyFactory;
  */
 class OrderHelper extends AbstractHelper
 {
-
-    /** @var Model\Order $order */
-    public $order;
-
-    /** @var BasketHelper $basketHelper */
-    public $basketHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var GiftCardHelper
-     */
-    public $giftCardHelper;
-
-    /**
-     * @var StoreHelper
-     */
-    public $storeHelper;
-
-    /**
-     * @var CustomerSession
-     */
-    public $customerSession;
-
-    /**
-     * @var CheckoutSession
-     */
-    public $checkoutSession;
-
-    /**
-     * @var Model\OrderRepository
-     */
-    public $orderRepository;
-
-    /** @var  LSR $lsr */
-    public $lsr;
-
-    /**
-     * @var Order
-     */
-    public $orderResourceModel;
-
-    /**
-     * @var array
-     */
-    public $tendertypesArray = [];
-
-    /**
-     * @var Json
-     */
-    public $json;
-
-    /**
-     * @var DateTime
-     */
-    public $dateTime;
-
-    /**
-     * @var TimezoneInterface
-     */
-    public $timezoneInterface;
-
-    /**
-     * @var Registry
-     */
-    public Registry $registry;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    public $storeManager;
-
-    /**
-     * @var CurrencyFactory
-     */
-    public $currencyFactory;
-
     /**
      * @var mixed
      */
     public $currentOrder;
 
     /**
-     *
-     * @var ConfigInterface
+     * @var array
      */
-    public $config;
+    public $tendertypesArray = [];
 
     /**
      * @param Context $context
@@ -151,45 +74,30 @@ class OrderHelper extends AbstractHelper
      * @param StoreHelper $storeHelper
      * @param CurrencyFactory $currencyFactory
      * @param ConfigInterface $config
+     * @param Data $dataHelper
      */
     public function __construct(
-        Context $context,
-        Model\Order $order,
-        BasketHelper $basketHelper,
-        LoyaltyHelper $loyaltyHelper,
-        GiftCardHelper $giftCardHelper,
-        Model\OrderRepository $orderRepository,
-        CustomerSession $customerSession,
-        CheckoutSession $checkoutSession,
-        LSR $lsr,
-        Order $orderResourceModel,
-        Json $json,
-        Registry $registry,
-        DateTime $dateTime,
-        TimezoneInterface $timezoneInterface,
-        StoreManagerInterface $storeManager,
-        StoreHelper $storeHelper,
-        CurrencyFactory $currencyFactory,
-        ConfigInterface $config
+        public Context $context,
+        public Model\Order $order,
+        public BasketHelper $basketHelper,
+        public LoyaltyHelper $loyaltyHelper,
+        public GiftCardHelper $giftCardHelper,
+        public Model\OrderRepository $orderRepository,
+        public CustomerSession $customerSession,
+        public CheckoutSession $checkoutSession,
+        public LSR $lsr,
+        public Order $orderResourceModel,
+        public Json $json,
+        public Registry $registry,
+        public DateTime $dateTime,
+        public TimezoneInterface $timezoneInterface,
+        public StoreManagerInterface $storeManager,
+        public StoreHelper $storeHelper,
+        public CurrencyFactory $currencyFactory,
+        public ConfigInterface $config,
+        public Data $dataHelper
     ) {
         parent::__construct($context);
-        $this->order              = $order;
-        $this->basketHelper       = $basketHelper;
-        $this->loyaltyHelper      = $loyaltyHelper;
-        $this->giftCardHelper     = $giftCardHelper;
-        $this->orderRepository    = $orderRepository;
-        $this->customerSession    = $customerSession;
-        $this->checkoutSession    = $checkoutSession;
-        $this->lsr                = $lsr;
-        $this->orderResourceModel = $orderResourceModel;
-        $this->json               = $json;
-        $this->registry           = $registry;
-        $this->dateTime           = $dateTime;
-        $this->timezoneInterface  = $timezoneInterface;
-        $this->storeManager       = $storeManager;
-        $this->storeHelper        = $storeHelper;
-        $this->currencyFactory    = $currencyFactory;
-        $this->config             = $config;
     }
 
     /**
@@ -511,6 +419,22 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * @param $orderObj
+     * @param $param
+     * @param $filterKey
+     * @return void
+     */
+    public function getFilterValues($orderObj, $param, $filterKey)
+    {
+        foreach ($orderObj as $key => $lines) {
+            if ($key != $filterKey) {
+                continue;
+            }
+            return $this->getParameterValues($lines, $param);
+        }
+    }
+
+    /**
      * Fetch node values based on the parameter passed
      * @param $orderObj
      * @param $param
@@ -519,15 +443,9 @@ class OrderHelper extends AbstractHelper
     public function getParameterValues($orderObj, $param)
     {
         $value    = null;
-        $getParam = 'get' . $param;
-        if (!property_exists($orderObj, $param)) {
-            foreach ($orderObj as $order) {
-                $value = $order->$getParam();
-            }
-        } else {
-            $value = $orderObj->$getParam();
+        if (array_key_exists($param, $orderObj->getData())) {
+            $value = $orderObj->getData($param);
         }
-
         return $value;
     }
 
@@ -652,8 +570,10 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * @param null $maxNumberOfEntries
-     * @return Entity\ArrayOfSalesEntry|Entity\SalesEntriesGetByCardIdResponse|ResponseInterface|null
+     * Get Current Customer Order History
+     *
+     * @param $maxNumberOfEntries
+     * @return array|Entity\GetMemContSalesHist_GetMemContSalesHistResponse|null
      */
     public function getCurrentCustomerOrderHistory($maxNumberOfEntries = null)
     {
@@ -663,19 +583,27 @@ class OrderHelper extends AbstractHelper
             return $response;
         }
         // @codingStandardsIgnoreStart
-        $request      = new Operation\SalesEntriesGetByCardId();
-        $orderHistory = new Entity\SalesEntriesGetByCardId();
-        // @codingStandardsIgnoreEnd
-        $orderHistory->setCardId($cardId);
-        if (!empty($maxNumberOfEntries)) {
-            $orderHistory->setMaxNumberOfEntries($maxNumberOfEntries);
-        }
+        $getSalesHistory = $this->dataHelper->createInstance(
+            GetMemContSalesHist_GetMemContSalesHist::class,
+            []
+        );
+
+        $getSalesHistory->setOperationInput(
+            [
+                'memberCardNo' => $cardId,
+                'storeNo' => "",
+                'dateFilter' => "1990-01-01",
+                'dateGreaterThan'=> true,
+                'maxResultContacts'=> 0
+            ]
+        );
+
         try {
-            $response = $request->execute($orderHistory);
+            $response = $getSalesHistory->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getSalesEntriesGetByCardIdResult() : $response;
+        return $response && $response->getResponseCode() == "0000" ? $response->getRecords()[0]->getLSCMemberSalesBuffer() : $response;
     }
 
     /**
@@ -703,21 +631,30 @@ class OrderHelper extends AbstractHelper
      * @return Entity\SalesEntry|Entity\SalesEntryGetResponse|ResponseInterface|null
      * @throws InvalidEnumException
      */
-    public function getOrderDetailsAgainstId($docId, $type = DocumentIdType::ORDER)
+    public function getOrderDetailsAgainstId($docId, $type)
     {
         $response = null;
+        $typeId   = $this->getOrderTypeId($type);
         // @codingStandardsIgnoreStart
-        $request = new Operation\SalesEntryGet();
-        $order   = new Entity\SalesEntryGet();
-        $order->setEntryId($docId);
-        $order->setType($type);
+        $request = $this->dataHelper->createInstance(
+            GetSelectedSalesDoc_GetSelectedSalesDoc::class,
+            []
+        );
+
+        $request->setOperationInput(
+            [
+                'documentSourceType' => $typeId,
+                'documentID' => $docId
+            ]
+        );
+
         // @codingStandardsIgnoreEnd
         try {
-            $response = $request->execute($order);
+            $response = $request->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getSalesEntryGetResult() : $response;
+        return $response && $response->getResponsecode() == "0000" ? current((array) $response->getRecords()) : null;
     }
 
     /**
@@ -837,15 +774,18 @@ class OrderHelper extends AbstractHelper
 
     /**
      * Validate if the order using CardId
+     *
      * @param $order
      * @return bool
      */
     public function isAuthorizedForOrder(
         $order
     ) {
-        $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
-        $order       = $this->getOrder();
-        $orderCardId = $order->getCardId();
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $order = $this->getOrder();
+        $orderLscMemberSalesBuffer = $order->getLscMemberSalesBuffer();
+        $orderCardId = $orderLscMemberSalesBuffer->getMemberCardNo();
+
         if ($cardId == $orderCardId) {
             return true;
         }
@@ -887,7 +827,7 @@ class OrderHelper extends AbstractHelper
     public function fetchOrder($docId, $type)
     {
         if (version_compare($this->lsr->getOmniVersion(), '2022.5.1', '>=') &&
-            $type == DocumentIdType::RECEIPT
+            $type == 0
         ) {
             if (version_compare($this->lsr->getOmniVersion(), '2023.10', '>')
                 && $this->lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $this->lsr->getCurrentWebsiteId())
@@ -908,6 +848,7 @@ class OrderHelper extends AbstractHelper
 
     /**
      * Set LS Central order details in registry.
+     *
      * @param $order
      */
     public function setOrderInRegistry($order)
@@ -924,7 +865,7 @@ class OrderHelper extends AbstractHelper
      */
     public function setCurrentMagOrderInRegistry($salesEntry)
     {
-        $order = $this->getOrderByDocumentId($salesEntry);
+        $order = $this->getOrderByDocumentId($salesEntry->getLscMemberSalesBuffer()->getDocumentId());
         $this->registerGivenValueInRegistry('current_mag_order', $order);
     }
 
@@ -973,14 +914,14 @@ class OrderHelper extends AbstractHelper
     /**
      * Get respective magento order given commerce service sales entry
      *
-     * @param $salesEntry
-     * @return array|OrderInterface
+     * @param $response
+     * @return array|false|mixed
      */
-    public function getOrderByDocumentId($salesEntry)
+    public function getOrderByDocumentId($documentId)
     {
         $order = [];
         try {
-            $documentId = $this->getDocumentIdGivenSalesEntry($salesEntry);
+            //$documentId = $response->getLscMemberSalesBuffer()->getData('Document ID');
 
             if (!empty($documentId)) {
                 $customerId = $this->customerSession->getCustomerId();
@@ -1383,8 +1324,12 @@ class OrderHelper extends AbstractHelper
         if (empty($currency) && empty($storeId) && empty($orderType) && $this->currentOrder) {
             if (is_array($this->currentOrder)) {
                 foreach ($this->currentOrder as $order) {
-                    $currency  = $order->getStoreCurrency();
-                    $orderType = $order->getIdType();
+                    if (!is_array($order)) {
+                        $currency  = $order->getStoreCurrencyCode();
+                        $orderType = $order->getDocumentSourceType();
+                        $orderType = $this->getOrderType($orderType);
+                    }
+
                 }
             } else {
                 $currency  = $this->currentOrder->getStoreCurrency();
@@ -1405,5 +1350,112 @@ class OrderHelper extends AbstractHelper
         }
 
         return $priceCurrency->format($amount, false, 2, null, $currencyObject);
+    }
+
+    /**
+     * Get order type based on the provided ID type
+     *
+     * @param int $idType The type of ID to determine the order status
+     * @return string The corresponding order status based on the ID type
+     */
+    public function getOrderType($idType)
+    {
+        switch ($idType) {
+            case 1:
+                return DocumentIdType::ORDER;
+            case 2:
+                return DocumentIdType::HOSP_ORDER;
+        }
+        return DocumentIdType::RECEIPT;
+    }
+
+    /**
+     * Get order status based on document source type
+     *
+     * @param $orderObj
+     * @return string
+     */
+    public function getOrderStatus($orderObj)
+    {
+        $sourceType = $this->getParameterValues($orderObj, "Document Source Type");
+        $orderType  = $this->getOrderType($sourceType);
+        switch ($orderType) {
+            case DocumentIdType::RECEIPT: //Receipt
+                return SalesEntryStatus::COMPLETE;
+            case DocumentIdType::ORDER: //Order
+                return $orderObj->getSaleIsReturnSale() ? SalesEntryStatus::CANCELED : SalesEntryStatus::CREATED;
+            case DocumentIdType::HOSP_ORDER: //HOSP ORDER
+                return SalesEntryStatus::PROCESSING;
+            default:
+                return SalesEntryStatus::CREATED;
+        }
+    }
+
+    /**
+     * Get order type based on the provided ID type
+     *
+     * @param int $idType The type of ID to determine the order status
+     * @return string The corresponding order status based on the ID type
+     */
+    public function getOrderTypeId($type)
+    {
+        switch ($type) {
+            case DocumentIdType::ORDER:
+                return 1;
+            case DocumentIdType::HOSP_ORDER:
+                return 2;
+            case DocumentIdType::RECEIPT:
+                return 0;
+        }
+        return 0;
+    }
+
+    /**
+     * Processes order data and updates fields based on order types and conditions.
+     *
+     * @param array $orders
+     * @return array
+     */
+    public function processOrderData($orders)
+    {
+        if (!is_array($orders)) {
+            $orders = [$orders];
+        }
+        foreach ($orders as $order) {
+            $order['IdType']          = $this->getOrderType($order['Document Source Type']);
+            $order['CustomerOrderNo'] = ($order['Customer Document ID']) ?:
+                $order['Document ID'];
+
+            switch ($order['IdType']) {
+                case DocumentIdType::RECEIPT: //Receipt
+                    $order['Status']               = SalesEntryStatus::COMPLETE;
+                    $order['ShippingStatus']       = ShippingStatus::SHIPPED;
+                    $order['ClickAndCollectOrder'] = ($order['Customer Document ID'] === null ||
+                            $order['Customer Document ID'] === '') == false;
+                    if (($order['Ship-to Name'] === null || $order['Ship-to Name'] === '')) {
+                        $order['Ship-to Name']  = $order['Name'];
+                        $order['Ship-to Email'] = $order['Email'];
+                    }
+                    break;
+                case DocumentIdType::ORDER: //Order
+                    $order['Status']               = $order['Sale Is Return Sale'] ?
+                        SalesEntryStatus::CANCELED : SalesEntryStatus::CREATED;
+                    $order['ShippingStatus']       = ShippingStatus::NOT_YET_SHIPPED;
+                    $order['CreateAtStoreId']      = $order['Store No.'];
+                    $order['ClickAndCollectOrder'] = "Need to implement";
+                    break;
+                case DocumentIdType::HOSP_ORDER: //HOSP ORDER
+                    $order['CreateTime']           = $order['Date Time'];
+                    $order['CreateAtStoreId']      = $order['Store No.'];
+                    $order['Status']               = SalesEntryStatus::PROCESSING;
+                    $order['ShippingStatus']       = ShippingStatus::SHIPPIG_NOT_REQUIRED;
+                    if ($order['Ship-to Name'] === null || $order['Ship-to Name'] === '') {
+                        $order['Ship-to Name']  = $order['Name'];
+                        $order['Ship-to Email'] = $order['Email'];
+                    }
+                    break;
+            }
+        }
+        return $orders;
     }
 }

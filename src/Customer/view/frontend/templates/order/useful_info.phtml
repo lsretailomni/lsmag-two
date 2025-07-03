@@ -5,7 +5,7 @@
 /** @var $block Info */
 use Ls\Customer\Block\Order\Info;
 ?>
-<?php $_order = $block->getOrder();
+<?php $_order = $block->getLscMemberSalesBuffer();
 $formattedLoyaltyPoints = $block->getFormattedLoyaltyPoints();
 if (!empty($_order->getStoreName())):
 ?>
@@ -24,7 +24,7 @@ if (!empty($_order->getStoreName())):
                 <span><?= /* @noEscape */ $_order->getStoreName() ?></span>
             </div>
         <?php endif; ?>
-        <?php if ($block->canShowClickAndCollect() && $_order->getClickAndCollectOrder()): ?>
+        <?php if ($block->canShowClickAndCollect() && $block->isClickAndCollectOrder()): ?>
             <div class="custom-box">
                 <strong class="box-title">
                     <span><?= /* @noEscape */ __('Click & Collect:') ?></span>
