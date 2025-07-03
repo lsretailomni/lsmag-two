@@ -39,9 +39,9 @@ class ItemHelper extends AbstractHelperOmni
         $discountInfo = [];
         try {
             if ($type == 2) {
-                $itemId = $item->getItemId();
-                $variantId = $item->getVariantId();
-                $uom = $item->getUomId();
+                $itemId            = $item->getNumber();
+                $variantId         = $item->getVariantCode();
+                $uom               = $item->getUnitOfMeasure();
                 $baseUnitOfMeasure = "";
                 $customPrice = $item->getDiscountAmount();
                 $this->getDiscountInfo(
@@ -124,28 +124,40 @@ class ItemHelper extends AbstractHelperOmni
         $graphQlRequest = 0
     ) {
         $orderLines = $discountsLines = [];
-        if ($orderData instanceof SalesEntry) {
-            $orderLines = $orderData->getLines();
-            $discountsLines = $orderData->getDiscountLines();
-        } elseif ($orderData instanceof \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction) {
-            $orderLines = $orderData->getMobiletransactionline();
-            $discountsLines = $orderData->getMobiletransdiscountline();
+        if ($orderData instanceof \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDoc) {
+            $orderLines     = !is_array($orderData->getLscMemberSalesDocLine()) ?
+                [$orderData->getLscMemberSalesDocLine()] : $orderData->getLscMemberSalesDocLine() ;
+            $discountsLines = !is_array($orderData->getLscMemberSalesDocDiscLine()) ?
+                [$orderData->getLscMemberSalesDocDiscLine()] : $orderData->getLscMemberSalesDocDiscLine();
+        } elseif ($orderData instanceof Order) {
+            $orderLines     = $orderData->getOrderLines();
+            $discountsLines = $orderData->getOrderDiscountLines()->getOrderDiscountLine();
         }
 
         foreach ($orderLines as $line) {
             if ($this->isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                 if ($customPrice > 0 && $customPrice != null) {
                     foreach ($discountsLines as $orderDiscountLine) {
-                        if ($line->getLineno() == $orderDiscountLine->getLineno()) {
-                            if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
+                        if ($line->getLineNo() == $orderDiscountLine->getDocumentLineNo()) {
+                            $offerDescription = !empty($orderDiscountLine->getDescription()) ?
+                                $orderDiscountLine->getDescription() :
+                                $orderDiscountLine->getOfferNo();
+
+                            if (empty($offerDescription)) {
+                                $offerDescription = __('Discounted');
+                            }
+
+                            $offerDescription .= '<br />';
+                            if (!in_array($offerDescription, $discountInfo)) {
                                 if (!$graphQlRequest) {
-                                    $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
+                                    $discountInfo[] = $offerDescription;
                                 } else {
                                     $discountInfo[] = [
-                                        'description' => $orderDiscountLine->getDescription(),
-                                        'value' => $orderDiscountLine->getDiscountamount()
+                                        'description' => $offerDescription,
+                                        'value'       => $orderDiscountLine->getDiscountAmount()
                                     ];
                                 }
+
                             }
                         }
                     }
@@ -337,7 +349,7 @@ class ItemHelper extends AbstractHelperOmni
                 (($line->getNetamount() + $line->getTaxamount()) / $line->getQuantity()) * $itemQty;
         }
 
-        $rowTotal = $line->getNetamount();
+        $rowTotal       = $line->getNetamount();
         $rowTotalIncTax = $line->getPrice() * $line->getQuantity();
 
         $quoteItem
@@ -429,16 +441,16 @@ class ItemHelper extends AbstractHelperOmni
     public function getComparisonValues($sku, $parentId = '')
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku', $sku, 'eq')->create();
-        $productList = $this->productRepository->getList($searchCriteria)->getItems();
+        $productList    = $this->productRepository->getList($searchCriteria)->getItems();
         if (!empty($productList)) {
             /** @var Product $product */
-            $product = array_pop($productList);
-            $itemId = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
-            $variantId = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
-            $uom = $product->getData('uom');
-            $barCode = $product->getData('barcode');
-            $uomQty = $product->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
-            $baseUom = null;
+            $product   = array_pop($productList);
+            $itemId    = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+            $variantId = ($product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE))?:"";
+            $uom       = $product->getData('uom');
+            $barCode   = $product->getData('barcode');
+            $uomQty    = $product->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+            $baseUom   = null;
 
             if ($parentId != '') {
                 $parentProduct = $this->productRepository->getById($parentId);
@@ -537,8 +549,9 @@ class ItemHelper extends AbstractHelperOmni
         $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
 
         return in_array($itemId, explode(',', $giftCardIdentifier)) ? $line->getId() == $quoteItem->getId() :
-            (($itemId == $line->getNumber() && $variantId == $line->getVariantcode()) &&
-                ($uom == $line->getUomid() || (empty($line->getUomid()) && $uom == $baseUnitOfMeasure)));
+            (($itemId == $line->getNumber() && $variantId == $line->getVariantCode()) &&
+                ($uom == $line->getUnitOfMeasure() || (empty($line->getUnitOfMeasure()) &&
+                        $uom == $baseUnitOfMeasure)));
     }
 
     /**

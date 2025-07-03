@@ -678,13 +678,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      * @param array $query
      * @param string $websiteId
      * @return bool
-     * @throws GuzzleException
      * @throws NoSuchEntityException
      */
     public function validateBaseUrl($baseUrl = '', $connectionParams = [], $query = [], $websiteId = '0')
     {
         if (empty($baseUrl)) {
-            $baseUrl = $this->getStoreConfig(self::SC_SERVICE_BASE_URL);
+            $baseUrl = $this->getWebsiteConfig(self::SC_SERVICE_BASE_URL, $websiteId);
         }
         if (empty($baseUrl)) {
             return false;

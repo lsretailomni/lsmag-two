@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Ls\Omni\Helper;
 
+use DomDocument;
+use DOMXPath;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
@@ -23,8 +25,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
+use Magento\Sales\Model\Order\Invoice\Item;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Phrase;
 
 /**
  * Helper class that is used on multiple areas
@@ -267,7 +272,7 @@ class Data extends AbstractHelperOmni
      * @param $loyaltyPoints
      * @param $basketData
      * @param bool $showMessage
-     * @return \Magento\Framework\Phrase|string
+     * @return Phrase|string
      */
     public function orderBalanceCheck($giftCardNo, $giftCardAmount, $loyaltyPoints, $basketData, $showMessage = true)
     {
@@ -612,7 +617,7 @@ class Data extends AbstractHelperOmni
      * @param array $connectionParams
      * @param array $query
      * @param array $data
-     * @return \DOMXPath
+     * @return DOMXPath
      * @throws GuzzleException|NoSuchEntityException
      */
     public function fetchOdataV4Xml($baseUrl = '', $connectionParams = [], $query = [], $data = [])
@@ -629,11 +634,11 @@ class Data extends AbstractHelperOmni
             $data
         );
 
-        $dom = new \DomDocument('1.0');
+        $dom = new DomDocument('1.0');
         $dom->loadXML($response);
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput       = true;
-        $xpath = new \DOMXPath($dom);
+        $xpath = new DOMXPath($dom);
         $xpath->registerNamespace('edm', 'http://docs.oasis-open.org/odata/ns/edm');
 
         return $xpath;
@@ -660,7 +665,7 @@ class Data extends AbstractHelperOmni
         $url = OmniService::getUrl($url);
         $client = $this->createInstance(OmniClient::class, ['uri' => $url]);
 
-        $requestXml = new \SimpleXMLElement('<Request/>');
+        $requestXml = new SimpleXMLElement('<Request/>');
         $requestXml->addChild('Request_ID', 'GET_TABLE_DATA');
         $requestBody = $requestXml->addChild('Request_Body');
         $requestBody->addChild('Table_Name', $tableName);
@@ -731,10 +736,10 @@ class Data extends AbstractHelperOmni
     /**
      * Format table data into a flat array
      *
-     * @param \SimpleXMLElement $response
+     * @param SimpleXMLElement $response
      * @return array
      */
-    public function formatTableDataResponse(\SimpleXMLElement $response): array
+    public function formatTableDataResponse(SimpleXMLElement $response): array
     {
         $fieldMap = $records = [];
 
@@ -797,21 +802,21 @@ class Data extends AbstractHelperOmni
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == "cart") {
                 return ($this->lsr->getStoreConfig(
-                    LSR::LS_ENABLE_COUPON_ELEMENTS,
-                    $this->lsr->getCurrentStoreId()
-                ) && $this->lsr->getStoreConfig(
-                    LSR::LS_COUPONS_SHOW_ON_CART,
-                    $this->lsr->getCurrentStoreId()
-                )
+                        LSR::LS_ENABLE_COUPON_ELEMENTS,
+                        $this->lsr->getCurrentStoreId()
+                    ) && $this->lsr->getStoreConfig(
+                        LSR::LS_COUPONS_SHOW_ON_CART,
+                        $this->lsr->getCurrentStoreId()
+                    )
                 );
             }
             return ($this->lsr->getStoreConfig(
-                LSR::LS_ENABLE_COUPON_ELEMENTS,
-                $this->lsr->getCurrentStoreId()
-            ) && $this->lsr->getStoreConfig(
-                LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
-                $this->lsr->getCurrentStoreId()
-            )
+                    LSR::LS_ENABLE_COUPON_ELEMENTS,
+                    $this->lsr->getCurrentStoreId()
+                ) && $this->lsr->getStoreConfig(
+                    LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
+                    $this->lsr->getCurrentStoreId()
+                )
             );
         } else {
             return false;
@@ -836,7 +841,7 @@ class Data extends AbstractHelperOmni
             $invoiceCreditMemo->setLsPointsEarn($pointsEarn);
             $invoiceCreditMemo->setLsDiscountAmount($lsDiscountAmount);
             $allVisibleItems = $invoiceCreditMemo->getOrder()->getAllVisibleItems();
-            /** @var $item \Magento\Sales\Model\Order\Invoice\Item */
+            /** @var $item Item */
             foreach ($allVisibleItems as $item) {
                 if (!$item->getParentItem()) {
                     $totalItemsQuantities = $totalItemsQuantities + $item->getQtyOrdered();
@@ -882,7 +887,7 @@ class Data extends AbstractHelperOmni
      * Get Tender type id mapping
      *
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getTenderTypesPaymentMapping()
     {
@@ -894,7 +899,7 @@ class Data extends AbstractHelperOmni
         }
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
-                $storeTenderTypes[$storeTenderType->getTenderTypeId()] = $storeTenderType->getName();
+                $storeTenderTypes[$storeTenderType->getCode()] = $storeTenderType->getDescription();
             }
         }
 
@@ -925,41 +930,22 @@ class Data extends AbstractHelperOmni
     /**
      * Getting tender types directly through API
      *
-     * @param $scopeId
-     * @param null $storeId
-     * @param null $baseUrl
-     * @param null $lsKey
-     * @return array
-     * @throws NoSuchEntityException
+     * @param string $scopeId
+     * @throws NoSuchEntityException|GuzzleException
      */
-    public function getTenderTypesDirectly($scopeId, $storeId = null, $baseUrl = null, $lsKey = null)
+    public function getTenderTypesDirectly($scopeId)
     {
         $result = null;
 
-        if ($baseUrl == null) {
-            $baseUrl = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $scopeId);
-        }
+        $storeId = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $scopeId);
 
-        if ($storeId == null) {
-            $storeId = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $scopeId);
-        }
-
-        if ($lsKey == null) {
-            $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $scopeId);
-        }
-
-        if ($this->lsr->validateBaseUrl($baseUrl, $scopeId) && $storeId != '') {
+        if ($this->lsr->validateBaseUrl('', [], [], $scopeId) && $storeId != '') {
             try {
-                $request = $this->formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId);
-                $result  = $request->execute();
-
-                if ($result != null) {
-                    $result = $result->getResult()->getStoreTenderTypes()->getReplStoreTenderType();
-                }
+                $operation = $this->formulateTenderTypesRequest($storeId);
+                $result = $operation->execute()->getRecords();
             } catch (Exception $e) {
                 $this->_logger->critical($e->getMessage());
             }
-
         }
 
         return $result;
@@ -970,32 +956,26 @@ class Data extends AbstractHelperOmni
      *
      * Formulate Tender Types Request
      *
-     * @param $baseUrl
-     * @param $lsKey
-     * @param $storeId
-     * @param $scopeId
-     * @return Operation\ReplEcommStoreTenderTypes
+     * @param string $storeId
+     * @return LSCTenderType
      */
-    public function formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId)
+    public function formulateTenderTypesRequest($storeId)
     {
-        //@codingStandardsIgnoreStart
-        $service_type = new ServiceType(Operation\ReplEcommStoreTenderTypes::SERVICE_TYPE);
-        $url          = OmniService::getUrl($service_type, $baseUrl);
-        $client       = new OmniClient($url, $service_type);
-        $request      = $this->createInstance(Operation\ReplEcommStoreTenderTypes::class);
-        $request->setClient($client);
-        $request->setToken($lsKey);
-        $client->setClassmap($request->getClassMap());
-        $request->setOperationInput()->setReplRequest(
-            (new Entity\ReplRequest())
-                ->setBatchSize(1000)
-                ->setFullReplication(1)
-                ->setLastKey('')
-                ->setStoreId($storeId)
+        $tenderTypeOperation = $this->createInstance(
+            LSCTenderType::class,
+            []
         );
-        //@codingStandardsIgnoreEnd
+        $tenderTypeOperation->setOperationInput(
+            [
+                'storeNo' => $storeId,
+                'batchSize' => 100,
+                'fullRepl' => true,
+                'lastKey' => '',
+                'lastEntryNo' => 0
+            ]
+        );
 
-        return $request;
+        return $tenderTypeOperation;
     }
 
     /**
@@ -1192,5 +1172,18 @@ class Data extends AbstractHelperOmni
     public function getScopeId()
     {
         return $this->request->getParam('website') ?? $this->storeManager->getStore()->getWebsiteId();
+    }
+
+
+    /**
+     * Create new instance of given class name
+     *
+     * @param string|null $entityClassName
+     * @param array $data
+     * @return mixed
+     */
+    public function createInstance(string $entityClassName = null, array $data = [])
+    {
+        return ObjectManager::getInstance()->create($entityClassName, $data);
     }
 }

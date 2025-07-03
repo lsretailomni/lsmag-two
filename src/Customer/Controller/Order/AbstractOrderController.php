@@ -20,39 +20,6 @@ use Magento\Framework\View\Result\PageFactory;
 class AbstractOrderController
 {
     /**
-     * @var ManagerInterface
-     */
-    public $messageManager;
-
-    /**
-     * @var ResultFactory
-     */
-    public $resultRedirect;
-
-    /** @var PageFactory */
-    public $resultPageFactory;
-
-    /**
-     * @var Http $request
-     */
-    public $request;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var ResultFactory
-     */
-    public $resultFactory;
-
-    /**
-     * @var UrlInterface
-     */
-    public $url;
-
-    /**
      * @param PageFactory $resultPageFactory
      * @param Http $request
      * @param OrderHelper $orderHelper
@@ -62,21 +29,14 @@ class AbstractOrderController
      * @param UrlInterface $url
      */
     public function __construct(
-        PageFactory $resultPageFactory,
-        Http $request,
-        OrderHelper $orderHelper,
-        ResultFactory $result,
-        ManagerInterface $messageManager,
-        ResultFactory $resultFactory,
-        UrlInterface $url
+        public PageFactory $resultPageFactory,
+        public Http $request,
+        public OrderHelper $orderHelper,
+        public ResultFactory $result,
+        public ManagerInterface $messageManager,
+        public ResultFactory $resultFactory,
+        public UrlInterface $url
     ) {
-        $this->resultRedirect    = $result;
-        $this->messageManager    = $messageManager;
-        $this->request           = $request;
-        $this->orderHelper       = $orderHelper;
-        $this->resultPageFactory = $resultPageFactory;
-        $this->resultFactory     = $resultFactory;
-        $this->url               = $url;
     }
 
     /**
@@ -91,7 +51,7 @@ class AbstractOrderController
         if ($this->request->getParam('order_id')) {
             $orderId = $this->request->getParam('order_id');
             $type    = $this->request->getParam('type');
-
+            
             if (empty($type)) {
                 $type = DocumentIdType::ORDER;
             }
@@ -103,7 +63,8 @@ class AbstractOrderController
 
                 return $redirect;
             }
-            $this->setHasReturnSales($response);
+            //Need to review later
+            //$this->setHasReturnSales($response);
 
             if (is_array($response)) {
                 $response = current($response);
@@ -130,7 +91,7 @@ class AbstractOrderController
     public function fetchAndSetCurrentOrderInRegistry($orderId, $type)
     {
         $response = $this->orderHelper->fetchOrder($orderId, $type);
-
+        
         if ($response) {
             $this->orderHelper->setOrderInRegistry($response);
         }

@@ -334,10 +334,10 @@ class StockHelper extends AbstractHelperOmni
                         $variantId
                     );
 
-                    if ($stock) {
-                        $itemStock = reset($stock);
+                    if ($stock && !empty($stock->getInventorybufferout())) {
+                        $itemStock = current((array)$stock->getInventorybufferout());
 
-                        if ($itemStock->getQtyInventory() <= 0) {
+                        if ($itemStock->getInventory() <= 0) {
                             if ($isRemoveItem == true) {
                                 $this->deleteItemFromQuote($item, $quote);
                             }
@@ -352,20 +352,20 @@ class StockHelper extends AbstractHelperOmni
                                     $item->getName()
                                 ));
                             }
-                        } elseif ($itemStock->getQtyInventory() < $qty) {
+                        } elseif ($itemStock->getInventory() < $qty) {
                             if ($isRemoveItem == true) {
                                 $this->deleteItemFromQuote($item, $quote);
                             }
                             $item->setHasError(true);
                             $item->setMessage(__(
                                 'Max quantity available for item %2 is %1',
-                                $itemStock->getQtyInventory(),
+                                $itemStock->getInventory(),
                                 $item->getName()
                             ));
                             if ($throwException == true) {
                                 throw new LocalizedException(__(
                                     'Max quantity available for item %2 is %1',
-                                    $itemStock->getQtyInventory(),
+                                    $itemStock->getInventory(),
                                     $item->getName()
                                 ));
                             }
