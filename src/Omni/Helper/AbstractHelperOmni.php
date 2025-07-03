@@ -9,7 +9,7 @@ use \Ls\Omni\Model\Central\GuzzleClient;
 use \Ls\Omni\Model\Central\TokenRequestService;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
-use Ls\Replication\Logger\OmniLogger;
+use \Ls\Replication\Logger\OmniLogger;
 use \Ls\Replication\Model\ResourceModel\ReplStoreview\CollectionFactory as ReplStoreCollection;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -230,7 +230,7 @@ class AbstractHelperOmni extends AbstractHelper
         public OrderRepositoryInterface $orderRepository,
         public \Magento\Sales\Model\ResourceModel\Order $orderResourceModel,
         public Json $json,
-        public ConfigInterface $config
+        public ConfigInterface $config,
     ) {
         parent::__construct($context);
         $this->initialize();
