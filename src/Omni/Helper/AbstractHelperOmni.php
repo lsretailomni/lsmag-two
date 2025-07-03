@@ -9,6 +9,7 @@ use \Ls\Omni\Model\Central\GuzzleClient;
 use \Ls\Omni\Model\Central\TokenRequestService;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
+use \Ls\Replication\Logger\OmniLogger;
 use \Ls\Replication\Model\ResourceModel\ReplStoreview\CollectionFactory as ReplStoreCollection;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -141,6 +142,7 @@ class AbstractHelperOmni extends AbstractHelper
      * @param GuzzleClient $guzzleClient
      * @param TokenRequestService $tokenRequestService
      * @param RequestInterface $request
+     * @param OmniLogger $omniLogger
      */
     public function __construct(
         public Context $context,
@@ -214,7 +216,7 @@ class AbstractHelperOmni extends AbstractHelper
         public GuzzleClient $guzzleClient,
         public TokenRequestService $tokenRequestService,
         public RequestInterface $request,
-        public \Ls\Replication\Logger\OmniLogger $omniLogger
+        public OmniLogger $omniLogger
     ) {
         parent::__construct($context);
         $this->initialize();
