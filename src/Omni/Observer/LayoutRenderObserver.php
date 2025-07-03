@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer;
 
@@ -9,16 +10,10 @@ use Magento\Framework\Event\ObserverInterface;
 class LayoutRenderObserver implements ObserverInterface
 {
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
      * @param LSR $lsr
      */
-    public function __construct(LSR $lsr)
+    public function __construct(public LSR $lsr)
     {
-        $this->lsr = $lsr;
     }
 
     /**

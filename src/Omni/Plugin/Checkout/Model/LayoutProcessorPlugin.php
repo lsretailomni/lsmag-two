@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\Data;
@@ -16,29 +18,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class LayoutProcessorPlugin
 {
     /**
-     * @var Data
-     */
-    public $data;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /** @var GiftCardHelper */
-    public $giftCardHelper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var ContactHelper
-     */
-    public $contactHelper;
-
-    /**
      * @param Data $data
      * @param LoyaltyHelper $loyaltyHelper
      * @param GiftCardHelper $giftCardHelper
@@ -46,17 +25,12 @@ class LayoutProcessorPlugin
      * @param ContactHelper $contactHelper
      */
     public function __construct(
-        Data $data,
-        LoyaltyHelper $loyaltyHelper,
-        GiftCardHelper $giftCardHelper,
-        LSR $lsr,
-        ContactHelper $contactHelper
+        public Data $data,
+        public LoyaltyHelper $loyaltyHelper,
+        public GiftCardHelper $giftCardHelper,
+        public LSR $lsr,
+        public ContactHelper $contactHelper
     ) {
-        $this->data           = $data;
-        $this->loyaltyHelper  = $loyaltyHelper;
-        $this->giftCardHelper = $giftCardHelper;
-        $this->lsr            = $lsr;
-        $this->contactHelper  = $contactHelper;
     }
 
     /**
@@ -65,16 +39,16 @@ class LayoutProcessorPlugin
      * @param LayoutProcessor $subject
      * @param array $jsLayout
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function afterProcess(
         LayoutProcessor $subject,
         array $jsLayout
     ) {
-        $shippingStep       = &$jsLayout['components']['checkout']['children']['steps']['children']['shipping-step'];
-        $billingStep        = &$jsLayout['components']['checkout']['children']['steps']['children']['billing-step'];
-        $payment            = &$billingStep['children']['payment'];
-        $sideBar            = &$jsLayout['components']['checkout']['children']['sidebar'];
+        $shippingStep = &$jsLayout['components']['checkout']['children']['steps']['children']['shipping-step'];
+        $billingStep = &$jsLayout['components']['checkout']['children']['steps']['children']['billing-step'];
+        $payment = &$billingStep['children']['payment'];
+        $sideBar = &$jsLayout['components']['checkout']['children']['sidebar'];
         $shippingAdditional = &$shippingStep['children']['shippingAddress']['children']['shippingAdditional'];
 
         if (!$this->lsr->isEnabled()) {
@@ -100,13 +74,13 @@ class LayoutProcessorPlugin
             }
         }
 
-        if ($this->loyaltyHelper->isLoyaltyPointsEnabled('checkout') == '0' ||
+        if ($this->loyaltyHelper->isLoyaltyPointsEnabled('checkout') === false ||
             empty($this->contactHelper->getCardIdFromCustomerSession())) {
             unset($billingStep['children']['payment']['children']['afterMethods']['children']['loyalty-points']);
             unset($sideBar['children']['summary']['children']['totals']['children']['loyalty_points_label']);
         }
 
-        if ($this->giftCardHelper->isGiftCardEnabled('checkout') == '0') {
+        if (!$this->giftCardHelper->isGiftCardEnabled('checkout')) {
             unset($billingStep['children']['payment']['children']['afterMethods']['children']['gift-card']);
         }
 
@@ -127,10 +101,10 @@ class LayoutProcessorPlugin
             } else {
                 $shippingAdditional =
                     [
-                        'component'   => "uiComponent",
+                        'component' => "uiComponent",
                         'displayArea' => 'shippingAdditional',
                         'sortOrder' => 1,
-                        'children'    => [
+                        'children' => [
                             'select_store' => [
                                 'component' => 'Ls_Omni/js/view/checkout/shipping/select-store'
                             ]
@@ -150,7 +124,7 @@ class LayoutProcessorPlugin
      * Check to see commerce services connection status
      *
      * @return bool|null
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function isValid()
     {

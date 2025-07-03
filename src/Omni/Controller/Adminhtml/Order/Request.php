@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Controller\Adminhtml\Order;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
@@ -23,42 +25,11 @@ use Psr\Log\LoggerInterface;
 class Request extends Action
 {
     /**
-     * @var OrderRepositoryInterface
-     */
-    public $orderRepository;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
      * @var ManagerInterface
      */
     public $messageManager;
 
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var OrderEdit
-     */
-    public $orderEdit;
-
-    /**
-     * Request constructor.
      * @param Context $context
      * @param OrderRepositoryInterface $orderRepository
      * @param BasketHelper $basketHelper
@@ -69,20 +40,14 @@ class Request extends Action
      */
     public function __construct(
         Action\Context $context,
-        OrderRepositoryInterface $orderRepository,
-        BasketHelper $basketHelper,
-        LoggerInterface $logger,
-        OrderHelper $orderHelper,
-        LSR $lsr,
-        OrderEdit $orderEdit
+        public OrderRepositoryInterface $orderRepository,
+        public BasketHelper $basketHelper,
+        public LoggerInterface $logger,
+        public OrderHelper $orderHelper,
+        public LSR $lsr,
+        public OrderEdit $orderEdit
     ) {
-        $this->orderRepository = $orderRepository;
-        $this->basketHelper    = $basketHelper;
-        $this->logger          = $logger;
-        $this->orderHelper     = $orderHelper;
         $this->messageManager  = $context->getMessageManager();
-        $this->lsr             = $lsr;
-        $this->orderEdit       = $orderEdit;
         parent::__construct($context);
     }
 
@@ -90,7 +55,7 @@ class Request extends Action
      * Send order to Ls Central admin controller execute
      *
      * @return Redirect
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute()
     {

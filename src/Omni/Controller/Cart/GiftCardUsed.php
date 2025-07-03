@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Controller\Cart;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
@@ -13,48 +15,14 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Data\Form\FormKey\Validator;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
-/**
- * Gift card controller
- */
 class GiftCardUsed extends \Magento\Checkout\Controller\Cart
 {
     /**
-     * Sales quote repository
-     *
-     * @var CartRepositoryInterface
-     */
-    public $quoteRepository;
-
-    /**
-     * @var GiftCardHelper
-     */
-    public $giftCardHelper;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
-     * @var \Magento\Framework\Pricing\Helper\Data
-     */
-    public $priceHelper;
-
-    /**
-     * @var Data
-     */
-    public $data;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * GiftCardUsed constructor.
      * @param Context $context
      * @param ScopeConfigInterface $scopeConfig
      * @param CheckoutSession $checkoutSession
@@ -66,6 +34,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
      * @param BasketHelper $basketHelper
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
      * @param Data $data
+     * @param LSR $lsr
      */
     public function __construct(
         Context $context,
@@ -74,12 +43,12 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
         StoreManagerInterface $storeManager,
         Validator $formKeyValidator,
         Cart $cart,
-        CartRepositoryInterface $quoteRepository,
-        GiftCardHelper $giftCardHelper,
-        BasketHelper $basketHelper,
-        \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        Data $data,
-        LSR $lsr
+        public CartRepositoryInterface $quoteRepository,
+        public GiftCardHelper $giftCardHelper,
+        public BasketHelper $basketHelper,
+        public \Magento\Framework\Pricing\Helper\Data $priceHelper,
+        public Data $data,
+        public LSR $lsr
     ) {
         parent::__construct(
             $context,
@@ -89,26 +58,20 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
             $formKeyValidator,
             $cart
         );
-        $this->quoteRepository = $quoteRepository;
-        $this->giftCardHelper  = $giftCardHelper;
-        $this->priceHelper     = $priceHelper;
-        $this->basketHelper    = $basketHelper;
-        $this->data            = $data;
-        $this->lsr             = $lsr;
     }
 
     /**
      * Add and remove gift card from cart page
      *
      * @return Redirect
+     * @throws GuzzleException
      */
     public function execute()
     {
-        $giftCardNo            = $this->getRequest()->getParam('giftcardno');
-        $giftCardPin           = $this->getRequest()->getParam('giftcardpin');
+        $giftCardNo = $this->getRequest()->getParam('giftcardno');
+        $giftCardPin = $this->getRequest()->getParam('giftcardpin');
         $giftCardBalanceAmount = 0;
-        $pointRate             = 0;
-        $giftCardAmount        = $this->getRequest()->getParam('removegiftcard') == 1
+        $giftCardAmount = $this->getRequest()->getParam('removegiftcard') == 1
             ? 0
             : trim($this->getRequest()->getParam('giftcardamount'));
 
@@ -126,10 +89,12 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
             if ($giftCardNo != null) {
                 $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $giftCardPin);
                 if (is_object($giftCardResponse)) {
-                    $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
-                    $giftCardBalanceAmount       = $convertedGiftCardBalanceArr['gift_card_balance_amount'];
-                    $quotePointRate              = $convertedGiftCardBalanceArr['quote_point_rate'];
-                    $giftCardCurrencyCode        = $convertedGiftCardBalanceArr['gift_card_currency'];
+                    $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance(
+                        $giftCardResponse
+                    );
+                    $giftCardBalanceAmount = $convertedGiftCardBalanceArr['gift_card_balance_amount'];
+                    $quotePointRate = $convertedGiftCardBalanceArr['quote_point_rate'];
+                    $giftCardCurrencyCode = $convertedGiftCardBalanceArr['gift_card_currency'];
                 } else {
                     $giftCardBalanceAmount = $giftCardResponse;
                 }
@@ -147,8 +112,8 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 return $this->_goBack();
             }
 
-            $cartQuote    = $this->cart->getQuote();
-            $itemsCount   = $cartQuote->getItemsCount();
+            $cartQuote = $this->cart->getQuote();
+            $itemsCount = $cartQuote->getItemsCount();
             $orderBalance = $this->data->getOrderBalance(
                 0,
                 $cartQuote->getLsPointsSpent(),
@@ -161,7 +126,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 $giftCardBalanceAmount
             );
 
-            if ($isGiftCardAmountValid == false) {
+            if ($isGiftCardAmountValid === false) {
                 $this->messageManager->addErrorMessage(
                     __(
                         'The applied amount %3' .
@@ -188,11 +153,11 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
             if ($itemsCount && !empty($giftCardResponse) && $isGiftCardAmountValid) {
                 $cartQuote->getShippingAddress()->setCollectShippingRates(true);
                 $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)
-                          ->setLsGiftCardNo($giftCardNo)
-                          ->setLsGiftCardPin($giftCardPin)
-                          ->setLsGiftCardCnyFactor($quotePointRate)
-                          ->setLsGiftCardCnyCode($giftCardCurrencyCode)
-                          ->collectTotals();
+                    ->setLsGiftCardNo($giftCardNo)
+                    ->setLsGiftCardPin($giftCardPin)
+                    ->setLsGiftCardCnyFactor($quotePointRate)
+                    ->setLsGiftCardCnyCode($giftCardCurrencyCode)
+                    ->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             }
             if ($giftCardAmount) {
@@ -241,9 +206,11 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
     }
 
     /**
+     * Get base currency code
+     *
      * @return string
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function getBaseCurrencyCode()
     {

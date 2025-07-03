@@ -1,17 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Form;
 
 use Magento\Payment\Block\Form;
 
-/**
- * Class Loyaltypoints
- * @package Ls\Omni\Block\Form
- */
 class Loyaltypoints extends Form
 {
     /**
-     * Loyaltypoints template
+     * Loyalty points template
      *
      * @var string
      */

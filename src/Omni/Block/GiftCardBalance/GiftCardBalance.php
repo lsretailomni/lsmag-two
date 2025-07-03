@@ -1,41 +1,16 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\GiftCardBalance;
 
-use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\GiftCardHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template;
-use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
 
-/**
- * To check gift card balance
- */
 class GiftCardBalance extends Template
 {
     /**
-     * @var PageFactory
-     */
-    public $resultPageFactory;
-
-    /**
-     * @var Data
-     */
-    public $giftCardHelper;
-
-    /**
-     * @var Data
-     */
-    public $logger;
-
-    /**
-     * @var array
-     */
-    public $layoutProcessors;
-
-    /**
-     * GiftCardBalance constructor.
      * @param Template\Context $context
      * @param GiftCardHelper $giftCardHelper
      * @param LoggerInterface $logger
@@ -44,16 +19,12 @@ class GiftCardBalance extends Template
      */
     public function __construct(
         Template\Context $context,
-        GiftCardHelper $giftCardHelper,
-        LoggerInterface $logger,
-        array $layoutProcessors = [],
+        public GiftCardHelper $giftCardHelper,
+        public LoggerInterface $logger,
+        public array $layoutProcessors = [],
         array $data = []
     ) {
-
-        $this->giftCardHelper = $giftCardHelper;
-        $this->logger         = $logger;
         parent::__construct($context, $data);
-        $this->layoutProcessors = $layoutProcessors;
     }
 
     /**
@@ -72,7 +43,7 @@ class GiftCardBalance extends Template
     /**
      * Check pin code field in enable or not in gift card
      *
-     * @return string
+     * @return bool
      * @throws NoSuchEntityException
      */
     public function isPinCodeFieldEnable()

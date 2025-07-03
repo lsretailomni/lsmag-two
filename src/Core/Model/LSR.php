@@ -310,6 +310,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const SESSION_CHECKOUT_DELIVERY_HOURS = 'delivery_hours';
 
+    const SESSION_CHECKOUT_GIFT_CARD = 'gift_card';
+
     // WORKFLOW
     const W_TYPE = 'T';
     const W_PAYLOAD = 'P';
@@ -425,7 +427,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
     const COUPONS = 'LS_COUPONS_';
     const STORE = 'LS_STORE_';
-    const STORES = 'LS_STORES';
+    const STORES = 'LS_STORES_';
     const STORE_HOURS = 'LS_STORE_HOURS_';
     const RETURN_POLICY_CACHE = 'LS_RETURN_POLICY_';
     const PING_RESPONSE_CACHE = 'PING_RESPONSE_';

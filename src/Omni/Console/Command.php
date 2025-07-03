@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Console;
 
@@ -30,12 +31,6 @@ class Command extends SymfonyCommand
     /** @var string */
     public $baseUrl;
 
-    /** @var Service */
-    public $service;
-
-    /** @var Reader */
-    public $dirReader;
-
     /**
      * @var Data
      */
@@ -46,11 +41,9 @@ class Command extends SymfonyCommand
      * @param Reader $dirReader
      */
     public function __construct(
-        Service $service,
-        Reader $dirReader
+        public Service $service,
+        public Reader $dirReader
     ) {
-        $this->service = $service;
-        $this->dirReader = $dirReader;
         parent::__construct();
     }
 

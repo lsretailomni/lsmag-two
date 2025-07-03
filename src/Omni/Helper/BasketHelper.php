@@ -1254,6 +1254,28 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
+     * Set gift card in checkout session being used
+     *
+     * @param $giftCard
+     */
+    public function setGiftCardResponseInCheckoutSession($giftCard)
+    {
+        $giftCard = $giftCard ? $this->flattenModel($giftCard) : null;
+        $this->checkoutSession->setData(LSR::SESSION_CHECKOUT_GIFT_CARD, $giftCard);
+    }
+
+    /**
+     * Get gift card from checkout session
+     *
+     * @return mixed|null
+     */
+    public function getGiftCardResponseFromCheckoutSession()
+    {
+        $value = $this->checkoutSession->getData(LSR::SESSION_CHECKOUT_GIFT_CARD);
+        return ($value) ? $this->restoreModel($value) : $value;
+    }
+
+    /**
      * clear store_pickup_hours from checkout session being used
      */
     public function unSetStorePickupHours()

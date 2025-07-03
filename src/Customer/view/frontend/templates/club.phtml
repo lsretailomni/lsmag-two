@@ -2,7 +2,7 @@
 /** @var Dashboard $block */
 
 use \Ls\Customer\Block\Account\Dashboard;
-
+$loyaltyPoints = $block->getLoyaltyPointsBalance();
 if ($account = $block->getMembersInfo()) : ?>
     <div class="block block-club-info">
         <div class="block-title">
@@ -27,10 +27,10 @@ if ($account = $block->getMembersInfo()) : ?>
                             <?= __('Loyalty Points Earned:'); ?>
                         </h6>
                         <span>
-                            <?= $block->getLoyaltyPointsBalance($account); ?>
+                            <?= $loyaltyPoints; ?>
                         </span>
                     </div>
-                    <?php if (!empty($block->getLoyaltyPointsBalance($account)) &&
+                    <?php if (!empty($loyaltyPoints) &&
                         ($expiry = $block->getPointBalanceExpiry())
                     ): ?>
                     <div class="loyalty-points-expiry">

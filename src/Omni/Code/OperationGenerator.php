@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Code;
 
@@ -13,18 +14,14 @@ use Laminas\Code\Generator\ParameterGenerator;
 
 class OperationGenerator extends AbstractOmniGenerator
 {
-    /** @var Operation */
-    private $operation;
-
     /**
      * @param Operation $operation
      * @param Metadata $metadata
      * @throws \Exception
      */
-    public function __construct(Operation $operation, Metadata $metadata)
+    public function __construct(public Operation $operation, Metadata $metadata)
     {
         parent::__construct($metadata);
-        $this->operation = $operation;
     }
 
     /**

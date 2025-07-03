@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model;
 
@@ -11,24 +12,13 @@ use Magento\Framework\ObjectManagerInterface;
 class Factory
 {
     /**
-     * @var Manager
-     */
-    protected $moduleManager;
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
      * @param Manager $moduleManager
      * @param ObjectManagerInterface $objectManager
      */
     public function __construct(
-        Manager $moduleManager,
-        ObjectManagerInterface $objectManager
+        public Manager $moduleManager,
+        public ObjectManagerInterface $objectManager
     ) {
-        $this->moduleManager = $moduleManager;
-        $this->objectManager = $objectManager;
     }
 
     /**

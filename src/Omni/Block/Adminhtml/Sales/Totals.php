@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Adminhtml\Sales;
 
@@ -11,29 +12,9 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Model\Order;
 
-/**
- * Class Totals
- * @package Ls\Omni\Block\Adminhtml\Sales
- */
 class Totals extends Template
 {
     /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var Currency
-     */
-    public $currency;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * Totals constructor.
      * @param Context $context
      * @param OrderHelper $orderHelper
      * @param LoyaltyHelper $loyaltyHelper
@@ -42,15 +23,12 @@ class Totals extends Template
      */
     public function __construct(
         Context $context,
-        OrderHelper $orderHelper,
-        LoyaltyHelper $loyaltyHelper,
-        Currency $currency,
+        public OrderHelper $orderHelper,
+        public LoyaltyHelper $loyaltyHelper,
+        public Currency $currency,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->orderHelper   = $orderHelper;
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->currency      = $currency;
     }
 
     /**

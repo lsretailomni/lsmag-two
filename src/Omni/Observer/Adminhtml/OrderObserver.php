@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer\Adminhtml;
 
@@ -20,59 +21,24 @@ use Psr\Log\LoggerInterface;
  */
 class OrderObserver implements ObserverInterface
 {
-
-    /** @var BasketHelper */
-    private $basketHelper;
-
-    /** @var OrderHelper */
-    private $orderHelper;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /** @var Order $orderResourceModel */
-    private $orderResourceModel;
-
-    /** @var LSR @var */
-    private $lsr;
-
-    /**
-     * @var ManagerInterface
-     */
-    private $messageManager;
-
-    /**
-     * @var OrderEdit
-     */
-    private $orderEdit;
-
     /**
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
      * @param LoggerInterface $logger
      * @param Order $orderResourceModel
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param ManagerInterface $messageManager
      * @param OrderEdit $orderEdit
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        OrderHelper $orderHelper,
-        LoggerInterface $logger,
-        Order $orderResourceModel,
-        LSR $LSR,
-        ManagerInterface $messageManager,
-        OrderEdit $orderEdit
+        public BasketHelper $basketHelper,
+        public OrderHelper $orderHelper,
+        public LoggerInterface $logger,
+        public Order $orderResourceModel,
+        public LSR $lsr,
+        public ManagerInterface $messageManager,
+        public OrderEdit $orderEdit
     ) {
-        $this->basketHelper       = $basketHelper;
-        $this->orderHelper        = $orderHelper;
-        $this->logger             = $logger;
-        $this->orderResourceModel = $orderResourceModel;
-        $this->lsr                = $LSR;
-        $this->messageManager     = $messageManager;
-        $this->orderEdit          = $orderEdit;
     }
 
     /**

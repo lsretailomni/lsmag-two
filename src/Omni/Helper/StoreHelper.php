@@ -6,12 +6,9 @@ namespace Ls\Omni\Helper;
 use Carbon\CarbonInterval;
 use Carbon\CarbonPeriod;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
 use \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\DataObject;
@@ -51,7 +48,7 @@ class StoreHelper extends AbstractHelperOmni
      *
      * @param string $websiteId
      * @param string|null $webStore
-     * @return array|bool|GetStores_GetStores|DataObject|mixed
+     * @return array|GetStores_GetStores|DataObject
      */
     public function getStore(string $websiteId = '', ?string $webStore = null)
     {
@@ -68,14 +65,7 @@ class StoreHelper extends AbstractHelperOmni
             if ($cachedResponse) {
                 $response = $cachedResponse;
             } else {
-                // @codingStandardsIgnoreStart
-                $webStoreOperation = $this->createInstance(Operation\GetStores_GetStores::class);
-                $webStoreOperation->setOperationInput(
-                    ['storeGetType' => '0', 'searchText' => $webStore, 'includeDetail' => false]
-                );
-                // @codingStandardsIgnoreEnd
-                $response = current($webStoreOperation->execute()->getRecords());
-
+                $response = $this->fetchStoresDataFromCentral($webStore);
                 if (!empty($response)) {
                     $this->cacheHelper->persistContentInCache(
                         $cacheId,
@@ -85,7 +75,6 @@ class StoreHelper extends AbstractHelperOmni
                     );
                 }
             }
-
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -94,35 +83,22 @@ class StoreHelper extends AbstractHelperOmni
     }
 
     /**
-     * Get all stores
+     * Getting all stores from central
      *
-     * @param $webStoreId
-     * @return array|Entity\ArrayOfStore|Entity\StoresGetAllResponse|Entity\StoresGetResponse|ResponseInterface|null
-     * @throws NoSuchEntityException
+     * @return array|GetStores_GetStores|DataObject
      */
-    public function getAllStores($webStoreId)
+    public function getAllStoresFromCentral()
     {
         $response = [];
-        $cacheId        = LSR::STORES;
-        $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
 
-        if ($cachedResponse) {
-            $response = $cachedResponse;
-        } else {
-            $baseUrl  = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $webStoreId);
-            // @codingStandardsIgnoreStart
-            if (version_compare($this->lsr->getOmniVersion(), '2023.01', '>')) {
-                $request = new Entity\StoresGet();
-                $request->setIncludeDetails(true);
-                $operation = new Operation\StoresGet($baseUrl);
+        try {
+            $cacheId = LSR::STORES . $this->lsr->getCurrentWebsiteId();
+            $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
+
+            if ($cachedResponse) {
+                $response = $cachedResponse;
             } else {
-                $request   = new Entity\StoresGetAll();
-                $operation = new Operation\StoresGetAll($baseUrl);
-            }
-            // @codingStandardsIgnoreEnd
-            try {
-                $response = $operation->execute($request);
-
+                $response = $this->fetchStoresDataFromCentral('', '1', true);
                 if (!empty($response)) {
                     $this->cacheHelper->persistContentInCache(
                         $cacheId,
@@ -131,18 +107,41 @@ class StoreHelper extends AbstractHelperOmni
                         86400
                     );
                 }
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
             }
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
         }
 
-        return $response ? $response->getResult() : $response;
+        return $response;
+    }
+
+    /**
+     * Fetch stores data from central based on parameters
+     *
+     * @param string $searchText
+     * @param string $storeGetType
+     * @param bool $includeDetails
+     * @return false|mixed
+     */
+    public function fetchStoresDataFromCentral(
+        string $searchText = '',
+        string $storeGetType = '1',
+        bool $includeDetails = false
+    ) {
+        // @codingStandardsIgnoreStart
+        $webStoreOperation = $this->createInstance(Operation\GetStores_GetStores::class);
+        $webStoreOperation->setOperationInput(
+            ['storeGetType' => $storeGetType, 'searchText' => $searchText, 'includeDetail' => $includeDetails]
+        );
+        // @codingStandardsIgnoreEnd
+        return current($webStoreOperation->execute()->getRecords());
     }
 
     /**
      * Getting store hours
      *
      * @param array $storeHours
+     * @param ?int $calendarType
      * @return array
      * @throws NoSuchEntityException
      */
@@ -166,41 +165,41 @@ class StoreHelper extends AbstractHelperOmni
             foreach ($storeHours as $storeHour) {
                 if ((!$calendarType && $storeHour->getCalendarType() == $this->getRetailCalendarType()) ||
                     ($calendarType && $storeHour->getCalendarType() == $calendarType)) {
-                    if ($storeHour->getDayOfWeek() == $currentDayOfWeek) {
+                    if ($storeHour->getDayNo() == $currentDayOfWeek) {
                         if ($this->dataHelper->checkDateValidity($current, $storeHour)) {
-                            if ($storeHour->getType() == StoreHourOpeningType::NORMAL) {
-                                $dateTimSlots[$current][StoreHourOpeningType::NORMAL] =
+                            if ($storeHour->getLineType() == 0) {
+                                $dateTimSlots[$current]['Normal'] =
                                     [
                                         "open"  => $this->formatTime(
-                                            $storeHour->getOpenFrom() ??
+                                            $storeHour->getTimeFrom() ??
                                             '0001-01-01T00:00:00Z'
                                         ),
                                         "close" => $this->formatTime(
-                                            $storeHour->getOpenTo() ??
+                                            $storeHour->getTimeTo() ??
                                             '0001-01-01T00:00:00Z'
                                         )
                                     ];
-                            } elseif ($storeHour->getType() == StoreHourOpeningType::TEMPORARY) {
-                                $dateTimSlots[$current][StoreHourOpeningType::TEMPORARY] =
+                            } elseif ($storeHour->getLineType() == 1) {
+                                $dateTimSlots[$current]['Temporary'] =
                                     [
                                         "open"  => $this->formatTime(
-                                            $storeHour->getOpenFrom() ??
+                                            $storeHour->getTimeFrom() ??
                                             '0001-01-01T00:00:00Z'
                                         ),
                                         "close" => $this->formatTime(
-                                            $storeHour->getOpenTo() ??
+                                            $storeHour->getTimeTo() ??
                                             '0001-01-01T00:00:00Z'
                                         )
                                     ];
                             } else {
-                                $dateTimSlots[$current][StoreHourOpeningType::CLOSED] =
+                                $dateTimSlots[$current]['Closed'] =
                                     [
                                         "open"  => $this->formatTime(
-                                            $storeHour->getOpenFrom() ??
+                                            $storeHour->getTimeFrom() ??
                                             '0001-01-01T00:00:00Z'
                                         ),
                                         "close" => $this->formatTime(
-                                            $storeHour->getOpenTo() ??
+                                            $storeHour->getTimeTo() ??
                                             '0001-01-01T00:00:00Z'
                                         )
                                     ];
@@ -218,8 +217,10 @@ class StoreHelper extends AbstractHelperOmni
      * For getting date and timeslots option
      *
      * @param array $storeHours
+     * @param ?int $calendarType
      * @return array
      * @throws NoSuchEntityException
+     * @throws GuzzleException
      */
     public function formatDateTimeSlotsValues($storeHours, $calendarType = null)
     {
@@ -228,7 +229,7 @@ class StoreHelper extends AbstractHelperOmni
             $options = $this->getDateTimeSlotsValues($storeHours, $calendarType);
             if (!empty($options)) {
                 foreach ($options as $key => $option) {
-                    $results[$key] = $option[StoreHourOpeningType::NORMAL];
+                    $results[$key] = $option['Normal'];
                 }
             }
         }
@@ -254,8 +255,9 @@ class StoreHelper extends AbstractHelperOmni
      * Get date time slots
      *
      * @param array $storeHours
+     * @param ?int $calendarType
      * @return array
-     * @throws Exception
+     * @throws NoSuchEntityException
      */
     public function getDateTimeSlotsValues($storeHours, $calendarType)
     {
@@ -276,26 +278,26 @@ class StoreHelper extends AbstractHelperOmni
                     $dateTimeSlots[$date][$type] = $typeValues;
                 }
 
-                if ($type == StoreHourOpeningType::CLOSED) {
-                    if (array_key_exists(StoreHourOpeningType::NORMAL, $dateTimeSlots[$date])) {
-                        $dateTimeSlots[$date][StoreHourOpeningType::NORMAL] = array_diff(
-                            $dateTimeSlots[$date][StoreHourOpeningType::NORMAL],
-                            $dateTimeSlots[$date][StoreHourOpeningType::CLOSED]
+                if ($type == 'Closed') {
+                    if (array_key_exists('Normal', $dateTimeSlots[$date])) {
+                        $dateTimeSlots[$date]['Normal'] = array_diff(
+                            $dateTimeSlots[$date]['Normal'],
+                            $dateTimeSlots[$date]['Closed']
                         );
                     }
                 }
 
-                if ($type == StoreHourOpeningType::TEMPORARY) {
-                    if (array_key_exists(StoreHourOpeningType::NORMAL, $dateTimeSlots[$date])) {
-                        $dateTimeSlots[$date][StoreHourOpeningType::NORMAL] =
-                            $dateTimeSlots[$date][StoreHourOpeningType::TEMPORARY];
+                if ($type == 'Temporary') {
+                    if (array_key_exists('Normal', $dateTimeSlots[$date])) {
+                        $dateTimeSlots[$date]['Normal'] =
+                            $dateTimeSlots[$date]['Temporary'];
                     }
                 }
             }
 
             if ($this->getCurrentDate() == $date &&
                 isset($dateTimeSlots[$date]) &&
-                isset($dateTimeSlots[$date][StoreHourOpeningType::NORMAL])
+                isset($dateTimeSlots[$date]['Normal'])
             ) {
                 $dateTimeSlots = $this->replaceKey($dateTimeSlots, $date, 'Today');
             }
@@ -387,10 +389,10 @@ class StoreHelper extends AbstractHelperOmni
     public function getRetailCalendarType()
     {
         if ($this->lsr->getCurrentIndustry($this->lsr->getCurrentStoreId()) == LSR::LS_INDUSTRY_VALUE_RETAIL) {
-            return StoreHourCalendarType::RECEIVING;
+            return 2;
         }
 
-        return StoreHourCalendarType::REST_ORDER_TAKING;
+        return 3;
     }
 
     /**
@@ -430,7 +432,7 @@ class StoreHelper extends AbstractHelperOmni
     public function loopThroughCollection($intervals, &$intervalsCollection)
     {
         foreach ($intervals as $interval) {
-            $intervalsCollection[] = $this->dateTime->date($this->pickupTimeFormat, strtotime($interval));
+            $intervalsCollection[] = $this->dateTime->date($this->pickupTimeFormat, $interval->toTimeString());
         }
     }
 
@@ -444,6 +446,8 @@ class StoreHelper extends AbstractHelperOmni
      */
     public function getTimeSlicesGivenRangesAndInterval($startTime, $endTime, $interval)
     {
+        $today = \Carbon\Carbon::today();
+
         return CarbonInterval::minutes($interval)->toPeriod($startTime, $endTime);
     }
 
