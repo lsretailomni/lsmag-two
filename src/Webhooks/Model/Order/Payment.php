@@ -201,7 +201,7 @@ class Payment
             }
             if ($validateInvoice && $validateOrder['data']['success']) {
                 $baseTotalAmount = $totalAmount;
-                $baseSubtotal = $subtotal;
+                $baseSubtotal    = $subtotal;
 
                 if ($order->getBaseCurrencyCode() !== $order->getOrderCurrencyCode()) {
                     $baseTotalAmount = $this->helper->getItemHelper()->convertToBaseCurrency(
@@ -209,7 +209,7 @@ class Payment
                         $order->getOrderCurrencyCode(),
                         $order->getBaseCurrencyCode()
                     );
-                    $baseSubtotal = $this->helper->getItemHelper()->convertToBaseCurrency(
+                    $baseSubtotal    = $this->helper->getItemHelper()->convertToBaseCurrency(
                         $subtotal,
                         $order->getOrderCurrencyCode(),
                         $order->getBaseCurrencyCode()
@@ -362,8 +362,8 @@ class Payment
             );
         }
         $orderShipment = $this->convertOrder->toShipment($order);
-
-        $parentItems = [];
+        $qty           = 0;
+        $parentItems   = [];
         foreach ($order->getAllItems() as $orderItem) {
             $parentItem = $orderItem->getParentItem();
 
@@ -386,6 +386,9 @@ class Payment
             $shipmentItem = $this->convertOrder->itemToShipmentItem($parentItem)->setQty($qty);
             $orderShipment->addItem($shipmentItem);
             $parentItems[] = $parentItem->getItemId();
+        }
+        if ($qty == 0) {
+            return;
         }
         $orderShipment->register();
         $defaultSourceCode = $this->defaultSourceProviderFactory->create()->getCode();
