@@ -9,6 +9,8 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\ContactCreateParameters;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
+use \Ls\Omni\Client\Ecommerce\Entity\GetMemberCard;
+use \Ls\Omni\Client\Ecommerce\Entity\GetMemberCardResult;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContactCreateResult as MemberContactCreateResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordChange;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordChangeResult as MemberPasswordChangeResponse;
@@ -187,6 +189,32 @@ class ContactHelper extends AbstractHelperOmni
         }
 
         return $response && $response->getResponseCode() == "0000" ? current($response->getRecords()) : null;
+    }
+
+    /**
+     * Get given member card
+     *
+     * @param string $cardId
+     * @return GetMemberCardResult
+     */
+    public function getGivenMemberCard(string $cardId)
+    {
+        $operation = $this->createInstance(Operation\GetMemberCard::class);
+        $operation->setOperationInput(
+            [
+                GetMemberCard::CARD_NO => $cardId,
+                GetMemberCard::TOTAL_REMAINING_POINTS => 0
+            ]
+        );
+        $response = null;
+
+        try {
+            $response = $operation->execute();
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return $response && $response->getResponseCode() == "0000" ? $response : null;
     }
 
     /**

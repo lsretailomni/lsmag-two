@@ -1,14 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Api;
 
-/**
- * Interface PointsManagementInterface
- * @package Ls\Omni\Api
- */
 interface PointsManagementInterface
 {
     /**
+     * Update points
+     *
      * @param $cartId
      * @param $pointSpent
      * @return mixed

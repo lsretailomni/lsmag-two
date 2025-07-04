@@ -15,40 +15,22 @@ use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
  */
 class Items extends AbstractItems
 {
-    /** @var  LSR $lsr */
-    public $lsr;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-    /**
-     * @var CollectionFactory|mixed|null
-     */
-    public $itemCollectionFactory;
-
-    /**
-     * @var Collection|null
-     */
-    private $itemCollection;
-
     /**
      * @param Context $context
      * @param LSR $lsr
      * @param OrderHelper $orderHelper
+     * @param CollectionFactory $itemCollectionFactory
      * @param array $data
      */
     public function __construct(
-        Context $context,
-        LSR $lsr,
-        OrderHelper $orderHelper,
-        CollectionFactory $itemCollectionFactory,
+        public Context $context,
+        public LSR $lsr,
+        public OrderHelper $orderHelper,
+        public Collection $itemCollection,
+        public CollectionFactory $itemCollectionFactory,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->lsr                   = $lsr;
-        $this->orderHelper           = $orderHelper;
-        $this->itemCollectionFactory = $itemCollectionFactory;
     }
 
     /**
@@ -58,8 +40,8 @@ class Items extends AbstractItems
      */
     public function getItems()
     {
-        $type         = $this->_request->getParam('type');
-        $order        = $this->getOrder();
+        $type = $this->_request->getParam('type');
+        $order = $this->getOrder(true);
         if ($this->getMagOrder() && $type != DocumentIdType::RECEIPT) {
             $magentoOrder = $this->getMagOrder();
 
@@ -71,21 +53,24 @@ class Items extends AbstractItems
             return $this->itemCollection->getItems();
         }
 
-        $orderLines = $order->getLines()->getSalesEntryLine();
+        $orderLines = $order->getLscMemberSalesDocLine();
+        if (!is_array($orderLines)) {
+            $orderLines = [$orderLines];
+        }
         $options = [];
         $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
         foreach ($orderLines as $key => $line) {
             foreach ($orderLines as $orderLine) {
-                if ($line->getLineNumber() == $orderLine->getParentLine() &&
+                if ($line->getLineNo() == $orderLine->getParentLine() &&
                     $orderLine->getParentLine() != 0) {
-                    $line->setPrice($line->getPrice() + $orderLine->getAmount()/$orderLine->getQuantity());
+                    $line->setPrice($line->getPrice() + $orderLine->getAmount() / $orderLine->getQuantity());
                     $line->setAmount($line->getAmount() + $orderLine->getAmount());
                 }
             }
-            if ($line->getParentLine() !=0) {
+            if ($line->getLineNo() != $line->getParentLine()) {
                 unset($orderLines[$key]);
             }
-            if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
+            if ($line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
                 unset($orderLines[$key]);
                 break;
             }

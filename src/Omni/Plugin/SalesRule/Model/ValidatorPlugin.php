@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\SalesRule\Model;
 
@@ -13,16 +14,10 @@ use Magento\SalesRule\Model\Validator;
 class ValidatorPlugin
 {
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
      * @param LSR $lsr
      */
-    public function __construct(LSR $lsr)
+    public function __construct(public LSR $lsr)
     {
-        $this->lsr = $lsr;
     }
 
     /**

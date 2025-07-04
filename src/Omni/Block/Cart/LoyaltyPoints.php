@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Cart;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Client\Ecommerce\Entity\CardGetPointBalanceResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Block\Cart\AbstractCart;
@@ -18,48 +19,31 @@ use Magento\Framework\Pricing\Helper\Data;
 class LoyaltyPoints extends AbstractCart
 {
     /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var Data
-     */
-    public $priceHelper;
-
-    /**
-     * @var PriceCurrencyInterface
-     */
-    public $priceCurrency;
-
-    /**
-     * @param LoyaltyHelper $loyaltyHelper
-     * @param Data $priceHelper
      * @param Context $context
      * @param CustomerSession $customerSession
      * @param CheckoutSession $checkoutSession
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param Data $priceHelper
+     * @param PriceCurrencyInterface $priceCurrency
      * @param array $data
      */
     public function __construct(
-        LoyaltyHelper $loyaltyHelper,
-        Data $priceHelper,
         Context $context,
         CustomerSession $customerSession,
         CheckoutSession $checkoutSession,
-        PriceCurrencyInterface $priceCurrency,
+        public LoyaltyHelper $loyaltyHelper,
+        public Data $priceHelper,
+        public PriceCurrencyInterface $priceCurrency,
         array $data = []
     ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);
-        $this->loyaltyHelper   = $loyaltyHelper;
-        $this->priceHelper = $priceHelper;
-        $this->priceCurrency = $priceCurrency;
     }
 
     /**
      * Get Member points for current customer
      *
      * @return int|CardGetPointBalanceResponse|ResponseInterface|null
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getMemberPoints()
     {
@@ -69,8 +53,8 @@ class LoyaltyPoints extends AbstractCart
     /**
      * Get point rate
      *
-     * @return float|GetPointRateResponse|ResponseInterface|null
-     * @throws NoSuchEntityException
+     * @return float|int|string|null
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getPointsRate()
     {
@@ -102,7 +86,7 @@ class LoyaltyPoints extends AbstractCart
     /**
      * Get formatted price
      *
-     * @param $price
+     * @param float $price
      * @return string
      */
     public function getFormattedPrice($price)

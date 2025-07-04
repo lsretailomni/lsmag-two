@@ -2,8 +2,8 @@
 
 namespace Ls\Customer\Block\Order;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
@@ -38,6 +38,7 @@ class Totals extends AbstractOrderBlock
      * @param $currency
      * @param $storeId
      * @return float
+     * @throws NoSuchEntityException
      */
     public function getFormattedPrice($amount, $currency = null, $storeId = null)
     {
@@ -52,19 +53,21 @@ class Totals extends AbstractOrderBlock
     public function getTotalTax()
     {
         $grandTotal     = $this->getGrandTotal();
-        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        $totalNetAmount = $this->orderHelper->getParameterValues($lineItemObj, "TotalNetAmount");
+        $lineItemObj    = ($this->getItems()) ? $this->getItems() : $this->getOrder()->getData();
+        $totalNetAmount = $this->orderHelper->getFilterValues($lineItemObj, "Net Amount", "LSCMemberSalesBuffer");
+
         return ($grandTotal - $totalNetAmount);
     }
 
     /**
      * To fetch TotalNetAmount value from SalesEntryGetResult or SalesEntryGetReturnSalesResul
      *
-     * @return mixed
+     * @return float
+     * @throws NoSuchEntityException
      */
     public function getTotalNetAmount()
     {
-        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
+        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder()->getData();
         $shipmentFee = $this->getShipmentChargeLineFee();
         return (float)$this->orderHelper->getParameterValues($lineItemObj, "TotalNetAmount") - (float)$shipmentFee
             + (float)$this->orderHelper->getParameterValues($lineItemObj, "TotalDiscount");
@@ -77,8 +80,8 @@ class Totals extends AbstractOrderBlock
      */
     public function getGrandTotal()
     {
-        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        return $this->orderHelper->getParameterValues($lineItemObj, "TotalAmount");
+        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder()->getData();
+        return $this->orderHelper->getFilterValues($lineItemObj, "Gross Amount", "LSCMemberSalesBuffer");
     }
 
     /**
@@ -94,12 +97,12 @@ class Totals extends AbstractOrderBlock
     /**
      * To fetch TotalDiscount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
      *
-     * @return mixed
+     * @return null
      */
     public function getTotalDiscount()
     {
         $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        return $this->orderHelper->getParameterValues($lineItemObj, "TotalDiscount");
+        return $this->orderHelper->getFilterValues($lineItemObj, "Discount Amount", "LSCMemberSalesBuffer");
     }
 
     /**
@@ -112,11 +115,12 @@ class Totals extends AbstractOrderBlock
     {
         $orderLines = $this->getLines();
         $fee        = 0;
-        foreach ($orderLines as $key => $line) {
-            if ($line->getItemId() == $this->lsr->getStoreConfig(
-                LSR::LSR_SHIPMENT_ITEM_ID,
-                $this->lsr->getCurrentStoreId()
-            )) {
+        if (!is_array($orderLines)) {
+            $orderLines = [$orderLines];
+        }
+        foreach ($orderLines as $line) {
+            if ($line->getNumber() ==
+                $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $this->lsr->getCurrentStoreId())) {
                 $fee = $line->getAmount();
                 break;
             }
@@ -154,10 +158,12 @@ class Totals extends AbstractOrderBlock
         $loyaltyInfo       = [];
         $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping();
         if ($paymentLines) {
+            if(!is_array($paymentLines)) {
+                $paymentLines = [$paymentLines];
+            }
             foreach ($paymentLines as $line) {
-                if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
-                    || $line->getType() === PaymentType::NONE) {
-                    $tenderTypeId = $line->getTenderType();
+                if ($line->getEntryType() == 1) {
+                    $tenderTypeId = $line->getNumber();
                     if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
                         $method    = $tenderTypeMapping[$tenderTypeId];
                         $methods[] = __($method);
@@ -187,8 +193,7 @@ class Totals extends AbstractOrderBlock
      */
     public function getLines()
     {
-        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        return $this->orderHelper->getParameterValues($lineItemObj, "Lines");
+        return ($this->getItems()) ? $this->getItems() : $this->getOrder(true)->getLscMemberSalesDocLine();
     }
 
 
@@ -200,7 +205,7 @@ class Totals extends AbstractOrderBlock
     public function getOrderPayments()
     {
         $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        return $this->orderHelper->getParameterValues($lineItemObj, "Payments");
+        return $lineItemObj["LSCMemberSalesDocLine"] ?? null;
     }
 
     /**
@@ -208,7 +213,7 @@ class Totals extends AbstractOrderBlock
      *
      * @param $loyaltyPoints
      * @return float|int
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function convertLoyaltyPointsToAmount($loyaltyPoints)
     {

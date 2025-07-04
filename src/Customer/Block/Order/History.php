@@ -6,9 +6,9 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use Ls\Omni\Client\Ecommerce\Entity\SalesEntriesGetByCardIdResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntriesGetByCardIdResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -27,32 +27,8 @@ use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 class History extends \Magento\Sales\Block\Order\History
 {
     /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var PriceCurrencyInterface
-     */
-    public $priceCurrency;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var OrderRepository
-     */
-    public $orderRepository;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    public $searchCriteriaBuilder;
-
-    /**
-     * History constructor.
+     *  History constructor.
+     * 
      * @param Context $context
      * @param CollectionFactory $orderCollectionFactory
      * @param CustomerSession $customerSession
@@ -65,22 +41,17 @@ class History extends \Magento\Sales\Block\Order\History
      * @param array $data
      */
     public function __construct(
-        Context $context,
-        CollectionFactory $orderCollectionFactory,
-        CustomerSession $customerSession,
-        Config $orderConfig,
-        OrderHelper $orderHelper,
-        PriceCurrencyInterface $priceCurrency,
-        LSR $LSR,
-        OrderRepository $orderRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
+        public Context $context,
+        public CollectionFactory $orderCollectionFactory,
+        public CustomerSession $customerSession,
+        public Config $orderConfig,
+        public OrderHelper $orderHelper,
+        public PriceCurrencyInterface $priceCurrency,
+        public LSR $lsr,
+        public OrderRepository $orderRepository,
+        public SearchCriteriaBuilder $searchCriteriaBuilder,
         array $data = []
     ) {
-        $this->orderHelper           = $orderHelper;
-        $this->priceCurrency         = $priceCurrency;
-        $this->lsr                   = $LSR;
-        $this->orderRepository       = $orderRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         parent::__construct($context, $orderCollectionFactory, $customerSession, $orderConfig, $data);
     }
 
@@ -104,7 +75,7 @@ class History extends \Magento\Sales\Block\Order\History
             $orders   = $this->orderHelper->getCurrentCustomerOrderHistory();
             if ($orders) {
                 try {
-                    $response = $orders;
+                    $response = $this->orderHelper->processOrderData($orders);
                 } catch (Exception $e) {
                     $this->_logger->error($e->getMessage());
                 }
@@ -122,10 +93,25 @@ class History extends \Magento\Sales\Block\Order\History
      * @param $storeId
      * @param $orderType
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function getFormattedPrice($amount, $currency = null, $storeId = null, $orderType = null)
     {
         return $this->orderHelper->getPriceWithCurrency($this->priceCurrency, $amount, $currency, $storeId, $orderType);
+    }
+
+    /**
+     * Get store currency code
+     *
+     * If store currency code is not passed then get store currency code from LSR
+     *
+     * @param $storeCurrencyCode
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getStoreCurrencyCode($storeCurrencyCode)
+    {
+        return ($storeCurrencyCode) ? $storeCurrencyCode : $this->lsr->getStoreCurrencyCode();
     }
 
     /**
@@ -168,31 +154,20 @@ class History extends \Magento\Sales\Block\Order\History
             false,
             $this->lsr->getCustomerIntegrationOnFrontend()
         )) {
-            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
-                // This condition is added to support viewing of orders created by POS
-                if (!empty($magOrder)) {
-                    return $this->getUrl(
-                        'customer/order/view',
-                        [
-                            'order_id' => $order->getId()
-                        ]
-                    );
-                }
-            }
-
-            if (!empty($magOrder) && !empty($order->getStoreCurrency())) {
-                if ($order->getStoreCurrency() != $magOrder->getOrderCurrencyCode()) {
-                    $order->setCustomerOrderNo(null);
+            if (!empty($magOrder) && !empty($order['Store Currency Code'])) {
+                if ($order['Store Currency Code'] != $magOrder->getOrderCurrencyCode()) {
+                    //$order->setCustomerOrderNo(null);
+                    $order['Customer Order No'] = null;
                 }
             }
 
             return $this->getUrl(
                 'customer/order/view',
                 [
-                    'order_id' => $order->getIdType() == 'Order' && $order->getCustomerOrderNo() ?
-                        $order->getCustomerOrderNo() : $order->getId(),
-                    'type'     => $order->getIdType() == 'Order' && $order->getCustomerOrderNo() ?
-                        DocumentIdType::ORDER : $order->getIdType()
+                    'order_id' => $order['IdType'] == 'Order' && $order['Customer Document ID'] ?
+                        $order['Customer Document ID'] : $order['Document ID'],
+                    'type'     => $order['IdType'] == 'Order' && $order['Document ID'] ?
+                        DocumentIdType::ORDER : $order['IdType']
                 ]
             );
         }
@@ -246,9 +221,9 @@ class History extends \Magento\Sales\Block\Order\History
      * @param $order
      * @return array|OrderInterface
      */
-    public function getOrderByDocumentId($order)
+    public function getOrderByDocumentId($documentId)
     {
-        return $this->orderHelper->getOrderByDocumentId($order);
+        return $this->orderHelper->getOrderByDocumentId($documentId);
     }
 
     /**

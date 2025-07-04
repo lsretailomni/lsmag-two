@@ -1,30 +1,20 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Order;
 
 use \Ls\Core\Model\LSR;
 use Magento\Framework\Exception\NoSuchEntityException;
 
-/**
- * Class Sequence
- * @package Ls\Omni\Plugin\Order
- */
 class Sequence
 {
 
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * Sequence constructor.
      * @param LSR $lsr
      */
     public function __construct(
-        LSR $lsr
+        public LSR $lsr
     ) {
-        $this->lsr = $lsr;
     }
 
     /**

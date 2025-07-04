@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\Checkout;
 
@@ -65,18 +66,20 @@ class CouponsProvider implements ConfigProviderInterface
      */
     public function getAvailableCoupons(): array
     {
-        $coupons = [];
+        $response = [];
+
         if ($this->isCustomerLoggedIn()) {
             $coupons = $this->loyaltyHelper->getAvailableCouponsForLoggedInCustomers();
-            foreach ($coupons as &$coupon) {
-                $each = $coupon;
-                $coupon = [];
-                $coupon["discount_code"] = $each->getDiscountno();
-                $coupon["description"] = $this->getFormattedDescription($each);
+
+            foreach ($coupons as $coupon) {
+                $response[] = [
+                    'discount_code' =>  $coupon->getDiscountno(),
+                    'description' =>  $this->getFormattedDescription($coupon)
+                ];
             }
         }
 
-        return $coupons;
+        return $response;
     }
 
     /**

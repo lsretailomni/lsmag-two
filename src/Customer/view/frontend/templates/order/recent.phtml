@@ -11,12 +11,13 @@ use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Core\Model\LSR;
 use Magento\Framework\Data\Helper\PostHelper;
 use Magento\Framework\Escaper;
-
+$orderCount = 0;
 ?>
 <div class="block block-dashboard-orders">
     <?php
-    $_orders    = $block->getOrderHistory();
-    $orderExist = false;
+    $_orders             = $block->getOrderHistory();
+    $orderExist          = false;
+    $magOrderIncrementId = "";
     ?>
     <div class="block-title order">
         <strong><?= /* @escapeNotVerified */
@@ -33,7 +34,7 @@ use Magento\Framework\Escaper;
         <?= $block->getChildHtml() ?>
         <?php if ($_orders): ?>
             <?php
-            if ($_orders instanceof ArrayOfSalesEntry): $_orders = $_orders->getSalesEntry();
+            if (is_array($_orders)):
                 if (count($_orders) > 0):
                     $orderExist = true;
                     ?>
@@ -61,34 +62,42 @@ use Magento\Framework\Escaper;
                             </thead>
                             <tbody>
                             <?php foreach ($_orders as $i => $_order):
-                                if (!$_order->getHasReturnSale() && $_order->getReturnSale()) {
+                                if ($orderCount == LSR::MAX_RECENT_ORDER) {
+                                    break;
+                                }
+
+
+                                if ($_order->getgetSaleIsReturnSale()) {
                                     continue;
                                 }
-                                $magOrder = $block->getOrderByDocumentId($_order);
+
+                                $magOrder = $block->getOrderByDocumentId($_order->getDocumentId());
                                 if ($magOrder) {
                                     $block->registerValueInRegistry($magOrder);
+                                    $magOrderIncrementId = $magOrder->getIncrementId();
                                 }
+                                $storeCurrency = $block->getStoreCurrencyCode($_order->getStoreCurrencyCode());
                                 ?>
                                 <tr>
                                     <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
                                         class="col id"><?= /* @escapeNotVerified */
-                                        $_order->getCustomerOrderNo() ? $_order->getCustomerOrderNo() : $_order->getId() ?></td>
+                                        $_order->getDocumentId() ? $_order->getDocumentId() : $magOrderIncrementId; ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
                                         class="col date"><?= /* @escapeNotVerified */
-                                        $block->getFormattedDate($_order->getCreateTime()) ?></td>
+                                        $block->getFormattedDate($_order->getDateTime()) ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>"
                                         class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : __('Not Applicable') ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Store Name')) ?>"
                                         class="col store-name"><?= $_order->getStoreName() ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Order Total')) ?>"
                                         class="col total"><?= /* @escapeNotVerified */
-                                        $block->getFormattedPrice($_order->getTotalAmount(), $_order->getStoreCurrency(), $_order->getStoreId(), $_order->getIdType()) ?></td>
+                                        $block->getFormattedPrice($_order->getGrossAmount(), $storeCurrency, "",$_order['IdType']) ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Status')) ?>"
                                         class="col status"><?= /* @escapeNotVerified */
-                                        $_order->getStatus() ?></td>
+                                        $_order['Status'] ?></td>
                                     <td data-th="<?= $escaper->escapeHtml(__('Actions')) ?>" class="col actions">
                                         <a href="<?= /* @escapeNotVerified */
-                                        $block->getViewUrl($_order, $magOrder) ?>" class="action view">
+                                        ($magOrder) ? $block->getViewUrl($_order, $magOrder) : $block->getViewUrl($_order) ?>" class="action view">
                                     <span><?= /* @escapeNotVerified */
                                         __('View Order') ?></span>
                                         </a>
@@ -106,7 +115,7 @@ use Magento\Framework\Escaper;
                                             <?php endif; ?>
                                             <?php if ($magOrder->canCancel() &&
                                             $block->orderCancellationOnFrontendIsEnabled() &&
-                                            strtolower($_order->getStatus()) !== strtolower(LSR::LS_STATE_CANCELED)
+                                            strtolower($_order['Status']) !== strtolower(LSR::LS_STATE_CANCELED)
                                         ): ?>
                                             <a href="#"
                                                class="action order cancel"
@@ -125,6 +134,7 @@ use Magento\Framework\Escaper;
                                         <?php endif; ?>
                                     </td>
                                 </tr>
+                            <?php ++$orderCount; ?>
                             <?php endforeach; ?>
                             </tbody>
                         </table>

@@ -39,8 +39,7 @@ class LsTables extends AbstractReset
         'ls_mag/replication/',
         'ls_mag/replication/last_execute_',
         'ls_mag/replication/status_',
-        'ls_mag/replication/max_key_',
-        'ls_mag/replication/app_id_'
+        'ls_mag/replication/last_entry_no_',
     ];
 
     /**

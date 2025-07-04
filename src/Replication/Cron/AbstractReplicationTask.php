@@ -363,7 +363,13 @@ abstract class AbstractReplicationTask
 
         foreach ($uniqueAttributes as $index => $attribute) {
             $key = array_search($attribute, $properties);
-            $sourceValue = $source->getData($key);
+
+            if (!$key) {
+                $sourceValue = $source->getData($attribute);
+            } else {
+                $sourceValue = $source->getData($key);
+            }
+
             $uniqueAttributesHash[] = ($sourceValue !== "" ? $sourceValue : $attribute) . '#' . $index;
         }
 

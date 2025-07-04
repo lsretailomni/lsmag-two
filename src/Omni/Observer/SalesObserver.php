@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer;
 
@@ -17,25 +18,13 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class SalesObserver implements ObserverInterface
 {
     /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    private $loyaltyHelper;
-
-    /**
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        LoyaltyHelper $loyaltyHelper
+        public BasketHelper $basketHelper,
+        public LoyaltyHelper $loyaltyHelper
     ) {
-        $this->basketHelper  = $basketHelper;
-        $this->loyaltyHelper = $loyaltyHelper;
     }
 
     /**
@@ -66,7 +55,7 @@ class SalesObserver implements ObserverInterface
             $basketData = $this->basketHelper->getBasketSessionValue();
 
             if (!empty($basketData)) {
-                $mobileTransaction = current($basketData->getMobiletransaction());
+                $mobileTransaction = current((array) $basketData->getMobiletransaction());
                 $grandTotal = $mobileTransaction->getGrossamount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;
                 $taxAmount = $mobileTransaction->getGrossamount() - $mobileTransaction->getNetamount();
