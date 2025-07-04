@@ -7,7 +7,7 @@ use Laminas\Validator\EmailAddress as ValidateEmailAddress;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Model\Central\GuzzleClient;
 use \Ls\Omni\Model\Central\TokenRequestService;
-use \Ls\Replication\Api\ReplStoreRepositoryInterface;
+use \Ls\Replication\Api\ReplStoreviewRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
 use \Ls\Replication\Logger\OmniLogger;
 use \Ls\Replication\Model\ResourceModel\ReplStoreview\CollectionFactory as ReplStoreCollection;
@@ -135,7 +135,7 @@ class AbstractHelperOmni extends AbstractHelper
      * @param ReplStoreCollection $storeCollectionFactory
      * @param Configuration $configuration
      * @param StockItemRepository $stockItemRepository
-     * @param ReplStoreRepositoryInterface $storeRepository
+     * @param ReplStoreviewRepositoryInterface $storeRepository
      * @param PriceHelper $priceHelper
      * @param WriterInterface $configWriter
      * @param DirectoryList $directoryList
@@ -214,7 +214,7 @@ class AbstractHelperOmni extends AbstractHelper
         public ReplStoreCollection $storeCollectionFactory,
         public Configuration $configuration,
         public StockItemRepository $stockItemRepository,
-        public ReplStoreRepositoryInterface $storeRepository,
+        public ReplStoreviewRepositoryInterface $storeRepository,
         public PriceHelper $priceHelper,
         public WriterInterface $configWriter,
         public DirectoryList $directoryList,

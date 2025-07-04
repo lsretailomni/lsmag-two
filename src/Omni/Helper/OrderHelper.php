@@ -74,11 +74,10 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function prepareOrder(Model\Order $order, RootMobileTransaction $oneListCalculateResponse)
     {
+        $rootCustomerOrderCreate = $this->createInstance(
+            RootCustomerOrderCreateV6::class
+        );
         try {
-            $rootCustomerOrderCreate = $this->createInstance(
-                RootCustomerOrderCreateV6::class
-            );
-
             $customerOrderCreateCoHeader = $this->createInstance(
                 CustomerOrderCreateCOHeaderV6::class
             );
@@ -170,7 +169,7 @@ class OrderHelper extends AbstractHelperOmni
 
             $pickupDateTimeslot = $order->getPickupDateTimeslot();
             if (!empty($pickupDateTimeslot)) {
-                $dateTimeFormat = "Y-m-d\T" . "H:i:00";
+                $dateTimeFormat = "Y-m-d";
                 $pickupDateTime = $this->dateTime->date($dateTimeFormat, $pickupDateTimeslot);
                 $customerOrderCreateCoHeader->addData([
                     CustomerOrderCreateCOHeaderV6::REQUESTED_DELIVERY_DATE => $pickupDateTime
@@ -198,7 +197,8 @@ class OrderHelper extends AbstractHelperOmni
                         CustomerOrderCreateCOLineV6::DISCOUNT_PERCENT => $orderLine->getDiscountpercent(),
                         CustomerOrderCreateCOLineV6::NET_AMOUNT => $orderLine->getNetamount(),
                         CustomerOrderCreateCOLineV6::VAT_AMOUNT => $orderLine->getTaxamount(),
-                        CustomerOrderCreateCOLineV6::AMOUNT => $orderLine->getNetamount() + $orderLine->getTaxamount(),
+                        CustomerOrderCreateCOLineV6::AMOUNT =>
+                            ($orderLine->getPrice() * $orderLine->getQuantity()) - $orderLine->getDiscountamount(),
                         CustomerOrderCreateCOLineV6::CLICK_AND_COLLECT => $isClickCollect,
                         CustomerOrderCreateCOLineV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId,
                         CustomerOrderCreateCOLineV6::EXTERNAL_ID => $id,
@@ -219,6 +219,7 @@ class OrderHelper extends AbstractHelperOmni
                     CustomerOrderCreateCODiscountLineV6::LINE_NO => $orderDiscountLine->getLineno(),
                     CustomerOrderCreateCODiscountLineV6::ENTRY_NO => $orderDiscountLine->getNo(),
                     CustomerOrderCreateCODiscountLineV6::OFFER_NO => $orderDiscountLine->getOfferno(),
+                    CustomerOrderCreateCODiscountLineV6::DISCOUNT_TYPE => $orderDiscountLine->getDiscounttype(),
                     CustomerOrderCreateCODiscountLineV6::PERIODIC_DISC_TYPE =>
                         $orderDiscountLine->getPeriodicdisctype(),
                     CustomerOrderCreateCODiscountLineV6::PERIODIC_DISC_GROUP =>
@@ -238,10 +239,12 @@ class OrderHelper extends AbstractHelperOmni
             $rootCustomerOrderCreate
                 ->setCustomerordercreatecolinev6($customerOrderCoLines)
                 ->setCustomerordercreatecodiscountlinev6($customerOrderDiscountCoLines);
-            return $rootCustomerOrderCreate;
+
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+
+        return $rootCustomerOrderCreate;
     }
 
     /**
@@ -498,25 +501,25 @@ class OrderHelper extends AbstractHelperOmni
      * Set required payment methods for the order
      *
      * @param Order $order
-     * @param $cardId
-     * @param $storeId
+     * @param string $cardId
+     * @param string $storeId
      * @return array
+     * @throws GuzzleException
      * @throws LocalizedException
      * @throws NoSuchEntityException
-     * @throws GuzzleException
      */
-    public function setOrderPayments(Model\Order $order, $cardId, $storeId)
+    public function setOrderPayments(Model\Order $order, string $cardId, string $storeId)
     {
-        $transId          = $order->getPayment()->getLastTransId();
-        $ccType           = $order->getPayment()->getCcType() ? substr($order->getPayment()->getCcType(), 0, 10) : '';
-        $cardNumber       = $order->getPayment()->getCcLast4();
-        $paidAmount       = $order->getPayment()->getAmountPaid();
+        $transId = $order->getPayment()->getLastTransId();
+        $ccType = $order->getPayment()->getCcType() ? substr($order->getPayment()->getCcType(), 0, 10) : '';
+        $cardNumber = $order->getPayment()->getCcLast4();
+        $paidAmount = $order->getPayment()->getAmountPaid();
         $authorizedAmount = $order->getPayment()->getAmountAuthorized();
-        $preApprovedDate  = date('Y-m-d', strtotime('+1 years'));
+        $preApprovedDate = date('Y-m-d', strtotime('+1 years'));
 
         $orderPaymentArray = [];
         //TODO change it to $paymentMethod->isOffline() == false when order edit option available for offline payments.
-        $paymentCode  = $order->getPayment()->getMethodInstance()->getCode();
+        $paymentCode = $order->getPayment()->getMethodInstance()->getCode();
         $tenderTypeId = $this->getPaymentTenderTypeId($paymentCode);
 
         $noOrderPayment = $this->paymentLineNotRequiredPaymentMethods($order);
@@ -525,7 +528,7 @@ class OrderHelper extends AbstractHelperOmni
         $isClickCollect = false;
 
         if ($shippingMethod !== null) {
-            $carrierCode    = $shippingMethod->getData('carrier_code');
+            $carrierCode = $shippingMethod->getData('carrier_code');
             $isClickCollect = $carrierCode == 'clickandcollect';
         }
         $lineNumber = 10000;
@@ -535,7 +538,7 @@ class OrderHelper extends AbstractHelperOmni
             $orderPayment->addData(
                 [
                     CustomerOrderCreateCOPaymentV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId,
-                    CustomerOrderCreateCOPaymentV6::LINE_NO  => $lineNumber,
+                    CustomerOrderCreateCOPaymentV6::LINE_NO => $lineNumber,
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT => $order->getGrandTotal(),
                     CustomerOrderCreateCOPaymentV6::TENDER_TYPE => $tenderTypeId,
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_VALID_DATE => $preApprovedDate,
@@ -545,13 +548,6 @@ class OrderHelper extends AbstractHelperOmni
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT_LCY => $order->getGrandTotal() * 1
                 ]
             );
-            // @codingStandardsIgnoreEnd
-            //default values for all payment typoes.
-//            $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
-//                ->setCurrencyFactor(1)
-//                ->setLineNumber('1')
-//                ->setExternalReference($order->getIncrementId())
-//                ->setAmount($order->getGrandTotal());
             // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
             if (!empty($transId)) {
                 $orderPayment->addData(
@@ -561,9 +557,6 @@ class OrderHelper extends AbstractHelperOmni
                         CustomerOrderCreateCOPaymentV6::TOKEN_NO => $transId,
                     ]
                 );
-//                $orderPayment->setCardType($ccType);
-//                $orderPayment->setCardNumber($cardNumber);
-//                $orderPayment->setTokenNumber($transId);
                 if (!empty($paidAmount)) {
                     $orderPayment->setType('1');
                 } else {
@@ -574,35 +567,18 @@ class OrderHelper extends AbstractHelperOmni
                     }
                 }
             }
-
-//            $orderPayment->setTenderType($tenderTypeId);
-//            $orderPayment->setPreApprovedValidDate($preApprovedDate);
             $orderPaymentArray[] = $orderPayment;
             $lineNumber += 10000;
         }
 
         if ($order->getLsPointsSpent()) {
             $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
-            $pointRate    = $this->loyaltyHelper->getPointRate();
-//            // @codingStandardsIgnoreStart
-//            $orderPaymentLoyalty = new Entity\OrderPayment();
-//            // @codingStandardsIgnoreEnd
-//            //default values for all payment types.
-//            $orderPaymentLoyalty->setCurrencyCode('LOY')
-//                ->setCurrencyFactor($pointRate)
-//                ->setLineNumber('2')
-//                ->setCardNumber($cardId)
-//                ->setExternalReference($order->getIncrementId())
-//                ->setAmount($order->getLsPointsSpent())
-//                ->setPreApprovedValidDate($preApprovedDate)
-//                ->setPaymentType(Entity\Enum\PaymentType::PAYMENT)
-//                ->setTenderType($tenderTypeId);
-
+            $pointRate = $this->loyaltyHelper->getPointRate();
             $orderPayment = $this->createInstance(CustomerOrderCreateCOPaymentV6::class);
             $orderPayment->addData(
                 [
                     CustomerOrderCreateCOPaymentV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId,
-                    CustomerOrderCreateCOPaymentV6::LINE_NO  => $lineNumber,
+                    CustomerOrderCreateCOPaymentV6::LINE_NO => $lineNumber,
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT => $order->getLsPointsSpent(),
                     CustomerOrderCreateCOPaymentV6::TENDER_TYPE => $tenderTypeId,
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_VALID_DATE => $preApprovedDate,
@@ -619,37 +595,14 @@ class OrderHelper extends AbstractHelperOmni
         }
 
         if ($order->getLsGiftCardAmountUsed()) {
-            $tenderTypeId   = $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
-//            $currencyFactor = 0;
-//            if (version_compare(
-//                $this->lsr->getCentralVersion($this->lsr->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES),
-//                '25',
-//                '<'
-//            )) {
-//                $currencyFactor = 1;
-//            }
+            $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
             $giftCardCurrencyCode = $order->getOrderCurrency()->getCurrencyCode();
-            // @codingStandardsIgnoreStart
-//            $orderPaymentGiftCard = new Entity\OrderPayment();
-//            // @codingStandardsIgnoreEnd
-//            //default values for all payment typoes.
-//            $orderPaymentGiftCard
-//                ->setCurrencyFactor($currencyFactor)
-//                ->setCurrencyCode($giftCardCurrencyCode)
-//                ->setAmount($order->getLsGiftCardAmountUsed())
-//                ->setLineNumber('3')
-//                ->setCardNumber($order->getLsGiftCardNo())
-//                ->setAuthorizationCode($order->getLsGiftCardPin())
-//                ->setExternalReference($order->getIncrementId())
-//                ->setPreApprovedValidDate($preApprovedDate)
-//                ->setTenderType($tenderTypeId)
-//                ->setPaymentType(Entity\Enum\PaymentType::PAYMENT);
 
             $orderPayment = $this->createInstance(CustomerOrderCreateCOPaymentV6::class);
             $orderPayment->addData(
                 [
                     CustomerOrderCreateCOPaymentV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId,
-                    CustomerOrderCreateCOPaymentV6::LINE_NO  => $lineNumber,
+                    CustomerOrderCreateCOPaymentV6::LINE_NO => $lineNumber,
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT => $order->getLsGiftCardAmountUsed(),
                     CustomerOrderCreateCOPaymentV6::TENDER_TYPE => $tenderTypeId,
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_VALID_DATE => $preApprovedDate,

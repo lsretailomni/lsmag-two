@@ -11,9 +11,7 @@ use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Model\Sales\AdminOrder\OrderEdit;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Redirect;
-use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -115,19 +113,17 @@ class Request extends Action
                         $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                         $response = $this->orderHelper->placeOrder($request);
 
-                        if ($response) {
-                            if (!empty($response->getResult()->getId())) {
-                                $documentId = $response->getResult()->getId();
-                                $order->setDocumentId($documentId);
-                                $order->addCommentToStatusHistory(
-                                    __('Order request has been sent to LS Central successfully by the admin manually.')
-                                );
-                                $this->orderRepository->save($order);
-                            }
-                            $this->messageManager->addSuccessMessage(
-                                __('Order request has been sent to LS Central successfully')
+                        if ($response && $response->getResponsecode() == "0000") {
+                            $documentId = $response->getCustomerorderid();
+                            $order->setDocumentId($documentId);
+                            $order->addCommentToStatusHistory(
+                                __('Order request has been sent to LS Central successfully by the admin manually.')
                             );
+                            $this->orderRepository->save($order);
                         }
+                        $this->messageManager->addSuccessMessage(
+                            __('Order request has been sent to LS Central successfully')
+                        );
                     }
                 }
             } catch (Exception $e) {
