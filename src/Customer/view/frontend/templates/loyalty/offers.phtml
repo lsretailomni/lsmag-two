@@ -7,17 +7,18 @@ use \Ls\Customer\Block\Loyalty\Offers;
 $should_use_block = false;
 $type             = $this->getType();
 $offers           = $this->getOffers();
-$total            = is_array($offers->getPublishedOfferLine()) ? count($offers->getPublishedOfferLine()) : 0;
+$total            = count($offers);
 $c                = 0;
 ?>
 <div class="coupons-view">
     <?php if ($should_use_block) : ?>
         <?php echo $this->getStaticBlock(); ?>
     <?php else : ?>
-        <?php if (is_array($offers->getPublishedOfferLine()) && $total > 0) : ?>
+        <?php if (is_array($offers) && $total > 0) : ?>
             <ul class=" coupons-grid">
-                <?php foreach ($offers->getPublishedOfferLine() as $offer) : ?>
+                <?php foreach ($offers as $key => $offer) : ?>
                     <?php
+                    $discountType = $this->getDiscountType($offer['Offer']->getDiscountType());
                     $offerProductCategory = $this->getOfferProductCategoryLink($offer);
                     if (!empty($offerProductCategory)) {
                         $c++;
@@ -32,33 +33,33 @@ $c                = 0;
                                     ?>
                                     <img id="coupon-collection-image-<?php echo $c ?>"
                                          src="<?php echo $this->getMediaPathToLoad() .
-                                             $images[0]; ?>" alt="<?php echo $offer->getDescription() ?> ">
+                                             $images[0]; ?>" alt="<?php echo $offer['Offer']->getDescription() ?> ">
                                 <?php endif; ?>
                             </div>
                             <div class="coupon-info">
                                 <div class="title">
-                                    <h3><?php echo $offer->getDescription(); ?></h3>
+                                    <h3><?php echo $offer['Offer']->getDescription(); ?></h3>
                                 </div>
-                                <?php if ($offer->getCode() == 'Coupon') { ?>
+                                <?php if ($discountType == 'Coupon') { ?>
                                     <div class="code">
-                                        <span><b><?php echo __("Code: "); ?></b><?php echo $offer->getOfferId(); ?></span>
+                                        <span><b><?php echo __("Code: "); ?></b><?php echo $offer['Offer']->getDiscountNo(); ?></span>
                                     </div>
                                 <?php } ?>
                                 <div class="code">
-                                    <span><b><?php echo __("Offer Type: "); ?></b><?php echo $offer->getCode(); ?></span>
+                                    <span><b><?php echo __("Offer Type: "); ?></b><?php echo $discountType; ?></span>
                                 </div>
-                                <?php if (!empty($offer->getExpirationDate())) {
-                                    $expirtyDate = $this->getOfferExpiryDate($offer->getExpirationDate());
-                                    if (!empty($expirtyDate)) {
+                                <?php if (!empty($offer['Offer']->getEndingDate())) {
+                                    $expiryDate = $this->getOfferExpiryDate($offer['Offer']->getEndingDate());
+                                    if (!empty($expiryDate)) {
                                         ?>
                                         <div class="date">
-                                            <span><b><?php echo __("Expiry: "); ?></b><?php echo $this->getOfferExpiryDate($offer->getExpirationDate()); ?></span>
+                                            <span><b><?php echo __("Expiry: "); ?></b><?php echo $expiryDate; ?></span>
                                         </div>
                                     <?php }
                                 }
                                 ?>
                                 <div class="coupon-description">
-                                    <p><?php echo $offer->getDetails(); ?></p>
+                                    <p><?php echo $offer['Offer']->getSecondarytext(); ?></p>
                                 </div>
                                 <?php if (!empty($offerProductCategory[0])) { ?>
                                     <p>
