@@ -423,7 +423,7 @@ class OrderHelper extends AbstractHelperOmni
      * @param RootCustomerOrderCreateV6 $request
      * @return Entity\OrderCreateResponse|ResponseInterface
      */
-    public function placeOrder(RootCustomerOrderCreateV6 $request)
+    public function placeOrder($request)
     {
         $operation = $this->createInstance(
             Operation\CustomerOrderCreateV6::class,

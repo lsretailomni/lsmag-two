@@ -100,7 +100,7 @@ class OrderObserver implements ObserverInterface
                     $response = $this->orderHelper->placeOrder($request);
                     try {
                         if ($response && $response->getResponsecode() == "0000") {
-                            $documentId = $response->getCustomerorderid();
+                            $documentId = $response->getHosporderreceiptno();
                             if (!empty($documentId)) {
                                 $order->setDocumentId($documentId);
                                 $this->basketHelper->setLastDocumentIdInCheckoutSession($documentId);
