@@ -19,8 +19,6 @@ use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\RootCustomerOrderCreateV6;
 use \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Client\Ecommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
@@ -728,12 +726,12 @@ class OrderHelper extends AbstractHelperOmni
             ]
         );
 
-        // @codingStandardsIgnoreEnd
         try {
             $response = $request->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
+
         return $response &&
         $response->getResponsecode() == "0000" &&
         !empty(current((array) $response->getRecords())->getData()) ? current((array) $response->getRecords()) : null;
@@ -1463,15 +1461,11 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function getOrderTypeId($type)
     {
-        switch ($type) {
-            case DocumentIdType::ORDER:
-                return 1;
-            case DocumentIdType::HOSP_ORDER:
-                return 2;
-            case DocumentIdType::RECEIPT:
-                return 0;
-        }
-        return 0;
+        return match ($type) {
+            DocumentIdType::ORDER => 1,
+            DocumentIdType::HOSP_ORDER => 2,
+            default => 0,
+        };
     }
 
     /**
