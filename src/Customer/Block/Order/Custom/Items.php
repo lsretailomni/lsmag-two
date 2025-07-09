@@ -42,7 +42,7 @@ class Items extends AbstractItems
     {
         $type = $this->_request->getParam('type');
         $order = $this->getOrder(true);
-        if ($this->getMagOrder() && $type != DocumentIdType::RECEIPT) {
+        if ($this->getMagOrder()) {
             $magentoOrder = $this->getMagOrder();
 
             if (!empty($magentoOrder) && !empty($order->getStoreCurrency())) {

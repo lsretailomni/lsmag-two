@@ -563,7 +563,7 @@ class ItemHelper extends AbstractHelperOmni
 
         return in_array($itemId, explode(',', $giftCardIdentifier)) ? $line->getId() == $quoteItem->getId() :
             (($itemId == $line->getNumber() && $variantId == $line->getVariantCode()) &&
-                ($uom == $line->getUnitOfMeasure() || (empty($line->getUnitOfMeasure()) &&
+                ($uom == $line->getUomid() || (empty($line->getUomid()) &&
                         $uom == $baseUnitOfMeasure)));
     }
 

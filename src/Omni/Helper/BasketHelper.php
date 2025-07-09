@@ -224,44 +224,67 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Get Order Lines and Discount Lines
      *
-     * @param Quote $quote
+     * @param \Magento\Sales\Model\Order $order
      * @return array
      * @throws InvalidEnumException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
-    public function getOrderLinesQuote(Quote $quote)
+    public function getOrderLinesQuote(\Magento\Sales\Model\Order $order)
     {
-        // @codingStandardsIgnoreLine
-        $websiteId     = $quote->getStore()->getWebsiteId();
-        $storeCode      = $this->lsr->getWebsiteConfig(
+        $quote = $this->cartRepository->get($order->getQuoteId());
+        $websiteId = $quote->getStore()->getWebsiteId();
+        $storeCode = $this->lsr->getWebsiteConfig(
             LSR::SC_SERVICE_STORE,
             $websiteId
         );
-        $basketResponse  = $quote->getBasketResponse();
-        $discountsArray  = [];
-        $itemsArray      = [];
+        $customerEmail = $order->getCustomerEmail();
+        $basketResponse = $quote->getBasketResponse();
+        $mobileTransaction = $mobileTransactionLines = $mobileTransactionDiscountLines = [];
+
         if (!empty($basketResponse)) {
             // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
-            $basketData     = $this->restoreModel(unserialize($basketResponse));
-            $discountsArray = $basketData->getMobiletransdiscountline();
-            $itemsArray     = $basketData->getMobiletransactionline();
+            $basketData = $this->restoreModel(unserialize($basketResponse));
+            $mobileTransaction = $basketData->getMobiletransaction();
+            $mobileTransactionDiscountLines = $basketData->getMobiletransdiscountline();
+            $mobileTransactionLines = $basketData->getMobiletransactionline();
         }
 
         $quoteItems = $quote->getAllVisibleItems();
 
-        if (empty($itemsArray)) {
+        if (empty($mobileTransaction)) {
+            $mobileTransaction[] = $this->createInstance(MobileTransaction::class);
+            current($mobileTransaction)->addData([
+                MobileTransaction::STORE_ID => $storeCode,
+            ]);
+        }
+
+        if (!$order->getCustomerIsGuest()) {
+            $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
+
+            if (empty($customer->getData('lsr_cardid'))) {
+                $this->contactHelper->syncCustomerAndAddress($customer);
+                $customer = $this->contactHelper->loadCustomerByEmailAndWebsiteId($customerEmail, $websiteId);
+            }
+
+            current($mobileTransaction)->addData([
+                MobileTransaction::MEMBER_CARD_NO => $customer->getData('lsr_cardid'),
+            ]);
+        }
+
+        if (empty($mobileTransactionLines)) {
             $lineNumber = 10000;
+
             foreach ($quoteItems as $quoteItem) {
                 list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                     $quoteItem->getSku()
                 );
-                $priceIncTax         = $discountPercentage = $discount = null;
+                $priceIncTax = $discountPercentage = $discount = null;
                 $regularPrice = $quoteItem->getOriginalPrice();
-                $finalPrice   = $quoteItem->getPriceInclTax();
+                $finalPrice = $quoteItem->getPriceInclTax();
 
                 if ($finalPrice < $regularPrice) {
-                    $priceIncTax        = $regularPrice;
-                    $discount           = ($regularPrice - $finalPrice) * $quoteItem->getData('qty');
+                    $priceIncTax = $regularPrice;
+                    $discount = ($regularPrice - $finalPrice) * $quoteItem->getData('qty');
                     $discountPercentage = (($regularPrice - $finalPrice) / $regularPrice) * 100;
                 }
 
@@ -298,7 +321,7 @@ class BasketHelper extends AbstractHelperOmni
                     MobileTransactionLine::DISCOUNT_PERCENT => $discountPercentage,
                 ]);
 
-                $itemsArray[] = $orderLine;
+                $mobileTransactionLines[] = $orderLine;
 
                 if ($discountPercentage && $discount) {
                     $orderDiscountLine = $this->createInstance(MobileTransDiscountLine::class);
@@ -309,17 +332,14 @@ class BasketHelper extends AbstractHelperOmni
                         MobileTransDiscountLine::DISCOUNT_AMOUNT => $discount,
                         MobileTransDiscountLine::DISCOUNT_PERCENT => $discountPercentage,
                     ]);
-                    $discountsArray[] = $orderDiscountLine;
+                    $mobileTransactionDiscountLines[] = $orderDiscountLine;
                 }
 
                 $lineNumber += 10000;
             }
         }
 
-        return [
-            'orderLinesArray'         => $itemsArray,
-            'orderDiscountLinesArray' => $discountsArray
-        ];
+        return [$mobileTransaction, $mobileTransactionLines, $mobileTransactionDiscountLines];
     }
 
     /**
@@ -855,37 +875,16 @@ class BasketHelper extends AbstractHelperOmni
     public function formulateCentralOrderRequestFromMagentoOrder(\Magento\Sales\Model\Order $order)
     {
         $orderEntity = $this->createInstance(RootMobileTransaction::class);
-        $quote = $this->cartRepository->get($order->getQuoteId());
-        $websiteId = $order->getStore()->getWebsiteId();
-        $customerEmail = $order->getCustomerEmail();
-        $webStore = $this->lsr->getWebsiteConfig(
-            LSR::SC_SERVICE_STORE,
-            $websiteId
-        );
-        $mobileTransaction = $this->createInstance(MobileTransaction::class);
-        $mobileTransaction->addData([
-            MobileTransaction::STORE_ID => $webStore,
-        ]);
 
-        if (!$order->getCustomerIsGuest()) {
-            $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
+        list($mobileTransaction,
+            $mobileTransactionLines,
+            $mobileTransactionDiscountLines
+            ) = $this->getOrderLinesQuote($order);
 
-            if (empty($customer->getData('lsr_cardid'))) {
-                $this->contactHelper->syncCustomerAndAddress($customer);
-                $customer = $this->contactHelper->loadCustomerByEmailAndWebsiteId($customerEmail, $websiteId);
-            }
-
-            $mobileTransaction->addData([
-                MobileTransaction::MEMBER_CARD_NO => $customer->getData('lsr_cardid'),
-            ]);
-        }
-        $orderDetails = $this->getOrderLinesQuote($quote);
-        $orderLinesArray = $orderDetails['orderLinesArray'];
-        $orderDiscountLinesArray = $orderDetails['orderDiscountLinesArray'];
         $orderEntity->addData([
-            RootMobileTransaction::MOBILE_TRANSACTION => [$mobileTransaction],
-            RootMobileTransaction::MOBILE_TRANSACTION_LINE => $orderLinesArray,
-            RootMobileTransaction::MOBILE_TRANS_DISCOUNT_LINE => $orderDiscountLinesArray,
+            RootMobileTransaction::MOBILE_TRANSACTION => $mobileTransaction,
+            RootMobileTransaction::MOBILE_TRANSACTION_LINE => $mobileTransactionLines,
+            RootMobileTransaction::MOBILE_TRANS_DISCOUNT_LINE => $mobileTransactionDiscountLines,
         ]);
 
         return $orderEntity;

@@ -437,6 +437,19 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
+     * Extract document_id from order response
+     *
+     * @param $response
+     * @return string
+     */
+    public function getDocumentIdFromResponseBasedOnIndustry($response)
+    {
+        return $response->getCustomerorderid();
+    }
+
+    /**
      * @param Model\Order\Address $magentoAddress
      * @return Entity\Address
      */
@@ -498,6 +511,8 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Set required payment methods for the order
      *
      * @param Order $order
@@ -693,7 +708,7 @@ class OrderHelper extends AbstractHelperOmni
      * This function is overriding in hospitality module
      * @param $docId
      * @param string $type
-     * @return Entity\SalesEntry|Entity\SalesEntryGetResponse|ResponseInterface|null
+     * @return GetSelectedSalesDoc_GetSelectedSalesDoc|null
      * @throws InvalidEnumException
      */
     public function getOrderDetailsAgainstId($docId, $type)
@@ -719,7 +734,9 @@ class OrderHelper extends AbstractHelperOmni
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response && $response->getResponsecode() == "0000" ? current((array) $response->getRecords()) : null;
+        return $response &&
+        $response->getResponsecode() == "0000" &&
+        !empty(current((array) $response->getRecords())->getData()) ? current((array) $response->getRecords()) : null;
     }
 
     /**
@@ -885,30 +902,12 @@ class OrderHelper extends AbstractHelperOmni
      *
      * @param $docId
      * @param $type
-     * @return SalesEntry|SalesEntry[]|SalesEntryGetResponse|SalesEntryGetSalesByOrderIdResponse|ResponseInterface|null
+     * @return GetSelectedSalesDoc_GetSelectedSalesDoc|null
      * @throws InvalidEnumException
-     * @throws NoSuchEntityException
      */
     public function fetchOrder($docId, $type)
     {
-        if (version_compare($this->lsr->getOmniVersion(), '2022.5.1', '>=') &&
-            $type == 0
-        ) {
-            if (version_compare($this->lsr->getOmniVersion(), '2023.10', '>')
-                && $this->lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $this->lsr->getCurrentWebsiteId())
-                == LSR::OnPremise) {
-                $response = $this->getSalesOrderByOrderIdNew($docId, $type);
-            } else {
-                $response = $this->getSalesOrderByOrderId($docId);
-            }
-            if (empty($response)) {
-                $response = $this->getOrderDetailsAgainstId($docId, $type);
-            }
-        } else {
-            $response = $this->getOrderDetailsAgainstId($docId, $type);
-        }
-
-        return $response;
+        return $this->getOrderDetailsAgainstId($docId, $type);
     }
 
     /**
@@ -1459,8 +1458,8 @@ class OrderHelper extends AbstractHelperOmni
     /**
      * Get order type based on the provided ID type
      *
-     * @param int $idType The type of ID to determine the order status
-     * @return string The corresponding order status based on the ID type
+     * @param string $type
+     * @return int
      */
     public function getOrderTypeId($type)
     {

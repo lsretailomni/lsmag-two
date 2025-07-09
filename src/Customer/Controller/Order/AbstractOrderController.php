@@ -6,6 +6,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
+use Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\OrderHelper;
@@ -51,7 +52,7 @@ class AbstractOrderController
         if ($this->request->getParam('order_id')) {
             $orderId = $this->request->getParam('order_id');
             $type    = $this->request->getParam('type');
-            
+
             if (empty($type)) {
                 $type = DocumentIdType::ORDER;
             }
@@ -84,14 +85,13 @@ class AbstractOrderController
      *
      * @param $orderId
      * @param $type
-     * @return SalesEntry|SalesEntry[]|SalesEntryGetResponse|SalesEntryGetSalesByOrderIdResponse|ResponseInterface|null
+     * @return GetSelectedSalesDoc_GetSelectedSalesDoc|null
      * @throws InvalidEnumException
-     * @throws NoSuchEntityException
      */
     public function fetchAndSetCurrentOrderInRegistry($orderId, $type)
     {
         $response = $this->orderHelper->fetchOrder($orderId, $type);
-        
+
         if ($response) {
             $this->orderHelper->setOrderInRegistry($response);
         }
