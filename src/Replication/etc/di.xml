@@ -380,7 +380,7 @@
     <preference for="Ls\Replication\Api\Data\ReplLscDataTranslationInterface"
                 type="Ls\Replication\Model\ReplLscDataTranslation"/>
     <preference for="Ls\Replication\Api\Data\ReplLscDataTranslationSearchResultsInterface"
-                type="Ls\Replication\Model\ReplLscDataTranslationkSearchResults"/>
+                type="Ls\Replication\Model\ReplLscDataTranslationSearchResults"/>
 
     <preference for="Ls\Replication\Api\ReplLscGs1databarBarcodeSetupRepositoryInterface"
                 type="Ls\Replication\Model\ReplLscGs1databarBarcodeSetupRepository"/>

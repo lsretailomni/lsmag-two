@@ -472,7 +472,7 @@ class ItemHelper extends AbstractHelperOmni
      */
     public function getItemAttributesGivenQuoteItem($quoteItem)
     {
-        if ($quoteItem->getProductType() != Type::DEFAULT_TYPE) {
+        if ($quoteItem->getProductType() != Type::DEFAULT_TYPE && $quoteItem->getProductType() != LSR::TYPE_GIFT_CARD) {
             $quoteItem = current($quoteItem->getChildren());
         }
 
@@ -548,7 +548,8 @@ class ItemHelper extends AbstractHelperOmni
     {
         $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
 
-        return in_array($itemId, explode(',', $giftCardIdentifier)) ? $line->getId() == $quoteItem->getId() :
+        return in_array($itemId, explode(',', $giftCardIdentifier)) ?
+            $line->getNumber() == $quoteItem->getProduct()->getLsrItemId() :
             (($itemId == $line->getNumber() && $variantId == $line->getVariantCode()) &&
                 ($uom == $line->getUnitOfMeasure() || (empty($line->getUnitOfMeasure()) &&
                         $uom == $baseUnitOfMeasure)));
