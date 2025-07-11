@@ -2,6 +2,7 @@
 
 namespace Ls\Customer\Block\Order;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\LSCMemberSalesBuffer;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
@@ -36,7 +37,7 @@ class Info extends AbstractOrderBlock
     /**
      * For getting shipping and billing address
      *
-     * @param false $isBillingAddress
+     * @param bool $isBillingAddress
      * @return string
      */
     public function getFormattedAddress(bool $isBillingAddress = false)
@@ -81,7 +82,7 @@ class Info extends AbstractOrderBlock
     /**
      * Get country name by country code
      *
-     * @param $countryCode
+     * @param string $countryCode
      * @return string
      */
     public function getCountryName($countryCode)
@@ -112,7 +113,7 @@ class Info extends AbstractOrderBlock
     /**
      * Retrieve current order model instance
      *
-     * @param $all
+     * @param bool $all
      * @return false|mixed|null
      */
     public function getOrder($all = false)
@@ -122,9 +123,10 @@ class Info extends AbstractOrderBlock
 
     /**
      * To fetch Status value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
      *
-     * @return mixed
+     * Depending on the structure of SalesEntry node
+     *
+     * @return string
      */
     public function getOrderStatus()
     {
@@ -136,7 +138,7 @@ class Info extends AbstractOrderBlock
      *
      * Depending on the structure of SalesEntry node
      *
-     * @return mixed
+     * @return bool
      */
     public function getClickAndCollectOrder()
     {
@@ -145,7 +147,9 @@ class Info extends AbstractOrderBlock
 
     /**
      * To fetch DocumentRegTime value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
+     *
+     * Depending on the structure of SalesEntry node
+     *
      * @return string|null
      */
     public function getDocRegistraionTime()
@@ -172,16 +176,23 @@ class Info extends AbstractOrderBlock
      */
     public function isClickAndCollectOrder()
     {
-        $order = $this->getOrder();
         $isCc = false;
-        $lines = !is_array($order->getLscMemberSalesDocLine()) ?
-            [$order->getLscMemberSalesDocLine()] :
-            $order->getLscMemberSalesDocLine();
+        $type = $this->_request->getParam('type');
+        $order = $this->getOrder();
 
-        foreach ($lines as $line) {
-            if ($line->getClickAndCollectLine()) {
-                $isCc = true;
-                break;
+        if ($type == 'Receipt') {
+            $lscMemberSalesBuffer = $order->getLscMemberSalesBuffer();
+            $isCc = !empty($lscMemberSalesBuffer->getCustomerDocumentId());
+        } else {
+            $lines = !is_array($order->getLscMemberSalesDocLine()) ?
+                [$order->getLscMemberSalesDocLine()] :
+                $order->getLscMemberSalesDocLine();
+
+            foreach ($lines as $line) {
+                if ($line->getClickAndCollectLine()) {
+                    $isCc = true;
+                    break;
+                }
             }
         }
 
@@ -233,8 +244,9 @@ class Info extends AbstractOrderBlock
      * DEV Notes:
      * 1st entry is for normal tender type
      * 2nd entry is specific for Giftcard.
+     *
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getPaymentDescription()
     {
@@ -310,6 +322,7 @@ class Info extends AbstractOrderBlock
 
     /**
      * Format loyalty points
+     *
      * @return string
      */
     public function getFormattedLoyaltyPoints()
@@ -324,6 +337,7 @@ class Info extends AbstractOrderBlock
     /**
      * Format gift card price
      * @param $giftCardAmount
+     *
      * @return string
      */
     public function getGiftCardFormattedPrice($giftCardAmount)
@@ -387,7 +401,7 @@ class Info extends AbstractOrderBlock
     /**
      * Check if order cancellation on frontend is enabled or not
      *
-     * @return bool|string
+     * @return array|string
      * @throws NoSuchEntityException
      */
     public function orderCancellationOnFrontendIsEnabled()

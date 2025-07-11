@@ -20,6 +20,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\RootCustomerOrderCreateV6;
 use \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\Ecommerce\Operation\GetSalesInfoByOrderId_GetSalesInfoByOrderId;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Client\Ecommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
 use \Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
@@ -714,7 +715,7 @@ class OrderHelper extends AbstractHelperOmni
         $response = null;
         $typeId   = $this->getOrderTypeId($type);
         // @codingStandardsIgnoreStart
-        $request = $this->dataHelper->createInstance(
+        $request = $this->createInstance(
             GetSelectedSalesDoc_GetSelectedSalesDoc::class,
             []
         );
@@ -765,67 +766,74 @@ class OrderHelper extends AbstractHelperOmni
      *
      * @param $docId
      * @param $type
-     * @return SalesEntry[]|Entity\SalesEntryGetSalesExtByOrderIdResponse|ResponseInterface
+     * @return GetSalesInfoByOrderId_GetSalesInfoByOrderId|null
      * @throws InvalidEnumException
      */
     public function getSalesOrderByOrderIdNew($docId, $type)
     {
-        $response = null;
-        // @codingStandardsIgnoreStart
-        $request = new Operation\SalesEntryGetSalesExtByOrderId();
-        $order   = new Entity\SalesEntryGetSalesExtByOrderId();
-        $order->setOrderId($docId);
-        // @codingStandardsIgnoreEnd
-        try {
-            $response = $request->execute($order);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        if ($response && $response->getSalesEntryGetSalesExtByOrderIdResult()) {
-            if (!empty($response->getSalesEntryGetSalesExtByOrderIdResult()->getSalesEntries()->getSalesEntry())) {
-                return $response->getSalesEntryGetSalesExtByOrderIdResult()->getSalesEntries()->getSalesEntry();
-            } elseif (!empty($response->getSalesEntryGetSalesExtByOrderIdResult()->getShipments()
-                ->getSalesEntryShipment())) {
-                $result          = $response->getSalesEntryGetSalesExtByOrderIdResult();
-                $cardId          = $result->getCardId();
-                $orderId         = $result->getOrderId();
-                $response        = $result->getShipments()->getSalesEntryShipment();
-                $salesEntryArray = [];
-                foreach ($response as $shipment) {
-                    $salesEntry          = new SalesEntry();
-                    $salesEntryLineArray = new Entity\ArrayOfSalesEntryLine();
-                    $salesEntryLines     = [];
-                    $salesEntry->setId($shipment->getId());
-                    $salesEntry->setIdType($type);
-                    $salesEntry->setShipToAddress($shipment->getAddress());
-                    $salesEntry->setCustomerOrderNo($orderId);
-                    $salesEntry->setDocumentRegTime($shipment->getShipmentDate());
-                    $salesEntry->setStatus(Entity\Enum\SalesEntryStatus::PROCESSING);
-                    $salesEntry->setId($shipment->getId());
-                    $salesEntry->setCardId($cardId);
-                    $salesEntry->setShippingAgentCode($shipment->getAgentCode());
-                    $salesEntry->setContactName($shipment->getName());
-                    foreach ($shipment->getLines() as $line) {
-                        $salesEntryLine = new Entity\SalesEntryLine();
-                        $salesEntryLine->setItemId($line->getItemId());
-                        $salesEntryLine->setLineNumber($line->getLineNumber());
-                        $salesEntryLine->setItemDescription($line->getItemDescription());
-                        $salesEntryLine->setUomId($line->getUomId());
-                        $salesEntryLine->setVariantId($line->getVariantId());
-                        $salesEntryLine->setQuantity($line->getQuantity());
-                        $salesEntryLines[] = $salesEntryLine;
-                    }
-                    $salesEntryLineArray->setSalesEntryLine($salesEntryLines);
-                    $salesEntry->setLines($salesEntryLineArray);
-                    $salesEntryArray[] = $salesEntry;
-                }
-                return $salesEntryArray;
-            } else {
-                return null;
-            }
-        }
+        $operation = $this->createInstance(GetSalesInfoByOrderId_GetSalesInfoByOrderId::class);
+        $operation->setOperationInput([
+            'customerOrderId' => $docId
+        ]);
+        $response = $operation->execute();
 
-        return null;
+        return $response && $response->getResponseCode() == "0000" ?
+            current((array)$response->getRecords()) : $response;
+//        // @codingStandardsIgnoreStart
+//        $request = new Operation\SalesEntryGetSalesExtByOrderId();
+//        $order   = new Entity\SalesEntryGetSalesExtByOrderId();
+//        $order->setOrderId($docId);
+//        // @codingStandardsIgnoreEnd
+//        try {
+//            $response = $request->execute($order);
+//        } catch (Exception $e) {
+//            $this->_logger->error($e->getMessage());
+//        }
+//        if ($response && $response->getSalesEntryGetSalesExtByOrderIdResult()) {
+//            if (!empty($response->getSalesEntryGetSalesExtByOrderIdResult()->getSalesEntries()->getSalesEntry())) {
+//                return $response->getSalesEntryGetSalesExtByOrderIdResult()->getSalesEntries()->getSalesEntry();
+//            } elseif (!empty($response->getSalesEntryGetSalesExtByOrderIdResult()->getShipments()
+//                ->getSalesEntryShipment())) {
+//                $result          = $response->getSalesEntryGetSalesExtByOrderIdResult();
+//                $cardId          = $result->getCardId();
+//                $orderId         = $result->getOrderId();
+//                $response        = $result->getShipments()->getSalesEntryShipment();
+//                $salesEntryArray = [];
+//                foreach ($response as $shipment) {
+//                    $salesEntry          = new SalesEntry();
+//                    $salesEntryLineArray = new Entity\ArrayOfSalesEntryLine();
+//                    $salesEntryLines     = [];
+//                    $salesEntry->setId($shipment->getId());
+//                    $salesEntry->setIdType($type);
+//                    $salesEntry->setShipToAddress($shipment->getAddress());
+//                    $salesEntry->setCustomerOrderNo($orderId);
+//                    $salesEntry->setDocumentRegTime($shipment->getShipmentDate());
+//                    $salesEntry->setStatus(Entity\Enum\SalesEntryStatus::PROCESSING);
+//                    $salesEntry->setId($shipment->getId());
+//                    $salesEntry->setCardId($cardId);
+//                    $salesEntry->setShippingAgentCode($shipment->getAgentCode());
+//                    $salesEntry->setContactName($shipment->getName());
+//                    foreach ($shipment->getLines() as $line) {
+//                        $salesEntryLine = new Entity\SalesEntryLine();
+//                        $salesEntryLine->setItemId($line->getItemId());
+//                        $salesEntryLine->setLineNumber($line->getLineNumber());
+//                        $salesEntryLine->setItemDescription($line->getItemDescription());
+//                        $salesEntryLine->setUomId($line->getUomId());
+//                        $salesEntryLine->setVariantId($line->getVariantId());
+//                        $salesEntryLine->setQuantity($line->getQuantity());
+//                        $salesEntryLines[] = $salesEntryLine;
+//                    }
+//                    $salesEntryLineArray->setSalesEntryLine($salesEntryLines);
+//                    $salesEntry->setLines($salesEntryLineArray);
+//                    $salesEntryArray[] = $salesEntry;
+//                }
+//                return $salesEntryArray;
+//            } else {
+//                return null;
+//            }
+//        }
+
+//        return $response;
     }
 
     /**
@@ -905,7 +913,16 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function fetchOrder($docId, $type)
     {
-        return $this->getOrderDetailsAgainstId($docId, $type);
+        $fetchedOrder = null;
+
+        if ($type == 'Receipt') {
+            $order = $this->getOrderDetailsAgainstId($docId, $type);
+            $orderLscMemberSalesBuffer = $order->getLscMemberSalesBuffer();
+            $docId = $orderLscMemberSalesBuffer->getCustomerDocumentId() ?? $docId;
+            $fetchedOrder = $this->getSalesOrderByOrderIdNew($docId, $type);
+        }
+
+        return $fetchedOrder ?? $this->getOrderDetailsAgainstId($docId, $type);
     }
 
     /**
@@ -927,7 +944,11 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function setCurrentMagOrderInRegistry($salesEntry)
     {
-        $order = $this->getOrderByDocumentId($salesEntry->getLscMemberSalesBuffer()->getDocumentId());
+        $lscMemberSalesBuffer = $salesEntry->getLscMemberSalesBuffer();
+        $documentId = !empty($lscMemberSalesBuffer->getCustomerDocumentId()) ?
+            $lscMemberSalesBuffer->getCustomerDocumentId() :
+            (!empty($lscMemberSalesBuffer->getDocumentId()) ? $lscMemberSalesBuffer->getDocumentId() : "");
+        $order = $this->getOrderByDocumentId($documentId);
         $this->registerGivenValueInRegistry('current_mag_order', $order);
     }
 
