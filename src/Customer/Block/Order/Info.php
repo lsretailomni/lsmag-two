@@ -98,14 +98,10 @@ class Info extends AbstractOrderBlock
     {
         $order = $this->getLscMemberSalesBuffer();
         if ($order) {
-            $customerOrderNo = $this->orderHelper->getParameterValues($order, "Document ID");
-            $orderId         = $customerOrderNo ?: $this->orderHelper->getParameterValues($order, "Id");
+            $customerOrderNo = $this->orderHelper->getParameterValues($order, "Customer Document ID");
+            $orderId         = $customerOrderNo ?: $this->orderHelper->getParameterValues($order, "Document ID");
 
-            if (!empty($customerOrderNo)) {
-                $type = __('Order');
-            } else {
-                $type = $order->getIdType();
-            }
+            $type = __('Order');
             $this->pageConfig->getTitle()->set(__('%1 # %2', $type, $orderId));
         }
     }
@@ -166,7 +162,7 @@ class Info extends AbstractOrderBlock
     {
         $order = $this->getOrder();
 
-        return $order->getLscMemberSalesBuffer();
+        return $this->orderHelper->getLscMemberSalesBuffer($order);
     }
 
     /**
@@ -177,22 +173,16 @@ class Info extends AbstractOrderBlock
     public function isClickAndCollectOrder()
     {
         $isCc = false;
-        $type = $this->_request->getParam('type');
         $order = $this->getOrder();
 
-        if ($type == 'Receipt') {
-            $lscMemberSalesBuffer = $order->getLscMemberSalesBuffer();
-            $isCc = !empty($lscMemberSalesBuffer->getCustomerDocumentId());
-        } else {
-            $lines = !is_array($order->getLscMemberSalesDocLine()) ?
-                [$order->getLscMemberSalesDocLine()] :
-                $order->getLscMemberSalesDocLine();
+        $lines = !is_array($order->getLscMemberSalesDocLine()) ?
+            [$order->getLscMemberSalesDocLine()] :
+            $order->getLscMemberSalesDocLine();
 
-            foreach ($lines as $line) {
-                if ($line->getClickAndCollectLine()) {
-                    $isCc = true;
-                    break;
-                }
+        foreach ($lines as $line) {
+            if ($line->getClickAndCollectLine()) {
+                $isCc = true;
+                break;
             }
         }
 

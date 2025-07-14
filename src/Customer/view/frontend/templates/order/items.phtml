@@ -9,7 +9,7 @@ use \Ls\Customer\Block\Order\Items;
 use Magento\Sales\Model\Order\Item;
 
 $order           = $block->getOrder(true);
-$transactions    = is_array($order) ? $order : [$order];
+$transactions    = $block->getCurrentTransaction();
 $checkIsShipment = $block->checkIsShipment();
 
 ?>

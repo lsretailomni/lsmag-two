@@ -3,8 +3,8 @@
 namespace Ls\Customer\Block\Order\Custom;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Helper\OrderHelper;
+use Magento\Framework\DataObject;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Block\Items\AbstractItems;
 use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
@@ -19,6 +19,7 @@ class Items extends AbstractItems
      * @param Context $context
      * @param LSR $lsr
      * @param OrderHelper $orderHelper
+     * @param Collection $itemCollection
      * @param CollectionFactory $itemCollectionFactory
      * @param array $data
      */
@@ -36,23 +37,23 @@ class Items extends AbstractItems
     /**
      * Get items
      *
-     * @return \Magento\Framework\DataObject[]
+     * @return DataObject[]
      */
     public function getItems()
     {
         $type = $this->_request->getParam('type');
         $order = $this->getOrder(true);
-        if ($this->getMagOrder()) {
-            $magentoOrder = $this->getMagOrder();
-
-            if (!empty($magentoOrder) && !empty($order->getStoreCurrency())) {
-                if ($order->getStoreCurrency() != $magentoOrder->getOrderCurrencyCode()) {
-                    $magentoOrder = null;
-                }
-            }
-            return $this->itemCollection->getItems();
-        }
-
+//        if ($this->getMagOrder()) {
+//            $magentoOrder = $this->getMagOrder();
+//
+//            if (!empty($magentoOrder) && !empty($order->getStoreCurrency())) {
+//                if ($order->getStoreCurrency() != $magentoOrder->getOrderCurrencyCode()) {
+//                    $magentoOrder = null;
+//                }
+//            }
+//            return $this->itemCollection->getItems();
+//        }
+        $documentId = $this->_request->getParam('order_id');
         $orderLines = $order->getLscMemberSalesDocLine();
         if (!is_array($orderLines)) {
             $orderLines = [$orderLines];
@@ -69,9 +70,10 @@ class Items extends AbstractItems
 //            if ($line->getLineNo() != $line->getParentLine()) {
 //                unset($orderLines[$key]);
 //            }
-            if ($line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
+            if ($line->getDocumentId() !== $documentId ||
+                $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)
+            ) {
                 unset($orderLines[$key]);
-                break;
             }
         }
         return $orderLines;

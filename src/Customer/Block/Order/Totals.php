@@ -22,16 +22,6 @@ class Totals extends AbstractOrderBlock
     public $loyaltyPointAmount = 0;
 
     /**
-     * Get items.
-     *
-     * @return array|null
-     */
-    public function getItems()
-    {
-        return $this->getData('items');
-    }
-
-    /**
      * Get formatted price
      *
      * @param $amount
@@ -83,8 +73,8 @@ class Totals extends AbstractOrderBlock
      */
     public function getNetAmount()
     {
-        if ($this->getOrder() && !empty($this->getOrder()->getLscMemberSalesBuffer())) {
-            return $this->getOrder()->getLscMemberSalesBuffer()->getNetAmount();
+        if (!empty($lscMemberSalesBuffer = current($this->getCurrentTransaction()))) {
+            return $lscMemberSalesBuffer->getNetAmount();
         }
 
         return 0.0;
@@ -93,12 +83,12 @@ class Totals extends AbstractOrderBlock
     /**
      * To fetch TotalAmount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
      *
-     * @return mixed
+     * @return float
      */
     public function getGrandTotal()
     {
-        if ($this->getOrder() && !empty($this->getOrder()->getLscMemberSalesBuffer())) {
-            return $this->getOrder()->getLscMemberSalesBuffer()->getGrossAmount();
+        if (!empty($lscMemberSalesBuffer = current($this->getCurrentTransaction()))) {
+            return $lscMemberSalesBuffer->getGrossAmount();
         }
 
         return 0.0;
@@ -121,8 +111,8 @@ class Totals extends AbstractOrderBlock
      */
     public function getTotalDiscount()
     {
-        if ($this->getOrder() && !empty($this->getOrder()->getLscMemberSalesBuffer())) {
-            return $this->getOrder()->getLscMemberSalesBuffer()->getDiscountAmount();
+        if (!empty($lscMemberSalesBuffer = current($this->getCurrentTransaction()))) {
+            return $lscMemberSalesBuffer->getDiscountAmount();
         }
 
         return 0.0;
@@ -136,7 +126,7 @@ class Totals extends AbstractOrderBlock
      */
     public function getShipmentChargeLineFee()
     {
-        $orderLines = $this->getLines();
+        $orderLines = $this->getItems();
         $fee        = 0;
         if (!is_array($orderLines)) {
             $orderLines = [$orderLines];
@@ -209,16 +199,42 @@ class Totals extends AbstractOrderBlock
         return [implode(', ', $methods), $giftCardInfo, $loyaltyInfo];
     }
 
-    /**
-     * Get lines
-     *
-     * @return mixed
-     */
-    public function getLines()
+
+    public function getCurrentTransaction()
     {
-        return ($this->getItems()) ? $this->getItems() : $this->getOrder(true)->getLscMemberSalesDocLine();
+        $order = $this->getOrder(true);
+        $documentId = $this->_request->getParam('order_id');
+        $requiredTransaction = null;
+
+        foreach ($order->getLscMemberSalesBuffer() ?? [] as $transaction) {
+            if ($transaction->getDocumentId() == $documentId) {
+                $requiredTransaction = $transaction;
+                break;
+            }
+        }
+
+        return [$requiredTransaction] ?? $order->getLscMemberSalesBuffer();
     }
 
+    /**
+     * Get orderLines either using magento order or central order object
+     *
+     * @return array
+     */
+    public function getItems()
+    {
+        $order = $this->getOrder(true);
+        $orderLines = $order->getLscMemberSalesDocLine();
+        $documentId = $this->_request->getParam('order_id');
+
+        foreach ($orderLines as $key => $line) {
+            if ($line->getDocumentId() !== $documentId || $line->getEntryType() == 1) {
+                unset($orderLines[$key]);
+            }
+        }
+
+        return $orderLines;
+    }
 
     /**
      * Get order payments

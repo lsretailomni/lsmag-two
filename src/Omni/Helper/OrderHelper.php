@@ -871,13 +871,25 @@ class OrderHelper extends AbstractHelperOmni
     ) {
         $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         $order = $this->getOrder();
-        $orderLscMemberSalesBuffer = $order->getLscMemberSalesBuffer();
+        $orderLscMemberSalesBuffer = $this->getLscMemberSalesBuffer($order);
         $orderCardId = $orderLscMemberSalesBuffer->getMemberCardNo();
 
         if ($cardId == $orderCardId) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get order header
+     *
+     * @param $salesEntry
+     * @return Entity\LSCMemberSalesBuffer
+     */
+    public function getLscMemberSalesBuffer($salesEntry)
+    {
+        return is_array($salesEntry->getLscMemberSalesBuffer()) ?
+        current($salesEntry->getLscMemberSalesBuffer()) : $salesEntry->getLscMemberSalesBuffer();
     }
 
     /**
@@ -917,7 +929,7 @@ class OrderHelper extends AbstractHelperOmni
 
         if ($type == 'Receipt') {
             $order = $this->getOrderDetailsAgainstId($docId, $type);
-            $orderLscMemberSalesBuffer = $order->getLscMemberSalesBuffer();
+            $orderLscMemberSalesBuffer = $this->getLscMemberSalesBuffer($order);
             $docId = $orderLscMemberSalesBuffer->getCustomerDocumentId() ?? $docId;
             $fetchedOrder = $this->getSalesOrderByOrderIdNew($docId, $type);
         }
@@ -944,7 +956,7 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function setCurrentMagOrderInRegistry($salesEntry)
     {
-        $lscMemberSalesBuffer = $salesEntry->getLscMemberSalesBuffer();
+        $lscMemberSalesBuffer = $this->getLscMemberSalesBuffer($salesEntry);
         $documentId = !empty($lscMemberSalesBuffer->getCustomerDocumentId()) ?
             $lscMemberSalesBuffer->getCustomerDocumentId() :
             (!empty($lscMemberSalesBuffer->getDocumentId()) ? $lscMemberSalesBuffer->getDocumentId() : "");
