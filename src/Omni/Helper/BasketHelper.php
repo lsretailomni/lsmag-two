@@ -693,7 +693,9 @@ class BasketHelper extends AbstractHelperOmni
                 }
 
                 if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
-                    $oneListRequest->setShipToCountryCode($oneList->getShipToCountryCode());
+                    $oneListRequest->setShipToCountryCode($oneList->getShipToCountryCode() ?? null);
+                    $oneListRequest->setShipToCounty($oneList->getShipToCounty() ?? null);
+                    $oneListRequest->setShipToPostCode($oneList->getShipToPostCode() ?? null);
                 }
 
                 if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
@@ -1166,7 +1168,16 @@ class BasketHelper extends AbstractHelperOmni
     {
         if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
             $country = $quote->getShippingAddress()->getCountryId();
+
             $oneList->setShipToCountryCode($country);
+
+            if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
+                $postCode = $quote->getShippingAddress()->getPostcode();
+                $county = $quote->getShippingAddress()->getRegionCode();
+                $oneList
+                    ->setShipToPostCode($postCode)
+                    ->setShipToCounty($county);
+            }
         }
 
         $basketData = $this->update($oneList);
