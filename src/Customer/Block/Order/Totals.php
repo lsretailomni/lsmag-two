@@ -53,8 +53,8 @@ class Totals extends AbstractOrderBlock
     public function getTotalTax()
     {
         $grandTotal     = $this->getGrandTotal();
-        $lineItemObj    = ($this->getItems()) ? $this->getItems() : $this->getOrder()->getData();
-        $totalNetAmount = $this->orderHelper->getFilterValues($lineItemObj, "Net Amount", "LSCMemberSalesBuffer");
+
+        $totalNetAmount = $this->getNetAmount();
 
         return ($grandTotal - $totalNetAmount);
     }
@@ -67,10 +67,27 @@ class Totals extends AbstractOrderBlock
      */
     public function getTotalNetAmount()
     {
-        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder()->getData();
+        $totalNetAmount = $this->getNetAmount();
+
+        $totalDiscount = $this->getTotalDiscount();
+
         $shipmentFee = $this->getShipmentChargeLineFee();
-        return (float)$this->orderHelper->getParameterValues($lineItemObj, "TotalNetAmount") - (float)$shipmentFee
-            + (float)$this->orderHelper->getParameterValues($lineItemObj, "TotalDiscount");
+
+        return $totalNetAmount - (float)$shipmentFee + $totalDiscount;
+    }
+
+    /**
+     * Get net amount from central order
+     *
+     * @return float
+     */
+    public function getNetAmount()
+    {
+        if ($this->getOrder() && !empty($this->getOrder()->getLscMemberSalesBuffer())) {
+            return $this->getOrder()->getLscMemberSalesBuffer()->getNetAmount();
+        }
+
+        return 0.0;
     }
 
     /**
@@ -80,8 +97,11 @@ class Totals extends AbstractOrderBlock
      */
     public function getGrandTotal()
     {
-        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder()->getData();
-        return $this->orderHelper->getFilterValues($lineItemObj, "Gross Amount", "LSCMemberSalesBuffer");
+        if ($this->getOrder() && !empty($this->getOrder()->getLscMemberSalesBuffer())) {
+            return $this->getOrder()->getLscMemberSalesBuffer()->getGrossAmount();
+        }
+
+        return 0.0;
     }
 
     /**
@@ -101,8 +121,11 @@ class Totals extends AbstractOrderBlock
      */
     public function getTotalDiscount()
     {
-        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        return $this->orderHelper->getFilterValues($lineItemObj, "Discount Amount", "LSCMemberSalesBuffer");
+        if ($this->getOrder() && !empty($this->getOrder()->getLscMemberSalesBuffer())) {
+            return $this->getOrder()->getLscMemberSalesBuffer()->getDiscountAmount();
+        }
+
+        return 0.0;
     }
 
     /**
@@ -158,7 +181,7 @@ class Totals extends AbstractOrderBlock
         $loyaltyInfo       = [];
         $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping();
         if ($paymentLines) {
-            if(!is_array($paymentLines)) {
+            if (!is_array($paymentLines)) {
                 $paymentLines = [$paymentLines];
             }
             foreach ($paymentLines as $line) {
@@ -198,14 +221,19 @@ class Totals extends AbstractOrderBlock
 
 
     /**
-     * Get Ordre payments
+     * Get order payments
      *
-     * @return mixed
+     * @return array|null
      */
     public function getOrderPayments()
     {
-        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        return $lineItemObj["LSCMemberSalesDocLine"] ?? null;
+        if ($this->getOrder() && !empty($this->getOrder()->getLscMemberSalesDocLine())) {
+            return is_array($this->getOrder()->getLscMemberSalesDocLine()) ?
+                $this->getOrder()->getLscMemberSalesDocLine() :
+                [$this->getOrder()->getLscMemberSalesDocLine()];
+        }
+
+        return null;
     }
 
     /**

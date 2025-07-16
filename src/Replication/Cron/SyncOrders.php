@@ -2,6 +2,7 @@
 
 namespace Ls\Replication\Cron;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
@@ -9,7 +10,6 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Sales\Model\ResourceModel\Order as OrderResourceModel;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
-use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -17,39 +17,9 @@ use Psr\Log\LoggerInterface;
 /** Syncing order through cron*/
 class SyncOrders
 {
-    /**
-     * @var ReplicationHelper
-     */
-    public $replicationHelper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
 
     /** @var StoreInterface $store */
     public $store;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /** @var OrderResourceModel */
-    private $orderResourceModel;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /** @var StoreManagerInterface */
-    public $storeManager;
 
     /**
      * @param LSR $lsr
@@ -61,21 +31,14 @@ class SyncOrders
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        LSR $lsr,
-        ReplicationHelper $replicationHelper,
-        OrderHelper $orderHelper,
-        BasketHelper $basketHelper,
-        OrderResourceModel $orderResourceModel,
-        LoggerInterface $logger,
-        StoreManagerInterface $storeManager
+        public LSR $lsr,
+        public ReplicationHelper $replicationHelper,
+        public OrderHelper $orderHelper,
+        public BasketHelper $basketHelper,
+        public OrderResourceModel $orderResourceModel,
+        public LoggerInterface $logger,
+        public StoreManagerInterface $storeManager
     ) {
-        $this->lsr                = $lsr;
-        $this->replicationHelper  = $replicationHelper;
-        $this->orderHelper        = $orderHelper;
-        $this->basketHelper       = $basketHelper;
-        $this->orderResourceModel = $orderResourceModel;
-        $this->logger             = $logger;
-        $this->storeManager       = $storeManager;
     }
 
     /**
@@ -83,7 +46,7 @@ class SyncOrders
      *
      * @param null $storeData
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute($storeData = null)
     {
@@ -112,7 +75,7 @@ class SyncOrders
                             try {
                                 $documentId = null;
                                 if ($order->getRelationParentId()) {
-                                    $oldOrder   = $this->orderHelper->getMagentoOrderGivenEntityId(
+                                    $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId(
                                         $order->getRelationParentId()
                                     );
                                     if ($oldOrder) {
@@ -127,18 +90,18 @@ class SyncOrders
                                     );
 
                                     if (!empty($basketData)) {
-                                        $request  = $this->orderHelper->prepareOrder($order, $basketData);
+                                        $request = $this->orderHelper->prepareOrder($order, $basketData);
                                         $response = $this->orderHelper->placeOrder($request);
 
-                                        if ($response) {
-                                            if (!empty($response->getResult()->getId())) {
-                                                $documentId = $response->getResult()->getId();
-                                                $order->setDocumentId($documentId);
-                                                $order->addCommentToStatusHistory(
-                                                    __('Order request has been sent to LS Central successfully by the cron.')
-                                                );
-                                                $this->orderResourceModel->save($order);
-                                            }
+                                        if ($response && $response->getResponsecode() == "0000") {
+                                            $documentId = $this->orderHelper->getDocumentIdFromResponseBasedOnIndustry(
+                                                $response
+                                            );
+                                            $order->setDocumentId($documentId);
+                                            $order->addCommentToStatusHistory(
+                                                __('Order request has been sent to LS Central successfully by the cron.')
+                                            );
+                                            $this->orderResourceModel->save($order);
                                         }
                                     }
                                 }
@@ -170,7 +133,7 @@ class SyncOrders
      *
      * @param null $storeData
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function executeManually($storeData = null)
     {

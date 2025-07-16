@@ -291,21 +291,20 @@ class Info extends AbstractOrderBlock
      */
     public function getOrderPayments()
     {
-        $paymentLines = [];
-        $orderTransactions = $this->getOrder(true)->getData();
-        foreach ($orderTransactions as $key => $lines) {
-            if ($key != "LSCMemberSalesDocLine") {
-                continue;
-            }
-            if (!is_array($lines)) {
-                $lines = [$lines];
-            }
-            foreach ($lines as $line) {
-                if ($line->getEntryType() == 1) {
-                    $paymentLines[] = $line;
-                }
+        $paymentLines = $orderTransactions = [];
+
+        if ($this->getOrder() && !empty($this->getOrder()->getLscMemberSalesDocLine())) {
+            $orderTransactions = is_array($this->getOrder()->getLscMemberSalesDocLine()) ?
+                $this->getOrder()->getLscMemberSalesDocLine() :
+                [$this->getOrder()->getLscMemberSalesDocLine()];
+        }
+
+        foreach ($orderTransactions as $line) {
+            if ($line->getEntryType() == 1) {
+                $paymentLines[] = $line;
             }
         }
+
         return $paymentLines;
     }
 
@@ -315,14 +314,10 @@ class Info extends AbstractOrderBlock
      */
     public function getFormattedLoyaltyPoints()
     {
-        $orderTransactions = $this->getOrder(true)->getData();
-        $points            = 0;
+        $points = 0;
+        $lscMemberSalesBuffer = $this->getLscMemberSalesBuffer();
+        $points += $lscMemberSalesBuffer->getPointsRewarded();
 
-        if (!is_array($orderTransactions)) {
-            $orderTransactions = [$orderTransactions];
-        }
-
-        $points += $this->orderHelper->getFilterValues($orderTransactions, "Points Rewarded", "LSCMemberSalesBuffer");
         return number_format((float)$points, 2, '.', '');
     }
 
