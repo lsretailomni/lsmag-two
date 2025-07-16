@@ -137,10 +137,11 @@ class ItemHelper extends AbstractHelperOmni
                 [$orderData->getLscMemberSalesDocDiscLine()] : []);
             $type = 2;
         } elseif ($orderData instanceof RootMobileTransaction) {
-            $orderLines     = !is_array($orderData->getMobiletransactionline()) ?
-                [$orderData->getMobiletransactionline()] : $orderData->getMobiletransactionline() ;
-            $discountsLines = !is_array($orderData->getMobiletransdiscountline()) ?
-                [$orderData->getMobiletransdiscountline()] : $orderData->getMobiletransdiscountline();
+            $orderLines     = $orderData->getMobiletransactionline() &&
+                is_array($orderData->getMobiletransactionline()) ?
+                    $orderData->getMobiletransactionline() :
+                    (($orderData->getMobiletransactionline() && !is_array($orderData->getMobiletransactionline())) ?
+                        [$orderData->getMobiletransactionline()] : []);
         }
 
         foreach ($orderLines as $line) {
