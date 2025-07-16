@@ -53,13 +53,13 @@ class OrderObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $check              = false;
-        $order              = $observer->getEvent()->getData('order');
+        $check = false;
+        $order = $observer->getEvent()->getData('order');
 
         $oneListCalculation = $this->basketHelper->getOneListCalculationFromCheckoutSession();
         if (empty($order->getIncrementId())) {
             $orderIds = $observer->getEvent()->getOrderIds();
-            $order    = $this->orderHelper->orderRepository->get($orderIds[0]);
+            $order = $this->orderHelper->orderRepository->get($orderIds[0]);
         }
 
         if (!$this->orderHelper->isAllowed($order)) {
@@ -80,13 +80,13 @@ class OrderObserver implements ObserverInterface
             }
             //checking for Adyen payment gateway
             $adyenResponse = $observer->getEvent()->getData('adyen_response');
-            $order         = $this->orderHelper->setAdyenParameters($adyenResponse, $order);
+            $order = $this->orderHelper->setAdyenParameters($adyenResponse, $order);
             if (!empty($order->getIncrementId())) {
                 $paymentMethod = $order->getPayment();
                 if (!empty($paymentMethod)) {
                     $paymentMethod = $order->getPayment()->getMethodInstance();
-                    $transId       = $order->getPayment()->getLastTransId();
-                    $check         = $paymentMethod->isOffline();
+                    $transId = $order->getPayment()->getLastTransId();
+                    $check = $paymentMethod->isOffline();
                     if ($paymentMethod->getCode() === 'free') {
                         $check = true;
                     }
@@ -96,11 +96,12 @@ class OrderObserver implements ObserverInterface
             // Loyalty Points/Gift card
             if (!empty($oneListCalculation)) {
                 if (($check || !empty($transId))) {
-                    $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+                    $request = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                     $response = $this->orderHelper->placeOrder($request);
                     try {
-                        if ($response) {
-                            $documentId = $response->getResult()->getId();
+                        if ($response && $response->getResponsecode() == "0000") {
+                            $documentId = $this->orderHelper->getDocumentIdFromResponseBasedOnIndustry($response);
+
                             if (!empty($documentId)) {
                                 $order->setDocumentId($documentId);
                                 $this->basketHelper->setLastDocumentIdInCheckoutSession($documentId);

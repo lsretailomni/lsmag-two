@@ -11,9 +11,7 @@ use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Model\Sales\AdminOrder\OrderEdit;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Redirect;
-use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -47,7 +45,7 @@ class Request extends Action
         public LSR $lsr,
         public OrderEdit $orderEdit
     ) {
-        $this->messageManager  = $context->getMessageManager();
+        $this->messageManager = $context->getMessageManager();
         parent::__construct($context);
     }
 
@@ -60,17 +58,17 @@ class Request extends Action
     public function execute()
     {
         $orderId = $this->getRequest()->getParam('order_id');
-        $order   = $this->orderRepository->get($orderId);
+        $order = $this->orderRepository->get($orderId);
         $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
         $this->lsr->setStoreId($order->getStoreId());
-        $response       = null;
+        $response = null;
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
 
         if ($this->lsr->isLSR($order->getStoreId())) {
             try {
                 $oneListCalculation = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
-                $documentId         = null;
+                $documentId = null;
                 if (!empty($oneListCalculation)) {
                     if ($order->getRelationParentId()) {
                         $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId(
@@ -80,7 +78,7 @@ class Request extends Action
                         if ($oldOrder && $this->lsr->getStoreConfig(LSR::LSR_ORDER_EDIT, $order->getStoreId())) {
                             $documentId = $oldOrder->getDocumentId();
                             if ($documentId) {
-                                $req      = $this->orderEdit->prepareOrder(
+                                $req = $this->orderEdit->prepareOrder(
                                     $order,
                                     $oneListCalculation,
                                     $oldOrder,
@@ -93,8 +91,8 @@ class Request extends Action
                                     $isClickCollect = false;
                                     $shippingMethod = $order->getShippingMethod(true);
                                     if ($shippingMethod !== null) {
-                                        $carrierCode    = $shippingMethod->getData('carrier_code');
-                                        $method         = $shippingMethod->getData('method');
+                                        $carrierCode = $shippingMethod->getData('carrier_code');
+                                        $method = $shippingMethod->getData('method');
                                         $isClickCollect = $carrierCode == 'clickandcollect';
                                     }
                                     if ($isClickCollect) {
@@ -112,21 +110,16 @@ class Request extends Action
                     }
 
                     if (empty($documentId)) {
-                        $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+                        $request = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                         $response = $this->orderHelper->placeOrder($request);
 
-                        if ($response) {
-                            if (!empty($response->getResult()->getId())) {
-                                $documentId = $response->getResult()->getId();
-                                $order->setDocumentId($documentId);
-                                $order->addCommentToStatusHistory(
-                                    __('Order request has been sent to LS Central successfully by the admin manually.')
-                                );
-                                $this->orderRepository->save($order);
-                            }
-                            $this->messageManager->addSuccessMessage(
-                                __('Order request has been sent to LS Central successfully')
+                        if ($response && $response->getResponsecode() == "0000") {
+                            $documentId = $this->orderHelper->getDocumentIdFromResponseBasedOnIndustry($response);
+                            $order->setDocumentId($documentId);
+                            $order->addCommentToStatusHistory(
+                                __('Order request has been sent to LS Central successfully by the admin manually.')
                             );
+                            $this->orderRepository->save($order);
                         }
                     }
                 }
@@ -142,6 +135,7 @@ class Request extends Action
         }
         $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
         $this->lsr->setStoreId(null);
+
         return $resultRedirect;
     }
 }

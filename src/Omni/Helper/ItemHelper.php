@@ -6,7 +6,9 @@ namespace Ls\Omni\Helper;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDoc;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
+use Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product;
@@ -124,21 +126,30 @@ class ItemHelper extends AbstractHelperOmni
         $graphQlRequest = 0
     ) {
         $orderLines = $discountsLines = [];
-        if ($orderData instanceof \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDoc) {
+        $type = 1;
+        if ($orderData instanceof GetSelectedSalesDoc_GetSelectedSalesDoc) {
             $orderLines     = !is_array($orderData->getLscMemberSalesDocLine()) ?
                 [$orderData->getLscMemberSalesDocLine()] : $orderData->getLscMemberSalesDocLine() ;
-            $discountsLines = !is_array($orderData->getLscMemberSalesDocDiscLine()) ?
-                [$orderData->getLscMemberSalesDocDiscLine()] : $orderData->getLscMemberSalesDocDiscLine();
-        } elseif ($orderData instanceof Order) {
-            $orderLines     = $orderData->getOrderLines();
-            $discountsLines = $orderData->getOrderDiscountLines()->getOrderDiscountLine();
+            $discountsLines = $orderData->getLscMemberSalesDocDiscLine() &&
+            is_array($orderData->getLscMemberSalesDocDiscLine()) ?
+                $orderData->getLscMemberSalesDocDiscLine() :
+                (($orderData->getLscMemberSalesDocDiscLine() && !is_array($orderData->getLscMemberSalesDocDiscLine())) ?
+                [$orderData->getLscMemberSalesDocDiscLine()] : []);
+            $type = 2;
+        } elseif ($orderData instanceof RootMobileTransaction) {
+            $orderLines     = !is_array($orderData->getMobiletransactionline()) ?
+                [$orderData->getMobiletransactionline()] : $orderData->getMobiletransactionline() ;
+            $discountsLines = !is_array($orderData->getMobiletransdiscountline()) ?
+                [$orderData->getMobiletransdiscountline()] : $orderData->getMobiletransdiscountline();
         }
 
         foreach ($orderLines as $line) {
             if ($this->isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                 if ($customPrice > 0 && $customPrice != null) {
                     foreach ($discountsLines as $orderDiscountLine) {
-                        if ($line->getLineNo() == $orderDiscountLine->getDocumentLineNo()) {
+                        if (($type == 2 && $line->getLineNo() == $orderDiscountLine->getDocumentLineNo()) ||
+                            ($type == 1 && $line->getLineNo() == $orderDiscountLine->getLineno())
+                        ) {
                             $offerDescription = !empty($orderDiscountLine->getDescription()) ?
                                 $orderDiscountLine->getDescription() :
                                 $orderDiscountLine->getOfferNo();
@@ -154,7 +165,9 @@ class ItemHelper extends AbstractHelperOmni
                                 } else {
                                     $discountInfo[] = [
                                         'description' => $offerDescription,
-                                        'value'       => $orderDiscountLine->getDiscountAmount()
+                                        'value'       => $type == 2 ?
+                                            $orderDiscountLine->getDiscountAmount() :
+                                            $orderDiscountLine->getDiscountamount()
                                     ];
                                 }
 
@@ -551,7 +564,7 @@ class ItemHelper extends AbstractHelperOmni
         return in_array($itemId, explode(',', $giftCardIdentifier)) ?
             $line->getNumber() == $quoteItem->getProduct()->getLsrItemId() :
             (($itemId == $line->getNumber() && $variantId == $line->getVariantCode()) &&
-                ($uom == $line->getUnitOfMeasure() || (empty($line->getUnitOfMeasure()) &&
+                ($uom == $line->getUomid() || (empty($line->getUomid()) &&
                         $uom == $baseUnitOfMeasure)));
     }
 

@@ -12,10 +12,15 @@ use Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer;
 
 $_item     = $block->getItem();
 $viewModel = $block->getViewModel();
+
 list($discountInfo, $line) = $viewModel->getDiscountInfoGivenOrderItem($_item);
 
 if (!empty($discountInfo)) {
     $discountDescription = $discountInfo[0] ?? '';
+}
+
+if ($line && !empty($line->getDiscountAmount()) && $line->getDiscountAmount() > 0 && empty($discountDescription)) {
+    $discountDescription = __('Discounted');
 }
 ?>
 <tr id="order-item-row-<?= (int)$_item->getId() ?>">

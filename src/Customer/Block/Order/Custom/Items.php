@@ -42,7 +42,7 @@ class Items extends AbstractItems
     {
         $type = $this->_request->getParam('type');
         $order = $this->getOrder(true);
-        if ($this->getMagOrder() && $type != DocumentIdType::RECEIPT) {
+        if ($this->getMagOrder()) {
             $magentoOrder = $this->getMagOrder();
 
             if (!empty($magentoOrder) && !empty($order->getStoreCurrency())) {
@@ -61,15 +61,14 @@ class Items extends AbstractItems
         $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
         foreach ($orderLines as $key => $line) {
             foreach ($orderLines as $orderLine) {
-                if ($line->getLineNo() == $orderLine->getParentLine() &&
-                    $orderLine->getParentLine() != 0) {
+                if ($line->getLineNo() == $orderLine->getParentLine()) {
                     $line->setPrice($line->getPrice() + $orderLine->getAmount() / $orderLine->getQuantity());
                     $line->setAmount($line->getAmount() + $orderLine->getAmount());
                 }
             }
-            if ($line->getLineNo() != $line->getParentLine()) {
-                unset($orderLines[$key]);
-            }
+//            if ($line->getLineNo() != $line->getParentLine()) {
+//                unset($orderLines[$key]);
+//            }
             if ($line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
                 unset($orderLines[$key]);
                 break;

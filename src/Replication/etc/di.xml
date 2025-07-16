@@ -491,8 +491,8 @@
                 type="Ls\Replication\Model\ReplLscTenderTypeRepository"/>
     <preference for="Ls\Replication\Api\Data\ReplLscTenderTypeInterface"
                 type="Ls\Replication\Model\ReplLscTenderType"/>
-    <preference for="Ls\Replication\Api\Data\ReplLscTenderTypeSetupSearchResultsInterface"
-                type="Ls\Replication\Model\ReplLscTenderTypeSetupSearchResults"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscTenderTypeSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscTenderTypeSearchResults"/>
 
     <preference for="Ls\Replication\Api\ReplLscValidationPeriodRepositoryInterface"
                 type="Ls\Replication\Model\ReplLscValidationPeriodRepository"/>

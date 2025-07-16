@@ -37,16 +37,20 @@ use SimpleXMLElement;
 class Data extends AbstractHelperOmni
 {
     /**
-     * @param $storeId
-     * @return mixed
+     * Get store name given id from flat store replication
+     *
+     * @param string $storeId
+     * @return string
      */
-    public function getStoreNameById($storeId)
+    public function getStoreNameById(string $storeId): string
     {
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('nav_id', $storeId, 'eq')->create();
-        $stores         = $this->storeRepository->getList($searchCriteria)->getItems();
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter('no', $storeId, 'eq')->create();
+        $stores = $this->storeRepository->getList($searchCriteria)->getItems();
+
         foreach ($stores as $store) {
-            return $store->getData('Name');
+            return $store->getData('name');
         }
+
         return "Sorry! No store found with ID : " . $storeId;
     }
 
@@ -660,6 +664,7 @@ class Data extends AbstractHelperOmni
     ): array {
         $baseUrl = !empty($baseUrl) ? $baseUrl :
             $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId());
+        $baseUrl = 'http://10.213.0.5:9047/LscNextMajor';
         $url = join('/', [$baseUrl, 'WS/Codeunit/RetailWebServices']);
         $url = OmniService::getUrl($url);
         $client = $this->createInstance(OmniClient::class, ['uri' => $url]);
