@@ -189,10 +189,10 @@ class History extends \Magento\Sales\Block\Order\History
      * Formulating order canceling url
      *
      * @param OrderInterface $magentoOrder
-     * @param SalesEntry $centralOrder
+     * @param $centralOrder
      * @return string
      */
-    public function getCancelUrl(OrderInterface $magentoOrder, SalesEntry $centralOrder)
+    public function getCancelUrl(OrderInterface $magentoOrder, $centralOrder)
     {
         return $magentoOrder && $centralOrder ? $this->getUrl(
             'customer/order/cancel',

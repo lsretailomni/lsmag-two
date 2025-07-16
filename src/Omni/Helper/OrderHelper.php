@@ -23,6 +23,8 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Client\Ecommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
 use \Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
+use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCancel as CustomerOrderCancelRequest;
+use \Ls\Omni\Client\Ecommerce\Operation\CustomerOrderCancel;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -1172,18 +1174,30 @@ class OrderHelper extends AbstractHelperOmni
     public function orderCancel($documentId, $storeId)
     {
         $response = null;
-        $request  = new Entity\OrderCancelEx();
-        $request->setOrderId($documentId);
-        $request->setStoreId($storeId);
-        $request->setUserId("");
-        $operation = new Operation\OrderCancelEx();
+//        $request  = new Entity\OrderCancelEx();
+//        $request->setOrderId($documentId);
+//        $request->setStoreId($storeId);
+//        $request->setUserId("");
+//        $operation = new Operation\OrderCancelEx();
+
+        $request = $this->dataHelper->createInstance(
+            CustomerOrderCancel::class,
+            []
+        );
+        $request->setOperationInput(
+            [
+                CustomerOrderCancelRequest::CUSTOMER_ORDER_DOCUMENT_ID => $documentId,
+                CustomerOrderCancelRequest::SOURCE_TYPE => $storeId
+            ]
+        );
+        
         try {
-            $response = $operation->execute($request);
+            $response = $request->execute($request);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
-        return $response ? $response->getOrderCancelExResult() : $response;
+        return $response && $response->getResponsecode() == "0000" ? $response->getOrderCancelExResult() : $response;
     }
 
     /**
