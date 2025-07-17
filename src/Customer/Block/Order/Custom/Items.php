@@ -54,6 +54,9 @@ class Items extends AbstractItems
         }
 
         $orderLines = $order->getLscMemberSalesDocLine();
+        if (!$orderLines) {
+            return [];
+        }
         if (!is_array($orderLines)) {
             $orderLines = [$orderLines];
         }
