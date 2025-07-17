@@ -207,7 +207,7 @@ class Offers extends Template
     public function getOfferExpiryDate($date)
     {
         try {
-            $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
+            $offerExpiryDate = (new \DateTime($date))->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
                 $this->lsr->getCurrentStoreId()
@@ -220,7 +220,7 @@ class Offers extends Template
 
     /**
      * Get offer product category links
-     * 
+     *
      * @param $offer
      * @return array|string[]|null
      * @throws LocalizedException
@@ -233,7 +233,7 @@ class Offers extends Template
         $offerLines = $offer['OfferLines'];
         if (count($offerLines) == 1) {
             try {
-                $lineType = $this->getDiscountLineType($offerLines[0]->getDiscountLineType());
+                $lineType     = $this->getDiscountLineType($offer, $offerLines[0]->getDiscountLineType());
                 
                 if ($lineType == OfferDiscountLineType::ITEM) {
                     $product = $this->replicationHelper->getProductDataByIdentificationAttributes(
@@ -246,7 +246,7 @@ class Offers extends Template
                     || $lineType == OfferDiscountLineType::ITEM_CATEGORY
                     || $lineType == OfferDiscountLineType::SPECIAL_GROUP
                 ) {
-                    return ['', ''];
+                    return ['',''];
                 }
             } catch (NoSuchEntityException $e) {
                 return null;
@@ -255,7 +255,7 @@ class Offers extends Template
             $categoryIds = [];
             $count       = 0;
             foreach ($offerLines as $offerLine) {
-                $lineType = $this->getDiscountLineType($offerLine->getDiscountLineType());
+                $lineType     = $this->getDiscountLineType($offer, $offerLine->getDiscountLineType());
                 if ($lineType == LineType::ITEM) {
                     try {
                         $catIds = $this->replicationHelper->getProductDataByIdentificationAttributes(
@@ -276,7 +276,7 @@ class Offers extends Template
                     || $lineType == OfferDiscountLineType::ITEM_CATEGORY
                     || $lineType == OfferDiscountLineType::SPECIAL_GROUP
                 ) {
-                    return ['', ''];
+                    return [];
                 }
             }
             if (!empty($categoryIds)) {
@@ -292,7 +292,7 @@ class Offers extends Template
                     $url     = $product->getProductUrl();
                     $text    = __('Go To Product');
                 } catch (NoSuchEntityException $e) {
-                    return ['', ''];
+                    return [];
                 }
             }
         }
@@ -306,27 +306,50 @@ class Offers extends Template
     /**
      * Get discount line type
      *
+     * @param $offer
      * @param $lineType
      * @return string|void
      */
-    public function getDiscountLineType($lineType)
+    public function getDiscountLineType($offer, $lineType)
     {
-        switch ($lineType) {
-            case 0:
-                return OfferDiscountLineType::ITEM;
-            case 1:
-                return OfferDiscountLineType::PRODUCT_GROUP;
-            case 2:
-                return OfferDiscountLineType::ITEM_CATEGORY;
-            case 3:
-                return OfferDiscountLineType::ALL;
-            case 4:
-                return OfferDiscountLineType::P_L_U_MENU;
-            case 5:
-                return OfferDiscountLineType::DEAL_MODIFIER;
-            case 6:
-                return OfferDiscountLineType::SPECIAL_GROUP;
+        $discountType = $this->getDiscountType($offer['Offer']->getDiscountType());
+        switch ($discountType) {
+            case OfferDiscountType::PROMOTION:
+            case OfferDiscountType::DEAL:
+                switch ($lineType) {
+                    case 0:
+                        return OfferDiscountLineType::ITEM;
+                    case 1:
+                        return OfferDiscountLineType::PRODUCT_GROUP;
+                    case 2:
+                        return OfferDiscountLineType::ITEM_CATEGORY;
+                    case 3:
+                        return OfferDiscountLineType::ALL;
+                    case 4:
+                        return OfferDiscountLineType::P_L_U_MENU;
+                    case 5:
+                        return OfferDiscountLineType::DEAL_MODIFIER;
+                    case 6:
+                        return OfferDiscountLineType::SPECIAL_GROUP;
+                }
+                break;
+            case OfferDiscountType::COUPON:
+                switch ($lineType) {
+                    case 0:
+                        return OfferDiscountLineType::ITEM;
+                    case 1:
+                        return OfferDiscountLineType::PRODUCT_GROUP;
+                    case 2:
+                        return OfferDiscountLineType::ITEM_CATEGORY;
+                    case 3:
+                        return OfferDiscountLineType::SPECIAL_GROUP;
+                    case 4:
+                        return OfferDiscountLineType::ALL;
+                }
+                break;
         }
+        
+        return $this->getOfferDiscountLineType($lineType);
     }
 
     /**
@@ -358,6 +381,32 @@ class Offers extends Template
                 return OfferDiscountType::LINE_DISCOUNT;
             case 9:
                 return OfferDiscountType::COUPON;
+        }
+    }
+
+    /**
+     * Get offer discount line type
+     *
+     * @param $lineType
+     * @return string
+     */
+    public function getOfferDiscountLineType($lineType)
+    {
+        switch ($lineType) {
+            case 0:
+                return OfferDiscountLineType::ITEM;
+            case 1:
+                return OfferDiscountLineType::PRODUCT_GROUP;
+            case 2:
+                return OfferDiscountLineType::ITEM_CATEGORY;
+            case 3:
+                return OfferDiscountLineType::ALL;
+            case 4:
+                return OfferDiscountLineType::SPECIAL_GROUP;
+            case 5:
+                return OfferDiscountLineType::P_L_U_MENU;
+            case 6:
+                return OfferDiscountLineType::DEAL_MODIFIER;
         }
     }
 

@@ -37,16 +37,10 @@ class LoyaltyHelper extends AbstractHelperOmni
         $customer = $this->customerSession->getCustomer();
         $cardId   = $customer->getData('lsr_cardid');
         // @codingStandardsIgnoreLine
-        //$request = new Operation\PublishedOffersGetByCardId();
-        //$entity = new Entity\PublishedOffersGetByCardId();
-        //$entity->setCardId($customer->getData('lsr_cardid'));
-        //$entity->setItemId('');
         
         $operation = $this->createInstance(GetDirectMarketingInfo::class);
         $operation->setOperationInput([
-            Entity\GetDirectMarketingInfo::CARD_ID => $cardId,
-//            Entity\GetDirectMarketingInfo::ITEM_NO => $itemId,
-//            Entity\GetDirectMarketingInfo::STORE_NO => $storeId
+            Entity\GetDirectMarketingInfo::CARD_ID => $cardId
         ]);
         // @codingStandardsIgnoreLine
 
