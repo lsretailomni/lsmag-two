@@ -432,12 +432,24 @@ class OrderHelper extends AbstractHelper
         $shippingAmount     = $order->getShippingInclTax();
 
         if (isset($shipmentTaxPercent) && $shippingAmount > 0) {
+            // @codingStandardsIgnoreLine
+            $shipmentOrderLine = new Entity\OrderLine();
+            $shipmentOrderLine->setPrice($shippingAmount);
+
+            if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
+                $orderLine = current($orderLines);
+                $shipmentTaxPercent = ($orderLine->getTaxAmount() / $orderLine->getNetAmount()) * 100;
+            }
+
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
-            // @codingStandardsIgnoreLine
-            $shipmentOrderLine = new Entity\OrderLine();
-            $shipmentOrderLine->setPrice($shippingAmount)
+
+            if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
+                $shipmentOrderLine->setPrice($netPrice);
+            }
+
+            $shipmentOrderLine
                 ->setAmount($shippingAmount)
                 ->setNetPrice($netPrice)
                 ->setNetAmount($netPrice)
@@ -498,7 +510,8 @@ class OrderHelper extends AbstractHelper
             $method = 'setAddress' . strval($i + 1);
             $omniAddress->$method($street);
         }
-        $region = $magentoAddress->getRegion() ? substr($magentoAddress->getRegion(), 0, 30) : null;
+        $region = $magentoAddress->getRegionCode() ??
+            ($magentoAddress->getRegion() ? substr($magentoAddress->getRegion(), 0, 30) : null);
         $omniAddress
             ->setCity($magentoAddress->getCity())
             ->setCountry($magentoAddress->getCountryId())

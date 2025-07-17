@@ -694,6 +694,9 @@ class BasketHelper extends AbstractHelperOmni
 
                 if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
                     $oneListRequest->setShipToCountryCode($oneList->getShipToCountryCode() ?? null);
+                }
+
+                if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
                     $oneListRequest->setShipToCounty($oneList->getShipToCounty() ?? null);
                     $oneListRequest->setShipToPostCode($oneList->getShipToPostCode() ?? null);
                 }
