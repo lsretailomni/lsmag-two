@@ -64,8 +64,7 @@ class AbstractOrderController
 
                 return $redirect;
             }
-            //Need to review later
-            //$this->setHasReturnSales($response);
+            $this->setHasReturnSales($response);
 
             if (is_array($response)) {
                 $response = current($response);
@@ -102,40 +101,52 @@ class AbstractOrderController
     /**
      * Set has return sales
      *
-     * @param $transactions
+     * @param $order
      * @return void
-     * @throws InvalidEnumException
-     * @throws NoSuchEntityException
      */
-    public function setHasReturnSales($transactions)
+    public function setHasReturnSales($order)
     {
-        if (!is_array($transactions) && $transactions->getIdType() == DocumentIdType::ORDER) {
-            if ($transactions->getPosted()) {
-                $transactions = $this->orderHelper->fetchOrder(
-                    $transactions->getCustomerOrderNo(),
-                    DocumentIdType::RECEIPT
-                );
-            } else {
-                $this->orderHelper->registerGivenValueInRegistry('has_return_sales', false);
-                return;
+        $refundExists = false;
+
+        $lscMemberSalesBuffer = is_array($order->getLscMemberSalesBuffer()) ?
+            $order->getLscMemberSalesBuffer() :
+            [$order->getLscMemberSalesBuffer()];
+
+        foreach ($lscMemberSalesBuffer as $transaction) {
+            if (!empty($transaction->getRefundReceiptNo())) {
+                $refundExists = true;
+                break;
             }
         }
 
-        if (empty($transactions)) {
-            $this->orderHelper->registerGivenValueInRegistry('has_return_sales', false);
-            return;
-        }
-
-        if (!is_array($transactions)) {
-            $transactions = [$transactions];
-        }
-
-        $hasReturnSales = $this->orderHelper->hasReturnSale($transactions);
-
-        if ($hasReturnSales) {
-            $this->orderHelper->registerGivenValueInRegistry('has_return_sales', true);
-        } else {
-            $this->orderHelper->registerGivenValueInRegistry('has_return_sales', false);
-        }
+        $this->orderHelper->registerGivenValueInRegistry('has_return_sales', $refundExists);
+//        if (!is_array($transactions) && $transactions->getIdType() == DocumentIdType::ORDER) {
+//            if ($transactions->getPosted()) {
+//                $transactions = $this->orderHelper->fetchOrder(
+//                    $transactions->getCustomerOrderNo(),
+//                    DocumentIdType::RECEIPT
+//                );
+//            } else {
+//                $this->orderHelper->registerGivenValueInRegistry('has_return_sales', false);
+//                return;
+//            }
+//        }
+//
+//        if (empty($transactions)) {
+//            $this->orderHelper->registerGivenValueInRegistry('has_return_sales', false);
+//            return;
+//        }
+//
+//        if (!is_array($transactions)) {
+//            $transactions = [$transactions];
+//        }
+//
+//        $hasReturnSales = $this->orderHelper->hasReturnSale($transactions);
+//
+//        if ($hasReturnSales) {
+//            $this->orderHelper->registerGivenValueInRegistry('has_return_sales', true);
+//        } else {
+//            $this->orderHelper->registerGivenValueInRegistry('has_return_sales', false);
+//        }
     }
 }

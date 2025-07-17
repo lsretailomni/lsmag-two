@@ -19,8 +19,8 @@ use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusReposit
 use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
-use \Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
 use \Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
+use \Ls\Replication\Api\ReplVatPostingSetupRepositoryInterface;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
@@ -403,7 +403,7 @@ class ReplicationHelper extends AbstractHelper
     /** @var ReplItemUnitOfMeasure */
     public $replItemUomRepository;
 
-    /** @var ReplTaxSetupRepositoryInterface */
+    /** @var ReplVatPostingSetupRepositoryInterface */
     public $replTaxSetupRepository;
 
     /** @var ReplStoreTenderTypeRepositoryInterface */
@@ -578,7 +578,7 @@ class ReplicationHelper extends AbstractHelper
      * @param ReplExtendedVariantValueRepository $extendedVariantValueRepository
      * @param ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository
      * @param ReplItemUnitOfMeasure $replItemUomRepository
-     * @param ReplTaxSetupRepositoryInterface $replTaxSetupRepository
+     * @param ReplVatPostingSetupRepositoryInterface $replTaxSetupRepository
      * @param ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository
      * @param TaxClassRepositoryInterface $taxClassRepository
      * @param ClassModelFactory $classModelFactory
@@ -645,7 +645,7 @@ class ReplicationHelper extends AbstractHelper
         ReplExtendedVariantValueRepository $extendedVariantValueRepository,
         ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository,
         ReplItemUnitOfMeasure $replItemUomRepository,
-        ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
+        ReplVatPostingSetupRepositoryInterface $replTaxSetupRepository,
         ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
         TaxClassRepositoryInterface $taxClassRepository,
         ClassModelFactory $classModelFactory,
@@ -1490,15 +1490,18 @@ class ReplicationHelper extends AbstractHelper
 
     /**
      * For getting tax setup information
-     * @return array|null
+     *
+     * @param int $websiteId
+     * @return array
      */
-    public function getTaxSetup()
+    public function getTaxSetup(int $websiteId)
     {
         $items   = null;
         $filters = [
-            ['field' => 'ProductTaxGroup', 'value' => '', 'condition_type' => 'neq'],
-            ['field' => 'BusinessTaxGroup', 'value' => '', 'condition_type' => 'neq'],
-            ['field' => 'TaxPercent', 'value' => 0, 'condition_type' => 'gt']
+            ['field' => 'vat_prod_posting_group', 'value' => '', 'condition_type' => 'neq'],
+            ['field' => 'vat_bus_posting_group', 'value' => '', 'condition_type' => 'neq'],
+            ['field' => 'vat', 'value' => 0, 'condition_type' => 'gt'],
+            ['field' => 'scope_id', 'value' => $websiteId, 'condition_type' => 'eq']
         ];
 
         $searchCriteria = $this->buildCriteriaForDirect($filters, -1, true);

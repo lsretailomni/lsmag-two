@@ -44,7 +44,7 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                     </thead>
                     <tbody>
                     <?php foreach ($_orders as $_order):
-                        if ($_order->getgetSaleIsReturnSale()) {
+                        if ($_order->getSaleIsReturnSale()) {
                             continue;
                         }
                         $documentId = null;

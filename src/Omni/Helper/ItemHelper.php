@@ -6,6 +6,7 @@ namespace Ls\Omni\Helper;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId;
 use Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDoc;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
@@ -127,8 +128,10 @@ class ItemHelper extends AbstractHelperOmni
     ) {
         $orderLines = $discountsLines = [];
         $type = 1;
-        if ($orderData instanceof GetSelectedSalesDoc_GetSelectedSalesDoc) {
-            $orderLines     = !is_array($orderData->getLscMemberSalesDocLine()) ?
+        if ($orderData instanceof GetSelectedSalesDoc_GetSelectedSalesDoc ||
+            $orderData instanceof GetSalesInfoByOrderId_GetSalesInfoByOrderId
+        ) {
+            $orderLines = !is_array($orderData->getLscMemberSalesDocLine()) ?
                 [$orderData->getLscMemberSalesDocLine()] : $orderData->getLscMemberSalesDocLine() ;
             $discountsLines = $orderData->getLscMemberSalesDocDiscLine() &&
             is_array($orderData->getLscMemberSalesDocDiscLine()) ?
@@ -560,10 +563,12 @@ class ItemHelper extends AbstractHelperOmni
     public function isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)
     {
         $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
+        $lineUom = method_exists($line, 'getUnitOfMeasure') ?
+            $line->getUnitOfMeasure() : (method_exists($line, 'getUomid') ? $line->getUomid() : "");
 
         return in_array($itemId, explode(',', $giftCardIdentifier)) ? $line->getId() == $quoteItem->getId() :
             (($itemId == $line->getNumber() && $variantId == $line->getVariantCode()) &&
-                ($uom == $line->getUomid() || (empty($line->getUomid()) &&
+                ($uom == $lineUom || (empty($lineUom) &&
                         $uom == $baseUnitOfMeasure)));
     }
 
