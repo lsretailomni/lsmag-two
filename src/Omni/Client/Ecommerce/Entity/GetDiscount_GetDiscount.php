@@ -56,7 +56,7 @@ class GetDiscount_GetDiscount extends AbstractModel
         return $this->getData(self::LSC_WI_PRICE);
     }
 
-    public function setLscWiPrice(?LSCWIPrice $value)
+    public function setLscWiPrice(?array $value)
     {
         return $this->setData(self::LSC_WI_PRICE, $value);
     }

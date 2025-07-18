@@ -90,9 +90,6 @@ class Customer extends AbstractModel
     public const ALLOW_MULTIPLE_POSTING_GROUPS = 'Allow Multiple Posting Groups';
     public const PREFERRED_BANK_ACCOUNT_CODE = 'Preferred Bank Account Code';
     public const CASH_FLOW_PAYMENT_TERMS_CODE = 'Cash Flow Payment Terms Code';
-    public const DEFAULT_TRANS_TYPE = 'Default Trans. Type';
-    public const DEFAULT_TRANS_TYPE_RETURN = 'Default Trans. Type - Return';
-    public const DEF_TRANSPORT_METHOD = 'Def. Transport Method';
     public const PRIMARY_CONTACT_NO = 'Primary Contact No.';
     public const CONTACT_TYPE = 'Contact Type';
     public const MOBILE_PHONE_NO = 'Mobile Phone No.';
@@ -218,9 +215,6 @@ class Customer extends AbstractModel
 	self::ALLOW_MULTIPLE_POSTING_GROUPS => 'allow_multiple_posting_groups',
 	self::PREFERRED_BANK_ACCOUNT_CODE => 'preferred_bank_account_code',
 	self::CASH_FLOW_PAYMENT_TERMS_CODE => 'cash_flow_payment_terms_code',
-	self::DEFAULT_TRANS_TYPE => 'default_trans_type',
-	self::DEFAULT_TRANS_TYPE_RETURN => 'default_trans_type_return',
-	self::DEF_TRANSPORT_METHOD => 'def_transport_method',
 	self::PRIMARY_CONTACT_NO => 'primary_contact_no',
 	self::CONTACT_TYPE => 'contact_type',
 	self::MOBILE_PHONE_NO => 'mobile_phone_no',
@@ -1061,36 +1055,6 @@ class Customer extends AbstractModel
     public function setCashFlowPaymentTermsCode(?string $value)
     {
         return $this->setData(self::CASH_FLOW_PAYMENT_TERMS_CODE, $value);
-    }
-
-    public function getDefaultTransType(): ?string
-    {
-        return $this->getData(self::DEFAULT_TRANS_TYPE);
-    }
-
-    public function setDefaultTransType(?string $value)
-    {
-        return $this->setData(self::DEFAULT_TRANS_TYPE, $value);
-    }
-
-    public function getDefaultTransTypeReturn(): ?string
-    {
-        return $this->getData(self::DEFAULT_TRANS_TYPE_RETURN);
-    }
-
-    public function setDefaultTransTypeReturn(?string $value)
-    {
-        return $this->setData(self::DEFAULT_TRANS_TYPE_RETURN, $value);
-    }
-
-    public function getDefTransportMethod(): ?string
-    {
-        return $this->getData(self::DEF_TRANSPORT_METHOD);
-    }
-
-    public function setDefTransportMethod(?string $value)
-    {
-        return $this->setData(self::DEF_TRANSPORT_METHOD, $value);
     }
 
     public function getPrimaryContactNo(): ?string

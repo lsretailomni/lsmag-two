@@ -75,17 +75,11 @@ class Vendor extends AbstractModel
     public const ALLOW_MULTIPLE_POSTING_GROUPS = 'Allow Multiple Posting Groups';
     public const PREFERRED_BANK_ACCOUNT_CODE = 'Preferred Bank Account Code';
     public const CASH_FLOW_PAYMENT_TERMS_CODE = 'Cash Flow Payment Terms Code';
-    public const DEFAULT_TRANS_TYPE = 'Default Trans. Type';
-    public const DEFAULT_TRANS_TYPE_RETURN = 'Default Trans. Type - Return';
-    public const DEF_TRANSPORT_METHOD = 'Def. Transport Method';
     public const PRIMARY_CONTACT_NO = 'Primary Contact No.';
     public const MOBILE_PHONE_NO = 'Mobile Phone No.';
     public const RESPONSIBILITY_CENTER = 'Responsibility Center';
     public const LOCATION_CODE = 'Location Code';
     public const LEAD_TIME_CALCULATION = 'Lead Time Calculation';
-    public const RECEIVE_EDOCUMENT_TO = 'Receive E-Document To';
-    public const SUST_CERT_NO = 'Sust. Cert. No.';
-    public const SUST_CERT_NAME = 'Sust. Cert. Name';
     public const PRICE_CALCULATION_METHOD = 'Price Calculation Method';
     public const BASE_CALENDAR_CODE = 'Base Calendar Code';
     public const DOCUMENT_SENDING_PROFILE = 'Document Sending Profile';
@@ -173,17 +167,11 @@ class Vendor extends AbstractModel
 	self::ALLOW_MULTIPLE_POSTING_GROUPS => 'allow_multiple_posting_groups',
 	self::PREFERRED_BANK_ACCOUNT_CODE => 'preferred_bank_account_code',
 	self::CASH_FLOW_PAYMENT_TERMS_CODE => 'cash_flow_payment_terms_code',
-	self::DEFAULT_TRANS_TYPE => 'default_trans_type',
-	self::DEFAULT_TRANS_TYPE_RETURN => 'default_trans_type_return',
-	self::DEF_TRANSPORT_METHOD => 'def_transport_method',
 	self::PRIMARY_CONTACT_NO => 'primary_contact_no',
 	self::MOBILE_PHONE_NO => 'mobile_phone_no',
 	self::RESPONSIBILITY_CENTER => 'responsibility_center',
 	self::LOCATION_CODE => 'location_code',
 	self::LEAD_TIME_CALCULATION => 'lead_time_calculation',
-	self::RECEIVE_EDOCUMENT_TO => 'receive_edocument_to',
-	self::SUST_CERT_NO => 'sust_cert_no',
-	self::SUST_CERT_NAME => 'sust_cert_name',
 	self::PRICE_CALCULATION_METHOD => 'price_calculation_method',
 	self::BASE_CALENDAR_CODE => 'base_calendar_code',
 	self::DOCUMENT_SENDING_PROFILE => 'document_sending_profile',
@@ -853,36 +841,6 @@ class Vendor extends AbstractModel
         return $this->setData(self::CASH_FLOW_PAYMENT_TERMS_CODE, $value);
     }
 
-    public function getDefaultTransType(): ?string
-    {
-        return $this->getData(self::DEFAULT_TRANS_TYPE);
-    }
-
-    public function setDefaultTransType(?string $value)
-    {
-        return $this->setData(self::DEFAULT_TRANS_TYPE, $value);
-    }
-
-    public function getDefaultTransTypeReturn(): ?string
-    {
-        return $this->getData(self::DEFAULT_TRANS_TYPE_RETURN);
-    }
-
-    public function setDefaultTransTypeReturn(?string $value)
-    {
-        return $this->setData(self::DEFAULT_TRANS_TYPE_RETURN, $value);
-    }
-
-    public function getDefTransportMethod(): ?string
-    {
-        return $this->getData(self::DEF_TRANSPORT_METHOD);
-    }
-
-    public function setDefTransportMethod(?string $value)
-    {
-        return $this->setData(self::DEF_TRANSPORT_METHOD, $value);
-    }
-
     public function getPrimaryContactNo(): ?string
     {
         return $this->getData(self::PRIMARY_CONTACT_NO);
@@ -931,36 +889,6 @@ class Vendor extends AbstractModel
     public function setLeadTimeCalculation(?string $value)
     {
         return $this->setData(self::LEAD_TIME_CALCULATION, $value);
-    }
-
-    public function getReceiveEDocumentTo(): ?int
-    {
-        return $this->getData(self::RECEIVE_EDOCUMENT_TO);
-    }
-
-    public function setReceiveEDocumentTo(?int $value)
-    {
-        return $this->setData(self::RECEIVE_EDOCUMENT_TO, $value);
-    }
-
-    public function getSustCertNo(): ?string
-    {
-        return $this->getData(self::SUST_CERT_NO);
-    }
-
-    public function setSustCertNo(?string $value)
-    {
-        return $this->setData(self::SUST_CERT_NO, $value);
-    }
-
-    public function getSustCertName(): ?string
-    {
-        return $this->getData(self::SUST_CERT_NAME);
-    }
-
-    public function setSustCertName(?string $value)
-    {
-        return $this->setData(self::SUST_CERT_NAME, $value);
     }
 
     public function getPriceCalculationMethod(): ?int

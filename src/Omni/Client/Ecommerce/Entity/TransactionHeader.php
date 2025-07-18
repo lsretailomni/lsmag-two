@@ -182,6 +182,8 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
 
     public const RETRIEVED_FROM_SUSPENDED_TRANS = 'RetrievedFromSuspendedTrans';
 
+    public const VATAMOUNT = 'VATAmount';
+
     public const YREPORT_ID = 'YReportID';
 
     public const TABLE_DESCRIPTION = 'TableDescription';
@@ -1714,6 +1716,24 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     public function getRetrievedfromsuspendedtrans() : ?bool
     {
         return $this->getData(self::RETRIEVED_FROM_SUSPENDED_TRANS);
+    }
+
+    /**
+     * @param ?float $VATAmount
+     * @return $this
+     */
+    public function setVatamount(?float $VATAmount)
+    {
+        $this->setData(self::VATAMOUNT, $VATAmount);
+        return $this;
+    }
+
+    /**
+     * @return ?float
+     */
+    public function getVatamount() : ?float
+    {
+        return $this->getData(self::VATAMOUNT);
     }
 
     /**
