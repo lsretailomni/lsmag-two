@@ -57,7 +57,7 @@ $_item->getItemId() ?>">
     <td class="col sku" data-th="<?= /* @noEscape */ __('SKU') ?>"><?= /* @noEscape */ $sku ?></td>
     <?php if (!$checkIsShipment): ?>
         <td class="col price" data-th="<?= /* @noEscape */ __('Price') ?>">
-            <?php if (!empty($_item->getDiscountAmount()) && $_item->getDiscountAmount() > 0): ?>
+            <?php if (!empty($_item->getDiscountAmount()) && $_item->getDiscountAmount() !== 0): ?>
                 <?= /* @noEscape */
                 $block->getFormattedPrice($_item->getAmount()); ?>
                 <div class="lsdiscountprice2">

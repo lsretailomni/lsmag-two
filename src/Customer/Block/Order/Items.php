@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\Block\Order;
 
@@ -38,10 +39,10 @@ class Items extends AbstractItems
         $order = $this->getOrder(true);
         $orderLines = $order->getLscMemberSalesDocLine();
         $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $trans);
-        $documentId = $this->_request->getParam('order_id');
+        $documentId = $trans->getDocumentId();
 
         foreach ($orderLines as $key => $line) {
-            if ($line->getDocumentId() !== $documentId ||
+            if (($line->getDocumentId() !== $documentId) ||
                 $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID) ||
                 $line->getEntryType() == 1
             ) {
@@ -134,19 +135,34 @@ class Items extends AbstractItems
         return ($this->orderHelper->getGivenValueFromRegistry('current_detail') == 'shipment');
     }
 
+    /**
+     * Get current transaction
+     *
+     * @return array
+     */
+
     public function getCurrentTransaction()
     {
         $order = $this->getOrder(true);
         $documentId = $this->_request->getParam('order_id');
-        $requiredTransaction = null;
+        $isCreditMemo = $this->_request->getActionName() == 'creditmemo' ||
+            $this->_request->getActionName() == 'printRefunds';
+        $requiredTransaction = [];
+        $transactions = $order->getLscMemberSalesBuffer() && is_array($order->getLscMemberSalesBuffer()) ?
+            $order->getLscMemberSalesBuffer() :
+            ($order->getLscMemberSalesBuffer() ? [$order->getLscMemberSalesBuffer()] : []);
 
-        foreach ($order->getLscMemberSalesBuffer() ?? [] as $transaction) {
-            if ($transaction->getDocumentId() == $documentId) {
-                $requiredTransaction = $transaction;
-                break;
+        foreach ($transactions as $transaction) {
+            if ($transaction->getDocumentId() == $documentId ||
+                ($isCreditMemo && $transaction->getSaleIsReturnSale())
+            ) {
+                $requiredTransaction[] = $transaction;
+                if (!$isCreditMemo) {
+                    break;
+                }
             }
         }
 
-        return [$requiredTransaction] ?? $order->getLscMemberSalesBuffer();
+        return $requiredTransaction;
     }
 }

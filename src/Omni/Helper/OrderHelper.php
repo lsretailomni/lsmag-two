@@ -21,6 +21,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use Ls\Omni\Client\Ecommerce\Operation\GetSalesInfoByOrderId_GetSalesInfoByOrderId;
+use Ls\Omni\Client\Ecommerce\Operation\GetSalesReturnById_GetSalesReturnById;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Client\Ecommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
 use \Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
@@ -714,7 +715,6 @@ class OrderHelper extends AbstractHelperOmni
     {
         $response = null;
         $typeId   = $this->getOrderTypeId($type);
-        // @codingStandardsIgnoreStart
         $request = $this->createInstance(
             GetSelectedSalesDoc_GetSelectedSalesDoc::class,
             []
@@ -742,122 +742,43 @@ class OrderHelper extends AbstractHelperOmni
      * Get sales order by order id
      *
      * @param $docId
-     * @return SalesEntry[]|Entity\SalesEntryGetSalesByOrderIdResponse|ResponseInterface|null
-     */
-    public function getSalesOrderByOrderId($docId)
-    {
-        $response = null;
-        // @codingStandardsIgnoreStart
-        $request = new Operation\SalesEntryGetSalesByOrderId();
-        $order   = new Entity\SalesEntryGetSalesByOrderId();
-        $order->setOrderId($docId);
-        // @codingStandardsIgnoreEnd
-        try {
-            $response = $request->execute($order);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        return $response && $response->getSalesEntryGetSalesByOrderIdResult() ?
-            $response->getSalesEntryGetSalesByOrderIdResult()->getSalesEntry() : $response;
-    }
-
-    /**
-     * Get sales order by order id
-     *
-     * @param $docId
-     * @param $type
      * @return GetSalesInfoByOrderId_GetSalesInfoByOrderId|null
      * @throws InvalidEnumException
      */
-    public function getSalesOrderByOrderIdNew($docId, $type)
+    public function getSalesOrderByOrderIdNew($docId)
     {
         $operation = $this->createInstance(GetSalesInfoByOrderId_GetSalesInfoByOrderId::class);
         $operation->setOperationInput([
             'customerOrderId' => $docId
         ]);
-        $response = $operation->execute();
+        $response = null;
+
+        try {
+            $response = $operation->execute();
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
 
         return $response && $response->getResponseCode() == "0000" ?
             current((array)$response->getRecords()) : $response;
-//        // @codingStandardsIgnoreStart
-//        $request = new Operation\SalesEntryGetSalesExtByOrderId();
-//        $order   = new Entity\SalesEntryGetSalesExtByOrderId();
-//        $order->setOrderId($docId);
-//        // @codingStandardsIgnoreEnd
-//        try {
-//            $response = $request->execute($order);
-//        } catch (Exception $e) {
-//            $this->_logger->error($e->getMessage());
-//        }
-//        if ($response && $response->getSalesEntryGetSalesExtByOrderIdResult()) {
-//            if (!empty($response->getSalesEntryGetSalesExtByOrderIdResult()->getSalesEntries()->getSalesEntry())) {
-//                return $response->getSalesEntryGetSalesExtByOrderIdResult()->getSalesEntries()->getSalesEntry();
-//            } elseif (!empty($response->getSalesEntryGetSalesExtByOrderIdResult()->getShipments()
-//                ->getSalesEntryShipment())) {
-//                $result          = $response->getSalesEntryGetSalesExtByOrderIdResult();
-//                $cardId          = $result->getCardId();
-//                $orderId         = $result->getOrderId();
-//                $response        = $result->getShipments()->getSalesEntryShipment();
-//                $salesEntryArray = [];
-//                foreach ($response as $shipment) {
-//                    $salesEntry          = new SalesEntry();
-//                    $salesEntryLineArray = new Entity\ArrayOfSalesEntryLine();
-//                    $salesEntryLines     = [];
-//                    $salesEntry->setId($shipment->getId());
-//                    $salesEntry->setIdType($type);
-//                    $salesEntry->setShipToAddress($shipment->getAddress());
-//                    $salesEntry->setCustomerOrderNo($orderId);
-//                    $salesEntry->setDocumentRegTime($shipment->getShipmentDate());
-//                    $salesEntry->setStatus(Entity\Enum\SalesEntryStatus::PROCESSING);
-//                    $salesEntry->setId($shipment->getId());
-//                    $salesEntry->setCardId($cardId);
-//                    $salesEntry->setShippingAgentCode($shipment->getAgentCode());
-//                    $salesEntry->setContactName($shipment->getName());
-//                    foreach ($shipment->getLines() as $line) {
-//                        $salesEntryLine = new Entity\SalesEntryLine();
-//                        $salesEntryLine->setItemId($line->getItemId());
-//                        $salesEntryLine->setLineNumber($line->getLineNumber());
-//                        $salesEntryLine->setItemDescription($line->getItemDescription());
-//                        $salesEntryLine->setUomId($line->getUomId());
-//                        $salesEntryLine->setVariantId($line->getVariantId());
-//                        $salesEntryLine->setQuantity($line->getQuantity());
-//                        $salesEntryLines[] = $salesEntryLine;
-//                    }
-//                    $salesEntryLineArray->setSalesEntryLine($salesEntryLines);
-//                    $salesEntry->setLines($salesEntryLineArray);
-//                    $salesEntryArray[] = $salesEntry;
-//                }
-//                return $salesEntryArray;
-//            } else {
-//                return null;
-//            }
-//        }
-
-//        return $response;
     }
 
     /**
      * Get sales return details
      *
-     * @param $docId
-     * @return SalesEntry[]|Entity\SalesEntryGetReturnSalesResponse|ResponseInterface|null
+     * @param string $docId
+     * @return Entity\GetSalesReturnById_GetSalesReturnById|null
      */
-    public function getReturnDetailsAgainstId(
-        $docId
-    ) {
-        $response = null;
-        // @codingStandardsIgnoreStart
-        $returnRequest = new Operation\SalesEntryGetReturnSales();
-        $returnOrder   = new Entity\SalesEntryGetReturnSales();
-        $returnOrder->setReceiptNo($docId);
-        // @codingStandardsIgnoreEnd
-        try {
-            $response = $returnRequest->execute($returnOrder);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        return $response && $response->getSalesEntryGetReturnSalesResult() ?
-            $response->getSalesEntryGetReturnSalesResult()->getSalesEntry() : $response;
+    public function getReturnDetailsAgainstId(string $docId)
+    {
+        $operation = $this->createInstance(GetSalesReturnById_GetSalesReturnById::class);
+        $operation->setOperationInput([
+            'receiptId' => $docId
+        ]);
+        $response = $operation->execute();
+
+        return $response && $response->getResponseCode() == "0000" ?
+            current((array)$response->getRecords()) : $response;
     }
 
     /**
@@ -920,7 +841,7 @@ class OrderHelper extends AbstractHelperOmni
      *
      * @param $docId
      * @param $type
-     * @return GetSelectedSalesDoc_GetSelectedSalesDoc|null
+     * @return GetSelectedSalesDoc_GetSelectedSalesDoc|GetSalesInfoByOrderId_GetSalesInfoByOrderId|null
      * @throws InvalidEnumException
      */
     public function fetchOrder($docId, $type)
@@ -932,7 +853,7 @@ class OrderHelper extends AbstractHelperOmni
             $orderLscMemberSalesBuffer = $this->getLscMemberSalesBuffer($order);
             $docId = !empty($orderLscMemberSalesBuffer->getCustomerDocumentId()) ?
                 $orderLscMemberSalesBuffer->getCustomerDocumentId() : $docId;
-            $fetchedOrder = $this->getSalesOrderByOrderIdNew($docId, $type);
+            $fetchedOrder = $this->getSalesOrderByOrderIdNew($docId);
         }
 
         return $fetchedOrder && !empty($fetchedOrder->getData()) ?
@@ -1011,15 +932,13 @@ class OrderHelper extends AbstractHelperOmni
     /**
      * Get respective magento order given commerce service sales entry
      *
-     * @param $response
+     * @param $documentId
      * @return array|false|mixed
      */
     public function getOrderByDocumentId($documentId)
     {
         $order = [];
         try {
-            //$documentId = $response->getLscMemberSalesBuffer()->getData('Document ID');
-
             if (!empty($documentId)) {
                 $customerId = $this->customerSession->getCustomerId();
                 $orderList  = $this->orderRepository->getList(
@@ -1063,8 +982,6 @@ class OrderHelper extends AbstractHelperOmni
      *
      * @param $entityId
      * @return OrderInterface
-     * @throws InputException
-     * @throws NoSuchEntityException
      */
     public function getMagentoOrderGivenEntityId($entityId)
     {

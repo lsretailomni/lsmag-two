@@ -7,6 +7,7 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId;
+use Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnById;
 use Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDoc;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
@@ -129,7 +130,8 @@ class ItemHelper extends AbstractHelperOmni
         $orderLines = $discountsLines = [];
         $type = 1;
         if ($orderData instanceof GetSelectedSalesDoc_GetSelectedSalesDoc ||
-            $orderData instanceof GetSalesInfoByOrderId_GetSalesInfoByOrderId
+            $orderData instanceof GetSalesInfoByOrderId_GetSalesInfoByOrderId ||
+            $orderData instanceof GetSalesReturnById_GetSalesReturnById
         ) {
             $orderLines = !is_array($orderData->getLscMemberSalesDocLine()) ?
                 [$orderData->getLscMemberSalesDocLine()] : $orderData->getLscMemberSalesDocLine() ;
@@ -148,7 +150,7 @@ class ItemHelper extends AbstractHelperOmni
 
         foreach ($orderLines as $line) {
             if ($this->isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                if ($customPrice > 0 && $customPrice != null) {
+                if ($customPrice != 0 && $customPrice != null) {
                     foreach ($discountsLines as $orderDiscountLine) {
                         if (($type == 2 && $line->getLineNo() == $orderDiscountLine->getDocumentLineNo()) ||
                             ($type == 1 && $line->getLineNo() == $orderDiscountLine->getLineno())

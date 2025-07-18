@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\Block\Order\Custom;
 
@@ -54,6 +55,7 @@ class Items extends AbstractItems
 //            return $this->itemCollection->getItems();
 //        }
         $documentId = $this->_request->getParam('order_id');
+        $newDocumentId = $this->_request->getParam('new_order_id');
         $orderLines = $order->getLscMemberSalesDocLine();
         if (!is_array($orderLines)) {
             $orderLines = [$orderLines];
@@ -71,6 +73,7 @@ class Items extends AbstractItems
 //                unset($orderLines[$key]);
 //            }
             if ($line->getDocumentId() !== $documentId ||
+                ($newDocumentId && in_array($line->getDocumentId(), $newDocumentId)) ||
                 $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)
             ) {
                 unset($orderLines[$key]);
