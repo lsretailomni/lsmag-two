@@ -48,8 +48,8 @@ $c      = 0;
                             <div class="code">
                                 <span><b><?php echo __("Offer Type: "); ?></b><?php echo $discountType; ?></span>
                             </div>
-                            <?php if (!empty($offer['Offer']->getExpirationDate())) {
-                                $expiryDate = $this->getOfferExpiryDate($offer['Offer']->getExpirationDate());
+                            <?php if (!empty($offer['Offer']->getEndingDate())) {
+                                $expiryDate = $this->getOfferExpiryDate($offer['Offer']->getEndingDate());
                                 if (!empty($expiryDate)) {
                                     ?>
                                     <div class="date">

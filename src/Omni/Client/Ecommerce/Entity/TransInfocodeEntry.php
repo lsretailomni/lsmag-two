@@ -70,6 +70,10 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
+    public const LOT_NO = 'LotNo';
+
+    public const LOTL_NO = 'LotlNo';
+
     /**
      * @param ?string $StoreNo
      * @return $this
@@ -590,6 +594,42 @@ class TransInfocodeEntry extends \Magento\Catalog\Model\AbstractModel
     public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
+    }
+
+    /**
+     * @param ?string $LotNo
+     * @return $this
+     */
+    public function setLotno(?string $LotNo)
+    {
+        $this->setData(self::LOT_NO, $LotNo);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getLotno() : ?string
+    {
+        return $this->getData(self::LOT_NO);
+    }
+
+    /**
+     * @param ?string $LotlNo
+     * @return $this
+     */
+    public function setLotlno(?string $LotlNo)
+    {
+        $this->setData(self::LOTL_NO, $LotlNo);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getLotlno() : ?string
+    {
+        return $this->getData(self::LOTL_NO);
     }
 }
 

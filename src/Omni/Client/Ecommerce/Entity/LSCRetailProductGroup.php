@@ -16,6 +16,7 @@ class LSCRetailProductGroup extends AbstractModel
     public const DESCRIPTION = 'Description';
     public const SHELF_LABEL_DESCRIPTION = 'Shelf Label Description';
     public const ITEM_TEMPLATE_CODE = 'Item Template Code';
+    public const ITEM_TEMPL_CODE = 'Item Templ. Code';
     public const POS_MENU_LINK = 'POS Menu Link';
     public const MIN_LOC_PROF_INVENTORY = 'Min Loc. Prof. Inventory';
     public const BARCODE_MASK = 'Barcode Mask';
@@ -60,6 +61,7 @@ class LSCRetailProductGroup extends AbstractModel
 	self::DESCRIPTION => 'description',
 	self::SHELF_LABEL_DESCRIPTION => 'shelf_label_description',
 	self::ITEM_TEMPLATE_CODE => 'item_template_code',
+	self::ITEM_TEMPL_CODE => 'item_templ_code',
 	self::POS_MENU_LINK => 'pos_menu_link',
 	self::MIN_LOC_PROF_INVENTORY => 'min_loc_prof_inventory',
 	self::BARCODE_MASK => 'barcode_mask',
@@ -153,6 +155,16 @@ class LSCRetailProductGroup extends AbstractModel
     public function setItemTemplateCode(?string $value)
     {
         return $this->setData(self::ITEM_TEMPLATE_CODE, $value);
+    }
+
+    public function getItemTemplCode(): ?string
+    {
+        return $this->getData(self::ITEM_TEMPL_CODE);
+    }
+
+    public function setItemTemplCode(?string $value)
+    {
+        return $this->setData(self::ITEM_TEMPL_CODE, $value);
     }
 
     public function getPosMenuLink(): ?string

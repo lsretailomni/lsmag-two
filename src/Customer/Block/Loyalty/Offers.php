@@ -115,35 +115,29 @@ class Offers extends Template
                 $img = $img[0];
             }
             $index++;
-//            $img_size = $img->getImgSize();
-//            if ($img_size->getWidth() == 0 || $img_size->getHeight() == 0) {
-//                $imageSize = $this->getImageWidthandHeight();
-//                $img_size->setWidth($imageSize[0]);
-//                $img_size->setHeight($imageSize[1]);
-//            }
 
-//            $result = $this->loyaltyHelper->getImageById($img->getId(), $img_size);
+            $result = $this->loyaltyHelper->getImageById($img->getImageId());
 
-//            if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
-//                $offerpath = $this->getMediaPathtoStore();
-//                // @codingStandardsIgnoreStart
-//                if (!is_dir($offerpath)) {
-//                    $this->file->mkdir($offerpath, 0775);
-//                }
-//                $format      = strtolower($result['format']);
-//                $id          = $img->getId();
-//                $output_file = "{$id}-{$index}.$format";
-//                $file        = "{$offerpath}{$output_file}";
-//
-//                if (!$this->file->fileExists($file)) {
-//                    $base64     = $result['image'];
-//                    $image_file = fopen($file, 'wb');
-//                    fwrite($image_file, base64_decode($base64));
-//                    fclose($image_file);
-//                }
-//                // @codingStandardsIgnoreEnd
-//                $images[] = "{$output_file}";
-//            }
+            if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
+                $offerpath = $this->getMediaPathtoStore();
+                // @codingStandardsIgnoreStart
+                if (!is_dir($offerpath)) {
+                    $this->file->mkdir($offerpath, 0775);
+                }
+                $format = explode('/', $result['format'])[1];
+                $id          = $img->getImageId();
+                $output_file = "{$id}-{$index}.$format";
+                $file        = "{$offerpath}{$output_file}";
+
+                if (!$this->file->fileExists($file)) {
+                    $base64     = $result['image'];
+                    $image_file = fopen($file, 'wb');
+                    fwrite($image_file, base64_decode($base64));
+                    fclose($image_file);
+                }
+                // @codingStandardsIgnoreEnd
+                $images[] = "{$output_file}";
+            }
             return $images;
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());

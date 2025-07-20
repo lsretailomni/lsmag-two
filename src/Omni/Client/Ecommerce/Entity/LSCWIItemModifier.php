@@ -18,6 +18,9 @@ class LSCWIItemModifier extends AbstractModel
     public const PROMPT = 'Prompt';
     public const GROUP_MIN_SELECTION = 'Group Min. Selection';
     public const GROUP_MAX_SELECTION = 'Group Max. Selection';
+    public const USAGE_CATEGORY = 'Usage Category';
+    public const USAGE_SUBCATEGORY = 'Usage Sub-Category';
+    public const TRIGGER_FUNCTION = 'Trigger Function';
     public const ITEM_NO = 'Item No.';
     public const VARIANT_CODE = 'Variant Code';
     public const DESCRIPTION = 'Description';
@@ -43,6 +46,9 @@ class LSCWIItemModifier extends AbstractModel
 	self::PROMPT => 'prompt',
 	self::GROUP_MIN_SELECTION => 'group_min_selection',
 	self::GROUP_MAX_SELECTION => 'group_max_selection',
+	self::USAGE_CATEGORY => 'usage_category',
+	self::USAGE_SUBCATEGORY => 'usage_subcategory',
+	self::TRIGGER_FUNCTION => 'trigger_function',
 	self::ITEM_NO => 'item_no',
 	self::VARIANT_CODE => 'variant_code',
 	self::DESCRIPTION => 'description',
@@ -135,6 +141,36 @@ class LSCWIItemModifier extends AbstractModel
     public function setGroupMaxSelection(?int $value)
     {
         return $this->setData(self::GROUP_MAX_SELECTION, $value);
+    }
+
+    public function getUsageCategory(): ?int
+    {
+        return $this->getData(self::USAGE_CATEGORY);
+    }
+
+    public function setUsageCategory(?int $value)
+    {
+        return $this->setData(self::USAGE_CATEGORY, $value);
+    }
+
+    public function getUsageSubCategory(): ?int
+    {
+        return $this->getData(self::USAGE_SUBCATEGORY);
+    }
+
+    public function setUsageSubCategory(?int $value)
+    {
+        return $this->setData(self::USAGE_SUBCATEGORY, $value);
+    }
+
+    public function getTriggerFunction(): ?int
+    {
+        return $this->getData(self::TRIGGER_FUNCTION);
+    }
+
+    public function setTriggerFunction(?int $value)
+    {
+        return $this->setData(self::TRIGGER_FUNCTION, $value);
     }
 
     public function getItemNo(): ?string
