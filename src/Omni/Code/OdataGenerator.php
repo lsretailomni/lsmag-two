@@ -188,10 +188,6 @@ class OdataGenerator
                         $params
                     );
                     
-                    if ($requestClassName == "GetImage_GetImage") {
-                        $flag = 1;
-                    }
-
                     $data = $omniDataHelper->fetchGivenOdata(
                         $action,
                         '',

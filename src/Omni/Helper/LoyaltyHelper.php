@@ -76,9 +76,6 @@ class LoyaltyHelper extends AbstractHelperOmni
             return $response;
         }
         // @codingStandardsIgnoreStart
-//        $request = new Operation\ImageGetById();
-//        $entity  = new Entity\ImageGetById();
-
         $operation = $this->createInstance(GetImage_GetImage::class);
         $operation->setOperationInput([
             'imageNo' => $image_id

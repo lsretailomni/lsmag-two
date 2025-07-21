@@ -104,7 +104,6 @@ class Offers extends Template
         try {
             $images = [];
             $index  = 0;
-            //$img    = $coupon->getImages()->getImageView();
             $img    = $coupon['ImageId'];
             if (empty($img)) {
                 return $img;
