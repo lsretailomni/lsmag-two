@@ -237,6 +237,7 @@ class Totals extends AbstractOrderBlock
     {
         $order = $this->getOrder(true);
         $orderLines = $order->getLscMemberSalesDocLine();
+        $orderLines = $orderLines && !is_array($orderLines) ? [$orderLines] : $orderLines;
         $documentId = $this->_request->getParam('order_id');
         $newDocumentId = $this->_request->getParam('new_order_id');
 

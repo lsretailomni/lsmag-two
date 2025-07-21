@@ -22,7 +22,9 @@ use \Ls\Customer\Block\Order\Item\Custom\Renderer; ?>
 <tr id="order-item-row-<?= /* @noEscape */
 $_item->getItemId() ?>">
     <td class="col name" data-th="<?= /* @noEscape */ __('Product Name') ?>">
-        <strong class="product name product-item-name"><?= /* @noEscape */ $_item->getDescription() ?></strong>
+        <strong class="product name product-item-name">
+            <?= /* @noEscape */ !empty($_item->getDescription()) ?  $_item->getDescription() : $_item->getNumber() ?>
+        </strong>
         <?php if (!empty($_item->getVariantDescription() && $_item->getVariantDescription() !== $_item->getDescription())): ?>
             <p><?= /* @noEscape */ $_item->getVariantDescription() ?></p>
         <?php endif; ?>

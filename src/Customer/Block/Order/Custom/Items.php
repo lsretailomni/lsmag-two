@@ -36,42 +36,25 @@ class Items extends AbstractItems
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Get items
      *
      * @return DataObject[]
      */
     public function getItems()
     {
-        $type = $this->_request->getParam('type');
         $order = $this->getOrder(true);
-//        if ($this->getMagOrder()) {
-//            $magentoOrder = $this->getMagOrder();
-//
-//            if (!empty($magentoOrder) && !empty($order->getStoreCurrency())) {
-//                if ($order->getStoreCurrency() != $magentoOrder->getOrderCurrencyCode()) {
-//                    $magentoOrder = null;
-//                }
-//            }
-//            return $this->itemCollection->getItems();
-//        }
+
         $documentId = $this->_request->getParam('order_id');
         $newDocumentId = $this->_request->getParam('new_order_id');
         $orderLines = $order->getLscMemberSalesDocLine();
         if (!is_array($orderLines)) {
             $orderLines = [$orderLines];
         }
-        $options = [];
         $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
+
         foreach ($orderLines as $key => $line) {
-            foreach ($orderLines as $orderLine) {
-                if ($line->getLineNo() == $orderLine->getParentLine()) {
-                    $line->setPrice($line->getPrice() + $orderLine->getAmount() / $orderLine->getQuantity());
-                    $line->setAmount($line->getAmount() + $orderLine->getAmount());
-                }
-            }
-//            if ($line->getLineNo() != $line->getParentLine()) {
-//                unset($orderLines[$key]);
-//            }
             if ($line->getDocumentId() !== $documentId ||
                 ($newDocumentId && in_array($line->getDocumentId(), $newDocumentId)) ||
                 $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)
@@ -79,6 +62,7 @@ class Items extends AbstractItems
                 unset($orderLines[$key]);
             }
         }
+
         return $orderLines;
     }
 

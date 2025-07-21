@@ -144,8 +144,11 @@ class ItemHelper extends AbstractHelperOmni
         } elseif ($orderData instanceof RootMobileTransaction) {
             $orderLines     = !is_array($orderData->getMobiletransactionline()) ?
                 [$orderData->getMobiletransactionline()] : $orderData->getMobiletransactionline() ;
-            $discountsLines = !is_array($orderData->getMobiletransdiscountline()) ?
-                [$orderData->getMobiletransdiscountline()] : $orderData->getMobiletransdiscountline();
+            $discountsLines = $orderData->getMobiletransdiscountline() &&
+            is_array($orderData->getMobiletransdiscountline()) ?
+                $orderData->getMobiletransdiscountline() :
+                (($orderData->getMobiletransdiscountline() && !is_array($orderData->getMobiletransdiscountline())) ?
+                    [$orderData->getMobiletransdiscountline()] : []);
         }
 
         foreach ($orderLines as $line) {
@@ -476,7 +479,6 @@ class ItemHelper extends AbstractHelperOmni
             }
 
             return [$itemId, $variantId, $uom, $barCode, $uomQty, $baseUom];
-
         }
 
         return null;
