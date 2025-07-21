@@ -136,16 +136,6 @@ class BasketHelper extends AbstractHelperOmni
                             $quoteItem->getData('qty');
                         $amount = $this->itemHelper->convertToCurrentStoreCurrency($quoteItem->getPrice() * $qty);
                         // @codingStandardsIgnoreLine
-//                        $list_item = (new Entity\OneListItem())
-//                            ->setQuantity($qty)
-//                            ->setItemId($itemId)
-//                            ->setId($child->getItemId())
-//                            ->setBarcodeId($barCode)
-//                            ->setVariantId($variantId)
-//                            ->setUnitOfMeasureId($uom)
-//                            ->setAmount($amount)
-//                            ->setPrice($price)
-//                            ->setImmutable(true);
                         $listItem = $this->createInstance(
                             MobileTransactionLine::class,
                             [
