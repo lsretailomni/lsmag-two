@@ -14,7 +14,7 @@ class PeriodicDiscView
     public string $baseUrl;
     public array $connectionParams;
     public string $companyName;
-    public \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetup $request;
+    public \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetupWPGLookup $request;
     public \Ls\Omni\Client\Ecommerce\Entity\PeriodicDiscViewResponse $response;
     public \Ls\Omni\Helper\Data $dataHelper;
 
@@ -24,13 +24,13 @@ class PeriodicDiscView
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
         $this->dataHelper = $this->createInstance(\Ls\Omni\Helper\Data::class);
-        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetup::class);
+        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetupWPGLookup::class);
     }
 
     public function execute(): \Ls\Omni\Client\Ecommerce\Entity\PeriodicDiscViewResponse
     {
         $response = $this->dataHelper->makeRequest(
-            \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetup::ACTION_NAME,
+            \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetupWPGLookup::ACTION_NAME,
             \Ls\Omni\Client\Ecommerce\Entity\PeriodicDiscView::class,
             $this->request,
             $this->baseUrl,
@@ -150,11 +150,11 @@ class PeriodicDiscView
         return ObjectManager::getInstance()->create($entityClassName, $data);
     }
 
-    public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetup
+    public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetupWPGLookup
     {
         $this->setRequest(
             $this->createInstance(
-                \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetup::class,
+                \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetupWPGLookup::class,
                 ['data' => $params]
             )
         );
@@ -164,7 +164,7 @@ class PeriodicDiscView
     }
 
 
-    public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetup $request): self
+    public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetupWPGLookup $request): self
     {
         $this->request = $request;
         return $this;
@@ -176,7 +176,7 @@ class PeriodicDiscView
         return $this;
     }
 
-    public function getRequest(): \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetup
+    public function getRequest(): \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetDiscountSetupWPGLookup
     {
         return $this->request;
     }

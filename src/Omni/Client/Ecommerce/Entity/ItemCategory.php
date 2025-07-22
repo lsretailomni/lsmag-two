@@ -18,7 +18,6 @@ class ItemCategory extends AbstractModel
     public const PRESENTATION_ORDER = 'Presentation Order';
     public const HAS_CHILDREN = 'Has Children';
     public const LAST_MODIFIED_DATE_TIME = 'Last Modified Date Time';
-    public const DEFAULT_SUST_ACCOUNT = 'Default Sust. Account';
     public const LSC_ITEM_NO_MISCELLANEOUS = 'LSC Item No. Miscellaneous';
     public const LSC_NEGATIVE = 'LSC Negative';
     public const LSC_NOT_DISCOUNTABLE = 'LSC Not Discountable';
@@ -58,7 +57,6 @@ class ItemCategory extends AbstractModel
 	self::PRESENTATION_ORDER => 'presentation_order',
 	self::HAS_CHILDREN => 'has_children',
 	self::LAST_MODIFIED_DATE_TIME => 'last_modified_date_time',
-	self::DEFAULT_SUST_ACCOUNT => 'default_sust_account',
 	self::LSC_ITEM_NO_MISCELLANEOUS => 'lsc_item_no_miscellaneous',
 	self::LSC_NEGATIVE => 'lsc_negative',
 	self::LSC_NOT_DISCOUNTABLE => 'lsc_not_discountable',
@@ -165,16 +163,6 @@ class ItemCategory extends AbstractModel
     public function setLastModifiedDateTime(?string $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
-    }
-
-    public function getDefaultSustAccount(): ?string
-    {
-        return $this->getData(self::DEFAULT_SUST_ACCOUNT);
-    }
-
-    public function setDefaultSustAccount(?string $value)
-    {
-        return $this->setData(self::DEFAULT_SUST_ACCOUNT, $value);
     }
 
     public function getLscItemNoMiscellaneous(): ?string

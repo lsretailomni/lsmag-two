@@ -77,7 +77,10 @@ class SalesObserver implements ObserverInterface
                 ) {
                     $address = $shippingAssignment->getShipping()->getAddress();
                     $address->setSubtotal($total->getSubtotal());
-                    $address->setSubtotalInclTax($total->getSubtotal());
+                    if (!$quote->isVirtual()) {
+                        $address->setSubtotalInclTax($total->getSubtotal());
+                    }
+                    
                 }
             }
         }

@@ -17,6 +17,9 @@ class LSCMemberContactAttrList extends AbstractModel
     public const TYPE = 'Type';
     public const DESCRIPTION = 'Description';
     public const VALUE = 'Value';
+    public const VALUE_TYPE = 'Value Type';
+    public const VISIBLE_TYPE = 'Visible Type';
+    public const LOOKUP_TYPE = 'Lookup Type';
 
     public static array $dbColumnsMapping = [
 	self::ACCOUNT_NO => 'account_no',
@@ -25,6 +28,9 @@ class LSCMemberContactAttrList extends AbstractModel
 	self::TYPE => 'type',
 	self::DESCRIPTION => 'description',
 	self::VALUE => 'value',
+	self::VALUE_TYPE => 'value_type',
+	self::VISIBLE_TYPE => 'visible_type',
+	self::LOOKUP_TYPE => 'lookup_type',
     ];
 
     public static function getDbColumnsMapping(): array
@@ -91,5 +97,35 @@ class LSCMemberContactAttrList extends AbstractModel
     public function setValue(?string $value)
     {
         return $this->setData(self::VALUE, $value);
+    }
+
+    public function getValueType(): ?int
+    {
+        return $this->getData(self::VALUE_TYPE);
+    }
+
+    public function setValueType(?int $value)
+    {
+        return $this->setData(self::VALUE_TYPE, $value);
+    }
+
+    public function getVisibleType(): ?int
+    {
+        return $this->getData(self::VISIBLE_TYPE);
+    }
+
+    public function setVisibleType(?int $value)
+    {
+        return $this->setData(self::VISIBLE_TYPE, $value);
+    }
+
+    public function getLookupType(): ?int
+    {
+        return $this->getData(self::LOOKUP_TYPE);
+    }
+
+    public function setLookupType(?int $value)
+    {
+        return $this->setData(self::LOOKUP_TYPE, $value);
     }
 }

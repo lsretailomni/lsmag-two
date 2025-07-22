@@ -114,6 +114,9 @@ class Client extends LaminasSoapClient
             ]
         ];
 
+        $opts        = ['http' => ['header' => "Authorization: Basic " . 'b21uaWRldjp1c2hGbWs5SENRdDJKYUpkYzhxYTNtNXEwOXI1WDI5YzZzRDRxcjlaK3A0PQ==', 'timeout' => $this->getTimeout()]];
+
+
         $context = stream_context_create($opts);
 
         $response = file_get_contents($this->url->toString(), false, $context);

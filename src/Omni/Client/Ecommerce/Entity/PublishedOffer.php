@@ -28,6 +28,10 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
 
     public const ENDING_DATE = 'EndingDate';
 
+    public const MEMBER_ATTRIBUTE = 'MemberAttribute';
+
+    public const MEMBER_ATTRIBUTE_VALUE = 'MemberAttributeValue';
+
     /**
      * @param ?string $No
      * @return $this
@@ -170,6 +174,42 @@ class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
     public function getEndingdate() : ?string
     {
         return $this->getData(self::ENDING_DATE);
+    }
+
+    /**
+     * @param ?string $MemberAttribute
+     * @return $this
+     */
+    public function setMemberattribute(?string $MemberAttribute)
+    {
+        $this->setData(self::MEMBER_ATTRIBUTE, $MemberAttribute);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getMemberattribute() : ?string
+    {
+        return $this->getData(self::MEMBER_ATTRIBUTE);
+    }
+
+    /**
+     * @param ?string $MemberAttributeValue
+     * @return $this
+     */
+    public function setMemberattributevalue(?string $MemberAttributeValue)
+    {
+        $this->setData(self::MEMBER_ATTRIBUTE_VALUE, $MemberAttributeValue);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getMemberattributevalue() : ?string
+    {
+        return $this->getData(self::MEMBER_ATTRIBUTE_VALUE);
     }
 }
 

@@ -112,6 +112,10 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
 
     public const PREPAYMENT_DOCUMENT_NO = 'PrepaymentDocumentNo';
 
+    public const SERIAL_NO = 'SerialNo';
+
+    public const LOT_NO = 'LotNo';
+
     /**
      * @param ?string $DocumentID
      * @return $this
@@ -1010,6 +1014,42 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     public function getPrepaymentdocumentno() : ?string
     {
         return $this->getData(self::PREPAYMENT_DOCUMENT_NO);
+    }
+
+    /**
+     * @param ?string $SerialNo
+     * @return $this
+     */
+    public function setSerialno(?string $SerialNo)
+    {
+        $this->setData(self::SERIAL_NO, $SerialNo);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getSerialno() : ?string
+    {
+        return $this->getData(self::SERIAL_NO);
+    }
+
+    /**
+     * @param ?string $LotNo
+     * @return $this
+     */
+    public function setLotno(?string $LotNo)
+    {
+        $this->setData(self::LOT_NO, $LotNo);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getLotno() : ?string
+    {
+        return $this->getData(self::LOT_NO);
     }
 }
 

@@ -6,6 +6,8 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\LineType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferType;
 use \Ls\Omni\Client\Ecommerce\Entity\ImageView;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -24,55 +26,8 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\StoreManagerInterface;
 
-/**
- * Class Offers
- * @package Ls\Customer\Block\Loyalty
- */
 class Offers extends Template
 {
-
-    /**
-     * @var LoyaltyHelper
-     */
-    private $loyaltyHelper;
-
-    /**
-     * @var File
-     */
-    public $file;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    public $storeManager;
-
-    /**
-     * @var ScopeConfigInterface
-     */
-    public $scopeConfig;
-
-    /**
-     * @var TimezoneInterface
-     */
-    public $timeZoneInterface;
-
-    /** @var ProductRepository */
-    public $productRepository;
-
-    /** @var CategoryRepository */
-    public $categoryRepository;
-
-    /** @var CategoryHelper */
-    public $categoryHelper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
     /**
      * @param Context $context
      * @param LoyaltyHelper $loyaltyHelper
@@ -88,51 +43,68 @@ class Offers extends Template
      * @param array $data
      */
     public function __construct(
-        Context $context,
-        LoyaltyHelper $loyaltyHelper,
-        File $file,
-        StoreManagerInterface $storeManager,
-        ScopeConfigInterface $scopeConfig,
-        TimezoneInterface $timeZoneInterface,
-        ProductRepository $productRepository,
-        CategoryRepository $categoryRepository,
-        CategoryHelper $categoryHelper,
-        LSR $lsr,
-        ReplicationHelper $replicationHelper,
+        public Context $context,
+        public LoyaltyHelper $loyaltyHelper,
+        public File $file,
+        public StoreManagerInterface $storeManager,
+        public ScopeConfigInterface $scopeConfig,
+        public TimezoneInterface $timeZoneInterface,
+        public ProductRepository $productRepository,
+        public CategoryRepository $categoryRepository,
+        public CategoryHelper $categoryHelper,
+        public LSR $lsr,
+        public ReplicationHelper $replicationHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->loyaltyHelper      = $loyaltyHelper;
-        $this->file               = $file;
-        $this->storeManager       = $storeManager;
-        $this->scopeConfig        = $scopeConfig;
-        $this->timeZoneInterface  = $timeZoneInterface;
-        $this->productRepository  = $productRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->categoryHelper     = $categoryHelper;
-        $this->lsr                = $lsr;
-        $this->replicationHelper  = $replicationHelper;
     }
 
     /**
+     * Fetch Offers
+     *
      * @return PublishedOffer[]
      */
     public function getOffers()
     {
+        $offersArr = [];
         $result = $this->loyaltyHelper->getOffers();
-        return ($result) ? $result->getPublishedOffer() : '';
+        
+        $publishedOffers = $result->getPublishedOffer();
+        foreach ($publishedOffers as $pubOffer) {
+            $offersArr[$pubOffer->getNo()]['Offer']  = $pubOffer;
+        }
+
+        $publishedOffersImages = $result->getPublishedOfferImages();
+        foreach ($publishedOffersImages as $pubOfferImage) {
+            $offerKey = $pubOfferImage->getKeyValue();
+            if (array_key_exists($offerKey, $offersArr)) {
+                $offersArr[$offerKey]['ImageId'] = $pubOfferImage;
+            }
+        }
+
+        $publishedOffersLines = $result->getPublishedOfferLine();
+        foreach ($publishedOffersLines as $pubOfferLine) {
+            $offerKey = $pubOfferLine->getPublishedOfferNo();
+            if (array_key_exists($offerKey, $offersArr)) {
+                $offersArr[$offerKey]['OfferLines'][] = $pubOfferLine;
+            }
+        }
+        
+        return $offersArr;
     }
 
     /**
-     * @param PublishedOffer $coupon
+     * Fetch Images
+     *
+     * @param $coupon
      * @return array|ImageView|ImageView[]|mixed
      */
-    public function fetchImages(PublishedOffer $coupon)
+    public function fetchImages($coupon)
     {
         try {
             $images = [];
             $index  = 0;
-            $img    = $coupon->getImages()->getImageView();
+            $img    = $coupon['ImageId'];
             if (empty($img)) {
                 return $img;
             }
@@ -142,14 +114,8 @@ class Offers extends Template
                 $img = $img[0];
             }
             $index++;
-            $img_size = $img->getImgSize();
-            if ($img_size->getWidth() == 0 || $img_size->getHeight() == 0) {
-                $imageSize = $this->getImageWidthandHeight();
-                $img_size->setWidth($imageSize[0]);
-                $img_size->setHeight($imageSize[1]);
-            }
 
-            $result = $this->loyaltyHelper->getImageById($img->getId(), $img_size);
+            $result = $this->loyaltyHelper->getImageById($img->getImageId());
 
             if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
                 $offerpath = $this->getMediaPathtoStore();
@@ -157,8 +123,8 @@ class Offers extends Template
                 if (!is_dir($offerpath)) {
                     $this->file->mkdir($offerpath, 0775);
                 }
-                $format      = strtolower($result['format']);
-                $id          = $img->getId();
+                $format = explode('/', $result['format'])[1];
+                $id          = $img->getImageId();
                 $output_file = "{$id}-{$index}.$format";
                 $file        = "{$offerpath}{$output_file}";
 
@@ -178,6 +144,8 @@ class Offers extends Template
     }
 
     /**
+     * Get media path to store
+     *
      * @return string
      * @throws ValidatorException
      */
@@ -188,6 +156,8 @@ class Offers extends Template
     }
 
     /**
+     * Get media path to load
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -199,6 +169,8 @@ class Offers extends Template
     }
 
     /**
+     * Get image width and height
+     *
      * @return array
      */
     public function getImageWidthandHeight()
@@ -220,13 +192,15 @@ class Offers extends Template
     }
 
     /**
+     * Get formated offer expiry date
+     *
      * @param $date
      * @return string
      */
     public function getOfferExpiryDate($date)
     {
         try {
-            $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
+            $offerExpiryDate = (new \DateTime($date))->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
                 $this->lsr->getCurrentStoreId()
@@ -240,27 +214,32 @@ class Offers extends Template
     /**
      * Get offer product category links
      *
-     * @param $offerLines
+     * @param $offer
      * @return array|string[]|null
-     * @throws NoSuchEntityException
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
-    public function getOfferProductCategoryLink($offerLines)
+    public function getOfferProductCategoryLink($offer)
     {
         $url  = '';
         $text = '';
+        $offerLines = $offer['OfferLines'];
         if (count($offerLines) == 1) {
             try {
-                if ($offerLines[0]->getLineType() == OfferDiscountLineType::ITEM) {
-                    $product = $this->replicationHelper->getProductDataByIdentificationAttributes($offerLines[0]->getId());
+                $lineType     = $this->getDiscountLineType($offer, $offerLines[0]->getDiscountLineType());
+                
+                if ($lineType == OfferDiscountLineType::ITEM) {
+                    $product = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $offerLines[0]->getDiscountLineId()
+                    );
                     $url     = $product->getProductUrl();
                     $text    = __("Go To Product");
                 }
-                if ($offerLines[0]->getLineType() == OfferDiscountLineType::PRODUCT_GROUP
-                    || $offerLines[0]->getLineType() == OfferDiscountLineType::ITEM_CATEGORY
-                    || $offerLines[0]->getLineType() == OfferDiscountLineType::SPECIAL_GROUP
+                if ($lineType == OfferDiscountLineType::PRODUCT_GROUP
+                    || $lineType == OfferDiscountLineType::ITEM_CATEGORY
+                    || $lineType == OfferDiscountLineType::SPECIAL_GROUP
                 ) {
-                    return ['', ''];
+                    return ['',''];
                 }
             } catch (NoSuchEntityException $e) {
                 return null;
@@ -269,9 +248,12 @@ class Offers extends Template
             $categoryIds = [];
             $count       = 0;
             foreach ($offerLines as $offerLine) {
-                if ($offerLine->getLineType() == LineType::ITEM) {
+                $lineType     = $this->getDiscountLineType($offer, $offerLine->getDiscountLineType());
+                if ($lineType == LineType::ITEM) {
                     try {
-                        $catIds = $this->replicationHelper->getProductDataByIdentificationAttributes($offerLine->getId())->getCategoryIds();
+                        $catIds = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                            $offerLine->getDiscountLineId()
+                        )->getCategoryIds();
                     } catch (Exception $e) {
                         return null;
                     }
@@ -283,11 +265,11 @@ class Offers extends Template
                         }
                         $count++;
                     }
-                } elseif ($offerLine->getLineType() == OfferDiscountLineType::PRODUCT_GROUP
-                    || $offerLine->getLineType() == OfferDiscountLineType::ITEM_CATEGORY
-                    || $offerLine->getLineType() == OfferDiscountLineType::SPECIAL_GROUP
+                } elseif ($lineType == OfferDiscountLineType::PRODUCT_GROUP
+                    || $lineType == OfferDiscountLineType::ITEM_CATEGORY
+                    || $lineType == OfferDiscountLineType::SPECIAL_GROUP
                 ) {
-                    return ['', ''];
+                    return [];
                 }
             }
             if (!empty($categoryIds)) {
@@ -297,11 +279,13 @@ class Offers extends Template
                 $text        = __('Go To Category');
             } else {
                 try {
-                    $product = $this->replicationHelper->getProductDataByIdentificationAttributes($offerLines[0]->getId());
+                    $product = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $offerLines[0]->getDiscountLineId()
+                    );
                     $url     = $product->getProductUrl();
                     $text    = __('Go To Product');
                 } catch (NoSuchEntityException $e) {
-                    return ['', ''];
+                    return [];
                 }
             }
         }
@@ -309,6 +293,139 @@ class Offers extends Template
             return [$url, $text];
         } else {
             return null;
+        }
+    }
+
+    /**
+     * Get discount line type
+     *
+     * @param $offer
+     * @param $lineType
+     * @return string|void
+     */
+    public function getDiscountLineType($offer, $lineType)
+    {
+        $discountType = $this->getDiscountType($offer['Offer']->getDiscountType());
+        switch ($discountType) {
+            case OfferDiscountType::PROMOTION:
+            case OfferDiscountType::DEAL:
+                switch ($lineType) {
+                    case 0:
+                        return OfferDiscountLineType::ITEM;
+                    case 1:
+                        return OfferDiscountLineType::PRODUCT_GROUP;
+                    case 2:
+                        return OfferDiscountLineType::ITEM_CATEGORY;
+                    case 3:
+                        return OfferDiscountLineType::ALL;
+                    case 4:
+                        return OfferDiscountLineType::P_L_U_MENU;
+                    case 5:
+                        return OfferDiscountLineType::DEAL_MODIFIER;
+                    case 6:
+                        return OfferDiscountLineType::SPECIAL_GROUP;
+                }
+                break;
+            case OfferDiscountType::COUPON:
+                switch ($lineType) {
+                    case 0:
+                        return OfferDiscountLineType::ITEM;
+                    case 1:
+                        return OfferDiscountLineType::PRODUCT_GROUP;
+                    case 2:
+                        return OfferDiscountLineType::ITEM_CATEGORY;
+                    case 3:
+                        return OfferDiscountLineType::SPECIAL_GROUP;
+                    case 4:
+                        return OfferDiscountLineType::ALL;
+                }
+                break;
+        }
+        
+        return $this->getOfferDiscountLineType($lineType);
+    }
+
+    /**
+     * Get discount type
+     *
+     * @param $discType
+     * @return string|void
+     */
+    public function getDiscountType($discType)
+    {
+        switch ($discType) {
+            case 0:
+                return OfferDiscountType::PROMOTION;
+            case 1:
+                return OfferDiscountType::DEAL;
+            case 2:
+                return OfferDiscountType::MULTIBUY;
+            case 3:
+                return OfferDiscountType::MIX_AND_MATCH;
+            case 4:
+                return OfferDiscountType::DISCOUNT_OFFER;
+            case 5:
+                return OfferDiscountType::TOTAL_DISCOUNT;
+            case 6:
+                return OfferDiscountType::TENDER_TYPE;
+            case 7:
+                return OfferDiscountType::ITEM_POINT;
+            case 8:
+                return OfferDiscountType::LINE_DISCOUNT;
+            case 9:
+                return OfferDiscountType::COUPON;
+        }
+    }
+
+    /**
+     * Get offer discount line type
+     *
+     * @param $lineType
+     * @return string
+     */
+    public function getOfferDiscountLineType($lineType)
+    {
+        switch ($lineType) {
+            case 0:
+                return OfferDiscountLineType::ITEM;
+            case 1:
+                return OfferDiscountLineType::PRODUCT_GROUP;
+            case 2:
+                return OfferDiscountLineType::ITEM_CATEGORY;
+            case 3:
+                return OfferDiscountLineType::ALL;
+            case 4:
+                return OfferDiscountLineType::SPECIAL_GROUP;
+            case 5:
+                return OfferDiscountLineType::P_L_U_MENU;
+            case 6:
+                return OfferDiscountLineType::DEAL_MODIFIER;
+        }
+    }
+
+    /**
+     * Get Offer type
+     *
+     * @param $type
+     * @return string|void
+     */
+    public function getOfferType($type)
+    {
+        switch ($type) {
+            case 0:
+                // not a part of member mgt system
+                return OfferType::GENERAL;
+            case 1:
+                //member attribute based, specifically the member contact signed up for this (golf etc)
+                return OfferType::SPECIAL_MEMBER;
+            case 2:
+                //Points and Coupons, item Points and Coupons,  something you can pay with
+                return OfferType::POINT_OFFER;
+            case 3:
+                //Club and scheme, offer is part of member mgt,
+                //got offer since you were in club,scheme,account or contact
+                return OfferType::CLUB;
+            
         }
     }
 }

@@ -49,8 +49,10 @@ class Cart
      * @return array
      * @throws NoSuchEntityException|LocalizedException|GuzzleException
      */
-    public function afterGetSectionData(\Magento\Checkout\CustomerData\Cart $subject, array $result)
-    {
+    public function afterGetSectionData(
+        \Magento\Checkout\CustomerData\Cart $subject,
+        array $result
+    ) {
         $quote = $this->checkoutSession->getQuote();
 
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {

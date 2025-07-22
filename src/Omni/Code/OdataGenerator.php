@@ -107,6 +107,15 @@ class OdataGenerator
             'response' => [
                 'DataSetName' => ''
             ]
+        ],
+        'GetImage_GetImage' => [
+            'request' => [
+                'imageNo' => '40000',
+                'mediaId' => ''
+            ],
+            'response' => [
+                'DataSetName' => ''
+            ]
         ]
     ];
 
@@ -178,7 +187,7 @@ class OdataGenerator
                         $action,
                         $params
                     );
-
+                    
                     $data = $omniDataHelper->fetchGivenOdata(
                         $action,
                         '',

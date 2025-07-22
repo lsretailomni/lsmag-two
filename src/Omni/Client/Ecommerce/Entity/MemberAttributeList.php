@@ -26,6 +26,10 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
 
     public const ATTRIBUTE_TYPE = 'AttributeType';
 
+    public const LOOKUP_TYPE = 'LookupType';
+
+    public const VISIBLE_TYPE = 'VisibleType';
+
     /**
      * @param ?string $Type
      * @return $this
@@ -150,6 +154,42 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     public function getAttributetype() : ?string
     {
         return $this->getData(self::ATTRIBUTE_TYPE);
+    }
+
+    /**
+     * @param ?string $LookupType
+     * @return $this
+     */
+    public function setLookuptype(?string $LookupType)
+    {
+        $this->setData(self::LOOKUP_TYPE, $LookupType);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getLookuptype() : ?string
+    {
+        return $this->getData(self::LOOKUP_TYPE);
+    }
+
+    /**
+     * @param ?string $VisibleType
+     * @return $this
+     */
+    public function setVisibletype(?string $VisibleType)
+    {
+        $this->setData(self::VISIBLE_TYPE, $VisibleType);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getVisibletype() : ?string
+    {
+        return $this->getData(self::VISIBLE_TYPE);
     }
 }
 
