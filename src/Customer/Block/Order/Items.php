@@ -32,17 +32,20 @@ class Items extends AbstractItems
     /**
      * Get orderLines either using magento order or central order object
      *
+     * @param $trans
      * @return array
      */
     public function getItems($trans)
     {
         $order = $this->getOrder(true);
         $orderLines = $order->getLscMemberSalesDocLine();
+        $orderLines = $orderLines && is_array($orderLines) ?
+            $orderLines : (($orderLines && !is_array($orderLines)) ? [$orderLines] : []);
         $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $trans);
         $documentId = $trans->getDocumentId();
 
         foreach ($orderLines as $key => $line) {
-            if (($line->getDocumentId() !== $documentId) ||
+            if ($line->getDocumentId() !== $documentId ||
                 $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID) ||
                 $line->getEntryType() == 1
             ) {

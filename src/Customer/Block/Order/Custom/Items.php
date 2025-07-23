@@ -45,19 +45,18 @@ class Items extends AbstractItems
     public function getItems()
     {
         $order = $this->getOrder(true);
-
         $documentId = $this->_request->getParam('order_id');
-        $newDocumentId = $this->_request->getParam('new_order_id');
         $orderLines = $order->getLscMemberSalesDocLine();
-        if (!is_array($orderLines)) {
-            $orderLines = [$orderLines];
-        }
+
+        $orderLines = $orderLines && is_array($orderLines) ?
+            $orderLines : (($orderLines && !is_array($orderLines)) ? [$orderLines] : []);
+
         $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
 
         foreach ($orderLines as $key => $line) {
             if ($line->getDocumentId() !== $documentId ||
-                ($newDocumentId && in_array($line->getDocumentId(), $newDocumentId)) ||
-                $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)
+                $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID) ||
+                $line->getEntryType() == 1
             ) {
                 unset($orderLines[$key]);
             }

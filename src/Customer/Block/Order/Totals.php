@@ -237,13 +237,15 @@ class Totals extends AbstractOrderBlock
     {
         $order = $this->getOrder(true);
         $orderLines = $order->getLscMemberSalesDocLine();
-        $orderLines = $orderLines && !is_array($orderLines) ? [$orderLines] : $orderLines;
+        $orderLines = $orderLines && is_array($orderLines) ?
+            $orderLines : (($orderLines && !is_array($orderLines)) ? [$orderLines] : []);
         $documentId = $this->_request->getParam('order_id');
         $newDocumentId = $this->_request->getParam('new_order_id');
+        $isCreditMemo = $this->orderHelper->getGivenValueFromRegistry('current_detail') == 'creditmemo';
 
         foreach ($orderLines as $key => $line) {
-            if ($line->getDocumentId() !== $documentId ||
-                ($newDocumentId && in_array($line->getDocumentId(), $newDocumentId)) ||
+            if ((!$isCreditMemo && $line->getDocumentId() !== $documentId) ||
+                ($isCreditMemo && $newDocumentId && !in_array($line->getDocumentId(), $newDocumentId)) ||
                 $line->getEntryType() == 1
             ) {
                 unset($orderLines[$key]);
