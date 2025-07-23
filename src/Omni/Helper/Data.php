@@ -150,11 +150,9 @@ class Data extends AbstractHelperOmni
             if ($startingDate && !$endingDate) {
                 $storeHoursObjStartDateTimeStamp = strtotime($startingDate);
                 return $currentTimeStamp >= $storeHoursObjStartDateTimeStamp;
-            } else {
+            } elseif (!$startingDate && $endingDate) {
                 $storeHoursObjEndDateTimeStamp = strtotime($endingDate);
-                if (!$startingDate && $endingDate) {
-                    return $currentTimeStamp <= $storeHoursObjEndDateTimeStamp;
-                }
+                return $currentTimeStamp <= $storeHoursObjEndDateTimeStamp;
             }
         }
 
