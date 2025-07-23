@@ -121,9 +121,6 @@ class Request extends Action
                             );
                             $this->orderRepository->save($order);
                         }
-                        $this->messageManager->addSuccessMessage(
-                            __('Order request has been sent to LS Central successfully')
-                        );
                     }
                 }
             } catch (Exception $e) {

@@ -128,22 +128,14 @@ class BasketHelper extends AbstractHelperOmni
                     }
 
                     if (!$match) {
-                        $price = $quoteItem->getProduct()->getPrice();
+                        $price = ($quoteItem->getProductType() == LSR::TYPE_GIFT_CARD) ? 
+                            $quoteItem->getPrice() : 
+                            $quoteItem->getProduct()->getPrice();
                         $price = $this->itemHelper->convertToCurrentStoreCurrency($price);
                         $qty = $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
                             $quoteItem->getData('qty');
                         $amount = $this->itemHelper->convertToCurrentStoreCurrency($quoteItem->getPrice() * $qty);
                         // @codingStandardsIgnoreLine
-//                        $list_item = (new Entity\OneListItem())
-//                            ->setQuantity($qty)
-//                            ->setItemId($itemId)
-//                            ->setId($child->getItemId())
-//                            ->setBarcodeId($barCode)
-//                            ->setVariantId($variantId)
-//                            ->setUnitOfMeasureId($uom)
-//                            ->setAmount($amount)
-//                            ->setPrice($price)
-//                            ->setImmutable(true);
                         $listItem = $this->createInstance(
                             MobileTransactionLine::class,
                             [
@@ -702,6 +694,9 @@ class BasketHelper extends AbstractHelperOmni
             $orderLines = $basketData ? $basketData->getMobiletransactionline() : [];
 
             foreach ($orderLines as $line) {
+                if($item->getProductType() == LSR::TYPE_GIFT_CARD && $line->getPrice() != $item->getCustomPrice()) {
+                    continue;
+                }
                 if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                     $rowTotal = $line->getQuantity() == $item->getQty() ?
                         ($line->getNetamount() + $line->getTaxamount()) :

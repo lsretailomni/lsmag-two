@@ -533,6 +533,8 @@ class ClassMap
         		'LSC Periodic Discount' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\LSCPeriodicDiscount',
         		'LSC Periodic Discount Benefits' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\LSCPeriodicDiscountBenefits',
         		'GetDiscount_GetDiscount' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\GetDiscount_GetDiscount',
+        		'Tenant Media' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\TenantMedia',
+        		'GetImage_GetImage' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\GetImage_GetImage',
         		'Item' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Item',
         		'LSC Item Status Link' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\LSCItemStatusLink',
         		'LSC Item/Special Group Link' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\LSCItemSpecialGroupLink',

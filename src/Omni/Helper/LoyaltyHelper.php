@@ -11,7 +11,7 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\GetDirectMarketingInfoResult as GetDirectMarketingInfoResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOfferLine;
-use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\Ecommerce\Operation\GetImage_GetImage;
 use \Ls\Omni\Client\Ecommerce\Operation\GetDirectMarketingInfo;
 use \Ls\Omni\Client\Ecommerce\Operation\GetDiscount_GetDiscount;
 use \Ls\Omni\Client\ResponseInterface;
@@ -35,18 +35,22 @@ class LoyaltyHelper extends AbstractHelperOmni
     {
         $response = null;
         $customer = $this->customerSession->getCustomer();
+        $cardId   = $customer->getData('lsr_cardid');
         // @codingStandardsIgnoreLine
-        $request = new Operation\PublishedOffersGetByCardId();
+        
+        $operation = $this->createInstance(GetDirectMarketingInfo::class);
+        $operation->setOperationInput([
+            Entity\GetDirectMarketingInfo::CARD_ID => $cardId
+        ]);
         // @codingStandardsIgnoreLine
-        $entity = new Entity\PublishedOffersGetByCardId();
-        $entity->setCardId($customer->getData('lsr_cardid'));
-        $entity->setItemId('');
+
         try {
-            $response = $request->execute($entity);
+            $response = $operation->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response ? $response->getResult() : $response;
+        
+        return $response && $response->getResponsecode() == '0000' ? $response->getLoadmemberdirmarkinfoxml() : null;
     }
 
     /**
@@ -59,7 +63,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function getImageById($image_id = null, $image_size = null)
     {
-        if ($image_id == null || $image_size == null) {
+        if ($image_id == null) {
             return [];
         }
 
@@ -72,34 +76,39 @@ class LoyaltyHelper extends AbstractHelperOmni
             return $response;
         }
         // @codingStandardsIgnoreStart
-        $request = new Operation\ImageGetById();
-        $entity  = new Entity\ImageGetById();
+        $operation = $this->createInstance(GetImage_GetImage::class);
+        $operation->setOperationInput([
+            'imageNo' => $image_id
+        ]);        
         // @codingStandardsIgnoreEnd
-        $entity->setId($image_id)
-            ->setImageSize($image_size);
-
         try {
-            $response = $request->execute($entity);
+            $response = $operation->execute($operation);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        if (!empty($response) && !empty($response->getResult())) {
+        if (!empty($response) && $response->getResponseCode() == '0000') {
             $this->cacheHelper->persistContentInCache(
                 $cacheId,
                 [
-                    "image"        => $response->getResult()->getImage(),
-                    "format"       => $response->getResult()->getFormat(),
-                    "location"     => $response->getResult()->getLocation(),
-                    "locationType" => $response->getResult()->getLocationType()
+                    "image"        => $response->getRecords()[0]->getTenantMedia()->getContent(),
+                    "format"       => $response->getRecords()[0]->getTenantMedia()->getMimeType(),
+                    "width"        => $response->getRecords()[0]->getTenantMedia()->getWidth(),
+                    "height"       => $response->getRecords()[0]->getTenantMedia()->getHeight(),
+                    "description"  => $response->getRecords()[0]->getTenantMedia()->getDescription(),
+                    "location"     => "",
+                    "locationType" => ""
                 ],
                 [Type::CACHE_TAG],
                 604800
             );
             return [
-                "image"        => $response->getResult()->getImage(),
-                "format"       => $response->getResult()->getFormat(),
-                "location"     => $response->getResult()->getLocation(),
-                "locationType" => $response->getResult()->getLocationType()
+                "image"        => $response->getRecords()[0]->getTenantMedia()->getContent(),
+                "format"       => $response->getRecords()[0]->getTenantMedia()->getMimeType(),
+                "width"        => $response->getRecords()[0]->getTenantMedia()->getWidth(),
+                "height"       => $response->getRecords()[0]->getTenantMedia()->getHeight(),
+                "description"  => $response->getRecords()[0]->getTenantMedia()->getDescription(),
+                "location"     => "",
+                "locationType" => ""
             ];
         }
         return [];

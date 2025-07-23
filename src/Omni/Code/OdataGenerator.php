@@ -114,8 +114,17 @@ class OdataGenerator
             ],
             'response' => [
                 'DataSetName' => ''
-            ]
+            ],
         ],
+        'GetImage_GetImage' => [
+            'request' => [
+                'imageNo' => '40000',
+                'mediaId' => ''
+            ],
+            'response' => [
+                'DataSetName' => ''
+            ]
+        ]
     ];
 
     /**

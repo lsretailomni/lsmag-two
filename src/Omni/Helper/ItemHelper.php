@@ -133,22 +133,22 @@ class ItemHelper extends AbstractHelperOmni
             $orderData instanceof GetSalesInfoByOrderId_GetSalesInfoByOrderId ||
             $orderData instanceof GetSalesReturnById_GetSalesReturnById
         ) {
-            $orderLines = !is_array($orderData->getLscMemberSalesDocLine()) ?
-                [$orderData->getLscMemberSalesDocLine()] : $orderData->getLscMemberSalesDocLine() ;
-            $discountsLines = $orderData->getLscMemberSalesDocDiscLine() &&
-            is_array($orderData->getLscMemberSalesDocDiscLine()) ?
-                $orderData->getLscMemberSalesDocDiscLine() :
-                (($orderData->getLscMemberSalesDocDiscLine() && !is_array($orderData->getLscMemberSalesDocDiscLine())) ?
-                [$orderData->getLscMemberSalesDocDiscLine()] : []);
+            $orderLines = $orderData->getLscMemberSalesDocLine();
+            $discountsLines = $orderData->getLscMemberSalesDocDiscLine();
+
+            $orderLines = $orderLines && is_array($orderLines) ?
+                $orderLines : ($orderLines && !is_array($orderLines) ? [$orderLines] : []);
+            $discountsLines = $discountsLines && is_array($discountsLines) ?
+                $discountsLines : (($discountsLines && !is_array($discountsLines)) ? [$discountsLines] : []);
             $type = 2;
         } elseif ($orderData instanceof RootMobileTransaction) {
-            $orderLines     = !is_array($orderData->getMobiletransactionline()) ?
-                [$orderData->getMobiletransactionline()] : $orderData->getMobiletransactionline() ;
-            $discountsLines = $orderData->getMobiletransdiscountline() &&
-            is_array($orderData->getMobiletransdiscountline()) ?
-                $orderData->getMobiletransdiscountline() :
-                (($orderData->getMobiletransdiscountline() && !is_array($orderData->getMobiletransdiscountline())) ?
-                    [$orderData->getMobiletransdiscountline()] : []);
+            $orderLines = $orderData->getMobiletransactionline();
+            $discountsLines = $orderData->getMobiletransdiscountline();
+
+            $orderLines = $orderLines && is_array($orderLines) ?
+                $orderLines : ($orderLines && !is_array($orderLines) ? [$orderLines] : []);
+            $discountsLines = $discountsLines && is_array($discountsLines) ?
+                $discountsLines : (($discountsLines && !is_array($discountsLines)) ? [$discountsLines] : []);
         }
 
         foreach ($orderLines as $line) {
@@ -492,7 +492,7 @@ class ItemHelper extends AbstractHelperOmni
      */
     public function getItemAttributesGivenQuoteItem($quoteItem)
     {
-        if ($quoteItem->getProductType() != Type::DEFAULT_TYPE) {
+        if ($quoteItem->getProductType() != Type::DEFAULT_TYPE && $quoteItem->getProductType() != LSR::TYPE_GIFT_CARD) {
             $quoteItem = current($quoteItem->getChildren());
         }
 
@@ -570,7 +570,8 @@ class ItemHelper extends AbstractHelperOmni
         $lineUom = method_exists($line, 'getUnitOfMeasure') ?
             $line->getUnitOfMeasure() : (method_exists($line, 'getUomid') ? $line->getUomid() : "");
 
-        return in_array($itemId, explode(',', $giftCardIdentifier)) ? $line->getId() == $quoteItem->getId() :
+        return in_array($itemId, explode(',', $giftCardIdentifier)) ?
+            $line->getNumber() == $quoteItem->getProduct()->getLsrItemId() :
             (($itemId == $line->getNumber() && $variantId == $line->getVariantCode()) &&
                 ($uom == $lineUom || (empty($lineUom) &&
                         $uom == $baseUnitOfMeasure)));
