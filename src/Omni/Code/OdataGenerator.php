@@ -175,10 +175,6 @@ class OdataGenerator
             $params = $nonReplication['params'] ?? null;
 
             if ($requestClassName && $params !== null) {
-                $flag = str_contains($requestClassName, 'GetImage_GetRequestDef');
-                if ($flag) {
-                    $xl = 1;
-                }
                 if (isset($this->allowedNonReplActions[$requestClassName])) {
                     $action = $requestClassName;
                     $requestClassName .= 'Request';
