@@ -67,7 +67,7 @@ if ($line && !empty($line->getDiscountAmount()) && $line->getDiscountAmount() > 
         <?php if ($line && !empty($line->getDiscountAmount()) && $line->getDiscountAmount() > 0) : ?>
             <?= $viewModel->getFormattedPrice($line->getAmount()); ?>
             <div class="lsdiscountprice2">
-                <span><?= $viewModel->getFormattedPrice($line->getPrice() * $_item->getQtyOrdered()); ?></span></div>
+                <span><?= $viewModel->getFormattedPrice($line->getAmount() + $line->getDiscountAmount()); ?></span></div>
             <div class="lsdiscountamount">
                 <?= '(' . __('Save') . ' ' . $viewModel->getFormattedPrice($line->getDiscountAmount()) . ')'; ?>
             </div>
@@ -86,7 +86,7 @@ if ($line && !empty($line->getDiscountAmount()) && $line->getDiscountAmount() > 
         </ul>
     </td>
     <td class="col subtotal" data-th="<?= $escaper->escapeHtml(__('Subtotal')) ?>">
-        <?php if($line) : ?>
+        <?php if ($line) : ?>
             <?= $viewModel->getFormattedPrice($line->getAmount()) ?>
         <?php else : ?>
         <?= $viewModel->getFormattedPrice($block->getItem()->getRowTotal()) ?>

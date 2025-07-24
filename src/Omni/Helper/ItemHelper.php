@@ -6,9 +6,11 @@ namespace Ls\Omni\Helper;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDoc;
+use \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId;
+use \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnById;
+use \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDoc;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
-use Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
+use \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product;
@@ -127,26 +129,31 @@ class ItemHelper extends AbstractHelperOmni
     ) {
         $orderLines = $discountsLines = [];
         $type = 1;
-        if ($orderData instanceof GetSelectedSalesDoc_GetSelectedSalesDoc) {
-            $orderLines     = !is_array($orderData->getLscMemberSalesDocLine()) ?
-                [$orderData->getLscMemberSalesDocLine()] : $orderData->getLscMemberSalesDocLine() ;
-            $discountsLines = $orderData->getLscMemberSalesDocDiscLine() &&
-            is_array($orderData->getLscMemberSalesDocDiscLine()) ?
-                $orderData->getLscMemberSalesDocDiscLine() :
-                (($orderData->getLscMemberSalesDocDiscLine() && !is_array($orderData->getLscMemberSalesDocDiscLine())) ?
-                [$orderData->getLscMemberSalesDocDiscLine()] : []);
+        if ($orderData instanceof GetSelectedSalesDoc_GetSelectedSalesDoc ||
+            $orderData instanceof GetSalesInfoByOrderId_GetSalesInfoByOrderId ||
+            $orderData instanceof GetSalesReturnById_GetSalesReturnById
+        ) {
+            $orderLines = $orderData->getLscMemberSalesDocLine();
+            $discountsLines = $orderData->getLscMemberSalesDocDiscLine();
+
+            $orderLines = $orderLines && is_array($orderLines) ?
+                $orderLines : ($orderLines && !is_array($orderLines) ? [$orderLines] : []);
+            $discountsLines = $discountsLines && is_array($discountsLines) ?
+                $discountsLines : (($discountsLines && !is_array($discountsLines)) ? [$discountsLines] : []);
             $type = 2;
         } elseif ($orderData instanceof RootMobileTransaction) {
-            $orderLines     = $orderData->getMobiletransactionline() &&
-                is_array($orderData->getMobiletransactionline()) ?
-                    $orderData->getMobiletransactionline() :
-                    (($orderData->getMobiletransactionline() && !is_array($orderData->getMobiletransactionline())) ?
-                        [$orderData->getMobiletransactionline()] : []);
+            $orderLines = $orderData->getMobiletransactionline();
+            $discountsLines = $orderData->getMobiletransdiscountline();
+
+            $orderLines = $orderLines && is_array($orderLines) ?
+                $orderLines : ($orderLines && !is_array($orderLines) ? [$orderLines] : []);
+            $discountsLines = $discountsLines && is_array($discountsLines) ?
+                $discountsLines : (($discountsLines && !is_array($discountsLines)) ? [$discountsLines] : []);
         }
 
         foreach ($orderLines as $line) {
             if ($this->isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                if ($customPrice > 0 && $customPrice != null) {
+                if ($customPrice != 0 && $customPrice != null) {
                     foreach ($discountsLines as $orderDiscountLine) {
                         if (($type == 2 && $line->getLineNo() == $orderDiscountLine->getDocumentLineNo()) ||
                             ($type == 1 && $line->getLineNo() == $orderDiscountLine->getLineno())
@@ -472,7 +479,6 @@ class ItemHelper extends AbstractHelperOmni
             }
 
             return [$itemId, $variantId, $uom, $barCode, $uomQty, $baseUom];
-
         }
 
         return null;
@@ -561,11 +567,13 @@ class ItemHelper extends AbstractHelperOmni
     public function isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)
     {
         $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
+        $lineUom = method_exists($line, 'getUnitOfMeasure') ?
+            $line->getUnitOfMeasure() : (method_exists($line, 'getUomid') ? $line->getUomid() : "");
 
         return in_array($itemId, explode(',', $giftCardIdentifier)) ?
             $line->getNumber() == $quoteItem->getProduct()->getLsrItemId() :
             (($itemId == $line->getNumber() && $variantId == $line->getVariantCode()) &&
-                ($uom == $line->getUomid() || (empty($line->getUomid()) &&
+                ($uom == $lineUom || (empty($lineUom) &&
                         $uom == $baseUnitOfMeasure)));
     }
 

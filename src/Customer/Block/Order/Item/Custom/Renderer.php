@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\Block\Order\Item\Custom;
 
@@ -12,7 +13,6 @@ use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Stdlib\StringUtils;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer;
-use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
 
 class Renderer extends DefaultRenderer
@@ -23,31 +23,6 @@ class Renderer extends DefaultRenderer
     // @codingStandardsIgnoreStart
     protected $_template = 'Ls_Customer::order/item/custom/renderer.phtml';
     // @codingStandardsIgnoreEnd
-
-    /**
-     * @var PriceCurrencyInterface
-     */
-    public $priceCurrency;
-
-    /**
-     * @var ItemHelper
-     */
-    public $itemHelper;
-
-    /**
-     * @var Collection|null
-     */
-    private $itemCollection;
-
-    /**
-     * @var CollectionFactory|mixed|null
-     */
-    public $itemCollectionFactory;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
 
     /**
      * @param Context $context
@@ -63,16 +38,12 @@ class Renderer extends DefaultRenderer
         Context $context,
         StringUtils $string,
         OptionFactory $productOptionFactory,
-        PriceCurrencyInterface $priceCurrency,
-        ItemHelper $itemHelper,
-        CollectionFactory $itemCollectionFactory,
-        OrderHelper $orderHelper,
+        public PriceCurrencyInterface $priceCurrency,
+        public ItemHelper $itemHelper,
+        public CollectionFactory $itemCollectionFactory,
+        public OrderHelper $orderHelper,
         array $data = []
     ) {
-        $this->priceCurrency         = $priceCurrency;
-        $this->itemHelper            = $itemHelper;
-        $this->orderHelper           = $orderHelper;
-        $this->itemCollectionFactory = $itemCollectionFactory;
         parent::__construct($context, $string, $productOptionFactory, $data);
     }
 
@@ -94,7 +65,7 @@ class Renderer extends DefaultRenderer
      */
     public function getItemOptions()
     {
-        $result    = [];
+        $result = [];
         $orderItem = $this->getOrderItem();
 
         if ($orderItem) {
@@ -178,6 +149,7 @@ class Renderer extends DefaultRenderer
      * @param $currency
      * @param $storeId
      * @return float
+     * @throws NoSuchEntityException
      */
     public function getFormattedPrice($amount, $currency = null, $storeId = null)
     {
@@ -191,8 +163,8 @@ class Renderer extends DefaultRenderer
      */
     public function getItemDiscountLines()
     {
-        $item      = $this->getItem();
-        $orderData = $this->getData('order');
+        $item = $this->getItem();
+        $orderData = $this->orderHelper->getOrder();
 
         return $this->itemHelper->getOrderDiscountLinesForItem($item, $orderData, 2);
     }
@@ -207,7 +179,6 @@ class Renderer extends DefaultRenderer
         return __("Save");
     }
 
-
     /**
      * For checking is shipment tab
      *
@@ -217,5 +188,4 @@ class Renderer extends DefaultRenderer
     {
         return ($this->orderHelper->getGivenValueFromRegistry('current_detail') == 'shipment');
     }
-
 }
