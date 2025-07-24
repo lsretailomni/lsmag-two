@@ -66,23 +66,28 @@ $orderCount = 0;
                                     break;
                                 }
 
-
-                                if ($_order->getgetSaleIsReturnSale()) {
+                                if ($_order->getSaleIsReturnSale()) {
                                     continue;
                                 }
 
-                                $magOrder = $block->getOrderByDocumentId($_order->getDocumentId());
-                                if ($magOrder) {
-                                    $block->registerValueInRegistry($magOrder);
-                                    $magOrderIncrementId = $magOrder->getIncrementId();
+                                $documentId = null;
+                                $documentId = !empty($_order->getCustomerDocumentId()) ? $_order->getCustomerDocumentId() : (!empty($_order->getDocumentId()) ? $_order->getDocumentId() : "");
+
+                                if (!empty($documentId)) {
+                                    $magOrder = $block->getOrderByDocumentId($documentId);
+
+                                    if ($magOrder) {
+                                        $block->registerValueInRegistry($magOrder);
+                                        $magOrderIncrementId = $magOrder->getIncrementId();
+                                    }
                                 }
+
                                 $storeCurrency = $block->getStoreCurrencyCode($_order->getStoreCurrencyCode());
                                 ?>
                                 <tr>
                                     <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
-                                        class="col id"><?= /* @escapeNotVerified */
-                                        $_order->getDocumentId() ? $_order->getDocumentId() : $magOrderIncrementId; ?></td>
-                                    <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
+                                        class="col id">
+                                        <?= /* @escapeNotVerified */ $documentId ?? $magOrderIncrementId ?>                                    <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
                                         class="col date"><?= /* @escapeNotVerified */
                                         $block->getFormattedDate($_order->getDateTime()) ?></td>
                                     <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>"

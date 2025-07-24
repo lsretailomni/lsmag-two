@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\Block\Order;
 
@@ -13,14 +14,6 @@ use Magento\Sales\Block\Items\AbstractItems;
  */
 class Items extends AbstractItems
 {
-    /** @var  LSR $lsr */
-    public $lsr;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
     /**
      * @param Context $context
      * @param LSR $lsr
@@ -29,29 +22,34 @@ class Items extends AbstractItems
      */
     public function __construct(
         Context $context,
-        LSR $lsr,
-        OrderHelper $orderHelper,
+        public LSR $lsr,
+        public OrderHelper $orderHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->lsr                   = $lsr;
-        $this->orderHelper           = $orderHelper;
     }
 
     /**
      * Get orderLines either using magento order or central order object
      *
-     * @return mixed
+     * @param $trans
+     * @return array
      */
     public function getItems($trans)
     {
-        $orderLines = $trans->getLines()->getSalesEntryLine();
+        $order = $this->getOrder(true);
+        $orderLines = $order->getLscMemberSalesDocLine();
+        $orderLines = $orderLines && is_array($orderLines) ?
+            $orderLines : (($orderLines && !is_array($orderLines)) ? [$orderLines] : []);
         $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $trans);
+        $documentId = $trans->getDocumentId();
 
         foreach ($orderLines as $key => $line) {
-            if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
+            if ($line->getDocumentId() !== $documentId ||
+                $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID) ||
+                $line->getEntryType() == 1
+            ) {
                 unset($orderLines[$key]);
-                break;
             }
         }
 
@@ -92,12 +90,13 @@ class Items extends AbstractItems
 
     /**
      * Get Id value from SalesEntryGetReturnSalesResult response
+     *
      * @param $order
      * @return mixed
      */
     public function getRelevantId($order)
     {
-        return $this->orderHelper->getParameterValues($order, "Id");
+        return $this->orderHelper->getParameterValues($order, "Document ID");
     }
 
     /**
@@ -137,5 +136,36 @@ class Items extends AbstractItems
     public function checkIsShipment()
     {
         return ($this->orderHelper->getGivenValueFromRegistry('current_detail') == 'shipment');
+    }
+
+    /**
+     * Get current transaction
+     *
+     * @return array
+     */
+
+    public function getCurrentTransaction()
+    {
+        $order = $this->getOrder(true);
+        $documentId = $this->_request->getParam('order_id');
+        $isCreditMemo = $this->_request->getActionName() == 'creditmemo' ||
+            $this->_request->getActionName() == 'printRefunds';
+        $requiredTransaction = [];
+        $transactions = $order->getLscMemberSalesBuffer() && is_array($order->getLscMemberSalesBuffer()) ?
+            $order->getLscMemberSalesBuffer() :
+            ($order->getLscMemberSalesBuffer() ? [$order->getLscMemberSalesBuffer()] : []);
+
+        foreach ($transactions as $transaction) {
+            if ($transaction->getDocumentId() == $documentId ||
+                ($isCreditMemo && $transaction->getSaleIsReturnSale())
+            ) {
+                $requiredTransaction[] = $transaction;
+                if (!$isCreditMemo) {
+                    break;
+                }
+            }
+        }
+
+        return $requiredTransaction;
     }
 }

@@ -563,6 +563,7 @@ class ClassMap
         		'Sales Shipment Header' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\SalesShipmentHeader',
         		'Sales Shipment Line' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\SalesShipmentLine',
         		'GetSalesInfoByOrderId_GetSalesInfoByOrderId' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\GetSalesInfoByOrderId_GetSalesInfoByOrderId',
+        		'GetSalesReturnById_GetSalesReturnById' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\GetSalesReturnById_GetSalesReturnById',
         		'GetSelectedSalesDoc_GetSelectedSalesDoc' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\GetSelectedSalesDoc_GetSelectedSalesDoc',
         		'LSC Store' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\LSCStore',
         		'LSC Store Group Setup' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\LSCStoreGroupSetup',

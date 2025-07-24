@@ -25,6 +25,7 @@ $helper        = $this->helper('Magento\Msrp\Helper\Data');
 $canApplyMsrp  = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
 $priceCurrency = $viewModel->getPriceCurrency();
 $_item->setDiscountAmount($viewModel->getItemRowDiscount($_item));
+$_item->setRowTotalInclTax($viewModel->getItemRowTotal($_item));
 ?>
 <tbody class="cart item">
 <tr class="item-info">

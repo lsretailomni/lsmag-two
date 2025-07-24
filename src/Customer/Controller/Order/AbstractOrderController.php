@@ -1,13 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\Controller\Order;
 
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
-use Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
-use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\App\Request\Http;
@@ -64,8 +61,7 @@ class AbstractOrderController
 
                 return $redirect;
             }
-            //Need to review later
-            //$this->setHasReturnSales($response);
+            $this->setHasReturnSales($response);
 
             if (is_array($response)) {
                 $response = current($response);
@@ -102,40 +98,48 @@ class AbstractOrderController
     /**
      * Set has return sales
      *
-     * @param $transactions
+     * @param $order
      * @return void
-     * @throws InvalidEnumException
-     * @throws NoSuchEntityException
      */
-    public function setHasReturnSales($transactions)
+    public function setHasReturnSales($order)
     {
-        if (!is_array($transactions) && $transactions->getIdType() == DocumentIdType::ORDER) {
-            if ($transactions->getPosted()) {
-                $transactions = $this->orderHelper->fetchOrder(
-                    $transactions->getCustomerOrderNo(),
-                    DocumentIdType::RECEIPT
-                );
-            } else {
-                $this->orderHelper->registerGivenValueInRegistry('has_return_sales', false);
-                return;
+        $refundExists = false;
+
+        $lscMemberSalesBuffer = is_array($order->getLscMemberSalesBuffer()) ?
+            $order->getLscMemberSalesBuffer() :
+            [$order->getLscMemberSalesBuffer()];
+
+        foreach ($lscMemberSalesBuffer as $transaction) {
+            if (!empty($transaction->getRefundReceiptNo())) {
+                $refundExists = true;
+                break;
             }
         }
 
-        if (empty($transactions)) {
-            $this->orderHelper->registerGivenValueInRegistry('has_return_sales', false);
-            return;
+        $this->orderHelper->registerGivenValueInRegistry('has_return_sales', $refundExists);
+    }
+
+    /**
+     * Get current transaction
+     *
+     * @return array
+     */
+    public function getCurrentTransaction()
+    {
+        $order = $this->orderHelper->getOrder(true);
+        $documentId = $this->request->getParam('order_id');
+        $requiredTransaction = [];
+        $lscMemberSalesBuffer = is_array($order->getLscMemberSalesBuffer()) ?
+            $order->getLscMemberSalesBuffer() :
+            [$order->getLscMemberSalesBuffer()];
+
+        foreach ($lscMemberSalesBuffer as $transaction) {
+            if ($transaction->getDocumentId() == $documentId) {
+                $requiredTransaction[] = $transaction;
+                break;
+            }
         }
 
-        if (!is_array($transactions)) {
-            $transactions = [$transactions];
-        }
-
-        $hasReturnSales = $this->orderHelper->hasReturnSale($transactions);
-
-        if ($hasReturnSales) {
-            $this->orderHelper->registerGivenValueInRegistry('has_return_sales', true);
-        } else {
-            $this->orderHelper->registerGivenValueInRegistry('has_return_sales', false);
-        }
+        return $requiredTransaction;
     }
 }

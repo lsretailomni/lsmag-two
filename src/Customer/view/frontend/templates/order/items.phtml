@@ -3,15 +3,15 @@
 // @codingStandardsIgnoreFile
 
 /** @var Items $block */
-$order = $block->getMagOrder();
+
 
 use \Ls\Customer\Block\Order\Items;
 use Magento\Sales\Model\Order\Item;
 
-$order           = $block->getOrder(true);
-$transactions    = is_array($order) ? $order : [$order];
+$order = $block->getOrder(true);
+$transactions = $block->getCurrentTransaction();
 $checkIsShipment = $block->checkIsShipment();
-
+$magentoOrder = $block->getMagOrder();
 ?>
 <div class="table-wrapper order-items">
     <?php foreach ($transactions as $trans): ?>
@@ -58,7 +58,7 @@ $checkIsShipment = $block->checkIsShipment();
             <?php $items = $block->getItems($trans); ?>
             <?php $giftMessage = '' ?>
             <?php foreach ($items as $item):
-                if ($item instanceof Item && $item->getParentItem()) :
+                if ($item instanceof Item && $item->getParentItem() || ($magentoOrder && $item->getParentLine() !== 0)) :
                     continue;
                 endif;
                 ?>

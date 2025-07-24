@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\Block\Order;
 
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\LSCMemberSalesBuffer;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
@@ -22,16 +24,6 @@ class Totals extends AbstractOrderBlock
     public $loyaltyPointAmount = 0;
 
     /**
-     * Get items.
-     *
-     * @return array|null
-     */
-    public function getItems()
-    {
-        return $this->getData('items');
-    }
-
-    /**
      * Get formatted price
      *
      * @param $amount
@@ -48,7 +40,7 @@ class Totals extends AbstractOrderBlock
     /**
      * Get Total Tax
      *
-     * @return mixed
+     * @return float
      */
     public function getTotalTax()
     {
@@ -83,8 +75,8 @@ class Totals extends AbstractOrderBlock
      */
     public function getNetAmount()
     {
-        if ($this->getOrder() && !empty($this->getOrder()->getLscMemberSalesBuffer())) {
-            return $this->getOrder()->getLscMemberSalesBuffer()->getNetAmount();
+        if (!empty($lscMemberSalesBuffer = current($this->getCurrentTransaction()))) {
+            return $lscMemberSalesBuffer->getNetAmount();
         }
 
         return 0.0;
@@ -93,12 +85,12 @@ class Totals extends AbstractOrderBlock
     /**
      * To fetch TotalAmount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
      *
-     * @return mixed
+     * @return float
      */
     public function getGrandTotal()
     {
-        if ($this->getOrder() && !empty($this->getOrder()->getLscMemberSalesBuffer())) {
-            return $this->getOrder()->getLscMemberSalesBuffer()->getGrossAmount();
+        if (!empty($lscMemberSalesBuffer = current($this->getCurrentTransaction()))) {
+            return $lscMemberSalesBuffer->getGrossAmount();
         }
 
         return 0.0;
@@ -117,12 +109,12 @@ class Totals extends AbstractOrderBlock
     /**
      * To fetch TotalDiscount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
      *
-     * @return null
+     * @return float
      */
     public function getTotalDiscount()
     {
-        if ($this->getOrder() && !empty($this->getOrder()->getLscMemberSalesBuffer())) {
-            return $this->getOrder()->getLscMemberSalesBuffer()->getDiscountAmount();
+        if (!empty($lscMemberSalesBuffer = current($this->getCurrentTransaction()))) {
+            return $lscMemberSalesBuffer->getDiscountAmount();
         }
 
         return 0.0;
@@ -136,7 +128,7 @@ class Totals extends AbstractOrderBlock
      */
     public function getShipmentChargeLineFee()
     {
-        $orderLines = $this->getLines();
+        $orderLines = $this->getItems();
         $fee        = 0;
         if (!is_array($orderLines)) {
             $orderLines = [$orderLines];
@@ -154,8 +146,8 @@ class Totals extends AbstractOrderBlock
     /**
      * Get Subtotal
      *
-     * @return mixed
-     * @throws NoSuchEntityException
+     * @return float
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getSubtotal()
     {
@@ -163,14 +155,15 @@ class Totals extends AbstractOrderBlock
         $shipmentFee = $this->getShipmentChargeLineFee();
         $grandTotal  = $this->getGrandTotal();
         $discount    = $this->getTotalDiscount();
-        return (float)$grandTotal + $discount - (float)$shipmentFee;
+
+        return $grandTotal + $discount - (float)$shipmentFee;
     }
 
     /**
      * Get Loyalty gift card info
      *
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getLoyaltyGiftCardInfo()
     {
@@ -209,16 +202,58 @@ class Totals extends AbstractOrderBlock
         return [implode(', ', $methods), $giftCardInfo, $loyaltyInfo];
     }
 
+
     /**
-     * Get lines
+     * Fetch current transaction
      *
-     * @return mixed
+     * @return array
      */
-    public function getLines()
+    public function getCurrentTransaction()
     {
-        return ($this->getItems()) ? $this->getItems() : $this->getOrder(true)->getLscMemberSalesDocLine();
+        $order = $this->getOrder();
+        $documentId = $order->getDocumentId() ?? $this->_request->getParam('order_id');
+        $newDocumentId = $this->_request->getParam('new_order_id');
+        $requiredTransaction = [];
+        $lscMemberSalesBuffer = $order instanceof LSCMemberSalesBuffer ? [$order] : (is_array($order->getLscMemberSalesBuffer()) ?
+            $order->getLscMemberSalesBuffer() :
+            [$order->getLscMemberSalesBuffer()]);
+
+        foreach ($lscMemberSalesBuffer as $transaction) {
+            if ($transaction->getDocumentId() == $documentId || in_array($transaction->getDocumentId(), $newDocumentId)) {
+                $requiredTransaction[] = $transaction;
+                break;
+            }
+        }
+
+        return $requiredTransaction;
     }
 
+    /**
+     * Get orderLines either using magento order or central order object
+     *
+     * @return array
+     */
+    public function getItems()
+    {
+        $order = $this->getOrder(true);
+        $orderLines = $order->getLscMemberSalesDocLine();
+        $orderLines = $orderLines && is_array($orderLines) ?
+            $orderLines : (($orderLines && !is_array($orderLines)) ? [$orderLines] : []);
+        $documentId = $this->_request->getParam('order_id');
+        $newDocumentId = $this->_request->getParam('new_order_id');
+        $isCreditMemo = $this->orderHelper->getGivenValueFromRegistry('current_detail') == 'creditmemo';
+
+        foreach ($orderLines as $key => $line) {
+            if ((!$isCreditMemo && $line->getDocumentId() !== $documentId) ||
+                ($isCreditMemo && $newDocumentId && !in_array($line->getDocumentId(), $newDocumentId)) ||
+                $line->getEntryType() == 1
+            ) {
+                unset($orderLines[$key]);
+            }
+        }
+
+        return $orderLines;
+    }
 
     /**
      * Get order payments
