@@ -107,6 +107,23 @@ class OdataGenerator
             'response' => [
                 'DataSetName' => ''
             ]
+        ],
+        'GetSalesReturnById_GetSalesReturnById' => [
+            'request' => [
+                'receiptId' => '00000P0001000000224',
+            ],
+            'response' => [
+                'DataSetName' => ''
+            ],
+        ],
+        'GetImage_GetImage' => [
+            'request' => [
+                'imageNo' => '40000',
+                'mediaId' => ''
+            ],
+            'response' => [
+                'DataSetName' => ''
+            ]
         ]
     ];
 

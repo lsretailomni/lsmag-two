@@ -18,7 +18,6 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
     public const LSC_MEMBER_SCHEME = 'LSC Member Scheme';
     public const LSC_MEMBER_CLUB = 'LSC Member Club';
     public const LSC_MEMBER_CONTACT_ATTR_LIST = 'LSC Member Contact Attr. List';
-    public const LSC_FLOWFIELD_BUFFER = 'LSC FlowField Buffer';
 
     public static array $dbColumnsMapping = [
 	self::LSC_MEMBER_CONTACT => 'lsc_member_contact',
@@ -28,7 +27,6 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
 	self::LSC_MEMBER_SCHEME => 'lsc_member_scheme',
 	self::LSC_MEMBER_CLUB => 'lsc_member_club',
 	self::LSC_MEMBER_CONTACT_ATTR_LIST => 'lsc_member_contact_attr_list',
-	self::LSC_FLOWFIELD_BUFFER => 'lsc_flowfield_buffer',
     ];
 
     public static function getDbColumnsMapping(): array
@@ -105,15 +103,5 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
     public function setLscMemberContactAttrList(?array $value)
     {
         return $this->setData(self::LSC_MEMBER_CONTACT_ATTR_LIST, $value);
-    }
-
-    public function getLscFlowfieldBuffer()
-    {
-        return $this->getData(self::LSC_FLOWFIELD_BUFFER);
-    }
-
-    public function setLscFlowfieldBuffer(?array $value)
-    {
-        return $this->setData(self::LSC_FLOWFIELD_BUFFER, $value);
     }
 }

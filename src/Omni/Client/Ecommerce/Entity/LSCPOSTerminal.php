@@ -96,6 +96,7 @@ class LSCPOSTerminal extends AbstractModel
     public const PRINTER_KOT_STATUS_AFTER_SENT = 'Printer KOT Status after Sent';
     public const SALES_SLIP = 'Sales Slip';
     public const VOID_SLIP = 'Void Slip';
+    public const CARD_SLIP = 'Card Slip';
     public const ONLY_EMAIL_SALES_TRANSACTIONS = 'Only Email Sales Transactions';
     public const BCC_EMAIL_ADDRESS = 'BCC E-Mail Address';
     public const INVENTORY_MAIN_MENU = 'Inventory Main Menu';
@@ -119,6 +120,7 @@ class LSCPOSTerminal extends AbstractModel
     public const ALLOW_BLOCKED_ITEMS_MOBILE_POS = 'Allow Blocked Items Mobile POS';
     public const OPEN_DRAWER_THEN_PRINT = 'Open drawer then print';
     public const EFT_AUTO_RECOVERY_ATTEMPTS = 'EFT Auto Recovery Attempts';
+    public const EFT_TERMINAL_OFFLINE_HANDLING = 'EFT Terminal Offline Handling';
     public const POS_SEARCH_ENGINE = 'POS Search Engine';
     public const SALES_ORDER_NOS = 'Sales Order Nos.';
     public const ITEM_FILTERING_METHOD = 'Item Filtering Method';
@@ -220,6 +222,7 @@ class LSCPOSTerminal extends AbstractModel
 	self::PRINTER_KOT_STATUS_AFTER_SENT => 'printer_kot_status_after_sent',
 	self::SALES_SLIP => 'sales_slip',
 	self::VOID_SLIP => 'void_slip',
+	self::CARD_SLIP => 'card_slip',
 	self::ONLY_EMAIL_SALES_TRANSACTIONS => 'only_email_sales_transactions',
 	self::BCC_EMAIL_ADDRESS => 'bcc_email_address',
 	self::INVENTORY_MAIN_MENU => 'inventory_main_menu',
@@ -243,6 +246,7 @@ class LSCPOSTerminal extends AbstractModel
 	self::ALLOW_BLOCKED_ITEMS_MOBILE_POS => 'allow_blocked_items_mobile_pos',
 	self::OPEN_DRAWER_THEN_PRINT => 'open_drawer_then_print',
 	self::EFT_AUTO_RECOVERY_ATTEMPTS => 'eft_auto_recovery_attempts',
+	self::EFT_TERMINAL_OFFLINE_HANDLING => 'eft_terminal_offline_handling',
 	self::POS_SEARCH_ENGINE => 'pos_search_engine',
 	self::SALES_ORDER_NOS => 'sales_order_nos',
 	self::ITEM_FILTERING_METHOD => 'item_filtering_method',
@@ -1115,6 +1119,16 @@ class LSCPOSTerminal extends AbstractModel
         return $this->setData(self::VOID_SLIP, $value);
     }
 
+    public function getCardSlip(): ?int
+    {
+        return $this->getData(self::CARD_SLIP);
+    }
+
+    public function setCardSlip(?int $value)
+    {
+        return $this->setData(self::CARD_SLIP, $value);
+    }
+
     public function getOnlyEmailSalesTransactions(): ?bool
     {
         return $this->getData(self::ONLY_EMAIL_SALES_TRANSACTIONS);
@@ -1343,6 +1357,16 @@ class LSCPOSTerminal extends AbstractModel
     public function setEftAutoRecoveryAttempts(?int $value)
     {
         return $this->setData(self::EFT_AUTO_RECOVERY_ATTEMPTS, $value);
+    }
+
+    public function getEftTerminalOfflineHandling(): ?int
+    {
+        return $this->getData(self::EFT_TERMINAL_OFFLINE_HANDLING);
+    }
+
+    public function setEftTerminalOfflineHandling(?int $value)
+    {
+        return $this->setData(self::EFT_TERMINAL_OFFLINE_HANDLING, $value);
     }
 
     public function getPosSearchEngine(): ?int

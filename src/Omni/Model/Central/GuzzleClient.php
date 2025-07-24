@@ -59,6 +59,7 @@ class GuzzleClient
         try {
             $tenant = $options['tenant'];
             $environmentName = $options['environmentName'];
+            $options['token'] = 1;
             if (!empty($options['token'])) {
                 $token = $options['token'];
                 $headers['Authorization'] = 'Bearer ' . $token;

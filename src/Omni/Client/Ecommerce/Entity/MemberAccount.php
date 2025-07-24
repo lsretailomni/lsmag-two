@@ -58,6 +58,8 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
 
     public const TOTAL_SALES = 'TotalSales';
 
+    public const EXPIRATIONIN_PERIOD_INT = 'ExpirationinPeriodInt';
+
     public const ACCOUNT_NO = 'AccountNo';
 
     public const MAIN_CONTACT = 'MainContact';
@@ -480,6 +482,24 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     public function getTotalsales() : ?float
     {
         return $this->getData(self::TOTAL_SALES);
+    }
+
+    /**
+     * @param ?float $ExpirationinPeriodInt
+     * @return $this
+     */
+    public function setExpirationinperiodint(?float $ExpirationinPeriodInt)
+    {
+        $this->setData(self::EXPIRATIONIN_PERIOD_INT, $ExpirationinPeriodInt);
+        return $this;
+    }
+
+    /**
+     * @return ?float
+     */
+    public function getExpirationinperiodint() : ?float
+    {
+        return $this->getData(self::EXPIRATIONIN_PERIOD_INT);
     }
 
     /**

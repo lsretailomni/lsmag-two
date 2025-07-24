@@ -2,6 +2,7 @@
 
 namespace Ls\Customer\Block\Order;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\LSCMemberSalesBuffer;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
@@ -36,7 +37,7 @@ class Info extends AbstractOrderBlock
     /**
      * For getting shipping and billing address
      *
-     * @param false $isBillingAddress
+     * @param bool $isBillingAddress
      * @return string
      */
     public function getFormattedAddress(bool $isBillingAddress = false)
@@ -81,7 +82,7 @@ class Info extends AbstractOrderBlock
     /**
      * Get country name by country code
      *
-     * @param $countryCode
+     * @param string $countryCode
      * @return string
      */
     public function getCountryName($countryCode)
@@ -97,14 +98,10 @@ class Info extends AbstractOrderBlock
     {
         $order = $this->getLscMemberSalesBuffer();
         if ($order) {
-            $customerOrderNo = $this->orderHelper->getParameterValues($order, "Document ID");
-            $orderId         = $customerOrderNo ?: $this->orderHelper->getParameterValues($order, "Id");
+            $customerOrderNo = $this->orderHelper->getParameterValues($order, "Customer Document ID");
+            $orderId         = $customerOrderNo ?: $this->orderHelper->getParameterValues($order, "Document ID");
 
-            if (!empty($customerOrderNo)) {
-                $type = __('Order');
-            } else {
-                $type = $order->getIdType();
-            }
+            $type = __('Order');
             $this->pageConfig->getTitle()->set(__('%1 # %2', $type, $orderId));
         }
     }
@@ -112,7 +109,7 @@ class Info extends AbstractOrderBlock
     /**
      * Retrieve current order model instance
      *
-     * @param $all
+     * @param bool $all
      * @return false|mixed|null
      */
     public function getOrder($all = false)
@@ -122,9 +119,10 @@ class Info extends AbstractOrderBlock
 
     /**
      * To fetch Status value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
      *
-     * @return mixed
+     * Depending on the structure of SalesEntry node
+     *
+     * @return string
      */
     public function getOrderStatus()
     {
@@ -136,7 +134,7 @@ class Info extends AbstractOrderBlock
      *
      * Depending on the structure of SalesEntry node
      *
-     * @return mixed
+     * @return bool
      */
     public function getClickAndCollectOrder()
     {
@@ -145,7 +143,9 @@ class Info extends AbstractOrderBlock
 
     /**
      * To fetch DocumentRegTime value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
+     *
+     * Depending on the structure of SalesEntry node
+     *
      * @return string|null
      */
     public function getDocRegistraionTime()
@@ -162,7 +162,7 @@ class Info extends AbstractOrderBlock
     {
         $order = $this->getOrder();
 
-        return $order->getLscMemberSalesBuffer();
+        return $this->orderHelper->getLscMemberSalesBuffer($order);
     }
 
     /**
@@ -172,8 +172,9 @@ class Info extends AbstractOrderBlock
      */
     public function isClickAndCollectOrder()
     {
-        $order = $this->getOrder();
         $isCc = false;
+        $order = $this->getOrder();
+
         $lines = !is_array($order->getLscMemberSalesDocLine()) ?
             [$order->getLscMemberSalesDocLine()] :
             $order->getLscMemberSalesDocLine();
@@ -237,8 +238,9 @@ class Info extends AbstractOrderBlock
      * DEV Notes:
      * 1st entry is for normal tender type
      * 2nd entry is specific for Giftcard.
+     *
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getPaymentDescription()
     {
@@ -314,6 +316,7 @@ class Info extends AbstractOrderBlock
 
     /**
      * Format loyalty points
+     *
      * @return string
      */
     public function getFormattedLoyaltyPoints()
@@ -328,6 +331,7 @@ class Info extends AbstractOrderBlock
     /**
      * Format gift card price
      * @param $giftCardAmount
+     *
      * @return string
      */
     public function getGiftCardFormattedPrice($giftCardAmount)
@@ -393,7 +397,7 @@ class Info extends AbstractOrderBlock
     /**
      * Check if order cancellation on frontend is enabled or not
      *
-     * @return bool|string
+     * @return array|string
      * @throws NoSuchEntityException
      */
     public function orderCancellationOnFrontendIsEnabled()

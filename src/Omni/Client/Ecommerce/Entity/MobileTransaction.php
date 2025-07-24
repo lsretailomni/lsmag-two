@@ -100,6 +100,10 @@ class MobileTransaction extends \Magento\Catalog\Model\AbstractModel
 
     public const SHIP_TO_COUNTRY_REGION_CODE = 'ShipToCountryRegionCode';
 
+    public const SHIP_TO_POST_CODE = 'ShipToPostCode';
+
+    public const SHIP_TO_COUNTY = 'ShipToCounty';
+
     /**
      * @param string $Id
      * @return $this
@@ -890,6 +894,42 @@ class MobileTransaction extends \Magento\Catalog\Model\AbstractModel
     public function getShiptocountryregioncode() : ?string
     {
         return $this->getData(self::SHIP_TO_COUNTRY_REGION_CODE);
+    }
+
+    /**
+     * @param ?string $ShipToPostCode
+     * @return $this
+     */
+    public function setShiptopostcode(?string $ShipToPostCode)
+    {
+        $this->setData(self::SHIP_TO_POST_CODE, $ShipToPostCode);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getShiptopostcode() : ?string
+    {
+        return $this->getData(self::SHIP_TO_POST_CODE);
+    }
+
+    /**
+     * @param ?string $ShipToCounty
+     * @return $this
+     */
+    public function setShiptocounty(?string $ShipToCounty)
+    {
+        $this->setData(self::SHIP_TO_COUNTY, $ShipToCounty);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getShiptocounty() : ?string
+    {
+        return $this->getData(self::SHIP_TO_COUNTY);
     }
 }
 

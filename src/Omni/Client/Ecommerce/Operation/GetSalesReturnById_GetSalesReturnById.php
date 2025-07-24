@@ -9,13 +9,13 @@ namespace Ls\Omni\Client\Ecommerce\Operation;
 
 use Magento\Framework\App\ObjectManager;
 
-class GetMemberContactInfo_GetMemberContactInfo
+class GetSalesReturnById_GetSalesReturnById
 {
     public string $baseUrl;
     public array $connectionParams;
     public string $companyName;
-    public \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoRequest $request;
-    public \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse $response;
+    public \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdRequest $request;
+    public \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdResponse $response;
     public \Ls\Omni\Helper\Data $dataHelper;
 
     public function __construct(string $baseUrl = '', array $connectionParams = [], string $companyName = '')
@@ -24,13 +24,13 @@ class GetMemberContactInfo_GetMemberContactInfo
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
         $this->dataHelper = $this->createInstance(\Ls\Omni\Helper\Data::class);
-        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoRequest::class);
+        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdRequest::class);
     }
 
-    public function execute(): \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse
+    public function execute(): \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdResponse
     {
         $raw = $this->dataHelper->makeRequest(
-            \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoRequest::ACTION_NAME,
+            \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdRequest::ACTION_NAME,
             self::class,
             $this->request,
             $this->baseUrl,
@@ -44,22 +44,22 @@ class GetMemberContactInfo_GetMemberContactInfo
         return $response;
     }
 
-    public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse
+    public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdResponse
     {
-        $requiredDataSetName = explode(',', 'LSC Member Contact,LSC Membership Card,LSC Member Login Card,LSC Member Account,LSC Member Scheme,LSC Member Club,LSC Member Contact Attr. List');
-        $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo::class);
+        $requiredDataSetName = explode(',', 'LSC Member Sales Buffer,LSC Member Sales Doc Line,LSC Member Sales Doc Disc Line,LSC Member Sales Data Entry');
+        $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnById::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
                 $entityClassName = str_replace(' ', '', preg_replace('/[\/\[\]()$\-._%&]/', '', $dataSet));
                 // Try flat response structure
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
                     $entity = $this->createInstance(
-                        \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo::class,
-                         ['data' => $data['LSC Member Contact,LSC Membership Card,LSC Member Login Card,LSC Member Account,LSC Member Scheme,LSC Member Club,LSC Member Contact Attr. List']]
+                        \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnById::class,
+                         ['data' => $data['LSC Member Sales Buffer,LSC Member Sales Doc Line,LSC Member Sales Doc Disc Line,LSC Member Sales Data Entry']]
                      );
 
                     return $this->createInstance(
-                        \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse::class,
+                        \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdResponse::class,
                        [
                        'data' =>
                            [
@@ -98,7 +98,7 @@ class GetMemberContactInfo_GetMemberContactInfo
                 }
             }
             return $this->createInstance(
-                \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse::class,
+                \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdResponse::class,
                 [
                 'data' =>
                     [
@@ -110,7 +110,7 @@ class GetMemberContactInfo_GetMemberContactInfo
             );
         }
         return $this->createInstance(
-            \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse::class,
+            \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdResponse::class,
              [
              'data' =>
                  [
@@ -151,11 +151,11 @@ class GetMemberContactInfo_GetMemberContactInfo
         return ObjectManager::getInstance()->create($entityClassName, $data);
     }
 
-    public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoRequest
+    public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdRequest
     {
         $this->setRequest(
             $this->createInstance(
-                \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoRequest::class,
+                \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdRequest::class,
                 ['data' => $params]
             )
         );
@@ -164,24 +164,24 @@ class GetMemberContactInfo_GetMemberContactInfo
         return $request;
     }
 
-    public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoRequest $request): self
+    public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdRequest $request): self
     {
         $this->request = $request;
         return $this;
     }
 
-    public function setResponse(\Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse $response): self
+    public function setResponse(\Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdResponse $response): self
     {
         $this->response = $response;
         return $this;
     }
 
-    public function getRequest(): \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoRequest
+    public function getRequest(): \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdRequest
     {
         return $this->request;
     }
 
-    public function getResponse(): \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse
+    public function getResponse(): \Ls\Omni\Client\Ecommerce\Entity\GetSalesReturnById_GetSalesReturnByIdResponse
     {
         return $this->response;
     }

@@ -94,7 +94,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->getData(self::LSC_RETAIL_IMAGE_LINK);
     }
 
-    public function setLscRetailImageLink(?LSCRetailImageLink $value)
+    public function setLscRetailImageLink(?array $value)
     {
         return $this->setData(self::LSC_RETAIL_IMAGE_LINK, $value);
     }
@@ -144,7 +144,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->getData(self::LSC_WI_PRICE);
     }
 
-    public function setLscWiPrice(?LSCWIPrice $value)
+    public function setLscWiPrice(?array $value)
     {
         return $this->setData(self::LSC_WI_PRICE, $value);
     }
@@ -154,7 +154,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->getData(self::ITEM_UNIT_OF_MEASURE);
     }
 
-    public function setItemUnitOfMeasure(?ItemUnitofMeasure $value)
+    public function setItemUnitOfMeasure(?array $value)
     {
         return $this->setData(self::ITEM_UNIT_OF_MEASURE, $value);
     }
@@ -164,7 +164,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->getData(self::UNIT_OF_MEASURE);
     }
 
-    public function setUnitOfMeasure(?UnitofMeasure $value)
+    public function setUnitOfMeasure(?array $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }

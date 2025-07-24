@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\Customer\ViewModel;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
@@ -47,6 +48,8 @@ class ItemRenderer implements ArgumentInterface
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Get matched line and discount info
      *
      * @param $orderItem
@@ -84,8 +87,6 @@ class ItemRenderer implements ArgumentInterface
                             }
                         }
                     }
-
-                    unset($this->lines[$index]);
                     break;
                 } else {
                     $line = null;
@@ -101,6 +102,7 @@ class ItemRenderer implements ArgumentInterface
      *
      * @param $amount
      * @return float
+     * @throws NoSuchEntityException
      */
     public function getFormattedPrice($amount)
     {
@@ -119,7 +121,7 @@ class ItemRenderer implements ArgumentInterface
      * @param $item
      * @return float|int
      * @throws NoSuchEntityException
-     * @throws InvalidEnumException
+     * @throws InvalidEnumException|GuzzleException
      */
     public function getItemRowDiscount($item)
     {
