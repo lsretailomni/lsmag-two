@@ -10,21 +10,52 @@ $product = $block->getProductGivenSku($productData['data']['productSku']);
 if ($product->getTypeId() == Type::TYPE_BUNDLE) {
     $itemId = $block->getLinkedProductsItemIds($product);
 } else {
-    $itemId  = $block->getLsCentralItemIdBySku($productData['data']['productSku']);
+    $itemId  = [$block->getLsCentralItemIdBySku($productData['data']['productSku'])];
 }
 
-$coupons = $block->getCoupons([$itemId]);
+$coupons = $block->getCoupons($itemId);
 $discountOffers = $mixAndMatchDiscounts = $multibuyOffers = [];
 ?>
 <div class="proactive-discounts-container">
     <?php
-    $discounts = $block->getProactiveDiscounts($itemId);
+    foreach ($itemId as $item) {
+        $discounts = $block->getProactiveDiscounts($item);
 
-    if (!empty($discounts)) {
-        list($discountOffers, $mixAndMatchDiscounts, $multibuyOffers) = $block->getRelevantDiscountOffers($discounts);
+        if (!empty($discounts)) {
+            list($discountOffer, $mixAndMatchDiscount, $multibuyOffer) = $block->getRelevantDiscountOffers($discounts);
+            if (!empty($discountOffer)) {
+                foreach ($discountOffer as $doNo => $do) {
+                    if (!isset($discountOffers[$doNo])) {
+                        $discountOffers[$doNo]['offer'] = $do;
+                        $discountOffers[$doNo]['discounts'] = $discounts;
+                        $discountOffers[$doNo]['item'] = $item;
+                    }
+                }
+            }
+
+            if (!empty($mixAndMatchDiscount)) {
+                foreach ($mixAndMatchDiscount as $mmNo => $mm) {
+                    if (!isset($mixAndMatchDiscounts[$mmNo])) {
+                        $mixAndMatchDiscounts[$mmNo]['offer'] = $mm;
+                        $mixAndMatchDiscounts[$mmNo]['discounts'] = $discounts;
+                        $mixAndMatchDiscounts[$mmNo]['item'] = $item;
+                    }
+                }
+            }
+
+            if (!empty($multibuyOffer)) {
+                foreach ($multibuyOffer as $mbNo => $mb) {
+                    if (!isset($multibuyOffers[$mbNo])) {
+                        $multibuyOffers[$mbNo]['offer'] = $mb;
+                        $multibuyOffers[$mbNo]['discounts'] = $discounts;
+                        $multibuyOffers[$mbNo]['item'] = $item;
+                    }
+                }
+            }
+        }
     }
 
-    if (!empty($discounts) || !empty($coupons)): ?>
+    if (!empty($discountOffers) || !empty($mixAndMatchDiscounts) || !empty($multibuyOffers) || !empty($coupons)): ?>
         <div class="discount-dropdown-label">
             <span><?php echo $block->escapeHtml(__("Offers and Promotions:")); ?></span>
         </div>
@@ -60,7 +91,7 @@ $discountOffers = $mixAndMatchDiscounts = $multibuyOffers = [];
             <?php foreach ($discountOffers as $discountOffer): ?>
                 <?=
                 "<div class='dropdown-content-wrapper content-coupon'>
-                    " . $block->getFormattedDescriptionForDiscountOffer($discountOffer) . "
+                    " . $block->getFormattedDescriptionForDiscountOffer($discountOffer['offer']) . "
                     </div>";
                 ?>
             <?php endforeach; ?>
@@ -68,7 +99,7 @@ $discountOffers = $mixAndMatchDiscounts = $multibuyOffers = [];
             <?php foreach ($multibuyOffers as $multibuyOffer): ?>
                 <?=
                 "<div class='dropdown-content-wrapper content-coupon'>
-                    " . $block->getFormattedDescriptionForMultibuyOffer($multibuyOffer, $discounts) . "
+                    " . $block->getFormattedDescriptionForMultibuyOffer($multibuyOffer['offer'], $multibuyOffer['discounts']) . "
                 </div>";
                 ?>
             <?php endforeach; ?>
@@ -76,7 +107,7 @@ $discountOffers = $mixAndMatchDiscounts = $multibuyOffers = [];
             <?php foreach ($mixAndMatchDiscounts as $mixAndMatchDiscount): ?>
                 <?=
                 "<div class='dropdown-content-wrapper content-coupon'>
-                " . $block->getFormattedDescriptionForMixAndMatchOffer($mixAndMatchDiscount, $discounts, $itemId) . "
+                " . $block->getFormattedDescriptionForMixAndMatchOffer($mixAndMatchDiscount['offer'], $mixAndMatchDiscount['discounts'], $mixAndMatchDiscount['item']) . "
                 </div>";
                 ?>
             <?php endforeach; ?>

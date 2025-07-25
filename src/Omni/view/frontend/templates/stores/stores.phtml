@@ -26,33 +26,33 @@ if ($collection && $collection->getSize()) : ?>
             $storeId = $store['no'];
             $hours = $block->hasData('storeHours') && !$block->getData('storeHours') ? [] : $block->getStoreHours($storeId);
             ?>
-            <div class="col-md-4 mb-5 store-map-plus-info-container" id="store-<?php echo $storeId; ?>">
-                <?php if ($show) { ?>
-                    <div id="map<?php echo $counter ?>" style="height:200px;" class="store-map"></div>
-                <?php } ?>
+            <div class="col-md-4 mb-5 store-map-plus-info-container" id="store-<?= $storeId; ?>">
+                <?php if ($show) : ?>
+                    <div id="map<?= $counter ?>" style="height:200px;" class="store-map"></div>
+                <?php endif; ?>
                 <?php if (!empty($store['name'])) : ?>
                     <div class="store-name">
-                        <i class="fas fa-store"></i><label><strong><?php echo __('Store'); ?>:</strong></label>
-                        <span><?php echo $store['name']; ?></span>
+                        <i class="fas fa-store"></i><label><strong><?= __('Store'); ?>:</strong></label>
+                        <span><?= $store['name']; ?></span>
 
                     </div>
                 <?php endif; ?>
                 <?php if (!empty($store['address']) && !empty($store['city']) && !empty($store['country_code'])) :
-                    if ($store['county'] == null) {
+                    if ($store['county'] == null) :
                         $store['county'] = "";
-                    }
+                    endif;
                     ?>
                     <div class="store-address">
-                        <i class="fas fa-map-marked-alt"></i><strong><?php echo __('Address'); ?>:</strong>
+                        <i class="fas fa-map-marked-alt"></i><strong><?= __('Address'); ?>:</strong>
                         <span><a target="_blank"
-                                 href="http://maps.google.com/maps?q=<?php echo $store['address'] . "+" . $store['city'] . "+" . $store['county'] . "+" . $store['post_code'] . "+" . $store['country_code']; ?>">
-                    <?php echo $store['address'] . ", " . $store['city'] . " " . $store['county'] . " " . $store['post_code'] . " " . $store['country_code'] . " " . "</a><br/>"; ?></span>
+                                 href="http://maps.google.com/maps?q=<?= $store['address'] . "+" . $store['city'] . "+" . $store['county'] . "+" . $store['post_code'] . "+" . $store['country_code']; ?>">
+                    <?= $store['address'] . ", " . $store['city'] . " " . $store['county'] . " " . $store['post_code'] . " " . $store['country_code'] . " " . "</a><br/>"; ?></span>
                     </div>
                 <?php endif; ?>
                 <?php if (!empty($store['phone_no'])) : ?>
                     <div class="store-phone">
-                        <i class="fas fa-phone-square-alt"></i><label><strong><?php echo __('Phone'); ?>:</strong></label>
-                        <a href="tel:<?php echo $store['phone_no']; ?>"><span><?php echo $store['phone_no']; ?></span></a>
+                        <i class="fas fa-phone-square-alt"></i><label><strong><?= __('Phone'); ?>:</strong></label>
+                        <a href="tel:<?= $store['phone_no']; ?>"><span><?= $store['phone_no']; ?></span></a>
                     </div>
                 <?php endif; ?>
                 <?= $block->getLayout()->createBlock(Stores::class)
@@ -65,15 +65,15 @@ if ($collection && $collection->getSize()) : ?>
         endforeach; ?>
         <?php if ($show) : ?>
             <script type="text/javascript">
-                var apiKey = '<?php echo $apiKey;?>';
+                var apiKey = '<?= $apiKey;?>';
                 var locations = [
-                    <?php foreach($collection->getData() as $store) {
-                    if ($store['county'] == null) {
+                    <?php foreach($collection->getData() as $store) :
+                    if ($store['county'] == null) :
                         $store['county'] = "";
-                    }
+                    endif;
                     ?>
-                    ['<?php echo $store['name']?><br/><?php echo $store['address'] . ", " . $store['city'] . "  " . " " . $store['county'] . " " . $store['post_code'] . " " . $store['country_code']; ?> ', <?php echo $store['latitude']?>,<?php echo $store['longitude'];?>, 14],
-                    <?php }  ?>
+                    ['<?= $store['name']?><br/><?= $store['address'] . ", " . $store['city'] . "  " . " " . $store['county'] . " " . $store['post_code'] . " " . $store['country_code']; ?> ', <?= $store['latitude']?>,<?= $store['longitude'];?>, 14],
+                    <?php endforeach; ?>
                 ];
                 requirejs([
                         'Ls_Omni/js/view/stores/googlemaps'
