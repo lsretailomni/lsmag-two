@@ -1170,16 +1170,24 @@ class BasketHelper extends AbstractHelperOmni
     public function updateBasketAndSaveTotals($oneList, $quote)
     {
         if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
-            $country = $quote->getShippingAddress()->getCountryId();
+            $shippingAddress = $quote->getShippingAddress();
+            $country = $shippingAddress->getCountryId();
 
             $oneList->setShipToCountryCode($country);
 
             if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
-                $postCode = $quote->getShippingAddress()->getPostcode();
-                $county = $quote->getShippingAddress()->getRegionCode();
-                $oneList
-                    ->setShipToPostCode($postCode)
-                    ->setShipToCounty($county);
+                $carrierCode = $shippingAddress->getShippingMethod();
+                $isClickCollect = $carrierCode == 'clickandcollect_clickandcollect';
+
+                if ($isClickCollect) {
+                    if (!empty($pickupStore = $quote->getPickupStore())) {
+                        $pickupStore = $this->storeHelper->getStoreDataByStoreId($pickupStore);
+                    }
+                }
+                $postCode = $isClickCollect ? $pickupStore->getZipCode() : $shippingAddress->getPostcode();
+                $county = $isClickCollect ? $pickupStore->getCounty() : $shippingAddress->getRegionCode();
+                $country = $isClickCollect ? $pickupStore->getCountry() : $shippingAddress->getCountryId();
+                $oneList->setShipToPostCode($postCode)->setShipToCounty($county)->setShipToCountryCode($country);
             }
         }
 
