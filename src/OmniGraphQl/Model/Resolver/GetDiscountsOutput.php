@@ -229,7 +229,7 @@ class GetDiscountsOutput implements ResolverInterface
      * @param $itemId
      * @return array|DiscountsGetResponse|ResponseInterface|null
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|\GuzzleHttp\Exception\GuzzleException
      */
     public function getProactiveDiscounts($itemId)
     {
