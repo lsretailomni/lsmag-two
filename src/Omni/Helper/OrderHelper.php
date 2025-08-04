@@ -7,6 +7,8 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\LineType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCODiscountLineV6;
 use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOHeaderV6;
 use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOLineV6;
@@ -53,6 +55,8 @@ class OrderHelper extends AbstractHelperOmni
     public $currentOrder;
 
     /**
+     * Place order by Id
+     * 
      * @param $orderId
      * @param Entity\Order $oneListCalculateResponse
      */
@@ -78,6 +82,7 @@ class OrderHelper extends AbstractHelperOmni
         $rootCustomerOrderCreate = $this->createInstance(
             RootCustomerOrderCreateV6::class
         );
+        
         try {
             $customerOrderCreateCoHeader = $this->createInstance(
                 CustomerOrderCreateCOHeaderV6::class
@@ -249,6 +254,8 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * Prepare order edit request
+     * 
      * @param Model\Order $order
      * @param $oneListCalculateResponse
      * @return Entity\OrderEdit
@@ -405,6 +412,7 @@ class OrderHelper extends AbstractHelperOmni
 
     /**
      * Set shipment line properties
+     * 
      * @param $orderLine
      * @param $order
      */
@@ -638,6 +646,36 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * Get payment type
+     * 
+     * @param $paymentType
+     * @return string
+     */
+    public function getPaymentType($paymentType)
+    {
+        switch ($paymentType) {
+            case 1:
+                return PaymentType::PAYMENT;
+            case 2:
+                return PaymentType::PRE_AUTHORIZATION;
+            case 3:
+                return PaymentType::REFUND;
+            case 4:
+                return PaymentType::SHIPPED;
+            case 5:
+                return PaymentType::COLLECTED;
+            case 6:
+                return PaymentType::ROUNDING;
+            case 7:
+                return PaymentType::REFUNDED_ON_P_O_S;
+            case 8:
+                return PaymentType::VOIDED;
+            default:
+                return PaymentType::NONE;
+        }
+    }
+
+    /**
      * This function is overriding in hospitality module
      *
      * Payment methods with no need to send in payment line
@@ -712,7 +750,7 @@ class OrderHelper extends AbstractHelperOmni
      * @return GetSelectedSalesDoc_GetSelectedSalesDoc|null
      * @throws InvalidEnumException
      */
-    public function getOrderDetailsAgainstId($docId, $type)
+    public function getOrderDetailsAgainstId($docId, $type = DocumentIdType::ORDER)
     {
         $response = null;
         $typeId   = $this->getOrderTypeId($type);
@@ -1125,12 +1163,6 @@ class OrderHelper extends AbstractHelperOmni
     public function orderCancel($documentId, $storeId)
     {
         $response = null;
-//        $request  = new Entity\OrderCancelEx();
-//        $request->setOrderId($documentId);
-//        $request->setStoreId($storeId);
-//        $request->setUserId("");
-//        $operation = new Operation\OrderCancelEx();
-
         $request = $this->dataHelper->createInstance(
             CustomerOrderCancel::class,
             []
@@ -1148,7 +1180,7 @@ class OrderHelper extends AbstractHelperOmni
             $this->_logger->error($e->getMessage());
         }
 
-        return $response && $response->getResponsecode() == "0000" ? $response->getOrderCancelExResult() : $response;
+        return $response && $response->getResponsecode() == "0000" ? $response->getResponseCode() : $response;
     }
 
     /**
@@ -1387,13 +1419,11 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function getOrderType($idType)
     {
-        switch ($idType) {
-            case 1:
-                return DocumentIdType::ORDER;
-            case 2:
-                return DocumentIdType::HOSP_ORDER;
-        }
-        return DocumentIdType::RECEIPT;
+        return match ($idType) {
+            1 => DocumentIdType::ORDER,
+            2 => DocumentIdType::HOSP_ORDER,
+            default => DocumentIdType::RECEIPT,
+        };
     }
 
     /**
@@ -1429,6 +1459,22 @@ class OrderHelper extends AbstractHelperOmni
         return match ($type) {
             DocumentIdType::ORDER => 1,
             DocumentIdType::HOSP_ORDER => 2,
+            default => 0,
+        };
+    }
+
+    /**
+     * Get LineType Id
+     * 
+     * @param $lineType
+     * @return int
+     */
+    public function getLineType($lineType)
+    {
+        return match ($lineType) {
+            LineType::ITEM => 0,
+            LineType::PAYMENT => 1,
+            LineType::SHIPPING => 7,
             default => 0,
         };
     }

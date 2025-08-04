@@ -35,12 +35,17 @@ class BasketHelper extends AbstractHelperOmni
     public $storeId = null;
 
     /** @var string */
-    public string $couponCode = '';
+    public ?string $couponCode = '';
 
     /**
      * @var boolean
      */
     public $calculateBasket;
+    
+    /*
+     * @var string
+     */
+    public $adminOrderCardId = "";
 
     /**
      * Initialize specific properties
@@ -580,26 +585,28 @@ class BasketHelper extends AbstractHelperOmni
      */
     public function getOneListAdmin($customerEmail, $websiteId, $isGuest)
     {
-        $cardId = '';
+        $this->adminOrderCardId = '';
 
         if (!$isGuest) {
             $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
 
             if (!empty($customer->getData('lsr_cardid'))) {
-                $cardId = $customer->getData('lsr_cardid');
+                $this->adminOrderCardId = $customer->getData('lsr_cardid');
             }
         }
         $webStore       = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         $this->storeId = $webStore;
         // @codingStandardsIgnoreStart
         /** @var Entity\OneList $list */
-        $list = (new Entity\OneList())
-            ->setCardId($cardId)
-            ->setDescription('OneList Magento')
-            ->setListType(Entity\Enum\ListType::BASKET)
-            ->setItems(new Entity\ArrayOfOneListItem())
-            ->setPublishedOffers($this->_offers())
-            ->setStoreId($webStore);
+//        $list = (new Entity\OneList())
+//            ->setCardId($cardId)
+//            ->setDescription('OneList Magento')
+//            ->setListType(Entity\Enum\ListType::BASKET)
+//            ->setItems(new Entity\ArrayOfOneListItem())
+//            ->setPublishedOffers($this->_offers())
+//            ->setStoreId($webStore);
+
+        $list    = $this->get();
 
         return $list;
         // @codingStandardsIgnoreEnd
@@ -625,8 +632,7 @@ class BasketHelper extends AbstractHelperOmni
     public function fetchFromOmni(): RootMobileTransaction
     {
         // if guest, then empty card id
-        $cardId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) == null)
-            ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) ?? $this->adminOrderCardId ?? '';
 
         $storeCode = $this->getDefaultWebStore();
 
