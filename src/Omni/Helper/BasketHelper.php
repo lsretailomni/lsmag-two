@@ -85,8 +85,8 @@ class BasketHelper extends AbstractHelperOmni
         $transactionId = $oneList->getMobiletransaction()
             ->getId();
         $storeCode = $this->getDefaultWebStore();
-        foreach ($items as $lineNumber => $quoteItem) {
-            $lineNumber = (++$lineNumber) * 10000;
+        $lineNumber = 0;
+        foreach ($items as $quoteItem) {
             $children = [];
             $isBundle = 0;
             if ($quoteItem->getProductType() == Type::TYPE_BUNDLE) {
@@ -98,6 +98,7 @@ class BasketHelper extends AbstractHelperOmni
 
             foreach ($children as $child) {
                 if ($child->getProduct()->isInStock()) {
+                    $lineNumber += 10000;
                     list($itemId, $variantId, $uom, $barCode) =
                         $this->itemHelper->getItemAttributesGivenQuoteItem($child);
                     $match = false;
@@ -128,8 +129,8 @@ class BasketHelper extends AbstractHelperOmni
                     }
 
                     if (!$match) {
-                        $price = ($quoteItem->getProductType() == LSR::TYPE_GIFT_CARD) ? 
-                            $quoteItem->getPrice() : 
+                        $price = ($quoteItem->getProductType() == LSR::TYPE_GIFT_CARD) ?
+                            $quoteItem->getPrice() :
                             $quoteItem->getProduct()->getPrice();
                         $price = $this->itemHelper->convertToCurrentStoreCurrency($price);
                         $qty = $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
@@ -694,7 +695,7 @@ class BasketHelper extends AbstractHelperOmni
             $orderLines = $basketData ? $basketData->getMobiletransactionline() : [];
 
             foreach ($orderLines as $line) {
-                if($item->getProductType() == LSR::TYPE_GIFT_CARD && $line->getPrice() != $item->getCustomPrice()) {
+                if ($item->getProductType() == LSR::TYPE_GIFT_CARD && $line->getPrice() != $item->getCustomPrice()) {
                     continue;
                 }
                 if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
@@ -766,7 +767,7 @@ class BasketHelper extends AbstractHelperOmni
             $orderLines = $lines;
         }
         if ($item->getProductType() == Type::TYPE_BUNDLE) {
-            $children      = !empty($lines) ? $item->getChildrenItems() : $item->getChildren();
+            $children = !empty($lines) ? $item->getChildrenItems() : $item->getChildren();
             $bundleProduct = 1;
         } else {
             $children[] = $item;
@@ -778,7 +779,11 @@ class BasketHelper extends AbstractHelperOmni
                     ($child->getItemId() == $line->getId() && $line->getDiscountamount() > 0) :
                     ($this->itemHelper->isSameItem($child, $line) && $line->getDiscountamount() > 0)
                 ) {
-                    $qty         = !empty($lines) ? $item->getQtyOrdered() : $item->getQty();
+                    $qty = !empty($lines) ?
+                        $item->getQtyOrdered() :
+                        ($bundleProduct ? $child->getData('qty') * $item->getData('qty') :
+                            $child->getQty()
+                        );
                     $rowDiscount += $line->getQuantity() == $qty ? $line->getDiscountamount()
                         : ($line->getDiscountAmount() / $line->getQuantity()) * $qty;
                     unset($orderLines[$index]);

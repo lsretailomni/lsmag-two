@@ -92,11 +92,11 @@ class Data extends AbstractHelperOmni
                 for ($i = 0; $i < 7; $i++) {
                     $current = date("Y-m-d", strtotime($today) + ($i * 86400));
                     $currentDayOfWeek = date('w', strtotime($current));
+                    $currentDayOfWeek = $currentDayOfWeek == "0" ? "7" : $currentDayOfWeek;
 
                     foreach ($storeResults->getRetailcalendarline() as $key => $r) {
-                        if ((empty($r->getCalendartype()) ||
-                                $r->getCalendartype() == "1" ||
-                                $r->getLinetype() == "0") &&
+                        if (((empty($r->getCalendartype()) ||
+                                $r->getCalendartype() == "1")) &&
                             $r->getDayno() == $currentDayOfWeek &&
                             $this->checkDateValidity($current, $r)) {
                             $storeHours[$currentDayOfWeek][] = [
@@ -150,11 +150,9 @@ class Data extends AbstractHelperOmni
             if ($startingDate && !$endingDate) {
                 $storeHoursObjStartDateTimeStamp = strtotime($startingDate);
                 return $currentTimeStamp >= $storeHoursObjStartDateTimeStamp;
-            } else {
+            } elseif (!$startingDate && $endingDate) {
                 $storeHoursObjEndDateTimeStamp = strtotime($endingDate);
-                if (!$startingDate && $endingDate) {
-                    return $currentTimeStamp <= $storeHoursObjEndDateTimeStamp;
-                }
+                return $currentTimeStamp <= $storeHoursObjEndDateTimeStamp;
             }
         }
 

@@ -133,11 +133,11 @@ class Proactive extends Template
 
         foreach ($periodicDiscounts as $periodicDiscount) {
             if ($periodicDiscount->getOfferType() == "2") {
-                $multibuyOffers[] = $periodicDiscount;
+                $multibuyOffers[$periodicDiscount->getNo()] = $periodicDiscount;
             }
 
             if ($periodicDiscount->getOfferType() == "3") {
-                $mixAndMatchOffers[] = $periodicDiscount;
+                $mixAndMatchOffers[$periodicDiscount->getNo()] = $periodicDiscount;
             }
 
             if ($periodicDiscount->getOfferType() == "4") {
@@ -146,7 +146,7 @@ class Proactive extends Template
                 if (empty($this->contactHelper->getCardIdFromCustomerSession()) && !empty($additionalInformation)) {
                     continue;
                 }
-                $discountOffers[] = $periodicDiscount;
+                $discountOffers[$periodicDiscount->getNo()] = $periodicDiscount;
             }
         }
 
@@ -311,10 +311,10 @@ class Proactive extends Template
             $priceHtml = '';
             if ($counter == 0) {
                 $popupLink = "<a style='cursor:pointer' class='ls-click-product-promotion'
-                 data-id='" . $mixAndMatchOffer->getOfferNo() . "'>"
+                 data-id='" . $mixAndMatchOffer->getNo() . "'>"
                     . __('Click Here to see the items') . "</a>";
                 $popupHtml = "<div class='ls-discounts-popup-model'
-                id='ls-popup-model-" . $mixAndMatchOffer->getOfferNo() . "' style='display:none;'>";
+                id='ls-popup-model-" . $mixAndMatchOffer->getNo() . "' style='display:none;'>";
             }
             $productHtml = '';
             if (!empty($productInfo)) {
@@ -329,7 +329,7 @@ class Proactive extends Template
                 if (!empty($productInfo->getProductUrl())) {
                     if (!empty($productInfo->getName())) {
                         $productName = $productInfo->getName();
-                        if ($counter == 0) {
+                        if (empty($productData)) {
                             $productHtml = $popupHtml;
                         }
                         $productHtml .= "<div class='item-popup'>";

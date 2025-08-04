@@ -10,6 +10,7 @@
  * @var CartViewModel $viewModel
  */
 
+use Magento\Catalog\Model\Product\Type;
 use \Magento\Checkout\Block\Cart\Item\Renderer;
 use Ls\Omni\ViewModel\CartViewModel;
 use Magento\Msrp\Helper\Data;
@@ -111,7 +112,8 @@ $_item->setRowTotalInclTax($viewModel->getItemRowTotal($_item));
                 <span class="price-excluding-tax" data-label="Excl. Tax">
                     <span class="cart-price">
                         <?= $priceCurrency->format($viewModel->getItemRowTotal($_item), true); ?><br/>
-                        <?php if ($_item->getDiscountAmount() > 0): $price = $_item->getProduct()->getPrice() * (int)$block->getQty(); ?>
+                        <?php if ($_item->getDiscountAmount() > 0):
+                            $price = ($_item->getProduct()->getTypeId() == Type::TYPE_BUNDLE ? $_item->getPrice() : $_item->getProduct()->getPrice()) * (int)$block->getQty(); ?>
                             <div class="lsdiscountprice2">
                             <strike>
                                 <?= $priceCurrency->format($viewModel->getConvertedAmount(
