@@ -1,9 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\CustomerGraphQl\Model\Resolver;
 
 use \Ls\CustomerGraphQl\Helper\DataHelper;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use Ls\Omni\Exception\InvalidEnumException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\Resolver\ContextInterface;
 use Magento\Framework\GraphQl\Query\Resolver\Value;
@@ -15,29 +19,26 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
  */
 class SalesEntries implements ResolverInterface
 {
-
-    /**
-     * @var DataHelper
-     */
-    private $dataHelper;
-
     /**
      * @param DataHelper $dataHelper
      */
     public function __construct(
-        DataHelper $dataHelper
+        public DataHelper $dataHelper
     ) {
-        $this->dataHelper = $dataHelper;
     }
 
     /**
      * Get customer sales entries
+     *
      * @param Field $field
      * @param ContextInterface $context
      * @param ResolveInfo $info
      * @param array|null $value
      * @param array|null $args
      * @return Value|mixed|void
+     * @throws InvalidEnumException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {

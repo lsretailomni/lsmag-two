@@ -10,6 +10,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Quote\Api\Data\CartInterface;
+use Magento\QuoteGraphQl\Model\Resolver\AvailablePaymentMethods;
 
 /**
  * AvailablePaymentMethods plugin responsible for filtering payment methods based on click and collect configuration
@@ -17,24 +18,13 @@ use Magento\Quote\Api\Data\CartInterface;
 class AvailablePaymentMethodsPlugin
 {
     /**
-     * @var PaymentInformationManagementInterface
-     */
-    private $informationManagement;
-    /**
-     * @var LSR
-     */
-    private LSR $lsr;
-
-    /**
      * @param PaymentInformationManagementInterface $informationManagement
      * @param LSR $lsr
      */
     public function __construct(
-        PaymentInformationManagementInterface $informationManagement,
-        LSR $lsr
+        public PaymentInformationManagementInterface $informationManagement,
+        public LSR $lsr
     ) {
-        $this->informationManagement = $informationManagement;
-        $this->lsr                   = $lsr;
     }
 
     /**

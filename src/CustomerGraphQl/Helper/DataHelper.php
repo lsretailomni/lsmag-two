@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\CustomerGraphQl\Helper;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Address;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
@@ -26,41 +28,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class DataHelper
 {
     /**
-     * @var LoyaltyHelper
-     */
-    private $loyaltyHelper;
-
-    /**
-     * @var Helper
-     */
-    private $helper;
-
-    /**
-     * @var OrderHelper
-     */
-    private $orderHelper;
-
-    /**
-     * @var Data
-     */
-    private $data;
-
-    /**
-     * @var LSR
-     */
-    private $lsr;
-
-    /**
-     * @var Currency
-     */
-    public $currencyHelper;
-
-    /**
-     * @var ItemHelper
-     */
-    public $itemHelper;
-
-    /**
      * @param LoyaltyHelper $loyaltyHelper
      * @param OrderHelper $orderHelper
      * @param Helper $helper
@@ -70,21 +37,14 @@ class DataHelper
      * @param ItemHelper $itemHelper
      */
     public function __construct(
-        LoyaltyHelper $loyaltyHelper,
-        OrderHelper $orderHelper,
-        Helper $helper,
-        Data $data,
-        Currency $currencyHelper,
-        LSR $lsr,
-        ItemHelper $itemHelper
+        public LoyaltyHelper $loyaltyHelper,
+        public OrderHelper $orderHelper,
+        public Helper $helper,
+        public Data $data,
+        public Currency $currencyHelper,
+        public LSR $lsr,
+        public ItemHelper $itemHelper
     ) {
-        $this->loyaltyHelper  = $loyaltyHelper;
-        $this->orderHelper    = $orderHelper;
-        $this->helper         = $helper;
-        $this->data           = $data;
-        $this->currencyHelper = $currencyHelper;
-        $this->lsr            = $lsr;
-        $this->itemHelper     = $itemHelper;
     }
 
     /**
@@ -93,7 +53,7 @@ class DataHelper
      * @param mixed $context
      * @return array
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getMembersInfo($context)
     {
@@ -154,7 +114,7 @@ class DataHelper
      * @param int|null $maxNumberOfEntries
      * @return array
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getSalesEntries($context, $maxNumberOfEntries)
     {
@@ -185,7 +145,7 @@ class DataHelper
      * @return array|ArrayOfSalesEntry|SalesEntriesGetByCardIdResponse|ResponseInterface
      * @throws InvalidEnumException
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getSalesEntryByDocumentId($context, $documentId, $type)
     {
@@ -282,7 +242,7 @@ class DataHelper
      * @param ArrayOfSalesEntryPayment $payments
      * @param $orderCurrencyCode
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getPayments(ArrayOfSalesEntryPayment $payments, $orderCurrencyCode): array
     {

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver\GiftCard;
 
@@ -14,17 +15,11 @@ use \Ls\Omni\Model\GiftCard\GiftCardManagement;
 class AppliedGiftCard implements ResolverInterface
 {
     /**
-     * @var GiftCardManagement
-     */
-    private $giftCardManagement;
-
-    /**
      * @param GiftCardManagement $giftCardManagement
      */
     public function __construct(
-        GiftCardManagement $giftCardManagement
+        public GiftCardManagement $giftCardManagement
     ) {
-        $this->giftCardManagement = $giftCardManagement;
     }
 
     /**

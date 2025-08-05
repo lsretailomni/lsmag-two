@@ -15,25 +15,13 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 class StoreInfoOutput implements ResolverInterface
 {
     /**
-     * @var DataHelper
-     */
-    public $dataHelper;
-
-    /**
-     * @var CheckoutSession
-     */
-    public CheckoutSession $checkoutSession;
-
-    /**
      * @param DataHelper $dataHelper
      * @param CheckoutSession $checkoutSession
      */
     public function __construct(
-        DataHelper $dataHelper,
-        CheckoutSession $checkoutSession
+        public DataHelper $dataHelper,
+        public CheckoutSession $checkoutSession
     ) {
-        $this->dataHelper      = $dataHelper;
-        $this->checkoutSession = $checkoutSession;
     }
 
     /**

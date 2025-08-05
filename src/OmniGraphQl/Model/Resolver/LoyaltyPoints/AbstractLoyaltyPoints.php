@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver\LoyaltyPoints;
 
@@ -15,36 +16,16 @@ use \Ls\Omni\Model\LoyaltyPoints\LoyaltyPointsManagement;
  */
 abstract class AbstractLoyaltyPoints implements ResolverInterface
 {
-
     /**
-     * @var LoyaltyHelper
-     */
-    protected $helper;
-
-    /**
-     * @var LoyaltyPointsManagement
-     */
-    protected $loyaltyPointsManagement;
-
-    /**
-     * @var GetCartForUser
-     */
-    protected $getCartForUser;
-
-    /**
-     * AbstractLoyaltyPoints constructor.
      * @param LoyaltyHelper $helper
      * @param LoyaltyPointsManagement $loyaltyPointsManagement
      * @param GetCartForUser $getCartForUser
      */
     public function __construct(
-        LoyaltyHelper $helper,
-        LoyaltyPointsManagement $loyaltyPointsManagement,
-        GetCartForUser $getCartForUser
+        public LoyaltyHelper $helper,
+        public LoyaltyPointsManagement $loyaltyPointsManagement,
+        public GetCartForUser $getCartForUser
     ) {
-        $this->helper                  = $helper;
-        $this->loyaltyPointsManagement = $loyaltyPointsManagement;
-        $this->getCartForUser          = $getCartForUser;
     }
 
     /**

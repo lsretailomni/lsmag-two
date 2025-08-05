@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
@@ -14,20 +15,12 @@ use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
  */
 class RemoveCouponFromCartPlugin
 {
-
     /**
-     * @var GetCartForUser
-     */
-    private $getCartForUser;
-
-    /**
-     * RemoveCouponFromCartPlugin constructor.
      * @param GetCartForUser $getCartForUser
      */
     public function __construct(
-        GetCartForUser $getCartForUser
+        public GetCartForUser $getCartForUser
     ) {
-        $this->getCartForUser = $getCartForUser;
     }
 
     /**

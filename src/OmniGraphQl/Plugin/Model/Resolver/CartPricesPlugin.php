@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
@@ -14,26 +15,14 @@ use Magento\Quote\Model\Quote\TotalsCollector;
  */
 class CartPricesPlugin
 {
-
-    /**
-     * @var TotalsCollector
-     */
-    private $totalsCollector;
-    /**
-     * @var BasketHelper
-     */
-    private BasketHelper $basketHelper;
-
     /**
      * @param TotalsCollector $totalsCollector
      * @param BasketHelper $basketHelper
      */
     public function __construct(
-        TotalsCollector $totalsCollector,
-        BasketHelper $basketHelper,
+        public TotalsCollector $totalsCollector,
+        public BasketHelper $basketHelper,
     ) {
-        $this->totalsCollector = $totalsCollector;
-        $this->basketHelper    = $basketHelper;
     }
 
     /**

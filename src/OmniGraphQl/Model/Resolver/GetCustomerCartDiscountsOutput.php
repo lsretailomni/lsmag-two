@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
@@ -19,33 +20,15 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 class GetCustomerCartDiscountsOutput implements ResolverInterface
 {
     /**
-     * @var LoyaltyHelper
-     */
-    private LoyaltyHelper $loyaltyHelper;
-
-    /**
-     * @var DataHelper
-     */
-    private DataHelper $dataHelper;
-
-    /**
-     * @var CustomerSession
-     */
-    public CustomerSession $customerSession;
-
-    /**
      * @param CustomerSession $customerSession
      * @param LoyaltyHelper $loyaltyHelper
      * @param DataHelper $dataHelper
      */
     public function __construct(
-        CustomerSession $customerSession,
-        LoyaltyHelper $loyaltyHelper,
-        DataHelper $dataHelper
+        public CustomerSession $customerSession,
+        public LoyaltyHelper $loyaltyHelper,
+        public DataHelper $dataHelper
     ) {
-        $this->customerSession = $customerSession;
-        $this->loyaltyHelper   = $loyaltyHelper;
-        $this->dataHelper      = $dataHelper;
     }
 
     /**

@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ItemHelper;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Quote\Model\Quote\Item;
@@ -14,35 +16,16 @@ use Magento\Quote\Model\Quote\Item;
  */
 class CartItemPricesPlugin
 {
-
-    /**
-     * @var DataHelper
-     */
-    private $dataHelper;
-
-    /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /**
-     * @var ItemHelper
-     */
-    private $itemHelper;
-
     /**
      * @param DataHelper $dataHelper
      * @param BasketHelper $basketHelper
      * @param ItemHelper $itemHelper
      */
     public function __construct(
-        DataHelper $dataHelper,
-        BasketHelper $basketHelper,
-        ItemHelper $itemHelper
+        public DataHelper $dataHelper,
+        public BasketHelper $basketHelper,
+        public ItemHelper $itemHelper
     ) {
-        $this->dataHelper   = $dataHelper;
-        $this->basketHelper = $basketHelper;
-        $this->itemHelper   = $itemHelper;
     }
 
     /**
@@ -54,6 +37,7 @@ class CartItemPricesPlugin
      * @param ResolveInfo $info
      * @param array|null $value
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function afterResolve(
         $subject,

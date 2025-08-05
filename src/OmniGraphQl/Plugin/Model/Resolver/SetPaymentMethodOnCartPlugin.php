@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
@@ -17,25 +18,13 @@ use Magento\QuoteGraphQl\Model\Cart\CheckCartCheckoutAllowance;
 class SetPaymentMethodOnCartPlugin
 {
     /**
-     * @var CheckCartCheckoutAllowance
-     */
-    private $checkCartCheckoutAllowance;
-
-    /**
-     * @var DataHelper
-     */
-    private $dataHelper;
-
-    /**
      * @param CheckCartCheckoutAllowance $checkCartCheckoutAllowance
      * @param DataHelper $dataHelper
      */
     public function __construct(
-        CheckCartCheckoutAllowance $checkCartCheckoutAllowance,
-        DataHelper $dataHelper
+        public CheckCartCheckoutAllowance $checkCartCheckoutAllowance,
+        public DataHelper $dataHelper
     ) {
-        $this->checkCartCheckoutAllowance = $checkCartCheckoutAllowance;
-        $this->dataHelper = $dataHelper;
     }
 
     /**

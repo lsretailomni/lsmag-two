@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver\Stock;
 
@@ -16,24 +17,13 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 class CartItemsAvailabilityInStoreOutput implements ResolverInterface
 {
     /**
-     * @var DataHelper
-     */
-    public $dataHelper;
-    /**
-     * @var Data
-     */
-    private Data $helper;
-
-    /**
      * @param DataHelper $dataHelper
      * @param Data $helper
      */
     public function __construct(
-        DataHelper $dataHelper,
-        Data $helper
+        public DataHelper $dataHelper,
+        public Data $helper
     ) {
-        $this->dataHelper = $dataHelper;
-        $this->helper     = $helper;
     }
 
     /**

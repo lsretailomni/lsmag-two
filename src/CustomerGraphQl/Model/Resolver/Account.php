@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\CustomerGraphQl\Model\Resolver;
 
@@ -16,23 +17,17 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
  */
 class Account implements ResolverInterface
 {
-
-    /**
-     * @var DataHelper
-     */
-    private $dataHelper;
-
     /**
      * @param DataHelper $dataHelper
      */
     public function __construct(
-        DataHelper $dataHelper
+        public DataHelper $dataHelper
     ) {
-        $this->dataHelper = $dataHelper;
     }
 
     /**
-     * for returning member contact information
+     * For returning member contact information
+     *
      * @param Field $field
      * @param ContextInterface $context
      * @param ResolveInfo $info
