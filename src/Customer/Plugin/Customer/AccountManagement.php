@@ -6,6 +6,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ForgotPasswordResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
+use \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Api\CustomerMetadataInterface;
@@ -98,14 +99,14 @@ class AccountManagement
                 if ($isEmail) {
                     $search = $this->contactHelper->search($username);
                     $found = $search !== null
-                        && ($search instanceof MemberContact)
-                        && !empty($search->getEmail());
+                        && ($search instanceof GetMemberContactInfo_GetMemberContactInfo)
+                        && !empty($search->getLscMemberContact()->getEmail());
                     if (!$found) {
                         throw new NoSuchEntityException(
                             __('Sorry! No account found with the provided email address.')
                         );
                     }
-                    $username = $search->getUserName();
+                    $username = $search->getLscMemberLoginCard()->getLoginId();
                 }
                 /** @var  MemberContact $result */
                 $result = $this->contactHelper->login($username, $password);

@@ -211,29 +211,31 @@ class OrderEdit
             //Set discount lines
             $orderDiscountLines = $oneListCalculateResponse->getMobiletransdiscountline();
 
-            foreach ($orderDiscountLines as $orderDiscountLine) {
-                $coDiscountLine = $this->orderHelper->createInstance(
-                    COEditDiscountLine::class
-                );
+            if ($orderDiscountLines && count($orderDiscountLines) > 0) {
+                foreach ($orderDiscountLines as $orderDiscountLine) {
+                    $coDiscountLine = $this->orderHelper->createInstance(
+                        COEditDiscountLine::class
+                    );
 
-                $periodicDiscountGroup = $orderDiscountLine->getPeriodicDiscountGroup()
-                    ?: $orderDiscountLine->getOfferNo();
+                    $periodicDiscountGroup = $orderDiscountLine->getPeriodicDiscountGroup()
+                        ?: $orderDiscountLine->getOfferNo();
 
-                $coDiscountLine->addData(
-                    [
-                        COEditDiscountLine::DOCUMENT_ID => $documentId,
-                        COEditDiscountLine::LINE_NO => $orderDiscountLine->getLineNumber(),
-                        COEditDiscountLine::ENTRY_NO => $orderDiscountLine->getNo(),
-                        COEditDiscountLine::DISCOUNT_TYPE => $orderDiscountLine->getDiscountType(),
-                        COEditDiscountLine::OFFER_NO => $orderDiscountLine->getOfferNo(),
-                        COEditDiscountLine::PERIODIC_DISC_TYPE => $orderDiscountLine->getPeriodicDiscountType(),
-                        COEditDiscountLine::PERIODIC_DISC_GROUP => $periodicDiscountGroup,
-                        COEditDiscountLine::DESCRIPTION => $orderDiscountLine->getDescription()
-                    ]
-                );
+                    $coDiscountLine->addData(
+                        [
+                            COEditDiscountLine::DOCUMENT_ID => $documentId,
+                            COEditDiscountLine::LINE_NO => $orderDiscountLine->getLineNumber(),
+                            COEditDiscountLine::ENTRY_NO => $orderDiscountLine->getNo(),
+                            COEditDiscountLine::DISCOUNT_TYPE => $orderDiscountLine->getDiscountType(),
+                            COEditDiscountLine::OFFER_NO => $orderDiscountLine->getOfferNo(),
+                            COEditDiscountLine::PERIODIC_DISC_TYPE => $orderDiscountLine->getPeriodicDiscountType(),
+                            COEditDiscountLine::PERIODIC_DISC_GROUP => $periodicDiscountGroup,
+                            COEditDiscountLine::DESCRIPTION => $orderDiscountLine->getDescription()
+                        ]
+                    );
+                }
+                $rootCustomerOrderEdit->setCoeditdiscountline($orderDiscountLines);
+                
             }
-
-            $rootCustomerOrderEdit->setCoeditdiscountline($orderDiscountLines);
             
             /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
             // @codingStandardsIgnoreStart
@@ -655,6 +657,7 @@ class OrderEdit
                     COEditLine::STORE_NO            => $createdAtStore,
                     COEditLine::EXTERNAL_ID         => $order->getIncrementId(),
                     COEditLine::DOCUMENT_ID         => $documentId,
+                    COEditLine::RETAIL_IMAGE_ID     => "",
                 ]);
 
                 $orderEditCoLines[] = $coEditLine;
@@ -682,6 +685,8 @@ class OrderEdit
                         $uom == $line->getUnitofmeasurecode()) {
                         $lineNumber = ($maxLineNo + 10000);
                         $line->setLineNo($lineNumber);
+                        $line->setRetailImageId("NEW_COLINE_INDICATOR"); //To indicate as new line item
+                        
                     }
                 }
             }
@@ -765,7 +770,7 @@ class OrderEdit
                                     $orderLine->getVariantCode() == $variantId &&
                                     $orderLine->getUomId() == $uom) {
                                     $price          = $orderLine->getPrice();
-                                    $amount         = ($orderLine->getAmount() / $orderLine->getQuantity())
+                                    $amount         = ($orderLine->getNetAmount() / $orderLine->getQuantity())
                                         * $qtyDifference;
                                     $netPrice       = $orderLine->getNetPrice();
                                     $netAmount      = ($orderLine->getNetAmount() / $orderLine->getQuantity())
@@ -776,7 +781,7 @@ class OrderEdit
                                         * $qtyDifference;
                                     $lineNumber     = ((int)$orderLine->getLineNo()
                                         + (int)$order->getEditIncrement());
-                                    $itemId         = $orderLine->getItemId();
+                                    $itemId         = $orderLine->getNumber();
 
                                     $coEditQtyUpdateLine = $this->orderHelper->createInstance(
                                         COEditLine::class
@@ -799,6 +804,7 @@ class OrderEdit
                                         COEditLine::STORE_NO            => $createdAtStore,
                                         COEditLine::EXTERNAL_ID         => $order->getIncrementId(),
                                         COEditLine::DOCUMENT_ID         => $documentId,
+                                        COEditLine::RETAIL_IMAGE_ID     => "NEW_COLINE_INDICATOR" //New line indicator
                                     ]);
 
                                     $orderEditQtyUpdateCoLines[] = $coEditQtyUpdateLine;

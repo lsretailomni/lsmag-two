@@ -1458,7 +1458,7 @@ class OrderHelper extends AbstractHelperOmni
     {
         return match ($type) {
             DocumentIdType::ORDER => 1,
-            DocumentIdType::HOSP_ORDER => 2,
+            DocumentIdType::HOSP_ORDER => 0,
             default => 0,
         };
     }

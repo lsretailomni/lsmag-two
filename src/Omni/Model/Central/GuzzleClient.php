@@ -96,6 +96,8 @@ class GuzzleClient
                     $payload['json'] = $data;
                 }
 
+
+
                 $response = $client->post(
                     $endpoint,
                     !empty($payload) ? $payload: []

@@ -46,10 +46,17 @@ class SalesObserver implements ObserverInterface
             }
 
             if ($addressType == AbstractAddress::TYPE_SHIPPING) {
-                $grandTotal = $basketData->getTotalAmount() + $total->getShippingAmount()
+//                $grandTotal = $basketData->getTotalAmount() + $total->getShippingAmount()
+//                    - $pointDiscount - $giftCardAmount;
+//                $taxAmount  = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
+//                $subTotal   = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
+
+                $mobileTransaction = current((array) $basketData->getMobiletransaction());
+                $grandTotal = $mobileTransaction->getGrossamount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;
-                $taxAmount  = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
-                $subTotal   = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
+                $taxAmount = $mobileTransaction->getGrossamount() - $mobileTransaction->getNetamount();
+                $subTotal = $mobileTransaction->getGrossamount() + $mobileTransaction->getLinediscount();
+                
                 $total->setTaxAmount($taxAmount)
                     ->setBaseTaxAmount($taxAmount)
                     ->setSubtotal($subTotal - $taxAmount)
