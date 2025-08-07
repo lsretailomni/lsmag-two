@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Helper;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\BasketHelper;
@@ -10,8 +11,8 @@ use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
-use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use \Ls\Omni\Model\Checkout\DataProvider;
+use Ls\Replication\Model\ResourceModel\ReplStoreview\CollectionFactory;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -282,7 +283,7 @@ class DataHelper extends AbstractHelper
      * Get all click and collect supported stores for given scope_id
      *
      * @param String $scopeId
-     * @return Collection
+     * @return \Ls\Replication\Model\ResourceModel\ReplStoreview\Collection
      * @throws NoSuchEntityException|LocalizedException
      */
     public function getStores($scopeId)
@@ -291,7 +292,7 @@ class DataHelper extends AbstractHelper
 
         $storesData = $storeCollection
             ->addFieldToFilter('scope_id', $scopeId)
-            ->addFieldToFilter('ClickAndCollect', 1);
+            ->addFieldToFilter('click_and_collect', 1);
 
         if (!$this->dataProvider->availableStoresOnlyEnabled()) {
             return $storesData;
@@ -302,15 +303,7 @@ class DataHelper extends AbstractHelper
             $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
             list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
 
-            if ($response) {
-                if (is_object($response)) {
-                    if (!is_array($response->getInventoryResponse())) {
-                        $response = [$response->getInventoryResponse()];
-                    } else {
-                        $response = $response->getInventoryResponse();
-                    }
-                }
-
+            if ($response && !empty($response->getInventorybufferout())) {
                 $clickNCollectStoresIds = $this->dataProvider->getClickAndCollectStoreIds($storesData);
                 $this->dataProvider->filterClickAndCollectStores($response, $clickNCollectStoresIds);
 
@@ -325,8 +318,7 @@ class DataHelper extends AbstractHelper
      * Get all stores for given scope_id
      *
      * @param String $scopeId
-     * @return Collection
-     * @throws NoSuchEntityException|LocalizedException
+     * @return \Ls\Replication\Model\ResourceModel\ReplStoreview\Collection
      */
     public function getAllStores($scopeId)
     {
@@ -366,12 +358,12 @@ class DataHelper extends AbstractHelper
      * @param String $storeId
      * @param String $websiteId
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getOrderTakingCalendarGivenStoreId($storeId, $websiteId, $calendarType = null)
     {
-        $store         = $this->storeHelper->getStore($websiteId, $storeId);
-        $slots         = $this->storeHelper->formatDateTimeSlotsValues($store->getStoreHours(), $calendarType);
+        $result = $this->omniDataHelper->fetchAllStoreHoursGivenStore($storeId);
+        $slots = $this->storeHelper->formatDateTimeSlotsValues($result, $calendarType);
         $formattedData = [];
 
         foreach ($slots as $index => $slot) {
@@ -385,8 +377,8 @@ class DataHelper extends AbstractHelper
      * Get cart model given required data
      *
      * @param String $maskedCartId
-     * @param String $userId
-     * @param String $storeId
+     * @param int $userId
+     * @param int $storeId
      * @return Quote
      * @throws GraphQlAuthorizationException
      * @throws GraphQlInputException

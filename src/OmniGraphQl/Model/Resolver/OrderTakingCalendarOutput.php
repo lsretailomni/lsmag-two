@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
@@ -34,13 +33,13 @@ class OrderTakingCalendarOutput implements ResolverInterface
 
         $storeId = $args['store_id'];
 
-        $websiteId = (int)$context->getExtensionAttributes()->getStore()->getWebsiteId();
+        $websiteId = (string)$context->getExtensionAttributes()->getStore()->getWebsiteId();
 
         $slots['pickup_dates'] = $this->dataHelper->getOrderTakingCalendarGivenStoreId($storeId, $websiteId);
         $slots['delivery_dates'] = $this->dataHelper->getOrderTakingCalendarGivenStoreId(
             $storeId,
             $websiteId,
-            StoreHourCalendarType::RECEIVING
+            2
         );
 
         return ['pickup_dates' => $slots['pickup_dates'], 'delivery_dates' => $slots['delivery_dates']];

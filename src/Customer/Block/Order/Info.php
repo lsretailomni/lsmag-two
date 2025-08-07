@@ -88,8 +88,7 @@ class Info extends AbstractOrderBlock
      */
     public function getCountryName($countryCode)
     {
-        $country = $this->countryFactory->create()->loadByCode($countryCode);
-        return $country->getName();
+        return $this->orderHelper->getCountryName($countryCode);
     }
 
     /**

@@ -37,7 +37,7 @@ class LoyaltyHelper extends AbstractHelperOmni
         $customer = $this->customerSession->getCustomer();
         $cardId   = $customer->getData('lsr_cardid');
         // @codingStandardsIgnoreLine
-        
+
         $operation = $this->createInstance(GetDirectMarketingInfo::class);
         $operation->setOperationInput([
             Entity\GetDirectMarketingInfo::CARD_ID => $cardId
@@ -49,7 +49,7 @@ class LoyaltyHelper extends AbstractHelperOmni
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        
+
         return $response && $response->getResponsecode() == '0000' ? $response->getLoadmemberdirmarkinfoxml() : null;
     }
 
@@ -79,7 +79,7 @@ class LoyaltyHelper extends AbstractHelperOmni
         $operation = $this->createInstance(GetImage_GetImage::class);
         $operation->setOperationInput([
             'imageNo' => $image_id
-        ]);        
+        ]);
         // @codingStandardsIgnoreEnd
         try {
             $response = $operation->execute($operation);
@@ -187,6 +187,33 @@ class LoyaltyHelper extends AbstractHelperOmni
     public function getSchemes()
     {
         return $this->dataHelper->fetchGivenTableData('LSC Member Scheme');
+    }
+
+    /**
+     * Get next scheme
+     *
+     * @param string $currentClubCode
+     * @param string $currentSequence
+     * @return mixed|null
+     * @throws NoSuchEntityException
+     */
+    public function getNextScheme(string $currentClubCode, string $currentSequence)
+    {
+        $schemes = $this->loyaltyHelper->getSchemes();
+        $requiredScheme = null;
+
+        foreach ($schemes as $scheme) {
+            $clubCode = $scheme['Club Code'];
+            $updateSequence = $scheme['Update Sequence'];
+            if ($currentClubCode == $clubCode &&
+                $updateSequence > $currentSequence
+            ) {
+                $requiredScheme = $scheme;
+                break;
+            }
+        }
+
+        return $requiredScheme;
     }
 
     /**

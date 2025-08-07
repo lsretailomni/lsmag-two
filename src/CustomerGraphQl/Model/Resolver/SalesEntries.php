@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\CustomerGraphQl\Model\Resolver;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\CustomerGraphQl\Helper\DataHelper;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use Ls\Omni\Exception\InvalidEnumException;
@@ -38,7 +39,7 @@ class SalesEntries implements ResolverInterface
      * @return Value|mixed|void
      * @throws InvalidEnumException
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {

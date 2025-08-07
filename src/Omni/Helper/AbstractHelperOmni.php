@@ -9,6 +9,7 @@ use \Ls\Omni\Model\Central\GuzzleClient;
 use \Ls\Omni\Model\Central\TokenRequestService;
 use \Ls\Replication\Api\ReplStoreviewRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
+use Ls\Replication\Api\ReplTenderviewRepositoryInterface;
 use \Ls\Replication\Logger\OmniLogger;
 use \Ls\Replication\Model\ResourceModel\ReplStoreview\CollectionFactory as ReplStoreCollection;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
@@ -218,7 +219,7 @@ class AbstractHelperOmni extends AbstractHelper
         public PriceHelper $priceHelper,
         public WriterInterface $configWriter,
         public DirectoryList $directoryList,
-        public ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
+        public ReplTenderviewRepositoryInterface $replStoreTenderTypeRepository,
         public GetCartForUser $getCartForUser,
         public MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
         public File $fileSystemDriver,

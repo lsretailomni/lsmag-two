@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Ls\CustomerGraphQl\Model\Resolver;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\CustomerGraphQl\Helper\DataHelper;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\Resolver\ContextInterface;
-use Magento\Framework\GraphQl\Query\Resolver\Value;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
@@ -33,12 +33,12 @@ class Account implements ResolverInterface
      * @param ResolveInfo $info
      * @param array|null $value
      * @param array|null $args
-     * @return array|Value|mixed
+     * @return array
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
-        return  $this->dataHelper->getMembersInfo($context);
+        return $this->dataHelper->getMembersInfo($context);
     }
 }

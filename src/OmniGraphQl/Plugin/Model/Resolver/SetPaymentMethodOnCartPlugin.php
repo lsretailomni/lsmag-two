@@ -63,8 +63,8 @@ class SetPaymentMethodOnCartPlugin
             throw new GraphQlInputException(__('Required parameter "code" for "payment_method" is missing.'));
         }
 
-        $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
-        $cart = $this->dataHelper->getCartGivenRequiredData($maskedCartId, $context->getUserId(), $storeId);
+        $storeId = $context->getExtensionAttributes()->getStore()->getId();
+        $cart = $this->dataHelper->getCartGivenRequiredData($maskedCartId, (int)$context->getUserId(), (int)$storeId);
         $this->checkCartCheckoutAllowance->execute($cart);
 
         if (!$cart->getCustomerEmail()) {

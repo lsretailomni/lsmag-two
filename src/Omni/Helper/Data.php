@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\RetailCalendarLine;
+use Ls\Omni\Client\Ecommerce\Entity\RootGetStoreOpeningHours;
 use \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\Ecommerce\Operation\GetStoreOpeningHours;
@@ -20,6 +21,7 @@ use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
@@ -55,14 +57,14 @@ class Data extends AbstractHelperOmni
     }
 
     /**
-     * Get Store hours
+     * Fetch all store hours from central
      *
      * @param string $storeId
-     * @return array
+     * @return RootGetStoreOpeningHours|null
      */
-    public function getStoreHours($storeId)
+    public function fetchAllStoreHoursGivenStore($storeId)
     {
-        $storeHours = null;
+        $storeResults = null;
         try {
             $cacheId = LSR::STORE_HOURS . $storeId;
             $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
@@ -85,6 +87,24 @@ class Data extends AbstractHelperOmni
                     86400
                 );
             }
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return $storeResults;
+    }
+
+    /**
+     * Get Store hours
+     *
+     * @param string $storeId
+     * @return array
+     */
+    public function getStoreHours($storeId)
+    {
+        $storeHours = null;
+        try {
+            $storeResults = $this->fetchAllStoreHoursGivenStore($storeId);
             $storeHours = [];
             $today = $this->dateTime->gmtDate("Y-m-d");
 
@@ -1016,13 +1036,13 @@ class Data extends AbstractHelperOmni
             list($response, $stockCollection) = $this->stockHelper->getGivenItemsStockInGivenStore($items, $storeId);
 
             if ($response) {
-                if (is_object($response)) {
-                    if (!is_array($response->getInventoryResponse())) {
-                        $response = [$response->getInventoryResponse()];
-                    } else {
-                        $response = $response->getInventoryResponse();
-                    }
-                }
+//                if (is_object($response)) {
+//                    if (!is_array($response->getInventoryResponse())) {
+//                        $response = [$response->getInventoryResponse()];
+//                    } else {
+//                        $response = $response->getInventoryResponse();
+//                    }
+//                }
 
                 return $this->stockHelper->updateStockCollection($response, $stockCollection);
             }
