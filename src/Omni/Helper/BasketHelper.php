@@ -658,7 +658,6 @@ class BasketHelper extends AbstractHelperOmni
             return null;
         }
 
-        $storeId = $this->getDefaultWebStore();
         $cardId  = $oneList->getCardId();
 
         /** @var Entity\ArrayOfOneListItem $oneListItems */
@@ -684,7 +683,7 @@ class BasketHelper extends AbstractHelperOmni
                     ->setCardId($cardId)
                     ->setListType(Entity\Enum\ListType::BASKET)
                     ->setItems($listItems)
-                    ->setStoreId($storeId);
+                    ->setStoreId($oneList->getStoreId());
 
                 if (version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
                     $oneListRequest
@@ -1172,8 +1171,9 @@ class BasketHelper extends AbstractHelperOmni
         if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
             $shippingAddress = $quote->getShippingAddress();
             $country = $shippingAddress->getCountryId();
-
             $oneList->setShipToCountryCode($country);
+            $storeId = $this->getDefaultWebStore();
+            $oneList->setStoreId($storeId);
 
             if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
                 $carrierCode = $shippingAddress->getShippingMethod();
@@ -1181,13 +1181,13 @@ class BasketHelper extends AbstractHelperOmni
 
                 if ($isClickCollect) {
                     if (!empty($pickupStore = $quote->getPickupStore())) {
-                        $pickupStore = $this->storeHelper->getStoreDataByStoreId($pickupStore);
+                        $oneList
+                            ->setShipToPostCode(null)
+                            ->setShipToCounty(null)
+                            ->setShipToCountryCode(null)
+                            ->setStoreId($pickupStore);
                     }
                 }
-                $postCode = $isClickCollect ? $pickupStore->getZipCode() : $shippingAddress->getPostcode();
-                $county = $isClickCollect ? $pickupStore->getCounty() : $shippingAddress->getRegionCode();
-                $country = $isClickCollect ? $pickupStore->getCountry() : $shippingAddress->getCountryId();
-                $oneList->setShipToPostCode($postCode)->setShipToCounty($county)->setShipToCountryCode($country);
             }
         }
 

@@ -419,7 +419,10 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Update shipping amount to shipment order line
+     *
      * @param $orderLines
      * @param $order
      * @return mixed
@@ -435,18 +438,12 @@ class OrderHelper extends AbstractHelper
             // @codingStandardsIgnoreLine
             $shipmentOrderLine = new Entity\OrderLine();
             $shipmentOrderLine->setPrice($shippingAmount);
-
-            if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
-                $orderLine = current($orderLines);
-                $shipmentTaxPercent = ($orderLine->getTaxAmount() / $orderLine->getNetAmount()) * 100;
-            }
-
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
 
             if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
-                $shipmentOrderLine->setPrice($netPrice);
+                $shipmentOrderLine->setValidateTax(1);
             }
 
             $shipmentOrderLine
