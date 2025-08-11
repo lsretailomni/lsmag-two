@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\Block\Order;
 
@@ -162,7 +163,7 @@ class Info extends AbstractOrderBlock
     {
         $order = $this->getOrder();
 
-        return $this->orderHelper->getLscMemberSalesBuffer($order);
+        return $order ? $this->orderHelper->getLscMemberSalesBuffer($order) : null;
     }
 
     /**
