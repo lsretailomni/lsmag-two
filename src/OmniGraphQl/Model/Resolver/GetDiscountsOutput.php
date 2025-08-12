@@ -157,9 +157,8 @@ class GetDiscountsOutput implements ResolverInterface
     {
         $webStore = $this->lsr->getActiveWebStore();
         $discounts = $this->loyaltyHelper->getProactiveDiscounts($itemId, $webStore);
-
+        $discountOffers = $mixAndMatchDiscounts = $multibuyOffers = [];
         if (!empty($discounts)) {
-            $discountOffers = $mixAndMatchDiscounts = $multibuyOffers = [];
             list(
                 $discountOffer,
                 $mixAndMatchDiscount,
@@ -198,7 +197,8 @@ class GetDiscountsOutput implements ResolverInterface
 
             return [$discountOffers, $mixAndMatchDiscounts, $multibuyOffers];
         }
-        return [];
+
+        return [$discountOffers, $mixAndMatchDiscounts, $multibuyOffers];
     }
 
     /**

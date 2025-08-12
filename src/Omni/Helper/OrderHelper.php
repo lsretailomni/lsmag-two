@@ -977,6 +977,27 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * Get magento order given increment_id
+     *
+     * @param $incrementId
+     * @return false|mixed|null
+     */
+    public function getMagentoOrderGivenExternalId($incrementId)
+    {
+        $order     = null;
+        $orderList = $this->orderRepository->getList(
+            $this->basketHelper->getSearchCriteriaBuilder()->
+            addFilter('increment_id', $incrementId)->create()
+        )->getItems();
+
+        if (!empty($orderList)) {
+            $order = reset($orderList);
+        }
+
+        return $order;
+    }
+
+    /**
      * Get magento order given entity_id
      *
      * @param $entityId
@@ -1477,6 +1498,6 @@ class OrderHelper extends AbstractHelperOmni
     public function getCountryName($countryCode)
     {
         $country = $this->countryFactory->create()->loadByCode($countryCode);
-        return $country->getName();
+        return $country->getCountryId();
     }
 }

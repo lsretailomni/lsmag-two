@@ -181,13 +181,16 @@ class DataHelper
             $websiteId = (int)$context->getExtensionAttributes()->getStore()->getWebsiteId();
             $userId = $context->getUserId();
             $this->helper->setCustomerValuesInSession($userId, $websiteId);
-            $salesEntryDetails = $this->orderHelper->getOrderDetailsAgainstId($documentId, $type);
+            $salesEntryDetails = $this->orderHelper->fetchOrder(
+                $documentId,
+                $type
+            );
 
             if (!empty($salesEntryDetails)) {
                 $salesEntry = $salesEntryDetails->getLscMemberSalesBuffer();
-                $customerDocId = $salesEntry->getCustomerDocumentId();
-                $magOrder = $this->orderHelper->getMagentoOrderGivenDocumentId($customerDocId);
-                $salesEntriesArray [] = $this->getSaleEntry(
+                $customerDocId = $salesEntry->getExternalId();
+                $magOrder = $this->orderHelper->getMagentoOrderGivenExternalId($customerDocId);
+                $salesEntriesArray[] = $this->getSaleEntry(
                     $salesEntry,
                     $salesEntryDetails,
                     $magOrder
@@ -228,9 +231,8 @@ class DataHelper
             $orderCurrencyCode = $magOrder->getOrderCurrencyCode();
         }
         $orderCurrencyCode = ($salesEntry->getStoreCurrencyCode()) ?: $orderCurrencyCode;
-        $orderId = !empty($salesEntry->getCustomerDocumentId()) ?
-            $salesEntry->getCustomerDocumentId() :
-            (!empty($salesEntry->getDocumentId()) ? $salesEntry->getDocumentId() : "");
+        $orderId = !empty($salesEntry->getDocumentId()) ?
+            $salesEntry->getDocumentId() : "";
 
         $itemLines = $paymentLines = $orderTransactions = [];
 
@@ -241,7 +243,9 @@ class DataHelper
         }
 
         foreach ($orderTransactions as $line) {
-            if ($line->getDocumentId() !== $orderId) {
+            if ($line->getDocumentId() !== $orderId ||
+                $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)
+            ) {
                 continue;
             }
 
@@ -256,7 +260,7 @@ class DataHelper
         return [
             'id' => $salesEntry->getDocumentId(),
             'click_and_collect_order' => $isClickNCollectOrder,
-            'document_reg_time' => $salesEntry->getCreateDatetime(),
+            'document_reg_time' => $salesEntry->getDateTime(),
             'document_id' => $salesEntry->getDocumentId(),
             'external_id' => ($salesEntry->getExternalId()) ?: $externalId,
             'id_type' => $salesEntry->getData('IdType'),
@@ -316,38 +320,32 @@ class DataHelper
     public function getAddress($order, bool $isBillingAddress = false): array
     {
         if ($isBillingAddress) {
-            if (!empty($order->getAddress()) && !empty($order->getCountryRegionCode())) {
-                return [
-                    'address1' => $order->getAddress(),
-                    'address2' => $order->getAddress2(),
-                    'cell_phone_number' => $order->getPhoneNo(),
-                    'city' => $order->getCity(),
-                    'country' => $this->orderHelper->getCountryName($order->getCountryRegionCode()),
-                    'house_no' => '',
-                    'post_code' => $order->getPostCode(),
-                    'state_province_region' => $order->getCounty(),
-                    'type' => 'Residential',
-                ];
-            }
+            return [
+                'address1' => $order->getAddress() ?? '',
+                'address2' => $order->getAddress2() ?? '',
+                'cell_phone_number' => $order->getPhoneNo() ?? '',
+                'city' => $order->getCity() ?? '',
+                'country' => !empty($order->getCountryRegionCode()) ?
+                    $this->orderHelper->getCountryName($order->getCountryRegionCode()) : '',
+                'house_no' => '',
+                'post_code' => $order->getPostCode() ?? '',
+                'state_province_region' => $order->getCounty() ?? '',
+                'type' => 'Residential',
+            ];
         } else {
-            if (!empty($order->getShipToName()) && !empty($order->getCountryRegionCode())) {
-
-                return [
-                    'address1' => $order->getShipToAddress(),
-                    'address2' => $order->getShipToAddress2(),
-                    'cell_phone_number' => $order->getShipToPhoneNo(),
-                    'city' => $order->getShipToCity(),
-                    'country' => $this->orderHelper->getCountryName($order->getShipToCountryRegionCode()),
-                    'house_no' => '',
-                    'post_code' => $order->getShipToPostCode(),
-                    'state_province_region' => $order->getShipToCounty(),
-                    'type' => 'Residential',
-                ];
-
-            }
+            return [
+                'address1' => $order->getShipToAddress() ?? '',
+                'address2' => $order->getShipToAddress2() ?? '',
+                'cell_phone_number' => $order->getShipToPhoneNo() ?? '',
+                'city' => $order->getShipToCity() ?? '',
+                'country' => !empty($order->getShipToCountryRegionCode()) ?
+                    $this->orderHelper->getCountryName($order->getShipToCountryRegionCode()) : '',
+                'house_no' => '',
+                'post_code' => $order->getShipToPostCode() ?? '',
+                'state_province_region' => $order->getShipToCounty() ?? '',
+                'type' => 'Residential',
+            ];
         }
-
-        return [];
     }
 
     /**
