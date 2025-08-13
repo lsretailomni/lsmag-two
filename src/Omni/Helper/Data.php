@@ -77,7 +77,7 @@ class Data extends AbstractHelperOmni
                     Entity\GetStoreOpeningHours::STORE_NO => $storeId,
                 ]);
                 $response = $operation->execute();
-                $storeResults = $response->getResponseCode() == "0000" ?
+                $storeResults = ($response->getResponseCode() == "0000" || $response->getResponseCode() == "1000") ?
                     $response->getGetstoreopeninghoursxml() : null;
 
                 $this->cacheHelper->persistContentInCache(
