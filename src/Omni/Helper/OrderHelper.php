@@ -387,7 +387,7 @@ class OrderHelper extends AbstractHelperOmni
             $taxAmount = (float)number_format(($shippingAmount - $netPrice), 2);
             $orderLine = end($customerOrderCoLines);
             $lineNumber = $orderLine->getLineno();
-            $lineNumber++;
+            $lineNumber = $lineNumber + 10000;
             $customerOrderCoLine = $this->createInstance(
                 CustomerOrderCreateCOLineV6::class
             );
@@ -646,12 +646,12 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
-     * Get payment type
+     * Get payment type id
      * 
      * @param $paymentType
      * @return string
      */
-    public function getPaymentType($paymentType)
+    public function getPaymentTypeId($paymentType)
     {
         switch ($paymentType) {
             case 1:
@@ -672,6 +672,27 @@ class OrderHelper extends AbstractHelperOmni
                 return PaymentType::VOIDED;
             default:
                 return PaymentType::NONE;
+        }
+    }
+
+    /**
+     * Get payment type
+     *
+     * @param $order
+     * @return string
+     */
+    public function getPaymentType($order)
+    {
+        $paidAmount       = $order->getPayment()->getAmountPaid();
+        $authorizedAmount = $order->getPayment()->getAmountAuthorized();
+        if (!empty($paidAmount)) {
+            return "1";
+        } else {
+            if (!empty($authorizedAmount)) {
+                return "2";
+            } else {
+                return "0";
+            }
         }
     }
 

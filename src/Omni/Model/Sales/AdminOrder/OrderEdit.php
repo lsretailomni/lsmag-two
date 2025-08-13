@@ -15,10 +15,12 @@ use \Ls\Omni\Helper\Data as OmniHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderEdit as EditOrder;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\RootCustomerOrderCancel;
+use \Ls\Omni\Client\Ecommerce\Entity\RootCOUpdatePayment;
 use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCancelCOLine;
 use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderStatusLog;
 use \Ls\Omni\Client\Ecommerce\Entity\COEditDiscountLine;
 use \Ls\Omni\Client\Ecommerce\Entity\COUpdatePayment as COUpdatePaymentLines;
+use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderPayment;
 use \Ls\Omni\Client\Ecommerce\Entity\COEditLine;
 use \Ls\Omni\Client\Ecommerce\Entity\COEditPayment;
 use \Ls\Omni\Client\Ecommerce\Entity\COEditHeader;
@@ -209,8 +211,8 @@ class OrderEdit
             $rootCustomerOrderEdit->setCoeditline($coEditLines);
             
             //Set discount lines
-            $orderDiscountLines = $oneListCalculateResponse->getMobiletransdiscountline();
-
+            $orderDiscountLines     = $oneListCalculateResponse->getMobiletransdiscountline();
+            $orderEditDiscountLines = [];
             if ($orderDiscountLines && count($orderDiscountLines) > 0) {
                 foreach ($orderDiscountLines as $orderDiscountLine) {
                     $coDiscountLine = $this->orderHelper->createInstance(
@@ -232,8 +234,9 @@ class OrderEdit
                             COEditDiscountLine::DESCRIPTION => $orderDiscountLine->getDescription()
                         ]
                     );
+                    $orderEditDiscountLines[] = $coDiscountLine;
                 }
-                $rootCustomerOrderEdit->setCoeditdiscountline($orderDiscountLines);
+                $rootCustomerOrderEdit->setCoeditdiscountline($orderEditDiscountLines);
                 
             }
             
@@ -256,39 +259,51 @@ class OrderEdit
             $updateOrderPaymentOperation = $this->orderHelper->createInstance(
                 COUpdatePayment::class
             );
-            $updatePaymentLines = $this->orderHelper->createInstance(
-                COUpdatePaymentLines::class
+            $rootCOUpdatePayment = $this->orderHelper->createInstance(
+                RootCOUpdatePayment::class
             );
+            $updatePaymentLines = $this->orderHelper->createInstance(
+                CustomerOrderPayment::class
+            );
+            $paymentType  = $this->orderHelper->getPaymentType($order);
+            $paymentCode  = $oldOrder->getPayment()->getMethodInstance()->getCode();
+            $tenderTypeId = $this->orderHelper->getPaymentTenderTypeId($paymentCode);
             foreach ($payments as $payment) {
-                $paymentType = $this->orderHelper->getPaymentType($payment->getType());
-                if ($paymentType == 1 && ($payment->getType() == Entity\Enum\PaymentType::PRE_AUTHORIZATION ||
-                    $payment->getType() == Entity\Enum\PaymentType::NONE)) {
-                
-                    $paymentLine =
+                if ($payment->getEntryType() == 1 && ($paymentType == "2" ||
+                        $payment->getEntryType() == "0")) {
+                    $paymentLine  =
                         [
-                            COEditPayment::DOCUMENT_ID             => $oldOrder->getDocumentId(),
-                            COEditPayment::STORE_NO                => $createdAtStore,
-                            COEditPayment::LINE_NO                 => $payment->getLineNumber(),
-                            COEditPayment::PRE_APPROVED_AMOUNT     => $payment->getAmount(),
-                            COEditPayment::TYPE                    => $this->orderHelper->getPaymentType(
-                                $payment->getType()
-                            ),
-                            COEditPayment::TENDER_TYPE             => $this->orderHelper->getPaymentTenderTypeId(
-                                $payment->getTenderType()
-                            ),
-                            COEditPayment::CARD_TYPE               => $payment->getCardType(),
-                            COEditPayment::CURRENCY_CODE           => $payment->getCurrencyCode(),
-                            COEditPayment::CURRENCY_FACTOR         => $payment->getCurrencyFactor(),
-                            COEditPayment::AUTHORIZATION_EXPIRED   => true,
-                            COEditPayment::TOKEN_NO                => $payment->getTokenNumber(),
-                            COEditPayment::CARDOR_CUSTOMERNUMBER   => $payment->getCardOrAccount()
+                            CustomerOrderPayment::DOCUMENT_ID             => $oldOrder->getDocumentId(),
+                            CustomerOrderPayment::STORE_NO                => $createdAtStore,
+                            CustomerOrderPayment::LINE_NO                 => $payment->getLineNo(),
+                            CustomerOrderPayment::TYPE                    => $paymentType,
+                            CustomerOrderPayment::TENDER_TYPE             => (int)$tenderTypeId,
+                            CustomerOrderPayment::CARD_TYPE               => $payment->getCardType(),
+                            CustomerOrderPayment::CURRENCY_CODE           => $payment->getCurrencyCode(),
+                            CustomerOrderPayment::CURRENCY_FACTOR         => $payment->getCurrencyFactor(),
+                            CustomerOrderPayment::AUTHORISATION_CODE      => "",
+                            CustomerOrderPayment::AUTHORIZATION_EXPIRED   => true,
+                            CustomerOrderPayment::TOKEN_NO                => $oldOrder->getPayment()->getLastTransId(),
+                            CustomerOrderPayment::CARDOR_CUSTOMERNUMBER   => $payment->getCardOrAccount()
                         ];
+                    if ($paymentType == "2") {
+                        $paymentLine[COEditPayment::PRE_APPROVED_AMOUNT] = $payment->getAmount();
+                        $paymentLine[COEditPayment::PRE_APPROVED_AMOUNT_LCY] =
+                            $payment->getCurrencyFactor() * $payment->getAmount();
+                    } else {
+                        $paymentLine[COEditPayment::FINALIZED_AMOUNT] = $payment->getAmount();
+                        $paymentLine[COEditPayment::FINALIZED_AMOUNT_LCY] =
+                            $payment->getCurrencyFactor() * $payment->getAmount();
+                    }
                     $updatePaymentLines->addData($paymentLine);
-
+                    $rootCOUpdatePayment->setCustomerorderpayment($updatePaymentLines);
                     $updateOrderPaymentOperation->setOperationInput(
-                        [COUpdatePaymentLines::COUPDATE_PAYMENT_XML => $updatePaymentLines]
+                        [
+                            COUpdatePaymentLines::WEB_PRE_AUTH_NOT_AUTHORIZE => false,
+                            COUpdatePaymentLines::COUPDATE_PAYMENT_XML => $rootCOUpdatePayment
+                        ]
                     );
-                    $updateOrderPaymentOperation->execute();
+                    $updatePaymentResponse = $updateOrderPaymentOperation->execute();
                 }
             }
             
@@ -354,6 +369,7 @@ class OrderEdit
                         COEditPayment::LINE_NO => $startingLineNumber,
                         COEditPayment::EXTERNAL_REFERENCE => $order->getIncrementId(),
                         COEditPayment::PRE_APPROVED_AMOUNT => $amount,
+                        COEditPayment::PRE_APPROVED_AMOUNT_LCY => $amount * $order->getBaseToOrderRate(),
                     ]
                 );
                 
@@ -372,20 +388,22 @@ class OrderEdit
                     if (!empty($paidAmount)) {
                         $orderPayment->addData(
                             [
-                                COEditPayment::TYPE => Entity\Enum\PaymentType::PAYMENT,
+                                COEditPayment::TYPE => "1",
                             ]
                         );
                     } else {
                         if (!empty($authorizedAmount)) {
                             $orderPayment->addData(
                                 [
-                                    COEditPayment::TYPE => Entity\Enum\PaymentType::PRE_AUTHORIZATION,
+                                    COEditPayment::TYPE => "2",
+                                    //Entity\Enum\PaymentType::PRE_AUTHORIZATION,
                                 ]
                             );
                         } else {
                             $orderPayment->addData(
                                 [
-                                    COEditPayment::TYPE => Entity\Enum\PaymentType::NONE
+                                    COEditPayment::TYPE => "0",
+                                    //Entity\Enum\PaymentType::NONE
                                 ]
                             );
                         }
@@ -447,7 +465,7 @@ class OrderEdit
 //                $orderPaymentGiftCard = new Entity\OrderPayment();
                 $orderPaymentGiftCard = $this->orderHelper->createInstance(COEditPayment::class);
                 // @codingStandardsIgnoreEnd
-                //default values for all payment typoes.
+                //default values for all payment types.
                 $orderPaymentGiftCard->addData(
                     [
                         COEditPayment::CURRENCY_FACTOR => 1,
@@ -490,7 +508,6 @@ class OrderEdit
      */
     public function updateShippingAmount($orderLines, $order, $customerOrder, $oldOrder)
     {
-        $itemsToCancel      = [];
         $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
         $shipmentTaxPercent = $this->orderHelper->getShipmentTaxPercent($order->getStore());
         $shippingAmount     = $order->getShippingInclTax();
@@ -500,19 +517,16 @@ class OrderEdit
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
             $salesOrderLines = $customerOrder->getLscMemberSalesDocLine();
-            $orderLine       = end($salesOrderLines);
-            $lineNumber      = $orderLine->getLineno();
+            
             foreach ($salesOrderLines as $line) {
                 if ($shipmentFeeId == $line->getNumber()) {
                     // @codingStandardsIgnoreLine
-
                     $coEditLine = $this->orderHelper->createInstance(
                         //MobileTransaction::class,
                         COEditLine::class
                     );
-                    
                     $coEditLine->addData([
-                        COEditLine::LINE_NO => $lineNumber,
+                        COEditLine::LINE_NO => $line->getLineNo(),
                         COEditLine::LINE_TYPE => 0,
                         COEditLine::STATUS => "",
                         COEditLine::NUMBER => $shipmentFeeId,
@@ -770,8 +784,8 @@ class OrderEdit
                                     $orderLine->getVariantCode() == $variantId &&
                                     $orderLine->getUomId() == $uom) {
                                     $price          = $orderLine->getPrice();
-                                    $amount         = ($orderLine->getNetAmount() / $orderLine->getQuantity())
-                                        * $qtyDifference;
+                                    $amount         = ($orderLine->getPrice() * $qtyDifference) -
+                                        ($orderLine->getDiscountAmount() / $orderLine->getQuantity());
                                     $netPrice       = $orderLine->getNetPrice();
                                     $netAmount      = ($orderLine->getNetAmount() / $orderLine->getQuantity())
                                         * $qtyDifference;
