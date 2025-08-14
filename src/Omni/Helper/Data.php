@@ -500,16 +500,25 @@ class Data extends AbstractHelperOmni
     /**
      * Fetch webstores from central
      *
-     * @return array
+     * @return array|null
      */
     public function fetchWebStores()
     {
+        $response = null;
         $webStoreOperation = $this->createInstance(Operation\GetStores_GetStores::class);
         $webStoreOperation->setOperationInput(
             ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
         );
 
-        return $webStoreOperation->execute()->getRecords();
+        try {
+            $response = $webStoreOperation->execute();
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return $response && $response->getResponseCode() == "0000" ?
+            current((array)$response->getRecords())->getLSCStore() :
+            null;
     }
 
     /**

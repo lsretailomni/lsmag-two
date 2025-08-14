@@ -6,8 +6,6 @@ namespace Ls\Omni\Controller\Adminhtml\System\Config;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Operation\GetStores_GetStores;
-use \Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
 use \Ls\Omni\Helper\Data;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -73,13 +71,6 @@ class LoadStore extends Action
                 ['companyName' => $companyName]
             );
 
-            $testConnectionOperation = new TestConnectionResponse(
-                $baseUrl,
-                $connectionParams,
-                $companyName,
-            );
-            $pong = current($testConnectionOperation->execute()->getRecords());
-
             if (!empty($pong)) {
                 list($lsCentralVersion, $lsRetailLicenseIsActive, $lsRetailLicenseUnitEcomIsActive) =
                     $this->helper->parsePingResponseAndSaveToConfigData($pong, $scopeId);
@@ -90,22 +81,14 @@ class LoadStore extends Action
                     ['company' => $companyName],
                     $scopeId
                 )) {
-                    $webStoreOperation = new GetStores_GetStores(
-                        $baseUrl,
-                        $connectionParams,
-                        $companyName,
-                    );
-                    $webStoreOperation->setOperationInput(
-                        ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
-                    );
-                    $stores = current($webStoreOperation->execute()->getRecords());
-                }
+                    $stores = $this->helper->fetchWebStores();
 
-                if (!empty($stores)) {
-                    $optionList = null;
-                    $optionList = [['value' => '', 'label' => __('Please select your web store')]];
-                    foreach ($stores->getLSCStore() ?? [] as $store) {
-                        $optionList[] = ['value' => $store->getNo(), 'label' => $store->getName()];
+                    if (!empty($stores)) {
+                        $optionList = null;
+                        $optionList = [['value' => '', 'label' => __('Please select your web store')]];
+                        foreach ($stores as $store) {
+                            $optionList[] = ['value' => $store->getNo(), 'label' => $store->getName()];
+                        }
                     }
                 }
             } else {
