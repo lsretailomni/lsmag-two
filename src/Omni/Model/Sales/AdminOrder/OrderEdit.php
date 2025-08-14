@@ -15,17 +15,13 @@ use \Ls\Omni\Helper\Data as OmniHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderEdit as EditOrder;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\RootCustomerOrderCancel;
-use \Ls\Omni\Client\Ecommerce\Entity\RootCOUpdatePayment;
 use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCancelCOLine;
 use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderStatusLog;
 use \Ls\Omni\Client\Ecommerce\Entity\COEditDiscountLine;
-use \Ls\Omni\Client\Ecommerce\Entity\COUpdatePayment as COUpdatePaymentLines;
-use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderPayment;
 use \Ls\Omni\Client\Ecommerce\Entity\COEditLine;
 use \Ls\Omni\Client\Ecommerce\Entity\COEditPayment;
 use \Ls\Omni\Client\Ecommerce\Entity\COEditHeader;
 use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderEdit as CustomerOrderEditEntity;
-use \Ls\Omni\Client\Ecommerce\Operation\COUpdatePayment;
 use \Ls\Omni\Client\Ecommerce\Operation\CustomerOrderEdit;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -246,67 +242,19 @@ class OrderEdit
             // @codingStandardsIgnoreEndund
             $orderPaymentArray = [];
             $payments = $customerOrder->getLscMemberSalesDocLine();
+            $startingLineNumber = 10000 + (7 * $order->getEditIncrement() * 10);
             $orderPaymentArray = $this->setOrderPayments(
                 $order,
+                $oldOrder,
                 $cardId,
                 $order->getPayment()->getMethodInstance()->getCode(),
-                10000,
-                // 7 * $order->getEditIncrement() * 10,
+                $startingLineNumber,
                 $order->getGrandTotal(),
-                $orderPaymentArray
+                $orderPaymentArray,
+                $payments,
+                $createdAtStore
             );
             $orderEditPaymentLines->addData($orderPaymentArray);
-            $updateOrderPaymentOperation = $this->orderHelper->createInstance(
-                COUpdatePayment::class
-            );
-            $rootCOUpdatePayment = $this->orderHelper->createInstance(
-                RootCOUpdatePayment::class
-            );
-            $updatePaymentLines = $this->orderHelper->createInstance(
-                CustomerOrderPayment::class
-            );
-            $paymentType  = $this->orderHelper->getPaymentType($order);
-            $paymentCode  = $oldOrder->getPayment()->getMethodInstance()->getCode();
-            $tenderTypeId = $this->orderHelper->getPaymentTenderTypeId($paymentCode);
-            foreach ($payments as $payment) {
-                if ($payment->getEntryType() == 1 && ($paymentType == "2" ||
-                        $payment->getEntryType() == "0")) {
-                    $paymentLine  =
-                        [
-                            CustomerOrderPayment::DOCUMENT_ID             => $oldOrder->getDocumentId(),
-                            CustomerOrderPayment::STORE_NO                => $createdAtStore,
-                            CustomerOrderPayment::LINE_NO                 => $payment->getLineNo(),
-                            CustomerOrderPayment::TYPE                    => $paymentType,
-                            CustomerOrderPayment::TENDER_TYPE             => (int)$tenderTypeId,
-                            CustomerOrderPayment::CARD_TYPE               => $payment->getCardType(),
-                            CustomerOrderPayment::CURRENCY_CODE           => $payment->getCurrencyCode(),
-                            CustomerOrderPayment::CURRENCY_FACTOR         => $payment->getCurrencyFactor(),
-                            CustomerOrderPayment::AUTHORISATION_CODE      => "",
-                            CustomerOrderPayment::AUTHORIZATION_EXPIRED   => true,
-                            CustomerOrderPayment::TOKEN_NO                => $oldOrder->getPayment()->getLastTransId(),
-                            CustomerOrderPayment::CARDOR_CUSTOMERNUMBER   => $payment->getCardOrAccount()
-                        ];
-                    if ($paymentType == "2") {
-                        $paymentLine[COEditPayment::PRE_APPROVED_AMOUNT] = $payment->getAmount();
-                        $paymentLine[COEditPayment::PRE_APPROVED_AMOUNT_LCY] =
-                            $payment->getCurrencyFactor() * $payment->getAmount();
-                    } else {
-                        $paymentLine[COEditPayment::FINALIZED_AMOUNT] = $payment->getAmount();
-                        $paymentLine[COEditPayment::FINALIZED_AMOUNT_LCY] =
-                            $payment->getCurrencyFactor() * $payment->getAmount();
-                    }
-                    $updatePaymentLines->addData($paymentLine);
-                    $rootCOUpdatePayment->setCustomerorderpayment($updatePaymentLines);
-                    $updateOrderPaymentOperation->setOperationInput(
-                        [
-                            COUpdatePaymentLines::WEB_PRE_AUTH_NOT_AUTHORIZE => false,
-                            COUpdatePaymentLines::COUPDATE_PAYMENT_XML => $rootCOUpdatePayment
-                        ]
-                    );
-                    $updatePaymentResponse = $updateOrderPaymentOperation->execute();
-                }
-            }
-            
             $rootCustomerOrderEdit->setCoeditpayment($orderEditPaymentLines);
             return $rootCustomerOrderEdit;
         } catch (Exception $e) {
@@ -318,11 +266,14 @@ class OrderEdit
      * Set order payments
      *
      * @param Order $order
+     * @param Order $oldOrder
      * @param string $cardId
      * @param string $isType
      * @param int $startingLineNumber
      * @param float $amount
      * @param array $orderPaymentArray
+     * @param array $payments,
+     * @param string $createdAtStore
      * @return mixed
      * @throws \Ls\Omni\Exception\InvalidEnumException
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -330,11 +281,14 @@ class OrderEdit
      */
     public function setOrderPayments(
         Order $order,
+        Order $oldOrder,
         $cardId,
         $isType,
         $startingLineNumber,
         $amount,
-        $orderPaymentArray
+        $orderPaymentArray,
+        $payments,
+        $createdAtStore
     ) {
         if ($amount > 0) {
             $transId          = $order->getPayment()->getLastTransId();
@@ -490,6 +444,56 @@ class OrderEdit
 //                    ->setPreApprovedValidDate($preApprovedDate)
 //                    ->setTenderType($tenderTypeId);
                 $orderPaymentArray[] = $orderPaymentGiftCard;
+            }
+
+            if (count($payments) > 0) {
+                $paymentType  = $this->orderHelper->getPaymentType($order);
+                $lineNo = 0;
+                foreach ($payments as $payment) {
+                    if ($payment->getEntryType() == 1 && ($paymentType == "2" ||
+                            $paymentType == "0")) {
+                        $paymentCode  = $oldOrder->getPayment()->getMethodInstance()->getCode();
+                        $tenderTypeId = $this->orderHelper->getPaymentTenderTypeId($paymentCode);
+                        
+                        $lineNo += 10000;
+                        $orderPaymentUpdate = $this->orderHelper->createInstance(COEditPayment::class);
+                        $orderPaymentUpdate->addData(
+                            [
+                                COEditPayment::DOCUMENT_ID             => $oldOrder->getDocumentId(),
+                                COEditPayment::STORE_NO                => $createdAtStore,
+                                COEditPayment::LINE_NO                 => $lineNo,
+                                COEditPayment::TYPE                    => $paymentType,
+                                COEditPayment::TENDER_TYPE             => (int)$tenderTypeId,
+                                COEditPayment::CARD_TYPE               => $payment->getCardType(),
+                                COEditPayment::CURRENCY_CODE           => $payment->getCurrencyCode(),
+                                COEditPayment::CURRENCY_FACTOR         => $payment->getCurrencyFactor(),
+                                COEditPayment::AUTHORIZATION_CODE      => "",
+                                COEditPayment::AUTHORIZATION_EXPIRED   => true,
+                                COEditPayment::TOKEN_NO                => $oldOrder->getPayment()->getLastTransId(),
+                                COEditPayment::CARDOR_CUSTOMERNUMBER   => $payment->getCardOrAccount()
+                            ]
+                        );
+                        if ($paymentType == "2") {
+                            $orderPaymentUpdate->addData(
+                                [
+                                    COEditPayment::PRE_APPROVED_AMOUNT => $payment->getAmount(),
+                                    COEditPayment::PRE_APPROVED_AMOUNT_LCY =>
+                                        $payment->getCurrencyFactor() * $payment->getAmount()
+                                ]
+                            );
+                        } else {
+                            $orderPaymentUpdate->addData(
+                                [
+                                    COEditPayment::FINALIZED_AMOUNT => $payment->getAmount(),
+                                    COEditPayment::FINALIZED_AMOUNT_LCY =>
+                                        $payment->getCurrencyFactor() * $payment->getAmount()
+                                ]
+                            );
+                        }
+
+                        $orderPaymentArray[] = $orderPaymentUpdate;
+                    }
+                }
             }
         }
         
