@@ -700,9 +700,6 @@
     <column xsi:type="text" name="customer_disc_group" nullable="true" comment="customer_disc_group"/>
     <column xsi:type="text" name="customer_posting_group" nullable="true" comment="customer_posting_group"/>
     <column xsi:type="text" name="customer_price_group" nullable="true" comment="customer_price_group"/>
-    <column xsi:type="text" name="def_transport_method" nullable="true" comment="def_transport_method"/>
-    <column xsi:type="text" name="default_trans_type" nullable="true" comment="default_trans_type"/>
-    <column xsi:type="text" name="default_trans_type_return" nullable="true" comment="default_trans_type_return"/>
     <column xsi:type="boolean" name="disable_search_by_name" default="0" nullable="true" comment="disable_search_by_name"/>
     <column xsi:type="text" name="document_sending_profile" nullable="true" comment="document_sending_profile"/>
     <column xsi:type="text" name="email" nullable="true" comment="email"/>
@@ -1546,7 +1543,6 @@
   <table name="ls_replication_repl_item_category" resource="default" engine="innodb" comment="Item Category">
     <column xsi:type="int" name="repl_item_category_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_category_id"/>
     <column xsi:type="varchar" name="code" length="200" nullable="true" comment="code"/>
-    <column xsi:type="text" name="default_sust_account" nullable="true" comment="default_sust_account"/>
     <column xsi:type="text" name="description" nullable="true" comment="description"/>
     <column xsi:type="boolean" name="has_children" default="0" nullable="true" comment="has_children"/>
     <column xsi:type="int" name="indentation" padding="11" nullable="true" comment="indentation"/>
@@ -1858,7 +1854,9 @@
     <column xsi:type="int" name="asn_quantity_method" padding="11" nullable="true" comment="asn_quantity_method"/>
     <column xsi:type="int" name="autologoff_after_min" padding="11" nullable="true" comment="autologoff_after_min"/>
     <column xsi:type="text" name="bcc_email_address" nullable="true" comment="bcc_email_address"/>
+    <column xsi:type="int" name="card_slip" padding="11" nullable="true" comment="card_slip"/>
     <column xsi:type="text" name="computer_name" nullable="true" comment="computer_name"/>
+    <column xsi:type="boolean" name="confirm_last_slip_print" default="0" nullable="true" comment="confirm_last_slip_print"/>
     <column xsi:type="text" name="copy_of_interface_profile" nullable="true" comment="copy_of_interface_profile"/>
     <column xsi:type="text" name="copy_of_menu_profile" nullable="true" comment="copy_of_menu_profile"/>
     <column xsi:type="int" name="count_of_trans" padding="11" nullable="true" comment="count_of_trans"/>
@@ -1882,6 +1880,7 @@
     <column xsi:type="text" name="dual_disp_style_profile" nullable="true" comment="dual_disp_style_profile"/>
     <column xsi:type="int" name="eft_auto_recovery_attempts" padding="11" nullable="true" comment="eft_auto_recovery_attempts"/>
     <column xsi:type="boolean" name="eft_embedded_receipt" default="0" nullable="true" comment="eft_embedded_receipt"/>
+    <column xsi:type="int" name="eft_terminal_offline_handling" padding="11" nullable="true" comment="eft_terminal_offline_handling"/>
     <column xsi:type="boolean" name="exclude_from_cash_mgnt" default="0" nullable="true" comment="exclude_from_cash_mgnt"/>
     <column xsi:type="boolean" name="exclude_from_ls_recommend" default="0" nullable="true" comment="exclude_from_ls_recommend"/>
     <column xsi:type="boolean" name="exit_after_each_trans" default="0" nullable="true" comment="exit_after_each_trans"/>
@@ -1972,6 +1971,7 @@
     <column xsi:type="int" name="tips_handling" padding="11" nullable="true" comment="tips_handling"/>
     <column xsi:type="boolean" name="use_numpad" default="0" nullable="true" comment="use_numpad"/>
     <column xsi:type="boolean" name="use_referenced_refunds" default="0" nullable="true" comment="use_referenced_refunds"/>
+    <column xsi:type="boolean" name="use_refund_selection" default="0" nullable="true" comment="use_refund_selection"/>
     <column xsi:type="int" name="void_slip" padding="11" nullable="true" comment="void_slip"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
@@ -2103,6 +2103,7 @@
     <column xsi:type="boolean" name="inventory_free_entry_tracking" default="0" nullable="true" comment="inventory_free_entry_tracking"/>
     <column xsi:type="text" name="item_category_code" nullable="true" comment="item_category_code"/>
     <column xsi:type="text" name="item_error_check_code" nullable="true" comment="item_error_check_code"/>
+    <column xsi:type="text" name="item_templ_code" nullable="true" comment="item_templ_code"/>
     <column xsi:type="text" name="item_template_code" nullable="true" comment="item_template_code"/>
     <column xsi:type="text" name="last_date_modified" nullable="true" comment="last_date_modified"/>
     <column xsi:type="int" name="min_loc_prof_inventory" padding="11" nullable="true" comment="min_loc_prof_inventory"/>
@@ -2357,6 +2358,7 @@
     <column xsi:type="text" name="phone_no" nullable="true" comment="phone_no"/>
     <column xsi:type="text" name="post_code" nullable="true" comment="post_code"/>
     <column xsi:type="text" name="price_group_codes" nullable="true" comment="price_group_codes"/>
+    <column xsi:type="text" name="sales_type_filter" nullable="true" comment="sales_type_filter"/>
     <column xsi:type="text" name="store_group_codes" nullable="true" comment="store_group_codes"/>
     <column xsi:type="text" name="store_vat_bus_post_gr" nullable="true" comment="store_vat_bus_post_gr"/>
     <column xsi:type="boolean" name="web_store" default="0" nullable="true" comment="web_store"/>
@@ -2667,15 +2669,12 @@
     <column xsi:type="decimal" name="nondeductible_vat" scale="4" precision="20" nullable="true" comment="nondeductible_vat"/>
     <column xsi:type="text" name="purch_vat_reporting_code" nullable="true" comment="purch_vat_reporting_code"/>
     <column xsi:type="text" name="purch_vat_unreal_account" nullable="true" comment="purch_vat_unreal_account"/>
-    <column xsi:type="text" name="purchase_tax_code_saft" nullable="true" comment="purchase_tax_code_saft"/>
     <column xsi:type="text" name="purchase_vat_account" nullable="true" comment="purchase_vat_account"/>
     <column xsi:type="text" name="reverse_chrg_vat_acc" nullable="true" comment="reverse_chrg_vat_acc"/>
     <column xsi:type="text" name="reverse_chrg_vat_unreal_acc" nullable="true" comment="reverse_chrg_vat_unreal_acc"/>
     <column xsi:type="text" name="sale_vat_reporting_code" nullable="true" comment="sale_vat_reporting_code"/>
-    <column xsi:type="text" name="sales_tax_code_saft" nullable="true" comment="sales_tax_code_saft"/>
     <column xsi:type="text" name="sales_vat_account" nullable="true" comment="sales_vat_account"/>
     <column xsi:type="text" name="sales_vat_unreal_account" nullable="true" comment="sales_vat_unreal_account"/>
-    <column xsi:type="text" name="starting_date" nullable="true" comment="starting_date"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
     <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
@@ -2908,9 +2907,6 @@
     <column xsi:type="text" name="creditor_no" nullable="true" comment="creditor_no"/>
     <column xsi:type="text" name="currency_code" nullable="true" comment="currency_code"/>
     <column xsi:type="text" name="currency_id" nullable="true" comment="currency_id"/>
-    <column xsi:type="text" name="def_transport_method" nullable="true" comment="def_transport_method"/>
-    <column xsi:type="text" name="default_trans_type" nullable="true" comment="default_trans_type"/>
-    <column xsi:type="text" name="default_trans_type_return" nullable="true" comment="default_trans_type_return"/>
     <column xsi:type="boolean" name="disable_search_by_name" default="0" nullable="true" comment="disable_search_by_name"/>
     <column xsi:type="text" name="document_sending_profile" nullable="true" comment="document_sending_profile"/>
     <column xsi:type="text" name="email" nullable="true" comment="email"/>
@@ -2964,15 +2960,12 @@
     <column xsi:type="int" name="priority" padding="11" nullable="true" comment="priority"/>
     <column xsi:type="boolean" name="privacy_blocked" default="0" nullable="true" comment="privacy_blocked"/>
     <column xsi:type="text" name="purchaser_code" nullable="true" comment="purchaser_code"/>
-    <column xsi:type="int" name="receive_edocument_to" padding="11" nullable="true" comment="receive_edocument_to"/>
     <column xsi:type="text" name="registration_number" nullable="true" comment="registration_number"/>
     <column xsi:type="text" name="responsibility_center" nullable="true" comment="responsibility_center"/>
     <column xsi:type="text" name="search_name" nullable="true" comment="search_name"/>
     <column xsi:type="text" name="shipment_method_code" nullable="true" comment="shipment_method_code"/>
     <column xsi:type="text" name="shipping_agent_code" nullable="true" comment="shipping_agent_code"/>
     <column xsi:type="int" name="statistics_group" padding="11" nullable="true" comment="statistics_group"/>
-    <column xsi:type="text" name="sust_cert_name" nullable="true" comment="sust_cert_name"/>
-    <column xsi:type="text" name="sust_cert_no" nullable="true" comment="sust_cert_no"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
     <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
@@ -3301,7 +3294,10 @@
     <column xsi:type="text" name="systemmodifiedat" nullable="true" comment="systemmodifiedat"/>
     <column xsi:type="text" name="systemmodifiedby" nullable="true" comment="systemmodifiedby"/>
     <column xsi:type="decimal" name="time_modifier_minutes" scale="4" precision="20" nullable="true" comment="time_modifier_minutes"/>
+    <column xsi:type="int" name="trigger_function" padding="11" nullable="true" comment="trigger_function"/>
     <column xsi:type="varchar" name="unit_of_measure" length="200" nullable="true" comment="unit_of_measure"/>
+    <column xsi:type="int" name="usage_category" padding="11" nullable="true" comment="usage_category"/>
+    <column xsi:type="int" name="usage_subcategory" padding="11" nullable="true" comment="usage_subcategory"/>
     <column xsi:type="varchar" name="variant_code" length="200" nullable="true" comment="variant_code"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>

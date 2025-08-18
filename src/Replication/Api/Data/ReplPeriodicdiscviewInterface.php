@@ -12,85 +12,113 @@ interface ReplPeriodicdiscviewInterface
 {
     public static function getDbColumnsMapping() : array;
 
-    public function getOfferNo() : ?string;
+    public function getAmountToTrigger() : ?float;
 
-    public function setOfferNo(?string $value);
+    public function setAmountToTrigger(?float $value);
 
-    public function getLineNo() : ?int;
+    public function getCouponCode() : ?string;
 
-    public function setLineNo(?int $value);
+    public function setCouponCode(?string $value);
 
-    public function getType() : ?int;
+    public function getCouponQtyNeeded() : ?float;
 
-    public function setType(?int $value);
-
-    public function getNo() : ?string;
-
-    public function setNo(?string $value);
-
-    public function getVariantCode() : ?string;
-
-    public function setVariantCode(?string $value);
-
-    public function getDescription() : ?string;
-
-    public function setDescription(?string $value);
-
-    public function getStandardPriceIncludingVat() : ?float;
-
-    public function setStandardPriceIncludingVat(?float $value);
-
-    public function getStandardPrice() : ?float;
-
-    public function setStandardPrice(?float $value);
-
-    public function getSplitDealPriceDisc() : ?float;
-
-    public function setSplitDealPriceDisc(?float $value);
-
-    public function getDealPriceDisc() : ?float;
-
-    public function setDealPriceDisc(?float $value);
-
-    public function getPriceGroup() : ?string;
-
-    public function setPriceGroup(?string $value);
+    public function setCouponQtyNeeded(?float $value);
 
     public function getCurrencyCode() : ?string;
 
     public function setCurrencyCode(?string $value);
 
-    public function getUnitOfMeasure() : ?string;
+    public function getCustomerDiscGroup() : ?string;
 
-    public function setUnitOfMeasure(?string $value);
+    public function setCustomerDiscGroup(?string $value);
 
-    public function getProdGroupCategory() : ?string;
+    public function getDealPriceValue() : ?float;
 
-    public function setProdGroupCategory(?string $value);
+    public function setDealPriceValue(?float $value);
 
-    public function getValidFromBeforeExpDate() : ?string;
+    public function getDealPriceDisc() : ?float;
 
-    public function setValidFromBeforeExpDate(?string $value);
+    public function setDealPriceDisc(?float $value);
 
-    public function getValidToBeforeExpDate() : ?string;
+    public function getDescription() : ?string;
 
-    public function setValidToBeforeExpDate(?string $value);
-
-    public function getLineGroup() : ?string;
-
-    public function setLineGroup(?string $value);
-
-    public function getNoOfItemsNeeded() : ?int;
-
-    public function setNoOfItemsNeeded(?int $value);
+    public function setDescription(?string $value);
 
     public function getDiscType() : ?int;
 
     public function setDiscType(?int $value);
 
+    public function getDiscountValue() : ?float;
+
+    public function setDiscountValue(?float $value);
+
     public function getDiscountAmount() : ?float;
 
     public function setDiscountAmount(?float $value);
+
+    public function getDiscountAmountIncludingVat() : ?float;
+
+    public function setDiscountAmountIncludingVat(?float $value);
+
+    public function getDiscountAmountValue() : ?float;
+
+    public function setDiscountAmountValue(?float $value);
+
+    public function getDiscountType() : ?int;
+
+    public function setDiscountType(?int $value);
+
+    public function getExclude() : ?bool;
+
+    public function setExclude(?bool $value);
+
+    public function getHeadPriceGroup() : ?string;
+
+    public function setHeadPriceGroup(?string $value);
+
+    public function getHeaderType() : ?int;
+
+    public function setHeaderType(?int $value);
+
+    public function getLineGroup() : ?string;
+
+    public function setLineGroup(?string $value);
+
+    public function getLineNo() : ?int;
+
+    public function setLineNo(?int $value);
+
+    public function getMaximumDiscountAmount() : ?float;
+
+    public function setMaximumDiscountAmount(?float $value);
+
+    public function getMemberAttribute() : ?string;
+
+    public function setMemberAttribute(?string $value);
+
+    public function getMemberPoints() : ?float;
+
+    public function setMemberPoints(?float $value);
+
+    public function getMemberType() : ?int;
+
+    public function setMemberType(?int $value);
+
+    public function getMemberValue() : ?string;
+
+    public function setMemberValue(?string $value);
+
+    public function getNo() : ?string;
+
+    public function setNo(?string $value);
+
+    public function getNoOfItemsNeeded() : ?int;
+
+    public function setNoOfItemsNeeded(?int $value);
+
+    public function getOfferNo() : ?string;
+
+    public function setOfferNo(?string $value);
 
     public function getOfferPrice() : ?float;
 
@@ -100,45 +128,65 @@ interface ReplPeriodicdiscviewInterface
 
     public function setOfferPriceIncludingVat(?float $value);
 
-    public function getDiscountAmountIncludingVat() : ?float;
+    public function getPlannedDemand() : ?float;
 
-    public function setDiscountAmountIncludingVat(?float $value);
-
-    public function getTriggerPopUpOnPos() : ?bool;
-
-    public function setTriggerPopUpOnPos(?bool $value);
-
-    public function getVariantType() : ?int;
-
-    public function setVariantType(?int $value);
-
-    public function getExclude() : ?bool;
-
-    public function setExclude(?bool $value);
-
-    public function getMemberPoints() : ?float;
-
-    public function setMemberPoints(?float $value);
-
-    public function getPromptAtScan() : ?bool;
-
-    public function setPromptAtScan(?bool $value);
-
-    public function getHeaderType() : ?int;
-
-    public function setHeaderType(?int $value);
+    public function setPlannedDemand(?float $value);
 
     public function getPlannedDemandType() : ?int;
 
     public function setPlannedDemandType(?int $value);
 
-    public function getPlannedDemand() : ?float;
+    public function getPopUpLine1() : ?string;
 
-    public function setPlannedDemand(?float $value);
+    public function setPopUpLine1(?string $value);
 
-    public function getSystemid() : ?string;
+    public function getPopUpLine2() : ?string;
 
-    public function setSystemid(?string $value);
+    public function setPopUpLine2(?string $value);
+
+    public function getPopUpLine3() : ?string;
+
+    public function setPopUpLine3(?string $value);
+
+    public function getPriceGroup() : ?string;
+
+    public function setPriceGroup(?string $value);
+
+    public function getPriority() : ?int;
+
+    public function setPriority(?int $value);
+
+    public function getProdGroupCategory() : ?string;
+
+    public function setProdGroupCategory(?string $value);
+
+    public function getPromptAtScan() : ?bool;
+
+    public function setPromptAtScan(?bool $value);
+
+    public function getPromptForAction() : ?int;
+
+    public function setPromptForAction(?int $value);
+
+    public function getSplitDealPriceDisc() : ?float;
+
+    public function setSplitDealPriceDisc(?float $value);
+
+    public function getStandardPrice() : ?float;
+
+    public function setStandardPrice(?float $value);
+
+    public function getStandardPriceIncludingVat() : ?float;
+
+    public function setStandardPriceIncludingVat(?float $value);
+
+    public function getStatus() : ?int;
+
+    public function setStatus(?int $value);
+
+    public function getStoreGroupCodes() : ?string;
+
+    public function setStoreGroupCodes(?string $value);
 
     public function getSystemcreatedat() : ?string;
 
@@ -156,81 +204,13 @@ interface ReplPeriodicdiscviewInterface
 
     public function setSystemmodifiedby(?string $value);
 
-    public function getStatus() : ?int;
+    public function getTenderOffer() : ?float;
 
-    public function setStatus(?int $value);
+    public function setTenderOffer(?float $value);
 
-    public function getHeadPriceGroup() : ?string;
+    public function getTenderOfferAmount() : ?float;
 
-    public function setHeadPriceGroup(?string $value);
-
-    public function getPriority() : ?int;
-
-    public function setPriority(?int $value);
-
-    public function getValidationPeriodId() : ?string;
-
-    public function setValidationPeriodId(?string $value);
-
-    public function getDiscountType() : ?int;
-
-    public function setDiscountType(?int $value);
-
-    public function getDealPriceValue() : ?float;
-
-    public function setDealPriceValue(?float $value);
-
-    public function getDiscountValue() : ?float;
-
-    public function setDiscountValue(?float $value);
-
-    public function getDiscountAmountValue() : ?float;
-
-    public function setDiscountAmountValue(?float $value);
-
-    public function getCustomerDiscGroup() : ?string;
-
-    public function setCustomerDiscGroup(?string $value);
-
-    public function getAmountToTrigger() : ?float;
-
-    public function setAmountToTrigger(?float $value);
-
-    public function getMemberValue() : ?string;
-
-    public function setMemberValue(?string $value);
-
-    public function getPopUpLine1() : ?string;
-
-    public function setPopUpLine1(?string $value);
-
-    public function getPopUpLine2() : ?string;
-
-    public function setPopUpLine2(?string $value);
-
-    public function getPopUpLine3() : ?string;
-
-    public function setPopUpLine3(?string $value);
-
-    public function getCouponCode() : ?string;
-
-    public function setCouponCode(?string $value);
-
-    public function getCouponQtyNeeded() : ?float;
-
-    public function setCouponQtyNeeded(?float $value);
-
-    public function getMemberType() : ?int;
-
-    public function setMemberType(?int $value);
-
-    public function getMemberAttribute() : ?string;
-
-    public function setMemberAttribute(?string $value);
-
-    public function getMaximumDiscountAmount() : ?float;
-
-    public function setMaximumDiscountAmount(?float $value);
+    public function setTenderOfferAmount(?float $value);
 
     public function getTenderTypeCode() : ?string;
 
@@ -240,21 +220,41 @@ interface ReplPeriodicdiscviewInterface
 
     public function setTenderTypeValue(?string $value);
 
-    public function getPromptForAction() : ?int;
+    public function getTriggerPopUpOnPos() : ?bool;
 
-    public function setPromptForAction(?int $value);
+    public function setTriggerPopUpOnPos(?bool $value);
 
-    public function getTenderOffer() : ?float;
+    public function getType() : ?int;
 
-    public function setTenderOffer(?float $value);
+    public function setType(?int $value);
 
-    public function getTenderOfferAmount() : ?float;
+    public function getUnitOfMeasure() : ?string;
 
-    public function setTenderOfferAmount(?float $value);
+    public function setUnitOfMeasure(?string $value);
 
-    public function getStoreGroupCodes() : ?string;
+    public function getValidFromBeforeExpDate() : ?string;
 
-    public function setStoreGroupCodes(?string $value);
+    public function setValidFromBeforeExpDate(?string $value);
+
+    public function getValidToBeforeExpDate() : ?string;
+
+    public function setValidToBeforeExpDate(?string $value);
+
+    public function getValidationPeriodId() : ?string;
+
+    public function setValidationPeriodId(?string $value);
+
+    public function getVariantCode() : ?string;
+
+    public function setVariantCode(?string $value);
+
+    public function getVariantType() : ?int;
+
+    public function setVariantType(?int $value);
+
+    public function getSystemid() : ?string;
+
+    public function setSystemid(?string $value);
 
     public function setProcessed(?bool $processed);
 
