@@ -446,7 +446,7 @@ class OrderEdit
                 $orderPaymentArray[] = $orderPaymentGiftCard;
             }
 
-            if (count($payments) > 0) {
+            if (is_array($payments) && count($payments) > 0) {
                 $paymentType  = $this->orderHelper->getPaymentType($order);
                 $lineNo = 0;
                 foreach ($payments as $payment) {

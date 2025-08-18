@@ -1479,7 +1479,7 @@ class OrderHelper extends AbstractHelperOmni
     {
         return match ($type) {
             DocumentIdType::ORDER => 1,
-            DocumentIdType::HOSP_ORDER => 0,
+            DocumentIdType::HOSP_ORDER => 2,
             default => 0,
         };
     }
