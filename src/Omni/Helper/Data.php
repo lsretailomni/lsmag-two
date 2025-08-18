@@ -691,7 +691,7 @@ class Data extends AbstractHelperOmni
     ): array {
         $baseUrl = !empty($baseUrl) ? $baseUrl :
             $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId());
-        $baseUrl = 'http://10.213.0.5:9047/LscNextMajor';
+        $baseUrl = 'http://172.22.3.73:9047/LSCentralDev';
         $url = join('/', [$baseUrl, 'WS/Codeunit/RetailWebServices']);
         $url = OmniService::getUrl($url);
         $client = $this->createInstance(OmniClient::class, ['uri' => $url]);

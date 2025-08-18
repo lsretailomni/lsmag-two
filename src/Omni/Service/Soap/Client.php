@@ -48,7 +48,7 @@ class Client extends LaminasSoapClient
         $soapOptions = $cacheHelper->getWsdlOptions();
         $token       = $this->getToken();
         $opts        = ['http' => ['header' => "Authorization: Bearer " . $token, 'timeout' => $this->getTimeout()]];
-        $opts        = ['http' => ['header' => "Authorization: Basic " . 'b21uaWRldjp1c2hGbWs5SENRdDJKYUpkYzhxYTNtNXEwOXI1WDI5YzZzRDRxcjlaK3A0PQ==', 'timeout' => $this->getTimeout()]];
+        $opts        = ['http' => ['header' => "Authorization: Basic " . 'YWRtaW46U2VsZlNlcnZpY2UxMjM=', 'timeout' => $this->getTimeout()]];
         // @codingStandardsIgnoreStart
         $context                       = stream_context_create($opts);
         $soapOptions['stream_context'] = $context;
@@ -114,7 +114,7 @@ class Client extends LaminasSoapClient
             ]
         ];
 
-        $opts        = ['http' => ['header' => "Authorization: Basic " . 'b21uaWRldjp1c2hGbWs5SENRdDJKYUpkYzhxYTNtNXEwOXI1WDI5YzZzRDRxcjlaK3A0PQ==', 'timeout' => $this->getTimeout()]];
+        $opts        = ['http' => ['header' => "Authorization: Basic " . 'YWRtaW46U2VsZlNlcnZpY2UxMjM=', 'timeout' => $this->getTimeout()]];
 
         $context = stream_context_create($opts);
 
