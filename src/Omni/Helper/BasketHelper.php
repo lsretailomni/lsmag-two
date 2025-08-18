@@ -1187,6 +1187,10 @@ class BasketHelper extends AbstractHelperOmni
                             ->setShipToCountryCode(null)
                             ->setStoreId($pickupStore);
                     }
+                } else {
+                    $oneList
+                        ->setShipToPostCode($shippingAddress->getPostcode())
+                        ->setShipToCounty($shippingAddress->getRegionCode());
                 }
             }
         }
