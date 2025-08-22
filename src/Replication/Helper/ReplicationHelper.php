@@ -145,33 +145,337 @@ class ReplicationHelper extends AbstractHelper
         'product'
     ];
 
+    public const TABLE_NAME_PREFIX = 'ls_replication_';
+    public const REPLICATION_ENTITY_MAPPING = [
+        'ReplLscAttribute' => 'ReplAttribute',
+        'ReplLscAttributeOptionValue' => 'ReplAttributeOptionValue',
+        'ReplLscAttributeValue' => 'ReplAttributeValue',
+        'ReplHierarchyview' => 'ReplHierarchy',
+        'ReplHierarchynodesview' => 'ReplHierarchyNode',
+        'ReplHierarchynodeslinkview' => 'ReplHierarchyLeaf',
+        'ReplLscBarcodes' => 'ReplBarcode',
+        'ReplLscWiExtdVariantValues' => 'ReplExtendedVariantValue',
+        'ReplVariantregview' => 'ReplItemVariantRegistration',
+        'ReplLscWiItemBuffer' => 'ReplItem',
+        'ReplItemuomupdview' => 'ReplItemUnitOfMeasure',
+        'ReplLscRetailImageLink' => 'ReplImageLink',
+        'ReplLscWiPrice' => 'ReplPrice',
+        'ReplLscInventoryLookupTable' => 'ReplInvStatus',
+        'ReplLscTenderType' => 'ReplStoreTenderType',
+        'ReplVatPostingSetup' => 'ReplTaxSetup'
+    ];
+    public const DB_TABLES_MAPPING = [
+        'repl_lsc_attribute' => [
+            'table_name' => 'repl_attribute',
+            'columns_mapping' => [
+                'code' => 'Code',
+                'default_value' => 'DefaultValue',
+                'description' => 'Description',
+                'value_type' => 'ValueType',
+            ]
+        ],
+        'repl_lsc_attribute_option_value' => [
+            'table_name' => 'repl_attribute_option_value',
+            'columns_mapping' => [
+                'attribute_code' => 'Code',
+                'option_value' => 'Value',
+                'sequence' => 'Sequence',
+            ]
+        ],
+        'repl_lsc_attribute_value' => [
+            'table_name' => 'repl_attribute_value',
+            'columns_mapping' => [
+                'attribute_code' => 'Code',
+                'attribute_value' => 'Value',
+                'link_field_1' => 'LinkField1',
+                'link_field_2' => 'LinkField2',
+                'link_field_3' => 'LinkField3',
+                'link_type' => 'LinkType',
+                'numeric_value' => 'NumbericValue',
+                'sequence' => 'Sequence',
+            ]
+        ],
+        'repl_hierarchyview' => [
+            'table_name' => 'repl_hierarchy',
+            'columns_mapping' => [
+                'hierarchy_code' => 'nav_id',
+                'description' => 'Description',
+                'type' => 'Type',
+                'priority' => 'Priority',
+                'sales_type_filter' => 'SalesType',
+                'start_date' => 'StartDate',
+                'validation_schedule_id' => 'ValidationScheduleId'
+            ]
+        ],
+        'repl_hierarchynodesview' => [
+            'table_name' => 'repl_hierarchy_node',
+            'columns_mapping' => [
+                'hierarchy_code' => 'HierarchyCode',
+                'description' => 'Description',
+                'node_id' => 'nav_id',
+                'parent_node_id' => 'ParentNode',
+                'children_order' => 'ChildrenOrder',
+                'indentation' => 'Indentation',
+                'presentation_order' => 'PresentationOrder',
+                'retail_image_id' => 'ImageId'
+            ]
+        ],
+        'repl_hierarchynodeslinkview' => [
+            'table_name' => 'repl_hierarchy_leaf',
+            'columns_mapping' => [
+                'hierarchy_code' => 'HierarchyCode',
+                'description' => 'Description',
+                'deal_price' => 'DealPrice',
+                'node_id' => 'NodeId',
+                'type' => 'Type',
+                'no' => 'nav_id',
+                'retail_image_id' => 'ImageId',
+                'item_unit_of_measure' => 'ItemUOM',
+                'sort_order' => 'SortOrder',
+                'validation_period_id' => 'ValidationPeriod',
+            ]
+        ],
+        'repl_lsc_barcodes' => [
+            'table_name' => 'repl_barcode',
+            'columns_mapping' => [
+                'barcode_no' => 'nav_id',
+                'description' => 'Description',
+                'item_no' => 'ItemId',
+                'unit_of_measure_code' => 'UnitOfMeasure',
+                'variant_code' => 'VariantId'
+            ]
+        ],
+        'repl_lsc_wi_extd_variant_values' => [
+            'table_name' => 'repl_extended_variant_value',
+            'columns_mapping' => [
+                'item_no' => 'ItemId',
+                'dimension' => 'Dimensions',
+                'code' => 'Code',
+                'value' => 'Value',
+                'framework_code' => 'FrameworkCode',
+                'logical_order' => 'LogicalOrder'
+            ]
+        ],
+        'repl_variantregview' => [
+            'table_name' => 'repl_item_variant_registration',
+            'columns_mapping' => [
+                'item_no' => 'ItemId',
+                'variant' => 'VariantId',
+                'framework_code' => 'FrameworkCode',
+                'variant_dimension_1' => 'VariantDimension1',
+                'variant_dimension_2' => 'VariantDimension2',
+                'variant_dimension_3' => 'VariantDimension3',
+                'variant_dimension_4' => 'VariantDimension4',
+                'variant_dimension_5' => 'VariantDimension5',
+                'variant_dimension_6' => 'VariantDimension6',
+                'block_sale_on_pos' => 'BlockedOnPos',
+                'blocked_on_ecommerce' => 'BlockedOnECom',
+                'lsc_order' => 'Order',
+                'lsc_pos_selection' => 'Selection',
+            ]
+        ],
+        'repl_item_variant' => [
+            'table_name' => 'repl_item_variant',
+            'columns_mapping' => [
+                'item_no' => 'ItemId',
+                'code' => 'VariantId',
+                'description' => 'Description',
+                'description_2' => 'Description2'
+            ]
+        ],
+        'repl_itemuomupdview' => [
+            'table_name' => 'repl_item_unit_of_measure',
+            'columns_mapping' => [
+                'code' => 'Code',
+                'item_no' => 'ItemId',
+                'qty_per_unit_of_measure' => 'QtyPrUOM',
+                'lsc_count_as_1_on_receipt' => 'CountAsOne',
+                'cubage' => 'Cubage',
+                'description' => 'Description',
+                'lsc_ecom_selection' => 'EComSelection',
+                'height' => 'Height',
+                'length' => 'Length',
+                'width' => 'Width',
+                'weight' => 'Weight',
+                'lsc_order' => 'Order',
+                'lsc_pos_selection' => 'Selection',
+            ]
+        ],
+        'repl_unit_of_measure' => [
+            'table_name' => 'repl_unit_of_measure',
+            'columns_mapping' => [
+                'code' => 'nav_id',
+                'description' => 'Description'
+            ]
+        ],
+        'repl_lsc_wi_item_buffer' => [
+            'table_name' => 'repl_item',
+            'columns_mapping' => [
+                'no' => 'nav_id',
+                'description' => 'Description',
+                'base_unit_of_measure' => 'BaseUnitOfMeasure',
+                'vat_prod_posting_group' => 'TaxItemGroupId',
+                'lsc_zero_price_valid' => 'ZeroPriceValId',
+                'unit_price' => 'UnitPrice',
+                'purch_unit_of_measure' => 'PurchUnitOfMeasure',
+                'sales_unit_of_measure' => 'SalseUnitOfMeasure',
+                'vendor_no' => 'VendorId',
+                'vendor_item_no' => 'VendorItemId',
+                'season_code' => 'SeasonCode',
+                'item_category_code' => 'ItemCategoryCode',
+                'lsc_item_family_code' => 'ItemFamilyCode',
+                'lsc_retail_product_code' => 'ProductGroupId',
+                'lsc_special_group_codes' => 'SpecialGroups',
+                'gross_weight' => 'GrossWeight',
+                'units_per_parcel' => 'UnitsPerParcel',
+                'unit_volume' => 'UnitVolume',
+                'item_html' => 'Details',
+                'block_discount' => 'BlockDiscount',
+                'block_manual_price_change' => 'BlockManualPriceChange',
+                'block_negative_adjustment' => 'BlockNegativeAdjustment',
+                'block_positive_adjustment' => 'BlockPositiveAdjustment',
+                'block_purchase_return' => 'BlockPurchaseReturn',
+                'block_sale_on_pos' => 'BlockedOnPos',
+                'blocked_on_ecommerce' => 'BlockedOnECom',
+                'blocked' => 'Blocked',
+                'countryregion_of_origin_code' => 'CountryOfOrigin',
+                'tariff_no' => 'TariffNo',
+                'type' => 'Type',
+                'item_tracking_code' => 'ItemTrackingCode'
+            ]
+        ],
+        'repl_lsc_retail_image_link' => [
+            'table_name' => 'repl_image_link',
+            'columns_mapping' => [
+                'image_id' => 'ImageId',
+                'display_order' => 'DisplayOrder',
+                'tablename' => 'TableName',
+                'keyvalue' => 'KeyValue',
+                'image_description' => 'ImageDescription'
+            ]
+        ],
+        'repl_lsc_wi_price' => [
+            'table_name' => 'repl_price',
+            'columns_mapping' => [
+                'store_no' => 'StoreId',
+                'item_no' => 'ItemId',
+                'unit_of_measure_code' => 'UnitOfMeasure',
+                'variant_code' => 'VariantId',
+                'customer_disc_group' => 'CustomerDiscountGroup',
+                'loyalty_scheme_code' => 'LoyaltySchemeCode',
+                'currency_code' => 'CurrencyCode',
+                'last_modify_date' => 'ModifyDate',
+                'unit_price' => 'UnitPriceInclVat',
+                'net_unit_price' => 'UnitPrice',
+                'qty_per_unit_of_measure' => 'QtyPerUnitOfMeasure'
+            ]
+        ],
+        'repl_lsc_inventory_lookup_table' => [
+            'table_name' => 'repl_inv_status',
+            'columns_mapping' => [
+                'item_no' => 'ItemId',
+                'variant_code' => 'VariantId',
+                'store_no' => 'StoreId',
+                'net_inventory' => 'Quantity'
+            ]
+        ],
+        'repl_lsc_tender_type' => [
+            'table_name' => 'repl_store_tender_type',
+            'columns_mapping' => [
+                'above_min_change_tender_type' => 'AboveMinimumTenderId',
+                'code' => 'TenderTypeId',
+                'description' => 'Name',
+                'function' => 'TenderFunction',
+                'valid_on_mobile_pos' => 'ValidOnMobilePOS',
+                'change_tend_code' => 'ChangeTenderId',
+                'min_change' => 'MinimumChangeAmount',
+                'rounding' => 'RoundingMethode',
+                'rounding_to' => 'Rounding',
+                'overtender_allowed' => 'AllowOverTender',
+                'overtender_max_amt' => 'MaximumOverTenderAmount',
+                'undertender_allowed' => 'AllowUnderTender',
+                'returnminus_allowed' => 'ReturnAllowed',
+                'drawer_opens' => 'OpenDrawer',
+                'counting_required' => 'CountingRequired',
+                'foreign_currency' => 'ForeignCurrency'
+            ]
+        ],
+        'repl_vat_posting_setup' => [
+            'table_name' => 'repl_tax_setup',
+            'columns_mapping' => [
+                'vat_bus_posting_group' => 'BusinessTaxGroup',
+                'vat_prod_posting_group' => 'ProductTaxGroup',
+                'vat' => 'TaxPercent'
+            ]
+        ],
+    ];
+
     /** @var array List of Replication Tables with unique field */
     public const JOB_CODE_UNIQUE_FIELD_ARRAY = [
-        "ls_mag/replication/repl_lsc_attribute" => ["code", "scope_id"],
-        "ls_mag/replication/repl_lsc_attribute_option_value" => ["attribute_code", "sequence", "scope_id"],
+        "ls_mag/replication/repl_lsc_attribute" => [
+            'code' => 'Code',
+            'scope_id' => 'scope_id'
+        ],
+        "ls_mag/replication/repl_lsc_attribute_option_value" => [
+            'attribute_code' => 'Code',
+            'sequence' => 'Sequence',
+            'scope_id' => 'scope_id'
+        ],
         "ls_mag/replication/repl_lsc_attribute_value" => [
-            "attribute_code",
-            "link_field_1",
-            "link_field_2",
-            "link_field_3",
-            "sequence",
+            'attribute_code' => 'Code',
+            'link_field_1' => 'LinkField1',
+            'link_field_2' => 'LinkField2',
+            'link_field_3' => 'LinkField3',
+            'sequence' => 'Sequence',
+            'scope_id'  => 'scope_id'
+        ],
+        "ls_mag/replication/repl_lsc_barcodes" => [
+            'barcode_no' => 'nav_id',
+            'scope_id'  => 'scope_id'
+        ],
+        "ls_mag/replication/repl_countryview" => [
+            "name",
             "scope_id"
         ],
-        "ls_mag/replication/repl_lsc_barcodes" => ["barcode_no", "scope_id"],
-        "ls_mag/replication/repl_countryview" => ["name", "scope_id"],
-        "ls_mag/replication/repl_currency" => ["code", "scope_id"],
-        "ls_mag/replication/repl_currency_exchange_rate" => ["currency_code", "scope_id"],
-        "ls_mag/replication/repl_customer" => ["our_account_no", "scope_id"],
+        "ls_mag/replication/repl_currency" => [
+            "code",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_currency_exchange_rate" => [
+            "currency_code",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_customer" => [
+            "our_account_no",
+            "scope_id"
+        ],
         "ls_mag/replication/repl_lsc_data_translation" => [
             "translation_id",
             "key",
             "language_code",
             "scope_id"
         ],
-        "ls_mag/replication/repl_html_translation" => ["TranslationId", "Key", "LanguageCode", "scope_id"],
-        "ls_mag/replication/repl_lsc_item_html_ml" => ["item_no", "language", "scope_id"],
-        "ls_mag/replication/repl_deal_html_translation" => ["TranslationId", "Key", "LanguageCode", "scope_id"],
-        "ls_mag/replication/repl_data_translation_lang_code" => ["code", "scope_id"],
+        "ls_mag/replication/repl_html_translation" => [
+            "TranslationId",
+            "Key",
+            "LanguageCode",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_lsc_item_html_ml" => [
+            "item_no",
+            "language",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_deal_html_translation" => [
+            "TranslationId",
+            "Key",
+            "LanguageCode",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_data_translation_lang_code" => [
+            "code",
+            "scope_id"
+        ],
         "ls_mag/replication/repl_periodicdiscview" => [
             "offer_no",
             "customer_disc_group",
@@ -185,53 +489,105 @@ class ReplicationHelper extends AbstractHelper
             "LineNumber",
             "scope_id"
         ],
-        "ls_mag/replication/repl_lsc_validation_period" => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_lsc_wi_extd_variant_values" => [
-            "code",
-            "framework_code",
-            "item_no",
-            "value",
+        "ls_mag/replication/repl_lsc_validation_period" => [
+            "nav_id",
             "scope_id"
         ],
-        "ls_mag/replication/repl_hierarchyview" => ["hierarchy_code", "scope_id"],
-        "ls_mag/replication/repl_hierarchynodeslinkview" => ["no", "node_id", "scope_id"],
-        "ls_mag/replication/repl_hierarchynodesview" => ["node_id", "scope_id"],
-        "ls_mag/replication/repl_image" => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_lsc_retail_image_link" => ["image_id", "keyvalue", "scope_id"],
-        "ls_mag/replication/repl_lsc_wi_item_buffer" => ["no", "scope_id"],
-        "ls_mag/replication/repl_item_category" => ["code", "scope_id"],
-        "ls_mag/replication/repl_itemuomupdview" => ["code", "item_no", "scope_id"],
-        "ls_mag/replication/repl_variantregview" => [
-            "item_no",
-            "variant",
+        "ls_mag/replication/repl_lsc_wi_extd_variant_values" => [
+            'item_no' => 'ItemId',
+            'code' => 'Code',
+            'value' => 'Value',
+            'framework_code' => 'FrameworkCode',
+            'scope_id'  => 'scope_id'
+        ],
+        "ls_mag/replication/repl_hierarchyview" => [
+            'hierarchy_code' => 'nav_id',
+            'scope_id' => 'scope_id'
+        ],
+        "ls_mag/replication/repl_hierarchynodeslinkview" => [
+            'no' => 'nav_id',
+            'node_id' => 'NodeId',
+            'scope_id' => 'scope_id'
+        ],
+        "ls_mag/replication/repl_hierarchynodesview" => [
+            'node_id' => 'nav_id',
+            'scope_id' => 'scope_id'
+        ],
+        "ls_mag/replication/repl_image" => [
+            "nav_id",
             "scope_id"
+        ],
+        "ls_mag/replication/repl_lsc_retail_image_link" => [
+            'image_id' => 'ImageId',
+            'keyvalue' => 'KeyValue',
+            'scope_id' => 'scope_id'
+        ],
+        "ls_mag/replication/repl_lsc_wi_item_buffer" => [
+            'no' => 'nav_id',
+            'scope_id' => 'scope_id'
+        ],
+        "ls_mag/replication/repl_item_category" => [
+            "code",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_itemuomupdview" => [
+            'code' => 'Code',
+            'item_no' => 'ItemId',
+            'scope_id' => 'scope_id'
+        ],
+        "ls_mag/replication/repl_variantregview" => [
+            'item_no' => 'ItemId',
+            'variant' => 'VariantId',
+            'scope_id' => 'scope_id'
         ],
         "ls_mag/replication/repl_item_variant" => [
-            "item_no",
+            'item_no' => 'ItemId',
+            'code' => 'VariantId',
+            'scope_id' => 'scope_id'
+        ],
+        "ls_mag/replication/repl_vendoritemview" => [
+            "vendorno",
+            "itemno",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_lsc_wi_price" => [
+            'store_no' => 'StoreId',
+            'item_no' => 'ItemId',
+            'unit_of_measure_code' => 'UnitOfMeasure',
+            'variant_code' => 'VariantId',
+            'qty_per_unit_of_measure' => 'QtyPerUnitOfMeasure',
+            'scope_id' => 'scope_id'
+        ],
+        "ls_mag/replication/repl_lsc_inventory_lookup_table" => [
+            'item_no' => 'ItemId',
+            'variant_code' => 'VariantId',
+            'store_no' => 'StoreId',
+            'scope_id' => 'scope_id'
+        ],
+        "ls_mag/replication/repl_lsc_retail_product_group" => [
             "code",
             "scope_id"
         ],
-        "ls_mag/replication/repl_vendoritemview" => ["vendorno", "itemno", "scope_id"],
-        "ls_mag/replication/repl_lsc_wi_price" => [
-            "item_no",
-            "variant_code",
-            "store_no",
-            "qty_per_unit_of_measure",
-            "unit_of_measure_code",
+        "ls_mag/replication/repl_shipping_agent" => [
+            "name",
             "scope_id"
         ],
-        "ls_mag/replication/repl_lsc_inventory_lookup_table" => [
-            "item_no",
-            "variant_code",
-            "store_no",
+        "ls_mag/replication/repl_storeview" => [
+            "no",
             "scope_id"
         ],
-        "ls_mag/replication/repl_lsc_retail_product_group" => ["code", "scope_id"],
-        "ls_mag/replication/repl_shipping_agent" => ["name", "scope_id"],
-        "ls_mag/replication/repl_storeview" => ["no", "scope_id"],
-        "ls_mag/replication/repl_lsc_tender_type" => ["code", "scope_id"],
-        "ls_mag/replication/repl_unit_of_measure" => ["code", "scope_id"],
-        "ls_mag/replication/repl_vendor" => ["no", "scope_id"],
+        "ls_mag/replication/repl_lsc_tender_type" => [
+            'code' => 'TenderTypeId',
+            'scope_id' => 'scope_id'
+        ],
+        "ls_mag/replication/repl_unit_of_measure" => [
+            'code' => 'nav_id',
+            'scope_id' => 'scope_id'
+        ],
+        "ls_mag/replication/repl_vendor" => [
+            "no",
+            "scope_id"
+        ],
         "ls_mag/replication/repl_hierarchydeallineview" => [
             "offer_no",
             "item_no",
@@ -246,16 +602,24 @@ class ReplicationHelper extends AbstractHelper
             "unit_of_measure",
             "scope_id"
         ],
-        "ls_mag/replication/repl_lsc_wi_item_recipe_buffer" => ["parent_item_no", "line_no", "scope_id"],
+        "ls_mag/replication/repl_lsc_wi_item_recipe_buffer" => [
+            "parent_item_no",
+            "line_no",
+            "scope_id"
+        ],
         "ls_mag/replication/repl_lsc_wi_item_modifier" => [
             "parent_item_no",
             "item_no",
             "scope_id"
         ],
-        "ls_mag/replication/loy_item" => ["nav_id", "scope_id"],
+        "ls_mag/replication/loy_item" => [
+            "nav_id",
+            "scope_id"
+        ],
         "ls_mag/replication/repl_vat_posting_setup" => [
-            "vat_bus_posting_group",
-            "vat_prod_posting_group", "scope_id"
+            'vat_bus_posting_group' => 'BusinessTaxGroup',
+            'vat_prod_posting_group' => 'ProductTaxGroup',
+            'scope_id' => 'scope_id'
         ]
     ];
 

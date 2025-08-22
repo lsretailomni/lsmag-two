@@ -8,13 +8,32 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
-
-class ReplLscWiItemBuffer extends AbstractDb
+class ReplLscWiItemBuffer extends ReplItem
 {
-    public function _construct()
+    /**
+     * Perform actions before object save
+     *
+     * param \Magento\Framework\Model\AbstractModel|\Magento\Framework\DataObject
+     * $object
+     * @return $this
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    protected function _beforeSave($object)
     {
-        $this->_init('ls_replication_repl_lsc_wi_item_buffer', 'repl_lsc_wi_item_buffer_id');
+        $mappings = \Ls\Replication\Helper\ReplicationHelper::DB_TABLES_MAPPING;
+        foreach ($mappings as $mapping) {
+            if (\Ls\Replication\Helper\ReplicationHelper::TABLE_NAME_PREFIX . $mapping['table_name'] == $this->getMainTable()) {
+                $columnsMapping = $mapping['columns_mapping'];
+                foreach ($columnsMapping as $columnName => $columnMapping) {
+                    if ($object->hasData($columnName)) {
+                        $object->setData($columnMapping, $object->getData($columnName));
+                    }
+                }
+                break;
+            }
+        }
+        return $this;
     }
 }
 

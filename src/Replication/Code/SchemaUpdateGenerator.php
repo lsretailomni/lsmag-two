@@ -16,35 +16,35 @@ class SchemaUpdateGenerator implements GeneratorInterface
 {
     /** @var array List of Replication Tables indexer for search */
     public static $indexerColumnLists = [
-        "ls_replication_repl_lsc_attribute" => [
-            "code",
+        "ls_replication_repl_attribute" => [
+            "Code",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_lsc_attribute_option_value" => [
-            "attribute_code",
-            "sequence",
+        "ls_replication_repl_attribute_option_value" => [
+            "Code",
+            "Sequence",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_lsc_attribute_value" => [
-            "attribute_code",
-            "link_field_1",
-            "link_field_2",
-            "link_field_3",
-            "sequence",
+        "ls_replication_repl_attribute_value" => [
+            "Code",
+            "LinkField1",
+            "LinkField2",
+            "LinkField3",
+            "Sequence",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_lsc_barcodes" => [
-            "barcode_no",
-            "item_no",
+        "ls_replication_repl_barcode" => [
+            "nav_id",
+            "ItemId",
             "scope_id",
             "processed",
             "is_updated",
@@ -112,37 +112,37 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_lsc_wi_extd_variant_values" => [
-            "code",
-            "framework_code",
-            "item_no",
-            "value",
+        "ls_replication_repl_extended_variant_value" => [
+            "Code",
+            "FrameworkCode",
+            "ItemId",
+            "Value",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_hierarchyview" => [
-            "hierarchy_code",
+        "ls_replication_repl_hierarchy" => [
+            "nav_id",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_hierarchynodeslinkview" => [
-            "no",
-            "node_id",
-            "hierarchy_code",
-            "type",
+        "ls_replication_repl_hierarchy_leaf" => [
+            "nav_id",
+            "NodeId",
+            "HierarchyCode",
+            "Type",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_hierarchynodesview" => [
-            "parent_node_id",
-            "hierarchy_code",
-            "node_id",
+        "ls_replication_repl_hierarchy_node" => [
+            "ParentNode",
+            "HierarchyCode",
+            "nav_id",
             "scope_id",
             "processed",
             "is_updated",
@@ -155,19 +155,19 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_lsc_retail_image_link" => [
-            "image_id",
-            "tablename",
-            "keyvalue",
+        "ls_replication_repl_image_link" => [
+            "ImageId",
+            "TableName",
+            "KeyValue",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_lsc_wi_item_buffer" => [
-            "no",
-            "item_category_code",
-            "lsc_retail_product_code",
+        "ls_replication_repl_item" => [
+            "nav_id",
+            "ItemCategoryCode",
+            "ProductGroupId",
             "scope_id",
             "processed",
             "is_updated",
@@ -180,17 +180,17 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_itemuomupdview" => [
-            "code",
-            "item_no",
+        "ls_replication_repl_item_unit_of_measure" => [
+            "Code",
+            "ItemId",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_variantregview" => [
-            "item_no",
-            "variant",
+        "ls_replication_repl_item_variant_registration" => [
+            "ItemId",
+            "VariantId",
             "scope_id",
             "processed",
             "is_updated",
@@ -204,21 +204,21 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_lsc_wi_price" => [
-            "item_no",
-            "variant_code",
-            "store_no",
-            "qty_per_unit_of_measure",
-            "unit_of_measure_code",
+        "ls_replication_repl_price" => [
+            "ItemId",
+            "VariantId",
+            "StoreId",
+            "QtyPerUnitOfMeasure",
+            "UnitOfMeasure",
             "scope_id",
             "processed",
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_lsc_inventory_lookup_table" => [
-            "item_no",
-            "variant_code",
-            "store_no",
+        "ls_replication_repl_inv_status" => [
+            "ItemId",
+            "VariantId",
+            "StoreId",
             "scope_id",
             "processed",
             "is_updated",
@@ -247,7 +247,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "scope_id"
         ],
         "ls_replication_repl_unit_of_measure" => [
-            "code",
+            "nav_id",
             "scope_id",
             "processed",
             "is_updated",
@@ -328,8 +328,20 @@ class SchemaUpdateGenerator implements GeneratorInterface
         $schema->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
         $schema->setAttribute('xsi:noNamespaceSchemaLocation', 'urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd');
         $tables = [];
+        $dbTablesMapping = ReplicationHelper::DB_TABLES_MAPPING;
         foreach ($this->replicationOperations as $replicationOperation) {
-            $tableName            = "ls_replication_" . $replicationOperation->getTableName();
+            $columnMappings = null;
+            $tableName = $replicationOperation->getTableName();
+            $tableIdColumnName = $replicationOperation->getTableColumnId();
+
+            if (isset($dbTablesMapping[$tableName])) {
+                $mappings = $dbTablesMapping[$tableName];
+                $tableName = ReplicationHelper::TABLE_NAME_PREFIX . $mappings['table_name'];
+                $columnMappings = $mappings['columns_mapping'];
+                $tableIdColumnName = $mappings['table_name'] . "_id";
+            } else {
+                $tableName = ReplicationHelper::TABLE_NAME_PREFIX . $tableName;
+            }
             $tableIncludedInIndex = array_key_exists($tableName, self::$indexerColumnLists);
             if (!in_array($tableName, $tables)) {
                 $table = $dom->createElement('table');
@@ -339,12 +351,12 @@ class SchemaUpdateGenerator implements GeneratorInterface
                 $table->setAttribute('comment', $replicationOperation->getName());
                 $column = $dom->createElement('column');
                 $column->setAttribute('xsi:type', 'int');
-                $column->setAttribute('name', $replicationOperation->getTableColumnId());
+                $column->setAttribute('name', $tableIdColumnName);
                 $column->setAttribute('padding', '10');
                 $column->setAttribute('unsigned', 'false');
                 $column->setAttribute('nullable', 'false');
                 $column->setAttribute('identity', 'true');
-                $column->setAttribute('comment', $replicationOperation->getTableColumnId());
+                $column->setAttribute('comment', $tableIdColumnName);
                 $table->appendChild($column);
                 $extraColumnsArray = [
                     [
@@ -500,9 +512,28 @@ class SchemaUpdateGenerator implements GeneratorInterface
 
                 $allColumnsArray = array_merge($defaultColumnsArray, $extraColumnsArray);
                 foreach ($allColumnsArray as $columnValue) {
+                    $columnName = $columnValue['name'];
+
+                    if ($columnMappings) {
+                        if (isset($columnMappings[$columnName])) {
+                            $columnName = $columnMappings[$columnName];
+                        } else {
+                            $isExtraColumns = false;
+                            foreach ($extraColumnsArray as $extraColumn) {
+                                if ($columnName == $extraColumn['name']) {
+                                    $isExtraColumns = true;
+                                    break;
+                                }
+                            }
+
+                            if (!$isExtraColumns) {
+                                continue;
+                            }
+                        }
+                    }
                     $extraColumn = $dom->createElement('column');
                     $extraColumn->setAttribute('xsi:type', $columnValue['field_type']);
-                    $extraColumn->setAttribute('name', $columnValue['name']);
+                    $extraColumn->setAttribute('name', $columnName);
                     if ($columnValue['field_type'] == 'decimal') {
                         $extraColumn->setAttribute('scale', '4');
                         $extraColumn->setAttribute('precision', '20');
@@ -526,7 +557,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
                 $constraint->setAttribute('xsi:type', 'primary');
                 $constraint->setAttribute('referenceId', 'PRIMARY');
                 $column = $dom->createElement('column');
-                $column->setAttribute('name', $replicationOperation->getTableColumnId());
+                $column->setAttribute('name', $tableIdColumnName);
                 $constraint->appendChild($column);
                 $table->appendChild($constraint);
 

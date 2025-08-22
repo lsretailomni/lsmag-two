@@ -240,6 +240,12 @@ abstract class AbstractReplicationTask
                 false
             ));
         }
+
+        if ($confPath == "ls_mag/replication/repl_hierarchyview") {
+            if ($source->getType() == 0) {
+                $source->setType('ItemDeal');
+            }
+        }
         $checksum             = $this->getHashGivenString($source->getData());
         $uniqueAttributesHash = $this->generateIdentityValue($uniqueAttributes, $source, $properties);
         $entityArray          = $this->checkEntityExistByAttributes(
@@ -319,8 +325,13 @@ abstract class AbstractReplicationTask
         if (empty($result)) {
             $criteria = $this->getSearchCriteria();
 
-            foreach ($uniqueAttributes as $attribute) {
-                $key = array_search($attribute, $properties);
+            foreach ($uniqueAttributes as $index => $attribute) {
+                $key = array_search($index, $properties);
+
+                if ($key === false) {
+                    $key = $index;
+                }
+
                 $sourceValue = $source->getData($key);
 
                 if ($sourceValue == "") {
@@ -360,17 +371,18 @@ abstract class AbstractReplicationTask
     public function generateIdentityValue($uniqueAttributes, $source, $properties)
     {
         $uniqueAttributesHash = [];
-
+        $i = 0;
         foreach ($uniqueAttributes as $index => $attribute) {
-            $key = array_search($attribute, $properties);
+            $key = array_search($index, $properties);
 
             if (!$key) {
-                $sourceValue = $source->getData($attribute);
+                $sourceValue = $source->getData($index);
             } else {
                 $sourceValue = $source->getData($key);
             }
 
-            $uniqueAttributesHash[] = ($sourceValue !== "" ? $sourceValue : $attribute) . '#' . $index;
+            $uniqueAttributesHash[] = ($sourceValue !== "" ? $sourceValue : $index) . '#' . $i;
+            $i++;
         }
 
         $uniqueAttributesHash = implode("$", $uniqueAttributesHash);
