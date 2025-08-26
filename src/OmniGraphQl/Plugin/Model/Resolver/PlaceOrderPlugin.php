@@ -5,7 +5,7 @@ namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Api\DiscountManagementInterface;
-use Ls\Omni\Model\Api\DiscountManagement;
+use \Ls\Omni\Model\Api\DiscountManagement;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
