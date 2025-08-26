@@ -16,5 +16,34 @@ class ReplStaffpermissionview extends AbstractDb
     {
         $this->_init('ls_replication_repl_staffpermissionview', 'repl_staffpermissionview_id');
     }
+
+    /**
+     * Perform actions before object save
+     *
+     * param \Magento\Framework\Model\AbstractModel|\Magento\Framework\DataObject
+     * $object
+     * @return $this
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    protected function _beforeSave($object)
+    {
+        $mappings = \Ls\Replication\Helper\ReplicationHelper::DB_TABLES_MAPPING;
+        foreach ($mappings as $mapping) {
+            if (\Ls\Replication\Helper\ReplicationHelper::TABLE_NAME_PREFIX . $mapping['table_name'] == $this->getMainTable()) {
+                $columnsMapping = $mapping['columns_mapping'];
+                foreach ($columnsMapping as $columnName => $columnMapping) {
+                    if ($object->hasData($columnName)) {
+                        $object->setData(
+                            is_array($columnMapping) ? $columnMapping['name'] : $columnMapping,
+                            $object->getData($columnName)
+                        );
+                    }
+                }
+                break;
+            }
+        }
+        return $this;
+    }
 }
 

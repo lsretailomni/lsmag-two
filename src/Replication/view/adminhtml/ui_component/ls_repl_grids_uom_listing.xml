@@ -139,7 +139,7 @@
                 </item>
             </argument>
         </column>
-        <column name="code">
+        <column name="nav_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -150,7 +150,7 @@
                 </item>
             </argument>
         </column>
-        <column name="description">
+        <column name="Description">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -161,7 +161,7 @@
                 </item>
             </argument>
         </column>
-        <column name="lsc_weight_unit_of_measure">
+        <column name="UnitDecimals">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

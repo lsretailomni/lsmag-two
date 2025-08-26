@@ -337,6 +337,9 @@ class SchemaUpdateGenerator implements GeneratorInterface
             if (isset($dbTablesMapping[$tableName])) {
                 $mappings = $dbTablesMapping[$tableName];
                 $tableName = ReplicationHelper::TABLE_NAME_PREFIX . $mappings['table_name'];
+                if ($tableName == ReplicationHelper::TABLE_NAME_PREFIX . 'repl_hierarchy') {
+                    $h1 = 1;
+                }
                 $columnMappings = $mappings['columns_mapping'];
                 $tableIdColumnName = $mappings['table_name'] . "_id";
             } else {
@@ -513,10 +516,17 @@ class SchemaUpdateGenerator implements GeneratorInterface
                 $allColumnsArray = array_merge($defaultColumnsArray, $extraColumnsArray);
                 foreach ($allColumnsArray as $columnValue) {
                     $columnName = $columnValue['name'];
-
+                    $columnType = $columnValue['field_type'];
                     if ($columnMappings) {
                         if (isset($columnMappings[$columnName])) {
-                            $columnName = $columnMappings[$columnName];
+                            if (isset($columnMappings[$columnName]['name']) &&
+                                isset($columnMappings[$columnName]['type'])
+                            ) {
+                                $columnType = $columnMappings[$columnName]['type'];
+                                $columnName = $columnMappings[$columnName]['name'];
+                            } else {
+                                $columnName = $columnMappings[$columnName];
+                            }
                         } else {
                             $isExtraColumns = false;
                             foreach ($extraColumnsArray as $extraColumn) {
@@ -532,15 +542,15 @@ class SchemaUpdateGenerator implements GeneratorInterface
                         }
                     }
                     $extraColumn = $dom->createElement('column');
-                    $extraColumn->setAttribute('xsi:type', $columnValue['field_type']);
+                    $extraColumn->setAttribute('xsi:type', $columnType);
                     $extraColumn->setAttribute('name', $columnName);
-                    if ($columnValue['field_type'] == 'decimal') {
+                    if ($columnType == 'decimal') {
                         $extraColumn->setAttribute('scale', '4');
                         $extraColumn->setAttribute('precision', '20');
                     }
-                    if ($columnValue['field_type'] == 'int')
+                    if ($columnType == 'int')
                         $extraColumn->setAttribute('padding', '11');
-                    if ($columnValue['field_type'] == 'varchar')
+                    if ($columnType == 'varchar')
                         $extraColumn->setAttribute('length', 200);
                     if ($columnValue['default'] != '')
                         $extraColumn->setAttribute('default', $columnValue['default']);

@@ -16,14 +16,14 @@
                 Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
             </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_store_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">repl_storeview_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">repl_store_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">repl_storeview_id</item>
+                        <item name="indexField" xsi:type="string">repl_store_id</item>
                     </item>
                 </item>
             </argument>
@@ -99,7 +99,7 @@
                 </item>
             </argument>
         </column>
-        <column name="no">
+        <column name="nav_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -110,7 +110,7 @@
                 </item>
             </argument>
         </column>
-        <column name="name">
+        <column name="Name">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -156,7 +156,7 @@
                 </item>
             </argument>
         </column>
-        <column name="city">
+        <column name="City">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -167,7 +167,7 @@
                 </item>
             </argument>
         </column>
-        <column name="click_and_collect">
+        <column name="ClickAndCollect">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -178,7 +178,7 @@
                 </item>
             </argument>
         </column>
-        <column name="country_code">
+        <column name="Country">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -189,7 +189,7 @@
                 </item>
             </argument>
         </column>
-        <column name="county">
+        <column name="County">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -200,7 +200,7 @@
                 </item>
             </argument>
         </column>
-        <column name="lcy_code">
+        <column name="Currency">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -211,7 +211,18 @@
                 </item>
             </argument>
         </column>
-        <column name="functionality_profile">
+        <column name="DefaultCustomerAccount">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">DefaultCustomerAccount</item>
+                    <item name="sortOrder" xsi:type="number">11</item>
+                </item>
+            </argument>
+        </column>
+        <column name="FunctionalityProfile">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -223,7 +234,7 @@
             </argument>
         </column>
 
-        <column name="latitude">
+        <column name="Latitute">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -234,7 +245,7 @@
                 </item>
             </argument>
         </column>
-        <column name="longitude">
+        <column name="Longitude">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -245,7 +256,7 @@
                 </item>
             </argument>
         </column>
-        <column name="phone_no">
+        <column name="Phone">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -256,7 +267,18 @@
                 </item>
             </argument>
         </column>
-        <column name="address">
+        <column name="State">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">State</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+            </argument>
+        </column>
+        <column name="Street">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -267,7 +289,7 @@
                 </item>
             </argument>
         </column>
-        <column name="store_vat_bus_post_gr">
+        <column name="TaxGroup">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -278,7 +300,7 @@
                 </item>
             </argument>
         </column>
-        <column name="post_code">
+        <column name="ZipCode">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -289,7 +311,7 @@
                 </item>
             </argument>
         </column>
-        <column name="price_group_codes">
+        <column name="PriceGroupCodes">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -300,7 +322,7 @@
                 </item>
             </argument>
         </column>
-        <column name="store_group_codes">
+        <column name="StoreGroupCodes">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -308,6 +330,17 @@
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Store Group Codes</item>
                     <item name="sortOrder" xsi:type="number">28</item>
+                </item>
+            </argument>
+        </column>
+        <column name="HospSalesTypes">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Sales Type</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
                 </item>
             </argument>
         </column>

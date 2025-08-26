@@ -27,7 +27,10 @@ class ReplHierarchyview extends ReplHierarchy
                 $columnsMapping = $mapping['columns_mapping'];
                 foreach ($columnsMapping as $columnName => $columnMapping) {
                     if ($object->hasData($columnName)) {
-                        $object->setData($columnMapping, $object->getData($columnName));
+                        $object->setData(
+                            is_array($columnMapping) ? $columnMapping['name'] : $columnMapping,
+                            $object->getData($columnName)
+                        );
                     }
                 }
                 break;

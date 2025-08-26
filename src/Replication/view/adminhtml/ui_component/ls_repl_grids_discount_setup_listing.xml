@@ -17,14 +17,14 @@
                 Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
             </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_discount_setup_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">repl_periodicdiscview_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">repl_discount_setup_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">repl_periodicdiscview_id</item>
+                        <item name="indexField" xsi:type="string">repl_discount_setup_id</item>
                     </item>
                 </item>
             </argument>
@@ -147,7 +147,7 @@
                 </item>
             </argument>
         </column>
-        <column name="no">
+        <column name="Number">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -158,7 +158,7 @@
                 </item>
             </argument>
         </column>
-        <column name="description">
+        <column name="Description">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -169,7 +169,7 @@
                 </item>
             </argument>
         </column>
-        <column name="deal_pricedisc">
+        <column name="DealPriceDiscount">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -180,7 +180,7 @@
                 </item>
             </argument>
         </column>
-        <column name="discount_amount_including_vat">
+        <column name="LineDiscountAmountInclVAT">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -191,7 +191,7 @@
                 </item>
             </argument>
         </column>
-        <column name="validation_period_id">
+        <column name="ValidationPeriodId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -202,7 +202,7 @@
                 </item>
             </argument>
         </column>
-        <column name="offer_no">
+        <column name="OfferNo">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -213,7 +213,7 @@
                 </item>
             </argument>
         </column>
-        <column name="priority">
+        <column name="PriorityNo">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -224,7 +224,7 @@
                 </item>
             </argument>
         </column>
-        <column name="type">
+        <column name="LineType">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -235,7 +235,7 @@
                 </item>
             </argument>
         </column>
-        <column name="status">
+        <column name="Enabled">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -246,7 +246,7 @@
                 </item>
             </argument>
         </column>
-        <column name="currency_code">
+        <column name="CurrencyCode">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -257,7 +257,7 @@
                 </item>
             </argument>
         </column>
-        <column name="customer_discount_group">
+        <column name="CustomerDiscountGroup">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -269,7 +269,7 @@
             </argument>
         </column>
 
-        <column name="popup_line_1">
+        <column name="Details">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -280,7 +280,7 @@
                 </item>
             </argument>
         </column>
-        <column name="member_value">
+        <column name="LoyaltySchemeCode">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -291,7 +291,18 @@
                 </item>
             </argument>
         </column>
-        <column name="unit_of_measure">
+        <column name="ModifyDate">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Modify Date</item>
+                    <item name="sortOrder" xsi:type="number">160</item>
+                </item>
+            </argument>
+        </column>
+        <column name="UnitOfMeasureId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -302,7 +313,7 @@
                 </item>
             </argument>
         </column>
-        <column name="variant_code">
+        <column name="VariantId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -313,7 +324,7 @@
                 </item>
             </argument>
         </column>
-        <column name="store_group_code">
+        <column name="StoreGroupCodes">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -324,7 +335,7 @@
                 </item>
             </argument>
         </column>
-        <column name="price_group">
+        <column name="PriceGroup">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

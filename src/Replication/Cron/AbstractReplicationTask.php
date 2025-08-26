@@ -6,6 +6,13 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\Data as LsHelper;
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscMemberType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
+use Ls\Omni\Client\Ecommerce\Entity\HierarchyView;
+use Ls\Omni\Client\Ecommerce\Entity\LSCWIItemBuffer;
+use Ls\Omni\Client\Ecommerce\Entity\PeriodicDiscView;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
@@ -241,9 +248,33 @@ abstract class AbstractReplicationTask
             ));
         }
 
-        if ($confPath == "ls_mag/replication/repl_hierarchyview") {
-            if ($source->getType() == 0) {
-                $source->setType('ItemDeal');
+        if ($confPath == ReplHierarchyviewTask::CONFIG_PATH ||
+            $confPath == ReplHierarchynodeslinkviewTask::CONFIG_PATH
+        ) {
+            $value = $this->getConstantByIndex(HierarchyType::class, $source->getData(HierarchyView::TYPE));
+            $source->setData(HierarchyView::TYPE, $value);
+        } elseif ($confPath == ReplPeriodicdiscviewTask::CONFIG_PATH) {
+            $value1 = $this->getConstantByIndex(
+                DiscountValueType::class,
+                $source->getData(PeriodicDiscView::DISCOUNT_TYPE)
+            );
+            $value2 = $this->getConstantByIndex(
+                ReplDiscMemberType::class,
+                $source->getData(PeriodicDiscView::MEMBER_TYPE)
+            );
+            $value3 = $this->getConstantByIndex(
+                ReplDiscountType::class,
+                $source->getData(PeriodicDiscView::TYPE)
+            );
+            $source->setData(PeriodicDiscView::DISCOUNT_TYPE, $value1);
+            $source->setData(PeriodicDiscView::MEMBER_TYPE, $value2);
+            $source->setData(PeriodicDiscView::TYPE, $value3);
+        } elseif ($confPath == ReplLscWiItemBufferTask::CONFIG_PATH) {
+            if (!empty($source->getData(LSCWIItemBuffer::ITEM_HTML))) {
+                $source->setData(
+                    LSCWIItemBuffer::ITEM_HTML,
+                    base64_decode($source->getData(LSCWIItemBuffer::ITEM_HTML))
+                );
             }
         }
         $checksum             = $this->getHashGivenString($source->getData());
@@ -285,6 +316,32 @@ abstract class AbstractReplicationTask
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * Get constant name by index
+     *
+     * @param string $class
+     * @param int $index
+     * @return string|null
+     * @throws \ReflectionException
+     */
+    public function getConstantByIndex(string $class, int $index): ?string
+    {
+        $reflection = new \ReflectionClass($class);
+
+        // Get constants in the order they are defined
+        $constants = $reflection->getReflectionConstants();
+
+        // Build ordered list [ "ITEM_DEAL" => "ItemDeal", ... ]
+        $orderedConstants = [];
+        foreach ($constants as $constant) {
+            $orderedConstants[$constant->getName()] = $constant->getValue();
+        }
+
+        // Get by numeric index
+        $values = array_values($orderedConstants);
+        return $values[$index] ?? null;
     }
 
     /**

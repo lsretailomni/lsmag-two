@@ -162,7 +162,13 @@ class ReplicationHelper extends AbstractHelper
         'ReplLscWiPrice' => 'ReplPrice',
         'ReplLscInventoryLookupTable' => 'ReplInvStatus',
         'ReplLscTenderType' => 'ReplStoreTenderType',
-        'ReplVatPostingSetup' => 'ReplTaxSetup'
+        'ReplVatPostingSetup' => 'ReplTaxSetup',
+        'ReplVendoritemview' => 'ReplLoyVendorItemMapping',
+        'ReplStoreview' => 'ReplStore',
+        'ReplCountryview' => 'ReplCountryCode',
+        'ReplPeriodicdiscview' => 'ReplDiscountSetup',
+        'ReplLscValidationPeriod' => 'ReplDiscountValidation',
+        'ReplLscDataTranslation' => 'ReplDataTranslation'
     ];
     public const DB_TABLES_MAPPING = [
         'repl_lsc_attribute' => [
@@ -200,7 +206,7 @@ class ReplicationHelper extends AbstractHelper
             'columns_mapping' => [
                 'hierarchy_code' => 'nav_id',
                 'description' => 'Description',
-                'type' => 'Type',
+                'type' => ['name' => 'Type' , 'type' => 'text'],
                 'priority' => 'Priority',
                 'sales_type_filter' => 'SalesType',
                 'start_date' => 'StartDate',
@@ -227,7 +233,7 @@ class ReplicationHelper extends AbstractHelper
                 'description' => 'Description',
                 'deal_price' => 'DealPrice',
                 'node_id' => 'NodeId',
-                'type' => 'Type',
+                'type' => ['name' => 'Type' , 'type' => 'text'],
                 'no' => 'nav_id',
                 'retail_image_id' => 'ImageId',
                 'item_unit_of_measure' => 'ItemUOM',
@@ -408,6 +414,156 @@ class ReplicationHelper extends AbstractHelper
                 'vat' => 'TaxPercent'
             ]
         ],
+        'repl_vendor' => [
+            'table_name' => 'repl_vendor',
+            'columns_mapping' => [
+                'no' => 'nav_id',
+                'name' => 'Name',
+                'blocked' => 'Blocked',
+                'last_date_modified' => 'UpdatedOnUtc',
+            ]
+        ],
+        'repl_vendoritemview' => [
+            'table_name' => 'repl_loy_vendor_item_mapping',
+            'columns_mapping' => [
+                'vendorno' => 'NavManufacturerId',
+                'itemno' => 'NavProductId',
+                'vendoritemno' => 'NavManufacturerItemId',
+            ]
+        ],
+        'repl_countryview' => [
+            'table_name' => 'repl_country_code',
+            'columns_mapping' => [
+                'code' => 'Code',
+                'county_name' => 'Name',
+                'lsc_web_store_customer_no' => 'CustomerNo',
+                'taxpostgroup' => 'TaxPostGroup'
+            ]
+        ],
+        'repl_lsc_validation_period' => [
+            'table_name' => 'repl_discount_validation',
+            'columns_mapping' => [
+                'nav_id' => 'nav_id',
+                'description' => 'Description',
+                'starting_date' => 'StartDate',
+                'starting_time' => 'StartTime',
+                'ending_time' => 'EndTime',
+                'monday_starting_time' => 'MondayStart',
+                'monday_ending_time' => 'MondayEnd',
+                'tuesday_starting_time' => 'TuesdayStart',
+                'tuesday_ending_time' => 'TuesdayEnd',
+                'wednesday_starting_time' => 'WednesdayStart',
+                'wednesday_ending_time' => 'WednesdayEnd',
+                'thursday_starting_time' => 'ThursdayStart',
+                'thursday_ending_time' => 'ThursdayEnd',
+                'friday_starting_time' => 'FridayStart',
+                'friday_ending_time' => 'FridayEnd',
+                'saturday_starting_time' => 'SaturdayStart',
+                'saturday_ending_time' => 'SaturdayEnd',
+                'sunday_starting_time' => 'SundayStart',
+                'sunday_ending_time' => 'SundayEnd',
+                'time_within_bounds' => 'TimeWithinBounds',
+                'ending_time_after_midnight' => 'EndAfterMidnight',
+                'mon_time_within_bounds' => 'MondayWithinBounds',
+                'mon_end_time_after_midnight' => 'MondayEndAfterMidnight',
+                'tue_time_within_bounds' => 'TuesdayWithinBounds',
+                'tue_end_time_after_midnight' => 'TuesdayEndAfterMidnight',
+                'wed_time_within_bounds' => 'WednesdayWithinBounds',
+                'wed_end_time_after_midnight' => 'WednesdayEndAfterMidnight',
+                'thu_time_within_bounds' => 'ThursdayWithinBounds',
+                'thu_end_time_after_midnight' => 'ThursdayEndAfterMidnight',
+                'fri_time_within_bounds' => 'FridayWithinBounds',
+                'fri_end_time_after_midnight' => 'FridayEndAfterMidnight',
+                'sat_time_within_bounds' => 'SaturdayWithinBounds',
+                'sat_end_time_after_midnight' => 'SaturdayEndAfterMidnight',
+                'sun_time_within_bounds' => 'SundayWithinBounds',
+                'sun_end_time_after_midnight' => 'SundayEndAfterMidnight'
+            ]
+        ],
+        'repl_periodicdiscview' => [
+            'table_name' => 'repl_discount_setup',
+            'columns_mapping' => [
+                'amount_to_trigger' => 'AmountToTrigger',
+                'coupon_code' => 'CouponCode',
+                'coupon_qty_needed' => 'CouponQtyNeeded',
+                'currency_code' => 'CurrencyCode',
+                'customer_disc_group' => 'CustomerDiscountGroup',
+                'deal_pricedisc' => 'DealPriceDiscount',
+                'deal_price_value' => 'DealPriceValue',
+                'description' => 'Description',
+                'discount_amount_value' => 'DiscountAmountValue',
+                'discount_value' => 'DiscountValue',
+                'discount_type' => ['name' => 'DiscountValueType', 'type' => 'text'],
+                'status' => 'Enabled',
+                'exclude' => 'Exclude',
+                'disc_type' => 'IsPercentage',
+                'discount_amount' => 'LineDiscountAmount',
+                'discount_amount_including_vat' => 'LineDiscountAmountInclVAT',
+                'line_group' => 'LineGroup',
+                'member_points' => 'LineMemberPoints',
+                'line_no' => 'LineNumber',
+                'type' => ['name' => 'Type', 'type' => 'text'],
+                'member_value' => 'LoyaltySchemeCode',
+                'maximum_discount_amount' => 'MaxDiscountAmount',
+                'member_attribute' => 'MemberAttribute',
+                'member_type' => ['name' => 'MemberType', 'type' => 'text'],
+                'no' => 'Number',
+                'no_of_items_needed' => 'NumberOfItemNeeded',
+                'offer_no' => 'OfferNo',
+                'offer_price' => 'OfferPrice',
+                'offer_price_including_vat' => 'OfferPriceInclVAT',
+                'price_group' => 'PriceGroup',
+                'priority' => 'PriorityNo',
+                'prod_group_category' => 'ProductItemCategory',
+                'prompt_for_action' => 'PromptForAction',
+                'split_deal_pricedisc' => 'SplitDealPriceDiscount',
+                'standard_price' => 'StandardPrice',
+                'standard_price_including_vat' => 'StandardPriceInclVAT',
+                'store_group_codes' => 'StoreGroupCodes',
+                'tender_offer' => 'TenderOffer',
+                'tender_offer_amount' => 'TenderOfferAmount',
+                'tender_type_code' => 'TenderTypeCode',
+                'tender_type_value' => 'TenderTypeValue',
+                'trigger_popup_on_pos' => 'TriggerPopUp',
+                'unit_of_measure' => 'UnitOfMeasureId',
+                'valid_from_before_exp_date' => 'ValidFromBeforeExpDate',
+                'valid_to_before_exp_date' => 'ValidToBeforeExpDate',
+                'validation_period_id' => 'ValidationPeriodId',
+                'variant_code' => 'VariantId',
+                'variant_type' => 'VariantType',
+            ]
+        ],
+        'repl_storeview' => [
+            'table_name' => 'repl_store',
+            'columns_mapping' => [
+                'no' => 'nav_id',
+                'name' => 'Name',
+                'address' => 'Street',
+                'post_code' => 'ZipCode',
+                'city' => 'City',
+                'county' => 'County',
+                'country_code' => 'Country',
+                'latitude' => 'Latitute',
+                'longitude' => 'Longitude',
+                'phone_no' => 'Phone',
+                'currency_code' => 'Currency',
+                'functionality_profile' => 'FunctionalityProfile',
+                'store_vat_bus_post_gr' => 'TaxGroup',
+                'click_and_collect' => 'ClickAndCollect',
+                'price_group_codes' => 'PriceGroupCodes',
+                'store_group_codes' => 'StoreGroupCodes',
+                'calc_inv_for_sourcing_location' => 'UseSourcingLocation',
+            ]
+        ],
+        'repl_lsc_data_translation' => [
+            'table_name' => 'repl_data_translation',
+            'columns_mapping' => [
+                'key' => 'Key',
+                'language_code' => 'LanguageCode',
+                'translation' => 'Text',
+                'translation_id' => 'TranslationId'
+            ]
+        ],
     ];
 
     /** @var array List of Replication Tables with unique field */
@@ -434,8 +590,8 @@ class ReplicationHelper extends AbstractHelper
             'scope_id'  => 'scope_id'
         ],
         "ls_mag/replication/repl_countryview" => [
-            "name",
-            "scope_id"
+            'county_name' => 'Name',
+            'scope_id'  => 'scope_id'
         ],
         "ls_mag/replication/repl_currency" => [
             "code",
@@ -450,10 +606,10 @@ class ReplicationHelper extends AbstractHelper
             "scope_id"
         ],
         "ls_mag/replication/repl_lsc_data_translation" => [
-            "translation_id",
-            "key",
-            "language_code",
-            "scope_id"
+            'key' => 'Key',
+            'language_code' => 'LanguageCode',
+            'translation_id' => 'TranslationId',
+            'scope_id'  => 'scope_id'
         ],
         "ls_mag/replication/repl_html_translation" => [
             "TranslationId",
@@ -462,9 +618,9 @@ class ReplicationHelper extends AbstractHelper
             "scope_id"
         ],
         "ls_mag/replication/repl_lsc_item_html_ml" => [
-            "item_no",
-            "language",
-            "scope_id"
+            "item_no" => "item_no",
+            "language" => "language",
+            "scope_id" => "scope_id"
         ],
         "ls_mag/replication/repl_deal_html_translation" => [
             "TranslationId",
@@ -477,12 +633,12 @@ class ReplicationHelper extends AbstractHelper
             "scope_id"
         ],
         "ls_mag/replication/repl_periodicdiscview" => [
-            "offer_no",
-            "customer_disc_group",
-            "no",
-            "unit_of_measure",
-            "variant_code",
-            "scope_id"
+            'offer_no' => 'OfferNo',
+            'customer_disc_group' => 'CustomerDiscountGroup',
+            'no' => 'Number',
+            'unit_of_measure' => 'UnitOfMeasureId',
+            'variant_code' => 'VariantId',
+            'scope_id'  => 'scope_id'
         ],
         "ls_mag/replication/repl_discount_setup" => [
             "OfferNo",
@@ -490,8 +646,8 @@ class ReplicationHelper extends AbstractHelper
             "scope_id"
         ],
         "ls_mag/replication/repl_lsc_validation_period" => [
-            "nav_id",
-            "scope_id"
+            'nav_id' => 'nav_id',
+            'scope_id'  => 'scope_id'
         ],
         "ls_mag/replication/repl_lsc_wi_extd_variant_values" => [
             'item_no' => 'ItemId',
@@ -546,9 +702,9 @@ class ReplicationHelper extends AbstractHelper
             'scope_id' => 'scope_id'
         ],
         "ls_mag/replication/repl_vendoritemview" => [
-            "vendorno",
-            "itemno",
-            "scope_id"
+            'vendorno' => 'NavManufacturerId',
+            'itemno' => 'NavProductId',
+            'scope_id' => 'scope_id'
         ],
         "ls_mag/replication/repl_lsc_wi_price" => [
             'store_no' => 'StoreId',
@@ -573,8 +729,8 @@ class ReplicationHelper extends AbstractHelper
             "scope_id"
         ],
         "ls_mag/replication/repl_storeview" => [
-            "no",
-            "scope_id"
+            'no' => 'nav_id',
+            'scope_id' => 'scope_id'
         ],
         "ls_mag/replication/repl_lsc_tender_type" => [
             'code' => 'TenderTypeId',
@@ -585,8 +741,8 @@ class ReplicationHelper extends AbstractHelper
             'scope_id' => 'scope_id'
         ],
         "ls_mag/replication/repl_vendor" => [
-            "no",
-            "scope_id"
+            'no' => 'nav_id',
+            'scope_id' => 'scope_id'
         ],
         "ls_mag/replication/repl_hierarchydeallineview" => [
             "offer_no",

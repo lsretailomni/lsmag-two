@@ -55,14 +55,19 @@ class ResourceModelGenerator extends AbstractGenerator
         if (isset($replicationEntityMapping[$this->getName()])) {
             $mappedEntity = $replicationEntityMapping[$this->getName()];
             $this->class->setExtendedClass(self::$namespace . '\\' . $mappedEntity);
+        } else {
+            $this->class->addUse(AbstractDb::class);
+            $this->class->setExtendedClass(AbstractDb::class);
+            $this->class->addMethodFromGenerator($constructorMethod);
+        }
 
-            // ✅ Add _beforeSave() method
-            $beforeSaveMethod = new MethodGenerator();
-            $beforeSaveMethod->setName('_beforeSave');
-            $beforeSaveMethod->setVisibility(MethodGenerator::VISIBILITY_PROTECTED);
-            $beforeSaveMethod->setParameter('object', \Magento\Framework\Model\AbstractModel::class);
-            $beforeSaveMethod->setDocBlock(
-                <<<EOT
+        // ✅ Add _beforeSave() method
+        $beforeSaveMethod = new MethodGenerator();
+        $beforeSaveMethod->setName('_beforeSave');
+        $beforeSaveMethod->setVisibility(MethodGenerator::VISIBILITY_PROTECTED);
+        $beforeSaveMethod->setParameter('object', \Magento\Framework\Model\AbstractModel::class);
+        $beforeSaveMethod->setDocBlock(
+            <<<EOT
 Perform actions before object save
 
 param \Magento\Framework\Model\AbstractModel|\Magento\Framework\DataObject \$object
@@ -70,16 +75,19 @@ param \Magento\Framework\Model\AbstractModel|\Magento\Framework\DataObject \$obj
 
 @SuppressWarnings(PHPMD.UnusedFormalParameter)
 EOT
-            );
-            $beforeSaveMethod->setBody(
-                <<<PHP
+        );
+        $beforeSaveMethod->setBody(
+            <<<PHP
 \$mappings = \Ls\Replication\Helper\ReplicationHelper::DB_TABLES_MAPPING;
 foreach (\$mappings as \$mapping) {
     if (\Ls\Replication\Helper\ReplicationHelper::TABLE_NAME_PREFIX . \$mapping['table_name'] == \$this->getMainTable()) {
         \$columnsMapping = \$mapping['columns_mapping'];
         foreach (\$columnsMapping as \$columnName => \$columnMapping) {
             if (\$object->hasData(\$columnName)) {
-                \$object->setData(\$columnMapping, \$object->getData(\$columnName));
+                \$object->setData(
+                    is_array(\$columnMapping) ? \$columnMapping['name'] : \$columnMapping,
+                    \$object->getData(\$columnName)
+                );
             }
         }
         break;
@@ -87,13 +95,8 @@ foreach (\$mappings as \$mapping) {
 }
 return \$this;
 PHP
-            );
-            $this->class->addMethodFromGenerator($beforeSaveMethod);
-        } else {
-            $this->class->addUse(AbstractDb::class);
-            $this->class->setExtendedClass(AbstractDb::class);
-            $this->class->addMethodFromGenerator($constructorMethod);
-        }
+        );
+        $this->class->addMethodFromGenerator($beforeSaveMethod);
 
 
         $content = $this->file->generate();

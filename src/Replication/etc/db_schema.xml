@@ -427,26 +427,12 @@
       <column name="repl_contactview_id"/>
     </constraint>
   </table>
-  <table name="ls_replication_repl_countryview" resource="default" engine="innodb" comment="CountryView">
-    <column xsi:type="int" name="repl_countryview_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_countryview_id"/>
-    <column xsi:type="int" name="address_format" padding="11" nullable="true" comment="address_format"/>
-    <column xsi:type="text" name="code" nullable="true" comment="code"/>
-    <column xsi:type="int" name="contact_address_format" padding="11" nullable="true" comment="contact_address_format"/>
-    <column xsi:type="text" name="county_name" nullable="true" comment="county_name"/>
-    <column xsi:type="text" name="eu_countryregion_code" nullable="true" comment="eu_countryregion_code"/>
-    <column xsi:type="text" name="intrastat_code" nullable="true" comment="intrastat_code"/>
-    <column xsi:type="text" name="iso_code" nullable="true" comment="iso_code"/>
-    <column xsi:type="text" name="iso_numeric_code" nullable="true" comment="iso_numeric_code"/>
-    <column xsi:type="text" name="last_modified_date_time" nullable="true" comment="last_modified_date_time"/>
-    <column xsi:type="text" name="lsc_web_store_customer_no" nullable="true" comment="lsc_web_store_customer_no"/>
-    <column xsi:type="varchar" name="name" length="200" nullable="true" comment="name"/>
-    <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
-    <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
-    <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
-    <column xsi:type="text" name="systemmodifiedat" nullable="true" comment="systemmodifiedat"/>
-    <column xsi:type="text" name="systemmodifiedby" nullable="true" comment="systemmodifiedby"/>
-    <column xsi:type="text" name="taxpostgroup" nullable="true" comment="taxpostgroup"/>
-    <column xsi:type="text" name="vat_scheme" nullable="true" comment="vat_scheme"/>
+  <table name="ls_replication_repl_country_code" resource="default" engine="innodb" comment="CountryView">
+    <column xsi:type="int" name="repl_country_code_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_country_code_id"/>
+    <column xsi:type="text" name="Code" nullable="true" comment="code"/>
+    <column xsi:type="text" name="Name" nullable="true" comment="county_name"/>
+    <column xsi:type="text" name="CustomerNo" nullable="true" comment="lsc_web_store_customer_no"/>
+    <column xsi:type="text" name="TaxPostGroup" nullable="true" comment="taxpostgroup"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -459,25 +445,7 @@
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_countryview_id"/>
-    </constraint>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRYVIEW_NAME">
-      <column name="name"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRYVIEW_SCOPEID">
-      <column name="scope_id"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRYVIEW_PROCESSED">
-      <column name="processed"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRYVIEW_ISUPDATED">
-      <column name="is_updated"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRYVIEW_ISDELETED">
-      <column name="IsDeleted"/>
-    </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_COUNTRYVIEW_IDENTITY_VALUE">
-      <column name="identity_value"/>
+      <column name="repl_country_code_id"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_currency" resource="default" engine="innodb" comment="Currency">
@@ -764,17 +732,12 @@
       <column name="identity_value"/>
     </constraint>
   </table>
-  <table name="ls_replication_repl_lsc_data_translation" resource="default" engine="innodb" comment="LSC Data Translation">
-    <column xsi:type="int" name="repl_lsc_data_translation_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_lsc_data_translation_id"/>
-    <column xsi:type="varchar" name="key" length="200" nullable="true" comment="key"/>
-    <column xsi:type="varchar" name="language_code" length="200" nullable="true" comment="language_code"/>
-    <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
-    <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
-    <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
-    <column xsi:type="text" name="systemmodifiedat" nullable="true" comment="systemmodifiedat"/>
-    <column xsi:type="text" name="systemmodifiedby" nullable="true" comment="systemmodifiedby"/>
-    <column xsi:type="text" name="translation" nullable="true" comment="translation"/>
-    <column xsi:type="varchar" name="translation_id" length="200" nullable="true" comment="translation_id"/>
+  <table name="ls_replication_repl_data_translation" resource="default" engine="innodb" comment="LSC Data Translation">
+    <column xsi:type="int" name="repl_data_translation_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_data_translation_id"/>
+    <column xsi:type="text" name="Key" nullable="true" comment="key"/>
+    <column xsi:type="text" name="LanguageCode" nullable="true" comment="language_code"/>
+    <column xsi:type="text" name="Text" nullable="true" comment="translation"/>
+    <column xsi:type="text" name="TranslationId" nullable="true" comment="translation_id"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -787,96 +750,59 @@
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_lsc_data_translation_id"/>
-    </constraint>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_DATA_TRANSLATION_TRANSLATIONID">
-      <column name="translation_id"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_DATA_TRANSLATION_KEY">
-      <column name="key"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_DATA_TRANSLATION_LANGUAGECODE">
-      <column name="language_code"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_DATA_TRANSLATION_SCOPEID">
-      <column name="scope_id"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_DATA_TRANSLATION_PROCESSED">
-      <column name="processed"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_DATA_TRANSLATION_ISUPDATED">
-      <column name="is_updated"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_DATA_TRANSLATION_ISDELETED">
-      <column name="IsDeleted"/>
-    </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_LSC_DATA_TRANSLATION_IDENTITY_VALUE">
-      <column name="identity_value"/>
+      <column name="repl_data_translation_id"/>
     </constraint>
   </table>
-  <table name="ls_replication_repl_periodicdiscview" resource="default" engine="innodb" comment="PeriodicDiscView">
-    <column xsi:type="int" name="repl_periodicdiscview_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_periodicdiscview_id"/>
-    <column xsi:type="decimal" name="amount_to_trigger" scale="4" precision="20" nullable="true" comment="amount_to_trigger"/>
-    <column xsi:type="text" name="coupon_code" nullable="true" comment="coupon_code"/>
-    <column xsi:type="decimal" name="coupon_qty_needed" scale="4" precision="20" nullable="true" comment="coupon_qty_needed"/>
-    <column xsi:type="text" name="currency_code" nullable="true" comment="currency_code"/>
-    <column xsi:type="text" name="customer_disc_group" nullable="true" comment="customer_disc_group"/>
-    <column xsi:type="decimal" name="deal_price_value" scale="4" precision="20" nullable="true" comment="deal_price_value"/>
-    <column xsi:type="decimal" name="deal_pricedisc" scale="4" precision="20" nullable="true" comment="deal_pricedisc"/>
-    <column xsi:type="text" name="description" nullable="true" comment="description"/>
-    <column xsi:type="int" name="disc_type" padding="11" nullable="true" comment="disc_type"/>
-    <column xsi:type="decimal" name="discount_amount" scale="4" precision="20" nullable="true" comment="discount_amount"/>
-    <column xsi:type="decimal" name="discount_amount_including_vat" scale="4" precision="20" nullable="true" comment="discount_amount_including_vat"/>
-    <column xsi:type="decimal" name="discount_amount_value" scale="4" precision="20" nullable="true" comment="discount_amount_value"/>
-    <column xsi:type="int" name="discount_type" padding="11" nullable="true" comment="discount_type"/>
-    <column xsi:type="decimal" name="discount_value" scale="4" precision="20" nullable="true" comment="discount_value"/>
-    <column xsi:type="boolean" name="exclude" default="0" nullable="true" comment="exclude"/>
-    <column xsi:type="text" name="head_price_group" nullable="true" comment="head_price_group"/>
-    <column xsi:type="int" name="header_type" padding="11" nullable="true" comment="header_type"/>
-    <column xsi:type="text" name="line_group" nullable="true" comment="line_group"/>
-    <column xsi:type="int" name="line_no" padding="11" nullable="true" comment="line_no"/>
-    <column xsi:type="decimal" name="maximum_discount_amount" scale="4" precision="20" nullable="true" comment="maximum_discount_amount"/>
-    <column xsi:type="text" name="member_attribute" nullable="true" comment="member_attribute"/>
-    <column xsi:type="decimal" name="member_points" scale="4" precision="20" nullable="true" comment="member_points"/>
-    <column xsi:type="int" name="member_type" padding="11" nullable="true" comment="member_type"/>
-    <column xsi:type="text" name="member_value" nullable="true" comment="member_value"/>
-    <column xsi:type="text" name="no" nullable="true" comment="no"/>
-    <column xsi:type="int" name="no_of_items_needed" padding="11" nullable="true" comment="no_of_items_needed"/>
-    <column xsi:type="text" name="offer_no" nullable="true" comment="offer_no"/>
-    <column xsi:type="decimal" name="offer_price" scale="4" precision="20" nullable="true" comment="offer_price"/>
-    <column xsi:type="decimal" name="offer_price_including_vat" scale="4" precision="20" nullable="true" comment="offer_price_including_vat"/>
-    <column xsi:type="decimal" name="planned_demand" scale="4" precision="20" nullable="true" comment="planned_demand"/>
-    <column xsi:type="int" name="planned_demand_type" padding="11" nullable="true" comment="planned_demand_type"/>
-    <column xsi:type="text" name="popup_line_1" nullable="true" comment="popup_line_1"/>
-    <column xsi:type="text" name="popup_line_2" nullable="true" comment="popup_line_2"/>
-    <column xsi:type="text" name="popup_line_3" nullable="true" comment="popup_line_3"/>
-    <column xsi:type="text" name="price_group" nullable="true" comment="price_group"/>
-    <column xsi:type="int" name="priority" padding="11" nullable="true" comment="priority"/>
-    <column xsi:type="text" name="prod_group_category" nullable="true" comment="prod_group_category"/>
-    <column xsi:type="boolean" name="prompt_at_scan" default="0" nullable="true" comment="prompt_at_scan"/>
-    <column xsi:type="int" name="prompt_for_action" padding="11" nullable="true" comment="prompt_for_action"/>
-    <column xsi:type="decimal" name="split_deal_pricedisc" scale="4" precision="20" nullable="true" comment="split_deal_pricedisc"/>
-    <column xsi:type="decimal" name="standard_price" scale="4" precision="20" nullable="true" comment="standard_price"/>
-    <column xsi:type="decimal" name="standard_price_including_vat" scale="4" precision="20" nullable="true" comment="standard_price_including_vat"/>
-    <column xsi:type="int" name="status" padding="11" nullable="true" comment="status"/>
-    <column xsi:type="text" name="store_group_codes" nullable="true" comment="store_group_codes"/>
-    <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
-    <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
-    <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
-    <column xsi:type="text" name="systemmodifiedat" nullable="true" comment="systemmodifiedat"/>
-    <column xsi:type="text" name="systemmodifiedby" nullable="true" comment="systemmodifiedby"/>
-    <column xsi:type="decimal" name="tender_offer" scale="4" precision="20" nullable="true" comment="tender_offer"/>
-    <column xsi:type="decimal" name="tender_offer_amount" scale="4" precision="20" nullable="true" comment="tender_offer_amount"/>
-    <column xsi:type="text" name="tender_type_code" nullable="true" comment="tender_type_code"/>
-    <column xsi:type="text" name="tender_type_value" nullable="true" comment="tender_type_value"/>
-    <column xsi:type="boolean" name="trigger_popup_on_pos" default="0" nullable="true" comment="trigger_popup_on_pos"/>
-    <column xsi:type="int" name="type" padding="11" nullable="true" comment="type"/>
-    <column xsi:type="text" name="unit_of_measure" nullable="true" comment="unit_of_measure"/>
-    <column xsi:type="text" name="valid_from_before_exp_date" nullable="true" comment="valid_from_before_exp_date"/>
-    <column xsi:type="text" name="valid_to_before_exp_date" nullable="true" comment="valid_to_before_exp_date"/>
-    <column xsi:type="text" name="validation_period_id" nullable="true" comment="validation_period_id"/>
-    <column xsi:type="text" name="variant_code" nullable="true" comment="variant_code"/>
-    <column xsi:type="int" name="variant_type" padding="11" nullable="true" comment="variant_type"/>
+  <table name="ls_replication_repl_discount_setup" resource="default" engine="innodb" comment="PeriodicDiscView">
+    <column xsi:type="int" name="repl_discount_setup_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_discount_setup_id"/>
+    <column xsi:type="decimal" name="AmountToTrigger" scale="4" precision="20" nullable="true" comment="amount_to_trigger"/>
+    <column xsi:type="text" name="CouponCode" nullable="true" comment="coupon_code"/>
+    <column xsi:type="decimal" name="CouponQtyNeeded" scale="4" precision="20" nullable="true" comment="coupon_qty_needed"/>
+    <column xsi:type="text" name="CurrencyCode" nullable="true" comment="currency_code"/>
+    <column xsi:type="text" name="CustomerDiscountGroup" nullable="true" comment="customer_disc_group"/>
+    <column xsi:type="decimal" name="DealPriceValue" scale="4" precision="20" nullable="true" comment="deal_price_value"/>
+    <column xsi:type="decimal" name="DealPriceDiscount" scale="4" precision="20" nullable="true" comment="deal_pricedisc"/>
+    <column xsi:type="text" name="Description" nullable="true" comment="description"/>
+    <column xsi:type="int" name="IsPercentage" padding="11" nullable="true" comment="disc_type"/>
+    <column xsi:type="decimal" name="LineDiscountAmount" scale="4" precision="20" nullable="true" comment="discount_amount"/>
+    <column xsi:type="decimal" name="LineDiscountAmountInclVAT" scale="4" precision="20" nullable="true" comment="discount_amount_including_vat"/>
+    <column xsi:type="decimal" name="DiscountAmountValue" scale="4" precision="20" nullable="true" comment="discount_amount_value"/>
+    <column xsi:type="text" name="DiscountValueType" nullable="true" comment="discount_type"/>
+    <column xsi:type="decimal" name="DiscountValue" scale="4" precision="20" nullable="true" comment="discount_value"/>
+    <column xsi:type="boolean" name="Exclude" default="0" nullable="true" comment="exclude"/>
+    <column xsi:type="text" name="LineGroup" nullable="true" comment="line_group"/>
+    <column xsi:type="int" name="LineNumber" padding="11" nullable="true" comment="line_no"/>
+    <column xsi:type="decimal" name="MaxDiscountAmount" scale="4" precision="20" nullable="true" comment="maximum_discount_amount"/>
+    <column xsi:type="text" name="MemberAttribute" nullable="true" comment="member_attribute"/>
+    <column xsi:type="decimal" name="LineMemberPoints" scale="4" precision="20" nullable="true" comment="member_points"/>
+    <column xsi:type="text" name="MemberType" nullable="true" comment="member_type"/>
+    <column xsi:type="text" name="LoyaltySchemeCode" nullable="true" comment="member_value"/>
+    <column xsi:type="text" name="Number" nullable="true" comment="no"/>
+    <column xsi:type="int" name="NumberOfItemNeeded" padding="11" nullable="true" comment="no_of_items_needed"/>
+    <column xsi:type="text" name="OfferNo" nullable="true" comment="offer_no"/>
+    <column xsi:type="decimal" name="OfferPrice" scale="4" precision="20" nullable="true" comment="offer_price"/>
+    <column xsi:type="decimal" name="OfferPriceInclVAT" scale="4" precision="20" nullable="true" comment="offer_price_including_vat"/>
+    <column xsi:type="text" name="PriceGroup" nullable="true" comment="price_group"/>
+    <column xsi:type="int" name="PriorityNo" padding="11" nullable="true" comment="priority"/>
+    <column xsi:type="text" name="ProductItemCategory" nullable="true" comment="prod_group_category"/>
+    <column xsi:type="int" name="PromptForAction" padding="11" nullable="true" comment="prompt_for_action"/>
+    <column xsi:type="decimal" name="SplitDealPriceDiscount" scale="4" precision="20" nullable="true" comment="split_deal_pricedisc"/>
+    <column xsi:type="decimal" name="StandardPrice" scale="4" precision="20" nullable="true" comment="standard_price"/>
+    <column xsi:type="decimal" name="StandardPriceInclVAT" scale="4" precision="20" nullable="true" comment="standard_price_including_vat"/>
+    <column xsi:type="int" name="Enabled" padding="11" nullable="true" comment="status"/>
+    <column xsi:type="text" name="StoreGroupCodes" nullable="true" comment="store_group_codes"/>
+    <column xsi:type="decimal" name="TenderOffer" scale="4" precision="20" nullable="true" comment="tender_offer"/>
+    <column xsi:type="decimal" name="TenderOfferAmount" scale="4" precision="20" nullable="true" comment="tender_offer_amount"/>
+    <column xsi:type="text" name="TenderTypeCode" nullable="true" comment="tender_type_code"/>
+    <column xsi:type="text" name="TenderTypeValue" nullable="true" comment="tender_type_value"/>
+    <column xsi:type="boolean" name="TriggerPopUp" default="0" nullable="true" comment="trigger_popup_on_pos"/>
+    <column xsi:type="text" name="Type" nullable="true" comment="type"/>
+    <column xsi:type="text" name="UnitOfMeasureId" nullable="true" comment="unit_of_measure"/>
+    <column xsi:type="text" name="ValidFromBeforeExpDate" nullable="true" comment="valid_from_before_exp_date"/>
+    <column xsi:type="text" name="ValidToBeforeExpDate" nullable="true" comment="valid_to_before_exp_date"/>
+    <column xsi:type="text" name="ValidationPeriodId" nullable="true" comment="validation_period_id"/>
+    <column xsi:type="text" name="VariantId" nullable="true" comment="variant_code"/>
+    <column xsi:type="int" name="VariantType" padding="11" nullable="true" comment="variant_type"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -889,9 +815,9 @@
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_periodicdiscview_id"/>
+      <column name="repl_discount_setup_id"/>
     </constraint>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_PERIODICDISCVIEW_IDENTITY_VALUE">
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_DISCOUNT_SETUP_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
   </table>
@@ -949,7 +875,7 @@
     <column xsi:type="int" name="Priority" padding="11" nullable="true" comment="priority"/>
     <column xsi:type="text" name="SalesType" nullable="true" comment="sales_type_filter"/>
     <column xsi:type="text" name="StartDate" nullable="true" comment="start_date"/>
-    <column xsi:type="int" name="Type" padding="11" nullable="true" comment="type"/>
+    <column xsi:type="text" name="Type" nullable="true" comment="type"/>
     <column xsi:type="text" name="ValidationScheduleId" nullable="true" comment="validation_schedule_id"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
@@ -1107,7 +1033,7 @@
     <column xsi:type="text" name="NodeId" nullable="true" comment="node_id"/>
     <column xsi:type="text" name="ImageId" nullable="true" comment="retail_image_id"/>
     <column xsi:type="int" name="SortOrder" padding="11" nullable="true" comment="sort_order"/>
-    <column xsi:type="int" name="Type" padding="11" nullable="true" comment="type"/>
+    <column xsi:type="text" name="Type" nullable="true" comment="type"/>
     <column xsi:type="text" name="ValidationPeriod" nullable="true" comment="validation_period_id"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
@@ -2179,32 +2105,25 @@
       <column name="repl_staffpermissionview_id"/>
     </constraint>
   </table>
-  <table name="ls_replication_repl_storeview" resource="default" engine="innodb" comment="StoreView">
-    <column xsi:type="int" name="repl_storeview_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_storeview_id"/>
-    <column xsi:type="text" name="address" nullable="true" comment="address"/>
-    <column xsi:type="text" name="address2" nullable="true" comment="address2"/>
-    <column xsi:type="boolean" name="calc_inv_for_sourcing_location" default="0" nullable="true" comment="calc_inv_for_sourcing_location"/>
-    <column xsi:type="text" name="city" nullable="true" comment="city"/>
-    <column xsi:type="boolean" name="click_and_collect" default="0" nullable="true" comment="click_and_collect"/>
-    <column xsi:type="text" name="country_code" nullable="true" comment="country_code"/>
-    <column xsi:type="text" name="county" nullable="true" comment="county"/>
-    <column xsi:type="text" name="currency_code" nullable="true" comment="currency_code"/>
-    <column xsi:type="text" name="functionality_profile" nullable="true" comment="functionality_profile"/>
-    <column xsi:type="decimal" name="latitude" scale="4" precision="20" nullable="true" comment="latitude"/>
-    <column xsi:type="text" name="lcy_code" nullable="true" comment="lcy_code"/>
-    <column xsi:type="decimal" name="longitude" scale="4" precision="20" nullable="true" comment="longitude"/>
-    <column xsi:type="boolean" name="loyalty" default="0" nullable="true" comment="loyalty"/>
-    <column xsi:type="text" name="name" nullable="true" comment="name"/>
-    <column xsi:type="varchar" name="no" length="200" nullable="true" comment="no"/>
-    <column xsi:type="text" name="phone_no" nullable="true" comment="phone_no"/>
-    <column xsi:type="text" name="post_code" nullable="true" comment="post_code"/>
-    <column xsi:type="text" name="price_group_codes" nullable="true" comment="price_group_codes"/>
-    <column xsi:type="text" name="sales_type_filter" nullable="true" comment="sales_type_filter"/>
-    <column xsi:type="text" name="store_group_codes" nullable="true" comment="store_group_codes"/>
-    <column xsi:type="text" name="store_vat_bus_post_gr" nullable="true" comment="store_vat_bus_post_gr"/>
-    <column xsi:type="boolean" name="web_store" default="0" nullable="true" comment="web_store"/>
-    <column xsi:type="text" name="web_store_pos_terminal" nullable="true" comment="web_store_pos_terminal"/>
-    <column xsi:type="text" name="web_store_staff_id" nullable="true" comment="web_store_staff_id"/>
+  <table name="ls_replication_repl_store" resource="default" engine="innodb" comment="StoreView">
+    <column xsi:type="int" name="repl_store_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_store_id"/>
+    <column xsi:type="text" name="Street" nullable="true" comment="address"/>
+    <column xsi:type="boolean" name="UseSourcingLocation" default="0" nullable="true" comment="calc_inv_for_sourcing_location"/>
+    <column xsi:type="text" name="City" nullable="true" comment="city"/>
+    <column xsi:type="boolean" name="ClickAndCollect" default="0" nullable="true" comment="click_and_collect"/>
+    <column xsi:type="text" name="Country" nullable="true" comment="country_code"/>
+    <column xsi:type="text" name="County" nullable="true" comment="county"/>
+    <column xsi:type="text" name="Currency" nullable="true" comment="currency_code"/>
+    <column xsi:type="text" name="FunctionalityProfile" nullable="true" comment="functionality_profile"/>
+    <column xsi:type="decimal" name="Latitute" scale="4" precision="20" nullable="true" comment="latitude"/>
+    <column xsi:type="decimal" name="Longitude" scale="4" precision="20" nullable="true" comment="longitude"/>
+    <column xsi:type="text" name="Name" nullable="true" comment="name"/>
+    <column xsi:type="text" name="nav_id" nullable="true" comment="no"/>
+    <column xsi:type="text" name="Phone" nullable="true" comment="phone_no"/>
+    <column xsi:type="text" name="ZipCode" nullable="true" comment="post_code"/>
+    <column xsi:type="text" name="PriceGroupCodes" nullable="true" comment="price_group_codes"/>
+    <column xsi:type="text" name="StoreGroupCodes" nullable="true" comment="store_group_codes"/>
+    <column xsi:type="text" name="TaxGroup" nullable="true" comment="store_vat_bus_post_gr"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -2217,16 +2136,7 @@
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_storeview_id"/>
-    </constraint>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_STOREVIEW_NO">
-      <column name="no"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_STOREVIEW_SCOPEID">
-      <column name="scope_id"/>
-    </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_STOREVIEW_IDENTITY_VALUE">
-      <column name="identity_value"/>
+      <column name="repl_store_id"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_lsc_staff_store_link" resource="default" engine="innodb" comment="LSC STAFF Store Link">
@@ -2426,52 +2336,43 @@
       <column name="repl_tax_setup_id"/>
     </constraint>
   </table>
-  <table name="ls_replication_repl_lsc_validation_period" resource="default" engine="innodb" comment="LSC Validation Period">
-    <column xsi:type="int" name="repl_lsc_validation_period_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_lsc_validation_period_id"/>
-    <column xsi:type="text" name="description" nullable="true" comment="description"/>
-    <column xsi:type="text" name="ending_date" nullable="true" comment="ending_date"/>
-    <column xsi:type="text" name="ending_time" nullable="true" comment="ending_time"/>
-    <column xsi:type="boolean" name="ending_time_after_midnight" default="0" nullable="true" comment="ending_time_after_midnight"/>
-    <column xsi:type="boolean" name="fri_end_time_after_midnight" default="0" nullable="true" comment="fri_end_time_after_midnight"/>
-    <column xsi:type="boolean" name="fri_time_within_bounds" default="0" nullable="true" comment="fri_time_within_bounds"/>
-    <column xsi:type="text" name="friday_ending_time" nullable="true" comment="friday_ending_time"/>
-    <column xsi:type="text" name="friday_starting_time" nullable="true" comment="friday_starting_time"/>
-    <column xsi:type="boolean" name="mon_end_time_after_midnight" default="0" nullable="true" comment="mon_end_time_after_midnight"/>
-    <column xsi:type="boolean" name="mon_time_within_bounds" default="0" nullable="true" comment="mon_time_within_bounds"/>
-    <column xsi:type="text" name="monday_ending_time" nullable="true" comment="monday_ending_time"/>
-    <column xsi:type="text" name="monday_starting_time" nullable="true" comment="monday_starting_time"/>
-    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="nav_id"/>
-    <column xsi:type="text" name="no_series" nullable="true" comment="no_series"/>
-    <column xsi:type="text" name="offer_ending_time" nullable="true" comment="offer_ending_time"/>
-    <column xsi:type="text" name="offer_starting_time" nullable="true" comment="offer_starting_time"/>
-    <column xsi:type="boolean" name="sat_end_time_after_midnight" default="0" nullable="true" comment="sat_end_time_after_midnight"/>
-    <column xsi:type="boolean" name="sat_time_within_bounds" default="0" nullable="true" comment="sat_time_within_bounds"/>
-    <column xsi:type="text" name="saturday_ending_time" nullable="true" comment="saturday_ending_time"/>
-    <column xsi:type="text" name="saturday_starting_time" nullable="true" comment="saturday_starting_time"/>
-    <column xsi:type="text" name="starting_date" nullable="true" comment="starting_date"/>
-    <column xsi:type="text" name="starting_time" nullable="true" comment="starting_time"/>
-    <column xsi:type="boolean" name="sun_end_time_after_midnight" default="0" nullable="true" comment="sun_end_time_after_midnight"/>
-    <column xsi:type="boolean" name="sun_time_within_bounds" default="0" nullable="true" comment="sun_time_within_bounds"/>
-    <column xsi:type="text" name="sunday_ending_time" nullable="true" comment="sunday_ending_time"/>
-    <column xsi:type="text" name="sunday_starting_time" nullable="true" comment="sunday_starting_time"/>
-    <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
-    <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
-    <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
-    <column xsi:type="text" name="systemmodifiedat" nullable="true" comment="systemmodifiedat"/>
-    <column xsi:type="text" name="systemmodifiedby" nullable="true" comment="systemmodifiedby"/>
-    <column xsi:type="boolean" name="thu_end_time_after_midnight" default="0" nullable="true" comment="thu_end_time_after_midnight"/>
-    <column xsi:type="boolean" name="thu_time_within_bounds" default="0" nullable="true" comment="thu_time_within_bounds"/>
-    <column xsi:type="text" name="thursday_ending_time" nullable="true" comment="thursday_ending_time"/>
-    <column xsi:type="text" name="thursday_starting_time" nullable="true" comment="thursday_starting_time"/>
-    <column xsi:type="boolean" name="time_within_bounds" default="0" nullable="true" comment="time_within_bounds"/>
-    <column xsi:type="boolean" name="tue_end_time_after_midnight" default="0" nullable="true" comment="tue_end_time_after_midnight"/>
-    <column xsi:type="boolean" name="tue_time_within_bounds" default="0" nullable="true" comment="tue_time_within_bounds"/>
-    <column xsi:type="text" name="tuesday_ending_time" nullable="true" comment="tuesday_ending_time"/>
-    <column xsi:type="text" name="tuesday_starting_time" nullable="true" comment="tuesday_starting_time"/>
-    <column xsi:type="boolean" name="wed_end_time_after_midnight" default="0" nullable="true" comment="wed_end_time_after_midnight"/>
-    <column xsi:type="boolean" name="wed_time_within_bounds" default="0" nullable="true" comment="wed_time_within_bounds"/>
-    <column xsi:type="text" name="wednesday_ending_time" nullable="true" comment="wednesday_ending_time"/>
-    <column xsi:type="text" name="wednesday_starting_time" nullable="true" comment="wednesday_starting_time"/>
+  <table name="ls_replication_repl_discount_validation" resource="default" engine="innodb" comment="LSC Validation Period">
+    <column xsi:type="int" name="repl_discount_validation_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_discount_validation_id"/>
+    <column xsi:type="text" name="Description" nullable="true" comment="description"/>
+    <column xsi:type="text" name="EndTime" nullable="true" comment="ending_time"/>
+    <column xsi:type="boolean" name="EndAfterMidnight" default="0" nullable="true" comment="ending_time_after_midnight"/>
+    <column xsi:type="boolean" name="FridayEndAfterMidnight" default="0" nullable="true" comment="fri_end_time_after_midnight"/>
+    <column xsi:type="boolean" name="FridayWithinBounds" default="0" nullable="true" comment="fri_time_within_bounds"/>
+    <column xsi:type="text" name="FridayEnd" nullable="true" comment="friday_ending_time"/>
+    <column xsi:type="text" name="FridayStart" nullable="true" comment="friday_starting_time"/>
+    <column xsi:type="boolean" name="MondayEndAfterMidnight" default="0" nullable="true" comment="mon_end_time_after_midnight"/>
+    <column xsi:type="boolean" name="MondayWithinBounds" default="0" nullable="true" comment="mon_time_within_bounds"/>
+    <column xsi:type="text" name="MondayEnd" nullable="true" comment="monday_ending_time"/>
+    <column xsi:type="text" name="MondayStart" nullable="true" comment="monday_starting_time"/>
+    <column xsi:type="text" name="nav_id" nullable="true" comment="nav_id"/>
+    <column xsi:type="boolean" name="SaturdayEndAfterMidnight" default="0" nullable="true" comment="sat_end_time_after_midnight"/>
+    <column xsi:type="boolean" name="SaturdayWithinBounds" default="0" nullable="true" comment="sat_time_within_bounds"/>
+    <column xsi:type="text" name="SaturdayEnd" nullable="true" comment="saturday_ending_time"/>
+    <column xsi:type="text" name="SaturdayStart" nullable="true" comment="saturday_starting_time"/>
+    <column xsi:type="text" name="StartDate" nullable="true" comment="starting_date"/>
+    <column xsi:type="text" name="StartTime" nullable="true" comment="starting_time"/>
+    <column xsi:type="boolean" name="SundayEndAfterMidnight" default="0" nullable="true" comment="sun_end_time_after_midnight"/>
+    <column xsi:type="boolean" name="SundayWithinBounds" default="0" nullable="true" comment="sun_time_within_bounds"/>
+    <column xsi:type="text" name="SundayEnd" nullable="true" comment="sunday_ending_time"/>
+    <column xsi:type="text" name="SundayStart" nullable="true" comment="sunday_starting_time"/>
+    <column xsi:type="boolean" name="ThursdayEndAfterMidnight" default="0" nullable="true" comment="thu_end_time_after_midnight"/>
+    <column xsi:type="boolean" name="ThursdayWithinBounds" default="0" nullable="true" comment="thu_time_within_bounds"/>
+    <column xsi:type="text" name="ThursdayEnd" nullable="true" comment="thursday_ending_time"/>
+    <column xsi:type="text" name="ThursdayStart" nullable="true" comment="thursday_starting_time"/>
+    <column xsi:type="boolean" name="TimeWithinBounds" default="0" nullable="true" comment="time_within_bounds"/>
+    <column xsi:type="boolean" name="TuesdayEndAfterMidnight" default="0" nullable="true" comment="tue_end_time_after_midnight"/>
+    <column xsi:type="boolean" name="TuesdayWithinBounds" default="0" nullable="true" comment="tue_time_within_bounds"/>
+    <column xsi:type="text" name="TuesdayEnd" nullable="true" comment="tuesday_ending_time"/>
+    <column xsi:type="text" name="TuesdayStart" nullable="true" comment="tuesday_starting_time"/>
+    <column xsi:type="boolean" name="WednesdayEndAfterMidnight" default="0" nullable="true" comment="wed_end_time_after_midnight"/>
+    <column xsi:type="boolean" name="WednesdayWithinBounds" default="0" nullable="true" comment="wed_time_within_bounds"/>
+    <column xsi:type="text" name="WednesdayEnd" nullable="true" comment="wednesday_ending_time"/>
+    <column xsi:type="text" name="WednesdayStart" nullable="true" comment="wednesday_starting_time"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -2484,25 +2385,7 @@
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_lsc_validation_period_id"/>
-    </constraint>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_VALIDATION_PERIOD_NAVID">
-      <column name="nav_id"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_VALIDATION_PERIOD_SCOPEID">
-      <column name="scope_id"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_VALIDATION_PERIOD_PROCESSED">
-      <column name="processed"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_VALIDATION_PERIOD_ISUPDATED">
-      <column name="is_updated"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_VALIDATION_PERIOD_ISDELETED">
-      <column name="IsDeleted"/>
-    </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_LSC_VALIDATION_PERIOD_IDENTITY_VALUE">
-      <column name="identity_value"/>
+      <column name="repl_discount_validation_id"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_lsc_item_variant_registration" resource="default" engine="innodb" comment="LSC Item Variant Registration">
@@ -2593,96 +2476,10 @@
   </table>
   <table name="ls_replication_repl_vendor" resource="default" engine="innodb" comment="Vendor">
     <column xsi:type="int" name="repl_vendor_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_vendor_id"/>
-    <column xsi:type="text" name="address" nullable="true" comment="address"/>
-    <column xsi:type="text" name="address_2" nullable="true" comment="address_2"/>
-    <column xsi:type="boolean" name="allow_multiple_posting_groups" default="0" nullable="true" comment="allow_multiple_posting_groups"/>
-    <column xsi:type="int" name="application_method" padding="11" nullable="true" comment="application_method"/>
-    <column xsi:type="text" name="base_calendar_code" nullable="true" comment="base_calendar_code"/>
-    <column xsi:type="boolean" name="block_payment_tolerance" default="0" nullable="true" comment="block_payment_tolerance"/>
-    <column xsi:type="int" name="blocked" padding="11" nullable="true" comment="blocked"/>
-    <column xsi:type="decimal" name="budgeted_amount" scale="4" precision="20" nullable="true" comment="budgeted_amount"/>
-    <column xsi:type="text" name="cash_flow_payment_terms_code" nullable="true" comment="cash_flow_payment_terms_code"/>
-    <column xsi:type="text" name="city" nullable="true" comment="city"/>
-    <column xsi:type="text" name="company_size_code" nullable="true" comment="company_size_code"/>
-    <column xsi:type="text" name="contact" nullable="true" comment="contact"/>
-    <column xsi:type="text" name="countryregion_code" nullable="true" comment="countryregion_code"/>
-    <column xsi:type="text" name="county" nullable="true" comment="county"/>
-    <column xsi:type="text" name="creditor_no" nullable="true" comment="creditor_no"/>
-    <column xsi:type="text" name="currency_code" nullable="true" comment="currency_code"/>
-    <column xsi:type="text" name="currency_id" nullable="true" comment="currency_id"/>
-    <column xsi:type="boolean" name="disable_search_by_name" default="0" nullable="true" comment="disable_search_by_name"/>
-    <column xsi:type="text" name="document_sending_profile" nullable="true" comment="document_sending_profile"/>
-    <column xsi:type="text" name="email" nullable="true" comment="email"/>
-    <column xsi:type="text" name="eori_number" nullable="true" comment="eori_number"/>
-    <column xsi:type="boolean" name="exclude_from_pmt_practices" default="0" nullable="true" comment="exclude_from_pmt_practices"/>
-    <column xsi:type="text" name="fax_no" nullable="true" comment="fax_no"/>
-    <column xsi:type="text" name="fin_charge_terms_code" nullable="true" comment="fin_charge_terms_code"/>
-    <column xsi:type="text" name="format_region" nullable="true" comment="format_region"/>
-    <column xsi:type="text" name="gen_bus_posting_group" nullable="true" comment="gen_bus_posting_group"/>
-    <column xsi:type="text" name="gln" nullable="true" comment="gln"/>
-    <column xsi:type="text" name="global_dimension_1_code" nullable="true" comment="global_dimension_1_code"/>
-    <column xsi:type="text" name="global_dimension_2_code" nullable="true" comment="global_dimension_2_code"/>
-    <column xsi:type="text" name="home_page" nullable="true" comment="home_page"/>
-    <column xsi:type="text" name="ic_partner_code" nullable="true" comment="ic_partner_code"/>
-    <column xsi:type="text" name="image" nullable="true" comment="image"/>
-    <column xsi:type="int" name="intrastat_partner_type" padding="11" nullable="true" comment="intrastat_partner_type"/>
-    <column xsi:type="text" name="invoice_disc_code" nullable="true" comment="invoice_disc_code"/>
-    <column xsi:type="text" name="language_code" nullable="true" comment="language_code"/>
-    <column xsi:type="text" name="last_date_modified" nullable="true" comment="last_date_modified"/>
-    <column xsi:type="text" name="last_modified_date_time" nullable="true" comment="last_modified_date_time"/>
-    <column xsi:type="text" name="lead_time_calculation" nullable="true" comment="lead_time_calculation"/>
-    <column xsi:type="text" name="location_code" nullable="true" comment="location_code"/>
-    <column xsi:type="text" name="lsc_asn_trust_profile" nullable="true" comment="lsc_asn_trust_profile"/>
-    <column xsi:type="text" name="lsc_buyer_group_code" nullable="true" comment="lsc_buyer_group_code"/>
-    <column xsi:type="text" name="lsc_buyer_id" nullable="true" comment="lsc_buyer_id"/>
-    <column xsi:type="boolean" name="lsc_enable_for_rel_calendar" default="0" nullable="true" comment="lsc_enable_for_rel_calendar"/>
-    <column xsi:type="text" name="lsc_release_calendar_group" nullable="true" comment="lsc_release_calendar_group"/>
-    <column xsi:type="int" name="lsc_rtc_filter_field" padding="11" nullable="true" comment="lsc_rtc_filter_field"/>
-    <column xsi:type="int" name="lsc_trust_level" padding="11" nullable="true" comment="lsc_trust_level"/>
-    <column xsi:type="boolean" name="lsc_validate_tracking_code" default="0" nullable="true" comment="lsc_validate_tracking_code"/>
-    <column xsi:type="text" name="mobile_phone_no" nullable="true" comment="mobile_phone_no"/>
-    <column xsi:type="text" name="name" nullable="true" comment="name"/>
-    <column xsi:type="text" name="name_2" nullable="true" comment="name_2"/>
-    <column xsi:type="varchar" name="no" length="200" nullable="true" comment="no"/>
-    <column xsi:type="text" name="no_series" nullable="true" comment="no_series"/>
-    <column xsi:type="text" name="our_account_no" nullable="true" comment="our_account_no"/>
-    <column xsi:type="text" name="overreceipt_code" nullable="true" comment="overreceipt_code"/>
-    <column xsi:type="int" name="partner_type" padding="11" nullable="true" comment="partner_type"/>
-    <column xsi:type="text" name="payment_method_code" nullable="true" comment="payment_method_code"/>
-    <column xsi:type="text" name="payment_method_id" nullable="true" comment="payment_method_id"/>
-    <column xsi:type="text" name="payment_terms_code" nullable="true" comment="payment_terms_code"/>
-    <column xsi:type="text" name="payment_terms_id" nullable="true" comment="payment_terms_id"/>
-    <column xsi:type="text" name="payto_vendor_no" nullable="true" comment="payto_vendor_no"/>
-    <column xsi:type="text" name="phone_no" nullable="true" comment="phone_no"/>
-    <column xsi:type="text" name="post_code" nullable="true" comment="post_code"/>
-    <column xsi:type="text" name="preferred_bank_account_code" nullable="true" comment="preferred_bank_account_code"/>
-    <column xsi:type="decimal" name="prepayment" scale="4" precision="20" nullable="true" comment="prepayment"/>
-    <column xsi:type="int" name="price_calculation_method" padding="11" nullable="true" comment="price_calculation_method"/>
-    <column xsi:type="boolean" name="prices_including_vat" default="0" nullable="true" comment="prices_including_vat"/>
-    <column xsi:type="text" name="primary_contact_no" nullable="true" comment="primary_contact_no"/>
-    <column xsi:type="int" name="priority" padding="11" nullable="true" comment="priority"/>
-    <column xsi:type="boolean" name="privacy_blocked" default="0" nullable="true" comment="privacy_blocked"/>
-    <column xsi:type="text" name="purchaser_code" nullable="true" comment="purchaser_code"/>
-    <column xsi:type="text" name="registration_number" nullable="true" comment="registration_number"/>
-    <column xsi:type="text" name="responsibility_center" nullable="true" comment="responsibility_center"/>
-    <column xsi:type="text" name="search_name" nullable="true" comment="search_name"/>
-    <column xsi:type="text" name="shipment_method_code" nullable="true" comment="shipment_method_code"/>
-    <column xsi:type="text" name="shipping_agent_code" nullable="true" comment="shipping_agent_code"/>
-    <column xsi:type="int" name="statistics_group" padding="11" nullable="true" comment="statistics_group"/>
-    <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
-    <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
-    <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
-    <column xsi:type="text" name="systemmodifiedat" nullable="true" comment="systemmodifiedat"/>
-    <column xsi:type="text" name="systemmodifiedby" nullable="true" comment="systemmodifiedby"/>
-    <column xsi:type="text" name="tax_area_code" nullable="true" comment="tax_area_code"/>
-    <column xsi:type="boolean" name="tax_liable" default="0" nullable="true" comment="tax_liable"/>
-    <column xsi:type="text" name="telex_answer_back" nullable="true" comment="telex_answer_back"/>
-    <column xsi:type="text" name="telex_no" nullable="true" comment="telex_no"/>
-    <column xsi:type="text" name="territory_code" nullable="true" comment="territory_code"/>
-    <column xsi:type="boolean" name="validate_eu_vat_reg_no" default="0" nullable="true" comment="validate_eu_vat_reg_no"/>
-    <column xsi:type="text" name="vat_bus_posting_group" nullable="true" comment="vat_bus_posting_group"/>
-    <column xsi:type="text" name="vat_registration_no" nullable="true" comment="vat_registration_no"/>
-    <column xsi:type="text" name="vendor_posting_group" nullable="true" comment="vendor_posting_group"/>
+    <column xsi:type="int" name="Blocked" padding="11" nullable="true" comment="blocked"/>
+    <column xsi:type="text" name="UpdatedOnUtc" nullable="true" comment="last_date_modified"/>
+    <column xsi:type="text" name="Name" nullable="true" comment="name"/>
+    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="no"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -2716,11 +2513,11 @@
       <column name="identity_value"/>
     </constraint>
   </table>
-  <table name="ls_replication_repl_vendoritemview" resource="default" engine="innodb" comment="VendorItemView">
-    <column xsi:type="int" name="repl_vendoritemview_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_vendoritemview_id"/>
-    <column xsi:type="varchar" name="itemno" length="200" nullable="true" comment="itemno"/>
-    <column xsi:type="text" name="vendoritemno" nullable="true" comment="vendoritemno"/>
-    <column xsi:type="varchar" name="vendorno" length="200" nullable="true" comment="vendorno"/>
+  <table name="ls_replication_repl_loy_vendor_item_mapping" resource="default" engine="innodb" comment="VendorItemView">
+    <column xsi:type="int" name="repl_loy_vendor_item_mapping_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_loy_vendor_item_mapping_id"/>
+    <column xsi:type="text" name="NavProductId" nullable="true" comment="itemno"/>
+    <column xsi:type="text" name="NavManufacturerItemId" nullable="true" comment="vendoritemno"/>
+    <column xsi:type="text" name="NavManufacturerId" nullable="true" comment="vendorno"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -2733,28 +2530,7 @@
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_vendoritemview_id"/>
-    </constraint>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDORITEMVIEW_VENDORNO">
-      <column name="vendorno"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDORITEMVIEW_ITEMNO">
-      <column name="itemno"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDORITEMVIEW_SCOPEID">
-      <column name="scope_id"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDORITEMVIEW_PROCESSED">
-      <column name="processed"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDORITEMVIEW_ISUPDATED">
-      <column name="is_updated"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDORITEMVIEW_ISDELETED">
-      <column name="IsDeleted"/>
-    </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_VENDORITEMVIEW_IDENTITY_VALUE">
-      <column name="identity_value"/>
+      <column name="repl_loy_vendor_item_mapping_id"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_lsc_wi_discounts" resource="default" engine="innodb" comment="LSC WI Discounts">
