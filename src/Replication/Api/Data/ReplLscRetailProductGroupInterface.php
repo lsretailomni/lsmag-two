@@ -32,6 +32,10 @@ interface ReplLscRetailProductGroupInterface
 
     public function setItemTemplateCode(?string $value);
 
+    public function getItemTemplCode() : ?string;
+
+    public function setItemTemplCode(?string $value);
+
     public function getPosMenuLink() : ?string;
 
     public function setPosMenuLink(?string $value);

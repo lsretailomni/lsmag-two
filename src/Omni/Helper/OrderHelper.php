@@ -5,26 +5,26 @@ namespace Ls\Omni\Helper;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCODiscountLineV6;
-use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOHeaderV6;
-use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOLineV6;
-use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOPaymentV6;
-use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateV6;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
-use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\RootCustomerOrderCreateV6;
-use \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\Ecommerce\Operation\GetSalesInfoByOrderId_GetSalesInfoByOrderId;
-use \Ls\Omni\Client\Ecommerce\Operation\GetSalesReturnById_GetSalesReturnById;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Omni\Client\Ecommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
-use \Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
-use \Ls\Omni\Exception\InvalidEnumException;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCODiscountLineV6;
+use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOHeaderV6;
+use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOLineV6;
+use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOPaymentV6;
+use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateV6;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
+use Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
+use Ls\Omni\Client\Ecommerce\Entity\RootCustomerOrderCreateV6;
+use Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
+use Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\Ecommerce\Operation\GetSalesInfoByOrderId_GetSalesInfoByOrderId;
+use Ls\Omni\Client\Ecommerce\Operation\GetSalesReturnById_GetSalesReturnById;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Client\Ecommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
+use Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
+use Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
@@ -741,7 +741,7 @@ class OrderHelper extends AbstractHelperOmni
      * Get sales order by order id
      *
      * @param $docId
-     * @return GetSalesInfoByOrderId_GetSalesInfoByOrderId|null
+     * @return Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId|null
      * @throws InvalidEnumException
      */
     public function getSalesOrderByOrderIdNew($docId)
@@ -840,7 +840,7 @@ class OrderHelper extends AbstractHelperOmni
      *
      * @param $docId
      * @param $type
-     * @return GetSelectedSalesDoc_GetSelectedSalesDoc|GetSalesInfoByOrderId_GetSalesInfoByOrderId|null
+     * @return GetSelectedSalesDoc_GetSelectedSalesDoc|Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId|null
      * @throws InvalidEnumException
      */
     public function fetchOrder($docId, $type)
@@ -977,6 +977,27 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * Get magento order given increment_id
+     *
+     * @param $incrementId
+     * @return false|mixed|null
+     */
+    public function getMagentoOrderGivenExternalId($incrementId)
+    {
+        $order     = null;
+        $orderList = $this->orderRepository->getList(
+            $this->basketHelper->getSearchCriteriaBuilder()->
+            addFilter('increment_id', $incrementId)->create()
+        )->getItems();
+
+        if (!empty($orderList)) {
+            $order = reset($orderList);
+        }
+
+        return $order;
+    }
+
+    /**
      * Get magento order given entity_id
      *
      * @param $entityId
@@ -1087,7 +1108,7 @@ class OrderHelper extends AbstractHelperOmni
      * @return OrderInterface|mixed
      * @throws AlreadyExistsException
      * @throws NoSuchEntityException
-     * @throws \Magento\Framework\Exception\InputException
+     * @throws InputException
      */
     public function setAdyenParameters($adyenResponse, $order)
     {
@@ -1270,7 +1291,7 @@ class OrderHelper extends AbstractHelperOmni
             $dateTime = $this->timezone->date($date)->format($format);
 
             return $dateTime;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $date;
@@ -1466,5 +1487,17 @@ class OrderHelper extends AbstractHelperOmni
             }
         }
         return $orders;
+    }
+
+    /**
+     * Get country name by country code
+     *
+     * @param string $countryCode
+     * @return string
+     */
+    public function getCountryName($countryCode)
+    {
+        $country = $this->countryFactory->create()->loadByCode($countryCode);
+        return $country->getCountryId();
     }
 }

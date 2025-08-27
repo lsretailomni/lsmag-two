@@ -29,114 +29,34 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\Ecommerce\Entity\PeriodicDisc
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getOfferNo() : ?string
+    public function getAmountToTrigger() : ?float
     {
-        return $this->getData(self::getDbColumnsMapping()[self::OFFER_NO]);
+        return $this->getData(self::getDbColumnsMapping()[self::AMOUNT_TO_TRIGGER]);
     }
 
-    public function setOfferNo(?string $value)
+    public function setAmountToTrigger(?float $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::OFFER_NO], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::AMOUNT_TO_TRIGGER], $value);
     }
 
-    public function getLineNo() : ?int
+    public function getCouponCode() : ?string
     {
-        return $this->getData(self::getDbColumnsMapping()[self::LINE_NO]);
+        return $this->getData(self::getDbColumnsMapping()[self::COUPON_CODE]);
     }
 
-    public function setLineNo(?int $value)
+    public function setCouponCode(?string $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::LINE_NO], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::COUPON_CODE], $value);
     }
 
-    public function getType() : ?int
+    public function getCouponQtyNeeded() : ?float
     {
-        return $this->getData(self::getDbColumnsMapping()[self::TYPE]);
+        return $this->getData(self::getDbColumnsMapping()[self::COUPON_QTY_NEEDED]);
     }
 
-    public function setType(?int $value)
+    public function setCouponQtyNeeded(?float $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::TYPE], $value);
-    }
-
-    public function getNo() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::NO]);
-    }
-
-    public function setNo(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::NO], $value);
-    }
-
-    public function getVariantCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
-    }
-
-    public function setVariantCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
-    }
-
-    public function getDescription() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
-    }
-
-    public function setDescription(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
-    }
-
-    public function getStandardPriceIncludingVat() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::STANDARD_PRICE_INCLUDING_VAT]);
-    }
-
-    public function setStandardPriceIncludingVat(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::STANDARD_PRICE_INCLUDING_VAT], $value);
-    }
-
-    public function getStandardPrice() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::STANDARD_PRICE]);
-    }
-
-    public function setStandardPrice(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::STANDARD_PRICE], $value);
-    }
-
-    public function getSplitDealPriceDisc() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SPLIT_DEAL_PRICEDISC]);
-    }
-
-    public function setSplitDealPriceDisc(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SPLIT_DEAL_PRICEDISC], $value);
-    }
-
-    public function getDealPriceDisc() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DEAL_PRICEDISC]);
-    }
-
-    public function setDealPriceDisc(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DEAL_PRICEDISC], $value);
-    }
-
-    public function getPriceGroup() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PRICE_GROUP]);
-    }
-
-    public function setPriceGroup(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PRICE_GROUP], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::COUPON_QTY_NEEDED], $value);
     }
 
     public function getCurrencyCode() : ?string
@@ -149,64 +69,44 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\Ecommerce\Entity\PeriodicDisc
         return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
     }
 
-    public function getUnitOfMeasure() : ?string
+    public function getCustomerDiscGroup() : ?string
     {
-        return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE]);
+        return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP]);
     }
 
-    public function setUnitOfMeasure(?string $value)
+    public function setCustomerDiscGroup(?string $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP], $value);
     }
 
-    public function getProdGroupCategory() : ?string
+    public function getDealPriceValue() : ?float
     {
-        return $this->getData(self::getDbColumnsMapping()[self::PROD_GROUP_CATEGORY]);
+        return $this->getData(self::getDbColumnsMapping()[self::DEAL_PRICE_VALUE]);
     }
 
-    public function setProdGroupCategory(?string $value)
+    public function setDealPriceValue(?float $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::PROD_GROUP_CATEGORY], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::DEAL_PRICE_VALUE], $value);
     }
 
-    public function getValidFromBeforeExpDate() : ?string
+    public function getDealPriceDisc() : ?float
     {
-        return $this->getData(self::getDbColumnsMapping()[self::VALID_FROM_BEFORE_EXP_DATE]);
+        return $this->getData(self::getDbColumnsMapping()[self::DEAL_PRICEDISC]);
     }
 
-    public function setValidFromBeforeExpDate(?string $value)
+    public function setDealPriceDisc(?float $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::VALID_FROM_BEFORE_EXP_DATE], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::DEAL_PRICEDISC], $value);
     }
 
-    public function getValidToBeforeExpDate() : ?string
+    public function getDescription() : ?string
     {
-        return $this->getData(self::getDbColumnsMapping()[self::VALID_TO_BEFORE_EXP_DATE]);
+        return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
 
-    public function setValidToBeforeExpDate(?string $value)
+    public function setDescription(?string $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::VALID_TO_BEFORE_EXP_DATE], $value);
-    }
-
-    public function getLineGroup() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LINE_GROUP]);
-    }
-
-    public function setLineGroup(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LINE_GROUP], $value);
-    }
-
-    public function getNoOfItemsNeeded() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::NO_OF_ITEMS_NEEDED]);
-    }
-
-    public function setNoOfItemsNeeded(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::NO_OF_ITEMS_NEEDED], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
     public function getDiscType() : ?int
@@ -219,6 +119,16 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\Ecommerce\Entity\PeriodicDisc
         return $this->setData(self::getDbColumnsMapping()[self::DISC_TYPE], $value);
     }
 
+    public function getDiscountValue() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_VALUE]);
+    }
+
+    public function setDiscountValue(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_VALUE], $value);
+    }
+
     public function getDiscountAmount() : ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT]);
@@ -227,6 +137,166 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\Ecommerce\Entity\PeriodicDisc
     public function setDiscountAmount(?float $value)
     {
         return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT], $value);
+    }
+
+    public function getDiscountAmountIncludingVat() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_INCLUDING_VAT]);
+    }
+
+    public function setDiscountAmountIncludingVat(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_INCLUDING_VAT], $value);
+    }
+
+    public function getDiscountAmountValue() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_VALUE]);
+    }
+
+    public function setDiscountAmountValue(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_VALUE], $value);
+    }
+
+    public function getDiscountType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_TYPE]);
+    }
+
+    public function setDiscountType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_TYPE], $value);
+    }
+
+    public function getExclude() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EXCLUDE]);
+    }
+
+    public function setExclude(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EXCLUDE], $value);
+    }
+
+    public function getHeadPriceGroup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::HEAD_PRICE_GROUP]);
+    }
+
+    public function setHeadPriceGroup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::HEAD_PRICE_GROUP], $value);
+    }
+
+    public function getHeaderType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::HEADER_TYPE]);
+    }
+
+    public function setHeaderType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::HEADER_TYPE], $value);
+    }
+
+    public function getLineGroup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LINE_GROUP]);
+    }
+
+    public function setLineGroup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LINE_GROUP], $value);
+    }
+
+    public function getLineNo() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LINE_NO]);
+    }
+
+    public function setLineNo(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LINE_NO], $value);
+    }
+
+    public function getMaximumDiscountAmount() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MAXIMUM_DISCOUNT_AMOUNT]);
+    }
+
+    public function setMaximumDiscountAmount(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MAXIMUM_DISCOUNT_AMOUNT], $value);
+    }
+
+    public function getMemberAttribute() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MEMBER_ATTRIBUTE]);
+    }
+
+    public function setMemberAttribute(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MEMBER_ATTRIBUTE], $value);
+    }
+
+    public function getMemberPoints() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MEMBER_POINTS]);
+    }
+
+    public function setMemberPoints(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MEMBER_POINTS], $value);
+    }
+
+    public function getMemberType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MEMBER_TYPE]);
+    }
+
+    public function setMemberType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MEMBER_TYPE], $value);
+    }
+
+    public function getMemberValue() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MEMBER_VALUE]);
+    }
+
+    public function setMemberValue(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MEMBER_VALUE], $value);
+    }
+
+    public function getNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NO]);
+    }
+
+    public function setNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NO], $value);
+    }
+
+    public function getNoOfItemsNeeded() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NO_OF_ITEMS_NEEDED]);
+    }
+
+    public function setNoOfItemsNeeded(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NO_OF_ITEMS_NEEDED], $value);
+    }
+
+    public function getOfferNo() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::OFFER_NO]);
+    }
+
+    public function setOfferNo(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::OFFER_NO], $value);
     }
 
     public function getOfferPrice() : ?float
@@ -249,74 +319,14 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\Ecommerce\Entity\PeriodicDisc
         return $this->setData(self::getDbColumnsMapping()[self::OFFER_PRICE_INCLUDING_VAT], $value);
     }
 
-    public function getDiscountAmountIncludingVat() : ?float
+    public function getPlannedDemand() : ?float
     {
-        return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_INCLUDING_VAT]);
+        return $this->getData(self::getDbColumnsMapping()[self::PLANNED_DEMAND]);
     }
 
-    public function setDiscountAmountIncludingVat(?float $value)
+    public function setPlannedDemand(?float $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_INCLUDING_VAT], $value);
-    }
-
-    public function getTriggerPopUpOnPos() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::TRIGGER_POPUP_ON_POS]);
-    }
-
-    public function setTriggerPopUpOnPos(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::TRIGGER_POPUP_ON_POS], $value);
-    }
-
-    public function getVariantType() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_TYPE]);
-    }
-
-    public function setVariantType(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_TYPE], $value);
-    }
-
-    public function getExclude() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::EXCLUDE]);
-    }
-
-    public function setExclude(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::EXCLUDE], $value);
-    }
-
-    public function getMemberPoints() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::MEMBER_POINTS]);
-    }
-
-    public function setMemberPoints(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::MEMBER_POINTS], $value);
-    }
-
-    public function getPromptAtScan() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PROMPT_AT_SCAN]);
-    }
-
-    public function setPromptAtScan(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PROMPT_AT_SCAN], $value);
-    }
-
-    public function getHeaderType() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::HEADER_TYPE]);
-    }
-
-    public function setHeaderType(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::HEADER_TYPE], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::PLANNED_DEMAND], $value);
     }
 
     public function getPlannedDemandType() : ?int
@@ -329,24 +339,134 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\Ecommerce\Entity\PeriodicDisc
         return $this->setData(self::getDbColumnsMapping()[self::PLANNED_DEMAND_TYPE], $value);
     }
 
-    public function getPlannedDemand() : ?float
+    public function getPopUpLine1() : ?string
     {
-        return $this->getData(self::getDbColumnsMapping()[self::PLANNED_DEMAND]);
+        return $this->getData(self::getDbColumnsMapping()[self::POPUP_LINE_1]);
     }
 
-    public function setPlannedDemand(?float $value)
+    public function setPopUpLine1(?string $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::PLANNED_DEMAND], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::POPUP_LINE_1], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getPopUpLine2() : ?string
     {
-        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+        return $this->getData(self::getDbColumnsMapping()[self::POPUP_LINE_2]);
     }
 
-    public function setSystemid(?string $value)
+    public function setPopUpLine2(?string $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::POPUP_LINE_2], $value);
+    }
+
+    public function getPopUpLine3() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::POPUP_LINE_3]);
+    }
+
+    public function setPopUpLine3(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::POPUP_LINE_3], $value);
+    }
+
+    public function getPriceGroup() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRICE_GROUP]);
+    }
+
+    public function setPriceGroup(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRICE_GROUP], $value);
+    }
+
+    public function getPriority() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PRIORITY]);
+    }
+
+    public function setPriority(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PRIORITY], $value);
+    }
+
+    public function getProdGroupCategory() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PROD_GROUP_CATEGORY]);
+    }
+
+    public function setProdGroupCategory(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PROD_GROUP_CATEGORY], $value);
+    }
+
+    public function getPromptAtScan() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PROMPT_AT_SCAN]);
+    }
+
+    public function setPromptAtScan(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PROMPT_AT_SCAN], $value);
+    }
+
+    public function getPromptForAction() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PROMPT_FOR_ACTION]);
+    }
+
+    public function setPromptForAction(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PROMPT_FOR_ACTION], $value);
+    }
+
+    public function getSplitDealPriceDisc() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SPLIT_DEAL_PRICEDISC]);
+    }
+
+    public function setSplitDealPriceDisc(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SPLIT_DEAL_PRICEDISC], $value);
+    }
+
+    public function getStandardPrice() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STANDARD_PRICE]);
+    }
+
+    public function setStandardPrice(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STANDARD_PRICE], $value);
+    }
+
+    public function getStandardPriceIncludingVat() : ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STANDARD_PRICE_INCLUDING_VAT]);
+    }
+
+    public function setStandardPriceIncludingVat(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STANDARD_PRICE_INCLUDING_VAT], $value);
+    }
+
+    public function getStatus() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STATUS]);
+    }
+
+    public function setStatus(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STATUS], $value);
+    }
+
+    public function getStoreGroupCodes() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::STORE_GROUP_CODES]);
+    }
+
+    public function setStoreGroupCodes(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::STORE_GROUP_CODES], $value);
     }
 
     public function getSystemcreatedat() : ?string
@@ -389,194 +509,24 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\Ecommerce\Entity\PeriodicDisc
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
     }
 
-    public function getStatus() : ?int
+    public function getTenderOffer() : ?float
     {
-        return $this->getData(self::getDbColumnsMapping()[self::STATUS]);
+        return $this->getData(self::getDbColumnsMapping()[self::TENDER_OFFER]);
     }
 
-    public function setStatus(?int $value)
+    public function setTenderOffer(?float $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::STATUS], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::TENDER_OFFER], $value);
     }
 
-    public function getHeadPriceGroup() : ?string
+    public function getTenderOfferAmount() : ?float
     {
-        return $this->getData(self::getDbColumnsMapping()[self::HEAD_PRICE_GROUP]);
+        return $this->getData(self::getDbColumnsMapping()[self::TENDER_OFFER_AMOUNT]);
     }
 
-    public function setHeadPriceGroup(?string $value)
+    public function setTenderOfferAmount(?float $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::HEAD_PRICE_GROUP], $value);
-    }
-
-    public function getPriority() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PRIORITY]);
-    }
-
-    public function setPriority(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PRIORITY], $value);
-    }
-
-    public function getValidationPeriodId() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::VALIDATION_PERIOD_ID]);
-    }
-
-    public function setValidationPeriodId(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::VALIDATION_PERIOD_ID], $value);
-    }
-
-    public function getDiscountType() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_TYPE]);
-    }
-
-    public function setDiscountType(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_TYPE], $value);
-    }
-
-    public function getDealPriceValue() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DEAL_PRICE_VALUE]);
-    }
-
-    public function setDealPriceValue(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DEAL_PRICE_VALUE], $value);
-    }
-
-    public function getDiscountValue() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_VALUE]);
-    }
-
-    public function setDiscountValue(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_VALUE], $value);
-    }
-
-    public function getDiscountAmountValue() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_VALUE]);
-    }
-
-    public function setDiscountAmountValue(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_VALUE], $value);
-    }
-
-    public function getCustomerDiscGroup() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP]);
-    }
-
-    public function setCustomerDiscGroup(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP], $value);
-    }
-
-    public function getAmountToTrigger() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::AMOUNT_TO_TRIGGER]);
-    }
-
-    public function setAmountToTrigger(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::AMOUNT_TO_TRIGGER], $value);
-    }
-
-    public function getMemberValue() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::MEMBER_VALUE]);
-    }
-
-    public function setMemberValue(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::MEMBER_VALUE], $value);
-    }
-
-    public function getPopUpLine1() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::POPUP_LINE_1]);
-    }
-
-    public function setPopUpLine1(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::POPUP_LINE_1], $value);
-    }
-
-    public function getPopUpLine2() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::POPUP_LINE_2]);
-    }
-
-    public function setPopUpLine2(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::POPUP_LINE_2], $value);
-    }
-
-    public function getPopUpLine3() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::POPUP_LINE_3]);
-    }
-
-    public function setPopUpLine3(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::POPUP_LINE_3], $value);
-    }
-
-    public function getCouponCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::COUPON_CODE]);
-    }
-
-    public function setCouponCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::COUPON_CODE], $value);
-    }
-
-    public function getCouponQtyNeeded() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::COUPON_QTY_NEEDED]);
-    }
-
-    public function setCouponQtyNeeded(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::COUPON_QTY_NEEDED], $value);
-    }
-
-    public function getMemberType() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::MEMBER_TYPE]);
-    }
-
-    public function setMemberType(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::MEMBER_TYPE], $value);
-    }
-
-    public function getMemberAttribute() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::MEMBER_ATTRIBUTE]);
-    }
-
-    public function setMemberAttribute(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::MEMBER_ATTRIBUTE], $value);
-    }
-
-    public function getMaximumDiscountAmount() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::MAXIMUM_DISCOUNT_AMOUNT]);
-    }
-
-    public function setMaximumDiscountAmount(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::MAXIMUM_DISCOUNT_AMOUNT], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::TENDER_OFFER_AMOUNT], $value);
     }
 
     public function getTenderTypeCode() : ?string
@@ -599,44 +549,94 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\Ecommerce\Entity\PeriodicDisc
         return $this->setData(self::getDbColumnsMapping()[self::TENDER_TYPE_VALUE], $value);
     }
 
-    public function getPromptForAction() : ?int
+    public function getTriggerPopUpOnPos() : ?bool
     {
-        return $this->getData(self::getDbColumnsMapping()[self::PROMPT_FOR_ACTION]);
+        return $this->getData(self::getDbColumnsMapping()[self::TRIGGER_POPUP_ON_POS]);
     }
 
-    public function setPromptForAction(?int $value)
+    public function setTriggerPopUpOnPos(?bool $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::PROMPT_FOR_ACTION], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::TRIGGER_POPUP_ON_POS], $value);
     }
 
-    public function getTenderOffer() : ?float
+    public function getType() : ?int
     {
-        return $this->getData(self::getDbColumnsMapping()[self::TENDER_OFFER]);
+        return $this->getData(self::getDbColumnsMapping()[self::TYPE]);
     }
 
-    public function setTenderOffer(?float $value)
+    public function setType(?int $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::TENDER_OFFER], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::TYPE], $value);
     }
 
-    public function getTenderOfferAmount() : ?float
+    public function getUnitOfMeasure() : ?string
     {
-        return $this->getData(self::getDbColumnsMapping()[self::TENDER_OFFER_AMOUNT]);
+        return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE]);
     }
 
-    public function setTenderOfferAmount(?float $value)
+    public function setUnitOfMeasure(?string $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::TENDER_OFFER_AMOUNT], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE], $value);
     }
 
-    public function getStoreGroupCodes() : ?string
+    public function getValidFromBeforeExpDate() : ?string
     {
-        return $this->getData(self::getDbColumnsMapping()[self::STORE_GROUP_CODES]);
+        return $this->getData(self::getDbColumnsMapping()[self::VALID_FROM_BEFORE_EXP_DATE]);
     }
 
-    public function setStoreGroupCodes(?string $value)
+    public function setValidFromBeforeExpDate(?string $value)
     {
-        return $this->setData(self::getDbColumnsMapping()[self::STORE_GROUP_CODES], $value);
+        return $this->setData(self::getDbColumnsMapping()[self::VALID_FROM_BEFORE_EXP_DATE], $value);
+    }
+
+    public function getValidToBeforeExpDate() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VALID_TO_BEFORE_EXP_DATE]);
+    }
+
+    public function setValidToBeforeExpDate(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VALID_TO_BEFORE_EXP_DATE], $value);
+    }
+
+    public function getValidationPeriodId() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VALIDATION_PERIOD_ID]);
+    }
+
+    public function setValidationPeriodId(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VALIDATION_PERIOD_ID], $value);
+    }
+
+    public function getVariantCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
+    }
+
+    public function setVariantCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
+    }
+
+    public function getVariantType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::VARIANT_TYPE]);
+    }
+
+    public function setVariantType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::VARIANT_TYPE], $value);
+    }
+
+    public function getSystemid() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
+    }
+
+    public function setSystemid(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
     public function setProcessed(?bool $processed)

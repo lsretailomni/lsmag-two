@@ -188,7 +188,10 @@ class ContactHelper extends AbstractHelperOmni
             $this->_logger->error($e->getMessage());
         }
 
-        return $response && $response->getResponseCode() == "0000" ? current($response->getRecords()) : null;
+        return $response &&
+        $response->getResponseCode() == "0000" &&
+        !empty(current($response->getRecords())->getLscMemberContact()) ?
+            current($response->getRecords()) : null;
     }
 
     /**

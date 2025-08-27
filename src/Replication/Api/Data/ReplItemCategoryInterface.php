@@ -40,10 +40,6 @@ interface ReplItemCategoryInterface
 
     public function setLastModifiedDateTime(?string $value);
 
-    public function getDefaultSustAccount() : ?string;
-
-    public function setDefaultSustAccount(?string $value);
-
     public function getLscItemNoMiscellaneous() : ?string;
 
     public function setLscItemNoMiscellaneous(?string $value);

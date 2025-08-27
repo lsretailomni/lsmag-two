@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver\LoyaltyPoints;
 
@@ -14,18 +15,11 @@ use \Ls\Omni\Model\LoyaltyPoints\LoyaltyPointsManagement;
 class LoyaltyPointsInfo implements ResolverInterface
 {
     /**
-     * @var LoyaltyPointsManagement
-     */
-    private $loyaltyPointsManagement;
-
-    /**
-     * AppliedLoyaltyPoints constructor.
      * @param LoyaltyPointsManagement $loyaltyPointsManagement
      */
     public function __construct(
-        LoyaltyPointsManagement $loyaltyPointsManagement
+        public LoyaltyPointsManagement $loyaltyPointsManagement
     ) {
-        $this->loyaltyPointsManagement = $loyaltyPointsManagement;
     }
 
     /**

@@ -553,7 +553,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_CENTRAL_TYPE = 'ls_mag/service/central_type';
     const OnPremise = '0';
     const Saas = '1';
-    
+
     const TYPE_GIFT_CARD = 'giftcard';
 
     /**
@@ -1506,5 +1506,14 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getStore()->getWebsiteId()
         );
+    }
+
+    /**
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function getStoreId()
+    {
+        return $this->storeManager->getStore()->getStoreId();
     }
 }

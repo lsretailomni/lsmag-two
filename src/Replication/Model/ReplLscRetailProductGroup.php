@@ -79,6 +79,16 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\Ecommerce\Entity\LSCReta
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_TEMPLATE_CODE], $value);
     }
 
+    public function getItemTemplCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ITEM_TEMPL_CODE]);
+    }
+
+    public function setItemTemplCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ITEM_TEMPL_CODE], $value);
+    }
+
     public function getPosMenuLink() : ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POS_MENU_LINK]);

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\Observer;
 
@@ -57,18 +58,18 @@ class AjaxLoginObserver extends AbstractOmniObserver
                             $username = $search->getLscMemberLoginCard()->getLoginId();
                         }
                         $result = $this->contactHelper->login($username, $credentials['password']);
-                        if ($result == false) {
-                            $message = __('Invalid Omni login or Omni password');
+                        if (!$result) {
+                            $message = __('Invalid LS Central login or password.');
                             return $this->generateMessage($observer, $message, true);
                         }
                         $response = [
                             'errors' => false,
-                            'message' => __('Omni login successful.')
+                            'message' => __('LS Central login successful.')
                         ];
                         if ($result instanceof RootMemberLogon) {
                             if ($isEmail === false && !$search) {
                                 $search = $this->contactHelper->search(
-                                    current($result->getMembercontact())->getEMail()
+                                    current((array)$result->getMembercontact())->getEMail()
                                 );
                             }
                             $this->contactHelper->processCustomerLogin($search, $credentials, $isEmail);

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
@@ -15,28 +16,13 @@ use Magento\Framework\Pricing\Helper\Data;
 class GiftCardBalanceOutput implements ResolverInterface
 {
     /**
-     * @var GiftCardHelper
-     */
-    public $giftCardHelper;
-
-    /**
-     * @var Data
-     */
-    public $priceHelper;
-
-    /**
-     * Giftcard balance output constructor.
-     *
      * @param GiftCardHelper $giftCardHelper
      * @param Data $priceHelper
      */
-
     public function __construct(
-        GiftCardHelper $giftCardHelper,
-        Data $priceHelper,
+        public GiftCardHelper $giftCardHelper,
+        public Data $priceHelper,
     ) {
-        $this->giftCardHelper = $giftCardHelper;
-        $this->priceHelper    = $priceHelper;
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
@@ -14,17 +15,11 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 class ReturnPolicyOutput implements ResolverInterface
 {
     /**
-     * @var ReturnPolicyManagement
-     */
-    public $returnPolicyManagement;
-
-    /**
      * @param ReturnPolicyManagement $returnPolicyManagement
      */
     public function __construct(
-        ReturnPolicyManagement $returnPolicyManagement
+        public ReturnPolicyManagement $returnPolicyManagement
     ) {
-        $this->returnPolicyManagement = $returnPolicyManagement;
     }
 
     /**

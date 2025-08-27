@@ -6,7 +6,6 @@ namespace Ls\Omni\Controller\Adminhtml\System\Config;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
 use \Ls\Omni\Helper\Data;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -41,9 +40,8 @@ class LoadHierarchy extends Action
      */
     public function execute()
     {
-        $optionList = $hierarchies = [];
+        $optionList = [];
         try {
-            $storeId = $this->getRequest()->getParam('storeId');
             $baseUrl = $this->getRequest()->getParam('baseUrl');
             $tenant = $this->getRequest()->getParam('tenant');
             $clientId = $this->getRequest()->getParam('client_id');
@@ -66,33 +64,19 @@ class LoadHierarchy extends Action
                 ['companyName' => $companyName],
                 $scopeId
             )) {
-                $hierarchyOperation = new HierarchyView(
-                    $baseUrl,
-                    $connectionParams,
-                    $companyName,
-                );
-                $hierarchyOperation->setOperationInput(
-                    [
-                        'storeNo' => $storeId,
-                        'batchSize' => 100,
-                        'fullRepl' => true,
-                        'lastKey' => '',
-                        'lastEntryNo' => 0
-                    ]
-                );
-                $hierarchies = $hierarchyOperation->execute()->getRecords();
-            }
+                $hierarchies = $this->helper->fetchWebStoreHierarchies();
 
-            if (!empty($hierarchies)) {
-                $optionList = [['value' => '', 'label' => __('Please select your hierarchy code')]];
-                foreach ($hierarchies as $hierarchy) {
-                    $optionList[] = [
-                        'value' => $hierarchy->getHierarchyCode(),
-                        'label' => $hierarchy->getDescription()
-                    ];
+                if (!empty($hierarchies)) {
+                    $optionList = [['value' => '', 'label' => __('Please select your hierarchy code')]];
+                    foreach ($hierarchies as $hierarchy) {
+                        $optionList[] = [
+                            'value' => $hierarchy->getHierarchyCode(),
+                            'label' => $hierarchy->getDescription()
+                        ];
+                    }
+                } else {
+                    $optionList = [['value' => '', 'label' => __('No hierarchy code found for the selected store')]];
                 }
-            } else {
-                $optionList = [['value' => '', 'label' => __('No hierarchy code found for the selected store')]];
             }
         } catch (Exception $e) {
             $this->logger->critical($e);

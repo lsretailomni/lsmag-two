@@ -22,23 +22,23 @@ class NavStore implements OptionSourceInterface
      * Get options list
      *
      * @return array|array[]
-     * @throws GuzzleException|NoSuchEntityException
      */
     public function toOptionArray()
     {
-        $stores       = current($this->getNavStores());
+        $stores = $this->getNavStores();
         $optionList = [['value' => '', 'label' => __('Please select your web store')]];
-        foreach ($stores->getLSCStore() ?? [] as $store) {
+
+        foreach ($stores ?? [] as $store) {
             $optionList[] = ['value' => $store['No.'], 'label' => $store['Name']];
         }
+
         return $optionList;
     }
 
     /**
      * Get nav stores
      *
-     * @return array
-     * @throws GuzzleException|NoSuchEntityException
+     * @return array|null
      */
     public function getNavStores()
     {

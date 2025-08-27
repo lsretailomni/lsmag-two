@@ -99,6 +99,36 @@ class ReplLscWiItemModifier extends \Ls\Omni\Client\Ecommerce\Entity\LSCWIItemMo
         return $this->setData(self::getDbColumnsMapping()[self::GROUP_MAX_SELECTION], $value);
     }
 
+    public function getUsageCategory() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::USAGE_CATEGORY]);
+    }
+
+    public function setUsageCategory(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::USAGE_CATEGORY], $value);
+    }
+
+    public function getUsageSubCategory() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::USAGE_SUBCATEGORY]);
+    }
+
+    public function setUsageSubCategory(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::USAGE_SUBCATEGORY], $value);
+    }
+
+    public function getTriggerFunction() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TRIGGER_FUNCTION]);
+    }
+
+    public function setTriggerFunction(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TRIGGER_FUNCTION], $value);
+    }
+
     public function getItemNo() : ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);

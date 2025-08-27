@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver\Stock;
 
@@ -16,33 +17,15 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 class ItemAvailabilityOutput implements ResolverInterface
 {
     /**
-     * @var StockHelper
-     */
-    public $stockHelper;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    public $productRepository;
-
-    /**
-     * @var DataHelper
-     */
-    public $dataHelper;
-
-    /**
      * @param StockHelper $stockHelper
      * @param ProductRepositoryInterface $productRepository
      * @param DataHelper $dataHelper
      */
     public function __construct(
-        StockHelper $stockHelper,
-        ProductRepositoryInterface $productRepository,
-        DataHelper $dataHelper
+        public StockHelper $stockHelper,
+        public ProductRepositoryInterface $productRepository,
+        public DataHelper $dataHelper
     ) {
-        $this->stockHelper       = $stockHelper;
-        $this->productRepository = $productRepository;
-        $this->dataHelper        = $dataHelper;
     }
     /**
      * @inheritdoc

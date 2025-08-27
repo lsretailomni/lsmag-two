@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Ls\OmniGraphQl\Model\Resolver;
 
 use \Ls\Core\Model\LSR;
@@ -12,11 +14,6 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
  */
 class IsServiceUpResolver implements ResolverInterface
 {
-    /**
-     * @var LSR
-     */
-    public LSR $lsr;
-
     private const CONFIG_PATHS_MAPPING = [
         'ls_coupons_active'       => LSR::LS_ENABLE_COUPON_ELEMENTS,
         'ls_giftcard_active'      => LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
@@ -29,9 +26,8 @@ class IsServiceUpResolver implements ResolverInterface
      * @param LSR $lsr
      */
     public function __construct(
-        LSR $lsr
+        public LSR $lsr
     ) {
-        $this->lsr = $lsr;
     }
 
     /**

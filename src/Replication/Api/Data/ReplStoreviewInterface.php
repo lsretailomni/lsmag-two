@@ -104,6 +104,10 @@ interface ReplStoreviewInterface
 
     public function setPriceGroupCodes(?string $value);
 
+    public function getSalesTypeFilter() : ?string;
+
+    public function setSalesTypeFilter(?string $value);
+
     public function setProcessed(?bool $processed);
 
     public function getProcessed() : ?bool;

@@ -98,20 +98,6 @@ class Dashboard extends Template
      */
     public function getNextScheme(string $currentClubCode, string $currentSequence)
     {
-        $schemes = $this->loyaltyHelper->getSchemes();
-        $requiredScheme = null;
-
-        foreach ($schemes as $scheme) {
-            $clubCode = $scheme['Club Code'];
-            $updateSequence = $scheme['Update Sequence'];
-            if ($currentClubCode == $clubCode &&
-                $updateSequence > $currentSequence
-             ) {
-                $requiredScheme = $scheme;
-                break;
-            }
-        }
-
-        return $requiredScheme;
+        return $this->loyaltyHelper->getNextScheme($currentClubCode, $currentSequence);
     }
 }

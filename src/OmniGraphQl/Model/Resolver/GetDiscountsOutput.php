@@ -1,23 +1,20 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
-use \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount;
-use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
-use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetByCardIdResponse;
-use \Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Helper\ContactHelper;
+use \Ls\Omni\Block\Product\View\Discount\Proactive;
+use \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount;
+use \Ls\Omni\Client\Ecommerce\Entity\LSCPeriodicDiscount;
+use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Catalog\Helper\Image;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session;
-use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Exception\LocalizedException;
@@ -26,7 +23,9 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
+use Magento\Framework\Phrase;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\App\Emulation;
@@ -39,91 +38,6 @@ use Psr\Log\LoggerInterface;
  */
 class GetDiscountsOutput implements ResolverInterface
 {
-    /**
-     * @var LSR
-     */
-    public LSR $lsr;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public LoyaltyHelper $loyaltyHelper;
-
-    /**
-     * @var CustomerFactory
-     */
-    public CustomerFactory $customerFactory;
-
-    /**
-     * @var PageFactory
-     */
-    public PageFactory $resultPageFactory;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    public StoreManagerInterface $storeManager;
-
-    /**
-     * @var ItemHelper
-     */
-    public ItemHelper $itemHelper;
-
-    /**
-     * @var Image
-     */
-    public Image $imageHelper;
-
-    /**
-     * @var PriceHelper
-     */
-    public PriceHelper $priceHelper;
-
-    /**
-     * @var TimezoneInterface
-     */
-    public TimezoneInterface $timeZoneInterface;
-
-    /**
-     * @var PriceCurrencyInterface
-     */
-    public PriceCurrencyInterface $priceCurrency;
-
-    /**
-     * @var ScopeConfigInterface
-     */
-    public ScopeConfigInterface $scopeConfig;
-
-    /**
-     * @var Session
-     */
-    public Session $customerSession;
-
-    /**
-     * @var Http
-     */
-    public Http $request;
-
-    /**
-     * @var DataHelper
-     */
-    public DataHelper $dataHelper;
-
-    /**
-     * @var Emulation
-     */
-    public Emulation $appEmulation;
-
-    /**
-     * @var LoggerInterface
-     */
-    public LoggerInterface $logger;
-
-    /**
-     * @var ContactHelper
-     */
-    public ContactHelper $contactHelper;
-
     /**
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
@@ -142,43 +56,30 @@ class GetDiscountsOutput implements ResolverInterface
      * @param Emulation $appEmulation
      * @param DataHelper $dataHelper
      * @param LoggerInterface $logger
+     * @param Proactive $proactiveDiscountBlock
+     * @param Registry $registry
      */
     public function __construct(
-        LSR $lsr,
-        LoyaltyHelper $loyaltyHelper,
-        PageFactory $resultPageFactory,
-        CustomerFactory $customerFactory,
-        StoreManagerInterface $storeManager,
-        ItemHelper $itemHelper,
-        Image $imageHelper,
-        PriceHelper $priceHelper,
-        ContactHelper $contactHelper,
-        PriceCurrencyInterface $priceCurrency,
-        TimezoneInterface $timeZoneInterface,
-        ScopeConfigInterface $scopeConfig,
-        Session $customerSession,
-        Http $request,
-        Emulation $appEmulation,
-        DataHelper $dataHelper,
-        LoggerInterface $logger
+        public LSR $lsr,
+        public LoyaltyHelper $loyaltyHelper,
+        public PageFactory $resultPageFactory,
+        public CustomerFactory $customerFactory,
+        public StoreManagerInterface $storeManager,
+        public ItemHelper $itemHelper,
+        public Image $imageHelper,
+        public PriceHelper $priceHelper,
+        public ContactHelper $contactHelper,
+        public PriceCurrencyInterface $priceCurrency,
+        public TimezoneInterface $timeZoneInterface,
+        public ScopeConfigInterface $scopeConfig,
+        public Session $customerSession,
+        public Http $request,
+        public Emulation $appEmulation,
+        public DataHelper $dataHelper,
+        public LoggerInterface $logger,
+        public Proactive $proactiveDiscountBlock,
+        public Registry $registry,
     ) {
-        $this->lsr               = $lsr;
-        $this->loyaltyHelper     = $loyaltyHelper;
-        $this->resultPageFactory = $resultPageFactory;
-        $this->customerFactory   = $customerFactory;
-        $this->storeManager      = $storeManager;
-        $this->itemHelper        = $itemHelper;
-        $this->imageHelper       = $imageHelper;
-        $this->priceHelper       = $priceHelper;
-        $this->priceCurrency     = $priceCurrency;
-        $this->timeZoneInterface = $timeZoneInterface;
-        $this->scopeConfig       = $scopeConfig;
-        $this->customerSession   = $customerSession;
-        $this->request           = $request;
-        $this->appEmulation      = $appEmulation;
-        $this->dataHelper        = $dataHelper;
-        $this->logger            = $logger;
-        $this->contactHelper     = $contactHelper;
     }
 
     /**
@@ -191,215 +92,320 @@ class GetDiscountsOutput implements ResolverInterface
         }
 
         if (!empty($context->getUserId())) {
-            $websiteId       = (int)$context->getExtensionAttributes()->getStore()->getWebsiteId();
-            $userId          = $context->getUserId();
+            $websiteId = (int)$context->getExtensionAttributes()->getStore()->getWebsiteId();
+            $userId = $context->getUserId();
             $this->dataHelper->setCustomerValuesInSession($userId, $websiteId);
         }
 
-        $itemId     = $args['item_id'];
-        $couponsObj = $this->getCoupons($itemId);
-
+        $itemId = $args['item_id'];
+        $couponsObj = $this->loyaltyHelper->getAllCouponsGivenItems([$itemId]);
         $discountsArr = $couponsArr = [];
-        $discountsObj = $this->getProactiveDiscounts($itemId);
+        list(
+            $discountOffers,
+            $mixAndMatchDiscounts,
+            $multibuyOffers
+            ) = $this->getProactiveDiscounts($itemId);
 
-        if (!empty($discountsObj)) {
-            foreach ($discountsObj as $discount) {
-                $discountsArr[] = $this->getFormattedDescriptionDiscount($itemId, $discount);
+        if (!empty($discountOffers)) {
+            foreach ($discountOffers as $discountOffer) {
+                $discountsArr[] = $this->getFormattedDescriptionForDiscountOffer($discountOffer['offer']);
             }
         }
+
+        if (!empty($mixAndMatchDiscounts)) {
+            foreach ($mixAndMatchDiscounts as $mixAndMatchDiscount) {
+                $discountsArr[] = $this->getFormattedDescriptionForMixAndMatchOffer(
+                    $mixAndMatchDiscount['offer'],
+                    $mixAndMatchDiscount['discounts'],
+                    $mixAndMatchDiscount['item']
+                );
+            }
+        }
+
+        if (!empty($multibuyOffers)) {
+            foreach ($multibuyOffers as $multibuyOffer) {
+                $discountsArr[] = $this->getFormattedDescriptionForMultibuyOffer(
+                    $multibuyOffer['offer'],
+                    $multibuyOffer['discounts']
+                );
+            }
+        }
+
         if (!empty($couponsObj != '')) {
             foreach ($couponsObj as $coupon) {
-                if ($coupon->getCode() == DiscountType::COUPON || $coupon->getCode() == DiscountType::PROMOTION) {
-                    $couponsArr[] = $this->dataHelper->getFormattedDescriptionCoupon($coupon);
-                }
+                $couponsArr[] = $this->dataHelper->getFormattedDescriptionCoupon($coupon);
             }
         }
 
         return [
             'output' => [
-                    'coupons'   => $couponsArr,
-                    'discounts' => $discountsArr
-                ]
+                'coupons' => $couponsArr,
+                'discounts' => $discountsArr
+            ]
         ];
     }
 
     /**
      * Get proactive discounts
      *
-     * @param $itemId
-     * @return array|DiscountsGetResponse|ResponseInterface|null
+     * @param string $itemId
+     * @return array
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getProactiveDiscounts($itemId)
     {
         $webStore = $this->lsr->getActiveWebStore();
-        if ($response = $this->loyaltyHelper->getProactiveDiscounts($itemId, $webStore)) {
-            if (!is_array($response)) {
-                $response = [$response];
-            }
+        $discounts = $this->loyaltyHelper->getProactiveDiscounts($itemId, $webStore);
+        $discountOffers = $mixAndMatchDiscounts = $multibuyOffers = [];
+        if (!empty($discounts)) {
+            list(
+                $discountOffer,
+                $mixAndMatchDiscount,
+                $multibuyOffer
+                ) = $this->proactiveDiscountBlock->getRelevantDiscountOffers($discounts);
 
-            $tempArray = [];
-            foreach ($response as $key => $responseData) {
-                $uniqueKey = $responseData->getPercentage() . '|' . $responseData->getItemId() . '|'
-                    . $responseData->getPopUpLine1() . '|' . $responseData->getType();
-
-                if (!in_array($uniqueKey, $tempArray, true)) {
-                    $tempArray[] = $uniqueKey;
-                    continue;
+            if (!empty($discountOffer)) {
+                foreach ($discountOffer as $doNo => $do) {
+                    if (!isset($discountOffers[$doNo])) {
+                        $discountOffers[$doNo]['offer'] = $do;
+                        $discountOffers[$doNo]['discounts'] = $discounts;
+                        $discountOffers[$doNo]['item'] = $itemId;
+                    }
                 }
-                unset($response[$key]);
             }
-            return $response;
+
+            if (!empty($mixAndMatchDiscount)) {
+                foreach ($mixAndMatchDiscount as $mmNo => $mm) {
+                    if (!isset($mixAndMatchDiscounts[$mmNo])) {
+                        $mixAndMatchDiscounts[$mmNo]['offer'] = $mm;
+                        $mixAndMatchDiscounts[$mmNo]['discounts'] = $discounts;
+                        $mixAndMatchDiscounts[$mmNo]['item'] = $itemId;
+                    }
+                }
+            }
+
+            if (!empty($multibuyOffer)) {
+                foreach ($multibuyOffer as $mbNo => $mb) {
+                    if (!isset($multibuyOffers[$mbNo])) {
+                        $multibuyOffers[$mbNo]['offer'] = $mb;
+                        $multibuyOffers[$mbNo]['discounts'] = $discounts;
+                        $multibuyOffers[$mbNo]['item'] = $itemId;
+                    }
+                }
+            }
+
+            return [$discountOffers, $mixAndMatchDiscounts, $multibuyOffers];
         }
-        return [];
+
+        return [$discountOffers, $mixAndMatchDiscounts, $multibuyOffers];
     }
 
     /**
-     * Get all coupons
+     * Get formatted description for discount offer
      *
-     * @param $sku
-     * @return array|bool|PublishedOffer[]|PublishedOffersGetByCardIdResponse|ResponseInterface
+     * @param LSCPeriodicDiscount $discount
+     * @return array
      */
-    public function getCoupons($sku)
+    public function getFormattedDescriptionForDiscountOffer(LSCPeriodicDiscount $discount): array
     {
-        $itemId = $sku;
-        try {
-            $storeId = $this->lsr->getActiveWebStore();
+        $description = [];
+        $additionalDetails = $this->getAdditionalInformation($discount);
 
-            if (!empty($this->contactHelper->getCardIdFromCustomerSession())
-                && str_contains($this->request->getOriginalPathInfo(), 'graphql')
-            ) {
-                $cardId = $this->contactHelper->getCardIdFromCustomerSession();
-
-                if ($response = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $itemId)) {
-                    return $response;
-                }
-                return [];
-            }
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
+        if ($discount->getDescription()) {
+            $description['discount_description_title'] = $discount->getDescription();
         }
-        return [];
+
+        if (floatval($discount->getDiscountValue()) > 0) {
+            $discountPercentage = number_format((float)$discount->getDiscountValue(), 2, '.', '');
+            $discountText = __('Avail %1 Off ', $discountPercentage . '%') . '';
+        }
+
+        if (!empty($discountText)) {
+            $description['discount_description_text'] = $discountText;
+        }
+
+        if (!empty($additionalDetails)) {
+            $description['discount_description_text'] .= $additionalDetails;
+        }
+
+        return $description;
     }
 
     /**
-     * Get formatted discount description
+     * Get additional information for the offer
      *
-     * @param $itemId
-     * @param ProactiveDiscount $discount
+     * @param LSCPeriodicDiscount $discount
+     * @return Phrase|string
+     */
+    public function getAdditionalInformation(LSCPeriodicDiscount $discount)
+    {
+        $publishedOffer = $this->registry->registry('lsr-c-po');
+        $publishedOffer = $publishedOffer ? $this->contactHelper->restoreModel($publishedOffer) : '';
+        $additionalDetails = '';
+
+        if ($publishedOffer && !empty($publishedOffer->getPublishedoffer())) {
+            foreach ($publishedOffer->getPublishedoffer() as $offer) {
+                if ($offer->getDiscountno() == $discount->getNo() &&
+                    !empty($offer->getData('MemberAttribute')) &&
+                    !empty($offer->getData('MemberAttributeValue'))
+                ) {
+                    $additionalDetails = __(
+                        'Applicable only if %1 is %2',
+                        $offer->getData('MemberAttribute'),
+                        $offer->getData('MemberAttributeValue')
+                    );
+
+                    break;
+                }
+            }
+        }
+
+        return $additionalDetails;
+    }
+
+    /**
+     * Get formatted description for mix & match offer
+     *
+     * @param LSCPeriodicDiscount $mixAndMatchOffer
+     * @param GetDiscount_GetDiscount $discounts
+     * @param string $itemId
      * @return array
      * @throws NoSuchEntityException
      */
-    // @codingStandardsIgnoreLine
-    public function getFormattedDescriptionDiscount(
-        $itemId,
-        ProactiveDiscount $discount
-    ) {
+    public function getFormattedDescriptionForMixAndMatchOffer(
+        LSCPeriodicDiscount $mixAndMatchOffer,
+        GetDiscount_GetDiscount $discounts,
+        string $itemId
+    ): array {
         $responseArr  = [];
         $discountText = '';
         $productData  = [];
-        if ($discount->getDescription()) {
-            $responseArr['discount_description_title'] = $discount->getDescription();
+        if ($mixAndMatchOffer->getDescription()) {
+            $responseArr['discount_description_title'] = $mixAndMatchOffer->getDescription();
         }
-        if (floatval($discount->getMinimumQuantity()) > 0 && $discount->getType() == ProactiveDiscountType::MULTIBUY) {
-            $responseArr['discount_min_qty'] = number_format(
-                (float)$discount->getMinimumQuantity(),
-                2,
-                '.',
-                ''
-            );
+        $additionalDetails = $this->getAdditionalInformation($mixAndMatchOffer);
+        $itemIds = [];
+        $counter = 0;
+        foreach ($discounts->getLscWiMixMatchOfferExt() as $discount) {
+            if ($discount->getOfferNo() == $mixAndMatchOffer->getNo() &&
+                $discount->getCustomerDiscGroup() == '--EXT--' &&
+                $discount->getItemNo() != $itemId
+            ) {
+                $itemIds[] = $discount->getItemNo();
+            }
         }
 
-        if (floatval($discount->getPercentage()) > 0) {
-            $discountPercentage = number_format((float)$discount->getPercentage(), 2, '.', '');
-            $discountText       = __('Avail %1 Off ', $discountPercentage . '%') . '';
+        if (floatval($mixAndMatchOffer->getDiscountValue()) > 0) {
+            $discountPercentage = number_format((float)$mixAndMatchOffer->getDiscountValue(), 2, '.', '');
+            $discountText = __('Avail %1 Off ', $discountPercentage . '%') . '';
         }
-        if ($discount->getItemIds()) {
-            $itemIds = $discount->getItemIds()->getString();
-            if (!is_array($itemIds)) {
-                $itemIds = [$discount->getItemIds()->getString()];
-            }
-            $itemIds      = array_unique($itemIds);
-            $itemIds      = array_diff($itemIds, [$itemId]);
-            $counter      = 0;
-            $productsData = [];
+
+        $currency     = $this->priceCurrency->getCurrency($this->lsr->getCurrentStoreId())->getCurrencyCode();
+        if (!empty($itemIds)) {
+            $productsData = $this->itemHelper->getProductsInfoByItemIds($itemIds);
+        }
+        foreach ($productsData as $productInfo) {
             $productName  = '';
-            $currency     = $this->priceCurrency->getCurrency($this->lsr->getCurrentStoreId())->getCurrencyCode();
-            if (!empty($itemIds)) {
-                $productsData = $this->itemHelper->getProductsInfoByItemIds($itemIds);
-            }
-            foreach ($productsData as $productInfo) {
-                if ($this->getMixandMatchProductLimit() == $counter) {
-                    break;
-                }
 
-                $productPrice = '';
-                if (!empty($productInfo)) {
-                    $imageUrl = $productInfo->getImage();
-                    if (!empty($productInfo->getFinalPrice())) {
-                        $productPrice = $productInfo->getFinalPrice();
+            if ($this->getMixandMatchProductLimit() == $counter) {
+                break;
+            }
+
+            $productPrice = '';
+            if (!empty($productInfo)) {
+                $imageUrl = $productInfo->getImage();
+                if (!empty($productInfo->getFinalPrice())) {
+                    $productPrice = $productInfo->getFinalPrice();
+                }
+                if (!empty($productInfo->getUrlKey())) {
+                    if (!empty($productInfo->getName())) {
+                        $productName = $productInfo->getName();
                     }
-                    if (!empty($productInfo->getUrlKey())) {
-                        if (!empty($productInfo->getName())) {
-                            $productName = $productInfo->getName();
-                        }
-                    }
-
-                    $productData[] = [
-                        'product_name' => $productName,
-                        'image_url'    => $imageUrl,
-                        'product_url'  => $productInfo->getUrlKey(),
-                        'sku'          => $productInfo->getSku(),
-                        'price'        => [
-                            'currency' => $currency,
-                            'value'    => $productInfo->getPrice(),
-                        ],
-                        'final_price'  => [
-                            'currency' => $currency,
-                            'value'    => $productPrice,
-                        ]
-                    ];
                 }
-                $counter++;
-            }
-            if (!empty($discountText)) {
-                $discountText .= __('if Buy with any of these items: ');
-            }
 
-            $responseArr['discount_description_text'] = $discountText;
+                $productData[] = [
+                    'product_name' => $productName,
+                    'image_url'    => $imageUrl,
+                    'product_url'  => $productInfo->getUrlKey(),
+                    'sku'          => $productInfo->getSku(),
+                    'price'        => [
+                        'currency' => $currency,
+                        'value'    => $productInfo->getPrice(),
+                    ],
+                    'final_price'  => [
+                        'currency' => $currency,
+                        'value'    => $productPrice,
+                    ]
+                ];
+            }
+            $counter++;
+        }
+        if (!empty($discountText)) {
+            $discountText .= __('if Buy with any of these items: ');
+        }
 
-            if ($this->getMixandMatchProductLimit() != 0) {
-                if (!empty($productsData)) {
-                    $responseArr['discount_products_data'] = $productData;
-                }
+        $responseArr['discount_description_text'] = $discountText;
+
+        if ($this->getMixandMatchProductLimit() != 0) {
+            if (!empty($productsData)) {
+                $responseArr['discount_products_data'] = $productData;
             }
-        } else {
-            if (!empty($discountText)) {
-                $responseArr['discount_description_text'] = $discountText;
-            }
+        }
+
+        if (!empty($additionalDetails)) {
+            $responseArr['discount_description_text'] .= $additionalDetails;
         }
 
         return $responseArr;
     }
 
     /**
-     * Get product image url by emulating frontend area (for graphql)
+     * Get formatted description for multi buy offer
      *
-     * @param $product
-     * @return string
-     * @throws NoSuchEntityException
+     * @param LSCPeriodicDiscount $multibuyOffer
+     * @param GetDiscount_GetDiscount $discounts
+     * @return array
      */
-    public function getImageUrl($product)
-    {
-        $this->appEmulation->startEnvironmentEmulation(
-            $this->lsr->getCurrentStoreId(),
-            Area::AREA_FRONTEND,
-            true
-        );
-        $imageUrl = $this->imageHelper->init($product, 'product_base_image')->getUrl();
-        $this->appEmulation->stopEnvironmentEmulation();
-        return $imageUrl;
+    public function getFormattedDescriptionForMultibuyOffer(
+        LSCPeriodicDiscount $multibuyOffer,
+        GetDiscount_GetDiscount $discounts
+    ): array {
+        $responseArr  = [];
+        $additionalDetails = $this->getAdditionalInformation($multibuyOffer);
+
+        if ($multibuyOffer->getDescription()) {
+            $responseArr['discount_description_title'] = $multibuyOffer->getDescription();
+        }
+
+        foreach ($discounts->getLscWiDiscounts() as $discount) {
+            if ($discount->getOfferNo() !== $multibuyOffer->getNo()) {
+                continue;
+            }
+            $discountText = '';
+            if (floatval($discount->getMinimumQuantity()) > 0) {
+                $responseArr['discount_min_qty'] = number_format(
+                    (float)$discount->getMinimumQuantity(),
+                    2,
+                    '.',
+                    ''
+                );
+            }
+
+            if (floatval($discount->getDiscount()) > 0) {
+                $discountPercentage = number_format((float)$discount->getDiscount(), 2, '.', '');
+                $discountText       = __('Avail %1 Off ', $discountPercentage . '%') . '';
+            }
+
+            $responseArr['discount_description_text'] = $discountText;
+            break;
+        }
+
+        if (!empty($additionalDetails)) {
+            $responseArr['discount_description_text'] .= $additionalDetails;
+        }
+
+        return $responseArr;
     }
 
     /**
@@ -411,53 +417,5 @@ class GetDiscountsOutput implements ResolverInterface
     public function getMixandMatchProductLimit()
     {
         return $this->lsr->getStoreConfig(LSR::LS_DISCOUNT_MIXANDMATCH_LIMIT, $this->lsr->getCurrentStoreId());
-    }
-
-    /**
-     * Format coupon code response
-     *
-     * @param PublishedOffer $coupon
-     * @return array
-     */
-    public function getFormattedDescriptionCoupon(PublishedOffer $coupon)
-    {
-        $responseArr = [];
-        if ($coupon->getDescription()) {
-            $responseArr['coupon_description'] = $coupon->getDescription();
-        }
-        if ($coupon->getDetails()) {
-            $responseArr['coupon_details'] = $coupon->getDetails();
-        }
-        if ($coupon->getCode() != DiscountType::PROMOTION) {
-            if ($coupon->getExpirationDate()) {
-                $responseArr['coupon_expire_date'] = $this->getFormattedOfferExpiryDate($coupon->getExpirationDate());
-            }
-            if ($coupon->getOfferId()) {
-                $responseArr['offer_id'] = $coupon->getOfferId();
-            }
-        }
-
-        return $responseArr;
-    }
-
-    /**
-     * Get formatted expiry date
-     *
-     * @param $date
-     * @return string
-     */
-    public function getFormattedOfferExpiryDate($date)
-    {
-        try {
-            return $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
-                LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                $this->lsr->getActiveWebStore()
-            ));
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-        }
-
-        return null;
     }
 }

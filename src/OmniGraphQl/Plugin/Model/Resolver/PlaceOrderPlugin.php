@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Api\DiscountManagementInterface;
-use Ls\Omni\Model\Api\DiscountManagement;
+use \Ls\Omni\Model\Api\DiscountManagement;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -18,33 +19,15 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 class PlaceOrderPlugin
 {
     /**
-     * @var DataHelper
-     */
-    private $dataHelper;
-
-    /**
-     * @var LSR
-     */
-    private $lsr;
-
-    /**
-     * @var DiscountManagementInterface
-     */
-    private $discountManagement;
-
-    /**
      * @param DataHelper $dataHelper
      * @param LSR $lsr
      * @param DiscountManagementInterface $discountManagement
      */
     public function __construct(
-        DataHelper $dataHelper,
-        LSR $lsr,
-        DiscountManagementInterface $discountManagement
+        public DataHelper $dataHelper,
+        public LSR $lsr,
+        public DiscountManagementInterface $discountManagement
     ) {
-        $this->dataHelper = $dataHelper;
-        $this->lsr = $lsr;
-        $this->discountManagement = $discountManagement;
     }
 
     /**

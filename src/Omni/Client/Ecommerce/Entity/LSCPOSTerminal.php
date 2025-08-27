@@ -97,6 +97,7 @@ class LSCPOSTerminal extends AbstractModel
     public const SALES_SLIP = 'Sales Slip';
     public const VOID_SLIP = 'Void Slip';
     public const CARD_SLIP = 'Card Slip';
+    public const CONFIRM_LAST_SLIP_PRINT = 'Confirm Last Slip Print';
     public const ONLY_EMAIL_SALES_TRANSACTIONS = 'Only Email Sales Transactions';
     public const BCC_EMAIL_ADDRESS = 'BCC E-Mail Address';
     public const INVENTORY_MAIN_MENU = 'Inventory Main Menu';
@@ -223,6 +224,7 @@ class LSCPOSTerminal extends AbstractModel
 	self::SALES_SLIP => 'sales_slip',
 	self::VOID_SLIP => 'void_slip',
 	self::CARD_SLIP => 'card_slip',
+	self::CONFIRM_LAST_SLIP_PRINT => 'confirm_last_slip_print',
 	self::ONLY_EMAIL_SALES_TRANSACTIONS => 'only_email_sales_transactions',
 	self::BCC_EMAIL_ADDRESS => 'bcc_email_address',
 	self::INVENTORY_MAIN_MENU => 'inventory_main_menu',
@@ -1127,6 +1129,16 @@ class LSCPOSTerminal extends AbstractModel
     public function setCardSlip(?int $value)
     {
         return $this->setData(self::CARD_SLIP, $value);
+    }
+
+    public function getConfirmLastSlipPrint(): ?bool
+    {
+        return $this->getData(self::CONFIRM_LAST_SLIP_PRINT);
+    }
+
+    public function setConfirmLastSlipPrint(?bool $value)
+    {
+        return $this->setData(self::CONFIRM_LAST_SLIP_PRINT, $value);
     }
 
     public function getOnlyEmailSalesTransactions(): ?bool

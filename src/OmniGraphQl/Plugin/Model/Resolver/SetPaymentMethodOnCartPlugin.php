@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
@@ -17,25 +18,13 @@ use Magento\QuoteGraphQl\Model\Cart\CheckCartCheckoutAllowance;
 class SetPaymentMethodOnCartPlugin
 {
     /**
-     * @var CheckCartCheckoutAllowance
-     */
-    private $checkCartCheckoutAllowance;
-
-    /**
-     * @var DataHelper
-     */
-    private $dataHelper;
-
-    /**
      * @param CheckCartCheckoutAllowance $checkCartCheckoutAllowance
      * @param DataHelper $dataHelper
      */
     public function __construct(
-        CheckCartCheckoutAllowance $checkCartCheckoutAllowance,
-        DataHelper $dataHelper
+        public CheckCartCheckoutAllowance $checkCartCheckoutAllowance,
+        public DataHelper $dataHelper
     ) {
-        $this->checkCartCheckoutAllowance = $checkCartCheckoutAllowance;
-        $this->dataHelper = $dataHelper;
     }
 
     /**
@@ -74,8 +63,8 @@ class SetPaymentMethodOnCartPlugin
             throw new GraphQlInputException(__('Required parameter "code" for "payment_method" is missing.'));
         }
 
-        $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
-        $cart = $this->dataHelper->getCartGivenRequiredData($maskedCartId, $context->getUserId(), $storeId);
+        $storeId = $context->getExtensionAttributes()->getStore()->getId();
+        $cart = $this->dataHelper->getCartGivenRequiredData($maskedCartId, (int)$context->getUserId(), (int)$storeId);
         $this->checkCartCheckoutAllowance->execute($cart);
 
         if (!$cart->getCustomerEmail()) {

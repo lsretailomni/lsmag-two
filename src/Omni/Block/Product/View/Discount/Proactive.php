@@ -416,11 +416,15 @@ class Proactive extends Template
     public function getFormattedOfferExpiryDate(string $date): ?string
     {
         try {
-            return $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
+            $format = $this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
                 $this->lsr->getActiveWebStore()
-            ));
+            );
+
+            $date = new \DateTime($date);
+
+            return $this->timeZoneInterface->date($date)->format($format);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
