@@ -435,7 +435,7 @@ class ReplicationHelper extends AbstractHelper
             'table_name' => 'repl_country_code',
             'columns_mapping' => [
                 'code' => 'Code',
-                'county_name' => 'Name',
+                'name' => 'Name',
                 'lsc_web_store_customer_no' => 'CustomerNo',
                 'taxpostgroup' => 'TaxPostGroup'
             ]

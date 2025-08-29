@@ -2798,7 +2798,7 @@
             "updated_at": true
         },
         "index": {
-            "LS_REPLICATION_REPL_VENDOR_NO": true,
+            "LS_REPLICATION_REPL_VENDOR_NAME": true,
             "LS_REPLICATION_REPL_VENDOR_SCOPE_ID": true,
             "LS_REPLICATION_REPL_VENDOR_PROCESSED": true,
             "LS_REPLICATION_REPL_VENDOR_IS_UPDATED": true,

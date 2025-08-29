@@ -345,6 +345,11 @@ class SchemaUpdateGenerator implements GeneratorInterface
             } else {
                 $tableName = ReplicationHelper::TABLE_NAME_PREFIX . $tableName;
             }
+            
+            if($tableName == "ls_replication_repl_vendor") {
+                $tab = "ls_replication_repl_vendor";
+            }
+            
             $tableIncludedInIndex = array_key_exists($tableName, self::$indexerColumnLists);
             if (!in_array($tableName, $tables)) {
                 $table = $dom->createElement('table');
