@@ -354,6 +354,7 @@ abstract class AbstractReplicationTask
         }
         try {
             $this->getRepository()->save($entity);
+            $entity->setData([]);
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
