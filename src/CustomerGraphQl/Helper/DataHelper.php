@@ -270,7 +270,7 @@ class DataHelper
             'posted' => $salesEntry->getPosted(),
             'ship_to_name' => $salesEntry->getShipToName(),
             'ship_to_email' => $salesEntry->getShipToEmail(),
-            'status' => $salesEntry->getStatus(),
+            'status' => $this->orderHelper->getOrderStatus($salesEntry),
             'store_id' => $salesEntry->getStoreId(),
             'store_name' => $salesEntry->getStoreName(),
             'store_currency' => ($salesEntry->getStoreCurrency()) ?: $orderCurrencyCode,
