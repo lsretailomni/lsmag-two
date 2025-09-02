@@ -3,6 +3,7 @@
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
 use Ls\Core\Model\LSR;
+use Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -90,6 +91,12 @@ class LsTables extends AbstractReset
     public function resetSpecificCronData($jobName, $scopeId, $coreConfigTableName)
     {
         $replicationTableName = 'ls_replication_' . $jobName;
+        $tableMappings = ReplicationHelper::DB_TABLES_MAPPING;
+
+        if (isset($tableMappings[$jobName])) {
+            $replicationTableName = 'ls_replication_' . $tableMappings[$jobName]['table_name'];
+        }
+
         if ($jobName == LSR::SC_ITEM_HTML_JOB_CODE) {
             $replicationTableName = 'ls_replication_repl_data_translation';
             $this->replicationHelper->deleteGivenTableDataGivenConditions(

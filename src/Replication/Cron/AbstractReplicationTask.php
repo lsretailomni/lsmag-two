@@ -7,11 +7,19 @@ use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\Data as LsHelper;
 use \Ls\Core\Model\LSR;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyDealType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceHandling;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemTriggerFunction;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemUsageCategory;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscMemberType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
+use Ls\Omni\Client\Ecommerce\Entity\HierarchyDealView;
 use Ls\Omni\Client\Ecommerce\Entity\HierarchyView;
 use Ls\Omni\Client\Ecommerce\Entity\LSCWIItemBuffer;
+use Ls\Omni\Client\Ecommerce\Entity\LSCWIItemModifier;
 use Ls\Omni\Client\Ecommerce\Entity\PeriodicDiscView;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
@@ -276,6 +284,39 @@ abstract class AbstractReplicationTask
                     base64_decode($source->getData(LSCWIItemBuffer::ITEM_HTML))
                 );
             }
+        } elseif ($confPath == ReplLscWiItemModifierTask::CONFIG_PATH) {
+            $value1 = $this->getConstantByIndex(
+                ItemModifierPriceType::class,
+                $source->getData(LSCWIItemModifier::PRICE_TYPE)
+            );
+            $value2 = $this->getConstantByIndex(
+                ItemModifierPriceHandling::class,
+                $source->getData(LSCWIItemModifier::PRICE_HANDLING)
+            );
+            $value3 = $this->getConstantByIndex(
+                ItemTriggerFunction::class,
+                $source->getData(LSCWIItemModifier::TRIGGER_FUNCTION)
+            );
+            $value4 = $this->getConstantByIndex(
+                ItemModifierType::class,
+                $source->getData(LSCWIItemModifier::USAGE_SUBCATEGORY)
+            );
+            $value5 = $this->getConstantByIndex(
+                ItemUsageCategory::class,
+                $source->getData(LSCWIItemModifier::USAGE_CATEGORY)
+            );
+
+            $source->setData(LSCWIItemModifier::PRICE_TYPE, $value1);
+            $source->setData(LSCWIItemModifier::PRICE_HANDLING, $value2);
+            $source->setData(LSCWIItemModifier::TRIGGER_FUNCTION, $value3);
+            $source->setData(LSCWIItemModifier::USAGE_SUBCATEGORY, $value4);
+            $source->setData(LSCWIItemModifier::USAGE_CATEGORY, $value5);
+        } elseif ($confPath == ReplHierarchydealviewTask::CONFIG_PATH) {
+            $value1 = $this->getConstantByIndex(
+                HierarchyDealType::class,
+                $source->getData(HierarchyDealView::TYPE)
+            );
+            $source->setData(HierarchyDealView::TYPE, $value1);
         }
         $checksum             = $this->getHashGivenString($source->getData());
         $uniqueAttributesHash = $this->generateIdentityValue($uniqueAttributes, $source, $properties);

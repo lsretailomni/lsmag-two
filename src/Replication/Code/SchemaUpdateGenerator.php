@@ -16,289 +16,289 @@ class SchemaUpdateGenerator implements GeneratorInterface
 {
     /** @var array List of Replication Tables indexer for search */
     public static $indexerColumnLists = [
-        "ls_replication_repl_attribute" => [
-            "Code",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_attribute' => [
+            'Code',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_attribute_option_value" => [
-            "Code",
-            "Sequence",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_attribute_option_value' => [
+            'Code',
+            'Sequence',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_attribute_value" => [
-            "Code",
-            "LinkField1",
-            "LinkField2",
-            "LinkField3",
-            "Sequence",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_attribute_value' => [
+            'Code',
+            'LinkField1',
+            'LinkField2',
+            'LinkField3',
+            'Sequence',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_barcode" => [
-            "nav_id",
-            "ItemId",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_barcode' => [
+            'nav_id',
+            'ItemId',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_countryview" => [
-            "name",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_countryview' => [
+            'name',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_currency" => [
-            "code",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_currency' => [
+            'CurrencyCode',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_currency_exchange_rate" => [
-            "currency_code",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_currency_exchange_rate' => [
+            'currency_code',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_customer" => [
-            "our_account_no",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_customer' => [
+            'AccountNumber',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_lsc_data_translation" => [
-            "translation_id",
-            "key",
-            "language_code",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_lsc_data_translation' => [
+            'translation_id',
+            'key',
+            'language_code',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_data_translation_lang_code" => [
-            "code",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_data_translation_lang_code' => [
+            'code',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_mag/replication/repl_periodicdiscview" => [
-            "offer_no",
-            "customer_disc_group",
-            "no",
-            "unit_of_measure",
-            "variant_code",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_mag/replication/repl_periodicdiscview' => [
+            'offer_no',
+            'customer_disc_group',
+            'no',
+            'unit_of_measure',
+            'variant_code',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_lsc_validation_period" => [
-            "nav_id",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_lsc_validation_period' => [
+            'nav_id',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_extended_variant_value" => [
-            "Code",
-            "FrameworkCode",
-            "ItemId",
-            "Value",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_extended_variant_value' => [
+            'Code',
+            'FrameworkCode',
+            'ItemId',
+            'Value',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_hierarchy" => [
-            "nav_id",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_hierarchy' => [
+            'nav_id',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_hierarchy_leaf" => [
-            "nav_id",
-            "NodeId",
-            "HierarchyCode",
-            "Type",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_hierarchy_leaf' => [
+            'nav_id',
+            'NodeId',
+            'HierarchyCode',
+            'Type',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_hierarchy_node" => [
-            "ParentNode",
-            "HierarchyCode",
-            "nav_id",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_hierarchy_node' => [
+            'ParentNode',
+            'HierarchyCode',
+            'nav_id',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_image" => [
-            "nav_id",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_image' => [
+            'nav_id',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_image_link" => [
-            "ImageId",
-            "TableName",
-            "KeyValue",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_image_link' => [
+            'ImageId',
+            'TableName',
+            'KeyValue',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_item" => [
-            "nav_id",
-            "ItemCategoryCode",
-            "ProductGroupId",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_item' => [
+            'nav_id',
+            'ItemCategoryCode',
+            'ProductGroupId',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_item_category" => [
-            "code",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_item_category' => [
+            'nav_id',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_item_unit_of_measure" => [
-            "Code",
-            "ItemId",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_item_unit_of_measure' => [
+            'Code',
+            'ItemId',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_item_variant_registration" => [
-            "ItemId",
-            "VariantId",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_item_variant_registration' => [
+            'ItemId',
+            'VariantId',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_vendoritemview" => [
-            "vendorno",
-            "itemno",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_vendoritemview' => [
+            'vendorno',
+            'itemno',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_price" => [
-            "ItemId",
-            "VariantId",
-            "StoreId",
-            "QtyPerUnitOfMeasure",
-            "UnitOfMeasure",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_price' => [
+            'ItemId',
+            'VariantId',
+            'StoreId',
+            'QtyPerUnitOfMeasure',
+            'UnitOfMeasure',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_inv_status" => [
-            "ItemId",
-            "VariantId",
-            "StoreId",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_inv_status' => [
+            'ItemId',
+            'VariantId',
+            'StoreId',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_lsc_retail_product_group" => [
-            "code",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_lsc_retail_product_group' => [
+            'code',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_shipping_agent" => [
-            "name",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_shipping_agent' => [
+            'name',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_storeview" => [
-            "no",
-            "scope_id"
+        'ls_replication_repl_storeview' => [
+            'no',
+            'scope_id'
         ],
-        "ls_replication_repl_tenderview" => [
-            "code",
-            "scope_id"
+        'ls_replication_repl_tenderview' => [
+            'code',
+            'scope_id'
         ],
-        "ls_replication_repl_unit_of_measure" => [
-            "nav_id",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_unit_of_measure' => [
+            'nav_id',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_vendor" => [
-            "no",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_vendor' => [
+            'nav_id',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_hierarchydeallineview" => [
-            "offer_no",
-            "item_no",
-            "offer_line_no",
-            "unit_of_measure",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_hierarchydeallineview' => [
+            'offer_no',
+            'item_no',
+            'offer_line_no',
+            'unit_of_measure',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_hierarchydealview" => [
-            "offer_no",
-            "no",
-            "line_no",
-            "unit_of_measure",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_hierarchydealview' => [
+            'offer_no',
+            'no',
+            'line_no',
+            'unit_of_measure',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_lsc_wi_item_recipe_buffer" => [
-            "parent_item_no",
-            "no",
-            "unit_of_measure_code",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_lsc_wi_item_recipe_buffer' => [
+            'parent_item_no',
+            'no',
+            'unit_of_measure_code',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ],
-        "ls_replication_repl_lsc_wi_item_modifier" => [
-            "parent_item_no",
-            "variant_code",
-            "subcode",
-            "infocode_code",
-            "unit_of_measure",
-            "scope_id",
-            "processed",
-            "is_updated",
-            "IsDeleted"
+        'ls_replication_repl_lsc_wi_item_modifier' => [
+            'parent_item_no',
+            'variant_code',
+            'subcode',
+            'infocode_code',
+            'unit_of_measure',
+            'scope_id',
+            'processed',
+            'is_updated',
+            'IsDeleted'
         ]
     ];
 

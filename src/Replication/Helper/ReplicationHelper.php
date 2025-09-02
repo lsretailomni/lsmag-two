@@ -168,7 +168,11 @@ class ReplicationHelper extends AbstractHelper
         'ReplCountryview' => 'ReplCountryCode',
         'ReplPeriodicdiscview' => 'ReplDiscountSetup',
         'ReplLscValidationPeriod' => 'ReplDiscountValidation',
-        'ReplLscDataTranslation' => 'ReplDataTranslation'
+        'ReplLscDataTranslation' => 'ReplDataTranslation',
+        'ReplLscWiItemRecipeBuffer' => 'ReplItemRecipe',
+        'ReplLscWiItemModifier' => 'ReplItemModifier',
+        'ReplHierarchydealview' => 'ReplHierarchyHospDeal',
+        'ReplHierarchydeallineview' => 'ReplHierarchyHospDealLine',
     ];
     public const DB_TABLES_MAPPING = [
         'repl_lsc_attribute' => [
@@ -435,9 +439,47 @@ class ReplicationHelper extends AbstractHelper
             'table_name' => 'repl_country_code',
             'columns_mapping' => [
                 'code' => 'Code',
-                'county_name' => 'Name',
+                'name' => 'Name',
                 'lsc_web_store_customer_no' => 'CustomerNo',
                 'taxpostgroup' => 'TaxPostGroup'
+            ]
+        ],
+        'repl_currency' => [
+            'table_name' => 'repl_currency',
+            'columns_mapping' => [
+                'code' => 'CurrencyCode',
+                'description' => 'Description',
+                'amount_rounding_precision' => 'RoundOfSales',
+                'invoice_rounding_type' => 'RoundOfTypeAmount',
+                'invoice_rounding_precision' => 'RoundOfAmount',
+                'lsc_pos_currency_symbol' => 'Symbol'
+            ]
+        ],
+        'repl_item_category' => [
+            'table_name' => 'repl_item_category',
+            'columns_mapping' => [
+                'description' => 'Description',
+                'code' => 'nav_id'
+            ]
+        ],
+        'repl_customer' => [
+            'table_name' => 'repl_customer',
+            'columns_mapping' => [
+                'lsc_customer_id' => 'nav_id',
+                'name' => 'Name',
+                'address' => 'Street',
+                'city' => 'City',
+                'county' => 'Country',
+                'home_page' => 'URL',
+                'email' => 'Email',
+                'blocked' => 'Blocked',
+                'no' => 'AccountNumber',
+                'post_code' => 'ZipCode',
+                'mobile_phone_no' => 'CellularPhone',
+                'phone_no' => 'PhoneLocal',
+                'currency_code' => 'Currency',
+                'vat_bus_posting_group' => 'TaxGroup',
+                'prices_including_vat' => 'IncludeTax',
             ]
         ],
         'repl_lsc_validation_period' => [
@@ -564,20 +606,97 @@ class ReplicationHelper extends AbstractHelper
                 'translation_id' => 'TranslationId'
             ]
         ],
+        'repl_hierarchydealview' => [
+            'table_name' => 'repl_hierarchy_hosp_deal',
+            'columns_mapping' => [
+                'hierarchy_code' => 'HierarchyCode',
+                'node_id' => 'ParentNode',
+                'offer_no' => 'DealNo',
+                'no' => 'No',
+                'description' => 'Description',
+                'line_no' => 'LineNo',
+                'type' => ['name' => 'Type', 'type' => 'text'],
+                'variant_code' => 'VariantCode',
+                'unit_of_measure' => 'UnitOfMeasure',
+                'min_selection' => 'MinSelection',
+                'max_selection' => 'MaxSelection',
+                'modifier_added_amount' => 'AddedAmount',
+                'deal_mod_size_gr_index' => 'DealModSizeGroupIndex',
+                'retail_image_id' => 'ImageId',
+            ]
+        ],
+        'repl_hierarchydeallineview' => [
+            'table_name' => 'repl_hierarchy_hosp_deal_line',
+            'columns_mapping' => [
+                'hierarchy_code' => 'HierarchyCode',
+                'node_id' => 'ParentNode',
+                'offer_no' => 'DealNo',
+                'offer_line_no' => 'DealLineNo',
+                'deal_modifier_line_no' => 'LineNo',
+                'deal_modifier_code' => 'DealLineCode',
+                'item_no' => 'ItemNo',
+                'description' => 'Description',
+                'variant_code' => 'VariantCode',
+                'unit_of_measure' => 'UnitOfMeasure',
+                'min_selection' => 'MinSelection',
+                'max_item_selection' => 'MaxSelection',
+                'added_amount' => 'AddedAmount',
+                'retail_image_id' => 'ImageId',
+            ]
+        ],
+        'repl_lsc_wi_item_modifier' => [
+            'table_name' => 'repl_item_modifier',
+            'columns_mapping' => [
+                'amount_percent' => 'AmountPercent',
+                'infocode_code' => 'Code',
+                'description' => 'Description',
+                'explanatory_header_text' => 'ExplanatoryHeaderText',
+                'group_max_selection' => 'GroupMaxSelection',
+                'group_min_selection' => 'GroupMinSelection',
+                'parent_item_no' => 'nav_id',
+                'max_selection' => 'MaxSelection',
+                'min_selection' => 'MinSelection',
+                'price_type' => ['name' => 'PriceType', 'type' => 'text'],
+                'prompt' => 'Prompt',
+                'subcode' => 'SubCode',
+                'time_modifier_minutes' => 'TimeModifierMinutes',
+                'item_no' => 'TriggerCode',
+                'price_handling' => ['name' => 'AlwaysCharge', 'type' => 'text'],
+                'trigger_function' => ['name' => 'TriggerFunction', 'type' => 'text'],
+                'usage_subcategory' => ['name' => 'Type', 'type' => 'text'],
+                'unit_of_measure' => 'UnitOfMeasure',
+                'usage_category' => ['name' => 'UsageCategory', 'type' => 'text'],
+                'variant_code' => 'VariantCode',
+            ]
+        ],
+        'repl_lsc_wi_item_recipe_buffer' => [
+            'table_name' => 'repl_item_recipe',
+            'columns_mapping' => [
+                'description' => 'Description',
+                'lsc_exclusion' => 'Exclusion',
+                'lsc_price_on_exclusion' => 'ExclusionPrice',
+                'retail_image_id' => 'ImageId',
+                'parent_item_no' => 'RecipeNo',
+                'line_no' => 'LineNo',
+                'quantity_per' => 'QuantityPer',
+                'no' => 'ItemNo',
+                'unit_of_measure_code' => 'UnitOfMeasure'
+            ]
+        ],
     ];
 
     /** @var array List of Replication Tables with unique field */
     public const JOB_CODE_UNIQUE_FIELD_ARRAY = [
-        "ls_mag/replication/repl_lsc_attribute" => [
+        'ls_mag/replication/repl_lsc_attribute' => [
             'code' => 'Code',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_attribute_option_value" => [
+        'ls_mag/replication/repl_lsc_attribute_option_value' => [
             'attribute_code' => 'Code',
             'sequence' => 'Sequence',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_attribute_value" => [
+        'ls_mag/replication/repl_lsc_attribute_value' => [
             'attribute_code' => 'Code',
             'link_field_1' => 'LinkField1',
             'link_field_2' => 'LinkField2',
@@ -585,54 +704,55 @@ class ReplicationHelper extends AbstractHelper
             'sequence' => 'Sequence',
             'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_barcodes" => [
+        'ls_mag/replication/repl_lsc_barcodes' => [
             'barcode_no' => 'nav_id',
             'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/repl_countryview" => [
+        'ls_mag/replication/repl_countryview' => [
+            'code' => 'Code',
+            'scope_id'  => 'scope_id'
+        ],
+        'ls_mag/replication/repl_currency' => [
+            'code' => 'CurrencyCode',
             'county_name' => 'Name',
             'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/repl_currency" => [
-            "code",
-            "scope_id"
+        'ls_mag/replication/repl_currency_exchange_rate' => [
+            'currency_code',
+            'scope_id'
         ],
-        "ls_mag/replication/repl_currency_exchange_rate" => [
-            "currency_code",
-            "scope_id"
+        'ls_mag/replication/repl_customer' => [
+            'lsc_customer_id' => 'nav_id',
+            'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/repl_customer" => [
-            "our_account_no",
-            "scope_id"
-        ],
-        "ls_mag/replication/repl_lsc_data_translation" => [
+        'ls_mag/replication/repl_lsc_data_translation' => [
             'key' => 'Key',
             'language_code' => 'LanguageCode',
             'translation_id' => 'TranslationId',
             'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/repl_html_translation" => [
-            "TranslationId",
-            "Key",
-            "LanguageCode",
-            "scope_id"
+        'ls_mag/replication/repl_html_translation' => [
+            'TranslationId',
+            'Key',
+            'LanguageCode',
+            'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_item_html_ml" => [
-            "item_no" => "item_no",
-            "language" => "language",
-            "scope_id" => "scope_id"
+        'ls_mag/replication/repl_lsc_item_html_ml' => [
+            'item_no' => 'item_no',
+            'language' => 'language',
+            'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_deal_html_translation" => [
-            "TranslationId",
-            "Key",
-            "LanguageCode",
-            "scope_id"
+        'ls_mag/replication/repl_deal_html_translation' => [
+            'TranslationId',
+            'Key',
+            'LanguageCode',
+            'scope_id'
         ],
-        "ls_mag/replication/repl_data_translation_lang_code" => [
-            "code",
-            "scope_id"
+        'ls_mag/replication/repl_data_translation_lang_code' => [
+            'code',
+            'scope_id'
         ],
-        "ls_mag/replication/repl_periodicdiscview" => [
+        'ls_mag/replication/repl_periodicdiscview' => [
             'offer_no' => 'OfferNo',
             'customer_disc_group' => 'CustomerDiscountGroup',
             'no' => 'Number',
@@ -640,73 +760,73 @@ class ReplicationHelper extends AbstractHelper
             'variant_code' => 'VariantId',
             'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/repl_discount_setup" => [
-            "OfferNo",
-            "LineNumber",
-            "scope_id"
+        'ls_mag/replication/repl_discount_setup' => [
+            'OfferNo',
+            'LineNumber',
+            'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_validation_period" => [
+        'ls_mag/replication/repl_lsc_validation_period' => [
             'nav_id' => 'nav_id',
             'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_wi_extd_variant_values" => [
+        'ls_mag/replication/repl_lsc_wi_extd_variant_values' => [
             'item_no' => 'ItemId',
             'code' => 'Code',
             'value' => 'Value',
             'framework_code' => 'FrameworkCode',
             'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/repl_hierarchyview" => [
+        'ls_mag/replication/repl_hierarchyview' => [
             'hierarchy_code' => 'nav_id',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_hierarchynodeslinkview" => [
+        'ls_mag/replication/repl_hierarchynodeslinkview' => [
             'no' => 'nav_id',
             'node_id' => 'NodeId',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_hierarchynodesview" => [
+        'ls_mag/replication/repl_hierarchynodesview' => [
             'node_id' => 'nav_id',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_image" => [
-            "nav_id",
-            "scope_id"
+        'ls_mag/replication/repl_image' => [
+            'nav_id',
+            'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_retail_image_link" => [
+        'ls_mag/replication/repl_lsc_retail_image_link' => [
             'image_id' => 'ImageId',
             'keyvalue' => 'KeyValue',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_wi_item_buffer" => [
+        'ls_mag/replication/repl_lsc_wi_item_buffer' => [
             'no' => 'nav_id',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_item_category" => [
-            "code",
-            "scope_id"
+        'ls_mag/replication/repl_item_category' => [
+            'code' => 'nav_id',
+            'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_itemuomupdview" => [
+        'ls_mag/replication/repl_itemuomupdview' => [
             'code' => 'Code',
             'item_no' => 'ItemId',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_variantregview" => [
+        'ls_mag/replication/repl_variantregview' => [
             'item_no' => 'ItemId',
             'variant' => 'VariantId',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_item_variant" => [
+        'ls_mag/replication/repl_item_variant' => [
             'item_no' => 'ItemId',
             'code' => 'VariantId',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_vendoritemview" => [
+        'ls_mag/replication/repl_vendoritemview' => [
             'vendorno' => 'NavManufacturerId',
             'itemno' => 'NavProductId',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_wi_price" => [
+        'ls_mag/replication/repl_lsc_wi_price' => [
             'store_no' => 'StoreId',
             'item_no' => 'ItemId',
             'unit_of_measure_code' => 'UnitOfMeasure',
@@ -714,65 +834,65 @@ class ReplicationHelper extends AbstractHelper
             'qty_per_unit_of_measure' => 'QtyPerUnitOfMeasure',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_inventory_lookup_table" => [
+        'ls_mag/replication/repl_lsc_inventory_lookup_table' => [
             'item_no' => 'ItemId',
             'variant_code' => 'VariantId',
             'store_no' => 'StoreId',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_retail_product_group" => [
-            "code",
-            "scope_id"
+        'ls_mag/replication/repl_lsc_retail_product_group' => [
+            'code',
+            'scope_id'
         ],
-        "ls_mag/replication/repl_shipping_agent" => [
-            "name",
-            "scope_id"
+        'ls_mag/replication/repl_shipping_agent' => [
+            'name',
+            'scope_id'
         ],
-        "ls_mag/replication/repl_storeview" => [
+        'ls_mag/replication/repl_storeview' => [
             'no' => 'nav_id',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_tender_type" => [
+        'ls_mag/replication/repl_lsc_tender_type' => [
             'code' => 'TenderTypeId',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_unit_of_measure" => [
+        'ls_mag/replication/repl_unit_of_measure' => [
             'code' => 'nav_id',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_vendor" => [
+        'ls_mag/replication/repl_vendor' => [
             'no' => 'nav_id',
             'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_hierarchydeallineview" => [
-            "offer_no",
-            "item_no",
-            "offer_line_no",
-            "unit_of_measure",
-            "scope_id"
+        'ls_mag/replication/repl_hierarchydeallineview' => [
+            'offer_no' => 'DealNo',
+            'offer_line_no' => 'DealLineNo',
+            'item_no' => 'ItemNo',
+            'unit_of_measure' => 'UnitOfMeasure',
+            'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_hierarchydealview" => [
-            "offer_no",
-            "no",
-            "line_no",
-            "unit_of_measure",
-            "scope_id"
+        'ls_mag/replication/repl_hierarchydealview' => [
+            'offer_no' => 'DealNo',
+            'no' => 'No',
+            'line_no' => 'LineNo',
+            'unit_of_measure' => 'UnitOfMeasure',
+            'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_wi_item_recipe_buffer" => [
-            "parent_item_no",
-            "line_no",
-            "scope_id"
+        'ls_mag/replication/repl_lsc_wi_item_recipe_buffer' => [
+            'parent_item_no' => 'RecipeNo',
+            'line_no' => 'LineNo',
+            'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_lsc_wi_item_modifier" => [
-            "parent_item_no",
-            "item_no",
-            "scope_id"
+        'ls_mag/replication/repl_lsc_wi_item_modifier' => [
+            'parent_item_no' => 'nav_id',
+            'item_no' => 'TriggerCode',
+            'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/loy_item" => [
-            "nav_id",
-            "scope_id"
+        'ls_mag/replication/loy_item' => [
+            'nav_id',
+            'scope_id'
         ],
-        "ls_mag/replication/repl_vat_posting_setup" => [
+        'ls_mag/replication/repl_vat_posting_setup' => [
             'vat_bus_posting_group' => 'BusinessTaxGroup',
             'vat_prod_posting_group' => 'ProductTaxGroup',
             'scope_id' => 'scope_id'
@@ -781,17 +901,16 @@ class ReplicationHelper extends AbstractHelper
 
     /** @var array List of Replication Tables with unique field for delete */
     public const DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY = [
-        "ls_mag/replication/repl_variantregview" => [
-            "item_no",
-            "variant_dimension_1",
-            "variant_dimension_2",
-            "variant_dimension_3",
-            "variant_dimension_4",
-            "variant_dimension_5",
-            "variant_dimension_6",
+        'ls_mag/replication/repl_variantregview' => [
+            'item_no',
+            'variant_dimension_1',
+            'variant_dimension_2',
+            'variant_dimension_3',
+            'variant_dimension_4',
+            'variant_dimension_5',
+            'variant_dimension_6',
         ],
-        "ls_mag/replication/repl_hierarchy_hosp_deal_line"  => ["DealNo", "DealLineNo", "LineNo", "scope_id"],
-
+        'ls_mag/replication/repl_hierarchy_hosp_deal_line'  => ['DealNo', 'DealLineNo', 'LineNo', 'scope_id'],
     ];
 
     public $connection;
