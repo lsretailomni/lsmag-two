@@ -239,36 +239,6 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\Ecommerce\Entity\VATPostingSet
         return $this->setData(self::getDbColumnsMapping()[self::PURCH_VAT_REPORTING_CODE], $value);
     }
 
-    public function getSalesTaxCodeSafT() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SALES_TAX_CODE_SAFT]);
-    }
-
-    public function setSalesTaxCodeSafT(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SALES_TAX_CODE_SAFT], $value);
-    }
-
-    public function getPurchaseTaxCodeSafT() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PURCHASE_TAX_CODE_SAFT]);
-    }
-
-    public function setPurchaseTaxCodeSafT(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PURCHASE_TAX_CODE_SAFT], $value);
-    }
-
-    public function getStartingDate() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::STARTING_DATE]);
-    }
-
-    public function setStartingDate(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::STARTING_DATE], $value);
-    }
-
     public function getNonDeductibleVat() : ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::NONDEDUCTIBLE_VAT]);

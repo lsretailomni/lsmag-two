@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\Block\Order;
 
@@ -87,8 +88,7 @@ class Info extends AbstractOrderBlock
      */
     public function getCountryName($countryCode)
     {
-        $country = $this->countryFactory->create()->loadByCode($countryCode);
-        return $country->getName();
+        return $this->orderHelper->getCountryName($countryCode);
     }
 
     /**
@@ -162,7 +162,7 @@ class Info extends AbstractOrderBlock
     {
         $order = $this->getOrder();
 
-        return $this->orderHelper->getLscMemberSalesBuffer($order);
+        return $order ? $this->orderHelper->getLscMemberSalesBuffer($order) : null;
     }
 
     /**

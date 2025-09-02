@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
@@ -13,17 +14,11 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 class StoresOutput implements ResolverInterface
 {
     /**
-     * @var DataHelper
-     */
-    public $dataHelper;
-
-    /**
      * @param DataHelper $dataHelper
      */
     public function __construct(
-        DataHelper $dataHelper
+        public DataHelper $dataHelper
     ) {
-        $this->dataHelper = $dataHelper;
     }
 
     /**

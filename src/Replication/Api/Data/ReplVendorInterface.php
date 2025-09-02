@@ -268,18 +268,6 @@ interface ReplVendorInterface
 
     public function setCashFlowPaymentTermsCode(?string $value);
 
-    public function getDefaultTransType() : ?string;
-
-    public function setDefaultTransType(?string $value);
-
-    public function getDefaultTransTypeReturn() : ?string;
-
-    public function setDefaultTransTypeReturn(?string $value);
-
-    public function getDefTransportMethod() : ?string;
-
-    public function setDefTransportMethod(?string $value);
-
     public function getPrimaryContactNo() : ?string;
 
     public function setPrimaryContactNo(?string $value);
@@ -299,18 +287,6 @@ interface ReplVendorInterface
     public function getLeadTimeCalculation() : ?string;
 
     public function setLeadTimeCalculation(?string $value);
-
-    public function getReceiveEDocumentTo() : ?int;
-
-    public function setReceiveEDocumentTo(?int $value);
-
-    public function getSustCertNo() : ?string;
-
-    public function setSustCertNo(?string $value);
-
-    public function getSustCertName() : ?string;
-
-    public function setSustCertName(?string $value);
 
     public function getPriceCalculationMethod() : ?int;
 

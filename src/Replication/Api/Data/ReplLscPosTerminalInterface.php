@@ -136,6 +136,10 @@ interface ReplLscPosTerminalInterface
 
     public function setUseReferencedRefunds(?bool $value);
 
+    public function getUseRefundSelection() : ?bool;
+
+    public function setUseRefundSelection(?bool $value);
+
     public function getLastDateModified() : ?string;
 
     public function setLastDateModified(?string $value);
@@ -348,6 +352,14 @@ interface ReplLscPosTerminalInterface
 
     public function setVoidSlip(?int $value);
 
+    public function getCardSlip() : ?int;
+
+    public function setCardSlip(?int $value);
+
+    public function getConfirmLastSlipPrint() : ?bool;
+
+    public function setConfirmLastSlipPrint(?bool $value);
+
     public function getOnlyEmailSalesTransactions() : ?bool;
 
     public function setOnlyEmailSalesTransactions(?bool $value);
@@ -439,6 +451,10 @@ interface ReplLscPosTerminalInterface
     public function getEftAutoRecoveryAttempts() : ?int;
 
     public function setEftAutoRecoveryAttempts(?int $value);
+
+    public function getEftTerminalOfflineHandling() : ?int;
+
+    public function setEftTerminalOfflineHandling(?int $value);
 
     public function getPosSearchEngine() : ?int;
 

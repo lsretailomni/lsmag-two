@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\CustomerGraphQl\Plugin;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\ContactHelper;
@@ -16,23 +18,14 @@ use Magento\Framework\GraphQl\Exception\GraphQlInputException;
  */
 class UpdateAccount
 {
-    /** @var ContactHelper */
-    private $contactHelper;
-
-    /** @var LSR @var */
-    private $lsr;
-
     /**
-     * UpdateAccount constructor.
      * @param ContactHelper $contactHelper
      * @param LSR $lsr
      */
     public function __construct(
-        ContactHelper $contactHelper,
-        LSR $lsr
+        public ContactHelper $contactHelper,
+        public LSR $lsr
     ) {
-        $this->contactHelper = $contactHelper;
-        $this->lsr           = $lsr;
     }
 
     /**
@@ -45,7 +38,7 @@ class UpdateAccount
      * @throws GraphQlInputException
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
-     * @throws LocalizedException
+     * @throws LocalizedException|GuzzleException
      */
     public function aroundExecute(
         SaveCustomer $subject,

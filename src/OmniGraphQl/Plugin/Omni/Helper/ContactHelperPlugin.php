@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Plugin\Omni\Helper;
 
-use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
+use \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
 use \Ls\Omni\Helper\ContactHelper;
 
 /**
@@ -16,14 +17,14 @@ class ContactHelperPlugin
      * To fix issue with merging quotes causing crash on checkout
      *
      * @param ContactHelper $subject
-     * @param MemberContact $result
+     * @param GetMemberContactInfo_GetMemberContactInfo $result
      * @param array $credentials
      * @param string $is_email
      * @return array
      */
     public function beforeProcessCustomerLogin(
         ContactHelper $subject,
-        MemberContact $result,
+        GetMemberContactInfo_GetMemberContactInfo $result,
         $credentials,
         $is_email
     ) {

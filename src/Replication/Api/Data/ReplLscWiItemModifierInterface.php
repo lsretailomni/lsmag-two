@@ -40,6 +40,18 @@ interface ReplLscWiItemModifierInterface
 
     public function setGroupMaxSelection(?int $value);
 
+    public function getUsageCategory() : ?int;
+
+    public function setUsageCategory(?int $value);
+
+    public function getUsageSubCategory() : ?int;
+
+    public function setUsageSubCategory(?int $value);
+
+    public function getTriggerFunction() : ?int;
+
+    public function setTriggerFunction(?int $value);
+
     public function getItemNo() : ?string;
 
     public function setItemNo(?string $value);

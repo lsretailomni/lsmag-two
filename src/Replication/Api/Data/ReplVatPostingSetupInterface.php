@@ -96,18 +96,6 @@ interface ReplVatPostingSetupInterface
 
     public function setPurchVatReportingCode(?string $value);
 
-    public function getSalesTaxCodeSafT() : ?string;
-
-    public function setSalesTaxCodeSafT(?string $value);
-
-    public function getPurchaseTaxCodeSafT() : ?string;
-
-    public function setPurchaseTaxCodeSafT(?string $value);
-
-    public function getStartingDate() : ?string;
-
-    public function setStartingDate(?string $value);
-
     public function getNonDeductibleVat() : ?float;
 
     public function setNonDeductibleVat(?float $value);

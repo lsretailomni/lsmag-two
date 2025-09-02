@@ -819,36 +819,6 @@ class ReplCustomer extends \Ls\Omni\Client\Ecommerce\Entity\Customer implements 
         return $this->setData(self::getDbColumnsMapping()[self::CASH_FLOW_PAYMENT_TERMS_CODE], $value);
     }
 
-    public function getDefaultTransType() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_TRANS_TYPE]);
-    }
-
-    public function setDefaultTransType(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_TRANS_TYPE], $value);
-    }
-
-    public function getDefaultTransTypeReturn() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_TRANS_TYPE_RETURN]);
-    }
-
-    public function setDefaultTransTypeReturn(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_TRANS_TYPE_RETURN], $value);
-    }
-
-    public function getDefTransportMethod() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DEF_TRANSPORT_METHOD]);
-    }
-
-    public function setDefTransportMethod(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DEF_TRANSPORT_METHOD], $value);
-    }
-
     public function getPrimaryContactNo() : ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRIMARY_CONTACT_NO]);

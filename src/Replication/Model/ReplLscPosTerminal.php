@@ -339,6 +339,16 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\Ecommerce\Entity\LSCPOSTerminal
         return $this->setData(self::getDbColumnsMapping()[self::USE_REFERENCED_REFUNDS], $value);
     }
 
+    public function getUseRefundSelection() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::USE_REFUND_SELECTION]);
+    }
+
+    public function setUseRefundSelection(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::USE_REFUND_SELECTION], $value);
+    }
+
     public function getLastDateModified() : ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED]);
@@ -869,6 +879,26 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\Ecommerce\Entity\LSCPOSTerminal
         return $this->setData(self::getDbColumnsMapping()[self::VOID_SLIP], $value);
     }
 
+    public function getCardSlip() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CARD_SLIP]);
+    }
+
+    public function setCardSlip(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CARD_SLIP], $value);
+    }
+
+    public function getConfirmLastSlipPrint() : ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CONFIRM_LAST_SLIP_PRINT]);
+    }
+
+    public function setConfirmLastSlipPrint(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CONFIRM_LAST_SLIP_PRINT], $value);
+    }
+
     public function getOnlyEmailSalesTransactions() : ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ONLY_EMAIL_SALES_TRANSACTIONS]);
@@ -1097,6 +1127,16 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\Ecommerce\Entity\LSCPOSTerminal
     public function setEftAutoRecoveryAttempts(?int $value)
     {
         return $this->setData(self::getDbColumnsMapping()[self::EFT_AUTO_RECOVERY_ATTEMPTS], $value);
+    }
+
+    public function getEftTerminalOfflineHandling() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EFT_TERMINAL_OFFLINE_HANDLING]);
+    }
+
+    public function setEftTerminalOfflineHandling(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EFT_TERMINAL_OFFLINE_HANDLING], $value);
     }
 
     public function getPosSearchEngine() : ?int

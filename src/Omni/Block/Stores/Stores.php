@@ -7,9 +7,10 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Helper\Data;
-use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
-use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplStoreview\Collection;
+use \Ls\Replication\Model\ResourceModel\ReplStoreview\CollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template;
 use Magento\Store\Model\ScopeInterface;
 use Psr\Log\LoggerInterface;
@@ -39,19 +40,22 @@ class Stores extends Template
     }
 
     /**
+     * Get replicated store collection
+     *
      * @return Collection
      */
     public function getStores()
     {
+        $collection = $this->replStoreCollectionFactory->create();
         try {
-            $collection = $this->replStoreFactory->create()
+            $collection = $collection
                 ->addFieldToFilter('IsDeleted', 0)
                 ->addFieldToFilter('scope_id', $this->lsr->getCurrentWebsiteId());
-
-            return $collection;
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
+
+        return $collection;
     }
 
     /**
@@ -73,19 +77,18 @@ class Stores extends Template
     }
 
     /**
-     * @return mixed
+     * Get configured google map key
+     *
+     * @return string
+     * @throws NoSuchEntityException
      */
     public function getStoreMapKey()
     {
-        try {
-            return $this->scopeConfig->getValue(
-                LSR::SC_CLICKCOLLECT_GOOGLE_API_KEY,
-                ScopeInterface::SCOPE_STORE,
-                $this->lsr->getCurrentStoreId()
-            );
-        } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
-        }
+        return $this->scopeConfig->getValue(
+            LSR::SC_CLICKCOLLECT_GOOGLE_API_KEY,
+            ScopeInterface::SCOPE_STORE,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**

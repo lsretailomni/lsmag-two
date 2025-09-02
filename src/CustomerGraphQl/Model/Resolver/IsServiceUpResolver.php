@@ -1,7 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace Ls\CustomerGraphQl\Model\Resolver;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
@@ -12,11 +16,6 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
  */
 class IsServiceUpResolver implements ResolverInterface
 {
-    /**
-     * @var LSR
-     */
-    private LSR $lsr;
-
     private const CONFIG_PATHS_MAPPING = [
         'show_club_information'       => LSR::SC_LOYALTY_SHOW_CLUB_INFORMATION
     ];
@@ -25,9 +24,8 @@ class IsServiceUpResolver implements ResolverInterface
      * @param LSR $lsr
      */
     public function __construct(
-        LSR $lsr
+        public LSR $lsr
     ) {
-        $this->lsr = $lsr;
     }
 
     /**
@@ -39,7 +37,7 @@ class IsServiceUpResolver implements ResolverInterface
      * @param array|null $value
      * @param array|null $args
      * @return bool
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {

@@ -669,36 +669,6 @@ class ReplVendor extends \Ls\Omni\Client\Ecommerce\Entity\Vendor implements Repl
         return $this->setData(self::getDbColumnsMapping()[self::CASH_FLOW_PAYMENT_TERMS_CODE], $value);
     }
 
-    public function getDefaultTransType() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_TRANS_TYPE]);
-    }
-
-    public function setDefaultTransType(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_TRANS_TYPE], $value);
-    }
-
-    public function getDefaultTransTypeReturn() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_TRANS_TYPE_RETURN]);
-    }
-
-    public function setDefaultTransTypeReturn(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_TRANS_TYPE_RETURN], $value);
-    }
-
-    public function getDefTransportMethod() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DEF_TRANSPORT_METHOD]);
-    }
-
-    public function setDefTransportMethod(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DEF_TRANSPORT_METHOD], $value);
-    }
-
     public function getPrimaryContactNo() : ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRIMARY_CONTACT_NO]);
@@ -747,36 +717,6 @@ class ReplVendor extends \Ls\Omni\Client\Ecommerce\Entity\Vendor implements Repl
     public function setLeadTimeCalculation(?string $value)
     {
         return $this->setData(self::getDbColumnsMapping()[self::LEAD_TIME_CALCULATION], $value);
-    }
-
-    public function getReceiveEDocumentTo() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::RECEIVE_EDOCUMENT_TO]);
-    }
-
-    public function setReceiveEDocumentTo(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::RECEIVE_EDOCUMENT_TO], $value);
-    }
-
-    public function getSustCertNo() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SUST_CERT_NO]);
-    }
-
-    public function setSustCertNo(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SUST_CERT_NO], $value);
-    }
-
-    public function getSustCertName() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SUST_CERT_NAME]);
-    }
-
-    public function setSustCertName(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SUST_CERT_NAME], $value);
     }
 
     public function getPriceCalculationMethod() : ?int

@@ -56,7 +56,7 @@ class OrderHelper extends AbstractHelperOmni
 
     /**
      * Place order by Id
-     * 
+     *
      * @param $orderId
      * @param Entity\Order $oneListCalculateResponse
      */
@@ -82,7 +82,7 @@ class OrderHelper extends AbstractHelperOmni
         $rootCustomerOrderCreate = $this->createInstance(
             RootCustomerOrderCreateV6::class
         );
-        
+
         try {
             $customerOrderCreateCoHeader = $this->createInstance(
                 CustomerOrderCreateCOHeaderV6::class
@@ -255,7 +255,7 @@ class OrderHelper extends AbstractHelperOmni
 
     /**
      * Prepare order edit request
-     * 
+     *
      * @param Model\Order $order
      * @param $oneListCalculateResponse
      * @return Entity\OrderEdit
@@ -412,7 +412,7 @@ class OrderHelper extends AbstractHelperOmni
 
     /**
      * Set shipment line properties
-     * 
+     *
      * @param $orderLine
      * @param $order
      */
@@ -647,7 +647,7 @@ class OrderHelper extends AbstractHelperOmni
 
     /**
      * Get payment type id
-     * 
+     *
      * @param $paymentType
      * @return string
      */
@@ -802,7 +802,7 @@ class OrderHelper extends AbstractHelperOmni
      * Get sales order by order id
      *
      * @param $docId
-     * @return GetSalesInfoByOrderId_GetSalesInfoByOrderId|null
+     * @return Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId|null
      * @throws InvalidEnumException
      */
     public function getSalesOrderByOrderIdNew($docId)
@@ -901,7 +901,7 @@ class OrderHelper extends AbstractHelperOmni
      *
      * @param $docId
      * @param $type
-     * @return GetSelectedSalesDoc_GetSelectedSalesDoc|GetSalesInfoByOrderId_GetSalesInfoByOrderId|null
+     * @return GetSelectedSalesDoc_GetSelectedSalesDoc|Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId|null
      * @throws InvalidEnumException
      */
     public function fetchOrder($docId, $type)
@@ -1038,6 +1038,27 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * Get magento order given increment_id
+     *
+     * @param $incrementId
+     * @return false|mixed|null
+     */
+    public function getMagentoOrderGivenExternalId($incrementId)
+    {
+        $order     = null;
+        $orderList = $this->orderRepository->getList(
+            $this->basketHelper->getSearchCriteriaBuilder()->
+            addFilter('increment_id', $incrementId)->create()
+        )->getItems();
+
+        if (!empty($orderList)) {
+            $order = reset($orderList);
+        }
+
+        return $order;
+    }
+
+    /**
      * Get magento order given entity_id
      *
      * @param $entityId
@@ -1148,7 +1169,7 @@ class OrderHelper extends AbstractHelperOmni
      * @return OrderInterface|mixed
      * @throws AlreadyExistsException
      * @throws NoSuchEntityException
-     * @throws \Magento\Framework\Exception\InputException
+     * @throws InputException
      */
     public function setAdyenParameters($adyenResponse, $order)
     {
@@ -1194,7 +1215,7 @@ class OrderHelper extends AbstractHelperOmni
                 CustomerOrderCancelRequest::SOURCE_TYPE => $storeId
             ]
         );
-        
+
         try {
             $response = $request->execute($request);
         } catch (Exception $e) {
@@ -1337,7 +1358,7 @@ class OrderHelper extends AbstractHelperOmni
             $dateTime = $this->timezone->date($date)->format($format);
 
             return $dateTime;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $date;
@@ -1486,7 +1507,7 @@ class OrderHelper extends AbstractHelperOmni
 
     /**
      * Get LineType Id
-     * 
+     *
      * @param $lineType
      * @return int
      */
@@ -1547,5 +1568,17 @@ class OrderHelper extends AbstractHelperOmni
             }
         }
         return $orders;
+    }
+
+    /**
+     * Get country name by country code
+     *
+     * @param string $countryCode
+     * @return string
+     */
+    public function getCountryName($countryCode)
+    {
+        $country = $this->countryFactory->create()->loadByCode($countryCode);
+        return $country->getCountryId();
     }
 }

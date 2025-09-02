@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Customer\Model\Session as CustomerSession;
@@ -19,33 +20,15 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 class GetCustomerCartDiscountsOutput implements ResolverInterface
 {
     /**
-     * @var LoyaltyHelper
-     */
-    private LoyaltyHelper $loyaltyHelper;
-
-    /**
-     * @var DataHelper
-     */
-    private DataHelper $dataHelper;
-
-    /**
-     * @var CustomerSession
-     */
-    public CustomerSession $customerSession;
-
-    /**
      * @param CustomerSession $customerSession
      * @param LoyaltyHelper $loyaltyHelper
      * @param DataHelper $dataHelper
      */
     public function __construct(
-        CustomerSession $customerSession,
-        LoyaltyHelper $loyaltyHelper,
-        DataHelper $dataHelper
+        public CustomerSession $customerSession,
+        public LoyaltyHelper $loyaltyHelper,
+        public DataHelper $dataHelper
     ) {
-        $this->customerSession = $customerSession;
-        $this->loyaltyHelper   = $loyaltyHelper;
-        $this->dataHelper      = $dataHelper;
     }
 
     /**
@@ -53,7 +36,6 @@ class GetCustomerCartDiscountsOutput implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
-
         if (!($this->customerSession->isLoggedIn())) {
             throw new GraphQlInputException(__('Customer session not active. Please log in.'));
         }
@@ -63,7 +45,7 @@ class GetCustomerCartDiscountsOutput implements ResolverInterface
 
         if (!empty($couponsObj != '')) {
             foreach ($couponsObj as $coupon) {
-                if ($coupon->getCode() == DiscountType::COUPON || $coupon->getCode() == DiscountType::PROMOTION) {
+                if ($coupon->getDiscounttype() == '9') {
                     $couponsArr[] = $this->dataHelper->getFormattedDescriptionCoupon($coupon);
                 }
             }
@@ -79,7 +61,7 @@ class GetCustomerCartDiscountsOutput implements ResolverInterface
      *
      * @return array
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getAvailableCoupons()
     {

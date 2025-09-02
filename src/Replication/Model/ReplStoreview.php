@@ -259,6 +259,16 @@ class ReplStoreview extends \Ls\Omni\Client\Ecommerce\Entity\StoreView implement
         return $this->setData(self::getDbColumnsMapping()[self::PRICE_GROUP_CODES], $value);
     }
 
+    public function getSalesTypeFilter() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SALES_TYPE_FILTER]);
+    }
+
+    public function setSalesTypeFilter(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SALES_TYPE_FILTER], $value);
+    }
+
     public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);

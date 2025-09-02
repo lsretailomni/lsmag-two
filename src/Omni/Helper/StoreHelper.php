@@ -9,6 +9,7 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores;
+use Ls\Omni\Client\Ecommerce\Entity\RootGetStoreOpeningHours;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\DataObject;
@@ -140,7 +141,7 @@ class StoreHelper extends AbstractHelperOmni
     /**
      * Getting store hours
      *
-     * @param array $storeHours
+     * @param RootGetStoreOpeningHours $storeHours
      * @param ?int $calendarType
      * @return array
      * @throws NoSuchEntityException
@@ -149,22 +150,29 @@ class StoreHelper extends AbstractHelperOmni
     public function getStoreOrderingHours($storeHours, $calendarType)
     {
         if (empty($storeHours)) {
-            $store      = $this->getStore($this->lsr->getStoreId());
-            $storeHours = $store->getStoreHours();
+            $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $this->lsr->getCurrentWebsiteId());
+            $storeHours = $this->dataHelper->getStoreHours($webStore);
         }
         $today                  = $this->getCurrentDate();
         $this->pickupDateFormat = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
         $this->pickupTimeFormat = $this->lsr->getStoreConfig(LSR::PICKUP_TIME_FORMAT);
         $dateTimSlots           = [];
+
         for ($count = 0; $count < 7; $count++) {
             $current          = $this->dateTime->date(
                 $this->pickupDateFormat,
                 strtotime($today) + ($count * 86400)
             );
             $currentDayOfWeek = $this->dateTime->date('w', strtotime($current));
-            foreach ($storeHours as $storeHour) {
+
+            if (!is_array($storeHours)) {
+                $storeHours = $storeHours->getRetailcalendarline();
+            }
+
+            foreach ($storeHours ?? [] as $storeHour) {
                 if ((!$calendarType && $storeHour->getCalendarType() == $this->getRetailCalendarType()) ||
                     ($calendarType && $storeHour->getCalendarType() == $calendarType)) {
+
                     if ($storeHour->getDayNo() == $currentDayOfWeek) {
                         if ($this->dataHelper->checkDateValidity($current, $storeHour)) {
                             if ($storeHour->getLineType() == 0) {
@@ -209,6 +217,7 @@ class StoreHelper extends AbstractHelperOmni
                 }
             }
         }
+
         return $dateTimSlots;
     }
     // @codingStandardsIgnoreEnd
@@ -216,11 +225,11 @@ class StoreHelper extends AbstractHelperOmni
     /**
      * For getting date and timeslots option
      *
-     * @param array $storeHours
-     * @param ?int $calendarType
+     * @param RootGetStoreOpeningHours|array $storeHours
+     * @param ?string $calendarType
      * @return array
-     * @throws NoSuchEntityException
      * @throws GuzzleException
+     * @throws NoSuchEntityException
      */
     public function formatDateTimeSlotsValues($storeHours, $calendarType = null)
     {
@@ -254,7 +263,7 @@ class StoreHelper extends AbstractHelperOmni
     /**
      * Get date time slots
      *
-     * @param array $storeHours
+     * @param RootGetStoreOpeningHours $storeHours
      * @param ?int $calendarType
      * @return array
      * @throws NoSuchEntityException

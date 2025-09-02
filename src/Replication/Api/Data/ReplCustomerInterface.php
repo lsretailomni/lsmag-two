@@ -328,18 +328,6 @@ interface ReplCustomerInterface
 
     public function setCashFlowPaymentTermsCode(?string $value);
 
-    public function getDefaultTransType() : ?string;
-
-    public function setDefaultTransType(?string $value);
-
-    public function getDefaultTransTypeReturn() : ?string;
-
-    public function setDefaultTransTypeReturn(?string $value);
-
-    public function getDefTransportMethod() : ?string;
-
-    public function setDefTransportMethod(?string $value);
-
     public function getPrimaryContactNo() : ?string;
 
     public function setPrimaryContactNo(?string $value);

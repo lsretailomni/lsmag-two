@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\RetailCalendarLine;
+use Ls\Omni\Client\Ecommerce\Entity\RootGetStoreOpeningHours;
 use \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\Ecommerce\Operation\GetStoreOpeningHours;
@@ -20,6 +21,7 @@ use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
@@ -55,14 +57,14 @@ class Data extends AbstractHelperOmni
     }
 
     /**
-     * Get Store hours
+     * Fetch all store hours from central
      *
      * @param string $storeId
-     * @return array
+     * @return RootGetStoreOpeningHours|null
      */
-    public function getStoreHours($storeId)
+    public function fetchAllStoreHoursGivenStore($storeId)
     {
-        $storeHours = null;
+        $storeResults = null;
         try {
             $cacheId = LSR::STORE_HOURS . $storeId;
             $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
@@ -75,7 +77,7 @@ class Data extends AbstractHelperOmni
                     Entity\GetStoreOpeningHours::STORE_NO => $storeId,
                 ]);
                 $response = $operation->execute();
-                $storeResults = $response->getResponseCode() == "0000" ?
+                $storeResults = ($response->getResponseCode() == "0000" || $response->getResponseCode() == "1000") ?
                     $response->getGetstoreopeninghoursxml() : null;
 
                 $this->cacheHelper->persistContentInCache(
@@ -85,6 +87,24 @@ class Data extends AbstractHelperOmni
                     86400
                 );
             }
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return $storeResults;
+    }
+
+    /**
+     * Get Store hours
+     *
+     * @param string $storeId
+     * @return array
+     */
+    public function getStoreHours($storeId)
+    {
+        $storeHours = null;
+        try {
+            $storeResults = $this->fetchAllStoreHoursGivenStore($storeId);
             $storeHours = [];
             $today = $this->dateTime->gmtDate("Y-m-d");
 
@@ -92,11 +112,11 @@ class Data extends AbstractHelperOmni
                 for ($i = 0; $i < 7; $i++) {
                     $current = date("Y-m-d", strtotime($today) + ($i * 86400));
                     $currentDayOfWeek = date('w', strtotime($current));
+                    $currentDayOfWeek = $currentDayOfWeek == "0" ? "7" : $currentDayOfWeek;
 
                     foreach ($storeResults->getRetailcalendarline() as $key => $r) {
-                        if ((empty($r->getCalendartype()) ||
-                                $r->getCalendartype() == "1" ||
-                                $r->getLinetype() == "0") &&
+                        if (((empty($r->getCalendartype()) ||
+                                $r->getCalendartype() == "1")) &&
                             $r->getDayno() == $currentDayOfWeek &&
                             $this->checkDateValidity($current, $r)) {
                             $storeHours[$currentDayOfWeek][] = [
@@ -150,11 +170,9 @@ class Data extends AbstractHelperOmni
             if ($startingDate && !$endingDate) {
                 $storeHoursObjStartDateTimeStamp = strtotime($startingDate);
                 return $currentTimeStamp >= $storeHoursObjStartDateTimeStamp;
-            } else {
+            } elseif (!$startingDate && $endingDate) {
                 $storeHoursObjEndDateTimeStamp = strtotime($endingDate);
-                if (!$startingDate && $endingDate) {
-                    return $currentTimeStamp <= $storeHoursObjEndDateTimeStamp;
-                }
+                return $currentTimeStamp <= $storeHoursObjEndDateTimeStamp;
             }
         }
 
@@ -482,16 +500,25 @@ class Data extends AbstractHelperOmni
     /**
      * Fetch webstores from central
      *
-     * @return array
+     * @return array|null
      */
     public function fetchWebStores()
     {
+        $response = null;
         $webStoreOperation = $this->createInstance(Operation\GetStores_GetStores::class);
         $webStoreOperation->setOperationInput(
             ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
         );
 
-        return $webStoreOperation->execute()->getRecords();
+        try {
+            $response = $webStoreOperation->execute();
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return $response && $response->getResponseCode() == "0000" ?
+            current((array)$response->getRecords())->getLSCStore() :
+            null;
     }
 
     /**
@@ -1018,13 +1045,13 @@ class Data extends AbstractHelperOmni
             list($response, $stockCollection) = $this->stockHelper->getGivenItemsStockInGivenStore($items, $storeId);
 
             if ($response) {
-                if (is_object($response)) {
-                    if (!is_array($response->getInventoryResponse())) {
-                        $response = [$response->getInventoryResponse()];
-                    } else {
-                        $response = $response->getInventoryResponse();
-                    }
-                }
+//                if (is_object($response)) {
+//                    if (!is_array($response->getInventoryResponse())) {
+//                        $response = [$response->getInventoryResponse()];
+//                    } else {
+//                        $response = $response->getInventoryResponse();
+//                    }
+//                }
 
                 return $this->stockHelper->updateStockCollection($response, $stockCollection);
             }

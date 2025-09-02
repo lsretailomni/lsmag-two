@@ -99,16 +99,6 @@ class ReplItemCategory extends \Ls\Omni\Client\Ecommerce\Entity\ItemCategory imp
         return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME], $value);
     }
 
-    public function getDefaultSustAccount() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_SUST_ACCOUNT]);
-    }
-
-    public function setDefaultSustAccount(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_SUST_ACCOUNT], $value);
-    }
-
     public function getLscItemNoMiscellaneous() : ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_ITEM_NO_MISCELLANEOUS]);
