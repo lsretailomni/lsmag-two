@@ -259,20 +259,20 @@ abstract class AbstractReplicationTask
         if ($confPath == ReplHierarchyviewTask::CONFIG_PATH ||
             $confPath == ReplHierarchynodeslinkviewTask::CONFIG_PATH
         ) {
-            $value = $this->getConstantByIndex(HierarchyType::class, $source->getData(HierarchyView::TYPE));
+            $value = $this->getConstantByIndex(HierarchyType::class, (int) $source->getData(HierarchyView::TYPE));
             $source->setData(HierarchyView::TYPE, $value);
         } elseif ($confPath == ReplPeriodicdiscviewTask::CONFIG_PATH) {
             $value1 = $this->getConstantByIndex(
                 DiscountValueType::class,
-                $source->getData(PeriodicDiscView::DISCOUNT_TYPE)
+                (int) $source->getData(PeriodicDiscView::DISCOUNT_TYPE)
             );
             $value2 = $this->getConstantByIndex(
                 ReplDiscMemberType::class,
-                $source->getData(PeriodicDiscView::MEMBER_TYPE)
+                (int) $source->getData(PeriodicDiscView::MEMBER_TYPE)
             );
             $value3 = $this->getConstantByIndex(
                 ReplDiscountType::class,
-                $source->getData(PeriodicDiscView::TYPE)
+                (int) $source->getData(PeriodicDiscView::TYPE)
             );
             $source->setData(PeriodicDiscView::DISCOUNT_TYPE, $value1);
             $source->setData(PeriodicDiscView::MEMBER_TYPE, $value2);
@@ -287,23 +287,23 @@ abstract class AbstractReplicationTask
         } elseif ($confPath == ReplLscWiItemModifierTask::CONFIG_PATH) {
             $value1 = $this->getConstantByIndex(
                 ItemModifierPriceType::class,
-                $source->getData(LSCWIItemModifier::PRICE_TYPE)
+                (int) $source->getData(LSCWIItemModifier::PRICE_TYPE)
             );
             $value2 = $this->getConstantByIndex(
                 ItemModifierPriceHandling::class,
-                $source->getData(LSCWIItemModifier::PRICE_HANDLING)
+                (int) $source->getData(LSCWIItemModifier::PRICE_HANDLING)
             );
             $value3 = $this->getConstantByIndex(
                 ItemTriggerFunction::class,
-                $source->getData(LSCWIItemModifier::TRIGGER_FUNCTION)
+                (int) $source->getData(LSCWIItemModifier::TRIGGER_FUNCTION)
             );
             $value4 = $this->getConstantByIndex(
                 ItemModifierType::class,
-                $source->getData(LSCWIItemModifier::USAGE_SUBCATEGORY)
+                (int) $source->getData(LSCWIItemModifier::USAGE_SUBCATEGORY)
             );
             $value5 = $this->getConstantByIndex(
                 ItemUsageCategory::class,
-                $source->getData(LSCWIItemModifier::USAGE_CATEGORY)
+                (int) $source->getData(LSCWIItemModifier::USAGE_CATEGORY)
             );
 
             $source->setData(LSCWIItemModifier::PRICE_TYPE, $value1);
@@ -314,7 +314,7 @@ abstract class AbstractReplicationTask
         } elseif ($confPath == ReplHierarchydealviewTask::CONFIG_PATH) {
             $value1 = $this->getConstantByIndex(
                 HierarchyDealType::class,
-                $source->getData(HierarchyDealView::TYPE)
+                (int) $source->getData(HierarchyDealView::TYPE)
             );
             $source->setData(HierarchyDealView::TYPE, $value1);
         }

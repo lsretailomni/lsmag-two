@@ -18,6 +18,7 @@ use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
 use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
+use Ls\Replication\Api\ReplLscTenderTypeRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
 use \Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
 use \Ls\Replication\Api\ReplVatPostingSetupRepositoryInterface;
@@ -886,7 +887,8 @@ class ReplicationHelper extends AbstractHelper
         'ls_mag/replication/repl_lsc_wi_item_modifier' => [
             'parent_item_no' => 'nav_id',
             'item_no' => 'TriggerCode',
-            'scope_id' => 'scope_id'
+            'scope_id' => 'scope_id',
+            'subcode' => 'SubCode'
         ],
         'ls_mag/replication/loy_item' => [
             'nav_id',
@@ -1045,7 +1047,7 @@ class ReplicationHelper extends AbstractHelper
     /** @var ReplVatPostingSetupRepositoryInterface */
     public $replTaxSetupRepository;
 
-    /** @var ReplStoreTenderTypeRepositoryInterface */
+    /** @var ReplLscTenderTypeRepositoryInterface */
     public $replStoreTenderTypeRepository;
 
     /**
@@ -1218,7 +1220,7 @@ class ReplicationHelper extends AbstractHelper
      * @param ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository
      * @param ReplItemUnitOfMeasure $replItemUomRepository
      * @param ReplVatPostingSetupRepositoryInterface $replTaxSetupRepository
-     * @param ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository
+     * @param ReplLscTenderTypeRepositoryInterface $replStoreTenderTypeRepository
      * @param TaxClassRepositoryInterface $taxClassRepository
      * @param ClassModelFactory $classModelFactory
      * @param ReplInvStatusRepository $replInvStatusRepository
@@ -1285,7 +1287,7 @@ class ReplicationHelper extends AbstractHelper
         ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository,
         ReplItemUnitOfMeasure $replItemUomRepository,
         ReplVatPostingSetupRepositoryInterface $replTaxSetupRepository,
-        ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
+        ReplLscTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
         TaxClassRepositoryInterface $taxClassRepository,
         ClassModelFactory $classModelFactory,
         ReplInvStatusRepository $replInvStatusRepository,
