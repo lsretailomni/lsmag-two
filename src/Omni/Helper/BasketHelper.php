@@ -41,7 +41,7 @@ class BasketHelper extends AbstractHelperOmni
      * @var boolean
      */
     public $calculateBasket;
-    
+
     /*
      * @var string
      */
@@ -1164,12 +1164,15 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Get basket calculation from current quote
      *
+     * @param $quote
      * @return RootMobileTransaction|null
      * @throws NoSuchEntityException
      */
-    public function getOneListCalculationFromCheckoutSession()
+    public function getOneListCalculationFromCheckoutSession($quote = null)
     {
-        $quote = $this->getCurrentQuote();
+        if (!$quote) {
+            $quote = $this->getCurrentQuote();
+        }
 
         if (!$quote) {
             return null;
