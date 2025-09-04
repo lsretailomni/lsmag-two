@@ -956,7 +956,7 @@ class BasketHelper extends AbstractHelperOmni
     public function getPrice($item)
     {
         if ($item->getProductType() == Type::TYPE_BUNDLE) {
-            $rowTotal = $this->getRowTotalBundleProduct($item);
+            $price = $item->getRowTotal();
         } else {
             $baseUnitOfMeasure = $item->getProduct()->getData('uom');
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
@@ -974,7 +974,10 @@ class BasketHelper extends AbstractHelperOmni
             }
         }
 
-        return $price;
+        $price = $price * $item->getQty();
+        $price = $this->basketHelper->getPriceAddingCustomOptions($item, $price);
+
+        return $this->itemHelper->convertToCurrentStoreCurrency($price);
     }
 
     /**

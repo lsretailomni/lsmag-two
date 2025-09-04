@@ -111,11 +111,7 @@ class Cart
                             $discountAmount = '';
                             if ($item->getDiscountAmount() > 0) {
                                 $discountAmount = $this->checkoutHelper->formatPrice($item->getDiscountAmount());
-                                $originalPrice  = $item->getProductType() == Type::TYPE_BUNDLE ?
-                                    $item->getRowTotal() : $this->basketHelper->itemHelper->convertToCurrentStoreCurrency(
-                                        $item->getProduct()->getPrice() * $item->getQty()
-                                    );
-                                $originalPrice = $this->basketHelper->getPriceAddingCustomOptions($item, $originalPrice);
+                                $originalPrice = $this->basketHelper->getPrice($item);
                             }
 
                             $item->setPriceInclTax($customPrice);

@@ -110,11 +110,11 @@ $_item->setDiscountAmount($viewModel->getItemRowDiscount($_item));
                 <span class="price-excluding-tax" data-label="Excl. Tax">
                     <span class="cart-price">
                         <?= $priceCurrency->format($viewModel->getItemRowTotal($_item), true); ?><br/>
-                        <?php if ($_item->getDiscountAmount() > 0): $price = $_item->getProduct()->getPrice() * (int)$block->getQty(); ?>
+                        <?php if ($_item->getDiscountAmount() > 0): ?>
                             <div class="lsdiscountprice2">
                             <strike>
                                 <?= $priceCurrency->format($viewModel->getConvertedAmount(
-                                    $viewModel->getItemPriceIncludeCustomOptions($_item, $price), true)
+                                    $viewModel->getItemPriceIncludeCustomOptions($_item), true)
                                 ); ?>
                             </strike>
                             </div>
