@@ -8,13 +8,35 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
-
-class ReplLscWiItemModifier extends AbstractDb
+class ReplLscWiItemModifier extends ReplItemModifier
 {
-    public function _construct()
+    /**
+     * Perform actions before object save
+     *
+     * param \Magento\Framework\Model\AbstractModel|\Magento\Framework\DataObject
+     * $object
+     * @return $this
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    protected function _beforeSave($object)
     {
-        $this->_init('ls_replication_repl_lsc_wi_item_modifier', 'repl_lsc_wi_item_modifier_id');
+        $mappings = \Ls\Replication\Helper\ReplicationHelper::DB_TABLES_MAPPING;
+        foreach ($mappings as $mapping) {
+            if (\Ls\Replication\Helper\ReplicationHelper::TABLE_NAME_PREFIX . $mapping['table_name'] == $this->getMainTable()) {
+                $columnsMapping = $mapping['columns_mapping'];
+                foreach ($columnsMapping as $columnName => $columnMapping) {
+                    if ($object->hasData($columnName)) {
+                        $object->setData(
+                            is_array($columnMapping) ? $columnMapping['name'] : $columnMapping,
+                            $object->getData($columnName)
+                        );
+                    }
+                }
+                break;
+            }
+        }
+        return $this;
     }
 }
 
