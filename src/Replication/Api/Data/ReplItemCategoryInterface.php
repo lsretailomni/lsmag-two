@@ -10,194 +10,147 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplItemCategoryInterface
 {
-    public static function getDbColumnsMapping() : array;
-
-    public function getCode() : ?string;
-
-    public function setCode(?string $value);
-
-    public function getParentCategory() : ?string;
-
-    public function setParentCategory(?string $value);
-
-    public function getDescription() : ?string;
-
-    public function setDescription(?string $value);
-
-    public function getIndentation() : ?int;
-
-    public function setIndentation(?int $value);
-
-    public function getPresentationOrder() : ?int;
-
-    public function setPresentationOrder(?int $value);
-
-    public function getHasChildren() : ?bool;
-
-    public function setHasChildren(?bool $value);
-
-    public function getLastModifiedDateTime() : ?string;
-
-    public function setLastModifiedDateTime(?string $value);
-
-    public function getLscItemNoMiscellaneous() : ?string;
-
-    public function setLscItemNoMiscellaneous(?string $value);
-
-    public function getLscNegative() : ?bool;
-
-    public function setLscNegative(?bool $value);
-
-    public function getLscNotDiscountable() : ?bool;
-
-    public function setLscNotDiscountable(?bool $value);
-
-    public function getLscItemTemplateCode() : ?string;
-
-    public function setLscItemTemplateCode(?string $value);
-
-    public function getLscDifferenceLcy() : ?float;
-
-    public function setLscDifferenceLcy(?float $value);
-
-    public function getLscItemHierarchyValue() : ?string;
-
-    public function setLscItemHierarchyValue(?string $value);
-
-    public function getLscPosInventoryLookup() : ?bool;
-
-    public function setLscPosInventoryLookup(?bool $value);
-
-    public function getLscDefaultProfit() : ?float;
-
-    public function setLscDefaultProfit(?float $value);
-
-    public function getLscDispensePrinterGroup() : ?string;
-
-    public function setLscDispensePrinterGroup(?string $value);
-
-    public function getLscDispensePrintSeqNo() : ?int;
-
-    public function setLscDispensePrintSeqNo(?int $value);
-
-    public function getLscDivisionCode() : ?string;
-
-    public function setLscDivisionCode(?string $value);
-
-    public function getLscItemErrorCheckCode() : ?string;
-
-    public function setLscItemErrorCheckCode(?string $value);
-
-    public function getLscSuggestedQtyOnPos() : ?float;
-
-    public function setLscSuggestedQtyOnPos(?float $value);
-
-    public function getLscProfitGoal() : ?float;
-
-    public function setLscProfitGoal(?float $value);
-
-    public function getLscBuyerGroupCode() : ?string;
-
-    public function setLscBuyerGroupCode(?string $value);
-
-    public function getLscReplenDataProfile() : ?string;
-
-    public function setLscReplenDataProfile(?string $value);
-
-    public function getLscBuyerId() : ?string;
-
-    public function setLscBuyerId(?string $value);
-
-    public function getLscReplenTransferRuleCode() : ?string;
-
-    public function setLscReplenTransferRuleCode(?string $value);
-
-    public function getLscDefItemDistrType() : ?int;
-
-    public function setLscDefItemDistrType(?int $value);
-
-    public function getLscDefItemDistrCode() : ?string;
-
-    public function setLscDefItemDistrCode(?string $value);
-
-    public function getLscExcludeFromReplenishment() : ?bool;
-
-    public function setLscExcludeFromReplenishment(?bool $value);
-
-    public function getLscExcludeFromOosCalc() : ?bool;
-
-    public function setLscExcludeFromOosCalc(?bool $value);
-
-    public function getLscDefReplenAssortmGrCode() : ?string;
-
-    public function setLscDefReplenAssortmGrCode(?string $value);
-
-    public function getLscDefReplenGradeCode() : ?string;
-
-    public function setLscDefReplenGradeCode(?string $value);
-
-    public function getLscPhysInvtCountPerCode() : ?string;
-
-    public function setLscPhysInvtCountPerCode(?string $value);
-
-    public function getLscAllocationRuleCode() : ?string;
-
-    public function setLscAllocationRuleCode(?string $value);
-
-    public function getLscPlbCategory() : ?bool;
-
-    public function setLscPlbCategory(?bool $value);
-
-    public function getSystemid() : ?string;
-
-    public function setSystemid(?string $value);
-
-    public function getSystemcreatedat() : ?string;
-
-    public function setSystemcreatedat(?string $value);
-
-    public function getSystemcreatedby() : ?string;
-
-    public function setSystemcreatedby(?string $value);
-
-    public function getSystemmodifiedat() : ?string;
-
-    public function setSystemmodifiedat(?string $value);
-
-    public function getSystemmodifiedby() : ?string;
-
-    public function setSystemmodifiedby(?string $value);
-
-    public function setProcessed(?bool $processed);
-
-    public function getProcessed() : ?bool;
-
-    public function setIsUpdated(?bool $is_updated);
-
-    public function getIsUpdated() : ?bool;
-
-    public function setIsFailed(?bool $is_failed);
-
-    public function getIsFailed() : ?bool;
-
-    public function setCreatedAt(?string $created_at);
-
-    public function getCreatedAt() : ?string;
-
-    public function setUpdatedAt(?string $updated_at);
-
-    public function getUpdatedAt() : ?string;
-
-    public function setIdentityValue(?string $identity_value);
-
-    public function getIdentityValue() : ?string;
-
-    public function setChecksum(?string $checksum);
-
-    public function getChecksum() : ?string;
-
-    public function setProcessedAt(?string $processed_at);
-
-    public function getProcessedAt() : ?string;
+    /**
+     * @param string $Description
+     * @return $this
+     */
+    public function setDescription($Description);
+
+    /**
+     * @return string
+     */
+    public function getDescription();
+
+    /**
+     * @param string $nav_id
+     * @return $this
+     */
+    public function setNavId($nav_id);
+
+    /**
+     * @return string
+     */
+    public function getNavId();
+
+    /**
+     * @param boolean $IsDeleted
+     * @return $this
+     */
+    public function setIsDeleted($IsDeleted);
+
+    /**
+     * @return boolean
+     */
+    public function getIsDeleted();
+
+    /**
+     * @param string $scope
+     * @return $this
+     */
+    public function setScope($scope);
+
+    /**
+     * @return string
+     */
+    public function getScope();
+
+    /**
+     * @param int $scope_id
+     * @return $this
+     */
+    public function setScopeId($scope_id);
+
+    /**
+     * @return int
+     */
+    public function getScopeId();
+
+    /**
+     * @param boolean $processed
+     * @return $this
+     */
+    public function setProcessed($processed);
+
+    /**
+     * @return boolean
+     */
+    public function getProcessed();
+
+    /**
+     * @param boolean $is_updated
+     * @return $this
+     */
+    public function setIsUpdated($is_updated);
+
+    /**
+     * @return boolean
+     */
+    public function getIsUpdated();
+
+    /**
+     * @param boolean $is_failed
+     * @return $this
+     */
+    public function setIsFailed($is_failed);
+
+    /**
+     * @return boolean
+     */
+    public function getIsFailed();
+
+    /**
+     * @param string $created_at
+     * @return $this
+     */
+    public function setCreatedAt($created_at);
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt();
+
+    /**
+     * @param string $updated_at
+     * @return $this
+     */
+    public function setUpdatedAt($updated_at);
+
+    /**
+     * @return string
+     */
+    public function getUpdatedAt();
+
+    /**
+     * @param string $identity_value
+     * @return $this
+     */
+    public function setIdentityValue($identity_value);
+
+    /**
+     * @return string
+     */
+    public function getIdentityValue();
+
+    /**
+     * @param string $checksum
+     * @return $this
+     */
+    public function setChecksum($checksum);
+
+    /**
+     * @return string
+     */
+    public function getChecksum();
+
+    /**
+     * @param string $processed_at
+     * @return $this
+     */
+    public function setProcessedAt($processed_at);
+
+    /**
+     * @return string
+     */
+    public function getProcessedAt();
 }
 

@@ -15,9 +15,9 @@ use Magento\Framework\Api\SearchCriteriaInterface;
 use Exception;
 use Magento\Framework\Phrase;
 use Magento\Framework\Api\SortOrder;
-use Ls\Replication\Api\ReplVendorRepositoryInterface;
 use Ls\Replication\Model\ResourceModel\ReplVendor\Collection;
 use Ls\Replication\Model\ResourceModel\ReplVendor\CollectionFactory;
+use Ls\Replication\Api\ReplVendorRepositoryInterface;
 use Ls\Replication\Api\Data\ReplVendorInterface;
 use Ls\Replication\Model\ReplVendorFactory;
 use Ls\Replication\Model\ReplVendorSearchResultsFactory;
@@ -25,67 +25,65 @@ use Ls\Replication\Model\ReplVendorSearchResultsFactory;
 class ReplVendorRepository implements ReplVendorRepositoryInterface
 {
     /**
-     * @property ReplVendorFactory $objectFactory
+     * @property ReplVendorFactory $object_factory
      */
-    public $objectFactory = null;
+    protected $object_factory = null;
 
     /**
-     * @property CollectionFactory $collectionFactory
+     * @property CollectionFactory $collection_factory
      */
-    public $collectionFactory = null;
+    protected $collection_factory = null;
 
     /**
-     * @property ReplVendorSearchResultsFactory $resultFactory
+     * @property ReplVendorSearchResultsFactory $result_factory
      */
-    public $resultFactory = null;
+    protected $result_factory = null;
 
-    public function __construct(ReplVendorFactory $objectFactory, CollectionFactory $collectionFactory, ReplVendorSearchResultsFactory $resultFactory)
+    public function __construct(ReplVendorFactory $object_factory, CollectionFactory $collection_factory, ReplVendorSearchResultsFactory $result_factory)
     {
-        $this->objectFactory = $objectFactory;
-        $this->collectionFactory = $collectionFactory;
-        $this->resultFactory = $resultFactory;
+        $this->object_factory = $object_factory;
+        $this->collection_factory = $collection_factory;
+        $this->result_factory = $result_factory;
     }
 
     public function getList(SearchCriteriaInterface $criteria)
     {
         /** @var SearchResultInterface $results */
-        $results = $this->resultFactory->create();
-        $results->setSearchCriteria($criteria);
-
+        /** @noinspection PhpUndefinedMethodInspection */
+        $results = $this->result_factory->create();
+        $results->setSearchCriteria( $criteria );
         /** @var Collection $collection */
-        $collection = $this->collectionFactory->create();
-        foreach ($criteria->getFilterGroups() as $filterGroup) {
-            $fields = [];
-            $conditions = [];
-            foreach ($filterGroup->getFilters() as $filter) {
-                $condition = $filter->getConditionType() ?: 'eq';
+        /** @noinspection PhpUndefinedMethodInspection */
+        $collection = $this->collection_factory->create();
+        foreach ( $criteria->getFilterGroups() as $filter_group ) {
+            $fields = [ ];
+            $conditions = [ ];
+            foreach ( $filter_group->getFilters() as $filter ) {
+                $condition = $filter->getConditionType() ? $filter->getConditionType() : 'eq';
                 $fields[] = $filter->getField();
-                $conditions[] = [$condition => $filter->getValue()];
+                $conditions[] = [ $condition => $filter->getValue() ];
             }
-            if ($fields) {
-                $collection->addFieldToFilter($fields, $conditions);
+            if ( $fields ) {
+                $collection->addFieldToFilter( $fields, $conditions );
             }
         }
-        $results->setTotalCount($collection->getSize());
-
-        $sortOrders = $criteria->getSortOrders();
-        if ($sortOrders) {
-            foreach ($sortOrders as $sortOrder) {
-                $collection->addOrder(
-                    $sortOrder->getField(),
-                    ($sortOrder->getDirection() === SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
+        $results->setTotalCount( $collection->getSize() );
+        $sort_orders = $criteria->getSortOrders();
+        if ( $sort_orders ) {
+            /** @var SortOrder $sort_order */
+            foreach ( $sort_orders as $sort_order ) {
+                $collection->addOrder( $sort_order->getField(),
+                                       ( $sort_order->getDirection() == SortOrder::SORT_ASC ) ? 'ASC' : 'DESC'
                 );
             }
         }
-
-        $collection->setCurPage($criteria->getCurrentPage());
-        $collection->setPageSize($criteria->getPageSize());
-
-        $objects = [];
-        foreach ($collection as $objectModel) {
-            $objects[] = $objectModel;
+        $collection->setCurPage( $criteria->getCurrentPage() );
+        $collection->setPageSize( $criteria->getPageSize() );
+        $objects = [ ];
+        foreach ( $collection as $object_model ) {
+            $objects[] = $object_model;
         }
-        $results->setItems($objects);
+        $results->setItems( $objects );
 
         return $results;
     }
@@ -94,8 +92,8 @@ class ReplVendorRepository implements ReplVendorRepositoryInterface
     {
         try {
             $object->save();
-        } catch (Exception $e) {
-            throw new CouldNotSaveException(new Phrase($e->getMessage()));
+        } catch ( Exception $e ) {
+            throw new CouldNotSaveException( new Phrase( $e->getMessage() ) );
         }
 
         return $object;
@@ -103,10 +101,10 @@ class ReplVendorRepository implements ReplVendorRepositoryInterface
 
     public function getById($id)
     {
-        $object = $this->objectFactory->create();
-        $object->load($id);
-        if (!$object->getId()) {
-            throw new NoSuchEntityException(new Phrase("Object with id '$id' does not exist."));
+        $object = $this->object_factory->create();
+        $object->load( $id );
+        if ( ! $object->getId() ) {
+            throw new NoSuchEntityException( new Phrase( "Object with id '$id' does not exist." ) );
         }
 
         return $object;
@@ -116,16 +114,16 @@ class ReplVendorRepository implements ReplVendorRepositoryInterface
     {
         try {
             $object->delete();
-        } catch (Exception $e) {
-            throw new CouldNotDeleteException(new Phrase($e->getMessage()));
+        } catch ( Exception $e) {
+            throw new CouldNotDeleteException( new Phrase( $e->getMessage() ) );
         }
 
-        return true;
+        return TRUE;
     }
 
     public function deleteById($id)
     {
-        return $this->delete($this->getById($id));
+        return $this->delete( $this->getById( $id ) );
     }
 }
 
