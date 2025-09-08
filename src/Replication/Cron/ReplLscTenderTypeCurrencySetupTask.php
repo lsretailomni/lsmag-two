@@ -25,6 +25,8 @@ class ReplLscTenderTypeCurrencySetupTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_tender_type_currency_setup';
 
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscTenderTypeCurrencySetup';
+
     /**
      * @property ReplLscTenderTypeCurrencySetupRepository $repository
      */
@@ -81,6 +83,16 @@ class ReplLscTenderTypeCurrencySetupTask extends AbstractReplicationTask
         $this->dataInterface = $dataInterface;
     }
 
+    public function getMainEntity() : ReplLscTenderTypeCurrencySetupInterface
+    {
+        return $this->dataInterface;
+    }
+
+    public function getModelName() : string
+    {
+        return self::MODEL_CLASS;
+    }
+
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
         $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCTenderTypeCurrencySetup($baseUrl, $connectionParams, $companyName);
@@ -112,11 +124,6 @@ class ReplLscTenderTypeCurrencySetupTask extends AbstractReplicationTask
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscTenderTypeCurrencySetupInterface
-    {
-        return $this->dataInterface;
     }
 }
 

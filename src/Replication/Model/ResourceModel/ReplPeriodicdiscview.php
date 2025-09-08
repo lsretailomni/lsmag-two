@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplPeriodicdiscview extends ReplDiscountSetup
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplPeriodicdiscview extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_periodicdiscview', 'repl_periodicdiscview_id');
+    }
+
     /**
      * Perform actions before object save
      *

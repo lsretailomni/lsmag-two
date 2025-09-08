@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplHierarchyview extends ReplHierarchy
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplHierarchyview extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_hierarchyview', 'repl_hierarchyview_id');
+    }
+
     /**
      * Perform actions before object save
      *

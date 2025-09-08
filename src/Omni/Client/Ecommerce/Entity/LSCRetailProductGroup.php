@@ -43,6 +43,8 @@ class LSCRetailProductGroup extends AbstractModel
     public const DEF_ITEM_DISTR_CODE = 'Def. Item Distr. Code';
     public const EXCLUDE_FROM_REPLENISHMENT = 'Exclude from Replenishment';
     public const EXCLUDE_FROM_OOS_CALC = 'Exclude from OOS Calc.';
+    public const LSC_DEF_REPLEN_ASSORTM_GR_CODE = 'LSC Def Replen Assortm Gr Code';
+    public const LSC_DEF_REPLEN_GRADE_CODE = 'LSC Def Replen Grade Code';
     public const NOT_DISCOUNTABLE = 'Not Discountable';
     public const PHYS_INVT_COUNTING_PERIOD_CODE = 'Phys Invt Counting Period Code';
     public const ALLOCATION_RULE_CODE = 'Allocation Rule Code';
@@ -88,6 +90,8 @@ class LSCRetailProductGroup extends AbstractModel
 	self::DEF_ITEM_DISTR_CODE => 'def_item_distr_code',
 	self::EXCLUDE_FROM_REPLENISHMENT => 'exclude_from_replenishment',
 	self::EXCLUDE_FROM_OOS_CALC => 'exclude_from_oos_calc',
+	self::LSC_DEF_REPLEN_ASSORTM_GR_CODE => 'lsc_def_replen_assortm_gr_code',
+	self::LSC_DEF_REPLEN_GRADE_CODE => 'lsc_def_replen_grade_code',
 	self::NOT_DISCOUNTABLE => 'not_discountable',
 	self::PHYS_INVT_COUNTING_PERIOD_CODE => 'phys_invt_counting_period_code',
 	self::ALLOCATION_RULE_CODE => 'allocation_rule_code',
@@ -425,6 +429,26 @@ class LSCRetailProductGroup extends AbstractModel
     public function setExcludeFromOosCalc(?bool $value)
     {
         return $this->setData(self::EXCLUDE_FROM_OOS_CALC, $value);
+    }
+
+    public function getLscDefReplenAssortmGrCode(): ?string
+    {
+        return $this->getData(self::LSC_DEF_REPLEN_ASSORTM_GR_CODE);
+    }
+
+    public function setLscDefReplenAssortmGrCode(?string $value)
+    {
+        return $this->setData(self::LSC_DEF_REPLEN_ASSORTM_GR_CODE, $value);
+    }
+
+    public function getLscDefReplenGradeCode(): ?string
+    {
+        return $this->getData(self::LSC_DEF_REPLEN_GRADE_CODE);
+    }
+
+    public function setLscDefReplenGradeCode(?string $value)
+    {
+        return $this->setData(self::LSC_DEF_REPLEN_GRADE_CODE, $value);
     }
 
     public function getNotDiscountable(): ?bool

@@ -30,6 +30,7 @@ class LSCMemberSalesDocLine extends AbstractModel
     public const NET_PRICE = 'Net Price';
     public const NUMBER = 'Number';
     public const PARENT_LINE = 'Parent Line';
+    public const PAYMENT_TYPE = 'Payment Type';
     public const POS_TERMINAL_NO = 'POS Terminal No.';
     public const PRICE = 'Price';
     public const QUANTITY = 'Quantity';
@@ -61,6 +62,7 @@ class LSCMemberSalesDocLine extends AbstractModel
 	self::NET_PRICE => 'net_price',
 	self::NUMBER => 'number',
 	self::PARENT_LINE => 'parent_line',
+	self::PAYMENT_TYPE => 'payment_type',
 	self::POS_TERMINAL_NO => 'pos_terminal_no',
 	self::PRICE => 'price',
 	self::QUANTITY => 'quantity',
@@ -267,6 +269,16 @@ class LSCMemberSalesDocLine extends AbstractModel
     public function setParentLine(?int $value)
     {
         return $this->setData(self::PARENT_LINE, $value);
+    }
+
+    public function getPaymentType(): ?int
+    {
+        return $this->getData(self::PAYMENT_TYPE);
+    }
+
+    public function setPaymentType(?int $value)
+    {
+        return $this->setData(self::PAYMENT_TYPE, $value);
     }
 
     public function getPosTerminalNo(): ?string

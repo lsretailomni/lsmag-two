@@ -8,12 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplHierarchynodeslinkviewRepositoryInterface as ReplHierarchynodeslinkviewRepository;
-use Ls\Replication\Model\ReplHierarchynodeslinkviewFactory;
-use Ls\Replication\Api\Data\ReplHierarchynodeslinkviewInterface;
-
-class ReplHierarchynodeslinkviewTask extends AbstractReplicationTask
+class ReplHierarchynodeslinkviewTask extends ReplEcommHierarchyLeafTask
 {
     public const JOB_CODE = 'replication_repl_hierarchynodeslinkview';
 
@@ -25,60 +20,11 @@ class ReplHierarchynodeslinkviewTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_hierarchynodeslinkview';
 
-    /**
-     * @property ReplHierarchynodeslinkviewRepository $repository
-     */
-    protected $repository = null;
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplHierarchynodeslinkview';
 
-    /**
-     * @property ReplHierarchynodeslinkviewFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplHierarchynodeslinkviewInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplHierarchynodeslinkviewRepository $repository)
+    public function getModelName() : string
     {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplHierarchynodeslinkviewRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplHierarchynodeslinkviewFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplHierarchynodeslinkviewFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplHierarchynodeslinkviewInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplHierarchynodeslinkviewInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplHierarchynodeslinkviewFactory $factory, ReplHierarchynodeslinkviewRepository $repository, ReplHierarchynodeslinkviewInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
+        return self::MODEL_CLASS;
     }
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
@@ -112,11 +58,6 @@ class ReplHierarchynodeslinkviewTask extends AbstractReplicationTask
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplHierarchynodeslinkviewInterface
-    {
-        return $this->dataInterface;
     }
 }
 

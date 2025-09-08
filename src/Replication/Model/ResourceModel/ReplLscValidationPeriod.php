@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplLscValidationPeriod extends ReplDiscountValidation
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplLscValidationPeriod extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_lsc_validation_period', 'repl_lsc_validation_period_id');
+    }
+
     /**
      * Perform actions before object save
      *

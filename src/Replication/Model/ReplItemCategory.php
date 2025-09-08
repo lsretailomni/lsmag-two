@@ -319,6 +319,26 @@ class ReplItemCategory extends \Ls\Omni\Client\Ecommerce\Entity\ItemCategory imp
         return $this->setData(self::getDbColumnsMapping()[self::LSC_EXCLUDE_FROM_OOS_CALC], $value);
     }
 
+    public function getLscDefReplenAssortmGrCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_DEF_REPLEN_ASSORTM_GR_CODE]);
+    }
+
+    public function setLscDefReplenAssortmGrCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_DEF_REPLEN_ASSORTM_GR_CODE], $value);
+    }
+
+    public function getLscDefReplenGradeCode() : ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_DEF_REPLEN_GRADE_CODE]);
+    }
+
+    public function setLscDefReplenGradeCode(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_DEF_REPLEN_GRADE_CODE], $value);
+    }
+
     public function getLscPhysInvtCountPerCode() : ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_PHYS_INVT_COUNT_PER_CODE]);

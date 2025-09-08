@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplCountryview extends ReplCountryCode
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplCountryview extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_countryview', 'repl_countryview_id');
+    }
+
     /**
      * Perform actions before object save
      *

@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplLscAttribute extends ReplAttribute
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplLscAttribute extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_lsc_attribute', 'repl_lsc_attribute_id');
+    }
+
     /**
      * Perform actions before object save
      *

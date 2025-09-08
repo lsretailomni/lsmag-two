@@ -8,12 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplVariantregviewRepositoryInterface as ReplVariantregviewRepository;
-use Ls\Replication\Model\ReplVariantregviewFactory;
-use Ls\Replication\Api\Data\ReplVariantregviewInterface;
-
-class ReplVariantregviewTask extends AbstractReplicationTask
+class ReplVariantregviewTask extends ReplEcommItemVariantRegistrationTask
 {
     public const JOB_CODE = 'replication_repl_variantregview';
 
@@ -25,60 +20,11 @@ class ReplVariantregviewTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_variantregview';
 
-    /**
-     * @property ReplVariantregviewRepository $repository
-     */
-    protected $repository = null;
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplVariantregview';
 
-    /**
-     * @property ReplVariantregviewFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplVariantregviewInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplVariantregviewRepository $repository)
+    public function getModelName() : string
     {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplVariantregviewRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplVariantregviewFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplVariantregviewFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplVariantregviewInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplVariantregviewInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplVariantregviewFactory $factory, ReplVariantregviewRepository $repository, ReplVariantregviewInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
+        return self::MODEL_CLASS;
     }
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
@@ -112,11 +58,6 @@ class ReplVariantregviewTask extends AbstractReplicationTask
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplVariantregviewInterface
-    {
-        return $this->dataInterface;
     }
 }
 

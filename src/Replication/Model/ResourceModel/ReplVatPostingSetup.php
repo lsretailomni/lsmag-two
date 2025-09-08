@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplVatPostingSetup extends ReplTaxSetup
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplVatPostingSetup extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_vat_posting_setup', 'repl_vat_posting_setup_id');
+    }
+
     /**
      * Perform actions before object save
      *

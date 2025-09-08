@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplHierarchydeallineview extends ReplHierarchyHospDealLine
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplHierarchydeallineview extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_hierarchydeallineview', 'repl_hierarchydeallineview_id');
+    }
+
     /**
      * Perform actions before object save
      *

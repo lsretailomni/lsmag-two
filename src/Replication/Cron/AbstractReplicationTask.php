@@ -4,25 +4,27 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use \Ls\Core\Model\Data as LsHelper;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyDealType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceHandling;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemTriggerFunction;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemUsageCategory;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscMemberType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
-use \Ls\Omni\Client\Ecommerce\Entity\HierarchyDealView;
-use \Ls\Omni\Client\Ecommerce\Entity\HierarchyView;
-use \Ls\Omni\Client\Ecommerce\Entity\LSCWIItemBuffer;
-use \Ls\Omni\Client\Ecommerce\Entity\LSCWIItemModifier;
-use \Ls\Omni\Client\Ecommerce\Entity\PeriodicDiscView;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Logger\Logger;
+use Ls\Core\Model\Data as LsHelper;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyDealType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceHandling;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemTriggerFunction;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemUsageCategory;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscMemberType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
+use Ls\Omni\Client\Ecommerce\Entity\HierarchyDealView;
+use Ls\Omni\Client\Ecommerce\Entity\HierarchyView;
+use Ls\Omni\Client\Ecommerce\Entity\LSCDataTranslation;
+use Ls\Omni\Client\Ecommerce\Entity\LSCItemHTMLML;
+use Ls\Omni\Client\Ecommerce\Entity\LSCWIItemBuffer;
+use Ls\Omni\Client\Ecommerce\Entity\LSCWIItemModifier;
+use Ls\Omni\Client\Ecommerce\Entity\PeriodicDiscView;
+use Ls\Replication\Helper\ReplicationHelper;
+use Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
@@ -31,6 +33,8 @@ use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * Abstract replication class for all
@@ -284,6 +288,26 @@ abstract class AbstractReplicationTask
                     base64_decode($source->getData(LSCWIItemBuffer::ITEM_HTML))
                 );
             }
+        } elseif ($confPath == ReplLscItemHtmlMlTask::CONFIG_PATH) {
+            if (!empty($source->getData(LSCItemHTMLML::HTML))) {
+                $source->setData(
+                    LSCDataTranslation::TRANSLATION,
+                    base64_decode($source->getData(LSCItemHTMLML::HTML))
+                );
+            }
+
+            $source->setData(
+                LSCDataTranslation::TRANSLATION_ID,
+                LSR::SC_TRANSLATION_ID_ITEM_HTML
+            );
+            $source->setData(
+                LSCDataTranslation::KEY,
+                $source->getData(LSCItemHTMLML::ITEM_NO)
+            );
+            $source->setData(
+                LSCDataTranslation::LANGUAGE_CODE,
+                $source->getData(LSCItemHTMLML::LANGUAGE)
+            );
         } elseif ($confPath == ReplLscWiItemModifierTask::CONFIG_PATH) {
             $value1 = $this->getConstantByIndex(
                 ItemModifierPriceType::class,
@@ -351,6 +375,24 @@ abstract class AbstractReplicationTask
             foreach ($properties as $propertyIndex => $property) {
                 $entity->setData($property, $source->getData($propertyIndex));
             }
+
+            $mappings = \Ls\Replication\Helper\ReplicationHelper::DB_TABLES_MAPPING;
+            foreach ($mappings as $mapping) {
+                if (\Ls\Replication\Helper\ReplicationHelper::TABLE_NAME_PREFIX . $mapping['table_name'] ==
+                    $entity->getResource()->getMainTable()
+                ) {
+                    $columnsMapping = $mapping['columns_mapping'];
+                    foreach ($columnsMapping as $columnName => $columnMapping) {
+                        if ($entity->hasData($columnName)) {
+                            $entity->setData(
+                                is_array($columnMapping) ? $columnMapping['name'] : $columnMapping,
+                                $entity->getData($columnName)
+                            );
+                        }
+                    }
+                    break;
+                }
+            }
         }
         try {
             $this->getRepository()->save($entity);
@@ -366,11 +408,11 @@ abstract class AbstractReplicationTask
      * @param string $class
      * @param int $index
      * @return string|null
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function getConstantByIndex(string $class, int $index): ?string
     {
-        $reflection = new \ReflectionClass($class);
+        $reflection = new ReflectionClass($class);
 
         // Get constants in the order they are defined
         $constants = $reflection->getReflectionConstants();
@@ -394,8 +436,9 @@ abstract class AbstractReplicationTask
     public function getProperties()
     {
         if ($this->properties == null) {
+            $modelClass = $this->getModelClass();
             // @codingStandardsIgnoreStart
-            $this->properties = $this->getMainEntity()::getDbColumnsMapping();
+            $this->properties = $this->getModelClass()::getDbColumnsMapping();
             // @codingStandardsIgnoreEnd
         }
         return $this->properties;

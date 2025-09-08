@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplLscWiExtdVariantValues extends ReplExtendedVariantValue
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplLscWiExtdVariantValues extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_lsc_wi_extd_variant_values', 'repl_lsc_wi_extd_variant_values_id');
+    }
+
     /**
      * Perform actions before object save
      *

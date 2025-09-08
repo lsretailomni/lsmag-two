@@ -25,6 +25,8 @@ class ReplLscStaffTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_staff';
 
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscStaff';
+
     /**
      * @property ReplLscStaffRepository $repository
      */
@@ -81,6 +83,16 @@ class ReplLscStaffTask extends AbstractReplicationTask
         $this->dataInterface = $dataInterface;
     }
 
+    public function getMainEntity() : ReplLscStaffInterface
+    {
+        return $this->dataInterface;
+    }
+
+    public function getModelName() : string
+    {
+        return self::MODEL_CLASS;
+    }
+
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
         $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCStaff($baseUrl, $connectionParams, $companyName);
@@ -112,11 +124,6 @@ class ReplLscStaffTask extends AbstractReplicationTask
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscStaffInterface
-    {
-        return $this->dataInterface;
     }
 }
 

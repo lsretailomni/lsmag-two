@@ -8,12 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscWiItemBufferRepositoryInterface as ReplLscWiItemBufferRepository;
-use Ls\Replication\Model\ReplLscWiItemBufferFactory;
-use Ls\Replication\Api\Data\ReplLscWiItemBufferInterface;
-
-class ReplLscWiItemBufferTask extends AbstractReplicationTask
+class ReplLscWiItemBufferTask extends ReplEcommItemTask
 {
     public const JOB_CODE = 'replication_repl_lsc_wi_item_buffer';
 
@@ -25,60 +20,11 @@ class ReplLscWiItemBufferTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_wi_item_buffer';
 
-    /**
-     * @property ReplLscWiItemBufferRepository $repository
-     */
-    protected $repository = null;
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscWiItemBuffer';
 
-    /**
-     * @property ReplLscWiItemBufferFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplLscWiItemBufferInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplLscWiItemBufferRepository $repository)
+    public function getModelName() : string
     {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplLscWiItemBufferRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplLscWiItemBufferFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplLscWiItemBufferFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplLscWiItemBufferInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplLscWiItemBufferInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplLscWiItemBufferFactory $factory, ReplLscWiItemBufferRepository $repository, ReplLscWiItemBufferInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
+        return self::MODEL_CLASS;
     }
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
@@ -112,11 +58,6 @@ class ReplLscWiItemBufferTask extends AbstractReplicationTask
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscWiItemBufferInterface
-    {
-        return $this->dataInterface;
     }
 }
 

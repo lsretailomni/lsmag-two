@@ -166,8 +166,8 @@
       <column name="IsDeleted"/>
     </index>
   </table>
-  <table name="ls_replication_repl_lsc_gs_1databar_barcode_setup" resource="default" engine="innodb" comment="LSC GS1DataBar Barcode Setup">
-    <column xsi:type="int" name="repl_lsc_gs_1databar_barcode_setup_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_lsc_gs_1databar_barcode_setup_id"/>
+  <table name="ls_replication_repl_lsc_gs_1_barcodev_1_setup" resource="default" engine="innodb" comment="LSC GS1 BarcodeV1 Setup">
+    <column xsi:type="int" name="repl_lsc_gs_1_barcodev_1_setup_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_lsc_gs_1_barcodev_1_setup_id"/>
     <column xsi:type="text" name="barcode_value" nullable="true" comment="barcode_value"/>
     <column xsi:type="decimal" name="decimals" scale="4" precision="20" nullable="true" comment="decimals"/>
     <column xsi:type="text" name="identifier" nullable="true" comment="identifier"/>
@@ -198,7 +198,7 @@
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_lsc_gs_1databar_barcode_setup_id"/>
+      <column name="repl_lsc_gs_1_barcodev_1_setup_id"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_lsc_barcode_mask" resource="default" engine="innodb" comment="LSC Barcode Mask">
@@ -1171,35 +1171,6 @@
       <column name="identity_value"/>
     </constraint>
   </table>
-  <table name="ls_replication_repl_lsc_item_html_ml" resource="default" engine="innodb" comment="LSC Item HTML ML">
-    <column xsi:type="int" name="repl_lsc_item_html_ml_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_lsc_item_html_ml_id"/>
-    <column xsi:type="text" name="html" nullable="true" comment="html"/>
-    <column xsi:type="text" name="item_no" nullable="true" comment="item_no"/>
-    <column xsi:type="text" name="language" nullable="true" comment="language"/>
-    <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
-    <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
-    <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
-    <column xsi:type="text" name="systemmodifiedat" nullable="true" comment="systemmodifiedat"/>
-    <column xsi:type="text" name="systemmodifiedby" nullable="true" comment="systemmodifiedby"/>
-    <column xsi:type="text" name="url" nullable="true" comment="url"/>
-    <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
-    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
-    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
-    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
-    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
-    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
-    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
-    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
-    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
-    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
-    <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_lsc_item_html_ml_id"/>
-    </constraint>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_LSC_ITEM_HTML_ML_IDENTITY_VALUE">
-      <column name="identity_value"/>
-    </constraint>
-  </table>
   <table name="ls_replication_repl_item_tracking_code" resource="default" engine="innodb" comment="Item Tracking Code">
     <column xsi:type="int" name="repl_item_tracking_code_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_tracking_code_id"/>
     <column xsi:type="text" name="code" nullable="true" comment="code"/>
@@ -1641,6 +1612,8 @@
     <column xsi:type="text" name="item_templ_code" nullable="true" comment="item_templ_code"/>
     <column xsi:type="text" name="item_template_code" nullable="true" comment="item_template_code"/>
     <column xsi:type="text" name="last_date_modified" nullable="true" comment="last_date_modified"/>
+    <column xsi:type="text" name="lsc_def_replen_assortm_gr_code" nullable="true" comment="lsc_def_replen_assortm_gr_code"/>
+    <column xsi:type="text" name="lsc_def_replen_grade_code" nullable="true" comment="lsc_def_replen_grade_code"/>
     <column xsi:type="int" name="min_loc_prof_inventory" padding="11" nullable="true" comment="min_loc_prof_inventory"/>
     <column xsi:type="boolean" name="not_discountable" default="0" nullable="true" comment="not_discountable"/>
     <column xsi:type="text" name="outbound_code" nullable="true" comment="outbound_code"/>

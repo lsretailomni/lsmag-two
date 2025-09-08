@@ -25,6 +25,8 @@ class ReplSalesPriceTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_sales_price';
 
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplSalesPrice';
+
     /**
      * @property ReplSalesPriceRepository $repository
      */
@@ -81,6 +83,16 @@ class ReplSalesPriceTask extends AbstractReplicationTask
         $this->dataInterface = $dataInterface;
     }
 
+    public function getMainEntity() : ReplSalesPriceInterface
+    {
+        return $this->dataInterface;
+    }
+
+    public function getModelName() : string
+    {
+        return self::MODEL_CLASS;
+    }
+
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
         $request = new \Ls\Omni\Client\Ecommerce\Operation\SalesPrice($baseUrl, $connectionParams, $companyName);
@@ -112,11 +124,6 @@ class ReplSalesPriceTask extends AbstractReplicationTask
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplSalesPriceInterface
-    {
-        return $this->dataInterface;
     }
 }
 

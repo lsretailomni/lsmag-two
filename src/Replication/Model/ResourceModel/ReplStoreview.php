@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplStoreview extends ReplStore
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplStoreview extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_storeview', 'repl_storeview_id');
+    }
+
     /**
      * Perform actions before object save
      *

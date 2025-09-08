@@ -25,6 +25,8 @@ class ReplLscInventoryMenuLinesTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_inventory_menu_lines';
 
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscInventoryMenuLines';
+
     /**
      * @property ReplLscInventoryMenuLinesRepository $repository
      */
@@ -81,6 +83,16 @@ class ReplLscInventoryMenuLinesTask extends AbstractReplicationTask
         $this->dataInterface = $dataInterface;
     }
 
+    public function getMainEntity() : ReplLscInventoryMenuLinesInterface
+    {
+        return $this->dataInterface;
+    }
+
+    public function getModelName() : string
+    {
+        return self::MODEL_CLASS;
+    }
+
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
         $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCInventoryMenuLines($baseUrl, $connectionParams, $companyName);
@@ -112,11 +124,6 @@ class ReplLscInventoryMenuLinesTask extends AbstractReplicationTask
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscInventoryMenuLinesInterface
-    {
-        return $this->dataInterface;
     }
 }
 

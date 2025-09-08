@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplLscAttributeOptionValue extends ReplAttributeOptionValue
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplLscAttributeOptionValue extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_lsc_attribute_option_value', 'repl_lsc_attribute_option_value_id');
+    }
+
     /**
      * Perform actions before object save
      *

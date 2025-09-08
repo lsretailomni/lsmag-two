@@ -148,32 +148,33 @@ class ReplicationHelper extends AbstractHelper
 
     public const TABLE_NAME_PREFIX = 'ls_replication_';
     public const REPLICATION_ENTITY_MAPPING = [
-        'ReplLscAttribute' => 'ReplAttribute',
-        'ReplLscAttributeOptionValue' => 'ReplAttributeOptionValue',
-        'ReplLscAttributeValue' => 'ReplAttributeValue',
-        'ReplHierarchyview' => 'ReplHierarchy',
-        'ReplHierarchynodesview' => 'ReplHierarchyNode',
-        'ReplHierarchynodeslinkview' => 'ReplHierarchyLeaf',
-        'ReplLscBarcodes' => 'ReplBarcode',
-        'ReplLscWiExtdVariantValues' => 'ReplExtendedVariantValue',
-        'ReplVariantregview' => 'ReplItemVariantRegistration',
-        'ReplLscWiItemBuffer' => 'ReplItem',
-        'ReplItemuomupdview' => 'ReplItemUnitOfMeasure',
-        'ReplLscRetailImageLink' => 'ReplImageLink',
-        'ReplLscWiPrice' => 'ReplPrice',
-        'ReplLscInventoryLookupTable' => 'ReplInvStatus',
-        'ReplLscTenderType' => 'ReplStoreTenderType',
-        'ReplVatPostingSetup' => 'ReplTaxSetup',
-        'ReplVendoritemview' => 'ReplLoyVendorItemMapping',
-        'ReplStoreview' => 'ReplStore',
-        'ReplCountryview' => 'ReplCountryCode',
-        'ReplPeriodicdiscview' => 'ReplDiscountSetup',
-        'ReplLscValidationPeriod' => 'ReplDiscountValidation',
-        'ReplLscDataTranslation' => 'ReplDataTranslation',
-        'ReplLscWiItemRecipeBuffer' => 'ReplItemRecipe',
-        'ReplLscWiItemModifier' => 'ReplItemModifier',
-        'ReplHierarchydealview' => 'ReplHierarchyHospDeal',
-        'ReplHierarchydeallineview' => 'ReplHierarchyHospDealLine',
+        'LscAttribute' => 'Attribute',
+        'LscAttributeOptionValue' => 'AttributeOptionValue',
+        'LscAttributeValue' => 'AttributeValue',
+        'Hierarchyview' => 'Hierarchy',
+        'Hierarchynodesview' => 'HierarchyNode',
+        'Hierarchynodeslinkview' => 'HierarchyLeaf',
+        'LscBarcodes' => 'Barcode',
+        'LscWiExtdVariantValues' => 'ExtendedVariantValue',
+        'Variantregview' => 'ItemVariantRegistration',
+        'LscWiItemBuffer' => 'Item',
+        'Itemuomupdview' => 'ItemUnitOfMeasure',
+        'LscRetailImageLink' => 'ImageLink',
+        'LscWiPrice' => 'Price',
+        'LscInventoryLookupTable' => 'InvStatus',
+        'LscTenderType' => 'StoreTenderType',
+        'VatPostingSetup' => 'TaxSetup',
+        'Vendoritemview' => 'LoyVendorItemMapping',
+        'Storeview' => 'Store',
+        'Countryview' => 'CountryCode',
+        'Periodicdiscview' => 'DiscountSetup',
+        'LscValidationPeriod' => 'DiscountValidation',
+        'LscDataTranslation' => 'DataTranslation',
+        'LscItemHtmlMl' => 'DataTranslation',
+        'LscWiItemRecipeBuffer' => 'ItemRecipe',
+        'LscWiItemModifier' => 'ItemModifier',
+        'Hierarchydealview' => 'HierarchyHospDeal',
+        'Hierarchydeallineview' => 'HierarchyHospDealLine',
     ];
     public const DB_TABLES_MAPPING = [
         'repl_lsc_attribute' => [
@@ -607,6 +608,15 @@ class ReplicationHelper extends AbstractHelper
                 'translation_id' => 'TranslationId'
             ]
         ],
+        'repl_lsc_item_html_ml' => [
+            'table_name' => 'repl_data_translation',
+            'columns_mapping' => [
+                'item_no' => 'Key',
+                'language' => 'LanguageCode',
+                'html' => 'Text',
+                'translation_id' => 'TranslationId'
+            ]
+        ],
         'repl_hierarchydealview' => [
             'table_name' => 'repl_hierarchy_hosp_deal',
             'columns_mapping' => [
@@ -739,9 +749,10 @@ class ReplicationHelper extends AbstractHelper
             'scope_id'
         ],
         'ls_mag/replication/repl_lsc_item_html_ml' => [
-            'item_no' => 'item_no',
-            'language' => 'language',
-            'scope_id' => 'scope_id'
+            'key' => 'Key',
+            'language_code' => 'LanguageCode',
+            'translation_id' => 'TranslationId',
+            'scope_id'  => 'scope_id'
         ],
         'ls_mag/replication/repl_deal_html_translation' => [
             'TranslationId',

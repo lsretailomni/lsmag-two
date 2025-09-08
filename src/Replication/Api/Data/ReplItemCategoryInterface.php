@@ -128,6 +128,14 @@ interface ReplItemCategoryInterface
 
     public function setLscExcludeFromOosCalc(?bool $value);
 
+    public function getLscDefReplenAssortmGrCode() : ?string;
+
+    public function setLscDefReplenAssortmGrCode(?string $value);
+
+    public function getLscDefReplenGradeCode() : ?string;
+
+    public function setLscDefReplenGradeCode(?string $value);
+
     public function getLscPhysInvtCountPerCode() : ?string;
 
     public function setLscPhysInvtCountPerCode(?string $value);

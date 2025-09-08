@@ -8,12 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscWiItemModifierRepositoryInterface as ReplLscWiItemModifierRepository;
-use Ls\Replication\Model\ReplLscWiItemModifierFactory;
-use Ls\Replication\Api\Data\ReplLscWiItemModifierInterface;
-
-class ReplLscWiItemModifierTask extends AbstractReplicationTask
+class ReplLscWiItemModifierTask extends ReplEcommItemModifierTask
 {
     public const JOB_CODE = 'replication_repl_lsc_wi_item_modifier';
 
@@ -25,60 +20,11 @@ class ReplLscWiItemModifierTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_wi_item_modifier';
 
-    /**
-     * @property ReplLscWiItemModifierRepository $repository
-     */
-    protected $repository = null;
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscWiItemModifier';
 
-    /**
-     * @property ReplLscWiItemModifierFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplLscWiItemModifierInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplLscWiItemModifierRepository $repository)
+    public function getModelName() : string
     {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplLscWiItemModifierRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplLscWiItemModifierFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplLscWiItemModifierFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplLscWiItemModifierInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplLscWiItemModifierInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplLscWiItemModifierFactory $factory, ReplLscWiItemModifierRepository $repository, ReplLscWiItemModifierInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
+        return self::MODEL_CLASS;
     }
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
@@ -112,11 +58,6 @@ class ReplLscWiItemModifierTask extends AbstractReplicationTask
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscWiItemModifierInterface
-    {
-        return $this->dataInterface;
     }
 }
 

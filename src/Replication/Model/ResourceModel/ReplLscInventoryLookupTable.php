@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplLscInventoryLookupTable extends ReplInvStatus
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplLscInventoryLookupTable extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_lsc_inventory_lookup_table', 'repl_lsc_inventory_lookup_table_id');
+    }
+
     /**
      * Perform actions before object save
      *

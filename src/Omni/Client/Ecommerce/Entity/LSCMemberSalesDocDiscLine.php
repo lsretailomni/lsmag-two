@@ -15,18 +15,24 @@ class LSCMemberSalesDocDiscLine extends AbstractModel
     public const DISCOUNT_AMOUNT = 'Discount Amount';
     public const DOCUMENT_ID = 'Document ID';
     public const DOCUMENT_LINE_NO = 'Document Line No.';
+    public const ENTRY_NO = 'Entry No.';
     public const LINE_NO = 'Line No.';
     public const OFFER_NO = 'Offer No.';
     public const OFFER_TYPE = 'Offer Type';
+    public const PERIODIC_DISC_GROUP = 'Periodic Disc. Group';
+    public const PERIODIC_DISC_TYPE = 'Periodic Disc. Type';
 
     public static array $dbColumnsMapping = [
 	self::DESCRIPTION => 'description',
 	self::DISCOUNT_AMOUNT => 'discount_amount',
 	self::DOCUMENT_ID => 'document_id',
 	self::DOCUMENT_LINE_NO => 'document_line_no',
+	self::ENTRY_NO => 'entry_no',
 	self::LINE_NO => 'line_no',
 	self::OFFER_NO => 'offer_no',
 	self::OFFER_TYPE => 'offer_type',
+	self::PERIODIC_DISC_GROUP => 'periodic_disc_group',
+	self::PERIODIC_DISC_TYPE => 'periodic_disc_type',
     ];
 
     public static function getDbColumnsMapping(): array
@@ -75,6 +81,16 @@ class LSCMemberSalesDocDiscLine extends AbstractModel
         return $this->setData(self::DOCUMENT_LINE_NO, $value);
     }
 
+    public function getEntryNo(): ?int
+    {
+        return $this->getData(self::ENTRY_NO);
+    }
+
+    public function setEntryNo(?int $value)
+    {
+        return $this->setData(self::ENTRY_NO, $value);
+    }
+
     public function getLineNo(): ?int
     {
         return $this->getData(self::LINE_NO);
@@ -103,5 +119,25 @@ class LSCMemberSalesDocDiscLine extends AbstractModel
     public function setOfferType(?int $value)
     {
         return $this->setData(self::OFFER_TYPE, $value);
+    }
+
+    public function getPeriodicDiscGroup(): ?string
+    {
+        return $this->getData(self::PERIODIC_DISC_GROUP);
+    }
+
+    public function setPeriodicDiscGroup(?string $value)
+    {
+        return $this->setData(self::PERIODIC_DISC_GROUP, $value);
+    }
+
+    public function getPeriodicDiscType(): ?int
+    {
+        return $this->getData(self::PERIODIC_DISC_TYPE);
+    }
+
+    public function setPeriodicDiscType(?int $value)
+    {
+        return $this->setData(self::PERIODIC_DISC_TYPE, $value);
     }
 }

@@ -8,12 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscAttributeOptionValueRepositoryInterface as ReplLscAttributeOptionValueRepository;
-use Ls\Replication\Model\ReplLscAttributeOptionValueFactory;
-use Ls\Replication\Api\Data\ReplLscAttributeOptionValueInterface;
-
-class ReplLscAttributeOptionValueTask extends AbstractReplicationTask
+class ReplLscAttributeOptionValueTask extends ReplEcommAttributeOptionValueTask
 {
     public const JOB_CODE = 'replication_repl_lsc_attribute_option_value';
 
@@ -25,60 +20,11 @@ class ReplLscAttributeOptionValueTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_attribute_option_value';
 
-    /**
-     * @property ReplLscAttributeOptionValueRepository $repository
-     */
-    protected $repository = null;
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscAttributeOptionValue';
 
-    /**
-     * @property ReplLscAttributeOptionValueFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplLscAttributeOptionValueInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplLscAttributeOptionValueRepository $repository)
+    public function getModelName() : string
     {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplLscAttributeOptionValueRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplLscAttributeOptionValueFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplLscAttributeOptionValueFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplLscAttributeOptionValueInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplLscAttributeOptionValueInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplLscAttributeOptionValueFactory $factory, ReplLscAttributeOptionValueRepository $repository, ReplLscAttributeOptionValueInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
+        return self::MODEL_CLASS;
     }
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
@@ -112,11 +58,6 @@ class ReplLscAttributeOptionValueTask extends AbstractReplicationTask
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscAttributeOptionValueInterface
-    {
-        return $this->dataInterface;
     }
 }
 

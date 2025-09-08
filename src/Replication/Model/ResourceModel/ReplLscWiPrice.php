@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplLscWiPrice extends ReplPrice
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplLscWiPrice extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_lsc_wi_price', 'repl_lsc_wi_price_id');
+    }
+
     /**
      * Perform actions before object save
      *

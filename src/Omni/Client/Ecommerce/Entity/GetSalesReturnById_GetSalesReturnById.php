@@ -44,7 +44,7 @@ class GetSalesReturnById_GetSalesReturnById extends AbstractModel
         return $this->getData(self::LSC_MEMBER_SALES_DOC_LINE);
     }
 
-    public function setLscMemberSalesDocLine(?array $value)
+    public function setLscMemberSalesDocLine(?LSCMemberSalesDocLine $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
     }
@@ -54,7 +54,7 @@ class GetSalesReturnById_GetSalesReturnById extends AbstractModel
         return $this->getData(self::LSC_MEMBER_SALES_DOC_DISC_LINE);
     }
 
-    public function setLscMemberSalesDocDiscLine(?array $value)
+    public function setLscMemberSalesDocDiscLine(?LSCMemberSalesDocDiscLine $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_DOC_DISC_LINE, $value);
     }

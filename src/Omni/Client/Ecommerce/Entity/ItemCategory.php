@@ -40,6 +40,8 @@ class ItemCategory extends AbstractModel
     public const LSC_DEF_ITEM_DISTR_CODE = 'LSC Def. Item Distr. Code';
     public const LSC_EXCLUDE_FROM_REPLENISHMENT = 'LSC Exclude from Replenishment';
     public const LSC_EXCLUDE_FROM_OOS_CALC = 'LSC Exclude from OOS Calc.';
+    public const LSC_DEF_REPLEN_ASSORTM_GR_CODE = 'LSC Def Replen Assortm Gr Code';
+    public const LSC_DEF_REPLEN_GRADE_CODE = 'LSC Def Replen Grade Code';
     public const LSC_PHYS_INVT_COUNT_PER_CODE = 'LSC Phys Invt Count. Per. Code';
     public const LSC_ALLOCATION_RULE_CODE = 'LSC Allocation Rule Code';
     public const LSC_PLB_CATEGORY = 'LSC PLB Category';
@@ -79,6 +81,8 @@ class ItemCategory extends AbstractModel
 	self::LSC_DEF_ITEM_DISTR_CODE => 'lsc_def_item_distr_code',
 	self::LSC_EXCLUDE_FROM_REPLENISHMENT => 'lsc_exclude_from_replenishment',
 	self::LSC_EXCLUDE_FROM_OOS_CALC => 'lsc_exclude_from_oos_calc',
+	self::LSC_DEF_REPLEN_ASSORTM_GR_CODE => 'lsc_def_replen_assortm_gr_code',
+	self::LSC_DEF_REPLEN_GRADE_CODE => 'lsc_def_replen_grade_code',
 	self::LSC_PHYS_INVT_COUNT_PER_CODE => 'lsc_phys_invt_count_per_code',
 	self::LSC_ALLOCATION_RULE_CODE => 'lsc_allocation_rule_code',
 	self::LSC_PLB_CATEGORY => 'lsc_plb_category',
@@ -383,6 +387,26 @@ class ItemCategory extends AbstractModel
     public function setLscExcludeFromOosCalc(?bool $value)
     {
         return $this->setData(self::LSC_EXCLUDE_FROM_OOS_CALC, $value);
+    }
+
+    public function getLscDefReplenAssortmGrCode(): ?string
+    {
+        return $this->getData(self::LSC_DEF_REPLEN_ASSORTM_GR_CODE);
+    }
+
+    public function setLscDefReplenAssortmGrCode(?string $value)
+    {
+        return $this->setData(self::LSC_DEF_REPLEN_ASSORTM_GR_CODE, $value);
+    }
+
+    public function getLscDefReplenGradeCode(): ?string
+    {
+        return $this->getData(self::LSC_DEF_REPLEN_GRADE_CODE);
+    }
+
+    public function setLscDefReplenGradeCode(?string $value)
+    {
+        return $this->setData(self::LSC_DEF_REPLEN_GRADE_CODE, $value);
     }
 
     public function getLscPhysInvtCountPerCode(): ?string

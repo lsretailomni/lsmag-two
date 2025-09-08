@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplItemuomupdview extends ReplItemUnitOfMeasure
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplItemuomupdview extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_itemuomupdview', 'repl_itemuomupdview_id');
+    }
+
     /**
      * Perform actions before object save
      *

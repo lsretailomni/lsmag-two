@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplLscDataTranslation extends ReplDataTranslation
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplLscDataTranslation extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_lsc_data_translation', 'repl_lsc_data_translation_id');
+    }
+
     /**
      * Perform actions before object save
      *

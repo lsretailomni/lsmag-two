@@ -8,12 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscWiExtdVariantValuesRepositoryInterface as ReplLscWiExtdVariantValuesRepository;
-use Ls\Replication\Model\ReplLscWiExtdVariantValuesFactory;
-use Ls\Replication\Api\Data\ReplLscWiExtdVariantValuesInterface;
-
-class ReplLscWiExtdVariantValuesTask extends AbstractReplicationTask
+class ReplLscWiExtdVariantValuesTask extends ReplEcommExtendedVariantValueTask
 {
     public const JOB_CODE = 'replication_repl_lsc_wi_extd_variant_values';
 
@@ -25,60 +20,11 @@ class ReplLscWiExtdVariantValuesTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_wi_extd_variant_values';
 
-    /**
-     * @property ReplLscWiExtdVariantValuesRepository $repository
-     */
-    protected $repository = null;
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscWiExtdVariantValues';
 
-    /**
-     * @property ReplLscWiExtdVariantValuesFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplLscWiExtdVariantValuesInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplLscWiExtdVariantValuesRepository $repository)
+    public function getModelName() : string
     {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplLscWiExtdVariantValuesRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplLscWiExtdVariantValuesFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplLscWiExtdVariantValuesFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplLscWiExtdVariantValuesInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplLscWiExtdVariantValuesInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplLscWiExtdVariantValuesFactory $factory, ReplLscWiExtdVariantValuesRepository $repository, ReplLscWiExtdVariantValuesInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
+        return self::MODEL_CLASS;
     }
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
@@ -112,11 +58,6 @@ class ReplLscWiExtdVariantValuesTask extends AbstractReplicationTask
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscWiExtdVariantValuesInterface
-    {
-        return $this->dataInterface;
     }
 }
 

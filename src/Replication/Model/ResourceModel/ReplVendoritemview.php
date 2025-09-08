@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplVendoritemview extends ReplLoyVendorItemMapping
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplVendoritemview extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_vendoritemview', 'repl_vendoritemview_id');
+    }
+
     /**
      * Perform actions before object save
      *

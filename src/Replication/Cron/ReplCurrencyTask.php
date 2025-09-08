@@ -25,6 +25,8 @@ class ReplCurrencyTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_currency';
 
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplCurrency';
+
     /**
      * @property ReplCurrencyRepository $repository
      */
@@ -81,6 +83,16 @@ class ReplCurrencyTask extends AbstractReplicationTask
         $this->dataInterface = $dataInterface;
     }
 
+    public function getMainEntity() : ReplCurrencyInterface
+    {
+        return $this->dataInterface;
+    }
+
+    public function getModelName() : string
+    {
+        return self::MODEL_CLASS;
+    }
+
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
         $request = new \Ls\Omni\Client\Ecommerce\Operation\Currency($baseUrl, $connectionParams, $companyName);
@@ -112,11 +124,6 @@ class ReplCurrencyTask extends AbstractReplicationTask
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplCurrencyInterface
-    {
-        return $this->dataInterface;
     }
 }
 

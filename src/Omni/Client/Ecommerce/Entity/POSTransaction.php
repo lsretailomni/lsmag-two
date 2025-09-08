@@ -158,6 +158,8 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
 
     public const RESTRICTED_FLAG = 'RestrictedFlag';
 
+    public const GROSS_AMOUNT_INT = 'GrossAmountInt';
+
     public const TAX_AREA_CODE = 'TaxAreaCode';
 
     public const WICTRANSACTION = 'WICTransaction';
@@ -1480,6 +1482,24 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     public function getRestrictedflag() : ?bool
     {
         return $this->getData(self::RESTRICTED_FLAG);
+    }
+
+    /**
+     * @param ?float $GrossAmountInt
+     * @return $this
+     */
+    public function setGrossamountint(?float $GrossAmountInt)
+    {
+        $this->setData(self::GROSS_AMOUNT_INT, $GrossAmountInt);
+        return $this;
+    }
+
+    /**
+     * @return ?float
+     */
+    public function getGrossamountint() : ?float
+    {
+        return $this->getData(self::GROSS_AMOUNT_INT);
     }
 
     /**

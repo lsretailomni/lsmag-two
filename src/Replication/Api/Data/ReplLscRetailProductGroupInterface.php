@@ -140,6 +140,14 @@ interface ReplLscRetailProductGroupInterface
 
     public function setExcludeFromOosCalc(?bool $value);
 
+    public function getLscDefReplenAssortmGrCode() : ?string;
+
+    public function setLscDefReplenAssortmGrCode(?string $value);
+
+    public function getLscDefReplenGradeCode() : ?string;
+
+    public function setLscDefReplenGradeCode(?string $value);
+
     public function getNotDiscountable() : ?bool;
 
     public function setNotDiscountable(?bool $value);

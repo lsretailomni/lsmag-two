@@ -96,6 +96,10 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
 
     public const PREPAYMENT_INVOICE_TYPE = 'PrepaymentInvoiceType';
 
+    public const CURRENCY_CODE = 'CurrencyCode';
+
+    public const CURRENCY_FACTOR = 'CurrencyFactor';
+
     /**
      * @param ?string $DocumentID
      * @return $this
@@ -850,6 +854,42 @@ class CustomerOrderCreateCOHeaderV6 extends \Magento\Catalog\Model\AbstractModel
     public function getPrepaymentinvoicetype() : ?string
     {
         return $this->getData(self::PREPAYMENT_INVOICE_TYPE);
+    }
+
+    /**
+     * @param ?string $CurrencyCode
+     * @return $this
+     */
+    public function setCurrencycode(?string $CurrencyCode)
+    {
+        $this->setData(self::CURRENCY_CODE, $CurrencyCode);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getCurrencycode() : ?string
+    {
+        return $this->getData(self::CURRENCY_CODE);
+    }
+
+    /**
+     * @param ?float $CurrencyFactor
+     * @return $this
+     */
+    public function setCurrencyfactor(?float $CurrencyFactor)
+    {
+        $this->setData(self::CURRENCY_FACTOR, $CurrencyFactor);
+        return $this;
+    }
+
+    /**
+     * @return ?float
+     */
+    public function getCurrencyfactor() : ?float
+    {
+        return $this->getData(self::CURRENCY_FACTOR);
     }
 }
 

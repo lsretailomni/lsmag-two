@@ -8,12 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplStoreviewRepositoryInterface as ReplStoreviewRepository;
-use Ls\Replication\Model\ReplStoreviewFactory;
-use Ls\Replication\Api\Data\ReplStoreviewInterface;
-
-class ReplStoreviewTask extends AbstractReplicationTask
+class ReplStoreviewTask extends ReplEcommStoreTask
 {
     public const JOB_CODE = 'replication_repl_storeview';
 
@@ -25,60 +20,11 @@ class ReplStoreviewTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_storeview';
 
-    /**
-     * @property ReplStoreviewRepository $repository
-     */
-    protected $repository = null;
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplStoreview';
 
-    /**
-     * @property ReplStoreviewFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplStoreviewInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplStoreviewRepository $repository)
+    public function getModelName() : string
     {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplStoreviewRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplStoreviewFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplStoreviewFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplStoreviewInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplStoreviewInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplStoreviewFactory $factory, ReplStoreviewRepository $repository, ReplStoreviewInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
+        return self::MODEL_CLASS;
     }
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
@@ -112,11 +58,6 @@ class ReplStoreviewTask extends AbstractReplicationTask
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplStoreviewInterface
-    {
-        return $this->dataInterface;
     }
 }
 

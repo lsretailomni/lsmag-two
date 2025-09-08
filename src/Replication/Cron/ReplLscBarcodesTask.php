@@ -8,12 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscBarcodesRepositoryInterface as ReplLscBarcodesRepository;
-use Ls\Replication\Model\ReplLscBarcodesFactory;
-use Ls\Replication\Api\Data\ReplLscBarcodesInterface;
-
-class ReplLscBarcodesTask extends AbstractReplicationTask
+class ReplLscBarcodesTask extends ReplEcommBarcodeTask
 {
     public const JOB_CODE = 'replication_repl_lsc_barcodes';
 
@@ -25,60 +20,11 @@ class ReplLscBarcodesTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_barcodes';
 
-    /**
-     * @property ReplLscBarcodesRepository $repository
-     */
-    protected $repository = null;
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscBarcodes';
 
-    /**
-     * @property ReplLscBarcodesFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplLscBarcodesInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplLscBarcodesRepository $repository)
+    public function getModelName() : string
     {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplLscBarcodesRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplLscBarcodesFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplLscBarcodesFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplLscBarcodesInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplLscBarcodesInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplLscBarcodesFactory $factory, ReplLscBarcodesRepository $repository, ReplLscBarcodesInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
+        return self::MODEL_CLASS;
     }
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
@@ -112,11 +58,6 @@ class ReplLscBarcodesTask extends AbstractReplicationTask
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscBarcodesInterface
-    {
-        return $this->dataInterface;
     }
 }
 

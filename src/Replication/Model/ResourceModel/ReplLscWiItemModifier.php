@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplLscWiItemModifier extends ReplItemModifier
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplLscWiItemModifier extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_lsc_wi_item_modifier', 'repl_lsc_wi_item_modifier_id');
+    }
+
     /**
      * Perform actions before object save
      *

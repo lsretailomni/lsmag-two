@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplHierarchynodesview extends ReplHierarchyNode
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplHierarchynodesview extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_hierarchynodesview', 'repl_hierarchynodesview_id');
+    }
+
     /**
      * Perform actions before object save
      *

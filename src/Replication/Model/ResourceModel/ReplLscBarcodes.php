@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplLscBarcodes extends ReplBarcode
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplLscBarcodes extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_lsc_barcodes', 'repl_lsc_barcodes_id');
+    }
+
     /**
      * Perform actions before object save
      *

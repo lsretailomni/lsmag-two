@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplVariantregview extends ReplItemVariantRegistration
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplVariantregview extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_variantregview', 'repl_variantregview_id');
+    }
+
     /**
      * Perform actions before object save
      *

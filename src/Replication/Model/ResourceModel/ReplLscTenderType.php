@@ -8,8 +8,15 @@
 
 namespace Ls\Replication\Model\ResourceModel;
 
-class ReplLscTenderType extends ReplStoreTenderType
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class ReplLscTenderType extends AbstractDb
 {
+    public function _construct()
+    {
+        $this->_init('ls_replication_repl_lsc_tender_type', 'repl_lsc_tender_type_id');
+    }
+
     /**
      * Perform actions before object save
      *
