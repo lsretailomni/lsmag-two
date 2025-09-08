@@ -78,7 +78,7 @@ class OpenGate extends AbstractOperation
     /**
      * @return OpenGateRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new OpenGateRequest();

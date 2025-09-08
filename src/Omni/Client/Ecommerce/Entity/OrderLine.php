@@ -64,6 +64,11 @@ class OrderLine extends Entity
     protected $LineType = null;
 
     /**
+     * @property string $LotNumber
+     */
+    protected $LotNumber = null;
+
+    /**
      * @property float $NetAmount
      */
     protected $NetAmount = null;
@@ -87,6 +92,11 @@ class OrderLine extends Entity
      * @property float $Quantity
      */
     protected $Quantity = null;
+
+    /**
+     * @property string $SerialNumber
+     */
+    protected $SerialNumber = null;
 
     /**
      * @property string $SourcingLocation
@@ -319,6 +329,24 @@ class OrderLine extends Entity
     }
 
     /**
+     * @param string $LotNumber
+     * @return $this
+     */
+    public function setLotNumber($LotNumber)
+    {
+        $this->LotNumber = $LotNumber;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLotNumber()
+    {
+        return $this->LotNumber;
+    }
+
+    /**
      * @param float $NetAmount
      * @return $this
      */
@@ -406,6 +434,24 @@ class OrderLine extends Entity
     public function getQuantity()
     {
         return $this->Quantity;
+    }
+
+    /**
+     * @param string $SerialNumber
+     * @return $this
+     */
+    public function setSerialNumber($SerialNumber)
+    {
+        $this->SerialNumber = $SerialNumber;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSerialNumber()
+    {
+        return $this->SerialNumber;
     }
 
     /**

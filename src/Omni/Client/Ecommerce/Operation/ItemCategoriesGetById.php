@@ -78,7 +78,7 @@ class ItemCategoriesGetById extends AbstractOperation
     /**
      * @return ItemCategoriesGetByIdRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ItemCategoriesGetByIdRequest();

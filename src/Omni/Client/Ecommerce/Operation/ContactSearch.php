@@ -78,7 +78,7 @@ class ContactSearch extends AbstractOperation
     /**
      * @return ContactSearchRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ContactSearchRequest();

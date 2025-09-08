@@ -10,108 +10,52 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\RequestInterface;
 
-class SecurityCheckProfile extends \Magento\Catalog\Model\AbstractModel implements RequestInterface
+class SecurityCheckProfile implements RequestInterface
 {
-    public const CLASS_NAME = 'SecurityCheckProfile';
-
-    public const RESPONSE_CODE = 'responseCode';
-
-    public const ERROR_TEXT = 'errorText';
-
-    public const SECURITY_PROFILE_EXIST = 'securityProfileExist';
-
-    public const STORE_NO = 'storeNo';
-
-    public const CUSTOMER_ORDER_ID = 'customerOrderID';
+    /**
+     * @property string $orderNo
+     */
+    protected $orderNo = null;
 
     /**
-     * @param ?string $responseCode
+     * @property string $storeNo
+     */
+    protected $storeNo = null;
+
+    /**
+     * @param string $orderNo
      * @return $this
      */
-    public function setResponsecode(?string $responseCode)
+    public function setOrderNo($orderNo)
     {
-        $this->setData(self::RESPONSE_CODE, $responseCode);
+        $this->orderNo = $orderNo;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getResponsecode() : ?string
+    public function getOrderNo()
     {
-        return $this->getData(self::RESPONSE_CODE);
+        return $this->orderNo;
     }
 
     /**
-     * @param ?string $errorText
+     * @param string $storeNo
      * @return $this
      */
-    public function setErrortext(?string $errorText)
+    public function setStoreNo($storeNo)
     {
-        $this->setData(self::ERROR_TEXT, $errorText);
+        $this->storeNo = $storeNo;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getErrortext() : ?string
+    public function getStoreNo()
     {
-        return $this->getData(self::ERROR_TEXT);
-    }
-
-    /**
-     * @param ?bool $securityProfileExist
-     * @return $this
-     */
-    public function setSecurityprofileexist(?bool $securityProfileExist)
-    {
-        $this->setData(self::SECURITY_PROFILE_EXIST, $securityProfileExist);
-        return $this;
-    }
-
-    /**
-     * @return ?bool
-     */
-    public function getSecurityprofileexist() : ?bool
-    {
-        return $this->getData(self::SECURITY_PROFILE_EXIST);
-    }
-
-    /**
-     * @param ?string $storeNo
-     * @return $this
-     */
-    public function setStoreno(?string $storeNo)
-    {
-        $this->setData(self::STORE_NO, $storeNo);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getStoreno() : ?string
-    {
-        return $this->getData(self::STORE_NO);
-    }
-
-    /**
-     * @param ?string $customerOrderID
-     * @return $this
-     */
-    public function setCustomerorderid(?string $customerOrderID)
-    {
-        $this->setData(self::CUSTOMER_ORDER_ID, $customerOrderID);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getCustomerorderid() : ?string
-    {
-        return $this->getData(self::CUSTOMER_ORDER_ID);
+        return $this->storeNo;
     }
 }
 

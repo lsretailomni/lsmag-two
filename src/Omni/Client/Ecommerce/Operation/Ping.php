@@ -78,7 +78,7 @@ class Ping extends AbstractOperation
     /**
      * @return PingRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new PingRequest();

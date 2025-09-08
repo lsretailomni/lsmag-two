@@ -78,7 +78,7 @@ class ActivityGetAvailabilityToken extends AbstractOperation
     /**
      * @return ActivityGetAvailabilityTokenRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ActivityGetAvailabilityTokenRequest();

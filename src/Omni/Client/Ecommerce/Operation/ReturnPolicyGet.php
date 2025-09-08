@@ -15,12 +15,12 @@ use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Client\Ecommerce\Entity\ContactBlock as ContactBlockRequest;
-use Ls\Omni\Client\Ecommerce\Entity\ContactBlockResponse as ContactBlockResponse;
+use Ls\Omni\Client\Ecommerce\Entity\ReturnPolicyGet as ReturnPolicyGetRequest;
+use Ls\Omni\Client\Ecommerce\Entity\ReturnPolicyGetResponse as ReturnPolicyGetResponse;
 
-class ContactBlock extends AbstractOperation
+class ReturnPolicyGet extends AbstractOperation
 {
-    public const OPERATION_NAME = 'CONTACT_BLOCK';
+    public const OPERATION_NAME = 'RETURN_POLICY_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
 
@@ -30,12 +30,12 @@ class ContactBlock extends AbstractOperation
     protected $client = null;
 
     /**
-     * @property ContactBlockRequest $request
+     * @property ReturnPolicyGetRequest $request
      */
     protected $request = null;
 
     /**
-     * @property ContactBlockResponse $response
+     * @property ReturnPolicyGetResponse $response
      */
     protected $response = null;
 
@@ -64,24 +64,24 @@ class ContactBlock extends AbstractOperation
     }
 
     /**
-     * @param ContactBlockRequest $request
-     * @return ResponseInterface|ContactBlockResponse
+     * @param ReturnPolicyGetRequest $request
+     * @return ResponseInterface|ReturnPolicyGetResponse
      */
     public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'ContactBlock' );
+        return $this->makeRequest( 'ReturnPolicyGet' );
     }
 
     /**
-     * @return ContactBlockRequest
+     * @return ReturnPolicyGetRequest
      */
     public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
-            $this->request = new ContactBlockRequest();
+            $this->request = new ReturnPolicyGetRequest();
         }
         return $this->request;
     }
@@ -118,7 +118,7 @@ class ContactBlock extends AbstractOperation
     }
 
     /**
-     * @param ContactBlockRequest $request
+     * @param ReturnPolicyGetRequest $request
      * @return $this
      */
     public function setRequest($request)
@@ -128,7 +128,7 @@ class ContactBlock extends AbstractOperation
     }
 
     /**
-     * @return ContactBlockRequest
+     * @return ReturnPolicyGetRequest
      */
     public function getRequest()
     {
@@ -136,7 +136,7 @@ class ContactBlock extends AbstractOperation
     }
 
     /**
-     * @param ContactBlockResponse $response
+     * @param ReturnPolicyGetResponse $response
      * @return $this
      */
     public function setResponse($response)
@@ -146,7 +146,7 @@ class ContactBlock extends AbstractOperation
     }
 
     /**
-     * @return ContactBlockResponse
+     * @return ReturnPolicyGetResponse
      */
     public function getResponse()
     {
