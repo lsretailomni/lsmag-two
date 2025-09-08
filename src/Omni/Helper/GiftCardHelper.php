@@ -6,10 +6,10 @@ namespace Ls\Omni\Helper;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\GetDataEntryBalanceV2;
+use \Ls\Omni\Client\CentralEcommerce\Entity;
+use \Ls\Omni\Client\CentralEcommerce\Entity\GetDataEntryBalanceV2;
 use \Ls\Omni\Client\Ecommerce\Entity\GiftCard;
-use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\CentralEcommerce\Operation;
 use Magento\Framework\Currency;
 use Magento\Framework\Exception\NoSuchEntityException;
 

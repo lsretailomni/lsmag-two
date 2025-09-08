@@ -33,7 +33,7 @@ class OperationGenerator extends AbstractOmniGenerator
     {
         $requestType        = preg_replace('/[-._]/', '', $this->operation->getRequest()->getType());
         $responseType       = preg_replace('/[-._]/', '', $this->operation->getResponse()->getType());
-        $serviceFolder      = ucfirst($this->getServiceType()->getValue());
+        $serviceFolder      = 'CentralEcommerce';
         $baseNamespace      = self::fqn('Ls', 'Omni', 'Client', $serviceFolder);
         $operationName      = $this->operation->getName();
         $operationNamespace = self::fqn($baseNamespace, 'Operation');

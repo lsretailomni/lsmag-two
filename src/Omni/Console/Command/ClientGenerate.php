@@ -46,7 +46,7 @@ class ClientGenerate extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $interfaceFolder = ucfirst($this->type->getValue());
+        $interfaceFolder = 'CentralEcommerce';
 
         $modulePath   = $this->dirReader->getModuleDir('', 'Ls_Omni');
         $baseDir      = AbstractGenerator::path($modulePath, 'Client', $interfaceFolder);

@@ -18,8 +18,8 @@ class ReplicationOperation extends Operation
     public const BASE_API_NAMESPACE        = 'Ls\\Replication\\Api';
     public const BASE_MODEL_NAMESPACE      = 'Ls\\Replication\\Model';
     public const BASE_CRON_NAMESPACE       = 'Ls\\Replication\\Cron';
-    public const BASE_OMNI_NAMESPACE       = 'Ls\\Omni\\Client\\Ecommerce\\Entity';
-    public const BASE_OPERATION_NAMESPACE  = 'Ls\\Omni\\Client\\Ecommerce\\Operation';
+    public const BASE_OMNI_NAMESPACE       = 'Ls\\Omni\\Client\\CentralEcommerce\\Entity';
+    public const BASE_OPERATION_NAMESPACE  = 'Ls\\Omni\\Client\\CentralEcommerce\\Operation';
     public const KNOWN_RESULT_PROPERTIES   = ['LastKey', 'MaxKey', 'RecordsRemaining'];
 
     /** @var string */

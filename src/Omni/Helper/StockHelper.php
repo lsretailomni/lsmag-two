@@ -5,11 +5,11 @@ namespace Ls\Omni\Helper;
 
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\GetInventoryMultipleV2;
-use \Ls\Omni\Client\Ecommerce\Entity\InventoryBufferIn;
-use \Ls\Omni\Client\Ecommerce\Entity\RootGetInventoryMultipleIn;
-use \Ls\Omni\Client\Ecommerce\Entity\RootGetInventoryMultipleOut;
-use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\CentralEcommerce\Entity\GetInventoryMultipleV2;
+use \Ls\Omni\Client\CentralEcommerce\Entity\InventoryBufferIn;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootGetInventoryMultipleIn;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootGetInventoryMultipleOut;
+use \Ls\Omni\Client\CentralEcommerce\Operation;
 use \Ls\Replication\Model\ResourceModel\ReplStoreview\Collection;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\Exception\LocalizedException;
