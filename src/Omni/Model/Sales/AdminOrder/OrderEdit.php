@@ -196,7 +196,7 @@ class OrderEdit
             $lineOrderArray  = $this->modifyItemQuantity(
                 $newItems,
                 $oldItems,
-                $orderLinesArray,
+                $coEditLines,
                 $order,
                 $createdAtStore,
                 $documentId
@@ -221,13 +221,15 @@ class OrderEdit
                     $coDiscountLine->addData(
                         [
                             COEditDiscountLine::DOCUMENT_ID => $documentId,
-                            COEditDiscountLine::LINE_NO => $orderDiscountLine->getLineNumber(),
+                            COEditDiscountLine::LINE_NO => $orderDiscountLine->getLineNo(),
                             COEditDiscountLine::ENTRY_NO => $orderDiscountLine->getNo(),
                             COEditDiscountLine::DISCOUNT_TYPE => $orderDiscountLine->getDiscountType(),
                             COEditDiscountLine::OFFER_NO => $orderDiscountLine->getOfferNo(),
                             COEditDiscountLine::PERIODIC_DISC_TYPE => $orderDiscountLine->getPeriodicDiscountType(),
                             COEditDiscountLine::PERIODIC_DISC_GROUP => $periodicDiscountGroup,
-                            COEditDiscountLine::DESCRIPTION => $orderDiscountLine->getDescription()
+                            COEditDiscountLine::DESCRIPTION => $orderDiscountLine->getDescription(),
+                            COEditDiscountLine::DISCOUNT_AMOUNT => $orderDiscountLine->getDiscountAmount(),
+                            COEditDiscountLine::DISCOUNT_PERCENT => $orderDiscountLine->getDiscountPercent()
                         ]
                     );
                     $orderEditDiscountLines[] = $coDiscountLine;
@@ -686,7 +688,7 @@ class OrderEdit
         $maxLineNo = 0;
         $orderLines = $customerOrder->getLscMemberSalesDocLine();
         foreach ($orderLines as $line) {
-            if ($line->getLineType() == 0
+            if ($line->getEntryType() == 0
                 && (int)$line->getLineNo() > $maxLineNo
             ) {
                 $maxLineNo = (int)$line->getLineNo();
@@ -757,7 +759,7 @@ class OrderEdit
      *
      * @param $newItems
      * @param $oldItems
-     * @param $orderLinesArray
+     * @param $coEditLines
      * @param $order
      * @param $createdAtStore
      * @param $documentId
@@ -767,7 +769,7 @@ class OrderEdit
     public function modifyItemQuantity(
         $newItems,
         $oldItems,
-        $orderLinesArray,
+        $coEditLines,
         $order,
         $createdAtStore,
         $documentId
@@ -783,10 +785,10 @@ class OrderEdit
                             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                                 $newItem->getSku()
                             );
-                            foreach ($orderLinesArray as &$orderLine) {
+                            foreach ($coEditLines as &$orderLine) {
                                 if ($orderLine->getNumber() == $itemId &&
                                     $orderLine->getVariantCode() == $variantId &&
-                                    $orderLine->getUomId() == $uom) {
+                                    $orderLine->getUnitofMeasureCode() == $uom) {
                                     $price          = $orderLine->getPrice();
                                     $amount         = ($orderLine->getPrice() * $qtyDifference) -
                                         ($orderLine->getDiscountAmount() / $orderLine->getQuantity());
