@@ -30,7 +30,7 @@ class RepositoryTestGenerator extends AbstractGenerator
      *
      * @var string
      */
-    public static string $namespace = 'Ls\\Replication\\Test\\Unit\\Model';
+    public static string $namespace = 'Ls\\Replication\\Test\\Unit\\Model\\Central';
 
     /**
      * Operation metadata for generation.

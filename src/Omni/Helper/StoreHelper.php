@@ -9,7 +9,7 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\CentralEcommerce\Entity\GetStores_GetStores;
-use Ls\Omni\Client\CentralEcommerce\Entity\RootGetStoreOpeningHours;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootGetStoreOpeningHours;
 use \Ls\Omni\Client\CentralEcommerce\Operation;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\DataObject;

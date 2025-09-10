@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscTenderTypeCurrencySetupRepositoryInterface as ReplLscTenderTypeCurrencySetupRepository;
-use Ls\Replication\Model\ReplLscTenderTypeCurrencySetupFactory;
-use Ls\Replication\Api\Data\ReplLscTenderTypeCurrencySetupInterface;
+use Ls\Replication\Api\Central\ReplLscTenderTypeCurrencySetupRepositoryInterface as ReplLscTenderTypeCurrencySetupRepository;
+use Ls\Replication\Model\Central\ReplLscTenderTypeCurrencySetupFactory;
+use Ls\Replication\Api\Central\Data\ReplLscTenderTypeCurrencySetupInterface;
 
 class ReplLscTenderTypeCurrencySetupTask extends AbstractReplicationTask
 {
@@ -25,7 +25,7 @@ class ReplLscTenderTypeCurrencySetupTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_tender_type_currency_setup';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscTenderTypeCurrencySetup';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscTenderTypeCurrencySetup';
 
     /**
      * @property ReplLscTenderTypeCurrencySetupRepository $repository
@@ -95,7 +95,7 @@ class ReplLscTenderTypeCurrencySetupTask extends AbstractReplicationTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCTenderTypeCurrencySetup($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCTenderTypeCurrencySetup($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

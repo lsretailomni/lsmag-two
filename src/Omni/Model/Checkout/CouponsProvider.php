@@ -6,7 +6,7 @@ namespace Ls\Omni\Model\Checkout;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
+use \Ls\Omni\Client\CentralEcommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;

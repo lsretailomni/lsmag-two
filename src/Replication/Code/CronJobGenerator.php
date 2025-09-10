@@ -45,7 +45,7 @@ class CronJobGenerator extends AbstractGenerator
      */
     public function generate(): string
     {
-        $replicationEntityMapping = ReplicationHelper::REPLICATION_ENTITY_MAPPING;
+        $replicationEntityMapping = ReplicationHelper::CRON_JOBS_MAPPING;
         $modelName = $this->operation->getModelName();
         $mappingExists = false;
         $mappedModelName = $modelName;
@@ -317,6 +317,12 @@ CODE
      */
     public function getMainEntityFqn($mappedModel): string
     {
+        $replicationEntityMapping = ReplicationHelper::ENTITY_MAPPING;
+
+        if (isset($replicationEntityMapping[$mappedModel])) {
+            $mappedModel = $replicationEntityMapping[$mappedModel];
+        }
+
         return AbstractGenerator::fqn(ReplicationOperation::BASE_MODEL_NAMESPACE, $mappedModel);
     }
 }

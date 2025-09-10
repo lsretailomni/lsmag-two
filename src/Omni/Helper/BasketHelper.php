@@ -561,7 +561,7 @@ class BasketHelper extends AbstractHelperOmni
             ->setCurrencyfactor((float)$this->loyaltyHelper->getPointRate());
         $operation = $this->createInstance(EcomCalculateBasket::class);
         $operation->setOperationInput(
-            [Entity\EcomCalculateBasket::MOBILE_TRANSACTION_XML => $oneList]
+            [\Ls\Omni\Client\CentralEcommerce\Entity\EcomCalculateBasket::MOBILE_TRANSACTION_XML => $oneList]
         );
         $response = $operation->execute();
 

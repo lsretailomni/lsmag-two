@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscBarcodeMaskRepositoryInterface as ReplLscBarcodeMaskRepository;
-use Ls\Replication\Model\ReplLscBarcodeMaskFactory;
-use Ls\Replication\Api\Data\ReplLscBarcodeMaskInterface;
+use Ls\Replication\Api\Central\ReplLscBarcodeMaskRepositoryInterface as ReplLscBarcodeMaskRepository;
+use Ls\Replication\Model\Central\ReplLscBarcodeMaskFactory;
+use Ls\Replication\Api\Central\Data\ReplLscBarcodeMaskInterface;
 
 class ReplLscBarcodeMaskTask extends AbstractReplicationTask
 {
@@ -25,7 +25,7 @@ class ReplLscBarcodeMaskTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_barcode_mask';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscBarcodeMask';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscBarcodeMask';
 
     /**
      * @property ReplLscBarcodeMaskRepository $repository
@@ -95,7 +95,7 @@ class ReplLscBarcodeMaskTask extends AbstractReplicationTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCBarcodeMask($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCBarcodeMask($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

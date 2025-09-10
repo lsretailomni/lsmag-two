@@ -20,7 +20,7 @@ class ReplLscAttributeTask extends ReplEcommAttributeTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_attribute';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscAttribute';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscAttribute';
 
     public function getModelName() : string
     {
@@ -29,7 +29,7 @@ class ReplLscAttributeTask extends ReplEcommAttributeTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCAttribute($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCAttribute($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

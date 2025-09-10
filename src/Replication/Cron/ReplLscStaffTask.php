@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscStaffRepositoryInterface as ReplLscStaffRepository;
-use Ls\Replication\Model\ReplLscStaffFactory;
-use Ls\Replication\Api\Data\ReplLscStaffInterface;
+use Ls\Replication\Api\Central\ReplLscStaffRepositoryInterface as ReplLscStaffRepository;
+use Ls\Replication\Model\Central\ReplLscStaffFactory;
+use Ls\Replication\Api\Central\Data\ReplLscStaffInterface;
 
 class ReplLscStaffTask extends AbstractReplicationTask
 {
@@ -25,7 +25,7 @@ class ReplLscStaffTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_staff';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscStaff';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscStaff';
 
     /**
      * @property ReplLscStaffRepository $repository
@@ -95,7 +95,7 @@ class ReplLscStaffTask extends AbstractReplicationTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCStaff($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCStaff($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

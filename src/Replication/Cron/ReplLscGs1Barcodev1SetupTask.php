@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscGs1Barcodev1SetupRepositoryInterface as ReplLscGs1Barcodev1SetupRepository;
-use Ls\Replication\Model\ReplLscGs1Barcodev1SetupFactory;
-use Ls\Replication\Api\Data\ReplLscGs1Barcodev1SetupInterface;
+use Ls\Replication\Api\Central\ReplLscGs1Barcodev1SetupRepositoryInterface as ReplLscGs1Barcodev1SetupRepository;
+use Ls\Replication\Model\Central\ReplLscGs1Barcodev1SetupFactory;
+use Ls\Replication\Api\Central\Data\ReplLscGs1Barcodev1SetupInterface;
 
 class ReplLscGs1Barcodev1SetupTask extends AbstractReplicationTask
 {
@@ -25,7 +25,7 @@ class ReplLscGs1Barcodev1SetupTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_gs_1_barcodev_1_setup';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscGs1Barcodev1Setup';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscGs1Barcodev1Setup';
 
     /**
      * @property ReplLscGs1Barcodev1SetupRepository $repository
@@ -95,7 +95,7 @@ class ReplLscGs1Barcodev1SetupTask extends AbstractReplicationTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCGS1BarcodeV1Setup($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCGS1BarcodeV1Setup($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

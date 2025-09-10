@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscStoreInventoryWorksheetRepositoryInterface as ReplLscStoreInventoryWorksheetRepository;
-use Ls\Replication\Model\ReplLscStoreInventoryWorksheetFactory;
-use Ls\Replication\Api\Data\ReplLscStoreInventoryWorksheetInterface;
+use Ls\Replication\Api\Central\ReplLscStoreInventoryWorksheetRepositoryInterface as ReplLscStoreInventoryWorksheetRepository;
+use Ls\Replication\Model\Central\ReplLscStoreInventoryWorksheetFactory;
+use Ls\Replication\Api\Central\Data\ReplLscStoreInventoryWorksheetInterface;
 
 class ReplLscStoreInventoryWorksheetTask extends AbstractReplicationTask
 {
@@ -25,7 +25,7 @@ class ReplLscStoreInventoryWorksheetTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_store_inventory_worksheet';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscStoreInventoryWorksheet';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscStoreInventoryWorksheet';
 
     /**
      * @property ReplLscStoreInventoryWorksheetRepository $repository
@@ -95,7 +95,7 @@ class ReplLscStoreInventoryWorksheetTask extends AbstractReplicationTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCStoreInventoryWorksheet($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCStoreInventoryWorksheet($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

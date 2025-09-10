@@ -8,7 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-class ReplLscWiItemBufferTask extends ReplEcommItemTask
+class ReplLscWiItemBufferTask extends ReplEcommItemsTask
 {
     public const JOB_CODE = 'replication_repl_lsc_wi_item_buffer';
 
@@ -20,7 +20,7 @@ class ReplLscWiItemBufferTask extends ReplEcommItemTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_wi_item_buffer';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscWiItemBuffer';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscWiItemBuffer';
 
     public function getModelName() : string
     {
@@ -29,7 +29,7 @@ class ReplLscWiItemBufferTask extends ReplEcommItemTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCWIItemBuffer($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCWIItemBuffer($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

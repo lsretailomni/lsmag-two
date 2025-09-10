@@ -5,7 +5,7 @@ namespace Ls\Customer\Observer;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use \Ls\Omni\Client\Ecommerce\Entity\RootMemberLogon;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootMemberLogon;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\Json;

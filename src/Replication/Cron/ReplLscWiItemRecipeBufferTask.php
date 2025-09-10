@@ -20,7 +20,7 @@ class ReplLscWiItemRecipeBufferTask extends ReplEcommItemRecipeTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_wi_item_recipe_buffer';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscWiItemRecipeBuffer';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscWiItemRecipeBuffer';
 
     public function getModelName() : string
     {
@@ -29,7 +29,7 @@ class ReplLscWiItemRecipeBufferTask extends ReplEcommItemRecipeTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCWIItemRecipeBuffer($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCWIItemRecipeBuffer($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

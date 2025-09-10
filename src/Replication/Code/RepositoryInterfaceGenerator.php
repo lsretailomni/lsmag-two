@@ -17,7 +17,7 @@ use Laminas\Code\Generator\ParameterGenerator;
 class RepositoryInterfaceGenerator extends AbstractGenerator
 {
     /** @var string */
-    public static string $namespace = "Ls\\Replication\\Api";
+    public static string $namespace = "Ls\\Replication\\Api\\Central";
 
     /** @var ReplicationOperation */
     public ReplicationOperation $operation;

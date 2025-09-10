@@ -20,7 +20,7 @@ use Laminas\Code\Generator\MethodGenerator;
 class ResourceCollectionGenerator extends AbstractGenerator
 {
     /** @var string Namespace for the generated ResourceCollection class */
-    public static $namespace = 'Ls\\Replication\\Model\\ResourceModel';
+    public static $namespace = 'Ls\\Replication\\Model\\Central\\ResourceModel';
 
     /** @var ReplicationOperation $operation Holds the replication operation details */
     public $operation;

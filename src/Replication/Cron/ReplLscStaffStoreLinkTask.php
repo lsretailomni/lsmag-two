@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscStaffStoreLinkRepositoryInterface as ReplLscStaffStoreLinkRepository;
-use Ls\Replication\Model\ReplLscStaffStoreLinkFactory;
-use Ls\Replication\Api\Data\ReplLscStaffStoreLinkInterface;
+use Ls\Replication\Api\Central\ReplLscStaffStoreLinkRepositoryInterface as ReplLscStaffStoreLinkRepository;
+use Ls\Replication\Model\Central\ReplLscStaffStoreLinkFactory;
+use Ls\Replication\Api\Central\Data\ReplLscStaffStoreLinkInterface;
 
 class ReplLscStaffStoreLinkTask extends AbstractReplicationTask
 {
@@ -25,7 +25,7 @@ class ReplLscStaffStoreLinkTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_staff_store_link';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscStaffStoreLink';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscStaffStoreLink';
 
     /**
      * @property ReplLscStaffStoreLinkRepository $repository
@@ -95,7 +95,7 @@ class ReplLscStaffStoreLinkTask extends AbstractReplicationTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCSTAFFStoreLink($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCSTAFFStoreLink($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

@@ -6,19 +6,19 @@
         <job name="repl_lsc_barcodes" instance="Ls\Replication\Cron\ReplLscBarcodesTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_variantregview" instance="Ls\Replication\Cron\ReplVariantregviewTask" method="execute">
+        <job name="repl_variantregview" instance="Ls\Replication\Cron\ReplLscVariantregviewTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
         <job name="repl_lsc_wi_extd_variant_values" instance="Ls\Replication\Cron\ReplLscWiExtdVariantValuesTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_item_variant" instance="Ls\Replication\Cron\ReplItemVariantTask" method="execute">
+        <job name="repl_item_variant" instance="Ls\Replication\Cron\ReplLscItemVariantTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_unit_of_measure" instance="Ls\Replication\Cron\ReplUnitOfMeasureTask" method="execute">
+        <job name="repl_unit_of_measure" instance="Ls\Replication\Cron\ReplLscUnitOfMeasureTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_itemuomupdview" instance="Ls\Replication\Cron\ReplItemuomupdviewTask" method="execute">
+        <job name="repl_itemuomupdview" instance="Ls\Replication\Cron\ReplLscItemuomupdviewTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
         <job name="repl_lsc_wi_price" instance="Ls\Replication\Cron\ReplLscWiPriceTask" method="execute">
@@ -40,16 +40,16 @@
         <job name="repl_lsc_attribute_option_value" instance="Ls\Replication\Cron\ReplLscAttributeOptionValueTask" method="execute">
             <schedule>*/4 * * * *</schedule>
         </job>
-        <job name="repl_hierarchyview" instance="Ls\Replication\Cron\ReplHierarchyviewTask" method="execute">
+        <job name="repl_hierarchyview" instance="Ls\Replication\Cron\ReplLscHierarchyviewTask" method="execute">
             <schedule>0 10 * * *</schedule>
         </job>
-        <job name="repl_hierarchynodesview" instance="Ls\Replication\Cron\ReplHierarchynodesviewTask" method="execute">
+        <job name="repl_hierarchynodesview" instance="Ls\Replication\Cron\ReplLscHierarchynodesviewTask" method="execute">
             <schedule>*/4 * * * *</schedule>
         </job>
-        <job name="repl_hierarchynodeslinkview" instance="Ls\Replication\Cron\ReplHierarchynodeslinkviewTask" method="execute">
+        <job name="repl_hierarchynodeslinkview" instance="Ls\Replication\Cron\ReplLscHierarchynodeslinkviewTask" method="execute">
             <schedule>*/4 * * * *</schedule>
         </job>
-        <job name="repl_periodicdiscview" instance="Ls\Replication\Cron\ReplPeriodicdiscviewTask" method="execute">
+        <job name="repl_periodicdiscview" instance="Ls\Replication\Cron\ReplLscPeriodicdiscviewTask" method="execute">
             <schedule>*/4 * * * *</schedule>
         </job>
         <job name="repl_lsc_validation_period" instance="Ls\Replication\Cron\ReplLscValidationPeriodTask" method="execute">
@@ -58,19 +58,19 @@
         <job name="repl_lsc_retail_image_link" instance="Ls\Replication\Cron\ReplLscRetailImageLinkTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_vendor" instance="Ls\Replication\Cron\ReplVendorTask" method="execute">
+        <job name="repl_vendor" instance="Ls\Replication\Cron\ReplLscVendorTask" method="execute">
             <schedule>0 1 * * *</schedule>
         </job>
-        <job name="repl_vendoritemview" instance="Ls\Replication\Cron\ReplVendoritemviewTask" method="execute">
+        <job name="repl_vendoritemview" instance="Ls\Replication\Cron\ReplLscVendoritemviewTask" method="execute">
             <schedule>0 1 * * *</schedule>
         </job>
-        <job name="repl_storeview" instance="Ls\Replication\Cron\ReplStoreviewTask" method="execute">
+        <job name="repl_storeview" instance="Ls\Replication\Cron\ReplLscStoreviewTask" method="execute">
             <schedule>/15 * * * *</schedule>
         </job>
-        <job name="repl_countryview" instance="Ls\Replication\Cron\ReplCountryviewTask" method="execute">
+        <job name="repl_countryview" instance="Ls\Replication\Cron\ReplLscCountryviewTask" method="execute">
             <schedule>0 1 * * *</schedule>
         </job>
-        <job name="repl_vat_posting_setup" instance="Ls\Replication\Cron\ReplVatPostingSetupTask" method="execute">
+        <job name="repl_vat_posting_setup" instance="Ls\Replication\Cron\ReplLscVatPostingSetupTask" method="execute">
             <schedule>0 1 * * *</schedule>
         </job>
         <job name="repl_lsc_tender_type" instance="Ls\Replication\Cron\ReplLscTenderTypeTask" method="execute">

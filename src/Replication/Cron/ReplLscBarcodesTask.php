@@ -8,7 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-class ReplLscBarcodesTask extends ReplEcommBarcodeTask
+class ReplLscBarcodesTask extends ReplEcommBarcodesTask
 {
     public const JOB_CODE = 'replication_repl_lsc_barcodes';
 
@@ -20,7 +20,7 @@ class ReplLscBarcodesTask extends ReplEcommBarcodeTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_barcodes';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscBarcodes';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscBarcodes';
 
     public function getModelName() : string
     {
@@ -29,7 +29,7 @@ class ReplLscBarcodesTask extends ReplEcommBarcodeTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCBarcodes($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCBarcodes($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

@@ -8,7 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-class ReplLscRetailImageLinkTask extends ReplEcommImageLinkTask
+class ReplLscRetailImageLinkTask extends ReplEcommImagesTask
 {
     public const JOB_CODE = 'replication_repl_lsc_retail_image_link';
 
@@ -20,7 +20,7 @@ class ReplLscRetailImageLinkTask extends ReplEcommImageLinkTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_retail_image_link';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscRetailImageLink';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscRetailImageLink';
 
     public function getModelName() : string
     {
@@ -29,7 +29,7 @@ class ReplLscRetailImageLinkTask extends ReplEcommImageLinkTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCRetailImageLink($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCRetailImageLink($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscWiImageBufferRepositoryInterface as ReplLscWiImageBufferRepository;
-use Ls\Replication\Model\ReplLscWiImageBufferFactory;
-use Ls\Replication\Api\Data\ReplLscWiImageBufferInterface;
+use Ls\Replication\Api\Central\ReplLscWiImageBufferRepositoryInterface as ReplLscWiImageBufferRepository;
+use Ls\Replication\Model\Central\ReplLscWiImageBufferFactory;
+use Ls\Replication\Api\Central\Data\ReplLscWiImageBufferInterface;
 
 class ReplLscWiImageBufferTask extends AbstractReplicationTask
 {
@@ -25,7 +25,7 @@ class ReplLscWiImageBufferTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_wi_image_buffer';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscWiImageBuffer';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscWiImageBuffer';
 
     /**
      * @property ReplLscWiImageBufferRepository $repository
@@ -95,7 +95,7 @@ class ReplLscWiImageBufferTask extends AbstractReplicationTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCWIImageBuffer($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCWIImageBuffer($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

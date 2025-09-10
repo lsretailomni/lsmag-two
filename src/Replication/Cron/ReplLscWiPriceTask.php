@@ -8,7 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-class ReplLscWiPriceTask extends ReplEcommPriceTask
+class ReplLscWiPriceTask extends ReplEcommPricesTask
 {
     public const JOB_CODE = 'replication_repl_lsc_wi_price';
 
@@ -20,7 +20,7 @@ class ReplLscWiPriceTask extends ReplEcommPriceTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_wi_price';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscWiPrice';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscWiPrice';
 
     public function getModelName() : string
     {
@@ -29,7 +29,7 @@ class ReplLscWiPriceTask extends ReplEcommPriceTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCWIPrice($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCWIPrice($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscWiInvLocationBufferRepositoryInterface as ReplLscWiInvLocationBufferRepository;
-use Ls\Replication\Model\ReplLscWiInvLocationBufferFactory;
-use Ls\Replication\Api\Data\ReplLscWiInvLocationBufferInterface;
+use Ls\Replication\Api\Central\ReplLscWiInvLocationBufferRepositoryInterface as ReplLscWiInvLocationBufferRepository;
+use Ls\Replication\Model\Central\ReplLscWiInvLocationBufferFactory;
+use Ls\Replication\Api\Central\Data\ReplLscWiInvLocationBufferInterface;
 
 class ReplLscWiInvLocationBufferTask extends AbstractReplicationTask
 {
@@ -25,7 +25,7 @@ class ReplLscWiInvLocationBufferTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_wi_inv_location_buffer';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscWiInvLocationBuffer';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscWiInvLocationBuffer';
 
     /**
      * @property ReplLscWiInvLocationBufferRepository $repository
@@ -95,7 +95,7 @@ class ReplLscWiInvLocationBufferTask extends AbstractReplicationTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCWIInvLocationBuffer($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCWIInvLocationBuffer($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

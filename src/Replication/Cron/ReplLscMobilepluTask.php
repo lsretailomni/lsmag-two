@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscMobilepluRepositoryInterface as ReplLscMobilepluRepository;
-use Ls\Replication\Model\ReplLscMobilepluFactory;
-use Ls\Replication\Api\Data\ReplLscMobilepluInterface;
+use Ls\Replication\Api\Central\ReplLscMobilepluRepositoryInterface as ReplLscMobilepluRepository;
+use Ls\Replication\Model\Central\ReplLscMobilepluFactory;
+use Ls\Replication\Api\Central\Data\ReplLscMobilepluInterface;
 
 class ReplLscMobilepluTask extends AbstractReplicationTask
 {
@@ -25,7 +25,7 @@ class ReplLscMobilepluTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_mobileplu';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscMobileplu';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscMobileplu';
 
     /**
      * @property ReplLscMobilepluRepository $repository
@@ -95,7 +95,7 @@ class ReplLscMobilepluTask extends AbstractReplicationTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCMobilePlu($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCMobilePlu($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

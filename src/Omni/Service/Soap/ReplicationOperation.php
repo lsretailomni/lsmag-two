@@ -5,7 +5,7 @@ namespace Ls\Omni\Service\Soap;
 
 use Ls\Core\Code\AbstractGenerator;
 use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\ClassMap;
+use Ls\Omni\Client\CentralEcommerce\ClassMap;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Module\Dir\Reader;
 use Magento\Framework\ObjectManagerInterface;
@@ -15,8 +15,8 @@ use Magento\Framework\ObjectManagerInterface;
  */
 class ReplicationOperation extends Operation
 {
-    public const BASE_API_NAMESPACE        = 'Ls\\Replication\\Api';
-    public const BASE_MODEL_NAMESPACE      = 'Ls\\Replication\\Model';
+    public const BASE_API_NAMESPACE        = 'Ls\\Replication\\Api\\Central';
+    public const BASE_MODEL_NAMESPACE      = 'Ls\\Replication\\Model\\Central';
     public const BASE_CRON_NAMESPACE       = 'Ls\\Replication\\Cron';
     public const BASE_OMNI_NAMESPACE       = 'Ls\\Omni\\Client\\CentralEcommerce\\Entity';
     public const BASE_OPERATION_NAMESPACE  = 'Ls\\Omni\\Client\\CentralEcommerce\\Operation';
@@ -162,7 +162,7 @@ class ReplicationOperation extends Operation
      */
     public function getMainEntityPath(bool $absolute = false): string
     {
-        return $this->getPath(AbstractGenerator::path('Model', $this->getModelName() . '.php'), $absolute);
+        return $this->getPath(AbstractGenerator::path('Model', 'Central', $this->getModelName() . '.php'), $absolute);
     }
 
     /**
@@ -238,7 +238,7 @@ class ReplicationOperation extends Operation
      */
     public function getInterfacePath(bool $absolute = false): string
     {
-        return $this->getPath(AbstractGenerator::path('Api', 'Data', $this->getInterfaceName() . '.php'), $absolute);
+        return $this->getPath(AbstractGenerator::path('Api', 'Central', 'Data', $this->getInterfaceName() . '.php'), $absolute);
     }
 
     /**
@@ -287,7 +287,7 @@ class ReplicationOperation extends Operation
      */
     public function getRepositoryInterfacePath(bool $absolute = false): string
     {
-        return $this->getPath(AbstractGenerator::path('Api', $this->getRepositoryInterfaceName() . '.php'), $absolute);
+        return $this->getPath(AbstractGenerator::path('Api', 'Central', $this->getRepositoryInterfaceName() . '.php'), $absolute);
     }
 
     /**
@@ -348,7 +348,7 @@ class ReplicationOperation extends Operation
      */
     public function getResourceCollectionPath(bool $absolute = false): string
     {
-        $path = AbstractGenerator::path('Model', 'ResourceModel', $this->getModelName(), 'Collection.php');
+        $path = AbstractGenerator::path('Model', 'Central', 'ResourceModel', $this->getModelName(), 'Collection.php');
         return $this->getPath($path, $absolute);
     }
 
@@ -370,7 +370,7 @@ class ReplicationOperation extends Operation
      */
     public function getResourceModelPath(bool $absolute = false): string
     {
-        $path = AbstractGenerator::path('Model', 'ResourceModel', $this->getModelName() . '.php');
+        $path = AbstractGenerator::path('Model', 'Central', 'ResourceModel', $this->getModelName() . '.php');
         return $this->getPath($path, $absolute);
     }
 
@@ -412,7 +412,7 @@ class ReplicationOperation extends Operation
      */
     public function getRepositoryPath(bool $absolute = false): string
     {
-        $path = AbstractGenerator::path('Model', $this->getRepositoryName() . '.php');
+        $path = AbstractGenerator::path('Model', 'Central', $this->getRepositoryName() . '.php');
         return $this->getPath($path, $absolute);
     }
 
@@ -424,7 +424,7 @@ class ReplicationOperation extends Operation
      */
     public function getRepositoryTestPath(bool $absolute = false): string
     {
-        $path = AbstractGenerator::path('Test', 'Unit', 'Model', $this->getRepositoryTestName() . '.php');
+        $path = AbstractGenerator::path('Test', 'Unit', 'Model', 'Central', $this->getRepositoryTestName() . '.php');
         return $this->getPath($path, $absolute);
     }
 
@@ -455,7 +455,13 @@ class ReplicationOperation extends Operation
      */
     public function getJobName(): string
     {
-        return $this->getModelName() . 'Task';
+        $name = $this->getName(true);
+
+        if (!str_starts_with($name, 'Lsc')) {
+            $name = 'Lsc'. $name;
+        }
+
+        return 'Repl'. $name . 'Task';
     }
 
     /**
@@ -507,7 +513,7 @@ class ReplicationOperation extends Operation
      */
     public function getSearchInterfacePath(bool $absolute = false): string
     {
-        $path = AbstractGenerator::path('Api', 'Data', $this->getSearchInterfaceName() . '.php');
+        $path = AbstractGenerator::path('Api', 'Central', 'Data', $this->getSearchInterfaceName() . '.php');
         return $this->getPath($path, $absolute);
     }
 
@@ -539,7 +545,7 @@ class ReplicationOperation extends Operation
      */
     public function getSearchPath(bool $absolute = false): string
     {
-        $path = AbstractGenerator::path('Model', $this->getSearchName() . '.php');
+        $path = AbstractGenerator::path('Model', 'Central', $this->getSearchName() . '.php');
         return $this->getPath($path, $absolute);
     }
 

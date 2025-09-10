@@ -7,15 +7,15 @@ use GuzzleHttp\Exception\GuzzleException;
 use Laminas\Json\Json;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Block\Stores\Stores;
-use \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores;
-use \Ls\Omni\Client\Ecommerce\Entity\RootGetInventoryMultipleOut;
+use \Ls\Omni\Client\CentralEcommerce\Entity\GetStores_GetStores;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootGetInventoryMultipleOut;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Omni\Helper\GiftCardHelper;
-use \Ls\Replication\Model\ResourceModel\ReplStoreview\Collection;
-use \Ls\Replication\Model\ResourceModel\ReplStoreview\CollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Checkout\Model\Session;
@@ -220,7 +220,7 @@ class DataProvider implements ConfigProviderInterface
                 !$this->lsr->isSSM() ?
                     $this->lsr->getCurrentWebsiteId() :
                     $this->lsr->getAdminStore()->getWebsiteId()
-            )->addFieldToFilter('click_and_collect', 1);
+            )->addFieldToFilter('ClickAndCollect', 1);
     }
 
     /**
@@ -349,7 +349,7 @@ class DataProvider implements ConfigProviderInterface
         $clickNCollectStoresIds = [];
 
         foreach ($storesData->getItems() as $storeData) {
-            $clickNCollectStoresIds[] = $storeData->getNo();
+            $clickNCollectStoresIds[] = $storeData->getNavId();
         }
 
         return $clickNCollectStoresIds;
@@ -475,7 +475,7 @@ class DataProvider implements ConfigProviderInterface
                     $this->lsr->getCurrentWebsiteId() :
                     $this->lsr->getAdminStore()->getWebsiteId()
             )
-            ->addFieldToFilter('no', ['in' => $responseItems]);
+            ->addFieldToFilter('nav_id', ['in' => $responseItems]);
     }
 
     /**

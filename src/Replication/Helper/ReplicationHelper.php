@@ -18,10 +18,9 @@ use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
 use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
-use Ls\Replication\Api\ReplLscTenderTypeRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
+use \Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
 use \Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
-use \Ls\Replication\Api\ReplVatPostingSetupRepositoryInterface;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
@@ -147,35 +146,44 @@ class ReplicationHelper extends AbstractHelper
     ];
 
     public const TABLE_NAME_PREFIX = 'ls_replication_';
-    public const REPLICATION_ENTITY_MAPPING = [
+    public const CRON_JOBS_MAPPING = [
         'LscAttribute' => 'Attribute',
         'LscAttributeOptionValue' => 'AttributeOptionValue',
         'LscAttributeValue' => 'AttributeValue',
         'Hierarchyview' => 'Hierarchy',
         'Hierarchynodesview' => 'HierarchyNode',
         'Hierarchynodeslinkview' => 'HierarchyLeaf',
-        'LscBarcodes' => 'Barcode',
-        'LscWiExtdVariantValues' => 'ExtendedVariantValue',
-        'Variantregview' => 'ItemVariantRegistration',
-        'LscWiItemBuffer' => 'Item',
-        'Itemuomupdview' => 'ItemUnitOfMeasure',
-        'LscRetailImageLink' => 'ImageLink',
-        'LscWiPrice' => 'Price',
-        'LscInventoryLookupTable' => 'InvStatus',
-        'LscTenderType' => 'StoreTenderType',
+        'LscBarcodes' => 'Barcodes',
+        'LscWiExtdVariantValues' => 'ExtendedVariants',
+        'Variantregview' => 'ItemVariantRegistrations',
+        'LscWiItemBuffer' => 'Items',
+        'LscRetailImageLink' => 'Images',
+        'LscWiPrice' => 'Prices',
+        'LscInventoryLookupTable' => 'InventoryStatus',
+        'LscTenderType' => 'StoreTenderTypes',
         'VatPostingSetup' => 'TaxSetup',
-        'Vendoritemview' => 'LoyVendorItemMapping',
-        'Storeview' => 'Store',
+        'Storeview' => 'Stores',
         'Countryview' => 'CountryCode',
         'Periodicdiscview' => 'DiscountSetup',
-        'LscValidationPeriod' => 'DiscountValidation',
+        'LscValidationPeriod' => 'DiscountValidations',
         'LscDataTranslation' => 'DataTranslation',
         'LscItemHtmlMl' => 'DataTranslation',
+        'LscOfferHtmlMl' => 'DataTranslation',
         'LscWiItemRecipeBuffer' => 'ItemRecipe',
         'LscWiItemModifier' => 'ItemModifier',
         'Hierarchydealview' => 'HierarchyHospDeal',
         'Hierarchydeallineview' => 'HierarchyHospDealLine',
+        'Vendor' => 'Vendor',
+        'Vendoritemview' => 'VendorItemMapping',
+        'UnitOfMeasure' => 'UnitOfMeasures',
+        'Itemuomupdview' => 'ItemUnitOfMeasures',
     ];
+
+    public const ENTITY_MAPPING = [
+        'ReplLscItemHtmlMl' => 'ReplLscDataTranslation',
+        'ReplLscOfferHtmlMl' => 'ReplLscDataTranslation'
+    ];
+
     public const DB_TABLES_MAPPING = [
         'repl_lsc_attribute' => [
             'table_name' => 'repl_attribute',
@@ -585,7 +593,7 @@ class ReplicationHelper extends AbstractHelper
                 'address' => 'Street',
                 'post_code' => 'ZipCode',
                 'city' => 'City',
-                'county' => 'County',
+                'county' => 'State',
                 'country_code' => 'Country',
                 'latitude' => 'Latitute',
                 'longitude' => 'Longitude',
@@ -612,6 +620,15 @@ class ReplicationHelper extends AbstractHelper
             'table_name' => 'repl_data_translation',
             'columns_mapping' => [
                 'item_no' => 'Key',
+                'language' => 'LanguageCode',
+                'html' => 'Text',
+                'translation_id' => 'TranslationId'
+            ]
+        ],
+        'repl_lsc_offer_html_ml' => [
+            'table_name' => 'repl_data_translation',
+            'columns_mapping' => [
+                'offer_no' => 'Key',
                 'language' => 'LanguageCode',
                 'html' => 'Text',
                 'translation_id' => 'TranslationId'
@@ -754,11 +771,11 @@ class ReplicationHelper extends AbstractHelper
             'translation_id' => 'TranslationId',
             'scope_id'  => 'scope_id'
         ],
-        'ls_mag/replication/repl_deal_html_translation' => [
-            'TranslationId',
-            'Key',
-            'LanguageCode',
-            'scope_id'
+        'ls_mag/replication/repl_lsc_offer_html_ml' => [
+            'key' => 'Key',
+            'language_code' => 'LanguageCode',
+            'translation_id' => 'TranslationId',
+            'scope_id'  => 'scope_id'
         ],
         'ls_mag/replication/repl_data_translation_lang_code' => [
             'code',
@@ -1055,10 +1072,10 @@ class ReplicationHelper extends AbstractHelper
     /** @var ReplItemUnitOfMeasure */
     public $replItemUomRepository;
 
-    /** @var ReplVatPostingSetupRepositoryInterface */
+    /** @var ReplTaxSetupRepositoryInterface */
     public $replTaxSetupRepository;
 
-    /** @var ReplLscTenderTypeRepositoryInterface */
+    /** @var ReplStoreTenderTypeRepositoryInterface */
     public $replStoreTenderTypeRepository;
 
     /**
@@ -1230,8 +1247,8 @@ class ReplicationHelper extends AbstractHelper
      * @param ReplExtendedVariantValueRepository $extendedVariantValueRepository
      * @param ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository
      * @param ReplItemUnitOfMeasure $replItemUomRepository
-     * @param ReplVatPostingSetupRepositoryInterface $replTaxSetupRepository
-     * @param ReplLscTenderTypeRepositoryInterface $replStoreTenderTypeRepository
+     * @param ReplTaxSetupRepositoryInterface $replTaxSetupRepository
+     * @param ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository
      * @param TaxClassRepositoryInterface $taxClassRepository
      * @param ClassModelFactory $classModelFactory
      * @param ReplInvStatusRepository $replInvStatusRepository
@@ -1297,8 +1314,8 @@ class ReplicationHelper extends AbstractHelper
         ReplExtendedVariantValueRepository $extendedVariantValueRepository,
         ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository,
         ReplItemUnitOfMeasure $replItemUomRepository,
-        ReplVatPostingSetupRepositoryInterface $replTaxSetupRepository,
-        ReplLscTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
+        ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
+        ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
         TaxClassRepositoryInterface $taxClassRepository,
         ClassModelFactory $classModelFactory,
         ReplInvStatusRepository $replInvStatusRepository,
@@ -2150,9 +2167,9 @@ class ReplicationHelper extends AbstractHelper
     {
         $items   = null;
         $filters = [
-            ['field' => 'vat_prod_posting_group', 'value' => '', 'condition_type' => 'neq'],
-            ['field' => 'vat_bus_posting_group', 'value' => '', 'condition_type' => 'neq'],
-            ['field' => 'vat', 'value' => 0, 'condition_type' => 'gt'],
+            ['field' => 'ProductTaxGroup', 'value' => '', 'condition_type' => 'neq'],
+            ['field' => 'BusinessTaxGroup', 'value' => '', 'condition_type' => 'neq'],
+            ['field' => 'TaxPercent', 'value' => 0, 'condition_type' => 'gt'],
             ['field' => 'scope_id', 'value' => $websiteId, 'condition_type' => 'eq']
         ];
 

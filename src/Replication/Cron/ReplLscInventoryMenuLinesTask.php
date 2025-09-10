@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscInventoryMenuLinesRepositoryInterface as ReplLscInventoryMenuLinesRepository;
-use Ls\Replication\Model\ReplLscInventoryMenuLinesFactory;
-use Ls\Replication\Api\Data\ReplLscInventoryMenuLinesInterface;
+use Ls\Replication\Api\Central\ReplLscInventoryMenuLinesRepositoryInterface as ReplLscInventoryMenuLinesRepository;
+use Ls\Replication\Model\Central\ReplLscInventoryMenuLinesFactory;
+use Ls\Replication\Api\Central\Data\ReplLscInventoryMenuLinesInterface;
 
 class ReplLscInventoryMenuLinesTask extends AbstractReplicationTask
 {
@@ -25,7 +25,7 @@ class ReplLscInventoryMenuLinesTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_inventory_menu_lines';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscInventoryMenuLines';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscInventoryMenuLines';
 
     /**
      * @property ReplLscInventoryMenuLinesRepository $repository
@@ -95,7 +95,7 @@ class ReplLscInventoryMenuLinesTask extends AbstractReplicationTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCInventoryMenuLines($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCInventoryMenuLines($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

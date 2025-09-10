@@ -22,7 +22,7 @@ use Laminas\Code\Generator\PropertyGenerator;
 class ModelGenerator extends AbstractGenerator
 {
     /** @var string */
-    public static string $namespace = 'Ls\\Replication\\Model';
+    public static string $namespace = 'Ls\\Replication\\Model\\Central';
 
     /** @var ReplicationOperation */
     public ReplicationOperation $operation;

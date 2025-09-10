@@ -110,15 +110,17 @@ class TenderTypesColumn extends Select
         } else {
             $storeTenderTypeArray = $this->helper->getTenderTypes($websiteId);
         }
+        $type = 0;
         if (empty($storeTenderTypeArray)) {
             $storeTenderTypeArray = $this->dataHelper->fetchWebStoreTenderTypes();
+            $type = 1;
         }
         $storeTenderTypes[] = ['value' => '', 'label' => __('Select tender type')];
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[] = [
-                    'value' => $storeTenderType->getCode(),
-                    'label' => $storeTenderType->getDescription()
+                    'value' => $type == 1 ? $storeTenderType->getCode() : $storeTenderType->getTenderTypeId(),
+                    'label' => $type == 1 ? $storeTenderType->getDescription() : $storeTenderType->getName()
                 ];
             }
         }

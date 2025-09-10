@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscWiMixMatchOfferExtRepositoryInterface as ReplLscWiMixMatchOfferExtRepository;
-use Ls\Replication\Model\ReplLscWiMixMatchOfferExtFactory;
-use Ls\Replication\Api\Data\ReplLscWiMixMatchOfferExtInterface;
+use Ls\Replication\Api\Central\ReplLscWiMixMatchOfferExtRepositoryInterface as ReplLscWiMixMatchOfferExtRepository;
+use Ls\Replication\Model\Central\ReplLscWiMixMatchOfferExtFactory;
+use Ls\Replication\Api\Central\Data\ReplLscWiMixMatchOfferExtInterface;
 
 class ReplLscWiMixMatchOfferExtTask extends AbstractReplicationTask
 {
@@ -25,7 +25,7 @@ class ReplLscWiMixMatchOfferExtTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_wi_mix_match_offer_ext';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscWiMixMatchOfferExt';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscWiMixMatchOfferExt';
 
     /**
      * @property ReplLscWiMixMatchOfferExtRepository $repository
@@ -95,7 +95,7 @@ class ReplLscWiMixMatchOfferExtTask extends AbstractReplicationTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCWIMixMatchOfferExt($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCWIMixMatchOfferExt($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscMemberContactRepositoryInterface as ReplLscMemberContactRepository;
-use Ls\Replication\Model\ReplLscMemberContactFactory;
-use Ls\Replication\Api\Data\ReplLscMemberContactInterface;
+use Ls\Replication\Api\Central\ReplLscMemberContactRepositoryInterface as ReplLscMemberContactRepository;
+use Ls\Replication\Model\Central\ReplLscMemberContactFactory;
+use Ls\Replication\Api\Central\Data\ReplLscMemberContactInterface;
 
 class ReplLscMemberContactTask extends AbstractReplicationTask
 {
@@ -25,7 +25,7 @@ class ReplLscMemberContactTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_member_contact';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscMemberContact';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscMemberContact';
 
     /**
      * @property ReplLscMemberContactRepository $repository
@@ -95,7 +95,7 @@ class ReplLscMemberContactTask extends AbstractReplicationTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCMemberContact($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCMemberContact($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

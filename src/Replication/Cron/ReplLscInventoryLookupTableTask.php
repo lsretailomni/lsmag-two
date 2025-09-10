@@ -8,7 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-class ReplLscInventoryLookupTableTask extends ReplEcommInvStatusTask
+class ReplLscInventoryLookupTableTask extends ReplEcommInventoryStatusTask
 {
     public const JOB_CODE = 'replication_repl_lsc_inventory_lookup_table';
 
@@ -20,7 +20,7 @@ class ReplLscInventoryLookupTableTask extends ReplEcommInvStatusTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_inventory_lookup_table';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscInventoryLookupTable';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscInventoryLookupTable';
 
     public function getModelName() : string
     {
@@ -29,7 +29,7 @@ class ReplLscInventoryLookupTableTask extends ReplEcommInvStatusTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCInventoryLookupTable($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCInventoryLookupTable($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,

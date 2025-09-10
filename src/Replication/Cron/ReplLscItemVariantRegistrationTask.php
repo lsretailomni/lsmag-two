@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscItemVariantRegistrationRepositoryInterface as ReplLscItemVariantRegistrationRepository;
-use Ls\Replication\Model\ReplLscItemVariantRegistrationFactory;
-use Ls\Replication\Api\Data\ReplLscItemVariantRegistrationInterface;
+use Ls\Replication\Api\Central\ReplLscItemVariantRegistrationRepositoryInterface as ReplLscItemVariantRegistrationRepository;
+use Ls\Replication\Model\Central\ReplLscItemVariantRegistrationFactory;
+use Ls\Replication\Api\Central\Data\ReplLscItemVariantRegistrationInterface;
 
 class ReplLscItemVariantRegistrationTask extends AbstractReplicationTask
 {
@@ -25,7 +25,7 @@ class ReplLscItemVariantRegistrationTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_item_variant_registration';
 
-    public const MODEL_CLASS = 'Ls\\Replication\\Model\\ReplLscItemVariantRegistration';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscItemVariantRegistration';
 
     /**
      * @property ReplLscItemVariantRegistrationRepository $repository
@@ -95,7 +95,7 @@ class ReplLscItemVariantRegistrationTask extends AbstractReplicationTask
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCItemVariantRegistration($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCItemVariantRegistration($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,
