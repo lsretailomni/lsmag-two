@@ -156,6 +156,7 @@ class ReplicationHelper extends AbstractHelper
         'LscBarcodes' => 'Barcodes',
         'LscWiExtdVariantValues' => 'ExtendedVariants',
         'Variantregview' => 'ItemVariantRegistrations',
+        'ItemVariant' => 'ItemVariant',
         'LscWiItemBuffer' => 'Items',
         'LscRetailImageLink' => 'Images',
         'LscWiPrice' => 'Prices',

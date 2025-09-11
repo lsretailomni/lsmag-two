@@ -8,12 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\Central\ReplItemVariantRepositoryInterface as ReplItemVariantRepository;
-use Ls\Replication\Model\Central\ReplItemVariantFactory;
-use Ls\Replication\Api\Central\Data\ReplItemVariantInterface;
-
-class ReplLscItemVariantTask extends AbstractReplicationTask
+class ReplLscItemVariantTask extends ReplEcommItemVariantTask
 {
     public const JOB_CODE = 'replication_repl_item_variant';
 
@@ -26,67 +21,6 @@ class ReplLscItemVariantTask extends AbstractReplicationTask
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_item_variant';
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplItemVariant';
-
-    /**
-     * @property ReplItemVariantRepository $repository
-     */
-    protected $repository = null;
-
-    /**
-     * @property ReplItemVariantFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplItemVariantInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplItemVariantRepository $repository)
-    {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplItemVariantRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplItemVariantFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplItemVariantFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplItemVariantInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplItemVariantInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplItemVariantFactory $factory, ReplItemVariantRepository $repository, ReplItemVariantInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
-    }
-
-    public function getMainEntity() : ReplItemVariantInterface
-    {
-        return $this->dataInterface;
-    }
 
     public function getModelName() : string
     {
