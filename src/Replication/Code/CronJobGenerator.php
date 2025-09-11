@@ -61,21 +61,24 @@ class CronJobGenerator extends AbstractGenerator
                 AbstractReplicationTask::class
         );
 
+        $tableName = $this->operation->getIdenticalTableCronJob($this->operation->getName());
+        $jobCode = $tableName ? 'replication_' . $tableName : $this->operation->getJobId();
+        $tableName = $tableName ?: ($mappingExists ?
+            strtolower($this->caseHelper->toSnakeCase('Repl'. $mappedModelName)) : $this->operation->getTableName()
+        );
+
         if (!$mappingExists) {
             $this->class->addUse(LsHelper::class, 'LsHelper');
             $this->class->addUse($this->operation->getRepositoryInterfaceFqn(), $this->operation->getRepositoryName());
             $this->class->addUse($this->operation->getFactoryFqn());
             $this->class->addUse($this->operation->getInterfaceFqn());
+
+            $this->class->addConstant('JOB_CODE', $jobCode);
+            $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$tableName}");
+            $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$tableName}");
+            $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE', "ls_mag/replication/last_execute_{$tableName}");
         }
 
-        $tableName = $this->operation->getIdenticalTableCronJob($this->operation->getName());
-        $jobCode = $tableName ? 'replication_' . $tableName : $this->operation->getJobId();
-        $tableName = $tableName ?: $this->operation->getTableName();
-
-        $this->class->addConstant('JOB_CODE', $jobCode);
-        $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$tableName}");
-        $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$tableName}");
-        $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE', "ls_mag/replication/last_execute_{$tableName}");
         $this->class->addConstant('CONFIG_PATH_LAST_ENTRY_NO', "ls_mag/replication/last_entry_no_{$tableName}");
         $this->class->addConstant('MODEL_CLASS', $this->getMainEntityFqn($modelName));
 
@@ -110,12 +113,12 @@ class CronJobGenerator extends AbstractGenerator
         if (!$mappingExists) {
             $this->class->addMethodFromGenerator($this->getConstructor());
             $this->class->addMethodFromGenerator($this->getMainEntity());
+            $this->class->addMethodFromGenerator($this->getConfigPath());
+            $this->class->addMethodFromGenerator($this->getConfigPathStatus());
+            $this->class->addMethodFromGenerator($this->getConfigPathLastExecute());
         }
         $this->class->addMethodFromGenerator($this->getModelName());
         $this->class->addMethodFromGenerator($this->getMakeRequest());
-        $this->class->addMethodFromGenerator($this->getConfigPath());
-        $this->class->addMethodFromGenerator($this->getConfigPathStatus());
-        $this->class->addMethodFromGenerator($this->getConfigPathLastExecute());
         $this->class->addMethodFromGenerator($this->getConfigPathLastEntryNo());
 
         $content = $this->file->generate();

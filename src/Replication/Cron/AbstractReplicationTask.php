@@ -839,6 +839,10 @@ abstract class AbstractReplicationTask
                 if ($this->isLastKeyAlwaysZero($storeId)) {
                     return;
                 }
+                if ($lastEntryNo === 0) {
+                    $lastEntryNo = (int) $lastKey;
+                    $lastKey = "";
+                }
             }
 
             $request = $this->makeRequest(

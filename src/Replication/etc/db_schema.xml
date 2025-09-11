@@ -35,6 +35,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_attribute_option_value" resource="default" engine="innodb" comment="LSC Attribute Option Value">
     <column xsi:type="int" name="repl_attribute_option_value_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_attribute_option_value_id"/>
@@ -73,6 +76,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_attribute_value" resource="default" engine="innodb" comment="LSC Attribute Value">
     <column xsi:type="int" name="repl_attribute_value_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_attribute_value_id"/>
@@ -125,6 +131,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_VALUE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ATTRIBUTE_VALUE_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_barcode" resource="default" engine="innodb" comment="LSC Barcodes">
     <column xsi:type="int" name="repl_barcode_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_barcode_id"/>
@@ -165,6 +174,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_BARCODE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_BARCODE_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_country_code" resource="default" engine="innodb" comment="CountryView">
     <column xsi:type="int" name="repl_country_code_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_country_code_id"/>
@@ -185,6 +197,9 @@
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_country_code_id"/>
+    </constraint>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_IDENTITY_VALUE">
+      <column name="identity_value"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_currency" resource="default" engine="innodb" comment="Currency">
@@ -297,6 +312,9 @@
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_data_translation_id"/>
+    </constraint>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_IDENTITY_VALUE">
+      <column name="identity_value"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_discount_setup" resource="default" engine="innodb" comment="PeriodicDiscView">
@@ -413,6 +431,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_hierarchy" resource="default" engine="innodb" comment="HierarchyView">
     <column xsi:type="int" name="repl_hierarchy_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_id"/>
@@ -452,6 +473,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_HIERARCHY_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_hierarchy_hosp_deal" resource="default" engine="innodb" comment="HierarchyDealView">
     <column xsi:type="int" name="repl_hierarchy_hosp_deal_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_hosp_deal_id"/>
@@ -483,6 +507,9 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_hierarchy_hosp_deal_id"/>
     </constraint>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_hierarchy_hosp_deal_line" resource="default" engine="innodb" comment="HierarchyDealLineView">
     <column xsi:type="int" name="repl_hierarchy_hosp_deal_line_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_hosp_deal_line_id"/>
@@ -513,6 +540,9 @@
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_hierarchy_hosp_deal_line_id"/>
+    </constraint>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_IDENTITY_VALUE">
+      <column name="identity_value"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_hierarchy_leaf" resource="default" engine="innodb" comment="HierarchyNodesLinkView">
@@ -565,6 +595,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_LEAF_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_HIERARCHY_LEAF_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_hierarchy_node" resource="default" engine="innodb" comment="HierarchyNodesView">
     <column xsi:type="int" name="repl_hierarchy_node_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_node_id"/>
@@ -611,6 +644,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_NODE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_HIERARCHY_NODE_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_image_link" resource="default" engine="innodb" comment="LSC Retail Image Link">
     <column xsi:type="int" name="repl_image_link_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_image_link_id"/>
@@ -696,6 +732,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_INV_STATUS_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_item_category" resource="default" engine="innodb" comment="Item Category">
     <column xsi:type="int" name="repl_item_category_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_category_id"/>
@@ -781,6 +820,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_item_variant" resource="default" engine="innodb" comment="Item Variant">
     <column xsi:type="int" name="repl_item_variant_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_variant_id"/>
@@ -840,6 +882,9 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_store_id"/>
     </constraint>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_STORE_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_store_tender_type" resource="default" engine="innodb" comment="LSC Tender Type">
     <column xsi:type="int" name="repl_store_tender_type_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_store_tender_type_id"/>
@@ -872,6 +917,9 @@
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_store_tender_type_id"/>
+    </constraint>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_IDENTITY_VALUE">
+      <column name="identity_value"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_unit_of_measure" resource="default" engine="innodb" comment="Unit of Measure">
@@ -930,6 +978,9 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_tax_setup_id"/>
     </constraint>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_TAX_SETUP_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_discount_validation" resource="default" engine="innodb" comment="LSC Validation Period">
     <column xsi:type="int" name="repl_discount_validation_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_discount_validation_id"/>
@@ -982,6 +1033,9 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_discount_validation_id"/>
     </constraint>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_DISCOUNT_VALIDATION_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_item_variant_registration" resource="default" engine="innodb" comment="VariantRegView">
     <column xsi:type="int" name="repl_item_variant_registration_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_variant_registration_id"/>
@@ -1028,6 +1082,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_vendor" resource="default" engine="innodb" comment="Vendor">
     <column xsi:type="int" name="repl_vendor_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_vendor_id"/>
@@ -1086,6 +1143,9 @@
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_loy_vendor_item_mapping_id"/>
+    </constraint>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_IDENTITY_VALUE">
+      <column name="identity_value"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_item" resource="default" engine="innodb" comment="LSC WI Item Buffer">
@@ -1156,6 +1216,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ITEM_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_item_modifier" resource="default" engine="innodb" comment="LSC WI Item Modifier">
     <column xsi:type="int" name="repl_item_modifier_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_modifier_id"/>
@@ -1193,6 +1256,9 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_item_modifier_id"/>
     </constraint>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_item_recipe" resource="default" engine="innodb" comment="LSC WI Item Recipe Buffer">
     <column xsi:type="int" name="repl_item_recipe_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_recipe_id"/>
@@ -1218,6 +1284,9 @@
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_item_recipe_id"/>
+    </constraint>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_IDENTITY_VALUE">
+      <column name="identity_value"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_price" resource="default" engine="innodb" comment="LSC WI Price">
@@ -1274,5 +1343,8 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_PRICE_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
 </schema>

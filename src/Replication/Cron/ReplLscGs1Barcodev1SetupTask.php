@@ -88,6 +88,21 @@ class ReplLscGs1Barcodev1SetupTask extends AbstractReplicationTask
         return $this->dataInterface;
     }
 
+    public function getConfigPath() : string
+    {
+        return self::CONFIG_PATH;
+    }
+
+    public function getConfigPathStatus() : string
+    {
+        return self::CONFIG_PATH_STATUS;
+    }
+
+    public function getConfigPathLastExecute() : string
+    {
+        return self::CONFIG_PATH_LAST_EXECUTE;
+    }
+
     public function getModelName() : string
     {
         return self::MODEL_CLASS;
@@ -104,21 +119,6 @@ class ReplLscGs1Barcodev1SetupTask extends AbstractReplicationTask
         'lastKey' => $lastKey
         ]);
         return $request;
-    }
-
-    public function getConfigPath() : string
-    {
-        return self::CONFIG_PATH;
-    }
-
-    public function getConfigPathStatus() : string
-    {
-        return self::CONFIG_PATH_STATUS;
-    }
-
-    public function getConfigPathLastExecute() : string
-    {
-        return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
     public function getConfigPathLastEntryNo() : string

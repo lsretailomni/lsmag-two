@@ -10,15 +10,7 @@ namespace Ls\Replication\Cron;
 
 class ReplLscUnitOfMeasureTask extends ReplEcommUnitOfMeasuresTask
 {
-    public const JOB_CODE = 'replication_repl_unit_of_measure';
-
-    public const CONFIG_PATH = 'ls_mag/replication/repl_unit_of_measure';
-
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_unit_of_measure';
-
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_unit_of_measure';
-
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_unit_of_measure';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_unit_of_measures';
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplUnitOfMeasure';
 
@@ -38,21 +30,6 @@ class ReplLscUnitOfMeasureTask extends ReplEcommUnitOfMeasuresTask
         'lastKey' => $lastKey
         ]);
         return $request;
-    }
-
-    public function getConfigPath() : string
-    {
-        return self::CONFIG_PATH;
-    }
-
-    public function getConfigPathStatus() : string
-    {
-        return self::CONFIG_PATH_STATUS;
-    }
-
-    public function getConfigPathLastExecute() : string
-    {
-        return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
     public function getConfigPathLastEntryNo() : string

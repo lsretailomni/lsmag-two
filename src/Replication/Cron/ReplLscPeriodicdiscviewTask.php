@@ -10,15 +10,7 @@ namespace Ls\Replication\Cron;
 
 class ReplLscPeriodicdiscviewTask extends ReplEcommDiscountSetupTask
 {
-    public const JOB_CODE = 'replication_repl_periodicdiscview';
-
-    public const CONFIG_PATH = 'ls_mag/replication/repl_periodicdiscview';
-
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_periodicdiscview';
-
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_periodicdiscview';
-
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_periodicdiscview';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_discount_setup';
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplPeriodicdiscview';
 
@@ -38,21 +30,6 @@ class ReplLscPeriodicdiscviewTask extends ReplEcommDiscountSetupTask
         'lastKey' => $lastKey
         ]);
         return $request;
-    }
-
-    public function getConfigPath() : string
-    {
-        return self::CONFIG_PATH;
-    }
-
-    public function getConfigPathStatus() : string
-    {
-        return self::CONFIG_PATH_STATUS;
-    }
-
-    public function getConfigPathLastExecute() : string
-    {
-        return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
     public function getConfigPathLastEntryNo() : string

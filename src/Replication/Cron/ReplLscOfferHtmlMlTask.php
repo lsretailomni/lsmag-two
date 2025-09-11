@@ -8,17 +8,9 @@
 
 namespace Ls\Replication\Cron;
 
-class ReplLscOfferHtmlMlTask extends ReplEcommDataTranslationTask
+class ReplLscOfferHtmlMlTask extends ReplEcommDealHtmlTranslationTask
 {
-    public const JOB_CODE = 'replication_repl_lsc_offer_html_ml';
-
-    public const CONFIG_PATH = 'ls_mag/replication/repl_lsc_offer_html_ml';
-
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_lsc_offer_html_ml';
-
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_lsc_offer_html_ml';
-
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_offer_html_ml';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_deal_html_translation';
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscDataTranslation';
 
@@ -38,21 +30,6 @@ class ReplLscOfferHtmlMlTask extends ReplEcommDataTranslationTask
         'lastKey' => $lastKey
         ]);
         return $request;
-    }
-
-    public function getConfigPath() : string
-    {
-        return self::CONFIG_PATH;
-    }
-
-    public function getConfigPathStatus() : string
-    {
-        return self::CONFIG_PATH_STATUS;
-    }
-
-    public function getConfigPathLastExecute() : string
-    {
-        return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
     public function getConfigPathLastEntryNo() : string

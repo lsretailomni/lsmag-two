@@ -10,15 +10,7 @@ namespace Ls\Replication\Cron;
 
 class ReplLscItemuomupdviewTask extends ReplEcommItemUnitOfMeasuresTask
 {
-    public const JOB_CODE = 'replication_repl_itemuomupdview';
-
-    public const CONFIG_PATH = 'ls_mag/replication/repl_itemuomupdview';
-
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_itemuomupdview';
-
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_itemuomupdview';
-
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_itemuomupdview';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_item_unit_of_measures';
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplItemuomupdview';
 
@@ -38,21 +30,6 @@ class ReplLscItemuomupdviewTask extends ReplEcommItemUnitOfMeasuresTask
         'lastKey' => $lastKey
         ]);
         return $request;
-    }
-
-    public function getConfigPath() : string
-    {
-        return self::CONFIG_PATH;
-    }
-
-    public function getConfigPathStatus() : string
-    {
-        return self::CONFIG_PATH_STATUS;
-    }
-
-    public function getConfigPathLastExecute() : string
-    {
-        return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
     public function getConfigPathLastEntryNo() : string
