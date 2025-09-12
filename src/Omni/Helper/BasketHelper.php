@@ -6,7 +6,6 @@ namespace Ls\Omni\Helper;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\CentralEcommerce\Entity\MobileTransaction;
 use \Ls\Omni\Client\CentralEcommerce\Entity\MobileTransactionLine;
 use \Ls\Omni\Client\CentralEcommerce\Entity\MobileTransDiscountLine;
@@ -341,15 +340,6 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * @return Entity\ArrayOfOneListPublishedOffer
-     */
-    public function _offers()
-    {
-        // @codingStandardsIgnoreLine
-        return new Entity\ArrayOfOneListPublishedOffer();
-    }
-
-    /**
      * Get configured store code for the current scope
      *
      * @return string|null
@@ -579,7 +569,7 @@ class BasketHelper extends AbstractHelperOmni
      * @param $customerEmail
      * @param $websiteId
      * @param $isGuest
-     * @return bool|Entity\OneList
+     * @return RootMobileTransaction
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -598,17 +588,7 @@ class BasketHelper extends AbstractHelperOmni
         $webStore       = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         $this->storeId = $webStore;
         // @codingStandardsIgnoreStart
-        /** @var Entity\OneList $list */
-//        $list = (new Entity\OneList())
-//            ->setCardId($cardId)
-//            ->setDescription('OneList Magento')
-//            ->setListType(Entity\Enum\ListType::BASKET)
-//            ->setItems(new Entity\ArrayOfOneListItem())
-//            ->setPublishedOffers($this->_offers())
-//            ->setStoreId($webStore);
-
         $list    = $this->get();
-
         return $list;
         // @codingStandardsIgnoreEnd
     }

@@ -6,7 +6,6 @@ namespace Ls\Omni\Helper;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use \Ls\Omni\Client\CentralEcommerce\Entity;
 use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCODiscountLineV6;

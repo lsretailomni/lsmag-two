@@ -5,24 +5,23 @@ namespace Ls\Omni\Model\Sales\AdminOrder;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCancel as CustomerOrderCancelRequest;
-use \Ls\Omni\Client\Ecommerce\Entity\RootCustomerOrderEdit;
-use \Ls\Omni\Client\Ecommerce\Operation\CustomerOrderCancel;
+use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCancel as CustomerOrderCancelRequest;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootCustomerOrderEdit;
+use \Ls\Omni\Client\CentralEcommerce\Operation\CustomerOrderCancel;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\Data as OmniHelper;
-use \Ls\Omni\Client\Ecommerce\Entity\OrderEdit as EditOrder;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\RootCustomerOrderCancel;
-use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCancelCOLine;
-use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderStatusLog;
-use \Ls\Omni\Client\Ecommerce\Entity\COEditDiscountLine;
-use \Ls\Omni\Client\Ecommerce\Entity\COEditLine;
-use \Ls\Omni\Client\Ecommerce\Entity\COEditPayment;
-use \Ls\Omni\Client\Ecommerce\Entity\COEditHeader;
-use \Ls\Omni\Client\Ecommerce\Entity\CustomerOrderEdit as CustomerOrderEditEntity;
-use \Ls\Omni\Client\Ecommerce\Operation\CustomerOrderEdit;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootCustomerOrderCancel;
+use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCancelCOLine;
+use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderStatusLog;
+use \Ls\Omni\Client\CentralEcommerce\Entity\COEditDiscountLine;
+use \Ls\Omni\Client\CentralEcommerce\Entity\COEditLine;
+use \Ls\Omni\Client\CentralEcommerce\Entity\COEditPayment;
+use \Ls\Omni\Client\CentralEcommerce\Entity\COEditHeader;
+use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderEdit as CustomerOrderEditEntity;
+use \Ls\Omni\Client\CentralEcommerce\Operation\CustomerOrderEdit;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderItemInterface;
@@ -54,9 +53,9 @@ class OrderEdit
 
     /**
      * For sending order edit request
-     *
-     * @param object $request
-     * @return Entity\OrderEditResponse|\Ls\Omni\Client\ResponseInterface
+     * 
+     * @param $request
+     * @return null
      */
     public function orderEdit($request)
     {
@@ -76,12 +75,12 @@ class OrderEdit
 
     /**
      * Prepare order edit
-     *
+     * 
      * @param Order $order
-     * @param object $oneListCalculateResponse
+     * @param $oneListCalculateResponse
      * @param Order $oldOrder
-     * @param string $documentId
-     * @return EditOrder|void
+     * @param $documentId
+     * @return mixed|void
      */
     public function prepareOrder(Order $order, $oneListCalculateResponse, Order $oldOrder, $documentId)
     {
