@@ -78,7 +78,7 @@ class SpgUnRegisterNotification extends AbstractOperation
     /**
      * @return SpgUnRegisterNotificationRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new SpgUnRegisterNotificationRequest();

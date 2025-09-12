@@ -94,18 +94,18 @@ define([
 
             $.each(stores.items, function (index, store) {
                 var latLng = {
-                    lat: parseFloat(store.latitude),
-                    lng: parseFloat(store.longitude)
+                    lat: parseFloat(store.Latitute),
+                    lng: parseFloat(store.Longitude)
                 };
 
                 var marker = new google.maps.Marker({
                     position: latLng,
                     map: map,
-                    title: store.name
+                    title: store.Name
                 });
 
                 google.maps.event.addListener(marker, 'click', function () {
-                    var storeInfo = $(stores.storesInfo).find('#store-' + store.no).html();
+                    var storeInfo = $(stores.storesInfo).find('#store-' + store.nav_id).html();
                     infoWindow.setContent(
                         '<div class="omni-stores-index">' +
                         '<div class="stores-maps-container">' +

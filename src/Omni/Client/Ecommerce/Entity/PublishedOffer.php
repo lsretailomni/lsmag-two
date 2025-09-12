@@ -8,208 +8,329 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class PublishedOffer extends \Magento\Catalog\Model\AbstractModel
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferType;
+use Ls\Omni\Exception\InvalidEnumException;
+
+class PublishedOffer extends Entity
 {
-    public const CLASS_NAME = 'PublishedOffer';
-
-    public const NO = 'No';
-
-    public const DISCOUNT_TYPE = 'DiscountType';
-
-    public const DISCOUNT_NO = 'DiscountNo';
-
-    public const DESCRIPTION = 'Description';
-
-    public const OFFER_CATEGORY = 'OfferCategory';
-
-    public const PRIMARY_TEXT = 'PrimaryText';
-
-    public const SECONDARY_TEXT = 'SecondaryText';
-
-    public const ENDING_DATE = 'EndingDate';
-
-    public const MEMBER_ATTRIBUTE = 'MemberAttribute';
-
-    public const MEMBER_ATTRIBUTE_VALUE = 'MemberAttributeValue';
+    /**
+     * @property ArrayOfImageView $Images
+     */
+    protected $Images = null;
 
     /**
-     * @param ?string $No
+     * @property ArrayOfOfferDetails $OfferDetails
+     */
+    protected $OfferDetails = null;
+
+    /**
+     * @property ArrayOfPublishedOfferLine $OfferLines
+     */
+    protected $OfferLines = null;
+
+    /**
+     * @property OfferDiscountType $Code
+     */
+    protected $Code = null;
+
+    /**
+     * @property string $Description
+     */
+    protected $Description = null;
+
+    /**
+     * @property string $Details
+     */
+    protected $Details = null;
+
+    /**
+     * @property string $ExpirationDate
+     */
+    protected $ExpirationDate = null;
+
+    /**
+     * @property string $MemberAttribute
+     */
+    protected $MemberAttribute = null;
+
+    /**
+     * @property string $MemberAttributeValue
+     */
+    protected $MemberAttributeValue = null;
+
+    /**
+     * @property string $OfferId
+     */
+    protected $OfferId = null;
+
+    /**
+     * @property boolean $Selected
+     */
+    protected $Selected = null;
+
+    /**
+     * @property OfferType $Type
+     */
+    protected $Type = null;
+
+    /**
+     * @property string $ValidationText
+     */
+    protected $ValidationText = null;
+
+    /**
+     * @param ArrayOfImageView $Images
      * @return $this
      */
-    public function setNo(?string $No)
+    public function setImages($Images)
     {
-        $this->setData(self::NO, $No);
+        $this->Images = $Images;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return ArrayOfImageView
      */
-    public function getNo() : ?string
+    public function getImages()
     {
-        return $this->getData(self::NO);
+        return $this->Images;
     }
 
     /**
-     * @param ?string $DiscountType
+     * @param ArrayOfOfferDetails $OfferDetails
      * @return $this
      */
-    public function setDiscounttype(?string $DiscountType)
+    public function setOfferDetails($OfferDetails)
     {
-        $this->setData(self::DISCOUNT_TYPE, $DiscountType);
+        $this->OfferDetails = $OfferDetails;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return ArrayOfOfferDetails
      */
-    public function getDiscounttype() : ?string
+    public function getOfferDetails()
     {
-        return $this->getData(self::DISCOUNT_TYPE);
+        return $this->OfferDetails;
     }
 
     /**
-     * @param ?string $DiscountNo
+     * @param ArrayOfPublishedOfferLine $OfferLines
      * @return $this
      */
-    public function setDiscountno(?string $DiscountNo)
+    public function setOfferLines($OfferLines)
     {
-        $this->setData(self::DISCOUNT_NO, $DiscountNo);
+        $this->OfferLines = $OfferLines;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return ArrayOfPublishedOfferLine
      */
-    public function getDiscountno() : ?string
+    public function getOfferLines()
     {
-        return $this->getData(self::DISCOUNT_NO);
+        return $this->OfferLines;
     }
 
     /**
-     * @param ?string $Description
+     * @param OfferDiscountType|string $Code
      * @return $this
+     * @throws InvalidEnumException
      */
-    public function setDescription(?string $Description)
+    public function setCode($Code)
     {
-        $this->setData(self::DESCRIPTION, $Description);
+        if ( ! $Code instanceof OfferDiscountType ) {
+            if ( OfferDiscountType::isValid( $Code ) )
+                $Code = new OfferDiscountType( $Code );
+            elseif ( OfferDiscountType::isValidKey( $Code ) )
+                $Code = new OfferDiscountType( constant( "OfferDiscountType::$Code" ) );
+            elseif ( ! $Code instanceof OfferDiscountType )
+                throw new InvalidEnumException();
+        }
+        $this->Code = $Code->getValue();
+
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return OfferDiscountType
      */
-    public function getDescription() : ?string
+    public function getCode()
     {
-        return $this->getData(self::DESCRIPTION);
+        return $this->Code;
     }
 
     /**
-     * @param ?string $OfferCategory
+     * @param string $Description
      * @return $this
      */
-    public function setOffercategory(?string $OfferCategory)
+    public function setDescription($Description)
     {
-        $this->setData(self::OFFER_CATEGORY, $OfferCategory);
+        $this->Description = $Description;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getOffercategory() : ?string
+    public function getDescription()
     {
-        return $this->getData(self::OFFER_CATEGORY);
+        return $this->Description;
     }
 
     /**
-     * @param ?string $PrimaryText
+     * @param string $Details
      * @return $this
      */
-    public function setPrimarytext(?string $PrimaryText)
+    public function setDetails($Details)
     {
-        $this->setData(self::PRIMARY_TEXT, $PrimaryText);
+        $this->Details = $Details;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getPrimarytext() : ?string
+    public function getDetails()
     {
-        return $this->getData(self::PRIMARY_TEXT);
+        return $this->Details;
     }
 
     /**
-     * @param ?string $SecondaryText
+     * @param string $ExpirationDate
      * @return $this
      */
-    public function setSecondarytext(?string $SecondaryText)
+    public function setExpirationDate($ExpirationDate)
     {
-        $this->setData(self::SECONDARY_TEXT, $SecondaryText);
+        $this->ExpirationDate = $ExpirationDate;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getSecondarytext() : ?string
+    public function getExpirationDate()
     {
-        return $this->getData(self::SECONDARY_TEXT);
+        return $this->ExpirationDate;
     }
 
     /**
-     * @param ?string $EndingDate
+     * @param string $MemberAttribute
      * @return $this
      */
-    public function setEndingdate(?string $EndingDate)
+    public function setMemberAttribute($MemberAttribute)
     {
-        $this->setData(self::ENDING_DATE, $EndingDate);
+        $this->MemberAttribute = $MemberAttribute;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getEndingdate() : ?string
+    public function getMemberAttribute()
     {
-        return $this->getData(self::ENDING_DATE);
+        return $this->MemberAttribute;
     }
 
     /**
-     * @param ?string $MemberAttribute
+     * @param string $MemberAttributeValue
      * @return $this
      */
-    public function setMemberattribute(?string $MemberAttribute)
+    public function setMemberAttributeValue($MemberAttributeValue)
     {
-        $this->setData(self::MEMBER_ATTRIBUTE, $MemberAttribute);
+        $this->MemberAttributeValue = $MemberAttributeValue;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getMemberattribute() : ?string
+    public function getMemberAttributeValue()
     {
-        return $this->getData(self::MEMBER_ATTRIBUTE);
+        return $this->MemberAttributeValue;
     }
 
     /**
-     * @param ?string $MemberAttributeValue
+     * @param string $OfferId
      * @return $this
      */
-    public function setMemberattributevalue(?string $MemberAttributeValue)
+    public function setOfferId($OfferId)
     {
-        $this->setData(self::MEMBER_ATTRIBUTE_VALUE, $MemberAttributeValue);
+        $this->OfferId = $OfferId;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getMemberattributevalue() : ?string
+    public function getOfferId()
     {
-        return $this->getData(self::MEMBER_ATTRIBUTE_VALUE);
+        return $this->OfferId;
+    }
+
+    /**
+     * @param boolean $Selected
+     * @return $this
+     */
+    public function setSelected($Selected)
+    {
+        $this->Selected = $Selected;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getSelected()
+    {
+        return $this->Selected;
+    }
+
+    /**
+     * @param OfferType|string $Type
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setType($Type)
+    {
+        if ( ! $Type instanceof OfferType ) {
+            if ( OfferType::isValid( $Type ) )
+                $Type = new OfferType( $Type );
+            elseif ( OfferType::isValidKey( $Type ) )
+                $Type = new OfferType( constant( "OfferType::$Type" ) );
+            elseif ( ! $Type instanceof OfferType )
+                throw new InvalidEnumException();
+        }
+        $this->Type = $Type->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return OfferType
+     */
+    public function getType()
+    {
+        return $this->Type;
+    }
+
+    /**
+     * @param string $ValidationText
+     * @return $this
+     */
+    public function setValidationText($ValidationText)
+    {
+        $this->ValidationText = $ValidationText;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValidationText()
+    {
+        return $this->ValidationText;
     }
 }
 

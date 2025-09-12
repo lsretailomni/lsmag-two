@@ -78,7 +78,7 @@ class ActivityCancel extends AbstractOperation
     /**
      * @return ActivityCancelRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ActivityCancelRequest();

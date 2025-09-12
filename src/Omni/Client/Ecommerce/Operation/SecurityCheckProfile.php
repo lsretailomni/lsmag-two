@@ -8,146 +8,201 @@
 
 namespace Ls\Omni\Client\Ecommerce\Operation;
 
+use Ls\Omni\Client\RequestInterface;
+use Ls\Omni\Client\ResponseInterface;
 use Ls\Omni\Client\AbstractOperation;
 use Ls\Omni\Service\Service as OmniService;
+use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
 use Ls\Omni\Client\Ecommerce\Entity\SecurityCheckProfile as SecurityCheckProfileRequest;
-use Ls\Omni\Client\Ecommerce\Entity\SecurityCheckProfileResult as SecurityCheckProfileResponse;
+use Ls\Omni\Client\Ecommerce\Entity\SecurityCheckProfileResponse as SecurityCheckProfileResponse;
 
 class SecurityCheckProfile extends AbstractOperation
 {
-    public const OPERATION_NAME = 'SecurityCheckProfile';
+    public const OPERATION_NAME = 'SECURITY_CHECK_PROFILE';
 
     public const SERVICE_TYPE = 'ecommerce';
 
     /**
      * @property OmniClient $client
      */
-    public $client = null;
+    protected $client = null;
 
     /**
      * @property SecurityCheckProfileRequest $request
      */
-    public $request = null;
+    protected $request = null;
 
     /**
      * @property SecurityCheckProfileResponse $response
      */
-    public $response = null;
+    protected $response = null;
 
     /**
-     * @property string $requestXml
+     * @property string $request_xml
      */
-    public $requestXml = null;
+    protected $request_xml = null;
 
     /**
-     * @property string $responseXml
+     * @property string $response_xml
      */
-    public $responseXml = null;
+    protected $response_xml = null;
 
     /**
-     * @property \Exception $error
+     * @property Exception $error
      */
-    public $error = null;
+    protected $error = null;
 
     public function __construct($baseUrl = '')
     {
-        parent::__construct();
-        $url = OmniService::getUrl($baseUrl, true);
-        $this->client = $this->createInstance(OmniClient::class, ['uri' => $url]);
-        $this->client->setClassmap($this->getClassMap());
+        $service_type = new ServiceType( self::SERVICE_TYPE );
+        parent::__construct( $service_type );
+        $url = OmniService::getUrl( $service_type,$baseUrl );
+        $this->client = new OmniClient( $url, $service_type );
+        $this->client->setClassmap( $this->getClassMap() );
     }
 
-    public function execute()
+    /**
+     * @param SecurityCheckProfileRequest $request
+     * @return ResponseInterface|SecurityCheckProfileResponse
+     */
+    public function execute(RequestInterface $request = null)
     {
-        return $this->makeRequest(self::OPERATION_NAME);
+        if ( !is_null( $request ) ) {
+            $this->setRequest( $request );
+        }
+        return $this->makeRequest( 'SecurityCheckProfile' );
     }
 
-    public function & setOperationInput(array $params = [])
+    /**
+     * @return SecurityCheckProfileRequest
+     */
+    public function & getOperationInput()
     {
-        $this->setRequest(
-            $this->createInstance(
-                SecurityCheckProfileRequest::class,
-                ['data' => $params]
-            )
-        );
-        $request = $this->getRequest();
-        return $request;
+        if ( is_null( $this->request ) ) {
+            $this->request = new SecurityCheckProfileRequest();
+        }
+        return $this->request;
     }
 
-    public function createInstance(string $entityClassName = null, array $data = [])
-    {
-        return \Magento\Framework\App\ObjectManager::getInstance()->create($entityClassName, $data);
-    }
-
+    /**
+     * @return array
+     */
     public function getClassMap()
     {
         return ClassMap::getClassMap();
     }
 
-    public function setClient(OmniClient $client)
+    public function isTokenized()
+    {
+        return FALSE;
+    }
+
+    /**
+     * @param OmniClient $client
+     * @return $this
+     */
+    public function setClient($client)
     {
         $this->client = $client;
         return $this;
     }
 
-    public function getClient() : OmniClient
+    /**
+     * @return OmniClient
+     */
+    public function getClient()
     {
         return $this->client;
     }
 
-    public function setRequest(SecurityCheckProfileRequest $request)
+    /**
+     * @param SecurityCheckProfileRequest $request
+     * @return $this
+     */
+    public function setRequest($request)
     {
         $this->request = $request;
         return $this;
     }
 
-    public function getRequest() : SecurityCheckProfileRequest
+    /**
+     * @return SecurityCheckProfileRequest
+     */
+    public function getRequest()
     {
         return $this->request;
     }
 
-    public function setResponse(SecurityCheckProfileResponse $response)
+    /**
+     * @param SecurityCheckProfileResponse $response
+     * @return $this
+     */
+    public function setResponse($response)
     {
         $this->response = $response;
         return $this;
     }
 
-    public function getResponse() : SecurityCheckProfileResponse
+    /**
+     * @return SecurityCheckProfileResponse
+     */
+    public function getResponse()
     {
         return $this->response;
     }
 
-    public function setRequestXml(string $requestXml)
+    /**
+     * @param string $request_xml
+     * @return $this
+     */
+    public function setRequestXml($request_xml)
     {
-        $this->requestXml = $requestXml;
+        $this->request_xml = $request_xml;
         return $this;
     }
 
-    public function getRequestXml() : string
+    /**
+     * @return string
+     */
+    public function getRequestXml()
     {
-        return $this->requestXml;
+        return $this->request_xml;
     }
 
-    public function setResponseXml(string $responseXml)
+    /**
+     * @param string $response_xml
+     * @return $this
+     */
+    public function setResponseXml($response_xml)
     {
-        $this->responseXml = $responseXml;
+        $this->response_xml = $response_xml;
         return $this;
     }
 
-    public function getResponseXml() : string
+    /**
+     * @return string
+     */
+    public function getResponseXml()
     {
-        return $this->responseXml;
+        return $this->response_xml;
     }
 
-    public function setError(\Exception $error)
+    /**
+     * @param Exception $error
+     * @return $this
+     */
+    public function setError($error)
     {
         $this->error = $error;
         return $this;
     }
 
-    public function getError() : \Exception
+    /**
+     * @return Exception
+     */
+    public function getError()
     {
         return $this->error;
     }

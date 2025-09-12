@@ -78,7 +78,7 @@ class SecurityCheckLog extends AbstractOperation
     /**
      * @return SecurityCheckLogRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new SecurityCheckLogRequest();

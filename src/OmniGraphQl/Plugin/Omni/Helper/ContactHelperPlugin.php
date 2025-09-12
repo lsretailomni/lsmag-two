@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Plugin\Omni\Helper;
 
-use \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
+use \Ls\Omni\Client\CentralEcommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
 use \Ls\Omni\Helper\ContactHelper;
 
 /**

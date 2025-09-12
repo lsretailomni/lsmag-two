@@ -5,12 +5,12 @@ namespace Ls\Omni\Helper;
 
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\GetInventoryMultipleV2;
-use \Ls\Omni\Client\Ecommerce\Entity\InventoryBufferIn;
-use \Ls\Omni\Client\Ecommerce\Entity\RootGetInventoryMultipleIn;
-use \Ls\Omni\Client\Ecommerce\Entity\RootGetInventoryMultipleOut;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Replication\Model\ResourceModel\ReplStoreview\Collection;
+use \Ls\Omni\Client\CentralEcommerce\Entity\GetInventoryMultipleV2;
+use \Ls\Omni\Client\CentralEcommerce\Entity\InventoryBufferIn;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootGetInventoryMultipleIn;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootGetInventoryMultipleOut;
+use \Ls\Omni\Client\CentralEcommerce\Operation;
+use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -222,7 +222,7 @@ class StockHelper extends AbstractHelperOmni
     public function getAllStoresFromReplTable(array $storesNavIds): Collection
     {
         $stores = $this->storeCollectionFactory->create()
-            ->addFieldToFilter('no', ['in' => $storesNavIds])
+            ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
             ->addFieldToFilter(
                 'scope_id',
                 ['eq' => !$this->lsr->isSSM() ?
@@ -232,7 +232,7 @@ class StockHelper extends AbstractHelperOmni
         $displayStores = $this->lsr->getStoreConfig(LSR::SC_CART_DISPLAY_STORES);
 
         if (!$displayStores) {
-            $stores->addFieldToFilter('click_and_collect', 1);
+            $stores->addFieldToFilter('ClickAndCollect', 1);
         }
 
         return $stores;

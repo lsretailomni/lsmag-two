@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscPosTerminalRepositoryInterface as ReplLscPosTerminalRepository;
-use Ls\Replication\Model\ReplLscPosTerminalFactory;
-use Ls\Replication\Api\Data\ReplLscPosTerminalInterface;
+use Ls\Replication\Api\Central\ReplLscPosTerminalRepositoryInterface as ReplLscPosTerminalRepository;
+use Ls\Replication\Model\Central\ReplLscPosTerminalFactory;
+use Ls\Replication\Api\Central\Data\ReplLscPosTerminalInterface;
 
 class ReplLscPosTerminalTask extends AbstractReplicationTask
 {
@@ -24,6 +24,8 @@ class ReplLscPosTerminalTask extends AbstractReplicationTask
     public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_lsc_pos_terminal';
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_pos_terminal';
+
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscPosTerminal';
 
     /**
      * @property ReplLscPosTerminalRepository $repository
@@ -81,17 +83,9 @@ class ReplLscPosTerminalTask extends AbstractReplicationTask
         $this->dataInterface = $dataInterface;
     }
 
-    public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
+    public function getMainEntity() : ReplLscPosTerminalInterface
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCPOSTerminal($baseUrl, $connectionParams, $companyName);
-        $request->setOperationInput([
-        'storeNo' => $storeNo,
-        'batchSize' => $batchSize,
-        'fullRepl' => $fullRepl,
-        'lastEntryNo' => $lastEntryNo,
-        'lastKey' => $lastKey
-        ]);
-        return $request;
+        return $this->dataInterface;
     }
 
     public function getConfigPath() : string
@@ -109,14 +103,27 @@ class ReplLscPosTerminalTask extends AbstractReplicationTask
         return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
+    public function getModelName() : string
+    {
+        return self::MODEL_CLASS;
+    }
+
+    public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
+    {
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCPOSTerminal($baseUrl, $connectionParams, $companyName);
+        $request->setOperationInput([
+        'storeNo' => $storeNo,
+        'batchSize' => $batchSize,
+        'fullRepl' => $fullRepl,
+        'lastEntryNo' => $lastEntryNo,
+        'lastKey' => $lastKey
+        ]);
+        return $request;
+    }
+
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscPosTerminalInterface
-    {
-        return $this->dataInterface;
     }
 }
 

@@ -11,8 +11,8 @@ use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use \Ls\Omni\Model\Checkout\DataProvider;
-use Ls\Replication\Model\ResourceModel\ReplStoreview\CollectionFactory;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -211,7 +211,7 @@ class DataHelper extends AbstractHelper
             'street'                            => $store['address'],
             'available_hospitality_sales_types' =>
                 !empty($store['HospSalesTypes']) ? explode('|', $store['HospSalesTypes']) : null,
-            'store_hours'                       => $this->formatStoreTiming($store['no'])
+            'store_hours'                       => $this->formatStoreTiming($store['nav_id'])
         ];
     }
 
@@ -283,7 +283,7 @@ class DataHelper extends AbstractHelper
      * Get all click and collect supported stores for given scope_id
      *
      * @param String $scopeId
-     * @return \Ls\Replication\Model\ResourceModel\ReplStoreview\Collection
+     * @return Collection
      * @throws NoSuchEntityException|LocalizedException
      */
     public function getStores($scopeId)
@@ -292,7 +292,7 @@ class DataHelper extends AbstractHelper
 
         $storesData = $storeCollection
             ->addFieldToFilter('scope_id', $scopeId)
-            ->addFieldToFilter('click_and_collect', 1);
+            ->addFieldToFilter('ClickAndCollect', 1);
 
         if (!$this->dataProvider->availableStoresOnlyEnabled()) {
             return $storesData;
@@ -318,7 +318,8 @@ class DataHelper extends AbstractHelper
      * Get all stores for given scope_id
      *
      * @param String $scopeId
-     * @return \Ls\Replication\Model\ResourceModel\ReplStoreview\Collection
+     * @return Collection
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function getAllStores($scopeId)
     {

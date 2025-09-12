@@ -27,15 +27,13 @@ use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 class History extends \Magento\Sales\Block\Order\History
 {
     /**
-     *  History constructor.
-     * 
      * @param Context $context
      * @param CollectionFactory $orderCollectionFactory
      * @param CustomerSession $customerSession
      * @param Config $orderConfig
      * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param OrderRepository $orderRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param array $data

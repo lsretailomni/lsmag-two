@@ -5,8 +5,8 @@ namespace Ls\CustomerGraphQl\Model\Resolver;
 
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\CustomerGraphQl\Helper\DataHelper;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;

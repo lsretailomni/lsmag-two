@@ -5,7 +5,7 @@ namespace Ls\Customer\Plugin\Customer;
 
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\RootMemberLogon;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootMemberLogon;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Api\CustomerMetadataInterface;

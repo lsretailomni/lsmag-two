@@ -6,9 +6,9 @@ namespace Ls\Omni\Block\Product\View\Discount;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\LSCPeriodicDiscount;
-use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
-use \Ls\Omni\Client\Ecommerce\Operation\GetDiscount_GetDiscount;
+use \Ls\Omni\Client\CentralEcommerce\Entity\LSCPeriodicDiscount;
+use \Ls\Omni\Client\CentralEcommerce\Entity\PublishedOffer;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetDiscount_GetDiscount;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -121,11 +121,11 @@ class Proactive extends Template
     /**
      * Segregate different types of discounts
      *
-     * @param \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts
+     * @param \Ls\Omni\Client\CentralEcommerce\Entity\GetDiscount_GetDiscount $discounts
      * @return array
      */
     public function getRelevantDiscountOffers(
-        \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts
+        \Ls\Omni\Client\CentralEcommerce\Entity\GetDiscount_GetDiscount $discounts
     ): array {
         $discountOffers = $mixAndMatchOffers = $multibuyOffers = [];
         $periodicDiscounts = $discounts->getLscPeriodicDiscount();
@@ -220,12 +220,12 @@ class Proactive extends Template
      * Get formatted description for multi buy offer
      *
      * @param LSCPeriodicDiscount $multibuyOffer
-     * @param \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts
+     * @param \Ls\Omni\Client\CentralEcommerce\Entity\GetDiscount_GetDiscount $discounts
      * @return string
      */
     public function getFormattedDescriptionForMultibuyOffer(
         LSCPeriodicDiscount $multibuyOffer,
-        \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts
+        \Ls\Omni\Client\CentralEcommerce\Entity\GetDiscount_GetDiscount $discounts
     ): string {
         $additionalDetails = $this->getAdditionalInformation($multibuyOffer);
         $description = [];
@@ -272,14 +272,14 @@ class Proactive extends Template
      * Get formatted description for mix & match offer
      *
      * @param LSCPeriodicDiscount $mixAndMatchOffer
-     * @param \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts
+     * @param \Ls\Omni\Client\CentralEcommerce\Entity\GetDiscount_GetDiscount $discounts
      * @param string $itemId
      * @return string
      * @throws NoSuchEntityException
      */
     public function getFormattedDescriptionForMixAndMatchOffer(
         LSCPeriodicDiscount $mixAndMatchOffer,
-        \Ls\Omni\Client\Ecommerce\Entity\GetDiscount_GetDiscount $discounts,
+        \Ls\Omni\Client\CentralEcommerce\Entity\GetDiscount_GetDiscount $discounts,
         string $itemId
     ): string {
         $additionalDetails = $this->getAdditionalInformation($mixAndMatchOffer);

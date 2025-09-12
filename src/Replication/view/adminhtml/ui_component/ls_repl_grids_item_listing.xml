@@ -16,14 +16,14 @@
                 Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
             </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_item_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">repl_lsc_wi_item_buffer_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">repl_item_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">repl_lsc_wi_item_buffer_id</item>
+                        <item name="indexField" xsi:type="string">repl_item_id</item>
                     </item>
                 </item>
             </argument>
@@ -95,7 +95,7 @@
         <selectionsColumn name="ids">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="indexField" xsi:type="string">repl_lsc_wi_item_buffer_id</item>
+                    <item name="indexField" xsi:type="string">repl_item_id</item>
                     <item name="sortOrder" xsi:type="number">0</item>
                 </item>
             </argument>
@@ -122,7 +122,7 @@
                 </item>
             </argument>
         </column>
-        <column name="no">
+        <column name="nav_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -133,7 +133,7 @@
                 </item>
             </argument>
         </column>
-        <column name="description">
+        <column name="Description">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -191,7 +191,7 @@
                 </item>
             </argument>
         </column>
-        <column name="blocked_on_ecommerce">
+        <column name="BlockedOnECom">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Ls\Replication\Model\BlockedStatus</item>
                 <item name="config" xsi:type="array">
@@ -202,7 +202,7 @@
                 </item>
             </argument>
         </column>
-        <column name="item_html" class="Ls\Replication\Ui\Component\Listing\Column\DecodeText">
+        <column name="Details">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -213,7 +213,7 @@
                 </item>
             </argument>
         </column>
-        <column name="base_unit_of_measure">
+        <column name="BaseUnitOfMeasure">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -224,7 +224,7 @@
                 </item>
             </argument>
         </column>
-        <column name="unit_price">
+        <column name="UnitPrice">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -235,7 +235,7 @@
                 </item>
             </argument>
         </column>
-        <column name="gross_weight">
+        <column name="GrossWeight">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -247,7 +247,7 @@
             </argument>
         </column>
 
-        <column name="item_category_code">
+        <column name="ItemCategoryCode">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -258,7 +258,7 @@
                 </item>
             </argument>
         </column>
-        <column name="lsc_item_family_code">
+        <column name="ItemFamilyCode">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -269,7 +269,7 @@
                 </item>
             </argument>
         </column>
-        <column name="lsc_retail_product_code">
+        <column name="ProductGroupId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -280,7 +280,7 @@
                 </item>
             </argument>
         </column>
-        <column name="purch_unit_of_measure">
+        <column name="PurchUnitOfMeasure">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -291,7 +291,7 @@
                 </item>
             </argument>
         </column>
-        <column name="lsc_special_group_codes">
+        <column name="SpecialGroups">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -302,7 +302,7 @@
                 </item>
             </argument>
         </column>
-        <column name="sales_unit_of_measure">
+        <column name="SalseUnitOfMeasure">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -313,7 +313,7 @@
                 </item>
             </argument>
         </column>
-        <column name="lsc_scale_item">
+        <column name="ScaleItem">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -324,7 +324,7 @@
                 </item>
             </argument>
         </column>
-        <column name="vat_prod_posting_group">
+        <column name="TaxItemGroupId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -335,7 +335,7 @@
                 </item>
             </argument>
         </column>
-        <column name="unit_volume">
+        <column name="UnitVolume">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -346,7 +346,7 @@
                 </item>
             </argument>
         </column>
-        <column name="units_per_parcel">
+        <column name="UnitsPerParcel">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -357,7 +357,7 @@
                 </item>
             </argument>
         </column>
-        <column name="vendor_no">
+        <column name="VendorId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -368,7 +368,7 @@
                 </item>
             </argument>
         </column>
-        <column name="vendor_item_no">
+        <column name="VendorItemId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -379,7 +379,7 @@
                 </item>
             </argument>
         </column>
-        <column name="lsc_zero_price_valid">
+        <column name="ZeroPriceValId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -390,7 +390,7 @@
                 </item>
             </argument>
         </column>
-        <column name="type">
+        <column name="Type">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -401,7 +401,7 @@
                 </item>
             </argument>
         </column>
-        <column name="tariff_no">
+        <column name="TariffNo">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -412,7 +412,7 @@
                 </item>
             </argument>
         </column>
-        <column name="countryregion_of_origin_code">
+        <column name="CountryOfOrigin">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

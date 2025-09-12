@@ -7,13 +7,13 @@ use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\GetDirectMarketingInfoResult as GetDirectMarketingInfoResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
-use \Ls\Omni\Client\Ecommerce\Entity\PublishedOfferLine;
-use \Ls\Omni\Client\Ecommerce\Operation\GetImage_GetImage;
-use \Ls\Omni\Client\Ecommerce\Operation\GetDirectMarketingInfo;
-use \Ls\Omni\Client\Ecommerce\Operation\GetDiscount_GetDiscount;
+use \Ls\Omni\Client\CentralEcommerce\Entity;
+use \Ls\Omni\Client\CentralEcommerce\Entity\GetDirectMarketingInfoResult as GetDirectMarketingInfoResponse;
+use \Ls\Omni\Client\CentralEcommerce\Entity\GetMemberContactInfo_GetMemberContactInfo;
+use \Ls\Omni\Client\CentralEcommerce\Entity\PublishedOfferLine;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetImage_GetImage;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetDirectMarketingInfo;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetDiscount_GetDiscount;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Filesystem\DirectoryList;
@@ -29,7 +29,7 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * To get all customer offers
      *
-     * @return Entity\ArrayOfPublishedOffer|Entity\PublishedOffersGetByCardIdResponse|ResponseInterface|null
+     * @return \Ls\Omni\Client\Ecommerce\Entity\ArrayOfPublishedOffer|\Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetByCardIdResponse|ResponseInterface|null
      */
     public function getOffers()
     {
@@ -379,12 +379,12 @@ class LoyaltyHelper extends AbstractHelperOmni
      * To get image size
      *
      * @param mixed $size
-     * @return Entity\ImageSize
+     * @return \Ls\Omni\Client\Ecommerce\Entity\ImageSize
      */
     public function getImageSize($size = null)
     {
         // @codingStandardsIgnoreLine
-        $imagesize = new Entity\ImageSize();
+        $imagesize = new \Ls\Omni\Client\Ecommerce\Entity\ImageSize();
         $imagesize->setHeight($size['height'])
             ->setWidth($size['width']);
         return $imagesize;

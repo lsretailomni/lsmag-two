@@ -3,9 +3,8 @@
 namespace Ls\Core\Model;
 
 use Exception;
-use GuzzleHttp\Exception\GuzzleException;
-use \Ls\Omni\Client\Ecommerce\Entity\TestConnection;
-use \Ls\Omni\Client\Ecommerce\Entity\TestConnectionResult;
+use \Ls\Omni\Client\CentralEcommerce\Entity\TestConnection;
+use \Ls\Omni\Client\CentralEcommerce\Entity\TestConnectionResult;
 use \Ls\Omni\Model\Central\TokenRequestService;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use \Ls\Omni\Client\ResponseInterface;
@@ -205,35 +204,6 @@ class Data
             ScopeInterface::SCOPE_STORES,
             $this->storeManager->getStore()->getId()
         );
-    }
-
-    /**
-     * Function for commerce service ping
-     *
-     * @param $baseUrl
-     * @return TestConnectionResult|ResponseInterface
-     */
-    public function omniPing($baseUrl)
-    {
-        //@codingStandardsIgnoreStart
-        $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
-        $url          = OmniService::getUrl($service_type, $baseUrl);
-        $client       = new OmniClient($url, $service_type);
-        $testConnection = new \Ls\Omni\Client\Ecommerce\Operation\TestConnection();
-        $testConnection->setRequest(
-            (new TestConnection())
-                ->setLSRetailVersion('')
-                ->setLSRetailCopyright('')
-                ->setApplicationVersion('')
-                ->setApplicationBuild('')
-                ->setResponseCode('')
-                ->setErrorText('')
-        );
-        //@codingStandardsIgnoreEnd
-        $testConnection->setClient($client);
-        $client->setClassMap($testConnection->getClassMap());
-
-        return $testConnection->execute();
     }
 
     /**

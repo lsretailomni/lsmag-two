@@ -8,248 +8,271 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferLineVariantType;
+use Ls\Omni\Exception\InvalidEnumException;
+
+class PublishedOfferLine extends Entity
 {
-    public const CLASS_NAME = 'PublishedOfferLine';
-
-    public const PUBLISHED_OFFER_NO = 'PublishedOfferNo';
-
-    public const DISCOUNT_TYPE = 'DiscountType';
-
-    public const DISCOUNT_NO = 'DiscountNo';
-
-    public const DISCOUNT_LINE_NO = 'DiscountLineNo';
-
-    public const DISCOUNT_LINE_TYPE = 'DiscountLineType';
-
-    public const DISCOUNT_LINE_ID = 'DiscountLineId';
-
-    public const DISCOUNT_LINE_DESCRIPTION = 'DiscountLineDescription';
-
-    public const VARIANT_TYPE = 'VariantType';
-
-    public const VARIANT_CODE = 'VariantCode';
-
-    public const EXCLUDE = 'Exclude';
-
-    public const UNIT_OF_MEASURE = 'UnitOfMeasure';
-
-    public const TABLE_NO = 'TableNo';
+    /**
+     * @property string $Description
+     */
+    protected $Description = null;
 
     /**
-     * @param ?string $PublishedOfferNo
+     * @property string $DiscountId
+     */
+    protected $DiscountId = null;
+
+    /**
+     * @property OfferDiscountType $DiscountType
+     */
+    protected $DiscountType = null;
+
+    /**
+     * @property boolean $Exclude
+     */
+    protected $Exclude = null;
+
+    /**
+     * @property int $LineNo
+     */
+    protected $LineNo = null;
+
+    /**
+     * @property OfferDiscountLineType $LineType
+     */
+    protected $LineType = null;
+
+    /**
+     * @property string $OfferId
+     */
+    protected $OfferId = null;
+
+    /**
+     * @property string $UnitOfMeasure
+     */
+    protected $UnitOfMeasure = null;
+
+    /**
+     * @property string $Variant
+     */
+    protected $Variant = null;
+
+    /**
+     * @property OfferLineVariantType $VariantType
+     */
+    protected $VariantType = null;
+
+    /**
+     * @param string $Description
      * @return $this
      */
-    public function setPublishedofferno(?string $PublishedOfferNo)
+    public function setDescription($Description)
     {
-        $this->setData(self::PUBLISHED_OFFER_NO, $PublishedOfferNo);
+        $this->Description = $Description;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getPublishedofferno() : ?string
+    public function getDescription()
     {
-        return $this->getData(self::PUBLISHED_OFFER_NO);
+        return $this->Description;
     }
 
     /**
-     * @param ?string $DiscountType
+     * @param string $DiscountId
      * @return $this
      */
-    public function setDiscounttype(?string $DiscountType)
+    public function setDiscountId($DiscountId)
     {
-        $this->setData(self::DISCOUNT_TYPE, $DiscountType);
+        $this->DiscountId = $DiscountId;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getDiscounttype() : ?string
+    public function getDiscountId()
     {
-        return $this->getData(self::DISCOUNT_TYPE);
+        return $this->DiscountId;
     }
 
     /**
-     * @param ?string $DiscountNo
+     * @param OfferDiscountType|string $DiscountType
      * @return $this
+     * @throws InvalidEnumException
      */
-    public function setDiscountno(?string $DiscountNo)
+    public function setDiscountType($DiscountType)
     {
-        $this->setData(self::DISCOUNT_NO, $DiscountNo);
+        if ( ! $DiscountType instanceof OfferDiscountType ) {
+            if ( OfferDiscountType::isValid( $DiscountType ) )
+                $DiscountType = new OfferDiscountType( $DiscountType );
+            elseif ( OfferDiscountType::isValidKey( $DiscountType ) )
+                $DiscountType = new OfferDiscountType( constant( "OfferDiscountType::$DiscountType" ) );
+            elseif ( ! $DiscountType instanceof OfferDiscountType )
+                throw new InvalidEnumException();
+        }
+        $this->DiscountType = $DiscountType->getValue();
+
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return OfferDiscountType
      */
-    public function getDiscountno() : ?string
+    public function getDiscountType()
     {
-        return $this->getData(self::DISCOUNT_NO);
+        return $this->DiscountType;
     }
 
     /**
-     * @param int $DiscountLineNo
+     * @param boolean $Exclude
      * @return $this
      */
-    public function setDiscountlineno($DiscountLineNo)
+    public function setExclude($Exclude)
     {
-        $this->setData(self::DISCOUNT_LINE_NO, $DiscountLineNo);
+        $this->Exclude = $Exclude;
         return $this;
     }
 
     /**
-     * @return int
+     * @return boolean
      */
-    public function getDiscountlineno()
+    public function getExclude()
     {
-        return $this->getData(self::DISCOUNT_LINE_NO);
+        return $this->Exclude;
     }
 
     /**
-     * @param int $DiscountLineType
+     * @param int $LineNo
      * @return $this
      */
-    public function setDiscountlinetype($DiscountLineType)
+    public function setLineNo($LineNo)
     {
-        $this->setData(self::DISCOUNT_LINE_TYPE, $DiscountLineType);
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDiscountlinetype()
-    {
-        return $this->getData(self::DISCOUNT_LINE_TYPE);
-    }
-
-    /**
-     * @param ?string $DiscountLineId
-     * @return $this
-     */
-    public function setDiscountlineid(?string $DiscountLineId)
-    {
-        $this->setData(self::DISCOUNT_LINE_ID, $DiscountLineId);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getDiscountlineid() : ?string
-    {
-        return $this->getData(self::DISCOUNT_LINE_ID);
-    }
-
-    /**
-     * @param ?string $DiscountLineDescription
-     * @return $this
-     */
-    public function setDiscountlinedescription(?string $DiscountLineDescription)
-    {
-        $this->setData(self::DISCOUNT_LINE_DESCRIPTION, $DiscountLineDescription);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getDiscountlinedescription() : ?string
-    {
-        return $this->getData(self::DISCOUNT_LINE_DESCRIPTION);
-    }
-
-    /**
-     * @param ?string $VariantType
-     * @return $this
-     */
-    public function setVarianttype(?string $VariantType)
-    {
-        $this->setData(self::VARIANT_TYPE, $VariantType);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getVarianttype() : ?string
-    {
-        return $this->getData(self::VARIANT_TYPE);
-    }
-
-    /**
-     * @param ?string $VariantCode
-     * @return $this
-     */
-    public function setVariantcode(?string $VariantCode)
-    {
-        $this->setData(self::VARIANT_CODE, $VariantCode);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getVariantcode() : ?string
-    {
-        return $this->getData(self::VARIANT_CODE);
-    }
-
-    /**
-     * @param ?bool $Exclude
-     * @return $this
-     */
-    public function setExclude(?bool $Exclude)
-    {
-        $this->setData(self::EXCLUDE, $Exclude);
-        return $this;
-    }
-
-    /**
-     * @return ?bool
-     */
-    public function getExclude() : ?bool
-    {
-        return $this->getData(self::EXCLUDE);
-    }
-
-    /**
-     * @param ?string $UnitOfMeasure
-     * @return $this
-     */
-    public function setUnitofmeasure(?string $UnitOfMeasure)
-    {
-        $this->setData(self::UNIT_OF_MEASURE, $UnitOfMeasure);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getUnitofmeasure() : ?string
-    {
-        return $this->getData(self::UNIT_OF_MEASURE);
-    }
-
-    /**
-     * @param int $TableNo
-     * @return $this
-     */
-    public function setTableno($TableNo)
-    {
-        $this->setData(self::TABLE_NO, $TableNo);
+        $this->LineNo = $LineNo;
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getTableno()
+    public function getLineNo()
     {
-        return $this->getData(self::TABLE_NO);
+        return $this->LineNo;
+    }
+
+    /**
+     * @param OfferDiscountLineType|string $LineType
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setLineType($LineType)
+    {
+        if ( ! $LineType instanceof OfferDiscountLineType ) {
+            if ( OfferDiscountLineType::isValid( $LineType ) )
+                $LineType = new OfferDiscountLineType( $LineType );
+            elseif ( OfferDiscountLineType::isValidKey( $LineType ) )
+                $LineType = new OfferDiscountLineType( constant( "OfferDiscountLineType::$LineType" ) );
+            elseif ( ! $LineType instanceof OfferDiscountLineType )
+                throw new InvalidEnumException();
+        }
+        $this->LineType = $LineType->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return OfferDiscountLineType
+     */
+    public function getLineType()
+    {
+        return $this->LineType;
+    }
+
+    /**
+     * @param string $OfferId
+     * @return $this
+     */
+    public function setOfferId($OfferId)
+    {
+        $this->OfferId = $OfferId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOfferId()
+    {
+        return $this->OfferId;
+    }
+
+    /**
+     * @param string $UnitOfMeasure
+     * @return $this
+     */
+    public function setUnitOfMeasure($UnitOfMeasure)
+    {
+        $this->UnitOfMeasure = $UnitOfMeasure;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnitOfMeasure()
+    {
+        return $this->UnitOfMeasure;
+    }
+
+    /**
+     * @param string $Variant
+     * @return $this
+     */
+    public function setVariant($Variant)
+    {
+        $this->Variant = $Variant;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVariant()
+    {
+        return $this->Variant;
+    }
+
+    /**
+     * @param OfferLineVariantType|string $VariantType
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setVariantType($VariantType)
+    {
+        if ( ! $VariantType instanceof OfferLineVariantType ) {
+            if ( OfferLineVariantType::isValid( $VariantType ) )
+                $VariantType = new OfferLineVariantType( $VariantType );
+            elseif ( OfferLineVariantType::isValidKey( $VariantType ) )
+                $VariantType = new OfferLineVariantType( constant( "OfferLineVariantType::$VariantType" ) );
+            elseif ( ! $VariantType instanceof OfferLineVariantType )
+                throw new InvalidEnumException();
+        }
+        $this->VariantType = $VariantType->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return OfferLineVariantType
+     */
+    public function getVariantType()
+    {
+        return $this->VariantType;
     }
 }
 

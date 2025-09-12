@@ -14,7 +14,7 @@ class ReplCustomer extends AbstractDb
 {
     public function _construct()
     {
-        $this->_init('ls_replication_repl_customer', 'repl_customer_id');
+        $this->_init( 'ls_replication_repl_customer', 'repl_customer_id' );
     }
 }
 

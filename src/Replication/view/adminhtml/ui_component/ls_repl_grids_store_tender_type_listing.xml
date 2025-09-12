@@ -20,14 +20,14 @@
                 Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
             </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_store_tender_type_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">repl_lsc_tender_type_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">repl_store_tender_type_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">repl_lsc_tender_type_id</item>
+                        <item name="indexField" xsi:type="string">repl_store_tender_type_id</item>
                     </item>
                 </item>
             </argument>
@@ -93,7 +93,7 @@
                 </item>
             </argument>
         </column>
-        <column name="description">
+        <column name="Name">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -104,7 +104,18 @@
                 </item>
             </argument>
         </column>
-        <column name="code">
+        <column name="OmniTenderTypeId">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Commerce Service Tender Type Id</item>
+                    <item name="sortOrder" xsi:type="number">3</item>
+                </item>
+            </argument>
+        </column>
+        <column name="TenderTypeId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -115,7 +126,7 @@
                 </item>
             </argument>
         </column>
-        <column name="store_no">
+        <column name="StoreID">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

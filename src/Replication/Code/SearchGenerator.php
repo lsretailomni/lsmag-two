@@ -17,7 +17,7 @@ use Magento\Framework\Api\SearchResults;
 class SearchGenerator extends AbstractGenerator
 {
     /** @var string $namespace Namespace for the generated search result model */
-    public static $namespace = 'Ls\\Replication\\Model';
+    public static $namespace = 'Ls\\Replication\\Model\\Central';
 
     /** @var ReplicationOperation $operation Contains the current replication operation context */
     public $operation;

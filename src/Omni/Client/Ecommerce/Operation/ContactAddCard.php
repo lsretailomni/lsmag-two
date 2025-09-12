@@ -78,7 +78,7 @@ class ContactAddCard extends AbstractOperation
     /**
      * @return ContactAddCardRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ContactAddCardRequest();

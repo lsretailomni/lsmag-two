@@ -20,14 +20,14 @@
                 Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
             </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_attribute_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">repl_lsc_attribute_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">repl_attribute_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">repl_lsc_attribute_id</item>
+                        <item name="indexField" xsi:type="string">repl_attribute_id</item>
                     </item>
                 </item>
             </argument>
@@ -93,7 +93,7 @@
                 </item>
             </argument>
         </column>
-        <column name="code">
+        <column name="Code">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -104,7 +104,7 @@
                 </item>
             </argument>
         </column>
-        <column name="description">
+        <column name="Description">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -162,7 +162,7 @@
                 </item>
             </argument>
         </column>
-        <column name="default_type">
+        <column name="DefaultValue">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -173,7 +173,7 @@
                 </item>
             </argument>
         </column>
-        <column name="value_type">
+        <column name="ValueType">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

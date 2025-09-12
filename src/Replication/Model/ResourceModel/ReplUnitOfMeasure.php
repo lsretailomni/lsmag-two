@@ -14,7 +14,7 @@ class ReplUnitOfMeasure extends AbstractDb
 {
     public function _construct()
     {
-        $this->_init('ls_replication_repl_unit_of_measure', 'repl_unit_of_measure_id');
+        $this->_init( 'ls_replication_repl_unit_of_measure', 'repl_unit_of_measure_id' );
     }
 }
 

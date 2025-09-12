@@ -42,11 +42,11 @@ class Tax implements OptionSourceInterface
         $taxDataArray = $this->replicationHelper->getTaxSetup($websiteId);
         if (!empty($taxDataArray)) {
             foreach ($taxDataArray as $taxData) {
-                $taxPercent = number_format($taxData->getVat(), 2);
+                $taxPercent = number_format($taxData->getTaxPercent(), 2);
                 $taxCodes[] = [
-                    'value' => $taxData->getVatBusPostingGroup() . '#' . $taxData->getVatProdPostingGroup() .
+                    'value' => $taxData->getBusinessTaxGroup() . '#' . $taxData->getProductTaxGroup() .
                         '#' . $taxPercent,
-                    'label' => __($taxData->getVatBusPostingGroup()) . ' - ' . __($taxData->getVatProdPostingGroup()) .
+                    'label' => __($taxData->getBusinessTaxGroup()) . ' - ' . __($taxData->getProductTaxGroup()) .
                         ' - ' . $taxPercent . '%'
                 ];
             }

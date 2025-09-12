@@ -14,7 +14,7 @@ class Collection extends AbstractCollection
 {
     public function _construct()
     {
-        $this->_init('Ls\Replication\Model\ReplUnitOfMeasure', 'Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure');
+        $this->_init( 'Ls\Replication\Model\ReplUnitOfMeasure', 'Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure' );
     }
 }
 

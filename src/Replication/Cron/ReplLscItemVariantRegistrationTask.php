@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscItemVariantRegistrationRepositoryInterface as ReplLscItemVariantRegistrationRepository;
-use Ls\Replication\Model\ReplLscItemVariantRegistrationFactory;
-use Ls\Replication\Api\Data\ReplLscItemVariantRegistrationInterface;
+use Ls\Replication\Api\Central\ReplLscItemVariantRegistrationRepositoryInterface as ReplLscItemVariantRegistrationRepository;
+use Ls\Replication\Model\Central\ReplLscItemVariantRegistrationFactory;
+use Ls\Replication\Api\Central\Data\ReplLscItemVariantRegistrationInterface;
 
 class ReplLscItemVariantRegistrationTask extends AbstractReplicationTask
 {
@@ -24,6 +24,8 @@ class ReplLscItemVariantRegistrationTask extends AbstractReplicationTask
     public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_lsc_item_variant_registration';
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_item_variant_registration';
+
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscItemVariantRegistration';
 
     /**
      * @property ReplLscItemVariantRegistrationRepository $repository
@@ -81,17 +83,9 @@ class ReplLscItemVariantRegistrationTask extends AbstractReplicationTask
         $this->dataInterface = $dataInterface;
     }
 
-    public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
+    public function getMainEntity() : ReplLscItemVariantRegistrationInterface
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCItemVariantRegistration($baseUrl, $connectionParams, $companyName);
-        $request->setOperationInput([
-        'storeNo' => $storeNo,
-        'batchSize' => $batchSize,
-        'fullRepl' => $fullRepl,
-        'lastEntryNo' => $lastEntryNo,
-        'lastKey' => $lastKey
-        ]);
-        return $request;
+        return $this->dataInterface;
     }
 
     public function getConfigPath() : string
@@ -109,14 +103,27 @@ class ReplLscItemVariantRegistrationTask extends AbstractReplicationTask
         return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
+    public function getModelName() : string
+    {
+        return self::MODEL_CLASS;
+    }
+
+    public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
+    {
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCItemVariantRegistration($baseUrl, $connectionParams, $companyName);
+        $request->setOperationInput([
+        'storeNo' => $storeNo,
+        'batchSize' => $batchSize,
+        'fullRepl' => $fullRepl,
+        'lastEntryNo' => $lastEntryNo,
+        'lastKey' => $lastKey
+        ]);
+        return $request;
+    }
+
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscItemVariantRegistrationInterface
-    {
-        return $this->dataInterface;
     }
 }
 

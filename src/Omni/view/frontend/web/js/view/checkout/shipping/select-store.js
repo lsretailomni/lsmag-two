@@ -37,8 +37,8 @@ define([
                     if (stores.totalRecords > 0) {
                         self.isSelectStoreVisible(true);
                         if (stores.totalRecords === 1) {
-                            storeId = stores.items[0].no;
-                            storeName = stores.items[0].name;
+                            storeId = stores.items[0].nav_id;
+                            storeName = stores.items[0].Name;
                             self.pickStoreId(storeId);
                             self.pickStoreName(storeName);
                         }
@@ -210,16 +210,16 @@ define([
             }
             var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores),
                 availableStoresOnly = $.parseJSON(window.checkoutConfig.shipping.select_store.available_store_only),
-                storeInfo = $(stores.storesInfo).find('#store-' + store.no).html(),
+                storeInfo = $(stores.storesInfo).find('#store-' + store.nav_id).html(),
                 popupModal = $("#popup-modal"),
                 popUpHtml = '<div class="double-btn-container">';
             if (!availableStoresOnly) {
                 popUpHtml += '<button data-id="'
-                + store.no + '" class="check-store-availability">Check Availability</button><button disabled data-id="'
-                + store.no + '" data-name="' + store.name + '" class="apply-store">Pick Up Here!</button>';
+                + store.nav_id + '" class="check-store-availability">Check Availability</button><button disabled data-id="'
+                + store.nav_id + '" data-name="' + store.Name + '" class="apply-store">Pick Up Here!</button>';
             } else {
                 popUpHtml += '<button data-id="'
-                + store.no + '" data-name="' + store.name + '" class="apply-store">Pick Up Here!</button>';
+                + store.nav_id + '" data-name="' + store.Name + '" class="apply-store">Pick Up Here!</button>';
             }
 
             popUpHtml += '</div><div class="stock-remarks"><div class="custom-loader"></div><ul></ul></div></div><br/>'

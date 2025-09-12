@@ -4,10 +4,27 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use \Ls\Core\Model\Data as LsHelper;
-use \Ls\Core\Model\LSR;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Logger\Logger;
+use Ls\Core\Model\Data as LsHelper;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyDealType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceHandling;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemTriggerFunction;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemUsageCategory;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscMemberType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
+use Ls\Omni\Client\CentralEcommerce\Entity\HierarchyDealView;
+use Ls\Omni\Client\CentralEcommerce\Entity\HierarchyView;
+use Ls\Omni\Client\CentralEcommerce\Entity\LSCDataTranslation;
+use Ls\Omni\Client\CentralEcommerce\Entity\LSCItemHTMLML;
+use Ls\Omni\Client\CentralEcommerce\Entity\LSCWIItemBuffer;
+use Ls\Omni\Client\CentralEcommerce\Entity\LSCWIItemModifier;
+use Ls\Omni\Client\CentralEcommerce\Entity\PeriodicDiscView;
+use Ls\Replication\Helper\ReplicationHelper;
+use Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
@@ -16,6 +33,8 @@ use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * Abstract replication class for all
@@ -153,21 +172,21 @@ abstract class AbstractReplicationTask
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
         } elseif ($confPath == ReplLscWiExtdVariantValuesTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
-        } elseif ($confPath == ReplItemVariantTask::CONFIG_PATH) {
+        } elseif ($confPath == ReplLscItemVariantTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT);
-        } elseif ($confPath == ReplHierarchynodesviewTask::CONFIG_PATH) {
+        } elseif ($confPath == ReplLscHierarchynodesviewTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_CATEGORY);
-        } elseif ($confPath == ReplPeriodicdiscviewTask::CONFIG_PATH) {
+        } elseif ($confPath == ReplLscPeriodicdiscviewTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP);
         } elseif ($confPath == ReplLscValidationPeriodTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_DISCOUNT_VALIDATION);
         } elseif ($confPath == ReplLscWiItemBufferTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_PRODUCT);
-        } elseif ($confPath == ReplHierarchynodeslinkviewTask::CONFIG_PATH) {
+        } elseif ($confPath == ReplLscHierarchynodeslinkviewTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ITEM_UPDATES);
-        } elseif ($confPath == ReplVendorTask::CONFIG_PATH) {
+        } elseif ($confPath == ReplLscVendorTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_VENDOR);
-        } elseif ($confPath == ReplVendoritemviewTask::CONFIG_PATH) {
+        } elseif ($confPath == ReplLscVendoritemviewTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE);
         }
     }
@@ -240,6 +259,109 @@ abstract class AbstractReplicationTask
                 false
             ));
         }
+
+        if ($confPath == ReplLscHierarchyviewTask::CONFIG_PATH ||
+            $confPath == ReplLscHierarchynodeslinkviewTask::CONFIG_PATH
+        ) {
+            $value = $this->getConstantByIndex(HierarchyType::class, (int) $source->getData(HierarchyView::TYPE));
+            $source->setData(HierarchyView::TYPE, $value);
+        } elseif ($confPath == ReplLscPeriodicdiscviewTask::CONFIG_PATH) {
+            $value1 = $this->getConstantByIndex(
+                DiscountValueType::class,
+                (int) $source->getData(PeriodicDiscView::DISCOUNT_TYPE)
+            );
+            $value2 = $this->getConstantByIndex(
+                ReplDiscMemberType::class,
+                (int) $source->getData(PeriodicDiscView::MEMBER_TYPE)
+            );
+            $value3 = $this->getConstantByIndex(
+                ReplDiscountType::class,
+                (int) $source->getData(PeriodicDiscView::TYPE)
+            );
+            $source->setData(PeriodicDiscView::DISCOUNT_TYPE, $value1);
+            $source->setData(PeriodicDiscView::MEMBER_TYPE, $value2);
+            $source->setData(PeriodicDiscView::TYPE, $value3);
+        } elseif ($confPath == ReplLscWiItemBufferTask::CONFIG_PATH) {
+            if (!empty($source->getData(LSCWIItemBuffer::ITEM_HTML))) {
+                $source->setData(
+                    LSCWIItemBuffer::ITEM_HTML,
+                    base64_decode($source->getData(LSCWIItemBuffer::ITEM_HTML))
+                );
+            }
+        } elseif ($confPath == ReplLscItemHtmlMlTask::CONFIG_PATH) {
+            if (!empty($source->getData(LSCItemHTMLML::HTML))) {
+                $source->setData(
+                    LSCDataTranslation::TRANSLATION,
+                    base64_decode($source->getData(LSCItemHTMLML::HTML))
+                );
+            }
+
+            $source->setData(
+                LSCDataTranslation::TRANSLATION_ID,
+                LSR::SC_TRANSLATION_ID_ITEM_HTML
+            );
+            $source->setData(
+                LSCDataTranslation::KEY,
+                $source->getData(LSCItemHTMLML::ITEM_NO)
+            );
+            $source->setData(
+                LSCDataTranslation::LANGUAGE_CODE,
+                $source->getData(LSCItemHTMLML::LANGUAGE)
+            );
+        } elseif ($confPath == ReplLscOfferHtmlMlTask::CONFIG_PATH) {
+            if (!empty($source->getData(\Ls\Omni\Client\CentralEcommerce\Entity\LSCOfferHTMLML::HTML))) {
+                $source->setData(
+                    LSCDataTranslation::TRANSLATION,
+                    base64_decode($source->getData(\Ls\Omni\Client\CentralEcommerce\Entity\LSCOfferHTMLML::HTML))
+                );
+            }
+
+            $source->setData(
+                LSCDataTranslation::TRANSLATION_ID,
+                LSR::SC_TRANSLATION_ID_DEAL_ITEM_HTML
+            );
+            $source->setData(
+                LSCDataTranslation::KEY,
+                $source->getData(\Ls\Omni\Client\CentralEcommerce\Entity\LSCOfferHTMLML::OFFER_NO)
+            );
+            $source->setData(
+                LSCDataTranslation::LANGUAGE_CODE,
+                $source->getData(\Ls\Omni\Client\CentralEcommerce\Entity\LSCOfferHTMLML::LANGUAGE)
+            );
+        } elseif ($confPath == ReplLscWiItemModifierTask::CONFIG_PATH) {
+            $value1 = $this->getConstantByIndex(
+                ItemModifierPriceType::class,
+                (int) $source->getData(LSCWIItemModifier::PRICE_TYPE)
+            );
+            $value2 = $this->getConstantByIndex(
+                ItemModifierPriceHandling::class,
+                (int) $source->getData(LSCWIItemModifier::PRICE_HANDLING)
+            );
+            $value3 = $this->getConstantByIndex(
+                ItemTriggerFunction::class,
+                (int) $source->getData(LSCWIItemModifier::TRIGGER_FUNCTION)
+            );
+            $value4 = $this->getConstantByIndex(
+                ItemModifierType::class,
+                (int) $source->getData(LSCWIItemModifier::USAGE_SUBCATEGORY)
+            );
+            $value5 = $this->getConstantByIndex(
+                ItemUsageCategory::class,
+                (int) $source->getData(LSCWIItemModifier::USAGE_CATEGORY)
+            );
+
+            $source->setData(LSCWIItemModifier::PRICE_TYPE, $value1);
+            $source->setData(LSCWIItemModifier::PRICE_HANDLING, $value2);
+            $source->setData(LSCWIItemModifier::TRIGGER_FUNCTION, $value3);
+            $source->setData(LSCWIItemModifier::USAGE_SUBCATEGORY, $value4);
+            $source->setData(LSCWIItemModifier::USAGE_CATEGORY, $value5);
+        } elseif ($confPath == ReplLscHierarchydealviewTask::CONFIG_PATH) {
+            $value1 = $this->getConstantByIndex(
+                HierarchyDealType::class,
+                (int) $source->getData(HierarchyDealView::TYPE)
+            );
+            $source->setData(HierarchyDealView::TYPE, $value1);
+        }
         $checksum             = $this->getHashGivenString($source->getData());
         $uniqueAttributesHash = $this->generateIdentityValue($uniqueAttributes, $source, $properties);
         $entityArray          = $this->checkEntityExistByAttributes(
@@ -273,12 +395,57 @@ abstract class AbstractReplicationTask
             foreach ($properties as $propertyIndex => $property) {
                 $entity->setData($property, $source->getData($propertyIndex));
             }
+
+            $mappings = \Ls\Replication\Helper\ReplicationHelper::DB_TABLES_MAPPING;
+            foreach ($mappings as $mapping) {
+                if (\Ls\Replication\Helper\ReplicationHelper::TABLE_NAME_PREFIX . $mapping['table_name'] ==
+                    $entity->getResource()->getMainTable()
+                ) {
+                    $columnsMapping = $mapping['columns_mapping'];
+                    foreach ($columnsMapping as $columnName => $columnMapping) {
+                        if ($entity->hasData($columnName)) {
+                            $entity->setData(
+                                is_array($columnMapping) ? $columnMapping['name'] : $columnMapping,
+                                $entity->getData($columnName)
+                            );
+                        }
+                    }
+                    break;
+                }
+            }
         }
         try {
             $this->getRepository()->save($entity);
+            $entity->setData([]);
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * Get constant name by index
+     *
+     * @param string $class
+     * @param int $index
+     * @return string|null
+     * @throws ReflectionException
+     */
+    public function getConstantByIndex(string $class, int $index): ?string
+    {
+        $reflection = new ReflectionClass($class);
+
+        // Get constants in the order they are defined
+        $constants = $reflection->getReflectionConstants();
+
+        // Build ordered list [ "ITEM_DEAL" => "ItemDeal", ... ]
+        $orderedConstants = [];
+        foreach ($constants as $constant) {
+            $orderedConstants[$constant->getName()] = $constant->getValue();
+        }
+
+        // Get by numeric index
+        $values = array_values($orderedConstants);
+        return $values[$index] ?? null;
     }
 
     /**
@@ -289,8 +456,9 @@ abstract class AbstractReplicationTask
     public function getProperties()
     {
         if ($this->properties == null) {
+            $modelClass = $this->getModelName();
             // @codingStandardsIgnoreStart
-            $this->properties = $this->getMainEntity()::getDbColumnsMapping();
+            $this->properties = $this->getModelName()::getDbColumnsMapping();
             // @codingStandardsIgnoreEnd
         }
         return $this->properties;
@@ -319,8 +487,13 @@ abstract class AbstractReplicationTask
         if (empty($result)) {
             $criteria = $this->getSearchCriteria();
 
-            foreach ($uniqueAttributes as $attribute) {
-                $key = array_search($attribute, $properties);
+            foreach ($uniqueAttributes as $index => $attribute) {
+                $key = array_search($index, $properties);
+
+                if ($key === false) {
+                    $key = $index;
+                }
+
                 $sourceValue = $source->getData($key);
 
                 if ($sourceValue == "") {
@@ -360,17 +533,18 @@ abstract class AbstractReplicationTask
     public function generateIdentityValue($uniqueAttributes, $source, $properties)
     {
         $uniqueAttributesHash = [];
-
+        $i = 0;
         foreach ($uniqueAttributes as $index => $attribute) {
-            $key = array_search($attribute, $properties);
+            $key = array_search($index, $properties);
 
             if (!$key) {
-                $sourceValue = $source->getData($attribute);
+                $sourceValue = $source->getData($index);
             } else {
                 $sourceValue = $source->getData($key);
             }
 
-            $uniqueAttributesHash[] = ($sourceValue !== "" ? $sourceValue : $attribute) . '#' . $index;
+            $uniqueAttributesHash[] = ($sourceValue !== "" ? $sourceValue : $index) . '#' . $i;
+            $i++;
         }
 
         $uniqueAttributesHash = implode("$", $uniqueAttributesHash);
@@ -665,6 +839,10 @@ abstract class AbstractReplicationTask
                 if ($this->isLastKeyAlwaysZero($storeId)) {
                     return;
                 }
+                if ($lastEntryNo === 0) {
+                    $lastEntryNo = (int) $lastKey;
+                    $lastKey = "";
+                }
             }
 
             $request = $this->makeRequest(
@@ -756,7 +934,8 @@ abstract class AbstractReplicationTask
         } else {
             $confPath = $this->getConfigPath();
             if ($confPath == ReplLscDataTranslationTask::CONFIG_PATH ||
-                $confPath == ReplLscItemHtmlMlTask::CONFIG_PATH
+                $confPath == ReplLscItemHtmlMlTask::CONFIG_PATH ||
+                $confPath == ReplLscOfferHtmlMlTask::CONFIG_PATH
             ) {
                 $this->defaultScope = ScopeInterface::SCOPE_STORES;
             }

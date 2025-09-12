@@ -17,7 +17,7 @@ use Laminas\Code\Generator\MethodGenerator;
 class ResourceModelGenerator extends AbstractGenerator
 {
     /** @var string */
-    public static string $namespace = 'Ls\\Replication\\Model\\ResourceModel';
+    public static string $namespace = 'Ls\\Replication\\Model\\Central\\ResourceModel';
 
     /** @var ReplicationOperation */
     public ReplicationOperation $operation;
@@ -44,15 +44,14 @@ class ResourceModelGenerator extends AbstractGenerator
 
         $constructorMethod = new MethodGenerator();
         $constructorMethod->setName('_construct');
-
         $indexColumn = $this->operation->getTableName() . '_id';
         $constructorMethod->setBody("\$this->_init('ls_replication_{$this->operation->getTableName()}', '$indexColumn');");
-
         $this->class->setNamespaceName(self::$namespace);
-        $this->class->addUse(AbstractDb::class);
         $this->class->setName($this->getName());
+        $this->class->addUse(AbstractDb::class);
         $this->class->setExtendedClass(AbstractDb::class);
         $this->class->addMethodFromGenerator($constructorMethod);
+
 
         $content = $this->file->generate();
 

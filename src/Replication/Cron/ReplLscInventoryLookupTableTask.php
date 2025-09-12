@@ -8,82 +8,20 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscInventoryLookupTableRepositoryInterface as ReplLscInventoryLookupTableRepository;
-use Ls\Replication\Model\ReplLscInventoryLookupTableFactory;
-use Ls\Replication\Api\Data\ReplLscInventoryLookupTableInterface;
-
-class ReplLscInventoryLookupTableTask extends AbstractReplicationTask
+class ReplLscInventoryLookupTableTask extends ReplEcommInventoryStatusTask
 {
-    public const JOB_CODE = 'replication_repl_lsc_inventory_lookup_table';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_inventory_status';
 
-    public const CONFIG_PATH = 'ls_mag/replication/repl_lsc_inventory_lookup_table';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscInventoryLookupTable';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_lsc_inventory_lookup_table';
-
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_lsc_inventory_lookup_table';
-
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_inventory_lookup_table';
-
-    /**
-     * @property ReplLscInventoryLookupTableRepository $repository
-     */
-    protected $repository = null;
-
-    /**
-     * @property ReplLscInventoryLookupTableFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplLscInventoryLookupTableInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplLscInventoryLookupTableRepository $repository)
+    public function getModelName() : string
     {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplLscInventoryLookupTableRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplLscInventoryLookupTableFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplLscInventoryLookupTableFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplLscInventoryLookupTableInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplLscInventoryLookupTableInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplLscInventoryLookupTableFactory $factory, ReplLscInventoryLookupTableRepository $repository, ReplLscInventoryLookupTableInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
+        return self::MODEL_CLASS;
     }
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCInventoryLookupTable($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCInventoryLookupTable($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,
@@ -94,29 +32,9 @@ class ReplLscInventoryLookupTableTask extends AbstractReplicationTask
         return $request;
     }
 
-    public function getConfigPath() : string
-    {
-        return self::CONFIG_PATH;
-    }
-
-    public function getConfigPathStatus() : string
-    {
-        return self::CONFIG_PATH_STATUS;
-    }
-
-    public function getConfigPathLastExecute() : string
-    {
-        return self::CONFIG_PATH_LAST_EXECUTE;
-    }
-
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscInventoryLookupTableInterface
-    {
-        return $this->dataInterface;
     }
 }
 

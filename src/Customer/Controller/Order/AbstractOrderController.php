@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ls\Customer\Controller\Order;
 
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\App\Request\Http;

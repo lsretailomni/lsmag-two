@@ -45,58 +45,81 @@ class CronJobGenerator extends AbstractGenerator
      */
     public function generate(): string
     {
+        $replicationEntityMapping = ReplicationHelper::CRON_JOBS_MAPPING;
+        $modelName = $this->operation->getModelName();
+        $mappingExists = false;
+        $mappedModelName = $modelName;
+        if (isset($replicationEntityMapping[$this->operation->getName(true)])) {
+            $mappingExists = true;
+            $mappedModelName = $replicationEntityMapping[$this->operation->getName(true)];
+        }
         $this->class->setName($this->operation->getJobName());
         $this->class->setNamespaceName($this->operation->getJobNamespace());
-        $this->class->setExtendedClass(AbstractReplicationTask::class);
-
-        $this->class->addUse(LsHelper::class, 'LsHelper');
-        $this->class->addUse($this->operation->getRepositoryInterfaceFqn(), $this->operation->getRepositoryName());
-        $this->class->addUse($this->operation->getFactoryFqn());
-        $this->class->addUse($this->operation->getInterfaceFqn());
+        $this->class->setExtendedClass(
+            $mappingExists ?
+                $this->getMappedCronName($mappedModelName) :
+                AbstractReplicationTask::class
+        );
 
         $tableName = $this->operation->getIdenticalTableCronJob($this->operation->getName());
         $jobCode = $tableName ? 'replication_' . $tableName : $this->operation->getJobId();
-        $tableName = $tableName ?: $this->operation->getTableName();
+        $tableName = $tableName ?: ($mappingExists ?
+            strtolower($this->caseHelper->toSnakeCase('Repl'. $mappedModelName)) : $this->operation->getTableName()
+        );
 
-        $this->class->addConstant('JOB_CODE', $jobCode);
-        $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$tableName}");
-        $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$tableName}");
-        $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE', "ls_mag/replication/last_execute_{$tableName}");
+        if (!$mappingExists) {
+            $this->class->addUse(LsHelper::class, 'LsHelper');
+            $this->class->addUse($this->operation->getRepositoryInterfaceFqn(), $this->operation->getRepositoryName());
+            $this->class->addUse($this->operation->getFactoryFqn());
+            $this->class->addUse($this->operation->getInterfaceFqn());
+
+            $this->class->addConstant('JOB_CODE', $jobCode);
+            $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$tableName}");
+            $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$tableName}");
+            $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE', "ls_mag/replication/last_execute_{$tableName}");
+        }
+
         $this->class->addConstant('CONFIG_PATH_LAST_ENTRY_NO', "ls_mag/replication/last_entry_no_{$tableName}");
+        $this->class->addConstant('MODEL_CLASS', $this->getMainEntityFqn($modelName));
 
-        $this->createProperty(
-            'repository',
-            $this->operation->getRepositoryName(),
-            [PropertyGenerator::FLAG_PROTECTED],
-            [],
-            true
-        );
-        $this->createProperty(
-            'factory',
-            $this->operation->getFactoryName(),
-            [PropertyGenerator::FLAG_PROTECTED],
-            [],
-            true
-        );
-        $this->createProperty(
-            'dataInterface',
-            $this->operation->getInterfaceName(),
-            [PropertyGenerator::FLAG_PROTECTED],
-            [],
-            true
-        );
+        if (!$mappingExists) {
+            $this->createProperty(
+                'repository',
+                $this->operation->getRepositoryName(),
+                [PropertyGenerator::FLAG_PROTECTED],
+                [],
+                true
+            );
+            $this->createProperty(
+                'factory',
+                $this->operation->getFactoryName(),
+                [PropertyGenerator::FLAG_PROTECTED],
+                [],
+                true
+            );
+            $this->createProperty(
+                'dataInterface',
+                $this->operation->getInterfaceName(),
+                [PropertyGenerator::FLAG_PROTECTED],
+                [],
+                true
+            );
+        }
 
         $repositoryName = $this->operation->getRepositoryName();
         $factoryName = $this->operation->getFactoryName();
         $dataInterface = $this->operation->getInterfaceName();
 
-        $this->class->addMethodFromGenerator($this->getConstructor());
+        if (!$mappingExists) {
+            $this->class->addMethodFromGenerator($this->getConstructor());
+            $this->class->addMethodFromGenerator($this->getMainEntity());
+            $this->class->addMethodFromGenerator($this->getConfigPath());
+            $this->class->addMethodFromGenerator($this->getConfigPathStatus());
+            $this->class->addMethodFromGenerator($this->getConfigPathLastExecute());
+        }
+        $this->class->addMethodFromGenerator($this->getModelName());
         $this->class->addMethodFromGenerator($this->getMakeRequest());
-        $this->class->addMethodFromGenerator($this->getConfigPath());
-        $this->class->addMethodFromGenerator($this->getConfigPathStatus());
-        $this->class->addMethodFromGenerator($this->getConfigPathLastExecute());
         $this->class->addMethodFromGenerator($this->getConfigPathLastEntryNo());
-        $this->class->addMethodFromGenerator($this->getMainEntity());
 
         $content = $this->file->generate();
 
@@ -117,7 +140,8 @@ class CronJobGenerator extends AbstractGenerator
             "\\{$dataInterface} \$dataInterface" => "{$dataInterface} \$dataInterface",
             ": \\{$dataInterface}" => ": {$dataInterface}",
             ": \\{$repositoryName}" => ": {$repositoryName}",
-            ": \\{$factoryName}" => ": {$factoryName}"
+            ": \\{$factoryName}" => ": {$factoryName}",
+            "\\{$this->getMappedCronName($mappedModelName)}" => "{$this->getMappedCronName($mappedModelName)}"
         ];
 
         return str_replace(array_keys($replaceMap), array_values($replaceMap), $content);
@@ -250,6 +274,20 @@ CODE
     }
 
     /**
+     * Get last entry no config path constant.
+     *
+     * @return MethodGenerator
+     */
+    public function getModelName(): MethodGenerator
+    {
+        return (new MethodGenerator())
+            ->setName('getModelName')
+            ->setVisibility(MethodGenerator::FLAG_PROTECTED)
+            ->setBody('return self::MODEL_CLASS;')
+            ->setReturnType('string');
+    }
+
+    /**
      * Get main entity reference.
      *
      * @return MethodGenerator
@@ -261,5 +299,33 @@ CODE
             ->setVisibility(MethodGenerator::FLAG_PROTECTED)
             ->setBody('return $this->dataInterface;')
             ->setReturnType($this->operation->getInterfaceName());
+    }
+
+    /**
+     * Get cron job class name
+     *
+     * @param $mappedModel
+     * @return string
+     */
+    public function getMappedCronName($mappedModel): string
+    {
+        return 'Repl'. 'Ecomm'. $mappedModel . 'Task';
+    }
+
+    /**
+     * Get fully qualified name of model
+     *
+     * @param $mappedModel
+     * @return string
+     */
+    public function getMainEntityFqn($mappedModel): string
+    {
+        $replicationEntityMapping = ReplicationHelper::ENTITY_MAPPING;
+
+        if (isset($replicationEntityMapping[$mappedModel])) {
+            $mappedModel = $replicationEntityMapping[$mappedModel];
+        }
+
+        return AbstractGenerator::fqn(ReplicationOperation::BASE_MODEL_NAMESPACE, $mappedModel);
     }
 }
