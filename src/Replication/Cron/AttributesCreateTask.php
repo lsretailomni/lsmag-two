@@ -700,7 +700,7 @@ class AttributesCreateTask
         //  create attribute if not exist.
         if (!$attribute || !$attribute->getAttributeId()) {
             $valueTypeArray = $this->getValueTypeArray();
-            $frontendInput  = $valueTypeArray[$replAttribute->getValueType()];
+            $frontendInput  = $valueTypeArray[$replAttribute->getValueType() ?? 0];
             $attributeData  = [
                 'attribute_code'                => $formattedCode,
                 'is_global'                     => ScopedAttributeInterface::SCOPE_STORE,
