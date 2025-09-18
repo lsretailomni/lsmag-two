@@ -2958,6 +2958,21 @@ class ReplicationHelper extends AbstractHelper
         return in_array($mimeType, $this->defaultMimeTypes);
     }
 
+    /**
+     * Get image format
+     *
+     * @param $format
+     * @return string
+     */
+    public function getImageFormat($format)
+    {
+        $format = strtolower($format);
+        $array = explode('image/', $format);
+        $format = end($array);
+
+        return $format;
+    }
+
     /** return SortOrder object based on the parameters provided
      * @param $field
      * @param string $direction

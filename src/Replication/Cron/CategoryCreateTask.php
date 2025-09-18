@@ -626,9 +626,7 @@ class CategoryCreateTask
             if (!is_dir($offerpath)) {
                 $this->file->mkdir($offerpath, 0775);
             }
-            $format = strtolower($result['format']);
-            $array = explode('image/', $format);
-            $format      = end($array);
+            $format = $this->replicationHelper->getImageFormat($result['format']);
             $imageName   = $this->oSlug($imageId);
             $output_file = "{$imageName}.$format";
             $file        = "{$offerpath}{$output_file}";
