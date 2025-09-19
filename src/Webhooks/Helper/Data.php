@@ -427,14 +427,15 @@ class Data
     }
 
     /**
-     * Get point rate
+     * Get points discount
      *
-     * @return float|GetPointRateResponse|ResponseInterface|null
+     * @param $loyaltyPoints
+     * @return float|int
      * @throws NoSuchEntityException
      */
-    public function getPointRate()
+    public function getLsPointsDiscount($loyaltyPoints)
     {
-        return $this->loyaltyHelper->getPointRate();
+        return $this->loyaltyHelper->getLsPointsDiscount($loyaltyPoints);
     }
 
     /**
