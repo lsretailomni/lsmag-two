@@ -380,7 +380,7 @@ class Data extends AbstractHelper
         $loyaltyAmount = 0;
         try {
             if ($loyaltyPoints > 0) {
-                $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+                $loyaltyAmount = $this->loyaltyHelper->getLsPointsDiscount($loyaltyPoints);
             }
             $quote = $this->cartRepository->get($this->checkoutSession->getQuoteId());
             if (!empty($basketData)) {
@@ -411,7 +411,7 @@ class Data extends AbstractHelper
             $loyaltyAmount = 0;
             if (!empty($basketData) && is_object($basketData)) {
                 if ($loyaltyPoints > 0) {
-                    $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+                    $loyaltyAmount = $this->loyaltyHelper->getLsPointsDiscount($loyaltyPoints) ;
                 }
                 $quote          = $this->cartRepository->get($this->checkoutSession->getQuoteId());
                 $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
@@ -688,11 +688,7 @@ class Data extends AbstractHelper
                 }
             }
 
-            $storeId = $invoiceCreditMemo->getOrder()->getStoreId();
-
-            $pointRate         = ($this->loyaltyHelper->getPointRate($storeId)) ?
-                $this->loyaltyHelper->getPointRate($storeId) : 0;
-            $totalPointsAmount = $pointsSpent * $pointRate;
+            $totalPointsAmount = $this->loyaltyHelper->getLsPointsDiscount($pointsSpent);
             $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
             $pointsSpent       = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
             $giftCardAmount    = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;

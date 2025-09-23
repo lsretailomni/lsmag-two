@@ -191,7 +191,7 @@ class Payment
                         $totalAmount = $totalAmount - $order->getLsGiftCardAmountUsed();
                     }
                     if ($order->getLsPointsSpent() > 0) {
-                        $totalAmount = $totalAmount - ($order->getLsPointsSpent() * $this->helper->getPointRate());
+                        $totalAmount = $totalAmount - $this->helper->getLsPointsDiscount($order->getLsPointsSpent());
                     }
                 }
 

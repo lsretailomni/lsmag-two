@@ -219,7 +219,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         $amount = 0;
         $pointDiscount = 0;
         if ($quote->getLsPointsSpent() > 0) {
-            $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $pointDiscount = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
             if ($pointDiscount > 0.001) {
                 $quote->setLsPointsDiscount($pointDiscount);
             }

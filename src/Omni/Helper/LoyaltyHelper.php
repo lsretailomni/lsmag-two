@@ -324,37 +324,31 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Convert Point Rate into Values
      *
-     * @return float|Entity\GetPointRateResponse|ResponseInterface|null
+     * @param $storeId
+     * @param $currencyCode
+     * @return float|Entity\GetPointRateResponse|ResponseInterface|string|null
      * @throws NoSuchEntityException
      */
-    public function getPointRate($storeId = null)
+    public function getPointRate($storeId = null, $currencyCode = null)
     {
         if (!$storeId) {
             $storeId = $this->lsr->getCurrentStoreId();
         }
 
         $response = null;
+        if (!$currencyCode) {
+            $currencyCode = $this->lsr->getStoreCurrencyCode();
+        }
 
         if ($this->lsr->isLSR($storeId) && $this->isEnabledLoyaltyPoints()) {
-            $cacheId  = LSR::POINTRATE . $storeId;
+            $cacheId  = LSR::POINTRATE . $currencyCode . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($response !== false) {
                 return $this->formatValue($response);
             }
-            // @codingStandardsIgnoreStart
-            $request = new Operation\GetPointRate();
-            $entity  = new Entity\GetPointRate();
-            // @codingStandardsIgnoreEnd
 
-            $currency = $this->lsr->getStoreCurrencyCode();
-            $entity->setCurrency($currency);
-
-            try {
-                $response = $request->execute($entity);
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
-            }
+            $response = $this->fetchGetPointsRate($currencyCode);
             if (!empty($response)) {
                 $this->cacheHelper->persistContentInCache(
                     $cacheId,
@@ -366,6 +360,31 @@ class LoyaltyHelper extends AbstractHelperOmni
                 return $this->formatValue($response->getResult());
             }
         }
+
+        return $response;
+    }
+
+    /**
+     * Fetch point rate from central
+     *
+     * @param $currencyCode
+     * @return Entity\GetPointRateResponse|ResponseInterface|null
+     */
+    public function fetchGetPointsRate($currencyCode)
+    {
+        // @codingStandardsIgnoreStart
+        $request = new Operation\GetPointRate();
+        $entity  = new Entity\GetPointRate();
+        // @codingStandardsIgnoreEnd
+
+        $entity->setCurrency($currencyCode);
+        $response = null;
+        try {
+            $response = $request->execute($entity);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
         return $response;
     }
 
@@ -777,6 +796,20 @@ class LoyaltyHelper extends AbstractHelperOmni
             LSR::IMAGE_CACHE_INDEPENDENT_OF_STORE_ID,
             $this->lsr->getCurrentStoreId()
         );
+    }
+
+    /**
+     * Get Ls points discount
+     *
+     * @param $pointsSpent
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    public function getLsPointsDiscount($pointsSpent)
+    {
+        $loyaltyPointsRate = $this->getPointRate(null, 'LOY');
+
+        return $pointsSpent * (1 / $loyaltyPointsRate);
     }
 
     /**

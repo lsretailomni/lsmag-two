@@ -49,7 +49,7 @@ class SalesObserver implements ObserverInterface
         $basketData = $this->basketHelper->getBasketSessionValue();
 
         if (!empty($basketData)) {
-            $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $pointDiscount  = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
             $giftCardAmount = $quote->getLsGiftCardAmountUsed();
 
             if ($pointDiscount > 0.001) {

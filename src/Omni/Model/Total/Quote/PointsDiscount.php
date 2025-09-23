@@ -31,7 +31,6 @@ class PointsDiscount extends AbstractTotal
     }
 
     /**
-     *
      * For fetching ls point discount
      *
      * @param Quote $quote
@@ -44,7 +43,7 @@ class PointsDiscount extends AbstractTotal
         $totals      = [];
         $pointsSpent = $quote->getLsPointsSpent();
         if ($pointsSpent > 0) {
-            $pointDiscount = $pointsSpent * $this->loyaltyHelper->getPointRate();
+            $pointDiscount = $this->loyaltyHelper->getLsPointsDiscount($pointsSpent);
             if ($pointDiscount > 0.001) {
                 $totals[] = [
                     'code'  => $this->getCode(),
