@@ -126,10 +126,25 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode RECEIPT_NO_MISSING()
  * @$method static StatusCode LOOKUP_VALUES_MISSING()
  * @$method static StatusCode CONTACT_IS_BLOCKED()
+ * @$method static StatusCode INV_TRANS_SEND_NO_LINES()
+ * @$method static StatusCode INV_TRANS_SEND_ALREADY_RECEIVED()
+ * @$method static StatusCode INV_TRANS_SEND_WORK_SHEET_NOT_FOUND()
+ * @$method static StatusCode INV_TRANS_SEND_WORK_SHEET_SEQ_NO_NOT_UNIQUE()
+ * @$method static StatusCode INV_TRANS_SEND_NO_NOT_UNIQUE()
+ * @$method static StatusCode INV_TRANS_SEND_UNEXPECTED_END()
+ * @$method static StatusCode INV_TRANS_SEND_TOO_MANY_LINES()
+ * @$method static StatusCode INV_TRANS_SEND_AREA_CODE_MISSING()
  * @$method static StatusCode ORDER_ALREADY_EXIST()
  * @$method static StatusCode ORDER_ID_NOT_FOUND()
  * @$method static StatusCode PAYMENT_ERROR()
  * @$method static StatusCode PAYMENT_AUTH_ERROR()
+ * @$method static StatusCode P_O_S_TERMINAL_I_D_MANDATORY()
+ * @$method static StatusCode APP_ID_MANDATORY()
+ * @$method static StatusCode APP_VERSION_MANDATORY()
+ * @$method static StatusCode DEVICE_UNIT_MANDATORY()
+ * @$method static StatusCode SIGNATURE_INVALID()
+ * @$method static StatusCode P_O_S_TERMINAL_NOT_FOUND()
+ * @$method static StatusCode NO_AVAILABLE_UNIT_FOUND()
  * @$method static StatusCode SERVER_REFUSING_TO_RESPOND()
  * @$method static StatusCode DINING_TABLE_STATUS_NOT_ABLE_TO_CHANGE()
  * @$method static StatusCode CANNOT_CHANGE_NUMBER_OF_COVER_ON_TABLE_NOT_SEATED()
@@ -172,6 +187,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode NAV_W_S_ERROR()
  * @$method static StatusCode NAV_W_S_QRY_ERROR()
  * @$method static StatusCode NAV_O_DATA_ERROR()
+ * @$method static StatusCode NAV_O_DATA_REPLICATION_ERROR()
  * @$method static StatusCode CUSTOMER_ORDER_NOT_FOUND()
  * @$method static StatusCode CUSTOMER_ORDER_ITEM_NOT_FOUND()
  * @$method static StatusCode CUSTOMER_ORDER_ITEM_ALREADY_IN_BOX()
@@ -410,6 +426,22 @@ class StatusCode extends Enum
 
     public const CONTACT_IS_BLOCKED = 'ContactIsBlocked';
 
+    public const INV_TRANS_SEND_NO_LINES = 'InvTransSendNoLines';
+
+    public const INV_TRANS_SEND_ALREADY_RECEIVED = 'InvTransSendAlreadyReceived';
+
+    public const INV_TRANS_SEND_WORK_SHEET_NOT_FOUND = 'InvTransSendWorkSheetNotFound';
+
+    public const INV_TRANS_SEND_WORK_SHEET_SEQ_NO_NOT_UNIQUE = 'InvTransSendWorkSheetSeqNoNotUnique';
+
+    public const INV_TRANS_SEND_NO_NOT_UNIQUE = 'InvTransSendNoNotUnique';
+
+    public const INV_TRANS_SEND_UNEXPECTED_END = 'InvTransSendUnexpectedEnd';
+
+    public const INV_TRANS_SEND_TOO_MANY_LINES = 'InvTransSendTooManyLines';
+
+    public const INV_TRANS_SEND_AREA_CODE_MISSING = 'InvTransSendAreaCodeMissing';
+
     public const ORDER_ALREADY_EXIST = 'OrderAlreadyExist';
 
     public const ORDER_ID_NOT_FOUND = 'OrderIdNotFound';
@@ -417,6 +449,20 @@ class StatusCode extends Enum
     public const PAYMENT_ERROR = 'PaymentError';
 
     public const PAYMENT_AUTH_ERROR = 'PaymentAuthError';
+
+    public const P_O_S_TERMINAL_I_D_MANDATORY = 'POSTerminalIDMandatory';
+
+    public const APP_ID_MANDATORY = 'AppIdMandatory';
+
+    public const APP_VERSION_MANDATORY = 'AppVersionMandatory';
+
+    public const DEVICE_UNIT_MANDATORY = 'DeviceUnitMandatory';
+
+    public const SIGNATURE_INVALID = 'SignatureInvalid';
+
+    public const P_O_S_TERMINAL_NOT_FOUND = 'POSTerminalNotFound';
+
+    public const NO_AVAILABLE_UNIT_FOUND = 'NoAvailableUnitFound';
 
     public const SERVER_REFUSING_TO_RESPOND = 'ServerRefusingToRespond';
 
@@ -501,6 +547,8 @@ class StatusCode extends Enum
     public const NAV_W_S_QRY_ERROR = 'NavWSQryError';
 
     public const NAV_O_DATA_ERROR = 'NavODataError';
+
+    public const NAV_O_DATA_REPLICATION_ERROR = 'NavODataReplicationError';
 
     public const CUSTOMER_ORDER_NOT_FOUND = 'CustomerOrderNotFound';
 
