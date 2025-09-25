@@ -59,7 +59,7 @@ class RestrictionGenerator extends AbstractOmniGenerator
      */
     public function generate()
     {
-        $serviceFolder = ucfirst($this->getServiceType()->getValue());
+        $serviceFolder = 'CentralEcommerce';
         $baseNamespace = self::fqn('Ls', 'Omni', 'Client', $serviceFolder);
         $entityNamespace = self::fqn($baseNamespace, 'Entity', 'Enum');
         $restrictionName = $this->restriction->getName();

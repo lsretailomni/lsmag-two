@@ -7,12 +7,12 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\MobileTransaction;
-use \Ls\Omni\Client\Ecommerce\Entity\MobileTransactionLine;
-use \Ls\Omni\Client\Ecommerce\Entity\MobileTransDiscountLine;
+use \Ls\Omni\Client\CentralEcommerce\Entity\MobileTransaction;
+use \Ls\Omni\Client\CentralEcommerce\Entity\MobileTransactionLine;
+use \Ls\Omni\Client\CentralEcommerce\Entity\MobileTransDiscountLine;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
-use \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
-use \Ls\Omni\Client\Ecommerce\Operation\EcomCalculateBasket;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootMobileTransaction;
+use \Ls\Omni\Client\CentralEcommerce\Operation\EcomCalculateBasket;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -561,7 +561,7 @@ class BasketHelper extends AbstractHelperOmni
             ->setCurrencyfactor((float)$this->loyaltyHelper->getPointRate());
         $operation = $this->createInstance(EcomCalculateBasket::class);
         $operation->setOperationInput(
-            [Entity\EcomCalculateBasket::MOBILE_TRANSACTION_XML => $oneList]
+            [\Ls\Omni\Client\CentralEcommerce\Entity\EcomCalculateBasket::MOBILE_TRANSACTION_XML => $oneList]
         );
         $response = $operation->execute();
 

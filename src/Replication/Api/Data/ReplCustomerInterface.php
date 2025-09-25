@@ -10,530 +10,510 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplCustomerInterface
 {
-    public static function getDbColumnsMapping() : array;
-
-    public function getNo() : ?string;
-
-    public function setNo(?string $value);
-
-    public function getName() : ?string;
-
-    public function setName(?string $value);
-
-    public function getSearchName() : ?string;
-
-    public function setSearchName(?string $value);
-
-    public function getName2() : ?string;
-
-    public function setName2(?string $value);
-
-    public function getAddress() : ?string;
-
-    public function setAddress(?string $value);
-
-    public function getAddress2() : ?string;
-
-    public function setAddress2(?string $value);
-
-    public function getCity() : ?string;
-
-    public function setCity(?string $value);
-
-    public function getContact() : ?string;
-
-    public function setContact(?string $value);
-
-    public function getPhoneNo() : ?string;
-
-    public function setPhoneNo(?string $value);
-
-    public function getTelexNo() : ?string;
-
-    public function setTelexNo(?string $value);
-
-    public function getDocumentSendingProfile() : ?string;
-
-    public function setDocumentSendingProfile(?string $value);
-
-    public function getShipToCode() : ?string;
-
-    public function setShipToCode(?string $value);
-
-    public function getOurAccountNo() : ?string;
-
-    public function setOurAccountNo(?string $value);
-
-    public function getTerritoryCode() : ?string;
-
-    public function setTerritoryCode(?string $value);
-
-    public function getGlobalDimension1Code() : ?string;
-
-    public function setGlobalDimension1Code(?string $value);
-
-    public function getGlobalDimension2Code() : ?string;
-
-    public function setGlobalDimension2Code(?string $value);
-
-    public function getChainName() : ?string;
-
-    public function setChainName(?string $value);
-
-    public function getBudgetedAmount() : ?float;
-
-    public function setBudgetedAmount(?float $value);
-
-    public function getCreditLimitLcy() : ?float;
-
-    public function setCreditLimitLcy(?float $value);
-
-    public function getCustomerPostingGroup() : ?string;
-
-    public function setCustomerPostingGroup(?string $value);
-
-    public function getCurrencyCode() : ?string;
-
-    public function setCurrencyCode(?string $value);
-
-    public function getCustomerPriceGroup() : ?string;
-
-    public function setCustomerPriceGroup(?string $value);
-
-    public function getLanguageCode() : ?string;
-
-    public function setLanguageCode(?string $value);
-
-    public function getRegistrationNumber() : ?string;
-
-    public function setRegistrationNumber(?string $value);
-
-    public function getStatisticsGroup() : ?int;
-
-    public function setStatisticsGroup(?int $value);
-
-    public function getPaymentTermsCode() : ?string;
-
-    public function setPaymentTermsCode(?string $value);
-
-    public function getFinChargeTermsCode() : ?string;
-
-    public function setFinChargeTermsCode(?string $value);
-
-    public function getSalespersonCode() : ?string;
-
-    public function setSalespersonCode(?string $value);
-
-    public function getShipmentMethodCode() : ?string;
-
-    public function setShipmentMethodCode(?string $value);
-
-    public function getShippingAgentCode() : ?string;
-
-    public function setShippingAgentCode(?string $value);
-
-    public function getPlaceOfExport() : ?string;
-
-    public function setPlaceOfExport(?string $value);
-
-    public function getInvoiceDiscCode() : ?string;
-
-    public function setInvoiceDiscCode(?string $value);
-
-    public function getCustomerDiscGroup() : ?string;
-
-    public function setCustomerDiscGroup(?string $value);
-
-    public function getCountryRegionCode() : ?string;
-
-    public function setCountryRegionCode(?string $value);
-
-    public function getCollectionMethod() : ?string;
-
-    public function setCollectionMethod(?string $value);
-
-    public function getAmount() : ?float;
-
-    public function setAmount(?float $value);
-
-    public function getBlocked() : ?int;
-
-    public function setBlocked(?int $value);
-
-    public function getInvoiceCopies() : ?int;
-
-    public function setInvoiceCopies(?int $value);
-
-    public function getLastStatementNo() : ?int;
-
-    public function setLastStatementNo(?int $value);
-
-    public function getPrintStatements() : ?bool;
-
-    public function setPrintStatements(?bool $value);
-
-    public function getBillToCustomerNo() : ?string;
-
-    public function setBillToCustomerNo(?string $value);
-
-    public function getPriority() : ?int;
-
-    public function setPriority(?int $value);
-
-    public function getPaymentMethodCode() : ?string;
-
-    public function setPaymentMethodCode(?string $value);
-
-    public function getFormatRegion() : ?string;
-
-    public function setFormatRegion(?string $value);
-
-    public function getLastModifiedDateTime() : ?string;
-
-    public function setLastModifiedDateTime(?string $value);
-
-    public function getLastDateModified() : ?string;
-
-    public function setLastDateModified(?string $value);
-
-    public function getApplicationMethod() : ?int;
-
-    public function setApplicationMethod(?int $value);
-
-    public function getPricesIncludingVat() : ?bool;
-
-    public function setPricesIncludingVat(?bool $value);
-
-    public function getLocationCode() : ?string;
-
-    public function setLocationCode(?string $value);
-
-    public function getFaxNo() : ?string;
-
-    public function setFaxNo(?string $value);
-
-    public function getTelexAnswerBack() : ?string;
-
-    public function setTelexAnswerBack(?string $value);
-
-    public function getVatRegistrationNo() : ?string;
-
-    public function setVatRegistrationNo(?string $value);
-
-    public function getCombineShipments() : ?bool;
-
-    public function setCombineShipments(?bool $value);
-
-    public function getGenBusPostingGroup() : ?string;
-
-    public function setGenBusPostingGroup(?string $value);
-
-    public function getGln() : ?string;
-
-    public function setGln(?string $value);
-
-    public function getPostCode() : ?string;
-
-    public function setPostCode(?string $value);
-
-    public function getCounty() : ?string;
-
-    public function setCounty(?string $value);
-
-    public function getEoriNumber() : ?string;
-
-    public function setEoriNumber(?string $value);
-
-    public function getUseGlnInElectronicDocument() : ?bool;
-
-    public function setUseGlnInElectronicDocument(?bool $value);
-
-    public function getEMail() : ?string;
-
-    public function setEMail(?string $value);
-
-    public function getHomePage() : ?string;
-
-    public function setHomePage(?string $value);
-
-    public function getReminderTermsCode() : ?string;
-
-    public function setReminderTermsCode(?string $value);
-
-    public function getNoSeries() : ?string;
-
-    public function setNoSeries(?string $value);
-
-    public function getTaxAreaCode() : ?string;
-
-    public function setTaxAreaCode(?string $value);
-
-    public function getTaxLiable() : ?bool;
-
-    public function setTaxLiable(?bool $value);
-
-    public function getVatBusPostingGroup() : ?string;
-
-    public function setVatBusPostingGroup(?string $value);
-
-    public function getReserve() : ?int;
-
-    public function setReserve(?int $value);
-
-    public function getBlockPaymentTolerance() : ?bool;
-
-    public function setBlockPaymentTolerance(?bool $value);
-
-    public function getIcPartnerCode() : ?string;
-
-    public function setIcPartnerCode(?string $value);
-
-    public function getPrepayment() : ?float;
-
-    public function setPrepayment(?float $value);
-
-    public function getPartnerType() : ?int;
-
-    public function setPartnerType(?int $value);
-
-    public function getIntrastatPartnerType() : ?int;
-
-    public function setIntrastatPartnerType(?int $value);
-
-    public function getExcludeFromPmtPractices() : ?bool;
-
-    public function setExcludeFromPmtPractices(?bool $value);
-
-    public function getImage() : ?string;
-
-    public function setImage(?string $value);
-
-    public function getPrivacyBlocked() : ?bool;
-
-    public function setPrivacyBlocked(?bool $value);
-
-    public function getDisableSearchByName() : ?bool;
-
-    public function setDisableSearchByName(?bool $value);
-
-    public function getAllowMultiplePostingGroups() : ?bool;
-
-    public function setAllowMultiplePostingGroups(?bool $value);
-
-    public function getPreferredBankAccountCode() : ?string;
-
-    public function setPreferredBankAccountCode(?string $value);
-
-    public function getCashFlowPaymentTermsCode() : ?string;
-
-    public function setCashFlowPaymentTermsCode(?string $value);
-
-    public function getPrimaryContactNo() : ?string;
-
-    public function setPrimaryContactNo(?string $value);
-
-    public function getContactType() : ?int;
-
-    public function setContactType(?int $value);
-
-    public function getMobilePhoneNo() : ?string;
-
-    public function setMobilePhoneNo(?string $value);
-
-    public function getResponsibilityCenter() : ?string;
-
-    public function setResponsibilityCenter(?string $value);
-
-    public function getShippingAdvice() : ?int;
-
-    public function setShippingAdvice(?int $value);
-
-    public function getShippingTime() : ?string;
-
-    public function setShippingTime(?string $value);
-
-    public function getShippingAgentServiceCode() : ?string;
-
-    public function setShippingAgentServiceCode(?string $value);
-
-    public function getServiceZoneCode() : ?string;
-
-    public function setServiceZoneCode(?string $value);
-
-    public function getCombineServiceShipments() : ?bool;
-
-    public function setCombineServiceShipments(?bool $value);
-
-    public function getPriceCalculationMethod() : ?int;
-
-    public function setPriceCalculationMethod(?int $value);
-
-    public function getAllowLineDisc() : ?bool;
-
-    public function setAllowLineDisc(?bool $value);
-
-    public function getBaseCalendarCode() : ?string;
-
-    public function setBaseCalendarCode(?string $value);
-
-    public function getCopySellToAddrToQteFrom() : ?int;
-
-    public function setCopySellToAddrToQteFrom(?int $value);
-
-    public function getValidateEuVatRegNo() : ?bool;
-
-    public function setValidateEuVatRegNo(?bool $value);
-
-    public function getCurrencyId() : ?string;
-
-    public function setCurrencyId(?string $value);
-
-    public function getPaymentTermsId() : ?string;
-
-    public function setPaymentTermsId(?string $value);
-
-    public function getShipmentMethodId() : ?string;
-
-    public function setShipmentMethodId(?string $value);
-
-    public function getPaymentMethodId() : ?string;
-
-    public function setPaymentMethodId(?string $value);
-
-    public function getTaxAreaId() : ?string;
-
-    public function setTaxAreaId(?string $value);
-
-    public function getContactId() : ?string;
-
-    public function setContactId(?string $value);
-
-    public function getContactGraphId() : ?string;
-
-    public function setContactGraphId(?string $value);
-
-    public function getLscDateCreated() : ?string;
-
-    public function setLscDateCreated(?string $value);
-
-    public function getLscCreatedByUser() : ?string;
-
-    public function setLscCreatedByUser(?string $value);
-
-    public function getLscExternalId() : ?string;
-
-    public function setLscExternalId(?string $value);
-
-    public function getLscCustomerId() : ?string;
-
-    public function setLscCustomerId(?string $value);
-
-    public function getLscReasonCode() : ?string;
-
-    public function setLscReasonCode(?string $value);
-
-    public function getLscRestrictionFunctionality() : ?int;
-
-    public function setLscRestrictionFunctionality(?int $value);
-
-    public function getLscPrintDocumentInvoice() : ?bool;
-
-    public function setLscPrintDocumentInvoice(?bool $value);
-
-    public function getLscTransactionLimit() : ?float;
-
-    public function setLscTransactionLimit(?float $value);
-
-    public function getLscDaytimePhoneNo() : ?string;
-
-    public function setLscDaytimePhoneNo(?string $value);
-
-    public function getLscHouseApartmentNo() : ?string;
-
-    public function setLscHouseApartmentNo(?string $value);
-
-    public function getLscRetailCustomerGroup() : ?string;
-
-    public function setLscRetailCustomerGroup(?string $value);
-
-    public function getLscDefaultWeight() : ?float;
-
-    public function setLscDefaultWeight(?float $value);
-
-    public function getLscOtherTenderInFinalizing() : ?bool;
-
-    public function setLscOtherTenderInFinalizing(?bool $value);
-
-    public function getLscPostAsShipment() : ?bool;
-
-    public function setLscPostAsShipment(?bool $value);
-
-    public function getLscInclIncExpOnSalesDoc() : ?bool;
-
-    public function setLscInclIncExpOnSalesDoc(?bool $value);
-
-    public function getLscAmtchargedonposint() : ?float;
-
-    public function setLscAmtchargedonposint(?float $value);
-
-    public function getLscAmtchargedpostedint() : ?float;
-
-    public function setLscAmtchargedpostedint(?float $value);
-
-    public function getLscBalancelcyint() : ?float;
-
-    public function setLscBalancelcyint(?float $value);
-
-    public function getSystemid() : ?string;
-
-    public function setSystemid(?string $value);
-
-    public function getSystemcreatedat() : ?string;
-
-    public function setSystemcreatedat(?string $value);
-
-    public function getSystemcreatedby() : ?string;
-
-    public function setSystemcreatedby(?string $value);
-
-    public function getSystemmodifiedat() : ?string;
-
-    public function setSystemmodifiedat(?string $value);
-
-    public function getSystemmodifiedby() : ?string;
-
-    public function setSystemmodifiedby(?string $value);
-
-    public function setProcessed(?bool $processed);
-
-    public function getProcessed() : ?bool;
-
-    public function setIsUpdated(?bool $is_updated);
-
-    public function getIsUpdated() : ?bool;
-
-    public function setIsFailed(?bool $is_failed);
-
-    public function getIsFailed() : ?bool;
-
-    public function setCreatedAt(?string $created_at);
-
-    public function getCreatedAt() : ?string;
-
-    public function setUpdatedAt(?string $updated_at);
-
-    public function getUpdatedAt() : ?string;
-
-    public function setIdentityValue(?string $identity_value);
-
-    public function getIdentityValue() : ?string;
-
-    public function setChecksum(?string $checksum);
-
-    public function getChecksum() : ?string;
-
-    public function setProcessedAt(?string $processed_at);
-
-    public function getProcessedAt() : ?string;
+    /**
+     * @param ArrayOfCard $Cards
+     * @return $this
+     */
+    public function setCards($Cards);
+
+    /**
+     * @return ArrayOfCard
+     */
+    public function getCards();
+
+    /**
+     * @param string $AccountNumber
+     * @return $this
+     */
+    public function setAccountNumber($AccountNumber);
+
+    /**
+     * @return string
+     */
+    public function getAccountNumber();
+
+    /**
+     * @param int $Blocked
+     * @return $this
+     */
+    public function setBlocked($Blocked);
+
+    /**
+     * @return int
+     */
+    public function getBlocked();
+
+    /**
+     * @param string $CellularPhone
+     * @return $this
+     */
+    public function setCellularPhone($CellularPhone);
+
+    /**
+     * @return string
+     */
+    public function getCellularPhone();
+
+    /**
+     * @param string $City
+     * @return $this
+     */
+    public function setCity($City);
+
+    /**
+     * @return string
+     */
+    public function getCity();
+
+    /**
+     * @param string $ClubCode
+     * @return $this
+     */
+    public function setClubCode($ClubCode);
+
+    /**
+     * @return string
+     */
+    public function getClubCode();
+
+    /**
+     * @param string $Country
+     * @return $this
+     */
+    public function setCountry($Country);
+
+    /**
+     * @return string
+     */
+    public function getCountry();
+
+    /**
+     * @param string $County
+     * @return $this
+     */
+    public function setCounty($County);
+
+    /**
+     * @return string
+     */
+    public function getCounty();
+
+    /**
+     * @param string $Currency
+     * @return $this
+     */
+    public function setCurrency($Currency);
+
+    /**
+     * @return string
+     */
+    public function getCurrency();
+
+    /**
+     * @param string $CustomerId
+     * @return $this
+     */
+    public function setCustomerId($CustomerId);
+
+    /**
+     * @return string
+     */
+    public function getCustomerId();
+
+    /**
+     * @param string $DiscountGroup
+     * @return $this
+     */
+    public function setDiscountGroup($DiscountGroup);
+
+    /**
+     * @return string
+     */
+    public function getDiscountGroup();
+
+    /**
+     * @param string $Email
+     * @return $this
+     */
+    public function setEmail($Email);
+
+    /**
+     * @return string
+     */
+    public function getEmail();
+
+    /**
+     * @param string $FirstName
+     * @return $this
+     */
+    public function setFirstName($FirstName);
+
+    /**
+     * @return string
+     */
+    public function getFirstName();
+
+    /**
+     * @param string $GuestType
+     * @return $this
+     */
+    public function setGuestType($GuestType);
+
+    /**
+     * @return string
+     */
+    public function getGuestType();
+
+    /**
+     * @param string $nav_id
+     * @return $this
+     */
+    public function setNavId($nav_id);
+
+    /**
+     * @return string
+     */
+    public function getNavId();
+
+    /**
+     * @param int $IncludeTax
+     * @return $this
+     */
+    public function setIncludeTax($IncludeTax);
+
+    /**
+     * @return int
+     */
+    public function getIncludeTax();
+
+    /**
+     * @param boolean $IsDeleted
+     * @return $this
+     */
+    public function setIsDeleted($IsDeleted);
+
+    /**
+     * @return boolean
+     */
+    public function getIsDeleted();
+
+    /**
+     * @param string $LastName
+     * @return $this
+     */
+    public function setLastName($LastName);
+
+    /**
+     * @return string
+     */
+    public function getLastName();
+
+    /**
+     * @param string $MiddleName
+     * @return $this
+     */
+    public function setMiddleName($MiddleName);
+
+    /**
+     * @return string
+     */
+    public function getMiddleName();
+
+    /**
+     * @param string $Name
+     * @return $this
+     */
+    public function setName($Name);
+
+    /**
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * @param string $NamePrefix
+     * @return $this
+     */
+    public function setNamePrefix($NamePrefix);
+
+    /**
+     * @return string
+     */
+    public function getNamePrefix();
+
+    /**
+     * @param string $NameSuffix
+     * @return $this
+     */
+    public function setNameSuffix($NameSuffix);
+
+    /**
+     * @return string
+     */
+    public function getNameSuffix();
+
+    /**
+     * @param string $PaymentTerms
+     * @return $this
+     */
+    public function setPaymentTerms($PaymentTerms);
+
+    /**
+     * @return string
+     */
+    public function getPaymentTerms();
+
+    /**
+     * @param string $PhoneLocal
+     * @return $this
+     */
+    public function setPhoneLocal($PhoneLocal);
+
+    /**
+     * @return string
+     */
+    public function getPhoneLocal();
+
+    /**
+     * @param string $PriceGroup
+     * @return $this
+     */
+    public function setPriceGroup($PriceGroup);
+
+    /**
+     * @return string
+     */
+    public function getPriceGroup();
+
+    /**
+     * @param string $ReceiptEmail
+     * @return $this
+     */
+    public function setReceiptEmail($ReceiptEmail);
+
+    /**
+     * @return string
+     */
+    public function getReceiptEmail();
+
+    /**
+     * @param int $ReceiptOption
+     * @return $this
+     */
+    public function setReceiptOption($ReceiptOption);
+
+    /**
+     * @return int
+     */
+    public function getReceiptOption();
+
+    /**
+     * @param string $SchemeCode
+     * @return $this
+     */
+    public function setSchemeCode($SchemeCode);
+
+    /**
+     * @return string
+     */
+    public function getSchemeCode();
+
+    /**
+     * @param SendEmail $SendReceiptByEMail
+     * @return $this
+     */
+    public function setSendReceiptByEMail($SendReceiptByEMail);
+
+    /**
+     * @return SendEmail
+     */
+    public function getSendReceiptByEMail();
+
+    /**
+     * @param string $ShippingLocation
+     * @return $this
+     */
+    public function setShippingLocation($ShippingLocation);
+
+    /**
+     * @return string
+     */
+    public function getShippingLocation();
+
+    /**
+     * @param string $State
+     * @return $this
+     */
+    public function setState($State);
+
+    /**
+     * @return string
+     */
+    public function getState();
+
+    /**
+     * @param string $Street
+     * @return $this
+     */
+    public function setStreet($Street);
+
+    /**
+     * @return string
+     */
+    public function getStreet();
+
+    /**
+     * @param string $TaxGroup
+     * @return $this
+     */
+    public function setTaxGroup($TaxGroup);
+
+    /**
+     * @return string
+     */
+    public function getTaxGroup();
+
+    /**
+     * @param string $URL
+     * @return $this
+     */
+    public function setURL($URL);
+
+    /**
+     * @return string
+     */
+    public function getURL();
+
+    /**
+     * @param string $UserName
+     * @return $this
+     */
+    public function setUserName($UserName);
+
+    /**
+     * @return string
+     */
+    public function getUserName();
+
+    /**
+     * @param string $ZipCode
+     * @return $this
+     */
+    public function setZipCode($ZipCode);
+
+    /**
+     * @return string
+     */
+    public function getZipCode();
+
+    /**
+     * @param string $scope
+     * @return $this
+     */
+    public function setScope($scope);
+
+    /**
+     * @return string
+     */
+    public function getScope();
+
+    /**
+     * @param int $scope_id
+     * @return $this
+     */
+    public function setScopeId($scope_id);
+
+    /**
+     * @return int
+     */
+    public function getScopeId();
+
+    /**
+     * @param boolean $processed
+     * @return $this
+     */
+    public function setProcessed($processed);
+
+    /**
+     * @return boolean
+     */
+    public function getProcessed();
+
+    /**
+     * @param boolean $is_updated
+     * @return $this
+     */
+    public function setIsUpdated($is_updated);
+
+    /**
+     * @return boolean
+     */
+    public function getIsUpdated();
+
+    /**
+     * @param boolean $is_failed
+     * @return $this
+     */
+    public function setIsFailed($is_failed);
+
+    /**
+     * @return boolean
+     */
+    public function getIsFailed();
+
+    /**
+     * @param string $created_at
+     * @return $this
+     */
+    public function setCreatedAt($created_at);
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt();
+
+    /**
+     * @param string $updated_at
+     * @return $this
+     */
+    public function setUpdatedAt($updated_at);
+
+    /**
+     * @return string
+     */
+    public function getUpdatedAt();
+
+    /**
+     * @param string $identity_value
+     * @return $this
+     */
+    public function setIdentityValue($identity_value);
+
+    /**
+     * @return string
+     */
+    public function getIdentityValue();
+
+    /**
+     * @param string $checksum
+     * @return $this
+     */
+    public function setChecksum($checksum);
+
+    /**
+     * @return string
+     */
+    public function getChecksum();
+
+    /**
+     * @param string $processed_at
+     * @return $this
+     */
+    public function setProcessedAt($processed_at);
+
+    /**
+     * @return string
+     */
+    public function getProcessedAt();
 }
 

@@ -5,7 +5,7 @@ namespace Ls\Customer\Block\Order;
 
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\LSCMemberSalesBuffer;
+use \Ls\Omni\Client\CentralEcommerce\Entity\LSCMemberSalesBuffer;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;

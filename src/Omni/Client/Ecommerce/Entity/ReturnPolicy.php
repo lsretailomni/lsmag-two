@@ -8,268 +8,305 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class ReturnPolicy extends \Magento\Catalog\Model\AbstractModel
+class ReturnPolicy
 {
-    public const CLASS_NAME = 'ReturnPolicy';
-
-    public const STORE_NO = 'Store_No.';
-
-    public const ITEM_CATEGORY_CODE = 'Item_Category_Code';
-
-    public const RETAIL_PRODUCT_CODE = 'Retail_Product_Code';
-
-    public const ITEM_NO = 'Item_No.';
-
-    public const VARIANT_DIMENSION_1_CODE = 'Variant_Dimension_1_Code';
-
-    public const VARIANT_CODE = 'Variant_Code';
-
-    public const STORE_GROUP_CODE = 'Store_Group_Code';
-
-    public const REFUND_NOT_ALLOWED = 'Refund_not_Allowed';
-
-    public const MANAGER_PRIVILEGES = 'Manager_Privileges';
-
-    public const REFUND_PERIOD_LENGTH = 'Refund_Period_Length';
-
-    public const MESSAGE_1 = 'Message_1';
-
-    public const MESSAGE_2 = 'Message_2';
-
-    public const RETURN_POLICY_HTML = 'Return_Policy_HTML';
+    /**
+     * @property string $ItemCategory
+     */
+    protected $ItemCategory = null;
 
     /**
-     * @param ?string $StoreNo
+     * @property string $ItemId
+     */
+    protected $ItemId = null;
+
+    /**
+     * @property boolean $ManagerPrivileges
+     */
+    protected $ManagerPrivileges = null;
+
+    /**
+     * @property string $Message1
+     */
+    protected $Message1 = null;
+
+    /**
+     * @property string $Message2
+     */
+    protected $Message2 = null;
+
+    /**
+     * @property string $ProductGroup
+     */
+    protected $ProductGroup = null;
+
+    /**
+     * @property boolean $RefundNotAllowed
+     */
+    protected $RefundNotAllowed = null;
+
+    /**
+     * @property string $RefundPeriodLength
+     */
+    protected $RefundPeriodLength = null;
+
+    /**
+     * @property string $ReturnPolicyHTML
+     */
+    protected $ReturnPolicyHTML = null;
+
+    /**
+     * @property string $StoreGroup
+     */
+    protected $StoreGroup = null;
+
+    /**
+     * @property string $StoreId
+     */
+    protected $StoreId = null;
+
+    /**
+     * @property string $VariantCode
+     */
+    protected $VariantCode = null;
+
+    /**
+     * @property string $VariantDimension1
+     */
+    protected $VariantDimension1 = null;
+
+    /**
+     * @param string $ItemCategory
      * @return $this
      */
-    public function setStoreNo(?string $StoreNo)
+    public function setItemCategory($ItemCategory)
     {
-        $this->setData(self::STORE_NO, $StoreNo);
+        $this->ItemCategory = $ItemCategory;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getStoreNo() : ?string
+    public function getItemCategory()
     {
-        return $this->getData(self::STORE_NO);
+        return $this->ItemCategory;
     }
 
     /**
-     * @param ?string $ItemCategoryCode
+     * @param string $ItemId
      * @return $this
      */
-    public function setItemCategoryCode(?string $ItemCategoryCode)
+    public function setItemId($ItemId)
     {
-        $this->setData(self::ITEM_CATEGORY_CODE, $ItemCategoryCode);
+        $this->ItemId = $ItemId;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getItemCategoryCode() : ?string
+    public function getItemId()
     {
-        return $this->getData(self::ITEM_CATEGORY_CODE);
+        return $this->ItemId;
     }
 
     /**
-     * @param ?string $RetailProductCode
+     * @param boolean $ManagerPrivileges
      * @return $this
      */
-    public function setRetailProductCode(?string $RetailProductCode)
+    public function setManagerPrivileges($ManagerPrivileges)
     {
-        $this->setData(self::RETAIL_PRODUCT_CODE, $RetailProductCode);
+        $this->ManagerPrivileges = $ManagerPrivileges;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return boolean
      */
-    public function getRetailProductCode() : ?string
+    public function getManagerPrivileges()
     {
-        return $this->getData(self::RETAIL_PRODUCT_CODE);
+        return $this->ManagerPrivileges;
     }
 
     /**
-     * @param ?string $ItemNo
+     * @param string $Message1
      * @return $this
      */
-    public function setItemNo(?string $ItemNo)
+    public function setMessage1($Message1)
     {
-        $this->setData(self::ITEM_NO, $ItemNo);
+        $this->Message1 = $Message1;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getItemNo() : ?string
+    public function getMessage1()
     {
-        return $this->getData(self::ITEM_NO);
+        return $this->Message1;
     }
 
     /**
-     * @param ?string $VariantDimension1Code
+     * @param string $Message2
      * @return $this
      */
-    public function setVariantDimension1Code(?string $VariantDimension1Code)
+    public function setMessage2($Message2)
     {
-        $this->setData(self::VARIANT_DIMENSION_1_CODE, $VariantDimension1Code);
+        $this->Message2 = $Message2;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getVariantDimension1Code() : ?string
+    public function getMessage2()
     {
-        return $this->getData(self::VARIANT_DIMENSION_1_CODE);
+        return $this->Message2;
     }
 
     /**
-     * @param ?string $VariantCode
+     * @param string $ProductGroup
      * @return $this
      */
-    public function setVariantCode(?string $VariantCode)
+    public function setProductGroup($ProductGroup)
     {
-        $this->setData(self::VARIANT_CODE, $VariantCode);
+        $this->ProductGroup = $ProductGroup;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getVariantCode() : ?string
+    public function getProductGroup()
     {
-        return $this->getData(self::VARIANT_CODE);
+        return $this->ProductGroup;
     }
 
     /**
-     * @param ?string $StoreGroupCode
+     * @param boolean $RefundNotAllowed
      * @return $this
      */
-    public function setStoreGroupCode(?string $StoreGroupCode)
+    public function setRefundNotAllowed($RefundNotAllowed)
     {
-        $this->setData(self::STORE_GROUP_CODE, $StoreGroupCode);
+        $this->RefundNotAllowed = $RefundNotAllowed;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return boolean
      */
-    public function getStoreGroupCode() : ?string
+    public function getRefundNotAllowed()
     {
-        return $this->getData(self::STORE_GROUP_CODE);
+        return $this->RefundNotAllowed;
     }
 
     /**
-     * @param ?bool $RefundnotAllowed
+     * @param string $RefundPeriodLength
      * @return $this
      */
-    public function setRefundNotAllowed(?bool $RefundnotAllowed)
+    public function setRefundPeriodLength($RefundPeriodLength)
     {
-        $this->setData(self::REFUND_NOT_ALLOWED, $RefundnotAllowed);
+        $this->RefundPeriodLength = $RefundPeriodLength;
         return $this;
     }
 
     /**
-     * @return ?bool
+     * @return string
      */
-    public function getRefundNotAllowed() : ?bool
+    public function getRefundPeriodLength()
     {
-        return $this->getData(self::REFUND_NOT_ALLOWED);
+        return $this->RefundPeriodLength;
     }
 
     /**
-     * @param ?bool $ManagerPrivileges
+     * @param string $ReturnPolicyHTML
      * @return $this
      */
-    public function setManagerPrivileges(?bool $ManagerPrivileges)
+    public function setReturnPolicyHTML($ReturnPolicyHTML)
     {
-        $this->setData(self::MANAGER_PRIVILEGES, $ManagerPrivileges);
+        $this->ReturnPolicyHTML = $ReturnPolicyHTML;
         return $this;
     }
 
     /**
-     * @return ?bool
+     * @return string
      */
-    public function getManagerPrivileges() : ?bool
+    public function getReturnPolicyHTML()
     {
-        return $this->getData(self::MANAGER_PRIVILEGES);
+        return $this->ReturnPolicyHTML;
     }
 
     /**
-     * @param ?string $RefundPeriodLength
+     * @param string $StoreGroup
      * @return $this
      */
-    public function setRefundPeriodLength(?string $RefundPeriodLength)
+    public function setStoreGroup($StoreGroup)
     {
-        $this->setData(self::REFUND_PERIOD_LENGTH, $RefundPeriodLength);
+        $this->StoreGroup = $StoreGroup;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getRefundPeriodLength() : ?string
+    public function getStoreGroup()
     {
-        return $this->getData(self::REFUND_PERIOD_LENGTH);
+        return $this->StoreGroup;
     }
 
     /**
-     * @param ?string $Message1
+     * @param string $StoreId
      * @return $this
      */
-    public function setMessage1(?string $Message1)
+    public function setStoreId($StoreId)
     {
-        $this->setData(self::MESSAGE_1, $Message1);
+        $this->StoreId = $StoreId;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getMessage1() : ?string
+    public function getStoreId()
     {
-        return $this->getData(self::MESSAGE_1);
+        return $this->StoreId;
     }
 
     /**
-     * @param ?string $Message2
+     * @param string $VariantCode
      * @return $this
      */
-    public function setMessage2(?string $Message2)
+    public function setVariantCode($VariantCode)
     {
-        $this->setData(self::MESSAGE_2, $Message2);
+        $this->VariantCode = $VariantCode;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getMessage2() : ?string
+    public function getVariantCode()
     {
-        return $this->getData(self::MESSAGE_2);
+        return $this->VariantCode;
     }
 
     /**
-     * @param ?string $ReturnPolicyHTML
+     * @param string $VariantDimension1
      * @return $this
      */
-    public function setReturnPolicyHtml(?string $ReturnPolicyHTML)
+    public function setVariantDimension1($VariantDimension1)
     {
-        $this->setData(self::RETURN_POLICY_HTML, $ReturnPolicyHTML);
+        $this->VariantDimension1 = $VariantDimension1;
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return string
      */
-    public function getReturnPolicyHtml() : ?string
+    public function getVariantDimension1()
     {
-        return $this->getData(self::RETURN_POLICY_HTML);
+        return $this->VariantDimension1;
     }
 }
 

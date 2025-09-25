@@ -10,102 +10,169 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplItemVariantInterface
 {
-    public static function getDbColumnsMapping() : array;
+    /**
+     * @param string $Description
+     * @return $this
+     */
+    public function setDescription($Description);
 
-    public function getCode() : ?string;
+    /**
+     * @return string
+     */
+    public function getDescription();
 
-    public function setCode(?string $value);
+    /**
+     * @param string $Description2
+     * @return $this
+     */
+    public function setDescription2($Description2);
 
-    public function getItemNo() : ?string;
+    /**
+     * @return string
+     */
+    public function getDescription2();
 
-    public function setItemNo(?string $value);
+    /**
+     * @param boolean $IsDeleted
+     * @return $this
+     */
+    public function setIsDeleted($IsDeleted);
 
-    public function getDescription() : ?string;
+    /**
+     * @return boolean
+     */
+    public function getIsDeleted();
 
-    public function setDescription(?string $value);
+    /**
+     * @param string $ItemId
+     * @return $this
+     */
+    public function setItemId($ItemId);
 
-    public function getDescription2() : ?string;
+    /**
+     * @return string
+     */
+    public function getItemId();
 
-    public function setDescription2(?string $value);
+    /**
+     * @param string $VariantId
+     * @return $this
+     */
+    public function setVariantId($VariantId);
 
-    public function getItemId() : ?string;
+    /**
+     * @return string
+     */
+    public function getVariantId();
 
-    public function setItemId(?string $value);
+    /**
+     * @param string $scope
+     * @return $this
+     */
+    public function setScope($scope);
 
-    public function getBlocked() : ?bool;
+    /**
+     * @return string
+     */
+    public function getScope();
 
-    public function setBlocked(?bool $value);
+    /**
+     * @param int $scope_id
+     * @return $this
+     */
+    public function setScopeId($scope_id);
 
-    public function getSalesBlocked() : ?bool;
+    /**
+     * @return int
+     */
+    public function getScopeId();
 
-    public function setSalesBlocked(?bool $value);
+    /**
+     * @param boolean $processed
+     * @return $this
+     */
+    public function setProcessed($processed);
 
-    public function getPurchasingBlocked() : ?bool;
+    /**
+     * @return boolean
+     */
+    public function getProcessed();
 
-    public function setPurchasingBlocked(?bool $value);
+    /**
+     * @param boolean $is_updated
+     * @return $this
+     */
+    public function setIsUpdated($is_updated);
 
-    public function getServiceBlocked() : ?bool;
+    /**
+     * @return boolean
+     */
+    public function getIsUpdated();
 
-    public function setServiceBlocked(?bool $value);
+    /**
+     * @param boolean $is_failed
+     * @return $this
+     */
+    public function setIsFailed($is_failed);
 
-    public function getProductionBlocked() : ?int;
+    /**
+     * @return boolean
+     */
+    public function getIsFailed();
 
-    public function setProductionBlocked(?int $value);
+    /**
+     * @param string $created_at
+     * @return $this
+     */
+    public function setCreatedAt($created_at);
 
-    public function getLscCommonItemNo() : ?string;
+    /**
+     * @return string
+     */
+    public function getCreatedAt();
 
-    public function setLscCommonItemNo(?string $value);
+    /**
+     * @param string $updated_at
+     * @return $this
+     */
+    public function setUpdatedAt($updated_at);
 
-    public function getSystemid() : ?string;
+    /**
+     * @return string
+     */
+    public function getUpdatedAt();
 
-    public function setSystemid(?string $value);
+    /**
+     * @param string $identity_value
+     * @return $this
+     */
+    public function setIdentityValue($identity_value);
 
-    public function getSystemcreatedat() : ?string;
+    /**
+     * @return string
+     */
+    public function getIdentityValue();
 
-    public function setSystemcreatedat(?string $value);
+    /**
+     * @param string $checksum
+     * @return $this
+     */
+    public function setChecksum($checksum);
 
-    public function getSystemcreatedby() : ?string;
+    /**
+     * @return string
+     */
+    public function getChecksum();
 
-    public function setSystemcreatedby(?string $value);
+    /**
+     * @param string $processed_at
+     * @return $this
+     */
+    public function setProcessedAt($processed_at);
 
-    public function getSystemmodifiedat() : ?string;
-
-    public function setSystemmodifiedat(?string $value);
-
-    public function getSystemmodifiedby() : ?string;
-
-    public function setSystemmodifiedby(?string $value);
-
-    public function setProcessed(?bool $processed);
-
-    public function getProcessed() : ?bool;
-
-    public function setIsUpdated(?bool $is_updated);
-
-    public function getIsUpdated() : ?bool;
-
-    public function setIsFailed(?bool $is_failed);
-
-    public function getIsFailed() : ?bool;
-
-    public function setCreatedAt(?string $created_at);
-
-    public function getCreatedAt() : ?string;
-
-    public function setUpdatedAt(?string $updated_at);
-
-    public function getUpdatedAt() : ?string;
-
-    public function setIdentityValue(?string $identity_value);
-
-    public function getIdentityValue() : ?string;
-
-    public function setChecksum(?string $checksum);
-
-    public function getChecksum() : ?string;
-
-    public function setProcessedAt(?string $processed_at);
-
-    public function getProcessedAt() : ?string;
+    /**
+     * @return string
+     */
+    public function getProcessedAt();
 }
 

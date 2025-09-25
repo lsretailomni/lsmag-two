@@ -78,7 +78,7 @@ class GiftCardGetHistory extends AbstractOperation
     /**
      * @return GiftCardGetHistoryRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new GiftCardGetHistoryRequest();

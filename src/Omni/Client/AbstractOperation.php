@@ -14,6 +14,7 @@ use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Replication\Logger\FlatReplicationLogger;
 use \Ls\Replication\Logger\OmniLogger;
+use Magento\Catalog\Model\AbstractModel;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\DataObject;
 use Magento\Framework\Session\SessionManagerInterface;
@@ -434,5 +435,18 @@ abstract class AbstractOperation implements OperationInterface
     {
         $this->session->start();
         return $this->session->getMessage();
+    }
+
+    /**
+     * Set operation input
+     *
+     * @param array $params
+     * @return AbstractModel
+     */
+    public function & setOperationInput(array $params = [])
+    {
+        $model = $this->objectManager->create(AbstractModel::class);
+
+        return $model;
     }
 }

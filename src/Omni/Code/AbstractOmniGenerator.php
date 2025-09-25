@@ -33,7 +33,7 @@ abstract class AbstractOmniGenerator extends CoreGenerator
         $this->serviceType = $metadata->getClient()->getServiceType();
 
         // Build the base namespace based on the service type.
-        $this->baseNamespace = $this->fqn('Ls', 'Omni', 'Client', ucfirst($this->serviceType->getValue()));
+        $this->baseNamespace = $this->fqn('Ls', 'Omni', 'Client', 'CentralEcommerce');
     }
 
     /**

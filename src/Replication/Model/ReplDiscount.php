@@ -51,6 +51,11 @@ class ReplDiscount extends AbstractModel implements ReplDiscountInterface, Ident
     protected $DiscountValueType = null;
 
     /**
+     * @property boolean $Exclude
+     */
+    protected $Exclude = null;
+
+    /**
      * @property string $FromDate
      */
     protected $FromDate = null;
@@ -69,6 +74,16 @@ class ReplDiscount extends AbstractModel implements ReplDiscountInterface, Ident
      * @property string $LoyaltySchemeCode
      */
     protected $LoyaltySchemeCode = null;
+
+    /**
+     * @property string $MemberAttribute
+     */
+    protected $MemberAttribute = null;
+
+    /**
+     * @property string $MemberAttributeValue
+     */
+    protected $MemberAttributeValue = null;
 
     /**
      * @property float $MinimumQuantity
@@ -301,6 +316,26 @@ class ReplDiscount extends AbstractModel implements ReplDiscountInterface, Ident
     }
 
     /**
+     * @param boolean $Exclude
+     * @return $this
+     */
+    public function setExclude($Exclude)
+    {
+        $this->setData( 'Exclude', $Exclude );
+        $this->Exclude = $Exclude;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getExclude()
+    {
+        return $this->getData( 'Exclude' );
+    }
+
+    /**
      * @param string $FromDate
      * @return $this
      */
@@ -378,6 +413,46 @@ class ReplDiscount extends AbstractModel implements ReplDiscountInterface, Ident
     public function getLoyaltySchemeCode()
     {
         return $this->getData( 'LoyaltySchemeCode' );
+    }
+
+    /**
+     * @param string $MemberAttribute
+     * @return $this
+     */
+    public function setMemberAttribute($MemberAttribute)
+    {
+        $this->setData( 'MemberAttribute', $MemberAttribute );
+        $this->MemberAttribute = $MemberAttribute;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberAttribute()
+    {
+        return $this->getData( 'MemberAttribute' );
+    }
+
+    /**
+     * @param string $MemberAttributeValue
+     * @return $this
+     */
+    public function setMemberAttributeValue($MemberAttributeValue)
+    {
+        $this->setData( 'MemberAttributeValue', $MemberAttributeValue );
+        $this->MemberAttributeValue = $MemberAttributeValue;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberAttributeValue()
+    {
+        return $this->getData( 'MemberAttributeValue' );
     }
 
     /**

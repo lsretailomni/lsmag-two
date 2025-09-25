@@ -14,7 +14,7 @@ class ReplAttribute extends AbstractDb
 {
     public function _construct()
     {
-        $this->_init('ls_replication_repl_attribute', 'repl_attribute_id' );
+        $this->_init( 'ls_replication_repl_attribute', 'repl_attribute_id' );
     }
 }
 

@@ -6,7 +6,7 @@ namespace Ls\Omni\Observer;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Event\Observer;

@@ -5,26 +5,27 @@ namespace Ls\Omni\Helper;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCODiscountLineV6;
-use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOHeaderV6;
-use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOLineV6;
-use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateCOPaymentV6;
-use Ls\Omni\Client\Ecommerce\Entity\CustomerOrderCreateV6;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
-use Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
-use Ls\Omni\Client\Ecommerce\Entity\RootCustomerOrderCreateV6;
-use Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
-use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Omni\Client\Ecommerce\Operation\GetSalesInfoByOrderId_GetSalesInfoByOrderId;
-use Ls\Omni\Client\Ecommerce\Operation\GetSalesReturnById_GetSalesReturnById;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Client\Ecommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
-use Ls\Omni\Client\Ecommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
-use Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\CentralEcommerce\Entity;
+use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCODiscountLineV6;
+use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCOHeaderV6;
+use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCOLineV6;
+use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCOPaymentV6;
+use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateV6;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
+use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootCustomerOrderCreateV6;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootMobileTransaction;
+use \Ls\Omni\Client\CentralEcommerce\Operation;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetSalesInfoByOrderId_GetSalesInfoByOrderId;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetSalesReturnById_GetSalesReturnById;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
+use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
@@ -52,9 +53,9 @@ class OrderHelper extends AbstractHelperOmni
 
     /**
      * @param $orderId
-     * @param Entity\Order $oneListCalculateResponse
+     * @param \Ls\Omni\Client\Ecommerce\Entity\Order $oneListCalculateResponse
      */
-    public function placeOrderById($orderId, Entity\Order $oneListCalculateResponse)
+    public function placeOrderById($orderId, \Ls\Omni\Client\Ecommerce\Entity\Order $oneListCalculateResponse)
     {
         $this->placeOrder(
             $this->prepareOrder($this->order->load($orderId), $oneListCalculateResponse)
@@ -249,7 +250,7 @@ class OrderHelper extends AbstractHelperOmni
     /**
      * @param Model\Order $order
      * @param $oneListCalculateResponse
-     * @return Entity\OrderEdit
+     * @return \Ls\Omni\Client\Ecommerce\Entity\OrderEdit
      */
     public function prepareOrderEdit(Model\Order $order, $oneListCalculateResponse)
     {
@@ -304,9 +305,9 @@ class OrderHelper extends AbstractHelperOmni
                 ->setShipToAddress($shipToAddress)
                 ->setStoreId($storeId);
             if ($isClickCollect) {
-                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
+                $oneListCalculateResponse->setOrderType(OrderType::CLICK_AND_COLLECT);
             } else {
-                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
+                $oneListCalculateResponse->setOrderType(OrderType::SALE);
                 //TODO need to fix the length issue once LS Central allow more then 10 characters.
                 $carrierCode = ($carrierCode) ? substr($carrierCode, 0, 10) : "";
                 $oneListCalculateResponse->setShippingAgentCode($carrierCode);
@@ -329,7 +330,7 @@ class OrderHelper extends AbstractHelperOmni
             //For flat shipment it will set the correct shipment value into the order
             $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
             // @codingStandardsIgnoreLine
-            $request = new Entity\OrderCreate();
+            $request = new \Ls\Omni\Client\Ecommerce\Entity\OrderCreate();
 
             if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
                 $request->setReturnOrderIdOnly(true);
@@ -420,7 +421,7 @@ class OrderHelper extends AbstractHelperOmni
      * Making Order Create request to Central
      *
      * @param RootCustomerOrderCreateV6 $request
-     * @return Entity\OrderCreateResponse|ResponseInterface
+     * @return \Ls\Omni\Client\Ecommerce\Entity\OrderCreateResponse|ResponseInterface
      */
     public function placeOrder($request)
     {
@@ -450,12 +451,12 @@ class OrderHelper extends AbstractHelperOmni
 
     /**
      * @param Model\Order\Address $magentoAddress
-     * @return Entity\Address
+     * @return \Ls\Omni\Client\Ecommerce\Entity\Address
      */
     public function convertAddress(Model\Order\Address $magentoAddress)
     {
         // @codingStandardsIgnoreLine
-        $omniAddress = new Entity\Address();
+        $omniAddress = new \Ls\Omni\Client\Ecommerce\Entity\Address();
         foreach ($magentoAddress->getStreet() as $i => $street) {
             // @codingStandardsIgnoreLine
             //TODO support multiple line address more than 3.
@@ -1144,11 +1145,11 @@ class OrderHelper extends AbstractHelperOmni
     public function orderCancel($documentId, $storeId)
     {
         $response = null;
-        $request  = new Entity\OrderCancelEx();
+        $request  = new \Ls\Omni\Client\Ecommerce\Entity\OrderCancelEx();
         $request->setOrderId($documentId);
         $request->setStoreId($storeId);
         $request->setUserId("");
-        $operation = new Operation\OrderCancelEx();
+        $operation = new \Ls\Omni\Client\Ecommerce\Operation\OrderCancelEx();
         try {
             $response = $operation->execute($request);
         } catch (Exception $e) {

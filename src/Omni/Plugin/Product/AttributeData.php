@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ls\Omni\Plugin\Product;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Api\ReplLscWiExtdVariantValuesRepositoryInterface;
+use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use Magento\Catalog\Model\Product;
@@ -19,13 +19,13 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class AttributeData
 {
     /**
-     * @param ReplLscWiExtdVariantValuesRepositoryInterface $replExtendedVariantValueRepository
+     * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
      * @param ReplicationHelper $replicationHelper
      * @param LSR $lsr
      * @param SortOrderBuilder $sortOrderBuilder
      */
     public function __construct(
-        public ReplLscWiExtdVariantValuesRepositoryInterface $replExtendedVariantValueRepository,
+        public ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
         public ReplicationHelper $replicationHelper,
         public LSR $lsr,
         public SortOrderBuilder $sortOrderBuilder
@@ -58,9 +58,9 @@ class AttributeData
             $newOptionData                = [];
             $filters                      = [
                 ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
-                ['field' => 'item_no', 'value' => $itemId, 'condition_type' => 'eq'],
+                ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
                 [
-                    'field' => 'code',
+                    'field' => 'Code',
                     'value' => $defaultScopedAttributeObject->getDefaultFrontendLabel(),
                     'condition_type' => 'eq'
                 ]
@@ -68,7 +68,7 @@ class AttributeData
             $criteria                     = $this->replicationHelper->buildCriteriaForArrayFrontEnd($filters, -1);
             $sortOrder                    = $this
                 ->sortOrderBuilder
-                ->setField('logical_order')
+                ->setField('LogicalOrder')
                 ->setDirection('ASC')
                 ->create();
             $criteria->setSortOrders([$sortOrder]);

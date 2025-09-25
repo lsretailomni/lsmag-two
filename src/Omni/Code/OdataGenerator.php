@@ -145,8 +145,8 @@ class OdataGenerator
         OutputInterface $output
     ) {
         $storeCode          = $omniDataHelper->lsr->getActiveWebStore();
-        $baseNamespace      = AbstractGenerator::fqn('Ls', 'Omni', 'Client', 'Ecommerce', 'Entity');
-        $operationNamespace = AbstractGenerator::fqn('Ls', 'Omni', 'Client', 'Ecommerce', 'Operation');
+        $baseNamespace      = AbstractGenerator::fqn('Ls', 'Omni', 'Client', 'CentralEcommerce', 'Entity');
+        $operationNamespace = AbstractGenerator::fqn('Ls', 'Omni', 'Client', 'CentralEcommerce', 'Operation');
         $this->generateBaseRequestContent($entityDir, $baseNamespace, $output);
         $this->generateBaseResponseContent($entityDir, $baseNamespace, $output);
         $this->segregateWebservices($omniDataHelper);

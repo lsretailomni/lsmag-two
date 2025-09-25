@@ -29,7 +29,7 @@ class RepositoryGenerator extends AbstractGenerator
      *
      * @var string
      */
-    public static string $namespace = 'Ls\\Replication\\Model';
+    public static string $namespace = 'Ls\\Replication\\Model\\Central';
 
     /**
      * Replication operation instance.

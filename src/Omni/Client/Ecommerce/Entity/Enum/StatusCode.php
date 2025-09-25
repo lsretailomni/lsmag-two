@@ -130,6 +130,13 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode ORDER_ID_NOT_FOUND()
  * @$method static StatusCode PAYMENT_ERROR()
  * @$method static StatusCode PAYMENT_AUTH_ERROR()
+ * @$method static StatusCode P_O_S_TERMINAL_I_D_MANDATORY()
+ * @$method static StatusCode APP_ID_MANDATORY()
+ * @$method static StatusCode APP_VERSION_MANDATORY()
+ * @$method static StatusCode DEVICE_UNIT_MANDATORY()
+ * @$method static StatusCode SIGNATURE_INVALID()
+ * @$method static StatusCode P_O_S_TERMINAL_NOT_FOUND()
+ * @$method static StatusCode NO_AVAILABLE_UNIT_FOUND()
  * @$method static StatusCode SERVER_REFUSING_TO_RESPOND()
  * @$method static StatusCode DINING_TABLE_STATUS_NOT_ABLE_TO_CHANGE()
  * @$method static StatusCode CANNOT_CHANGE_NUMBER_OF_COVER_ON_TABLE_NOT_SEATED()
@@ -172,6 +179,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode NAV_W_S_ERROR()
  * @$method static StatusCode NAV_W_S_QRY_ERROR()
  * @$method static StatusCode NAV_O_DATA_ERROR()
+ * @$method static StatusCode NAV_O_DATA_REPLICATION_ERROR()
  * @$method static StatusCode CUSTOMER_ORDER_NOT_FOUND()
  * @$method static StatusCode CUSTOMER_ORDER_ITEM_NOT_FOUND()
  * @$method static StatusCode CUSTOMER_ORDER_ITEM_ALREADY_IN_BOX()
@@ -418,6 +426,20 @@ class StatusCode extends Enum
 
     public const PAYMENT_AUTH_ERROR = 'PaymentAuthError';
 
+    public const P_O_S_TERMINAL_I_D_MANDATORY = 'POSTerminalIDMandatory';
+
+    public const APP_ID_MANDATORY = 'AppIdMandatory';
+
+    public const APP_VERSION_MANDATORY = 'AppVersionMandatory';
+
+    public const DEVICE_UNIT_MANDATORY = 'DeviceUnitMandatory';
+
+    public const SIGNATURE_INVALID = 'SignatureInvalid';
+
+    public const P_O_S_TERMINAL_NOT_FOUND = 'POSTerminalNotFound';
+
+    public const NO_AVAILABLE_UNIT_FOUND = 'NoAvailableUnitFound';
+
     public const SERVER_REFUSING_TO_RESPOND = 'ServerRefusingToRespond';
 
     public const DINING_TABLE_STATUS_NOT_ABLE_TO_CHANGE = 'DiningTableStatusNotAbleToChange';
@@ -501,6 +523,8 @@ class StatusCode extends Enum
     public const NAV_W_S_QRY_ERROR = 'NavWSQryError';
 
     public const NAV_O_DATA_ERROR = 'NavODataError';
+
+    public const NAV_O_DATA_REPLICATION_ERROR = 'NavODataReplicationError';
 
     public const CUSTOMER_ORDER_NOT_FOUND = 'CustomerOrderNotFound';
 

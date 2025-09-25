@@ -8,10 +8,11 @@
 
 namespace Ls\Replication\Model;
 
+use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\DataObject\IdentityInterface;
 use Ls\Replication\Api\Data\ReplCustomerInterface;
 
-class ReplCustomer extends \Ls\Omni\Client\Ecommerce\Entity\Customer implements ReplCustomerInterface, IdentityInterface
+class ReplCustomer extends AbstractModel implements ReplCustomerInterface, IdentityInterface
 {
     public const CACHE_TAG = 'ls_replication_repl_customer';
 
@@ -19,1340 +20,1164 @@ class ReplCustomer extends \Ls\Omni\Client\Ecommerce\Entity\Customer implements 
 
     protected $_eventPrefix = 'ls_replication_repl_customer';
 
+    /**
+     * @property ArrayOfCard $Cards
+     */
+    protected $Cards = null;
+
+    /**
+     * @property string $AccountNumber
+     */
+    protected $AccountNumber = null;
+
+    /**
+     * @property int $Blocked
+     */
+    protected $Blocked = null;
+
+    /**
+     * @property string $CellularPhone
+     */
+    protected $CellularPhone = null;
+
+    /**
+     * @property string $City
+     */
+    protected $City = null;
+
+    /**
+     * @property string $ClubCode
+     */
+    protected $ClubCode = null;
+
+    /**
+     * @property string $Country
+     */
+    protected $Country = null;
+
+    /**
+     * @property string $County
+     */
+    protected $County = null;
+
+    /**
+     * @property string $Currency
+     */
+    protected $Currency = null;
+
+    /**
+     * @property string $CustomerId
+     */
+    protected $CustomerId = null;
+
+    /**
+     * @property string $DiscountGroup
+     */
+    protected $DiscountGroup = null;
+
+    /**
+     * @property string $Email
+     */
+    protected $Email = null;
+
+    /**
+     * @property string $FirstName
+     */
+    protected $FirstName = null;
+
+    /**
+     * @property string $GuestType
+     */
+    protected $GuestType = null;
+
+    /**
+     * @property string $nav_id
+     */
+    protected $nav_id = null;
+
+    /**
+     * @property int $IncludeTax
+     */
+    protected $IncludeTax = null;
+
+    /**
+     * @property boolean $IsDeleted
+     */
+    protected $IsDeleted = null;
+
+    /**
+     * @property string $LastName
+     */
+    protected $LastName = null;
+
+    /**
+     * @property string $MiddleName
+     */
+    protected $MiddleName = null;
+
+    /**
+     * @property string $Name
+     */
+    protected $Name = null;
+
+    /**
+     * @property string $NamePrefix
+     */
+    protected $NamePrefix = null;
+
+    /**
+     * @property string $NameSuffix
+     */
+    protected $NameSuffix = null;
+
+    /**
+     * @property string $PaymentTerms
+     */
+    protected $PaymentTerms = null;
+
+    /**
+     * @property string $PhoneLocal
+     */
+    protected $PhoneLocal = null;
+
+    /**
+     * @property string $PriceGroup
+     */
+    protected $PriceGroup = null;
+
+    /**
+     * @property string $ReceiptEmail
+     */
+    protected $ReceiptEmail = null;
+
+    /**
+     * @property int $ReceiptOption
+     */
+    protected $ReceiptOption = null;
+
+    /**
+     * @property string $SchemeCode
+     */
+    protected $SchemeCode = null;
+
+    /**
+     * @property SendEmail $SendReceiptByEMail
+     */
+    protected $SendReceiptByEMail = null;
+
+    /**
+     * @property string $ShippingLocation
+     */
+    protected $ShippingLocation = null;
+
+    /**
+     * @property string $State
+     */
+    protected $State = null;
+
+    /**
+     * @property string $Street
+     */
+    protected $Street = null;
+
+    /**
+     * @property string $TaxGroup
+     */
+    protected $TaxGroup = null;
+
+    /**
+     * @property string $URL
+     */
+    protected $URL = null;
+
+    /**
+     * @property string $UserName
+     */
+    protected $UserName = null;
+
+    /**
+     * @property string $ZipCode
+     */
+    protected $ZipCode = null;
+
+    /**
+     * @property string $scope
+     */
+    protected $scope = null;
+
+    /**
+     * @property int $scope_id
+     */
+    protected $scope_id = null;
+
+    /**
+     * @property boolean $processed
+     */
+    protected $processed = null;
+
+    /**
+     * @property boolean $is_updated
+     */
+    protected $is_updated = null;
+
+    /**
+     * @property boolean $is_failed
+     */
+    protected $is_failed = null;
+
+    /**
+     * @property string $created_at
+     */
+    protected $created_at = null;
+
+    /**
+     * @property string $updated_at
+     */
+    protected $updated_at = null;
+
+    /**
+     * @property string $identity_value
+     */
+    protected $identity_value = null;
+
+    /**
+     * @property string $checksum
+     */
+    protected $checksum = null;
+
+    /**
+     * @property string $processed_at
+     */
+    protected $processed_at = null;
+
     public function _construct()
     {
-        $this->_init('Ls\Replication\Model\ResourceModel\ReplCustomer');
+        $this->_init( 'Ls\Replication\Model\ResourceModel\ReplCustomer' );
     }
 
     public function getIdentities()
     {
-        return [self::CACHE_TAG . '_' . $this->getId()];
+        return [ self::CACHE_TAG . '_' . $this->getId() ];
     }
 
-    public function getNo() : ?string
+    /**
+     * @param ArrayOfCard $Cards
+     * @return $this
+     */
+    public function setCards($Cards)
     {
-        return $this->getData(self::getDbColumnsMapping()[self::NO]);
-    }
-
-    public function setNo(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::NO], $value);
-    }
-
-    public function getName() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::NAME]);
-    }
-
-    public function setName(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::NAME], $value);
-    }
-
-    public function getSearchName() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SEARCH_NAME]);
-    }
-
-    public function setSearchName(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SEARCH_NAME], $value);
-    }
-
-    public function getName2() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::NAME_2]);
-    }
-
-    public function setName2(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::NAME_2], $value);
-    }
-
-    public function getAddress() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::ADDRESS]);
-    }
-
-    public function setAddress(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::ADDRESS], $value);
-    }
-
-    public function getAddress2() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::ADDRESS_2]);
-    }
-
-    public function setAddress2(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::ADDRESS_2], $value);
-    }
-
-    public function getCity() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CITY]);
-    }
-
-    public function setCity(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CITY], $value);
-    }
-
-    public function getContact() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CONTACT]);
-    }
-
-    public function setContact(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CONTACT], $value);
-    }
-
-    public function getPhoneNo() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PHONE_NO]);
-    }
-
-    public function setPhoneNo(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PHONE_NO], $value);
-    }
-
-    public function getTelexNo() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::TELEX_NO]);
-    }
-
-    public function setTelexNo(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::TELEX_NO], $value);
-    }
-
-    public function getDocumentSendingProfile() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DOCUMENT_SENDING_PROFILE]);
-    }
-
-    public function setDocumentSendingProfile(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DOCUMENT_SENDING_PROFILE], $value);
-    }
-
-    public function getShipToCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SHIPTO_CODE]);
-    }
-
-    public function setShipToCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SHIPTO_CODE], $value);
-    }
-
-    public function getOurAccountNo() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::OUR_ACCOUNT_NO]);
-    }
-
-    public function setOurAccountNo(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::OUR_ACCOUNT_NO], $value);
-    }
-
-    public function getTerritoryCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::TERRITORY_CODE]);
-    }
-
-    public function setTerritoryCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::TERRITORY_CODE], $value);
-    }
-
-    public function getGlobalDimension1Code() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::GLOBAL_DIMENSION_1_CODE]);
-    }
-
-    public function setGlobalDimension1Code(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::GLOBAL_DIMENSION_1_CODE], $value);
-    }
-
-    public function getGlobalDimension2Code() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::GLOBAL_DIMENSION_2_CODE]);
-    }
-
-    public function setGlobalDimension2Code(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::GLOBAL_DIMENSION_2_CODE], $value);
-    }
-
-    public function getChainName() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CHAIN_NAME]);
-    }
-
-    public function setChainName(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CHAIN_NAME], $value);
-    }
-
-    public function getBudgetedAmount() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::BUDGETED_AMOUNT]);
-    }
-
-    public function setBudgetedAmount(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::BUDGETED_AMOUNT], $value);
-    }
-
-    public function getCreditLimitLcy() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CREDIT_LIMIT_LCY]);
-    }
-
-    public function setCreditLimitLcy(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CREDIT_LIMIT_LCY], $value);
-    }
-
-    public function getCustomerPostingGroup() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_POSTING_GROUP]);
-    }
-
-    public function setCustomerPostingGroup(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_POSTING_GROUP], $value);
-    }
-
-    public function getCurrencyCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
-    }
-
-    public function setCurrencyCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
-    }
-
-    public function getCustomerPriceGroup() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_PRICE_GROUP]);
-    }
-
-    public function setCustomerPriceGroup(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_PRICE_GROUP], $value);
-    }
-
-    public function getLanguageCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LANGUAGE_CODE]);
-    }
-
-    public function setLanguageCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LANGUAGE_CODE], $value);
-    }
-
-    public function getRegistrationNumber() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::REGISTRATION_NUMBER]);
-    }
-
-    public function setRegistrationNumber(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::REGISTRATION_NUMBER], $value);
-    }
-
-    public function getStatisticsGroup() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::STATISTICS_GROUP]);
-    }
-
-    public function setStatisticsGroup(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::STATISTICS_GROUP], $value);
-    }
-
-    public function getPaymentTermsCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_TERMS_CODE]);
-    }
-
-    public function setPaymentTermsCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_TERMS_CODE], $value);
-    }
-
-    public function getFinChargeTermsCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::FIN_CHARGE_TERMS_CODE]);
-    }
-
-    public function setFinChargeTermsCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::FIN_CHARGE_TERMS_CODE], $value);
-    }
-
-    public function getSalespersonCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SALESPERSON_CODE]);
-    }
-
-    public function setSalespersonCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SALESPERSON_CODE], $value);
-    }
-
-    public function getShipmentMethodCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SHIPMENT_METHOD_CODE]);
-    }
-
-    public function setShipmentMethodCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SHIPMENT_METHOD_CODE], $value);
-    }
-
-    public function getShippingAgentCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SHIPPING_AGENT_CODE]);
-    }
-
-    public function setShippingAgentCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SHIPPING_AGENT_CODE], $value);
-    }
-
-    public function getPlaceOfExport() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PLACE_OF_EXPORT]);
-    }
-
-    public function setPlaceOfExport(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PLACE_OF_EXPORT], $value);
-    }
-
-    public function getInvoiceDiscCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::INVOICE_DISC_CODE]);
-    }
-
-    public function setInvoiceDiscCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::INVOICE_DISC_CODE], $value);
-    }
-
-    public function getCustomerDiscGroup() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP]);
-    }
-
-    public function setCustomerDiscGroup(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP], $value);
-    }
-
-    public function getCountryRegionCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::COUNTRYREGION_CODE]);
-    }
-
-    public function setCountryRegionCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::COUNTRYREGION_CODE], $value);
-    }
-
-    public function getCollectionMethod() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::COLLECTION_METHOD]);
-    }
-
-    public function setCollectionMethod(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::COLLECTION_METHOD], $value);
-    }
-
-    public function getAmount() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::AMOUNT]);
-    }
-
-    public function setAmount(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::AMOUNT], $value);
-    }
-
-    public function getBlocked() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::BLOCKED]);
-    }
-
-    public function setBlocked(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::BLOCKED], $value);
-    }
-
-    public function getInvoiceCopies() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::INVOICE_COPIES]);
-    }
-
-    public function setInvoiceCopies(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::INVOICE_COPIES], $value);
-    }
-
-    public function getLastStatementNo() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LAST_STATEMENT_NO]);
-    }
-
-    public function setLastStatementNo(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LAST_STATEMENT_NO], $value);
-    }
-
-    public function getPrintStatements() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PRINT_STATEMENTS]);
-    }
-
-    public function setPrintStatements(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PRINT_STATEMENTS], $value);
-    }
-
-    public function getBillToCustomerNo() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::BILLTO_CUSTOMER_NO]);
-    }
-
-    public function setBillToCustomerNo(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::BILLTO_CUSTOMER_NO], $value);
-    }
-
-    public function getPriority() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PRIORITY]);
-    }
-
-    public function setPriority(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PRIORITY], $value);
-    }
-
-    public function getPaymentMethodCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_METHOD_CODE]);
-    }
-
-    public function setPaymentMethodCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_METHOD_CODE], $value);
-    }
-
-    public function getFormatRegion() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::FORMAT_REGION]);
-    }
-
-    public function setFormatRegion(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::FORMAT_REGION], $value);
-    }
-
-    public function getLastModifiedDateTime() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME]);
-    }
-
-    public function setLastModifiedDateTime(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME], $value);
-    }
-
-    public function getLastDateModified() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED]);
-    }
-
-    public function setLastDateModified(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED], $value);
-    }
-
-    public function getApplicationMethod() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::APPLICATION_METHOD]);
-    }
-
-    public function setApplicationMethod(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::APPLICATION_METHOD], $value);
-    }
-
-    public function getPricesIncludingVat() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PRICES_INCLUDING_VAT]);
-    }
-
-    public function setPricesIncludingVat(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PRICES_INCLUDING_VAT], $value);
-    }
-
-    public function getLocationCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LOCATION_CODE]);
-    }
-
-    public function setLocationCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LOCATION_CODE], $value);
-    }
-
-    public function getFaxNo() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::FAX_NO]);
-    }
-
-    public function setFaxNo(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::FAX_NO], $value);
-    }
-
-    public function getTelexAnswerBack() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::TELEX_ANSWER_BACK]);
-    }
-
-    public function setTelexAnswerBack(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::TELEX_ANSWER_BACK], $value);
-    }
-
-    public function getVatRegistrationNo() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::VAT_REGISTRATION_NO]);
-    }
-
-    public function setVatRegistrationNo(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::VAT_REGISTRATION_NO], $value);
-    }
-
-    public function getCombineShipments() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::COMBINE_SHIPMENTS]);
-    }
-
-    public function setCombineShipments(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::COMBINE_SHIPMENTS], $value);
-    }
-
-    public function getGenBusPostingGroup() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::GEN_BUS_POSTING_GROUP]);
-    }
-
-    public function setGenBusPostingGroup(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::GEN_BUS_POSTING_GROUP], $value);
-    }
-
-    public function getGln() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::GLN]);
-    }
-
-    public function setGln(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::GLN], $value);
-    }
-
-    public function getPostCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::POST_CODE]);
-    }
-
-    public function setPostCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::POST_CODE], $value);
-    }
-
-    public function getCounty() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::COUNTY]);
-    }
-
-    public function setCounty(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::COUNTY], $value);
-    }
-
-    public function getEoriNumber() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::EORI_NUMBER]);
-    }
-
-    public function setEoriNumber(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::EORI_NUMBER], $value);
-    }
-
-    public function getUseGlnInElectronicDocument() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::USE_GLN_IN_ELECTRONIC_DOCUMENT]);
-    }
-
-    public function setUseGlnInElectronicDocument(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::USE_GLN_IN_ELECTRONIC_DOCUMENT], $value);
-    }
-
-    public function getEMail() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::EMAIL]);
-    }
-
-    public function setEMail(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::EMAIL], $value);
-    }
-
-    public function getHomePage() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::HOME_PAGE]);
-    }
-
-    public function setHomePage(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::HOME_PAGE], $value);
-    }
-
-    public function getReminderTermsCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::REMINDER_TERMS_CODE]);
-    }
-
-    public function setReminderTermsCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::REMINDER_TERMS_CODE], $value);
-    }
-
-    public function getNoSeries() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::NO_SERIES]);
-    }
-
-    public function setNoSeries(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::NO_SERIES], $value);
-    }
-
-    public function getTaxAreaCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::TAX_AREA_CODE]);
-    }
-
-    public function setTaxAreaCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::TAX_AREA_CODE], $value);
-    }
-
-    public function getTaxLiable() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::TAX_LIABLE]);
-    }
-
-    public function setTaxLiable(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::TAX_LIABLE], $value);
-    }
-
-    public function getVatBusPostingGroup() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GROUP]);
-    }
-
-    public function setVatBusPostingGroup(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GROUP], $value);
-    }
-
-    public function getReserve() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::RESERVE]);
-    }
-
-    public function setReserve(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::RESERVE], $value);
-    }
-
-    public function getBlockPaymentTolerance() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::BLOCK_PAYMENT_TOLERANCE]);
-    }
-
-    public function setBlockPaymentTolerance(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::BLOCK_PAYMENT_TOLERANCE], $value);
-    }
-
-    public function getIcPartnerCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::IC_PARTNER_CODE]);
-    }
-
-    public function setIcPartnerCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::IC_PARTNER_CODE], $value);
-    }
-
-    public function getPrepayment() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PREPAYMENT]);
-    }
-
-    public function setPrepayment(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PREPAYMENT], $value);
-    }
-
-    public function getPartnerType() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PARTNER_TYPE]);
-    }
-
-    public function setPartnerType(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PARTNER_TYPE], $value);
-    }
-
-    public function getIntrastatPartnerType() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::INTRASTAT_PARTNER_TYPE]);
-    }
-
-    public function setIntrastatPartnerType(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::INTRASTAT_PARTNER_TYPE], $value);
-    }
-
-    public function getExcludeFromPmtPractices() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_PMT_PRACTICES]);
-    }
-
-    public function setExcludeFromPmtPractices(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_PMT_PRACTICES], $value);
-    }
-
-    public function getImage() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::IMAGE]);
-    }
-
-    public function setImage(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::IMAGE], $value);
-    }
-
-    public function getPrivacyBlocked() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PRIVACY_BLOCKED]);
-    }
-
-    public function setPrivacyBlocked(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PRIVACY_BLOCKED], $value);
-    }
-
-    public function getDisableSearchByName() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::DISABLE_SEARCH_BY_NAME]);
-    }
-
-    public function setDisableSearchByName(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::DISABLE_SEARCH_BY_NAME], $value);
-    }
-
-    public function getAllowMultiplePostingGroups() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::ALLOW_MULTIPLE_POSTING_GROUPS]);
-    }
-
-    public function setAllowMultiplePostingGroups(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::ALLOW_MULTIPLE_POSTING_GROUPS], $value);
-    }
-
-    public function getPreferredBankAccountCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PREFERRED_BANK_ACCOUNT_CODE]);
-    }
-
-    public function setPreferredBankAccountCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PREFERRED_BANK_ACCOUNT_CODE], $value);
-    }
-
-    public function getCashFlowPaymentTermsCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CASH_FLOW_PAYMENT_TERMS_CODE]);
-    }
-
-    public function setCashFlowPaymentTermsCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CASH_FLOW_PAYMENT_TERMS_CODE], $value);
-    }
-
-    public function getPrimaryContactNo() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PRIMARY_CONTACT_NO]);
-    }
-
-    public function setPrimaryContactNo(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PRIMARY_CONTACT_NO], $value);
-    }
-
-    public function getContactType() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CONTACT_TYPE]);
-    }
-
-    public function setContactType(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CONTACT_TYPE], $value);
-    }
-
-    public function getMobilePhoneNo() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::MOBILE_PHONE_NO]);
-    }
-
-    public function setMobilePhoneNo(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::MOBILE_PHONE_NO], $value);
-    }
-
-    public function getResponsibilityCenter() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::RESPONSIBILITY_CENTER]);
-    }
-
-    public function setResponsibilityCenter(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::RESPONSIBILITY_CENTER], $value);
-    }
-
-    public function getShippingAdvice() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SHIPPING_ADVICE]);
-    }
-
-    public function setShippingAdvice(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SHIPPING_ADVICE], $value);
-    }
-
-    public function getShippingTime() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SHIPPING_TIME]);
-    }
-
-    public function setShippingTime(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SHIPPING_TIME], $value);
-    }
-
-    public function getShippingAgentServiceCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SHIPPING_AGENT_SERVICE_CODE]);
-    }
-
-    public function setShippingAgentServiceCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SHIPPING_AGENT_SERVICE_CODE], $value);
-    }
-
-    public function getServiceZoneCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SERVICE_ZONE_CODE]);
-    }
-
-    public function setServiceZoneCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SERVICE_ZONE_CODE], $value);
-    }
-
-    public function getCombineServiceShipments() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::COMBINE_SERVICE_SHIPMENTS]);
-    }
-
-    public function setCombineServiceShipments(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::COMBINE_SERVICE_SHIPMENTS], $value);
-    }
-
-    public function getPriceCalculationMethod() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PRICE_CALCULATION_METHOD]);
-    }
-
-    public function setPriceCalculationMethod(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PRICE_CALCULATION_METHOD], $value);
-    }
-
-    public function getAllowLineDisc() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::ALLOW_LINE_DISC]);
-    }
-
-    public function setAllowLineDisc(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::ALLOW_LINE_DISC], $value);
-    }
-
-    public function getBaseCalendarCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::BASE_CALENDAR_CODE]);
-    }
-
-    public function setBaseCalendarCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::BASE_CALENDAR_CODE], $value);
-    }
-
-    public function getCopySellToAddrToQteFrom() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::COPY_SELLTO_ADDR_TO_QTE_FROM]);
-    }
-
-    public function setCopySellToAddrToQteFrom(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::COPY_SELLTO_ADDR_TO_QTE_FROM], $value);
-    }
-
-    public function getValidateEuVatRegNo() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::VALIDATE_EU_VAT_REG_NO]);
-    }
-
-    public function setValidateEuVatRegNo(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::VALIDATE_EU_VAT_REG_NO], $value);
-    }
-
-    public function getCurrencyId() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_ID]);
-    }
-
-    public function setCurrencyId(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_ID], $value);
-    }
-
-    public function getPaymentTermsId() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_TERMS_ID]);
-    }
-
-    public function setPaymentTermsId(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_TERMS_ID], $value);
-    }
-
-    public function getShipmentMethodId() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SHIPMENT_METHOD_ID]);
-    }
-
-    public function setShipmentMethodId(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SHIPMENT_METHOD_ID], $value);
-    }
-
-    public function getPaymentMethodId() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_METHOD_ID]);
-    }
-
-    public function setPaymentMethodId(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_METHOD_ID], $value);
-    }
-
-    public function getTaxAreaId() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::TAX_AREA_ID]);
-    }
-
-    public function setTaxAreaId(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::TAX_AREA_ID], $value);
-    }
-
-    public function getContactId() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CONTACT_ID]);
-    }
-
-    public function setContactId(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CONTACT_ID], $value);
-    }
-
-    public function getContactGraphId() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::CONTACT_GRAPH_ID]);
-    }
-
-    public function setContactGraphId(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::CONTACT_GRAPH_ID], $value);
-    }
-
-    public function getLscDateCreated() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_DATE_CREATED]);
-    }
-
-    public function setLscDateCreated(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_DATE_CREATED], $value);
-    }
-
-    public function getLscCreatedByUser() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_CREATED_BY_USER]);
-    }
-
-    public function setLscCreatedByUser(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_CREATED_BY_USER], $value);
-    }
-
-    public function getLscExternalId() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_EXTERNAL_ID]);
-    }
-
-    public function setLscExternalId(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_EXTERNAL_ID], $value);
-    }
-
-    public function getLscCustomerId() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_CUSTOMER_ID]);
-    }
-
-    public function setLscCustomerId(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_CUSTOMER_ID], $value);
-    }
-
-    public function getLscReasonCode() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_REASON_CODE]);
-    }
-
-    public function setLscReasonCode(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_REASON_CODE], $value);
-    }
-
-    public function getLscRestrictionFunctionality() : ?int
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_RESTRICTION_FUNCTIONALITY]);
-    }
-
-    public function setLscRestrictionFunctionality(?int $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_RESTRICTION_FUNCTIONALITY], $value);
-    }
-
-    public function getLscPrintDocumentInvoice() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_PRINT_DOCUMENT_INVOICE]);
-    }
-
-    public function setLscPrintDocumentInvoice(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_PRINT_DOCUMENT_INVOICE], $value);
-    }
-
-    public function getLscTransactionLimit() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_TRANSACTION_LIMIT]);
-    }
-
-    public function setLscTransactionLimit(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_TRANSACTION_LIMIT], $value);
-    }
-
-    public function getLscDaytimePhoneNo() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_DAYTIME_PHONE_NO]);
-    }
-
-    public function setLscDaytimePhoneNo(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_DAYTIME_PHONE_NO], $value);
-    }
-
-    public function getLscHouseApartmentNo() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_HOUSEAPARTMENT_NO]);
-    }
-
-    public function setLscHouseApartmentNo(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_HOUSEAPARTMENT_NO], $value);
-    }
-
-    public function getLscRetailCustomerGroup() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_RETAIL_CUSTOMER_GROUP]);
-    }
-
-    public function setLscRetailCustomerGroup(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_RETAIL_CUSTOMER_GROUP], $value);
-    }
-
-    public function getLscDefaultWeight() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_DEFAULT_WEIGHT]);
-    }
-
-    public function setLscDefaultWeight(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_DEFAULT_WEIGHT], $value);
-    }
-
-    public function getLscOtherTenderInFinalizing() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_OTHER_TENDER_IN_FINALIZING]);
-    }
-
-    public function setLscOtherTenderInFinalizing(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_OTHER_TENDER_IN_FINALIZING], $value);
-    }
-
-    public function getLscPostAsShipment() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_POST_AS_SHIPMENT]);
-    }
-
-    public function setLscPostAsShipment(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_POST_AS_SHIPMENT], $value);
-    }
-
-    public function getLscInclIncExpOnSalesDoc() : ?bool
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_INCL_INCEXP_ON_SALES_DOC]);
-    }
-
-    public function setLscInclIncExpOnSalesDoc(?bool $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_INCL_INCEXP_ON_SALES_DOC], $value);
-    }
-
-    public function getLscAmtchargedonposint() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_AMTCHARGEDONPOSINT]);
-    }
-
-    public function setLscAmtchargedonposint(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_AMTCHARGEDONPOSINT], $value);
-    }
-
-    public function getLscAmtchargedpostedint() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_AMTCHARGEDPOSTEDINT]);
-    }
-
-    public function setLscAmtchargedpostedint(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_AMTCHARGEDPOSTEDINT], $value);
-    }
-
-    public function getLscBalancelcyint() : ?float
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::LSC_BALANCELCYINT]);
-    }
-
-    public function setLscBalancelcyint(?float $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::LSC_BALANCELCYINT], $value);
-    }
-
-    public function getSystemid() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
-    }
-
-    public function setSystemid(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
-    }
-
-    public function getSystemcreatedat() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
-    }
-
-    public function setSystemcreatedat(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
-    }
-
-    public function getSystemcreatedby() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
-    }
-
-    public function setSystemcreatedby(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
-    }
-
-    public function getSystemmodifiedat() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
-    }
-
-    public function setSystemmodifiedat(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
-    }
-
-    public function getSystemmodifiedby() : ?string
-    {
-        return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
-    }
-
-    public function setSystemmodifiedby(?string $value)
-    {
-        return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
-    }
-
-    public function setProcessed(?bool $processed)
-    {
-        $this->setData('processed', $processed);
-        $this->setDataChanges(true);
+        $this->setData( 'Cards', $Cards );
+        $this->Cards = $Cards;
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    /**
+     * @return ArrayOfCard
+     */
+    public function getCards()
     {
-        return $this->getData('processed');
+        return $this->getData( 'Cards' );
     }
 
-    public function setIsUpdated(?bool $is_updated)
+    /**
+     * @param string $AccountNumber
+     * @return $this
+     */
+    public function setAccountNumber($AccountNumber)
     {
-        $this->setData('is_updated', $is_updated);
-        $this->setDataChanges(true);
+        $this->setData( 'AccountNumber', $AccountNumber );
+        $this->AccountNumber = $AccountNumber;
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    /**
+     * @return string
+     */
+    public function getAccountNumber()
     {
-        return $this->getData('is_updated');
+        return $this->getData( 'AccountNumber' );
     }
 
-    public function setIsFailed(?bool $is_failed)
+    /**
+     * @param int $Blocked
+     * @return $this
+     */
+    public function setBlocked($Blocked)
     {
-        $this->setData('is_failed', $is_failed);
-        $this->setDataChanges(true);
+        $this->setData( 'Blocked', $Blocked );
+        $this->Blocked = $Blocked;
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    /**
+     * @return int
+     */
+    public function getBlocked()
     {
-        return $this->getData('is_failed');
+        return $this->getData( 'Blocked' );
     }
 
-    public function setCreatedAt(?string $created_at)
+    /**
+     * @param string $CellularPhone
+     * @return $this
+     */
+    public function setCellularPhone($CellularPhone)
     {
-        $this->setData('created_at', $created_at);
-        $this->setDataChanges(true);
+        $this->setData( 'CellularPhone', $CellularPhone );
+        $this->CellularPhone = $CellularPhone;
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    /**
+     * @return string
+     */
+    public function getCellularPhone()
     {
-        return $this->getData('created_at');
+        return $this->getData( 'CellularPhone' );
     }
 
-    public function setUpdatedAt(?string $updated_at)
+    /**
+     * @param string $City
+     * @return $this
+     */
+    public function setCity($City)
     {
-        $this->setData('updated_at', $updated_at);
-        $this->setDataChanges(true);
+        $this->setData( 'City', $City );
+        $this->City = $City;
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    /**
+     * @return string
+     */
+    public function getCity()
     {
-        return $this->getData('updated_at');
+        return $this->getData( 'City' );
     }
 
-    public function setIdentityValue(?string $identity_value)
+    /**
+     * @param string $ClubCode
+     * @return $this
+     */
+    public function setClubCode($ClubCode)
     {
-        $this->setData('identity_value', $identity_value);
-        $this->setDataChanges(true);
+        $this->setData( 'ClubCode', $ClubCode );
+        $this->ClubCode = $ClubCode;
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    /**
+     * @return string
+     */
+    public function getClubCode()
     {
-        return $this->getData('identity_value');
+        return $this->getData( 'ClubCode' );
     }
 
-    public function setChecksum(?string $checksum)
+    /**
+     * @param string $Country
+     * @return $this
+     */
+    public function setCountry($Country)
     {
-        $this->setData('checksum', $checksum);
-        $this->setDataChanges(true);
+        $this->setData( 'Country', $Country );
+        $this->Country = $Country;
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
-    public function getChecksum() : ?string
+    /**
+     * @return string
+     */
+    public function getCountry()
     {
-        return $this->getData('checksum');
+        return $this->getData( 'Country' );
     }
 
-    public function setProcessedAt(?string $processed_at)
+    /**
+     * @param string $County
+     * @return $this
+     */
+    public function setCounty($County)
     {
-        $this->setData('processed_at', $processed_at);
-        $this->setDataChanges(true);
+        $this->setData( 'County', $County );
+        $this->County = $County;
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    /**
+     * @return string
+     */
+    public function getCounty()
     {
-        return $this->getData('processed_at');
+        return $this->getData( 'County' );
+    }
+
+    /**
+     * @param string $Currency
+     * @return $this
+     */
+    public function setCurrency($Currency)
+    {
+        $this->setData( 'Currency', $Currency );
+        $this->Currency = $Currency;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->getData( 'Currency' );
+    }
+
+    /**
+     * @param string $CustomerId
+     * @return $this
+     */
+    public function setCustomerId($CustomerId)
+    {
+        $this->setData( 'CustomerId', $CustomerId );
+        $this->CustomerId = $CustomerId;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerId()
+    {
+        return $this->getData( 'CustomerId' );
+    }
+
+    /**
+     * @param string $DiscountGroup
+     * @return $this
+     */
+    public function setDiscountGroup($DiscountGroup)
+    {
+        $this->setData( 'DiscountGroup', $DiscountGroup );
+        $this->DiscountGroup = $DiscountGroup;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscountGroup()
+    {
+        return $this->getData( 'DiscountGroup' );
+    }
+
+    /**
+     * @param string $Email
+     * @return $this
+     */
+    public function setEmail($Email)
+    {
+        $this->setData( 'Email', $Email );
+        $this->Email = $Email;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->getData( 'Email' );
+    }
+
+    /**
+     * @param string $FirstName
+     * @return $this
+     */
+    public function setFirstName($FirstName)
+    {
+        $this->setData( 'FirstName', $FirstName );
+        $this->FirstName = $FirstName;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->getData( 'FirstName' );
+    }
+
+    /**
+     * @param string $GuestType
+     * @return $this
+     */
+    public function setGuestType($GuestType)
+    {
+        $this->setData( 'GuestType', $GuestType );
+        $this->GuestType = $GuestType;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGuestType()
+    {
+        return $this->getData( 'GuestType' );
+    }
+
+    /**
+     * @param string $nav_id
+     * @return $this
+     */
+    public function setNavId($nav_id)
+    {
+        $this->setData( 'nav_id', $nav_id );
+        $this->nav_id = $nav_id;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNavId()
+    {
+        return $this->getData( 'nav_id' );
+    }
+
+    /**
+     * @param int $IncludeTax
+     * @return $this
+     */
+    public function setIncludeTax($IncludeTax)
+    {
+        $this->setData( 'IncludeTax', $IncludeTax );
+        $this->IncludeTax = $IncludeTax;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIncludeTax()
+    {
+        return $this->getData( 'IncludeTax' );
+    }
+
+    /**
+     * @param boolean $IsDeleted
+     * @return $this
+     */
+    public function setIsDeleted($IsDeleted)
+    {
+        $this->setData( 'IsDeleted', $IsDeleted );
+        $this->IsDeleted = $IsDeleted;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsDeleted()
+    {
+        return $this->getData( 'IsDeleted' );
+    }
+
+    /**
+     * @param string $LastName
+     * @return $this
+     */
+    public function setLastName($LastName)
+    {
+        $this->setData( 'LastName', $LastName );
+        $this->LastName = $LastName;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->getData( 'LastName' );
+    }
+
+    /**
+     * @param string $MiddleName
+     * @return $this
+     */
+    public function setMiddleName($MiddleName)
+    {
+        $this->setData( 'MiddleName', $MiddleName );
+        $this->MiddleName = $MiddleName;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMiddleName()
+    {
+        return $this->getData( 'MiddleName' );
+    }
+
+    /**
+     * @param string $Name
+     * @return $this
+     */
+    public function setName($Name)
+    {
+        $this->setData( 'Name', $Name );
+        $this->Name = $Name;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->getData( 'Name' );
+    }
+
+    /**
+     * @param string $NamePrefix
+     * @return $this
+     */
+    public function setNamePrefix($NamePrefix)
+    {
+        $this->setData( 'NamePrefix', $NamePrefix );
+        $this->NamePrefix = $NamePrefix;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamePrefix()
+    {
+        return $this->getData( 'NamePrefix' );
+    }
+
+    /**
+     * @param string $NameSuffix
+     * @return $this
+     */
+    public function setNameSuffix($NameSuffix)
+    {
+        $this->setData( 'NameSuffix', $NameSuffix );
+        $this->NameSuffix = $NameSuffix;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNameSuffix()
+    {
+        return $this->getData( 'NameSuffix' );
+    }
+
+    /**
+     * @param string $PaymentTerms
+     * @return $this
+     */
+    public function setPaymentTerms($PaymentTerms)
+    {
+        $this->setData( 'PaymentTerms', $PaymentTerms );
+        $this->PaymentTerms = $PaymentTerms;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentTerms()
+    {
+        return $this->getData( 'PaymentTerms' );
+    }
+
+    /**
+     * @param string $PhoneLocal
+     * @return $this
+     */
+    public function setPhoneLocal($PhoneLocal)
+    {
+        $this->setData( 'PhoneLocal', $PhoneLocal );
+        $this->PhoneLocal = $PhoneLocal;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhoneLocal()
+    {
+        return $this->getData( 'PhoneLocal' );
+    }
+
+    /**
+     * @param string $PriceGroup
+     * @return $this
+     */
+    public function setPriceGroup($PriceGroup)
+    {
+        $this->setData( 'PriceGroup', $PriceGroup );
+        $this->PriceGroup = $PriceGroup;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceGroup()
+    {
+        return $this->getData( 'PriceGroup' );
+    }
+
+    /**
+     * @param string $ReceiptEmail
+     * @return $this
+     */
+    public function setReceiptEmail($ReceiptEmail)
+    {
+        $this->setData( 'ReceiptEmail', $ReceiptEmail );
+        $this->ReceiptEmail = $ReceiptEmail;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReceiptEmail()
+    {
+        return $this->getData( 'ReceiptEmail' );
+    }
+
+    /**
+     * @param int $ReceiptOption
+     * @return $this
+     */
+    public function setReceiptOption($ReceiptOption)
+    {
+        $this->setData( 'ReceiptOption', $ReceiptOption );
+        $this->ReceiptOption = $ReceiptOption;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReceiptOption()
+    {
+        return $this->getData( 'ReceiptOption' );
+    }
+
+    /**
+     * @param string $SchemeCode
+     * @return $this
+     */
+    public function setSchemeCode($SchemeCode)
+    {
+        $this->setData( 'SchemeCode', $SchemeCode );
+        $this->SchemeCode = $SchemeCode;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSchemeCode()
+    {
+        return $this->getData( 'SchemeCode' );
+    }
+
+    /**
+     * @param SendEmail $SendReceiptByEMail
+     * @return $this
+     */
+    public function setSendReceiptByEMail($SendReceiptByEMail)
+    {
+        $this->setData( 'SendReceiptByEMail', $SendReceiptByEMail );
+        $this->SendReceiptByEMail = $SendReceiptByEMail;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return SendEmail
+     */
+    public function getSendReceiptByEMail()
+    {
+        return $this->getData( 'SendReceiptByEMail' );
+    }
+
+    /**
+     * @param string $ShippingLocation
+     * @return $this
+     */
+    public function setShippingLocation($ShippingLocation)
+    {
+        $this->setData( 'ShippingLocation', $ShippingLocation );
+        $this->ShippingLocation = $ShippingLocation;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingLocation()
+    {
+        return $this->getData( 'ShippingLocation' );
+    }
+
+    /**
+     * @param string $State
+     * @return $this
+     */
+    public function setState($State)
+    {
+        $this->setData( 'State', $State );
+        $this->State = $State;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->getData( 'State' );
+    }
+
+    /**
+     * @param string $Street
+     * @return $this
+     */
+    public function setStreet($Street)
+    {
+        $this->setData( 'Street', $Street );
+        $this->Street = $Street;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStreet()
+    {
+        return $this->getData( 'Street' );
+    }
+
+    /**
+     * @param string $TaxGroup
+     * @return $this
+     */
+    public function setTaxGroup($TaxGroup)
+    {
+        $this->setData( 'TaxGroup', $TaxGroup );
+        $this->TaxGroup = $TaxGroup;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaxGroup()
+    {
+        return $this->getData( 'TaxGroup' );
+    }
+
+    /**
+     * @param string $URL
+     * @return $this
+     */
+    public function setURL($URL)
+    {
+        $this->setData( 'URL', $URL );
+        $this->URL = $URL;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getURL()
+    {
+        return $this->getData( 'URL' );
+    }
+
+    /**
+     * @param string $UserName
+     * @return $this
+     */
+    public function setUserName($UserName)
+    {
+        $this->setData( 'UserName', $UserName );
+        $this->UserName = $UserName;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserName()
+    {
+        return $this->getData( 'UserName' );
+    }
+
+    /**
+     * @param string $ZipCode
+     * @return $this
+     */
+    public function setZipCode($ZipCode)
+    {
+        $this->setData( 'ZipCode', $ZipCode );
+        $this->ZipCode = $ZipCode;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getZipCode()
+    {
+        return $this->getData( 'ZipCode' );
+    }
+
+    /**
+     * @param string $scope
+     * @return $this
+     */
+    public function setScope($scope)
+    {
+        $this->setData( 'scope', $scope );
+        $this->scope = $scope;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScope()
+    {
+        return $this->getData( 'scope' );
+    }
+
+    /**
+     * @param int $scope_id
+     * @return $this
+     */
+    public function setScopeId($scope_id)
+    {
+        $this->setData( 'scope_id', $scope_id );
+        $this->scope_id = $scope_id;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScopeId()
+    {
+        return $this->getData( 'scope_id' );
+    }
+
+    /**
+     * @param boolean $processed
+     * @return $this
+     */
+    public function setProcessed($processed)
+    {
+        $this->setData( 'processed', $processed );
+        $this->processed = $processed;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getProcessed()
+    {
+        return $this->getData( 'processed' );
+    }
+
+    /**
+     * @param boolean $is_updated
+     * @return $this
+     */
+    public function setIsUpdated($is_updated)
+    {
+        $this->setData( 'is_updated', $is_updated );
+        $this->is_updated = $is_updated;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsUpdated()
+    {
+        return $this->getData( 'is_updated' );
+    }
+
+    /**
+     * @param boolean $is_failed
+     * @return $this
+     */
+    public function setIsFailed($is_failed)
+    {
+        $this->setData( 'is_failed', $is_failed );
+        $this->is_failed = $is_failed;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsFailed()
+    {
+        return $this->getData( 'is_failed' );
+    }
+
+    /**
+     * @param string $created_at
+     * @return $this
+     */
+    public function setCreatedAt($created_at)
+    {
+        $this->setData( 'created_at', $created_at );
+        $this->created_at = $created_at;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt()
+    {
+        return $this->getData( 'created_at' );
+    }
+
+    /**
+     * @param string $updated_at
+     * @return $this
+     */
+    public function setUpdatedAt($updated_at)
+    {
+        $this->setData( 'updated_at', $updated_at );
+        $this->updated_at = $updated_at;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdatedAt()
+    {
+        return $this->getData( 'updated_at' );
+    }
+
+    /**
+     * @param string $identity_value
+     * @return $this
+     */
+    public function setIdentityValue($identity_value)
+    {
+        $this->setData( 'identity_value', $identity_value );
+        $this->identity_value = $identity_value;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentityValue()
+    {
+        return $this->getData( 'identity_value' );
+    }
+
+    /**
+     * @param string $checksum
+     * @return $this
+     */
+    public function setChecksum($checksum)
+    {
+        $this->setData( 'checksum', $checksum );
+        $this->checksum = $checksum;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChecksum()
+    {
+        return $this->getData( 'checksum' );
+    }
+
+    /**
+     * @param string $processed_at
+     * @return $this
+     */
+    public function setProcessedAt($processed_at)
+    {
+        $this->setData( 'processed_at', $processed_at );
+        $this->processed_at = $processed_at;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProcessedAt()
+    {
+        return $this->getData( 'processed_at' );
     }
 }
 
