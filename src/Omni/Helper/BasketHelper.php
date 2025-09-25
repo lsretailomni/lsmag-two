@@ -69,6 +69,8 @@ class BasketHelper extends AbstractHelperOmni
      */
     public function setOneListQuote(Quote $quote, RootMobileTransaction $oneList)
     {
+        $country = $quote->getShippingAddress()->getCountryId();
+        $oneList->getMobiletransaction()->setShiptocountryregioncode($country);
         $quoteItems = $quote->getAllVisibleItems();
 
         return $this->setGivenItemsInGivenOneList($oneList, $quoteItems);
