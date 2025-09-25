@@ -219,6 +219,16 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::LINE_NO], $value);
     }
 
+    public function getLineType() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LINE_TYPE]);
+    }
+
+    public function setLineType(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LINE_TYPE], $value);
+    }
+
     public function getMaximumDiscountAmount() : ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAXIMUM_DISCOUNT_AMOUNT]);

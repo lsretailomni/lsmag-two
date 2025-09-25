@@ -185,6 +185,15 @@ class ReplicationHelper extends AbstractHelper
         'ReplLscOfferHtmlMl' => 'ReplLscDataTranslation'
     ];
 
+    public const SAME_NAME_MAPPING = [
+        'PeriodicDiscView' => [
+            'Type' => [
+                0 => 'Line Type',
+                1 => 'Type'
+            ]
+        ]
+    ];
+
     public const DB_TABLES_MAPPING = [
         'repl_lsc_attribute' => [
             'table_name' => 'repl_attribute',
@@ -584,6 +593,7 @@ class ReplicationHelper extends AbstractHelper
                 'validation_period_id' => 'ValidationPeriodId',
                 'variant_code' => 'VariantId',
                 'variant_type' => 'VariantType',
+                'line_type' => ['name' => 'LineType', 'type' => 'text']
             ]
         ],
         'repl_storeview' => [
@@ -785,9 +795,9 @@ class ReplicationHelper extends AbstractHelper
             'scope_id'  => 'scope_id'
         ],
         'ls_mag/replication/repl_discount_setup' => [
-            'OfferNo',
-            'LineNumber',
-            'scope_id'
+            'offer_no' => 'OfferNo',
+            'line_no' => 'LineNumber',
+            'scope_id'  => 'scope_id'
         ],
         'ls_mag/replication/repl_discount_validation' => [
             'nav_id' => 'nav_id',
@@ -4069,7 +4079,7 @@ class ReplicationHelper extends AbstractHelper
 
             $sourceItems[$sku] = $this->getSourceItemGivenData(
                 $sku,
-                $replInvStatus->getQuantity(),
+                $replInvStatus->getQuantity() ?? 0,
                 ($replInvStatus->getQuantity() > 0) ? 1 : 0
             );
 

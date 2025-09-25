@@ -15,6 +15,7 @@ use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemTriggerFunction;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemUsageCategory;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscMemberType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountLineType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
 use Ls\Omni\Client\CentralEcommerce\Entity\HierarchyDealView;
 use Ls\Omni\Client\CentralEcommerce\Entity\HierarchyView;
@@ -278,9 +279,14 @@ abstract class AbstractReplicationTask
                 ReplDiscountType::class,
                 (int) $source->getData(PeriodicDiscView::TYPE)
             );
+            $value4 = $this->getConstantByIndex(
+                ReplDiscountLineType::class,
+                (int) $source->getData(PeriodicDiscView::LINE_TYPE)
+            );
             $source->setData(PeriodicDiscView::DISCOUNT_TYPE, $value1);
             $source->setData(PeriodicDiscView::MEMBER_TYPE, $value2);
             $source->setData(PeriodicDiscView::TYPE, $value3);
+            $source->setData(PeriodicDiscView::LINE_TYPE, $value4);
         } elseif ($confPath == ReplLscWiItemBufferTask::CONFIG_PATH) {
             if (!empty($source->getData(LSCWIItemBuffer::ITEM_HTML))) {
                 $source->setData(

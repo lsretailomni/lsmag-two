@@ -336,6 +336,7 @@
     <column xsi:type="boolean" name="Exclude" default="0" nullable="true" comment="exclude"/>
     <column xsi:type="text" name="LineGroup" nullable="true" comment="line_group"/>
     <column xsi:type="int" name="LineNumber" padding="11" nullable="true" comment="line_no"/>
+    <column xsi:type="text" name="LineType" nullable="true" comment="line_type"/>
     <column xsi:type="decimal" name="MaxDiscountAmount" scale="4" precision="20" nullable="true" comment="maximum_discount_amount"/>
     <column xsi:type="text" name="MemberAttribute" nullable="true" comment="member_attribute"/>
     <column xsi:type="decimal" name="LineMemberPoints" scale="4" precision="20" nullable="true" comment="member_points"/>
@@ -690,6 +691,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_IMAGE_LINK_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_IMAGE_LINK_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_inv_status" resource="default" engine="innodb" comment="LSC Inventory Lookup Table">
     <column xsi:type="int" name="repl_inv_status_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_inv_status_id"/>

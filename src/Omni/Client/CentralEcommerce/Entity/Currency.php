@@ -42,6 +42,7 @@ class Currency extends AbstractModel
     public const MAX_PAYMENT_TOLERANCE_AMOUNT = 'Max. Payment Tolerance Amount';
     public const SYMBOL = 'Symbol';
     public const LAST_MODIFIED_DATE_TIME = 'Last Modified Date Time';
+    public const CURRENCY_SYMBOL_POSITION = 'Currency Symbol Position';
     public const LSC_LOWEST_ACCEPT_DENOM_AMT = 'LSC Lowest Accept. Denom. Amt.';
     public const LSC_DENOMINATION_ROUNDING_TYPE = 'LSC Denomination Rounding Type';
     public const LSC_POS_CURRENCY_SYMBOL = 'LSC POS Currency Symbol';
@@ -85,6 +86,7 @@ class Currency extends AbstractModel
 	self::MAX_PAYMENT_TOLERANCE_AMOUNT => 'max_payment_tolerance_amount',
 	self::SYMBOL => 'symbol',
 	self::LAST_MODIFIED_DATE_TIME => 'last_modified_date_time',
+	self::CURRENCY_SYMBOL_POSITION => 'currency_symbol_position',
 	self::LSC_LOWEST_ACCEPT_DENOM_AMT => 'lsc_lowest_accept_denom_amt',
 	self::LSC_DENOMINATION_ROUNDING_TYPE => 'lsc_denomination_rounding_type',
 	self::LSC_POS_CURRENCY_SYMBOL => 'lsc_pos_currency_symbol',
@@ -411,6 +413,16 @@ class Currency extends AbstractModel
     public function setLastModifiedDateTime(?string $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
+    }
+
+    public function getCurrencySymbolPosition(): ?int
+    {
+        return $this->getData(self::CURRENCY_SYMBOL_POSITION);
+    }
+
+    public function setCurrencySymbolPosition(?int $value)
+    {
+        return $this->setData(self::CURRENCY_SYMBOL_POSITION, $value);
     }
 
     public function getLscLowestAcceptDenomAmt(): ?float

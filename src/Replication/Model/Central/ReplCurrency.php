@@ -339,6 +339,16 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME], $value);
     }
 
+    public function getCurrencySymbolPosition() : ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_SYMBOL_POSITION]);
+    }
+
+    public function setCurrencySymbolPosition(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_SYMBOL_POSITION], $value);
+    }
+
     public function getLscLowestAcceptDenomAmt() : ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_LOWEST_ACCEPT_DENOM_AMT]);

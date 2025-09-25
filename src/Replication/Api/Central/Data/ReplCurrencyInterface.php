@@ -136,6 +136,10 @@ interface ReplCurrencyInterface
 
     public function setLastModifiedDateTime(?string $value);
 
+    public function getCurrencySymbolPosition() : ?int;
+
+    public function setCurrencySymbolPosition(?int $value);
+
     public function getLscLowestAcceptDenomAmt() : ?float;
 
     public function setLscLowestAcceptDenomAmt(?float $value);

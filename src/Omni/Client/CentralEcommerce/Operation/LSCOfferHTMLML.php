@@ -73,10 +73,12 @@ class LSCOfferHTMLML
             $deletedFieldsDefinition = $data['DataSet']['DataSetDel']['DynDataSet']['DataSetFields'];
         }
 
+        $dataSetName = '';
         if (isset($recRef['Records'])) {
             $rows = $recRef['Records'];
         } elseif (isset($recRef['DataSetRows'])) {
             $rows = $recRef['DataSetRows'];
+            $dataSetName = $recRef['DataSetName'];
         } else {
             $rows = [];
         }
@@ -98,12 +100,27 @@ class LSCOfferHTMLML
                     \Ls\Omni\Client\CentralEcommerce\Entity\LSCOfferHTMLML::class
                 );
                 foreach ($values as $value) {
+                    $sameNameExists = false;
                     $fieldName = $fields[$value['FieldIndex']];
+                    if (isset(\Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[$dataSetName][$fieldName])) {
+                        $sameNameExists = true;
+                    }
                     if (strtolower($fieldName) == 'id') {
                         $fieldName = 'Nav Id';
                     }
-                    if ($entry->getData($fieldName) === null) {
+                    if ((!$sameNameExists && $entry->getData($fieldName) === null) ||
+                    ($sameNameExists &&
+                    $entry->getData(\Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[$dataSetName][$fieldName][0]) === null)
+                    ) {
+                        if ($sameNameExists) {
+                            $fieldName = \Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[$dataSetName][$fieldName][0];
+                        }
                         $entry->setData($fieldName, $value['FieldValue']);
+                    } else {
+                        if ($sameNameExists) {
+                            $fieldName = \Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[$dataSetName][$fieldName][1];
+                            $entry->setData($fieldName, $value['FieldValue']);
+                        }
                     }
                 }
                 $results[] = $entry;
@@ -119,11 +136,25 @@ class LSCOfferHTMLML
                 $entry->setData('is_deleted', true);
                 foreach ($values as $value) {
                     $fieldName = $deletedFields[$value['FieldIndex']];
+                    if (isset(\Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[$dataSetName][$fieldName])) {
+                        $sameNameExists = true;
+                    }
                     if (strtolower($fieldName) == 'id') {
                         $fieldName = 'Nav Id';
                     }
-                    if ($entry->getData($fieldName) === null) {
+                    if ((!$sameNameExists && $entry->getData($fieldName) === null) ||
+                    ($sameNameExists &&
+                    $entry->getData(\Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[$dataSetName][$fieldName][0]) === null)
+                    ) {
+                        if ($sameNameExists) {
+                            $fieldName = \Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[$dataSetName][$fieldName][0];
+                        }
                         $entry->setData($fieldName, $value['FieldValue']);
+                    } else {
+                        if ($sameNameExists) {
+                            $fieldName = \Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[$dataSetName][$fieldName][1];
+                            $entry->setData($fieldName, $value['FieldValue']);
+                        }
                     }
                 }
                 $results[] = $entry;
