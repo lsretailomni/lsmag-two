@@ -811,7 +811,7 @@ class OrderEdit
                                         COEditLine::STATUS              => "",
                                         COEditLine::NUMBER              => $itemId,
                                         COEditLine::VARIANT_CODE        => $orderLine->getVariantCode(),
-                                        COEditLine::UNITOF_MEASURE_CODE => $orderLine->getUomid(),
+                                        COEditLine::UNITOF_MEASURE_CODE => $orderLine->getUnitofmeasurecode(),
                                         COEditLine::NET_PRICE           => $netPrice,
                                         COEditLine::PRICE               => $price,
                                         COEditLine::QUANTITY            => $qtyDifference,
