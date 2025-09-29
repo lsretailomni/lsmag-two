@@ -8,6 +8,7 @@ use Ls\Core\Model\Data as LsHelper;
 use Ls\Core\Model\LSR;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyDealType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyLeafType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceHandling;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceType;
@@ -261,10 +262,11 @@ abstract class AbstractReplicationTask
             ));
         }
 
-        if ($confPath == ReplLscHierarchyviewTask::CONFIG_PATH ||
-            $confPath == ReplLscHierarchynodeslinkviewTask::CONFIG_PATH
-        ) {
+        if ($confPath == ReplLscHierarchyviewTask::CONFIG_PATH) {
             $value = $this->getConstantByIndex(HierarchyType::class, (int) $source->getData(HierarchyView::TYPE));
+            $source->setData(HierarchyView::TYPE, $value);
+        } elseif ($confPath == ReplLscHierarchynodeslinkviewTask::CONFIG_PATH) {
+            $value = $this->getConstantByIndex(HierarchyLeafType::class, (int) $source->getData(HierarchyView::TYPE));
             $source->setData(HierarchyView::TYPE, $value);
         } elseif ($confPath == ReplLscPeriodicdiscviewTask::CONFIG_PATH) {
             $value1 = $this->getConstantByIndex(
