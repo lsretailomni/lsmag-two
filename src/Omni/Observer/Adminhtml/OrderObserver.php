@@ -4,13 +4,15 @@ declare(strict_types=1);
 namespace Ls\Omni\Observer\Adminhtml;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Model\Sales\AdminOrder\OrderEdit;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Model\ResourceModel\Order;
@@ -45,9 +47,11 @@ class OrderObserver implements ObserverInterface
      * Execute method to perform order creation and updates
      *
      * @param Observer $observer
-     * @return $this|void
-     * @throws AlreadyExistsException
+     * @return $this
      * @throws NoSuchEntityException
+     * @throws GuzzleException
+     * @throws InvalidEnumException
+     * @throws LocalizedException
      */
     public function execute(Observer $observer)
     {
@@ -56,8 +60,6 @@ class OrderObserver implements ObserverInterface
         $this->orderHelper->storeManager->setCurrentStore($order->getStoreId());
         $this->orderHelper->checkoutSession->setQuoteId($order->getQuoteId());
         $this->orderHelper->customerSession->setData('customer_id', $order->getCustomerId());
-        //$this->orderHelper->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $order->getCustomer()->getLsrCardid());
-        //$oneListCalculation = $this->basketHelper->getOneListCalculation();
         $oneListCalculation = $this->basketHelper->calculateOneListFromOrder($order);
         $response           = null;
         /*
@@ -88,7 +90,6 @@ class OrderObserver implements ObserverInterface
                                     $shippingMethod = $order->getShippingMethod(true);
                                     if ($shippingMethod !== null) {
                                         $carrierCode    = $shippingMethod->getData('carrier_code');
-                                        $method         = $shippingMethod->getData('method');
                                         $isClickCollect = $carrierCode == 'clickandcollect';
                                     }
                                     if ($isClickCollect) {
