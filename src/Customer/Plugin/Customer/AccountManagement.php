@@ -103,7 +103,6 @@ class AccountManagement
                     $found = $search !== null
                         && !empty($search->getLscMemberContact())
                         && !empty($search->getLscMemberContact()->getEmail());
-
                     if (!$found) {
                         throw new NoSuchEntityException(
                             __('Sorry! No account found with the provided email address.')

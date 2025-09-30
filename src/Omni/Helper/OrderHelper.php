@@ -6,6 +6,8 @@ namespace Ls\Omni\Helper;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\LineType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use \Ls\Omni\Client\CentralEcommerce\Entity;
 use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCODiscountLineV6;
 use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCOHeaderV6;
@@ -13,7 +15,7 @@ use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCOLineV6;
 use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCOPaymentV6;
 use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateV6;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
@@ -25,6 +27,8 @@ use \Ls\Omni\Client\CentralEcommerce\Operation\GetSalesReturnById_GetSalesReturn
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Client\CentralEcommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
 use \Ls\Omni\Client\CentralEcommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
+use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCancel as CustomerOrderCancelRequest;
+use \Ls\Omni\Client\CentralEcommerce\Operation\CustomerOrderCancel;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -52,6 +56,8 @@ class OrderHelper extends AbstractHelperOmni
     public $currentOrder;
 
     /**
+     * Place order by Id
+     *
      * @param $orderId
      * @param \Ls\Omni\Client\Ecommerce\Entity\Order $oneListCalculateResponse
      */
@@ -77,6 +83,7 @@ class OrderHelper extends AbstractHelperOmni
         $rootCustomerOrderCreate = $this->createInstance(
             RootCustomerOrderCreateV6::class
         );
+
         try {
             $customerOrderCreateCoHeader = $this->createInstance(
                 CustomerOrderCreateCOHeaderV6::class
@@ -248,6 +255,8 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * Prepare order edit request
+     *
      * @param Model\Order $order
      * @param $oneListCalculateResponse
      * @return \Ls\Omni\Client\Ecommerce\Entity\OrderEdit
@@ -379,7 +388,7 @@ class OrderHelper extends AbstractHelperOmni
             $taxAmount = (float)number_format(($shippingAmount - $netPrice), 2);
             $orderLine = end($customerOrderCoLines);
             $lineNumber = $orderLine->getLineno();
-            $lineNumber++;
+            $lineNumber = $lineNumber + 10000;
             $customerOrderCoLine = $this->createInstance(
                 CustomerOrderCreateCOLineV6::class
             );
@@ -404,6 +413,7 @@ class OrderHelper extends AbstractHelperOmni
 
     /**
      * Set shipment line properties
+     *
      * @param $orderLine
      * @param $order
      */
@@ -637,6 +647,57 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * Get payment type id
+     *
+     * @param $paymentType
+     * @return string
+     */
+    public function getPaymentTypeId($paymentType)
+    {
+        switch ($paymentType) {
+            case 1:
+                return PaymentType::PAYMENT;
+            case 2:
+                return PaymentType::PRE_AUTHORIZATION;
+            case 3:
+                return PaymentType::REFUND;
+            case 4:
+                return PaymentType::SHIPPED;
+            case 5:
+                return PaymentType::COLLECTED;
+            case 6:
+                return PaymentType::ROUNDING;
+            case 7:
+                return PaymentType::REFUNDED_ON_P_O_S;
+            case 8:
+                return PaymentType::VOIDED;
+            default:
+                return PaymentType::NONE;
+        }
+    }
+
+    /**
+     * Get payment type
+     *
+     * @param $order
+     * @return string
+     */
+    public function getPaymentType($order)
+    {
+        $paidAmount       = $order->getPayment()->getAmountPaid();
+        $authorizedAmount = $order->getPayment()->getAmountAuthorized();
+        if (!empty($paidAmount)) {
+            return "1";
+        } else {
+            if (!empty($authorizedAmount)) {
+                return "2";
+            } else {
+                return "0";
+            }
+        }
+    }
+
+    /**
      * This function is overriding in hospitality module
      *
      * Payment methods with no need to send in payment line
@@ -711,7 +772,7 @@ class OrderHelper extends AbstractHelperOmni
      * @return GetSelectedSalesDoc_GetSelectedSalesDoc|null
      * @throws InvalidEnumException
      */
-    public function getOrderDetailsAgainstId($docId, $type)
+    public function getOrderDetailsAgainstId($docId, $type = DocumentIdType::ORDER)
     {
         $response = null;
         $typeId   = $this->getOrderTypeId($type);
@@ -1145,18 +1206,23 @@ class OrderHelper extends AbstractHelperOmni
     public function orderCancel($documentId, $storeId)
     {
         $response = null;
-        $request  = new \Ls\Omni\Client\Ecommerce\Entity\OrderCancelEx();
-        $request->setOrderId($documentId);
-        $request->setStoreId($storeId);
-        $request->setUserId("");
-        $operation = new \Ls\Omni\Client\Ecommerce\Operation\OrderCancelEx();
+        $request = $this->dataHelper->createInstance(
+            CustomerOrderCancel::class,
+            []
+        );
+        $request->setOperationInput(
+            [
+                CustomerOrderCancelRequest::CUSTOMER_ORDER_DOCUMENT_ID => $documentId,
+                CustomerOrderCancelRequest::SOURCE_TYPE => $storeId
+            ]
+        );
         try {
-            $response = $operation->execute($request);
+            $response = $request->execute($request);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
-        return $response ? $response->getOrderCancelExResult() : $response;
+        return $response && $response->getResponsecode() == "0000" ? $response->getResponseCode() : $response;
     }
 
     /**
@@ -1395,13 +1461,11 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function getOrderType($idType)
     {
-        switch ($idType) {
-            case 1:
-                return DocumentIdType::ORDER;
-            case 2:
-                return DocumentIdType::HOSP_ORDER;
-        }
-        return DocumentIdType::RECEIPT;
+        return match ($idType) {
+            1 => DocumentIdType::ORDER,
+            2 => DocumentIdType::HOSP_ORDER,
+            default => DocumentIdType::RECEIPT,
+        };
     }
 
     /**
@@ -1437,6 +1501,22 @@ class OrderHelper extends AbstractHelperOmni
         return match ($type) {
             DocumentIdType::ORDER => 1,
             DocumentIdType::HOSP_ORDER => 2,
+            default => 0,
+        };
+    }
+
+    /**
+     * Get LineType Id
+     *
+     * @param $lineType
+     * @return int
+     */
+    public function getLineType($lineType)
+    {
+        return match ($lineType) {
+            LineType::ITEM => 0,
+            LineType::PAYMENT => 1,
+            LineType::SHIPPING => 7,
             default => 0,
         };
     }

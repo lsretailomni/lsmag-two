@@ -55,7 +55,10 @@ class OrderObserver implements ObserverInterface
         $order = $observer->getEvent()->getData('order');
         $this->orderHelper->storeManager->setCurrentStore($order->getStoreId());
         $this->orderHelper->checkoutSession->setQuoteId($order->getQuoteId());
-        $oneListCalculation = $this->basketHelper->getOneListCalculation();
+        $this->orderHelper->customerSession->setData('customer_id', $order->getCustomerId());
+        //$this->orderHelper->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $order->getCustomer()->getLsrCardid());
+        //$oneListCalculation = $this->basketHelper->getOneListCalculation();
+        $oneListCalculation = $this->basketHelper->calculateOneListFromOrder($order);
         $response           = null;
         /*
          * Adding condition to only process if LSR is enabled.

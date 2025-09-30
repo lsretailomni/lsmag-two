@@ -123,13 +123,17 @@ class Totals extends AbstractOrderBlock
     /**
      * Get Shipment charge line fee
      *
-     * @return float|int|null
+     * @return int
      * @throws NoSuchEntityException
      */
     public function getShipmentChargeLineFee()
     {
         $orderLines = $this->getItems();
         $fee        = 0;
+        if (!$orderLines) {
+            return $fee;
+        }
+        
         if (!is_array($orderLines)) {
             $orderLines = [$orderLines];
         }
