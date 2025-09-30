@@ -706,7 +706,11 @@ class ItemHelper extends AbstractHelper
     public function getItemAttributesGivenQuoteItem($quoteItem)
     {
         if ($quoteItem->getProductType() != Type::DEFAULT_TYPE) {
-            $quoteItem = current($quoteItem->getChildren());
+            if ($quoteItem instanceof \Magento\Sales\Model\Order\Item) {
+                $quoteItem = current($quoteItem->getChildrenItems());
+            } else {
+                $quoteItem = current($quoteItem->getChildren());
+            }
         }
 
         $itemId    = $quoteItem->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);

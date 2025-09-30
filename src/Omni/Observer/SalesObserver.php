@@ -66,9 +66,13 @@ class SalesObserver implements ObserverInterface
                     - $pointDiscount - $giftCardAmount;
                 $taxAmount  = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
                 $subTotal   = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
-                $total->setTaxAmount($taxAmount)
-                    ->setBaseTaxAmount($this->basketHelper->itemHelper->convertToBaseCurrency($taxAmount))
-                    ->setSubtotal($basketData->getTotalNetAmount())
+
+                if (!$this->basketHelper->getLsrModel()->localTaxIsEnabled()) {
+                    $total->setTaxAmount($taxAmount)
+                        ->setBaseTaxAmount($this->basketHelper->itemHelper->convertToBaseCurrency($taxAmount));
+                }
+
+                    $total->setSubtotal($basketData->getTotalNetAmount())
                     ->setBaseSubtotal(
                         $this->basketHelper->itemHelper->convertToBaseCurrency($basketData->getTotalNetAmount())
                     )

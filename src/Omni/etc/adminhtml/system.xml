@@ -315,10 +315,17 @@
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\BasketCalculation</source_model>
                 </field>
                 <field id="ship_to_params" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="0">
-                    <label>Calculate tax based on shipping address parameters like postcode &amp; state</label>
+                    <label>Calculate tax from Central based on shipping address parameters like postcode &amp; state</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>
                         Enable this if you want to calculate tax based on shipping address parameters like postcode &amp; state. The tax is calculated using basket calculation request. In order to use it properly for both guest &amp; registered user make sure Calculate Basket At = Every Cart Update and on checkout.
+                    </comment>
+                </field>
+                <field id="local_tax" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="0">
+                    <label>Calculate tax from Magento based on Tax Rules or Third party tax engines</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        Enable this if you want to calculate tax in magento
                     </comment>
                 </field>
             </group>

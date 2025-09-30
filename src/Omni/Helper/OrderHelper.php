@@ -13,6 +13,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Locale\ConfigInterface;
@@ -130,6 +131,7 @@ class OrderHelper extends AbstractHelper
      * @var ConfigInterface
      */
     public $config;
+    private ItemHelper $itemHelper;
 
     /**
      * @param Context $context
@@ -157,6 +159,7 @@ class OrderHelper extends AbstractHelper
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
         GiftCardHelper $giftCardHelper,
+        ItemHelper $itemHelper,
         Model\OrderRepository $orderRepository,
         CustomerSession $customerSession,
         CheckoutSession $checkoutSession,
@@ -176,6 +179,7 @@ class OrderHelper extends AbstractHelper
         $this->basketHelper       = $basketHelper;
         $this->loyaltyHelper      = $loyaltyHelper;
         $this->giftCardHelper     = $giftCardHelper;
+        $this->itemHelper         = $itemHelper;
         $this->orderRepository    = $orderRepository;
         $this->customerSession    = $customerSession;
         $this->checkoutSession    = $checkoutSession;
@@ -288,6 +292,43 @@ class OrderHelper extends AbstractHelper
                 $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
             }
             $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+            if ($this->lsr->localTaxIsEnabled()) {
+                $quoteItemList = $order->getAllVisibleItems();
+
+                foreach ($quoteItemList as $quoteItem) {
+                    if ($quoteItem->getParentItem()) {
+                        continue;
+                    }
+                    $children      = [];
+
+                    if ($quoteItem->getProductType() == Type::TYPE_BUNDLE) {
+                        $children      = $quoteItem->getChildren();
+                        $bundleProduct = 1;
+                    } else {
+                        $children[] = $quoteItem;
+                    }
+
+                    foreach ($children as $child) {
+                        foreach ($orderLinesArray as $index => $line) {
+                            if ($this->itemHelper->isSameItem($child, $line)
+                            ) {
+                                $taxAmount = $quoteItem->getTaxAmount();
+                                $taxPercent = $quoteItem->getTaxPercent();
+                                $lineAmount = $line->getAmount();
+
+                                $netPriceFormula = 1 + $taxPercent / 100;
+                                $netPrice        = $lineAmount / $netPriceFormula;
+                                $line
+                                    ->setNetPrice($netPrice)
+                                    ->setNetAmount($netPrice)
+                                    ->setTaxAmount($taxAmount)
+                                    ->setValidateTax(1);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
             //For click and collect we need to remove shipment charge orderline
             //For flat shipment it will set the correct shipment value into the order
             $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
@@ -442,7 +483,9 @@ class OrderHelper extends AbstractHelper
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
 
-            if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
+            if ($this->lsr->shipToParamsInBasketCalculationIsEnabled() ||
+            $this->lsr->localTaxIsEnabled()
+            ) {
                 $shipmentOrderLine->setValidateTax(1);
             }
 
