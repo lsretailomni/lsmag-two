@@ -1,24 +1,15 @@
 <?php
-
 namespace Ls\Webhooks\Api;
 
-/**
- * Interface OrderStatusInterface
- * @api
- */
+use Ls\Webhooks\Api\Data\OrderMessageInterface;
+
 interface OrderStatusInterface
 {
     /**
-     * Set order status API
+     * Accepts the incoming order status update webhook
      *
-     * @param string $OrderId
-     * @param string $HeaderStatus
-     * @param string $MsgSubject
-     * @param string $MsgDetail
-     * @param string $CardId
-     * @param mixed $Lines
-     * @param string $OrderKOTStatus
-     * @return mixed
+     * @param \Ls\Webhooks\Api\Data\OrderMessageInterface $orderMessage
+     * @return bool
      */
-    public function set($OrderId, $HeaderStatus, $MsgSubject, $MsgDetail, $CardId = null, $Lines = null, $OrderKOTStatus = null);
+    public function set(OrderMessageInterface $orderMessage);
 }
