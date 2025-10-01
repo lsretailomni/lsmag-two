@@ -6,7 +6,7 @@ namespace Ls\Omni\Code;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Helper\Data;
-use Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
