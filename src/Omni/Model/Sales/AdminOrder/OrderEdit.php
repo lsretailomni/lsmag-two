@@ -861,14 +861,14 @@ class OrderEdit
                     && $orderLine->getVariantCode() == $line->getVariantCode()
                     && $orderLine->getUnitOfMeasure() == $line->getUnitOfMeasureCode()) {
                     $line->setLineNo($orderLine->getLineNo());
-                    $line->setQuantity($orderLine->getQuantity());
-                    $line->setNetPrice($orderLine->getNetPrice());
-                    $line->setPrice($orderLine->getPrice());
-                    $line->setDiscountPercent($orderLine->getDiscount());
-                    $line->setDiscountAmount($orderLine->getDiscountAmount());
-                    $line->setNetAmount($orderLine->getNetAmount());
-                    $line->setVatAmount($orderLine->getVatAmount());
-                    $line->setAmount($orderLine->getAmount());
+//                    $line->setQuantity($orderLine->getQuantity());
+//                    $line->setNetPrice($orderLine->getNetPrice());
+//                    $line->setPrice($orderLine->getPrice());
+//                    $line->setDiscountPercent($orderLine->getDiscount());
+//                    $line->setDiscountAmount($orderLine->getDiscountAmount());
+//                    $line->setNetAmount($orderLine->getNetAmount());
+//                    $line->setVatAmount($orderLine->getVatAmount());
+//                    $line->setAmount($orderLine->getAmount());
                 }
             }
         }
