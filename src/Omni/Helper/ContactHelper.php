@@ -6,22 +6,22 @@ namespace Ls\Omni\Helper;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\ContactCreateParameters;
+use \Ls\Omni\Client\CentralEcommerce\Entity;
+use \Ls\Omni\Client\CentralEcommerce\Entity\ContactCreateParameters;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
-use \Ls\Omni\Client\Ecommerce\Entity\GetMemberCard;
-use \Ls\Omni\Client\Ecommerce\Entity\GetMemberCardResult;
-use \Ls\Omni\Client\Ecommerce\Entity\MemberContactCreateResult as MemberContactCreateResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordChange;
-use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordChangeResult as MemberPasswordChangeResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\MemberPasswordReset;
-use \Ls\Omni\Client\Ecommerce\Entity\RootMemberContactCreate;
-use \Ls\Omni\Client\Ecommerce\Entity\RootMemberLogon;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\Ecommerce\Operation\GetMemberContactInfo_GetMemberContactInfo;
-use \Ls\Omni\Client\Ecommerce\Operation\MemberContactCreate;
-use \Ls\Omni\Client\Ecommerce\Operation\MemberContactUpdate;
-use \Ls\Omni\Client\Ecommerce\Operation\MemberLogon;
+use \Ls\Omni\Client\CentralEcommerce\Entity\GetMemberCard;
+use \Ls\Omni\Client\CentralEcommerce\Entity\GetMemberCardResult;
+use \Ls\Omni\Client\CentralEcommerce\Entity\MemberContactCreateResult as MemberContactCreateResponse;
+use \Ls\Omni\Client\CentralEcommerce\Entity\MemberPasswordChange;
+use \Ls\Omni\Client\CentralEcommerce\Entity\MemberPasswordChangeResult as MemberPasswordChangeResponse;
+use \Ls\Omni\Client\CentralEcommerce\Entity\MemberPasswordReset;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootMemberContactCreate;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootMemberLogon;
+use \Ls\Omni\Client\CentralEcommerce\Operation;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetMemberContactInfo_GetMemberContactInfo;
+use \Ls\Omni\Client\CentralEcommerce\Operation\MemberContactCreate;
+use \Ls\Omni\Client\CentralEcommerce\Operation\MemberContactUpdate;
+use \Ls\Omni\Client\CentralEcommerce\Operation\MemberLogon;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Exception\NavException;
@@ -648,23 +648,11 @@ class ContactHelper extends AbstractHelperOmni
      * Get all schemes
      *
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getSchemes()
     {
-        $schemes       = [];
-        $schemesGetAll = new Entity\SchemesGetAll();
-        $request       = new Operation\SchemesGetAll();
-        try {
-            $response = $request->execute($schemesGetAll);
-            foreach ($response->getSchemesGetAllResult() as $scheme) {
-                /** @var Entity\Scheme $scheme */
-                $schemes[$scheme->getId()] = $scheme->getClub()->getId();
-            }
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-
-        return $schemes;
+        return $this->loyaltyHelper->getSchemes();
     }
 
     /**
@@ -1258,13 +1246,13 @@ class ContactHelper extends AbstractHelperOmni
      *
      * @param object $arrayOneLists
      * @param string $type
-     * @return Entity\OneList|null
+     * @return \Ls\Omni\Client\Ecommerce\Entity\OneList|null
      * @throws NoSuchEntityException
      */
     public function getOneListTypeObject($arrayOneLists, $type)
     {
         if (is_array($arrayOneLists)) {
-            /** @var Entity\OneList $oneList */
+            /** @var \Ls\Omni\Client\Ecommerce\Entity\OneList $oneList */
             foreach ($arrayOneLists as $oneList) {
                 if ($oneList->getListType() == $type &&
                     $oneList->getStoreId() == $this->basketHelper->getDefaultWebStore()
@@ -1305,10 +1293,10 @@ class ContactHelper extends AbstractHelperOmni
     /**
      * Update wishlist after login
      *
-     * @param Entity\OneList $oneListWishlist
+     * @param \Ls\Omni\Client\Ecommerce\Entity\OneList $oneListWishlist
      * @return void
      */
-    public function updateWishlistAfterLogin(Entity\OneList $oneListWishlist)
+    public function updateWishlistAfterLogin(\Ls\Omni\Client\Ecommerce\Entity\OneList $oneListWishlist)
     {
         // @codingStandardsIgnoreStart
         $customerId = $this->customerSession->getCustomer()->getId();
@@ -1355,7 +1343,7 @@ class ContactHelper extends AbstractHelperOmni
             }
 
             if (!is_array($oneListWishlist) &&
-                $oneListWishlist instanceof Entity\OneList) {
+                $oneListWishlist instanceof \Ls\Omni\Client\Ecommerce\Entity\OneList) {
                 $this->customerSession->setData(LSR::SESSION_CART_WISHLIST, $oneListWishlist);
             }
         } catch (Exception $e) {
@@ -1544,14 +1532,14 @@ class ContactHelper extends AbstractHelperOmni
      * Execute the OneListGetByCardId request
      *
      * @param $cardId
-     * @return Entity\OneListGetByCardIdResponse|ResponseInterface
+     * @return \Ls\Omni\Client\Ecommerce\Entity\OneListGetByCardIdResponse|ResponseInterface
      * @throws InvalidEnumException
      */
     public function getOneListGetByCardId($cardId)
     {
-        $request = new Operation\OneListGetByCardId();
+        $request = new \Ls\Omni\Client\Ecommerce\Operation\OneListGetByCardId();
         // @codingStandardsIgnoreLine
-        $entity = new Entity\OneListGetByCardId();
+        $entity = new \Ls\Omni\Client\Ecommerce\Entity\OneListGetByCardId();
         $entity->setCardId($cardId);
         $entity->setListType(ListType::WISH);
         $entity->setIncludeLines(true);

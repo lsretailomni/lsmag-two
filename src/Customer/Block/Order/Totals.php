@@ -5,7 +5,7 @@ namespace Ls\Customer\Block\Order;
 
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\LSCMemberSalesBuffer;
+use \Ls\Omni\Client\CentralEcommerce\Entity\LSCMemberSalesBuffer;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
@@ -123,13 +123,17 @@ class Totals extends AbstractOrderBlock
     /**
      * Get Shipment charge line fee
      *
-     * @return float|int|null
+     * @return int
      * @throws NoSuchEntityException
      */
     public function getShipmentChargeLineFee()
     {
         $orderLines = $this->getItems();
         $fee        = 0;
+        if (!$orderLines) {
+            return $fee;
+        }
+        
         if (!is_array($orderLines)) {
             $orderLines = [$orderLines];
         }

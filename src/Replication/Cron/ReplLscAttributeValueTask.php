@@ -8,82 +8,20 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscAttributeValueRepositoryInterface as ReplLscAttributeValueRepository;
-use Ls\Replication\Model\ReplLscAttributeValueFactory;
-use Ls\Replication\Api\Data\ReplLscAttributeValueInterface;
-
-class ReplLscAttributeValueTask extends AbstractReplicationTask
+class ReplLscAttributeValueTask extends ReplEcommAttributeValueTask
 {
-    public const JOB_CODE = 'replication_repl_lsc_attribute_value';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_attribute_value';
 
-    public const CONFIG_PATH = 'ls_mag/replication/repl_lsc_attribute_value';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscAttributeValue';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_lsc_attribute_value';
-
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_lsc_attribute_value';
-
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_attribute_value';
-
-    /**
-     * @property ReplLscAttributeValueRepository $repository
-     */
-    protected $repository = null;
-
-    /**
-     * @property ReplLscAttributeValueFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplLscAttributeValueInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplLscAttributeValueRepository $repository)
+    public function getModelName() : string
     {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplLscAttributeValueRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplLscAttributeValueFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplLscAttributeValueFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplLscAttributeValueInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplLscAttributeValueInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplLscAttributeValueFactory $factory, ReplLscAttributeValueRepository $repository, ReplLscAttributeValueInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
+        return self::MODEL_CLASS;
     }
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCAttributeValue($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCAttributeValue($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,
@@ -94,29 +32,9 @@ class ReplLscAttributeValueTask extends AbstractReplicationTask
         return $request;
     }
 
-    public function getConfigPath() : string
-    {
-        return self::CONFIG_PATH;
-    }
-
-    public function getConfigPathStatus() : string
-    {
-        return self::CONFIG_PATH_STATUS;
-    }
-
-    public function getConfigPathLastExecute() : string
-    {
-        return self::CONFIG_PATH_LAST_EXECUTE;
-    }
-
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscAttributeValueInterface
-    {
-        return $this->dataInterface;
     }
 }
 

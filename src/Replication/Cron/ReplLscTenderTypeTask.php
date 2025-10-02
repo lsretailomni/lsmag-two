@@ -8,82 +8,20 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscTenderTypeRepositoryInterface as ReplLscTenderTypeRepository;
-use Ls\Replication\Model\ReplLscTenderTypeFactory;
-use Ls\Replication\Api\Data\ReplLscTenderTypeInterface;
-
-class ReplLscTenderTypeTask extends AbstractReplicationTask
+class ReplLscTenderTypeTask extends ReplEcommStoreTenderTypesTask
 {
-    public const JOB_CODE = 'replication_repl_lsc_tender_type';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_store_tender_types';
 
-    public const CONFIG_PATH = 'ls_mag/replication/repl_lsc_tender_type';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscTenderType';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_lsc_tender_type';
-
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_lsc_tender_type';
-
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_tender_type';
-
-    /**
-     * @property ReplLscTenderTypeRepository $repository
-     */
-    protected $repository = null;
-
-    /**
-     * @property ReplLscTenderTypeFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplLscTenderTypeInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplLscTenderTypeRepository $repository)
+    public function getModelName() : string
     {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplLscTenderTypeRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplLscTenderTypeFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplLscTenderTypeFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplLscTenderTypeInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplLscTenderTypeInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplLscTenderTypeFactory $factory, ReplLscTenderTypeRepository $repository, ReplLscTenderTypeInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
+        return self::MODEL_CLASS;
     }
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCTenderType($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCTenderType($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,
@@ -94,29 +32,9 @@ class ReplLscTenderTypeTask extends AbstractReplicationTask
         return $request;
     }
 
-    public function getConfigPath() : string
-    {
-        return self::CONFIG_PATH;
-    }
-
-    public function getConfigPathStatus() : string
-    {
-        return self::CONFIG_PATH_STATUS;
-    }
-
-    public function getConfigPathLastExecute() : string
-    {
-        return self::CONFIG_PATH_LAST_EXECUTE;
-    }
-
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscTenderTypeInterface
-    {
-        return $this->dataInterface;
     }
 }
 

@@ -29,27 +29,28 @@ class SalesObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $event              = $observer->getEvent();
-        $quote              = $event->getQuote();
+        $event = $observer->getEvent();
+        $quote = $event->getQuote();
         $shippingAssignment = $event->getShippingAssignment();
-        $addressType        = $shippingAssignment->getShipping()->getAddress()->getAddressType();
-        $total              = $event->getTotal();
+        $addressType = $shippingAssignment->getShipping()->getAddress()->getAddressType();
+        $total = $event->getTotal();
+        $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+        $giftCardAmount = $quote->getLsGiftCardAmountUsed();
 
-        $basketData = $this->basketHelper->getBasketSessionValue();
+        if ($pointDiscount > 0.001) {
+            $quote->setLsPointsDiscount($pointDiscount);
+        }
 
-        if (!empty($basketData)) {
-            $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-            $giftCardAmount = $quote->getLsGiftCardAmountUsed();
+        if ($addressType == AbstractAddress::TYPE_SHIPPING) {
+            $basketData = $this->basketHelper->getOneListCalculationFromCheckoutSession($quote);
 
-            if ($pointDiscount > 0.001) {
-                $quote->setLsPointsDiscount($pointDiscount);
-            }
-
-            if ($addressType == AbstractAddress::TYPE_SHIPPING) {
-                $grandTotal = $basketData->getTotalAmount() + $total->getShippingAmount()
+            if (!empty($basketData)) {
+                $mobileTransaction = current((array)$basketData->getMobiletransaction());
+                $grandTotal = $mobileTransaction->getGrossamount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;
-                $taxAmount  = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
-                $subTotal   = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
+                $taxAmount = $mobileTransaction->getGrossamount() - $mobileTransaction->getNetamount();
+                $subTotal = $mobileTransaction->getGrossamount() + $mobileTransaction->getLinediscount();
+
                 $total->setTaxAmount($taxAmount)
                     ->setBaseTaxAmount($taxAmount)
                     ->setSubtotal($subTotal - $taxAmount)
@@ -59,10 +60,11 @@ class SalesObserver implements ObserverInterface
                     ->setGrandTotal($grandTotal)
                     ->setBaseGrandTotal($grandTotal)
                     ->setSubtotalWithDiscount($subTotal);
-            } else {
-                $total->setBaseGrandTotal(0);
-                $total->setGrandTotal(0);
             }
+
+        } else {
+            $total->setBaseGrandTotal(0);
+            $total->setGrandTotal(0);
         }
     }
 }

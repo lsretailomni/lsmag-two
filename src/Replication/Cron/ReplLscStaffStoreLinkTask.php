@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscStaffStoreLinkRepositoryInterface as ReplLscStaffStoreLinkRepository;
-use Ls\Replication\Model\ReplLscStaffStoreLinkFactory;
-use Ls\Replication\Api\Data\ReplLscStaffStoreLinkInterface;
+use Ls\Replication\Api\Central\ReplLscStaffStoreLinkRepositoryInterface as ReplLscStaffStoreLinkRepository;
+use Ls\Replication\Model\Central\ReplLscStaffStoreLinkFactory;
+use Ls\Replication\Api\Central\Data\ReplLscStaffStoreLinkInterface;
 
 class ReplLscStaffStoreLinkTask extends AbstractReplicationTask
 {
@@ -24,6 +24,8 @@ class ReplLscStaffStoreLinkTask extends AbstractReplicationTask
     public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_lsc_staff_store_link';
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_staff_store_link';
+
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscStaffStoreLink';
 
     /**
      * @property ReplLscStaffStoreLinkRepository $repository
@@ -81,17 +83,9 @@ class ReplLscStaffStoreLinkTask extends AbstractReplicationTask
         $this->dataInterface = $dataInterface;
     }
 
-    public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
+    public function getMainEntity() : ReplLscStaffStoreLinkInterface
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCSTAFFStoreLink($baseUrl, $connectionParams, $companyName);
-        $request->setOperationInput([
-        'storeNo' => $storeNo,
-        'batchSize' => $batchSize,
-        'fullRepl' => $fullRepl,
-        'lastEntryNo' => $lastEntryNo,
-        'lastKey' => $lastKey
-        ]);
-        return $request;
+        return $this->dataInterface;
     }
 
     public function getConfigPath() : string
@@ -109,14 +103,27 @@ class ReplLscStaffStoreLinkTask extends AbstractReplicationTask
         return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
+    public function getModelName() : string
+    {
+        return self::MODEL_CLASS;
+    }
+
+    public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
+    {
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCSTAFFStoreLink($baseUrl, $connectionParams, $companyName);
+        $request->setOperationInput([
+        'storeNo' => $storeNo,
+        'batchSize' => $batchSize,
+        'fullRepl' => $fullRepl,
+        'lastEntryNo' => $lastEntryNo,
+        'lastKey' => $lastKey
+        ]);
+        return $request;
+    }
+
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscStaffStoreLinkInterface
-    {
-        return $this->dataInterface;
     }
 }
 

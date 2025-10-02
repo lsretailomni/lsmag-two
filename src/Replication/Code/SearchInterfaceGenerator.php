@@ -17,7 +17,7 @@ use Laminas\Code\Generator\InterfaceGenerator;
 class SearchInterfaceGenerator extends AbstractGenerator
 {
     /** @var string $namespace Namespace for generated API Data interfaces */
-    public static $namespace = "Ls\\Replication\\Api\\Data";
+    public static $namespace = "Ls\\Replication\\Api\\Central\\Data";
 
     /** @var ReplicationOperation $operation Holds the replication operation details */
     public $operation;

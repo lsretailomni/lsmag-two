@@ -91,12 +91,6 @@ class LsTables extends AbstractReset
     public function resetSpecificCronData($jobName, $scopeId, $coreConfigTableName)
     {
         $replicationTableName = 'ls_replication_' . $jobName;
-        $tableMappings = ReplicationHelper::DB_TABLES_MAPPING;
-
-        if (isset($tableMappings[$jobName])) {
-            $replicationTableName = 'ls_replication_' . $tableMappings[$jobName]['table_name'];
-        }
-
         if ($jobName == LSR::SC_ITEM_HTML_JOB_CODE) {
             $replicationTableName = 'ls_replication_repl_data_translation';
             $this->replicationHelper->deleteGivenTableDataGivenConditions(

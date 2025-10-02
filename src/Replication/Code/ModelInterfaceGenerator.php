@@ -19,7 +19,7 @@ use ReflectionException;
 class ModelInterfaceGenerator extends AbstractGenerator
 {
     /** @var string */
-    public static string $namespace = "Ls\\Replication\\Api\\Data";
+    public static string $namespace = "Ls\\Replication\\Api\\Central\\Data";
 
     /** @var string */
     public string $entityFqn;

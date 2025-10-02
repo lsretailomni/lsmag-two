@@ -78,7 +78,7 @@ class ActivityAllowancesGet extends AbstractOperation
     /**
      * @return ActivityAllowancesGetRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ActivityAllowancesGetRequest();

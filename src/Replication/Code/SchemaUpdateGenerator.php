@@ -337,19 +337,12 @@ class SchemaUpdateGenerator implements GeneratorInterface
             if (isset($dbTablesMapping[$tableName])) {
                 $mappings = $dbTablesMapping[$tableName];
                 $tableName = ReplicationHelper::TABLE_NAME_PREFIX . $mappings['table_name'];
-                if ($tableName == ReplicationHelper::TABLE_NAME_PREFIX . 'repl_hierarchy') {
-                    $h1 = 1;
-                }
                 $columnMappings = $mappings['columns_mapping'];
                 $tableIdColumnName = $mappings['table_name'] . "_id";
             } else {
-                $tableName = ReplicationHelper::TABLE_NAME_PREFIX . $tableName;
+                continue;
             }
-            
-            if($tableName == "ls_replication_repl_vendor") {
-                $tab = "ls_replication_repl_vendor";
-            }
-            
+
             $tableIncludedInIndex = array_key_exists($tableName, self::$indexerColumnLists);
             if (!in_array($tableName, $tables)) {
                 $table = $dom->createElement('table');

@@ -18,10 +18,9 @@ use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
 use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
-use Ls\Replication\Api\ReplLscTenderTypeRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
+use \Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
 use \Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
-use \Ls\Replication\Api\ReplVatPostingSetupRepositoryInterface;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
@@ -147,34 +146,54 @@ class ReplicationHelper extends AbstractHelper
     ];
 
     public const TABLE_NAME_PREFIX = 'ls_replication_';
-    public const REPLICATION_ENTITY_MAPPING = [
-        'ReplLscAttribute' => 'ReplAttribute',
-        'ReplLscAttributeOptionValue' => 'ReplAttributeOptionValue',
-        'ReplLscAttributeValue' => 'ReplAttributeValue',
-        'ReplHierarchyview' => 'ReplHierarchy',
-        'ReplHierarchynodesview' => 'ReplHierarchyNode',
-        'ReplHierarchynodeslinkview' => 'ReplHierarchyLeaf',
-        'ReplLscBarcodes' => 'ReplBarcode',
-        'ReplLscWiExtdVariantValues' => 'ReplExtendedVariantValue',
-        'ReplVariantregview' => 'ReplItemVariantRegistration',
-        'ReplLscWiItemBuffer' => 'ReplItem',
-        'ReplItemuomupdview' => 'ReplItemUnitOfMeasure',
-        'ReplLscRetailImageLink' => 'ReplImageLink',
-        'ReplLscWiPrice' => 'ReplPrice',
-        'ReplLscInventoryLookupTable' => 'ReplInvStatus',
-        'ReplLscTenderType' => 'ReplStoreTenderType',
-        'ReplVatPostingSetup' => 'ReplTaxSetup',
-        'ReplVendoritemview' => 'ReplLoyVendorItemMapping',
-        'ReplStoreview' => 'ReplStore',
-        'ReplCountryview' => 'ReplCountryCode',
-        'ReplPeriodicdiscview' => 'ReplDiscountSetup',
-        'ReplLscValidationPeriod' => 'ReplDiscountValidation',
-        'ReplLscDataTranslation' => 'ReplDataTranslation',
-        'ReplLscWiItemRecipeBuffer' => 'ReplItemRecipe',
-        'ReplLscWiItemModifier' => 'ReplItemModifier',
-        'ReplHierarchydealview' => 'ReplHierarchyHospDeal',
-        'ReplHierarchydeallineview' => 'ReplHierarchyHospDealLine',
+    public const CRON_JOBS_MAPPING = [
+        'LscAttribute' => 'Attribute',
+        'LscAttributeOptionValue' => 'AttributeOptionValue',
+        'LscAttributeValue' => 'AttributeValue',
+        'Hierarchyview' => 'Hierarchy',
+        'Hierarchynodesview' => 'HierarchyNode',
+        'Hierarchynodeslinkview' => 'HierarchyLeaf',
+        'LscBarcodes' => 'Barcodes',
+        'LscWiExtdVariantValues' => 'ExtendedVariants',
+        'Variantregview' => 'ItemVariantRegistrations',
+        'ItemVariant' => 'ItemVariant',
+        'LscWiItemBuffer' => 'Items',
+        'LscRetailImageLink' => 'ImageLinks',
+        'LscWiPrice' => 'Prices',
+        'LscInventoryLookupTable' => 'InventoryStatus',
+        'LscTenderType' => 'StoreTenderTypes',
+        'VatPostingSetup' => 'TaxSetup',
+        'Storeview' => 'Stores',
+        'Countryview' => 'CountryCode',
+        'Periodicdiscview' => 'DiscountSetup',
+        'LscValidationPeriod' => 'DiscountValidations',
+        'LscDataTranslation' => 'DataTranslation',
+        'LscItemHtmlMl' => 'HtmlTranslation',
+        'LscOfferHtmlMl' => 'DealHtmlTranslation',
+        'LscWiItemRecipeBuffer' => 'ItemRecipe',
+        'LscWiItemModifier' => 'ItemModifier',
+        'Hierarchydealview' => 'HierarchyHospDeal',
+        'Hierarchydeallineview' => 'HierarchyHospDealLine',
+        'Vendor' => 'Vendor',
+        'Vendoritemview' => 'VendorItemMapping',
+        'UnitOfMeasure' => 'UnitOfMeasures',
+        'Itemuomupdview' => 'ItemUnitOfMeasures',
     ];
+
+    public const ENTITY_MAPPING = [
+        'ReplLscItemHtmlMl' => 'ReplLscDataTranslation',
+        'ReplLscOfferHtmlMl' => 'ReplLscDataTranslation'
+    ];
+
+    public const SAME_NAME_MAPPING = [
+        'PeriodicDiscView' => [
+            'Type' => [
+                0 => 'Line Type',
+                1 => 'Type'
+            ]
+        ]
+    ];
+
     public const DB_TABLES_MAPPING = [
         'repl_lsc_attribute' => [
             'table_name' => 'repl_attribute',
@@ -574,6 +593,7 @@ class ReplicationHelper extends AbstractHelper
                 'validation_period_id' => 'ValidationPeriodId',
                 'variant_code' => 'VariantId',
                 'variant_type' => 'VariantType',
+                'line_type' => ['name' => 'LineType', 'type' => 'text']
             ]
         ],
         'repl_storeview' => [
@@ -584,7 +604,7 @@ class ReplicationHelper extends AbstractHelper
                 'address' => 'Street',
                 'post_code' => 'ZipCode',
                 'city' => 'City',
-                'county' => 'County',
+                'county' => 'State',
                 'country_code' => 'Country',
                 'latitude' => 'Latitute',
                 'longitude' => 'Longitude',
@@ -604,6 +624,24 @@ class ReplicationHelper extends AbstractHelper
                 'key' => 'Key',
                 'language_code' => 'LanguageCode',
                 'translation' => 'Text',
+                'translation_id' => 'TranslationId'
+            ]
+        ],
+        'repl_lsc_item_html_ml' => [
+            'table_name' => 'repl_data_translation',
+            'columns_mapping' => [
+                'item_no' => 'Key',
+                'language' => 'LanguageCode',
+                'html' => 'Text',
+                'translation_id' => 'TranslationId'
+            ]
+        ],
+        'repl_lsc_offer_html_ml' => [
+            'table_name' => 'repl_data_translation',
+            'columns_mapping' => [
+                'offer_no' => 'Key',
+                'language' => 'LanguageCode',
+                'html' => 'Text',
                 'translation_id' => 'TranslationId'
             ]
         ],
@@ -688,16 +726,16 @@ class ReplicationHelper extends AbstractHelper
 
     /** @var array List of Replication Tables with unique field */
     public const JOB_CODE_UNIQUE_FIELD_ARRAY = [
-        'ls_mag/replication/repl_lsc_attribute' => [
+        'ls_mag/replication/repl_attribute' => [
             'code' => 'Code',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_lsc_attribute_option_value' => [
+        'ls_mag/replication/repl_attribute_option_value' => [
             'attribute_code' => 'Code',
             'sequence' => 'Sequence',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_lsc_attribute_value' => [
+        'ls_mag/replication/repl_attribute_value' => [
             'attribute_code' => 'Code',
             'link_field_1' => 'LinkField1',
             'link_field_2' => 'LinkField2',
@@ -705,11 +743,11 @@ class ReplicationHelper extends AbstractHelper
             'sequence' => 'Sequence',
             'scope_id'  => 'scope_id'
         ],
-        'ls_mag/replication/repl_lsc_barcodes' => [
+        'ls_mag/replication/repl_barcode' => [
             'barcode_no' => 'nav_id',
             'scope_id'  => 'scope_id'
         ],
-        'ls_mag/replication/repl_countryview' => [
+        'ls_mag/replication/repl_country_code' => [
             'code' => 'Code',
             'scope_id'  => 'scope_id'
         ],
@@ -718,7 +756,7 @@ class ReplicationHelper extends AbstractHelper
             'county_name' => 'Name',
             'scope_id'  => 'scope_id'
         ],
-        'ls_mag/replication/repl_currency_exchange_rate' => [
+        'ls_mag/replication/repl_currency_exch_rate' => [
             'currency_code',
             'scope_id'
         ],
@@ -726,34 +764,29 @@ class ReplicationHelper extends AbstractHelper
             'lsc_customer_id' => 'nav_id',
             'scope_id'  => 'scope_id'
         ],
-        'ls_mag/replication/repl_lsc_data_translation' => [
+        'ls_mag/replication/repl_data_translation' => [
             'key' => 'Key',
             'language_code' => 'LanguageCode',
             'translation_id' => 'TranslationId',
             'scope_id'  => 'scope_id'
         ],
         'ls_mag/replication/repl_html_translation' => [
-            'TranslationId',
-            'Key',
-            'LanguageCode',
-            'scope_id'
-        ],
-        'ls_mag/replication/repl_lsc_item_html_ml' => [
-            'item_no' => 'item_no',
-            'language' => 'language',
-            'scope_id' => 'scope_id'
+            'key' => 'Key',
+            'language_code' => 'LanguageCode',
+            'translation_id' => 'TranslationId',
+            'scope_id'  => 'scope_id'
         ],
         'ls_mag/replication/repl_deal_html_translation' => [
-            'TranslationId',
-            'Key',
-            'LanguageCode',
-            'scope_id'
+            'key' => 'Key',
+            'language_code' => 'LanguageCode',
+            'translation_id' => 'TranslationId',
+            'scope_id'  => 'scope_id'
         ],
         'ls_mag/replication/repl_data_translation_lang_code' => [
             'code',
             'scope_id'
         ],
-        'ls_mag/replication/repl_periodicdiscview' => [
+        'ls_mag/replication/repl_discount' => [
             'offer_no' => 'OfferNo',
             'customer_disc_group' => 'CustomerDiscountGroup',
             'no' => 'Number',
@@ -762,44 +795,40 @@ class ReplicationHelper extends AbstractHelper
             'scope_id'  => 'scope_id'
         ],
         'ls_mag/replication/repl_discount_setup' => [
-            'OfferNo',
-            'LineNumber',
-            'scope_id'
+            'offer_no' => 'OfferNo',
+            'line_no' => 'LineNumber',
+            'scope_id'  => 'scope_id'
         ],
-        'ls_mag/replication/repl_lsc_validation_period' => [
+        'ls_mag/replication/repl_discount_validation' => [
             'nav_id' => 'nav_id',
             'scope_id'  => 'scope_id'
         ],
-        'ls_mag/replication/repl_lsc_wi_extd_variant_values' => [
+        'ls_mag/replication/repl_extended_variant_value' => [
             'item_no' => 'ItemId',
             'code' => 'Code',
             'value' => 'Value',
             'framework_code' => 'FrameworkCode',
             'scope_id'  => 'scope_id'
         ],
-        'ls_mag/replication/repl_hierarchyview' => [
+        'ls_mag/replication/repl_hierarchy' => [
             'hierarchy_code' => 'nav_id',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_hierarchynodeslinkview' => [
+        'ls_mag/replication/repl_hierarchy_leaf' => [
             'no' => 'nav_id',
             'node_id' => 'NodeId',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_hierarchynodesview' => [
+        'ls_mag/replication/repl_hierarchy_node' => [
             'node_id' => 'nav_id',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_image' => [
-            'nav_id',
-            'scope_id'
-        ],
-        'ls_mag/replication/repl_lsc_retail_image_link' => [
+        'ls_mag/replication/repl_image_link' => [
             'image_id' => 'ImageId',
             'keyvalue' => 'KeyValue',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_lsc_wi_item_buffer' => [
+        'ls_mag/replication/repl_item' => [
             'no' => 'nav_id',
             'scope_id' => 'scope_id'
         ],
@@ -807,12 +836,12 @@ class ReplicationHelper extends AbstractHelper
             'code' => 'nav_id',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_itemuomupdview' => [
+        'ls_mag/replication/repl_item_unit_of_measure' => [
             'code' => 'Code',
             'item_no' => 'ItemId',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_variantregview' => [
+        'ls_mag/replication/repl_item_variant_registration' => [
             'item_no' => 'ItemId',
             'variant' => 'VariantId',
             'scope_id' => 'scope_id'
@@ -822,12 +851,12 @@ class ReplicationHelper extends AbstractHelper
             'code' => 'VariantId',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_vendoritemview' => [
+        'ls_mag/replication/repl_loy_vendor_item_mapping' => [
             'vendorno' => 'NavManufacturerId',
             'itemno' => 'NavProductId',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_lsc_wi_price' => [
+        'ls_mag/replication/repl_price' => [
             'store_no' => 'StoreId',
             'item_no' => 'ItemId',
             'unit_of_measure_code' => 'UnitOfMeasure',
@@ -835,13 +864,13 @@ class ReplicationHelper extends AbstractHelper
             'qty_per_unit_of_measure' => 'QtyPerUnitOfMeasure',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_lsc_inventory_lookup_table' => [
+        'ls_mag/replication/repl_inv_status' => [
             'item_no' => 'ItemId',
             'variant_code' => 'VariantId',
             'store_no' => 'StoreId',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_lsc_retail_product_group' => [
+        'ls_mag/replication/repl_product_group' => [
             'code',
             'scope_id'
         ],
@@ -849,11 +878,11 @@ class ReplicationHelper extends AbstractHelper
             'name',
             'scope_id'
         ],
-        'ls_mag/replication/repl_storeview' => [
+        'ls_mag/replication/repl_store' => [
             'no' => 'nav_id',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_lsc_tender_type' => [
+        'ls_mag/replication/repl_store_tender_type' => [
             'code' => 'TenderTypeId',
             'scope_id' => 'scope_id'
         ],
@@ -865,26 +894,26 @@ class ReplicationHelper extends AbstractHelper
             'no' => 'nav_id',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_hierarchydeallineview' => [
+        'ls_mag/replication/repl_hierarchy_hosp_deal_line' => [
             'offer_no' => 'DealNo',
             'offer_line_no' => 'DealLineNo',
             'item_no' => 'ItemNo',
             'unit_of_measure' => 'UnitOfMeasure',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_hierarchydealview' => [
+        'ls_mag/replication/repl_hierarchy_hosp_deal' => [
             'offer_no' => 'DealNo',
             'no' => 'No',
             'line_no' => 'LineNo',
             'unit_of_measure' => 'UnitOfMeasure',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_lsc_wi_item_recipe_buffer' => [
+        'ls_mag/replication/repl_item_recipe' => [
             'parent_item_no' => 'RecipeNo',
             'line_no' => 'LineNo',
             'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_lsc_wi_item_modifier' => [
+        'ls_mag/replication/repl_item_modifier' => [
             'parent_item_no' => 'nav_id',
             'item_no' => 'TriggerCode',
             'scope_id' => 'scope_id',
@@ -894,7 +923,7 @@ class ReplicationHelper extends AbstractHelper
             'nav_id',
             'scope_id'
         ],
-        'ls_mag/replication/repl_vat_posting_setup' => [
+        'ls_mag/replication/repl_tax_setup' => [
             'vat_bus_posting_group' => 'BusinessTaxGroup',
             'vat_prod_posting_group' => 'ProductTaxGroup',
             'scope_id' => 'scope_id'
@@ -1044,10 +1073,10 @@ class ReplicationHelper extends AbstractHelper
     /** @var ReplItemUnitOfMeasure */
     public $replItemUomRepository;
 
-    /** @var ReplVatPostingSetupRepositoryInterface */
+    /** @var ReplTaxSetupRepositoryInterface */
     public $replTaxSetupRepository;
 
-    /** @var ReplLscTenderTypeRepositoryInterface */
+    /** @var ReplStoreTenderTypeRepositoryInterface */
     public $replStoreTenderTypeRepository;
 
     /**
@@ -1219,8 +1248,8 @@ class ReplicationHelper extends AbstractHelper
      * @param ReplExtendedVariantValueRepository $extendedVariantValueRepository
      * @param ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository
      * @param ReplItemUnitOfMeasure $replItemUomRepository
-     * @param ReplVatPostingSetupRepositoryInterface $replTaxSetupRepository
-     * @param ReplLscTenderTypeRepositoryInterface $replStoreTenderTypeRepository
+     * @param ReplTaxSetupRepositoryInterface $replTaxSetupRepository
+     * @param ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository
      * @param TaxClassRepositoryInterface $taxClassRepository
      * @param ClassModelFactory $classModelFactory
      * @param ReplInvStatusRepository $replInvStatusRepository
@@ -1286,8 +1315,8 @@ class ReplicationHelper extends AbstractHelper
         ReplExtendedVariantValueRepository $extendedVariantValueRepository,
         ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository,
         ReplItemUnitOfMeasure $replItemUomRepository,
-        ReplVatPostingSetupRepositoryInterface $replTaxSetupRepository,
-        ReplLscTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
+        ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
+        ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
         TaxClassRepositoryInterface $taxClassRepository,
         ClassModelFactory $classModelFactory,
         ReplInvStatusRepository $replInvStatusRepository,
@@ -2139,9 +2168,9 @@ class ReplicationHelper extends AbstractHelper
     {
         $items   = null;
         $filters = [
-            ['field' => 'vat_prod_posting_group', 'value' => '', 'condition_type' => 'neq'],
-            ['field' => 'vat_bus_posting_group', 'value' => '', 'condition_type' => 'neq'],
-            ['field' => 'vat', 'value' => 0, 'condition_type' => 'gt'],
+            ['field' => 'ProductTaxGroup', 'value' => '', 'condition_type' => 'neq'],
+            ['field' => 'BusinessTaxGroup', 'value' => '', 'condition_type' => 'neq'],
+            ['field' => 'TaxPercent', 'value' => 0, 'condition_type' => 'gt'],
             ['field' => 'scope_id', 'value' => $websiteId, 'condition_type' => 'eq']
         ];
 
@@ -2937,6 +2966,21 @@ class ReplicationHelper extends AbstractHelper
     public function isMimeTypeValid($mimeType)
     {
         return in_array($mimeType, $this->defaultMimeTypes);
+    }
+
+    /**
+     * Get image format
+     *
+     * @param $format
+     * @return string
+     */
+    public function getImageFormat($format)
+    {
+        $format = strtolower($format);
+        $array = explode('image/', $format);
+        $format = end($array);
+
+        return $format;
     }
 
     /** return SortOrder object based on the parameters provided
@@ -4035,7 +4079,7 @@ class ReplicationHelper extends AbstractHelper
 
             $sourceItems[$sku] = $this->getSourceItemGivenData(
                 $sku,
-                $replInvStatus->getQuantity(),
+                $replInvStatus->getQuantity() ?? 0,
                 ($replInvStatus->getQuantity() > 0) ? 1 : 0
             );
 

@@ -4,10 +4,7 @@ namespace Ls\Customer\Block\Order;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntriesGetByCardIdResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session as CustomerSession;
@@ -27,15 +24,13 @@ use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 class History extends \Magento\Sales\Block\Order\History
 {
     /**
-     *  History constructor.
-     * 
      * @param Context $context
      * @param CollectionFactory $orderCollectionFactory
      * @param CustomerSession $customerSession
      * @param Config $orderConfig
      * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param OrderRepository $orderRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param array $data
@@ -58,7 +53,7 @@ class History extends \Magento\Sales\Block\Order\History
     /**
      * Get order history
      *
-     * @return array|bool|ArrayOfSalesEntry|SalesEntriesGetByCardIdResponse|ResponseInterface|Collection
+     * @return array|bool|ResponseInterface|Collection
      * @throws NoSuchEntityException
      */
     public function getOrderHistory()
@@ -189,10 +184,10 @@ class History extends \Magento\Sales\Block\Order\History
      * Formulating order canceling url
      *
      * @param OrderInterface $magentoOrder
-     * @param SalesEntry $centralOrder
+     * @param $centralOrder
      * @return string
      */
-    public function getCancelUrl(OrderInterface $magentoOrder, SalesEntry $centralOrder)
+    public function getCancelUrl(OrderInterface $magentoOrder, $centralOrder)
     {
         return $magentoOrder && $centralOrder ? $this->getUrl(
             'customer/order/cancel',

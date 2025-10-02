@@ -53,7 +53,7 @@ class EntityGenerator extends AbstractOmniGenerator
     public function generate()
     {
         // Define the namespace and class name for the entity
-        $serviceFolder = ucfirst($this->getServiceType()->getValue());
+        $serviceFolder = 'CentralEcommerce';
         $baseNamespace = self::fqn('Ls', 'Omni', 'Client', $serviceFolder);
         $entityNamespace = self::fqn($baseNamespace, 'Entity');
 

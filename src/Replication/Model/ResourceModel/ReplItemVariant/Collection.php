@@ -14,7 +14,7 @@ class Collection extends AbstractCollection
 {
     public function _construct()
     {
-        $this->_init('Ls\Replication\Model\ReplItemVariant', 'Ls\Replication\Model\ResourceModel\ReplItemVariant');
+        $this->_init( 'Ls\Replication\Model\ReplItemVariant', 'Ls\Replication\Model\ResourceModel\ReplItemVariant' );
     }
 }
 

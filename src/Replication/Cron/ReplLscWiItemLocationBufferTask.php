@@ -9,9 +9,9 @@
 namespace Ls\Replication\Cron;
 
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscWiItemLocationBufferRepositoryInterface as ReplLscWiItemLocationBufferRepository;
-use Ls\Replication\Model\ReplLscWiItemLocationBufferFactory;
-use Ls\Replication\Api\Data\ReplLscWiItemLocationBufferInterface;
+use Ls\Replication\Api\Central\ReplLscWiItemLocationBufferRepositoryInterface as ReplLscWiItemLocationBufferRepository;
+use Ls\Replication\Model\Central\ReplLscWiItemLocationBufferFactory;
+use Ls\Replication\Api\Central\Data\ReplLscWiItemLocationBufferInterface;
 
 class ReplLscWiItemLocationBufferTask extends AbstractReplicationTask
 {
@@ -24,6 +24,8 @@ class ReplLscWiItemLocationBufferTask extends AbstractReplicationTask
     public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_lsc_wi_item_location_buffer';
 
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_wi_item_location_buffer';
+
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscWiItemLocationBuffer';
 
     /**
      * @property ReplLscWiItemLocationBufferRepository $repository
@@ -81,17 +83,9 @@ class ReplLscWiItemLocationBufferTask extends AbstractReplicationTask
         $this->dataInterface = $dataInterface;
     }
 
-    public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
+    public function getMainEntity() : ReplLscWiItemLocationBufferInterface
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCWIItemLocationBuffer($baseUrl, $connectionParams, $companyName);
-        $request->setOperationInput([
-        'storeNo' => $storeNo,
-        'batchSize' => $batchSize,
-        'fullRepl' => $fullRepl,
-        'lastEntryNo' => $lastEntryNo,
-        'lastKey' => $lastKey
-        ]);
-        return $request;
+        return $this->dataInterface;
     }
 
     public function getConfigPath() : string
@@ -109,14 +103,27 @@ class ReplLscWiItemLocationBufferTask extends AbstractReplicationTask
         return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
+    public function getModelName() : string
+    {
+        return self::MODEL_CLASS;
+    }
+
+    public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
+    {
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCWIItemLocationBuffer($baseUrl, $connectionParams, $companyName);
+        $request->setOperationInput([
+        'storeNo' => $storeNo,
+        'batchSize' => $batchSize,
+        'fullRepl' => $fullRepl,
+        'lastEntryNo' => $lastEntryNo,
+        'lastKey' => $lastKey
+        ]);
+        return $request;
+    }
+
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscWiItemLocationBufferInterface
-    {
-        return $this->dataInterface;
     }
 }
 

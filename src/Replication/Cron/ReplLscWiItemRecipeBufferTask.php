@@ -8,82 +8,20 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscWiItemRecipeBufferRepositoryInterface as ReplLscWiItemRecipeBufferRepository;
-use Ls\Replication\Model\ReplLscWiItemRecipeBufferFactory;
-use Ls\Replication\Api\Data\ReplLscWiItemRecipeBufferInterface;
-
-class ReplLscWiItemRecipeBufferTask extends AbstractReplicationTask
+class ReplLscWiItemRecipeBufferTask extends ReplEcommItemRecipeTask
 {
-    public const JOB_CODE = 'replication_repl_lsc_wi_item_recipe_buffer';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_item_recipe';
 
-    public const CONFIG_PATH = 'ls_mag/replication/repl_lsc_wi_item_recipe_buffer';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscWiItemRecipeBuffer';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_lsc_wi_item_recipe_buffer';
-
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_lsc_wi_item_recipe_buffer';
-
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_wi_item_recipe_buffer';
-
-    /**
-     * @property ReplLscWiItemRecipeBufferRepository $repository
-     */
-    protected $repository = null;
-
-    /**
-     * @property ReplLscWiItemRecipeBufferFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplLscWiItemRecipeBufferInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplLscWiItemRecipeBufferRepository $repository)
+    public function getModelName() : string
     {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplLscWiItemRecipeBufferRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplLscWiItemRecipeBufferFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplLscWiItemRecipeBufferFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplLscWiItemRecipeBufferInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplLscWiItemRecipeBufferInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplLscWiItemRecipeBufferFactory $factory, ReplLscWiItemRecipeBufferRepository $repository, ReplLscWiItemRecipeBufferInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
+        return self::MODEL_CLASS;
     }
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCWIItemRecipeBuffer($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCWIItemRecipeBuffer($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,
@@ -94,29 +32,9 @@ class ReplLscWiItemRecipeBufferTask extends AbstractReplicationTask
         return $request;
     }
 
-    public function getConfigPath() : string
-    {
-        return self::CONFIG_PATH;
-    }
-
-    public function getConfigPathStatus() : string
-    {
-        return self::CONFIG_PATH_STATUS;
-    }
-
-    public function getConfigPathLastExecute() : string
-    {
-        return self::CONFIG_PATH_LAST_EXECUTE;
-    }
-
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscWiItemRecipeBufferInterface
-    {
-        return $this->dataInterface;
     }
 }
 

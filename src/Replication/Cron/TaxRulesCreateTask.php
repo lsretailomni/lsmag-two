@@ -302,7 +302,7 @@ class TaxRulesCreateTask
          * @var Rate $taxRate
          */
         $taxRate = $this->taxRateInterfaceFactory->create();
-        $taxRate->setRate($rate->getTaxPercent())
+        $taxRate->setRate($rate->getTaxPercent() ?? 0)
             ->setTaxCountryId($countryCode->getCode())
             ->setTaxRegionId(0)
             ->setTaxPostcode('*')

@@ -7,11 +7,10 @@ use Laminas\Validator\EmailAddress as ValidateEmailAddress;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Model\Central\GuzzleClient;
 use \Ls\Omni\Model\Central\TokenRequestService;
-use \Ls\Replication\Api\ReplStoreviewRepositoryInterface;
+use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
-use Ls\Replication\Api\ReplTenderviewRepositoryInterface;
 use \Ls\Replication\Logger\OmniLogger;
-use \Ls\Replication\Model\ResourceModel\ReplStoreview\CollectionFactory as ReplStoreCollection;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory as ReplStoreCollection;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ProductFactory;
@@ -136,7 +135,7 @@ class AbstractHelperOmni extends AbstractHelper
      * @param ReplStoreCollection $storeCollectionFactory
      * @param Configuration $configuration
      * @param StockItemRepository $stockItemRepository
-     * @param ReplStoreviewRepositoryInterface $storeRepository
+     * @param ReplStoreRepositoryInterface $storeRepository
      * @param PriceHelper $priceHelper
      * @param WriterInterface $configWriter
      * @param DirectoryList $directoryList
@@ -215,11 +214,11 @@ class AbstractHelperOmni extends AbstractHelper
         public ReplStoreCollection $storeCollectionFactory,
         public Configuration $configuration,
         public StockItemRepository $stockItemRepository,
-        public ReplStoreviewRepositoryInterface $storeRepository,
+        public ReplStoreRepositoryInterface $storeRepository,
         public PriceHelper $priceHelper,
         public WriterInterface $configWriter,
         public DirectoryList $directoryList,
-        public ReplTenderviewRepositoryInterface $replStoreTenderTypeRepository,
+        public ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
         public GetCartForUser $getCartForUser,
         public MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
         public File $fileSystemDriver,

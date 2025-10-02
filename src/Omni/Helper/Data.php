@@ -8,20 +8,20 @@ use DOMXPath;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\RetailCalendarLine;
-use Ls\Omni\Client\Ecommerce\Entity\RootGetStoreOpeningHours;
-use \Ls\Omni\Client\Ecommerce\Entity\RootMobileTransaction;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\Ecommerce\Operation\GetStoreOpeningHours;
-use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
-use \Ls\Omni\Client\Ecommerce\Operation\LSCTenderType;
-use \Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
+use \Ls\Omni\Client\CentralEcommerce\Entity;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RetailCalendarLine;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootGetStoreOpeningHours;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootMobileTransaction;
+use \Ls\Omni\Client\CentralEcommerce\Operation;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetStoreOpeningHours;
+use \Ls\Omni\Client\CentralEcommerce\Operation\HierarchyView;
+use \Ls\Omni\Client\CentralEcommerce\Operation\LSCTenderType;
+use \Ls\Omni\Client\CentralEcommerce\Operation\TestConnectionResponse;
 use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\DataObject;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
@@ -46,11 +46,11 @@ class Data extends AbstractHelperOmni
      */
     public function getStoreNameById(string $storeId): string
     {
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('no', $storeId, 'eq')->create();
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter('nav_id', $storeId, 'eq')->create();
         $stores = $this->storeRepository->getList($searchCriteria)->getItems();
 
         foreach ($stores as $store) {
-            return $store->getData('name');
+            return $store->getData('Name');
         }
 
         return "Sorry! No store found with ID : " . $storeId;
@@ -691,7 +691,7 @@ class Data extends AbstractHelperOmni
     ): array {
         $baseUrl = !empty($baseUrl) ? $baseUrl :
             $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId());
-        $baseUrl = 'http://10.213.0.5:9047/LscNextMajor';
+        $baseUrl = 'http://10.213.0.5:9047/LsCentralDev';
         $url = join('/', [$baseUrl, 'WS/Codeunit/RetailWebServices']);
         $url = OmniService::getUrl($url);
         $client = $this->createInstance(OmniClient::class, ['uri' => $url]);
@@ -930,7 +930,7 @@ class Data extends AbstractHelperOmni
         }
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
-                $storeTenderTypes[$storeTenderType->getCode()] = $storeTenderType->getDescription();
+                $storeTenderTypes[$storeTenderType->getTenderTypeId()] = $storeTenderType->getName();
             }
         }
 
@@ -1021,7 +1021,7 @@ class Data extends AbstractHelperOmni
      * @throws GraphQlAuthorizationException
      * @throws GraphQlInputException
      * @throws GraphQlNoSuchEntityException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function fetchCartAndReturnStock($maskedCartId, $userId, $scopeId, $storeId, $quote = null)
     {

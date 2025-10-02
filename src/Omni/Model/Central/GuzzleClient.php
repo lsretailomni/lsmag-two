@@ -50,7 +50,7 @@ class GuzzleClient
      */
     public function makeRequest($baseUrl, $action, $method, $type = 'odata', $options = [], $query = [], $data = [])
     {
-        $baseUrl = 'http://10.213.0.5:9048/LscNextMajor/';
+        $baseUrl = 'http://10.213.0.5:9048/LsCentralDev/';
         $headers = [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json'
@@ -59,6 +59,7 @@ class GuzzleClient
         try {
             $tenant = $options['tenant'];
             $environmentName = $options['environmentName'];
+            $options['token'] = 1;
             if (!empty($options['token'])) {
                 $token = $options['token'];
                 $headers['Authorization'] = 'Bearer ' . $token;

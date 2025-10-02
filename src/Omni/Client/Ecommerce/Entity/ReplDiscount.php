@@ -45,6 +45,11 @@ class ReplDiscount
     protected $DiscountValueType = null;
 
     /**
+     * @property boolean $Exclude
+     */
+    protected $Exclude = null;
+
+    /**
      * @property string $FromDate
      */
     protected $FromDate = null;
@@ -250,6 +255,24 @@ class ReplDiscount
     public function getDiscountValueType()
     {
         return $this->DiscountValueType;
+    }
+
+    /**
+     * @param boolean $Exclude
+     * @return $this
+     */
+    public function setExclude($Exclude)
+    {
+        $this->Exclude = $Exclude;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getExclude()
+    {
+        return $this->Exclude;
     }
 
     /**

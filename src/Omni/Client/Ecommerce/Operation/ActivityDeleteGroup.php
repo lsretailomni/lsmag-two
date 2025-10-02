@@ -78,7 +78,7 @@ class ActivityDeleteGroup extends AbstractOperation
     /**
      * @return ActivityDeleteGroupRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ActivityDeleteGroupRequest();

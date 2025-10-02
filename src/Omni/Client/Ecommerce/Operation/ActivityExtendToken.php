@@ -78,7 +78,7 @@ class ActivityExtendToken extends AbstractOperation
     /**
      * @return ActivityExtendTokenRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ActivityExtendTokenRequest();

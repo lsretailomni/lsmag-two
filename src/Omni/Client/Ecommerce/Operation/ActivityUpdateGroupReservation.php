@@ -78,7 +78,7 @@ class ActivityUpdateGroupReservation extends AbstractOperation
     /**
      * @return ActivityUpdateGroupReservationRequest
      */
-    public function & setOperationInput(array $params = [])
+    public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
             $this->request = new ActivityUpdateGroupReservationRequest();

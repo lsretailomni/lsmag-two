@@ -544,7 +544,12 @@ class DiscountCreateSetupTask
         $customerGroupIds = [];
         if ($replDiscount->getMemberType() == ReplDiscMemberType::CLUB
             && !empty($replDiscount->getLoyaltySchemeCode()) && !empty($schemes)) {
-            $groups = array_keys($schemes, $replDiscount->getLoyaltySchemeCode());
+            $groups = [];
+            foreach ($schemes as $scheme) {
+                if ($scheme['Club Code'] == $replDiscount->getLoyaltySchemeCode()) {
+                    $groups[] = $scheme['Code'];
+                }
+            }
             foreach ($groups as $group) {
                 $customerGroupIds[] = $this->contactHelper->
                 getCustomerGroupIdByName($group);
@@ -1137,7 +1142,11 @@ class DiscountCreateSetupTask
      */
     public function createAllAvailableCustomerGroups($schemes)
     {
-        $customGroups = array_keys($schemes);
+        $customGroups = [];
+
+        foreach ($schemes as $scheme) {
+            $customGroups[] = $scheme['Code'];
+        }
 
         foreach ($customGroups as $customGroup) {
             $this->contactHelper->getCustomerGroupIdByName($customGroup);

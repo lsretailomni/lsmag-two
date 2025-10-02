@@ -8,82 +8,20 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Api\ReplLscWiPriceRepositoryInterface as ReplLscWiPriceRepository;
-use Ls\Replication\Model\ReplLscWiPriceFactory;
-use Ls\Replication\Api\Data\ReplLscWiPriceInterface;
-
-class ReplLscWiPriceTask extends AbstractReplicationTask
+class ReplLscWiPriceTask extends ReplEcommPricesTask
 {
-    public const JOB_CODE = 'replication_repl_lsc_wi_price';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_prices';
 
-    public const CONFIG_PATH = 'ls_mag/replication/repl_lsc_wi_price';
+    public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscWiPrice';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_lsc_wi_price';
-
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_lsc_wi_price';
-
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_wi_price';
-
-    /**
-     * @property ReplLscWiPriceRepository $repository
-     */
-    protected $repository = null;
-
-    /**
-     * @property ReplLscWiPriceFactory $factory
-     */
-    protected $factory = null;
-
-    /**
-     * @property ReplLscWiPriceInterface $dataInterface
-     */
-    protected $dataInterface = null;
-
-    public function setRepository(ReplLscWiPriceRepository $repository)
+    public function getModelName() : string
     {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    public function getRepository() : ReplLscWiPriceRepository
-    {
-        return $this->repository;
-    }
-
-    public function setFactory(ReplLscWiPriceFactory $factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function getFactory() : ReplLscWiPriceFactory
-    {
-        return $this->factory;
-    }
-
-    public function setDataInterface(ReplLscWiPriceInterface $dataInterface)
-    {
-        $this->dataInterface = $dataInterface;
-        return $this;
-    }
-
-    public function getDataInterface() : ReplLscWiPriceInterface
-    {
-        return $this->dataInterface;
-    }
-
-    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig, \Magento\Config\Model\ResourceModel\Config $resourceConfig, \Ls\Replication\Logger\Logger $logger, LsHelper $helper, \Ls\Replication\Helper\ReplicationHelper $repHelper, ReplLscWiPriceFactory $factory, ReplLscWiPriceRepository $repository, ReplLscWiPriceInterface $dataInterface)
-    {
-        parent::__construct($scopeConfig, $resourceConfig, $logger, $helper, $repHelper);
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->dataInterface = $dataInterface;
+        return self::MODEL_CLASS;
     }
 
     public function makeRequest(string $baseUrl = '', array $connectionParams = [], string $companyName = '', bool $fullRepl = false, int $batchSize = 100, string $storeNo = '', int $lastEntryNo = 0, string $lastKey = '')
     {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\LSCWIPrice($baseUrl, $connectionParams, $companyName);
+        $request = new \Ls\Omni\Client\CentralEcommerce\Operation\LSCWIPrice($baseUrl, $connectionParams, $companyName);
         $request->setOperationInput([
         'storeNo' => $storeNo,
         'batchSize' => $batchSize,
@@ -94,29 +32,9 @@ class ReplLscWiPriceTask extends AbstractReplicationTask
         return $request;
     }
 
-    public function getConfigPath() : string
-    {
-        return self::CONFIG_PATH;
-    }
-
-    public function getConfigPathStatus() : string
-    {
-        return self::CONFIG_PATH_STATUS;
-    }
-
-    public function getConfigPathLastExecute() : string
-    {
-        return self::CONFIG_PATH_LAST_EXECUTE;
-    }
-
     public function getConfigPathLastEntryNo() : string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
-    }
-
-    public function getMainEntity() : ReplLscWiPriceInterface
-    {
-        return $this->dataInterface;
     }
 }
 

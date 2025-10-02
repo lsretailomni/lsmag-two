@@ -10,86 +10,169 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplUnitOfMeasureInterface
 {
-    public static function getDbColumnsMapping() : array;
+    /**
+     * @param string $Description
+     * @return $this
+     */
+    public function setDescription($Description);
 
-    public function getCode() : ?string;
+    /**
+     * @return string
+     */
+    public function getDescription();
 
-    public function setCode(?string $value);
+    /**
+     * @param string $nav_id
+     * @return $this
+     */
+    public function setNavId($nav_id);
 
-    public function getDescription() : ?string;
+    /**
+     * @return string
+     */
+    public function getNavId();
 
-    public function setDescription(?string $value);
+    /**
+     * @param boolean $IsDeleted
+     * @return $this
+     */
+    public function setIsDeleted($IsDeleted);
 
-    public function getInternationalStandardCode() : ?string;
+    /**
+     * @return boolean
+     */
+    public function getIsDeleted();
 
-    public function setInternationalStandardCode(?string $value);
+    /**
+     * @param string $ShortDescription
+     * @return $this
+     */
+    public function setShortDescription($ShortDescription);
 
-    public function getLastModifiedDateTime() : ?string;
+    /**
+     * @return string
+     */
+    public function getShortDescription();
 
-    public function setLastModifiedDateTime(?string $value);
+    /**
+     * @param int $UnitDecimals
+     * @return $this
+     */
+    public function setUnitDecimals($UnitDecimals);
 
-    public function getLscPosMinDenominator() : ?float;
+    /**
+     * @return int
+     */
+    public function getUnitDecimals();
 
-    public function setLscPosMinDenominator(?float $value);
+    /**
+     * @param string $scope
+     * @return $this
+     */
+    public function setScope($scope);
 
-    public function getLscWeightUnitOfMeasure() : ?bool;
+    /**
+     * @return string
+     */
+    public function getScope();
 
-    public function setLscWeightUnitOfMeasure(?bool $value);
+    /**
+     * @param int $scope_id
+     * @return $this
+     */
+    public function setScopeId($scope_id);
 
-    public function getSymbol() : ?string;
+    /**
+     * @return int
+     */
+    public function getScopeId();
 
-    public function setSymbol(?string $value);
+    /**
+     * @param boolean $processed
+     * @return $this
+     */
+    public function setProcessed($processed);
 
-    public function getSystemcreatedat() : ?string;
+    /**
+     * @return boolean
+     */
+    public function getProcessed();
 
-    public function setSystemcreatedat(?string $value);
+    /**
+     * @param boolean $is_updated
+     * @return $this
+     */
+    public function setIsUpdated($is_updated);
 
-    public function getSystemcreatedby() : ?string;
+    /**
+     * @return boolean
+     */
+    public function getIsUpdated();
 
-    public function setSystemcreatedby(?string $value);
+    /**
+     * @param boolean $is_failed
+     * @return $this
+     */
+    public function setIsFailed($is_failed);
 
-    public function getSystemmodifiedat() : ?string;
+    /**
+     * @return boolean
+     */
+    public function getIsFailed();
 
-    public function setSystemmodifiedat(?string $value);
+    /**
+     * @param string $created_at
+     * @return $this
+     */
+    public function setCreatedAt($created_at);
 
-    public function getSystemmodifiedby() : ?string;
+    /**
+     * @return string
+     */
+    public function getCreatedAt();
 
-    public function setSystemmodifiedby(?string $value);
+    /**
+     * @param string $updated_at
+     * @return $this
+     */
+    public function setUpdatedAt($updated_at);
 
-    public function getSystemid() : ?string;
+    /**
+     * @return string
+     */
+    public function getUpdatedAt();
 
-    public function setSystemid(?string $value);
+    /**
+     * @param string $identity_value
+     * @return $this
+     */
+    public function setIdentityValue($identity_value);
 
-    public function setProcessed(?bool $processed);
+    /**
+     * @return string
+     */
+    public function getIdentityValue();
 
-    public function getProcessed() : ?bool;
+    /**
+     * @param string $checksum
+     * @return $this
+     */
+    public function setChecksum($checksum);
 
-    public function setIsUpdated(?bool $is_updated);
+    /**
+     * @return string
+     */
+    public function getChecksum();
 
-    public function getIsUpdated() : ?bool;
+    /**
+     * @param string $processed_at
+     * @return $this
+     */
+    public function setProcessedAt($processed_at);
 
-    public function setIsFailed(?bool $is_failed);
-
-    public function getIsFailed() : ?bool;
-
-    public function setCreatedAt(?string $created_at);
-
-    public function getCreatedAt() : ?string;
-
-    public function setUpdatedAt(?string $updated_at);
-
-    public function getUpdatedAt() : ?string;
-
-    public function setIdentityValue(?string $identity_value);
-
-    public function getIdentityValue() : ?string;
-
-    public function setChecksum(?string $checksum);
-
-    public function getChecksum() : ?string;
-
-    public function setProcessedAt(?string $processed_at);
-
-    public function getProcessedAt() : ?string;
+    /**
+     * @return string
+     */
+    public function getProcessedAt();
 }
 

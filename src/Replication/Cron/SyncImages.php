@@ -191,7 +191,7 @@ class SyncImages extends ProductCreateTask
             $filterArr[]['sku'] = $productObj->getSku();
         }
 
-        if (count($filterArr) >0) {
+        if (count($filterArr) > 0) {
             $existingImages = $this->mediaProcessor->getExistingImages($filterArr);
             $this->addImageHashes($existingImages);
         }
