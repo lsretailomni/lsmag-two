@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Ls\Webhooks\Api\Data;
 
 /**
@@ -6,7 +8,7 @@ namespace Ls\Webhooks\Api\Data;
  *
  * Represents the order message payload received by the API
  */
-interface OrderMessageInterface
+interface OrderStatusMessageInterface
 {
     public const ORDER_ID = 'OrderId';
     public const CARD_ID = 'CardId';

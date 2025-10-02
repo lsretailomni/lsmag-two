@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Ls\Webhooks\Model\Data;
 
 use Ls\Webhooks\Api\Data\OrderLineInterface;

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Model;
 
@@ -47,19 +48,18 @@ class OrderPayment implements OrderPaymentInterface
     /**
      * @inheritdoc
      */
-    public function set($orderId, $status, $amount, $currencyCode, $token, $authCode, $reference, $lines)
+    public function set(\Ls\Webhooks\Api\Data\OrderPaymentMessageInterface $orderPayment)
     {
         try {
             $data = [
-                'OrderId'      => $orderId,
-                'Status'       => $status,
-                'Amount'       => $amount,
-                'CurrencyCode' => $currencyCode,
-                'Token'        => $token,
-                'AuthCode'     => $authCode,
-                'Reference'    => $reference,
-                'Lines'        => $lines
-
+                'OrderId' => $orderPayment->getOrderId(),
+                'Status' => $orderPayment->getStatus(),
+                'Amount' => $orderPayment->getAmount(),
+                'CurrencyCode' => $orderPayment->getCurrencyCode(),
+                'Token' => $orderPayment->getToken(),
+                'AuthCode' => $orderPayment->getAuthCode(),
+                'Reference' => $orderPayment->getReference(),
+                'Lines' => $this->formatOrderLines($orderPayment->getLines()),
             ];
             $this->logger->info('OrderPayment = ', $data);
             if (!empty($data['OrderId'])) {
@@ -70,5 +70,30 @@ class OrderPayment implements OrderPaymentInterface
             $this->logger->error($e->getMessage());
             return $this->helper->outputMessage(false, $e->getMessage());
         }
+    }
+
+    /**
+     * Get formatted lines
+     *
+     * @param \Ls\Webhooks\Api\Data\OrderLineInterface[] $lines
+     * @return array
+     */
+    public function formatOrderLines(array $lines)
+    {
+        $formattedLines = [];
+        if (!empty($lines)) {
+            foreach ($lines as $line) {
+                $formattedLines[] = [
+                    'NewStatus' => $line->getNewStatus(),
+                    'ItemId' => $line->getItemId(),
+                    'Quantity' => $line->getQuantity(),
+                    'UnitOfMeasureId' => $line->getUnitOfMeasureId(),
+                    'VariantId' => $line->getVariantId(),
+                    'Amount' => $line->getAmount(),
+                ];
+            }
+        }
+
+        return $formattedLines;
     }
 }

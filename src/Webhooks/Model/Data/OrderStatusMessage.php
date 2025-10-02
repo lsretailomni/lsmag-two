@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace Ls\Webhooks\Model\Data;
 
-use Ls\Webhooks\Api\Data\OrderMessageInterface;
+use \Ls\Webhooks\Api\Data\OrderStatusMessageInterface;
 use Magento\Framework\Model\AbstractExtensibleModel;
 
 /**
@@ -9,7 +11,7 @@ use Magento\Framework\Model\AbstractExtensibleModel;
  *
  * Implementation of OrderMessageInterface
  */
-class OrderMessage extends AbstractExtensibleModel implements OrderMessageInterface
+class OrderStatusMessage extends AbstractExtensibleModel implements OrderStatusMessageInterface
 {
     /**
      * @inheritdoc

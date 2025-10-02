@@ -1,25 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Api;
 
-/**
- * Interface OrderPaymentInterface
- * @api
- */
+use Ls\Webhooks\Api\Data\OrderPaymentMessageInterface;
+
 interface OrderPaymentInterface
 {
     /**
-     * Set order payment
+     * Accepts the incoming order status update webhook
      *
-     * @param string $OrderId
-     * @param string $Status
-     * @param string $Amount
-     * @param string $CurrencyCode
-     * @param string $Token
-     * @param string $AuthCode
-     * @param string $Reference
-     * @param mixed $Lines
-     * @return mixed
+     * @param \Ls\Webhooks\Api\Data\OrderPaymentMessageInterface $orderPayment
+     * @return bool
      */
-    public function set($OrderId, $Status, $Amount, $CurrencyCode, $Token, $AuthCode, $Reference, $Lines);
+    public function set(OrderPaymentMessageInterface $orderPayment);
 }

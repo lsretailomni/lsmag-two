@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Model;
 
@@ -38,7 +39,7 @@ class OrderStatus implements OrderStatusInterface
     /**
      * @inheritdoc
      */
-    public function set(\Ls\Webhooks\Api\Data\OrderMessageInterface $orderMessage)
+    public function set(\Ls\Webhooks\Api\Data\OrderStatusMessageInterface $orderMessage)
     {
         try {
             $data = [
