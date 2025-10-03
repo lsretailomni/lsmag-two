@@ -26,7 +26,8 @@
     <preference for="Ls\Webhooks\Api\Data\ReceiverInterface" type="Ls\Webhooks\Model\Notification\Receiver"/>
     <preference for="Ls\Webhooks\Api\Data\SenderInterface" type="Ls\Webhooks\Model\Notification\Sender"/>
     <preference for="Ls\Webhooks\Api\OrderStatusInterface" type="Ls\Webhooks\Model\OrderStatus"/>
-    <preference for="Ls\Webhooks\Api\Data\OrderStatusMessageInterface" type="Ls\Webhooks\Model\Data\OrderStatusMessage"/>
     <preference for="Ls\Webhooks\Api\Data\OrderLineInterface" type="Ls\Webhooks\Model\Data\OrderLine"/>
+    <preference for="Ls\Webhooks\Api\Data\OrderStatusMessageInterface" type="Ls\Webhooks\Model\Data\OrderStatusMessage"/>
     <preference for="Ls\Webhooks\Api\Data\OrderPaymentMessageInterface" type="Ls\Webhooks\Model\Data\OrderPaymentMessage"/>
+    <preference for="Ls\Webhooks\Api\Data\OrderShipmentMessageInterface" type="Ls\Webhooks\Model\Data\OrderShipmentMessage"/>
 </config>

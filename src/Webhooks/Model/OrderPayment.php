@@ -13,36 +13,16 @@ use \Ls\Webhooks\Logger\Logger;
  */
 class OrderPayment implements OrderPaymentInterface
 {
-
     /**
-     * @var Logger
-     */
-    public $logger;
-
-    /**
-     * @var Payment
-     */
-    public $payment;
-
-    /**
-     * @var Data
-     */
-    public $helper;
-
-    /**
-     * OrderPayment constructor.
      * @param Logger $logger
      * @param Payment $payment
      * @param Data $helper
      */
     public function __construct(
-        Logger $logger,
-        Payment $payment,
-        Data $helper
+        public Logger $logger,
+        public Payment $payment,
+        public Data $helper
     ) {
-        $this->logger  = $logger;
-        $this->payment = $payment;
-        $this->helper  = $helper;
     }
 
     /**

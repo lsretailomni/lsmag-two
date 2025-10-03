@@ -14,26 +14,13 @@ use \Ls\Webhooks\Model\Order\Status;
 class OrderStatus implements OrderStatusInterface
 {
     /**
-     * @var Logger
-     */
-    private $logger;
-
-    /**
-     * @var Status
-     */
-    private $status;
-
-    /**
-     * OrderStatus constructor.
      * @param Status $status
      * @param Logger $logger
      */
     public function __construct(
-        Status $status,
-        Logger $logger
+        public Status $status,
+        public Logger $logger
     ) {
-        $this->status = $status;
-        $this->logger = $logger;
     }
 
     /**
@@ -48,7 +35,9 @@ class OrderStatus implements OrderStatusInterface
                 'HeaderStatus' => $orderMessage->getHeaderStatus(),
                 'MsgSubject' => $orderMessage->getMsgSubject(),
                 'MsgDetail' => $orderMessage->getMsgDetail(),
-                'Lines' => $this->formatOrderLines($orderMessage->getLines()),
+                'Lines' => $this->formatOrderLines(
+                    !is_array($orderMessage->getLines()) ? [] : $orderMessage->getLines()
+                ),
                 'orderKOTStatus' => $orderMessage->getOrderKOTStatus()
             ];
             $this->logger->info('OrderStatus = ', $data);

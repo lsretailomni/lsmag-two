@@ -13,11 +13,6 @@ use Magento\Framework\Event\ManagerInterface;
 class PushNotification extends AbstractNotification
 {
     /**
-     * @var ManagerInterface
-     */
-    private $eventManager;
-
-    /**
      * @param Data $helper
      * @param Logger $logger
      * @param ReceiverFactory $receiverFactory
@@ -26,16 +21,14 @@ class PushNotification extends AbstractNotification
      * @param array $data
      */
     public function __construct(
-        Data $helper,
-        Logger $logger,
-        ReceiverFactory $receiverFactory,
-        SenderFactory $senderFactory,
-        ManagerInterface $eventManager,
+        public Data $helper,
+        public Logger $logger,
+        public ReceiverFactory $receiverFactory,
+        public SenderFactory $senderFactory,
+        public ManagerInterface $eventManager,
         array $data = []
     ) {
         parent::__construct($helper, $logger, $receiverFactory, $senderFactory, $data);
-
-        $this->eventManager = $eventManager;
     }
 
     /**

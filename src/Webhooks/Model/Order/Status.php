@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Model\Order;
 
@@ -21,46 +22,6 @@ class Status
     public const SUCCESS_MESSAGE = 'success';
 
     /**
-     * @var Data
-     */
-    public $helper;
-
-    /**
-     * @var NotificationHelper
-     */
-    private $notificationHelper;
-
-    /**
-     * @var OrderCancel
-     */
-    public $orderCancel;
-
-    /**
-     * @var CreditMemo
-     */
-    public $creditMemo;
-
-    /**
-     * @var Payment
-     */
-    public $payment;
-
-    /**
-     * @var Invoice
-     */
-    public $invoice;
-
-    /**
-     * @var CreditmemoFactory
-     */
-    public $creditMemoFactory;
-
-    /**
-     * @var CreditmemoService
-     */
-    public $creditMemoService;
-
-    /**
      * @var array
      */
     public $message = [];
@@ -76,23 +37,15 @@ class Status
      * @param CreditmemoService $creditMemoService
      */
     public function __construct(
-        Data $helper,
-        OrderCancel $orderCancel,
-        CreditMemo $creditMemo,
-        Payment $payment,
-        Invoice $invoice,
-        NotificationHelper $notificationHelper,
-        CreditmemoFactory $creditMemoFactory,
-        CreditmemoService $creditMemoService
+        public Data $helper,
+        public OrderCancel $orderCancel,
+        public CreditMemo $creditMemo,
+        public Payment $payment,
+        public Invoice $invoice,
+        public NotificationHelper $notificationHelper,
+        public CreditmemoFactory $creditMemoFactory,
+        public CreditmemoService $creditMemoService
     ) {
-        $this->helper             = $helper;
-        $this->orderCancel        = $orderCancel;
-        $this->creditMemo         = $creditMemo;
-        $this->payment            = $payment;
-        $this->invoice            = $invoice;
-        $this->notificationHelper = $notificationHelper;
-        $this->creditMemoFactory  = $creditMemoFactory;
-        $this->creditMemoService  = $creditMemoService;
     }
 
     /**
@@ -129,7 +82,7 @@ class Status
      *
      * @param string $status
      * @param array $itemsInfo
-     * @param OrderInterface|array $magOrder
+     * @param OrderInterface|array $magentoOrder
      * @param array $data
      * @throws NoSuchEntityException|LocalizedException
      */

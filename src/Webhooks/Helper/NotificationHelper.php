@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Helper;
 
@@ -14,33 +15,15 @@ use Magento\Sales\Api\Data\OrderInterface;
 class NotificationHelper
 {
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var PushNotification
-     */
-    public $pushNotification;
-
-    /**
-     * @var EmailNotification
-     */
-    public $emailNotification;
-
-    /**
      * @param LSR $lsr
      * @param PushNotification $pushNotification
      * @param EmailNotification $emailNotification
      */
     public function __construct(
-        LSR $lsr,
-        PushNotification $pushNotification,
-        EmailNotification $emailNotification
+        public LSR $lsr,
+        public PushNotification $pushNotification,
+        public EmailNotification $emailNotification
     ) {
-        $this->lsr               = $lsr;
-        $this->pushNotification  = $pushNotification;
-        $this->emailNotification = $emailNotification;
     }
 
     /**

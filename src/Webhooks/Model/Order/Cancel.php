@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Model\Order;
 
@@ -14,42 +15,17 @@ use Magento\Sales\Model\Order\ItemRepository;
 class Cancel
 {
     /**
-     * @var Logger
-     */
-    private $logger;
-
-    /**
-     * @var OrderManagementInterface
-     */
-    private $orderManagement;
-
-    /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
-     * @var ItemRepository
-     */
-    private $itemRepository;
-
-    /**
-     * Cancel constructor.
      * @param OrderManagementInterface $orderManagement
      * @param ItemRepository $itemRepository
      * @param Data $helper
      * @param Logger $logger
      */
     public function __construct(
-        OrderManagementInterface $orderManagement,
-        ItemRepository $itemRepository,
-        Data $helper,
-        Logger $logger
+        public OrderManagementInterface $orderManagement,
+        public ItemRepository $itemRepository,
+        public Data $helper,
+        public Logger $logger
     ) {
-        $this->orderManagement = $orderManagement;
-        $this->itemRepository  = $itemRepository;
-        $this->helper          = $helper;
-        $this->logger          = $logger;
     }
 
     /**
