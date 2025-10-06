@@ -6,7 +6,6 @@ namespace Ls\Customer\Block\Order;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\CentralEcommerce\Entity\LSCMemberSalesBuffer;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -373,17 +372,19 @@ class Info extends AbstractOrderBlock
      * Formulating order canceling url
      *
      * @param OrderInterface $magentoOrder
-     * @param SalesEntry $centralOrder
+     * @param $centralOrder
      * @return string
      */
-    public function getCancelUrl(OrderInterface $magentoOrder, SalesEntry $centralOrder)
+    public function getCancelUrl(OrderInterface $magentoOrder, $centralOrder)
     {
         return $magentoOrder && $centralOrder ? $this->getUrl(
             'customer/order/cancel',
             [
                 'magento_order_id' => $magentoOrder->getId(),
-                'central_order_id' => $centralOrder->getId(),
-                'id_type'          => $centralOrder->getIdType()
+                'central_order_id' => $centralOrder->getLscMemberSalesBuffer()->getDocumentId(),
+                'id_type'          => $this->orderHelper->getOrderType(
+                    $centralOrder->getLscMemberSalesBuffer()->getDocumentSourceType()
+                )
             ]
         ) : '';
     }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\AdminOrder;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\OneList;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
@@ -10,6 +11,8 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\OrderHelper;
+use Magento\Backend\Model\Session\Quote;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Sales\Model\AdminOrder\Create;
 use Psr\Log\LoggerInterface;
 
@@ -25,6 +28,7 @@ class CreatePlugin
      * @param LSR $lsr
      * @param Data $data
      * @param OrderHelper $orderHelper
+     * @param Quote $backendQuoteSession
      */
     public function __construct(
         public BasketHelper $basketHelper,
@@ -32,7 +36,8 @@ class CreatePlugin
         public LoggerInterface $logger,
         public LSR $lsr,
         public Data $data,
-        public OrderHelper $orderHelper
+        public OrderHelper $orderHelper,
+        public Quote $backendQuoteSession
     ) {
     }
 
@@ -42,6 +47,7 @@ class CreatePlugin
      * @param Create $subject
      * @param $result
      * @return mixed
+     * @throws GuzzleException|AlreadyExistsException
      */
     public function afterSaveQuote(
         Create $subject,
@@ -54,6 +60,13 @@ class CreatePlugin
         $quote = $subject->getQuote();
         $this->orderHelper->storeManager->setCurrentStore($quote->getStoreId());
         $this->basketHelper->setCorrectStoreIdInCheckoutSession($quote->getStoreId());
+        if (!empty($quote)) {
+            $this->basketHelper->getCheckoutSession()->setQuoteId($quote->getId());
+            $quote->setIsActive(1);
+            $this->itemHelper->quoteResourceModel->save($quote);
+            $this->basketHelper->getCustomerSession()->setCustomerId($quote->getCustomer()->getId());
+        }
+
         try {
             if ($this->lsr->isLSR($quote->getStoreId())) {
                 $couponCode = $quote->getCouponCode();
@@ -85,7 +98,9 @@ class CreatePlugin
                 }
                 /** @var Order $basketData */
                 $basketData = $this->basketHelper->update($oneList);
+                $quote = $this->basketHelper->getCurrentQuote();
                 $this->itemHelper->setDiscountedPricesForItems($quote, $basketData, 2);
+                $this->backendQuoteSession->_resetState();
                 if (!empty($basketData) && method_exists($basketData, 'getPointsRewarded')) {
                     $quote->setLsPointsEarn($basketData->getPointsRewarded())->save();
                 }

@@ -6,7 +6,6 @@ namespace Ls\Omni\Helper;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\CentralEcommerce\Entity\MobileTransaction;
 use \Ls\Omni\Client\CentralEcommerce\Entity\MobileTransactionLine;
 use \Ls\Omni\Client\CentralEcommerce\Entity\MobileTransDiscountLine;
@@ -35,12 +34,17 @@ class BasketHelper extends AbstractHelperOmni
     public $storeId = null;
 
     /** @var string */
-    public string $couponCode = '';
+    public ?string $couponCode = '';
 
     /**
      * @var boolean
      */
     public $calculateBasket;
+
+    /*
+     * @var string
+     */
+    public $adminOrderCardId = "";
 
     /**
      * Initialize specific properties
@@ -65,6 +69,8 @@ class BasketHelper extends AbstractHelperOmni
      */
     public function setOneListQuote(Quote $quote, RootMobileTransaction $oneList)
     {
+        $country = $quote->getShippingAddress()->getCountryId();
+        $oneList->getMobiletransaction()->setShiptocountryregioncode($country);
         $quoteItems = $quote->getAllVisibleItems();
 
         return $this->setGivenItemsInGivenOneList($oneList, $quoteItems);
@@ -336,15 +342,6 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * @return Entity\ArrayOfOneListPublishedOffer
-     */
-    public function _offers()
-    {
-        // @codingStandardsIgnoreLine
-        return new Entity\ArrayOfOneListPublishedOffer();
-    }
-
-    /**
      * Get configured store code for the current scope
      *
      * @return string|null
@@ -574,34 +571,26 @@ class BasketHelper extends AbstractHelperOmni
      * @param $customerEmail
      * @param $websiteId
      * @param $isGuest
-     * @return bool|Entity\OneList
+     * @return RootMobileTransaction
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function getOneListAdmin($customerEmail, $websiteId, $isGuest)
     {
-        $cardId = '';
+        $this->adminOrderCardId = '';
 
         if (!$isGuest) {
             $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
 
             if (!empty($customer->getData('lsr_cardid'))) {
-                $cardId = $customer->getData('lsr_cardid');
+                $this->adminOrderCardId = $customer->getData('lsr_cardid');
             }
         }
         $webStore       = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         $this->storeId = $webStore;
         // @codingStandardsIgnoreStart
-        /** @var Entity\OneList $list */
-        $list = (new Entity\OneList())
-            ->setCardId($cardId)
-            ->setDescription('OneList Magento')
-            ->setListType(Entity\Enum\ListType::BASKET)
-            ->setItems(new Entity\ArrayOfOneListItem())
-            ->setPublishedOffers($this->_offers())
-            ->setStoreId($webStore);
-
+        $list    = $this->get();
         return $list;
         // @codingStandardsIgnoreEnd
     }
@@ -626,8 +615,7 @@ class BasketHelper extends AbstractHelperOmni
     public function fetchFromOmni(): RootMobileTransaction
     {
         // if guest, then empty card id
-        $cardId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) == null)
-            ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) ?? $this->adminOrderCardId ?? '';
 
         $storeCode = $this->getDefaultWebStore();
 
@@ -1158,12 +1146,15 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Get basket calculation from current quote
      *
+     * @param $quote
      * @return RootMobileTransaction|null
      * @throws NoSuchEntityException
      */
-    public function getOneListCalculationFromCheckoutSession()
+    public function getOneListCalculationFromCheckoutSession($quote = null)
     {
-        $quote = $this->getCurrentQuote();
+        if (!$quote) {
+            $quote = $this->getCurrentQuote();
+        }
 
         if (!$quote) {
             return null;

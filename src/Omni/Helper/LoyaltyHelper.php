@@ -562,7 +562,7 @@ class LoyaltyHelper extends AbstractHelperOmni
                     $this->registry->register('lsr-c-po', $results);
                     $publishedOffers = $rootGetDirectMarketingInfo->getPublishedoffer();
 
-                    foreach ($publishedOffers as $publishedOffer) {
+                    foreach ($publishedOffers ?? [] as $publishedOffer) {
                         if ($publishedOffer->getDiscounttype() == "9") {
                             $coupons[$publishedOffer->getNo()] = $publishedOffer;
                         }

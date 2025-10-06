@@ -6,6 +6,8 @@ namespace Ls\Omni\Helper;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\LineType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use \Ls\Omni\Client\CentralEcommerce\Entity;
 use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCODiscountLineV6;
 use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCOHeaderV6;
@@ -13,7 +15,7 @@ use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCOLineV6;
 use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCOPaymentV6;
 use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateV6;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
@@ -25,6 +27,8 @@ use \Ls\Omni\Client\CentralEcommerce\Operation\GetSalesReturnById_GetSalesReturn
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Client\CentralEcommerce\Operation\GetMemContSalesHist_GetMemContSalesHist;
 use \Ls\Omni\Client\CentralEcommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
+use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCancel as CustomerOrderCancelRequest;
+use \Ls\Omni\Client\CentralEcommerce\Operation\CustomerOrderCancel;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -52,6 +56,8 @@ class OrderHelper extends AbstractHelperOmni
     public $currentOrder;
 
     /**
+     * Place order by Id
+     *
      * @param $orderId
      * @param \Ls\Omni\Client\Ecommerce\Entity\Order $oneListCalculateResponse
      */
@@ -77,6 +83,7 @@ class OrderHelper extends AbstractHelperOmni
         $rootCustomerOrderCreate = $this->createInstance(
             RootCustomerOrderCreateV6::class
         );
+
         try {
             $customerOrderCreateCoHeader = $this->createInstance(
                 CustomerOrderCreateCOHeaderV6::class
@@ -248,103 +255,6 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
-     * @param Model\Order $order
-     * @param $oneListCalculateResponse
-     * @return \Ls\Omni\Client\Ecommerce\Entity\OrderEdit
-     */
-    public function prepareOrderEdit(Model\Order $order, $oneListCalculateResponse)
-    {
-        try {
-            $storeId       = $oneListCalculateResponse->getStoreId();
-            $cardId        = $oneListCalculateResponse->getCardId();
-            $customerEmail = $order->getCustomerEmail();
-            $customerName  = $order->getBillingAddress()->getFirstname() . ' ' .
-                $order->getBillingAddress()->getLastname();
-
-            if ($order->getShippingAddress()) {
-                $shipToName = $order->getShippingAddress()->getFirstname() . ' ' .
-                    $order->getShippingAddress()->getLastname();
-            } else {
-                $shipToName = $customerName;
-            }
-
-            if ($this->customerSession->isLoggedIn()) {
-                $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
-            } else {
-                $contactId = '';
-            }
-            $shippingMethod = $order->getShippingMethod(true);
-            //TODO work on condition
-            $isClickCollect = false;
-            $carrierCode    = '';
-            $method         = '';
-
-            if ($shippingMethod !== null) {
-                $carrierCode    = $shippingMethod->getData('carrier_code');
-                $method         = $shippingMethod->getData('method');
-                $isClickCollect = $carrierCode == 'clickandcollect';
-            }
-
-            /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
-            $orderPaymentArrayObject = $this->setOrderPayments($order, $cardId);
-
-            //if the shipping address is empty, we use the contact address as shipping address.
-            $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;
-            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) :
-                $contactAddress;
-
-            $oneListCalculateResponse
-                ->setId($order->getIncrementId())
-                ->setContactId($contactId)
-                ->setCardId($cardId)
-                ->setEmail($customerEmail)
-                ->setShipToEmail($customerEmail)
-                ->setContactName($customerName)
-                ->setShipToName($shipToName)
-                ->setContactAddress($contactAddress)
-                ->setShipToAddress($shipToAddress)
-                ->setStoreId($storeId);
-            if ($isClickCollect) {
-                $oneListCalculateResponse->setOrderType(OrderType::CLICK_AND_COLLECT);
-            } else {
-                $oneListCalculateResponse->setOrderType(OrderType::SALE);
-                //TODO need to fix the length issue once LS Central allow more then 10 characters.
-                $carrierCode = ($carrierCode) ? substr($carrierCode, 0, 10) : "";
-                $oneListCalculateResponse->setShippingAgentCode($carrierCode);
-                $method = ($method) ? substr($method, 0, 10) : "";
-                $oneListCalculateResponse->setShippingAgentServiceCode($method);
-            }
-            $pickupDateTimeslot = $order->getPickupDateTimeslot();
-            if (!empty($pickupDateTimeslot)) {
-                $dateTimeFormat = "Y-m-d\T" . "H:i:00";
-                $pickupDateTime = $this->dateTime->date($dateTimeFormat, $pickupDateTimeslot);
-                $oneListCalculateResponse->setRequestedDeliveryDate($pickupDateTime);
-            }
-            $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
-            //For click and collect.
-            if ($isClickCollect) {
-                $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
-            }
-            $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
-            //For click and collect we need to remove shipment charge orderline
-            //For flat shipment it will set the correct shipment value into the order
-            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
-            // @codingStandardsIgnoreLine
-            $request = new \Ls\Omni\Client\Ecommerce\Entity\OrderCreate();
-
-            if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
-                $request->setReturnOrderIdOnly(true);
-            }
-
-            $oneListCalculateResponse->setOrderLines($orderLinesArray);
-            $request->setRequest($oneListCalculateResponse);
-            return $request;
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-    }
-
-    /**
      * Get shipment tax percent
      *
      * @param $storeId
@@ -379,7 +289,7 @@ class OrderHelper extends AbstractHelperOmni
             $taxAmount = (float)number_format(($shippingAmount - $netPrice), 2);
             $orderLine = end($customerOrderCoLines);
             $lineNumber = $orderLine->getLineno();
-            $lineNumber++;
+            $lineNumber = $lineNumber + 10000;
             $customerOrderCoLine = $this->createInstance(
                 CustomerOrderCreateCOLineV6::class
             );
@@ -404,6 +314,7 @@ class OrderHelper extends AbstractHelperOmni
 
     /**
      * Set shipment line properties
+     *
      * @param $orderLine
      * @param $order
      */
@@ -637,6 +548,57 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * Get payment type id
+     *
+     * @param $paymentType
+     * @return string
+     */
+    public function getPaymentTypeId($paymentType)
+    {
+        switch ($paymentType) {
+            case 1:
+                return PaymentType::PAYMENT;
+            case 2:
+                return PaymentType::PRE_AUTHORIZATION;
+            case 3:
+                return PaymentType::REFUND;
+            case 4:
+                return PaymentType::SHIPPED;
+            case 5:
+                return PaymentType::COLLECTED;
+            case 6:
+                return PaymentType::ROUNDING;
+            case 7:
+                return PaymentType::REFUNDED_ON_P_O_S;
+            case 8:
+                return PaymentType::VOIDED;
+            default:
+                return PaymentType::NONE;
+        }
+    }
+
+    /**
+     * Get payment type
+     *
+     * @param $order
+     * @return string
+     */
+    public function getPaymentType($order)
+    {
+        $paidAmount       = $order->getPayment()->getAmountPaid();
+        $authorizedAmount = $order->getPayment()->getAmountAuthorized();
+        if (!empty($paidAmount)) {
+            return "1";
+        } else {
+            if (!empty($authorizedAmount)) {
+                return "2";
+            } else {
+                return "0";
+            }
+        }
+    }
+
+    /**
      * This function is overriding in hospitality module
      *
      * Payment methods with no need to send in payment line
@@ -711,7 +673,7 @@ class OrderHelper extends AbstractHelperOmni
      * @return GetSelectedSalesDoc_GetSelectedSalesDoc|null
      * @throws InvalidEnumException
      */
-    public function getOrderDetailsAgainstId($docId, $type)
+    public function getOrderDetailsAgainstId($docId, $type = DocumentIdType::ORDER)
     {
         $response = null;
         $typeId   = $this->getOrderTypeId($type);
@@ -1145,18 +1107,23 @@ class OrderHelper extends AbstractHelperOmni
     public function orderCancel($documentId, $storeId)
     {
         $response = null;
-        $request  = new \Ls\Omni\Client\Ecommerce\Entity\OrderCancelEx();
-        $request->setOrderId($documentId);
-        $request->setStoreId($storeId);
-        $request->setUserId("");
-        $operation = new \Ls\Omni\Client\Ecommerce\Operation\OrderCancelEx();
+        $request = $this->dataHelper->createInstance(
+            CustomerOrderCancel::class,
+            []
+        );
+        $request->setOperationInput(
+            [
+                CustomerOrderCancelRequest::CUSTOMER_ORDER_DOCUMENT_ID => $documentId,
+                CustomerOrderCancelRequest::SOURCE_TYPE => $storeId
+            ]
+        );
         try {
-            $response = $operation->execute($request);
+            $response = $request->execute($request);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
-        return $response ? $response->getOrderCancelExResult() : $response;
+        return $response && $response->getResponsecode() == "0000" ? $response->getResponseCode() : $response;
     }
 
     /**
@@ -1395,13 +1362,11 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function getOrderType($idType)
     {
-        switch ($idType) {
-            case 1:
-                return DocumentIdType::ORDER;
-            case 2:
-                return DocumentIdType::HOSP_ORDER;
-        }
-        return DocumentIdType::RECEIPT;
+        return match ($idType) {
+            1 => DocumentIdType::ORDER,
+            2 => DocumentIdType::HOSP_ORDER,
+            default => DocumentIdType::RECEIPT,
+        };
     }
 
     /**
@@ -1437,6 +1402,22 @@ class OrderHelper extends AbstractHelperOmni
         return match ($type) {
             DocumentIdType::ORDER => 1,
             DocumentIdType::HOSP_ORDER => 2,
+            default => 0,
+        };
+    }
+
+    /**
+     * Get LineType Id
+     *
+     * @param $lineType
+     * @return int
+     */
+    public function getLineType($lineType)
+    {
+        return match ($lineType) {
+            LineType::ITEM => 0,
+            LineType::PAYMENT => 1,
+            LineType::SHIPPING => 7,
             default => 0,
         };
     }

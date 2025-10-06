@@ -107,7 +107,7 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                                     <?php endif; ?>
                                     <?php if ($magOrder->canCancel() &&
                                     $block->orderCancellationOnFrontendIsEnabled() &&
-                                    strtolower($_order->getStatus()) !== strtolower(LSR::LS_STATE_CANCELED)
+                                    strtolower($_order['Status']) !== strtolower(LSR::LS_STATE_CANCELED)
                                 ): ?>
                                     <a href="#"
                                        class="action order cancel"
