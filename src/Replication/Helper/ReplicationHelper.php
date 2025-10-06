@@ -2097,17 +2097,31 @@ class ReplicationHelper extends AbstractHelper
          * Added the condition to update config value based on specific store id.
          */
         if ($storeId && !$this->lsr->isSSM()) {
-            $this->configWriter->save(
-                $path,
-                $value,
-                $scope,
-                $storeId
-            );
+            if ($value === null) {
+                $this->configWriter->delete(
+                    $path,
+                    $scope,
+                    $storeId
+                );
+            } else {
+                $this->configWriter->save(
+                    $path,
+                    $value,
+                    $scope,
+                    $storeId
+                );
+            }
         } else {
-            $this->configWriter->save(
-                $path,
-                $value
-            );
+            if ($value === null) {
+                $this->configWriter->delete(
+                    $path
+                );
+            } else {
+                $this->configWriter->save(
+                    $path,
+                    $value
+                );
+            }
         }
     }
 

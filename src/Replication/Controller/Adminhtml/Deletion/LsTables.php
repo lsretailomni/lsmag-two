@@ -100,6 +100,19 @@ class LsTables extends AbstractReset
                     'scope_id = ?'      => $scopeId
                 ]
             );
+        } elseif ($jobName == 'repl_data_translation_lang_code') {
+            $this->replicationHelper->updateConfigValue(
+                null,
+                LSR::SC_STORE_REPLICATED_DATA_TRANSLATION_LANG_CODE,
+                $scopeId,
+                ScopeInterface::SCOPE_STORES
+            );
+            $this->replicationHelper->updateConfigValue(
+                null,
+                LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
+                $scopeId,
+                ScopeInterface::SCOPE_STORES
+            );
         } else {
             $replicationTableName = $this->replicationHelper->getGivenTableName($replicationTableName);
             $this->replicationHelper->deleteGivenTableDataGivenConditions(
