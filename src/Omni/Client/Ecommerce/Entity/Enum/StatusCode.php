@@ -126,6 +126,14 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode RECEIPT_NO_MISSING()
  * @$method static StatusCode LOOKUP_VALUES_MISSING()
  * @$method static StatusCode CONTACT_IS_BLOCKED()
+ * @$method static StatusCode INV_TRANS_SEND_NO_LINES()
+ * @$method static StatusCode INV_TRANS_SEND_ALREADY_RECEIVED()
+ * @$method static StatusCode INV_TRANS_SEND_WORK_SHEET_NOT_FOUND()
+ * @$method static StatusCode INV_TRANS_SEND_WORK_SHEET_SEQ_NO_NOT_UNIQUE()
+ * @$method static StatusCode INV_TRANS_SEND_NO_NOT_UNIQUE()
+ * @$method static StatusCode INV_TRANS_SEND_UNEXPECTED_END()
+ * @$method static StatusCode INV_TRANS_SEND_TOO_MANY_LINES()
+ * @$method static StatusCode INV_TRANS_SEND_AREA_CODE_MISSING()
  * @$method static StatusCode ORDER_ALREADY_EXIST()
  * @$method static StatusCode ORDER_ID_NOT_FOUND()
  * @$method static StatusCode PAYMENT_ERROR()
@@ -417,6 +425,22 @@ class StatusCode extends Enum
     public const LOOKUP_VALUES_MISSING = 'LookupValuesMissing';
 
     public const CONTACT_IS_BLOCKED = 'ContactIsBlocked';
+
+    public const INV_TRANS_SEND_NO_LINES = 'InvTransSendNoLines';
+
+    public const INV_TRANS_SEND_ALREADY_RECEIVED = 'InvTransSendAlreadyReceived';
+
+    public const INV_TRANS_SEND_WORK_SHEET_NOT_FOUND = 'InvTransSendWorkSheetNotFound';
+
+    public const INV_TRANS_SEND_WORK_SHEET_SEQ_NO_NOT_UNIQUE = 'InvTransSendWorkSheetSeqNoNotUnique';
+
+    public const INV_TRANS_SEND_NO_NOT_UNIQUE = 'InvTransSendNoNotUnique';
+
+    public const INV_TRANS_SEND_UNEXPECTED_END = 'InvTransSendUnexpectedEnd';
+
+    public const INV_TRANS_SEND_TOO_MANY_LINES = 'InvTransSendTooManyLines';
+
+    public const INV_TRANS_SEND_AREA_CODE_MISSING = 'InvTransSendAreaCodeMissing';
 
     public const ORDER_ALREADY_EXIST = 'OrderAlreadyExist';
 
