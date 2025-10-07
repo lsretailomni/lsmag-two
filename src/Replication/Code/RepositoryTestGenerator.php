@@ -33,20 +33,12 @@ class RepositoryTestGenerator extends AbstractGenerator
     public static string $namespace = 'Ls\\Replication\\Test\\Unit\\Model\\Central';
 
     /**
-     * Operation metadata for generation.
-     *
-     * @var ReplicationOperation
-     */
-    public ReplicationOperation $operation;
-
-    /**
      * @param ReplicationOperation $operation
      * @throws Exception
      */
-    public function __construct(ReplicationOperation $operation)
+    public function __construct(public ReplicationOperation $operation)
     {
         parent::__construct();
-        $this->operation = $operation;
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Ui\DataProvider;
 
@@ -8,7 +9,6 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Module\Dir\Reader;
 use Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider;
@@ -17,8 +17,6 @@ use Magento\Framework\View\Element\UiComponent\DataProvider\Reporting;
 use Magento\Framework\Xml\Parser;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\System\Store as StoreManager;
-use Magento\Ui\DataProvider\AddFieldToCollectionInterface;
-use Magento\Ui\DataProvider\AddFilterToCollectionInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -34,46 +32,6 @@ class CronsProvider extends DataProvider implements DataProviderInterface
     ];
 
     /**
-     * @var AddFieldToCollectionInterface[]
-     */
-    public $addFieldStrategies;
-
-    /**
-     * @var AddFilterToCollectionInterface[]
-     */
-    public $addFilterStrategies;
-
-    /**
-     * @var Http
-     */
-    public $request;
-    /**
-     * @var Reader
-     */
-    public $moduleDirReader;
-
-    /**
-     * @var StoreManager
-     */
-    public $storeManager;
-
-    /** @var LSR */
-    public $lsr;
-
-    /**
-     * @var Parser
-     */
-    public $parser;
-
-    /** @var ReplicationHelper */
-    public $rep_helper;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /**
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
@@ -85,7 +43,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
      * @param FilterBuilder $filterBuilder
      * @param StoreManager $storeManager
      * @param LSR $lsr
-     * @param ReplicationHelper $repHelper
+     * @param ReplicationHelper $rep_helper
      * @param LoggerInterface $logger
      * @param array $meta
      * @param array $data
@@ -97,13 +55,13 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         Reporting $reporting,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         RequestInterface $request,
-        Reader $moduleDirReader,
-        Parser $parser,
+        public Reader $moduleDirReader,
+        public Parser $parser,
         FilterBuilder $filterBuilder,
-        StoreManager $storeManager,
-        LSR $lsr,
-        ReplicationHelper $repHelper,
-        LoggerInterface $logger,
+        public StoreManager $storeManager,
+        public LSR $lsr,
+        public ReplicationHelper $rep_helper,
+        public LoggerInterface $logger,
         array $meta = [],
         array $data = []
     ) {
@@ -118,14 +76,6 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             $meta,
             $data
         );
-        $this->request         = $request;
-        $this->moduleDirReader = $moduleDirReader;
-        $this->parser          = $parser;
-        $this->lsr             = $lsr;
-        $this->filterBuilder   = $filterBuilder;
-        $this->rep_helper      = $repHelper;
-        $this->storeManager    = $storeManager;
-        $this->logger          = $logger;
     }
 
     /**

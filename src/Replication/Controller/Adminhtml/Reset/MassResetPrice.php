@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Controller\Adminhtml\Reset;
 
@@ -14,29 +15,6 @@ use Psr\Log\LoggerInterface;
 class MassResetPrice extends Action
 {
     /**
-     * @var Filter
-     */
-    public $filter;
-
-    /**
-     * @var PageFactory
-     */
-    public $resultPageFactory;
-
-    /**
-     * @var CollectionFactory factory
-     */
-    public $collectionFactory;
-
-    /** @var ResourceConnection */
-    public $resource;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /**
      * @param Context $context
      * @param Filter $filter
      * @param PageFactory $resultPageFactory
@@ -46,18 +24,13 @@ class MassResetPrice extends Action
      */
     public function __construct(
         Context $context,
-        Filter $filter,
-        PageFactory $resultPageFactory,
-        CollectionFactory $collectionFactory,
-        ResourceConnection $resource,
-        LoggerInterface $logger
+        public Filter $filter,
+        public PageFactory $resultPageFactory,
+        public CollectionFactory $collectionFactory,
+        public ResourceConnection $resource,
+        public LoggerInterface $logger
     ) {
         parent::__construct($context);
-        $this->filter            = $filter;
-        $this->resultPageFactory = $resultPageFactory;
-        $this->collectionFactory = $collectionFactory;
-        $this->resource          = $resource;
-        $this->logger            = $logger;
     }
 
     /**

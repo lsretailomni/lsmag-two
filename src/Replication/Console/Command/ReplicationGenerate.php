@@ -1,5 +1,6 @@
 <?php
 // @codingStandardsIgnoreFile
+declare(strict_types=1);
 
 namespace Ls\Replication\Console\Command;
 
@@ -47,18 +48,14 @@ class ReplicationGenerate extends OmniCommand
     /** @var bool */
     public $generateCronConfig = false;
 
-    /** @var File */
-    public $fileHelper;
-
     /**
      * @param Service $service
      * @param Reader $dirReader
-     * @param File $file
+     * @param File $fileHelper
      */
-    public function __construct(Service $service, Reader $dirReader, File $file)
+    public function __construct(Service $service, Reader $dirReader, public File $fileHelper)
     {
         parent::__construct($service, $dirReader);
-        $this->fileHelper = $file;
     }
 
     /**

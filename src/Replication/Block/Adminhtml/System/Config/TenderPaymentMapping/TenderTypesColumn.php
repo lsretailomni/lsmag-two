@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Block\Adminhtml\System\Config\TenderPaymentMapping;
 
@@ -17,20 +18,6 @@ use Magento\Framework\View\Element\Html\Select;
 class TenderTypesColumn extends Select
 {
     /**
-     * @var ReplicationHelper
-     */
-    public $helper;
-
-    /** @var RequestInterface */
-    public $request;
-
-    /** @var Data */
-    public $dataHelper;
-
-    /** @var LSR */
-    public $lsr;
-
-    /**
      * @param Context $context
      * @param ReplicationHelper $helper
      * @param Data $dataHelper
@@ -40,17 +27,13 @@ class TenderTypesColumn extends Select
      */
     public function __construct(
         Context $context,
-        ReplicationHelper $helper,
-        Data $dataHelper,
-        LSR $lsr,
-        RequestInterface $request,
+        public ReplicationHelper $helper,
+        public Data $dataHelper,
+        public LSR $lsr,
+        public RequestInterface $request,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->helper     = $helper;
-        $this->dataHelper = $dataHelper;
-        $this->lsr        = $lsr;
-        $this->request    = $request;
     }
 
     /**

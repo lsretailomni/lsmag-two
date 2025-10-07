@@ -19,18 +19,14 @@ class ResourceModelGenerator extends AbstractGenerator
     /** @var string */
     public static string $namespace = 'Ls\\Replication\\Model\\Central\\ResourceModel';
 
-    /** @var ReplicationOperation */
-    public ReplicationOperation $operation;
-
     /**
      * @param ReplicationOperation $operation
      * @throws Exception
      * @throws ReflectionException
      */
-    public function __construct(ReplicationOperation $operation)
+    public function __construct(public ReplicationOperation $operation)
     {
         parent::__construct();
-        $this->operation = $operation;
     }
 
     /**

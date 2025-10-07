@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Ui\Component\Listing\Column;
 
@@ -7,19 +8,9 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Store\Model\System\Store as StoreManager;
 use Magento\Ui\Component\Listing\Columns\Column;
 
-/**
- * Class ColorStatus
- * @package Ls\Replication\Ui\Component\Listing\Column
- */
 class Stores extends Column
 {
     /**
-     * @var StoreManager
-     */
-    public $storeManager;
-
-    /**
-     * Stores constructor.
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
      * @param StoreManager $storeManager
@@ -29,11 +20,10 @@ class Stores extends Column
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        StoreManager $storeManager,
+        public StoreManager $storeManager,
         array $components = [],
         array $data = []
     ) {
-        $this->storeManager = $storeManager;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 

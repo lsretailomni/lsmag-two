@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Block\Adminhtml\System\Config;
 
@@ -11,11 +12,6 @@ use Magento\Framework\View\Helper\SecureHtmlRenderer;
 class DeleteDatabtn extends Field
 {
     /**
-     * @var Share
-     */
-    public $shareConfig;
-
-    /**
      * @param Context $context
      * @param Share $shareConfig
      * @param array $data
@@ -23,12 +19,11 @@ class DeleteDatabtn extends Field
      */
     public function __construct(
         Context $context,
-        Share $shareConfig,
+        public Share $shareConfig,
         array $data = [],
         ?SecureHtmlRenderer $secureRenderer = null
     ) {
         parent::__construct($context, $data, $secureRenderer);
-        $this->shareConfig = $shareConfig;
     }
 
     /**

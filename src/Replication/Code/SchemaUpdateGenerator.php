@@ -1,5 +1,6 @@
 <?php
 // @codingStandardsIgnoreFile
+declare(strict_types=1);
 
 namespace Ls\Replication\Code;
 
@@ -302,15 +303,11 @@ class SchemaUpdateGenerator implements GeneratorInterface
         ]
     ];
 
-    /** @var array */
-    public $replicationOperations;
-
     /**
      * @param array $replicationOperations
      */
-    public function __construct(array $replicationOperations)
+    public function __construct(public array $replicationOperations)
     {
-        $this->replicationOperations = $replicationOperations;
     }
 
     /**
@@ -549,7 +546,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
                     if ($columnType == 'int')
                         $extraColumn->setAttribute('padding', '11');
                     if ($columnType == 'varchar')
-                        $extraColumn->setAttribute('length', 200);
+                        $extraColumn->setAttribute('length', '200');
                     if ($columnValue['default'] != '')
                         $extraColumn->setAttribute('default', $columnValue['default']);
                     if ($columnValue['name'] == 'created_at')

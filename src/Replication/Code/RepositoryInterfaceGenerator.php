@@ -19,21 +19,15 @@ class RepositoryInterfaceGenerator extends AbstractGenerator
     /** @var string */
     public static string $namespace = "Ls\\Replication\\Api\\Central";
 
-    /** @var ReplicationOperation */
-    public ReplicationOperation $operation;
-
     /**
-     * RepositoryInterfaceGenerator constructor.
-     *
-     * @param ReplicationOperation $replicationOperation
+     * @param ReplicationOperation $operation
      * @throws Exception
      */
-    public function __construct(ReplicationOperation $replicationOperation)
+    public function __construct(public ReplicationOperation $operation)
     {
         parent::__construct();
         $this->class = new InterfaceGenerator();
         $this->file->setClass($this->class);
-        $this->operation = $replicationOperation;
     }
 
     /**

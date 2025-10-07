@@ -27,20 +27,16 @@ class ModelInterfaceGenerator extends AbstractGenerator
     /** @var ReflectionClass */
     public ReflectionClass $reflectedEntity;
 
-    /** @var ReplicationOperation */
-    public ReplicationOperation $operation;
-
     /**
      * @param ReplicationOperation $operation
      * @throws Exception
      * @throws ReflectionException
      */
-    public function __construct(ReplicationOperation $operation)
+    public function __construct(public ReplicationOperation $operation)
     {
         parent::__construct();
         $this->class = new InterfaceGenerator();
         $this->file->setClass($this->class);
-        $this->operation = $operation;
         $this->entityFqn = $this->operation->getOmniEntityFqn();
         $this->reflectedEntity = new ReflectionClass($this->entityFqn);
     }
