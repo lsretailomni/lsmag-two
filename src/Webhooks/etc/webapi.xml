@@ -5,19 +5,19 @@
     <route url="/V1/OrderMessageStatusUpdate" method="POST">
         <service class="Ls\Webhooks\Api\OrderStatusInterface" method="set"/>
         <resources>
-            <resource ref="Magento_Backend::admin"/>
+            <resource ref="Ls_Replication::ls_retail_webhooks"/>
         </resources>
     </route>
     <route url="/V1/OrderMessagePayment" method="POST">
         <service class="Ls\Webhooks\Api\OrderPaymentInterface" method="set"/>
         <resources>
-            <resource ref="Magento_Backend::admin"/>
+            <resource ref="Ls_Replication::ls_retail_webhooks"/>
         </resources>
     </route>
     <route url="/V1/OrderMessageShipping" method="POST">
         <service class="Ls\Webhooks\Api\OrderShipmentInterface" method="set"/>
         <resources>
-            <resource ref="Magento_Backend::admin"/>
+            <resource ref="Ls_Replication::ls_retail_webhooks"/>
         </resources>
     </route>
 </routes>
