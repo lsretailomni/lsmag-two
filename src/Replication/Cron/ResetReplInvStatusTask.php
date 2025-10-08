@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
@@ -22,30 +23,16 @@ class ResetReplInvStatusTask
      */
     public $defaultScope = ScopeInterface::SCOPE_WEBSITES;
 
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /** @var LSR */
-    public $lsr;
-
-    /**
-     * @var Logger
-     */
-    public $logger;
-
     /**
      * @param ReplicationHelper $replicationHelper
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param Logger $logger
      */
     public function __construct(
-        ReplicationHelper $replicationHelper,
-        LSR $LSR,
-        Logger $logger
+        public ReplicationHelper $replicationHelper,
+        public LSR $lsr,
+        public Logger $logger
     ) {
-        $this->replicationHelper = $replicationHelper;
-        $this->lsr               = $LSR;
-        $this->logger            = $logger;
         $this->setDefaultScope();
     }
 

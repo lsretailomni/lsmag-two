@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Api\Data\ReplUnitOfMeasureInterface;
 use \Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
@@ -27,7 +29,6 @@ use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Attribute\OptionManagement;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
-use Magento\Eav\Api\AttributeOptionManagementInterface;
 use Magento\Eav\Api\AttributeOptionUpdateInterface;
 use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Eav\Api\Data\AttributeOptionInterfaceFactory;
@@ -51,44 +52,6 @@ use Magento\Store\Model\ScopeInterface;
 class AttributesCreateTask
 {
     /**
-     * @var ReplExtendedVariantValueRepository
-     */
-    public $replExtendedVariantValueRepository;
-
-    /**
-     * @var ReplItemVariantRepository
-     */
-    public $replItemVariantRepository;
-
-    /**
-     * @var ProductAttributeRepositoryInterface
-     */
-    public $productAttributeRepository;
-
-    /** @var EavSetupFactory */
-    public $eavSetupFactory;
-
-    /** @var ReplAttributeRepositoryInterface */
-    public $replAttributeRepositoryInterface;
-
-    /** @var ReplAttributeOptionValueRepositoryInterface */
-    public $replAttributeOptionValueRepositoryInterface;
-
-    /** @var Config */
-    public $eavConfig;
-
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /** @var LSR */
-    public $lsr;
-
-    /**
-     * @var Logger
-     */
-    public $logger;
-
-    /**
      * @var bool
      */
     public $successCronAttribute = false;
@@ -103,16 +66,6 @@ class AttributesCreateTask
      */
     public $successCronAttributeStandardVariant = false;
 
-    /**
-     * @var AttributeFactory
-     */
-    public $eavAttributeFactory;
-
-    /**
-     * @var Entity
-     */
-    public $eavEntity;
-
     /** @var int */
     public $remainingAttributesCount;
 
@@ -121,42 +74,6 @@ class AttributesCreateTask
 
     /** @var StoreInterface $store */
     public $store;
-
-    /** @var ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepositoryInterface */
-    public $replUnitOfMeasureRepositoryInterface;
-
-    /** @var AttributeOptionLabelInterfaceFactory $optionLabelFactory */
-    public $optionLabelFactory;
-
-    /**
-     * @var AttributeOptionInterfaceFactory
-     */
-    public $optionFactory;
-
-    /**
-     * @var AttributeOptionManagementInterface
-     */
-    public $attributeOptionManagement;
-
-    /**
-     * @var AttributeOptionUpdateInterface
-     */
-    public $attributeOptionUpdate;
-
-    /**
-     * @var ReplVendorRepositoryInterface
-     */
-    public $replVendorRepositoryInterface;
-
-    /**
-     * @var ReplItemVariantCollectionFactory
-     */
-    public $replItemVariantCollectionFactory;
-
-    /**
-     * @var CollectionFactory
-     */
-    public $attrOptionCollectionFactory;
 
     /**
      * @var array
@@ -169,7 +86,7 @@ class AttributesCreateTask
      * @param EavSetupFactory $eavSetupFactory
      * @param Logger $logger
      * @param AttributeFactory $eavAttributeFactory
-     * @param Entity $eav_entity
+     * @param Entity $eavEntity
      * @param ReplAttributeRepositoryInterface $replAttributeRepositoryInterface
      * @param ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
      * @param ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepositoryInterface
@@ -179,54 +96,34 @@ class AttributesCreateTask
      * @param AttributeOptionLabelInterfaceFactory $optionLabelFactory
      * @param AttributeOptionInterfaceFactory $optionFactory
      * @param OptionManagement $attributeOptionManagement
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param ReplItemVariantRepository $replItemVariantRepository
      * @param ReplItemVariantCollectionFactory $replItemVariantCollectionFactory
      * @param CollectionFactory $attrOptionCollectionFactory
      * @param AttributeOptionUpdateInterface $attributeOptionUpdate
      */
     public function __construct(
-        ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
-        ProductAttributeRepositoryInterface $productAttributeRepository,
-        EavSetupFactory $eavSetupFactory,
-        Logger $logger,
-        AttributeFactory $eavAttributeFactory,
-        Entity $eav_entity,
-        ReplAttributeRepositoryInterface $replAttributeRepositoryInterface,
-        ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
-        ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepositoryInterface,
-        ReplVendorRepositoryInterface $replVendorRepositoryInterface,
-        Config $eavConfig,
-        ReplicationHelper $replicationHelper,
-        AttributeOptionLabelInterfaceFactory $optionLabelFactory,
-        AttributeOptionInterfaceFactory $optionFactory,
-        OptionManagement $attributeOptionManagement,
-        LSR $LSR,
-        ReplItemVariantRepository $replItemVariantRepository,
-        ReplItemVariantCollectionFactory $replItemVariantCollectionFactory,
-        CollectionFactory $attrOptionCollectionFactory,
-        AttributeOptionUpdateInterface $attributeOptionUpdate
+        public ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
+        public ProductAttributeRepositoryInterface $productAttributeRepository,
+        public EavSetupFactory $eavSetupFactory,
+        public Logger $logger,
+        public AttributeFactory $eavAttributeFactory,
+        public Entity $eavEntity,
+        public ReplAttributeRepositoryInterface $replAttributeRepositoryInterface,
+        public ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
+        public ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepositoryInterface,
+        public ReplVendorRepositoryInterface $replVendorRepositoryInterface,
+        public Config $eavConfig,
+        public ReplicationHelper $replicationHelper,
+        public AttributeOptionLabelInterfaceFactory $optionLabelFactory,
+        public AttributeOptionInterfaceFactory $optionFactory,
+        public OptionManagement $attributeOptionManagement,
+        public LSR $lsr,
+        public ReplItemVariantRepository $replItemVariantRepository,
+        public ReplItemVariantCollectionFactory $replItemVariantCollectionFactory,
+        public CollectionFactory $attrOptionCollectionFactory,
+        public AttributeOptionUpdateInterface $attributeOptionUpdate
     ) {
-        $this->replExtendedVariantValueRepository          = $replExtendedVariantValueRepository;
-        $this->productAttributeRepository                  = $productAttributeRepository;
-        $this->eavSetupFactory                             = $eavSetupFactory;
-        $this->logger                                      = $logger;
-        $this->eavAttributeFactory                         = $eavAttributeFactory;
-        $this->eavEntity                                   = $eav_entity;
-        $this->replAttributeRepositoryInterface            = $replAttributeRepositoryInterface;
-        $this->replAttributeOptionValueRepositoryInterface = $replAttributeOptionValueRepositoryInterface;
-        $this->eavConfig                                   = $eavConfig;
-        $this->replicationHelper                           = $replicationHelper;
-        $this->lsr                                         = $LSR;
-        $this->replUnitOfMeasureRepositoryInterface        = $replUnitOfMeasureRepositoryInterface;
-        $this->replVendorRepositoryInterface               = $replVendorRepositoryInterface;
-        $this->optionLabelFactory                          = $optionLabelFactory;
-        $this->optionFactory                               = $optionFactory;
-        $this->attributeOptionManagement                   = $attributeOptionManagement;
-        $this->replItemVariantRepository                   = $replItemVariantRepository;
-        $this->replItemVariantCollectionFactory            = $replItemVariantCollectionFactory;
-        $this->attrOptionCollectionFactory                 = $attrOptionCollectionFactory;
-        $this->attributeOptionUpdate                       = $attributeOptionUpdate;
     }
 
     /**
@@ -234,7 +131,7 @@ class AttributesCreateTask
      *
      * @param null $storeData
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute($storeData = null)
     {
@@ -306,7 +203,7 @@ class AttributesCreateTask
      * @param null $storeData
      * @return array
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function executeManually($storeData = null)
     {
@@ -402,6 +299,7 @@ class AttributesCreateTask
 
     /**
      * Process Variant Attributes
+     *
      * @param $store
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -530,6 +428,7 @@ class AttributesCreateTask
 
     /**
      * Process Standard Variant Attributes
+     *
      * @param $store
      * @throws LocalizedException
      * @throws NoSuchEntityException

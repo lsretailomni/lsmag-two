@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
@@ -30,15 +31,6 @@ use Magento\Tax\Model\Calculation\Rule;
  */
 class TaxRulesCreateTask
 {
-    /** @var Logger */
-    public $logger;
-
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /** @var LSR */
-    public $lsr;
-
     /** @var bool */
     public $cronStatus = false;
 
@@ -49,44 +41,9 @@ class TaxRulesCreateTask
     public $store;
 
     /**
-     * @var ReplCountryCodeRepository
-     */
-    public $replCountryCodeRepository;
-
-    /**
-     * @var ReplTaxSetupRepository
-     */
-    public $replTaxSetupRepository;
-
-    /**
-     * @var TaxRateInterfaceFactory
-     */
-    public $taxRateInterfaceFactory;
-
-    /**
-     * @var TaxRateRepositoryInterface
-     */
-    public $taxRateRepository;
-
-    /**
-     * @var TaxRuleInterfaceFactory
-     */
-    public $taxRuleInterfaceFactory;
-
-    /**
-     * @var TaxRuleRepositoryInterface
-     */
-    public $taxRuleRepository;
-
-    /**
-     * @var ReplStoreRepositoryInterface
-     */
-    public $replStoreRepository;
-
-    /**
      * @param Logger $logger
      * @param ReplicationHelper $replicationHelper
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param ReplCountryCodeRepository $replCountryCodeRepository
      * @param ReplTaxSetupRepository $replTaxSetupRepository
      * @param TaxRateInterfaceFactory $taxRateInterfaceFactory
@@ -96,27 +53,17 @@ class TaxRulesCreateTask
      * @param ReplStoreRepositoryInterface $replStoreRepository
      */
     public function __construct(
-        Logger $logger,
-        ReplicationHelper $replicationHelper,
-        LSR $LSR,
-        ReplCountryCodeRepository $replCountryCodeRepository,
-        ReplTaxSetupRepository $replTaxSetupRepository,
-        TaxRateInterfaceFactory $taxRateInterfaceFactory,
-        TaxRateRepositoryInterface $taxRateRepository,
-        TaxRuleInterfaceFactory $taxRuleInterfaceFactory,
-        TaxRuleRepositoryInterface $taxRuleRepository,
-        ReplStoreRepositoryInterface $replStoreRepository
+        public Logger $logger,
+        public ReplicationHelper $replicationHelper,
+        public LSR $lsr,
+        public ReplCountryCodeRepository $replCountryCodeRepository,
+        public ReplTaxSetupRepository $replTaxSetupRepository,
+        public TaxRateInterfaceFactory $taxRateInterfaceFactory,
+        public TaxRateRepositoryInterface $taxRateRepository,
+        public TaxRuleInterfaceFactory $taxRuleInterfaceFactory,
+        public TaxRuleRepositoryInterface $taxRuleRepository,
+        public ReplStoreRepositoryInterface $replStoreRepository
     ) {
-        $this->logger                    = $logger;
-        $this->replicationHelper         = $replicationHelper;
-        $this->lsr                       = $LSR;
-        $this->replCountryCodeRepository = $replCountryCodeRepository;
-        $this->replTaxSetupRepository    = $replTaxSetupRepository;
-        $this->taxRateInterfaceFactory   = $taxRateInterfaceFactory;
-        $this->taxRateRepository         = $taxRateRepository;
-        $this->taxRuleInterfaceFactory   = $taxRuleInterfaceFactory;
-        $this->taxRuleRepository         = $taxRuleRepository;
-        $this->replStoreRepository       = $replStoreRepository;
     }
 
     /**
