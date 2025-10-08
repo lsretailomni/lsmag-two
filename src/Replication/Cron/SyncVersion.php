@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
@@ -15,21 +16,6 @@ use Magento\Store\Model\ScopeInterface;
  */
 class SyncVersion
 {
-    /**
-     * @var ReplicationHelper
-     */
-    public $replicationHelper;
-
-    /**
-     * @var Data
-     */
-    public $helper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
     /** @var StoreInterface $store */
     public $store;
 
@@ -39,13 +25,10 @@ class SyncVersion
      * @param ReplicationHelper $replicationHelper
      */
     public function __construct(
-        LSR $lsr,
-        Data $helper,
-        ReplicationHelper $replicationHelper
+        public LSR $lsr,
+        public Data $helper,
+        public ReplicationHelper $replicationHelper
     ) {
-        $this->lsr               = $lsr;
-        $this->helper            = $helper;
-        $this->replicationHelper = $replicationHelper;
     }
 
     /**

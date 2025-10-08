@@ -6,6 +6,7 @@ namespace Ls\Omni\Code;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Helper\Data;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -408,6 +409,9 @@ class OdataGenerator
             } elseif (isset($recRef['DataSetName'])) {
                 $name = $recRef['DataSetName'];
             }
+            if ($name == 'PeriodicDiscView') {
+                $x = 1;
+            }
             $entityClassName = str_replace(' ', '', $this->formatGivenValue($name));
             $this->registerEntity(
                 $name,
@@ -648,6 +652,9 @@ use Magento\Catalog\Model\AbstractModel;
 class $entityClassName extends AbstractModel
 {
 PHP;
+        if ($entityClassName == 'PeriodicDiscView') {
+            $xq = 1;
+        }
         $mapping = '';
         foreach ($recordFields as $field) {
             $fieldName = $field['FieldName'];
@@ -893,10 +900,12 @@ class $entityClassName
             \$deletedFieldsDefinition = \$data['DataSet']['DataSetDel']['DynDataSet']['DataSetFields'];
         }
 
+        \$dataSetName = '';
         if (isset(\$recRef['Records'])) {
             \$rows = \$recRef['Records'];
         } elseif (isset(\$recRef['DataSetRows'])) {
             \$rows = \$recRef['DataSetRows'];
+            \$dataSetName = \$recRef['DataSetName'];
         } else {
             \$rows = [];
         }
@@ -918,12 +927,27 @@ class $entityClassName
                     {$entityName}::class
                 );
                 foreach (\$values as \$value) {
+                    \$sameNameExists = false;
                     \$fieldName = \$fields[\$value['FieldIndex']];
+                    if (isset(\Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[\$dataSetName][\$fieldName])) {
+                        \$sameNameExists = true;
+                    }
                     if (strtolower(\$fieldName) == 'id') {
                         \$fieldName = 'Nav Id';
                     }
-                    if (\$entry->getData(\$fieldName) === null) {
+                    if ((!\$sameNameExists && \$entry->getData(\$fieldName) === null) ||
+                    (\$sameNameExists &&
+                    \$entry->getData(\Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[\$dataSetName][\$fieldName][0]) === null)
+                    ) {
+                        if (\$sameNameExists) {
+                            \$fieldName = \Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[\$dataSetName][\$fieldName][0];
+                        }
                         \$entry->setData(\$fieldName, \$value['FieldValue']);
+                    } else {
+                        if (\$sameNameExists) {
+                            \$fieldName = \Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[\$dataSetName][\$fieldName][1];
+                            \$entry->setData(\$fieldName, \$value['FieldValue']);
+                        }
                     }
                 }
                 \$results[] = \$entry;
@@ -939,11 +963,25 @@ class $entityClassName
                 \$entry->setData('is_deleted', true);
                 foreach (\$values as \$value) {
                     \$fieldName = \$deletedFields[\$value['FieldIndex']];
+                    if (isset(\Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[\$dataSetName][\$fieldName])) {
+                        \$sameNameExists = true;
+                    }
                     if (strtolower(\$fieldName) == 'id') {
                         \$fieldName = 'Nav Id';
                     }
-                    if (\$entry->getData(\$fieldName) === null) {
+                    if ((!\$sameNameExists && \$entry->getData(\$fieldName) === null) ||
+                    (\$sameNameExists &&
+                    \$entry->getData(\Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[\$dataSetName][\$fieldName][0]) === null)
+                    ) {
+                        if (\$sameNameExists) {
+                            \$fieldName = \Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[\$dataSetName][\$fieldName][0];
+                        }
                         \$entry->setData(\$fieldName, \$value['FieldValue']);
+                    } else {
+                        if (\$sameNameExists) {
+                            \$fieldName = \Ls\Replication\Helper\ReplicationHelper::SAME_NAME_MAPPING[\$dataSetName][\$fieldName][1];
+                            \$entry->setData(\$fieldName, \$value['FieldValue']);
+                        }
                     }
                 }
                 \$results[] = \$entry;
@@ -1613,12 +1651,24 @@ PHP;
         // Normalize fields by FieldName
         $mergedFields = [];
         foreach ($recordFields as $field) {
+            $fieldName = $field['FieldName'];
+            $fieldDataType = $field['FieldDataType'];
             if (!isset($field['FieldName']) || !isset($field['FieldDataType'])) {
                 continue; // Skip if required keys are missing
             }
-            $mergedFields[$field['FieldName']] = [
-                'FieldName' => $field['FieldName'],
-                'FieldDataType' => $field['FieldDataType']
+
+            if (isset(ReplicationHelper::SAME_NAME_MAPPING[$sanitizedEntityClassName][$fieldName])) {
+                if (!isset($mergedFields[$fieldName]) &&
+                !isset($mergedFields[ReplicationHelper::SAME_NAME_MAPPING[$sanitizedEntityClassName][$fieldName][0]])
+                ) {
+                    $fieldName = ReplicationHelper::SAME_NAME_MAPPING[$sanitizedEntityClassName][$fieldName][0];
+                } else {
+                    $fieldName = ReplicationHelper::SAME_NAME_MAPPING[$sanitizedEntityClassName][$fieldName][1];
+                }
+            }
+            $mergedFields[$fieldName] = [
+                'FieldName' => $fieldName,
+                'FieldDataType' => $fieldDataType
             ];
         }
 

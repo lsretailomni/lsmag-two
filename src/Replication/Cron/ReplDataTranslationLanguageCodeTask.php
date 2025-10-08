@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
@@ -85,14 +86,26 @@ class ReplDataTranslationLanguageCodeTask
                     $languageCode = $this->dataHelper->fetchGivenTableData(
                         'LSC Data Translation Language'
                     );
+                    $newLanguageCodes = [];
+                    foreach ($languageCode as $langCode) {
+                        $newLanguageCodes[] = $langCode['Language Code'];
+                    }
 
-                    $serializedStr = $this->jsonEncoder->serialize($languageCode);
-                    $this->replicationHelper->updateConfigValue(
-                        $serializedStr,
-                        LSR::SC_STORE_REPLICATED_DATA_TRANSLATION_LANG_CODE,
-                        $store->getId(),
-                        ScopeInterface::SCOPE_STORES
-                    );
+                    $availableLanguageCodes = $this->getAvailableLanguageCode($store->getId());
+                    sort($availableLanguageCodes);
+                    sort($newLanguageCodes);
+
+                    if ($availableLanguageCodes !== $newLanguageCodes) {
+                        $serializedStr = $this->jsonEncoder->serialize($languageCode);
+                        $this->replicationHelper->updateConfigValue(
+                            $serializedStr,
+                            LSR::SC_STORE_REPLICATED_DATA_TRANSLATION_LANG_CODE,
+                            $store->getId(),
+                            ScopeInterface::SCOPE_STORES
+                        );
+
+                        $this->replicationHelper->flushByTypeCode('config');
+                    }
 
                     $this->replicationHelper->updateConfigValue(
                         1,
@@ -104,5 +117,23 @@ class ReplDataTranslationLanguageCodeTask
                 $this->lsr->setStoreId(null);
             }
         }
+    }
+
+    public function getAvailableLanguageCode($storeId)
+    {
+        $serializedStr = $this->lsr->getStoreConfig(
+            LSR::SC_STORE_REPLICATED_DATA_TRANSLATION_LANG_CODE,
+            $storeId
+        );
+        $languageCodes = [];
+        if (!empty($serializedStr)) {
+            $records = $this->jsonEncoder->unserialize($serializedStr);
+
+            foreach ($records as $record) {
+                $languageCodes[] = $record['Language Code'];
+            }
+        }
+
+        return $languageCodes;
     }
 }

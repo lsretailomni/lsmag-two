@@ -24,9 +24,6 @@ class ModelGenerator extends AbstractGenerator
     /** @var string */
     public static string $namespace = 'Ls\\Replication\\Model\\Central';
 
-    /** @var ReplicationOperation */
-    public ReplicationOperation $operation;
-
     /** @var ReflectionClass */
     public ReflectionClass $reflectedEntity;
 
@@ -35,10 +32,9 @@ class ModelGenerator extends AbstractGenerator
      * @throws Exception
      * @throws ReflectionException
      */
-    public function __construct(ReplicationOperation $operation)
+    public function __construct(public ReplicationOperation $operation)
     {
         parent::__construct();
-        $this->operation = $operation;
         $this->reflectedEntity = new ClassReflection($this->operation->getOmniEntityFqn());
     }
 

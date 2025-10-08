@@ -19,19 +19,15 @@ class SearchInterfaceGenerator extends AbstractGenerator
     /** @var string $namespace Namespace for generated API Data interfaces */
     public static $namespace = "Ls\\Replication\\Api\\Central\\Data";
 
-    /** @var ReplicationOperation $operation Holds the replication operation details */
-    public $operation;
-
     /**
      * @param ReplicationOperation $operation
      * @throws Exception
      */
-    public function __construct(ReplicationOperation $operation)
+    public function __construct(public ReplicationOperation $operation)
     {
         parent::__construct();
         $this->class = new InterfaceGenerator();
         $this->file->setClass($this->class);
-        $this->operation = $operation;
     }
 
     /**

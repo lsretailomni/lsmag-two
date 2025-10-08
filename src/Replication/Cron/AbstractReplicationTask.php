@@ -1,30 +1,33 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyDealType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceHandling;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemTriggerFunction;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemUsageCategory;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscMemberType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
-use Ls\Omni\Client\CentralEcommerce\Entity\HierarchyDealView;
-use Ls\Omni\Client\CentralEcommerce\Entity\HierarchyView;
-use Ls\Omni\Client\CentralEcommerce\Entity\LSCDataTranslation;
-use Ls\Omni\Client\CentralEcommerce\Entity\LSCItemHTMLML;
-use Ls\Omni\Client\CentralEcommerce\Entity\LSCWIItemBuffer;
-use Ls\Omni\Client\CentralEcommerce\Entity\LSCWIItemModifier;
-use Ls\Omni\Client\CentralEcommerce\Entity\PeriodicDiscView;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Replication\Logger\Logger;
+use \Ls\Core\Model\Data as LsHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyDealType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyLeafType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceHandling;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierPriceType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemTriggerFunction;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemUsageCategory;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscMemberType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountLineType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
+use \Ls\Omni\Client\CentralEcommerce\Entity\HierarchyDealView;
+use \Ls\Omni\Client\CentralEcommerce\Entity\HierarchyView;
+use \Ls\Omni\Client\CentralEcommerce\Entity\LSCDataTranslation;
+use \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemHTMLML;
+use \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIItemBuffer;
+use \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIItemModifier;
+use \Ls\Omni\Client\CentralEcommerce\Entity\PeriodicDiscView;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
@@ -50,18 +53,8 @@ abstract class AbstractReplicationTask
         'ls_mag/replication/repl_inv_status'
     ];
 
-    /** @var Logger */
-    public $logger;
-    /** @var ScopeConfigInterface */
-    public $scope_config;
-    /** @var Config */
-    public $resource_config;
-    /** @var LsHelper */
-    public $ls_helper;
     /** @var null */
     public $properties = null;
-    /** @var ReplicationHelper */
-    public $rep_helper;
     /** @var integer */
     public $recordsRemaining = 0;
     /** @var bool */
@@ -73,21 +66,16 @@ abstract class AbstractReplicationTask
      * @param ScopeConfigInterface $scope_config
      * @param Config $resource_config
      * @param Logger $logger
-     * @param LsHelper $helper
-     * @param ReplicationHelper $repHelper
+     * @param LsHelper $ls_helper
+     * @param ReplicationHelper $rep_helper
      */
     public function __construct(
-        ScopeConfigInterface $scope_config,
-        Config $resource_config,
-        Logger $logger,
-        LsHelper $helper,
-        ReplicationHelper $repHelper
+        public ScopeConfigInterface $scope_config,
+        public Config $resource_config,
+        public Logger $logger,
+        public LsHelper $ls_helper,
+        public ReplicationHelper $rep_helper
     ) {
-        $this->scope_config    = $scope_config;
-        $this->resource_config = $resource_config;
-        $this->logger          = $logger;
-        $this->ls_helper       = $helper;
-        $this->rep_helper      = $repHelper;
         $this->setDefaultScope();
     }
 
@@ -150,7 +138,7 @@ abstract class AbstractReplicationTask
      *
      * @param $storeData
      * @return int[]
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function executeManually($storeData = null)
     {
@@ -260,10 +248,11 @@ abstract class AbstractReplicationTask
             ));
         }
 
-        if ($confPath == ReplLscHierarchyviewTask::CONFIG_PATH ||
-            $confPath == ReplLscHierarchynodeslinkviewTask::CONFIG_PATH
-        ) {
+        if ($confPath == ReplLscHierarchyviewTask::CONFIG_PATH) {
             $value = $this->getConstantByIndex(HierarchyType::class, (int) $source->getData(HierarchyView::TYPE));
+            $source->setData(HierarchyView::TYPE, $value);
+        } elseif ($confPath == ReplLscHierarchynodeslinkviewTask::CONFIG_PATH) {
+            $value = $this->getConstantByIndex(HierarchyLeafType::class, (int) $source->getData(HierarchyView::TYPE));
             $source->setData(HierarchyView::TYPE, $value);
         } elseif ($confPath == ReplLscPeriodicdiscviewTask::CONFIG_PATH) {
             $value1 = $this->getConstantByIndex(
@@ -278,9 +267,14 @@ abstract class AbstractReplicationTask
                 ReplDiscountType::class,
                 (int) $source->getData(PeriodicDiscView::TYPE)
             );
+            $value4 = $this->getConstantByIndex(
+                ReplDiscountLineType::class,
+                (int) $source->getData(PeriodicDiscView::LINE_TYPE)
+            );
             $source->setData(PeriodicDiscView::DISCOUNT_TYPE, $value1);
             $source->setData(PeriodicDiscView::MEMBER_TYPE, $value2);
             $source->setData(PeriodicDiscView::TYPE, $value3);
+            $source->setData(PeriodicDiscView::LINE_TYPE, $value4);
         } elseif ($confPath == ReplLscWiItemBufferTask::CONFIG_PATH) {
             if (!empty($source->getData(LSCWIItemBuffer::ITEM_HTML))) {
                 $source->setData(
@@ -469,14 +463,14 @@ abstract class AbstractReplicationTask
      *
      * @param array $uniqueAttributes
      * @param $source
-     * @param string $uniqueAttributesHash
+     * @param int $uniqueAttributesHash
      * @param array $properties
      * @return mixed
      */
     public function checkEntityExistByAttributes(
         array $uniqueAttributes,
         $source,
-        string $uniqueAttributesHash,
+        int $uniqueAttributesHash,
         array $properties
     ) {
         $criteria = $this->getSearchCriteria();
@@ -587,25 +581,15 @@ abstract class AbstractReplicationTask
     /**
      * Check LastKey is always zero or not using Replication Config Path
      *
-     * @param $storeId
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function isLastKeyAlwaysZero($storeId)
+    public function isLastKeyAlwaysZero()
     {
-        $lsrModel = $this->getLsrModel();
         $noLastKeyConfigPaths = self::$no_lastkey_config_path;
 
-        if (version_compare(
-            $lsrModel->getOmniVersion($storeId, $this->defaultScope),
-            '2024.4.0',
-            '>='
-        )) {
-            $noLastKeyConfigPaths = self::$no_lastkey_config_path;
-
-            if (($key = array_search('ls_mag/replication/repl_inv_status', $noLastKeyConfigPaths)) !== false) {
-                unset($noLastKeyConfigPaths[$key]);
-            }
+        if (($key = array_search('ls_mag/replication/repl_inv_status', $noLastKeyConfigPaths)) !== false) {
+            unset($noLastKeyConfigPaths[$key]);
         }
 
         return in_array($this->getConfigPath(), $noLastKeyConfigPaths);
@@ -741,7 +725,7 @@ abstract class AbstractReplicationTask
      *
      * @param $lsr
      * @param $storeId
-     * @return int|string
+     * @return int
      */
     public function getBatchSize($lsr, $storeId)
     {
@@ -836,7 +820,7 @@ abstract class AbstractReplicationTask
             if (isset($isFirstTime) && $isFirstTime == 1) {
                 $fullRepl = false;
 
-                if ($this->isLastKeyAlwaysZero($storeId)) {
+                if ($this->isLastKeyAlwaysZero()) {
                     return;
                 }
                 if ($lastEntryNo === 0) {
@@ -850,9 +834,9 @@ abstract class AbstractReplicationTask
                 [],
                 '',
                 $fullRepl,
-                $batchSize,
+                (int) $batchSize,
                 $webStoreID,
-                $lastEntryNo,
+                (int) $lastEntryNo,
                 $lastKey
             );
 

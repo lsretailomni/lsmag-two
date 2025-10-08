@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ImageSize;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -35,50 +37,8 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class CategoryCreateTask
 {
-    /** @var CategoryFactory */
-    public $categoryFactory;
-
-    /** @var CategoryRepositoryInterface */
-    public $categoryRepository;
-
-    /** @var ReplHierarchyNodeRepository */
-    public $replHierarchyNodeRepository;
-
-    /** @var ReplImageLinkRepositoryInterface */
-    public $replImageLinkRepositoryInterface;
-
-    /** @var Logger */
-    public $logger;
-
-    /** @var CollectionFactory */
-    public $collectionFactory;
-
-    /** @var LoyaltyHelper */
-    public $loyaltyHelper;
-
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /** @var File */
-    public $file;
-
-    /** @var LSR */
-    public $lsr;
-
     /** @var bool */
     public $cronStatus = false;
-
-    /** @var ProductRepositoryInterface */
-    public $productRepository;
-
-    /** @var CategoryLinkRepositoryInterface */
-    public $categoryLinkRepositoryInterface;
-
-    /** @var ReplHierarchyNodeCollectionFactory */
-    public $replHierarchyNodeCollectionFactory;
-
-    /** @var Attribute */
-    public $eavAttribute;
 
     /** @var int */
     public $remainingRecords;
@@ -92,9 +52,6 @@ class CategoryCreateTask
     /** @var $langCode */
     public $langCode;
 
-    /** @var StoreManagerInterface */
-    public $storeManager;
-
     /**
      * @param CategoryFactory $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
@@ -105,45 +62,30 @@ class CategoryCreateTask
      * @param LoyaltyHelper $loyaltyHelper
      * @param File $file
      * @param ReplicationHelper $replicationHelper
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface
      * @param ProductRepositoryInterface $productRepository
-     * @param ReplHierarchyNodeCollectionFactory $replHierarchyCollectionFactory
+     * @param ReplHierarchyNodeCollectionFactory $replHierarchyNodeCollectionFactory
      * @param Attribute $eavAttribute
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        CategoryFactory $categoryFactory,
-        CategoryRepositoryInterface $categoryRepository,
-        ReplHierarchyNodeRepository $replHierarchyNodeRepository,
-        ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
-        CollectionFactory $collectionFactory,
-        Logger $logger,
-        LoyaltyHelper $loyaltyHelper,
-        File $file,
-        ReplicationHelper $replicationHelper,
-        LSR $LSR,
-        CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
-        ProductRepositoryInterface $productRepository,
-        ReplHierarchyNodeCollectionFactory $replHierarchyCollectionFactory,
-        Attribute $eavAttribute,
-        StoreManagerInterface $storeManager
+        public CategoryFactory $categoryFactory,
+        public CategoryRepositoryInterface $categoryRepository,
+        public ReplHierarchyNodeRepository $replHierarchyNodeRepository,
+        public ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
+        public CollectionFactory $collectionFactory,
+        public Logger $logger,
+        public LoyaltyHelper $loyaltyHelper,
+        public File $file,
+        public ReplicationHelper $replicationHelper,
+        public LSR $lsr,
+        public CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
+        public ProductRepositoryInterface $productRepository,
+        public ReplHierarchyNodeCollectionFactory $replHierarchyNodeCollectionFactory,
+        public Attribute $eavAttribute,
+        public StoreManagerInterface $storeManager
     ) {
-        $this->categoryFactory                    = $categoryFactory;
-        $this->categoryRepository                 = $categoryRepository;
-        $this->replHierarchyNodeRepository        = $replHierarchyNodeRepository;
-        $this->replImageLinkRepositoryInterface   = $replImageLinkRepositoryInterface;
-        $this->logger                             = $logger;
-        $this->collectionFactory                  = $collectionFactory;
-        $this->loyaltyHelper                      = $loyaltyHelper;
-        $this->file                               = $file;
-        $this->replicationHelper                  = $replicationHelper;
-        $this->lsr                                = $LSR;
-        $this->categoryLinkRepositoryInterface    = $categoryLinkRepositoryInterface;
-        $this->productRepository                  = $productRepository;
-        $this->replHierarchyNodeCollectionFactory = $replHierarchyCollectionFactory;
-        $this->eavAttribute                       = $eavAttribute;
-        $this->storeManager                       = $storeManager;
     }
 
     /**
@@ -152,7 +94,7 @@ class CategoryCreateTask
      * @param $storeData
      * @return void
      * @throws InputException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute($storeData = null)
     {
@@ -440,7 +382,7 @@ class CategoryCreateTask
                                 'position',
                                 $hierarchyNodeSub->getChildrenOrder()
                             );
-                            // @codingStandardsIgnoreStart                            
+                            // @codingStandardsIgnoreStart
                             $this->categoryRepository->save($subCategoryExistData);
                         } else {
                             $subCategoryExistData->setStoreId($this->store->getId());
@@ -626,7 +568,7 @@ class CategoryCreateTask
             if (!is_dir($offerpath)) {
                 $this->file->mkdir($offerpath, 0775);
             }
-            $format      = strtolower($result['format']);
+            $format = $this->replicationHelper->getImageFormat($result['format']);
             $imageName   = $this->oSlug($imageId);
             $output_file = "{$imageName}.$format";
             $file        = "{$offerpath}{$output_file}";

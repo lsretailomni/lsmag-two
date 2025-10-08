@@ -30,6 +30,7 @@ class PeriodicDiscView extends AbstractModel
     public const HEADER_TYPE = 'Header Type';
     public const LINE_GROUP = 'Line Group';
     public const LINE_NO = 'Line No.';
+    public const LINE_TYPE = 'Line Type';
     public const MAXIMUM_DISCOUNT_AMOUNT = 'Maximum Discount Amount';
     public const MEMBER_ATTRIBUTE = 'Member Attribute';
     public const MEMBER_POINTS = 'Member Points';
@@ -93,6 +94,7 @@ class PeriodicDiscView extends AbstractModel
 	self::HEADER_TYPE => 'header_type',
 	self::LINE_GROUP => 'line_group',
 	self::LINE_NO => 'line_no',
+	self::LINE_TYPE => 'line_type',
 	self::MAXIMUM_DISCOUNT_AMOUNT => 'maximum_discount_amount',
 	self::MEMBER_ATTRIBUTE => 'member_attribute',
 	self::MEMBER_POINTS => 'member_points',
@@ -331,6 +333,16 @@ class PeriodicDiscView extends AbstractModel
     public function setLineNo(?int $value)
     {
         return $this->setData(self::LINE_NO, $value);
+    }
+
+    public function getLineType(): ?int
+    {
+        return $this->getData(self::LINE_TYPE);
+    }
+
+    public function setLineType(?int $value)
+    {
+        return $this->setData(self::LINE_TYPE, $value);
     }
 
     public function getMaximumDiscountAmount(): ?float

@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
 use \Ls\Omni\Helper\ContactHelper;
@@ -40,61 +42,6 @@ use Magento\Store\Model\ScopeInterface;
  */
 class DiscountCreateTask
 {
-    /**
-     * @var CatalogRuleRepositoryInterface
-     */
-    public $catalogRule;
-
-    /**
-     * @var RuleFactory
-     */
-    public $ruleFactory;
-
-    /**
-     * @var RuleCollectionFactory
-     */
-    public $ruleCollectionFactory;
-
-    /**
-     * @var Job
-     */
-    public $jobApply;
-
-    /**
-     * @var ReplDiscountRepositoryInterface
-     */
-    public $replDiscountRepository;
-
-    /**
-     * @var ReplDiscountValidationRepositoryInterface
-     */
-    public $discountValidationRepository;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var Logger
-     */
-    public $logger;
-
-    /**
-     * @var ReplicationHelper
-     */
-    public $replicationHelper;
-
-    /**
-     * @var ContactHelper
-     */
-    public $contactHelper;
-
-    /**
-     * @var CollectionFactory
-     */
-    public $replDiscountCollection;
-
     /** @var int */
     public $remainingRecords;
 
@@ -111,35 +58,24 @@ class DiscountCreateTask
      * @param ReplDiscountRepositoryInterface $replDiscountRepository
      * @param ReplDiscountValidationRepositoryInterface $discountValidationRepository
      * @param ReplicationHelper $replicationHelper
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param CollectionFactory $replDiscountCollection
      * @param ContactHelper $contactHelper
      * @param Logger $logger
      */
     public function __construct(
-        CatalogRuleRepositoryInterface $catalogRule,
-        RuleFactory $ruleFactory,
-        RuleCollectionFactory $ruleCollectionFactory,
-        Job $jobApply,
-        ReplDiscountRepositoryInterface $replDiscountRepository,
-        ReplDiscountValidationRepositoryInterface $discountValidationRepository,
-        ReplicationHelper $replicationHelper,
-        LSR $LSR,
-        CollectionFactory $replDiscountCollection,
-        ContactHelper $contactHelper,
-        Logger $logger
+        public CatalogRuleRepositoryInterface $catalogRule,
+        public RuleFactory $ruleFactory,
+        public RuleCollectionFactory $ruleCollectionFactory,
+        public Job $jobApply,
+        public ReplDiscountRepositoryInterface $replDiscountRepository,
+        public ReplDiscountValidationRepositoryInterface $discountValidationRepository,
+        public ReplicationHelper $replicationHelper,
+        public LSR $lsr,
+        public CollectionFactory $replDiscountCollection,
+        public ContactHelper $contactHelper,
+        public Logger $logger
     ) {
-        $this->catalogRule                  = $catalogRule;
-        $this->ruleFactory                  = $ruleFactory;
-        $this->ruleCollectionFactory        = $ruleCollectionFactory;
-        $this->jobApply                     = $jobApply;
-        $this->replDiscountRepository       = $replDiscountRepository;
-        $this->discountValidationRepository = $discountValidationRepository;
-        $this->replicationHelper            = $replicationHelper;
-        $this->contactHelper                = $contactHelper;
-        $this->lsr                          = $LSR;
-        $this->replDiscountCollection       = $replDiscountCollection;
-        $this->logger                       = $logger;
     }
 
     /**
@@ -150,7 +86,7 @@ class DiscountCreateTask
      * @throws InputException
      * @throws InvalidTransitionException
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute($storeData = null)
     {

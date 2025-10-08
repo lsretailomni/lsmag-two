@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplImageLink;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
@@ -43,7 +45,7 @@ class SyncImages extends ProductCreateTask
      * @param mixed $storeData
      * @return void
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute($storeData = null)
     {
@@ -94,7 +96,7 @@ class SyncImages extends ProductCreateTask
      * @param mixed $storeData
      * @return int[]
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function executeManually($storeData = null)
     {
@@ -191,7 +193,7 @@ class SyncImages extends ProductCreateTask
             $filterArr[]['sku'] = $productObj->getSku();
         }
 
-        if (count($filterArr) >0) {
+        if (count($filterArr) > 0) {
             $existingImages = $this->mediaProcessor->getExistingImages($filterArr);
             $this->addImageHashes($existingImages);
         }

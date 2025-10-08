@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Ui\Component\Listing\Column;
 
@@ -6,13 +7,8 @@ use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
-/**
- * Class ColorStatus
- * @package Ls\Replication\Ui\Component\Listing\Column
- */
 class ColorStatus extends Column
 {
-
     /**
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory

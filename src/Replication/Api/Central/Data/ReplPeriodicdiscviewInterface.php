@@ -88,6 +88,10 @@ interface ReplPeriodicdiscviewInterface
 
     public function setLineNo(?int $value);
 
+    public function getLineType() : ?int;
+
+    public function setLineType(?int $value);
+
     public function getMaximumDiscountAmount() : ?float;
 
     public function setMaximumDiscountAmount(?float $value);

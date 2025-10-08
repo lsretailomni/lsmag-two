@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
@@ -91,12 +92,6 @@ class LsTables extends AbstractReset
     public function resetSpecificCronData($jobName, $scopeId, $coreConfigTableName)
     {
         $replicationTableName = 'ls_replication_' . $jobName;
-        $tableMappings = ReplicationHelper::DB_TABLES_MAPPING;
-
-        if (isset($tableMappings[$jobName])) {
-            $replicationTableName = 'ls_replication_' . $tableMappings[$jobName]['table_name'];
-        }
-
         if ($jobName == LSR::SC_ITEM_HTML_JOB_CODE) {
             $replicationTableName = 'ls_replication_repl_data_translation';
             $this->replicationHelper->deleteGivenTableDataGivenConditions(
@@ -105,6 +100,19 @@ class LsTables extends AbstractReset
                     'TranslationId = ?' => LSR::SC_TRANSLATION_ID_ITEM_HTML,
                     'scope_id = ?'      => $scopeId
                 ]
+            );
+        } elseif ($jobName == 'repl_data_translation_lang_code') {
+            $this->replicationHelper->updateConfigValue(
+                null,
+                LSR::SC_STORE_REPLICATED_DATA_TRANSLATION_LANG_CODE,
+                $scopeId,
+                ScopeInterface::SCOPE_STORES
+            );
+            $this->replicationHelper->updateConfigValue(
+                null,
+                LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
+                $scopeId,
+                ScopeInterface::SCOPE_STORES
             );
         } else {
             $replicationTableName = $this->replicationHelper->getGivenTableName($replicationTableName);

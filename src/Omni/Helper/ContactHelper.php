@@ -648,23 +648,11 @@ class ContactHelper extends AbstractHelperOmni
      * Get all schemes
      *
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getSchemes()
     {
-        $schemes       = [];
-        $schemesGetAll = new \Ls\Omni\Client\Ecommerce\Entity\SchemesGetAll();
-        $request       = new \Ls\Omni\Client\Ecommerce\Operation\SchemesGetAll();
-        try {
-            $response = $request->execute($schemesGetAll);
-            foreach ($response->getSchemesGetAllResult() as $scheme) {
-                /** @var \Ls\Omni\Client\Ecommerce\Entity\Scheme $scheme */
-                $schemes[$scheme->getId()] = $scheme->getClub()->getId();
-            }
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-
-        return $schemes;
+        return $this->loyaltyHelper->getSchemes();
     }
 
     /**

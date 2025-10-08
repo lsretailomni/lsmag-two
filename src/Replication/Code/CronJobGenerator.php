@@ -22,20 +22,12 @@ use Laminas\Code\Generator\ParameterGenerator;
 class CronJobGenerator extends AbstractGenerator
 {
     /**
-     * Replication operation instance.
-     *
-     * @var ReplicationOperation
-     */
-    public ReplicationOperation $operation;
-
-    /**
      * @param ReplicationOperation $operation
      * @throws Exception
      */
-    public function __construct(ReplicationOperation $operation)
+    public function __construct(public ReplicationOperation $operation)
     {
         parent::__construct();
-        $this->operation = $operation;
     }
 
     /**

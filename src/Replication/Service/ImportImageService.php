@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Service;
 
@@ -11,31 +12,10 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filesystem\Io\File;
 
 /**
- * Class ImportImageService
- * assign images to products by image URL
+ * Assign images to products by image URL
  */
 class ImportImageService
 {
-    /**
-     * Directory List
-     *
-     * @var DirectoryList
-     */
-    public $directoryList;
-
-    /**
-     * File interface
-     *
-     * @var File
-     */
-    public $file;
-
-    /** @var ReplImageLinkRepositoryInterface */
-    public $replImageLinkRepositoryInterface;
-
-    /** @var Logger */
-    public $logger;
-
     /**
      * @param DirectoryList $directoryList
      * @param File $file
@@ -43,15 +23,11 @@ class ImportImageService
      * @param Logger $logger
      */
     public function __construct(
-        DirectoryList $directoryList,
-        File $file,
-        ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
-        Logger $logger
+        public DirectoryList $directoryList,
+        public File $file,
+        public ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
+        public Logger $logger
     ) {
-        $this->directoryList                    = $directoryList;
-        $this->file                             = $file;
-        $this->replImageLinkRepositoryInterface = $replImageLinkRepositoryInterface;
-        $this->logger                           = $logger;
     }
 
     /**

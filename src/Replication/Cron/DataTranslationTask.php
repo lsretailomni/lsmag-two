@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
 use \Ls\Replication\Model\ReplAttributeOptionValue;
@@ -41,36 +43,6 @@ use Magento\Store\Model\ScopeInterface;
 class DataTranslationTask
 {
     /**
-     * @var ReplicationHelper
-     */
-    public $replicationHelper;
-
-    /**
-     * @var ReplDataTranslationRepositoryInterface
-     */
-    public $dataTranslationRepository;
-
-    /**
-     * @var CategoryCollectionFactory
-     */
-    public $categoryCollectionFactory;
-
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    public $categoryRepository;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var Logger
-     */
-    public $logger;
-
-    /**
      * @var StoreInterface $store
      */
     public $store;
@@ -81,71 +53,11 @@ class DataTranslationTask
     public $cronStatus = false;
 
     /**
-     * @var Attribute
-     */
-    public $eavAttribute;
-
-    /**
-     * @var ReplDataTranslationCollectionFactory
-     */
-    public $replDataTranslationCollectionFactory;
-
-    /**
-     * @var Product
-     */
-    public $productResourceModel;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    public $productRepository;
-
-    /**
-     * @var ProductAttributeRepositoryInterface
-     */
-    public $productAttributeRepository;
-
-    /**
-     * @var AttributeFactory
-     */
-    public $eavAttributeFactory;
-
-    /**
-     * @var AttributeOptionManagementInterface
-     */
-    public $attributeOptionManagement;
-
-    /**
-     * @var AttributeOptionLabelInterfaceFactory
-     */
-    public $optionLabelFactory;
-
-    /**
-     * @var ReplAttributeOptionValueRepositoryInterface
-     */
-    public $replAttributeOptionValueRepositoryInterface;
-
-    /**
-     * @var ReplItemVariantRepositoryInterface
-     */
-    public $replItemVariantRepository;
-
-    /**
-     * @var AttributeFrontendLabelInterfaceFactory
-     */
-    public $frontendLabelInterfaceFactory;
-
-    /**
-     * @var CollectionFactory
-     */
-    public $attrOptionCollectionFactory;
-
-    /**
      * @param ReplicationHelper $replicationHelper
      * @param ReplDataTranslationRepositoryInterface $dataTranslationRepository
      * @param CategoryCollectionFactory $categoryCollectionFactory
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param Logger $logger
      * @param ReplDataTranslationCollectionFactory $replDataTranslationCollectionFactory
      * @param Attribute $eavAttribute
@@ -157,47 +69,29 @@ class DataTranslationTask
      * @param AttributeOptionLabelInterfaceFactory $optionLabelFactory
      * @param ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
      * @param AttributeFrontendLabelInterfaceFactory $frontendLabelInterfaceFactory
-     * @param CollectionFactory $_attrOptionCollectionFactory
+     * @param CollectionFactory $attrOptionCollectionFactory
      * @param ReplItemVariantRepositoryInterface $replItemVariantRepository
      */
     public function __construct(
-        ReplicationHelper $replicationHelper,
-        ReplDataTranslationRepositoryInterface $dataTranslationRepository,
-        CategoryCollectionFactory $categoryCollectionFactory,
-        CategoryRepositoryInterface $categoryRepository,
-        LSR $LSR,
-        Logger $logger,
-        ReplDataTranslationCollectionFactory $replDataTranslationCollectionFactory,
-        Attribute $eavAttribute,
-        Product $productResourceModel,
-        ProductRepositoryInterface $productRepository,
-        ProductAttributeRepositoryInterface $productAttributeRepository,
-        AttributeFactory $eavAttributeFactory,
-        AttributeOptionManagementInterface $attributeOptionManagement,
-        AttributeOptionLabelInterfaceFactory $optionLabelFactory,
-        ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
-        AttributeFrontendLabelInterfaceFactory $frontendLabelInterfaceFactory,
-        CollectionFactory $_attrOptionCollectionFactory,
-        ReplItemVariantRepositoryInterface $replItemVariantRepository
+        public ReplicationHelper $replicationHelper,
+        public ReplDataTranslationRepositoryInterface $dataTranslationRepository,
+        public CategoryCollectionFactory $categoryCollectionFactory,
+        public CategoryRepositoryInterface $categoryRepository,
+        public LSR $lsr,
+        public Logger $logger,
+        public ReplDataTranslationCollectionFactory $replDataTranslationCollectionFactory,
+        public Attribute $eavAttribute,
+        public Product $productResourceModel,
+        public ProductRepositoryInterface $productRepository,
+        public ProductAttributeRepositoryInterface $productAttributeRepository,
+        public AttributeFactory $eavAttributeFactory,
+        public AttributeOptionManagementInterface $attributeOptionManagement,
+        public AttributeOptionLabelInterfaceFactory $optionLabelFactory,
+        public ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
+        public AttributeFrontendLabelInterfaceFactory $frontendLabelInterfaceFactory,
+        public CollectionFactory $attrOptionCollectionFactory,
+        public ReplItemVariantRepositoryInterface $replItemVariantRepository
     ) {
-        $this->replicationHelper                           = $replicationHelper;
-        $this->dataTranslationRepository                   = $dataTranslationRepository;
-        $this->categoryCollectionFactory                   = $categoryCollectionFactory;
-        $this->categoryRepository                          = $categoryRepository;
-        $this->lsr                                         = $LSR;
-        $this->logger                                      = $logger;
-        $this->replDataTranslationCollectionFactory        = $replDataTranslationCollectionFactory;
-        $this->eavAttribute                                = $eavAttribute;
-        $this->productResourceModel                        = $productResourceModel;
-        $this->productRepository                           = $productRepository;
-        $this->productAttributeRepository                  = $productAttributeRepository;
-        $this->eavAttributeFactory                         = $eavAttributeFactory;
-        $this->attributeOptionManagement                   = $attributeOptionManagement;
-        $this->optionLabelFactory                          = $optionLabelFactory;
-        $this->replAttributeOptionValueRepositoryInterface = $replAttributeOptionValueRepositoryInterface;
-        $this->frontendLabelInterfaceFactory               = $frontendLabelInterfaceFactory;
-        $this->attrOptionCollectionFactory                 = $_attrOptionCollectionFactory;
-        $this->replItemVariantRepository                   = $replItemVariantRepository;
     }
 
     /**
@@ -206,7 +100,7 @@ class DataTranslationTask
      * @param mixed $storeData
      * @return void
      * @throws NoSuchEntityException
-     * @throws LocalizedException
+     * @throws LocalizedException|GuzzleException
      */
     public function execute($storeData = null)
     {
@@ -733,7 +627,7 @@ class DataTranslationTask
      *
      * @param mixed $storeData
      * @return int[]
-     * @throws NoSuchEntityException|LocalizedException
+     * @throws NoSuchEntityException|LocalizedException|GuzzleException
      */
     public function executeManually($storeData = null)
     {
@@ -836,7 +730,7 @@ class DataTranslationTask
         $formattedCode                = $this->replicationHelper->formatAttributeCode($attributeCode);
         $defaultScopedAttributeObject = $this->replicationHelper->getProductAttributeGivenCodeAndScope($formattedCode);
         if (!empty($defaultScopedAttributeObject->getId())) {
-            $optionId = $defaultScopedAttributeObject->getSource()->getOptionId($originalOptionalValue);
+            $optionId = (int)$defaultScopedAttributeObject->getSource()->getOptionId($originalOptionalValue);
 
             if (!empty($optionId)) {
                 foreach ($defaultScopedAttributeObject->getOptions() as $option) {

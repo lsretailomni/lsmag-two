@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
@@ -17,7 +19,6 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class ResetReplDiscountSetupStatusTask
 {
-
     /** @var string */
     public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_setup_status_reset';
 
@@ -30,49 +31,26 @@ class ResetReplDiscountSetupStatusTask
     /** @var string */
     public const DISCOUNT_VALIDATION_TABLE = 'ls_replication_repl_discount_validation';
 
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /** @var LSR */
-    public $lsr;
-
-    /**
-     * @var Logger
-     */
-    public $logger;
-
-    /**
-     * @var ResourceConnection
-     */
-    public $resource;
-
     /**
      * @var string
      */
     public $defaultScope = ScopeInterface::SCOPE_WEBSITES;
 
-    /** @var StoreManagerInterface */
-    public $storeManager;
 
     /**
      * @param ReplicationHelper $replicationHelper
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param Logger $logger
      * @param ResourceConnection $resource
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        ReplicationHelper $replicationHelper,
-        LSR $LSR,
-        Logger $logger,
-        ResourceConnection $resource,
-        StoreManagerInterface $storeManager
+        public ReplicationHelper $replicationHelper,
+        public LSR $lsr,
+        public Logger $logger,
+        public ResourceConnection $resource,
+        public StoreManagerInterface $storeManager
     ) {
-        $this->replicationHelper = $replicationHelper;
-        $this->lsr               = $LSR;
-        $this->logger            = $logger;
-        $this->resource          = $resource;
-        $this->storeManager      = $storeManager;
         $this->setDefaultScope();
     }
 
@@ -80,7 +58,7 @@ class ResetReplDiscountSetupStatusTask
      * Entry point for cron jobs
      *
      * @param mixed $storeData
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute($storeData = null)
     {
@@ -97,13 +75,7 @@ class ResetReplDiscountSetupStatusTask
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 if ($this->lsr->isLSR($store->getId(), $this->defaultScope)) {
-                    if (version_compare(
-                        $this->lsr->getOmniVersion($store->getId(), $this->defaultScope),
-                        '2024.4.0',
-                        '>='
-                    )) {
-                        return;
-                    }
+                    
                     $this->logger->debug('Running ResetReplDiscountSetupStatusTask Task ');
 
                     $this->replicationHelper->updateConfigValue(

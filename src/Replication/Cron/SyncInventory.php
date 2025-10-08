@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplInvStatus;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
@@ -36,7 +38,7 @@ class SyncInventory extends ProductCreateTask
      * @param mixed $storeData
      * @return void
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute($storeData = null)
     {
@@ -235,7 +237,7 @@ class SyncInventory extends ProductCreateTask
      * @param mixed $storeData
      * @return int[]
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function executeManually($storeData = null)
     {

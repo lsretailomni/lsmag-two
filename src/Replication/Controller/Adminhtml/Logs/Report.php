@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Controller\Adminhtml\Logs;
 
@@ -16,10 +17,6 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class Report
- * @package Ls\Replication\Controller\Adminhtml\Logs
- */
 class Report extends Action
 {
     public $allowedFiles = [
@@ -32,30 +29,6 @@ class Report extends Action
         'system.log'
     ];
 
-    /** @var PageFactory */
-    public $resultPageFactory;
-
-    /** @var ObjectManagerInterface */
-    public $objectManager;
-
-    /** @var LoggerInterface */
-    public $logger;
-
-    /**
-     * @var Magento\Framework\App\Response\Http\FileFactory
-     */
-    public $downloader;
-
-    /**
-     * @var File
-     */
-    public $driverFile;
-
-    /**
-     * @var Filesystem
-     */
-    public $fileSystem;
-
     /**
      * @var Object
      */
@@ -66,25 +39,19 @@ class Report extends Action
      * @param PageFactory $resultPageFactory
      * @param ObjectManagerInterface $objectManager
      * @param LoggerInterface $logger
-     * @param FileFactory $fileFactory
+     * @param FileFactory $downloader
      * @param File $driverFile
-     * @param Filesystem $filesystem
+     * @param Filesystem $fileSystem
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory,
-        ObjectManagerInterface $objectManager,
-        LoggerInterface $logger,
-        FileFactory $fileFactory,
-        File $driverFile,
-        Filesystem $filesystem
+        public PageFactory $resultPageFactory,
+        public ObjectManagerInterface $objectManager,
+        public LoggerInterface $logger,
+        public FileFactory $downloader,
+        public File $driverFile,
+        public Filesystem $fileSystem
     ) {
-        $this->resultPageFactory = $resultPageFactory;
-        $this->objectManager     = $objectManager;
-        $this->logger            = $logger;
-        $this->downloader        = $fileFactory;
-        $this->driverFile        = $driverFile;
-        $this->fileSystem        = $filesystem;
         parent::__construct($context);
     }
 
