@@ -67,7 +67,7 @@ class PaymentClientTokenGet extends AbstractOperation
      * @param PaymentClientTokenGetRequest $request
      * @return ResponseInterface|PaymentClientTokenGetResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

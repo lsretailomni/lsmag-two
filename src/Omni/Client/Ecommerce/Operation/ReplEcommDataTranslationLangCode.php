@@ -67,7 +67,7 @@ class ReplEcommDataTranslationLangCode extends AbstractOperation
      * @param ReplEcommDataTranslationLangCodeRequest $request
      * @return ResponseInterface|ReplEcommDataTranslationLangCodeResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

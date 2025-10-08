@@ -30,7 +30,7 @@ class ReturnPolicyOutput implements ResolverInterface
     /**
      * @inheritdoc
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         if (empty($args['parent_sku'])) {
             throw new GraphQlInputException(__('Required parameter "parent_sku" is missing'));

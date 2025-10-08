@@ -67,7 +67,7 @@ class ActivityGetAvailabilityToken extends AbstractOperation
      * @param ActivityGetAvailabilityTokenRequest $request
      * @return ResponseInterface|ActivityGetAvailabilityTokenResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

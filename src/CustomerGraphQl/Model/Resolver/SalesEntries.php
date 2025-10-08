@@ -4,6 +4,9 @@ namespace Ls\CustomerGraphQl\Model\Resolver;
 
 use \Ls\CustomerGraphQl\Helper\DataHelper;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use Ls\Omni\Exception\InvalidEnumException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\Resolver\ContextInterface;
 use Magento\Framework\GraphQl\Query\Resolver\Value;
@@ -38,8 +41,11 @@ class SalesEntries implements ResolverInterface
      * @param array|null $value
      * @param array|null $args
      * @return Value|mixed|void
+     * @throws InvalidEnumException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         $pageSize = null;
         $orderId  = null;

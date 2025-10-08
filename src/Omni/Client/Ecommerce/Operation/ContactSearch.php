@@ -67,7 +67,7 @@ class ContactSearch extends AbstractOperation
      * @param ContactSearchRequest $request
      * @return ResponseInterface|ContactSearchResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
