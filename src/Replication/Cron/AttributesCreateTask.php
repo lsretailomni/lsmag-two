@@ -571,7 +571,7 @@ class AttributesCreateTask
                         $this->attributeOptionUpdate->update(
                             Product::ENTITY,
                             $formattedCode,
-                            $option->getValue(),
+                            (int) $option->getValue(),
                             $option
                         );
                         break;
