@@ -12,6 +12,7 @@ use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Backend\Model\Session\Quote;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Sales\Model\AdminOrder\Create;
 use Psr\Log\LoggerInterface;
 
@@ -46,7 +47,7 @@ class CreatePlugin
      * @param Create $subject
      * @param $result
      * @return mixed
-     * @throws GuzzleException
+     * @throws GuzzleException|AlreadyExistsException
      */
     public function afterSaveQuote(
         Create $subject,
@@ -63,6 +64,7 @@ class CreatePlugin
             $this->basketHelper->getCheckoutSession()->setQuoteId($quote->getId());
             $quote->setIsActive(1);
             $this->itemHelper->quoteResourceModel->save($quote);
+            $this->basketHelper->getCustomerSession()->setCustomerId($quote->getCustomer()->getId());
         }
 
         try {

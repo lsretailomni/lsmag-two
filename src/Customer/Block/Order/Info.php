@@ -177,10 +177,6 @@ class Info extends AbstractOrderBlock
         $lines = !is_array($order->getLscMemberSalesDocLine()) ?
             [$order->getLscMemberSalesDocLine()] :
             $order->getLscMemberSalesDocLine();
-        
-        if (!$isCc) {
-            return $isCc;
-        }
 
         foreach ($lines as $line) {
             if ($line->getClickAndCollectLine()) {

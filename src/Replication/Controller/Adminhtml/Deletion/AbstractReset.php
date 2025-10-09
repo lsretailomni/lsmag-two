@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
@@ -56,19 +57,6 @@ abstract class AbstractReset extends Action
 
     public const LS_TRANSLATION_TABLE = 'ls_replication_repl_data_translation';
 
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /**
-     * @var ReplAttributeCollectionFactory
-     */
-    public $replAttributeCollectionFactory;
-
-    /**
-     * @var ReplExtendedCollectionFactory
-     */
-    public $replExtendedCollectionFactory;
-
     /**
      * @param Context $context
      * @param ReplicationHelper $replicationHelper
@@ -77,14 +65,11 @@ abstract class AbstractReset extends Action
      */
     public function __construct(
         Context $context,
-        ReplicationHelper $replicationHelper,
-        ReplAttributeCollectionFactory $replAttributeCollectionFactory,
-        ReplExtendedCollectionFactory $replExtendedCollectionFactory
+        public ReplicationHelper $replicationHelper,
+        public ReplAttributeCollectionFactory $replAttributeCollectionFactory,
+        public ReplExtendedCollectionFactory $replExtendedCollectionFactory
     ) {
         parent::__construct($context);
-        $this->replicationHelper              = $replicationHelper;
-        $this->replAttributeCollectionFactory = $replAttributeCollectionFactory;
-        $this->replExtendedCollectionFactory  = $replExtendedCollectionFactory;
     }
 
     /**

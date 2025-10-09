@@ -308,14 +308,6 @@ class OrderEdit
             $noOrderPayment = ['ls_payment_method_pay_at_store', 'free'];
             if (!in_array($paymentCode, $noOrderPayment)) {
                 // @codingStandardsIgnoreStart
-//                $orderPayment = new Entity\OrderPayment();
-                // @codingStandardsIgnoreEnd
-                //default values for all payment types.
-//                $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
-//                    ->setCurrencyFactor($order->getBaseToOrderRate())
-//                    ->setLineNumber($startingLineNumber)
-//                    ->setExternalReference($order->getIncrementId())
-//                    ->setAmount($amount);
                 $orderPayment = $this->orderHelper->createInstance(COEditPayment::class);
                 $orderPayment->addData(
                     [
@@ -337,9 +329,7 @@ class OrderEdit
                             COEditPayment::TOKEN_NO => $transId
                         ]
                     );
-//                    $orderPayment->setCardType($ccType);
-//                    $orderPayment->setCardNumber($cardNumber);
-//                    $orderPayment->setTokenNumber($transId);
+
                     if (!empty($paidAmount)) {
                         $orderPayment->addData(
                             [
@@ -363,15 +353,6 @@ class OrderEdit
                             );
                         }
                     }
-//                    if (!empty($paidAmount)) {
-//                        $orderPayment->setPaymentType(Entity\Enum\PaymentType::PAYMENT);
-//                    } else {
-//                        if (!empty($authorizedAmount)) {
-//                            $orderPayment->setPaymentType(Entity\Enum\PaymentType::PRE_AUTHORIZATION);
-//                        } else {
-//                            $orderPayment->setPaymentType(Entity\Enum\PaymentType::NONE);
-//                        }
-//                    }
                 }
                 $orderPayment->addData(
                     [
@@ -379,8 +360,6 @@ class OrderEdit
                         COEditPayment::PRE_APPROVED_VALID_DATE => $preApprovedDate,
                     ]
                 );
-//                $orderPayment->setTenderType($tenderTypeId);
-//                $orderPayment->setPreApprovedValidDate($preApprovedDate);
                 $orderPaymentArray[] = $orderPayment;
             }
 
@@ -388,7 +367,6 @@ class OrderEdit
                 $tenderTypeId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
                 $pointRate    = $this->orderHelper->loyaltyHelper->getPointRate();
                 // @codingStandardsIgnoreStart
-//                $orderPaymentLoyalty = new Entity\OrderPayment();
                 $orderPaymentLoyalty = $this->orderHelper->createInstance(COEditPayment::class);
                 // @codingStandardsIgnoreEnd
                 //default values for all payment types.
@@ -404,20 +382,11 @@ class OrderEdit
                         COEditPayment::TENDER_TYPE => $tenderTypeId
                     ]
                 );
-//                $orderPaymentLoyalty->setCurrencyCode('LOY')
-//                    ->setCurrencyFactor($pointRate)
-//                    ->setLineNumber($startingLineNumber + 1)
-//                    ->setCardNumber($cardId)
-//                    ->setExternalReference($order->getIncrementId())
-//                    ->setAmount($order->getLsPointsSpent())
-//                    ->setPreApprovedValidDate($preApprovedDate)
-//                    ->setTenderType($tenderTypeId);
                 $orderPaymentArray[] = $orderPaymentLoyalty;
             }
             if ($order->getLsGiftCardAmountUsed()) {
                 $tenderTypeId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
                 // @codingStandardsIgnoreStart
-//                $orderPaymentGiftCard = new Entity\OrderPayment();
                 $orderPaymentGiftCard = $this->orderHelper->createInstance(COEditPayment::class);
                 // @codingStandardsIgnoreEnd
                 //default values for all payment types.
@@ -434,16 +403,6 @@ class OrderEdit
                         COEditPayment::TENDER_TYPE => $tenderTypeId
                     ]
                 );
-//                $orderPaymentGiftCard
-//                    ->setCurrencyFactor(1)
-//                    ->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
-//                    ->setAmount($order->getLsGiftCardAmountUsed())
-//                    ->setLineNumber($startingLineNumber + 2)
-//                    ->setCardNumber($order->getLsGiftCardNo())
-//                    ->setAuthorizationCode($order->getLsGiftCardPin())
-//                    ->setExternalReference($order->getIncrementId())
-//                    ->setPreApprovedValidDate($preApprovedDate)
-//                    ->setTenderType($tenderTypeId);
                 $orderPaymentArray[] = $orderPaymentGiftCard;
             }
 
@@ -861,14 +820,6 @@ class OrderEdit
                     && $orderLine->getVariantCode() == $line->getVariantCode()
                     && $orderLine->getUnitOfMeasure() == $line->getUnitOfMeasureCode()) {
                     $line->setLineNo($orderLine->getLineNo());
-                    $line->setQuantity($orderLine->getQuantity());
-                    $line->setNetPrice($orderLine->getNetPrice());
-                    $line->setPrice($orderLine->getPrice());
-                    $line->setDiscountPercent($orderLine->getDiscount());
-                    $line->setDiscountAmount($orderLine->getDiscountAmount());
-                    $line->setNetAmount($orderLine->getNetAmount());
-                    $line->setVatAmount($orderLine->getVatAmount());
-                    $line->setAmount($orderLine->getAmount());
                 }
             }
         }

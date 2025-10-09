@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplLoyVendorItemMapping;
 use Magento\Framework\Exception\LocalizedException;
@@ -28,7 +30,7 @@ class SyncVendorAttributesValue extends ProductCreateTask
      * @param mixed $storeData
      * @return void
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute($storeData = null)
     {
@@ -88,7 +90,7 @@ class SyncVendorAttributesValue extends ProductCreateTask
      * @param mixed $storeData
      * @return int[]
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function executeManually($storeData = null)
     {

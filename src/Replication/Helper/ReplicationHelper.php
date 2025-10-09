@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Helper;
 
@@ -946,271 +947,6 @@ class ReplicationHelper extends AbstractHelper
 
     public $connection;
 
-    /** @var StoreManagerInterface */
-    public $storeManager;
-
-    /** @var Filesystem */
-    public $filesystem;
-
-    /** @var SearchCriteriaBuilder */
-    public $searchCriteriaBuilder;
-
-    /** @var FilterBuilder */
-    public $filterBuilder;
-
-    /** @var FilterGroupBuilder */
-    public $filterGroupBuilder;
-
-    /** @var ReplImageLinkRepositoryInterface */
-    public $replImageLinkRepositoryInterface;
-
-    /** @var Config */
-    public $eavConfig;
-
-    /** @var WriterInterface */
-    public $configWriter;
-
-    /** @var Set */
-    public $attributeSet;
-
-    /** @var TypeListInterface */
-    public $cacheTypeList;
-
-    /** @var LSR */
-    public $lsr;
-
-    /** @var ResourceConnection */
-    public $resource;
-
-    /** @var SortOrder */
-    public $sortOrder;
-
-    /** @var DateTime */
-    public $dateTime;
-
-    /** @var TimezoneInterface */
-    public $timezone;
-
-    /** @var Logger */
-    public $_logger;
-
-    /**
-     * @var ReplItemRepository
-     */
-    public $itemRepository;
-
-    /**
-     * @var FileSystemDirectory
-     */
-    public $fileSystemDirectory;
-
-    /** @var CollectionFactory */
-    public $categoryCollectionFactory;
-
-    /** @var ReplHierarchyLeafRepository */
-    public $replHierarchyLeafRepository;
-
-    /** @var CategoryLinkManagementInterface */
-    public $categoryLinkManagement;
-
-    /**  @var ReplAttributeValueCollectionFactory */
-    public $replAttributeValueCollectionFactory;
-
-    /**
-     * @var ReplExtendedVariantValueCollectionFactory
-     */
-    public $replExtendedVariantValueCollectionFactory;
-
-    /**
-     * @var TypeFactory
-     */
-    public $eavTypeFactory;
-
-    /**
-     * @var SetFactory
-     */
-    public $attributeSetFactory;
-
-    /**
-     * @var AttributeSetManagement
-     */
-    public $attributeSetManagement;
-
-    /**
-     * @var AttributeManagement
-     */
-    public $attributeManagement;
-
-    /**
-     * @var GroupFactory
-     */
-    public $attributeSetGroupFactory;
-
-    /**
-     * @var AttributeGroupRepositoryInterface
-     */
-    public $attributeGroupRepository;
-
-    /**
-     * @var AttributeSetRepositoryInterface
-     */
-    public $attributeSetRepository;
-
-    /**
-     * @var ReplAttributeValueRepositoryInterface
-     */
-    public $replAttributeValueRepositoryInterface;
-
-    /** @var ConfigurableProTypeModel */
-    public $configurableProTypeModel;
-
-    /** @var ReplExtendedVariantValueRepository */
-    public $extendedVariantValueRepository;
-
-    /** @var ReplItemVariantRegistrationRepository */
-    public $itemVariantRegistrationRepository;
-
-    /** @var ReplItemUnitOfMeasure */
-    public $replItemUomRepository;
-
-    /** @var ReplTaxSetupRepositoryInterface */
-    public $replTaxSetupRepository;
-
-    /** @var ReplStoreTenderTypeRepositoryInterface */
-    public $replStoreTenderTypeRepository;
-
-    /**
-     * @var TaxClassRepositoryInterface
-     */
-    public $taxClassRepository;
-
-    /**
-     * @var ClassModelFactory
-     */
-    public $classModelFactory;
-
-    /** @var ReplInvStatusRepository */
-    public $replInvStatusRepository;
-
-    /**
-     * @var SourceItemsSave
-     */
-    public $sourceItemsSave;
-
-    /**
-     * @var SourceItemInterfaceFactory
-     */
-    public $sourceItemFactory;
-
-    /**
-     * @var DefaultSourceProviderInterfaceFactory
-     */
-    public $defaultSourceProviderFactory;
-
-    /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
-     */
-    public $productCollectionFactory;
-
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    public $categoryRepository;
-    /**
-     * @var ResourceModelCategory
-     */
-    public $categoryResourceModel;
-
-    /**
-     * @var RuleCollectionFactory
-     */
-    public $ruleCollectionFactory;
-
-    /**
-     * @var ReplUnitOfMeasureRepositoryInterface
-     */
-    public $replUnitOfMeasureRepository;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    public $productRepository;
-
-    /**
-     * @var GetParentSkusOfChildrenSkus
-     */
-    public $getParentSkusOfChildrenSkus;
-
-    /**
-     * @var StockStatusRepository
-     */
-    public $stockStatusRepository;
-
-    /**
-     * @var GetProductIdsBySkus
-     */
-    public $getProductIdsBySkus;
-
-    /**
-     * @var AttributeFactory
-     */
-    public $eavAttributeFactory;
-
-    /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product
-     */
-    public $productResourceModel;
-
-    /**
-     * @var ProductMetadataInterface
-     */
-    public $productMetadata;
-
-    /**
-     * @var GetStockSourceLinksInterface
-     */
-    public $getStockSourceLinks;
-
-    /**
-     * @var SourceItemRepositoryInterface
-     */
-    public $sourceItemRepository;
-
-    /**
-     * @var SourceItemsDeleteInterface
-     */
-    public $sourceItemDeleteRepository;
-
-    /**
-     * @var GetAssignedStockIdForWebsite
-     */
-    public $getAssignedStockIdForWebsite;
-
-    /**
-     * @var StockItemCriteriaInterfaceFactory
-     */
-    public $criteriaInterfaceFactory;
-
-    /**
-     * @var StockItemRepositoryInterface
-     */
-    public $stockItemRepository;
-
-    /**
-     * @var StockConfigurationInterface
-     */
-    public $stockConfiguration;
-
-    /**
-     * @var IsSingleSourceModeInterface
-     */
-    public $isSingleSourceMode;
-
-    /**
-     * @var Type
-     */
-    public $pageCache;
-
     /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -1218,15 +954,15 @@ class ReplicationHelper extends AbstractHelper
      * @param FilterGroupBuilder $filterGroupBuilder
      * @param ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface
      * @param StoreManagerInterface $storeManager
-     * @param Filesystem $Filesystem
+     * @param Filesystem $filesystem
      * @param Config $eavConfig
      * @param WriterInterface $configWriter
      * @param Set $attributeSet
      * @param TypeListInterface $cacheTypeList
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param ResourceConnection $resource
      * @param SortOrder $sortOrder
-     * @param DateTime $date
+     * @param DateTime $dateTime
      * @param TimezoneInterface $timezone
      * @param Logger $_logger
      * @param ReplItemRepository $itemRepository
@@ -1270,7 +1006,7 @@ class ReplicationHelper extends AbstractHelper
      * @param ProductMetadataInterface $productMetadata
      * @param GetStockSourceLinksInterface $getStockSourceLinks
      * @param SourceItemRepositoryInterface $sourceItemRepository
-     * @param SourceItemsDeleteInterface $sourceItemsDelete
+     * @param SourceItemsDeleteInterface $sourceItemDeleteRepository
      * @param GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite
      * @param StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory
      * @param StockItemRepositoryInterface $stockItemRepository
@@ -1280,135 +1016,71 @@ class ReplicationHelper extends AbstractHelper
      */
     public function __construct(
         Context $context,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        FilterBuilder $filterBuilder,
-        FilterGroupBuilder $filterGroupBuilder,
-        ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
-        StoreManagerInterface $storeManager,
-        Filesystem $Filesystem,
-        Config $eavConfig,
-        WriterInterface $configWriter,
-        Set $attributeSet,
-        TypeListInterface $cacheTypeList,
-        LSR $LSR,
-        ResourceConnection $resource,
-        SortOrder $sortOrder,
-        DateTime $date,
-        TimezoneInterface $timezone,
+        public SearchCriteriaBuilder $searchCriteriaBuilder,
+        public FilterBuilder $filterBuilder,
+        public FilterGroupBuilder $filterGroupBuilder,
+        public ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
+        public StoreManagerInterface $storeManager,
+        public Filesystem $filesystem,
+        public Config $eavConfig,
+        public WriterInterface $configWriter,
+        public Set $attributeSet,
+        public TypeListInterface $cacheTypeList,
+        public LSR $lsr,
+        public ResourceConnection $resource,
+        public SortOrder $sortOrder,
+        public DateTime $dateTime,
+        public TimezoneInterface $timezone,
         Logger $_logger,
-        ReplItemRepository $itemRepository,
-        FileSystemDirectory $fileSystemDirectory,
-        CollectionFactory $categoryCollectionFactory,
-        ReplHierarchyLeafRepository $replHierarchyLeafRepository,
-        CategoryLinkManagementInterface $categoryLinkManagement,
-        ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
-        ReplExtendedVariantValueCollectionFactory $replExtendedVariantValueCollectionFactory,
-        TypeFactory $eavTypeFactory,
-        SetFactory $attributeSetFactory,
-        AttributeSetManagement $attributeSetManagement,
-        AttributeManagement $attributeManagement,
-        GroupFactory $attributeSetGroupFactory,
-        AttributeGroupRepositoryInterface $attributeGroupRepository,
-        AttributeSetRepositoryInterface $attributeSetRepository,
-        ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
-        ConfigurableProTypeModel $configurableProTypeModel,
-        ReplExtendedVariantValueRepository $extendedVariantValueRepository,
-        ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository,
-        ReplItemUnitOfMeasure $replItemUomRepository,
-        ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
-        ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
-        TaxClassRepositoryInterface $taxClassRepository,
-        ClassModelFactory $classModelFactory,
-        ReplInvStatusRepository $replInvStatusRepository,
-        SourceItemsSave $sourceItemsSave,
-        SourceItemInterfaceFactory $sourceItemFactory,
-        DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
-        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
-        CategoryRepositoryInterface $categoryRepository,
-        ResourceModelCategory $categoryResourceModel,
-        RuleCollectionFactory $ruleCollectionFactory,
-        ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository,
-        ProductRepositoryInterface $productRepository,
-        GetParentSkusOfChildrenSkus $getParentSkusOfChildrenSkus,
-        StockStatusRepository $stockStatusRepository,
-        GetProductIdsBySkus $getProductIdsBySkus,
-        AttributeFactory $eavAttributeFactory,
-        \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
-        ProductMetadataInterface $productMetadata,
-        GetStockSourceLinksInterface $getStockSourceLinks,
-        SourceItemRepositoryInterface $sourceItemRepository,
-        SourceItemsDeleteInterface $sourceItemsDelete,
-        GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite,
-        StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory,
-        StockItemRepositoryInterface $stockItemRepository,
-        StockConfigurationInterface $stockConfiguration,
-        IsSingleSourceModeInterface $isSingleSourceMode,
-        Type $pageCache
+        public ReplItemRepository $itemRepository,
+        public FileSystemDirectory $fileSystemDirectory,
+        public CollectionFactory $categoryCollectionFactory,
+        public ReplHierarchyLeafRepository $replHierarchyLeafRepository,
+        public CategoryLinkManagementInterface $categoryLinkManagement,
+        public ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
+        public ReplExtendedVariantValueCollectionFactory $replExtendedVariantValueCollectionFactory,
+        public TypeFactory $eavTypeFactory,
+        public SetFactory $attributeSetFactory,
+        public AttributeSetManagement $attributeSetManagement,
+        public AttributeManagement $attributeManagement,
+        public GroupFactory $attributeSetGroupFactory,
+        public AttributeGroupRepositoryInterface $attributeGroupRepository,
+        public AttributeSetRepositoryInterface $attributeSetRepository,
+        public ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
+        public ConfigurableProTypeModel $configurableProTypeModel,
+        public ReplExtendedVariantValueRepository $extendedVariantValueRepository,
+        public ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository,
+        public ReplItemUnitOfMeasure $replItemUomRepository,
+        public ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
+        public ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
+        public TaxClassRepositoryInterface $taxClassRepository,
+        public ClassModelFactory $classModelFactory,
+        public ReplInvStatusRepository $replInvStatusRepository,
+        public SourceItemsSave $sourceItemsSave,
+        public SourceItemInterfaceFactory $sourceItemFactory,
+        public DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
+        public \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
+        public CategoryRepositoryInterface $categoryRepository,
+        public ResourceModelCategory $categoryResourceModel,
+        public RuleCollectionFactory $ruleCollectionFactory,
+        public ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository,
+        public ProductRepositoryInterface $productRepository,
+        public GetParentSkusOfChildrenSkus $getParentSkusOfChildrenSkus,
+        public StockStatusRepository $stockStatusRepository,
+        public GetProductIdsBySkus $getProductIdsBySkus,
+        public AttributeFactory $eavAttributeFactory,
+        public \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
+        public ProductMetadataInterface $productMetadata,
+        public GetStockSourceLinksInterface $getStockSourceLinks,
+        public SourceItemRepositoryInterface $sourceItemRepository,
+        public SourceItemsDeleteInterface $sourceItemDeleteRepository,
+        public GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite,
+        public StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory,
+        public StockItemRepositoryInterface $stockItemRepository,
+        public StockConfigurationInterface $stockConfiguration,
+        public IsSingleSourceModeInterface $isSingleSourceMode,
+        public Type $pageCache
     ) {
-        $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
-        $this->filterBuilder                             = $filterBuilder;
-        $this->filterGroupBuilder                        = $filterGroupBuilder;
-        $this->storeManager                              = $storeManager;
-        $this->filesystem                                = $Filesystem;
-        $this->replImageLinkRepositoryInterface          = $replImageLinkRepositoryInterface;
-        $this->eavConfig                                 = $eavConfig;
-        $this->configWriter                              = $configWriter;
-        $this->attributeSet                              = $attributeSet;
-        $this->cacheTypeList                             = $cacheTypeList;
-        $this->lsr                                       = $LSR;
-        $this->resource                                  = $resource;
-        $this->sortOrder                                 = $sortOrder;
-        $this->dateTime                                  = $date;
-        $this->timezone                                  = $timezone;
-        $this->_logger                                   = $_logger;
-        $this->itemRepository                            = $itemRepository;
-        $this->fileSystemDirectory                       = $fileSystemDirectory;
-        $this->categoryCollectionFactory                 = $categoryCollectionFactory;
-        $this->replHierarchyLeafRepository               = $replHierarchyLeafRepository;
-        $this->categoryLinkManagement                    = $categoryLinkManagement;
-        $this->replAttributeValueCollectionFactory       = $replAttributeValueCollectionFactory;
-        $this->replExtendedVariantValueCollectionFactory = $replExtendedVariantValueCollectionFactory;
-        $this->eavTypeFactory                            = $eavTypeFactory;
-        $this->attributeSetFactory                       = $attributeSetFactory;
-        $this->attributeSetManagement                    = $attributeSetManagement;
-        $this->attributeManagement                       = $attributeManagement;
-        $this->attributeSetGroupFactory                  = $attributeSetGroupFactory;
-        $this->attributeGroupRepository                  = $attributeGroupRepository;
-        $this->attributeSetRepository                    = $attributeSetRepository;
-        $this->replAttributeValueRepositoryInterface     = $replAttributeValueRepositoryInterface;
-        $this->configurableProTypeModel                  = $configurableProTypeModel;
-        $this->extendedVariantValueRepository            = $extendedVariantValueRepository;
-        $this->itemVariantRegistrationRepository         = $itemVariantRegistrationRepository;
-        $this->replItemUomRepository                     = $replItemUomRepository;
-        $this->replTaxSetupRepository                    = $replTaxSetupRepository;
-        $this->replStoreTenderTypeRepository             = $replStoreTenderTypeRepository;
-        $this->taxClassRepository                        = $taxClassRepository;
-        $this->classModelFactory                         = $classModelFactory;
-        $this->replInvStatusRepository                   = $replInvStatusRepository;
-        $this->sourceItemsSave                           = $sourceItemsSave;
-        $this->sourceItemFactory                         = $sourceItemFactory;
-        $this->defaultSourceProviderFactory              = $defaultSourceProviderFactory;
-        $this->productCollectionFactory                  = $productCollectionFactory;
-        $this->categoryRepository                        = $categoryRepository;
-        $this->categoryResourceModel                     = $categoryResourceModel;
-        $this->ruleCollectionFactory                     = $ruleCollectionFactory;
-        $this->replUnitOfMeasureRepository               = $replUnitOfMeasureRepository;
-        $this->productRepository                         = $productRepository;
-        $this->getParentSkusOfChildrenSkus               = $getParentSkusOfChildrenSkus;
-        $this->stockStatusRepository                     = $stockStatusRepository;
-        $this->getProductIdsBySkus                       = $getProductIdsBySkus;
-        $this->eavAttributeFactory                       = $eavAttributeFactory;
-        $this->productResourceModel                      = $productResourceModel;
-        $this->productMetadata                           = $productMetadata;
-        $this->getStockSourceLinks                       = $getStockSourceLinks;
-        $this->sourceItemRepository                      = $sourceItemRepository;
-        $this->sourceItemDeleteRepository                = $sourceItemsDelete;
-        $this->getAssignedStockIdForWebsite              = $getAssignedStockIdForWebsite;
-        $this->criteriaInterfaceFactory                  = $criteriaInterfaceFactory;
-        $this->stockItemRepository                       = $stockItemRepository;
-        $this->stockConfiguration                        = $stockConfiguration;
-        $this->isSingleSourceMode                        = $isSingleSourceMode;
-        $this->pageCache                                 = $pageCache;
         parent::__construct(
             $context
         );
@@ -2097,17 +1769,31 @@ class ReplicationHelper extends AbstractHelper
          * Added the condition to update config value based on specific store id.
          */
         if ($storeId && !$this->lsr->isSSM()) {
-            $this->configWriter->save(
-                $path,
-                $value,
-                $scope,
-                $storeId
-            );
+            if ($value === null) {
+                $this->configWriter->delete(
+                    $path,
+                    $scope,
+                    $storeId
+                );
+            } else {
+                $this->configWriter->save(
+                    $path,
+                    $value,
+                    $scope,
+                    $storeId
+                );
+            }
         } else {
-            $this->configWriter->save(
-                $path,
-                $value
-            );
+            if ($value === null) {
+                $this->configWriter->delete(
+                    $path
+                );
+            } else {
+                $this->configWriter->save(
+                    $path,
+                    $value
+                );
+            }
         }
     }
 
@@ -4202,7 +3888,7 @@ class ReplicationHelper extends AbstractHelper
         $sourceItem = $this->sourceItemFactory->create();
         $sourceItem->setSourceCode($sourceCode);
         $sourceItem->setSku($sku);
-        $sourceItem->setQuantity($inventory);
+        $sourceItem->setQuantity((float)$inventory);
         $sourceItem->setStatus($status);
 
         return $sourceItem;

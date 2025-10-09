@@ -19,17 +19,13 @@ class SearchGenerator extends AbstractGenerator
     /** @var string $namespace Namespace for the generated search result model */
     public static $namespace = 'Ls\\Replication\\Model\\Central';
 
-    /** @var ReplicationOperation $operation Contains the current replication operation context */
-    public $operation;
-
     /**
      * @param ReplicationOperation $operation
      * @throws Exception
      */
-    public function __construct(ReplicationOperation $operation)
+    public function __construct(public ReplicationOperation $operation)
     {
         parent::__construct();
-        $this->operation = $operation;
     }
 
     /**

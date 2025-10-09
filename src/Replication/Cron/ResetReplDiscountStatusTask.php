@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
@@ -23,49 +24,25 @@ class ResetReplDiscountStatusTask
     /** @var string */
     public const DISCOUNT_TABLE_NAME = 'ls_replication_repl_discount';
 
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /** @var LSR */
-    public $lsr;
-
-    /**
-     * @var Logger
-     */
-    public $logger;
-
-    /**
-     * @var ResourceConnection
-     */
-    public $resource;
-
     /**
      * @var string
      */
     public $defaultScope = ScopeInterface::SCOPE_WEBSITES;
 
-    /** @var StoreManagerInterface */
-    public $storeManager;
-
     /**
      * @param ReplicationHelper $replicationHelper
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param Logger $logger
      * @param ResourceConnection $resource
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        ReplicationHelper $replicationHelper,
-        LSR $LSR,
-        Logger $logger,
-        ResourceConnection $resource,
-        StoreManagerInterface $storeManager
+        public ReplicationHelper $replicationHelper,
+        public LSR $lsr,
+        public Logger $logger,
+        public ResourceConnection $resource,
+        public StoreManagerInterface $storeManager
     ) {
-        $this->replicationHelper     = $replicationHelper;
-        $this->lsr                   = $LSR;
-        $this->logger                = $logger;
-        $this->resource              = $resource;
-        $this->storeManager          = $storeManager;
         $this->setDefaultScope();
     }
 
@@ -90,13 +67,7 @@ class ResetReplDiscountStatusTask
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 if ($this->lsr->isLSR($store->getId(), $this->defaultScope)) {
-                    if (version_compare(
-                        $this->lsr->getOmniVersion($store->getId(), $this->defaultScope),
-                        '2024.4.0',
-                        '>='
-                    )) {
-                        return;
-                    }
+                    
                     $this->logger->debug('Running ResetReplDiscountStatusTask Task ');
 
                     $this->replicationHelper->updateConfigValue(

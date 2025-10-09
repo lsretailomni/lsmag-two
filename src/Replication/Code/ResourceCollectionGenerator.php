@@ -22,9 +22,6 @@ class ResourceCollectionGenerator extends AbstractGenerator
     /** @var string Namespace for the generated ResourceCollection class */
     public static $namespace = 'Ls\\Replication\\Model\\Central\\ResourceModel';
 
-    /** @var ReplicationOperation $operation Holds the replication operation details */
-    public $operation;
-
     /** @var Filesystem $filesystem Symfony Filesystem instance for file operations */
     public $filesystem;
 
@@ -32,7 +29,7 @@ class ResourceCollectionGenerator extends AbstractGenerator
      * @param ReplicationOperation $operation
      * @throws Exception
      */
-    public function __construct(ReplicationOperation $operation)
+    public function __construct(public ReplicationOperation $operation)
     {
         parent::__construct();
         $this->operation = $operation;

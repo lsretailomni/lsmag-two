@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
@@ -17,44 +18,8 @@ use Psr\Log\LoggerInterface;
 /** Syncing edited order through cron*/
 class SyncOrdersEdit
 {
-    /**
-     * @var ReplicationHelper
-     */
-    public $replicationHelper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
     /** @var StoreInterface $store */
     public $store;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /** @var OrderResourceModel */
-    private $orderResourceModel;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /** @var StoreManagerInterface */
-    public $storeManager;
-
-    /**
-     * @var OrderEdit
-     */
-    public $orderEdit;
 
     /**
      * @param LSR $lsr
@@ -67,23 +32,15 @@ class SyncOrdersEdit
      * @param OrderEdit $orderEdit
      */
     public function __construct(
-        LSR $lsr,
-        ReplicationHelper $replicationHelper,
-        OrderHelper $orderHelper,
-        BasketHelper $basketHelper,
-        OrderResourceModel $orderResourceModel,
-        LoggerInterface $logger,
-        StoreManagerInterface $storeManager,
-        OrderEdit $orderEdit
+        public LSR $lsr,
+        public ReplicationHelper $replicationHelper,
+        public OrderHelper $orderHelper,
+        public BasketHelper $basketHelper,
+        public OrderResourceModel $orderResourceModel,
+        public LoggerInterface $logger,
+        public StoreManagerInterface $storeManager,
+        public OrderEdit $orderEdit
     ) {
-        $this->lsr                = $lsr;
-        $this->replicationHelper  = $replicationHelper;
-        $this->orderHelper        = $orderHelper;
-        $this->basketHelper       = $basketHelper;
-        $this->orderResourceModel = $orderResourceModel;
-        $this->logger             = $logger;
-        $this->storeManager       = $storeManager;
-        $this->orderEdit          = $orderEdit;
     }
 
     /**

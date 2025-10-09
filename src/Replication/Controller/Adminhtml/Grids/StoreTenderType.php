@@ -1,45 +1,19 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Controller\Adminhtml\Grids;
 
-use Magento\Backend\App\Action;
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\Page;
-use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\Phrase;
 
-/**
- * Class for Store Tender Type cron job */
-class StoreTenderType extends Action
+class StoreTenderType extends AbstractGrid
 {
     /**
-     * @var PageFactory
-     */
-    public $resultPageFactory;
-
-    /**
-     * Constructor
+     * Get title
      *
-     * @param Context $context
-     * @param PageFactory $resultPageFactory
+     * @return Phrase
      */
-    public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory
-    ) {
-        parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-    }
-
-    /**
-     * Load the grid defined through grid component
-     *
-     * @return Page
-     */
-    public function execute()
+    public function getTitle()
     {
-        $resultPage = $this->resultPageFactory->create();
-        //Set the header title of grid
-        $resultPage->getConfig()->getTitle()->prepend(__('Store Tender Type'));
-        return $resultPage;
+        return __('Store Tender Type Replication');
     }
 }

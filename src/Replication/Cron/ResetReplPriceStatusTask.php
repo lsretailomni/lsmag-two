@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
@@ -22,28 +23,16 @@ class ResetReplPriceStatusTask
      */
     public $defaultScope = ScopeInterface::SCOPE_WEBSITES;
 
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /** @var LSR */
-    public $lsr;
-
-    /** @var Logger */
-    public $logger;
-
     /**
      * @param ReplicationHelper $replicationHelper
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param Logger $logger
      */
     public function __construct(
-        ReplicationHelper $replicationHelper,
-        LSR $LSR,
-        Logger $logger
+        public ReplicationHelper $replicationHelper,
+        public LSR $lsr,
+        public Logger $logger
     ) {
-        $this->replicationHelper = $replicationHelper;
-        $this->lsr               = $LSR;
-        $this->logger            = $logger;
         $this->setDefaultScope();
     }
 
@@ -68,14 +57,7 @@ class ResetReplPriceStatusTask
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 if ($this->lsr->isLSR($store->getId(), $this->defaultScope)) {
-                    if (version_compare(
-                        $this->lsr->getOmniVersion($store->getId(), $this->defaultScope),
-                        '2024.4.0',
-                        '>='
-                    )) {
-                        return;
-                    }
-
+                    
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         self::CONFIG_PATH_LAST_EXECUTE,
