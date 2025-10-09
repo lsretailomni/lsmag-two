@@ -6,94 +6,94 @@
             <resource id="Magento_Backend::admin">
                 <resource id="Ls_Replication::ls_retail" title="LS Retail" sortOrder="85">
                     <resource id="Ls_Replication::ls_retail_conf_group" title="Configuration" translate="title"
-                              sortOrder="1">
+                              sortOrder="20">
                         <resource id="Ls_Replication::ls_retail_conf_group_configuration"
                                   title="LS Retail Configuration"
                                   translate="title"
-                                  sortOrder="2">
+                                  sortOrder="10">
                         </resource>
                     </resource>
                     <resource id="Ls_Replication::ls_retail_cron_group" title="Manual Crons"
                               translate="title"
-                              sortOrder="3">
+                              sortOrder="30">
                         <resource id="Ls_Replication::ls_retail_cron_group_crons_grid" title="Crons Listing"
                                   translate="title"
-                                  sortOrder="4">
+                                  sortOrder="10">
                         </resource>
                     </resource>
                     <resource id="Ls_Replication::ls_retail_logs_report" title="Logs"
                               translate="title"
-                              sortOrder="5">
+                              sortOrder="40">
                         <resource id="Ls_Replication::ls_retail_logs_report_main" title="Report"
                                   translate="title"
-                                  sortOrder="6">
+                                  sortOrder="10">
                         </resource>
                     </resource>
                     <resource id="Ls_Replication::replication_grid_group" title="Replication Status"
                               translate="title"
-                              sortOrder="10">
+                              sortOrder="50">
                         <resource id="Ls_Replication::item_grid" title="Item Replication" translate="title"
                                   sortOrder="10"/>
                         <resource id="Ls_Replication::item_price_grid" title="Price Replication"
                                   translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="20"/>
                         <resource id="Ls_Replication::item_inventory_grid" title="Inventory Status Replication"
                                   translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="30"/>
                         <resource id="Ls_Replication::barcode_grid" title="Barcode Replication"
                                   translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="40"/>
                         <resource id="Ls_Replication::data_translation_grid" title="Data Translation Replication"
                                   translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="50"/>
                         <resource id="Ls_Replication::data_translation_lang_code_grid"
                                   title="Data Translation Lang Code Replication"
                                   translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="60"/>
                         <resource id="Ls_Replication::item_html_grid" title="Item Html Replication"
                                   translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="70"/>
                         <resource id="Ls_Replication::extendedvariantvalue_grid"
                                   title="Extended Variant Value Replication" translate="title" sortOrder="10"/>
                         <resource id="Ls_Replication::imagelink_grid" title="Image Link Replication"
                                   translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="80"/>
                         <resource id="Ls_Replication::itemvariantregistration_grid"
                                   title="Item Variant Registration Replication" translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="90"/>
                         <resource id="Ls_Replication::itemvariant_grid"
                                   title="Item Variant Replication" translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="100"/>
                         <resource id="Ls_Replication::hierarchy_grid" title="Hierarchy Replication"
                                   translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="110"/>
                         <resource id="Ls_Replication::hierarchynode_grid" title="Hierarchy Node Replication"
-                                  translate="title" sortOrder="10"/>
+                                  translate="title" sortOrder="120"/>
                         <resource id="Ls_Replication::hierarchyleaf_grid" title="Hierarchy Leaf Replication"
-                                  translate="title" sortOrder="10"/>
+                                  translate="title" sortOrder="130"/>
                         <resource id="Ls_Replication::attribute_grid" title="Attribute Replication"
                                   translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="140"/>
                         <resource id="Ls_Replication::attributevalue_grid" title="Attribute Value Replication"
-                                  translate="title" sortOrder="10"/>
+                                  translate="title" sortOrder="150"/>
                         <resource id="Ls_Replication::attributeoptionvalue_grid"
-                                  title="Attribute Option Value Replication" translate="title" sortOrder="10"/>
+                                  title="Attribute Option Value Replication" translate="title" sortOrder="160"/>
                         <resource id="Ls_Replication::discount_grid" title="Discount Replication"
                                   translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="170"/>
                         <resource id="Ls_Replication::discount_setup_grid" title="Discount Setup Replication"
                                   translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="180"/>
                         <resource id="Ls_Replication::itemcategory_grid" title="Item Category Replication"
-                                  translate="title" sortOrder="10"/>
+                                  translate="title" sortOrder="190"/>
                         <resource id="Ls_Replication::productgroup_grid" title="Product Group Replication"
-                                  translate="title" sortOrder="10"/>
+                                  translate="title" sortOrder="200"/>
                         <resource id="Ls_Replication::store_grid" title="Store Replication" translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="210"/>
                         <resource id="Ls_Replication::uom_grid" title="Unit Of Measure" translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="220"/>
                         <resource id="Ls_Replication::item_uom_grid" title="Item Unit Of Measure" translate="title"
-                                  sortOrder="10"/>
+                                  sortOrder="230"/>
                     </resource>
                 </resource>
             </resource>

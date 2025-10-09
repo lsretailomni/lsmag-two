@@ -30,5 +30,10 @@
                 <template_cancel>ls_mag_webhooks_template_cancel</template_cancel>
             </webhooks>
         </ls_mag>
+        <oauth>
+            <consumer>
+                <enable_integration_as_bearer>1</enable_integration_as_bearer>
+            </consumer>
+        </oauth>
     </default>
 </config>

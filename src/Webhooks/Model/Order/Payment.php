@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Model\Order;
 
@@ -27,71 +28,6 @@ use Magento\Shipping\Model\ShipmentNotifier;
 class Payment
 {
     /**
-     * @var Logger
-     */
-    private $logger;
-
-    /**
-     * @var InvoiceService
-     */
-    private $invoiceService;
-
-    /**
-     * @var TransactionFactory
-     */
-    private $transactionFactory;
-
-    /**
-     * @var InvoiceSender
-     */
-    private $invoiceSender;
-
-    /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
-     * @var NotificationHelper
-     */
-    private $notificationHelper;
-
-    /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @var Order
-     */
-    private $convertOrder;
-
-    /**
-     * @var ShipmentNotifier
-     */
-    private $shipmentNotifier;
-
-    /**
-     * @var ShipmentRepositoryInterface
-     */
-    private $shipmentRepository;
-
-    /**
-     * @var DefaultSourceProviderInterfaceFactory
-     */
-    private $defaultSourceProviderFactory;
-
-    /**
-     * @var ReplicationHelper
-     */
-    private $replicationHelper;
-
-    /**
-     * @var ManagerInterface
-     */
-    private $eventManager;
-
-    /**
      * @param Logger $logger
      * @param InvoiceService $invoiceService
      * @param TransactionFactory $transactionFactory
@@ -107,33 +43,20 @@ class Payment
      * @param ManagerInterface $eventManager
      */
     public function __construct(
-        Logger $logger,
-        InvoiceService $invoiceService,
-        TransactionFactory $transactionFactory,
-        InvoiceSender $invoiceSender,
-        Data $helper,
-        NotificationHelper $notificationHelper,
-        OrderRepositoryInterface $orderRepository,
-        Order $convertOrder,
-        ShipmentNotifier $shipmentNotifier,
-        ShipmentRepositoryInterface $shipmentRepository,
-        DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
-        ReplicationHelper $replicationHelper,
-        ManagerInterface $eventManager
+        public Logger $logger,
+        public InvoiceService $invoiceService,
+        public TransactionFactory $transactionFactory,
+        public InvoiceSender $invoiceSender,
+        public Data $helper,
+        public NotificationHelper $notificationHelper,
+        public OrderRepositoryInterface $orderRepository,
+        public Order $convertOrder,
+        public ShipmentNotifier $shipmentNotifier,
+        public ShipmentRepositoryInterface $shipmentRepository,
+        public DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
+        public ReplicationHelper $replicationHelper,
+        public ManagerInterface $eventManager
     ) {
-        $this->logger                       = $logger;
-        $this->invoiceService               = $invoiceService;
-        $this->transactionFactory           = $transactionFactory;
-        $this->invoiceSender                = $invoiceSender;
-        $this->helper                       = $helper;
-        $this->notificationHelper           = $notificationHelper;
-        $this->orderRepository              = $orderRepository;
-        $this->convertOrder                 = $convertOrder;
-        $this->shipmentNotifier             = $shipmentNotifier;
-        $this->shipmentRepository           = $shipmentRepository;
-        $this->defaultSourceProviderFactory = $defaultSourceProviderFactory;
-        $this->replicationHelper            = $replicationHelper;
-        $this->eventManager                 = $eventManager;
     }
 
     /**
@@ -195,7 +118,7 @@ class Payment
                     }
                 }
 
-                $validateOrder   = $this->validatePayment($order, $totalAmount, $documentId, $shippingAmount);
+                $validateOrder   = $this->validatePayment($order, (string)$totalAmount, $documentId, $shippingAmount);
                 $invoice         = $this->invoiceService->prepareInvoice($order, $itemsToInvoice);
                 $validateInvoice = $this->validateInvoice($invoice, $documentId);
             }
@@ -313,8 +236,8 @@ class Payment
     {
         $validate   = true;
         $message    = '';
-        $grandTotal = (float)$order->getGrandTotal();
-        $totalDue   = (float)$order->getTotalDue();
+        $grandTotal = (string)$order->getGrandTotal();
+        $totalDue   = (string)$order->getTotalDue();
 
         if (bccomp($grandTotal, $amount, 3) == -1 && bccomp($totalDue, $amount, 3) != 1) {
             $message = "Invoice amount is greater than order amount for document id #" . $documentId;

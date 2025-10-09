@@ -1,9 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Helper;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Client\CentralEcommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId;
+use Ls\Omni\Client\CentralEcommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
@@ -30,57 +33,6 @@ use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
  */
 class Data
 {
-
-    /**
-     * @var Logger
-     */
-    public $logger;
-
-    /**
-     * @var OrderRepositoryInterface
-     */
-    public $orderRepository;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    public $searchCriteriaBuilder;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var OmniHelper
-     */
-    public $omniHelper;
-
-    /**
-     * @var ItemHelper
-     */
-    public $itemHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var SerializerJson
-     */
-    public $jsonSerializer;
-
-    /**
-     * @var ProductRepository
-     */
-    public ProductRepository $productRepository;
-
     /**
      * @param Logger $logger
      * @param OrderRepositoryInterface $orderRepository
@@ -94,27 +46,17 @@ class Data
      * @param ProductRepository $productRepository
      */
     public function __construct(
-        Logger $logger,
-        OrderRepositoryInterface $orderRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        OrderHelper $orderHelper,
-        LSR $lsr,
-        OmniHelper $omniHelper,
-        ItemHelper $itemHelper,
-        LoyaltyHelper $loyaltyHelper,
-        SerializerJson $jsonSerializer,
-        ProductRepository $productRepository
+        public Logger $logger,
+        public OrderRepositoryInterface $orderRepository,
+        public SearchCriteriaBuilder $searchCriteriaBuilder,
+        public OrderHelper $orderHelper,
+        public LSR $lsr,
+        public OmniHelper $omniHelper,
+        public ItemHelper $itemHelper,
+        public LoyaltyHelper $loyaltyHelper,
+        public SerializerJson $jsonSerializer,
+        public ProductRepository $productRepository
     ) {
-        $this->logger                = $logger;
-        $this->orderRepository       = $orderRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->orderHelper           = $orderHelper;
-        $this->lsr                   = $lsr;
-        $this->omniHelper            = $omniHelper;
-        $this->itemHelper            = $itemHelper;
-        $this->loyaltyHelper         = $loyaltyHelper;
-        $this->jsonSerializer        = $jsonSerializer;
-        $this->productRepository     = $productRepository;
     }
 
     /**
@@ -542,9 +484,10 @@ class Data
     }
 
     /**
+     * Fetch order from Central using orderId
+     *
      * @param $orderId
-     * @return SalesEntry|SalesEntry[]|SalesEntryGetResponse|SalesEntryGetSalesByOrderIdResponse|ResponseInterface|null
-     * @throws NoSuchEntityException
+     * @return GetSalesInfoByOrderId_GetSalesInfoByOrderId|GetSelectedSalesDoc_GetSelectedSalesDoc|null
      * @throws InvalidEnumException
      */
     public function fetchOrder($orderId)

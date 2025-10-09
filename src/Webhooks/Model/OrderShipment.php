@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Model;
 
@@ -14,59 +15,40 @@ use \Ls\Webhooks\Logger\Logger;
 class OrderShipment implements OrderShipmentInterface
 {
     /**
-     * @var Logger
-     */
-    private $logger;
-
-    /**
-     * @var Shipment
-     */
-    private $shipment;
-
-    /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
-     * OrderShipment constructor.
      * @param Shipment $shipment
      * @param Data $helper
      * @param Logger $logger
      */
     public function __construct(
-        Shipment $shipment,
-        Data $helper,
-        Logger $logger
+        public Shipment $shipment,
+        public Data $helper,
+        public Logger $logger
     ) {
-        $this->shipment = $shipment;
-        $this->helper   = $helper;
-        $this->logger   = $logger;
     }
 
     /**
      * @inheritdoc
      */
-    public function set($orderId, $shipmentNo, $trackingId, $trackingUrl, $provider, $service, $lines)
+    public function set(\Ls\Webhooks\Api\Data\OrderShipmentMessageInterface $orderShipping)
     {
         try {
             $logOriginal = [
-                'OrderId'     => $orderId,
-                'ShipmentNo'  => $shipmentNo,
-                'TrackingId'  => $trackingId,
-                'TrackingUrl' => $trackingUrl,
-                'Provider'    => $provider,
-                'Service'     => $service,
-                'Lines'       => $lines,
+                'OrderId'     => $orderShipping->getOrderId(),
+                'ShipmentNo'  => $orderShipping->getShipmentNo(),
+                'TrackingId'  => $orderShipping->getTrackingId(),
+                'TrackingUrl' => $orderShipping->getTrackingUrl(),
+                'Provider'    => $orderShipping->getProvider(),
+                'Service'     => $orderShipping->getService(),
+                'Lines'       => $orderShipping->getLines(),
 
             ];
             $data        = [
-                'orderId'             => $orderId,
-                'lsCentralShippingId' => $shipmentNo,
-                'trackingId'          => $trackingId,
-                'shipmentProvider'    => $provider,
-                'service'             => $service,
-                'lines'               => $lines,
+                'orderId'             => $orderShipping->getOrderId(),
+                'lsCentralShippingId' => $orderShipping->getShipmentNo(),
+                'trackingId'          => $orderShipping->getTrackingId(),
+                'shipmentProvider'    => $orderShipping->getProvider(),
+                'service'             => $orderShipping->getService(),
+                'lines'               => $orderShipping->getLines(),
 
             ];
             $this->logger->info('OrderShipment', $logOriginal);

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Ls\Webhooks\Observer\GiftCard;
 
 use Magento\Framework\App\Area;
@@ -16,40 +18,19 @@ use Magento\Store\Model\ScopeInterface;
 class SendNotification implements ObserverInterface
 {
     /**
-     * Scope config
-     *
-     * @var ScopeConfigInterface
-     */
-    private $scopeConfig;
-
-    /**
-     * @var TransportBuilder
-     */
-    private $transportBuilder;
-
-    /**
-     * @var CurrencyInterface
-     */
-    private $localeCurrency;
-
-    /**
      * @param CurrencyInterface $localeCurrency
      * @param TransportBuilder $transportBuilder
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        CurrencyInterface $localeCurrency,
-        TransportBuilder $transportBuilder,
-        ScopeConfigInterface $scopeConfig
+        public CurrencyInterface $localeCurrency,
+        public TransportBuilder $transportBuilder,
+        public ScopeConfigInterface $scopeConfig
     ) {
-        $this->localeCurrency = $localeCurrency;
-        $this->transportBuilder = $transportBuilder;
-        $this->scopeConfig = $scopeConfig;
     }
 
     /**
      * Entry point for the observer
-     *
      *
      * @param Observer $observer
      * @return $this

@@ -2,22 +2,22 @@
 
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
-    <route url="/V1/orderstatus" method="POST">
+    <route url="/V1/OrderMessageStatusUpdate" method="POST">
         <service class="Ls\Webhooks\Api\OrderStatusInterface" method="set"/>
         <resources>
-            <resource ref="anonymous"/>
+            <resource ref="Ls_Replication::ls_retail_webhooks"/>
         </resources>
     </route>
-    <route url="/V1/orderpayment" method="POST">
+    <route url="/V1/OrderMessagePayment" method="POST">
         <service class="Ls\Webhooks\Api\OrderPaymentInterface" method="set"/>
         <resources>
-            <resource ref="anonymous"/>
+            <resource ref="Ls_Replication::ls_retail_webhooks"/>
         </resources>
     </route>
-    <route url="/V1/ordershipping" method="POST">
+    <route url="/V1/OrderMessageShipping" method="POST">
         <service class="Ls\Webhooks\Api\OrderShipmentInterface" method="set"/>
         <resources>
-            <resource ref="anonymous"/>
+            <resource ref="Ls_Replication::ls_retail_webhooks"/>
         </resources>
     </route>
 </routes>

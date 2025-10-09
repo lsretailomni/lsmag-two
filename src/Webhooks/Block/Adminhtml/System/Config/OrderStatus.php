@@ -14,28 +14,6 @@ use Magento\Config\Model\Config\Source\Email\Template as DefaultEmailTemplates;
 class OrderStatus extends AbstractFieldArray
 {
     /**
-     * @var ElementFactory
-     */
-    private $elementFactory;
-
-    /**
-     * @var Config
-     */
-    private $emailConfig;
-
-    private $defaultTemplates;
-
-    /**
-     * @var CollectionFactory
-     */
-    private $customTemplateFactory;
-
-    /**
-     * @var DefaultEmailTemplates
-     */
-    private $expectedOrderStatus;
-
-    /**
      * @param Context $context
      * @param ElementFactory $elementFactory
      * @param Config $emailConfig
@@ -46,19 +24,14 @@ class OrderStatus extends AbstractFieldArray
      */
     public function __construct(
         Context $context,
-        ElementFactory $elementFactory,
-        Config $emailConfig,
-        ExpectedOrderStatus $expectedOrderStatus,
-        DefaultEmailTemplates $defaultTemplates,
-        CollectionFactory $customTemplateFactory,
+        public ElementFactory $elementFactory,
+        public Config $emailConfig,
+        public ExpectedOrderStatus $expectedOrderStatus,
+        public DefaultEmailTemplates $defaultTemplates,
+        public CollectionFactory $customTemplateFactory,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->emailConfig           = $emailConfig;
-        $this->elementFactory        = $elementFactory;
-        $this->expectedOrderStatus   = $expectedOrderStatus;
-        $this->defaultTemplates      = $defaultTemplates;
-        $this->customTemplateFactory = $customTemplateFactory;
     }
 
     /**

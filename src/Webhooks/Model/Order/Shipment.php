@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Model\Order;
 
@@ -19,88 +20,12 @@ use Magento\Sales\Api\Data\ShipmentCreationArgumentsExtensionInterfaceFactory;
 use Magento\Sales\Api\Data\ShipmentCreationArgumentsInterfaceFactory;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
 use \Ls\Webhooks\Logger\Logger;
-use \Ls\Core\Model\LSR;
 
 /**
  * class to create shipment through webhook
  */
 class Shipment
 {
-    /**
-     * @var ShipOrderInterface
-     */
-    private $shipOrderInterface;
-
-    /**
-     * @var ShipmentItemCreationInterface
-     */
-    private $shipmentItemCreationInterface;
-
-    /**
-     * @var ShipmentInterface
-     */
-    private $shipmentInterface;
-
-    /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
-     * @var NotificationHelper
-     */
-    private $notificationHelper;
-
-    /**
-     * @var TrackFactory
-     */
-    private $trackFactory;
-
-    /**
-     * @var ShipmentCommentCreationInterface
-     */
-    private $shipmentCommentCreation;
-
-    /**
-     * @var ShippingHelper
-     */
-    private $shippingHelper;
-
-    /**
-     * @var ShipmentRepositoryInterface
-     */
-    private $shipmentRepository;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    protected $searchCriteriaBuilder;
-
-    /**
-     * @var ShipmentCreationArgumentsInterfaceFactory
-     */
-    private $shipmentArgumentsFactory;
-
-    /**
-     * @var ShipmentCreationArgumentsExtensionInterfaceFactory
-     */
-    private $argumentExtensionFactory;
-
-    /**
-     * @var ReplicationHelper
-     */
-    private $replicationHelper;
-
-    /**
-     * @var DefaultSourceProviderInterfaceFactory
-     */
-    private $defaultSourceProviderFactory;
-
-    /**
-     * @var Logger
-     */
-    private $logger;
-
     /**
      * @param ShipOrderInterface $shipOrderInterface
      * @param ShipmentItemCreationInterface $shipmentItemCreationInterface
@@ -119,37 +44,22 @@ class Shipment
      * @param Logger $logger
      */
     public function __construct(
-        ShipOrderInterface $shipOrderInterface,
-        ShipmentItemCreationInterface $shipmentItemCreationInterface,
-        ShipmentCreationArgumentsInterfaceFactory $shipmentCreationArgumentsInterfaceFactory,
-        ShipmentCreationArgumentsExtensionInterfaceFactory $shipmentCreationArgumentsExtensionInterfaceFactory,
-        ReplicationHelper $replicationHelper,
-        DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
-        ShipmentInterface $shipmentInterface,
-        TrackFactory $trackFactory,
-        ShipmentCommentCreationInterface $shipmentCommentCreation,
-        Data $helper,
-        NotificationHelper $notificationHelper,
-        ShippingHelper $shippingHelper,
-        ShipmentRepositoryInterface $shipmentRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        Logger $logger
+        public ShipOrderInterface $shipOrderInterface,
+        public ShipmentItemCreationInterface $shipmentItemCreationInterface,
+        public ShipmentCreationArgumentsInterfaceFactory $shipmentCreationArgumentsInterfaceFactory,
+        public ShipmentCreationArgumentsExtensionInterfaceFactory $shipmentCreationArgumentsExtensionInterfaceFactory,
+        public ReplicationHelper $replicationHelper,
+        public DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
+        public ShipmentInterface $shipmentInterface,
+        public TrackFactory $trackFactory,
+        public ShipmentCommentCreationInterface $shipmentCommentCreation,
+        public Data $helper,
+        public NotificationHelper $notificationHelper,
+        public ShippingHelper $shippingHelper,
+        public ShipmentRepositoryInterface $shipmentRepository,
+        public SearchCriteriaBuilder $searchCriteriaBuilder,
+        public Logger $logger
     ) {
-        $this->shipOrderInterface            = $shipOrderInterface;
-        $this->shipmentItemCreationInterface = $shipmentItemCreationInterface;
-        $this->shipmentArgumentsFactory      = $shipmentCreationArgumentsInterfaceFactory;
-        $this->argumentExtensionFactory      = $shipmentCreationArgumentsExtensionInterfaceFactory;
-        $this->replicationHelper             = $replicationHelper;
-        $this->defaultSourceProviderFactory  = $defaultSourceProviderFactory;
-        $this->shipmentInterface             = $shipmentInterface;
-        $this->trackFactory                  = $trackFactory;
-        $this->shipmentCommentCreation       = $shipmentCommentCreation;
-        $this->helper                        = $helper;
-        $this->notificationHelper            = $notificationHelper;
-        $this->shippingHelper                = $shippingHelper;
-        $this->shipmentRepository            = $shipmentRepository;
-        $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
-        $this->logger                        = $logger;
     }
 
     /**
@@ -220,8 +130,8 @@ class Shipment
                         $websiteId
                     );
 
-                    $arguments = $this->shipmentArgumentsFactory->create();
-                    $extension = $this->argumentExtensionFactory
+                    $arguments = $this->shipmentCreationArgumentsInterfaceFactory->create();
+                    $extension = $this->shipmentCreationArgumentsExtensionInterfaceFactory
                         ->create()
                         ->setSourceCode($sourceCode);
                     $arguments->setExtensionAttributes($extension);

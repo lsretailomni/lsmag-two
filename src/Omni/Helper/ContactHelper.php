@@ -168,11 +168,11 @@ class ContactHelper extends AbstractHelperOmni
     /**
      * Get customer from central based on given search type
      *
-     * @param string $searchStr
+     * @param $searchStr
      * @param int $searchType
      * @return false|Entity\GetMemberContactInfo_GetMemberContactInfo|mixed|null
      */
-    public function getCentralCustomerBasedOnSearchType(string $searchStr, int $searchType)
+    public function getCentralCustomerBasedOnSearchType($searchStr, int $searchType)
     {
         $response = null;
         $contactSearchOperation = $this->createInstance(GetMemberContactInfo_GetMemberContactInfo::class);
@@ -284,10 +284,10 @@ class ContactHelper extends AbstractHelperOmni
     /**
      * Get customer from central based on cardId
      *
-     * @param string $cardId
+     * @param $cardId
      * @return false|Entity\GetMemberContactInfo_GetMemberContactInfo|mixed|null
      */
-    public function getCentralCustomerByCardId(string $cardId)
+    public function getCentralCustomerByCardId($cardId)
     {
         return $this->getCentralCustomerBasedOnSearchType($cardId, 0);
     }
@@ -1034,7 +1034,7 @@ class ContactHelper extends AbstractHelperOmni
                 $customer->setData('lsr_username', $userName);
             }
             $contactEmail = $this->searchWithUsernameOrEmail($customer->getEmail());
-            if (!empty($contactEmail->getLscMemberLoginCard())) {
+            if ($contactEmail && !empty($contactEmail->getLscMemberLoginCard())) {
                 $card = !is_array($contactEmail->getLscMembershipCard()) ?
                     $contactEmail->getLscMembershipCard() : current($contactEmail->getLscMembershipCard());
                 $contact = [
