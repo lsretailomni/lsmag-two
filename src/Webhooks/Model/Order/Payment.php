@@ -118,7 +118,7 @@ class Payment
                     }
                 }
 
-                $validateOrder   = $this->validatePayment($order, $totalAmount, $documentId, $shippingAmount);
+                $validateOrder   = $this->validatePayment($order, (string)$totalAmount, $documentId, $shippingAmount);
                 $invoice         = $this->invoiceService->prepareInvoice($order, $itemsToInvoice);
                 $validateInvoice = $this->validateInvoice($invoice, $documentId);
             }

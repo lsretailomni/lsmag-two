@@ -130,8 +130,8 @@ class Shipment
                         $websiteId
                     );
 
-                    $arguments = $this->shipmentArgumentsFactory->create();
-                    $extension = $this->argumentExtensionFactory
+                    $arguments = $this->shipmentCreationArgumentsInterfaceFactory->create();
+                    $extension = $this->shipmentCreationArgumentsExtensionInterfaceFactory
                         ->create()
                         ->setSourceCode($sourceCode);
                     $arguments->setExtensionAttributes($extension);
