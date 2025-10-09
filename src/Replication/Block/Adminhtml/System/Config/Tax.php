@@ -43,7 +43,7 @@ class Tax implements OptionSourceInterface
         $taxDataArray = $this->replicationHelper->getTaxSetup($websiteId);
         if (!empty($taxDataArray)) {
             foreach ($taxDataArray as $taxData) {
-                $taxPercent = number_format($taxData->getTaxPercent(), 2);
+                $taxPercent = number_format((float)$taxData->getTaxPercent(), 2);
                 $taxCodes[] = [
                     'value' => $taxData->getBusinessTaxGroup() . '#' . $taxData->getProductTaxGroup() .
                         '#' . $taxPercent,
