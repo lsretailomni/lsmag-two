@@ -298,7 +298,7 @@ class ItemHelper extends AbstractHelperOmni
         if ($quote->getId()) {
             if (isset($basketData)) {
                 $mobileTransaction = current($basketData->getMobiletransaction());
-                $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+                $pointDiscount  = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
                 $giftCardAmount = $quote->getLsGiftCardAmountUsed();
                 $quote->getShippingAddress()
                     ->setGrandTotal(

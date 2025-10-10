@@ -945,7 +945,7 @@ class BasketHelper extends AbstractHelperOmni
                 $quoteItem->getProduct()->setIsSuperMode(true);
                 try {
                     // @codingStandardsIgnoreLine
-                    $this->getItemHelper()->itemResourceModel->save($quoteItem);
+                    $this->itemResourceModel->save($quoteItem);
                 } catch (LocalizedException $e) {
                     $this->_logger->critical(
                         "Error saving Quote Item:-" . $quoteItem->getSku() . " - " . $e->getMessage()

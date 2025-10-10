@@ -312,8 +312,8 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Convert Point Rate into Values
      *
-     * @param string $storeId
-     * @param string $currencyCode
+     * @param $storeId
+     * @param $currencyCode
      * @return float|int|string|null
      * @throws GuzzleException
      * @throws NoSuchEntityException
@@ -330,36 +330,14 @@ class LoyaltyHelper extends AbstractHelperOmni
 
         $rate = 0;
         if ($this->lsr->isLSR($storeId) && $this->isEnabledLoyaltyPoints()) {
-            $cacheId = LSR::POINTRATE . $storeId . '_' . $currencyCode;
+            $cacheId  = LSR::POINTRATE . $currencyCode . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($response !== false) {
                 return $this->formatValue($response);
             }
 
-            $response = current($this->dataHelper->fetchGivenTableData(
-                'Currency Exchange Rate',
-                '',
-                [
-                    [
-                        'filterName' => 'Currency Code',
-                        'filterValue' => $currencyCode
-                    ]
-                ]
-            ));
-
-            if (!empty($response['LSC POS Exchange Rate Amount']) &&
-                !empty($response['LSC POS Rel. Exch. Rate Amount'])
-            ) {
-                $rate = ((1 / $response['LSC POS Exchange Rate Amount']) * $response['LSC POS Rel. Exch. Rate Amount']);
-            } else {
-                if (!empty($response['Exchange Rate Amount']) &&
-                    !empty($response['Relational Exch. Rate Amount'])
-                ) {
-                    $rate = ((1 / $response['Exchange Rate Amount']) * $response['Relational Exch. Rate Amount']);
-                }
-            }
-
+            $rate = $this->fetchGetPointsRate($currencyCode);
             if (!empty($rate)) {
                 $this->cacheHelper->persistContentInCache(
                     $cacheId,
@@ -369,6 +347,42 @@ class LoyaltyHelper extends AbstractHelperOmni
                 );
 
                 return $rate;
+            }
+        }
+
+        return $rate;
+    }
+
+    /**
+     * Fetch point rate from central
+     *
+     * @param $currencyCode
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    public function fetchGetPointsRate($currencyCode)
+    {
+        $rate = 0;
+        $response = current($this->dataHelper->fetchGivenTableData(
+            'Currency Exchange Rate',
+            '',
+            [
+                [
+                    'filterName' => 'Currency Code',
+                    'filterValue' => $currencyCode
+                ]
+            ]
+        ));
+
+        if (!empty($response['LSC POS Exchange Rate Amount']) &&
+            !empty($response['LSC POS Rel. Exch. Rate Amount'])
+        ) {
+            $rate = ((1 / $response['LSC POS Exchange Rate Amount']) * $response['LSC POS Rel. Exch. Rate Amount']);
+        } else {
+            if (!empty($response['Exchange Rate Amount']) &&
+                !empty($response['Relational Exch. Rate Amount'])
+            ) {
+                $rate = ((1 / $response['Exchange Rate Amount']) * $response['Relational Exch. Rate Amount']);
             }
         }
 
@@ -826,6 +840,20 @@ class LoyaltyHelper extends AbstractHelperOmni
             LSR::IMAGE_CACHE_INDEPENDENT_OF_STORE_ID,
             $this->lsr->getCurrentStoreId()
         );
+    }
+
+    /**
+     * Get Ls points discount
+     *
+     * @param $pointsSpent
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    public function getLsPointsDiscount($pointsSpent)
+    {
+        $loyaltyPointsRate = $this->getPointRate(null, 'LOY');
+
+        return $pointsSpent * (1 / $loyaltyPointsRate);
     }
 
     /**

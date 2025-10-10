@@ -58,7 +58,7 @@ class LoyaltyPoints extends AbstractCart
      */
     public function getPointsRate()
     {
-        return $this->loyaltyHelper->getPointRate();
+        return $this->loyaltyHelper->getPointRate(null, 'LOY');
     }
 
     /**

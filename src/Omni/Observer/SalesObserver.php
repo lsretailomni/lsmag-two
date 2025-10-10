@@ -41,10 +41,15 @@ class SalesObserver implements ObserverInterface
         $event = $observer->getEvent();
         $quote = $event->getQuote();
         $shippingAssignment = $event->getShippingAssignment();
-        $addressType = $shippingAssignment->getShipping()->getAddress()->getAddressType();
-        $total = $event->getTotal();
-        $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-        $giftCardAmount = $quote->getLsGiftCardAmountUsed();
+        $addressType        = $shippingAssignment->getShipping()->getAddress()->getAddressType();
+        $total              = $event->getTotal();
+        $loyaltyPointsSpent = $quote->getLsPointsSpent();
+        $pointDiscount = 0;
+        if (!empty($loyaltyPointsSpent)) {
+            $pointDiscount = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
+        }
+
+        $giftCardAmount     = $quote->getLsGiftCardAmountUsed();
 
         if ($pointDiscount > 0.001) {
             $quote->setLsPointsDiscount($pointDiscount);
@@ -80,7 +85,7 @@ class SalesObserver implements ObserverInterface
                     if (!$quote->isVirtual()) {
                         $address->setSubtotalInclTax($total->getSubtotal());
                     }
-                    
+
                 }
             }
         }

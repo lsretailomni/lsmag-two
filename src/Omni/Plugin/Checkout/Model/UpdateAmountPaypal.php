@@ -50,8 +50,8 @@ class UpdateAmountPaypal
 
         $quote         = $this->checkoutSession->getQuote();
         $paymentMethod = $quote->getPayment()->getMethod();
-        $pointRate     = $this->loyaltyHelper->getPointRate();
-        $loyaltyPoints = $pointRate > 0 ? $pointRate * $quote->getLsPointsSpent() : 0;
+        $loyaltyPoints = $quote->getLsPointsSpent() > 0 ?
+            $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent()) : 0;
 
         if (in_array($paymentMethod, $paypalMehodList)) {
             $result[self::SUBTOTAL] = $quote->getSubtotal() - ($loyaltyPoints + $quote->getLsGiftCardAmountUsed());
