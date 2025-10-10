@@ -132,7 +132,6 @@ class PayStore extends AbstractExtensibleModel implements
      */
     public $canReviewPayment = false;
 
-
     /**
      * @var bool
      */
@@ -162,8 +161,8 @@ class PayStore extends AbstractExtensibleModel implements
         public DataObject $dataObject,
         public Logger $logger,
         public DirectoryHelper $directory,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct(
@@ -570,7 +569,7 @@ class PayStore extends AbstractExtensibleModel implements
      * @return bool|mixed
      * @throws LocalizedException
      */
-    public function isAvailable(CartInterface $quote = null)
+    public function isAvailable(?CartInterface $quote = null)
     {
         if (!$this->isActive($quote ? $quote->getStoreId() : null)) {
             return false;

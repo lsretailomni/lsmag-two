@@ -41,7 +41,7 @@ class SalesEntries implements ResolverInterface
      * @throws LocalizedException
      * @throws NoSuchEntityException|GuzzleException
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         $pageSize = null;
         $orderId  = null;

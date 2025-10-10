@@ -510,7 +510,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      * @throws GuzzleException
      * @throws NoSuchEntityException
      */
-    public function getPublishedOffers(string $cardId, string $storeId, string $itemId = null)
+    public function getPublishedOffers(string $cardId, string $storeId, ?string $itemId = null)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $cacheId = LSR::COUPONS;

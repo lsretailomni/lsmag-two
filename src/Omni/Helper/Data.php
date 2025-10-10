@@ -1201,7 +1201,6 @@ class Data extends AbstractHelperOmni
         return $this->request->getParam('website') ?? $this->storeManager->getStore()->getWebsiteId();
     }
 
-
     /**
      * Create new instance of given class name
      *
@@ -1209,7 +1208,7 @@ class Data extends AbstractHelperOmni
      * @param array $data
      * @return mixed
      */
-    public function createInstance(string $entityClassName = null, array $data = [])
+    public function createInstance(?string $entityClassName = null, array $data = [])
     {
         return ObjectManager::getInstance()->create($entityClassName, $data);
     }

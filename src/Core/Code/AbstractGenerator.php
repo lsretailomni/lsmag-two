@@ -207,7 +207,7 @@ CODE);
         bool $isAbstract = false,
         array $flags = [],
         array $parameters = [],
-        ReflectionNamedType $returnType = null,
+        ?ReflectionNamedType $returnType = null,
         string $body = ''
     ): void {
         $methodGen = new MethodGenerator();

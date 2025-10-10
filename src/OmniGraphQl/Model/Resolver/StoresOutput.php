@@ -24,7 +24,7 @@ class StoresOutput implements ResolverInterface
     /**
      * @inheritdoc
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         $scopeId = (int)$context->getExtensionAttributes()->getStore()->getId();
         $stores  = $this->dataHelper->getAllStores($scopeId);

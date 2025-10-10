@@ -61,8 +61,8 @@ class SetShippingMethodsOnCartPlugin
         Field $field,
         $context,
         ResolveInfo $info,
-        array $value = null,
-        array $args = null
+        ?array $value = null,
+        ?array $args = null
     ) {
         if (empty($args['input']['shipping_methods'])) {
             throw new GraphQlInputException(__('Required parameter "shipping_methods" is missing'));

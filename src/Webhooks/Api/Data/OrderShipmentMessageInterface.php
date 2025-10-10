@@ -127,5 +127,5 @@ interface OrderShipmentMessageInterface
      * @param \Ls\Webhooks\Api\Data\OrderLineInterface[]|null $lines
      * @return $this
      */
-    public function setLines(array $lines = null);
+    public function setLines(?array $lines = null);
 }

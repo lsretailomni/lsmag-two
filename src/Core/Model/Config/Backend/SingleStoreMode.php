@@ -44,8 +44,8 @@ class SingleStoreMode extends Value
         TypeListInterface $cacheTypeList,
         LSR $lsr,
         ResourceConnection $resourceConnection,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->lsr                = $lsr;

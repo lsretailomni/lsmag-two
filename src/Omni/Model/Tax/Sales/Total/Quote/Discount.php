@@ -16,6 +16,7 @@ use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 use Magento\SalesRule\Api\Data\DiscountDataInterfaceFactory;
 use Magento\SalesRule\Api\Data\RuleDiscountInterfaceFactory;
+use Magento\SalesRule\Model\RulesApplier;
 use Magento\SalesRule\Model\Validator;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -33,6 +34,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
      * @param LoyaltyHelper $loyaltyHelper
      * @param RuleDiscountInterfaceFactory|null $discountInterfaceFactory
      * @param DiscountDataInterfaceFactory|null $discountDataInterfaceFactory
+     * @param RulesApplier|null $rulesApplier
      */
     public function __construct(
         ManagerInterface $eventManager,
@@ -41,8 +43,9 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         PriceCurrencyInterface $priceCurrency,
         public BasketHelper $basketHelper,
         public LoyaltyHelper $loyaltyHelper,
-        RuleDiscountInterfaceFactory $discountInterfaceFactory = null,
-        DiscountDataInterfaceFactory $discountDataInterfaceFactory = null
+        ?RuleDiscountInterfaceFactory $discountInterfaceFactory = null,
+        ?DiscountDataInterfaceFactory $discountDataInterfaceFactory = null,
+        ?RulesApplier $rulesApplier = null
     ) {
         parent::__construct(
             $eventManager,
@@ -50,7 +53,8 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             $validator,
             $priceCurrency,
             $discountInterfaceFactory,
-            $discountDataInterfaceFactory
+            $discountDataInterfaceFactory,
+            $rulesApplier
         );
     }
 

@@ -67,7 +67,7 @@ class DeviceSave extends AbstractOperation
      * @param DeviceSaveRequest $request
      * @return ResponseInterface|DeviceSaveResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

@@ -85,7 +85,7 @@ class GetDiscountsOutput implements ResolverInterface
     /**
      * @inheritdoc
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         if (empty($args['item_id'])) {
             throw new GraphQlInputException(__('Required parameter "item_id" is missing'));

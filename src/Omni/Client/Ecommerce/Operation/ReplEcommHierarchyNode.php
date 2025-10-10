@@ -67,7 +67,7 @@ class ReplEcommHierarchyNode extends AbstractOperation
      * @param ReplEcommHierarchyNodeRequest $request
      * @return ResponseInterface|ReplEcommHierarchyNodeResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

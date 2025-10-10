@@ -67,7 +67,7 @@ class ReplEcommDataTranslation extends AbstractOperation
      * @param ReplEcommDataTranslationRequest $request
      * @return ResponseInterface|ReplEcommDataTranslationResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

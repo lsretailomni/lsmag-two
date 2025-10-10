@@ -67,7 +67,7 @@ class ActivityGroupAdditionalChargesSet extends AbstractOperation
      * @param ActivityGroupAdditionalChargesSetRequest $request
      * @return ResponseInterface|ActivityGroupAdditionalChargesSetResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

@@ -117,7 +117,6 @@ class OperationGenerator extends AbstractOmniGenerator
 
         // GENERATE FINAL CLASS CONTENT
         $content = $this->file->generate();
-
         // Cleanup slashes from common type hints
         $replaceMap = [
             'extends Ls\\Omni\\Client\\AbstractOperation' => 'extends AbstractOperation',
@@ -213,7 +212,7 @@ CODE
         $method->setName('createInstance');
         $method->setParameter(ParameterGenerator::fromArray([
             'name'         => 'entityClassName',
-            'type'         => 'string',
+            'type'         => '?string',
             'defaultvalue' => null
         ]));
         $method->setParameter(ParameterGenerator::fromArray([

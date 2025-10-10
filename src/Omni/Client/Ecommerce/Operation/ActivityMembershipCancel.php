@@ -67,7 +67,7 @@ class ActivityMembershipCancel extends AbstractOperation
      * @param ActivityMembershipCancelRequest $request
      * @return ResponseInterface|ActivityMembershipCancelResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

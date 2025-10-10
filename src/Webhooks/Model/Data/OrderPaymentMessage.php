@@ -136,7 +136,7 @@ class OrderPaymentMessage extends AbstractExtensibleModel implements OrderPaymen
     /**
      * @inheritdoc
      */
-    public function setLines(array $lines = null)
+    public function setLines(?array $lines = null)
     {
         return $this->setData(self::LINES, $lines);
     }
