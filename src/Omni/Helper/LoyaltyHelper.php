@@ -363,7 +363,7 @@ class LoyaltyHelper extends AbstractHelperOmni
     public function fetchGetPointsRate($currencyCode)
     {
         $rate = 0;
-        $response = current($this->dataHelper->fetchGivenTableData(
+        $response = $this->dataHelper->fetchGivenTableData(
             'Currency Exchange Rate',
             '',
             [
@@ -372,7 +372,7 @@ class LoyaltyHelper extends AbstractHelperOmni
                     'filterValue' => $currencyCode
                 ]
             ]
-        ));
+        );
 
         if (!empty($response['LSC POS Exchange Rate Amount']) &&
             !empty($response['LSC POS Rel. Exch. Rate Amount'])
@@ -384,6 +384,10 @@ class LoyaltyHelper extends AbstractHelperOmni
             ) {
                 $rate = ((1 / $response['Exchange Rate Amount']) * $response['Relational Exch. Rate Amount']);
             }
+        }
+
+        if ($rate) {
+            $rate = 1 / $rate;
         }
 
         return $rate;

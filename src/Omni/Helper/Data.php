@@ -790,7 +790,7 @@ class Data extends AbstractHelperOmni
             $records[] = $record;
         }
 
-        return $records;
+        return end($records);
     }
 
     /**
