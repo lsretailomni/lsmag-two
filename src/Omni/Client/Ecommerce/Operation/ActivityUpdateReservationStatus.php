@@ -67,7 +67,7 @@ class ActivityUpdateReservationStatus extends AbstractOperation
      * @param ActivityUpdateReservationStatusRequest $request
      * @return ResponseInterface|ActivityUpdateReservationStatusResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

@@ -67,7 +67,7 @@ class SalesEntriesGetByCardIdEx extends AbstractOperation
      * @param SalesEntriesGetByCardIdExRequest $request
      * @return ResponseInterface|SalesEntriesGetByCardIdExResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

@@ -67,7 +67,7 @@ class ActivityReservationsGet extends AbstractOperation
      * @param ActivityReservationsGetRequest $request
      * @return ResponseInterface|ActivityReservationsGetResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

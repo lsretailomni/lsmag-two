@@ -67,7 +67,7 @@ class OrderCancelEx extends AbstractOperation
      * @param OrderCancelExRequest $request
      * @return ResponseInterface|OrderCancelExResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

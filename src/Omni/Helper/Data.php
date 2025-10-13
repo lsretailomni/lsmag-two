@@ -263,7 +263,7 @@ class Data extends AbstractHelperOmni
         $loyaltyAmount = $grossAmount = 0;
         try {
             if ($loyaltyPoints > 0) {
-                $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+                $loyaltyAmount = $this->loyaltyHelper->getLsPointsDiscount($loyaltyPoints);
             }
 
             if (!empty($basketData) &&
@@ -303,7 +303,7 @@ class Data extends AbstractHelperOmni
             $loyaltyAmount = 0;
             if (!empty($basketData) && is_object($basketData)) {
                 if ($loyaltyPoints > 0) {
-                    $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+                    $loyaltyAmount = $this->loyaltyHelper->getLsPointsDiscount($loyaltyPoints) ;
                 }
                 $quote          = $this->cartRepository->get($this->checkoutSession->getQuoteId());
                 $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
@@ -790,7 +790,7 @@ class Data extends AbstractHelperOmni
             $records[] = $record;
         }
 
-        return $records;
+        return end($records);
     }
 
     /**
@@ -890,11 +890,7 @@ class Data extends AbstractHelperOmni
                 }
             }
 
-            $storeId = $invoiceCreditMemo->getOrder()->getStoreId();
-
-            $pointRate         = ($this->loyaltyHelper->getPointRate($storeId)) ?
-                $this->loyaltyHelper->getPointRate($storeId) : 0;
-            $totalPointsAmount = $pointsSpent * $pointRate;
+            $totalPointsAmount = $this->loyaltyHelper->getLsPointsDiscount($pointsSpent);
             $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
             $pointsSpent       = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
             $giftCardAmount    = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
@@ -1205,7 +1201,6 @@ class Data extends AbstractHelperOmni
         return $this->request->getParam('website') ?? $this->storeManager->getStore()->getWebsiteId();
     }
 
-
     /**
      * Create new instance of given class name
      *
@@ -1213,7 +1208,7 @@ class Data extends AbstractHelperOmni
      * @param array $data
      * @return mixed
      */
-    public function createInstance(string $entityClassName = null, array $data = [])
+    public function createInstance(?string $entityClassName = null, array $data = [])
     {
         return ObjectManager::getInstance()->create($entityClassName, $data);
     }

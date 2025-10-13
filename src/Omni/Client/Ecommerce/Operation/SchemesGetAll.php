@@ -67,7 +67,7 @@ class SchemesGetAll extends AbstractOperation
      * @param SchemesGetAllRequest $request
      * @return ResponseInterface|SchemesGetAllResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

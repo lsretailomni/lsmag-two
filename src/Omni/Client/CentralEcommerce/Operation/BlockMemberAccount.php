@@ -76,7 +76,7 @@ class BlockMemberAccount extends AbstractOperation
         return $request;
     }
 
-    public function createInstance(string $entityClassName = null, array $data = [])
+    public function createInstance(?string $entityClassName = null, array $data = [])
     {
         return \Magento\Framework\App\ObjectManager::getInstance()->create($entityClassName, $data);
     }

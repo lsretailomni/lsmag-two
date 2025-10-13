@@ -110,7 +110,7 @@ class Totals extends Template
         }
 
         if ($this->getSource()->getLsPointsSpent() > 0) {
-            $loyaltyAmount = $this->getSource()->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $loyaltyAmount = $this->loyaltyHelper->getLsPointsDiscount($this->getSource()->getLsPointsSpent());
             // @codingStandardsIgnoreLine
             $loyaltyPoints = new DataObject(
                 [

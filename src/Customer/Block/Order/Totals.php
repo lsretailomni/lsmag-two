@@ -285,6 +285,6 @@ class Totals extends AbstractOrderBlock
     public function convertLoyaltyPointsToAmount($loyaltyPoints)
     {
         $points = number_format((float)$loyaltyPoints, 2, '.', '');
-        return $points * $this->loyaltyHelper->getPointRate();
+        return  $this->loyaltyHelper->getLsPointsDiscount($points);
     }
 }

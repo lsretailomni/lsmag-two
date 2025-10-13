@@ -136,7 +136,7 @@ class OrderStatusMessage extends AbstractExtensibleModel implements OrderStatusM
     /**
      * @inheritdoc
      */
-    public function setLines(array $lines = null)
+    public function setLines(?array $lines = null)
     {
         return $this->setData(self::LINES, $lines);
     }

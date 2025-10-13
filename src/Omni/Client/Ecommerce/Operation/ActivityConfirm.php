@@ -67,7 +67,7 @@ class ActivityConfirm extends AbstractOperation
      * @param ActivityConfirmRequest $request
      * @return ResponseInterface|ActivityConfirmResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

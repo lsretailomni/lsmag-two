@@ -67,7 +67,7 @@ class RecommendedActive extends AbstractOperation
      * @param RecommendedActiveRequest $request
      * @return ResponseInterface|RecommendedActiveResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

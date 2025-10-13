@@ -189,6 +189,10 @@ class Data
                 if ($item['order_status'] == $orderStatus) {
                     $template = $item['email_template'];
                     break;
+                } else {
+                    if ($item['order_status'] == 'MISC') {
+                        $template = $item['email_template'];
+                    }
                 }
             }
         }
@@ -214,7 +218,7 @@ class Data
      * @return array
      * @throws NoSuchEntityException
      */
-        public function getItems($order, $itemsInfo, $linesMerged = true)
+    public function getItems($order, $itemsInfo, $linesMerged = true)
     {
         $items                = [];
         $globalCounter        = 0;
@@ -365,14 +369,15 @@ class Data
     }
 
     /**
-     * Get point rate
+     * Get points discount
      *
-     * @return float|GetPointRateResponse|ResponseInterface|null
+     * @param $loyaltyPoints
+     * @return float|int
      * @throws NoSuchEntityException
      */
-    public function getPointRate()
+    public function getLsPointsDiscount($loyaltyPoints)
     {
-        return $this->loyaltyHelper->getPointRate();
+        return $this->loyaltyHelper->getLsPointsDiscount($loyaltyPoints);
     }
 
     /**

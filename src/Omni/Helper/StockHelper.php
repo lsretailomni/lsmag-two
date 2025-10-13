@@ -48,7 +48,7 @@ class StockHelper extends AbstractHelperOmni
      */
     public function getGivenItemsStockInGivenStore(array $items, string $storeId = '')
     {
-        $stockCollection = $stockItems = [];
+        $stockCollection             = $stockItems = [];
         $useManageStockConfiguration = $this->configuration->getManageStock();
 
         foreach ($items as &$item) {
@@ -111,17 +111,17 @@ class StockHelper extends AbstractHelperOmni
         foreach ($stockCollection as &$stock) {
             if ($stock['item_id'] == $parentProductSku && $stock['variant_id'] == $childProductSku) {
                 $stock['qty'] = $stock['qty'] + $qty;
-                $found = true;
+                $found        = true;
                 break;
             }
         }
 
         if (!$found) {
             $stockCollection[] = [
-                'item_id' => $parentProductSku,
+                'item_id'    => $parentProductSku,
                 'variant_id' => $childProductSku,
-                'name' => $name,
-                'qty' => $qty
+                'name'       => $name,
+                'qty'        => $qty
             ];
         }
     }
@@ -221,13 +221,15 @@ class StockHelper extends AbstractHelperOmni
      */
     public function getAllStoresFromReplTable(array $storesNavIds): Collection
     {
-        $stores = $this->storeCollectionFactory->create()
+        $stores        = $this->storeCollectionFactory->create()
             ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
             ->addFieldToFilter(
                 'scope_id',
-                ['eq' => !$this->lsr->isSSM() ?
-                    $this->lsr->getCurrentWebsiteId() :
-                    $this->lsr->getAdminStore()->getWebsiteId()]
+                [
+                    'eq' => !$this->lsr->isSSM() ?
+                        $this->lsr->getCurrentWebsiteId() :
+                        $this->lsr->getAdminStore()->getWebsiteId()
+                ]
             );
         $displayStores = $this->lsr->getStoreConfig(LSR::SC_CART_DISPLAY_STORES);
 
@@ -248,9 +250,9 @@ class StockHelper extends AbstractHelperOmni
      */
     public function fetchAllStoresItemInStockPlusApplyJoin(string $simpleProductId, string $productSku): Collection
     {
-        $itemId = $this->itemHelper->getLsCentralItemIdBySku($productSku);
+        $itemId      = $this->itemHelper->getLsCentralItemIdBySku($productSku);
         $storesNavId = [];
-        $response = $this->getAllStoresItemInStock(
+        $response    = $this->getAllStoresItemInStock(
             $simpleProductId,
             $itemId
         );
@@ -288,7 +290,7 @@ class StockHelper extends AbstractHelperOmni
         bool $throwException = false
     ) {
         if (!$item->getHasError()) {
-            $storeId = $this->lsr->getActiveWebStore();
+            $storeId  = $this->lsr->getActiveWebStore();
             $children = [];
 
             if ($item->getProductType() == Type::TYPE_BUNDLE) {
@@ -393,11 +395,11 @@ class StockHelper extends AbstractHelperOmni
             foreach ($stockCollection as &$values) {
                 if ($values['item_id'] == $item->getNumber() && $values['variant_id'] == $item->getVariant()) {
                     if ($actualQty > 0) {
-                        $values['status'] = '1';
+                        $values['status']  = '1';
                         $values['display'] = __('This item is available');
 
                         if ($values['qty'] > $actualQty) {
-                            $values['status'] = '0';
+                            $values['status']  = '0';
                             $values['display'] = __(
                                 'You have selected %1 quantity for this item.
                                  We only have %2 quantity available in stock for this store.
@@ -407,7 +409,7 @@ class StockHelper extends AbstractHelperOmni
                             );
                         }
                     } else {
-                        $values['status'] = '0';
+                        $values['status']  = '0';
                         $values['display'] = __('This item is not available');
                     }
                 }
