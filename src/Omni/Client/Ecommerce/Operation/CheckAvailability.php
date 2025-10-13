@@ -67,7 +67,7 @@ class CheckAvailability extends AbstractOperation
      * @param CheckAvailabilityRequest $request
      * @return ResponseInterface|CheckAvailabilityResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

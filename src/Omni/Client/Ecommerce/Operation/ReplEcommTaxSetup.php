@@ -67,7 +67,7 @@ class ReplEcommTaxSetup extends AbstractOperation
      * @param ReplEcommTaxSetupRequest $request
      * @return ResponseInterface|ReplEcommTaxSetupResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
