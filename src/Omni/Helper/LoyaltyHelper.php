@@ -246,15 +246,26 @@ class LoyaltyHelper extends AbstractHelperOmni
             $startDateTs = Carbon::now();
             $endDateTs = Carbon::now()->addDays((int)$expiryInterval);
 
-            foreach ($result as $res) {
-                $entryType = $res['Entry Type'];
-                $expirationDate = Carbon::parse($res['Expiration Date']);
+            if (is_array($result) && isset($result[0]) && is_array($result[0])) {
+                foreach ($result as $res) {
+                    $entryType = $res['Entry Type'];
+                    $expirationDate = Carbon::parse($res['Expiration Date']);
+                    if ($entryType == "0" && $expirationDate->between($startDateTs, $endDateTs, true)) {
+                        $totalEarnedPoints += $res['Points'];
+                    } elseif ($entryType == "1" && $expirationDate->between($startDateTs, $endDateTs, true)) {
+                        $totalRedemption += $res['Points'];
+                    }
+                }    
+            } elseif (is_array($result)) {
+                $entryType = $result['Entry Type'];
+                $expirationDate = Carbon::parse($result['Expiration Date']);
                 if ($entryType == "0" && $expirationDate->between($startDateTs, $endDateTs, true)) {
-                    $totalEarnedPoints += $res['Points'];
+                    $totalEarnedPoints += $result['Points'];
                 } elseif ($entryType == "1" && $expirationDate->between($startDateTs, $endDateTs, true)) {
-                    $totalRedemption += $res['Points'];
+                    $totalRedemption += $result['Points'];
                 }
             }
+            
 
             //Convert to negative redemption points to positive for ease of calculation
             $totalRedemption = abs($totalRedemption);
