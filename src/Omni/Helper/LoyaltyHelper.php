@@ -202,16 +202,25 @@ class LoyaltyHelper extends AbstractHelperOmni
         $schemes = $this->loyaltyHelper->getSchemes();
         $requiredScheme = null;
 
-        foreach ($schemes as $scheme) {
-            $clubCode = $scheme['Club Code'];
-            $updateSequence = $scheme['Update Sequence'];
-            if ($currentClubCode == $clubCode &&
-                $updateSequence > $currentSequence
-            ) {
-                $requiredScheme = $scheme;
-                break;
+        if (is_array($schemes) && isset($schemes[0]) && is_array($schemes[0])) {
+            foreach ($schemes as $scheme) {
+                $clubCode       = $scheme['Club Code'];
+                $updateSequence = $scheme['Update Sequence'];
+                if ($currentClubCode == $clubCode && 
+                    $updateSequence > $currentSequence
+                ) {
+                    $requiredScheme = $scheme;
+                    break;
+                }
             }
-        }
+        } elseif (is_array($schemes)) {
+            $clubCode       = $schemes['Club Code'] ?? $schemes;
+            $updateSequence = $schemes['Update Sequence'] ?? 0;
+            
+            if ($currentClubCode == $clubCode && $updateSequence > $currentSequence) {
+                $requiredScheme = $schemes;
+            }
+         }
 
         return $requiredScheme;
     }
@@ -514,7 +523,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      * @throws GuzzleException
      * @throws NoSuchEntityException
      */
-    public function getPublishedOffers(string $cardId, string $storeId, ?string $itemId = null)
+    public function getPublishedOffers(?string $cardId, string $storeId, ?string $itemId = null)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $cacheId = LSR::COUPONS;

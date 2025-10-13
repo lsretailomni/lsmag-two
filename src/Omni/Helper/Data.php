@@ -773,7 +773,6 @@ class Data extends AbstractHelperOmni
     public function formatTableDataResponse(SimpleXMLElement $response): array
     {
         $fieldMap = $records = [];
-
         foreach ($response->Response_Body->WS_Table_Field_Buffer ?? [] as $field) {
             $node = (string)($field->Node_Name ?? '');
             $name = (string)($field->Field_Name ?? '');
@@ -781,7 +780,6 @@ class Data extends AbstractHelperOmni
                 $fieldMap[$node] = $name;
             }
         }
-
         foreach ($response->Response_Body->Table_Data ?? [] as $row) {
             $record = [];
             foreach ($fieldMap as $node => $fieldName) {
@@ -789,8 +787,7 @@ class Data extends AbstractHelperOmni
             }
             $records[] = $record;
         }
-
-        return end($records);
+        return $records ? end($records) : [];
     }
 
     /**
