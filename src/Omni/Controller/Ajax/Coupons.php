@@ -40,6 +40,12 @@ class Coupons implements HttpPostActionInterface
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;
         }
+
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/custom.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('I am here');
+        
         $result     = $this->resultJsonFactory->create();
         $resultPage = $this->resultPageFactory->create();
         $block      = $resultPage->getLayout()

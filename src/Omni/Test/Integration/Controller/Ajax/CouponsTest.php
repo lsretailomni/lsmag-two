@@ -87,11 +87,14 @@ class CouponsTest extends AbstractController
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_MODULE_ENABLED, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
+        Config(LSR::LS_CUSTOMER_INTEGRATION_ACTIVE, AbstractIntegrationTest::LS_CUSTOMER_INTEGRATION_ACTIVE, 'website'),
+        Config(LSR::LS_BASKET_INTEGRATION_ACTIVE, AbstractIntegrationTest::LS_BASKET_INTEGRATION_ACTIVE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [

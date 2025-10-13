@@ -710,6 +710,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isLSR($storeId = false, $scope = false, $force = true)
     {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/custom.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('I am here isLSR 1');
+        $logger->info('storeId '.$storeId);
+        $logger->info('scope '.$scope);
         if (!$this->isEnabled($storeId, $scope) || !$force) {
             return false;
         }
@@ -718,6 +724,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             $this->validateBaseUrlStoreId == $storeId &&
             $scope == $this->validateBaseUrlScope
         ) {
+            $logger->info('I am here isLSR 2 ');
+            $logger->info((int)$this->validateBaseUrlResponse);
             return $this->validateBaseUrlResponse;
         }
         $this->validateBaseUrlStoreId = $storeId;
@@ -727,17 +735,21 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             $store                      = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
             $websiteId                  = $storeId;
             $this->validateBaseUrlScope = $scope;
+            $logger->info('I am here isLSR 3');
         } else {
             $baseUrl                    = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
             $store                      = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
             $this->validateBaseUrlScope = false;
+            $logger->info('I am here isLSR 4');
         }
         if (empty($baseUrl) || empty($store)) {
+            $logger->info('I am here isLSR 5');
             $this->validateBaseUrlResponse = false;
         } else {
+            $logger->info('I am here isLSR 6');
             $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl, [], [], $websiteId);
         }
-
+        $logger->info('I am here isLSR '.$this->validateBaseUrlResponse);
         return $this->validateBaseUrlResponse;
     }
 
@@ -1357,7 +1369,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if ($storeId === null) {
             $storeId = $this->getCurrentStoreId();
         }
-
+        
         return $this->getStoreConfig(LSR::SC_MODULE_ENABLED, $storeId);
     }
 

@@ -15,7 +15,7 @@ define('EMAIL_1', getenv('EMAIL'));
 define('FIRST_NAME_1', getenv('FIRST_NAME'));
 define('LAST_NAME_1', getenv('LAST_NAME'));
 define('CUSTOMER_ID_1', getenv('CUSTOMER_ID'));
-define('CS_URL_1', getenv('CS_URL'));
+define('BASE_URL', getenv('BASE_URL'));
 define('CS_VERSION_1', getenv('CS_VERSION'));
 define('LS_VERSION_1', getenv('LS_VERSION'));
 define('CS_STORE_1', getenv('CS_STORE'));
@@ -43,6 +43,8 @@ define('ENABLE_COUPON_ELEMENTS', getenv('ENABLE_COUPON_ELEMENTS'));
 define('COUPONS_SHOW_ON_CHECKOUT', getenv('COUPONS_SHOW_ON_CHECKOUT'));
 define('ENABLE_LOY_ELEMENTS', getenv('ENABLE_LOY_ELEMENTS'));
 define('LOY_SHOW_ON_CHECKOUT', getenv('LOY_SHOW_ON_CHECKOUT'));
+define('LS_CUSTOMER_INTEGRATION_ACTIVE', getenv('LS_CUSTOMER_INTEGRATION_ACTIVE'));
+define('LS_BASKET_INTEGRATION_ACTIVE', getenv('LS_BASKET_INTEGRATION_ACTIVE'));
 define('ENABLE_GC_ELEMENTS', getenv('ENABLE_GC_ELEMENTS'));
 define('GC_SHOW_ON_CHECKOUT', getenv('GC_SHOW_ON_CHECKOUT'));
 define('DISCOUNT_VALIDATION_ACTIVE', getenv('DISCOUNT_VALIDATION_ACTIVE'));
@@ -60,7 +62,8 @@ class AbstractIntegrationTest extends TestCase
     public const FIRST_NAME = FIRST_NAME_1;
     public const LAST_NAME = LAST_NAME_1;
     public const CUSTOMER_ID = CUSTOMER_ID_1;
-    public const CS_URL = CS_URL_1;
+//    public const CS_URL = CS_URL_1;
+    public const BASE_URL = BASE_URL;
     public const CS_VERSION = CS_VERSION_1;
     public const CS_STORE = CS_STORE_1;
     public const LS_MAG_ENABLE = LS_MAG_ENABLE;
@@ -93,6 +96,8 @@ class AbstractIntegrationTest extends TestCase
     public const SC_CLICKCOLLECT_ENABLED = SC_CLICKCOLLECT_ENABLED;
     public const TENDER_TYPE_MAPPINGS = TENDER_TYPE_MAPPINGS;
     public const ADYEN_RESPONSE = ADYEN_RESPONSE;
+    public const LS_CUSTOMER_INTEGRATION_ACTIVE = LS_CUSTOMER_INTEGRATION_ACTIVE;
+    public const LS_BASKET_INTEGRATION_ACTIVE = LS_BASKET_INTEGRATION_ACTIVE;
 
     protected function setUp(): void
     {
