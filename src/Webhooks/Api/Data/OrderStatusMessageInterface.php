@@ -137,5 +137,5 @@ interface OrderStatusMessageInterface
      * @param \Ls\Webhooks\Api\Data\OrderLineInterface[]|null $lines List of order line items
      * @return $this
      */
-    public function setLines(array $lines = null);
+    public function setLines(?array $lines = null);
 }

@@ -28,7 +28,7 @@ class GiftCardBalanceOutput implements ResolverInterface
     /**
      * @inheritdoc
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         if (empty($args['gift_card_no'])) {
             throw new GraphQlInputException(__('Required parameter "gift_card_no" is missing'));

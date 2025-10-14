@@ -252,7 +252,7 @@ class AbstractHelperOmni extends AbstractHelper
      * @param array $data
      * @return mixed
      */
-    public function createInstance(string $entityClassName = null, array $data = [])
+    public function createInstance(?string $entityClassName = null, array $data = [])
     {
         return ObjectManager::getInstance()->create($entityClassName, $data);
     }

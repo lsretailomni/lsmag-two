@@ -47,8 +47,8 @@ class SetPaymentMethodOnCartPlugin
         Field $field,
         $context,
         ResolveInfo $info,
-        array $value = null,
-        array $args = null
+        ?array $value = null,
+        ?array $args = null
     ) {
         if (!isset($args['input']['anonymous']) || $args['input']['anonymous'] === false) {
             return [$field, $context, $info, $value, $args];

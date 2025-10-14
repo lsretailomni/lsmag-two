@@ -32,13 +32,10 @@ class Invoice
                 $invoice->getOrder()->setIncrementId($invoice->getOrder()->getDocumentId());
             }
             if ($invoice->getLsPointsSpent() > 0) {
-                $pointRate = $this->loyaltyHelper->getPointRate();
-                if ($pointRate > 0) {
-                    $loyaltyAmount = -($invoice->getLsPointsSpent() * $pointRate);
-                    $invoice->setLsPointsSpent($loyaltyAmount);
-                } else {
-                    $invoice->setLsPointsSpent(0);
-                }
+                $loyaltyAmount = -$this->loyaltyHelper->getLsPointsDiscount($invoice->getLsPointsSpent());
+                $invoice->setLsPointsSpent($loyaltyAmount);
+            } else {
+                $invoice->setLsPointsSpent(0);
             }
             if ($invoice->getLsGiftCardAmountUsed() > 0) {
                 $invoice->setLsGiftCardAmountUsed(-($invoice->getLsGiftCardAmountUsed()));

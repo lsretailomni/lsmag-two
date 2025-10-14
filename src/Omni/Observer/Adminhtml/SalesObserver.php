@@ -45,6 +45,8 @@ class SalesObserver implements ObserverInterface
             $basketData = $this->basketHelper->getOneListCalculationFromCheckoutSession($quote);
 
             if (!empty($basketData)) {
+                $pointDiscount  = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
+                $giftCardAmount = $quote->getLsGiftCardAmountUsed();
                 $mobileTransaction = current((array)$basketData->getMobiletransaction());
                 $grandTotal = $mobileTransaction->getGrossamount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;

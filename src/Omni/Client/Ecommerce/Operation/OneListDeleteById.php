@@ -67,7 +67,7 @@ class OneListDeleteById extends AbstractOperation
      * @param OneListDeleteByIdRequest $request
      * @return ResponseInterface|OneListDeleteByIdResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

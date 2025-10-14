@@ -67,7 +67,7 @@ class OneListHospCalculate extends AbstractOperation
      * @param OneListHospCalculateRequest $request
      * @return ResponseInterface|OneListHospCalculateResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

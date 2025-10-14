@@ -263,7 +263,7 @@ class Data extends AbstractHelperOmni
         $loyaltyAmount = $grossAmount = 0;
         try {
             if ($loyaltyPoints > 0) {
-                $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+                $loyaltyAmount = $this->loyaltyHelper->getLsPointsDiscount($loyaltyPoints);
             }
 
             if (!empty($basketData) &&
@@ -303,7 +303,7 @@ class Data extends AbstractHelperOmni
             $loyaltyAmount = 0;
             if (!empty($basketData) && is_object($basketData)) {
                 if ($loyaltyPoints > 0) {
-                    $loyaltyAmount = $this->loyaltyHelper->getPointRate() * $loyaltyPoints;
+                    $loyaltyAmount = $this->loyaltyHelper->getLsPointsDiscount($loyaltyPoints) ;
                 }
                 $quote          = $this->cartRepository->get($this->checkoutSession->getQuoteId());
                 $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
@@ -773,7 +773,6 @@ class Data extends AbstractHelperOmni
     public function formatTableDataResponse(SimpleXMLElement $response): array
     {
         $fieldMap = $records = [];
-
         foreach ($response->Response_Body->WS_Table_Field_Buffer ?? [] as $field) {
             $node = (string)($field->Node_Name ?? '');
             $name = (string)($field->Field_Name ?? '');
@@ -781,7 +780,6 @@ class Data extends AbstractHelperOmni
                 $fieldMap[$node] = $name;
             }
         }
-
         foreach ($response->Response_Body->Table_Data ?? [] as $row) {
             $record = [];
             foreach ($fieldMap as $node => $fieldName) {
@@ -789,8 +787,7 @@ class Data extends AbstractHelperOmni
             }
             $records[] = $record;
         }
-
-        return $records;
+        return $records ? end($records) : [];
     }
 
     /**
@@ -890,11 +887,7 @@ class Data extends AbstractHelperOmni
                 }
             }
 
-            $storeId = $invoiceCreditMemo->getOrder()->getStoreId();
-
-            $pointRate         = ($this->loyaltyHelper->getPointRate($storeId)) ?
-                $this->loyaltyHelper->getPointRate($storeId) : 0;
-            $totalPointsAmount = $pointsSpent * $pointRate;
+            $totalPointsAmount = $this->loyaltyHelper->getLsPointsDiscount($pointsSpent);
             $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
             $pointsSpent       = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
             $giftCardAmount    = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
@@ -1205,7 +1198,6 @@ class Data extends AbstractHelperOmni
         return $this->request->getParam('website') ?? $this->storeManager->getStore()->getWebsiteId();
     }
 
-
     /**
      * Create new instance of given class name
      *
@@ -1213,7 +1205,7 @@ class Data extends AbstractHelperOmni
      * @param array $data
      * @return mixed
      */
-    public function createInstance(string $entityClassName = null, array $data = [])
+    public function createInstance(?string $entityClassName = null, array $data = [])
     {
         return ObjectManager::getInstance()->create($entityClassName, $data);
     }

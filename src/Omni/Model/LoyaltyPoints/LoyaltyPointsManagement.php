@@ -38,9 +38,9 @@ class LoyaltyPointsManagement
         $lsPointsSpent = $quote->getLsPointsSpent();
         $lsPointsEarn  = $quote->getLsPointsEarn();
         $pointDiscount = 0;
-        $pointRate     = $this->loyaltyHelper->getPointRate();
+        $pointRate     = 1 / $this->loyaltyHelper->getPointRate(null, 'LOY');
         if ($lsPointsSpent > 0) {
-            $pointDiscount = -$lsPointsSpent * $pointRate;
+            $pointDiscount = -$this->loyaltyHelper->getLsPointsDiscount($lsPointsSpent);
         }
         return [
             'points_earn'     => $lsPointsEarn,

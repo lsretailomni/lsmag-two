@@ -34,7 +34,7 @@ class GetCustomerCartDiscountsOutput implements ResolverInterface
     /**
      * @inheritdoc
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         if (!($this->customerSession->isLoggedIn())) {
             throw new GraphQlInputException(__('Customer session not active. Please log in.'));

@@ -67,7 +67,7 @@ class GiftCardGetBalance extends AbstractOperation
      * @param GiftCardGetBalanceRequest $request
      * @return ResponseInterface|GiftCardGetBalanceResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

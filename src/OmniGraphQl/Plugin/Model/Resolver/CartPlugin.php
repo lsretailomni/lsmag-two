@@ -40,8 +40,8 @@ class CartPlugin
         Field $field,
         $context,
         ResolveInfo $info,
-        array $value = null,
-        array $args = null
+        ?array $value = null,
+        ?array $args = null
     ) {
         if (isset($result['model'])) {
             $quote = $result['model'];

@@ -499,7 +499,7 @@ class OrderHelper extends AbstractHelperOmni
 
         if ($order->getLsPointsSpent()) {
             $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
-            $pointRate = $this->loyaltyHelper->getPointRate();
+            $pointRate = 0;
             $orderPayment = $this->createInstance(CustomerOrderCreateCOPaymentV6::class);
             $orderPayment->addData(
                 [

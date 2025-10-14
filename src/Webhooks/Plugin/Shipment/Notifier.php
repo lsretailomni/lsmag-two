@@ -26,7 +26,7 @@ class Notifier
         ShipmentNotifier $subject,
         OrderInterface $order,
         ShipmentInterface $shipment,
-        ShipmentCommentCreationInterface $comment = null,
+        ?ShipmentCommentCreationInterface $comment = null,
         $forceSyncMode = false
     ) {
         $order->setIncrementId($order->getDocumentId());

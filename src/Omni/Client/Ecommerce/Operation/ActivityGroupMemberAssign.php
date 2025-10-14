@@ -67,7 +67,7 @@ class ActivityGroupMemberAssign extends AbstractOperation
      * @param ActivityGroupMemberAssignRequest $request
      * @return ResponseInterface|ActivityGroupMemberAssignResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

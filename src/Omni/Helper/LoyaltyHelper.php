@@ -202,16 +202,25 @@ class LoyaltyHelper extends AbstractHelperOmni
         $schemes = $this->loyaltyHelper->getSchemes();
         $requiredScheme = null;
 
-        foreach ($schemes as $scheme) {
-            $clubCode = $scheme['Club Code'];
-            $updateSequence = $scheme['Update Sequence'];
-            if ($currentClubCode == $clubCode &&
-                $updateSequence > $currentSequence
-            ) {
-                $requiredScheme = $scheme;
-                break;
+        if (is_array($schemes) && isset($schemes[0]) && is_array($schemes[0])) {
+            foreach ($schemes as $scheme) {
+                $clubCode       = $scheme['Club Code'];
+                $updateSequence = $scheme['Update Sequence'];
+                if ($currentClubCode == $clubCode && 
+                    $updateSequence > $currentSequence
+                ) {
+                    $requiredScheme = $scheme;
+                    break;
+                }
             }
-        }
+        } elseif (is_array($schemes)) {
+            $clubCode       = $schemes['Club Code'] ?? $schemes;
+            $updateSequence = $schemes['Update Sequence'] ?? 0;
+            
+            if ($currentClubCode == $clubCode && $updateSequence > $currentSequence) {
+                $requiredScheme = $schemes;
+            }
+         }
 
         return $requiredScheme;
     }
@@ -237,15 +246,26 @@ class LoyaltyHelper extends AbstractHelperOmni
             $startDateTs = Carbon::now();
             $endDateTs = Carbon::now()->addDays((int)$expiryInterval);
 
-            foreach ($result as $res) {
-                $entryType = $res['Entry Type'];
-                $expirationDate = Carbon::parse($res['Expiration Date']);
+            if (is_array($result) && isset($result[0]) && is_array($result[0])) {
+                foreach ($result as $res) {
+                    $entryType = $res['Entry Type'];
+                    $expirationDate = Carbon::parse($res['Expiration Date']);
+                    if ($entryType == "0" && $expirationDate->between($startDateTs, $endDateTs, true)) {
+                        $totalEarnedPoints += $res['Points'];
+                    } elseif ($entryType == "1" && $expirationDate->between($startDateTs, $endDateTs, true)) {
+                        $totalRedemption += $res['Points'];
+                    }
+                }    
+            } elseif (is_array($result)) {
+                $entryType = $result['Entry Type'];
+                $expirationDate = Carbon::parse($result['Expiration Date']);
                 if ($entryType == "0" && $expirationDate->between($startDateTs, $endDateTs, true)) {
-                    $totalEarnedPoints += $res['Points'];
+                    $totalEarnedPoints += $result['Points'];
                 } elseif ($entryType == "1" && $expirationDate->between($startDateTs, $endDateTs, true)) {
-                    $totalRedemption += $res['Points'];
+                    $totalRedemption += $result['Points'];
                 }
             }
+            
 
             //Convert to negative redemption points to positive for ease of calculation
             $totalRedemption = abs($totalRedemption);
@@ -312,8 +332,8 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Convert Point Rate into Values
      *
-     * @param string $storeId
-     * @param string $currencyCode
+     * @param $storeId
+     * @param $currencyCode
      * @return float|int|string|null
      * @throws GuzzleException
      * @throws NoSuchEntityException
@@ -330,36 +350,14 @@ class LoyaltyHelper extends AbstractHelperOmni
 
         $rate = 0;
         if ($this->lsr->isLSR($storeId) && $this->isEnabledLoyaltyPoints()) {
-            $cacheId = LSR::POINTRATE . $storeId . '_' . $currencyCode;
+            $cacheId  = LSR::POINTRATE . $currencyCode . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($response !== false) {
                 return $this->formatValue($response);
             }
 
-            $response = current($this->dataHelper->fetchGivenTableData(
-                'Currency Exchange Rate',
-                '',
-                [
-                    [
-                        'filterName' => 'Currency Code',
-                        'filterValue' => $currencyCode
-                    ]
-                ]
-            ));
-
-            if (!empty($response['LSC POS Exchange Rate Amount']) &&
-                !empty($response['LSC POS Rel. Exch. Rate Amount'])
-            ) {
-                $rate = ((1 / $response['LSC POS Exchange Rate Amount']) * $response['LSC POS Rel. Exch. Rate Amount']);
-            } else {
-                if (!empty($response['Exchange Rate Amount']) &&
-                    !empty($response['Relational Exch. Rate Amount'])
-                ) {
-                    $rate = ((1 / $response['Exchange Rate Amount']) * $response['Relational Exch. Rate Amount']);
-                }
-            }
-
+            $rate = $this->fetchGetPointsRate($currencyCode);
             if (!empty($rate)) {
                 $this->cacheHelper->persistContentInCache(
                     $cacheId,
@@ -370,6 +368,46 @@ class LoyaltyHelper extends AbstractHelperOmni
 
                 return $rate;
             }
+        }
+
+        return $rate;
+    }
+
+    /**
+     * Fetch point rate from central
+     *
+     * @param $currencyCode
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    public function fetchGetPointsRate($currencyCode)
+    {
+        $rate = 0;
+        $response = $this->dataHelper->fetchGivenTableData(
+            'Currency Exchange Rate',
+            '',
+            [
+                [
+                    'filterName' => 'Currency Code',
+                    'filterValue' => $currencyCode
+                ]
+            ]
+        );
+
+        if (!empty($response['LSC POS Exchange Rate Amount']) &&
+            !empty($response['LSC POS Rel. Exch. Rate Amount'])
+        ) {
+            $rate = ((1 / $response['LSC POS Exchange Rate Amount']) * $response['LSC POS Rel. Exch. Rate Amount']);
+        } else {
+            if (!empty($response['Exchange Rate Amount']) &&
+                !empty($response['Relational Exch. Rate Amount'])
+            ) {
+                $rate = ((1 / $response['Exchange Rate Amount']) * $response['Relational Exch. Rate Amount']);
+            }
+        }
+
+        if ($rate) {
+            $rate = 1 / $rate;
         }
 
         return $rate;
@@ -496,7 +534,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      * @throws GuzzleException
      * @throws NoSuchEntityException
      */
-    public function getPublishedOffers(string $cardId, string $storeId, string $itemId = null)
+    public function getPublishedOffers(?string $cardId, string $storeId, ?string $itemId = null)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $cacheId = LSR::COUPONS;
@@ -826,6 +864,20 @@ class LoyaltyHelper extends AbstractHelperOmni
             LSR::IMAGE_CACHE_INDEPENDENT_OF_STORE_ID,
             $this->lsr->getCurrentStoreId()
         );
+    }
+
+    /**
+     * Get Ls points discount
+     *
+     * @param $pointsSpent
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    public function getLsPointsDiscount($pointsSpent)
+    {
+        $loyaltyPointsRate = $this->getPointRate(null, 'LOY');
+
+        return $pointsSpent * (1 / $loyaltyPointsRate);
     }
 
     /**

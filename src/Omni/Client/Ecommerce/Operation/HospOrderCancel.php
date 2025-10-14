@@ -67,7 +67,7 @@ class HospOrderCancel extends AbstractOperation
      * @param HospOrderCancelRequest $request
      * @return ResponseInterface|HospOrderCancelResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
