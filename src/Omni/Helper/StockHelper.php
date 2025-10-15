@@ -62,20 +62,20 @@ class StockHelper extends AbstractHelper
      * @param StockItemRepository $stockItemRepository
      */
     public function __construct(
-        Context                    $context,
+        Context $context,
         ProductRepositoryInterface $productRepository,
-        CollectionFactory          $storeCollectionFactory,
-        LSR                        $lsr,
-        ItemHelper                 $itemHelper,
-        Configuration              $configuration,
-        StockItemRepository        $stockItemRepository
+        CollectionFactory $storeCollectionFactory,
+        LSR $lsr,
+        ItemHelper $itemHelper,
+        Configuration $configuration,
+        StockItemRepository $stockItemRepository
     ) {
-        $this->productRepository = $productRepository;
+        $this->productRepository      = $productRepository;
         $this->storeCollectionFactory = $storeCollectionFactory;
-        $this->lsr = $lsr;
-        $this->itemHelper = $itemHelper;
-        $this->configuration = $configuration;
-        $this->stockItemRepository = $stockItemRepository;
+        $this->lsr                    = $lsr;
+        $this->itemHelper             = $itemHelper;
+        $this->configuration          = $configuration;
+        $this->stockItemRepository    = $stockItemRepository;
         parent::__construct($context);
     }
 
@@ -95,8 +95,8 @@ class StockHelper extends AbstractHelper
             return $this->getItemsStockInStoreFromSourcingLocation($storeId, $items);
         }
 
-        $response = null;
-        $request = new Operation\ItemsInStockGet();
+        $response  = null;
+        $request   = new Operation\ItemsInStockGet();
         $itemStock = new Entity\ItemsInStockGet();
         if (!empty($parentProductId) && !empty($childProductId)) {
             $itemStock->setItemId($parentProductId)->
@@ -129,7 +129,7 @@ class StockHelper extends AbstractHelper
      */
     public function getGivenItemsStockInGivenStore($items, $storeId = '')
     {
-        $stockCollection = $stockItems = [];
+        $stockCollection             = $stockItems = [];
         $useManageStockConfiguration = $this->configuration->getManageStock();
 
         foreach ($items as &$item) {
@@ -192,17 +192,17 @@ class StockHelper extends AbstractHelper
         foreach ($stockCollection as &$stock) {
             if ($stock['item_id'] == $parentProductSku && $stock['variant_id'] == $childProductSku) {
                 $stock['qty'] = $stock['qty'] + $qty;
-                $found = true;
+                $found        = true;
                 break;
             }
         }
 
         if (!$found) {
             $stockCollection[] = [
-                'item_id' => $parentProductSku,
+                'item_id'    => $parentProductSku,
                 'variant_id' => $childProductSku,
-                'name' => $name,
-                'qty' => $qty
+                'name'       => $name,
+                'qty'        => $qty
             ];
         }
     }
@@ -218,16 +218,17 @@ class StockHelper extends AbstractHelper
      */
     public function getItemsStockInStoreFromSourcingLocation($storeId, $items)
     {
-        $response = null;
-        $request = new Operation\ItemsInStoreGetEx();
+        $response  = null;
+        $request   = new Operation\ItemsInStoreGetEx();
         $itemStock = new Entity\ItemsInStoreGetEx();
         $itemStock->setStoreId($storeId);
-        $itemStock->setUseSourcingLocation(true);
+        $sourcingLocationCheck = $this->lsr->getStoreConfig(LSR::SC_CART_CHECK_INVENTORY_FROM_SOURCING_LOCATION);
+        $itemStock->setUseSourcingLocation($sourcingLocationCheck);
         $itemStock->setLocationId('');
         foreach ($items as $item) {
             $inventoryRequest = new Entity\InventoryRequest();
-            $itemId = reset($item);
-            $variantId = end($item);
+            $itemId           = reset($item);
+            $variantId        = end($item);
             if (!empty($itemId) && !empty($variantId)) {
                 $inventoryRequest->setItemId($itemId)->setVariantId($variantId);
             } else {
@@ -269,9 +270,9 @@ class StockHelper extends AbstractHelper
         }
         $response = null;
         // @codingStandardsIgnoreStart
-        $request = new Operation\ItemsInStoreGet();
-        $itemStock = new Entity\ItemsInStoreGet();
-        $inventoryRequestParent = new Entity\ArrayOfInventoryRequest();
+        $request                    = new Operation\ItemsInStoreGet();
+        $itemStock                  = new Entity\ItemsInStoreGet();
+        $inventoryRequestParent     = new Entity\ArrayOfInventoryRequest();
         $inventoryRequestCollection = [];
 
         foreach ($items as $item) {
@@ -322,7 +323,7 @@ class StockHelper extends AbstractHelper
 
             $response = null;
             // @codingStandardsIgnoreStart
-            $request = new Operation\ItemsInStockGet();
+            $request   = new Operation\ItemsInStockGet();
             $itemStock = new Entity\ItemsInStockGet();
             // @codingStandardsIgnoreEnd
 
@@ -349,13 +350,15 @@ class StockHelper extends AbstractHelper
      */
     public function getAllStoresFromReplTable($storesNavIds)
     {
-        $stores = $this->storeCollectionFactory->create()
+        $stores        = $this->storeCollectionFactory->create()
             ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
             ->addFieldToFilter(
                 'scope_id',
-                ['eq' => !$this->lsr->isSSM() ?
-                    $this->lsr->getCurrentWebsiteId() :
-                    $this->lsr->getAdminStore()->getWebsiteId()]
+                [
+                    'eq' => !$this->lsr->isSSM() ?
+                        $this->lsr->getCurrentWebsiteId() :
+                        $this->lsr->getAdminStore()->getWebsiteId()
+                ]
             );
         $displayStores = $this->lsr->getStoreConfig(LSR::SC_CART_DISPLAY_STORES);
 
@@ -376,9 +379,9 @@ class StockHelper extends AbstractHelper
      */
     public function fetchAllStoresItemInStockPlusApplyJoin($simpleProductId, $productSku)
     {
-        $itemId = $this->itemHelper->getLsCentralItemIdBySku($productSku);
+        $itemId      = $this->itemHelper->getLsCentralItemIdBySku($productSku);
         $storesNavId = [];
-        $response = $this->getAllStoresItemInStock(
+        $response    = $this->getAllStoresItemInStock(
             $simpleProductId,
             $itemId
         );
@@ -416,10 +419,10 @@ class StockHelper extends AbstractHelper
         }
 
         $response = [];
-        $items = [];
+        $items    = [];
 
         // @codingStandardsIgnoreStart
-        $request = new Operation\ItemsInStoreGet();
+        $request      = new Operation\ItemsInStoreGet();
         $itemsInStore = new Entity\ItemsInStoreGet();
         foreach ($variants as $variant) {
             $inventoryReq = new Entity\InventoryRequest();
@@ -443,7 +446,7 @@ class StockHelper extends AbstractHelper
             }
             if (is_array($inventoryResponseArray->getInventoryResponse())) {
                 foreach ($inventoryResponseArray->getInventoryResponse() as $inventoryResponse) {
-                    $sku = $inventoryResponse->getItemId() . '-' .
+                    $sku                        = $inventoryResponse->getItemId() . '-' .
                         $inventoryResponse->getVariantId();
                     $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
                 }
@@ -472,7 +475,7 @@ class StockHelper extends AbstractHelper
         bool $throwException = false
     ) {
         if (!$item->getHasError()) {
-            $storeId = $this->lsr->getActiveWebStore();
+            $storeId  = $this->lsr->getActiveWebStore();
             $children = [];
 
             if ($item->getProductType() == Type::TYPE_BUNDLE) {
@@ -577,11 +580,11 @@ class StockHelper extends AbstractHelper
             foreach ($stockCollection as &$values) {
                 if ($values['item_id'] == $item->getItemId() && $values['variant_id'] == $item->getVariantId()) {
                     if ($actualQty > 0) {
-                        $values['status'] = '1';
+                        $values['status']  = '1';
                         $values['display'] = __('This item is available');
 
                         if ($values['qty'] > $actualQty) {
-                            $values['status'] = '0';
+                            $values['status']  = '0';
                             $values['display'] = __(
                                 'You have selected %1 quantity for this item.
                                  We only have %2 quantity available in stock for this store.
@@ -591,7 +594,7 @@ class StockHelper extends AbstractHelper
                             );
                         }
                     } else {
-                        $values['status'] = '0';
+                        $values['status']  = '0';
                         $values['display'] = __('This item is not available');
                     }
                 }

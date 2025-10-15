@@ -59,7 +59,7 @@ class Totals extends AbstractBlock
         }
 
         if ($order->getLsPointsSpent() > 0) {
-            $loyaltyAmount = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $loyaltyAmount = $this->loyaltyHelper->getLsPointsDiscount($order->getLsPointsSpent());
             // @codingStandardsIgnoreLine
             $loyaltyPoints = new DataObject(
                 [

@@ -16,6 +16,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StoreHourCalendarType RECEIVING()
  * @$method static StoreHourCalendarType REST_ORDER_TAKING()
  * @$method static StoreHourCalendarType OTHER()
+ * @$method static StoreHourCalendarType SELF_SERVICE_KIOSK()
  */
 class StoreHourCalendarType extends Enum
 {
@@ -28,5 +29,7 @@ class StoreHourCalendarType extends Enum
     public const REST_ORDER_TAKING = 'RestOrderTaking';
 
     public const OTHER = 'Other';
+
+    public const SELF_SERVICE_KIOSK = 'SelfServiceKiosk';
 }
 

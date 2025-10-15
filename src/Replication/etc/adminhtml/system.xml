@@ -267,10 +267,24 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enable/Disable basket availability check when adding products to the cart</comment>
                 </field>
-                <field id="product_availability"
+                <field id="sourcing_location"
                        translate="label"
                        type="select"
                        sortOrder="20"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="0">
+                    <depends>
+                        <field id="ls_mag/one_list/availability_check">1</field>
+                    </depends>
+                    <label>Sourcing Location</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable/Disable sourcing location in availability check</comment>
+                </field>
+                <field id="product_availability"
+                       translate="label"
+                       type="select"
+                       sortOrder="30"
                        showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
@@ -281,7 +295,7 @@
                 <field id="display_stores"
                        translate="label"
                        type="select"
-                       sortOrder="30"
+                       sortOrder="40"
                        showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">

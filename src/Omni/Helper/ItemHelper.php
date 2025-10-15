@@ -511,7 +511,7 @@ class ItemHelper extends AbstractHelper
     {
         if ($quote->getId()) {
             if (isset($basketData)) {
-                $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+                $pointDiscount  = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
                 $giftCardAmount = $quote->getLsGiftCardAmountUsed();
                 $quote->getShippingAddress()
                     ->setGrandTotal(

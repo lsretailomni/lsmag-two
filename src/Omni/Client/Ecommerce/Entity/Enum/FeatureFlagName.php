@@ -73,6 +73,7 @@ use MyCLabs\Enum\Enum;
  * @$method static FeatureFlagName AUDKENNI_TEXT_TO_MAKE_A_HASH()
  * @$method static FeatureFlagName GOOGLE_LOGIN_ENABLED()
  * @$method static FeatureFlagName GOOGLE_IOS_CLIENT_ID()
+ * @$method static FeatureFlagName GOOGLE_REQUEST_ID()
  * @$method static FeatureFlagName FACEBOOK_LOGIN_ENABLED()
  * @$method static FeatureFlagName APPLE_LOGIN_ENABLED()
  */
@@ -201,6 +202,8 @@ class FeatureFlagName extends Enum
     public const GOOGLE_LOGIN_ENABLED = 'GoogleLoginEnabled';
 
     public const GOOGLE_IOS_CLIENT_ID = 'GoogleIosClientId';
+
+    public const GOOGLE_REQUEST_ID = 'GoogleRequestId';
 
     public const FACEBOOK_LOGIN_ENABLED = 'FacebookLoginEnabled';
 
