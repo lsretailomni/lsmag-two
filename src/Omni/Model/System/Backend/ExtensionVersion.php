@@ -39,8 +39,8 @@ class ExtensionVersion extends Value
         ScopeConfigInterface $config,
         TypeListInterface $cacheTypeList,
         Data $helper,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->helper = $helper;

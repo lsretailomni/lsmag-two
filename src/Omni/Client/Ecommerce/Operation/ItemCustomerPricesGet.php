@@ -67,7 +67,7 @@ class ItemCustomerPricesGet extends AbstractOperation
      * @param ItemCustomerPricesGetRequest $request
      * @return ResponseInterface|ItemCustomerPricesGetResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
