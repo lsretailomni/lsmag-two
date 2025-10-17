@@ -8,7 +8,6 @@ declare(strict_types=1);
 namespace Ls\Omni\Test\Integration\Observer;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Test\Fixture\ApplyLoyaltyPointsInCartFixture;
 use \Ls\Omni\Test\Fixture\CustomerAddressFixture;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -17,7 +16,6 @@ use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Customer\Test\Fixture\CustomerFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use Magento\Framework\Exception\ValidatorException;
-use Magento\Framework\Event\Observer;
 use Magento\Quote\Api\Data\AddressInterfaceFactory;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Customer\Model\Session as CustomerSession;
@@ -33,7 +31,6 @@ use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
-use Magento\Quote\Model\QuoteFactory;
 use Magento\TestFramework\Fixture\AppArea;
 
 class DataAssignObserverTest extends AbstractIntegrationTest
@@ -131,7 +128,12 @@ class DataAssignObserverTest extends AbstractIntegrationTest
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
@@ -191,7 +193,7 @@ class DataAssignObserverTest extends AbstractIntegrationTest
 
         $this->expectException(ValidatorException::class);
 
-        $order = $this->quoteManagement->submit($quote);
+        $this->quoteManagement->submit($quote);
 
         $this->basketHelper->setOneListCalculationInCheckoutSession(null);
         $quote->delete();

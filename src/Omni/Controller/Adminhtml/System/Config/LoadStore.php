@@ -49,6 +49,7 @@ class LoadStore extends Action
             ['value' => '', 'label' => __('No store found for entered omni api url')]
         ];
         $lsRetailLicenseIsActive = $lsRetailLicenseUnitEcomIsActive = $lsCentralVersion = '';
+        $pong = __('Unfortunately, commerce service ping fails. Please try with valid connection details.');
         try {
             $baseUrl = $this->getRequest()->getParam('baseUrl');
             $scopeId = $this->getRequest()->getParam('scopeId');
@@ -57,8 +58,8 @@ class LoadStore extends Action
             $clientSecret = $this->getRequest()->getParam('client_secret');
             $companyName = $this->getRequest()->getParam('company_name');
             $environmentName = $this->getRequest()->getParam('environment_name');
-
             $baseUrl = $this->helper->getBaseUrl($baseUrl);
+            
             $connectionParams = [
                 'tenant' => $tenant,
                 'clientId' => $clientId,
@@ -68,9 +69,9 @@ class LoadStore extends Action
             $pong = $this->helper->omniPing(
                 $baseUrl,
                 $connectionParams,
-                ['companyName' => $companyName]
+                ['company' => $companyName]
             );
-
+            
             if (!empty($pong)) {
                 list($lsCentralVersion, $lsRetailLicenseIsActive, $lsRetailLicenseUnitEcomIsActive) =
                     $this->helper->parsePingResponseAndSaveToConfigData($pong, $scopeId);

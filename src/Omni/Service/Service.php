@@ -41,7 +41,6 @@ class Service
             // Build the full URL by joining the base URL and the corresponding service endpoint.
             $url = join('/', [$baseUrl, self::CODE_UNIT]);
         }
-
         return UriFactory::factory($url);
     }
     // @codingStandardsIgnoreEnd

@@ -109,7 +109,7 @@ class BlockObserverTest extends AbstractIntegrationTest
         $this->event         = $this->objectManager->get(Event::class);
         $this->blockObserver = $this->objectManager->get(BlockObserver::class);
         $this->registry      = $this->objectManager->get(Registry::class);
-        $this->transport     = $this->objectManager->get(TransportInterface::class);
+//        $this->transport     = $this->objectManager->get(TransportInterface::class);
         $this->block         = $this->objectManager->get(
             LayoutInterface::class
         );
@@ -124,7 +124,12 @@ class BlockObserverTest extends AbstractIntegrationTest
     #[
         AppArea('adminhtml'),
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
@@ -220,7 +225,12 @@ class BlockObserverTest extends AbstractIntegrationTest
     #[
         AppArea('adminhtml'),
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),

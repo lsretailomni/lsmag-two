@@ -36,7 +36,12 @@ class LoadTenderTypeTest extends AbstractBackendController
 
     public function testExecute()
     {
-        $this->getRequest()->setParam("baseUrl", AbstractIntegrationTest::CS_URL);
+        $this->getRequest()->setParam("baseUrl", AbstractIntegrationTest::BASE_URL);
+        $this->getRequest()->setParam("tenant", AbstractIntegrationTest::SC_TENANT);
+        $this->getRequest()->setParam("client_id", AbstractIntegrationTest::SC_CLIENT_ID);
+        $this->getRequest()->setParam("client_secret", AbstractIntegrationTest::SC_CLIENT_SECRET);
+        $this->getRequest()->setParam("company_name", AbstractIntegrationTest::SC_COMPANY_NAME);
+        $this->getRequest()->setParam("environment_name", AbstractIntegrationTest::SC_ENVIRONMENT_NAME);
         $this->getRequest()->setParam("storeId", AbstractIntegrationTest::CS_STORE);
         $this->getRequest()->setParam("lsKey", '');
         $this->getRequest()->setParam("scopeId", '1');
@@ -51,7 +56,12 @@ class LoadTenderTypeTest extends AbstractBackendController
 
     public function testExecuteNullResult()
     {
-        $this->getRequest()->setParam("baseUrl", AbstractIntegrationTest::CS_URL);
+        $this->getRequest()->setParam("baseUrl", AbstractIntegrationTest::BASE_URL);
+        $this->getRequest()->setParam("tenant", AbstractIntegrationTest::SC_TENANT);
+        $this->getRequest()->setParam("client_id", AbstractIntegrationTest::SC_CLIENT_ID);
+        $this->getRequest()->setParam("client_secret", AbstractIntegrationTest::SC_CLIENT_SECRET);
+        $this->getRequest()->setParam("company_name", AbstractIntegrationTest::SC_COMPANY_NAME);
+        $this->getRequest()->setParam("environment_name", AbstractIntegrationTest::SC_ENVIRONMENT_NAME);
         $this->getRequest()->setParam("storeId", 'S0000');
         $this->getRequest()->setParam("lsKey", '');
         $this->getRequest()->setParam("scopeId", '1');

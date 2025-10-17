@@ -45,7 +45,6 @@ class LoadTenderType extends Action
     {
         $optionList = $tenderTypes = [];
         try {
-            $storeId = $this->getRequest()->getParam('storeId');
             $baseUrl = $this->getRequest()->getParam('baseUrl');
             $tenant = $this->getRequest()->getParam('tenant');
             $clientId = $this->getRequest()->getParam('client_id');

@@ -38,7 +38,6 @@ use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
-use Magento\Quote\Model\QuoteFactory;
 use Magento\TestFramework\Fixture\AppArea;
 use Magento\Quote\Model\QuoteIdMaskFactory;
 use Magento\Quote\Model\Quote\TotalsCollectorList;
@@ -176,7 +175,12 @@ class SalesObserverTest extends AbstractIntegrationTest
     #[
         AppArea('adminhtml'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
@@ -254,11 +258,12 @@ class SalesObserverTest extends AbstractIntegrationTest
 
         $expectedLsPointsDiscount = AbstractIntegrationTest::LSR_LOY_POINTS * $this->loyaltyHelper->getPointRate();
 
+        $mobileTransaction = current((array)$this->basketHelper->getOneListCalculationFromCheckoutSession()->getMobiletransaction());
         $this->assertNotEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
         $this->assertNotNull($this->basketHelper->getOneListCalculationFromCheckoutSession());
         $this->assertEquals(
-            $this->basketHelper->getOneListCalculationFromCheckoutSession()->getPointsRewarded(),
-            $this->checkoutSession->getQuote()->getLsPointsEarn()
+            (float) $mobileTransaction->getIssuedpoints(),
+            (float) $this->checkoutSession->getQuote()->getLsPointsEarn()
         );
         $this->assertEquals($expectedLsPointsDiscount, $this->checkoutSession->getQuote()->getLsPointsDiscount());
 

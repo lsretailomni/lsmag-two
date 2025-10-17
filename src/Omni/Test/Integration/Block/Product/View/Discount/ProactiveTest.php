@@ -36,37 +36,6 @@ class ProactiveTest extends AbstractIntegrationTest
     public $contactHelper;
 
     /**
-     * @return void
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->objectManager = Bootstrap::getObjectManager();
-        $this->proactive     = $this->objectManager->get(Proactive::class);
-        $this->contactHelper = $this->objectManager->get(ContactHelper::class);
-    }
-
-    /**
-     * @magentoAppIsolation enabled
-     */
-    #[
-        AppArea('frontend'),
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
-        Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
-        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LICENSE, 'website'),
-        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
-    ]
-    public function testGetProactiveDiscounts()
-    {
-        $result = $this->proactive->getProactiveDiscounts(40000);
-
-        $this->assertNotEquals([], $result);
-    }
-
-    /**
      * @magentoAppIsolation enabled
      */
     #[
@@ -85,12 +54,53 @@ class ProactiveTest extends AbstractIntegrationTest
     }
 
     /**
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->objectManager = Bootstrap::getObjectManager();
+        $this->proactive     = $this->objectManager->get(Proactive::class);
+        $this->contactHelper = $this->objectManager->get(ContactHelper::class);
+    }
+
+    /**
      * @magentoAppIsolation enabled
      */
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
+        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LICENSE, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
+    ]
+    public function testGetProactiveDiscounts()
+    {
+        $result = $this->proactive->getProactiveDiscounts(40000);
+
+        $this->assertNotEquals([], $result);
+    }
+
+    /**
+     * @magentoAppIsolation enabled
+     */
+    #[
+        AppArea('frontend'),
+        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
@@ -100,7 +110,7 @@ class ProactiveTest extends AbstractIntegrationTest
     public function testGetCoupons()
     {
         $this->contactHelper->setCardIdInCustomerSession(self::LSR_CARD_ID);
-        $result = $this->proactive->getCoupons([40180]);
+        $result = $this->proactive->getCoupons(["40180"]);
 
         $this->assertNotEquals([], $result);
     }
@@ -121,7 +131,7 @@ class ProactiveTest extends AbstractIntegrationTest
     public function testGetCouponsWithoutCardId()
     {
         $this->contactHelper->setCardIdInCustomerSession('');
-        $result = $this->proactive->getCoupons([40180]);
+        $result = $this->proactive->getCoupons(["40180"]);
 
         $this->assertEquals([], $result);
     }

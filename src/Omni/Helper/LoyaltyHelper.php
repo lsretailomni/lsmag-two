@@ -607,7 +607,6 @@ class LoyaltyHelper extends AbstractHelperOmni
                     }
                 }
             }
-
             return $coupons;
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -627,28 +626,14 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function getAvailableCouponsForLoggedInCustomers()
     {
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/custom.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-        $logger->info('I am here getAvailableCouponsForLoggedInCustomers 1');
-        $flag = $this->lsr->isLSR(
-            $this->lsr->getCurrentStoreId(),
-            false,
-            $this->lsr->getBasketIntegrationOnFrontend()
-        );
-        
-        //$flag =  $this->lsr->getBasketIntegrationOnFrontend();
-        $logger->info("Flag ".(string)$flag);
         if ($this->lsr->isLSR(
             $this->lsr->getCurrentStoreId(),
             false,
             $this->lsr->getBasketIntegrationOnFrontend()
         )) {
             
-            $logger->info('I am here getAvailableCouponsForLoggedInCustomers 2');
             $storeId = $this->lsr->getActiveWebStore();
             $cardId = $this->contactHelper->getCardIdFromCustomerSession();
-            $logger->info("CardId: ".$cardId);
             if (!$cardId) { //fetch card id from customer object if session value not available
                 $customerId = $this->customerSession->getCustomerId();
                 $customer = $this->customerFactory->create()->load($customerId);
@@ -892,7 +877,7 @@ class LoyaltyHelper extends AbstractHelperOmni
     {
         $loyaltyPointsRate = $this->getPointRate(null, 'LOY');
 
-        return $pointsSpent * (1 / $loyaltyPointsRate);
+        return ($loyaltyPointsRate > 0) ? $pointsSpent * (1 / $loyaltyPointsRate) : 0;
     }
 
     /**
