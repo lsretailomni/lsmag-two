@@ -377,13 +377,14 @@ class Info extends AbstractOrderBlock
      */
     public function getCancelUrl(OrderInterface $magentoOrder, $centralOrder)
     {
+        $salesBuffer = $this->getLscMemberSalesBuffer();
         return $magentoOrder && $centralOrder ? $this->getUrl(
             'customer/order/cancel',
             [
                 'magento_order_id' => $magentoOrder->getId(),
-                'central_order_id' => $centralOrder->getLscMemberSalesBuffer()->getDocumentId(),
+                'central_order_id' => $salesBuffer->getDocumentId(),
                 'id_type'          => $this->orderHelper->getOrderType(
-                    $centralOrder->getLscMemberSalesBuffer()->getDocumentSourceType()
+                    $salesBuffer->getDocumentSourceType()
                 )
             ]
         ) : '';

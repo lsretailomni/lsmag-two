@@ -1440,24 +1440,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * To keep running discount replication for commerce service older version and running discount replication for saas
-     *
-     * @param $store
-     * @param $scope
-     * @return array
-     * @throws NoSuchEntityException
-     */
-    public function validateForOlderVersion($store, $scope = null)
-    {
-        $status = ['discountSetup' => false, 'discount' => true];
-        if (version_compare($this->getOmniVersion($store->getId(), $scope), '2023.10', '>')) {
-            $status = ['discountSetup' => true, 'discount' => false];
-        }
-
-        return $status;
-    }
-
-    /**
      * Is single store mode
      *
      * @return bool
