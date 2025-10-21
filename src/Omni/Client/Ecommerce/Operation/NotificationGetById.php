@@ -67,7 +67,7 @@ class NotificationGetById extends AbstractOperation
      * @param NotificationGetByIdRequest $request
      * @return ResponseInterface|NotificationGetByIdResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

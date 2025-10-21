@@ -67,7 +67,7 @@ class ReplEcommDiscounts extends AbstractOperation
      * @param ReplEcommDiscountsRequest $request
      * @return ResponseInterface|ReplEcommDiscountsResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

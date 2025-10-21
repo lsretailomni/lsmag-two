@@ -67,7 +67,7 @@ class ActivityAllowancesGet extends AbstractOperation
      * @param ActivityAllowancesGetRequest $request
      * @return ResponseInterface|ActivityAllowancesGetResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

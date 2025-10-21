@@ -67,7 +67,7 @@ class SpgUnlockRodDevice extends AbstractOperation
      * @param SpgUnlockRodDeviceRequest $request
      * @return ResponseInterface|SpgUnlockRodDeviceResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
