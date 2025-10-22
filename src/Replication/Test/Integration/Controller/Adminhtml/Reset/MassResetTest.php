@@ -5,15 +5,15 @@ namespace Ls\Replication\Test\Integration\Controller\Adminhtml\Reset;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
-use \Ls\Replication\Cron\ReplEcommBarcodesTask;
-use \Ls\Replication\Cron\ReplEcommExtendedVariantsTask;
-use \Ls\Replication\Cron\ReplEcommImageLinksTask;
-use \Ls\Replication\Cron\ReplEcommInventoryStatusTask;
-use \Ls\Replication\Cron\ReplEcommItemsTask;
-use \Ls\Replication\Cron\ReplEcommItemUnitOfMeasuresTask;
-use \Ls\Replication\Cron\ReplEcommItemVariantRegistrationsTask;
-use \Ls\Replication\Cron\ReplEcommPricesTask;
-use \Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask;
+use \Ls\Replication\Cron\ReplLscBarcodesTask;
+use \Ls\Replication\Cron\ReplLscWiExtdVariantValuesTask;
+use \Ls\Replication\Cron\ReplLscRetailImageLinkTask;
+use \Ls\Replication\Cron\ReplLscInventoryLookupTableTask;
+use \Ls\Replication\Cron\ReplLscWiItemBufferTask;
+use \Ls\Replication\Cron\ReplLscItemuomupdviewTask;
+use \Ls\Replication\Cron\ReplLscVariantregviewTask;
+use \Ls\Replication\Cron\ReplLscWiPriceTask;
+use \Ls\Replication\Cron\ReplLscUnitOfMeasureTask;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
@@ -69,7 +69,12 @@ class MassResetTest extends AbstractBackendController
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
@@ -80,63 +85,63 @@ class MassResetTest extends AbstractBackendController
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommItemsTask::class,
+                'job_url' => ReplLscWiItemBufferTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommItemVariantRegistrationsTask::class,
+                'job_url' => ReplLscVariantregviewTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommExtendedVariantsTask::class,
+                'job_url' => ReplLscWiExtdVariantValuesTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommItemUnitOfMeasuresTask::class,
+                'job_url' => ReplLscItemuomupdviewTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommUnitOfMeasuresTask::class,
+                'job_url' => ReplLscUnitOfMeasureTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommBarcodesTask::class,
+                'job_url' => ReplLscBarcodesTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommImageLinksTask::class,
+                'job_url' => ReplLscRetailImageLinkTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommPricesTask::class,
+                'job_url' => ReplLscWiPriceTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommInventoryStatusTask::class,
+                'job_url' => ReplLscInventoryLookupTableTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
@@ -168,7 +173,12 @@ class MassResetTest extends AbstractBackendController
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),

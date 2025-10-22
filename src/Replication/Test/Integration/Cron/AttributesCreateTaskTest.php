@@ -16,13 +16,13 @@ use \Ls\Replication\Api\ReplItemVariantRepositoryInterface;
 use \Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
 use \Ls\Replication\Api\ReplVendorRepositoryInterface;
 use \Ls\Replication\Cron\AttributesCreateTask;
-use \Ls\Replication\Cron\ReplEcommAttributeOptionValueTask;
-use \Ls\Replication\Cron\ReplEcommAttributeTask;
-use \Ls\Replication\Cron\ReplEcommAttributeValueTask;
-use \Ls\Replication\Cron\ReplEcommExtendedVariantsTask;
-use \Ls\Replication\Cron\ReplEcommItemVariantsTask;
-use \Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask;
-use \Ls\Replication\Cron\ReplEcommVendorTask;
+use Ls\Replication\Cron\ReplLscAttributeOptionValueTask;
+use Ls\Replication\Cron\ReplLscAttributeTask;
+use Ls\Replication\Cron\ReplLscAttributeValueTask;
+use Ls\Replication\Cron\ReplLscItemVariantTask;
+use Ls\Replication\Cron\ReplLscUnitOfMeasureTask;
+use Ls\Replication\Cron\ReplLscVendorTask;
+use Ls\Replication\Cron\ReplLscWiExtdVariantValuesTask;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
@@ -46,49 +46,49 @@ use PHPUnit\Framework\TestCase;
     DataFixture(
         FlatDataReplication::class,
         [
-            'job_url' => ReplEcommAttributeTask::class,
+            'job_url' => ReplLscAttributeTask::class,
             'scope'   => ScopeInterface::SCOPE_WEBSITE
         ]
     ),
     DataFixture(
         FlatDataReplication::class,
         [
-            'job_url' => ReplEcommAttributeOptionValueTask::class,
+            'job_url' => ReplLscAttributeOptionValueTask::class,
             'scope'   => ScopeInterface::SCOPE_WEBSITE
         ]
     ),
     DataFixture(
         FlatDataReplication::class,
         [
-            'job_url' => ReplEcommAttributeValueTask::class,
+            'job_url' => ReplLscAttributeValueTask::class,
             'scope'   => ScopeInterface::SCOPE_WEBSITE
         ]
     ),
     DataFixture(
         FlatDataReplication::class,
         [
-            'job_url' => ReplEcommExtendedVariantsTask::class,
+            'job_url' => ReplLscWiExtdVariantValuesTask::class,
             'scope'   => ScopeInterface::SCOPE_WEBSITE
         ]
     ),
     DataFixture(
         FlatDataReplication::class,
         [
-            'job_url' => ReplEcommItemVariantsTask::class,
+            'job_url' => ReplLscItemVariantTask::class,
             'scope'   => ScopeInterface::SCOPE_WEBSITE
         ]
     ),
     DataFixture(
         FlatDataReplication::class,
         [
-            'job_url' => ReplEcommUnitOfMeasuresTask::class,
+            'job_url' => ReplLscUnitOfMeasureTask::class,
             'scope'   => ScopeInterface::SCOPE_WEBSITE
         ]
     ),
     DataFixture(
         FlatDataReplication::class,
         [
-            'job_url' => ReplEcommVendorTask::class,
+            'job_url' => ReplLscVendorTask::class,
             'scope'   => ScopeInterface::SCOPE_WEBSITE
         ]
     )
@@ -170,7 +170,12 @@ class AttributesCreateTaskTest extends TestCase
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
@@ -211,7 +216,12 @@ class AttributesCreateTaskTest extends TestCase
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
@@ -243,7 +253,12 @@ class AttributesCreateTaskTest extends TestCase
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
@@ -290,7 +305,12 @@ class AttributesCreateTaskTest extends TestCase
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
@@ -335,7 +355,12 @@ class AttributesCreateTaskTest extends TestCase
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
@@ -378,7 +403,12 @@ class AttributesCreateTaskTest extends TestCase
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),

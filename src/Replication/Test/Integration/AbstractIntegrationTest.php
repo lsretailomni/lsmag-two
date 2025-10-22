@@ -6,6 +6,12 @@ namespace Ls\Replication\Test\Integration;
 use PHPUnit\Framework\TestCase;
 
 define('CS_URL_1', getenv('CS_URL'));
+define('BASE_URL', getenv('BASE_URL'));
+define('SC_COMPANY_NAME', getenv('SC_COMPANY_NAME'));
+define('SC_TENANT', getenv('SC_TENANT'));
+define('SC_CLIENT_ID', getenv('SC_CLIENT_ID'));
+define('SC_CLIENT_SECRET', getenv('SC_CLIENT_SECRET'));
+define('SC_ENVIRONMENT_NAME', getenv('SC_ENVIRONMENT_NAME'));
 define('CS_VERSION_1', getenv('CS_VERSION'));
 define('LS_VERSION_1', getenv('LS_VERSION'));
 define('CS_STORE_1', getenv('CS_STORE'));
@@ -49,9 +55,16 @@ define('SAMPLE_OFFER_ITEM_1', getenv('SAMPLE_OFFER_ITEM_1'));
 define('SAMPLE_VALID_VALIDATION_PERIOD_ID', getenv('SAMPLE_VALID_VALIDATION_PERIOD_ID'));
 define('SAMPLE_STORE_GROUP_CODES', getenv('SAMPLE_STORE_GROUP_CODES'));
 define('SAMPLE_PRICE_GROUP', getenv('SAMPLE_PRICE_GROUP'));
+define('SC_SUCCESS_CRON_CATEGORY', getenv('SC_SUCCESS_CRON_CATEGORY'));
 class AbstractIntegrationTest extends TestCase
 {
     public const CS_URL = CS_URL_1;
+    public const BASE_URL = BASE_URL;
+    public const SC_COMPANY_NAME = SC_COMPANY_NAME;
+    public const SC_TENANT = SC_TENANT;
+    public const SC_CLIENT_ID = SC_CLIENT_ID;
+    public const SC_CLIENT_SECRET = SC_CLIENT_SECRET;
+    public const SC_ENVIRONMENT_NAME = SC_ENVIRONMENT_NAME;
     public const CS_VERSION = CS_VERSION_1;
     public const LS_VERSION = LS_VERSION_1;
     public const CS_STORE = CS_STORE_1;
@@ -96,6 +109,7 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_VALID_VALIDATION_PERIOD_ID = SAMPLE_VALID_VALIDATION_PERIOD_ID;
     public const SAMPLE_STORE_GROUP_CODES = SAMPLE_STORE_GROUP_CODES;
     public const SAMPLE_PRICE_GROUP = SAMPLE_PRICE_GROUP;
+    public const SC_SUCCESS_CRON_CATEGORY = SC_SUCCESS_CRON_CATEGORY;
 
     /**
      * Get environment variable value given name

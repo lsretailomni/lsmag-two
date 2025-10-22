@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration\Cron;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Cron\DataTranslationTask;
 use \Ls\Replication\Cron\ProductCreateTask;
+use Ls\Replication\Cron\ReplLscDataTranslationTask;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Catalog\Model\Product;
 use Magento\Store\Model\ScopeInterface;
@@ -52,7 +52,7 @@ class DataTranslationTaskTest extends AbstractTaskTest
             $storeId
         );
 
-        $this->executeUntilReady(DataTranslationTask::class, [
+        $this->executeUntilReady(ReplLscDataTranslationTask::class, [
             LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
         ]);
 

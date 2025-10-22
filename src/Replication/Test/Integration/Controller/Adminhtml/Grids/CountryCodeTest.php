@@ -38,7 +38,7 @@ class CountryCodeTest extends AbstractGrid
     ]
     public function testExecute(): void
     {
-        $this->assertPageName(__('Country Code'));
+        $this->assertPageName(__('Country Code Replication'));
     }
 
     public function getUri()
