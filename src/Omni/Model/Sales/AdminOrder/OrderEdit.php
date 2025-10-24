@@ -52,6 +52,16 @@ class OrderEdit
     public $loyaltyHelper;
 
     /**
+     * @var array Old items
+     */
+    public $oldItems;
+
+    /**
+     * @var array New items
+     */
+    public $newItemsArray;
+
+    /**
      * @param OrderHelper $orderHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
@@ -65,10 +75,10 @@ class OrderEdit
         LSR $LSR,
         LoyaltyHelper $loyaltyHelper,
     ) {
-        $this->orderHelper = $orderHelper;
-        $this->itemHelper  = $itemHelper;
-        $this->logger      = $logger;
-        $this->lsr         = $LSR;
+        $this->orderHelper   = $orderHelper;
+        $this->itemHelper    = $itemHelper;
+        $this->logger        = $logger;
+        $this->lsr           = $LSR;
         $this->loyaltyHelper = $loyaltyHelper;
     }
 
@@ -90,17 +100,17 @@ class OrderEdit
     /**
      * Prepare order edit
      *
-     * @param Order $order
+     * @param $order
      * @param object $oneListCalculateResponse
-     * @param Order $oldOrder
+     * @param $oldOrder
      * @param string $documentId
+     * @param $customerOrder
      * @return EditOrder|void
      */
-    public function prepareOrder(Order $order, $oneListCalculateResponse, Order $oldOrder, $documentId)
+    public function prepareOrder(Order $order, $oneListCalculateResponse, $oldOrder, $documentId, $customerOrder)
     {
         try {
-            $customerOrder = $this->orderHelper->getOrderDetailsAgainstId($documentId);
-            $orderEdit     = new EditOrder();
+            $orderEdit = new EditOrder();
             $orderEdit->setOrderId($documentId);
             $orderEdit->setEditType(OrderEditType::GENERAL);
             $orderObject = new CommerceOrder();
@@ -175,23 +185,21 @@ class OrderEdit
             $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
             $lineOrderArray  = [];
             /** @var OrderItemInterface[] $olditems */
-            $oldItems = $oldOrder->getItems();
+            $this->oldItems = $oldOrder->getItems();
             /** @var OrderItemInterface[] $newItems */
-            $newItems      = $order->getItems();
-            $newItemsArray = [];
+            $newItems = $order->getItems();
             foreach ($newItems as $newItem) {
-                $newItemsArray[$newItem->getSku()] = $newItem->getSku();
+                $this->newItemsArray[$newItem->getSku()] = $newItem->getSku();
             }
             $oldItemsArray = [];
-            foreach ($oldItems as $oldItem) {
+            foreach ($this->oldItems as $oldItem) {
                 $oldItemsArray[$oldItem->getSku()] = $oldItem->getSku();
             }
-            $this->removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId, $oldOrder);
-            $this->addNewItems($newItemsArray, $oldItemsArray, $orderLinesArray, $order);
+            $this->addNewItems($this->newItemsArray, $oldItemsArray, $orderLinesArray, $order);
             $this->updateItemLineNumber($orderLinesArray, $customerOrder);
-            $lineOrderArray  = $this->modifyItemQuantity($newItems, $oldItems, $orderLinesArray, $order);
-            $orderLinesArray = array_merge($orderLinesArray, $lineOrderArray);
-            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order, $customerOrder, $oldOrder);
+            $lineOrderArray    = $this->modifyItemQuantity($newItems, $this->oldItems, $orderLinesArray, $order);
+            $orderLinesArray   = array_merge($orderLinesArray, $lineOrderArray);
+            $orderLinesArray   = $this->updateShippingAmount($orderLinesArray, $order, $customerOrder, $oldOrder);
             $orderPaymentArray = $this->setOrderPayments(
                 $order,
                 $cardId,
@@ -445,6 +453,7 @@ class OrderEdit
                         $uom == $line->getUomId()) {
                         $lineNumber = ((int)$line->getLineNumber() + (int)$order->getEditIncrement());
                         $line->setLineNumber($lineNumber);
+                        $line->setItemImageId('NEW_COLINE_INDICATOR');
                     }
                 }
             }
@@ -458,11 +467,10 @@ class OrderEdit
      * @param $newItemsArray
      * @param $customerOrder
      * @param $documentId
-     * @param $oldOrder
      * @return void
      * @throws NoSuchEntityException
      */
-    public function removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId, $oldOrder)
+    public function removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId)
     {
         $itemsToCancel = [];
         foreach ($oldItems as $oldItem) {
@@ -582,5 +590,36 @@ class OrderEdit
                 }
             }
         }
+    }
+
+    /**
+     * Return old items
+     *
+     * @return array
+     */
+    public function getOldItems()
+    {
+        return $this->oldItems;
+    }
+
+    /**
+     * Return new items
+     *
+     * @return array
+     */
+    public function getNewItems()
+    {
+        return $this->newItemsArray;
+    }
+
+    /**
+     * Unset items array
+     *
+     * @return void
+     */
+    public function unsetItemsArray()
+    {
+        unset($this->newItemsArray);
+        unset($this->oldItems);
     }
 }

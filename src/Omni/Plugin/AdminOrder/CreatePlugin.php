@@ -89,6 +89,7 @@ class CreatePlugin
         $quote = $subject->getQuote();
         $this->orderHelper->storeManager->setCurrentStore($quote->getStoreId());
         $this->basketHelper->setCorrectStoreIdInCheckoutSession($quote->getStoreId());
+        $this->basketHelper->getCustomerSession()->setCustomerId($quote->getCustomer()->getId());
         try {
             if ($this->lsr->isLSR($quote->getStoreId())) {
                 $couponCode = $quote->getCouponCode();
