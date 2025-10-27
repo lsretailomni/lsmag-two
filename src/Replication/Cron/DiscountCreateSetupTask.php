@@ -156,6 +156,9 @@ class DiscountCreateSetupTask
                         if (!empty($publishedOfferCollection)) {
                             $reindexRules = false;
                             $schemes      = $this->contactHelper->getSchemes();
+                            if (is_array($schemes) && !array_key_exists(0,$schemes)) {
+                                $schemes = [$schemes];
+                            }
                             $this->createAllAvailableCustomerGroups($schemes);
                             /** @var ReplDiscountSetup $item */
                             foreach ($publishedOfferCollection as $item) {
@@ -1061,7 +1064,6 @@ class DiscountCreateSetupTask
     public function createAllAvailableCustomerGroups($schemes)
     {
         $customGroups = [];
-
         foreach ($schemes as $scheme) {
             $customGroups[] = $scheme['Code'];
         }

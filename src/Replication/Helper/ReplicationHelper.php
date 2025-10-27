@@ -1738,6 +1738,7 @@ class ReplicationHelper extends AbstractHelper
         /**
          * add a check here to see if new value is different from old one in order to avoid unnecessory flushing.
          */
+        echo $path." \n";
         $existingData = $this->lsr->getConfigValueFromDb(
             $path,
             $scope,

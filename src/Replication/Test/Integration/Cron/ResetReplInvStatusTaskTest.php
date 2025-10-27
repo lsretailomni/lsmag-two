@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration\Cron;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Cron\ReplEcommInventoryStatusTask;
+use \Ls\Replication\Cron\ReplLscInventoryLookupTableTask;
 use \Ls\Replication\Cron\ResetReplInvStatusTask;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
@@ -50,12 +50,17 @@ class ResetReplInvStatusTaskTest extends TestCase
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommInventoryStatusTask::class,
+                'job_url' => ReplLscInventoryLookupTableTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, '2023.0.0', 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
@@ -92,12 +97,17 @@ class ResetReplInvStatusTaskTest extends TestCase
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommInventoryStatusTask::class,
+                'job_url' => ReplLscInventoryLookupTableTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
@@ -130,17 +140,17 @@ class ResetReplInvStatusTaskTest extends TestCase
     public function getRequiredValues()
     {
         $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
-            ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS,
+            ReplLscInventoryLookupTableTask::CONFIG_PATH_STATUS,
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getWebsite()->getId()
         );
         $fullReplicationConfigPath = $this->lsr->getConfigValueFromDb(
-            ReplEcommInventoryStatusTask::CONFIG_PATH,
+            ReplLscInventoryLookupTableTask::CONFIG_PATH,
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getWebsite()->getId()
         );
         $fullReplicationMaxKey = $this->lsr->getConfigValueFromDb(
-            ReplEcommInventoryStatusTask::CONFIG_PATH_MAX_KEY,
+            ReplLscInventoryLookupTableTask::CONFIG_PATH_MAX_KEY,
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getWebsite()->getId()
         );

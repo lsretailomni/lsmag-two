@@ -399,7 +399,11 @@ abstract class AbstractTaskTest extends TestCase
             AbstractIntegrationTest::SAMPLE_HIERARCHY_NAV_ID,
             'website'
         ),
-        Config(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE, 5, 'store', 'default')
+        Config(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE, 5, 'store', 'default'),
+        Config(LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO, 1, 'store', 'default'),
+        Config(LSR::SC_SUCCESS_CRON_PRODUCT, 1, 'store', 'default'),
+        Config(LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP, 1, 'store', 'default'),
+        Config(LSR::SC_SUCCESS_CRON_DISCOUNT, 1, 'store', 'default'),
     ]
     public function testExecute()
     {

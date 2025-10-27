@@ -286,6 +286,7 @@ class ProductCreateTask
                         /** @var ReplItem $item */
                         foreach ($items->getItems() as $item) {
                             try {
+                                //echo $item->getNavId()."  ";
                                 $taxClass    = null;
                                 $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                                     $item->getNavId(),
@@ -360,6 +361,19 @@ class ProductCreateTask
                                     $item->getNavId(),
                                     $this->getScopeId()
                                 );
+                                
+                                if($item->getNavId() == "40000") {
+                                    echo $item->getNavId();
+                                    echo "variants ".count($variants);
+                                    echo "tota UOM ".count($totalUomCodes);
+                                }
+
+                                if($item->getNavId() == "40020") {
+                                    echo $item->getNavId();
+                                    echo "variants ".count($variants);
+                                    echo "tota UOM ".count($totalUomCodes);
+                                }
+                                
                                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                 //Update UOM attributes for simple products
                                 if (empty($variants) && count($totalUomCodes[$item->getNavId()]) == 1) {
