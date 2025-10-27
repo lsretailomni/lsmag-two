@@ -658,7 +658,6 @@ class BasketHelper extends AbstractHelperOmni
             return null;
         }
 
-        $storeId = $this->getDefaultWebStore();
         $cardId  = $oneList->getCardId();
 
         /** @var Entity\ArrayOfOneListItem $oneListItems */
@@ -684,7 +683,7 @@ class BasketHelper extends AbstractHelperOmni
                     ->setCardId($cardId)
                     ->setListType(Entity\Enum\ListType::BASKET)
                     ->setItems($listItems)
-                    ->setStoreId($storeId);
+                    ->setStoreId($oneList->getStoreId());
 
                 if (version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
                     $oneListRequest
@@ -693,7 +692,12 @@ class BasketHelper extends AbstractHelperOmni
                 }
 
                 if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
-                    $oneListRequest->setShipToCountryCode($oneList->getShipToCountryCode());
+                    $oneListRequest->setShipToCountryCode($oneList->getShipToCountryCode() ?? null);
+                }
+
+                if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
+                    $oneListRequest->setShipToCounty($oneList->getShipToCounty() ?? null);
+                    $oneListRequest->setShipToPostCode($oneList->getShipToPostCode() ?? null);
                 }
 
                 if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
@@ -1165,8 +1169,30 @@ class BasketHelper extends AbstractHelperOmni
     public function updateBasketAndSaveTotals($oneList, $quote)
     {
         if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
-            $country = $quote->getShippingAddress()->getCountryId();
+            $shippingAddress = $quote->getShippingAddress();
+            $country = $shippingAddress->getCountryId();
             $oneList->setShipToCountryCode($country);
+            $storeId = $this->getDefaultWebStore();
+            $oneList->setStoreId($storeId);
+
+            if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
+                $carrierCode = $shippingAddress->getShippingMethod();
+                $isClickCollect = $carrierCode == 'clickandcollect_clickandcollect';
+
+                if ($isClickCollect) {
+                    if (!empty($pickupStore = $quote->getPickupStore())) {
+                        $oneList
+                            ->setShipToPostCode(null)
+                            ->setShipToCounty(null)
+                            ->setShipToCountryCode(null)
+                            ->setStoreId($pickupStore);
+                    }
+                } else {
+                    $oneList
+                        ->setShipToPostCode($shippingAddress->getPostcode())
+                        ->setShipToCounty($shippingAddress->getRegionCode());
+                }
+            }
         }
 
         $basketData = $this->update($oneList);

@@ -426,6 +426,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_ORDER_INTEGRATION_ACTIVE = 'ls_mag/standalone_integration/order';
     //Basket Calculation
     const LS_PLACE_TO_SYNC_BASKET_CALCULATION = 'ls_mag/ls_basket_calculation/place_to_sync';
+    const LS_BASKET_CALCULATION_SHIP_TO_PARAMS = 'ls_mag/ls_basket_calculation/ship_to_params';
 
     //Order Management
     const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_management/prefix';
@@ -1109,6 +1110,16 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             self::LS_PLACE_TO_SYNC_BASKET_CALCULATION,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
+    }
+
+    /**
+     * Returns whether we need to pass address params in basket calculation
+     *
+     * @return bool
+     */
+    public function shipToParamsInBasketCalculationIsEnabled(): bool
+    {
+        return (bool)$this->scopeConfig->getValue(self::LS_BASKET_CALCULATION_SHIP_TO_PARAMS);
     }
 
     /**
