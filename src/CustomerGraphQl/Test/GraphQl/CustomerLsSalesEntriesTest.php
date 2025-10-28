@@ -110,7 +110,7 @@ class CustomerLsSalesEntriesTest extends GraphQlTestBase
     public function testLsSalesEntriesWithFilter(): void
     {
         // Fetch the ID from environment variables
-        $id = getenv('LS_SALES_ENTRY_ID') ?: 'CO001813';
+        $id = getenv('LS_SALES_ENTRY_ID') ?: 'CO004805';
 
         $query = <<<QUERY
         query {

@@ -1777,6 +1777,8 @@ class ProductCreateTask
         $attributesCode = $this->replicationHelper->_getAttributesCodes($item->getNavId(), $this->getScopeId());
 
         if (empty($attributesCode)) {
+            print_r($attributesCode);
+            print_r($variants);
             $this->handleVariantsInCaseOfNoItemAttributeInExtendedVariant($variants);
             $variants = [];
         }

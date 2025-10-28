@@ -3419,7 +3419,7 @@ class ReplicationHelper extends AbstractHelper
                 ->addFilter('Code', true, 'notnull')
                 ->addFilter('Dimensions', true, 'notnull')
                 ->addFilter('scope_id', $storeId, 'eq')->create();
-            $sortOrder      = $this->sortOrder->setField('DimensionLogicalOrder')->setDirection(SortOrder::SORT_ASC);
+            $sortOrder      = $this->sortOrder->setField('Dimensions')->setDirection(SortOrder::SORT_ASC);
             $searchCriteria->setSortOrders([$sortOrder]);
             $attributeCodes = $this->extendedVariantValueRepository->getList($searchCriteria)->getItems();
 

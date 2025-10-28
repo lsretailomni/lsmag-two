@@ -6,6 +6,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
@@ -45,6 +46,11 @@ class UpdateCartItemsTest extends GraphQlTestBase
     public $checkoutSession;
 
     /**
+     * @var Session
+     */
+    public $customerSession;
+
+    /**
      * @var ManagerInterface
      */
     public $eventManager;
@@ -62,6 +68,7 @@ class UpdateCartItemsTest extends GraphQlTestBase
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
         $this->maskedQuote     = $this->objectManager->get(QuoteIdToMaskedQuoteIdInterface::class);
         $this->checkoutSession = $this->objectManager->create(Session::class);
+        $this->customerSession = $this->objectManager->create(CustomerSession::class);
         $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
         $this->basketHelper    = $this->objectManager->create(BasketHelper::class);
     }
@@ -72,7 +79,12 @@ class UpdateCartItemsTest extends GraphQlTestBase
     #[
         AppArea('graphql'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, \Ls\Omni\Test\Integration\AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default')
@@ -87,6 +99,11 @@ class UpdateCartItemsTest extends GraphQlTestBase
         $cart            = $this->addSimpleProduct($emptyCart, $product);
         $maskedQuoteId   = $this->maskedQuote->execute($cart->getId());
         $item            = current($cart->getAllVisibleItems());
+
+        $this->customerSession->setData('customer_id', $customer->getId());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
+        $this->checkoutSession->setQuoteId($cart->getId());
+        
         $query           = $this->getQuery($maskedQuoteId, $item->getId(), 5);
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 

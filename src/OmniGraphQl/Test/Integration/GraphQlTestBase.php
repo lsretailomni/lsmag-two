@@ -64,7 +64,7 @@ abstract class GraphQlTestBase extends GraphQlAbstract
         $this->productSku = (defined('WEB_API_TEST_PRODUCT_SKU')) ?
             WEB_API_TEST_PRODUCT_SKU : AbstractIntegrationTest::ITEM_SIMPLE;
         $this->email      = (defined('WEB_API_TEST_EMAIL')) ?
-            WEB_API_TEST_EMAIL : 'pipeline_retail@lsretail.com';
+            WEB_API_TEST_EMAIL : 'retail.new2@getnada.com';
         $this->password   = (defined('PASSWORD')) ?
             PASSWORD : 'Nmswer123@';
     }
@@ -82,10 +82,12 @@ abstract class GraphQlTestBase extends GraphQlAbstract
     protected function executeQuery(string $query, ?string $token = ''): array
     {
         // Initialize headers array
-        $headers = [];
+        $headers                 = [];
+        $headers['store']        = "default";
+        $headers['content-type'] = "application/json";
 
         // Add Authorization header if token is provided
-        if ($token !== null) {
+        if ($token !== "") {
             $headers['Authorization'] = "Bearer $token";
         }
 
@@ -108,7 +110,7 @@ abstract class GraphQlTestBase extends GraphQlAbstract
         $headers = [];
 
         // Add Authorization header if token is provided
-        if ($token !== null) {
+        if ($token !== "") {
             $headers['Authorization'] = "Bearer $token";
         }
 
@@ -123,9 +125,9 @@ abstract class GraphQlTestBase extends GraphQlAbstract
      */
     protected function loginAndFetchToken(): string
     {
-        $email    = getenv('EMAIL') ?: throw new \RuntimeException('TEST_USER_EMAIL is not set in .env');
+        $email    = getenv('WEB_API_TEST_EMAIL') ?: throw new \RuntimeException('TEST_USER_EMAIL is not set in .env');
         $password = getenv('PASSWORD') ?:
-            throw new \RuntimeException('TEST_USER_PASSWORD is not set in .env');
+            throw new \RuntimeException('WEB_API_TEST_EMAIL is not set in .env');
 
         $loginMutation = <<<MUTATION
         mutation {

@@ -5,7 +5,7 @@ namespace Ls\OmniGraphQl\Helper;
 
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
+use \Ls\Omni\Client\CentralEcommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\StockHelper;
@@ -196,19 +196,19 @@ class DataHelper extends AbstractHelper
     public function formatStoreData($store)
     {
         return [
-            'store_id'                          => $store['no'],
-            'store_name'                        => $store['name'],
-            'click_and_collect_accepted'        => $store['click_and_collect'],
-            'latitude'                          => $store['latitude'],
-            'longitude'                         => $store['longitude'],
-            'phone'                             => $store['phone_no'],
-            'city'                              => $store['city'],
-            'country'                           => $store['country_code'],
-            'county'                            => $store['county'],
-            'state'                             => $store['county'],
-            'zip_code'                          => $store['post_code'],
-            'currency_accepted'                 => $store['currency_code'],
-            'street'                            => $store['address'],
+            'store_id'                          => $store['nav_id'],
+            'store_name'                        => $store['Name'],
+            'click_and_collect_accepted'        => $store['ClickAndCollect'],
+            'latitude'                          => $store['Latitute'],
+            'longitude'                         => $store['Longitude'],
+            'phone'                             => $store['Phone'],
+            'city'                              => $store['City'],
+            'country'                           => $store['Country'],
+//            'county'                            => $store['County'],
+            'state'                             => $store['State'],
+            'zip_code'                          => $store['ZipCode'],
+            'currency_accepted'                 => $store['Currency'],
+            'street'                            => $store['Street'],
             'available_hospitality_sales_types' =>
                 !empty($store['HospSalesTypes']) ? explode('|', $store['HospSalesTypes']) : null,
             'store_hours'                       => $this->formatStoreTiming($store['nav_id'])

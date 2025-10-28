@@ -640,6 +640,7 @@ class LoyaltyHelper extends AbstractHelperOmni
                 $cardId = $customer->getLsrCardid();
             }
             $rootGetDirectMarketingInfo = $this->getPublishedOffers($cardId, $storeId);
+            //print_r($rootGetDirectMarketingInfo);
             $requiredOffers = [];
             if ($rootGetDirectMarketingInfo) {
                 $publishedOffers = $rootGetDirectMarketingInfo->getPublishedoffer();
@@ -650,6 +651,7 @@ class LoyaltyHelper extends AbstractHelperOmni
                     }
                 }
             }
+            
             $itemsInCart = $this->checkoutSession->getQuote()->getAllVisibleItems();
             $coupons = $itemIdentifiers = [];
             foreach ($itemsInCart as $item) {
@@ -672,7 +674,6 @@ class LoyaltyHelper extends AbstractHelperOmni
                     ];
                 }
             }
-
             if (!empty($requiredOffers)) {
                 foreach ($requiredOffers as $each) {
                     $offerNo = $each->getNo();

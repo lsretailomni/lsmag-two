@@ -123,6 +123,10 @@ class AbstractIntegrationTest extends TestCase
         return getenv($name);
     }
 
+    /**
+     * @magentoDbIsolation disabled
+     * @magentoAppIsolation disabled
+     */
     public function testExecute()
     {
         $this->assertEquals(1, 1);
