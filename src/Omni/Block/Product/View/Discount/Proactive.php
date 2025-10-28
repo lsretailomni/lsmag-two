@@ -201,7 +201,9 @@ class Proactive extends Template
 
                 foreach ($itemId as $id) {
                     $publishedOffers = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $id);
-
+                    if (!is_array($publishedOffers)) {
+                        continue;
+                    }
                     foreach ($publishedOffers as $publishedOffer) {
                         if ($publishedOffer->getCode() == OfferDiscountType::COUPON ||
                             $publishedOffer->getCode() == OfferDiscountType::PROMOTION ||
