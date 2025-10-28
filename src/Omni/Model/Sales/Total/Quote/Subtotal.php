@@ -57,8 +57,7 @@ class Subtotal
             $this->lsr->getCurrentStoreId(),
             false,
             $this->lsr->getBasketIntegrationOnFrontend()
-        ) || $this->lsr->localTaxIsEnabled()
-        ) {
+        )) {
             return $proceed($quote, $shippingAssignment, $total);
         }
 
