@@ -186,8 +186,6 @@ abstract class AbstractTaskTest extends TestCase
         $this->replVendorRepository                  = $this->objectManager->get(ReplVendorRepositoryInterface::class);
         $this->replDiscountSetupRepository           = $this->objectManager->get(ReplDiscountSetupRepositoryInterface::class);
         $this->replDiscountSetupInterfaceFactory     = $this->objectManager->get(ReplDiscountSetupInterfaceFactory::class);
-        $this->replDiscountRepository                = $this->objectManager->get(ReplDiscountRepositoryInterface::class);
-        $this->replDiscountInterfaceFactory          = $this->objectManager->get(ReplDiscountInterfaceFactory::class);
         $this->replDiscountValidationRepository      = $this->objectManager->get(ReplDiscountValidationRepositoryInterface::class);
         $this->replDataTranslationRepository         = $this->objectManager->get(ReplDataTranslationRepositoryInterface::class);
         $this->replDataTranslationInterfaceFactory   = $this->objectManager->get(ReplDataTranslationInterfaceFactory::class);

@@ -10,12 +10,7 @@ use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
-use Magento\TestFramework\Fixture\Config;
 
-/**
- * @magentoDbIsolation disabled
- * @magentoAppIsolation disabled
- */
 class ProductCreateTaskTestTest extends AbstractTaskTest
 {
     /**
@@ -34,10 +29,6 @@ class ProductCreateTaskTestTest extends AbstractTaskTest
         parent::tearDown();
     }
 
-    /**
-     * @magentoDbIsolation disabled
-     * @magentoAppIsolation disabled
-     */
     public function actualExecute()
     {
         $storeId           = $this->storeManager->getStore()->getId();

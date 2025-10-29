@@ -361,7 +361,7 @@ class ProductCreateTask
                                     $item->getNavId(),
                                     $this->getScopeId()
                                 );
-                                
+
                                 if($item->getNavId() == "40000") {
                                     echo $item->getNavId();
                                     echo "variants ".count($variants);
@@ -373,7 +373,7 @@ class ProductCreateTask
                                     echo "variants ".count($variants);
                                     echo "tota UOM ".count($totalUomCodes);
                                 }
-                                
+
                                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                 //Update UOM attributes for simple products
                                 if (empty($variants) && count($totalUomCodes[$item->getNavId()]) == 1) {
