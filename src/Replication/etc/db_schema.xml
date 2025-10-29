@@ -989,6 +989,7 @@
   <table name="ls_replication_repl_discount_validation" resource="default" engine="innodb" comment="LSC Validation Period">
     <column xsi:type="int" name="repl_discount_validation_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_discount_validation_id"/>
     <column xsi:type="text" name="Description" nullable="true" comment="description"/>
+    <column xsi:type="text" name="EndDate" nullable="true" comment="ending_date"/>
     <column xsi:type="text" name="EndTime" nullable="true" comment="ending_time"/>
     <column xsi:type="boolean" name="EndAfterMidnight" default="0" nullable="true" comment="ending_time_after_midnight"/>
     <column xsi:type="boolean" name="FridayEndAfterMidnight" default="0" nullable="true" comment="fri_end_time_after_midnight"/>
