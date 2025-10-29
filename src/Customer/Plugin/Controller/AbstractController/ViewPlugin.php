@@ -1,13 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\Plugin\Controller\AbstractController;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
-use Magento\Sales\Controller\AbstractController\View as ViewAlias;
 use Psr\Log\LoggerInterface;
 
 class ViewPlugin
@@ -56,6 +57,7 @@ class ViewPlugin
      * @param $subject
      * @param $proceed
      * @return Redirect|mixed
+     * @throws GuzzleException
      */
     public function aroundExecute($subject, $proceed)
     {
@@ -72,13 +74,9 @@ class ViewPlugin
             $resultRedirect = $this->resultRedirectFactory->create();
             $actionName = $subject->getRequest()->getActionName();
 
-            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
-                $resultRedirect->setPath('customer/order/'. $actionName .'/order_id/' . $documentId);
-            } else {
-                $resultRedirect->setPath(
-                    'customer/order/'. $actionName. '/order_id/' . $documentId . '/type/' . DocumentIdType::ORDER
-                );
-            }
+            $resultRedirect->setPath(
+                'customer/order/'. $actionName. '/order_id/' . $documentId . '/type/' . DocumentIdType::ORDER
+            );
             return $resultRedirect;
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());

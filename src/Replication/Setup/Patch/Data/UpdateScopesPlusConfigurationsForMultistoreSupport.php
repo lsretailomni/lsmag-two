@@ -36,7 +36,7 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
         "ls_replication_repl_currency_exch_rate",
         "ls_replication_repl_customer",
         "ls_replication_repl_data_translation",
-        "ls_replication_repl_discount",
+        "ls_replication_repl_discount_setup",
         "ls_replication_repl_discount_validation",
         "ls_replication_repl_hierarchy",
         "ls_replication_repl_hierarchy_leaf",
@@ -59,7 +59,6 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
         "ls_replication_repl_vendor"
     ];
 
-
     /** @var array List of all websiteScopeFields */
     private $websiteScopeFields = [
         "ls_mag/service/base_url",
@@ -76,7 +75,6 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
         "ls_mag/replication/last_execute_repl_attribute_option_value",
         "ls_mag/replication/last_execute_repl_attribute_value",
         "ls_mag/replication/last_execute_repl_barcode",
-        "ls_mag/replication/last_execute_repl_discount",
         "ls_mag/replication/last_execute_repl_extended_variant_value",
         "ls_mag/replication/last_execute_repl_hierarchy",
         "ls_mag/replication/last_execute_repl_hierarchy_leaf",
@@ -93,7 +91,6 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
         "ls_mag/replication/max_key_repl_attribute_option_value",
         "ls_mag/replication/max_key_repl_attribute_value",
         "ls_mag/replication/max_key_repl_barcode",
-        "ls_mag/replication/max_key_repl_discount",
         "ls_mag/replication/max_key_repl_extended_variant_value",
         "ls_mag/replication/max_key_repl_hierarchy",
         "ls_mag/replication/max_key_repl_hierarchy_leaf",
@@ -110,7 +107,6 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
         "ls_mag/replication/repl_attribute_option_value",
         "ls_mag/replication/repl_attribute_value",
         "ls_mag/replication/repl_barcode",
-        "ls_mag/replication/repl_discount",
         "ls_mag/replication/repl_extended_variant_value",
         "ls_mag/replication/repl_hierarchy",
         "ls_mag/replication/repl_hierarchy_leaf",
@@ -127,7 +123,6 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
         "ls_mag/replication/status_repl_attribute_option_value",
         "ls_mag/replication/status_repl_attribute_value",
         "ls_mag/replication/status_repl_barcode",
-        "ls_mag/replication/status_repl_discount",
         "ls_mag/replication/status_repl_extended_variant_value",
         "ls_mag/replication/status_repl_hierarchy",
         "ls_mag/replication/status_repl_hierarchy_leaf",
@@ -143,11 +138,9 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
         "ls_mag/replication/success_repl_attribute",
         "ls_mag/replication/success_repl_attribute_variant",
         "ls_mag/replication/success_repl_category",
-        "ls_mag/replication/success_repl_discount",
         "ls_mag/replication/success_repl_product",
         "ls_mag/replication/last_execute_repl_category",
         "ls_mag/replication/last_execute_repl_attributes",
-        "ls_mag/replication/last_execute_repl_discount_create",
         "ls_mag/replication/last_execute_repl_products",
         "ls_mag/replication/success_sync_item_updates",
         "ls_mag/replication/success_sync_inventory",
@@ -159,7 +152,6 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
         "ls_mag/replication/last_execute_repl_item_images_sync",
         "ls_mag/replication/last_execute_repl_attributes_value_sync",
         "ls_mag/replication/last_execute_repl_price_sync",
-        "ls_mag/replication/last_execute_repl_discount_status_reset",
         "ls_mag/replication/last_execute_repl_discount_setup_status_reset",
         "ls_mag/replication/last_execute_repl_inv_status_reset",
         "ls_mag/replication/last_execute_repl_price_status_reset"

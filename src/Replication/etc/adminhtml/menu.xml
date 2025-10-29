@@ -72,9 +72,6 @@
         <add id="Ls_Replication::attributeoptionvalue_grid" title="Attribute Option Value" translate="title"
              module="Ls_Replication" sortOrder="6" resource="Ls_Replication::attributeoptionvalue_grid"
              parent="Ls_Replication::replication_grid_group_second" action="ls_repl/grids/attributeoptionvalue"/>
-        <add id="Ls_Replication::discount_grid" title="Discount Replication" translate="title" module="Ls_Replication"
-             sortOrder="7" resource="Ls_Replication::discount_grid" parent="Ls_Replication::replication_grid_group_second"
-             action="ls_repl/grids/discount"/>
         <add id="Ls_Replication::discount_setup_grid" title="Discount Setup Replication" translate="title" module="Ls_Replication"
              sortOrder="8" resource="Ls_Replication::discount_setup_grid" parent="Ls_Replication::replication_grid_group_second"
              action="ls_repl/grids/discountsetup"/>

@@ -116,9 +116,6 @@ class DiscountCreateSetupTask
 
         if (!empty($stores)) {
             foreach ($stores as $store) {
-                if (!$this->lsr->validateForOlderVersion($store)['discountSetup']) {
-                    continue;
-                }
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
                 if ($this->lsr->isLSR($this->store->getId())) {

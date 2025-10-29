@@ -99,9 +99,6 @@
         <job name="repl_tax_rules" instance="Ls\Replication\Cron\TaxRulesCreateTask" method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>
-        <job name="repl_discount_create" instance="Ls\Replication\Cron\DiscountCreateTask" method="execute">
-            <schedule>*/5 * * * *</schedule>
-        </job>
         <job name="repl_discount_create_setup" instance="Ls\Replication\Cron\DiscountCreateSetupTask" method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>
@@ -137,10 +134,6 @@
             <schedule>0 0 * * *</schedule>
         </job>
         <job name="repl_price_status_reset" instance="Ls\Replication\Cron\ResetReplPriceStatusTask" method="execute">
-            <schedule>0 0 * * *</schedule>
-        </job>
-        <job name="repl_discount_status_reset" instance="Ls\Replication\Cron\ResetReplDiscountStatusTask"
-             method="execute">
             <schedule>0 0 * * *</schedule>
         </job>
         <job name="repl_discount_setup_status_reset" instance="Ls\Replication\Cron\ResetReplDiscountSetupStatusTask"
