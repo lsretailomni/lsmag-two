@@ -85,6 +85,7 @@ class CategoryCreateTaskTest extends TestCase
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_TIMEOUT, AbstractIntegrationTest::SC_SERVICE_TIMEOUT, 'store', 'default'),
         Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
         Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
         Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
@@ -125,6 +126,7 @@ class CategoryCreateTaskTest extends TestCase
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_TIMEOUT, AbstractIntegrationTest::SC_SERVICE_TIMEOUT, 'store', 'default'),
         Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
         Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
         Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
@@ -160,6 +162,7 @@ class CategoryCreateTaskTest extends TestCase
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_TIMEOUT, AbstractIntegrationTest::SC_SERVICE_TIMEOUT, 'store', 'default'),
         Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
         Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
         Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
@@ -190,6 +193,7 @@ class CategoryCreateTaskTest extends TestCase
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_TIMEOUT, AbstractIntegrationTest::SC_SERVICE_TIMEOUT, 'store', 'default'),
         Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
         Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
         Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
@@ -237,6 +241,7 @@ class CategoryCreateTaskTest extends TestCase
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_TIMEOUT, AbstractIntegrationTest::SC_SERVICE_TIMEOUT, 'store', 'default'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
