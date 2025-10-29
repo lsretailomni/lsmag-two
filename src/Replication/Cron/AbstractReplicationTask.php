@@ -106,9 +106,6 @@ abstract class AbstractReplicationTask
             if (!empty($stores)) {
                 foreach ($stores as $store) {
                     if ($this->getLsrModel()->isEnabled($store->getId(), $this->defaultScope)) {
-                        if ($this->executeDiscountReplicationOnCentralType($lsr, $store, $this->defaultScope)) {
-                            continue;
-                        }
                         $this->fetchDataGivenStore($store->getId());
                     }
                 }
@@ -930,29 +927,6 @@ abstract class AbstractReplicationTask
                 $this->defaultScope = ScopeInterface::SCOPE_STORES;
             }
         }
-    }
-
-    /**
-     * Execute discount replication for central type saas or on-prem
-     *
-     * @param $lsr
-     * @param $store
-     * @param $scope
-     * @return bool
-     */
-    public function executeDiscountReplicationOnCentralType($lsr, $store, $scope)
-    {
-        $configPath = $this->getConfigPath();
-
-        if ($configPath == "ls_mag/replication/repl_discount_setup") {
-            return !$lsr->validateForOlderVersion($store, $scope)['discountSetup'];
-        }
-
-        if ($configPath == "ls_mag/replication/repl_discount") {
-            return !$lsr->validateForOlderVersion($store, $scope)['discount'];
-        }
-
-        return false;
     }
 
     /**

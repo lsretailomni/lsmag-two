@@ -509,6 +509,7 @@ class ReplicationHelper extends AbstractHelper
                 'nav_id' => 'nav_id',
                 'description' => 'Description',
                 'starting_date' => 'StartDate',
+                'ending_date' => 'EndDate',
                 'starting_time' => 'StartTime',
                 'ending_time' => 'EndTime',
                 'monday_starting_time' => 'MondayStart',
