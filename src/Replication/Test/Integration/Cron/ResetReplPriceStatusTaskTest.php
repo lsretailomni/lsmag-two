@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration\Cron;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Cron\ReplEcommPricesTask;
+use \Ls\Replication\Cron\ReplLscWiPriceTask;
 use \Ls\Replication\Cron\ResetReplPriceStatusTask;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
@@ -50,7 +50,7 @@ class ResetReplPriceStatusTaskTest extends TestCase
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommPricesTask::class,
+                'job_url' => ReplLscWiPriceTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
@@ -73,21 +73,11 @@ class ResetReplPriceStatusTaskTest extends TestCase
     ]
     public function testExecuteOld()
     {
-        list($fullReplicationPriceStatus1,
-            $fullReplicationPriceConfigPath1,
-            $fullReplicationPriceMaxKey1
-            ) = $this->getRequiredValues();
+        $fullReplicationPriceStatus1 = $this->getRequiredValues();
         $this->assertNotNull($fullReplicationPriceStatus1);
-        $this->assertNotNull($fullReplicationPriceConfigPath1);
-        $this->assertNotNull($fullReplicationPriceMaxKey1);
         $this->cron->execute();
-        list($fullReplicationPriceStatus2,
-            $fullReplicationPriceConfigPath2,
-            $fullReplicationPriceMaxKey2
-            ) = $this->getRequiredValues();
+        $fullReplicationPriceStatus2 = $this->getRequiredValues();
         $this->assertTrue($fullReplicationPriceStatus2 == "0");
-        $this->assertTrue($fullReplicationPriceConfigPath2 == "0");
-        $this->assertTrue($fullReplicationPriceMaxKey2 == "0");
     }
 
     /**
@@ -97,7 +87,7 @@ class ResetReplPriceStatusTaskTest extends TestCase
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommPricesTask::class,
+                'job_url' => ReplLscWiPriceTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
@@ -120,44 +110,18 @@ class ResetReplPriceStatusTaskTest extends TestCase
     ]
     public function testExecuteNew()
     {
-        list($fullReplicationStatus1,
-            $fullReplicationConfigPath1,
-            $fullReplicationMaxKey1
-            ) = $this->getRequiredValues();
-        $this->assertNotNull($fullReplicationStatus1);
-        $this->assertNotNull($fullReplicationConfigPath1);
-        $this->assertNotNull($fullReplicationMaxKey1);
         $this->cron->execute();
-        list($fullReplicationStatus2,
-            $fullReplicationConfigPath2,
-            $fullReplicationMaxKey2
-            ) = $this->getRequiredValues();
+        $fullReplicationStatus2 = $this->getRequiredValues();
         $this->assertNotNull($fullReplicationStatus2);
-        $this->assertNotNull($fullReplicationConfigPath2);
-        $this->assertNotNull($fullReplicationMaxKey2);
     }
 
     public function getRequiredValues()
     {
         $fullReplicationPriceStatus = $this->lsr->getConfigValueFromDb(
-            ReplEcommPricesTask::CONFIG_PATH_STATUS,
+            ReplLscWiPriceTask::CONFIG_PATH_STATUS,
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getWebsite()->getId()
         );
-        $fullReplicationPriceConfigPath = $this->lsr->getConfigValueFromDb(
-            ReplEcommPricesTask::CONFIG_PATH,
-            ScopeInterface::SCOPE_WEBSITES,
-            $this->storeManager->getWebsite()->getId()
-        );
-        $fullReplicationPriceMaxKey = $this->lsr->getConfigValueFromDb(
-            ReplEcommPricesTask::CONFIG_PATH_MAX_KEY,
-            ScopeInterface::SCOPE_WEBSITES,
-            $this->storeManager->getWebsite()->getId()
-        );
-        return [
-            $fullReplicationPriceStatus,
-            $fullReplicationPriceConfigPath,
-            $fullReplicationPriceMaxKey
-        ];
+        return $fullReplicationPriceStatus;
     }
 }

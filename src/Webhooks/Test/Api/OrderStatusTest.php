@@ -44,30 +44,31 @@ class OrderStatusTest extends AbstractWebhookTest
         $objectManager = Bootstrap::getObjectManager();
         $serviceInfo   = [
             'rest' => [
-                'resourcePath' => '/V1/orderstatus',
+                'resourcePath' => '/V1/OrderMessageStatusUpdate',
                 'httpMethod'   => Request::HTTP_METHOD_POST
             ],
         ];
 
         $requestData = [
-            'OrderId'        => $documentId,
-            'CardId'         => '',
-            'HeaderStatus'   => '',
-            'MsgSubject'     => '',
-            'MsgDetail'      => '',
-            'Lines'          => [
-                [
-                    'LineNo'          => '10000',
-                    'PrevStatus'      => null,
-                    'NewStatus'       => 'CANCELED',
-                    'ItemId'          => $this->productSku,
-                    'VariantId'       => '',
-                    'UnitOfMeasureId' => 'PCS',
-                    'Quantity'        => 1.0,
-                    'Amount'          => $this->product->getPrice(),
-                ]
-            ],
-            "orderKOTStatus" => null
+            "orderMessage" => [
+                'OrderId'        => $documentId,
+                'CardId'         => '',
+                'HeaderStatus'   => '',
+                'MsgSubject'     => '',
+                'MsgDetail'      => '',
+                'Lines'          => [
+                    [
+                        'LineNo'          => '10000',
+                        'NewStatus'       => 'CANCELED',
+                        'ItemId'          => $this->productSku,
+                        'VariantId'       => '',
+                        'UnitOfMeasureId' => 'PCS',
+                        'Quantity'        => 1.0,
+                        'Amount'          => $this->product->getPrice(),
+                    ]
+                ],
+                "orderKOTStatus" => null
+            ]
         ];
 
         // Using the Magento Web API client to send the request
@@ -93,30 +94,31 @@ class OrderStatusTest extends AbstractWebhookTest
         $objectManager = Bootstrap::getObjectManager();
         $serviceInfo   = [
             'rest' => [
-                'resourcePath' => '/V1/orderstatus',
+                'resourcePath' => '/V1/OrderMessageStatusUpdate',
                 'httpMethod'   => Request::HTTP_METHOD_POST
             ],
         ];
 
         $requestData = [
-            'OrderId'        => $documentId,
-            'CardId'         => '',
-            'HeaderStatus'   => '',
-            'MsgSubject'     => '',
-            'MsgDetail'      => '',
-            'Lines'          => [
-                [
-                    'LineNo'          => '10000',
-                    'PrevStatus'      => null,
-                    'NewStatus'       => 'PICKED',
-                    'ItemId'          => $this->productSku,
-                    'VariantId'       => '',
-                    'UnitOfMeasureId' => 'PCS',
-                    'Quantity'        => 1.0,
-                    'Amount'          => $this->product->getPrice(),
-                ]
-            ],
-            "orderKOTStatus" => null
+            "orderMessage" => [
+                'OrderId'        => $documentId,
+                'CardId'         => '',
+                'HeaderStatus'   => '',
+                'MsgSubject'     => '',
+                'MsgDetail'      => '',
+                'Lines'          => [
+                    [
+                        'LineNo'          => '10000',
+                        'NewStatus'       => 'PICKED',
+                        'ItemId'          => $this->productSku,
+                        'VariantId'       => '',
+                        'UnitOfMeasureId' => 'PCS',
+                        'Quantity'        => 1.0,
+                        'Amount'          => $this->product->getPrice(),
+                    ]
+                ],
+                "orderKOTStatus" => null
+            ]
         ];
 
         // Using the Magento Web API client to send the request
@@ -143,30 +145,31 @@ class OrderStatusTest extends AbstractWebhookTest
         $objectManager = Bootstrap::getObjectManager();
         $serviceInfo   = [
             'rest' => [
-                'resourcePath' => '/V1/orderstatus',
+                'resourcePath' => '/V1/OrderMessageStatusUpdate',
                 'httpMethod'   => Request::HTTP_METHOD_POST
             ],
         ];
 
         $requestData = [
-            'OrderId'        => $documentId,
-            'CardId'         => '',
-            'HeaderStatus'   => '',
-            'MsgSubject'     => '',
-            'MsgDetail'      => '',
-            'Lines'          => [
-                [
-                    'LineNo'          => '10000',
-                    'PrevStatus'      => null,
-                    'NewStatus'       => 'COLLECTED',
-                    'ItemId'          => $this->productSku,
-                    'VariantId'       => '',
-                    'UnitOfMeasureId' => 'PCS',
-                    'Quantity'        => 1.0,
-                    'Amount'          => $this->product->getPrice(),
-                ]
-            ],
-            "orderKOTStatus" => null
+            "orderMessage" => [
+                'OrderId'        => $documentId,
+                'CardId'         => '',
+                'HeaderStatus'   => '',
+                'MsgSubject'     => '',
+                'MsgDetail'      => '',
+                'Lines'          => [
+                    [
+                        'LineNo'          => '10000',
+                        'NewStatus'       => 'COLLECTED',
+                        'ItemId'          => $this->productSku,
+                        'VariantId'       => '',
+                        'UnitOfMeasureId' => 'PCS',
+                        'Quantity'        => 1.0,
+                        'Amount'          => $this->product->getPrice(),
+                    ]
+                ],
+                "orderKOTStatus" => null
+            ]
         ];
 
         // Using the Magento Web API client to send the request
@@ -193,35 +196,37 @@ class OrderStatusTest extends AbstractWebhookTest
         $objectManager = Bootstrap::getObjectManager();
         $serviceInfo   = [
             'rest' => [
-                'resourcePath' => '/V1/orderpayment',
+                'resourcePath' => '/V1/OrderMessagePayment',
                 'httpMethod'   => Request::HTTP_METHOD_POST
             ],
         ];
 
         $requestData = [
-            'OrderId'      => $documentId,
-            'Status'       => '0',
-            'Amount'       => $order->getGrandTotal(),
-            'CurrencyCode' => 'GBP',
-            'Token'        => $order->getPayment()->getCcTransId(),
-            'AuthCode'     => '',
-            'Reference'    => $incrementId,
-            'Lines'        => [
-                [
-                    'LineNo'          => '10000',
-                    'ItemId'          => $this->productSku,
-                    'VariantId'       => '',
-                    'UnitOfMeasureId' => 'PCS',
-                    'Quantity'        => 1.0,
-                    'Amount'          => $this->product->getPrice(),
-                ],
-                [
-                    'LineNo'          => '20000',
-                    'ItemId'          => '66010',
-                    'VariantId'       => '',
-                    'UnitOfMeasureId' => 'PCS',
-                    'Quantity'        => 1.0,
-                    'Amount'          => 5.0,
+            "orderPayment" => [
+                'OrderId'      => $documentId,
+                'Status'       => '0',
+                'Amount'       => $order->getGrandTotal(),
+                'CurrencyCode' => 'GBP',
+                'Token'        => $order->getPayment()->getCcTransId(),
+                'AuthCode'     => '',
+                'Reference'    => $incrementId,
+                'Lines'        => [
+                    [
+                        'LineNo'          => '10000',
+                        'ItemId'          => $this->productSku,
+                        'VariantId'       => '',
+                        'UnitOfMeasureId' => 'PCS',
+                        'Quantity'        => 1.0,
+                        'Amount'          => $this->product->getPrice(),
+                    ],
+                    [
+                        'LineNo'          => '20000',
+                        'ItemId'          => '66010',
+                        'VariantId'       => '',
+                        'UnitOfMeasureId' => 'PCS',
+                        'Quantity'        => 1.0,
+                        'Amount'          => 5.0,
+                    ]
                 ]
             ]
         ];
@@ -233,30 +238,31 @@ class OrderStatusTest extends AbstractWebhookTest
         $objectManager = Bootstrap::getObjectManager();
         $serviceInfo1   = [
             'rest' => [
-                'resourcePath' => '/V1/orderstatus',
+                'resourcePath' => '/V1/OrderMessageStatusUpdate',
                 'httpMethod'   => Request::HTTP_METHOD_POST
             ],
         ];
 
         $requestData1 = [
-            'OrderId'        => $documentId,
-            'CardId'         => '',
-            'HeaderStatus'   => '',
-            'MsgSubject'     => '',
-            'MsgDetail'      => '',
-            'Lines'          => [
-                [
-                    'LineNo'          => '10000',
-                    'PrevStatus'      => null,
-                    'NewStatus'       => 'CANCELED',
-                    'ItemId'          => $this->productSku,
-                    'VariantId'       => '',
-                    'UnitOfMeasureId' => 'PCS',
-                    'Quantity'        => 1.0,
-                    'Amount'          => $this->product->getPrice(),
-                ]
-            ],
-            "orderKOTStatus" => null
+            "orderMessage" =>[
+                'OrderId'        => $documentId,
+                'CardId'         => '',
+                'HeaderStatus'   => '',
+                'MsgSubject'     => '',
+                'MsgDetail'      => '',
+                'Lines'          => [
+                    [
+                        'LineNo'          => '10000',
+                        'NewStatus'       => 'CANCELED',
+                        'ItemId'          => $this->productSku,
+                        'VariantId'       => '',
+                        'UnitOfMeasureId' => 'PCS',
+                        'Quantity'        => 1.0,
+                        'Amount'          => $this->product->getPrice(),
+                    ]
+                ],
+                "orderKOTStatus" => null
+            ]
         ];
 
         // Using the Magento Web API client to send the request

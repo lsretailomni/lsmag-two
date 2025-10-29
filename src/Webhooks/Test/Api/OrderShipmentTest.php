@@ -41,31 +41,32 @@ class OrderShipmentTest extends AbstractWebhookTest
         $order = $this->getOrCreateOrder($incrementId, $documentId, $this->customer, $this->product, true, false);
 
         // Bootstrapping Magento
-        $objectManager = Bootstrap::getObjectManager();
         $serviceInfo   = [
             'rest' => [
-                'resourcePath' => '/V1/ordershipping',
+                'resourcePath' => '/V1/OrderMessageShipping',
                 'httpMethod'   => Request::HTTP_METHOD_POST
             ],
         ];
 
         $requestData = [
-            'OrderId'     => $documentId,
-            'ShipmentNo'  => $incrementId,
-            'TrackingId'  => 'TRK123',
-            'TrackingUrl' => 'http://www.flatrate.com',
-            'Provider'    => 'FLATRATE',
-            'Service'     => 'FLATRATE',
-            'Lines'       => [
-                [
-                    'LineNo'          => '10000',
-                    'ItemId'          => $this->productSku,
-                    'VariantId'       => '',
-                    'UnitOfMeasureId' => 'PCS',
-                    'Quantity'        => 1.0,
-                    'Amount'          => $this->product->getPrice(),
+                "orderShipping" => [
+                'OrderId'     => $documentId,
+                'ShipmentNo'  => $incrementId,
+                'TrackingId'  => 'TRK123',
+                'TrackingUrl' => 'http://www.flatrate.com',
+                'Provider'    => 'FLATRATE',
+                'Service'     => 'FLATRATE',
+                'Lines'       => [
+                    [
+                        'LineNo'          => '10000',
+                        'ItemId'          => $this->productSku,
+                        'VariantId'       => '',
+                        'UnitOfMeasureId' => 'PCS',
+                        'Quantity'        => 1.0,
+                        'Amount'          => $this->product->getPrice(),
+                    ]
                 ]
-            ]
+            ]        
         ];
 
         // Using the Magento Web API client to send the request

@@ -73,21 +73,11 @@ class ResetReplInvStatusTaskTest extends TestCase
     ]
     public function testExecuteOld()
     {
-        list($fullReplicationStatus1,
-            $fullReplicationConfigPath1,
-            $fullReplicationMaxKey1
-            ) = $this->getRequiredValues();
+        $fullReplicationStatus1 = $this->getRequiredValues();
         $this->assertNotNull($fullReplicationStatus1);
-        $this->assertNotNull($fullReplicationConfigPath1);
-        $this->assertNotNull($fullReplicationMaxKey1);
         $this->cron->execute();
-        list($fullReplicationStatus2,
-            $fullReplicationConfigPath2,
-            $fullReplicationMaxKey2
-            ) = $this->getRequiredValues();
+        $fullReplicationStatus2 = $this->getRequiredValues();
         $this->assertTrue($fullReplicationStatus2 == "0");
-        $this->assertTrue($fullReplicationConfigPath2 == "0");
-        $this->assertTrue($fullReplicationMaxKey2 == "0");
     }
 
     /**
@@ -120,21 +110,9 @@ class ResetReplInvStatusTaskTest extends TestCase
     ]
     public function testExecuteNew()
     {
-        list($fullReplicationStatus1,
-            $fullReplicationConfigPath1,
-            $fullReplicationMaxKey1
-            ) = $this->getRequiredValues();
-        $this->assertNotNull($fullReplicationStatus1);
-        $this->assertNotNull($fullReplicationConfigPath1);
-        $this->assertNotNull($fullReplicationMaxKey1);
         $this->cron->execute();
-        list($fullReplicationStatus2,
-            $fullReplicationConfigPath2,
-            $fullReplicationMaxKey2
-            ) = $this->getRequiredValues();
+        $fullReplicationStatus2 = $this->getRequiredValues();
         $this->assertNotNull($fullReplicationStatus2);
-        $this->assertNotNull($fullReplicationConfigPath2);
-        $this->assertNotNull($fullReplicationMaxKey2);
     }
 
     public function getRequiredValues()
@@ -144,20 +122,7 @@ class ResetReplInvStatusTaskTest extends TestCase
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getWebsite()->getId()
         );
-        $fullReplicationConfigPath = $this->lsr->getConfigValueFromDb(
-            ReplLscInventoryLookupTableTask::CONFIG_PATH,
-            ScopeInterface::SCOPE_WEBSITES,
-            $this->storeManager->getWebsite()->getId()
-        );
-        $fullReplicationMaxKey = $this->lsr->getConfigValueFromDb(
-            ReplLscInventoryLookupTableTask::CONFIG_PATH_MAX_KEY,
-            ScopeInterface::SCOPE_WEBSITES,
-            $this->storeManager->getWebsite()->getId()
-        );
-        return [
-            $fullReplicationStatus,
-            $fullReplicationConfigPath,
-            $fullReplicationMaxKey
-        ];
+        
+        return $fullReplicationStatus;
     }
 }
