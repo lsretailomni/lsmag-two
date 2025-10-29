@@ -12,6 +12,7 @@ define('SC_TENANT', getenv('SC_TENANT'));
 define('SC_CLIENT_ID', getenv('SC_CLIENT_ID'));
 define('SC_CLIENT_SECRET', getenv('SC_CLIENT_SECRET'));
 define('SC_ENVIRONMENT_NAME', getenv('SC_ENVIRONMENT_NAME'));
+define('SC_SERVICE_TIMEOUT', getenv('SC_SERVICE_TIMEOUT'));
 define('CS_VERSION_1', getenv('CS_VERSION'));
 define('LS_VERSION_1', getenv('LS_VERSION'));
 define('CS_STORE_1', getenv('CS_STORE'));
@@ -65,6 +66,7 @@ class AbstractIntegrationTest extends TestCase
     public const SC_CLIENT_ID = SC_CLIENT_ID;
     public const SC_CLIENT_SECRET = SC_CLIENT_SECRET;
     public const SC_ENVIRONMENT_NAME = SC_ENVIRONMENT_NAME;
+    public const SC_SERVICE_TIMEOUT = SC_SERVICE_TIMEOUT;
     public const CS_VERSION = CS_VERSION_1;
     public const LS_VERSION = LS_VERSION_1;
     public const CS_STORE = CS_STORE_1;
