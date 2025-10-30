@@ -179,9 +179,9 @@ class BasketHelper extends AbstractHelperOmni
                     }
 
                     if (!$match) {
-                        $price = $quoteItem->getProduct()->getPrice();
-                        $price = $this->itemHelper->convertToCurrentStoreCurrency($price);
-                        $qty = $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
+                        $price  = $quoteItem->getProduct()->getPrice();
+                        $price  = $this->itemHelper->convertToCurrentStoreCurrency($price);
+                        $qty    = $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
                             $quoteItem->getData('qty');
                         $amount = $this->itemHelper->convertToCurrentStoreCurrency($quoteItem->getPrice() * $qty);
                         // @codingStandardsIgnoreLine
@@ -241,7 +241,7 @@ class BasketHelper extends AbstractHelperOmni
                 list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                     $quoteItem->getSku()
                 );
-                $priceIncTax         = $discountPercentage = $discount = null;
+                $priceIncTax  = $discountPercentage = $discount = null;
                 $regularPrice = $quoteItem->getOriginalPrice();
                 $finalPrice   = $quoteItem->getPriceInclTax();
 
@@ -253,16 +253,16 @@ class BasketHelper extends AbstractHelperOmni
 
                 if ($quoteItem->getDiscountAmount() > 0) {
                     if (!$discount && !$discountPercentage) {
-                        $discount = $quoteItem->getDiscountAmount();
+                        $discount           = $quoteItem->getDiscountAmount();
                         $discountPercentage = $quoteItem->getDiscountPercent();
 
                         if ($discountPercentage == 0) {
-                            $rowTotalInclTax = $quoteItem->getRowTotalInclTax();
+                            $rowTotalInclTax    = $quoteItem->getRowTotalInclTax();
                             $discountPercentage = ($discount / $rowTotalInclTax) * 100;
                         }
                     } else {
-                        $rowTotalInclTax = $quoteItem->getRowTotalInclTax() + $discount;
-                        $discount += $quoteItem->getDiscountAmount();
+                        $rowTotalInclTax    = $quoteItem->getRowTotalInclTax() + $discount;
+                        $discount           += $quoteItem->getDiscountAmount();
                         $discountPercentage = ($discount / $rowTotalInclTax) * 100;
                     }
                 }
@@ -292,7 +292,7 @@ class BasketHelper extends AbstractHelperOmni
                         ->setDiscountPercent($discountPercentage)
                         ->setDiscountType(Entity\Enum\DiscountType::LINE)
                         ->setLineNumber($lineNumber);
-                    $discountsArray[] = $orderDiscountLine;
+                    $discountsArray[]  = $orderDiscountLine;
                 }
 
                 $lineNumber += 10000;
@@ -1082,6 +1082,9 @@ class BasketHelper extends AbstractHelperOmni
             $order->getCustomerIsGuest()
         );
         $oneList    = $this->setOneListQuote($quote, $oneList);
+        if ($couponCode == null) {
+            $couponCode = '';
+        }
         $this->setCouponCodeInAdmin($couponCode);
 
         return $this->update($oneList);
@@ -1196,7 +1199,7 @@ class BasketHelper extends AbstractHelperOmni
         }
 
         $basketData = $this->update($oneList);
-        $quote = $this->getCurrentQuote();
+        $quote      = $this->getCurrentQuote();
         if (is_object($basketData)) {
             $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
             $cartQuote = $this->checkoutSession->getQuote();
@@ -1311,7 +1314,7 @@ class BasketHelper extends AbstractHelperOmni
                     $itemOption = $item->getOptionByCode('option_' . $option->getId());
                     if ($itemOption) {
                         $optionValue = $itemOption->getValue();
-                        $values = explode(',', $optionValue); // Handle multiple selected values
+                        $values      = explode(',', $optionValue); // Handle multiple selected values
 
                         foreach ($values as $valueId) {
                             $value = $option->getValueById($valueId);

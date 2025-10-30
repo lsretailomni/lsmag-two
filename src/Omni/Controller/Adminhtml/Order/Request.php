@@ -115,14 +115,23 @@ class Request extends Action
                         if ($oldOrder && $this->lsr->getStoreConfig(LSR::LSR_ORDER_EDIT, $order->getStoreId())) {
                             $documentId = $oldOrder->getDocumentId();
                             if ($documentId) {
+                                $customerOrder = $this->orderHelper->getOrderDetailsAgainstId($documentId);
+                                $this->orderEdit->unsetItemsArray();
                                 $req      = $this->orderEdit->prepareOrder(
                                     $order,
                                     $oneListCalculation,
                                     $oldOrder,
-                                    $documentId
+                                    $documentId,
+                                    $customerOrder
                                 );
                                 $response = $this->orderEdit->orderEdit($req);
                                 if ($response) {
+                                    $this->orderEdit->removeItemsFromOrder(
+                                        $this->orderEdit->getOldItems(),
+                                        $this->orderEdit->getNewItems(),
+                                        $customerOrder,
+                                        $documentId
+                                    );
                                     $order->setDocumentId($documentId);
                                     $order->setLsOrderEdit(true);
                                     $isClickCollect = false;
