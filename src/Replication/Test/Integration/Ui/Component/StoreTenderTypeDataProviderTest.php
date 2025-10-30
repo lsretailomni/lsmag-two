@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration\Ui\Component;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Cron\ReplEcommStoreTenderTypesTask;
+use \Ls\Replication\Cron\ReplLscTenderTypeTask;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Store\Model\ScopeInterface;
@@ -66,7 +66,7 @@ class StoreTenderTypeDataProviderTest extends AbstractDataProvider
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommStoreTenderTypesTask::class,
+                'job_url' => ReplLscTenderTypeTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )
@@ -97,7 +97,7 @@ class StoreTenderTypeDataProviderTest extends AbstractDataProvider
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommStoreTenderTypesTask::class,
+                'job_url' => ReplLscTenderTypeTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )

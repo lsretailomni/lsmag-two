@@ -5,9 +5,9 @@ namespace Ls\Replication\Test\Integration\Cron;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Api\ReplCountryCodeRepositoryInterface;
-use \Ls\Replication\Cron\ReplEcommCountryCodeTask;
-use \Ls\Replication\Cron\ReplEcommStoresTask;
-use \Ls\Replication\Cron\ReplEcommTaxSetupTask;
+use \Ls\Replication\Cron\ReplLscCountryviewTask;
+use \Ls\Replication\Cron\ReplLscStoreviewTask;
+use \Ls\Replication\Cron\ReplLscVatPostingSetupTask;
 use \Ls\Replication\Cron\TaxRulesCreateTask;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
@@ -33,21 +33,21 @@ use PHPUnit\Framework\TestCase;
     DataFixture(
         FlatDataReplication::class,
         [
-            'job_url' => ReplEcommTaxSetupTask::class,
+            'job_url' => ReplLscVatPostingSetupTask::class,
             'scope' => ScopeInterface::SCOPE_WEBSITE
         ]
     ),
     DataFixture(
         FlatDataReplication::class,
         [
-            'job_url' => ReplEcommCountryCodeTask::class,
+            'job_url' => ReplLscCountryviewTask::class,
             'scope' => ScopeInterface::SCOPE_WEBSITE
         ]
     ),
     DataFixture(
         FlatDataReplication::class,
         [
-            'job_url' => ReplEcommStoresTask::class,
+            'job_url' => ReplLscStoreviewTask::class,
             'scope' => ScopeInterface::SCOPE_WEBSITE
         ]
     )

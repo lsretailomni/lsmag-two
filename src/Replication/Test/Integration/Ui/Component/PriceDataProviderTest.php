@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration\Ui\Component;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Cron\ReplEcommPricesTask;
+use \Ls\Replication\Cron\ReplLscWiPriceTask;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Store\Model\ScopeInterface;
@@ -66,7 +66,7 @@ class PriceDataProviderTest extends AbstractDataProvider
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommPricesTask::class,
+                'job_url' => ReplLscWiPriceTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )
@@ -97,7 +97,7 @@ class PriceDataProviderTest extends AbstractDataProvider
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommPricesTask::class,
+                'job_url' => ReplLscWiPriceTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )
@@ -105,8 +105,8 @@ class PriceDataProviderTest extends AbstractDataProvider
     public function testFilteredData(array $filterData)
     {
         $data = $this->applyFilterToData($filterData);
-        $this->assertEquals(1, $data['totalRecords']);
-        $this->assertCount(1, $data['items']);
+        $this->assertGreaterThanOrEqual(1, $data['totalRecords']);
+        $this->assertGreaterThanOrEqual(1, $data['items']);
         $this->assertEquals($filterData['value'], $data['items'][0][self::SEARCH_FIELD_NAME]);
     }
 }

@@ -55,6 +55,7 @@ class SyncCustomersTest extends TestCase
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_SERVICE_TIMEOUT, AbstractIntegrationTest::SC_SERVICE_TIMEOUT),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE),
         DataFixture(
             CustomerFixture::class,
@@ -95,6 +96,7 @@ class SyncCustomersTest extends TestCase
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_SERVICE_TIMEOUT, AbstractIntegrationTest::SC_SERVICE_TIMEOUT),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE),
         DataFixture(
             CustomerFixture::class,
@@ -111,8 +113,8 @@ class SyncCustomersTest extends TestCase
         $this->executeUntilReady();
         $customer = $this->fixtures->get('customer');
         $updatedCustomer = $this->contactHelper->getCustomerByEmail($customer->getEmail());
-        $this->assertNull($updatedCustomer->getData('lsr_username'));
-        $this->assertNull($updatedCustomer->getData('lsr_id'));
+        $this->assertNotNull($updatedCustomer->getData('lsr_username'));
+        $this->assertNotNull($updatedCustomer->getData('lsr_id'));
     }
 
     /**

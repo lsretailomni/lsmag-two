@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration\Ui\Component;
 
 use Ls\Core\Model\LSR;
-use Ls\Replication\Cron\ReplEcommHierarchyNodeTask;
-use Ls\Replication\Cron\ReplEcommHierarchyTask;
+use Ls\Replication\Cron\ReplLscHierarchynodesviewTask;
 use Ls\Replication\Test\Fixture\FlatDataReplication;
 use Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Store\Model\ScopeInterface;
@@ -67,7 +66,7 @@ class HierarchyNodeDataProviderTest extends AbstractDataProvider
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommHierarchyNodeTask::class,
+                'job_url' => ReplLscHierarchynodesviewTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )
@@ -98,7 +97,7 @@ class HierarchyNodeDataProviderTest extends AbstractDataProvider
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommHierarchyNodeTask::class,
+                'job_url' => ReplLscHierarchynodesviewTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )

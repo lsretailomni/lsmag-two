@@ -9,7 +9,6 @@ use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Replication\Api\Data\ReplAttributeValueInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplDataTranslationInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplDiscountSetupInterfaceFactory;
-use \Ls\Replication\Api\Data\ReplDiscountInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
 use Ls\Replication\Api\Data\ReplImageLinkInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplInvStatusInterfaceFactory;
@@ -17,7 +16,6 @@ use \Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplPriceInterfaceFactory;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use \Ls\Replication\Api\ReplDataTranslationRepositoryInterface;
-use \Ls\Replication\Api\ReplDiscountRepositoryInterface;
 use \Ls\Replication\Api\ReplDiscountSetupRepositoryInterface;
 use \Ls\Replication\Api\ReplDiscountValidationRepositoryInterface;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface;
@@ -134,9 +132,7 @@ abstract class AbstractTaskTest extends TestCase
     public $replVendorItemRepository;
     public $replVendorRepository;
     public $replDiscountSetupInterfaceFactory;
-    public $replDiscountInterfaceFactory;
     public $replDiscountSetupRepository;
-    public $replDiscountRepository;
     public $replDiscountValidationRepository;
     public $replDataTranslationRepository;
     public $replDataTranslationInterfaceFactory;
@@ -607,38 +603,38 @@ abstract class AbstractTaskTest extends TestCase
     {
         $this->addDummyStandardVariantAttributeOptionData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID,
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ID,,
             'Small'
         );
         $this->addDummyStandardVariantAttributeOptionData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            '001',
+            '002',
             'Medium'
         );
         $this->addDummyStandardVariantAttributeOptionData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            '002',
+            '003',
             'Large'
         );
 
         $this->addDummyPriceData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ID,
         );
 
         $this->addDummyInventoryData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
-        );
-
-        $this->addDummyInventoryData(
-            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            '001',
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ID,
         );
 
         $this->addDummyInventoryData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
             '002',
+        );
+
+        $this->addDummyInventoryData(
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
+            '003',
         );
     }
 

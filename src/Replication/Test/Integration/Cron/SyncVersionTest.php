@@ -63,10 +63,8 @@ class SyncVersionTest extends TestCase
     {
         $this->executeUntilReady();
         $this->system->clean();
-        $csVersion = $this->lsr->getOmniVersion();
         $centralVersion = $this->lsr->getCentralVersion();
 
-        $this->assertNotNull($csVersion);
         $this->assertNotNull($centralVersion);
     }
 

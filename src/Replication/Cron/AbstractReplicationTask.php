@@ -887,9 +887,7 @@ abstract class AbstractReplicationTask
                 }
                 $this->persistLastKey($lastKey, $storeId);
                 $this->persistLastEntryNo($lastEntryNo, $storeId);
-                if($this->getConfigPathStatus() == LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP) {
-                    echo $this->getConfigPathStatus() ." 2 ".(bool)$this->cronStatus;
-                }
+                
                 $this->rep_helper->updateCronStatus(
                     $this->cronStatus,
                     $this->getConfigPathStatus(),
