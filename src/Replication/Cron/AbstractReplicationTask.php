@@ -162,7 +162,6 @@ abstract class AbstractReplicationTask
         } elseif ($confPath == ReplLscHierarchynodesviewTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_CATEGORY);
         } elseif ($confPath == ReplLscPeriodicdiscviewTask::CONFIG_PATH) {
-            echo "updateSuccessStatus()\n";
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP);
         } elseif ($confPath == ReplLscValidationPeriodTask::CONFIG_PATH) {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_DISCOUNT_VALIDATION);
@@ -876,8 +875,6 @@ abstract class AbstractReplicationTask
 
                             $this->saveSource($properties, $source);
                         }
-                        echo "Count : " . count($result) . "\n";
-                        
                         $this->updateSuccessStatus($storeId);
                     }
                 }

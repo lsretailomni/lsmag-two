@@ -603,7 +603,7 @@ abstract class AbstractTaskTest extends TestCase
     {
         $this->addDummyStandardVariantAttributeOptionData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ID,,
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ID,
             'Small'
         );
         $this->addDummyStandardVariantAttributeOptionData(
