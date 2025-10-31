@@ -831,6 +831,7 @@
         "column": {
             "repl_discount_validation_id": true,
             "Description": true,
+            "EndDate": true,
             "EndTime": true,
             "EndAfterMidnight": true,
             "FridayEndAfterMidnight": true,

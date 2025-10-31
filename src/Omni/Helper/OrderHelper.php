@@ -1123,7 +1123,7 @@ class OrderHelper extends AbstractHelperOmni
             $this->_logger->error($e->getMessage());
         }
 
-        return $response && $response->getResponsecode() == "0000" ? $response->getResponseCode() : $response;
+        return $response && $response->getResponsecode() == "0000";
     }
 
     /**
@@ -1141,14 +1141,8 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function formulateOrderCancelResponse($response, $order)
     {
-        if (version_compare($this->lsr->getOmniVersion(), '2022.12.0', '>')) {
-            if (!$response) {
-                $this->formulateException($order);
-            }
-        } else {
-            if ($response !== "") {
-                $this->formulateException($order);
-            }
+        if (!$response) {
+            $this->formulateException($order);
         }
     }
 
@@ -1167,26 +1161,6 @@ class OrderHelper extends AbstractHelperOmni
         $order->addCommentToStatusHistory($message);
         $this->orderRepository->save($order);
         throw new LocalizedException(__($message));
-    }
-
-    /**
-     * This function is overriding in hospitality module
-     *
-     * Get respective document_id given commerce service sales entry
-     *
-     * @param $salesEntry
-     * @return mixed
-     * @throws NoSuchEntityException
-     */
-    public function getDocumentIdGivenSalesEntry($salesEntry)
-    {
-        // This is to support backward compatibility of Omni
-        if (version_compare($this->lsr->getOmniVersion(), '4.6.0', '>')) {
-            $customerOrderNo = $this->getParameterValues($salesEntry, "CustomerOrderNo");
-            return $customerOrderNo;
-        }
-
-        return $this->getParameterValues($salesEntry, "Id");
     }
 
     /**

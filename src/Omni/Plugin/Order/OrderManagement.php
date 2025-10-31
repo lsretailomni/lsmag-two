@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Order;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
@@ -47,7 +48,7 @@ class OrderManagement
      * @throws AlreadyExistsException
      * @throws InputException
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function aroundCancel(OrderManagementInterface $subject, $proceed, $id)
     {

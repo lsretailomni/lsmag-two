@@ -857,10 +857,8 @@ class ProductCreateTask
                             ->setDisabled(false)
                             ->setContent($imageContent);
 
-                        if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
-                            $this->attributeMediaGalleryEntry
-                                ->setLabel(($image->getImageDescription()) ?: $productData->getName());
-                        }
+                        $this->attributeMediaGalleryEntry
+                            ->setLabel(($image->getImageDescription()) ?: $productData->getName());
 
                         if ($i == 0) {
                             $types = ['image', 'small_image', 'thumbnail'];
@@ -892,9 +890,7 @@ class ProductCreateTask
                 $existentImage = $this->imagesFetched[$image->getImageId()];
                 $existentImage->setLabel(($image->getDescription()) ?: $productData->getName());
 
-                if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
-                    $existentImage->setLabel(($image->getImageDescription()) ?: $productData->getName());
-                }
+                $existentImage->setLabel(($image->getImageDescription()) ?: $productData->getName());
 
                 if ($i == 0) {
                     $types = ['image', 'small_image', 'thumbnail'];

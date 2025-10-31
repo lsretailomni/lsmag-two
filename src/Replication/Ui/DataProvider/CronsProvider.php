@@ -97,7 +97,6 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         }
 
         $cronsGroupListing = $this->readCronFile($scopeId);
-        $versionRes        = version_compare($this->lsr->getOmniVersion($scopeId, $scope), '2024.4.0', '>=');
 
         foreach ($cronsGroupListing as $cronlist) {
             $path = '';
@@ -119,15 +118,6 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 $fullReplicationStatus    = '0';
                 $cronName                 = $joblist['_attribute']['name'];
                 $isTranslationRelatedCron = $this->showTranslationRelatedCronJobsAtStoreLevel($cronName);
-                if (($cronName == 'repl_discount' || $cronName == 'repl_discount_create' ||
-                        $cronName == 'repl_discount_status_reset') && $versionRes) {
-                    continue;
-                }
-                if (($cronName == 'repl_discount_setup' || $cronName == 'repl_discount_create_setup' ||
-                        $cronName == 'repl_discount_setup_status_reset') &&
-                    !$versionRes) {
-                    continue;
-                }
                 if (!$this->lsr->isSSM()) {
                     if ($scope == ScopeInterface::SCOPE_STORES) {
                         if (($cronlist['_attribute']['id'] == 'flat_replication' ||
