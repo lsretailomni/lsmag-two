@@ -85,7 +85,7 @@
                 <field id="base_url" translate="label" type="text" sortOrder="20" showInWebsite="1">
                     <label>Service Base URL</label>
                     <validate>required-entry validate-url</validate>
-                    <comment>https://lscentral.api.bc.dynamics.com/V2.0/{tenant}/{environment_name}</comment>
+                    <comment>https://api.businesscentral.dynamics.com/v2.0/{tenant}/{environment_name}</comment>
                     <depends>
                         <field id="*/*/central_type">1</field>
                     </depends>

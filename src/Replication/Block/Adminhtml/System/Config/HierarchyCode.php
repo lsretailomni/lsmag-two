@@ -32,7 +32,13 @@ class HierarchyCode implements OptionSourceInterface
      */
     public function toOptionArray()
     {
-        $hierarchies = $this->helper->fetchWebStoreHierarchies();
+        // get current Website Id.
+        $websiteId = (int)$this->request->getParam('website');
+        $hierarchies = [];
+
+        if ($this->lsr->validateBaseUrl('', [], [], $websiteId)) {
+            $hierarchies = $this->helper->fetchWebStoreHierarchies();
+        }
 
         if (!empty($hierarchies)) {
             $optionList = [['value' => '', 'label' => __('Please select your hierarchy code')]];

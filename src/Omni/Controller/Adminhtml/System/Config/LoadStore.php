@@ -81,7 +81,7 @@ class LoadStore extends Action
             $pong = $this->helper->omniPing(
                 $baseUrl,
                 $connectionParams,
-                ['companyName' => $companyName]
+                ['company' => $companyName]
             );
 
             if (!empty($pong)) {
@@ -97,7 +97,7 @@ class LoadStore extends Action
                     $stores = $this->helper->fetchWebStores(
                         $baseUrl,
                         $connectionParams,
-                        ['companyName' => $companyName]
+                        ['company' => $companyName]
                     );
 
                     if (!empty($stores)) {

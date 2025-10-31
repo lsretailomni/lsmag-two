@@ -18,7 +18,7 @@ use Magento\Store\Model\StoreManagerInterface;
 class LSR
 {
     const TOKEN_ENDPOINT = 'https://login.microsoftonline.com/%s/oauth2/v2.0/token';
-    const BC_BASE_URL = 'https://lscentral.api.bc.dynamics.com/V2.0';
+    const BC_BASE_URL = 'https://api.businesscentral.dynamics.com/v2.0';
     const TOKEN_SCOPE = 'https://api.businesscentral.dynamics.com/.default';
     const TOKEN_GRANT_TYPE = 'client_credentials';
     const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>
@@ -690,7 +690,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function validateBaseUrl($baseUrl = '', $connectionParams = [], $query = [], $websiteId = '0')
     {
-        if ($connectionParams['centralType'] == '1') {
+        $centralType = $connectionParams['centralType'] ??
+            $this->getWebsiteConfig(self::SC_REPLICATION_CENTRAL_TYPE, $websiteId);
+
+        if ($centralType == '1') {
             if (empty($baseUrl)) {
                 $baseUrl = $this->getWebsiteConfig(self::SC_SERVICE_BASE_URL, $websiteId);
             }

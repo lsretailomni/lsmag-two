@@ -75,13 +75,13 @@ class LoadHierarchy extends Action
             if ($this->lsr->validateBaseUrl(
                 $baseUrl,
                 $connectionParams,
-                ['companyName' => $companyName],
+                ['company' => $companyName],
                 $scopeId
             )) {
                 $hierarchies = $this->helper->fetchWebStoreHierarchies(
                     $baseUrl,
                     $connectionParams,
-                    ['companyName' => $companyName],
+                    ['company' => $companyName],
                     $storeId
                 );
 

@@ -50,7 +50,7 @@ class Recent extends Template
      * Get recent order history
      *
      * @return array|null
-     * @throws NoSuchEntityException|GuzzleException
+     * @throws NoSuchEntityException
      */
     public function getOrderHistory()
     {
@@ -153,7 +153,7 @@ class Recent extends Template
             );
         }
 
-        return $this->getUrl('sales/order/view', ['order_id' => $order['Document ID']]);
+        return $this->getUrl('sales/order/view', ['order_id' => $order->getId()]);
     }
 
     /**
