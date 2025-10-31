@@ -8,17 +8,12 @@
 
 namespace Ls\Replication\Cron;
 
-use Magento\Store\Api\Data\StoreInterface;
-
 class ReplLscDataTranslationTask extends ReplEcommDataTranslationTask
 {
     public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_data_translation';
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscDataTranslation';
 
-    /** @var StoreInterface $store */
-    public $store;
-    
     public function getModelName() : string
     {
         return self::MODEL_CLASS;

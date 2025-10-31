@@ -182,7 +182,7 @@ class TaxCreateTaskTest extends TestCase
         $filters     = [
             [
                 'field' => 'code',
-                'value' => $replCountryCode->getCode() . '-*-*-' . $rate->getProductTaxGroup() . '-' . $scopeId,
+                'value' => $replCountryCode->getCode() . '-*-*-' . $rate->getProductTaxGroup(),
                 'condition_type' => 'eq'
             ],
         ];
