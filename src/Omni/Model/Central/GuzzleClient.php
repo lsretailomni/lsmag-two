@@ -50,20 +50,18 @@ class GuzzleClient
      */
     public function makeRequest($baseUrl, $action, $method, $type = 'odata', $options = [], $query = [], $data = [])
     {
-        $baseUrl = 'http://10.213.0.5:9048/LsCentralDev/';
         $headers = [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json'
         ];
         $timeout = $this->lsr->getOmniTimeout();
         try {
+            $centralType = $options['centralType'];
             $tenant = $options['tenant'];
             $environmentName = $options['environmentName'];
-            $options['token'] = 1;
             if (!empty($options['token'])) {
                 $token = $options['token'];
-                $headers['Authorization'] = 'Bearer ' . $token;
-                $headers['Authorization'] = 'Basic ' . 'b21uaWRldjp1c2hGbWs5SENRdDJKYUpkYzhxYTNtNXEwOXI1WDI5YzZzRDRxcjlaK3A0PQ==';
+                $headers['Authorization'] = $centralType == '1' ? 'Bearer ' . $token : 'Basic ' . $token;
             }
 
             if (str_starts_with($action, 'ODataRequest_')) {
@@ -85,8 +83,9 @@ class GuzzleClient
             ]);
             $type = $type == 'odata' ? 'ODataV4' : 'WS/Codeunit';
 
-            $endpoint = 'V2.0/' . $tenant . '/' . $environmentName . '/' . $type . '/' . $action;
-            $endpoint = $type . '/' . $action;
+            $endpoint = $centralType == '1' ?
+                'V2.0/' . $tenant . '/' . $environmentName . '/' . $type . '/' . $action :
+                $type . '/' . $action;
             if ($method == 'POST') {
                 if (!empty($query)) {
                     $payload['query'] = $query;

@@ -44,17 +44,30 @@ class Client extends LaminasSoapClient
      */
     public function execute()
     {
+        $lsr = ObjectManager::getInstance()->get(LSR::class);
+        $omniDataHelper = ObjectManager::getInstance()->get(Data::class);
         $cacheHelper = ObjectManager::getInstance()->get(CacheHelper::class);
+        $centralType = $this->getCentralType();
         $soapOptions = $cacheHelper->getWsdlOptions();
-        $token       = $this->getToken();
-        $opts        = ['http' => ['header' => "Authorization: Bearer " . $token, 'timeout' => $this->getTimeout()]];
-        $opts        = ['http' => ['header' => "Authorization: Basic " . 'b21uaWRldjp1c2hGbWs5SENRdDJKYUpkYzhxYTNtNXEwOXI1WDI5YzZzRDRxcjlaK3A0PQ==', 'timeout' => $this->getTimeout()]];
+        $token = $this->getToken();
+
+        if ($centralType == '1') {
+            $opts = ['http' => ['header' => "Authorization: Bearer " . $token, 'timeout' => $this->getTimeout()]];
+            $this->url->setQuery([
+                'company' => $this->getCompanyName()
+            ]);
+        } else {
+            $opts = ['http' => ['header' => "Authorization: Basic " . $token, 'timeout' => $this->getTimeout()]];
+            $this->url->setQuery([
+                'company' => $omniDataHelper->extractCompanyNameFromWebServiceUri(
+                    $lsr->getWebsiteConfig(LSR::SC_WEB_SERVICE_URI, $lsr->getWebsiteId())
+                )
+            ]);
+        }
         // @codingStandardsIgnoreStart
-        $context                       = stream_context_create($opts);
+        $context = stream_context_create($opts);
         $soapOptions['stream_context'] = $context;
-        $this->url->setQuery([
-            'company' => $this->getCompanyName()
-        ]);
+
 
         parent::__construct($this->url->toString(), $soapOptions);
     }
@@ -78,13 +91,34 @@ class Client extends LaminasSoapClient
      */
     public function getToken()
     {
-        $lsr          = ObjectManager::getInstance()->get(LSR::class);
-        $dataHelper   = ObjectManager::getInstance()->get(Data::class);
-        $clientId     = $lsr->getWebsiteConfig(LSR::SC_CLIENT_ID, $lsr->getWebsiteId());
+        $lsr = ObjectManager::getInstance()->get(LSR::class);
+        $dataHelper = ObjectManager::getInstance()->get(Data::class);
+        $clientId = $lsr->getWebsiteConfig(LSR::SC_CLIENT_ID, $lsr->getWebsiteId());
         $clientSecret = $lsr->getWebsiteConfig(LSR::SC_CLIENT_SECRET, $lsr->getWebsiteId());
-        $tenant       = $lsr->getWebsiteConfig(LSR::SC_TENANT, $lsr->getWebsiteId());
+        $tenant = $lsr->getWebsiteConfig(LSR::SC_TENANT, $lsr->getWebsiteId());
+        $username = $lsr->getWebsiteConfig(LSR::SC_USERNAME, $lsr->getWebsiteId());
+        $password = $lsr->getWebsiteConfig(LSR::SC_PASSWORD, $lsr->getWebsiteId());
+        $centralType = $this->getCentralType();
+        $options = [
+            'username' => $username,
+            'password' => $password,
+            'centralType' => $centralType,
+            'tenant' => $tenant,
+            'clientId' => $clientId,
+            'clientSecret' => $clientSecret
+        ];
+        return $dataHelper->fetchValidToken($options);
+    }
 
-        return $dataHelper->fetchValidToken($tenant, $clientId, $clientSecret);
+    /**
+     * Get configured central type
+     *
+     * @return string
+     */
+    public function getCentralType()
+    {
+        $lsr = ObjectManager::getInstance()->get(LSR::class);
+        return $lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $lsr->getWebsiteId());
     }
 
     /**
@@ -106,15 +140,20 @@ class Client extends LaminasSoapClient
      */
     public function getWsdlXml()
     {
-        $opts = [
-            'http' => [
-                'header' => [
-                    "Authorization: Bearer " . $this->getToken(),
-                ]
-            ]
-        ];
+        $centralType = $this->getCentralType();
 
-        $opts        = ['http' => ['header' => "Authorization: Basic " . 'b21uaWRldjp1c2hGbWs5SENRdDJKYUpkYzhxYTNtNXEwOXI1WDI5YzZzRDRxcjlaK3A0PQ==', 'timeout' => $this->getTimeout()]];
+        if ($centralType == '1') {
+            $opts = [
+                'http' => [
+                    'header' => [
+                        "Authorization: Bearer " . $this->getToken(),
+                        'timeout' => $this->getTimeout()
+                    ]
+                ]
+            ];
+        } else {
+            $opts = ['http' => ['header' => "Authorization: Basic " . $this->getToken(), 'timeout' => $this->getTimeout()]];
+        }
 
         $context = stream_context_create($opts);
 
