@@ -72,10 +72,10 @@ class SyncOrdersTest extends TestCase
         DataFixture(
             CustomerFixture::class,
             [
-                'lsr_username' => \Ls\Customer\Test\Integration\AbstractIntegrationTest::USERNAME,
-                'lsr_id' => \Ls\Customer\Test\Integration\AbstractIntegrationTest::LSR_ID,
-                'lsr_cardid' => \Ls\Customer\Test\Integration\AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token' => \Ls\Customer\Test\Integration\AbstractIntegrationTest::CUSTOMER_ID
+                'lsr_username' => AbstractIntegrationTest::USERNAME,
+                'lsr_id' => AbstractIntegrationTest::LSR_ID,
+                'lsr_cardid' => AbstractIntegrationTest::LSR_CARD_ID,
+                'lsr_token' => AbstractIntegrationTest::CUSTOMER_ID
             ],
             as: 'customer'
         ),

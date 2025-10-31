@@ -61,6 +61,9 @@ define('SC_SUCCESS_CRON_CATEGORY', getenv('SC_SUCCESS_CRON_CATEGORY'));
 define('PASSWORD', getenv('PASSWORD'));
 define('EMAIL', getenv('EMAIL'));
 define('CUSTOMER_ID', getenv('CUSTOMER_ID'));
+define('USERNAME', getenv('USERNAME_1'));
+define('LSR_ID', getenv('LSR_ID'));
+define('LSR_CARD_ID', getenv('LSR_CARD_ID'));
 
 class AbstractIntegrationTest extends TestCase
 {
@@ -83,6 +86,9 @@ class AbstractIntegrationTest extends TestCase
     public const EMAIL = EMAIL;
     public const CUSTOMER_ID = CUSTOMER_ID;
     public const PASSWORD = PASSWORD;
+    public const USERNAME = USERNAME;
+    public const LSR_ID = LSR_ID;
+    public const LSR_CARD_ID = LSR_CARD_ID;
     
     public const DEFAULT_BATCH_SIZE = DEFAULT_BATCH_SIZE;
     public const SAMPLE_SIMPLE_ITEM_ID = SAMPLE_SIMPLE_ITEM_ID;
