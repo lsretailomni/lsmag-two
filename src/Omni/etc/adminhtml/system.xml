@@ -50,6 +50,8 @@
                 </field>
                 <field id="username" translate="label comment" type="text" sortOrder="30" showInWebsite="1">
                     <label>Username</label>
+                    <validate>required-entry</validate>
+                    <comment>Username for a valid LS Central User required for Basic Auth</comment>
                     <depends>
                         <field id="*/*/central_type">0</field>
                     </depends>
@@ -57,6 +59,8 @@
                 <field id="password" translate="label comment" type="obscure" sortOrder="30" showInWebsite="1">
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                     <label>Password</label>
+                    <validate>required-entry</validate>
+                    <comment>Web Service Access Key for a valid LS Central User when Credential Type = NavUserPassword required for Basic Auth. Locate this value in LS Central under Users</comment>
                     <depends>
                         <field id="*/*/central_type">0</field>
                     </depends>
