@@ -5,6 +5,7 @@ namespace Ls\Customer\Test\Integration\Controller\Order;
 use \Ls\Core\Model\LSR;
 use \Ls\Customer\Test\Fixture\CustomerFixture;
 use \Ls\Customer\Test\Integration\AbstractIntegrationTest;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Registry;
@@ -70,10 +71,12 @@ class ViewTest extends AbstractController
         $orders = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
 
         if ($orders) {
-            $order = current($orders->getSalesEntry());
+            $order = end($orders);
+            $orderType = $order->getDocumentSourceType();
+            $orderType = $this->orderHelper->getOrderType($orderType);
             $this->getRequest()->setParams([
-                'order_id' => $order->getId(),
-                'type'     => $order->getIdType()
+                'order_id' => $order->getDocumentId(),
+                'type'     => $orderType
             ]);
 
             $this->dispatch('customer/order/view');
@@ -153,10 +156,12 @@ class ViewTest extends AbstractController
         $orders = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
 
         if ($orders) {
-            $order = current($orders->getSalesEntry());
+            $order = end($orders);
+            $orderType = $order->getDocumentSourceType();
+            $orderType = $this->orderHelper->getOrderType($orderType);
             $this->getRequest()->setParams([
-                'order_id' => $order->getId(),
-                'type'     => $order->getIdType()
+                'order_id' => $order->getDocumentId(),
+                'type'     => $orderType
             ]);
         }
 
@@ -204,10 +209,12 @@ class ViewTest extends AbstractController
         $orders = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
 
         if ($orders) {
-            $order = current($orders->getSalesEntry());
+            $order = end($orders);
+            $orderType = $order->getDocumentSourceType();
+            $orderType = $this->orderHelper->getOrderType($orderType);
             $this->getRequest()->setParams([
-                'order_id' => $order->getId() . '123',
-                'type'     => $order->getIdType()
+                'order_id' => $order->getDocumentId() . '123',
+                'type'     => $orderType
             ]);
         }
         $this->dispatch('customer/order/view');

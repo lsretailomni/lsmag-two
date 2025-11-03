@@ -108,7 +108,7 @@ class CancelTest extends AbstractController
 
         $this->getRequest()->setParams([
             'magento_order_id' => $magentoOrder->getId(),
-            'central_order_id' => $centralOrder->getId(),
+            'central_order_id' => $centralOrder->getLscMemberSalesBuffer()->getDocumentId(),
             'id_type'          => DocumentIdType::ORDER
         ]);
 
@@ -150,7 +150,7 @@ class CancelTest extends AbstractController
         $orders = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
 
         if ($orders) {
-            $order = current($orders->getSalesEntry());
+            $order = current($orders);
             $this->getRequest()->setParams([
                 'central_order_id' => $order->getId(),
                 'id_type'          => $order->getIdType()
