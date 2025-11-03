@@ -11,25 +11,25 @@ use Magento\JwtUserToken\Api\RevokedRepositoryInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
 
-define('PASSWORD', getenv('PASSWORD'));
-define('EMAIL', getenv('EMAIL'));
-define('FIRST_NAME', getenv('FIRST_NAME'));
-define('LAST_NAME', getenv('LAST_NAME'));
-define('CUSTOMER_ID', getenv('CUSTOMER_ID'));
-define('CS_URL', getenv('CS_URL'));
-define('BASE_URL', getenv('BASE_URL'));
-define('SC_COMPANY_NAME', getenv('SC_COMPANY_NAME'));
-define('SC_TENANT', getenv('SC_TENANT'));
-define('SC_CLIENT_ID', getenv('SC_CLIENT_ID'));
-define('SC_CLIENT_SECRET', getenv('SC_CLIENT_SECRET'));
-define('SC_ENVIRONMENT_NAME', getenv('SC_ENVIRONMENT_NAME'));
-define('CS_VERSION', getenv('CS_VERSION'));
-define('LS_VERSION', getenv('LS_VERSION'));
-define('CS_STORE', getenv('CS_STORE'));
-define('ENABLED', getenv('ENABLED'));
-define('USERNAME', getenv('USERNAME_1'));
-define('LSR_ID', getenv('LSR_ID'));
-define('LSR_CARD_ID', getenv('LSR_CARD_ID'));
+if (!defined("PASSWORD")) { define('PASSWORD', getenv('PASSWORD')); }
+if (!defined("EMAIL")) { define('EMAIL', getenv('EMAIL')); }
+if (!defined("FIRST_NAME")) { define('FIRST_NAME', getenv('FIRST_NAME')); }
+if (!defined("LAST_NAME")) { define('LAST_NAME', getenv('LAST_NAME')); }
+if (!defined("CUSTOMER_ID")) { define('CUSTOMER_ID', getenv('CUSTOMER_ID'));}
+if (!defined("CS_URL")) { define('CS_URL', getenv('CS_URL')); }
+if (!defined("BASE_URL")) { define('BASE_URL', getenv('BASE_URL')); }
+if (!defined("SC_COMPANY_NAME")) { define('SC_COMPANY_NAME', getenv('SC_COMPANY_NAME')); }
+if (!defined("SC_TENANT")) { define('SC_TENANT', getenv('SC_TENANT')); }
+if (!defined("SC_CLIENT_ID")) { define('SC_CLIENT_ID', getenv('SC_CLIENT_ID')); }
+if (!defined("SC_CLIENT_SECRET")) { define('SC_CLIENT_SECRET', getenv('SC_CLIENT_SECRET')); }
+if (!defined("SC_ENVIRONMENT_NAME")) { define('SC_ENVIRONMENT_NAME', getenv('SC_ENVIRONMENT_NAME')); }
+if (!defined("CS_VERSION")) { define('CS_VERSION', getenv('CS_VERSION')); }
+if (!defined("LS_VERSION")) { define('LS_VERSION', getenv('LS_VERSION')); }
+if (!defined("CS_STORE")) { define('CS_STORE', getenv('CS_STORE')); }
+if (!defined("ENABLED")) { define('ENABLED', getenv('ENABLED')); }
+if (!defined("USERNAME")) { define('USERNAME', getenv('USERNAME_1')); }
+if (!defined("LSR_ID")) { define('LSR_ID', getenv('LSR_ID')); }
+if (!defined("LSR_CARD_ID")) { define('LSR_CARD_ID', getenv('LSR_CARD_ID')); }
 class AbstractIntegrationTest extends TestCase
 {
     //php const need to defined in phpunit.xml file

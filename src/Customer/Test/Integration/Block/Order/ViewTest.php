@@ -116,6 +116,7 @@ class ViewTest extends TestCase
         $this->registry->register('current_mag_order', $magentoOrder);
         $this->registry->register('current_order', $centralOrder);
         $this->block->setData('current_order', $centralOrder);
+        $this->block->getRequest()->setParams(['order_id' => $centralOrder->getLscMemberSalesBuffer()->getDocumentId()]);
         $this->block->setNameInLayout('sales.order.view');
         $page = $this->pageFactory->create();
         $page->addHandle([
@@ -159,11 +160,12 @@ class ViewTest extends TestCase
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
         $orders = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
-        $order  = current($orders->getSalesEntry());
-        $order  = $this->orderHelper->fetchOrder($order->getId(), $order->getIdType());
+        $order  = current($orders);
+        $order  = $this->orderHelper->fetchOrder($order->getDocumentId(), $order->getIdType());
         $this->registry->register('current_order', $order);
         $this->block->setData('current_order', $order);
         $this->block->setNameInLayout('sales.order.view');
+        $this->block->getRequest()->setParams(['order_id' => $order->getLscMemberSalesBuffer()->getDocumentId()]);
         $page = $this->pageFactory->create();
         $page->addHandle([
             'default',

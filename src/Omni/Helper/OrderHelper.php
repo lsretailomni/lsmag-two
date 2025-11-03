@@ -1408,6 +1408,7 @@ class OrderHelper extends AbstractHelperOmni
             $orders = [$orders];
         }
         foreach ($orders as $order) {
+            if($order->getRecords())
             $order['IdType']          = $this->getOrderType($order['Document Source Type']);
             $order['CustomerOrderNo'] = ($order['Customer Document ID']) ?:
                 $order['Document ID'];

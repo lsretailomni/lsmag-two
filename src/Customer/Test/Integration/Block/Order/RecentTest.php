@@ -70,7 +70,7 @@ class RecentTest extends TestCase
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
         $this->block->setTemplate('Ls_Customer::order/recent.phtml');
-        $orders = $this->block->getOrderHistory()->getSalesEntry();
+        $orders = $this->block->getOrderHistory();
         $output = $this->block->toHtml();
         $this->assertStringContainsString((string)__('Recent Orders'), $output);
 

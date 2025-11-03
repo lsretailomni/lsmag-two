@@ -77,7 +77,7 @@ class DashboardTest extends TestCase
         $this->assertStringContainsString((string)__('Loyalty Level:'), $output);
         $this->assertStringContainsString((string)__('Next Level'), $output);
 
-        if ($account->getScheme()->getNextScheme()) {
+        if ($account->getLscMemberScheme()->getNextScheme()) {
             $this->assertStringContainsString((string)__('Level:'), $output);
             $this->assertStringContainsString((string)__('Points Needed:'), $output);
             $this->assertStringContainsString((string)__('Benefits of Next Level:'), $output);
