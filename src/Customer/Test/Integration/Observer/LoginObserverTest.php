@@ -62,7 +62,6 @@ class LoginObserverTest extends AbstractIntegrationTest
 
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNotNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -95,7 +94,6 @@ class LoginObserverTest extends AbstractIntegrationTest
 
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -128,7 +126,6 @@ class LoginObserverTest extends AbstractIntegrationTest
 
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -163,7 +160,6 @@ class LoginObserverTest extends AbstractIntegrationTest
 
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -197,7 +193,6 @@ class LoginObserverTest extends AbstractIntegrationTest
         $this->assertEquals(self::CUSTOMER_ID, $this->customerSession->getCustomerId());
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNotNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -231,7 +226,6 @@ class LoginObserverTest extends AbstractIntegrationTest
         $this->assertEquals(self::CUSTOMER_ID, $this->customerSession->getCustomerId());
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNotNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -251,7 +245,6 @@ class LoginObserverTest extends AbstractIntegrationTest
         ));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -271,7 +264,6 @@ class LoginObserverTest extends AbstractIntegrationTest
         ));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -287,7 +279,6 @@ class LoginObserverTest extends AbstractIntegrationTest
         ));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 }

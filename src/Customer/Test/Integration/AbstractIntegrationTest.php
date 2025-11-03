@@ -27,9 +27,10 @@ if (!defined("CS_VERSION")) { define('CS_VERSION', getenv('CS_VERSION')); }
 if (!defined("LS_VERSION")) { define('LS_VERSION', getenv('LS_VERSION')); }
 if (!defined("CS_STORE")) { define('CS_STORE', getenv('CS_STORE')); }
 if (!defined("ENABLED")) { define('ENABLED', getenv('ENABLED')); }
-if (!defined("USERNAME")) { define('USERNAME', getenv('USERNAME_1')); }
+if (!defined("USERNAME")) { define('USERNAME', getenv('USERNAME')); }
 if (!defined("LSR_ID")) { define('LSR_ID', getenv('LSR_ID')); }
 if (!defined("LSR_CARD_ID")) { define('LSR_CARD_ID', getenv('LSR_CARD_ID')); }
+if (!defined("ACCOUNT_ID")) { define('ACCOUNT_ID', getenv('ACCOUNT_ID')); }
 class AbstractIntegrationTest extends TestCase
 {
     //php const need to defined in phpunit.xml file
@@ -52,6 +53,7 @@ class AbstractIntegrationTest extends TestCase
     public const USERNAME = USERNAME;
     public const LSR_ID = LSR_ID;
     public const LSR_CARD_ID = LSR_CARD_ID;
+    public const ACCOUNT_ID = ACCOUNT_ID;
 
     public static function createCustomerWithCustomAttributesFixture()
     {

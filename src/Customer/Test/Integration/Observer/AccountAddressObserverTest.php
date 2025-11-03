@@ -53,7 +53,8 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
                 'lsr_username' => AbstractIntegrationTest::USERNAME,
                 'lsr_id'       => AbstractIntegrationTest::LSR_ID,
                 'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID,
+                'lsr_account_id' => AbstractIntegrationTest::ACCOUNT_ID
             ],
             as: 'customer'
         ),
@@ -101,7 +102,8 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
                 'lsr_username' => AbstractIntegrationTest::USERNAME,
                 'lsr_id'       => AbstractIntegrationTest::LSR_ID,
                 'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID,
+                'lsr_account_id' => AbstractIntegrationTest::ACCOUNT_ID
             ],
             as: 'customer'
         ),
@@ -152,7 +154,8 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
                 'lsr_username' => null,
                 'lsr_id'       => AbstractIntegrationTest::LSR_ID,
                 'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID,
+                'lsr_account_id' => AbstractIntegrationTest::ACCOUNT_ID
             ],
             as: 'customer'
         ),

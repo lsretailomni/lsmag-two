@@ -84,7 +84,6 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
 
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNotNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -127,7 +126,7 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
             ]
         ));
         $content = $this->controllerAction->getResponse()->getContent();
-        $expected = json_encode(['errors' => true, 'message' => 'Invalid Omni login or Omni password']);
+        $expected = json_encode(['errors' => true, 'message' => 'Invalid LS Central login or password.']);
 
         $this->assertEquals(
             $expected,
@@ -179,7 +178,7 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
         ));
 
         $content = $this->controllerAction->getResponse()->getContent();
-        $expected = json_encode(['errors' => true, 'message' => 'Invalid Omni login or Omni password']);
+        $expected = json_encode(['errors' => true, 'message' => 'Invalid LS Central login or password.']);
 
         $this->assertEquals(
             $expected,
@@ -187,7 +186,6 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
         );
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -233,7 +231,7 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
         ));
 
         $content = $this->controllerAction->getResponse()->getContent();
-        $expected = json_encode(['errors' => true, 'message' => 'Invalid Omni login or Omni password']);
+        $expected = json_encode(['errors' => true, 'message' => 'Invalid LS Central login or password.']);
 
         $this->assertEquals(
             $expected,
@@ -241,7 +239,6 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
         );
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -265,7 +262,8 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
                 'lsr_username'   => AbstractIntegrationTest::USERNAME,
                 'lsr_id'     => AbstractIntegrationTest::LSR_ID,
                 'lsr_cardid' => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token' => AbstractIntegrationTest::CUSTOMER_ID
+                'lsr_token' => AbstractIntegrationTest::CUSTOMER_ID,
+                'lsr_account_id' => AbstractIntegrationTest::ACCOUNT_ID
             ],
             as: 'customer'
         ),
@@ -298,7 +296,6 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
         $this->assertEquals($customer->getId(), $this->customerSession->getCustomerId());
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNotNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -322,7 +319,8 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
                 'lsr_username'   => AbstractIntegrationTest::USERNAME,
                 'lsr_id'     => AbstractIntegrationTest::LSR_ID,
                 'lsr_cardid' => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token' => AbstractIntegrationTest::CUSTOMER_ID
+                'lsr_token' => AbstractIntegrationTest::CUSTOMER_ID,
+                'lsr_account_id' => AbstractIntegrationTest::ACCOUNT_ID
             ],
             as: 'customer'
         ),
@@ -354,7 +352,6 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
         $this->assertEquals($customer->getId(), $this->customerSession->getCustomerId());
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNotNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -368,7 +365,8 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
                 'lsr_username'   => AbstractIntegrationTest::USERNAME,
                 'lsr_id'     => AbstractIntegrationTest::LSR_ID,
                 'lsr_cardid' => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token' => AbstractIntegrationTest::CUSTOMER_ID
+                'lsr_token' => AbstractIntegrationTest::CUSTOMER_ID,
+                'lsr_account_id' => AbstractIntegrationTest::ACCOUNT_ID
             ],
             as: 'customer'
         ),
@@ -399,7 +397,6 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
         ));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -413,7 +410,8 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
                 'lsr_username'   => AbstractIntegrationTest::USERNAME,
                 'lsr_id'     => AbstractIntegrationTest::LSR_ID,
                 'lsr_cardid' => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token' => AbstractIntegrationTest::CUSTOMER_ID
+                'lsr_token' => AbstractIntegrationTest::CUSTOMER_ID,
+                'lsr_account_id' => AbstractIntegrationTest::ACCOUNT_ID
             ],
             as: 'customer'
         ),
@@ -444,7 +442,6 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
         ));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -472,7 +469,6 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
         ));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 
@@ -499,7 +495,6 @@ class AjaxLoginObserverTest extends AbstractIntegrationTest
         ));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
-        $this->assertNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
         $this->assertNull($this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT));
     }
 }
