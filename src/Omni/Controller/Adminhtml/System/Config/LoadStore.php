@@ -82,7 +82,11 @@ class LoadStore extends Action
                     ['company' => $companyName],
                     $scopeId
                 )) {
-                    $stores = $this->helper->fetchWebStores();
+                    $stores = $this->helper->fetchWebStores(
+                        $baseUrl,
+                        $connectionParams,
+                        ['company' => $companyName]                        
+                    );
 
                     if (!empty($stores)) {
                         $optionList = null;
@@ -107,7 +111,7 @@ class LoadStore extends Action
                 'store' => $optionList,
                 'hierarchy' => $hierarchyPlaceholder,
                 'version' => $lsCentralVersion,
-                'pong' => $pong->getData(),
+                'pong' => (method_exists($pong, 'getData')) ?? $pong->getData(),
                 'licenseHtml' => $licenseHtml
             ]
         );

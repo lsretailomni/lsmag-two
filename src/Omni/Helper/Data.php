@@ -501,10 +501,17 @@ class Data extends AbstractHelperOmni
      *
      * @return array|null
      */
-    public function fetchWebStores()
+    public function fetchWebStores($baseUrl,$connectionParams,$companyName)
     {
         $response = null;
-        $webStoreOperation = $this->createInstance(Operation\GetStores_GetStores::class);
+        $webStoreOperation = $this->createInstance(
+            Operation\GetStores_GetStores::class,
+            [
+                'baseUrl' => $baseUrl,
+                'connectionParams' => $connectionParams,
+                'companyName' => $companyName['company'] ?? ''
+            ]
+        );
         $webStoreOperation->setOperationInput(
             ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
         );
