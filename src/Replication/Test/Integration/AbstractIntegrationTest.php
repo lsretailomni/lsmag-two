@@ -4,11 +4,12 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration;
 
 use PHPUnit\Framework\TestCase;
-
+define('SC_CLIENT_ID', getenv('SC_CLIENT_ID'));
 if (!defined("CS_URL_1")) { define('CS_URL_1', getenv('CS_URL')); }
 if (!defined("BASE_URL")) { define('BASE_URL', getenv('BASE_URL')); }
 if (!defined("SC_COMPANY_NAME")) { define('SC_COMPANY_NAME', getenv('SC_COMPANY_NAME')); }
-if (!defined("SC_TENANT")) { define('', getenv('SC_TENANT')); }
+if (!defined("SC_TENANT")) { define('SC_TENANT', getenv('SC_TENANT')); }
+if (!defined("SC_CLIENT_ID")) { define('SC_CLIENT_ID', getenv('SC_CLIENT_ID')); }
 if (!defined("SC_CLIENT_SECRET")) { define('SC_CLIENT_SECRET', getenv('SC_CLIENT_SECRET')); }
 if (!defined("SC_ENVIRONMENT_NAME")) { define('SC_ENVIRONMENT_NAME', getenv('SC_ENVIRONMENT_NAME')); }
 if (!defined("SC_SERVICE_TIMEOUT")) { define('SC_SERVICE_TIMEOUT', getenv('SC_SERVICE_TIMEOUT')); }

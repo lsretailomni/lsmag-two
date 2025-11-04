@@ -6,7 +6,7 @@ namespace Ls\Replication\Test\Integration\Block\Adminhtml\System\Config;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Block\Adminhtml\System\Config\Tax;
 use \Ls\Replication\Block\Adminhtml\System\Config\TenderPaymentMapping;
-use \Ls\Replication\Cron\ReplEcommStoreTenderTypesTask;
+use \Ls\Replication\Cron\ReplLscTenderTypeTask;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Framework\App\RequestInterface;
@@ -66,13 +66,15 @@ class TenderPaymentMappingTest extends TestCase
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommStoreTenderTypesTask::class,
+                'job_url' => ReplLscTenderTypeTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
     ]
     public function testRender(): void
     {
+        $state = $this->objectManager->get(\Magento\Framework\App\State::class);
+        $state->setAreaCode('adminhtml');
         $this->request->setParams([
             'website' => $this->storeManager->getWebsite()->getId()
         ]);
