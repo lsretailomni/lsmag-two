@@ -446,8 +446,19 @@ class Data extends AbstractHelperOmni
             );
         }
 
-        $baseUrl = $this->getBaseUrl(!empty($baseUrl) ?
-            $baseUrl : $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId()));
+        if (isset($connectionParams['password']) && $connectionParams['password'] === '******') {
+            $connectionParams['password'] = $this->lsr->getWebsiteConfig(
+                LSR::SC_PASSWORD,
+                $this->getScopeId()
+            );
+        }
+
+        $connectionParams['centralType'] = $connectionParams['centralType'] ??
+            $this->lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $this->getScopeId());
+        $connectionParams['username'] = $connectionParams['username'] ??
+            $this->lsr->getWebsiteConfig(LSR::SC_USERNAME, $this->getScopeId());
+        $connectionParams['password'] = $connectionParams['password'] ??
+            $this->lsr->getWebsiteConfig(LSR::SC_PASSWORD, $this->getScopeId());
         $connectionParams['clientId'] = $connectionParams['clientId'] ??
             $this->lsr->getWebsiteConfig(LSR::SC_CLIENT_ID, $this->getScopeId());
         $connectionParams['clientSecret'] = $connectionParams['clientSecret'] ??
@@ -457,15 +468,72 @@ class Data extends AbstractHelperOmni
             $this->lsr->getWebsiteConfig(LSR::SC_TENANT, $this->getScopeId());
         $connectionParams['environmentName'] = $connectionParams['environmentName'] ??
             $this->lsr->getWebsiteConfig(LSR::SC_ENVIRONMENT_NAME, $this->getScopeId());
-        $query['company'] = !empty($query['company']) ?
-            $query['company'] : $this->lsr->getWebsiteConfig(LSR::SC_COMPANY_NAME, $this->getScopeId());
 
-        $connectionParams['token'] =
-            $this->fetchValidToken(
-                $connectionParams['tenant'],
-                $connectionParams['clientId'],
-                $connectionParams['clientSecret']
+        if ($connectionParams['centralType'] == '0') {
+            $query['company'] = !empty($query['company']) ?
+                $query['company'] :
+                $this->extractCompanyNameFromWebServiceUri($connectionParams['webServiceUri'] ??
+                    $this->lsr->getWebsiteConfig(LSR::SC_WEB_SERVICE_URI, $this->getScopeId()));
+            $baseUrl = $this->extractBaseUrlFromWebServiceUri(
+                $connectionParams['odataUri'] ??
+                    $this->lsr->getWebsiteConfig(LSR::SC_ODATA_URI, $this->getScopeId())
             );
+        } else {
+            $query['company'] = !empty($query['company']) ?
+                $query['company'] : $this->lsr->getWebsiteConfig(LSR::SC_COMPANY_NAME, $this->getScopeId());
+
+            $baseUrl = $this->getBaseUrl(!empty($baseUrl) ?
+                $baseUrl : $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId()));
+        }
+
+        $connectionParams['token'] = $this->fetchValidToken($connectionParams);
+    }
+
+    /**
+     * Extract company name from web service uri
+     *
+     * @param ?string $webServiceUri
+     * @return string|null
+     */
+    public function extractCompanyNameFromWebServiceUri(?string $webServiceUri)
+    {
+        if ($webServiceUri && preg_match('#/WS/([^/]+)/Codeunit/#', $webServiceUri, $matches)) {
+            return $matches[1];
+        }
+        return null;
+    }
+
+    /**
+     * Extract base url from web service uri
+     *
+     * @param ?string $webServiceUri
+     * @param bool $includeTrailingSlash
+     * @return string|null
+     */
+    public function extractBaseUrlFromWebServiceUri(?string $webServiceUri, bool $includeTrailingSlash = true)
+    {
+        if (!$webServiceUri) {
+            return null;
+        }
+        $parts = parse_url($webServiceUri);
+        if (!isset($parts['scheme'], $parts['host'], $parts['path'])) {
+            return null;
+        }
+
+        $pathSegments = explode('/', ltrim($parts['path'], '/'));
+        $basePath = isset($pathSegments[0]) ? $pathSegments[0] : '';
+
+        $baseUrl = $parts['scheme'] . '://' . $parts['host'];
+        if (isset($parts['port'])) {
+            $baseUrl .= ':' . $parts['port'];
+        }
+        $baseUrl .= '/' . $basePath;
+
+        if ($includeTrailingSlash) {
+            $baseUrl .= '/';
+        }
+
+        return $baseUrl;
     }
 
     /**
@@ -500,12 +568,22 @@ class Data extends AbstractHelperOmni
     /**
      * Fetch webstores from central
      *
-     * @return array|null
+     * @param $baseUrl
+     * @param $connectionParams
+     * @param $companyName
+     * @return ?array
      */
-    public function fetchWebStores()
+    public function fetchWebStores($baseUrl = '', $connectionParams = [], $companyName = [])
     {
         $response = null;
-        $webStoreOperation = $this->createInstance(Operation\GetStores_GetStores::class);
+        $webStoreOperation = $this->createInstance(
+            Operation\GetStores_GetStores::class,
+            [
+                'baseUrl' => $baseUrl,
+                'connectionParams' => $connectionParams,
+                'companyName' => $companyName['company'] ?? ''
+            ]
+        );
         $webStoreOperation->setOperationInput(
             ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
         );
@@ -524,16 +602,27 @@ class Data extends AbstractHelperOmni
     /**
      * Fetch hierarchies from central
      *
+     * @param $baseUrl
+     * @param $connectionParams
+     * @param $companyName
+     * @param $storeId
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
-    public function fetchWebStoreHierarchies()
+    public function fetchWebStoreHierarchies($baseUrl = '', $connectionParams = [], $companyName = [], $storeId = '')
     {
-        $storeCode = $this->lsr->getWebsiteConfig(
+        $storeCode = empty($storeId) ? $this->lsr->getWebsiteConfig(
             LSR::SC_SERVICE_STORE,
             $this->getScopeId()
+        ) : $storeId;
+        $hierarchyOperation = $this->createInstance(
+            HierarchyView::class,
+            [
+            'baseUrl' => $baseUrl,
+            'connectionParams' => $connectionParams,
+            'companyName' => $companyName['company'] ?? ''
+            ]
         );
-        $hierarchyOperation = $this->createInstance(HierarchyView::class);
         $hierarchyOperation->setOperationInput(
             [
                 'storeNo' => $storeCode,
@@ -548,18 +637,29 @@ class Data extends AbstractHelperOmni
     }
 
     /**
-     * Fetch hierarchies from central
+     * Fetch tender types from central
      *
-     * @return mixed
-     * @throws NoSuchEntityException|GuzzleException
+     * @param $baseUrl
+     * @param $connectionParams
+     * @param $companyName
+     * @param $storeId
+     * @return array
+     * @throws NoSuchEntityException
      */
-    public function fetchWebStoreTenderTypes()
+    public function fetchWebStoreTenderTypes($baseUrl = '', $connectionParams = [], $companyName = [], $storeId = '')
     {
-        $storeCode = $this->lsr->getWebsiteConfig(
+        $storeCode = empty($storeId) ? $this->lsr->getWebsiteConfig(
             LSR::SC_SERVICE_STORE,
             $this->getScopeId()
+        ) : $storeId;
+        $tenderTypeOperation = $this->createInstance(
+            LSCTenderType::class,
+            [
+                'baseUrl' => $baseUrl,
+                'connectionParams' => $connectionParams,
+                'companyName' => $companyName['company'] ?? ''
+            ]
         );
-        $tenderTypeOperation = $this->createInstance(LSCTenderType::class);
         $tenderTypeOperation->setOperationInput(
             [
                 'storeNo' => $storeCode,
@@ -681,18 +781,30 @@ class Data extends AbstractHelperOmni
      * @param string $tableName
      * @param string $baseUrl
      * @param array $filters
+     * @param bool $returnMultiple
      * @return array
      * @throws NoSuchEntityException
      */
     public function fetchGivenTableData(
         string $tableName,
         string $baseUrl = '',
-        array $filters = []
+        array $filters = [],
+        bool $returnMultiple = true
     ): array {
-        $baseUrl = !empty($baseUrl) ? $baseUrl :
-            $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId());
-        $baseUrl = 'http://10.213.0.5:9047/LsCentralDev';
+        $centralType = $this->lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $this->getScopeId());
+
+        if ($centralType == '1') {
+            $baseUrl = !empty($baseUrl) ? $baseUrl :
+                $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId());
+
+        } else {
+            $baseUrl = $this->extractBaseUrlFromWebServiceUri(
+                $this->lsr->getWebsiteConfig(LSR::SC_WEB_SERVICE_URI, $this->getScopeId()),
+                false
+            );
+        }
         $url = join('/', [$baseUrl, 'WS/Codeunit/RetailWebServices']);
+
         $url = OmniService::getUrl($url);
         $client = $this->createInstance(OmniClient::class, ['uri' => $url]);
 
@@ -761,16 +873,17 @@ class Data extends AbstractHelperOmni
         $this->omniLogger->debug("Response Body:\n" . $decoded);
         $response = simplexml_load_string($decoded);
 
-        return $this->formatTableDataResponse($response);
+        return $this->formatTableDataResponse($response, $returnMultiple);
     }
 
     /**
      * Format table data into a flat array
      *
      * @param SimpleXMLElement $response
+     * @param bool $returnMultiple
      * @return array
      */
-    public function formatTableDataResponse(SimpleXMLElement $response): array
+    public function formatTableDataResponse(SimpleXMLElement $response, bool $returnMultiple = true): array
     {
         $fieldMap = $records = [];
         foreach ($response->Response_Body->WS_Table_Field_Buffer ?? [] as $field) {
@@ -787,7 +900,12 @@ class Data extends AbstractHelperOmni
             }
             $records[] = $record;
         }
-        return $records ? end($records) : [];
+
+        if (!empty($records)) {
+            return $returnMultiple ? $records : end($records);
+        }
+
+        return [];
     }
 
     /**
@@ -830,21 +948,21 @@ class Data extends AbstractHelperOmni
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == "cart") {
                 return ($this->lsr->getStoreConfig(
-                        LSR::LS_ENABLE_COUPON_ELEMENTS,
-                        $this->lsr->getCurrentStoreId()
-                    ) && $this->lsr->getStoreConfig(
-                        LSR::LS_COUPONS_SHOW_ON_CART,
-                        $this->lsr->getCurrentStoreId()
-                    )
-                );
-            }
-            return ($this->lsr->getStoreConfig(
                     LSR::LS_ENABLE_COUPON_ELEMENTS,
                     $this->lsr->getCurrentStoreId()
                 ) && $this->lsr->getStoreConfig(
-                    LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
+                    LSR::LS_COUPONS_SHOW_ON_CART,
                     $this->lsr->getCurrentStoreId()
                 )
+                );
+            }
+            return ($this->lsr->getStoreConfig(
+                LSR::LS_ENABLE_COUPON_ELEMENTS,
+                $this->lsr->getCurrentStoreId()
+            ) && $this->lsr->getStoreConfig(
+                LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
+                $this->lsr->getCurrentStoreId()
+            )
             );
         } else {
             return false;
@@ -1164,27 +1282,38 @@ class Data extends AbstractHelperOmni
     /**
      * Fetch valid token
      *
-     * @param string $tenant
-     * @param string $clientId
-     * @param string $clientSecret
+     * @param array $connectionParams
      * @return string
      * @throws NoSuchEntityException
      */
-    public function fetchValidToken($tenant, $clientId, $clientSecret)
+    public function fetchValidToken($connectionParams)
     {
-        $token = $this->getAvailableToken();
-        $expiry = $this->getTokenExpiry();
-        $currentTime = time();
-        $buffer = 300; // 5 minutes
+        $centralType = $connectionParams['centralType'];
 
-        if ($token && $expiry && $currentTime < $expiry - $buffer) {
-            return $token;
+        if ($centralType == 1) {
+            $tenant = $connectionParams['tenant'];
+            $clientId = $connectionParams['clientId'];
+            $clientSecret = $connectionParams['clientSecret'];
+            $token = $this->getAvailableToken();
+            $expiry = $this->getTokenExpiry();
+            $currentTime = time();
+            $buffer = 300; // 5 minutes
+
+            if ($token && $expiry && $currentTime < $expiry - $buffer) {
+                return $token;
+            }
+
+            $token = $this->tokenRequestService->requestToken($tenant, $clientId, $clientSecret);
+            $this->persistValidToken($token);
+
+            return $token['access_token'] ?? null;
+        } else {
+            $username = $connectionParams['username'];
+            $password = $connectionParams['password'];
+
+            // Create Base64 encoded token for basic authentication
+            return base64_encode($username . ':' . $password);
         }
-
-        $token = $this->tokenRequestService->requestToken($tenant, $clientId, $clientSecret);
-        $this->persistValidToken($token);
-
-        return $token['access_token'] ?? null;
     }
 
     /**

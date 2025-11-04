@@ -21,34 +21,99 @@
                     <label>Version</label>
                     <backend_model>Ls\Omni\Model\System\Backend\ExtensionVersion</backend_model>
                 </field>
+                <field id="central_type" translate="label comment" type="select" sortOrder="15" showInWebsite="1">
+                    <label>Ls Central Implementation</label>
+                    <source_model>Ls\Omni\Block\Adminhtml\System\Config\Types</source_model>
+                    <comment>
+                        Ls Central is running as SaaS or on-premise? Please select the appropriate option.
+                    </comment>
+                </field>
+                <field id="web_service_uri" translate="label" type="text" sortOrder="20" showInWebsite="1">
+                    <label>Web Service URI</label>
+                    <validate>required-entry validate-url</validate>
+                    <depends>
+                        <field id="*/*/central_type">0</field>
+                    </depends>
+                    <comment>
+                        Locate this value in LS Central under Web Service Setup, Server section. Recommended format: http[s]://{SERVER_IP}:{SERVER_PORT}/{SERVICE_NAME}/WS/{COMPANY_NAME}/Codeunit/{SERVICE_NAME}
+                    </comment>
+                </field>
+                <field id="odata_service_uri" translate="label" type="text" sortOrder="20" showInWebsite="1">
+                    <label>OdataV4 Web Service URI</label>
+                    <validate>required-entry validate-url</validate>
+                    <depends>
+                        <field id="*/*/central_type">0</field>
+                    </depends>
+                    <comment>
+                        Locate this value in LS Central under Web Service Setup by selecting Actions &gt;&gt; Functions &gt;&gt; Show Odata V4 Uri. Recommended format: http[s]://{SERVER_IP}:{OdataV4_PORT}/{SERVICE_NAME}/ODataV4
+                    </comment>
+                </field>
+                <field id="username" translate="label comment" type="text" sortOrder="30" showInWebsite="1">
+                    <label>Username</label>
+                    <validate>required-entry</validate>
+                    <comment>Username for a valid LS Central User required for Basic Auth</comment>
+                    <depends>
+                        <field id="*/*/central_type">0</field>
+                    </depends>
+                </field>
+                <field id="password" translate="label comment" type="obscure" sortOrder="30" showInWebsite="1">
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <label>Password</label>
+                    <validate>required-entry</validate>
+                    <comment>Web Service Access Key for a valid LS Central User when Credential Type = NavUserPassword required for Basic Auth. Locate this value in LS Central under Users</comment>
+                    <depends>
+                        <field id="*/*/central_type">0</field>
+                    </depends>
+                </field>
                 <field id="tenant" translate="label" type="text" sortOrder="20" showInWebsite="1">
                     <label>Tenant</label>
                     <validate>required-entry</validate>
+                    <depends>
+                        <field id="*/*/central_type">1</field>
+                    </depends>
                 </field>
                 <field id="environment_name" translate="label" type="text" sortOrder="20" showInWebsite="1">
                     <label>Environment Name</label>
                     <validate>required-entry</validate>
+                    <depends>
+                        <field id="*/*/central_type">1</field>
+                    </depends>
                 </field>
                 <field id="company_name" translate="label" type="text" sortOrder="20" showInWebsite="1">
                     <label>Company Name</label>
                     <validate>required-entry</validate>
+                    <depends>
+                        <field id="*/*/central_type">1</field>
+                    </depends>
                 </field>
                 <field id="base_url" translate="label" type="text" sortOrder="20" showInWebsite="1">
                     <label>Service Base URL</label>
                     <validate>required-entry validate-url</validate>
-                    <comment>https://lscentral.api.bc.dynamics.com/V2.0/{tenant}/{environment_name}</comment>
+                    <comment>https://api.businesscentral.dynamics.com/v2.0/{tenant}/{environment_name}</comment>
+                    <depends>
+                        <field id="*/*/central_type">1</field>
+                    </depends>
                 </field>
                 <field id="autopopulate_base_url" translate="label comment" type="button" sortOrder="30"
                        showInWebsite="1">
                     <frontend_model>Ls\Omni\Block\Adminhtml\System\Config\AutopopulateButton</frontend_model>
                     <comment>Press to autopopulate base url (ODataV4)</comment>
+                    <depends>
+                        <field id="*/*/central_type">1</field>
+                    </depends>
                 </field>
                 <field id="client_id" translate="label comment" type="text" sortOrder="30" showInWebsite="1">
                     <label>Client ID</label>
+                    <depends>
+                        <field id="*/*/central_type">1</field>
+                    </depends>
                 </field>
                 <field id="client_secret" translate="label comment" type="obscure" sortOrder="30" showInWebsite="1">
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                     <label>Client Secret</label>
+                    <depends>
+                        <field id="*/*/central_type">1</field>
+                    </depends>
                 </field>
                 <field id="validate_base_url" translate="label comment" type="button" sortOrder="50"
                        showInWebsite="1">
@@ -87,19 +152,19 @@
                        showInWebsite="1" showInStore="1">
                     <label>Debug</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Debug Mode for Commerce Service Client</comment>
+                    <comment>Debug Mode for WebService Client</comment>
                 </field>
                 <field id="timeout" translate="label comment" type="text" sortOrder="130" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Service Timeout</label>
                     <validate>required-entry validate-number validate-digits validate-greater-than-zero</validate>
-                    <comment>Max time in seconds to wait for commerce service response</comment>
+                    <comment>Max time in seconds to wait for webservice response</comment>
                 </field>
                 <field id="heart_beat_timeout" translate="label comment" type="text" sortOrder="140" showInDefault="1"
                        showInWebsite="1" showInStore="1">
-                    <label>Commerce Service Heartbeat Cache Timeout</label>
+                    <label>WebService Heartbeat Cache Timeout</label>
                     <validate>required-entry validate-number validate-digits validate-greater-than-zero</validate>
-                    <comment>Commerce service heartbeat cache timeout in seconds. Make sure LS eCommerce Cache is enabled in order to use this.</comment>
+                    <comment>Webservice heartbeat cache timeout in seconds. Make sure LS eCommerce Cache is enabled in order to use this.</comment>
                 </field>
                 <field id="ls_central_timezone" translate="label comment" type="text" sortOrder="150" showInDefault="1"
                        showInWebsite="1" showInStore="0">

@@ -206,7 +206,7 @@ class LoyaltyHelper extends AbstractHelperOmni
             foreach ($schemes as $scheme) {
                 $clubCode       = $scheme['Club Code'];
                 $updateSequence = $scheme['Update Sequence'];
-                if ($currentClubCode == $clubCode && 
+                if ($currentClubCode == $clubCode &&
                     $updateSequence > $currentSequence
                 ) {
                     $requiredScheme = $scheme;
@@ -216,7 +216,7 @@ class LoyaltyHelper extends AbstractHelperOmni
         } elseif (is_array($schemes)) {
             $clubCode       = $schemes['Club Code'] ?? $schemes;
             $updateSequence = $schemes['Update Sequence'] ?? 0;
-            
+
             if ($currentClubCode == $clubCode && $updateSequence > $currentSequence) {
                 $requiredScheme = $schemes;
             }
@@ -255,7 +255,7 @@ class LoyaltyHelper extends AbstractHelperOmni
                     } elseif ($entryType == "1" && $expirationDate->between($startDateTs, $endDateTs, true)) {
                         $totalRedemption += $res['Points'];
                     }
-                }    
+                }
             } elseif (is_array($result)) {
                 $entryType = $result['Entry Type'];
                 $expirationDate = Carbon::parse($result['Expiration Date']);
@@ -265,7 +265,7 @@ class LoyaltyHelper extends AbstractHelperOmni
                     $totalRedemption += $result['Points'];
                 }
             }
-            
+
 
             //Convert to negative redemption points to positive for ease of calculation
             $totalRedemption = abs($totalRedemption);
@@ -391,7 +391,8 @@ class LoyaltyHelper extends AbstractHelperOmni
                     'filterName' => 'Currency Code',
                     'filterValue' => $currencyCode
                 ]
-            ]
+            ],
+            false
         );
 
         if (!empty($response['LSC POS Exchange Rate Amount']) &&
@@ -871,7 +872,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      *
      * @param $pointsSpent
      * @return float|int
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getLsPointsDiscount($pointsSpent)
     {

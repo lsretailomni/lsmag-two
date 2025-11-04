@@ -57,18 +57,31 @@ class LoadStore extends Action
             $clientSecret = $this->getRequest()->getParam('client_secret');
             $companyName = $this->getRequest()->getParam('company_name');
             $environmentName = $this->getRequest()->getParam('environment_name');
+            $centralType = $this->getRequest()->getParam('central_type');
+            $webServiceUri = $this->getRequest()->getParam('web_service_uri');
+            $odataUri = $this->getRequest()->getParam('odata_uri');
+            $username = $this->getRequest()->getParam('username');
+            $password = $this->getRequest()->getParam('password');
 
-            $baseUrl = $this->helper->getBaseUrl($baseUrl);
+            if ($centralType == '1') {
+                $baseUrl = $this->helper->getBaseUrl($baseUrl);
+            }
+
             $connectionParams = [
                 'tenant' => $tenant,
                 'clientId' => $clientId,
                 'clientSecret' => $clientSecret,
                 'environmentName' => $environmentName,
+                'centralType' => $centralType,
+                'webServiceUri' => $webServiceUri,
+                'odataUri' => $odataUri,
+                'username' => $username,
+                'password' => $password
             ];
             $pong = $this->helper->omniPing(
                 $baseUrl,
                 $connectionParams,
-                ['companyName' => $companyName]
+                ['company' => $companyName]
             );
 
             if (!empty($pong)) {
@@ -81,7 +94,11 @@ class LoadStore extends Action
                     ['company' => $companyName],
                     $scopeId
                 )) {
-                    $stores = $this->helper->fetchWebStores();
+                    $stores = $this->helper->fetchWebStores(
+                        $baseUrl,
+                        $connectionParams,
+                        ['company' => $companyName]
+                    );
 
                     if (!empty($stores)) {
                         $optionList = null;

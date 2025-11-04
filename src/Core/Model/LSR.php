@@ -18,7 +18,7 @@ use Magento\Store\Model\StoreManagerInterface;
 class LSR
 {
     const TOKEN_ENDPOINT = 'https://login.microsoftonline.com/%s/oauth2/v2.0/token';
-    const BC_BASE_URL = 'https://lscentral.api.bc.dynamics.com/V2.0';
+    const BC_BASE_URL = 'https://api.businesscentral.dynamics.com/v2.0';
     const TOKEN_SCOPE = 'https://api.businesscentral.dynamics.com/.default';
     const TOKEN_GRANT_TYPE = 'client_credentials';
     const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>
@@ -74,6 +74,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_TENANT = 'ls_mag/service/tenant';
     const SC_ENVIRONMENT_NAME = 'ls_mag/service/environment_name';
     const SC_COMPANY_NAME = 'ls_mag/service/company_name';
+    const SC_WEB_SERVICE_URI = 'ls_mag/service/web_service_uri';
+    const SC_ODATA_URI = 'ls_mag/service/odata_service_uri';
+    const SC_USERNAME = 'ls_mag/service/username';
+    const SC_PASSWORD = 'ls_mag/service/password';
     const SC_CLIENT_ID = 'ls_mag/service/client_id';
     const SC_CLIENT_SECRET = 'ls_mag/service/client_secret';
 
@@ -686,11 +690,16 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function validateBaseUrl($baseUrl = '', $connectionParams = [], $query = [], $websiteId = '0')
     {
-        if (empty($baseUrl)) {
-            $baseUrl = $this->getWebsiteConfig(self::SC_SERVICE_BASE_URL, $websiteId);
-        }
-        if (empty($baseUrl)) {
-            return false;
+        $centralType = $connectionParams['centralType'] ??
+            $this->getWebsiteConfig(self::SC_REPLICATION_CENTRAL_TYPE, $websiteId);
+
+        if ($centralType == '1') {
+            if (empty($baseUrl)) {
+                $baseUrl = $this->getWebsiteConfig(self::SC_SERVICE_BASE_URL, $websiteId);
+            }
+            if (empty($baseUrl)) {
+                return false;
+            }
         }
 
         $this->data->getOmniDataHelper()->setMissingParameters($baseUrl, $connectionParams, $query);
@@ -706,7 +715,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      * @param bool $scope
      * @param bool $force
      * @return bool|null
-     * @throws GuzzleException
      * @throws NoSuchEntityException
      */
     public function isLSR($storeId = false, $scope = false, $force = true)
@@ -722,21 +730,28 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             return $this->validateBaseUrlResponse;
         }
         $this->validateBaseUrlStoreId = $storeId;
-        $websiteId                    = '';
+        $websiteId = '';
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
-            $baseUrl                    = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
-            $store                      = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
-            $websiteId                  = $storeId;
+            $baseUrl = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+            $store = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
+            $websiteId = $storeId;
             $this->validateBaseUrlScope = $scope;
+            $centralType = $this->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $storeId);
         } else {
-            $baseUrl                    = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
-            $store                      = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
+            $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+            $store = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
+            $centralType = $this->getStoreConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $storeId);
             $this->validateBaseUrlScope = false;
         }
-        if (empty($baseUrl) || empty($store)) {
+        if ($centralType == '1' && (empty($baseUrl) || empty($store))) {
             $this->validateBaseUrlResponse = false;
         } else {
-            $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl, [], [], $websiteId);
+            $this->validateBaseUrlResponse = $this->validateBaseUrl(
+                $baseUrl,
+                ['centralType' => $centralType],
+                [],
+                $websiteId
+            );
         }
 
         return $this->validateBaseUrlResponse;
