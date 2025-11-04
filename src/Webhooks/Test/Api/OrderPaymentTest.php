@@ -2,11 +2,10 @@
 
 namespace Ls\Webhooks\Test\Api;
 
-use \Ls\Webhooks\Api\Data\OrderPaymentMessageInterface;
 use Magento\Framework\Webapi\Rest\Request;
 use Magento\TestFramework\Helper\Bootstrap;
 
-class OrderPaymentTest extends AbstractWebhookTest
+class OrderPaymentTest extends AbstractWebhookBase
 {
     /**
      * @var $product
@@ -46,7 +45,6 @@ class OrderPaymentTest extends AbstractWebhookTest
             'rest' => [
                 'resourcePath' => '/V1/OrderMessagePayment',
                 'httpMethod'   => Request::HTTP_METHOD_POST,
-//                'token'        => 'f1aeqoy7hj1hozsrhmyfcxv5i53jore8'
             ],
         ];
 
