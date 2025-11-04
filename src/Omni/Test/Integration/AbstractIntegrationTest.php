@@ -58,7 +58,7 @@ if (!defined("PICKUP_TIMESLOTS_ENABLED")) { define('PICKUP_TIMESLOTS_ENABLED', g
 if (!defined("SC_CLICKCOLLECT_ENABLED")) { define('SC_CLICKCOLLECT_ENABLED', getenv('SC_CLICKCOLLECT_ENABLED')); }
 if (!defined("TENDER_TYPE_MAPPINGS")) { define('TENDER_TYPE_MAPPINGS', getenv('TENDER_TYPE_MAPPINGS')); }
 if (!defined("ADYEN_RESPONSE")) { define('ADYEN_RESPONSE', json_decode(getenv('ADYEN_RESPONSE'), true)); }
-if (!defined("LS_ORDER_NUMBER_PREFIX_PATH")) { define('LS_ORDER_NUMBER_PREFIX_PATH', json_decode(getenv('LS_ORDER_NUMBER_PREFIX_PATH'), true)); }
+if (!defined("LS_ORDER_NUMBER_PREFIX_PATH")) { define('LS_ORDER_NUMBER_PREFIX_PATH', getenv('LS_ORDER_NUMBER_PREFIX_PATH')); }
 
 class AbstractIntegrationTest extends TestCase
 {
