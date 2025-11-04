@@ -97,5 +97,5 @@ class LoadStoreTest extends AbstractBackendController
 //        $this->assertEquals('true', $content->success);
 //        $this->assertNotNull($content->store);
 //        $this->assertEquals(1, count($content->store));
-    }
+//    }
 }
