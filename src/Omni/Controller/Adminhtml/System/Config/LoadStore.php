@@ -82,11 +82,7 @@ class LoadStore extends Action
                     ['company' => $companyName],
                     $scopeId
                 )) {
-                    $stores = $this->helper->fetchWebStores(
-                        $baseUrl,
-                        $connectionParams,
-                        ['company' => $companyName]                        
-                    );
+                    $stores = $this->helper->fetchWebStores();
 
                     if (!empty($stores)) {
                         $optionList = null;

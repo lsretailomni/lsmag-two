@@ -2,8 +2,10 @@
 
 namespace Ls\Omni\Test\Integration\Controller\Adminhtml\System\Config;
 
+use Ls\Core\Model\LSR;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use Magento\Framework\App\Request\Http as HttpRequest;
+use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\TestCase\AbstractBackendController;
 
 class LoadStoreTest extends AbstractBackendController
@@ -34,6 +36,19 @@ class LoadStoreTest extends AbstractBackendController
         parent::setUp();
     }
 
+    #[
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website')
+    ]
     public function testExecute()
     {
         $this->getRequest()->setParam("baseUrl", AbstractIntegrationTest::BASE_URL);
@@ -53,6 +68,19 @@ class LoadStoreTest extends AbstractBackendController
         $this->assertNotEquals(1, count($content->store));
     }
 
+//    #[
+//        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
+//        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL."_1", 'store', 'default'),
+//        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'website'),
+//        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+//        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+//        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+//        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+//        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+//        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
+//        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
+//        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website')
+//    ]
 //    public function testExecuteNullResult()
 //    {
 //        $this->getRequest()->setParam("baseUrl", AbstractIntegrationTest::BASE_URL."_1");
@@ -61,7 +89,6 @@ class LoadStoreTest extends AbstractBackendController
 //        $this->getRequest()->setParam("client_secret", AbstractIntegrationTest::SC_CLIENT_SECRET);
 //        $this->getRequest()->setParam("company_name", AbstractIntegrationTest::SC_COMPANY_NAME);
 //        $this->getRequest()->setParam("environment_name", AbstractIntegrationTest::SC_ENVIRONMENT_NAME);
-//        $this->getRequest()->setParam("lsKey", '');
 //        $this->getRequest()->setParam("scopeId", '1');
 //        $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
 //        $this->dispatch('backend/omni/system_config/loadStore');
@@ -70,5 +97,5 @@ class LoadStoreTest extends AbstractBackendController
 //        $this->assertEquals('true', $content->success);
 //        $this->assertNotNull($content->store);
 //        $this->assertEquals(1, count($content->store));
-//    }
+    }
 }
