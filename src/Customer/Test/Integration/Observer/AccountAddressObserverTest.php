@@ -38,6 +38,11 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website'),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'website'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'website'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'website'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
         Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
         Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
@@ -46,7 +51,6 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -87,6 +91,11 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website'),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'website'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'website'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'website'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
         Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
         Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
@@ -95,7 +104,6 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -139,6 +147,11 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website'),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'website'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'website'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'website'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
         Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
         Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
@@ -147,7 +160,6 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         DataFixture(
             CustomerFixture::class,
             [

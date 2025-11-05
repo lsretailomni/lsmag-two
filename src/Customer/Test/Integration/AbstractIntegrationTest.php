@@ -16,7 +16,6 @@ if (!defined("EMAIL")) { define('EMAIL', getenv('EMAIL')); }
 if (!defined("FIRST_NAME")) { define('FIRST_NAME', getenv('FIRST_NAME')); }
 if (!defined("LAST_NAME")) { define('LAST_NAME', getenv('LAST_NAME')); }
 if (!defined("CUSTOMER_ID")) { define('CUSTOMER_ID', getenv('CUSTOMER_ID'));}
-if (!defined("CS_URL")) { define('CS_URL', getenv('CS_URL')); }
 if (!defined("BASE_URL")) { define('BASE_URL', getenv('BASE_URL')); }
 if (!defined("SC_COMPANY_NAME")) { define('SC_COMPANY_NAME', getenv('SC_COMPANY_NAME')); }
 if (!defined("SC_TENANT")) { define('SC_TENANT', getenv('SC_TENANT')); }
@@ -27,6 +26,11 @@ if (!defined("CS_VERSION")) { define('CS_VERSION', getenv('CS_VERSION')); }
 if (!defined("LS_VERSION")) { define('LS_VERSION', getenv('LS_VERSION')); }
 if (!defined("CS_STORE")) { define('CS_STORE', getenv('CS_STORE')); }
 if (!defined("ENABLED")) { define('ENABLED', getenv('ENABLED')); }
+if (!defined("SC_REPLICATION_CENTRAL_TYPE")) { define('SC_REPLICATION_CENTRAL_TYPE', getenv('SC_REPLICATION_CENTRAL_TYPE')); }
+if (!defined("SC_WEB_SERVICE_URI")) { define('SC_WEB_SERVICE_URI', getenv('SC_WEB_SERVICE_URI')); }
+if (!defined("SC_ODATA_URI")) { define('SC_ODATA_URI', getenv('SC_ODATA_URI')); }
+if (!defined("SC_USERNAME")) { define('SC_USERNAME', getenv('SC_USERNAME')); }
+if (!defined("SC_PASSWORD")) { define('SC_PASSWORD', getenv('SC_PASSWORD')); }
 if (!defined("USERNAME")) { define('USERNAME', getenv('USERNAME')); }
 if (!defined("LSR_ID")) { define('LSR_ID', getenv('LSR_ID')); }
 if (!defined("LSR_CARD_ID")) { define('LSR_CARD_ID', getenv('LSR_CARD_ID')); }
@@ -39,7 +43,6 @@ class AbstractIntegrationTest extends TestCase
     public const FIRST_NAME = FIRST_NAME;
     public const LAST_NAME = LAST_NAME;
     public const CUSTOMER_ID = CUSTOMER_ID;
-    public const CS_URL = CS_URL;
     public const BASE_URL = BASE_URL;
     public const SC_COMPANY_NAME = SC_COMPANY_NAME;
     public const SC_TENANT = SC_TENANT;
@@ -50,6 +53,11 @@ class AbstractIntegrationTest extends TestCase
     public const LS_VERSION = LS_VERSION;
     public const CS_STORE = CS_STORE;
     public const ENABLED =  ENABLED;
+    public const SC_REPLICATION_CENTRAL_TYPE = SC_REPLICATION_CENTRAL_TYPE;
+    public const SC_WEB_SERVICE_URI =  SC_WEB_SERVICE_URI;
+    public const SC_USERNAME =  SC_USERNAME;
+    public const SC_PASSWORD =  SC_PASSWORD;
+    public const SC_ODATA_URI =  SC_ODATA_URI;
     public const USERNAME = USERNAME;
     public const LSR_ID = LSR_ID;
     public const LSR_CARD_ID = LSR_CARD_ID;
