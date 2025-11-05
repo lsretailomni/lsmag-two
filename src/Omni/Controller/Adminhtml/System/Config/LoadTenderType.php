@@ -51,13 +51,23 @@ class LoadTenderType extends Action
             $clientSecret = $this->getRequest()->getParam('client_secret');
             $companyName = $this->getRequest()->getParam('company_name');
             $environmentName = $this->getRequest()->getParam('environment_name');
+            $centralType = $this->getRequest()->getParam('central_type');
+            $webServiceUri = $this->getRequest()->getParam('web_service_uri');
+            $odataUri = $this->getRequest()->getParam('odata_uri');
+            $username = $this->getRequest()->getParam('username');
+            $password = $this->getRequest()->getParam('password');
             $scopeId = $this->getRequest()->getParam('scopeId');
-            $baseUrl = $this->helper->getBaseUrl($baseUrl);
+            $storeId = $this->getRequest()->getParam('storeId');
             $connectionParams = [
                 'tenant' => $tenant,
                 'clientId' => $clientId,
                 'clientSecret' => $clientSecret,
                 'environmentName' => $environmentName,
+                'centralType' => $centralType,
+                'webServiceUri' => $webServiceUri,
+                'odataUri' => $odataUri,
+                'username' => $username,
+                'password' => $password
             ];
 
             if ($this->lsr->validateBaseUrl(
@@ -66,7 +76,12 @@ class LoadTenderType extends Action
                 ['company' => $companyName],
                 $scopeId
             )) {
-                $tenderTypes = $this->helper->fetchWebStoreTenderTypes();
+                $tenderTypes = $this->helper->fetchWebStoreTenderTypes(
+                    $baseUrl,
+                    $connectionParams,
+                    ['company' => $companyName],
+                    $storeId
+                );
 
                 if (!empty($tenderTypes)) {
                     $paymentTenderTypesArray = $this->lsr->getStoreConfig(

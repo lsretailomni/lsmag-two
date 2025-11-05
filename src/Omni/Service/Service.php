@@ -56,21 +56,28 @@ class Service
      */
     public function getOmniBaseUrl($magentoStoreId = '')
     {
-        return 'http://10.213.0.5:9047/LsCentralDev';
         // Initialize the ObjectManager instance
         $objectManager = ObjectManager::getInstance();
 
         // Create an instance of the LSR model
         // @codingStandardsIgnoreLine
-        $lsr = $objectManager->create('Ls\Core\Model\LSR');
-
+        $lsr = $objectManager->create(\Ls\Core\Model\LSR::class);
+        $omniDataHelper = $objectManager->create(\Ls\Omni\Helper\Data::class);
         // If no store ID is provided, fetch it from the current store context
         if ($magentoStoreId == '') {
             // Get storeId from the default loaded store.
             $magentoStoreId = $lsr->getCurrentStoreId();
         }
+        $centralType = $lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $lsr->getWebsiteId());
 
-        // Retrieve the base URL from the LSR store configuration
-        return $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $magentoStoreId);
+        if ($centralType == '1') {
+            // Retrieve the base URL from the LSR store configuration
+            return $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $magentoStoreId);
+        } else {
+            return $omniDataHelper->extractBaseUrlFromWebServiceUri(
+                $lsr->getStoreConfig(LSR::SC_WEB_SERVICE_URI, $magentoStoreId),
+                false
+            );
+        }
     }
 }

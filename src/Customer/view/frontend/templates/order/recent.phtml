@@ -34,7 +34,7 @@ $orderCount = 0;
         <?= $block->getChildHtml() ?>
         <?php if ($_orders): ?>
             <?php
-            if (is_array($_orders)):
+            if (is_array($_orders) && !(end($_orders) instanceof Magento\Sales\Api\Data\OrderInterface)):
                 if (count($_orders) > 0):
                     $orderExist = true;
                     ?>
@@ -121,6 +121,7 @@ $orderCount = 0;
                                             <?php endif; ?>
                                             <?php if ($magOrder->canCancel() &&
                                             $block->orderCancellationOnFrontendIsEnabled() &&
+                                            isset($_order['Status']) &&
                                             strtolower($_order['Status']) !== strtolower(LSR::LS_STATE_CANCELED)
                                         ): ?>
                                             <a href="#"
