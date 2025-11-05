@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration;
 
 use PHPUnit\Framework\TestCase;
-define('SC_CLIENT_ID', getenv('SC_CLIENT_ID'));
 if (!defined("CS_URL_1")) { define('CS_URL_1', getenv('CS_URL')); }
 if (!defined("BASE_URL")) { define('BASE_URL', getenv('BASE_URL')); }
 if (!defined("SC_COMPANY_NAME")) { define('SC_COMPANY_NAME', getenv('SC_COMPANY_NAME')); }
