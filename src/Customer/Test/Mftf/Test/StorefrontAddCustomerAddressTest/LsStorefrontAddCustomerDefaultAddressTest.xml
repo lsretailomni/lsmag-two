@@ -13,9 +13,12 @@
         </annotations>
         <before>
             <remove keyForRemoval="createCustomer"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
-            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="login">
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
+            </actionGroup>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="flushCache">
                 <argument name="indices" value=""/>
             </actionGroup>
         </before>
@@ -29,7 +32,9 @@
         <actionGroup ref="LoginToStorefrontActionGroup" stepKey="loginToStorefrontAccount" before="AddNewDefaultAddress">
             <argument name="Customer" value="Ls_Simple_US_Customer"/>
         </actionGroup>
-
+        <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" before="deleteNewUser">
+            <argument name="indices" value=""/>
+        </actionGroup>
         <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser" after="checkNewAddressesPostcodeOnDefaultShipping">
             <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
         </actionGroup>

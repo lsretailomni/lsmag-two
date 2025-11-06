@@ -14,7 +14,9 @@
             <group value="lsCustomerAdmin"/>
         </annotations>
         <before>
-            <magentoCLI command="config:set --scope website --scope-code base {{ServiceBaseUrlDisabled.path}} {{ServiceBaseUrlDisabled.value}}" stepKey="serviceBaseUrl"/>
+            <magentoCLI command="config:set --scope website --scope-code base {{ServiceWebServiceUriDisabled.path}} '{{ServiceWebServiceUriDisabled.value}}'" stepKey="ServiceWebServiceUriDisabled"/>
+            <magentoCLI command="config:set --scope website --scope-code base {{ServiceOdataWebServiceUriDisabled.path}} '{{ServiceOdataWebServiceUriDisabled.value}}'" stepKey="ServiceOdataWebServiceUriDisabled"/>
+
             <actionGroup ref="CliCacheCleanActionGroup" stepKey="cleanCache" before="login">
                 <argument name="tags" value="config full_page"/>
             </actionGroup>
@@ -39,6 +41,9 @@
             <argument name="tags" value="config full_page"/>
         </actionGroup>
         <!-- Login as admin -->
+        <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" before="openCustomersGridPage">
+            <argument name="indices" value=""/>
+        </actionGroup>
         <actionGroup ref="AdminOpenCustomersGridActionGroup" stepKey="openCustomersGridPage" after="cleanCache"/>
         <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerPage" after="openCustomersGridPage">
             <argument name="customer" value="Simple_US_Customer"/>

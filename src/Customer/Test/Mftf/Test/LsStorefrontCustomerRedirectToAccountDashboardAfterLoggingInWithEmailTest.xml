@@ -15,13 +15,16 @@
         </annotations>
         <before>
             <remove keyForRemoval="createCustomer"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login" before="cleanInvalidatedCaches"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" before="cleanInvalidatedCaches"/>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache" before="cleanInvalidatedCaches">
+                <argument name="tags" value="config"/>
+            </actionGroup>
             <createData entity="LsSimpleProduct3" stepKey="product1" before="cleanInvalidatedCaches"/>
-            <magentoCLI command="config:set ls_mag/loyalty/loyalty_points_expiry_interval 1000" stepKey="settingLoyaltyPointsExpiryBefore" before="cleanInvalidatedCaches"/>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="login" after="cleanInvalidatedCaches"/>
-            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="login">
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="product1">
                 <argument name="indices" value=""/>
             </actionGroup>
+            <magentoCLI command="config:set ls_mag/loyalty/loyalty_points_expiry_interval 1000" stepKey="settingLoyaltyPointsExpiryBefore" before="cleanInvalidatedCaches"/>
         </before>
         <after>
             <!--Delete test data.-->
@@ -45,7 +48,9 @@
         <actionGroup ref="AssertLoyaltyOffersPagesActionGroup" stepKey="validateLoyaltyOffersPages"  before="assertAccountLinkInUrl">
             <argument name="product" value="$product1$"/>
         </actionGroup>
-
+        <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="assertAccountLinkInUrl">
+            <argument name="indices" value=""/>
+        </actionGroup>
          <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser" after="assertAccountLinkInUrl">
             <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
         </actionGroup>

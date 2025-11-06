@@ -13,10 +13,10 @@
             <group value="lsCustomer"/>
         </annotations>
         <before>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
-            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" >
-                <argument name="indices" value=""/>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
             </actionGroup>
         </before>
         <after>
@@ -28,7 +28,10 @@
         </actionGroup>
 
         <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation"  after="seeSuccessMessage" />
-        <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser" after="customerDashboardInformation">
+        <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="customerDashboardInformation">
+            <argument name="indices" value=""/>
+        </actionGroup>
+        <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser" after="reindex">
             <argument name="email" value="{{Simple_US_Customer.email}}"/>
         </actionGroup>
         <actionGroup ref="ResetAdminDataGridToDefaultViewActionGroup" stepKey="resetGrid" after="deleteNewUser"/>

@@ -12,10 +12,13 @@
             <group value="lsReplication"/>
         </annotations>
         <before>
-            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin" />
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" />
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
+            </actionGroup>
             <magentoCLI command="config:set ls_mag/replication/default_batch_size 5000" stepKey="setDefaultBatchSize"/>
             <magentoCLI command="config:set ls_mag/replication/product_batch_size 1" stepKey="setProductBatchSize"/>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
         </before>
         <after>
             <!--Delete test data.-->

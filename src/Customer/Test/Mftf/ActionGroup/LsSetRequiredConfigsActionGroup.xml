@@ -6,13 +6,24 @@
         <annotations>
             <description>Set required configs</description>
         </annotations>
-        <magentoCLI command="config:set --scope website --scope-code base {{ServiceStore.path}} {{ServiceStore.value}}" stepKey="serviceStore"/>
-        <magentoCLI command="config:set --scope website --scope-code base {{ServiceHierarchyCode.path}} {{ServiceHierarchyCode.value}}" stepKey="serviceHierarchyCode"/>
-        <magentoCLI command="config:set --scope website --scope-code base {{ServiceBaseUrl.path}} {{ServiceBaseUrl.value}}" stepKey="serviceBaseUrl"/>
-        <magentoCLI command="config:set --scope website --scope-code base {{ServiceVersion.path}} {{ServiceVersion.value}}" stepKey="serviceVersion"/>
-        <magentoCLI command="config:set --scope website --scope-code base {{ServiceCentralVersion.path}} {{ServiceCentralVersion.value}}" stepKey="serviceCentralVersion"/>
         <magentoCLI command="config:set --scope website --scope-code base {{ServiceDebug.path}} {{ServiceDebug.value}}" stepKey="serviceDebug"/>
-        <magentoCLI command="config:set --scope website --scope-code base {{OrderPrefix.path}} {{OrderPrefix.value}}" stepKey="orderPrefix"/>
-        <magentoCLI command="config:set --scope website --scope-code base ls_mag/service/timeout 60" stepKey="serviceTimeout"/>
+        <amOnPage url="/admin/admin/system_config/edit/section/ls_mag/website/1/#ls_mag_service-link" stepKey="navigateToConfigurationSection"/>
+        <selectOption selector="{{LsConfigManagementSection.ServiceCentralType}}" userInput="On-Premise" stepKey="fillCentralType" />
+        <fillField selector="{{LsConfigManagementSection.ServiceWebServiceUri}}" userInput="{{ServiceWebServiceUri.value}}" stepKey="setServiceWebServiceUri"/>
+        <fillField selector="{{LsConfigManagementSection.ServiceOdataWebServiceUri}}" userInput="{{ServiceOdataWebServiceUri.value}}" stepKey="setaServiceOdataWebServiceUri"/>
+        <fillField selector="{{LsConfigManagementSection.ServiceUsername}}" userInput="{{ServiceUsername.value}}" stepKey="setServiceUsername"/>
+        <fillField selector="{{LsConfigManagementSection.ServicePassword}}" userInput="{{ServicePassword.value}}" stepKey="setServicePassword"/>
+        <click selector="{{LsConfigManagementSection.ValidateBaseUrl}}" stepKey="validateBaseUrl" after="setServicePassword"/>
+        <wait stepKey="waitForPopup" time="5" after="validateBaseUrl" />
+        <acceptPopup stepKey="clickOk" after="waitForPopup"/>
+        <wait stepKey="waitForStoresLoad" time="5" after="clickOk"/>
+        <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStore" after="waitForStoresLoad"/>
+        <wait stepKey="waitForHierarchyLoad" time="5" after="fillStore"/>
+        <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchy" after="waitForHierarchyLoad"/>
+        <comment userInput="saveStoreConfiguration" stepKey="comment"/>
+        <waitForElementVisible selector="{{StoreConfigSection.Save}}" stepKey="waitForSaveButton"/>
+        <click selector="{{StoreConfigSection.Save}}" stepKey="clickSaveButton"/>
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="You saved the configuration." stepKey="seeSuccessMessage3"/>
     </actionGroup>
 </actionGroups>

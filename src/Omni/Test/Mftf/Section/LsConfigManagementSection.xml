@@ -8,8 +8,11 @@
 <sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
     <section name="LsConfigManagementSection">
-        <element name="ServiceBaseUrl" type="text" selector="#ls_mag_service_base_url" timeout="60"/>
-        <element name="ServiceCentralType" type="select" selector="#ls_mag_service_central_type"/>
+        <element name="ServiceCentralType" type="select" selector="#ls_mag_service_central_type" timeout="60"/>
+        <element name="ServiceWebServiceUri" type="text" selector="#ls_mag_service_web_service_uri" timeout="60"/>
+        <element name="ServiceOdataWebServiceUri" type="text" selector="#ls_mag_service_odata_service_uri" timeout="60"/>
+        <element name="ServiceUsername" type="text" selector="#ls_mag_service_username" timeout="60"/>
+        <element name="ServicePassword" type="text" selector="#ls_mag_service_password" timeout="60"/>
         <element name="ValidateBaseUrl" type="button" selector="#validate_base_url"/>
         <element name="SelectedStore" type="select" selector="#ls_mag_service_selected_store" timeout="60"/>
         <element name="SelectedHierarchyCode" type="select" selector="#ls_mag_service_replicate_hierarchy_code"/>
