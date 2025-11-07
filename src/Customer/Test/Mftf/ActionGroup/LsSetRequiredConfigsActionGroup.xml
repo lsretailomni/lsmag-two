@@ -6,6 +6,7 @@
         <annotations>
             <description>Set required configs</description>
         </annotations>
+        <magentoCLI command="config:set --scope website --scope-code base {{OrderPrefix.path}} {{OrderPrefix.value}}" stepKey="orderPrefix"/>
         <magentoCLI command="config:set --scope website --scope-code base {{ServiceDebug.path}} {{ServiceDebug.value}}" stepKey="serviceDebug"/>
         <amOnPage url="/admin/admin/system_config/edit/section/ls_mag/website/1/#ls_mag_service-link" stepKey="navigateToConfigurationSection"/>
         <selectOption selector="{{LsConfigManagementSection.ServiceCentralType}}" userInput="On-Premise" stepKey="fillCentralType" />

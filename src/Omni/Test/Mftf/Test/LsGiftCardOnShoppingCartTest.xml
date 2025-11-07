@@ -12,8 +12,11 @@
         </annotations>
 
         <before>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
+            </actionGroup>
             <!--Create test data.-->
             <createData entity="LsSimpleProduct3" stepKey="product1" />
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
@@ -52,6 +55,9 @@
         <seeInCurrentUrl url="{{CheckoutCartPage.url}}" stepKey="verifyCartRedirectAfterAddingProductFromProductPage2"/>
         <waitForElementVisible selector="{{CheckoutCartMessageSection.successMessage}}" stepKey="assertSuccess"/>
         <waitForElementVisible selector="#cart-totals .giftcard-discount" stepKey="validateGiftCardDiscountInSummary"/>
+        <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices" before="deleteNewUser">
+            <argument name="indices" value=""/>
+        </actionGroup>
         <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser">
             <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
         </actionGroup>

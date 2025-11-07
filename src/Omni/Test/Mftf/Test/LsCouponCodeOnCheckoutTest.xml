@@ -16,19 +16,11 @@
         <before>
             <magentoCLI command="config:set carriers/clickandcollect/active 0" stepKey="disableClickAndCollect" after="EnablingGuestCheckoutLogin"/>
             <remove keyForRemoval="product1"/>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin" before="reindexInvalidatedIndices"/>
-            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" before="reindexInvalidatedIndices"/>
-            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache" before="reindexInvalidatedIndices">
-                <argument name="tags" value="config"/>
-            </actionGroup>
             <createData entity="LsSimpleProduct3" stepKey="product1" before="reindexInvalidatedIndices"/>
         </before>
         <after>
             <magentoCLI command="config:set carriers/clickandcollect/active 1" stepKey="enableClickAndCollect" after="DisablingGuestCheckoutLogin"/>
         </after>
-        <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices" before="openCustomersGridPage">
-            <argument name="indices" value=""/>
-        </actionGroup>
         <actionGroup ref="AdminOpenCustomersGridActionGroup" stepKey="openCustomersGridPage" before="addProductToCart1"/>
         <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerPage" before="addProductToCart1">
             <argument name="customer" value="Ls_Simple_US_Customer"/>
