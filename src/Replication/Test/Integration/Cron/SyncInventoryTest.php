@@ -149,7 +149,7 @@ class SyncInventoryTest extends AbstractTaskTest
     {
         $itemStock = $this->replicationHelper->getInventoryStatus(
             $itemId,
-            AbstractIntegrationTest::CS_STORE,
+            AbstractIntegrationTest::WEB_STORE,
             $this->storeManager->getWebsite()->getId(),
             $variantId
         );

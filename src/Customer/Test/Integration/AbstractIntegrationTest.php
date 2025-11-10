@@ -24,7 +24,7 @@ if (!defined("SC_CLIENT_SECRET")) { define('SC_CLIENT_SECRET', getenv('SC_CLIENT
 if (!defined("SC_ENVIRONMENT_NAME")) { define('SC_ENVIRONMENT_NAME', getenv('SC_ENVIRONMENT_NAME')); }
 if (!defined("CS_VERSION")) { define('CS_VERSION', getenv('CS_VERSION')); }
 if (!defined("LS_VERSION")) { define('LS_VERSION', getenv('LS_VERSION')); }
-if (!defined("CS_STORE")) { define('CS_STORE', getenv('CS_STORE')); }
+if (!defined("WEB_STORE")) { define('WEB_STORE', getenv('WEB_STORE')); }
 if (!defined("ENABLED")) { define('ENABLED', getenv('ENABLED')); }
 if (!defined("SC_REPLICATION_CENTRAL_TYPE")) { define('SC_REPLICATION_CENTRAL_TYPE', getenv('SC_REPLICATION_CENTRAL_TYPE')); }
 if (!defined("SC_WEB_SERVICE_URI")) { define('SC_WEB_SERVICE_URI', getenv('SC_WEB_SERVICE_URI')); }
@@ -51,7 +51,7 @@ class AbstractIntegrationTest extends TestCase
     public const SC_ENVIRONMENT_NAME = SC_ENVIRONMENT_NAME;
     public const CS_VERSION = CS_VERSION;
     public const LS_VERSION = LS_VERSION;
-    public const CS_STORE = CS_STORE;
+    public const WEB_STORE = WEB_STORE;
     public const ENABLED =  ENABLED;
     public const SC_REPLICATION_CENTRAL_TYPE = SC_REPLICATION_CENTRAL_TYPE;
     public const SC_WEB_SERVICE_URI =  SC_WEB_SERVICE_URI;

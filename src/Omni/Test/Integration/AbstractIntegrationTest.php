@@ -15,16 +15,14 @@ if (!defined("EMAIL_1")) { define('EMAIL_1', getenv('EMAIL')); }
 if (!defined("FIRST_NAME_1")) { define('FIRST_NAME_1', getenv('FIRST_NAME')); }
 if (!defined("LAST_NAME_1")) { define('LAST_NAME_1', getenv('LAST_NAME')); }
 if (!defined("CUSTOMER_ID_1")) { define('CUSTOMER_ID_1', getenv('CUSTOMER_ID')); }
-if (!defined("CS_URL_1")) { define('CS_URL_1', getenv('CS_URL')); }
 if (!defined("BASE_URL")) { define('BASE_URL', getenv('BASE_URL')); }
 if (!defined("SC_COMPANY_NAME")) { define('SC_COMPANY_NAME', getenv('SC_COMPANY_NAME')); }
 if (!defined("SC_TENANT")) { define('SC_TENANT', getenv('SC_TENANT')); }
 if (!defined("SC_CLIENT_ID")) { define('SC_CLIENT_ID', getenv('SC_CLIENT_ID')); }
 if (!defined("SC_CLIENT_SECRET")) { define('SC_CLIENT_SECRET', getenv('SC_CLIENT_SECRET')); }
 if (!defined("SC_ENVIRONMENT_NAME")) { define('SC_ENVIRONMENT_NAME', getenv('SC_ENVIRONMENT_NAME')); }
-if (!defined("CS_VERSION_1")) { define('CS_VERSION_1', getenv('CS_VERSION')); }
 if (!defined("LS_VERSION_1")) { define('LS_VERSION_1', getenv('LS_VERSION')); }
-if (!defined("CS_STORE_1")) { define('CS_STORE_1', getenv('CS_STORE')); }
+if (!defined("WEB_STORE")) { define('WEB_STORE', getenv('WEB_STORE')); }
 if (!defined("ENABLED_1")) { define('ENABLED_1', getenv('ENABLED')); }
 if (!defined("SC_REPLICATION_CENTRAL_TYPE")) { define('SC_REPLICATION_CENTRAL_TYPE', getenv('SC_REPLICATION_CENTRAL_TYPE')); }
 if (!defined("SC_WEB_SERVICE_URI")) { define('SC_WEB_SERVICE_URI', getenv('SC_WEB_SERVICE_URI')); }
@@ -74,15 +72,13 @@ class AbstractIntegrationTest extends TestCase
     public const FIRST_NAME = FIRST_NAME_1;
     public const LAST_NAME = LAST_NAME_1;
     public const CUSTOMER_ID = CUSTOMER_ID_1;
-    public const CS_URL = CS_URL_1;
     public const SC_REPLICATION_CENTRAL_TYPE = SC_REPLICATION_CENTRAL_TYPE;
     public const SC_WEB_SERVICE_URI =  SC_WEB_SERVICE_URI;
     public const SC_USERNAME =  SC_USERNAME;
     public const SC_PASSWORD =  SC_PASSWORD;
     public const SC_ODATA_URI =  SC_ODATA_URI;
     public const BASE_URL = BASE_URL;
-    public const CS_VERSION = CS_VERSION_1;
-    public const CS_STORE = CS_STORE_1;
+    public const WEB_STORE = WEB_STORE;
     public const SC_COMPANY_NAME = SC_COMPANY_NAME;
     public const SC_TENANT = SC_TENANT;
     public const SC_CLIENT_ID = SC_CLIENT_ID;
