@@ -556,7 +556,7 @@
     <column xsi:type="varchar" name="NodeId" length="200" nullable="true" comment="node_id"/>
     <column xsi:type="text" name="ImageId" nullable="true" comment="retail_image_id"/>
     <column xsi:type="int" name="SortOrder" padding="11" nullable="true" comment="sort_order"/>
-    <column xsi:type="text" name="Type" nullable="true" comment="type"/>
+    <column xsi:type="varchar" name="Type" length="200" nullable="true" comment="type"/>
     <column xsi:type="text" name="ValidationPeriod" nullable="true" comment="validation_period_id"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
