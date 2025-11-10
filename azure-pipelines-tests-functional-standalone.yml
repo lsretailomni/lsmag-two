@@ -15,14 +15,24 @@ resources:
         MYSQL_PASSWORD: mysql
         MYSQL_ROOT_PASSWORD: mysql
     - container: opensearch
-      image: opensearchproject/opensearch:2.13.0
+      image: markoshust/magento-opensearch:2.12-0
       ports:
-        - "9200:9200"
-        - "9300:9300"
-        - "9600:9600"
+      - "9200:9200"
+      - "9300:9300"
       env:
-        discovery.type: single-node
         plugins.security.disabled: "true"
+        OPENSEARCH_HOST: 127.0.0.1
+        OPENSEARCH_PORT: 9200
+      environment:
+        - "discovery.type=single-node"
+        ## Avoid test failures due to small disks
+        ## More info at https://github.com/markshust/docker-magento/issues/488
+        - "cluster.routing.allocation.disk.threshold_enabled=false"
+        - "index.blocks.read_only_allow_delete"
+        ## Uncomment to set custom heap size to avoid memory errors
+        #- "OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g"
+        ## Uncomment to increase the virtual memory map count
+        #- "max_map_count=262144"
     - container: selenium
       image: selenium/standalone-chrome-debug:latest
       ports:
