@@ -14,15 +14,15 @@ resources:
         MYSQL_USER: mysql
         MYSQL_PASSWORD: mysql
         MYSQL_ROOT_PASSWORD: mysql
-    - container: elasticsearch
-      image: $(ELASTIC_SEARCH_IMAGE)
+    - container: opensearch
+      image: opensearchproject/opensearch:2.13.0
       ports:
         - "9200:9200"
         - "9300:9300"
+        - "9600:9600"
       env:
         discovery.type: single-node
-        ES_JAVA_OPTS: -Xms1g -Xmx1g
-        cluster.routing.allocation.disk.threshold_enabled: false
+        plugins.security.disabled: "true"
     - container: selenium
       image: selenium/standalone-chrome-debug:latest
       ports:
