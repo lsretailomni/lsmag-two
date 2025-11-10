@@ -82,12 +82,13 @@ jobs:
         displayName: 'Wait for Database to initialise'
 
       - script: |
-          printf 'Waiting for elasticsearch to accept connections'
-          until curl -XGET '0.0.0.0:9200/'; do
-          printf '.'
-          sleep 1;
-          done;
-        displayName: 'Wait for Elasticsearch to initialise'
+          printf 'Waiting for opensearch to accept connections'
+          until curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9200 | grep -q "200"; do
+            printf '.'
+            sleep 1
+          done
+          echo "OpenSearch is up!"
+        displayName: 'Wait for opensearch to initialise'
 
       - script: |
           printf 'Waiting for selenium to accept connections'
