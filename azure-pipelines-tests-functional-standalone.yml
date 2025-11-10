@@ -39,7 +39,7 @@ jobs:
 
     services:
       db: db
-      elasticsearch: elasticsearch
+      opensearch: opensearch
       selenium: selenium
 
     strategy:
@@ -159,7 +159,7 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)
-          php bin/magento setup:install --base-url=http://mag.localhost.com/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=mysql --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=127.0.0.1 --elasticsearch-port=9200
+          php bin/magento setup:install --base-url=http://mag.localhost.com/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=mysql --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=opensearch --opensearch-host=127.0.0.1 --opensearch-port=9200
         displayName: 'Magento Installation Testing'
 
       - script: |
