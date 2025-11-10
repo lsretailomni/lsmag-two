@@ -211,8 +211,8 @@ jobs:
           echo "ELASTICSEARCH_VERSION=$(ELASTICSEARCH_VERSION)" >> dev/tests/acceptance/.env
           echo "SELENIUM_HOST=$(SELENIUM_HOST)" >> dev/tests/acceptance/.env
           echo "CUSTOM_MODULE_PATHS=$(CUSTOM_MODULE_PATHS)" >> dev/tests/acceptance/.env
-          echo 'WEB_SERVICE_URI="'"$(echo "\"$(WEB_SERVICE_URI)\"" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
-          echo 'ODATA_WEB_SERVICE_URI="'"$(echo "\"$(ODATA_WEB_SERVICE_URI)\"" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
+          echo 'WEB_SERVICE_URI="'"$(echo "$(WEB_SERVICE_URI)" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
+          echo 'ODATA_WEB_SERVICE_URI="'"$(echo "$(ODATA_WEB_SERVICE_URI)" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
           echo "SERVICE_USERNAME=$(SERVICE_USERNAME)" >> dev/tests/acceptance/.env
           echo "SERVICE_PASSWORD=$(SERVICE_PASSWORD)" >> dev/tests/acceptance/.env
           echo "CENTRAL_STORE_CODE=$(CENTRAL_STORE_CODE)" >> dev/tests/acceptance/.env
@@ -236,13 +236,13 @@ jobs:
           echo "GIFT_CARD_NUMBER_1=$(GIFT_CARD_NUMBER_1)" >> dev/tests/acceptance/.env
           echo "RESTRICTED_ORDER_STATUSES_DEFAULT=$(RESTRICTED_ORDER_STATUSES_DEFAULT)" >> dev/tests/acceptance/.env
           echo "RESTRICTED_ORDER_STATUSES_UPDATED=$(RESTRICTED_ORDER_STATUSES_UPDATED)" >> dev/tests/acceptance/.env
-          echo 'ODATA_WEB_SERVICE_URI_DISABLED="'"$(echo "\"$(ODATA_WEB_SERVICE_URI_DISABLED)\"" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
-          echo 'WEB_SERVICE_URI_DISABLED="'"$(echo "\"$(WEB_SERVICE_URI_DISABLED)\"" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
+          echo 'ODATA_WEB_SERVICE_URI_DISABLED="'"$(echo "$(ODATA_WEB_SERVICE_URI_DISABLED)" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
+          echo 'WEB_SERVICE_URI_DISABLED="'"$(echo "$(WEB_SERVICE_URI_DISABLED)" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
           echo "CENTRAL_TYPE_ON_PREM=$(CENTRAL_TYPE_ON_PREM)" >> dev/tests/acceptance/.env
           echo "CENTRAL_TYPE_SAAS=$(CENTRAL_TYPE_SAAS)" >> dev/tests/acceptance/.env
           echo "SERVICE_TENANT=$(SERVICE_TENANT)" >> dev/tests/acceptance/.env
           echo "SERVICE_ENV=$(SERVICE_ENV)" >> dev/tests/acceptance/.env
-          echo "SERVICE_COMPANY=$(SERVICE_COMPANY)" >> dev/tests/acceptance/.env
+          echo 'SERVICE_COMPANY="'"$(echo "$(SERVICE_COMPANY)" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
           echo "SERVICE_CLIENT_ID=$(SERVICE_CLIENT_ID)" >> dev/tests/acceptance/.env
           echo "SERVICE_CLIENT_SECRET=$(SERVICE_CLIENT_SECRET)" >> dev/tests/acceptance/.env
           cat dev/tests/acceptance/.env
