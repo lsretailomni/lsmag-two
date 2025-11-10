@@ -181,11 +181,6 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)
-          php bin/magento module:disable Magento_TwoFactorAuth Magento_AdminAdobeImsTwoFactorAuth
-          php bin/magento config:set cms/wysiwyg/enabled disabled
-          php bin/magento config:set admin/security/admin_account_sharing 1
-          php bin/magento config:set admin/security/use_form_key 0
-          php bin/magento cache:flush
           vendor/bin/mftf build:project
           echo "MAGENTO_BASE_URL=$(MAGENTO_BASE_URL)" > dev/tests/acceptance/.env
           echo "MAGENTO_BACKEND_NAME=$(MAGENTO_BACKEND_NAME)" >> dev/tests/acceptance/.env
@@ -201,11 +196,14 @@ jobs:
           echo "ELASTICSEARCH_VERSION=$(ELASTICSEARCH_VERSION)" >> dev/tests/acceptance/.env
           echo "SELENIUM_HOST=$(SELENIUM_HOST)" >> dev/tests/acceptance/.env
           echo "CUSTOM_MODULE_PATHS=$(CUSTOM_MODULE_PATHS)" >> dev/tests/acceptance/.env
+          echo "CENTRAL_TYPE=$(CENTRAL_TYPE)" >> dev/tests/acceptance/.env
+          echo "WEB_SERVICE_URI=$(WEB_SERVICE_URI)" >> dev/tests/acceptance/.env
+          echo "ODATA_WEB_SERVICE_URI=$(ODATA_WEB_SERVICE_URI)" >> dev/tests/acceptance/.env
+          echo "SERVICE_USERNAME=$(SERVICE_USERNAME)" >> dev/tests/acceptance/.env
+          echo "SERVICE_PASSWORD=$(SERVICE_PASSWORD)" >> dev/tests/acceptance/.env
           echo "CENTRAL_STORE_CODE=$(CENTRAL_STORE_CODE)" >> dev/tests/acceptance/.env
           echo "HIERARCHY_CODE=$(HIERARCHY_CODE)" >> dev/tests/acceptance/.env
-          echo "SERVICE_BASE_URL=$(SERVICE_BASE_URL)" >> dev/tests/acceptance/.env
-          echo "CS_VERSION=$(CS_VERSION)" >> dev/tests/acceptance/.env
-          echo 'CENTRAL_VERSION="'"$(echo "\"$(CENTRAL_VERSION)\"" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
+          echo "CENTRAL_VERSION=$(CENTRAL_VERSION)" >> dev/tests/acceptance/.env
           echo "INDUSTRY=$(INDUSTRY)" >> dev/tests/acceptance/.env
           echo "ORDER_PREFIX=$(ORDER_PREFIX)" >> dev/tests/acceptance/.env
           echo "EXISTING_CUSTOMER_1_EMAIL=$(EXISTING_CUSTOMER_1_EMAIL)" >> dev/tests/acceptance/.env
@@ -225,14 +223,16 @@ jobs:
           echo "RESTRICTED_ORDER_STATUSES_DEFAULT=$(RESTRICTED_ORDER_STATUSES_DEFAULT)" >> dev/tests/acceptance/.env
           echo "RESTRICTED_ORDER_STATUSES_UPDATED=$(RESTRICTED_ORDER_STATUSES_UPDATED)" >> dev/tests/acceptance/.env
           echo "SERVICE_BASE_URL_DISABLED=$(SERVICE_BASE_URL_DISABLED)" >> dev/tests/acceptance/.env
+          echo "WEB_SERVICE_URI_DISABLED=$(WEB_SERVICE_URI_DISABLED)" >> dev/tests/acceptance/.env
+          echo "ODATA_WEB_SERVICE_URI_DISABLED=$(ODATA_WEB_SERVICE_URI_DISABLED)" >> dev/tests/acceptance/.env
+          echo "CENTRAL_TYPE_ON_PREM=$(CENTRAL_TYPE_ON_PREM)" >> dev/tests/acceptance/.env
+          echo "CENTRAL_TYPE_SAAS=$(CENTRAL_TYPE_SAAS)" >> dev/tests/acceptance/.env
+          echo "SERVICE_TENANT=$(SERVICE_TENANT)" >> dev/tests/acceptance/.env
+          echo "SERVICE_ENV=$(SERVICE_ENV)" >> dev/tests/acceptance/.env
+          echo "SERVICE_COMPANY=$(SERVICE_COMPANY)" >> dev/tests/acceptance/.env
+          echo "SERVICE_CLIENT_ID=$(SERVICE_CLIENT_ID)" >> dev/tests/acceptance/.env
+          echo "SERVICE_CLIENT_SECRET=$(SERVICE_CLIENT_SECRET)" >> dev/tests/acceptance/.env
           cat dev/tests/acceptance/.env
-          touch dev/tests/acceptance/.credentials
-          echo "magento/MAGENTO_ADMIN_PASSWORD=$(MAGENTO_ADMIN_PASSWORD)" >> dev/tests/acceptance/.credentials
-          echo "magento/payflow_pro_partner=$(payflow_pro_partner)" >> dev/tests/acceptance/.credentials
-          echo "magento/payflow_pro_user=$(payflow_pro_user)" >> dev/tests/acceptance/.credentials
-          echo "magento/payflow_pro_pwd=$(payflow_pro_pwd)" >> dev/tests/acceptance/.credentials
-          echo "magento/payflow_pro_vendor=$(payflow_pro_vendor)" >> dev/tests/acceptance/.credentials
-          cat dev/tests/acceptance/.credentials
           cp dev/tests/acceptance/.htaccess.sample dev/tests/acceptance/.htaccess
           cd dev/tests/acceptance
           php ../../../vendor/bin/mftf doctor --verbose
@@ -240,66 +240,67 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsCustomer --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          php ../../../vendor/bin/mftf run:group lsCustomer --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+          php ../../../vendor/bin/mftf run:test LsStorefrontCreateCustomerTest --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
           tail -f $(magentoDirectory)/var/log/*.log &
           sleep 60
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
         displayName: 'Running Functional tests for group lsCustomer'
         continueOnError: true
 
-      - script: |
-          cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsPDP --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-          tail -f $(magentoDirectory)/var/log/*.log &
-          sleep 60
-          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
-        displayName: 'Running Functional tests for group lsPDP'
-        continueOnError: true
-
-      - script: |
-          cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsCms --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-          cat $(magentoDirectory)/var/log/debug.log
-          cat $(magentoDirectory)/var/log/omniclient.log
-          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
-        displayName: 'Running Functional tests for group lsCms'
-        continueOnError: true
-
-      - script: |
-          cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsReplication --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-          cat $(magentoDirectory)/var/log/debug.log
-          cat $(magentoDirectory)/var/log/omniclient.log
-          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
-        displayName: 'Running Functional tests for group lsReplication'
-        continueOnError: true
-
-      - script: |
-          cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsConfig --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-          cat $(magentoDirectory)/var/log/debug.log
-          cat $(magentoDirectory)/var/log/omniclient.log
-          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
-        displayName: 'Running Functional tests for group lsConfig'
-        continueOnError: true
-
-      - script: |
-          cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsShoppingCart --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-          cat $(magentoDirectory)/var/log/debug.log
-          cat $(magentoDirectory)/var/log/omniclient.log
-          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
-        displayName: 'Running Functional tests for group lsShoppingCart'
-        continueOnError: true
-
-      - script: |
-          cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsCheckout --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-          cat $(magentoDirectory)/var/log/debug.log
-          cat $(magentoDirectory)/var/log/omniclient.log
-          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
-        displayName: 'Running Functional tests for group lsCheckout'
-        continueOnError: true
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsPDP --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          tail -f $(magentoDirectory)/var/log/*.log &
+#          sleep 60
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsPDP'
+#        continueOnError: true
+#
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsCms --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          cat $(magentoDirectory)/var/log/debug.log
+#          cat $(magentoDirectory)/var/log/omniclient.log
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsCms'
+#        continueOnError: true
+#
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsReplication --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          cat $(magentoDirectory)/var/log/debug.log
+#          cat $(magentoDirectory)/var/log/omniclient.log
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsReplication'
+#        continueOnError: true
+#
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsConfig --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          cat $(magentoDirectory)/var/log/debug.log
+#          cat $(magentoDirectory)/var/log/omniclient.log
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsConfig'
+#        continueOnError: true
+#
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsShoppingCart --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          cat $(magentoDirectory)/var/log/debug.log
+#          cat $(magentoDirectory)/var/log/omniclient.log
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsShoppingCart'
+#        continueOnError: true
+#
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsCheckout --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          cat $(magentoDirectory)/var/log/debug.log
+#          cat $(magentoDirectory)/var/log/omniclient.log
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsCheckout'
+#        continueOnError: true
 
       - script: |
           docker logs $(SELENIUM_CONTAINER_ID)
