@@ -84,15 +84,15 @@ jobs:
 
       - script: |
           echo "Checking container connectivity..."
-          ping -c 3 opensearch || echo "Ping failed, might be normal."
-          curl -v http://opensearch:9200 || true
+          curl -v http://127.0.0.1:9200 || true
           echo "Starting wait loop..."
-          until curl -s -o /dev/null -w "%{http_code}" http://opensearch:9200 | grep -q "200"; do
+          until curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9200 | grep -q "200"; do
             printf '.'
             sleep 5
           done
           echo "OpenSearch is up!"
         displayName: 'Wait for OpenSearch to initialize (debug)'
+
 
       - script: |
           printf 'Waiting for selenium to accept connections'
