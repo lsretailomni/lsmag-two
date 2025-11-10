@@ -13,7 +13,7 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
      *
      * @return void
      */
-    protected function prepareBlockData()
+    public function prepareBlockData()
     {
         $order      = $this->_checkoutSession->getLastRealOrder();
         $documentId = $this->_checkoutSession->getLastDocumentId();
@@ -37,6 +37,16 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
         } else {
             parent::prepareBlockData();
         }
+    }
+
+    /**
+     * Get checkout session
+     *
+     * @return \Magento\Checkout\Model\Session
+     */
+    public function getCheckoutSession()
+    {
+        return $this->_checkoutSession;
     }
 
 }
