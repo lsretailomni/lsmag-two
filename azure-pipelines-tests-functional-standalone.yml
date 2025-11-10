@@ -17,22 +17,13 @@ resources:
     - container: opensearch
       image: markoshust/magento-opensearch:2.12-0
       ports:
-      - "9200:9200"
-      - "9300:9300"
+        - "9200:9200"
+        - "9300:9300"
       env:
+        discovery.type: "single-node"
+        cluster.routing.allocation.disk.threshold_enabled: "false"
+        index.blocks.read_only_allow_delete: ""
         plugins.security.disabled: "true"
-        OPENSEARCH_HOST: 127.0.0.1
-        OPENSEARCH_PORT: 9200
-      environment:
-        - "discovery.type=single-node"
-        ## Avoid test failures due to small disks
-        ## More info at https://github.com/markshust/docker-magento/issues/488
-        - "cluster.routing.allocation.disk.threshold_enabled=false"
-        - "index.blocks.read_only_allow_delete"
-        ## Uncomment to set custom heap size to avoid memory errors
-        #- "OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g"
-        ## Uncomment to increase the virtual memory map count
-        #- "max_map_count=262144"
     - container: selenium
       image: selenium/standalone-chrome-debug:latest
       ports:
@@ -92,13 +83,16 @@ jobs:
         displayName: 'Wait for Database to initialise'
 
       - script: |
-          printf 'Waiting for opensearch to accept connections'
-          until curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9200 | grep -q "200"; do
+          echo "Checking container connectivity..."
+          ping -c 3 opensearch || echo "Ping failed, might be normal."
+          curl -v http://opensearch:9200 || true
+          echo "Starting wait loop..."
+          until curl -s -o /dev/null -w "%{http_code}" http://opensearch:9200 | grep -q "200"; do
             printf '.'
-            sleep 1
+            sleep 5
           done
           echo "OpenSearch is up!"
-        displayName: 'Wait for opensearch to initialise'
+        displayName: 'Wait for OpenSearch to initialize (debug)'
 
       - script: |
           printf 'Waiting for selenium to accept connections'
