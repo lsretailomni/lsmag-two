@@ -15,15 +15,14 @@ resources:
         MYSQL_PASSWORD: mysql
         MYSQL_ROOT_PASSWORD: mysql
     - container: opensearch
-      image: markoshust/magento-opensearch:2.12-0
+      image: opensearchproject/opensearch:2.12.0
       ports:
         - "9200:9200"
-        - "9300:9300"
+        - "9600:9600"
       env:
-        discovery.type: "single-node"
-        cluster.routing.allocation.disk.threshold_enabled: "false"
-        index.blocks.read_only_allow_delete: ""
+        discovery.type: single-node
         plugins.security.disabled: "true"
+        OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
     - container: selenium
       image: selenium/standalone-chrome-debug:latest
       ports:
