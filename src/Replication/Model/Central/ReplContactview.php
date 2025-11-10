@@ -29,7 +29,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getAccountNo() : ?string
+    public function getAccountNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ACCOUNT_NO]);
     }
@@ -39,7 +39,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::ACCOUNT_NO], $value);
     }
 
-    public function getClubCode() : ?string
+    public function getClubCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CLUB_CODE]);
     }
@@ -49,7 +49,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::CLUB_CODE], $value);
     }
 
-    public function getSchemeCode() : ?string
+    public function getSchemeCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SCHEME_CODE]);
     }
@@ -59,7 +59,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::SCHEME_CODE], $value);
     }
 
-    public function getContactNo() : ?string
+    public function getContactNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CONTACT_NO]);
     }
@@ -69,7 +69,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::CONTACT_NO], $value);
     }
 
-    public function getMainContact() : ?bool
+    public function getMainContact(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAIN_CONTACT]);
     }
@@ -79,7 +79,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::MAIN_CONTACT], $value);
     }
 
-    public function getName() : ?string
+    public function getName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NAME]);
     }
@@ -89,7 +89,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::NAME], $value);
     }
 
-    public function getSearchName() : ?string
+    public function getSearchName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SEARCH_NAME]);
     }
@@ -99,7 +99,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::SEARCH_NAME], $value);
     }
 
-    public function getName2() : ?string
+    public function getName2(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NAME_2]);
     }
@@ -109,7 +109,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::NAME_2], $value);
     }
 
-    public function getAddress() : ?string
+    public function getAddress(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADDRESS]);
     }
@@ -119,7 +119,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::ADDRESS], $value);
     }
 
-    public function getAddress2() : ?string
+    public function getAddress2(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADDRESS_2]);
     }
@@ -129,7 +129,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::ADDRESS_2], $value);
     }
 
-    public function getCity() : ?string
+    public function getCity(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CITY]);
     }
@@ -139,7 +139,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::CITY], $value);
     }
 
-    public function getHouseApartmentNo() : ?string
+    public function getHouseApartmentNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::HOUSEAPARTMENT_NO]);
     }
@@ -149,7 +149,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::HOUSEAPARTMENT_NO], $value);
     }
 
-    public function getPostCode() : ?string
+    public function getPostCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POST_CODE]);
     }
@@ -159,7 +159,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::POST_CODE], $value);
     }
 
-    public function getEMail() : ?string
+    public function getEMail(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::EMAIL]);
     }
@@ -169,7 +169,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::EMAIL], $value);
     }
 
-    public function getHomePage() : ?string
+    public function getHomePage(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::HOME_PAGE]);
     }
@@ -179,7 +179,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::HOME_PAGE], $value);
     }
 
-    public function getPhoneNo() : ?string
+    public function getPhoneNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PHONE_NO]);
     }
@@ -189,7 +189,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::PHONE_NO], $value);
     }
 
-    public function getMobilePhoneNo() : ?string
+    public function getMobilePhoneNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::MOBILE_PHONE_NO]);
     }
@@ -199,7 +199,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::MOBILE_PHONE_NO], $value);
     }
 
-    public function getTerritoryCode() : ?string
+    public function getTerritoryCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TERRITORY_CODE]);
     }
@@ -209,7 +209,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::TERRITORY_CODE], $value);
     }
 
-    public function getCounty() : ?string
+    public function getCounty(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUNTY]);
     }
@@ -219,7 +219,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::COUNTY], $value);
     }
 
-    public function getCountryRegionCode() : ?string
+    public function getCountryRegionCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUNTRYREGION_CODE]);
     }
@@ -229,7 +229,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::COUNTRYREGION_CODE], $value);
     }
 
-    public function getLanguageCode() : ?string
+    public function getLanguageCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LANGUAGE_CODE]);
     }
@@ -239,7 +239,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::LANGUAGE_CODE], $value);
     }
 
-    public function getGender() : ?int
+    public function getGender(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::GENDER]);
     }
@@ -249,7 +249,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::GENDER], $value);
     }
 
-    public function getDateOfBirth() : ?string
+    public function getDateOfBirth(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DATE_OF_BIRTH]);
     }
@@ -259,7 +259,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::DATE_OF_BIRTH], $value);
     }
 
-    public function getBirthday() : ?string
+    public function getBirthday(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BIRTHDAY]);
     }
@@ -269,7 +269,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::BIRTHDAY], $value);
     }
 
-    public function getContactGender() : ?int
+    public function getContactGender(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::CONTACT_GENDER]);
     }
@@ -279,7 +279,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::CONTACT_GENDER], $value);
     }
 
-    public function getMaritalStatus() : ?int
+    public function getMaritalStatus(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::MARITAL_STATUS]);
     }
@@ -289,7 +289,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::MARITAL_STATUS], $value);
     }
 
-    public function getGuestType() : ?string
+    public function getGuestType(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::GUEST_TYPE]);
     }
@@ -299,7 +299,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::GUEST_TYPE], $value);
     }
 
-    public function getExpirationPeriodType() : ?int
+    public function getExpirationPeriodType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXPIRATION_PERIOD_TYPE]);
     }
@@ -309,7 +309,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::EXPIRATION_PERIOD_TYPE], $value);
     }
 
-    public function getBlocked() : ?bool
+    public function getBlocked(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCKED]);
     }
@@ -319,7 +319,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::BLOCKED], $value);
     }
 
-    public function getReasonBlocked() : ?string
+    public function getReasonBlocked(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REASON_BLOCKED]);
     }
@@ -329,7 +329,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::REASON_BLOCKED], $value);
     }
 
-    public function getDateBlocked() : ?string
+    public function getDateBlocked(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DATE_BLOCKED]);
     }
@@ -339,7 +339,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::DATE_BLOCKED], $value);
     }
 
-    public function getBlockedBy() : ?string
+    public function getBlockedBy(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCKED_BY]);
     }
@@ -349,7 +349,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::BLOCKED_BY], $value);
     }
 
-    public function getCreatedDate() : ?string
+    public function getCreatedDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CREATED_DATE]);
     }
@@ -359,7 +359,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::CREATED_DATE], $value);
     }
 
-    public function getCreatedBy() : ?string
+    public function getCreatedBy(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CREATED_BY]);
     }
@@ -369,7 +369,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::CREATED_BY], $value);
     }
 
-    public function getPrivacyBlocked() : ?bool
+    public function getPrivacyBlocked(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRIVACY_BLOCKED]);
     }
@@ -379,7 +379,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::PRIVACY_BLOCKED], $value);
     }
 
-    public function getNoSeries() : ?string
+    public function getNoSeries(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO_SERIES]);
     }
@@ -389,7 +389,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::NO_SERIES], $value);
     }
 
-    public function getExternalId() : ?string
+    public function getExternalId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXTERNAL_ID]);
     }
@@ -399,7 +399,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::EXTERNAL_ID], $value);
     }
 
-    public function getExternalSystem() : ?string
+    public function getExternalSystem(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXTERNAL_SYSTEM]);
     }
@@ -409,7 +409,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::EXTERNAL_SYSTEM], $value);
     }
 
-    public function getMemberCardTemporary() : ?string
+    public function getMemberCardTemporary(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::MEMBER_CARD_TEMPORARY]);
     }
@@ -419,7 +419,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::MEMBER_CARD_TEMPORARY], $value);
     }
 
-    public function getFirstName() : ?string
+    public function getFirstName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::FIRST_NAME]);
     }
@@ -429,7 +429,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::FIRST_NAME], $value);
     }
 
-    public function getMiddleName() : ?string
+    public function getMiddleName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::MIDDLE_NAME]);
     }
@@ -439,7 +439,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::MIDDLE_NAME], $value);
     }
 
-    public function getSurname() : ?string
+    public function getSurname(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SURNAME]);
     }
@@ -449,7 +449,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::SURNAME], $value);
     }
 
-    public function getSalutationCode() : ?string
+    public function getSalutationCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALUTATION_CODE]);
     }
@@ -459,7 +459,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::SALUTATION_CODE], $value);
     }
 
-    public function getSearchEMail() : ?string
+    public function getSearchEMail(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SEARCH_EMAIL]);
     }
@@ -469,7 +469,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::SEARCH_EMAIL], $value);
     }
 
-    public function getSendReceiptByEMail() : ?int
+    public function getSendReceiptByEMail(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SEND_RECEIPT_BY_EMAIL]);
     }
@@ -479,7 +479,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::SEND_RECEIPT_BY_EMAIL], $value);
     }
 
-    public function getCitySearchInternal() : ?string
+    public function getCitySearchInternal(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CITY_SEARCH_INTERNAL]);
     }
@@ -489,7 +489,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::CITY_SEARCH_INTERNAL], $value);
     }
 
-    public function getPostCodeSearchInternal() : ?string
+    public function getPostCodeSearchInternal(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POST_CODE_SEARCH_INTERNAL]);
     }
@@ -499,7 +499,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::POST_CODE_SEARCH_INTERNAL], $value);
     }
 
-    public function getDefaultToken() : ?int
+    public function getDefaultToken(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_TOKEN]);
     }
@@ -509,7 +509,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_TOKEN], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -519,7 +519,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -529,7 +529,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -539,7 +539,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -549,7 +549,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -559,7 +559,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
     }
 
-    public function getCardno() : ?string
+    public function getCardno(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CARDNO]);
     }
@@ -569,7 +569,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::CARDNO], $value);
     }
 
-    public function getLoginid() : ?string
+    public function getLoginid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOGINID]);
     }
@@ -579,7 +579,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::LOGINID], $value);
     }
 
-    public function getCustomerid() : ?string
+    public function getCustomerid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CUSTOMERID]);
     }
@@ -596,7 +596,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -608,7 +608,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -620,7 +620,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -632,7 +632,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -644,7 +644,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -656,7 +656,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -668,7 +668,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -680,7 +680,7 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

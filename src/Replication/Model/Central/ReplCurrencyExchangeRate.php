@@ -29,7 +29,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getCurrencyCode() : ?string
+    public function getCurrencyCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
     }
@@ -39,7 +39,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
     }
 
-    public function getStartingDate() : ?string
+    public function getStartingDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STARTING_DATE]);
     }
@@ -49,7 +49,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::STARTING_DATE], $value);
     }
 
-    public function getExchangeRateAmount() : ?float
+    public function getExchangeRateAmount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXCHANGE_RATE_AMOUNT]);
     }
@@ -59,7 +59,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::EXCHANGE_RATE_AMOUNT], $value);
     }
 
-    public function getAdjustmentExchRateAmount() : ?float
+    public function getAdjustmentExchRateAmount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADJUSTMENT_EXCH_RATE_AMOUNT]);
     }
@@ -69,7 +69,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::ADJUSTMENT_EXCH_RATE_AMOUNT], $value);
     }
 
-    public function getRelationalCurrencyCode() : ?string
+    public function getRelationalCurrencyCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::RELATIONAL_CURRENCY_CODE]);
     }
@@ -79,7 +79,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::RELATIONAL_CURRENCY_CODE], $value);
     }
 
-    public function getRelationalExchRateAmount() : ?float
+    public function getRelationalExchRateAmount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::RELATIONAL_EXCH_RATE_AMOUNT]);
     }
@@ -89,7 +89,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::RELATIONAL_EXCH_RATE_AMOUNT], $value);
     }
 
-    public function getFixExchangeRateAmount() : ?int
+    public function getFixExchangeRateAmount(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::FIX_EXCHANGE_RATE_AMOUNT]);
     }
@@ -99,7 +99,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::FIX_EXCHANGE_RATE_AMOUNT], $value);
     }
 
-    public function getRelationalAdjmtExchRateAmt() : ?float
+    public function getRelationalAdjmtExchRateAmt(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::RELATIONAL_ADJMT_EXCH_RATE_AMT]);
     }
@@ -109,7 +109,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::RELATIONAL_ADJMT_EXCH_RATE_AMT], $value);
     }
 
-    public function getLscPosExchangeRateAmount() : ?float
+    public function getLscPosExchangeRateAmount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_EXCHANGE_RATE_AMOUNT]);
     }
@@ -119,7 +119,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::LSC_POS_EXCHANGE_RATE_AMOUNT], $value);
     }
 
-    public function getLscPosRelExchRateAmount() : ?float
+    public function getLscPosRelExchRateAmount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_REL_EXCH_RATE_AMOUNT]);
     }
@@ -129,7 +129,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::LSC_POS_REL_EXCH_RATE_AMOUNT], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -139,7 +139,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -149,7 +149,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -159,7 +159,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -169,7 +169,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -186,7 +186,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -198,7 +198,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -210,7 +210,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -222,7 +222,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -234,7 +234,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -246,7 +246,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -258,7 +258,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -270,7 +270,7 @@ class ReplCurrencyExchangeRate extends \Ls\Omni\Client\CentralEcommerce\Entity\C
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

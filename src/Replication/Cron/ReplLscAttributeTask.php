@@ -14,7 +14,7 @@ class ReplLscAttributeTask extends ReplEcommAttributeTask
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscAttribute';
 
-    public function getModelName() : string
+    public function getModelName(): string
     {
         return self::MODEL_CLASS;
     }
@@ -32,7 +32,7 @@ class ReplLscAttributeTask extends ReplEcommAttributeTask
         return $request;
     }
 
-    public function getConfigPathLastEntryNo() : string
+    public function getConfigPathLastEntryNo(): string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
     }

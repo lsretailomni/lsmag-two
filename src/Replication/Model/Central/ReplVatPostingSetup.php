@@ -29,7 +29,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getVatBusPostingGroup() : ?string
+    public function getVatBusPostingGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GROUP]);
     }
@@ -39,7 +39,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GROUP], $value);
     }
 
-    public function getVatProdPostingGroup() : ?string
+    public function getVatProdPostingGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAT_PROD_POSTING_GROUP]);
     }
@@ -49,7 +49,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::VAT_PROD_POSTING_GROUP], $value);
     }
 
-    public function getVatCalculationType() : ?int
+    public function getVatCalculationType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAT_CALCULATION_TYPE]);
     }
@@ -59,7 +59,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::VAT_CALCULATION_TYPE], $value);
     }
 
-    public function getVat() : ?float
+    public function getVat(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAT]);
     }
@@ -69,7 +69,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::VAT], $value);
     }
 
-    public function getUnrealizedVatType() : ?int
+    public function getUnrealizedVatType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNREALIZED_VAT_TYPE]);
     }
@@ -79,7 +79,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::UNREALIZED_VAT_TYPE], $value);
     }
 
-    public function getAdjustForPaymentDiscount() : ?bool
+    public function getAdjustForPaymentDiscount(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADJUST_FOR_PAYMENT_DISCOUNT]);
     }
@@ -89,7 +89,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::ADJUST_FOR_PAYMENT_DISCOUNT], $value);
     }
 
-    public function getSalesVatAccount() : ?string
+    public function getSalesVatAccount(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALES_VAT_ACCOUNT]);
     }
@@ -99,7 +99,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::SALES_VAT_ACCOUNT], $value);
     }
 
-    public function getSalesVatUnrealAccount() : ?string
+    public function getSalesVatUnrealAccount(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALES_VAT_UNREAL_ACCOUNT]);
     }
@@ -109,7 +109,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::SALES_VAT_UNREAL_ACCOUNT], $value);
     }
 
-    public function getPurchaseVatAccount() : ?string
+    public function getPurchaseVatAccount(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PURCHASE_VAT_ACCOUNT]);
     }
@@ -119,7 +119,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::PURCHASE_VAT_ACCOUNT], $value);
     }
 
-    public function getPurchVatUnrealAccount() : ?string
+    public function getPurchVatUnrealAccount(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PURCH_VAT_UNREAL_ACCOUNT]);
     }
@@ -129,7 +129,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::PURCH_VAT_UNREAL_ACCOUNT], $value);
     }
 
-    public function getReverseChrgVatAcc() : ?string
+    public function getReverseChrgVatAcc(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REVERSE_CHRG_VAT_ACC]);
     }
@@ -139,7 +139,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::REVERSE_CHRG_VAT_ACC], $value);
     }
 
-    public function getReverseChrgVatUnrealAcc() : ?string
+    public function getReverseChrgVatUnrealAcc(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REVERSE_CHRG_VAT_UNREAL_ACC]);
     }
@@ -149,7 +149,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::REVERSE_CHRG_VAT_UNREAL_ACC], $value);
     }
 
-    public function getVatIdentifier() : ?string
+    public function getVatIdentifier(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAT_IDENTIFIER]);
     }
@@ -159,7 +159,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::VAT_IDENTIFIER], $value);
     }
 
-    public function getEuService() : ?bool
+    public function getEuService(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::EU_SERVICE]);
     }
@@ -169,7 +169,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::EU_SERVICE], $value);
     }
 
-    public function getVatClauseCode() : ?string
+    public function getVatClauseCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAT_CLAUSE_CODE]);
     }
@@ -179,7 +179,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::VAT_CLAUSE_CODE], $value);
     }
 
-    public function getCertificateOfSupplyRequired() : ?bool
+    public function getCertificateOfSupplyRequired(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::CERTIFICATE_OF_SUPPLY_REQUIRED]);
     }
@@ -189,7 +189,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::CERTIFICATE_OF_SUPPLY_REQUIRED], $value);
     }
 
-    public function getTaxCategory() : ?string
+    public function getTaxCategory(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TAX_CATEGORY]);
     }
@@ -199,7 +199,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::TAX_CATEGORY], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -209,7 +209,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getBlocked() : ?bool
+    public function getBlocked(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCKED]);
     }
@@ -219,7 +219,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::BLOCKED], $value);
     }
 
-    public function getSaleVatReportingCode() : ?string
+    public function getSaleVatReportingCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALE_VAT_REPORTING_CODE]);
     }
@@ -229,7 +229,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::SALE_VAT_REPORTING_CODE], $value);
     }
 
-    public function getPurchVatReportingCode() : ?string
+    public function getPurchVatReportingCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PURCH_VAT_REPORTING_CODE]);
     }
@@ -239,7 +239,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::PURCH_VAT_REPORTING_CODE], $value);
     }
 
-    public function getNonDeductibleVat() : ?float
+    public function getNonDeductibleVat(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::NONDEDUCTIBLE_VAT]);
     }
@@ -249,7 +249,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::NONDEDUCTIBLE_VAT], $value);
     }
 
-    public function getNonDedPurchaseVatAccount() : ?string
+    public function getNonDedPurchaseVatAccount(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NONDED_PURCHASE_VAT_ACCOUNT]);
     }
@@ -259,7 +259,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::NONDED_PURCHASE_VAT_ACCOUNT], $value);
     }
 
-    public function getAllowNonDeductibleVat() : ?int
+    public function getAllowNonDeductibleVat(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALLOW_NONDEDUCTIBLE_VAT]);
     }
@@ -269,7 +269,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::ALLOW_NONDEDUCTIBLE_VAT], $value);
     }
 
-    public function getLscVatGroupCode() : ?string
+    public function getLscVatGroupCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_VAT_GROUP_CODE]);
     }
@@ -279,7 +279,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::LSC_VAT_GROUP_CODE], $value);
     }
 
-    public function getLscPosTerminalVatCode() : ?string
+    public function getLscPosTerminalVatCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_TERMINAL_VAT_CODE]);
     }
@@ -289,7 +289,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::LSC_POS_TERMINAL_VAT_CODE], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -299,7 +299,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -309,7 +309,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -319,7 +319,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -329,7 +329,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -346,7 +346,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -358,7 +358,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -370,7 +370,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -382,7 +382,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -394,7 +394,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -406,7 +406,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -418,7 +418,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -430,7 +430,7 @@ class ReplVatPostingSetup extends \Ls\Omni\Client\CentralEcommerce\Entity\VATPos
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

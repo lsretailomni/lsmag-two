@@ -2,7 +2,7 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
   <table name="ls_replication_repl_attribute" resource="default" engine="innodb" comment="LSC Attribute">
     <column xsi:type="int" name="repl_attribute_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_attribute_id"/>
-    <column xsi:type="text" name="Code" nullable="true" comment="code"/>
+    <column xsi:type="varchar" name="Code" length="200" nullable="true" comment="code"/>
     <column xsi:type="text" name="DefaultValue" nullable="true" comment="default_value"/>
     <column xsi:type="text" name="Description" nullable="true" comment="description"/>
     <column xsi:type="int" name="ValueType" padding="11" nullable="true" comment="value_type"/>
@@ -41,7 +41,7 @@
   </table>
   <table name="ls_replication_repl_attribute_option_value" resource="default" engine="innodb" comment="LSC Attribute Option Value">
     <column xsi:type="int" name="repl_attribute_option_value_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_attribute_option_value_id"/>
-    <column xsi:type="text" name="Code" nullable="true" comment="attribute_code"/>
+    <column xsi:type="varchar" name="Code" length="200" nullable="true" comment="attribute_code"/>
     <column xsi:type="text" name="Value" nullable="true" comment="option_value"/>
     <column xsi:type="int" name="Sequence" padding="11" nullable="true" comment="sequence"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
@@ -82,11 +82,11 @@
   </table>
   <table name="ls_replication_repl_attribute_value" resource="default" engine="innodb" comment="LSC Attribute Value">
     <column xsi:type="int" name="repl_attribute_value_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_attribute_value_id"/>
-    <column xsi:type="text" name="Code" nullable="true" comment="attribute_code"/>
+    <column xsi:type="varchar" name="Code" length="200" nullable="true" comment="attribute_code"/>
     <column xsi:type="text" name="Value" nullable="true" comment="attribute_value"/>
-    <column xsi:type="text" name="LinkField1" nullable="true" comment="link_field_1"/>
-    <column xsi:type="text" name="LinkField2" nullable="true" comment="link_field_2"/>
-    <column xsi:type="text" name="LinkField3" nullable="true" comment="link_field_3"/>
+    <column xsi:type="varchar" name="LinkField1" length="200" nullable="true" comment="link_field_1"/>
+    <column xsi:type="varchar" name="LinkField2" length="200" nullable="true" comment="link_field_2"/>
+    <column xsi:type="varchar" name="LinkField3" length="200" nullable="true" comment="link_field_3"/>
     <column xsi:type="int" name="LinkType" padding="11" nullable="true" comment="link_type"/>
     <column xsi:type="decimal" name="NumbericValue" scale="4" precision="20" nullable="true" comment="numeric_value"/>
     <column xsi:type="int" name="Sequence" padding="11" nullable="true" comment="sequence"/>
@@ -137,9 +137,9 @@
   </table>
   <table name="ls_replication_repl_barcode" resource="default" engine="innodb" comment="LSC Barcodes">
     <column xsi:type="int" name="repl_barcode_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_barcode_id"/>
-    <column xsi:type="text" name="nav_id" nullable="true" comment="barcode_no"/>
+    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="barcode_no"/>
     <column xsi:type="text" name="Description" nullable="true" comment="description"/>
-    <column xsi:type="text" name="ItemId" nullable="true" comment="item_no"/>
+    <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="item_no"/>
     <column xsi:type="text" name="UnitOfMeasure" nullable="true" comment="unit_of_measure_code"/>
     <column xsi:type="text" name="VariantId" nullable="true" comment="variant_code"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
@@ -205,7 +205,7 @@
   <table name="ls_replication_repl_currency" resource="default" engine="innodb" comment="Currency">
     <column xsi:type="int" name="repl_currency_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_currency_id"/>
     <column xsi:type="decimal" name="RoundOfSales" scale="4" precision="20" nullable="true" comment="amount_rounding_precision"/>
-    <column xsi:type="text" name="CurrencyCode" nullable="true" comment="code"/>
+    <column xsi:type="varchar" name="CurrencyCode" length="200" nullable="true" comment="code"/>
     <column xsi:type="text" name="Description" nullable="true" comment="description"/>
     <column xsi:type="decimal" name="RoundOfAmount" scale="4" precision="20" nullable="true" comment="invoice_rounding_precision"/>
     <column xsi:type="int" name="RoundOfTypeAmount" padding="11" nullable="true" comment="invoice_rounding_type"/>
@@ -255,7 +255,7 @@
     <column xsi:type="text" name="nav_id" nullable="true" comment="lsc_customer_id"/>
     <column xsi:type="text" name="CellularPhone" nullable="true" comment="mobile_phone_no"/>
     <column xsi:type="text" name="Name" nullable="true" comment="name"/>
-    <column xsi:type="text" name="AccountNumber" nullable="true" comment="no"/>
+    <column xsi:type="varchar" name="AccountNumber" length="200" nullable="true" comment="no"/>
     <column xsi:type="text" name="PhoneLocal" nullable="true" comment="phone_no"/>
     <column xsi:type="text" name="ZipCode" nullable="true" comment="post_code"/>
     <column xsi:type="boolean" name="IncludeTax" default="0" nullable="true" comment="prices_including_vat"/>
@@ -388,12 +388,12 @@
   </table>
   <table name="ls_replication_repl_extended_variant_value" resource="default" engine="innodb" comment="LSC WI Extd. Variant Values">
     <column xsi:type="int" name="repl_extended_variant_value_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_extended_variant_value_id"/>
-    <column xsi:type="text" name="Code" nullable="true" comment="code"/>
+    <column xsi:type="varchar" name="Code" length="200" nullable="true" comment="code"/>
     <column xsi:type="int" name="Dimensions" padding="11" nullable="true" comment="dimension"/>
-    <column xsi:type="text" name="FrameworkCode" nullable="true" comment="framework_code"/>
-    <column xsi:type="text" name="ItemId" nullable="true" comment="item_no"/>
+    <column xsi:type="varchar" name="FrameworkCode" length="200" nullable="true" comment="framework_code"/>
+    <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="item_no"/>
     <column xsi:type="int" name="LogicalOrder" padding="11" nullable="true" comment="logical_order"/>
-    <column xsi:type="text" name="Value" nullable="true" comment="value"/>
+    <column xsi:type="varchar" name="Value" length="200" nullable="true" comment="value"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -439,7 +439,7 @@
   <table name="ls_replication_repl_hierarchy" resource="default" engine="innodb" comment="HierarchyView">
     <column xsi:type="int" name="repl_hierarchy_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_id"/>
     <column xsi:type="text" name="Description" nullable="true" comment="description"/>
-    <column xsi:type="text" name="nav_id" nullable="true" comment="hierarchy_code"/>
+    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="hierarchy_code"/>
     <column xsi:type="int" name="Priority" padding="11" nullable="true" comment="priority"/>
     <column xsi:type="text" name="SalesType" nullable="true" comment="sales_type_filter"/>
     <column xsi:type="text" name="StartDate" nullable="true" comment="start_date"/>
@@ -550,10 +550,10 @@
     <column xsi:type="int" name="repl_hierarchy_leaf_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_leaf_id"/>
     <column xsi:type="decimal" name="DealPrice" scale="4" precision="20" nullable="true" comment="deal_price"/>
     <column xsi:type="text" name="Description" nullable="true" comment="description"/>
-    <column xsi:type="text" name="HierarchyCode" nullable="true" comment="hierarchy_code"/>
+    <column xsi:type="varchar" name="HierarchyCode" length="200" nullable="true" comment="hierarchy_code"/>
     <column xsi:type="text" name="ItemUOM" nullable="true" comment="item_unit_of_measure"/>
-    <column xsi:type="text" name="nav_id" nullable="true" comment="no"/>
-    <column xsi:type="text" name="NodeId" nullable="true" comment="node_id"/>
+    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="no"/>
+    <column xsi:type="varchar" name="NodeId" length="200" nullable="true" comment="node_id"/>
     <column xsi:type="text" name="ImageId" nullable="true" comment="retail_image_id"/>
     <column xsi:type="int" name="SortOrder" padding="11" nullable="true" comment="sort_order"/>
     <column xsi:type="text" name="Type" nullable="true" comment="type"/>
@@ -604,10 +604,10 @@
     <column xsi:type="int" name="repl_hierarchy_node_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_hierarchy_node_id"/>
     <column xsi:type="int" name="ChildrenOrder" padding="11" nullable="true" comment="children_order"/>
     <column xsi:type="text" name="Description" nullable="true" comment="description"/>
-    <column xsi:type="text" name="HierarchyCode" nullable="true" comment="hierarchy_code"/>
+    <column xsi:type="varchar" name="HierarchyCode" length="200" nullable="true" comment="hierarchy_code"/>
     <column xsi:type="int" name="Indentation" padding="11" nullable="true" comment="indentation"/>
-    <column xsi:type="text" name="nav_id" nullable="true" comment="node_id"/>
-    <column xsi:type="text" name="ParentNode" nullable="true" comment="parent_node_id"/>
+    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="node_id"/>
+    <column xsi:type="varchar" name="ParentNode" length="200" nullable="true" comment="parent_node_id"/>
     <column xsi:type="int" name="PresentationOrder" padding="11" nullable="true" comment="presentation_order"/>
     <column xsi:type="text" name="ImageId" nullable="true" comment="retail_image_id"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
@@ -653,9 +653,9 @@
     <column xsi:type="int" name="repl_image_link_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_image_link_id"/>
     <column xsi:type="int" name="DisplayOrder" padding="11" nullable="true" comment="display_order"/>
     <column xsi:type="text" name="ImageDescription" nullable="true" comment="image_description"/>
-    <column xsi:type="text" name="ImageId" nullable="true" comment="image_id"/>
-    <column xsi:type="text" name="KeyValue" nullable="true" comment="keyvalue"/>
-    <column xsi:type="text" name="TableName" nullable="true" comment="tablename"/>
+    <column xsi:type="varchar" name="ImageId" length="200" nullable="true" comment="image_id"/>
+    <column xsi:type="varchar" name="KeyValue" length="200" nullable="true" comment="keyvalue"/>
+    <column xsi:type="varchar" name="TableName" length="200" nullable="true" comment="tablename"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -697,10 +697,10 @@
   </table>
   <table name="ls_replication_repl_inv_status" resource="default" engine="innodb" comment="LSC Inventory Lookup Table">
     <column xsi:type="int" name="repl_inv_status_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_inv_status_id"/>
-    <column xsi:type="text" name="ItemId" nullable="true" comment="item_no"/>
+    <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="item_no"/>
     <column xsi:type="decimal" name="Quantity" scale="4" precision="20" nullable="true" comment="net_inventory"/>
-    <column xsi:type="text" name="StoreId" nullable="true" comment="store_no"/>
-    <column xsi:type="text" name="VariantId" nullable="true" comment="variant_code"/>
+    <column xsi:type="varchar" name="StoreId" length="200" nullable="true" comment="store_no"/>
+    <column xsi:type="varchar" name="VariantId" length="200" nullable="true" comment="variant_code"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -742,7 +742,7 @@
   </table>
   <table name="ls_replication_repl_item_category" resource="default" engine="innodb" comment="Item Category">
     <column xsi:type="int" name="repl_item_category_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_category_id"/>
-    <column xsi:type="text" name="nav_id" nullable="true" comment="code"/>
+    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="code"/>
     <column xsi:type="text" name="Description" nullable="true" comment="description"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
@@ -779,11 +779,11 @@
   </table>
   <table name="ls_replication_repl_item_unit_of_measure" resource="default" engine="innodb" comment="ItemUoMUpdView">
     <column xsi:type="int" name="repl_item_unit_of_measure_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_unit_of_measure_id"/>
-    <column xsi:type="text" name="Code" nullable="true" comment="code"/>
+    <column xsi:type="varchar" name="Code" length="200" nullable="true" comment="code"/>
     <column xsi:type="decimal" name="Cubage" scale="4" precision="20" nullable="true" comment="cubage"/>
     <column xsi:type="text" name="Description" nullable="true" comment="description"/>
     <column xsi:type="decimal" name="Height" scale="4" precision="20" nullable="true" comment="height"/>
-    <column xsi:type="text" name="ItemId" nullable="true" comment="item_no"/>
+    <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="item_no"/>
     <column xsi:type="decimal" name="Length" scale="4" precision="20" nullable="true" comment="length"/>
     <column xsi:type="boolean" name="CountAsOne" default="0" nullable="true" comment="lsc_count_as_1_on_receipt"/>
     <column xsi:type="int" name="EComSelection" padding="11" nullable="true" comment="lsc_ecom_selection"/>
@@ -928,7 +928,7 @@
   </table>
   <table name="ls_replication_repl_unit_of_measure" resource="default" engine="innodb" comment="Unit of Measure">
     <column xsi:type="int" name="repl_unit_of_measure_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_unit_of_measure_id"/>
-    <column xsi:type="text" name="nav_id" nullable="true" comment="code"/>
+    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="code"/>
     <column xsi:type="text" name="Description" nullable="true" comment="description"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
@@ -1047,8 +1047,8 @@
     <column xsi:type="boolean" name="BlockedOnPos" default="0" nullable="true" comment="block_sale_on_pos"/>
     <column xsi:type="boolean" name="BlockedOnECom" default="0" nullable="true" comment="blocked_on_ecommerce"/>
     <column xsi:type="text" name="FrameworkCode" nullable="true" comment="framework_code"/>
-    <column xsi:type="text" name="ItemId" nullable="true" comment="item_no"/>
-    <column xsi:type="text" name="VariantId" nullable="true" comment="variant"/>
+    <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="item_no"/>
+    <column xsi:type="varchar" name="VariantId" length="200" nullable="true" comment="variant"/>
     <column xsi:type="text" name="VariantDimension1" nullable="true" comment="variant_dimension_1"/>
     <column xsi:type="text" name="VariantDimension2" nullable="true" comment="variant_dimension_2"/>
     <column xsi:type="text" name="VariantDimension3" nullable="true" comment="variant_dimension_3"/>
@@ -1096,7 +1096,7 @@
     <column xsi:type="int" name="Blocked" padding="11" nullable="true" comment="blocked"/>
     <column xsi:type="text" name="UpdatedOnUtc" nullable="true" comment="last_date_modified"/>
     <column xsi:type="text" name="Name" nullable="true" comment="name"/>
-    <column xsi:type="text" name="nav_id" nullable="true" comment="no"/>
+    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="no"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -1167,14 +1167,14 @@
     <column xsi:type="text" name="CountryOfOrigin" nullable="true" comment="countryregion_of_origin_code"/>
     <column xsi:type="text" name="Description" nullable="true" comment="description"/>
     <column xsi:type="decimal" name="GrossWeight" scale="4" precision="20" nullable="true" comment="gross_weight"/>
-    <column xsi:type="text" name="ItemCategoryCode" nullable="true" comment="item_category_code"/>
+    <column xsi:type="varchar" name="ItemCategoryCode" length="200" nullable="true" comment="item_category_code"/>
     <column xsi:type="text" name="Details" nullable="true" comment="item_html"/>
     <column xsi:type="text" name="ItemTrackingCode" nullable="true" comment="item_tracking_code"/>
     <column xsi:type="text" name="ItemFamilyCode" nullable="true" comment="lsc_item_family_code"/>
-    <column xsi:type="text" name="ProductGroupId" nullable="true" comment="lsc_retail_product_code"/>
+    <column xsi:type="varchar" name="ProductGroupId" length="200" nullable="true" comment="lsc_retail_product_code"/>
     <column xsi:type="text" name="SpecialGroups" nullable="true" comment="lsc_special_group_codes"/>
     <column xsi:type="boolean" name="ZeroPriceValId" default="0" nullable="true" comment="lsc_zero_price_valid"/>
-    <column xsi:type="text" name="nav_id" nullable="true" comment="no"/>
+    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="no"/>
     <column xsi:type="text" name="PurchUnitOfMeasure" nullable="true" comment="purch_unit_of_measure"/>
     <column xsi:type="text" name="SalseUnitOfMeasure" nullable="true" comment="sales_unit_of_measure"/>
     <column xsi:type="text" name="SeasonCode" nullable="true" comment="season_code"/>
@@ -1298,15 +1298,15 @@
     <column xsi:type="int" name="repl_price_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_price_id"/>
     <column xsi:type="text" name="CurrencyCode" nullable="true" comment="currency_code"/>
     <column xsi:type="text" name="CustomerDiscountGroup" nullable="true" comment="customer_disc_group"/>
-    <column xsi:type="text" name="ItemId" nullable="true" comment="item_no"/>
+    <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="item_no"/>
     <column xsi:type="text" name="ModifyDate" nullable="true" comment="last_modify_date"/>
     <column xsi:type="text" name="LoyaltySchemeCode" nullable="true" comment="loyalty_scheme_code"/>
     <column xsi:type="decimal" name="UnitPrice" scale="4" precision="20" nullable="true" comment="net_unit_price"/>
     <column xsi:type="decimal" name="QtyPerUnitOfMeasure" scale="4" precision="20" nullable="true" comment="qty_per_unit_of_measure"/>
-    <column xsi:type="text" name="StoreId" nullable="true" comment="store_no"/>
-    <column xsi:type="text" name="UnitOfMeasure" nullable="true" comment="unit_of_measure_code"/>
+    <column xsi:type="varchar" name="StoreId" length="200" nullable="true" comment="store_no"/>
+    <column xsi:type="varchar" name="UnitOfMeasure" length="200" nullable="true" comment="unit_of_measure_code"/>
     <column xsi:type="decimal" name="UnitPriceInclVat" scale="4" precision="20" nullable="true" comment="unit_price"/>
-    <column xsi:type="text" name="VariantId" nullable="true" comment="variant_code"/>
+    <column xsi:type="varchar" name="VariantId" length="200" nullable="true" comment="variant_code"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>

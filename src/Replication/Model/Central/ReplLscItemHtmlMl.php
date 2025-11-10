@@ -29,7 +29,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getHtml() : ?string
+    public function getHtml(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::HTML]);
     }
@@ -39,7 +39,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this->setData(self::getDbColumnsMapping()[self::HTML], $value);
     }
 
-    public function getItemNo() : ?string
+    public function getItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
     }
@@ -49,7 +49,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
     }
 
-    public function getLanguage() : ?string
+    public function getLanguage(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LANGUAGE]);
     }
@@ -59,7 +59,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this->setData(self::getDbColumnsMapping()[self::LANGUAGE], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -69,7 +69,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -79,7 +79,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -89,7 +89,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -99,7 +99,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
     }
 
-    public function getUrl() : ?string
+    public function getUrl(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::URL]);
     }
@@ -109,7 +109,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this->setData(self::getDbColumnsMapping()[self::URL], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -126,7 +126,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -138,7 +138,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -150,7 +150,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -162,7 +162,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -174,7 +174,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -186,7 +186,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -198,7 +198,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -210,7 +210,7 @@ class ReplLscItemHtmlMl extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemH
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

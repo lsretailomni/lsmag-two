@@ -29,7 +29,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CODE]);
     }
@@ -39,7 +39,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
     }
 
-    public function getStoreNo() : ?string
+    public function getStoreNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
     }
@@ -49,7 +49,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -59,7 +59,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getFunction() : ?int
+    public function getFunction(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::FUNCTION]);
     }
@@ -69,7 +69,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::FUNCTION], $value);
     }
 
-    public function getValidOnMobilePos() : ?bool
+    public function getValidOnMobilePos(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::VALID_ON_MOBILE_POS]);
     }
@@ -79,7 +79,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::VALID_ON_MOBILE_POS], $value);
     }
 
-    public function getChangeTendCode() : ?string
+    public function getChangeTendCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CHANGE_TEND_CODE]);
     }
@@ -89,7 +89,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::CHANGE_TEND_CODE], $value);
     }
 
-    public function getAboveMinChangeTenderType() : ?string
+    public function getAboveMinChangeTenderType(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ABOVE_MIN_CHANGE_TENDER_TYPE]);
     }
@@ -99,7 +99,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::ABOVE_MIN_CHANGE_TENDER_TYPE], $value);
     }
 
-    public function getMinChange() : ?float
+    public function getMinChange(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MIN_CHANGE]);
     }
@@ -109,7 +109,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::MIN_CHANGE], $value);
     }
 
-    public function getRounding() : ?int
+    public function getRounding(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ROUNDING]);
     }
@@ -119,7 +119,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::ROUNDING], $value);
     }
 
-    public function getRoundingTo() : ?float
+    public function getRoundingTo(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::ROUNDING_TO]);
     }
@@ -129,7 +129,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::ROUNDING_TO], $value);
     }
 
-    public function getReturnMinusAllowed() : ?bool
+    public function getReturnMinusAllowed(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::RETURNMINUS_ALLOWED]);
     }
@@ -139,7 +139,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::RETURNMINUS_ALLOWED], $value);
     }
 
-    public function getForeignCurrency() : ?bool
+    public function getForeignCurrency(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::FOREIGN_CURRENCY]);
     }
@@ -149,7 +149,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::FOREIGN_CURRENCY], $value);
     }
 
-    public function getUndertenderAllowed() : ?bool
+    public function getUndertenderAllowed(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNDERTENDER_ALLOWED]);
     }
@@ -159,7 +159,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::UNDERTENDER_ALLOWED], $value);
     }
 
-    public function getOvertenderAllowed() : ?bool
+    public function getOvertenderAllowed(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::OVERTENDER_ALLOWED]);
     }
@@ -169,7 +169,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::OVERTENDER_ALLOWED], $value);
     }
 
-    public function getOvertenderMaxAmt() : ?float
+    public function getOvertenderMaxAmt(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::OVERTENDER_MAX_AMT]);
     }
@@ -179,7 +179,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::OVERTENDER_MAX_AMT], $value);
     }
 
-    public function getCountingRequired() : ?bool
+    public function getCountingRequired(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUNTING_REQUIRED]);
     }
@@ -189,7 +189,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::COUNTING_REQUIRED], $value);
     }
 
-    public function getDrawerOpens() : ?bool
+    public function getDrawerOpens(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::DRAWER_OPENS]);
     }
@@ -199,7 +199,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this->setData(self::getDbColumnsMapping()[self::DRAWER_OPENS], $value);
     }
 
-    public function getDateentrycodes() : ?string
+    public function getDateentrycodes(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DATEENTRYCODES]);
     }
@@ -216,7 +216,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -228,7 +228,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -240,7 +240,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -252,7 +252,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -264,7 +264,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -276,7 +276,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -288,7 +288,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -300,7 +300,7 @@ class ReplTenderview extends \Ls\Omni\Client\CentralEcommerce\Entity\TenderView 
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

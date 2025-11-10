@@ -29,7 +29,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getStoreNo() : ?string
+    public function getStoreNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
     }
@@ -39,7 +39,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
     }
 
-    public function getNo() : ?string
+    public function getNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO]);
     }
@@ -49,7 +49,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::NO], $value);
     }
 
-    public function getTerminalType() : ?int
+    public function getTerminalType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TERMINAL_TYPE]);
     }
@@ -59,7 +59,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::TERMINAL_TYPE], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -69,7 +69,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getPlacement() : ?string
+    public function getPlacement(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PLACEMENT]);
     }
@@ -79,7 +79,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::PLACEMENT], $value);
     }
 
-    public function getStatementMethod() : ?int
+    public function getStatementMethod(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::STATEMENT_METHOD]);
     }
@@ -89,7 +89,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::STATEMENT_METHOD], $value);
     }
 
-    public function getTerminalStatement() : ?bool
+    public function getTerminalStatement(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::TERMINAL_STATEMENT]);
     }
@@ -99,7 +99,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::TERMINAL_STATEMENT], $value);
     }
 
-    public function getDefaultPriceGroup() : ?string
+    public function getDefaultPriceGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_PRICE_GROUP]);
     }
@@ -109,7 +109,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_PRICE_GROUP], $value);
     }
 
-    public function getNotActive() : ?bool
+    public function getNotActive(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::NOT_ACTIVE]);
     }
@@ -119,7 +119,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::NOT_ACTIVE], $value);
     }
 
-    public function getTerminalNetworkId() : ?string
+    public function getTerminalNetworkId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TERMINAL_NETWORK_ID]);
     }
@@ -129,7 +129,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::TERMINAL_NETWORK_ID], $value);
     }
 
-    public function getTerminalIpAddress() : ?string
+    public function getTerminalIpAddress(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TERMINAL_IP_ADDRESS]);
     }
@@ -139,7 +139,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::TERMINAL_IP_ADDRESS], $value);
     }
 
-    public function getTerminalConnection() : ?int
+    public function getTerminalConnection(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TERMINAL_CONNECTION]);
     }
@@ -149,7 +149,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::TERMINAL_CONNECTION], $value);
     }
 
-    public function getShowItemImage() : ?bool
+    public function getShowItemImage(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHOW_ITEM_IMAGE]);
     }
@@ -159,7 +159,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SHOW_ITEM_IMAGE], $value);
     }
 
-    public function getShowItemHtml() : ?bool
+    public function getShowItemHtml(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHOW_ITEM_HTML]);
     }
@@ -169,7 +169,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SHOW_ITEM_HTML], $value);
     }
 
-    public function getShowOfferHtml() : ?bool
+    public function getShowOfferHtml(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHOW_OFFER_HTML]);
     }
@@ -179,7 +179,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SHOW_OFFER_HTML], $value);
     }
 
-    public function getDisplayTerminalClosed() : ?bool
+    public function getDisplayTerminalClosed(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISPLAY_TERMINAL_CLOSED]);
     }
@@ -189,7 +189,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DISPLAY_TERMINAL_CLOSED], $value);
     }
 
-    public function getDisplayLinkedItem() : ?bool
+    public function getDisplayLinkedItem(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISPLAY_LINKED_ITEM]);
     }
@@ -199,7 +199,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DISPLAY_LINKED_ITEM], $value);
     }
 
-    public function getFraudSortField() : ?float
+    public function getFraudSortField(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::FRAUD_SORT_FIELD]);
     }
@@ -209,7 +209,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::FRAUD_SORT_FIELD], $value);
     }
 
-    public function getManagerKeyOnReturn() : ?bool
+    public function getManagerKeyOnReturn(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::MANAGER_KEY_ON_RETURN]);
     }
@@ -219,7 +219,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::MANAGER_KEY_ON_RETURN], $value);
     }
 
-    public function getKeylockStaffPermGroup() : ?string
+    public function getKeylockStaffPermGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::KEYLOCK_STAFF_PERM_GROUP]);
     }
@@ -229,7 +229,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::KEYLOCK_STAFF_PERM_GROUP], $value);
     }
 
-    public function getSlipIfReturn() : ?int
+    public function getSlipIfReturn(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SLIP_IF_RETURN]);
     }
@@ -239,7 +239,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SLIP_IF_RETURN], $value);
     }
 
-    public function getOpenDrawerAtLiLo() : ?bool
+    public function getOpenDrawerAtLiLo(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::OPEN_DRAWER_AT_LILO]);
     }
@@ -249,7 +249,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::OPEN_DRAWER_AT_LILO], $value);
     }
 
-    public function getOnlyTotalInSuspTrans() : ?bool
+    public function getOnlyTotalInSuspTrans(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ONLY_TOTAL_IN_SUSP_TRANS]);
     }
@@ -259,7 +259,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::ONLY_TOTAL_IN_SUSP_TRANS], $value);
     }
 
-    public function getExitAfterEachTrans() : ?bool
+    public function getExitAfterEachTrans(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXIT_AFTER_EACH_TRANS]);
     }
@@ -269,7 +269,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::EXIT_AFTER_EACH_TRANS], $value);
     }
 
-    public function getAutologoffAfterMin() : ?int
+    public function getAutologoffAfterMin(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::AUTOLOGOFF_AFTER_MIN]);
     }
@@ -279,7 +279,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::AUTOLOGOFF_AFTER_MIN], $value);
     }
 
-    public function getAllowAutologoffInSalesMode() : ?bool
+    public function getAllowAutologoffInSalesMode(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALLOW_AUTOLOGOFF_IN_SALES_MODE]);
     }
@@ -289,7 +289,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::ALLOW_AUTOLOGOFF_IN_SALES_MODE], $value);
     }
 
-    public function getReturnInTransaction() : ?bool
+    public function getReturnInTransaction(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::RETURN_IN_TRANSACTION]);
     }
@@ -299,7 +299,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::RETURN_IN_TRANSACTION], $value);
     }
 
-    public function getItemNoOnReceipt() : ?int
+    public function getItemNoOnReceipt(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO_ON_RECEIPT]);
     }
@@ -309,7 +309,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO_ON_RECEIPT], $value);
     }
 
-    public function getPrintReceiptForNegAdj() : ?bool
+    public function getPrintReceiptForNegAdj(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINT_RECEIPT_FOR_NEG_ADJ]);
     }
@@ -319,7 +319,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::PRINT_RECEIPT_FOR_NEG_ADJ], $value);
     }
 
-    public function getEftEmbeddedReceipt() : ?bool
+    public function getEftEmbeddedReceipt(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::EFT_EMBEDDED_RECEIPT]);
     }
@@ -329,7 +329,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::EFT_EMBEDDED_RECEIPT], $value);
     }
 
-    public function getUseReferencedRefunds() : ?bool
+    public function getUseReferencedRefunds(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::USE_REFERENCED_REFUNDS]);
     }
@@ -339,7 +339,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::USE_REFERENCED_REFUNDS], $value);
     }
 
-    public function getUseRefundSelection() : ?bool
+    public function getUseRefundSelection(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::USE_REFUND_SELECTION]);
     }
@@ -349,7 +349,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::USE_REFUND_SELECTION], $value);
     }
 
-    public function getLastDateModified() : ?string
+    public function getLastDateModified(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED]);
     }
@@ -359,7 +359,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED], $value);
     }
 
-    public function getPrintReceiptLogo() : ?string
+    public function getPrintReceiptLogo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINT_RECEIPT_LOGO]);
     }
@@ -369,7 +369,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::PRINT_RECEIPT_LOGO], $value);
     }
 
-    public function getPrintReceiptBitmapNo() : ?int
+    public function getPrintReceiptBitmapNo(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINT_RECEIPT_BITMAP_NO]);
     }
@@ -379,7 +379,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::PRINT_RECEIPT_BITMAP_NO], $value);
     }
 
-    public function getRcptTextMaxLength() : ?int
+    public function getRcptTextMaxLength(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::RCPT_TEXT_MAX_LENGTH]);
     }
@@ -389,7 +389,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::RCPT_TEXT_MAX_LENGTH], $value);
     }
 
-    public function getNoOfTopBottomLines() : ?int
+    public function getNoOfTopBottomLines(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO_OF_TOPBOTTOM_LINES]);
     }
@@ -399,7 +399,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::NO_OF_TOPBOTTOM_LINES], $value);
     }
 
-    public function getReceiptBarcode() : ?bool
+    public function getReceiptBarcode(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::RECEIPT_BARCODE]);
     }
@@ -409,7 +409,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::RECEIPT_BARCODE], $value);
     }
 
-    public function getReceiptSetupLocation() : ?int
+    public function getReceiptSetupLocation(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::RECEIPT_SETUP_LOCATION]);
     }
@@ -419,7 +419,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::RECEIPT_SETUP_LOCATION], $value);
     }
 
-    public function getDisplayTextMaxLength() : ?int
+    public function getDisplayTextMaxLength(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISPLAY_TEXT_MAX_LENGTH]);
     }
@@ -429,7 +429,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DISPLAY_TEXT_MAX_LENGTH], $value);
     }
 
-    public function getCustomerDisplayText1() : ?string
+    public function getCustomerDisplayText1(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_DISPLAY_TEXT_1]);
     }
@@ -439,7 +439,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_DISPLAY_TEXT_1], $value);
     }
 
-    public function getCustomerDisplayText2() : ?string
+    public function getCustomerDisplayText2(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_DISPLAY_TEXT_2]);
     }
@@ -449,7 +449,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_DISPLAY_TEXT_2], $value);
     }
 
-    public function getPrintReceiptBcType() : ?int
+    public function getPrintReceiptBcType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINT_RECEIPT_BC_TYPE]);
     }
@@ -459,7 +459,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::PRINT_RECEIPT_BC_TYPE], $value);
     }
 
-    public function getReceiptBarcodeWidth() : ?int
+    public function getReceiptBarcodeWidth(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::RECEIPT_BARCODE_WIDTH]);
     }
@@ -469,7 +469,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::RECEIPT_BARCODE_WIDTH], $value);
     }
 
-    public function getReceiptBarcodeHeight() : ?int
+    public function getReceiptBarcodeHeight(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::RECEIPT_BARCODE_HEIGHT]);
     }
@@ -479,7 +479,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::RECEIPT_BARCODE_HEIGHT], $value);
     }
 
-    public function getOnlineTransBackup() : ?bool
+    public function getOnlineTransBackup(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ONLINE_TRANS_BACKUP]);
     }
@@ -489,7 +489,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::ONLINE_TRANS_BACKUP], $value);
     }
 
-    public function getSumOfTransNo() : ?string
+    public function getSumOfTransNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SUM_OF_TRANS_NO]);
     }
@@ -499,7 +499,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SUM_OF_TRANS_NO], $value);
     }
 
-    public function getCountOfTrans() : ?int
+    public function getCountOfTrans(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUNT_OF_TRANS]);
     }
@@ -509,7 +509,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::COUNT_OF_TRANS], $value);
     }
 
-    public function getNoSeries() : ?string
+    public function getNoSeries(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO_SERIES]);
     }
@@ -519,7 +519,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::NO_SERIES], $value);
     }
 
-    public function getTableGroup() : ?string
+    public function getTableGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TABLE_GROUP]);
     }
@@ -529,7 +529,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::TABLE_GROUP], $value);
     }
 
-    public function getTableViewAtLogon() : ?bool
+    public function getTableViewAtLogon(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::TABLE_VIEW_AT_LOGON]);
     }
@@ -539,7 +539,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::TABLE_VIEW_AT_LOGON], $value);
     }
 
-    public function getOperationalMode() : ?int
+    public function getOperationalMode(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::OPERATIONAL_MODE]);
     }
@@ -549,7 +549,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::OPERATIONAL_MODE], $value);
     }
 
-    public function getRecPrintingOffByDefault() : ?bool
+    public function getRecPrintingOffByDefault(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::REC_PRINTING_OFF_BY_DEFAULT]);
     }
@@ -559,7 +559,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::REC_PRINTING_OFF_BY_DEFAULT], $value);
     }
 
-    public function getDefaultSalesType() : ?string
+    public function getDefaultSalesType(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_SALES_TYPE]);
     }
@@ -569,7 +569,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_SALES_TYPE], $value);
     }
 
-    public function getFBTakeawaySalesType() : ?string
+    public function getFBTakeawaySalesType(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::FB_TAKEAWAY_SALES_TYPE]);
     }
@@ -579,7 +579,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::FB_TAKEAWAY_SALES_TYPE], $value);
     }
 
-    public function getDeliverySalesType() : ?string
+    public function getDeliverySalesType(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DELIVERY_SALES_TYPE]);
     }
@@ -589,7 +589,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DELIVERY_SALES_TYPE], $value);
     }
 
-    public function getSafeNo() : ?string
+    public function getSafeNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SAFE_NO]);
     }
@@ -599,7 +599,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SAFE_NO], $value);
     }
 
-    public function getStaffLoginValidation() : ?int
+    public function getStaffLoginValidation(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::STAFF_LOGIN_VALIDATION]);
     }
@@ -609,7 +609,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::STAFF_LOGIN_VALIDATION], $value);
     }
 
-    public function getExcludeFromCashMgnt() : ?bool
+    public function getExcludeFromCashMgnt(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_CASH_MGNT]);
     }
@@ -619,7 +619,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_CASH_MGNT], $value);
     }
 
-    public function getLastZReport() : ?string
+    public function getLastZReport(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_ZREPORT]);
     }
@@ -629,7 +629,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::LAST_ZREPORT], $value);
     }
 
-    public function getLastYReport() : ?string
+    public function getLastYReport(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_YREPORT]);
     }
@@ -639,7 +639,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::LAST_YREPORT], $value);
     }
 
-    public function getHardwareProfile() : ?string
+    public function getHardwareProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::HARDWARE_PROFILE]);
     }
@@ -649,7 +649,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::HARDWARE_PROFILE], $value);
     }
 
-    public function getMenuProfile() : ?string
+    public function getMenuProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::MENU_PROFILE]);
     }
@@ -659,7 +659,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::MENU_PROFILE], $value);
     }
 
-    public function getInterfaceProfile() : ?string
+    public function getInterfaceProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::INTERFACE_PROFILE]);
     }
@@ -669,7 +669,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::INTERFACE_PROFILE], $value);
     }
 
-    public function getFunctionalityProfile() : ?string
+    public function getFunctionalityProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::FUNCTIONALITY_PROFILE]);
     }
@@ -679,7 +679,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::FUNCTIONALITY_PROFILE], $value);
     }
 
-    public function getStyleProfile() : ?string
+    public function getStyleProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STYLE_PROFILE]);
     }
@@ -689,7 +689,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::STYLE_PROFILE], $value);
     }
 
-    public function getSskProfileId() : ?string
+    public function getSskProfileId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SSK_PROFILE_ID]);
     }
@@ -699,7 +699,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SSK_PROFILE_ID], $value);
     }
 
-    public function getSskTerminalEnabled() : ?bool
+    public function getSskTerminalEnabled(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SSK_TERMINAL_ENABLED]);
     }
@@ -709,7 +709,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SSK_TERMINAL_ENABLED], $value);
     }
 
-    public function getPrintVatRefundChecks() : ?bool
+    public function getPrintVatRefundChecks(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINT_VAT_REFUND_CHECKS]);
     }
@@ -719,7 +719,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::PRINT_VAT_REFUND_CHECKS], $value);
     }
 
-    public function getPrintSuspendWithPrepayment() : ?bool
+    public function getPrintSuspendWithPrepayment(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINT_SUSPEND_WITH_PREPAYMENT]);
     }
@@ -729,7 +729,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::PRINT_SUSPEND_WITH_PREPAYMENT], $value);
     }
 
-    public function getPrintNumberOfItems() : ?bool
+    public function getPrintNumberOfItems(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINT_NUMBER_OF_ITEMS]);
     }
@@ -739,7 +739,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::PRINT_NUMBER_OF_ITEMS], $value);
     }
 
-    public function getPrintTotalSavings() : ?bool
+    public function getPrintTotalSavings(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINT_TOTAL_SAVINGS]);
     }
@@ -749,7 +749,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::PRINT_TOTAL_SAVINGS], $value);
     }
 
-    public function getPrintDiscountDetail() : ?bool
+    public function getPrintDiscountDetail(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINT_DISCOUNT_DETAIL]);
     }
@@ -759,7 +759,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::PRINT_DISCOUNT_DETAIL], $value);
     }
 
-    public function getSecondHardwareProfile() : ?string
+    public function getSecondHardwareProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SECOND_HARDWARE_PROFILE]);
     }
@@ -769,7 +769,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SECOND_HARDWARE_PROFILE], $value);
     }
 
-    public function getPrintSecondReceipt() : ?bool
+    public function getPrintSecondReceipt(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINT_SECOND_RECEIPT]);
     }
@@ -779,7 +779,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::PRINT_SECOND_RECEIPT], $value);
     }
 
-    public function getSalesTypeFilter() : ?string
+    public function getSalesTypeFilter(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALES_TYPE_FILTER]);
     }
@@ -789,7 +789,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SALES_TYPE_FILTER], $value);
     }
 
-    public function getCopyOfMenuProfile() : ?string
+    public function getCopyOfMenuProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COPY_OF_MENU_PROFILE]);
     }
@@ -799,7 +799,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::COPY_OF_MENU_PROFILE], $value);
     }
 
-    public function getCopyOfInterfaceProfile() : ?string
+    public function getCopyOfInterfaceProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COPY_OF_INTERFACE_PROFILE]);
     }
@@ -809,7 +809,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::COPY_OF_INTERFACE_PROFILE], $value);
     }
 
-    public function getIdleTimerInterval() : ?float
+    public function getIdleTimerInterval(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::IDLE_TIMER_INTERVAL]);
     }
@@ -819,7 +819,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::IDLE_TIMER_INTERVAL], $value);
     }
 
-    public function getExternalPrinterId() : ?string
+    public function getExternalPrinterId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXTERNAL_PRINTER_ID]);
     }
@@ -829,7 +829,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::EXTERNAL_PRINTER_ID], $value);
     }
 
-    public function getHospTypePopUpOnLogon() : ?int
+    public function getHospTypePopUpOnLogon(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::HOSP_TYPE_POPUP_ON_LOGON]);
     }
@@ -839,7 +839,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::HOSP_TYPE_POPUP_ON_LOGON], $value);
     }
 
-    public function getReceiptBarcodeId() : ?int
+    public function getReceiptBarcodeId(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::RECEIPT_BARCODE_ID]);
     }
@@ -849,7 +849,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::RECEIPT_BARCODE_ID], $value);
     }
 
-    public function getPrinterKotStatusAfterSent() : ?int
+    public function getPrinterKotStatusAfterSent(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINTER_KOT_STATUS_AFTER_SENT]);
     }
@@ -859,7 +859,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::PRINTER_KOT_STATUS_AFTER_SENT], $value);
     }
 
-    public function getSalesSlip() : ?int
+    public function getSalesSlip(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALES_SLIP]);
     }
@@ -869,7 +869,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SALES_SLIP], $value);
     }
 
-    public function getVoidSlip() : ?int
+    public function getVoidSlip(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VOID_SLIP]);
     }
@@ -879,7 +879,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::VOID_SLIP], $value);
     }
 
-    public function getCardSlip() : ?int
+    public function getCardSlip(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::CARD_SLIP]);
     }
@@ -889,7 +889,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::CARD_SLIP], $value);
     }
 
-    public function getConfirmLastSlipPrint() : ?bool
+    public function getConfirmLastSlipPrint(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::CONFIRM_LAST_SLIP_PRINT]);
     }
@@ -899,7 +899,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::CONFIRM_LAST_SLIP_PRINT], $value);
     }
 
-    public function getOnlyEmailSalesTransactions() : ?bool
+    public function getOnlyEmailSalesTransactions(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ONLY_EMAIL_SALES_TRANSACTIONS]);
     }
@@ -909,7 +909,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::ONLY_EMAIL_SALES_TRANSACTIONS], $value);
     }
 
-    public function getBccEMailAddress() : ?string
+    public function getBccEMailAddress(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BCC_EMAIL_ADDRESS]);
     }
@@ -919,7 +919,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::BCC_EMAIL_ADDRESS], $value);
     }
 
-    public function getInventoryMainMenu() : ?string
+    public function getInventoryMainMenu(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::INVENTORY_MAIN_MENU]);
     }
@@ -929,7 +929,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::INVENTORY_MAIN_MENU], $value);
     }
 
-    public function getInventoryNoOfRecords() : ?int
+    public function getInventoryNoOfRecords(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::INVENTORY_NO_OF_RECORDS]);
     }
@@ -939,7 +939,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::INVENTORY_NO_OF_RECORDS], $value);
     }
 
-    public function getAllowPostImDocuments() : ?bool
+    public function getAllowPostImDocuments(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALLOW_POST_IM_DOCUMENTS]);
     }
@@ -949,7 +949,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::ALLOW_POST_IM_DOCUMENTS], $value);
     }
 
-    public function getAsnQuantityMethod() : ?int
+    public function getAsnQuantityMethod(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ASN_QUANTITY_METHOD]);
     }
@@ -959,7 +959,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::ASN_QUANTITY_METHOD], $value);
     }
 
-    public function getDualDispEnabled() : ?bool
+    public function getDualDispEnabled(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::DUAL_DISP_ENABLED]);
     }
@@ -969,7 +969,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DUAL_DISP_ENABLED], $value);
     }
 
-    public function getDualDispStyleProfile() : ?string
+    public function getDualDispStyleProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DUAL_DISP_STYLE_PROFILE]);
     }
@@ -979,7 +979,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DUAL_DISP_STYLE_PROFILE], $value);
     }
 
-    public function getDualDispInterfaceProfile() : ?string
+    public function getDualDispInterfaceProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DUAL_DISP_INTERFACE_PROFILE]);
     }
@@ -989,7 +989,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DUAL_DISP_INTERFACE_PROFILE], $value);
     }
 
-    public function getDualDispMenuProfile() : ?string
+    public function getDualDispMenuProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DUAL_DISP_MENU_PROFILE]);
     }
@@ -999,7 +999,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DUAL_DISP_MENU_PROFILE], $value);
     }
 
-    public function getDualDispSlideshow() : ?string
+    public function getDualDispSlideshow(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DUAL_DISP_SLIDESHOW]);
     }
@@ -1009,7 +1009,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DUAL_DISP_SLIDESHOW], $value);
     }
 
-    public function getDualDispScreen() : ?int
+    public function getDualDispScreen(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::DUAL_DISP_SCREEN]);
     }
@@ -1019,7 +1019,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DUAL_DISP_SCREEN], $value);
     }
 
-    public function getSlipPrintOrder() : ?int
+    public function getSlipPrintOrder(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SLIP_PRINT_ORDER]);
     }
@@ -1029,7 +1029,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SLIP_PRINT_ORDER], $value);
     }
 
-    public function getTipsHandling() : ?int
+    public function getTipsHandling(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TIPS_HANDLING]);
     }
@@ -1039,7 +1039,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::TIPS_HANDLING], $value);
     }
 
-    public function getSkipMerchantReceipt() : ?bool
+    public function getSkipMerchantReceipt(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SKIP_MERCHANT_RECEIPT]);
     }
@@ -1049,7 +1049,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SKIP_MERCHANT_RECEIPT], $value);
     }
 
-    public function getSkipCustomerReceipt() : ?bool
+    public function getSkipCustomerReceipt(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SKIP_CUSTOMER_RECEIPT]);
     }
@@ -1059,7 +1059,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SKIP_CUSTOMER_RECEIPT], $value);
     }
 
-    public function getDisableVoidCardPrompt() : ?bool
+    public function getDisableVoidCardPrompt(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISABLE_VOID_CARD_PROMPT]);
     }
@@ -1069,7 +1069,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DISABLE_VOID_CARD_PROMPT], $value);
     }
 
-    public function getPostTransactionAfterVoid() : ?bool
+    public function getPostTransactionAfterVoid(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::POST_TRANSACTION_AFTER_VOID]);
     }
@@ -1079,7 +1079,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::POST_TRANSACTION_AFTER_VOID], $value);
     }
 
-    public function getUseNumpad() : ?bool
+    public function getUseNumpad(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::USE_NUMPAD]);
     }
@@ -1089,7 +1089,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::USE_NUMPAD], $value);
     }
 
-    public function getIncludeEftZreport() : ?int
+    public function getIncludeEftZreport(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::INCLUDE_EFT_ZREPORT]);
     }
@@ -1099,7 +1099,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::INCLUDE_EFT_ZREPORT], $value);
     }
 
-    public function getAllowBlockedItemsMobilePos() : ?bool
+    public function getAllowBlockedItemsMobilePos(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALLOW_BLOCKED_ITEMS_MOBILE_POS]);
     }
@@ -1109,7 +1109,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::ALLOW_BLOCKED_ITEMS_MOBILE_POS], $value);
     }
 
-    public function getOpenDrawerThenPrint() : ?bool
+    public function getOpenDrawerThenPrint(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::OPEN_DRAWER_THEN_PRINT]);
     }
@@ -1119,7 +1119,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::OPEN_DRAWER_THEN_PRINT], $value);
     }
 
-    public function getEftAutoRecoveryAttempts() : ?int
+    public function getEftAutoRecoveryAttempts(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::EFT_AUTO_RECOVERY_ATTEMPTS]);
     }
@@ -1129,7 +1129,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::EFT_AUTO_RECOVERY_ATTEMPTS], $value);
     }
 
-    public function getEftTerminalOfflineHandling() : ?int
+    public function getEftTerminalOfflineHandling(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::EFT_TERMINAL_OFFLINE_HANDLING]);
     }
@@ -1139,7 +1139,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::EFT_TERMINAL_OFFLINE_HANDLING], $value);
     }
 
-    public function getPosSearchEngine() : ?int
+    public function getPosSearchEngine(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::POS_SEARCH_ENGINE]);
     }
@@ -1149,7 +1149,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::POS_SEARCH_ENGINE], $value);
     }
 
-    public function getSalesOrderNos() : ?string
+    public function getSalesOrderNos(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALES_ORDER_NOS]);
     }
@@ -1159,7 +1159,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SALES_ORDER_NOS], $value);
     }
 
-    public function getItemFilteringMethod() : ?int
+    public function getItemFilteringMethod(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_FILTERING_METHOD]);
     }
@@ -1169,7 +1169,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_FILTERING_METHOD], $value);
     }
 
-    public function getShowNumberpad() : ?bool
+    public function getShowNumberpad(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHOW_NUMBERPAD]);
     }
@@ -1179,7 +1179,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SHOW_NUMBERPAD], $value);
     }
 
-    public function getDeviceType() : ?int
+    public function getDeviceType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEVICE_TYPE]);
     }
@@ -1189,7 +1189,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DEVICE_TYPE], $value);
     }
 
-    public function getDeviceLicenseKey() : ?string
+    public function getDeviceLicenseKey(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEVICE_LICENSE_KEY]);
     }
@@ -1199,7 +1199,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::DEVICE_LICENSE_KEY], $value);
     }
 
-    public function getComputerName() : ?string
+    public function getComputerName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COMPUTER_NAME]);
     }
@@ -1209,7 +1209,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::COMPUTER_NAME], $value);
     }
 
-    public function getPosterminalguid() : ?string
+    public function getPosterminalguid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POSTERMINALGUID]);
     }
@@ -1219,7 +1219,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::POSTERMINALGUID], $value);
     }
 
-    public function getExcludeFromLsRecommend() : ?bool
+    public function getExcludeFromLsRecommend(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_LS_RECOMMEND]);
     }
@@ -1229,7 +1229,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_LS_RECOMMEND], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -1239,7 +1239,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -1249,7 +1249,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -1259,7 +1259,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -1269,7 +1269,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -1286,7 +1286,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -1298,7 +1298,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -1310,7 +1310,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -1322,7 +1322,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -1334,7 +1334,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -1346,7 +1346,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -1358,7 +1358,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -1370,7 +1370,7 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

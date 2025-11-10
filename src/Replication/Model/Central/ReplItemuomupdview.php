@@ -29,7 +29,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getItemNo() : ?string
+    public function getItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
     }
@@ -39,7 +39,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
     }
 
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CODE]);
     }
@@ -49,7 +49,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
     }
 
-    public function getQtyPerUnitOfMeasure() : ?float
+    public function getQtyPerUnitOfMeasure(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::QTY_PER_UNIT_OF_MEASURE]);
     }
@@ -59,7 +59,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::QTY_PER_UNIT_OF_MEASURE], $value);
     }
 
-    public function getQtyRoundingPrecision() : ?float
+    public function getQtyRoundingPrecision(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::QTY_ROUNDING_PRECISION]);
     }
@@ -69,7 +69,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::QTY_ROUNDING_PRECISION], $value);
     }
 
-    public function getLength() : ?float
+    public function getLength(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LENGTH]);
     }
@@ -79,7 +79,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::LENGTH], $value);
     }
 
-    public function getWidth() : ?float
+    public function getWidth(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::WIDTH]);
     }
@@ -89,7 +89,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::WIDTH], $value);
     }
 
-    public function getHeight() : ?float
+    public function getHeight(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::HEIGHT]);
     }
@@ -99,7 +99,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::HEIGHT], $value);
     }
 
-    public function getCubage() : ?float
+    public function getCubage(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::CUBAGE]);
     }
@@ -109,7 +109,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::CUBAGE], $value);
     }
 
-    public function getWeight() : ?float
+    public function getWeight(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::WEIGHT]);
     }
@@ -119,7 +119,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::WEIGHT], $value);
     }
 
-    public function getLscNoInBarcode() : ?string
+    public function getLscNoInBarcode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_NO_IN_BARCODE]);
     }
@@ -129,7 +129,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::LSC_NO_IN_BARCODE], $value);
     }
 
-    public function getLscPrintShelfLabel() : ?bool
+    public function getLscPrintShelfLabel(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_PRINT_SHELF_LABEL]);
     }
@@ -139,7 +139,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::LSC_PRINT_SHELF_LABEL], $value);
     }
 
-    public function getLscTextOnShelfLabel() : ?string
+    public function getLscTextOnShelfLabel(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_TEXT_ON_SHELF_LABEL]);
     }
@@ -149,7 +149,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::LSC_TEXT_ON_SHELF_LABEL], $value);
     }
 
-    public function getLscCountAs1OnReceipt() : ?bool
+    public function getLscCountAs1OnReceipt(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_COUNT_AS_1_ON_RECEIPT]);
     }
@@ -159,7 +159,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::LSC_COUNT_AS_1_ON_RECEIPT], $value);
     }
 
-    public function getLscPosSelection() : ?int
+    public function getLscPosSelection(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_SELECTION]);
     }
@@ -169,7 +169,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::LSC_POS_SELECTION], $value);
     }
 
-    public function getLscOrder() : ?int
+    public function getLscOrder(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_ORDER]);
     }
@@ -179,7 +179,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::LSC_ORDER], $value);
     }
 
-    public function getLscEcomSelection() : ?int
+    public function getLscEcomSelection(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_ECOM_SELECTION]);
     }
@@ -189,7 +189,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::LSC_ECOM_SELECTION], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -199,7 +199,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -209,7 +209,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -219,7 +219,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -229,7 +229,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -239,7 +239,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -256,7 +256,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -268,7 +268,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -280,7 +280,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -292,7 +292,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -304,7 +304,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -316,7 +316,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -328,7 +328,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -340,7 +340,7 @@ class ReplItemuomupdview extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemUoM
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

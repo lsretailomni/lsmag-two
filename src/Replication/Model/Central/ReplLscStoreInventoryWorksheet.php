@@ -29,7 +29,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getWorksheetseqno() : ?int
+    public function getWorksheetseqno(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::WORKSHEETSEQNO]);
     }
@@ -39,7 +39,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::WORKSHEETSEQNO], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -49,7 +49,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getStoreNo() : ?string
+    public function getStoreNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
     }
@@ -59,7 +59,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
     }
 
-    public function getReasonCode() : ?string
+    public function getReasonCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REASON_CODE]);
     }
@@ -69,7 +69,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::REASON_CODE], $value);
     }
 
-    public function getDefaultUom() : ?int
+    public function getDefaultUom(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_UOM]);
     }
@@ -79,7 +79,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_UOM], $value);
     }
 
-    public function getLocationCode() : ?string
+    public function getLocationCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOCATION_CODE]);
     }
@@ -89,7 +89,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::LOCATION_CODE], $value);
     }
 
-    public function getUseArea() : ?bool
+    public function getUseArea(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::USE_AREA]);
     }
@@ -99,7 +99,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::USE_AREA], $value);
     }
 
-    public function getTypeOfEntering() : ?int
+    public function getTypeOfEntering(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TYPE_OF_ENTERING]);
     }
@@ -109,7 +109,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::TYPE_OF_ENTERING], $value);
     }
 
-    public function getCountingPeriod() : ?string
+    public function getCountingPeriod(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUNTING_PERIOD]);
     }
@@ -119,7 +119,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::COUNTING_PERIOD], $value);
     }
 
-    public function getNextCount() : ?string
+    public function getNextCount(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NEXT_COUNT]);
     }
@@ -129,7 +129,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::NEXT_COUNT], $value);
     }
 
-    public function getNoSeries() : ?string
+    public function getNoSeries(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO_SERIES]);
     }
@@ -139,7 +139,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::NO_SERIES], $value);
     }
 
-    public function getUseBarcodeUomInMobile() : ?bool
+    public function getUseBarcodeUomInMobile(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::USE_BARCODE_UOM_IN_MOBILE]);
     }
@@ -149,7 +149,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::USE_BARCODE_UOM_IN_MOBILE], $value);
     }
 
-    public function getWorksheetType() : ?int
+    public function getWorksheetType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::WORKSHEET_TYPE]);
     }
@@ -159,7 +159,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::WORKSHEET_TYPE], $value);
     }
 
-    public function getLabelType() : ?int
+    public function getLabelType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LABEL_TYPE]);
     }
@@ -169,7 +169,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::LABEL_TYPE], $value);
     }
 
-    public function getLabelFunctionCode() : ?string
+    public function getLabelFunctionCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LABEL_FUNCTION_CODE]);
     }
@@ -179,7 +179,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::LABEL_FUNCTION_CODE], $value);
     }
 
-    public function getNewLocationCode() : ?string
+    public function getNewLocationCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NEW_LOCATION_CODE]);
     }
@@ -189,7 +189,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::NEW_LOCATION_CODE], $value);
     }
 
-    public function getNewStoreCode() : ?string
+    public function getNewStoreCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NEW_STORE_CODE]);
     }
@@ -199,7 +199,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::NEW_STORE_CODE], $value);
     }
 
-    public function getVendorNo() : ?string
+    public function getVendorNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VENDOR_NO]);
     }
@@ -209,7 +209,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::VENDOR_NO], $value);
     }
 
-    public function getChangeVendorAllowed() : ?bool
+    public function getChangeVendorAllowed(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::CHANGE_VENDOR_ALLOWED]);
     }
@@ -219,7 +219,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::CHANGE_VENDOR_ALLOWED], $value);
     }
 
-    public function getChangeUomAllowed() : ?bool
+    public function getChangeUomAllowed(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::CHANGE_UOM_ALLOWED]);
     }
@@ -229,7 +229,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::CHANGE_UOM_ALLOWED], $value);
     }
 
-    public function getRetailProductFilter() : ?string
+    public function getRetailProductFilter(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::RETAIL_PRODUCT_FILTER]);
     }
@@ -239,7 +239,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::RETAIL_PRODUCT_FILTER], $value);
     }
 
-    public function getQuantityMethod() : ?int
+    public function getQuantityMethod(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::QUANTITY_METHOD]);
     }
@@ -249,7 +249,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::QUANTITY_METHOD], $value);
     }
 
-    public function getQuickDefaultQuantity() : ?float
+    public function getQuickDefaultQuantity(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::QUICKDEFAULT_QUANTITY]);
     }
@@ -259,7 +259,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::QUICKDEFAULT_QUANTITY], $value);
     }
 
-    public function getInvAdjustGroupCode() : ?string
+    public function getInvAdjustGroupCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::INV_ADJUST_GROUP_CODE]);
     }
@@ -269,7 +269,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::INV_ADJUST_GROUP_CODE], $value);
     }
 
-    public function getCycleCount() : ?bool
+    public function getCycleCount(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::CYCLE_COUNT]);
     }
@@ -279,7 +279,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::CYCLE_COUNT], $value);
     }
 
-    public function getUseBatchPosting() : ?bool
+    public function getUseBatchPosting(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::USE_BATCH_POSTING]);
     }
@@ -289,7 +289,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::USE_BATCH_POSTING], $value);
     }
 
-    public function getTryPostBeforePutOnQueue() : ?bool
+    public function getTryPostBeforePutOnQueue(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::TRY_POST_BEFORE_PUT_ON_QUEUE]);
     }
@@ -299,7 +299,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::TRY_POST_BEFORE_PUT_ON_QUEUE], $value);
     }
 
-    public function getShowItemDetails() : ?bool
+    public function getShowItemDetails(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHOW_ITEM_DETAILS]);
     }
@@ -309,7 +309,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::SHOW_ITEM_DETAILS], $value);
     }
 
-    public function getStoreinvtransactionMaxLines() : ?int
+    public function getStoreinvtransactionMaxLines(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::STOREINVTRANSACTION_MAX_LINES]);
     }
@@ -319,7 +319,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::STOREINVTRANSACTION_MAX_LINES], $value);
     }
 
-    public function getStoreInvCompetitorCode() : ?string
+    public function getStoreInvCompetitorCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_INV_COMPETITOR_CODE]);
     }
@@ -329,7 +329,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::STORE_INV_COMPETITOR_CODE], $value);
     }
 
-    public function getAdditionalText() : ?string
+    public function getAdditionalText(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADDITIONAL_TEXT]);
     }
@@ -339,7 +339,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::ADDITIONAL_TEXT], $value);
     }
 
-    public function getValidateTrackingCode() : ?bool
+    public function getValidateTrackingCode(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::VALIDATE_TRACKING_CODE]);
     }
@@ -349,7 +349,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::VALIDATE_TRACKING_CODE], $value);
     }
 
-    public function getAllowUnknownItem() : ?bool
+    public function getAllowUnknownItem(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALLOW_UNKNOWN_ITEM]);
     }
@@ -359,7 +359,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::ALLOW_UNKNOWN_ITEM], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -369,7 +369,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -379,7 +379,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -389,7 +389,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -399,7 +399,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -416,7 +416,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -428,7 +428,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -440,7 +440,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -452,7 +452,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -464,7 +464,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -476,7 +476,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -488,7 +488,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -500,7 +500,7 @@ class ReplLscStoreInventoryWorksheet extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

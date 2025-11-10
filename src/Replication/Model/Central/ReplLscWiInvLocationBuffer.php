@@ -29,7 +29,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getStoreNo() : ?string
+    public function getStoreNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
     }
@@ -39,7 +39,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
     }
 
-    public function getType() : ?int
+    public function getType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TYPE]);
     }
@@ -49,7 +49,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this->setData(self::getDbColumnsMapping()[self::TYPE], $value);
     }
 
-    public function getLocationCode() : ?string
+    public function getLocationCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOCATION_CODE]);
     }
@@ -59,7 +59,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this->setData(self::getDbColumnsMapping()[self::LOCATION_CODE], $value);
     }
 
-    public function getLocationName() : ?string
+    public function getLocationName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOCATION_NAME]);
     }
@@ -69,7 +69,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this->setData(self::getDbColumnsMapping()[self::LOCATION_NAME], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -79,7 +79,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -89,7 +89,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -99,7 +99,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -109,7 +109,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -126,7 +126,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -138,7 +138,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -150,7 +150,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -162,7 +162,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -174,7 +174,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -186,7 +186,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -198,7 +198,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -210,7 +210,7 @@ class ReplLscWiInvLocationBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

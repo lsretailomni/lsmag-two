@@ -29,7 +29,7 @@ class ReplVendoritemview extends \Ls\Omni\Client\CentralEcommerce\Entity\VendorI
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEMNO]);
     }
@@ -39,7 +39,7 @@ class ReplVendoritemview extends \Ls\Omni\Client\CentralEcommerce\Entity\VendorI
         return $this->setData(self::getDbColumnsMapping()[self::ITEMNO], $value);
     }
 
-    public function getVendorno() : ?string
+    public function getVendorno(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VENDORNO]);
     }
@@ -49,7 +49,7 @@ class ReplVendoritemview extends \Ls\Omni\Client\CentralEcommerce\Entity\VendorI
         return $this->setData(self::getDbColumnsMapping()[self::VENDORNO], $value);
     }
 
-    public function getVendoritemno() : ?string
+    public function getVendoritemno(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VENDORITEMNO]);
     }
@@ -66,7 +66,7 @@ class ReplVendoritemview extends \Ls\Omni\Client\CentralEcommerce\Entity\VendorI
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -78,7 +78,7 @@ class ReplVendoritemview extends \Ls\Omni\Client\CentralEcommerce\Entity\VendorI
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -90,7 +90,7 @@ class ReplVendoritemview extends \Ls\Omni\Client\CentralEcommerce\Entity\VendorI
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -102,7 +102,7 @@ class ReplVendoritemview extends \Ls\Omni\Client\CentralEcommerce\Entity\VendorI
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -114,7 +114,7 @@ class ReplVendoritemview extends \Ls\Omni\Client\CentralEcommerce\Entity\VendorI
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -126,7 +126,7 @@ class ReplVendoritemview extends \Ls\Omni\Client\CentralEcommerce\Entity\VendorI
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -138,7 +138,7 @@ class ReplVendoritemview extends \Ls\Omni\Client\CentralEcommerce\Entity\VendorI
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -150,7 +150,7 @@ class ReplVendoritemview extends \Ls\Omni\Client\CentralEcommerce\Entity\VendorI
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

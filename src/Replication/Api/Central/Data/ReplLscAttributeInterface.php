@@ -10,130 +10,130 @@ namespace Ls\Replication\Api\Central\Data;
 
 interface ReplLscAttributeInterface
 {
-    public static function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping(): array;
 
-    public function getAttributeIsDinAreaSection() : ?bool;
+    public function getAttributeIsDinAreaSection(): ?bool;
 
     public function setAttributeIsDinAreaSection(?bool $value);
 
-    public function getAttributeTypeId() : ?string;
+    public function getAttributeTypeId(): ?string;
 
     public function setAttributeTypeId(?string $value);
 
-    public function getCode() : ?string;
+    public function getCode(): ?string;
 
     public function setCode(?string $value);
 
-    public function getDefaultValue() : ?string;
+    public function getDefaultValue(): ?string;
 
     public function setDefaultValue(?string $value);
 
-    public function getDescription() : ?string;
+    public function getDescription(): ?string;
 
     public function setDescription(?string $value);
 
-    public function getDescriptionCustomer() : ?string;
+    public function getDescriptionCustomer(): ?string;
 
     public function setDescriptionCustomer(?string $value);
 
-    public function getDinReservSpecialRequest() : ?bool;
+    public function getDinReservSpecialRequest(): ?bool;
 
     public function setDinReservSpecialRequest(?bool $value);
 
-    public function getDisplayOnPos() : ?int;
+    public function getDisplayOnPos(): ?int;
 
     public function setDisplayOnPos(?int $value);
 
-    public function getInstances() : ?int;
+    public function getInstances(): ?int;
 
     public function setInstances(?int $value);
 
-    public function getLinking() : ?int;
+    public function getLinking(): ?int;
 
     public function setLinking(?int $value);
 
-    public function getMaxValue() : ?int;
+    public function getMaxValue(): ?int;
 
     public function setMaxValue(?int $value);
 
-    public function getMinValue() : ?int;
+    public function getMinValue(): ?int;
 
     public function setMinValue(?int $value);
 
-    public function getOptionValueFieldLink() : ?int;
+    public function getOptionValueFieldLink(): ?int;
 
     public function setOptionValueFieldLink(?int $value);
 
-    public function getOptionValueFilter() : ?string;
+    public function getOptionValueFilter(): ?string;
 
     public function setOptionValueFilter(?string $value);
 
-    public function getOptionValueTableLink() : ?int;
+    public function getOptionValueTableLink(): ?int;
 
     public function setOptionValueTableLink(?int $value);
 
-    public function getSystemcreatedat() : ?string;
+    public function getSystemcreatedat(): ?string;
 
     public function setSystemcreatedat(?string $value);
 
-    public function getSystemcreatedby() : ?string;
+    public function getSystemcreatedby(): ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?string;
+    public function getSystemmodifiedat(): ?string;
 
     public function setSystemmodifiedat(?string $value);
 
-    public function getSystemmodifiedby() : ?string;
+    public function getSystemmodifiedby(): ?string;
 
     public function setSystemmodifiedby(?string $value);
 
-    public function getValueForRecipe() : ?int;
+    public function getValueForRecipe(): ?int;
 
     public function setValueForRecipe(?int $value);
 
-    public function getValueRequired() : ?int;
+    public function getValueRequired(): ?int;
 
     public function setValueRequired(?int $value);
 
-    public function getValueType() : ?int;
+    public function getValueType(): ?int;
 
     public function setValueType(?int $value);
 
-    public function getSystemid() : ?string;
+    public function getSystemid(): ?string;
 
     public function setSystemid(?string $value);
 
     public function setProcessed(?bool $processed);
 
-    public function getProcessed() : ?bool;
+    public function getProcessed(): ?bool;
 
     public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : ?bool;
+    public function getIsUpdated(): ?bool;
 
     public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : ?bool;
+    public function getIsFailed(): ?bool;
 
     public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : ?string;
+    public function getCreatedAt(): ?string;
 
     public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : ?string;
+    public function getUpdatedAt(): ?string;
 
     public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : ?string;
+    public function getIdentityValue(): ?string;
 
     public function setChecksum(?string $checksum);
 
-    public function getChecksum() : ?string;
+    public function getChecksum(): ?string;
 
     public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : ?string;
+    public function getProcessedAt(): ?string;
 }
 

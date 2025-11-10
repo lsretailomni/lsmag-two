@@ -39,7 +39,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::NAV_ID], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -49,7 +49,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getStartingDate() : ?string
+    public function getStartingDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STARTING_DATE]);
     }
@@ -59,7 +59,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::STARTING_DATE], $value);
     }
 
-    public function getEndingDate() : ?string
+    public function getEndingDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ENDING_DATE]);
     }
@@ -69,7 +69,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::ENDING_DATE], $value);
     }
 
-    public function getStartingTime() : ?string
+    public function getStartingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STARTING_TIME]);
     }
@@ -79,7 +79,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::STARTING_TIME], $value);
     }
 
-    public function getEndingTime() : ?string
+    public function getEndingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ENDING_TIME]);
     }
@@ -89,7 +89,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::ENDING_TIME], $value);
     }
 
-    public function getTimeWithinBounds() : ?bool
+    public function getTimeWithinBounds(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::TIME_WITHIN_BOUNDS]);
     }
@@ -99,7 +99,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::TIME_WITHIN_BOUNDS], $value);
     }
 
-    public function getMondayStartingTime() : ?string
+    public function getMondayStartingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::MONDAY_STARTING_TIME]);
     }
@@ -109,7 +109,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::MONDAY_STARTING_TIME], $value);
     }
 
-    public function getMondayEndingTime() : ?string
+    public function getMondayEndingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::MONDAY_ENDING_TIME]);
     }
@@ -119,7 +119,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::MONDAY_ENDING_TIME], $value);
     }
 
-    public function getMonTimeWithinBounds() : ?bool
+    public function getMonTimeWithinBounds(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::MON_TIME_WITHIN_BOUNDS]);
     }
@@ -129,7 +129,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::MON_TIME_WITHIN_BOUNDS], $value);
     }
 
-    public function getTuesdayStartingTime() : ?string
+    public function getTuesdayStartingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TUESDAY_STARTING_TIME]);
     }
@@ -139,7 +139,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::TUESDAY_STARTING_TIME], $value);
     }
 
-    public function getTuesdayEndingTime() : ?string
+    public function getTuesdayEndingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TUESDAY_ENDING_TIME]);
     }
@@ -149,7 +149,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::TUESDAY_ENDING_TIME], $value);
     }
 
-    public function getTueTimeWithinBounds() : ?bool
+    public function getTueTimeWithinBounds(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::TUE_TIME_WITHIN_BOUNDS]);
     }
@@ -159,7 +159,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::TUE_TIME_WITHIN_BOUNDS], $value);
     }
 
-    public function getWednesdayStartingTime() : ?string
+    public function getWednesdayStartingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::WEDNESDAY_STARTING_TIME]);
     }
@@ -169,7 +169,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::WEDNESDAY_STARTING_TIME], $value);
     }
 
-    public function getWednesdayEndingTime() : ?string
+    public function getWednesdayEndingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::WEDNESDAY_ENDING_TIME]);
     }
@@ -179,7 +179,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::WEDNESDAY_ENDING_TIME], $value);
     }
 
-    public function getWedTimeWithinBounds() : ?bool
+    public function getWedTimeWithinBounds(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::WED_TIME_WITHIN_BOUNDS]);
     }
@@ -189,7 +189,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::WED_TIME_WITHIN_BOUNDS], $value);
     }
 
-    public function getThursdayStartingTime() : ?string
+    public function getThursdayStartingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::THURSDAY_STARTING_TIME]);
     }
@@ -199,7 +199,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::THURSDAY_STARTING_TIME], $value);
     }
 
-    public function getThursdayEndingTime() : ?string
+    public function getThursdayEndingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::THURSDAY_ENDING_TIME]);
     }
@@ -209,7 +209,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::THURSDAY_ENDING_TIME], $value);
     }
 
-    public function getThuTimeWithinBounds() : ?bool
+    public function getThuTimeWithinBounds(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::THU_TIME_WITHIN_BOUNDS]);
     }
@@ -219,7 +219,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::THU_TIME_WITHIN_BOUNDS], $value);
     }
 
-    public function getFridayStartingTime() : ?string
+    public function getFridayStartingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::FRIDAY_STARTING_TIME]);
     }
@@ -229,7 +229,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::FRIDAY_STARTING_TIME], $value);
     }
 
-    public function getFridayEndingTime() : ?string
+    public function getFridayEndingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::FRIDAY_ENDING_TIME]);
     }
@@ -239,7 +239,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::FRIDAY_ENDING_TIME], $value);
     }
 
-    public function getFriTimeWithinBounds() : ?bool
+    public function getFriTimeWithinBounds(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::FRI_TIME_WITHIN_BOUNDS]);
     }
@@ -249,7 +249,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::FRI_TIME_WITHIN_BOUNDS], $value);
     }
 
-    public function getSaturdayStartingTime() : ?string
+    public function getSaturdayStartingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SATURDAY_STARTING_TIME]);
     }
@@ -259,7 +259,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::SATURDAY_STARTING_TIME], $value);
     }
 
-    public function getSaturdayEndingTime() : ?string
+    public function getSaturdayEndingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SATURDAY_ENDING_TIME]);
     }
@@ -269,7 +269,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::SATURDAY_ENDING_TIME], $value);
     }
 
-    public function getSatTimeWithinBounds() : ?bool
+    public function getSatTimeWithinBounds(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SAT_TIME_WITHIN_BOUNDS]);
     }
@@ -279,7 +279,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::SAT_TIME_WITHIN_BOUNDS], $value);
     }
 
-    public function getSundayStartingTime() : ?string
+    public function getSundayStartingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SUNDAY_STARTING_TIME]);
     }
@@ -289,7 +289,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::SUNDAY_STARTING_TIME], $value);
     }
 
-    public function getSundayEndingTime() : ?string
+    public function getSundayEndingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SUNDAY_ENDING_TIME]);
     }
@@ -299,7 +299,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::SUNDAY_ENDING_TIME], $value);
     }
 
-    public function getSunTimeWithinBounds() : ?bool
+    public function getSunTimeWithinBounds(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SUN_TIME_WITHIN_BOUNDS]);
     }
@@ -309,7 +309,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::SUN_TIME_WITHIN_BOUNDS], $value);
     }
 
-    public function getEndingTimeAfterMidnight() : ?bool
+    public function getEndingTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ENDING_TIME_AFTER_MIDNIGHT]);
     }
@@ -319,7 +319,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::ENDING_TIME_AFTER_MIDNIGHT], $value);
     }
 
-    public function getMonEndTimeAfterMidnight() : ?bool
+    public function getMonEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::MON_END_TIME_AFTER_MIDNIGHT]);
     }
@@ -329,7 +329,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::MON_END_TIME_AFTER_MIDNIGHT], $value);
     }
 
-    public function getTueEndTimeAfterMidnight() : ?bool
+    public function getTueEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::TUE_END_TIME_AFTER_MIDNIGHT]);
     }
@@ -339,7 +339,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::TUE_END_TIME_AFTER_MIDNIGHT], $value);
     }
 
-    public function getWedEndTimeAfterMidnight() : ?bool
+    public function getWedEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::WED_END_TIME_AFTER_MIDNIGHT]);
     }
@@ -349,7 +349,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::WED_END_TIME_AFTER_MIDNIGHT], $value);
     }
 
-    public function getThuEndTimeAfterMidnight() : ?bool
+    public function getThuEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::THU_END_TIME_AFTER_MIDNIGHT]);
     }
@@ -359,7 +359,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::THU_END_TIME_AFTER_MIDNIGHT], $value);
     }
 
-    public function getFriEndTimeAfterMidnight() : ?bool
+    public function getFriEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::FRI_END_TIME_AFTER_MIDNIGHT]);
     }
@@ -369,7 +369,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::FRI_END_TIME_AFTER_MIDNIGHT], $value);
     }
 
-    public function getSatEndTimeAfterMidnight() : ?bool
+    public function getSatEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SAT_END_TIME_AFTER_MIDNIGHT]);
     }
@@ -379,7 +379,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::SAT_END_TIME_AFTER_MIDNIGHT], $value);
     }
 
-    public function getSunEndTimeAfterMidnight() : ?bool
+    public function getSunEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SUN_END_TIME_AFTER_MIDNIGHT]);
     }
@@ -389,7 +389,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::SUN_END_TIME_AFTER_MIDNIGHT], $value);
     }
 
-    public function getNoSeries() : ?string
+    public function getNoSeries(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO_SERIES]);
     }
@@ -399,7 +399,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::NO_SERIES], $value);
     }
 
-    public function getOfferStartingTime() : ?string
+    public function getOfferStartingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::OFFER_STARTING_TIME]);
     }
@@ -409,7 +409,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::OFFER_STARTING_TIME], $value);
     }
 
-    public function getOfferEndingTime() : ?string
+    public function getOfferEndingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::OFFER_ENDING_TIME]);
     }
@@ -419,7 +419,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::OFFER_ENDING_TIME], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -429,7 +429,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -439,7 +439,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -449,7 +449,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -459,7 +459,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -476,7 +476,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -488,7 +488,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -500,7 +500,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -512,7 +512,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -524,7 +524,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -536,7 +536,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -548,7 +548,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -560,7 +560,7 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

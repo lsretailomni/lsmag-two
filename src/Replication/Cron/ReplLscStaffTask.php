@@ -48,7 +48,7 @@ class ReplLscStaffTask extends AbstractReplicationTask
         return $this;
     }
 
-    public function getRepository() : ReplLscStaffRepository
+    public function getRepository(): ReplLscStaffRepository
     {
         return $this->repository;
     }
@@ -59,7 +59,7 @@ class ReplLscStaffTask extends AbstractReplicationTask
         return $this;
     }
 
-    public function getFactory() : ReplLscStaffFactory
+    public function getFactory(): ReplLscStaffFactory
     {
         return $this->factory;
     }
@@ -70,7 +70,7 @@ class ReplLscStaffTask extends AbstractReplicationTask
         return $this;
     }
 
-    public function getDataInterface() : ReplLscStaffInterface
+    public function getDataInterface(): ReplLscStaffInterface
     {
         return $this->dataInterface;
     }
@@ -83,27 +83,27 @@ class ReplLscStaffTask extends AbstractReplicationTask
         $this->dataInterface = $dataInterface;
     }
 
-    public function getMainEntity() : ReplLscStaffInterface
+    public function getMainEntity(): ReplLscStaffInterface
     {
         return $this->dataInterface;
     }
 
-    public function getConfigPath() : string
+    public function getConfigPath(): string
     {
         return self::CONFIG_PATH;
     }
 
-    public function getConfigPathStatus() : string
+    public function getConfigPathStatus(): string
     {
         return self::CONFIG_PATH_STATUS;
     }
 
-    public function getConfigPathLastExecute() : string
+    public function getConfigPathLastExecute(): string
     {
         return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
-    public function getModelName() : string
+    public function getModelName(): string
     {
         return self::MODEL_CLASS;
     }
@@ -121,7 +121,7 @@ class ReplLscStaffTask extends AbstractReplicationTask
         return $request;
     }
 
-    public function getConfigPathLastEntryNo() : string
+    public function getConfigPathLastEntryNo(): string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
     }

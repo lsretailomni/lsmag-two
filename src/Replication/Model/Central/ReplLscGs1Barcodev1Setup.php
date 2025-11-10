@@ -29,7 +29,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getType() : ?int
+    public function getType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TYPE]);
     }
@@ -39,7 +39,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::TYPE], $value);
     }
 
-    public function getIdentifier() : ?string
+    public function getIdentifier(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::IDENTIFIER]);
     }
@@ -49,7 +49,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::IDENTIFIER], $value);
     }
 
-    public function getSectionType() : ?int
+    public function getSectionType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SECTION_TYPE]);
     }
@@ -59,7 +59,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::SECTION_TYPE], $value);
     }
 
-    public function getSectionSize() : ?int
+    public function getSectionSize(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SECTION_SIZE]);
     }
@@ -69,7 +69,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::SECTION_SIZE], $value);
     }
 
-    public function getIdentifierSize() : ?int
+    public function getIdentifierSize(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::IDENTIFIER_SIZE]);
     }
@@ -79,7 +79,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::IDENTIFIER_SIZE], $value);
     }
 
-    public function getSectionMapping() : ?int
+    public function getSectionMapping(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SECTION_MAPPING]);
     }
@@ -89,7 +89,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::SECTION_MAPPING], $value);
     }
 
-    public function getMappingStartingChar() : ?int
+    public function getMappingStartingChar(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAPPING_STARTING_CHAR]);
     }
@@ -99,7 +99,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::MAPPING_STARTING_CHAR], $value);
     }
 
-    public function getPreferredSequence() : ?int
+    public function getPreferredSequence(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PREFERRED_SEQUENCE]);
     }
@@ -109,7 +109,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::PREFERRED_SEQUENCE], $value);
     }
 
-    public function getDecimals() : ?float
+    public function getDecimals(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DECIMALS]);
     }
@@ -119,7 +119,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::DECIMALS], $value);
     }
 
-    public function getValueType() : ?int
+    public function getValueType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VALUE_TYPE]);
     }
@@ -129,7 +129,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::VALUE_TYPE], $value);
     }
 
-    public function getBarcodeValue() : ?string
+    public function getBarcodeValue(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BARCODE_VALUE]);
     }
@@ -139,7 +139,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::BARCODE_VALUE], $value);
     }
 
-    public function getValueDec() : ?float
+    public function getValueDec(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::VALUE_DEC]);
     }
@@ -149,7 +149,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::VALUE_DEC], $value);
     }
 
-    public function getValueDate() : ?string
+    public function getValueDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VALUE_DATE]);
     }
@@ -159,7 +159,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::VALUE_DATE], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -169,7 +169,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -179,7 +179,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -189,7 +189,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -199,7 +199,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -216,7 +216,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -228,7 +228,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -240,7 +240,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -252,7 +252,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -264,7 +264,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -276,7 +276,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -288,7 +288,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -300,7 +300,7 @@ class ReplLscGs1Barcodev1Setup extends \Ls\Omni\Client\CentralEcommerce\Entity\L
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

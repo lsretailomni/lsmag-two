@@ -29,7 +29,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CODE]);
     }
@@ -39,7 +39,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
     }
 
-    public function getItemNo() : ?string
+    public function getItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
     }
@@ -49,7 +49,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -59,7 +59,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getDescription2() : ?string
+    public function getDescription2(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION_2]);
     }
@@ -69,7 +69,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION_2], $value);
     }
 
-    public function getItemId() : ?string
+    public function getItemId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_ID]);
     }
@@ -79,7 +79,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_ID], $value);
     }
 
-    public function getBlocked() : ?bool
+    public function getBlocked(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCKED]);
     }
@@ -89,7 +89,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::BLOCKED], $value);
     }
 
-    public function getSalesBlocked() : ?bool
+    public function getSalesBlocked(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALES_BLOCKED]);
     }
@@ -99,7 +99,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::SALES_BLOCKED], $value);
     }
 
-    public function getPurchasingBlocked() : ?bool
+    public function getPurchasingBlocked(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PURCHASING_BLOCKED]);
     }
@@ -109,7 +109,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::PURCHASING_BLOCKED], $value);
     }
 
-    public function getServiceBlocked() : ?bool
+    public function getServiceBlocked(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SERVICE_BLOCKED]);
     }
@@ -119,7 +119,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::SERVICE_BLOCKED], $value);
     }
 
-    public function getProductionBlocked() : ?int
+    public function getProductionBlocked(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRODUCTION_BLOCKED]);
     }
@@ -129,7 +129,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::PRODUCTION_BLOCKED], $value);
     }
 
-    public function getLscCommonItemNo() : ?string
+    public function getLscCommonItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_COMMON_ITEM_NO]);
     }
@@ -139,7 +139,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::LSC_COMMON_ITEM_NO], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -149,7 +149,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -159,7 +159,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -169,7 +169,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -179,7 +179,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -196,7 +196,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -208,7 +208,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -220,7 +220,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -232,7 +232,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -244,7 +244,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -256,7 +256,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -268,7 +268,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -280,7 +280,7 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

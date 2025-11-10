@@ -10,102 +10,102 @@ namespace Ls\Replication\Api\Central\Data;
 
 interface ReplLscStaffStoreLinkInterface
 {
-    public static function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping(): array;
 
-    public function getStaffId() : ?string;
+    public function getStaffId(): ?string;
 
     public function setStaffId(?string $value);
 
-    public function getStoreNo() : ?string;
+    public function getStoreNo(): ?string;
 
     public function setStoreNo(?string $value);
 
-    public function getPermissionGrp() : ?string;
+    public function getPermissionGrp(): ?string;
 
     public function setPermissionGrp(?string $value);
 
-    public function getPermissionGroup() : ?string;
+    public function getPermissionGroup(): ?string;
 
     public function setPermissionGroup(?string $value);
 
-    public function getPosInterfaceProfile() : ?string;
+    public function getPosInterfaceProfile(): ?string;
 
     public function setPosInterfaceProfile(?string $value);
 
-    public function getPosStyleProfile() : ?string;
+    public function getPosStyleProfile(): ?string;
 
     public function setPosStyleProfile(?string $value);
 
-    public function getPosMenuProfile() : ?string;
+    public function getPosMenuProfile(): ?string;
 
     public function setPosMenuProfile(?string $value);
 
-    public function getDeliveryDriver() : ?bool;
+    public function getDeliveryDriver(): ?bool;
 
     public function setDeliveryDriver(?bool $value);
 
-    public function getFloat() : ?float;
+    public function getFloat(): ?float;
 
     public function setFloat(?float $value);
 
-    public function getOnCall() : ?bool;
+    public function getOnCall(): ?bool;
 
     public function setOnCall(?bool $value);
 
-    public function getDefaultSalesType() : ?string;
+    public function getDefaultSalesType(): ?string;
 
     public function setDefaultSalesType(?string $value);
 
-    public function getSystemid() : ?string;
+    public function getSystemid(): ?string;
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?string;
+    public function getSystemcreatedat(): ?string;
 
     public function setSystemcreatedat(?string $value);
 
-    public function getSystemcreatedby() : ?string;
+    public function getSystemcreatedby(): ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?string;
+    public function getSystemmodifiedat(): ?string;
 
     public function setSystemmodifiedat(?string $value);
 
-    public function getSystemmodifiedby() : ?string;
+    public function getSystemmodifiedby(): ?string;
 
     public function setSystemmodifiedby(?string $value);
 
     public function setProcessed(?bool $processed);
 
-    public function getProcessed() : ?bool;
+    public function getProcessed(): ?bool;
 
     public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : ?bool;
+    public function getIsUpdated(): ?bool;
 
     public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : ?bool;
+    public function getIsFailed(): ?bool;
 
     public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : ?string;
+    public function getCreatedAt(): ?string;
 
     public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : ?string;
+    public function getUpdatedAt(): ?string;
 
     public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : ?string;
+    public function getIdentityValue(): ?string;
 
     public function setChecksum(?string $checksum);
 
-    public function getChecksum() : ?string;
+    public function getChecksum(): ?string;
 
     public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : ?string;
+    public function getProcessedAt(): ?string;
 }
 

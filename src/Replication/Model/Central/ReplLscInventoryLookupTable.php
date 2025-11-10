@@ -29,7 +29,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getItemNo() : ?string
+    public function getItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
     }
@@ -39,7 +39,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
     }
 
-    public function getVariantCode() : ?string
+    public function getVariantCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
     }
@@ -49,7 +49,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
     }
 
-    public function getLocation() : ?string
+    public function getLocation(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOCATION]);
     }
@@ -59,7 +59,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::LOCATION], $value);
     }
 
-    public function getStoreNo() : ?string
+    public function getStoreNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
     }
@@ -69,7 +69,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
     }
 
-    public function getPhysInventory() : ?float
+    public function getPhysInventory(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::PHYS_INVENTORY]);
     }
@@ -79,7 +79,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::PHYS_INVENTORY], $value);
     }
 
-    public function getPurchaseOrder() : ?float
+    public function getPurchaseOrder(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::PURCHASE_ORDER]);
     }
@@ -89,7 +89,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::PURCHASE_ORDER], $value);
     }
 
-    public function getTotalSales() : ?float
+    public function getTotalSales(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::TOTAL_SALES]);
     }
@@ -99,7 +99,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::TOTAL_SALES], $value);
     }
 
-    public function getCoResEntries() : ?float
+    public function getCoResEntries(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::CO_RES_ENTRIES]);
     }
@@ -109,7 +109,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::CO_RES_ENTRIES], $value);
     }
 
-    public function getVarPhysInventory() : ?float
+    public function getVarPhysInventory(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAR_PHYS_INVENTORY]);
     }
@@ -119,7 +119,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::VAR_PHYS_INVENTORY], $value);
     }
 
-    public function getVarPurchaseOrder() : ?float
+    public function getVarPurchaseOrder(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAR_PURCHASE_ORDER]);
     }
@@ -129,7 +129,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::VAR_PURCHASE_ORDER], $value);
     }
 
-    public function getVarTotalSales() : ?float
+    public function getVarTotalSales(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAR_TOTAL_SALES]);
     }
@@ -139,7 +139,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::VAR_TOTAL_SALES], $value);
     }
 
-    public function getVarCoResEntries() : ?float
+    public function getVarCoResEntries(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAR_CO_RES_ENTRIES]);
     }
@@ -149,7 +149,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::VAR_CO_RES_ENTRIES], $value);
     }
 
-    public function getPostedSales() : ?float
+    public function getPostedSales(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::POSTED_SALES]);
     }
@@ -159,7 +159,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::POSTED_SALES], $value);
     }
 
-    public function getVarPostedSales() : ?float
+    public function getVarPostedSales(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAR_POSTED_SALES]);
     }
@@ -169,7 +169,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::VAR_POSTED_SALES], $value);
     }
 
-    public function getSerialNo() : ?string
+    public function getSerialNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SERIAL_NO]);
     }
@@ -179,7 +179,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::SERIAL_NO], $value);
     }
 
-    public function getLotNo() : ?string
+    public function getLotNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_NO]);
     }
@@ -189,7 +189,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::LOT_NO], $value);
     }
 
-    public function getExpirationDate() : ?string
+    public function getExpirationDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXPIRATION_DATE]);
     }
@@ -199,7 +199,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::EXPIRATION_DATE], $value);
     }
 
-    public function getTotalInvAdjmt() : ?float
+    public function getTotalInvAdjmt(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::TOTAL_INV_ADJMT]);
     }
@@ -209,7 +209,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::TOTAL_INV_ADJMT], $value);
     }
 
-    public function getVarTotalInvAdjmt() : ?float
+    public function getVarTotalInvAdjmt(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAR_TOTAL_INV_ADJMT]);
     }
@@ -219,7 +219,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::VAR_TOTAL_INV_ADJMT], $value);
     }
 
-    public function getPostedInvAdjmt() : ?float
+    public function getPostedInvAdjmt(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::POSTED_INV_ADJMT]);
     }
@@ -229,7 +229,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::POSTED_INV_ADJMT], $value);
     }
 
-    public function getVarPostedInvAdjmt() : ?float
+    public function getVarPostedInvAdjmt(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAR_POSTED_INV_ADJMT]);
     }
@@ -239,7 +239,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::VAR_POSTED_INV_ADJMT], $value);
     }
 
-    public function getNetInventory() : ?float
+    public function getNetInventory(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::NET_INVENTORY]);
     }
@@ -249,7 +249,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::NET_INVENTORY], $value);
     }
 
-    public function getLocationProfile() : ?string
+    public function getLocationProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOCATION_PROFILE]);
     }
@@ -259,7 +259,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::LOCATION_PROFILE], $value);
     }
 
-    public function getReplicationCounter() : ?int
+    public function getReplicationCounter(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::REPLICATION_COUNTER]);
     }
@@ -269,7 +269,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::REPLICATION_COUNTER], $value);
     }
 
-    public function getSourcingLocationInventory() : ?float
+    public function getSourcingLocationInventory(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::SOURCING_LOCATION_INVENTORY]);
     }
@@ -279,7 +279,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::SOURCING_LOCATION_INVENTORY], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -289,7 +289,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -299,7 +299,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -309,7 +309,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -319,7 +319,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -336,7 +336,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -348,7 +348,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -360,7 +360,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -372,7 +372,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -384,7 +384,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -396,7 +396,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -408,7 +408,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -420,7 +420,7 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

@@ -10,218 +10,218 @@ namespace Ls\Replication\Api\Central\Data;
 
 interface ReplLscRetailProductGroupInterface
 {
-    public static function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping(): array;
 
-    public function getItemCategoryCode() : ?string;
+    public function getItemCategoryCode(): ?string;
 
     public function setItemCategoryCode(?string $value);
 
-    public function getCode() : ?string;
+    public function getCode(): ?string;
 
     public function setCode(?string $value);
 
-    public function getDescription() : ?string;
+    public function getDescription(): ?string;
 
     public function setDescription(?string $value);
 
-    public function getShelfLabelDescription() : ?string;
+    public function getShelfLabelDescription(): ?string;
 
     public function setShelfLabelDescription(?string $value);
 
-    public function getItemTemplateCode() : ?string;
+    public function getItemTemplateCode(): ?string;
 
     public function setItemTemplateCode(?string $value);
 
-    public function getItemTemplCode() : ?string;
+    public function getItemTemplCode(): ?string;
 
     public function setItemTemplCode(?string $value);
 
-    public function getPosMenuLink() : ?string;
+    public function getPosMenuLink(): ?string;
 
     public function setPosMenuLink(?string $value);
 
-    public function getMinLocProfInventory() : ?int;
+    public function getMinLocProfInventory(): ?int;
 
     public function setMinLocProfInventory(?int $value);
 
-    public function getBarcodeMask() : ?string;
+    public function getBarcodeMask(): ?string;
 
     public function setBarcodeMask(?string $value);
 
-    public function getUseEanStandardBarc() : ?bool;
+    public function getUseEanStandardBarc(): ?bool;
 
     public function setUseEanStandardBarc(?bool $value);
 
-    public function getDefaultProfit() : ?float;
+    public function getDefaultProfit(): ?float;
 
     public function setDefaultProfit(?float $value);
 
-    public function getDispensePrinterGroup() : ?string;
+    public function getDispensePrinterGroup(): ?string;
 
     public function setDispensePrinterGroup(?string $value);
 
-    public function getDisableDispensePrinting() : ?bool;
+    public function getDisableDispensePrinting(): ?bool;
 
     public function setDisableDispensePrinting(?bool $value);
 
-    public function getPosInventoryLookup() : ?bool;
+    public function getPosInventoryLookup(): ?bool;
 
     public function setPosInventoryLookup(?bool $value);
 
-    public function getLastDateModified() : ?string;
+    public function getLastDateModified(): ?string;
 
     public function setLastDateModified(?string $value);
 
-    public function getInventoryFreeEntryTracking() : ?bool;
+    public function getInventoryFreeEntryTracking(): ?bool;
 
     public function setInventoryFreeEntryTracking(?bool $value);
 
-    public function getVariantFrameworkCode() : ?string;
+    public function getVariantFrameworkCode(): ?string;
 
     public function setVariantFrameworkCode(?string $value);
 
-    public function getPrimaryKey() : ?string;
+    public function getPrimaryKey(): ?string;
 
     public function setPrimaryKey(?string $value);
 
-    public function getDivisionCode() : ?string;
+    public function getDivisionCode(): ?string;
 
     public function setDivisionCode(?string $value);
 
-    public function getItemErrorCheckCode() : ?string;
+    public function getItemErrorCheckCode(): ?string;
 
     public function setItemErrorCheckCode(?string $value);
 
-    public function getSuggestedQtyOnPos() : ?float;
+    public function getSuggestedQtyOnPos(): ?float;
 
     public function setSuggestedQtyOnPos(?float $value);
 
-    public function getDefaultBaseUom() : ?string;
+    public function getDefaultBaseUom(): ?string;
 
     public function setDefaultBaseUom(?string $value);
 
-    public function getQtyNotInDecimal() : ?bool;
+    public function getQtyNotInDecimal(): ?bool;
 
     public function setQtyNotInDecimal(?bool $value);
 
-    public function getProfitGoal() : ?float;
+    public function getProfitGoal(): ?float;
 
     public function setProfitGoal(?float $value);
 
-    public function getBuyerGroupCode() : ?string;
+    public function getBuyerGroupCode(): ?string;
 
     public function setBuyerGroupCode(?string $value);
 
-    public function getReplenDataProfile() : ?string;
+    public function getReplenDataProfile(): ?string;
 
     public function setReplenDataProfile(?string $value);
 
-    public function getBuyerId() : ?string;
+    public function getBuyerId(): ?string;
 
     public function setBuyerId(?string $value);
 
-    public function getReplenTransferRuleCode() : ?string;
+    public function getReplenTransferRuleCode(): ?string;
 
     public function setReplenTransferRuleCode(?string $value);
 
-    public function getDefItemDistrType() : ?int;
+    public function getDefItemDistrType(): ?int;
 
     public function setDefItemDistrType(?int $value);
 
-    public function getDefItemDistrCode() : ?string;
+    public function getDefItemDistrCode(): ?string;
 
     public function setDefItemDistrCode(?string $value);
 
-    public function getExcludeFromReplenishment() : ?bool;
+    public function getExcludeFromReplenishment(): ?bool;
 
     public function setExcludeFromReplenishment(?bool $value);
 
-    public function getExcludeFromOosCalc() : ?bool;
+    public function getExcludeFromOosCalc(): ?bool;
 
     public function setExcludeFromOosCalc(?bool $value);
 
-    public function getLscDefReplenAssortmGrCode() : ?string;
+    public function getLscDefReplenAssortmGrCode(): ?string;
 
     public function setLscDefReplenAssortmGrCode(?string $value);
 
-    public function getLscDefReplenGradeCode() : ?string;
+    public function getLscDefReplenGradeCode(): ?string;
 
     public function setLscDefReplenGradeCode(?string $value);
 
-    public function getNotDiscountable() : ?bool;
+    public function getNotDiscountable(): ?bool;
 
     public function setNotDiscountable(?bool $value);
 
-    public function getPhysInvtCountingPeriodCode() : ?string;
+    public function getPhysInvtCountingPeriodCode(): ?string;
 
     public function setPhysInvtCountingPeriodCode(?string $value);
 
-    public function getAllocationRuleCode() : ?string;
+    public function getAllocationRuleCode(): ?string;
 
     public function setAllocationRuleCode(?string $value);
 
-    public function getOutboundCode() : ?string;
+    public function getOutboundCode(): ?string;
 
     public function setOutboundCode(?string $value);
 
-    public function getSortOrder() : ?int;
+    public function getSortOrder(): ?int;
 
     public function setSortOrder(?int $value);
 
-    public function getPlbGroup() : ?bool;
+    public function getPlbGroup(): ?bool;
 
     public function setPlbGroup(?bool $value);
 
-    public function getSystemid() : ?string;
+    public function getSystemid(): ?string;
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?string;
+    public function getSystemcreatedat(): ?string;
 
     public function setSystemcreatedat(?string $value);
 
-    public function getSystemcreatedby() : ?string;
+    public function getSystemcreatedby(): ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?string;
+    public function getSystemmodifiedat(): ?string;
 
     public function setSystemmodifiedat(?string $value);
 
-    public function getSystemmodifiedby() : ?string;
+    public function getSystemmodifiedby(): ?string;
 
     public function setSystemmodifiedby(?string $value);
 
     public function setProcessed(?bool $processed);
 
-    public function getProcessed() : ?bool;
+    public function getProcessed(): ?bool;
 
     public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : ?bool;
+    public function getIsUpdated(): ?bool;
 
     public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : ?bool;
+    public function getIsFailed(): ?bool;
 
     public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : ?string;
+    public function getCreatedAt(): ?string;
 
     public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : ?string;
+    public function getUpdatedAt(): ?string;
 
     public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : ?string;
+    public function getIdentityValue(): ?string;
 
     public function setChecksum(?string $checksum);
 
-    public function getChecksum() : ?string;
+    public function getChecksum(): ?string;
 
     public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : ?string;
+    public function getProcessedAt(): ?string;
 }
 

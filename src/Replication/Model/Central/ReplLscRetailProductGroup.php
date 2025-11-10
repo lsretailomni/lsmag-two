@@ -29,7 +29,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getItemCategoryCode() : ?string
+    public function getItemCategoryCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_CATEGORY_CODE]);
     }
@@ -39,7 +39,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_CATEGORY_CODE], $value);
     }
 
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CODE]);
     }
@@ -49,7 +49,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -59,7 +59,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getShelfLabelDescription() : ?string
+    public function getShelfLabelDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHELF_LABEL_DESCRIPTION]);
     }
@@ -69,7 +69,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SHELF_LABEL_DESCRIPTION], $value);
     }
 
-    public function getItemTemplateCode() : ?string
+    public function getItemTemplateCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_TEMPLATE_CODE]);
     }
@@ -79,7 +79,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_TEMPLATE_CODE], $value);
     }
 
-    public function getItemTemplCode() : ?string
+    public function getItemTemplCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_TEMPL_CODE]);
     }
@@ -89,7 +89,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_TEMPL_CODE], $value);
     }
 
-    public function getPosMenuLink() : ?string
+    public function getPosMenuLink(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POS_MENU_LINK]);
     }
@@ -99,7 +99,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::POS_MENU_LINK], $value);
     }
 
-    public function getMinLocProfInventory() : ?int
+    public function getMinLocProfInventory(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::MIN_LOC_PROF_INVENTORY]);
     }
@@ -109,7 +109,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::MIN_LOC_PROF_INVENTORY], $value);
     }
 
-    public function getBarcodeMask() : ?string
+    public function getBarcodeMask(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BARCODE_MASK]);
     }
@@ -119,7 +119,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::BARCODE_MASK], $value);
     }
 
-    public function getUseEanStandardBarc() : ?bool
+    public function getUseEanStandardBarc(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::USE_EAN_STANDARD_BARC]);
     }
@@ -129,7 +129,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::USE_EAN_STANDARD_BARC], $value);
     }
 
-    public function getDefaultProfit() : ?float
+    public function getDefaultProfit(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_PROFIT]);
     }
@@ -139,7 +139,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_PROFIT], $value);
     }
 
-    public function getDispensePrinterGroup() : ?string
+    public function getDispensePrinterGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISPENSE_PRINTER_GROUP]);
     }
@@ -149,7 +149,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::DISPENSE_PRINTER_GROUP], $value);
     }
 
-    public function getDisableDispensePrinting() : ?bool
+    public function getDisableDispensePrinting(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISABLE_DISPENSE_PRINTING]);
     }
@@ -159,7 +159,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::DISABLE_DISPENSE_PRINTING], $value);
     }
 
-    public function getPosInventoryLookup() : ?bool
+    public function getPosInventoryLookup(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::POS_INVENTORY_LOOKUP]);
     }
@@ -169,7 +169,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::POS_INVENTORY_LOOKUP], $value);
     }
 
-    public function getLastDateModified() : ?string
+    public function getLastDateModified(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED]);
     }
@@ -179,7 +179,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED], $value);
     }
 
-    public function getInventoryFreeEntryTracking() : ?bool
+    public function getInventoryFreeEntryTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::INVENTORY_FREE_ENTRY_TRACKING]);
     }
@@ -189,7 +189,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::INVENTORY_FREE_ENTRY_TRACKING], $value);
     }
 
-    public function getVariantFrameworkCode() : ?string
+    public function getVariantFrameworkCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_FRAMEWORK_CODE]);
     }
@@ -199,7 +199,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_FRAMEWORK_CODE], $value);
     }
 
-    public function getPrimaryKey() : ?string
+    public function getPrimaryKey(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRIMARY_KEY]);
     }
@@ -209,7 +209,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::PRIMARY_KEY], $value);
     }
 
-    public function getDivisionCode() : ?string
+    public function getDivisionCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DIVISION_CODE]);
     }
@@ -219,7 +219,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::DIVISION_CODE], $value);
     }
 
-    public function getItemErrorCheckCode() : ?string
+    public function getItemErrorCheckCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_ERROR_CHECK_CODE]);
     }
@@ -229,7 +229,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_ERROR_CHECK_CODE], $value);
     }
 
-    public function getSuggestedQtyOnPos() : ?float
+    public function getSuggestedQtyOnPos(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::SUGGESTED_QTY_ON_POS]);
     }
@@ -239,7 +239,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SUGGESTED_QTY_ON_POS], $value);
     }
 
-    public function getDefaultBaseUom() : ?string
+    public function getDefaultBaseUom(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_BASE_UOM]);
     }
@@ -249,7 +249,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_BASE_UOM], $value);
     }
 
-    public function getQtyNotInDecimal() : ?bool
+    public function getQtyNotInDecimal(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::QTY_NOT_IN_DECIMAL]);
     }
@@ -259,7 +259,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::QTY_NOT_IN_DECIMAL], $value);
     }
 
-    public function getProfitGoal() : ?float
+    public function getProfitGoal(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::PROFIT_GOAL]);
     }
@@ -269,7 +269,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::PROFIT_GOAL], $value);
     }
 
-    public function getBuyerGroupCode() : ?string
+    public function getBuyerGroupCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BUYER_GROUP_CODE]);
     }
@@ -279,7 +279,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::BUYER_GROUP_CODE], $value);
     }
 
-    public function getReplenDataProfile() : ?string
+    public function getReplenDataProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REPLEN_DATA_PROFILE]);
     }
@@ -289,7 +289,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::REPLEN_DATA_PROFILE], $value);
     }
 
-    public function getBuyerId() : ?string
+    public function getBuyerId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BUYER_ID]);
     }
@@ -299,7 +299,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::BUYER_ID], $value);
     }
 
-    public function getReplenTransferRuleCode() : ?string
+    public function getReplenTransferRuleCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REPLEN_TRANSFER_RULE_CODE]);
     }
@@ -309,7 +309,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::REPLEN_TRANSFER_RULE_CODE], $value);
     }
 
-    public function getDefItemDistrType() : ?int
+    public function getDefItemDistrType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEF_ITEM_DISTR_TYPE]);
     }
@@ -319,7 +319,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::DEF_ITEM_DISTR_TYPE], $value);
     }
 
-    public function getDefItemDistrCode() : ?string
+    public function getDefItemDistrCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEF_ITEM_DISTR_CODE]);
     }
@@ -329,7 +329,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::DEF_ITEM_DISTR_CODE], $value);
     }
 
-    public function getExcludeFromReplenishment() : ?bool
+    public function getExcludeFromReplenishment(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_REPLENISHMENT]);
     }
@@ -339,7 +339,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_REPLENISHMENT], $value);
     }
 
-    public function getExcludeFromOosCalc() : ?bool
+    public function getExcludeFromOosCalc(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_OOS_CALC]);
     }
@@ -349,7 +349,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_OOS_CALC], $value);
     }
 
-    public function getLscDefReplenAssortmGrCode() : ?string
+    public function getLscDefReplenAssortmGrCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DEF_REPLEN_ASSORTM_GR_CODE]);
     }
@@ -359,7 +359,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DEF_REPLEN_ASSORTM_GR_CODE], $value);
     }
 
-    public function getLscDefReplenGradeCode() : ?string
+    public function getLscDefReplenGradeCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DEF_REPLEN_GRADE_CODE]);
     }
@@ -369,7 +369,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DEF_REPLEN_GRADE_CODE], $value);
     }
 
-    public function getNotDiscountable() : ?bool
+    public function getNotDiscountable(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::NOT_DISCOUNTABLE]);
     }
@@ -379,7 +379,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::NOT_DISCOUNTABLE], $value);
     }
 
-    public function getPhysInvtCountingPeriodCode() : ?string
+    public function getPhysInvtCountingPeriodCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PHYS_INVT_COUNTING_PERIOD_CODE]);
     }
@@ -389,7 +389,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::PHYS_INVT_COUNTING_PERIOD_CODE], $value);
     }
 
-    public function getAllocationRuleCode() : ?string
+    public function getAllocationRuleCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALLOCATION_RULE_CODE]);
     }
@@ -399,7 +399,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::ALLOCATION_RULE_CODE], $value);
     }
 
-    public function getOutboundCode() : ?string
+    public function getOutboundCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::OUTBOUND_CODE]);
     }
@@ -409,7 +409,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::OUTBOUND_CODE], $value);
     }
 
-    public function getSortOrder() : ?int
+    public function getSortOrder(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SORT_ORDER]);
     }
@@ -419,7 +419,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SORT_ORDER], $value);
     }
 
-    public function getPlbGroup() : ?bool
+    public function getPlbGroup(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PLB_GROUP]);
     }
@@ -429,7 +429,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::PLB_GROUP], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -439,7 +439,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -449,7 +449,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -459,7 +459,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -469,7 +469,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -486,7 +486,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -498,7 +498,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -510,7 +510,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -522,7 +522,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -534,7 +534,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -546,7 +546,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -558,7 +558,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -570,7 +570,7 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

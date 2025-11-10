@@ -29,7 +29,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getItemNo() : ?string
+    public function getItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
     }
@@ -39,7 +39,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
     }
 
-    public function getSalesCode() : ?string
+    public function getSalesCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALES_CODE]);
     }
@@ -49,7 +49,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::SALES_CODE], $value);
     }
 
-    public function getCurrencyCode() : ?string
+    public function getCurrencyCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
     }
@@ -59,7 +59,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
     }
 
-    public function getStartingDate() : ?string
+    public function getStartingDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STARTING_DATE]);
     }
@@ -69,7 +69,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::STARTING_DATE], $value);
     }
 
-    public function getUnitPrice() : ?float
+    public function getUnitPrice(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNIT_PRICE]);
     }
@@ -79,7 +79,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::UNIT_PRICE], $value);
     }
 
-    public function getPriceIncludesVat() : ?bool
+    public function getPriceIncludesVat(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRICE_INCLUDES_VAT]);
     }
@@ -89,7 +89,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::PRICE_INCLUDES_VAT], $value);
     }
 
-    public function getAllowInvoiceDisc() : ?bool
+    public function getAllowInvoiceDisc(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALLOW_INVOICE_DISC]);
     }
@@ -99,7 +99,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::ALLOW_INVOICE_DISC], $value);
     }
 
-    public function getVatBusPostingGrPrice() : ?string
+    public function getVatBusPostingGrPrice(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GR_PRICE]);
     }
@@ -109,7 +109,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GR_PRICE], $value);
     }
 
-    public function getSalesType() : ?int
+    public function getSalesType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALES_TYPE]);
     }
@@ -119,7 +119,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::SALES_TYPE], $value);
     }
 
-    public function getMinimumQuantity() : ?float
+    public function getMinimumQuantity(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MINIMUM_QUANTITY]);
     }
@@ -129,7 +129,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::MINIMUM_QUANTITY], $value);
     }
 
-    public function getEndingDate() : ?string
+    public function getEndingDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ENDING_DATE]);
     }
@@ -139,7 +139,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::ENDING_DATE], $value);
     }
 
-    public function getUnitOfMeasureCode() : ?string
+    public function getUnitOfMeasureCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE]);
     }
@@ -149,7 +149,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE], $value);
     }
 
-    public function getVariantCode() : ?string
+    public function getVariantCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
     }
@@ -159,7 +159,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
     }
 
-    public function getAllowLineDisc() : ?bool
+    public function getAllowLineDisc(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALLOW_LINE_DISC]);
     }
@@ -169,7 +169,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::ALLOW_LINE_DISC], $value);
     }
 
-    public function getLscMarkup() : ?float
+    public function getLscMarkup(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_MARKUP]);
     }
@@ -179,7 +179,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::LSC_MARKUP], $value);
     }
 
-    public function getLscProfit() : ?float
+    public function getLscProfit(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_PROFIT]);
     }
@@ -189,7 +189,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::LSC_PROFIT], $value);
     }
 
-    public function getLscProfitLcy() : ?float
+    public function getLscProfitLcy(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_PROFIT_LCY]);
     }
@@ -199,7 +199,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::LSC_PROFIT_LCY], $value);
     }
 
-    public function getLscUnitPriceIncludingVat() : ?float
+    public function getLscUnitPriceIncludingVat(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_UNIT_PRICE_INCLUDING_VAT]);
     }
@@ -209,7 +209,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::LSC_UNIT_PRICE_INCLUDING_VAT], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -219,7 +219,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -229,7 +229,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -239,7 +239,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -249,7 +249,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -266,7 +266,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -278,7 +278,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -290,7 +290,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -302,7 +302,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -314,7 +314,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -326,7 +326,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -338,7 +338,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -350,7 +350,7 @@ class ReplSalesPrice extends \Ls\Omni\Client\CentralEcommerce\Entity\SalesPrice 
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

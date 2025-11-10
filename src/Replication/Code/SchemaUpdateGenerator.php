@@ -496,9 +496,19 @@ class SchemaUpdateGenerator implements GeneratorInterface
                             }
 
                             if ($tableIncludedInIndex) {
-                                if (in_array($propertyName, self::$indexerColumnLists[$tableName]) && $fieldType == 'text') {
-                                    $fieldType = 'varchar';
+                                if ($columnMappings) {
+                                    if (isset($columnMappings[$propertyName])) {
+                                        $mappedColumnName = $columnMappings[$propertyName];
+
+                                        if (in_array(
+                                            $mappedColumnName,
+                                            self::$indexerColumnLists[$tableName]) && $fieldType == 'text'
+                                        ) {
+                                            $fieldType = 'varchar';
+                                        }
+                                    }
                                 }
+
                             }
                             $defaultColumnsArray[$constName]['field_type'] = $fieldType;
                             $defaultColumnsArray[$constName]['default'] = $default;

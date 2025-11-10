@@ -10,398 +10,398 @@ namespace Ls\Replication\Api\Central\Data;
 
 interface ReplVendorInterface
 {
-    public static function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping(): array;
 
-    public function getNo() : ?string;
+    public function getNo(): ?string;
 
     public function setNo(?string $value);
 
-    public function getName() : ?string;
+    public function getName(): ?string;
 
     public function setName(?string $value);
 
-    public function getSearchName() : ?string;
+    public function getSearchName(): ?string;
 
     public function setSearchName(?string $value);
 
-    public function getName2() : ?string;
+    public function getName2(): ?string;
 
     public function setName2(?string $value);
 
-    public function getAddress() : ?string;
+    public function getAddress(): ?string;
 
     public function setAddress(?string $value);
 
-    public function getAddress2() : ?string;
+    public function getAddress2(): ?string;
 
     public function setAddress2(?string $value);
 
-    public function getCity() : ?string;
+    public function getCity(): ?string;
 
     public function setCity(?string $value);
 
-    public function getContact() : ?string;
+    public function getContact(): ?string;
 
     public function setContact(?string $value);
 
-    public function getPhoneNo() : ?string;
+    public function getPhoneNo(): ?string;
 
     public function setPhoneNo(?string $value);
 
-    public function getTelexNo() : ?string;
+    public function getTelexNo(): ?string;
 
     public function setTelexNo(?string $value);
 
-    public function getOurAccountNo() : ?string;
+    public function getOurAccountNo(): ?string;
 
     public function setOurAccountNo(?string $value);
 
-    public function getTerritoryCode() : ?string;
+    public function getTerritoryCode(): ?string;
 
     public function setTerritoryCode(?string $value);
 
-    public function getGlobalDimension1Code() : ?string;
+    public function getGlobalDimension1Code(): ?string;
 
     public function setGlobalDimension1Code(?string $value);
 
-    public function getGlobalDimension2Code() : ?string;
+    public function getGlobalDimension2Code(): ?string;
 
     public function setGlobalDimension2Code(?string $value);
 
-    public function getBudgetedAmount() : ?float;
+    public function getBudgetedAmount(): ?float;
 
     public function setBudgetedAmount(?float $value);
 
-    public function getVendorPostingGroup() : ?string;
+    public function getVendorPostingGroup(): ?string;
 
     public function setVendorPostingGroup(?string $value);
 
-    public function getCurrencyCode() : ?string;
+    public function getCurrencyCode(): ?string;
 
     public function setCurrencyCode(?string $value);
 
-    public function getLanguageCode() : ?string;
+    public function getLanguageCode(): ?string;
 
     public function setLanguageCode(?string $value);
 
-    public function getRegistrationNumber() : ?string;
+    public function getRegistrationNumber(): ?string;
 
     public function setRegistrationNumber(?string $value);
 
-    public function getStatisticsGroup() : ?int;
+    public function getStatisticsGroup(): ?int;
 
     public function setStatisticsGroup(?int $value);
 
-    public function getPaymentTermsCode() : ?string;
+    public function getPaymentTermsCode(): ?string;
 
     public function setPaymentTermsCode(?string $value);
 
-    public function getFinChargeTermsCode() : ?string;
+    public function getFinChargeTermsCode(): ?string;
 
     public function setFinChargeTermsCode(?string $value);
 
-    public function getPurchaserCode() : ?string;
+    public function getPurchaserCode(): ?string;
 
     public function setPurchaserCode(?string $value);
 
-    public function getShipmentMethodCode() : ?string;
+    public function getShipmentMethodCode(): ?string;
 
     public function setShipmentMethodCode(?string $value);
 
-    public function getShippingAgentCode() : ?string;
+    public function getShippingAgentCode(): ?string;
 
     public function setShippingAgentCode(?string $value);
 
-    public function getInvoiceDiscCode() : ?string;
+    public function getInvoiceDiscCode(): ?string;
 
     public function setInvoiceDiscCode(?string $value);
 
-    public function getCountryRegionCode() : ?string;
+    public function getCountryRegionCode(): ?string;
 
     public function setCountryRegionCode(?string $value);
 
-    public function getBlocked() : ?int;
+    public function getBlocked(): ?int;
 
     public function setBlocked(?int $value);
 
-    public function getPayToVendorNo() : ?string;
+    public function getPayToVendorNo(): ?string;
 
     public function setPayToVendorNo(?string $value);
 
-    public function getPriority() : ?int;
+    public function getPriority(): ?int;
 
     public function setPriority(?int $value);
 
-    public function getPaymentMethodCode() : ?string;
+    public function getPaymentMethodCode(): ?string;
 
     public function setPaymentMethodCode(?string $value);
 
-    public function getFormatRegion() : ?string;
+    public function getFormatRegion(): ?string;
 
     public function setFormatRegion(?string $value);
 
-    public function getLastModifiedDateTime() : ?string;
+    public function getLastModifiedDateTime(): ?string;
 
     public function setLastModifiedDateTime(?string $value);
 
-    public function getLastDateModified() : ?string;
+    public function getLastDateModified(): ?string;
 
     public function setLastDateModified(?string $value);
 
-    public function getApplicationMethod() : ?int;
+    public function getApplicationMethod(): ?int;
 
     public function setApplicationMethod(?int $value);
 
-    public function getPricesIncludingVat() : ?bool;
+    public function getPricesIncludingVat(): ?bool;
 
     public function setPricesIncludingVat(?bool $value);
 
-    public function getFaxNo() : ?string;
+    public function getFaxNo(): ?string;
 
     public function setFaxNo(?string $value);
 
-    public function getTelexAnswerBack() : ?string;
+    public function getTelexAnswerBack(): ?string;
 
     public function setTelexAnswerBack(?string $value);
 
-    public function getVatRegistrationNo() : ?string;
+    public function getVatRegistrationNo(): ?string;
 
     public function setVatRegistrationNo(?string $value);
 
-    public function getGenBusPostingGroup() : ?string;
+    public function getGenBusPostingGroup(): ?string;
 
     public function setGenBusPostingGroup(?string $value);
 
-    public function getGln() : ?string;
+    public function getGln(): ?string;
 
     public function setGln(?string $value);
 
-    public function getPostCode() : ?string;
+    public function getPostCode(): ?string;
 
     public function setPostCode(?string $value);
 
-    public function getCounty() : ?string;
+    public function getCounty(): ?string;
 
     public function setCounty(?string $value);
 
-    public function getEoriNumber() : ?string;
+    public function getEoriNumber(): ?string;
 
     public function setEoriNumber(?string $value);
 
-    public function getEMail() : ?string;
+    public function getEMail(): ?string;
 
     public function setEMail(?string $value);
 
-    public function getHomePage() : ?string;
+    public function getHomePage(): ?string;
 
     public function setHomePage(?string $value);
 
-    public function getNoSeries() : ?string;
+    public function getNoSeries(): ?string;
 
     public function setNoSeries(?string $value);
 
-    public function getTaxAreaCode() : ?string;
+    public function getTaxAreaCode(): ?string;
 
     public function setTaxAreaCode(?string $value);
 
-    public function getTaxLiable() : ?bool;
+    public function getTaxLiable(): ?bool;
 
     public function setTaxLiable(?bool $value);
 
-    public function getVatBusPostingGroup() : ?string;
+    public function getVatBusPostingGroup(): ?string;
 
     public function setVatBusPostingGroup(?string $value);
 
-    public function getBlockPaymentTolerance() : ?bool;
+    public function getBlockPaymentTolerance(): ?bool;
 
     public function setBlockPaymentTolerance(?bool $value);
 
-    public function getIcPartnerCode() : ?string;
+    public function getIcPartnerCode(): ?string;
 
     public function setIcPartnerCode(?string $value);
 
-    public function getPrepayment() : ?float;
+    public function getPrepayment(): ?float;
 
     public function setPrepayment(?float $value);
 
-    public function getPartnerType() : ?int;
+    public function getPartnerType(): ?int;
 
     public function setPartnerType(?int $value);
 
-    public function getIntrastatPartnerType() : ?int;
+    public function getIntrastatPartnerType(): ?int;
 
     public function setIntrastatPartnerType(?int $value);
 
-    public function getExcludeFromPmtPractices() : ?bool;
+    public function getExcludeFromPmtPractices(): ?bool;
 
     public function setExcludeFromPmtPractices(?bool $value);
 
-    public function getCompanySizeCode() : ?string;
+    public function getCompanySizeCode(): ?string;
 
     public function setCompanySizeCode(?string $value);
 
-    public function getImage() : ?string;
+    public function getImage(): ?string;
 
     public function setImage(?string $value);
 
-    public function getPrivacyBlocked() : ?bool;
+    public function getPrivacyBlocked(): ?bool;
 
     public function setPrivacyBlocked(?bool $value);
 
-    public function getDisableSearchByName() : ?bool;
+    public function getDisableSearchByName(): ?bool;
 
     public function setDisableSearchByName(?bool $value);
 
-    public function getCreditorNo() : ?string;
+    public function getCreditorNo(): ?string;
 
     public function setCreditorNo(?string $value);
 
-    public function getAllowMultiplePostingGroups() : ?bool;
+    public function getAllowMultiplePostingGroups(): ?bool;
 
     public function setAllowMultiplePostingGroups(?bool $value);
 
-    public function getPreferredBankAccountCode() : ?string;
+    public function getPreferredBankAccountCode(): ?string;
 
     public function setPreferredBankAccountCode(?string $value);
 
-    public function getCashFlowPaymentTermsCode() : ?string;
+    public function getCashFlowPaymentTermsCode(): ?string;
 
     public function setCashFlowPaymentTermsCode(?string $value);
 
-    public function getPrimaryContactNo() : ?string;
+    public function getPrimaryContactNo(): ?string;
 
     public function setPrimaryContactNo(?string $value);
 
-    public function getMobilePhoneNo() : ?string;
+    public function getMobilePhoneNo(): ?string;
 
     public function setMobilePhoneNo(?string $value);
 
-    public function getResponsibilityCenter() : ?string;
+    public function getResponsibilityCenter(): ?string;
 
     public function setResponsibilityCenter(?string $value);
 
-    public function getLocationCode() : ?string;
+    public function getLocationCode(): ?string;
 
     public function setLocationCode(?string $value);
 
-    public function getLeadTimeCalculation() : ?string;
+    public function getLeadTimeCalculation(): ?string;
 
     public function setLeadTimeCalculation(?string $value);
 
-    public function getPriceCalculationMethod() : ?int;
+    public function getPriceCalculationMethod(): ?int;
 
     public function setPriceCalculationMethod(?int $value);
 
-    public function getBaseCalendarCode() : ?string;
+    public function getBaseCalendarCode(): ?string;
 
     public function setBaseCalendarCode(?string $value);
 
-    public function getDocumentSendingProfile() : ?string;
+    public function getDocumentSendingProfile(): ?string;
 
     public function setDocumentSendingProfile(?string $value);
 
-    public function getValidateEuVatRegNo() : ?bool;
+    public function getValidateEuVatRegNo(): ?bool;
 
     public function setValidateEuVatRegNo(?bool $value);
 
-    public function getCurrencyId() : ?string;
+    public function getCurrencyId(): ?string;
 
     public function setCurrencyId(?string $value);
 
-    public function getPaymentTermsId() : ?string;
+    public function getPaymentTermsId(): ?string;
 
     public function setPaymentTermsId(?string $value);
 
-    public function getPaymentMethodId() : ?string;
+    public function getPaymentMethodId(): ?string;
 
     public function setPaymentMethodId(?string $value);
 
-    public function getOverReceiptCode() : ?string;
+    public function getOverReceiptCode(): ?string;
 
     public function setOverReceiptCode(?string $value);
 
-    public function getLscRtcFilterField() : ?int;
+    public function getLscRtcFilterField(): ?int;
 
     public function setLscRtcFilterField(?int $value);
 
-    public function getLscEnableForRelCalendar() : ?bool;
+    public function getLscEnableForRelCalendar(): ?bool;
 
     public function setLscEnableForRelCalendar(?bool $value);
 
-    public function getLscReleaseCalendarGroup() : ?string;
+    public function getLscReleaseCalendarGroup(): ?string;
 
     public function setLscReleaseCalendarGroup(?string $value);
 
-    public function getLscBuyerGroupCode() : ?string;
+    public function getLscBuyerGroupCode(): ?string;
 
     public function setLscBuyerGroupCode(?string $value);
 
-    public function getLscBuyerId() : ?string;
+    public function getLscBuyerId(): ?string;
 
     public function setLscBuyerId(?string $value);
 
-    public function getLscAsnTrustProfile() : ?string;
+    public function getLscAsnTrustProfile(): ?string;
 
     public function setLscAsnTrustProfile(?string $value);
 
-    public function getLscTrustLevel() : ?int;
+    public function getLscTrustLevel(): ?int;
 
     public function setLscTrustLevel(?int $value);
 
-    public function getLscValidateTrackingCode() : ?bool;
+    public function getLscValidateTrackingCode(): ?bool;
 
     public function setLscValidateTrackingCode(?bool $value);
 
-    public function getSystemid() : ?string;
+    public function getSystemid(): ?string;
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?string;
+    public function getSystemcreatedat(): ?string;
 
     public function setSystemcreatedat(?string $value);
 
-    public function getSystemcreatedby() : ?string;
+    public function getSystemcreatedby(): ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?string;
+    public function getSystemmodifiedat(): ?string;
 
     public function setSystemmodifiedat(?string $value);
 
-    public function getSystemmodifiedby() : ?string;
+    public function getSystemmodifiedby(): ?string;
 
     public function setSystemmodifiedby(?string $value);
 
     public function setProcessed(?bool $processed);
 
-    public function getProcessed() : ?bool;
+    public function getProcessed(): ?bool;
 
     public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : ?bool;
+    public function getIsUpdated(): ?bool;
 
     public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : ?bool;
+    public function getIsFailed(): ?bool;
 
     public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : ?string;
+    public function getCreatedAt(): ?string;
 
     public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : ?string;
+    public function getUpdatedAt(): ?string;
 
     public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : ?string;
+    public function getIdentityValue(): ?string;
 
     public function setChecksum(?string $checksum);
 
-    public function getChecksum() : ?string;
+    public function getChecksum(): ?string;
 
     public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : ?string;
+    public function getProcessedAt(): ?string;
 }
 

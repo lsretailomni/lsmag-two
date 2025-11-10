@@ -10,238 +10,238 @@ namespace Ls\Replication\Api\Central\Data;
 
 interface ReplLscWiItemBufferInterface
 {
-    public static function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping(): array;
 
-    public function getNo() : ?string;
+    public function getNo(): ?string;
 
     public function setNo(?string $value);
 
-    public function getDescription() : ?string;
+    public function getDescription(): ?string;
 
     public function setDescription(?string $value);
 
-    public function getSearchDescription() : ?string;
+    public function getSearchDescription(): ?string;
 
     public function setSearchDescription(?string $value);
 
-    public function getBaseUnitOfMeasure() : ?string;
+    public function getBaseUnitOfMeasure(): ?string;
 
     public function setBaseUnitOfMeasure(?string $value);
 
-    public function getPriceUnitConversion() : ?int;
+    public function getPriceUnitConversion(): ?int;
 
     public function setPriceUnitConversion(?int $value);
 
-    public function getType() : ?int;
+    public function getType(): ?int;
 
     public function setType(?int $value);
 
-    public function getItemDiscGroup() : ?string;
+    public function getItemDiscGroup(): ?string;
 
     public function setItemDiscGroup(?string $value);
 
-    public function getAllowInvoiceDisc() : ?bool;
+    public function getAllowInvoiceDisc(): ?bool;
 
     public function setAllowInvoiceDisc(?bool $value);
 
-    public function getUnitPrice() : ?float;
+    public function getUnitPrice(): ?float;
 
     public function setUnitPrice(?float $value);
 
-    public function getVendorNo() : ?string;
+    public function getVendorNo(): ?string;
 
     public function setVendorNo(?string $value);
 
-    public function getVendorItemNo() : ?string;
+    public function getVendorItemNo(): ?string;
 
     public function setVendorItemNo(?string $value);
 
-    public function getAlternativeItemNo() : ?string;
+    public function getAlternativeItemNo(): ?string;
 
     public function setAlternativeItemNo(?string $value);
 
-    public function getGrossWeight() : ?float;
+    public function getGrossWeight(): ?float;
 
     public function setGrossWeight(?float $value);
 
-    public function getNetWeight() : ?float;
+    public function getNetWeight(): ?float;
 
     public function setNetWeight(?float $value);
 
-    public function getUnitsPerParcel() : ?float;
+    public function getUnitsPerParcel(): ?float;
 
     public function setUnitsPerParcel(?float $value);
 
-    public function getUnitVolume() : ?float;
+    public function getUnitVolume(): ?float;
 
     public function setUnitVolume(?float $value);
 
-    public function getTariffNo() : ?string;
+    public function getTariffNo(): ?string;
 
     public function setTariffNo(?string $value);
 
-    public function getBlocked() : ?bool;
+    public function getBlocked(): ?bool;
 
     public function setBlocked(?bool $value);
 
-    public function getBlockReason() : ?string;
+    public function getBlockReason(): ?string;
 
     public function setBlockReason(?string $value);
 
-    public function getPriceIncludesVat() : ?bool;
+    public function getPriceIncludesVat(): ?bool;
 
     public function setPriceIncludesVat(?bool $value);
 
-    public function getCountryRegionOfOriginCode() : ?string;
+    public function getCountryRegionOfOriginCode(): ?string;
 
     public function setCountryRegionOfOriginCode(?string $value);
 
-    public function getVatProdPostingGroup() : ?string;
+    public function getVatProdPostingGroup(): ?string;
 
     public function setVatProdPostingGroup(?string $value);
 
-    public function getSalesUnitOfMeasure() : ?string;
+    public function getSalesUnitOfMeasure(): ?string;
 
     public function setSalesUnitOfMeasure(?string $value);
 
-    public function getPurchUnitOfMeasure() : ?string;
+    public function getPurchUnitOfMeasure(): ?string;
 
     public function setPurchUnitOfMeasure(?string $value);
 
-    public function getItemCategoryCode() : ?string;
+    public function getItemCategoryCode(): ?string;
 
     public function setItemCategoryCode(?string $value);
 
-    public function getItemTrackingCode() : ?string;
+    public function getItemTrackingCode(): ?string;
 
     public function setItemTrackingCode(?string $value);
 
-    public function getLscDivisionCode() : ?string;
+    public function getLscDivisionCode(): ?string;
 
     public function setLscDivisionCode(?string $value);
 
-    public function getLscRetailProductCode() : ?string;
+    public function getLscRetailProductCode(): ?string;
 
     public function setLscRetailProductCode(?string $value);
 
-    public function getLscSpecialGroupCodes() : ?string;
+    public function getLscSpecialGroupCodes(): ?string;
 
     public function setLscSpecialGroupCodes(?string $value);
 
-    public function getLscVariantFrameworkCode() : ?string;
+    public function getLscVariantFrameworkCode(): ?string;
 
     public function setLscVariantFrameworkCode(?string $value);
 
-    public function getSeasonCode() : ?string;
+    public function getSeasonCode(): ?string;
 
     public function setSeasonCode(?string $value);
 
-    public function getItemHtml() : ?string;
+    public function getItemHtml(): ?string;
 
     public function setItemHtml(?string $value);
 
-    public function getBlockSaleOnPos() : ?bool;
+    public function getBlockSaleOnPos(): ?bool;
 
     public function setBlockSaleOnPos(?bool $value);
 
-    public function getBlockPurchaseReturn() : ?bool;
+    public function getBlockPurchaseReturn(): ?bool;
 
     public function setBlockPurchaseReturn(?bool $value);
 
-    public function getBlockedOnEcommerce() : ?bool;
+    public function getBlockedOnEcommerce(): ?bool;
 
     public function setBlockedOnEcommerce(?bool $value);
 
-    public function getBlockDiscount() : ?bool;
+    public function getBlockDiscount(): ?bool;
 
     public function setBlockDiscount(?bool $value);
 
-    public function getBlockManualPriceChange() : ?bool;
+    public function getBlockManualPriceChange(): ?bool;
 
     public function setBlockManualPriceChange(?bool $value);
 
-    public function getBlockNegativeAdjustment() : ?bool;
+    public function getBlockNegativeAdjustment(): ?bool;
 
     public function setBlockNegativeAdjustment(?bool $value);
 
-    public function getBlockPositiveAdjustment() : ?bool;
+    public function getBlockPositiveAdjustment(): ?bool;
 
     public function setBlockPositiveAdjustment(?bool $value);
 
-    public function getLscItemFamilyCode() : ?string;
+    public function getLscItemFamilyCode(): ?string;
 
     public function setLscItemFamilyCode(?string $value);
 
-    public function getLscZeroPriceValid() : ?bool;
+    public function getLscZeroPriceValid(): ?bool;
 
     public function setLscZeroPriceValid(?bool $value);
 
-    public function getLscNoDiscountAllowed() : ?bool;
+    public function getLscNoDiscountAllowed(): ?bool;
 
     public function setLscNoDiscountAllowed(?bool $value);
 
-    public function getLscKeyingInPrice() : ?int;
+    public function getLscKeyingInPrice(): ?int;
 
     public function setLscKeyingInPrice(?int $value);
 
-    public function getLscScaleItem() : ?bool;
+    public function getLscScaleItem(): ?bool;
 
     public function setLscScaleItem(?bool $value);
 
-    public function getLscKeyingInQuantity() : ?int;
+    public function getLscKeyingInQuantity(): ?int;
 
     public function setLscKeyingInQuantity(?int $value);
 
-    public function getSystemid() : ?string;
+    public function getSystemid(): ?string;
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?string;
+    public function getSystemcreatedat(): ?string;
 
     public function setSystemcreatedat(?string $value);
 
-    public function getSystemcreatedby() : ?string;
+    public function getSystemcreatedby(): ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?string;
+    public function getSystemmodifiedat(): ?string;
 
     public function setSystemmodifiedat(?string $value);
 
-    public function getSystemmodifiedby() : ?string;
+    public function getSystemmodifiedby(): ?string;
 
     public function setSystemmodifiedby(?string $value);
 
     public function setProcessed(?bool $processed);
 
-    public function getProcessed() : ?bool;
+    public function getProcessed(): ?bool;
 
     public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : ?bool;
+    public function getIsUpdated(): ?bool;
 
     public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : ?bool;
+    public function getIsFailed(): ?bool;
 
     public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : ?string;
+    public function getCreatedAt(): ?string;
 
     public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : ?string;
+    public function getUpdatedAt(): ?string;
 
     public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : ?string;
+    public function getIdentityValue(): ?string;
 
     public function setChecksum(?string $checksum);
 
-    public function getChecksum() : ?string;
+    public function getChecksum(): ?string;
 
     public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : ?string;
+    public function getProcessedAt(): ?string;
 }
 

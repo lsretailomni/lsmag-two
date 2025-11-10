@@ -29,7 +29,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CODE]);
     }
@@ -39,7 +39,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -49,7 +49,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getWarrantyDateFormula() : ?string
+    public function getWarrantyDateFormula(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::WARRANTY_DATE_FORMULA]);
     }
@@ -59,7 +59,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::WARRANTY_DATE_FORMULA], $value);
     }
 
-    public function getManWarrantyDateEntryReqd() : ?bool
+    public function getManWarrantyDateEntryReqd(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAN_WARRANTY_DATE_ENTRY_REQD]);
     }
@@ -69,7 +69,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::MAN_WARRANTY_DATE_ENTRY_REQD], $value);
     }
 
-    public function getManExpirDateEntryReqd() : ?bool
+    public function getManExpirDateEntryReqd(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAN_EXPIR_DATE_ENTRY_REQD]);
     }
@@ -79,7 +79,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::MAN_EXPIR_DATE_ENTRY_REQD], $value);
     }
 
-    public function getStrictExpirationPosting() : ?bool
+    public function getStrictExpirationPosting(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::STRICT_EXPIRATION_POSTING]);
     }
@@ -89,7 +89,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::STRICT_EXPIRATION_POSTING], $value);
     }
 
-    public function getUseExpirationDates() : ?bool
+    public function getUseExpirationDates(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::USE_EXPIRATION_DATES]);
     }
@@ -99,7 +99,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::USE_EXPIRATION_DATES], $value);
     }
 
-    public function getSnSpecificTracking() : ?bool
+    public function getSnSpecificTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_SPECIFIC_TRACKING]);
     }
@@ -109,7 +109,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_SPECIFIC_TRACKING], $value);
     }
 
-    public function getSnInfoInboundMustExist() : ?bool
+    public function getSnInfoInboundMustExist(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_INFO_INBOUND_MUST_EXIST]);
     }
@@ -119,7 +119,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_INFO_INBOUND_MUST_EXIST], $value);
     }
 
-    public function getSnInfoOutboundMustExist() : ?bool
+    public function getSnInfoOutboundMustExist(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_INFO_OUTBOUND_MUST_EXIST]);
     }
@@ -129,7 +129,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_INFO_OUTBOUND_MUST_EXIST], $value);
     }
 
-    public function getSnWarehouseTracking() : ?bool
+    public function getSnWarehouseTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_WAREHOUSE_TRACKING]);
     }
@@ -139,7 +139,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_WAREHOUSE_TRACKING], $value);
     }
 
-    public function getSnPurchaseInboundTracking() : ?bool
+    public function getSnPurchaseInboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_PURCHASE_INBOUND_TRACKING]);
     }
@@ -149,7 +149,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_PURCHASE_INBOUND_TRACKING], $value);
     }
 
-    public function getSnPurchaseOutboundTracking() : ?bool
+    public function getSnPurchaseOutboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_PURCHASE_OUTBOUND_TRACKING]);
     }
@@ -159,7 +159,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_PURCHASE_OUTBOUND_TRACKING], $value);
     }
 
-    public function getSnSalesInboundTracking() : ?bool
+    public function getSnSalesInboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_SALES_INBOUND_TRACKING]);
     }
@@ -169,7 +169,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_SALES_INBOUND_TRACKING], $value);
     }
 
-    public function getSnSalesOutboundTracking() : ?bool
+    public function getSnSalesOutboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_SALES_OUTBOUND_TRACKING]);
     }
@@ -179,7 +179,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_SALES_OUTBOUND_TRACKING], $value);
     }
 
-    public function getSnPosAdjmtInbTracking() : ?bool
+    public function getSnPosAdjmtInbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_POS_ADJMT_INB_TRACKING]);
     }
@@ -189,7 +189,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_POS_ADJMT_INB_TRACKING], $value);
     }
 
-    public function getSnPosAdjmtOutbTracking() : ?bool
+    public function getSnPosAdjmtOutbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_POS_ADJMT_OUTB_TRACKING]);
     }
@@ -199,7 +199,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_POS_ADJMT_OUTB_TRACKING], $value);
     }
 
-    public function getSnNegAdjmtInbTracking() : ?bool
+    public function getSnNegAdjmtInbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_NEG_ADJMT_INB_TRACKING]);
     }
@@ -209,7 +209,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_NEG_ADJMT_INB_TRACKING], $value);
     }
 
-    public function getSnNegAdjmtOutbTracking() : ?bool
+    public function getSnNegAdjmtOutbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_NEG_ADJMT_OUTB_TRACKING]);
     }
@@ -219,7 +219,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_NEG_ADJMT_OUTB_TRACKING], $value);
     }
 
-    public function getSnTransferTracking() : ?bool
+    public function getSnTransferTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_TRANSFER_TRACKING]);
     }
@@ -229,7 +229,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_TRANSFER_TRACKING], $value);
     }
 
-    public function getSnManufInboundTracking() : ?bool
+    public function getSnManufInboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_MANUF_INBOUND_TRACKING]);
     }
@@ -239,7 +239,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_MANUF_INBOUND_TRACKING], $value);
     }
 
-    public function getSnManufOutboundTracking() : ?bool
+    public function getSnManufOutboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_MANUF_OUTBOUND_TRACKING]);
     }
@@ -249,7 +249,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_MANUF_OUTBOUND_TRACKING], $value);
     }
 
-    public function getSnAssemblyInboundTracking() : ?bool
+    public function getSnAssemblyInboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_ASSEMBLY_INBOUND_TRACKING]);
     }
@@ -259,7 +259,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_ASSEMBLY_INBOUND_TRACKING], $value);
     }
 
-    public function getSnAssemblyOutboundTracking() : ?bool
+    public function getSnAssemblyOutboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SN_ASSEMBLY_OUTBOUND_TRACKING]);
     }
@@ -269,7 +269,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SN_ASSEMBLY_OUTBOUND_TRACKING], $value);
     }
 
-    public function getCreateSnInfoOnPosting() : ?bool
+    public function getCreateSnInfoOnPosting(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::CREATE_SN_INFO_ON_POSTING]);
     }
@@ -279,7 +279,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::CREATE_SN_INFO_ON_POSTING], $value);
     }
 
-    public function getLotSpecificTracking() : ?bool
+    public function getLotSpecificTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_SPECIFIC_TRACKING]);
     }
@@ -289,7 +289,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_SPECIFIC_TRACKING], $value);
     }
 
-    public function getLotInfoInboundMustExist() : ?bool
+    public function getLotInfoInboundMustExist(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_INFO_INBOUND_MUST_EXIST]);
     }
@@ -299,7 +299,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_INFO_INBOUND_MUST_EXIST], $value);
     }
 
-    public function getLotInfoOutboundMustExist() : ?bool
+    public function getLotInfoOutboundMustExist(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_INFO_OUTBOUND_MUST_EXIST]);
     }
@@ -309,7 +309,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_INFO_OUTBOUND_MUST_EXIST], $value);
     }
 
-    public function getLotWarehouseTracking() : ?bool
+    public function getLotWarehouseTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_WAREHOUSE_TRACKING]);
     }
@@ -319,7 +319,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_WAREHOUSE_TRACKING], $value);
     }
 
-    public function getLotPurchaseInboundTracking() : ?bool
+    public function getLotPurchaseInboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_PURCHASE_INBOUND_TRACKING]);
     }
@@ -329,7 +329,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_PURCHASE_INBOUND_TRACKING], $value);
     }
 
-    public function getLotPurchaseOutboundTracking() : ?bool
+    public function getLotPurchaseOutboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_PURCHASE_OUTBOUND_TRACKING]);
     }
@@ -339,7 +339,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_PURCHASE_OUTBOUND_TRACKING], $value);
     }
 
-    public function getLotSalesInboundTracking() : ?bool
+    public function getLotSalesInboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_SALES_INBOUND_TRACKING]);
     }
@@ -349,7 +349,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_SALES_INBOUND_TRACKING], $value);
     }
 
-    public function getLotSalesOutboundTracking() : ?bool
+    public function getLotSalesOutboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_SALES_OUTBOUND_TRACKING]);
     }
@@ -359,7 +359,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_SALES_OUTBOUND_TRACKING], $value);
     }
 
-    public function getLotPosAdjmtInbTracking() : ?bool
+    public function getLotPosAdjmtInbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_POS_ADJMT_INB_TRACKING]);
     }
@@ -369,7 +369,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_POS_ADJMT_INB_TRACKING], $value);
     }
 
-    public function getLotPosAdjmtOutbTracking() : ?bool
+    public function getLotPosAdjmtOutbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_POS_ADJMT_OUTB_TRACKING]);
     }
@@ -379,7 +379,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_POS_ADJMT_OUTB_TRACKING], $value);
     }
 
-    public function getLotNegAdjmtInbTracking() : ?bool
+    public function getLotNegAdjmtInbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_NEG_ADJMT_INB_TRACKING]);
     }
@@ -389,7 +389,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_NEG_ADJMT_INB_TRACKING], $value);
     }
 
-    public function getLotNegAdjmtOutbTracking() : ?bool
+    public function getLotNegAdjmtOutbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_NEG_ADJMT_OUTB_TRACKING]);
     }
@@ -399,7 +399,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_NEG_ADJMT_OUTB_TRACKING], $value);
     }
 
-    public function getLotTransferTracking() : ?bool
+    public function getLotTransferTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_TRANSFER_TRACKING]);
     }
@@ -409,7 +409,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_TRANSFER_TRACKING], $value);
     }
 
-    public function getLotManufInboundTracking() : ?bool
+    public function getLotManufInboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_MANUF_INBOUND_TRACKING]);
     }
@@ -419,7 +419,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_MANUF_INBOUND_TRACKING], $value);
     }
 
-    public function getLotManufOutboundTracking() : ?bool
+    public function getLotManufOutboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_MANUF_OUTBOUND_TRACKING]);
     }
@@ -429,7 +429,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_MANUF_OUTBOUND_TRACKING], $value);
     }
 
-    public function getLotAssemblyInboundTracking() : ?bool
+    public function getLotAssemblyInboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_ASSEMBLY_INBOUND_TRACKING]);
     }
@@ -439,7 +439,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_ASSEMBLY_INBOUND_TRACKING], $value);
     }
 
-    public function getLotAssemblyOutboundTracking() : ?bool
+    public function getLotAssemblyOutboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOT_ASSEMBLY_OUTBOUND_TRACKING]);
     }
@@ -449,7 +449,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::LOT_ASSEMBLY_OUTBOUND_TRACKING], $value);
     }
 
-    public function getCreateLotNoInfoOnPosting() : ?bool
+    public function getCreateLotNoInfoOnPosting(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::CREATE_LOT_NO_INFO_ON_POSTING]);
     }
@@ -459,7 +459,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::CREATE_LOT_NO_INFO_ON_POSTING], $value);
     }
 
-    public function getPackageSpecificTracking() : ?bool
+    public function getPackageSpecificTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_SPECIFIC_TRACKING]);
     }
@@ -469,7 +469,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_SPECIFIC_TRACKING], $value);
     }
 
-    public function getPackageWarehouseTracking() : ?bool
+    public function getPackageWarehouseTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_WAREHOUSE_TRACKING]);
     }
@@ -479,7 +479,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_WAREHOUSE_TRACKING], $value);
     }
 
-    public function getPackageInfoInbMustExist() : ?bool
+    public function getPackageInfoInbMustExist(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_INFO_INB_MUST_EXIST]);
     }
@@ -489,7 +489,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_INFO_INB_MUST_EXIST], $value);
     }
 
-    public function getPackageInfoOutbMustExist() : ?bool
+    public function getPackageInfoOutbMustExist(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_INFO_OUTB_MUST_EXIST]);
     }
@@ -499,7 +499,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_INFO_OUTB_MUST_EXIST], $value);
     }
 
-    public function getPackagePurchaseInbTracking() : ?bool
+    public function getPackagePurchaseInbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_PURCHASE_INB_TRACKING]);
     }
@@ -509,7 +509,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_PURCHASE_INB_TRACKING], $value);
     }
 
-    public function getPackagePurchOutbTracking() : ?bool
+    public function getPackagePurchOutbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_PURCH_OUTB_TRACKING]);
     }
@@ -519,7 +519,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_PURCH_OUTB_TRACKING], $value);
     }
 
-    public function getPackageSalesInboundTracking() : ?bool
+    public function getPackageSalesInboundTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_SALES_INBOUND_TRACKING]);
     }
@@ -529,7 +529,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_SALES_INBOUND_TRACKING], $value);
     }
 
-    public function getPackageSalesOutbTracking() : ?bool
+    public function getPackageSalesOutbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_SALES_OUTB_TRACKING]);
     }
@@ -539,7 +539,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_SALES_OUTB_TRACKING], $value);
     }
 
-    public function getPackagePosInbTracking() : ?bool
+    public function getPackagePosInbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_POS_INB_TRACKING]);
     }
@@ -549,7 +549,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_POS_INB_TRACKING], $value);
     }
 
-    public function getPackagePosOutbTracking() : ?bool
+    public function getPackagePosOutbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_POS_OUTB_TRACKING]);
     }
@@ -559,7 +559,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_POS_OUTB_TRACKING], $value);
     }
 
-    public function getPackageNegInbTracking() : ?bool
+    public function getPackageNegInbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_NEG_INB_TRACKING]);
     }
@@ -569,7 +569,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_NEG_INB_TRACKING], $value);
     }
 
-    public function getPackageNegOutbTracking() : ?bool
+    public function getPackageNegOutbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_NEG_OUTB_TRACKING]);
     }
@@ -579,7 +579,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_NEG_OUTB_TRACKING], $value);
     }
 
-    public function getPackageTransferTracking() : ?bool
+    public function getPackageTransferTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_TRANSFER_TRACKING]);
     }
@@ -589,7 +589,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_TRANSFER_TRACKING], $value);
     }
 
-    public function getPackageManufInbTracking() : ?bool
+    public function getPackageManufInbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_MANUF_INB_TRACKING]);
     }
@@ -599,7 +599,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_MANUF_INB_TRACKING], $value);
     }
 
-    public function getPackageManufOutbTracking() : ?bool
+    public function getPackageManufOutbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_MANUF_OUTB_TRACKING]);
     }
@@ -609,7 +609,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_MANUF_OUTB_TRACKING], $value);
     }
 
-    public function getPackageAssemblyInbTracking() : ?bool
+    public function getPackageAssemblyInbTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_ASSEMBLY_INB_TRACKING]);
     }
@@ -619,7 +619,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_ASSEMBLY_INB_TRACKING], $value);
     }
 
-    public function getPackageAssemblyOutTracking() : ?bool
+    public function getPackageAssemblyOutTracking(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PACKAGE_ASSEMBLY_OUT_TRACKING]);
     }
@@ -629,7 +629,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::PACKAGE_ASSEMBLY_OUT_TRACKING], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -639,7 +639,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -649,7 +649,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -659,7 +659,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -669,7 +669,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -686,7 +686,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -698,7 +698,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -710,7 +710,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -722,7 +722,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -734,7 +734,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -746,7 +746,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -758,7 +758,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -770,7 +770,7 @@ class ReplItemTrackingCode extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemT
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

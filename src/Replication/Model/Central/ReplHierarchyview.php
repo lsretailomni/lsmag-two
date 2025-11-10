@@ -29,7 +29,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getHierarchyCode() : ?string
+    public function getHierarchyCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::HIERARCHY_CODE]);
     }
@@ -39,7 +39,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this->setData(self::getDbColumnsMapping()[self::HIERARCHY_CODE], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -49,7 +49,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getType() : ?int
+    public function getType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TYPE]);
     }
@@ -59,7 +59,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this->setData(self::getDbColumnsMapping()[self::TYPE], $value);
     }
 
-    public function getStartDate() : ?string
+    public function getStartDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::START_DATE]);
     }
@@ -69,7 +69,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this->setData(self::getDbColumnsMapping()[self::START_DATE], $value);
     }
 
-    public function getPriority() : ?int
+    public function getPriority(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRIORITY]);
     }
@@ -79,7 +79,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this->setData(self::getDbColumnsMapping()[self::PRIORITY], $value);
     }
 
-    public function getSalesTypeFilter() : ?string
+    public function getSalesTypeFilter(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALES_TYPE_FILTER]);
     }
@@ -89,7 +89,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this->setData(self::getDbColumnsMapping()[self::SALES_TYPE_FILTER], $value);
     }
 
-    public function getValidationScheduleId() : ?string
+    public function getValidationScheduleId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VALIDATION_SCHEDULE_ID]);
     }
@@ -106,7 +106,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -118,7 +118,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -130,7 +130,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -142,7 +142,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -154,7 +154,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -166,7 +166,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -178,7 +178,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -190,7 +190,7 @@ class ReplHierarchyview extends \Ls\Omni\Client\CentralEcommerce\Entity\Hierarch
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

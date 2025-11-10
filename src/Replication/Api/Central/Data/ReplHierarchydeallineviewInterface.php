@@ -10,94 +10,94 @@ namespace Ls\Replication\Api\Central\Data;
 
 interface ReplHierarchydeallineviewInterface
 {
-    public static function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping(): array;
 
-    public function getHierarchyCode() : ?string;
+    public function getHierarchyCode(): ?string;
 
     public function setHierarchyCode(?string $value);
 
-    public function getNodeId() : ?string;
+    public function getNodeId(): ?string;
 
     public function setNodeId(?string $value);
 
-    public function getOfferNo() : ?string;
+    public function getOfferNo(): ?string;
 
     public function setOfferNo(?string $value);
 
-    public function getOfferLineNo() : ?int;
+    public function getOfferLineNo(): ?int;
 
     public function setOfferLineNo(?int $value);
 
-    public function getDealModifierLineNo() : ?int;
+    public function getDealModifierLineNo(): ?int;
 
     public function setDealModifierLineNo(?int $value);
 
-    public function getDealModifierCode() : ?string;
+    public function getDealModifierCode(): ?string;
 
     public function setDealModifierCode(?string $value);
 
-    public function getItemNo() : ?string;
+    public function getItemNo(): ?string;
 
     public function setItemNo(?string $value);
 
-    public function getDescription() : ?string;
+    public function getDescription(): ?string;
 
     public function setDescription(?string $value);
 
-    public function getVariantCode() : ?string;
+    public function getVariantCode(): ?string;
 
     public function setVariantCode(?string $value);
 
-    public function getUnitOfMeasure() : ?string;
+    public function getUnitOfMeasure(): ?string;
 
     public function setUnitOfMeasure(?string $value);
 
-    public function getMinSelection() : ?int;
+    public function getMinSelection(): ?int;
 
     public function setMinSelection(?int $value);
 
-    public function getMaxItemSelection() : ?int;
+    public function getMaxItemSelection(): ?int;
 
     public function setMaxItemSelection(?int $value);
 
-    public function getAddedAmount() : ?float;
+    public function getAddedAmount(): ?float;
 
     public function setAddedAmount(?float $value);
 
-    public function getRetailImageId() : ?string;
+    public function getRetailImageId(): ?string;
 
     public function setRetailImageId(?string $value);
 
     public function setProcessed(?bool $processed);
 
-    public function getProcessed() : ?bool;
+    public function getProcessed(): ?bool;
 
     public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : ?bool;
+    public function getIsUpdated(): ?bool;
 
     public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : ?bool;
+    public function getIsFailed(): ?bool;
 
     public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : ?string;
+    public function getCreatedAt(): ?string;
 
     public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : ?string;
+    public function getUpdatedAt(): ?string;
 
     public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : ?string;
+    public function getIdentityValue(): ?string;
 
     public function setChecksum(?string $checksum);
 
-    public function getChecksum() : ?string;
+    public function getChecksum(): ?string;
 
     public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : ?string;
+    public function getProcessedAt(): ?string;
 }
 

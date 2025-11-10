@@ -29,7 +29,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getNo() : ?string
+    public function getNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO]);
     }
@@ -39,7 +39,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::NO], $value);
     }
 
-    public function getName() : ?string
+    public function getName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NAME]);
     }
@@ -49,7 +49,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::NAME], $value);
     }
 
-    public function getSearchName() : ?string
+    public function getSearchName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SEARCH_NAME]);
     }
@@ -59,7 +59,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SEARCH_NAME], $value);
     }
 
-    public function getName2() : ?string
+    public function getName2(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NAME_2]);
     }
@@ -69,7 +69,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::NAME_2], $value);
     }
 
-    public function getAddress() : ?string
+    public function getAddress(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADDRESS]);
     }
@@ -79,7 +79,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::ADDRESS], $value);
     }
 
-    public function getAddress2() : ?string
+    public function getAddress2(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADDRESS_2]);
     }
@@ -89,7 +89,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::ADDRESS_2], $value);
     }
 
-    public function getCity() : ?string
+    public function getCity(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CITY]);
     }
@@ -99,7 +99,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::CITY], $value);
     }
 
-    public function getContact() : ?string
+    public function getContact(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CONTACT]);
     }
@@ -109,7 +109,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::CONTACT], $value);
     }
 
-    public function getPhoneNo() : ?string
+    public function getPhoneNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PHONE_NO]);
     }
@@ -119,7 +119,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PHONE_NO], $value);
     }
 
-    public function getTelexNo() : ?string
+    public function getTelexNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TELEX_NO]);
     }
@@ -129,7 +129,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::TELEX_NO], $value);
     }
 
-    public function getDocumentSendingProfile() : ?string
+    public function getDocumentSendingProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DOCUMENT_SENDING_PROFILE]);
     }
@@ -139,7 +139,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::DOCUMENT_SENDING_PROFILE], $value);
     }
 
-    public function getShipToCode() : ?string
+    public function getShipToCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHIPTO_CODE]);
     }
@@ -149,7 +149,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SHIPTO_CODE], $value);
     }
 
-    public function getOurAccountNo() : ?string
+    public function getOurAccountNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::OUR_ACCOUNT_NO]);
     }
@@ -159,7 +159,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::OUR_ACCOUNT_NO], $value);
     }
 
-    public function getTerritoryCode() : ?string
+    public function getTerritoryCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TERRITORY_CODE]);
     }
@@ -169,7 +169,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::TERRITORY_CODE], $value);
     }
 
-    public function getGlobalDimension1Code() : ?string
+    public function getGlobalDimension1Code(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::GLOBAL_DIMENSION_1_CODE]);
     }
@@ -179,7 +179,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::GLOBAL_DIMENSION_1_CODE], $value);
     }
 
-    public function getGlobalDimension2Code() : ?string
+    public function getGlobalDimension2Code(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::GLOBAL_DIMENSION_2_CODE]);
     }
@@ -189,7 +189,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::GLOBAL_DIMENSION_2_CODE], $value);
     }
 
-    public function getChainName() : ?string
+    public function getChainName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CHAIN_NAME]);
     }
@@ -199,7 +199,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::CHAIN_NAME], $value);
     }
 
-    public function getBudgetedAmount() : ?float
+    public function getBudgetedAmount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::BUDGETED_AMOUNT]);
     }
@@ -209,7 +209,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::BUDGETED_AMOUNT], $value);
     }
 
-    public function getCreditLimitLcy() : ?float
+    public function getCreditLimitLcy(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::CREDIT_LIMIT_LCY]);
     }
@@ -219,7 +219,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::CREDIT_LIMIT_LCY], $value);
     }
 
-    public function getCustomerPostingGroup() : ?string
+    public function getCustomerPostingGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_POSTING_GROUP]);
     }
@@ -229,7 +229,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_POSTING_GROUP], $value);
     }
 
-    public function getCurrencyCode() : ?string
+    public function getCurrencyCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
     }
@@ -239,7 +239,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
     }
 
-    public function getCustomerPriceGroup() : ?string
+    public function getCustomerPriceGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_PRICE_GROUP]);
     }
@@ -249,7 +249,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_PRICE_GROUP], $value);
     }
 
-    public function getLanguageCode() : ?string
+    public function getLanguageCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LANGUAGE_CODE]);
     }
@@ -259,7 +259,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LANGUAGE_CODE], $value);
     }
 
-    public function getRegistrationNumber() : ?string
+    public function getRegistrationNumber(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REGISTRATION_NUMBER]);
     }
@@ -269,7 +269,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::REGISTRATION_NUMBER], $value);
     }
 
-    public function getStatisticsGroup() : ?int
+    public function getStatisticsGroup(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::STATISTICS_GROUP]);
     }
@@ -279,7 +279,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::STATISTICS_GROUP], $value);
     }
 
-    public function getPaymentTermsCode() : ?string
+    public function getPaymentTermsCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_TERMS_CODE]);
     }
@@ -289,7 +289,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_TERMS_CODE], $value);
     }
 
-    public function getFinChargeTermsCode() : ?string
+    public function getFinChargeTermsCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::FIN_CHARGE_TERMS_CODE]);
     }
@@ -299,7 +299,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::FIN_CHARGE_TERMS_CODE], $value);
     }
 
-    public function getSalespersonCode() : ?string
+    public function getSalespersonCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALESPERSON_CODE]);
     }
@@ -309,7 +309,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SALESPERSON_CODE], $value);
     }
 
-    public function getShipmentMethodCode() : ?string
+    public function getShipmentMethodCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHIPMENT_METHOD_CODE]);
     }
@@ -319,7 +319,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SHIPMENT_METHOD_CODE], $value);
     }
 
-    public function getShippingAgentCode() : ?string
+    public function getShippingAgentCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHIPPING_AGENT_CODE]);
     }
@@ -329,7 +329,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SHIPPING_AGENT_CODE], $value);
     }
 
-    public function getPlaceOfExport() : ?string
+    public function getPlaceOfExport(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PLACE_OF_EXPORT]);
     }
@@ -339,7 +339,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PLACE_OF_EXPORT], $value);
     }
 
-    public function getInvoiceDiscCode() : ?string
+    public function getInvoiceDiscCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::INVOICE_DISC_CODE]);
     }
@@ -349,7 +349,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::INVOICE_DISC_CODE], $value);
     }
 
-    public function getCustomerDiscGroup() : ?string
+    public function getCustomerDiscGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP]);
     }
@@ -359,7 +359,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP], $value);
     }
 
-    public function getCountryRegionCode() : ?string
+    public function getCountryRegionCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUNTRYREGION_CODE]);
     }
@@ -369,7 +369,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::COUNTRYREGION_CODE], $value);
     }
 
-    public function getCollectionMethod() : ?string
+    public function getCollectionMethod(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COLLECTION_METHOD]);
     }
@@ -379,7 +379,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::COLLECTION_METHOD], $value);
     }
 
-    public function getAmount() : ?float
+    public function getAmount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::AMOUNT]);
     }
@@ -389,7 +389,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::AMOUNT], $value);
     }
 
-    public function getBlocked() : ?int
+    public function getBlocked(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCKED]);
     }
@@ -399,7 +399,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::BLOCKED], $value);
     }
 
-    public function getInvoiceCopies() : ?int
+    public function getInvoiceCopies(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::INVOICE_COPIES]);
     }
@@ -409,7 +409,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::INVOICE_COPIES], $value);
     }
 
-    public function getLastStatementNo() : ?int
+    public function getLastStatementNo(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_STATEMENT_NO]);
     }
@@ -419,7 +419,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LAST_STATEMENT_NO], $value);
     }
 
-    public function getPrintStatements() : ?bool
+    public function getPrintStatements(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINT_STATEMENTS]);
     }
@@ -429,7 +429,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PRINT_STATEMENTS], $value);
     }
 
-    public function getBillToCustomerNo() : ?string
+    public function getBillToCustomerNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BILLTO_CUSTOMER_NO]);
     }
@@ -439,7 +439,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::BILLTO_CUSTOMER_NO], $value);
     }
 
-    public function getPriority() : ?int
+    public function getPriority(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRIORITY]);
     }
@@ -449,7 +449,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PRIORITY], $value);
     }
 
-    public function getPaymentMethodCode() : ?string
+    public function getPaymentMethodCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_METHOD_CODE]);
     }
@@ -459,7 +459,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_METHOD_CODE], $value);
     }
 
-    public function getFormatRegion() : ?string
+    public function getFormatRegion(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::FORMAT_REGION]);
     }
@@ -469,7 +469,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::FORMAT_REGION], $value);
     }
 
-    public function getLastModifiedDateTime() : ?string
+    public function getLastModifiedDateTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME]);
     }
@@ -479,7 +479,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME], $value);
     }
 
-    public function getLastDateModified() : ?string
+    public function getLastDateModified(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED]);
     }
@@ -489,7 +489,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED], $value);
     }
 
-    public function getApplicationMethod() : ?int
+    public function getApplicationMethod(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::APPLICATION_METHOD]);
     }
@@ -499,7 +499,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::APPLICATION_METHOD], $value);
     }
 
-    public function getPricesIncludingVat() : ?bool
+    public function getPricesIncludingVat(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRICES_INCLUDING_VAT]);
     }
@@ -509,7 +509,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PRICES_INCLUDING_VAT], $value);
     }
 
-    public function getLocationCode() : ?string
+    public function getLocationCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOCATION_CODE]);
     }
@@ -519,7 +519,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LOCATION_CODE], $value);
     }
 
-    public function getFaxNo() : ?string
+    public function getFaxNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::FAX_NO]);
     }
@@ -529,7 +529,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::FAX_NO], $value);
     }
 
-    public function getTelexAnswerBack() : ?string
+    public function getTelexAnswerBack(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TELEX_ANSWER_BACK]);
     }
@@ -539,7 +539,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::TELEX_ANSWER_BACK], $value);
     }
 
-    public function getVatRegistrationNo() : ?string
+    public function getVatRegistrationNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAT_REGISTRATION_NO]);
     }
@@ -549,7 +549,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::VAT_REGISTRATION_NO], $value);
     }
 
-    public function getCombineShipments() : ?bool
+    public function getCombineShipments(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::COMBINE_SHIPMENTS]);
     }
@@ -559,7 +559,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::COMBINE_SHIPMENTS], $value);
     }
 
-    public function getGenBusPostingGroup() : ?string
+    public function getGenBusPostingGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::GEN_BUS_POSTING_GROUP]);
     }
@@ -569,7 +569,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::GEN_BUS_POSTING_GROUP], $value);
     }
 
-    public function getGln() : ?string
+    public function getGln(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::GLN]);
     }
@@ -579,7 +579,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::GLN], $value);
     }
 
-    public function getPostCode() : ?string
+    public function getPostCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POST_CODE]);
     }
@@ -589,7 +589,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::POST_CODE], $value);
     }
 
-    public function getCounty() : ?string
+    public function getCounty(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUNTY]);
     }
@@ -599,7 +599,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::COUNTY], $value);
     }
 
-    public function getEoriNumber() : ?string
+    public function getEoriNumber(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::EORI_NUMBER]);
     }
@@ -609,7 +609,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::EORI_NUMBER], $value);
     }
 
-    public function getUseGlnInElectronicDocument() : ?bool
+    public function getUseGlnInElectronicDocument(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::USE_GLN_IN_ELECTRONIC_DOCUMENT]);
     }
@@ -619,7 +619,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::USE_GLN_IN_ELECTRONIC_DOCUMENT], $value);
     }
 
-    public function getEMail() : ?string
+    public function getEMail(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::EMAIL]);
     }
@@ -629,7 +629,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::EMAIL], $value);
     }
 
-    public function getHomePage() : ?string
+    public function getHomePage(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::HOME_PAGE]);
     }
@@ -639,7 +639,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::HOME_PAGE], $value);
     }
 
-    public function getReminderTermsCode() : ?string
+    public function getReminderTermsCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REMINDER_TERMS_CODE]);
     }
@@ -649,7 +649,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::REMINDER_TERMS_CODE], $value);
     }
 
-    public function getNoSeries() : ?string
+    public function getNoSeries(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO_SERIES]);
     }
@@ -659,7 +659,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::NO_SERIES], $value);
     }
 
-    public function getTaxAreaCode() : ?string
+    public function getTaxAreaCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TAX_AREA_CODE]);
     }
@@ -669,7 +669,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::TAX_AREA_CODE], $value);
     }
 
-    public function getTaxLiable() : ?bool
+    public function getTaxLiable(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::TAX_LIABLE]);
     }
@@ -679,7 +679,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::TAX_LIABLE], $value);
     }
 
-    public function getVatBusPostingGroup() : ?string
+    public function getVatBusPostingGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GROUP]);
     }
@@ -689,7 +689,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GROUP], $value);
     }
 
-    public function getReserve() : ?int
+    public function getReserve(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::RESERVE]);
     }
@@ -699,7 +699,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::RESERVE], $value);
     }
 
-    public function getBlockPaymentTolerance() : ?bool
+    public function getBlockPaymentTolerance(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCK_PAYMENT_TOLERANCE]);
     }
@@ -709,7 +709,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::BLOCK_PAYMENT_TOLERANCE], $value);
     }
 
-    public function getIcPartnerCode() : ?string
+    public function getIcPartnerCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::IC_PARTNER_CODE]);
     }
@@ -719,7 +719,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::IC_PARTNER_CODE], $value);
     }
 
-    public function getPrepayment() : ?float
+    public function getPrepayment(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::PREPAYMENT]);
     }
@@ -729,7 +729,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PREPAYMENT], $value);
     }
 
-    public function getPartnerType() : ?int
+    public function getPartnerType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PARTNER_TYPE]);
     }
@@ -739,7 +739,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PARTNER_TYPE], $value);
     }
 
-    public function getIntrastatPartnerType() : ?int
+    public function getIntrastatPartnerType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::INTRASTAT_PARTNER_TYPE]);
     }
@@ -749,7 +749,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::INTRASTAT_PARTNER_TYPE], $value);
     }
 
-    public function getExcludeFromPmtPractices() : ?bool
+    public function getExcludeFromPmtPractices(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_PMT_PRACTICES]);
     }
@@ -759,7 +759,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::EXCLUDE_FROM_PMT_PRACTICES], $value);
     }
 
-    public function getImage() : ?string
+    public function getImage(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::IMAGE]);
     }
@@ -769,7 +769,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::IMAGE], $value);
     }
 
-    public function getPrivacyBlocked() : ?bool
+    public function getPrivacyBlocked(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRIVACY_BLOCKED]);
     }
@@ -779,7 +779,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PRIVACY_BLOCKED], $value);
     }
 
-    public function getDisableSearchByName() : ?bool
+    public function getDisableSearchByName(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISABLE_SEARCH_BY_NAME]);
     }
@@ -789,7 +789,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::DISABLE_SEARCH_BY_NAME], $value);
     }
 
-    public function getAllowMultiplePostingGroups() : ?bool
+    public function getAllowMultiplePostingGroups(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALLOW_MULTIPLE_POSTING_GROUPS]);
     }
@@ -799,7 +799,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::ALLOW_MULTIPLE_POSTING_GROUPS], $value);
     }
 
-    public function getPreferredBankAccountCode() : ?string
+    public function getPreferredBankAccountCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PREFERRED_BANK_ACCOUNT_CODE]);
     }
@@ -809,7 +809,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PREFERRED_BANK_ACCOUNT_CODE], $value);
     }
 
-    public function getCashFlowPaymentTermsCode() : ?string
+    public function getCashFlowPaymentTermsCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CASH_FLOW_PAYMENT_TERMS_CODE]);
     }
@@ -819,7 +819,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::CASH_FLOW_PAYMENT_TERMS_CODE], $value);
     }
 
-    public function getPrimaryContactNo() : ?string
+    public function getPrimaryContactNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRIMARY_CONTACT_NO]);
     }
@@ -829,7 +829,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PRIMARY_CONTACT_NO], $value);
     }
 
-    public function getContactType() : ?int
+    public function getContactType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::CONTACT_TYPE]);
     }
@@ -839,7 +839,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::CONTACT_TYPE], $value);
     }
 
-    public function getMobilePhoneNo() : ?string
+    public function getMobilePhoneNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::MOBILE_PHONE_NO]);
     }
@@ -849,7 +849,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::MOBILE_PHONE_NO], $value);
     }
 
-    public function getResponsibilityCenter() : ?string
+    public function getResponsibilityCenter(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::RESPONSIBILITY_CENTER]);
     }
@@ -859,7 +859,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::RESPONSIBILITY_CENTER], $value);
     }
 
-    public function getShippingAdvice() : ?int
+    public function getShippingAdvice(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHIPPING_ADVICE]);
     }
@@ -869,7 +869,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SHIPPING_ADVICE], $value);
     }
 
-    public function getShippingTime() : ?string
+    public function getShippingTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHIPPING_TIME]);
     }
@@ -879,7 +879,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SHIPPING_TIME], $value);
     }
 
-    public function getShippingAgentServiceCode() : ?string
+    public function getShippingAgentServiceCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHIPPING_AGENT_SERVICE_CODE]);
     }
@@ -889,7 +889,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SHIPPING_AGENT_SERVICE_CODE], $value);
     }
 
-    public function getServiceZoneCode() : ?string
+    public function getServiceZoneCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SERVICE_ZONE_CODE]);
     }
@@ -899,7 +899,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SERVICE_ZONE_CODE], $value);
     }
 
-    public function getCombineServiceShipments() : ?bool
+    public function getCombineServiceShipments(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::COMBINE_SERVICE_SHIPMENTS]);
     }
@@ -909,7 +909,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::COMBINE_SERVICE_SHIPMENTS], $value);
     }
 
-    public function getPriceCalculationMethod() : ?int
+    public function getPriceCalculationMethod(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRICE_CALCULATION_METHOD]);
     }
@@ -919,7 +919,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PRICE_CALCULATION_METHOD], $value);
     }
 
-    public function getAllowLineDisc() : ?bool
+    public function getAllowLineDisc(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALLOW_LINE_DISC]);
     }
@@ -929,7 +929,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::ALLOW_LINE_DISC], $value);
     }
 
-    public function getBaseCalendarCode() : ?string
+    public function getBaseCalendarCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BASE_CALENDAR_CODE]);
     }
@@ -939,7 +939,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::BASE_CALENDAR_CODE], $value);
     }
 
-    public function getCopySellToAddrToQteFrom() : ?int
+    public function getCopySellToAddrToQteFrom(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::COPY_SELLTO_ADDR_TO_QTE_FROM]);
     }
@@ -949,7 +949,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::COPY_SELLTO_ADDR_TO_QTE_FROM], $value);
     }
 
-    public function getValidateEuVatRegNo() : ?bool
+    public function getValidateEuVatRegNo(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::VALIDATE_EU_VAT_REG_NO]);
     }
@@ -959,7 +959,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::VALIDATE_EU_VAT_REG_NO], $value);
     }
 
-    public function getCurrencyId() : ?string
+    public function getCurrencyId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_ID]);
     }
@@ -969,7 +969,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_ID], $value);
     }
 
-    public function getPaymentTermsId() : ?string
+    public function getPaymentTermsId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_TERMS_ID]);
     }
@@ -979,7 +979,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_TERMS_ID], $value);
     }
 
-    public function getShipmentMethodId() : ?string
+    public function getShipmentMethodId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHIPMENT_METHOD_ID]);
     }
@@ -989,7 +989,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SHIPMENT_METHOD_ID], $value);
     }
 
-    public function getPaymentMethodId() : ?string
+    public function getPaymentMethodId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_METHOD_ID]);
     }
@@ -999,7 +999,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_METHOD_ID], $value);
     }
 
-    public function getTaxAreaId() : ?string
+    public function getTaxAreaId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TAX_AREA_ID]);
     }
@@ -1009,7 +1009,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::TAX_AREA_ID], $value);
     }
 
-    public function getContactId() : ?string
+    public function getContactId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CONTACT_ID]);
     }
@@ -1019,7 +1019,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::CONTACT_ID], $value);
     }
 
-    public function getContactGraphId() : ?string
+    public function getContactGraphId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CONTACT_GRAPH_ID]);
     }
@@ -1029,7 +1029,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::CONTACT_GRAPH_ID], $value);
     }
 
-    public function getLscDateCreated() : ?string
+    public function getLscDateCreated(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DATE_CREATED]);
     }
@@ -1039,7 +1039,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DATE_CREATED], $value);
     }
 
-    public function getLscCreatedByUser() : ?string
+    public function getLscCreatedByUser(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_CREATED_BY_USER]);
     }
@@ -1049,7 +1049,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_CREATED_BY_USER], $value);
     }
 
-    public function getLscExternalId() : ?string
+    public function getLscExternalId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_EXTERNAL_ID]);
     }
@@ -1059,7 +1059,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_EXTERNAL_ID], $value);
     }
 
-    public function getLscCustomerId() : ?string
+    public function getLscCustomerId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_CUSTOMER_ID]);
     }
@@ -1069,7 +1069,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_CUSTOMER_ID], $value);
     }
 
-    public function getLscReasonCode() : ?string
+    public function getLscReasonCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_REASON_CODE]);
     }
@@ -1079,7 +1079,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_REASON_CODE], $value);
     }
 
-    public function getLscRestrictionFunctionality() : ?int
+    public function getLscRestrictionFunctionality(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_RESTRICTION_FUNCTIONALITY]);
     }
@@ -1089,7 +1089,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_RESTRICTION_FUNCTIONALITY], $value);
     }
 
-    public function getLscPrintDocumentInvoice() : ?bool
+    public function getLscPrintDocumentInvoice(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_PRINT_DOCUMENT_INVOICE]);
     }
@@ -1099,7 +1099,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_PRINT_DOCUMENT_INVOICE], $value);
     }
 
-    public function getLscTransactionLimit() : ?float
+    public function getLscTransactionLimit(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_TRANSACTION_LIMIT]);
     }
@@ -1109,7 +1109,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_TRANSACTION_LIMIT], $value);
     }
 
-    public function getLscDaytimePhoneNo() : ?string
+    public function getLscDaytimePhoneNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DAYTIME_PHONE_NO]);
     }
@@ -1119,7 +1119,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DAYTIME_PHONE_NO], $value);
     }
 
-    public function getLscHouseApartmentNo() : ?string
+    public function getLscHouseApartmentNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_HOUSEAPARTMENT_NO]);
     }
@@ -1129,7 +1129,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_HOUSEAPARTMENT_NO], $value);
     }
 
-    public function getLscRetailCustomerGroup() : ?string
+    public function getLscRetailCustomerGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_RETAIL_CUSTOMER_GROUP]);
     }
@@ -1139,7 +1139,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_RETAIL_CUSTOMER_GROUP], $value);
     }
 
-    public function getLscDefaultWeight() : ?float
+    public function getLscDefaultWeight(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DEFAULT_WEIGHT]);
     }
@@ -1149,7 +1149,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DEFAULT_WEIGHT], $value);
     }
 
-    public function getLscOtherTenderInFinalizing() : ?bool
+    public function getLscOtherTenderInFinalizing(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_OTHER_TENDER_IN_FINALIZING]);
     }
@@ -1159,7 +1159,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_OTHER_TENDER_IN_FINALIZING], $value);
     }
 
-    public function getLscPostAsShipment() : ?bool
+    public function getLscPostAsShipment(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_POST_AS_SHIPMENT]);
     }
@@ -1169,7 +1169,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_POST_AS_SHIPMENT], $value);
     }
 
-    public function getLscInclIncExpOnSalesDoc() : ?bool
+    public function getLscInclIncExpOnSalesDoc(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_INCL_INCEXP_ON_SALES_DOC]);
     }
@@ -1179,7 +1179,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_INCL_INCEXP_ON_SALES_DOC], $value);
     }
 
-    public function getLscAmtchargedonposint() : ?float
+    public function getLscAmtchargedonposint(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_AMTCHARGEDONPOSINT]);
     }
@@ -1189,7 +1189,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_AMTCHARGEDONPOSINT], $value);
     }
 
-    public function getLscAmtchargedpostedint() : ?float
+    public function getLscAmtchargedpostedint(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_AMTCHARGEDPOSTEDINT]);
     }
@@ -1199,7 +1199,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_AMTCHARGEDPOSTEDINT], $value);
     }
 
-    public function getLscBalancelcyint() : ?float
+    public function getLscBalancelcyint(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_BALANCELCYINT]);
     }
@@ -1209,7 +1209,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_BALANCELCYINT], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -1219,7 +1219,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -1229,7 +1229,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -1239,7 +1239,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -1249,7 +1249,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -1266,7 +1266,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -1278,7 +1278,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -1290,7 +1290,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -1302,7 +1302,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -1314,7 +1314,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -1326,7 +1326,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -1338,7 +1338,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -1350,7 +1350,7 @@ class ReplCustomer extends \Ls\Omni\Client\CentralEcommerce\Entity\Customer impl
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

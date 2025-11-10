@@ -10,234 +10,234 @@ namespace Ls\Replication\Api\Central\Data;
 
 interface ReplPriceListLineInterface
 {
-    public static function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping(): array;
 
-    public function getPriceListCode() : ?string;
+    public function getPriceListCode(): ?string;
 
     public function setPriceListCode(?string $value);
 
-    public function getLineNo() : ?int;
+    public function getLineNo(): ?int;
 
     public function setLineNo(?int $value);
 
-    public function getSourceType() : ?int;
+    public function getSourceType(): ?int;
 
     public function setSourceType(?int $value);
 
-    public function getSourceNo() : ?string;
+    public function getSourceNo(): ?string;
 
     public function setSourceNo(?string $value);
 
-    public function getParentSourceNo() : ?string;
+    public function getParentSourceNo(): ?string;
 
     public function setParentSourceNo(?string $value);
 
-    public function getSourceId() : ?string;
+    public function getSourceId(): ?string;
 
     public function setSourceId(?string $value);
 
-    public function getAssetType() : ?int;
+    public function getAssetType(): ?int;
 
     public function setAssetType(?int $value);
 
-    public function getAssetNo() : ?string;
+    public function getAssetNo(): ?string;
 
     public function setAssetNo(?string $value);
 
-    public function getVariantCode() : ?string;
+    public function getVariantCode(): ?string;
 
     public function setVariantCode(?string $value);
 
-    public function getCurrencyCode() : ?string;
+    public function getCurrencyCode(): ?string;
 
     public function setCurrencyCode(?string $value);
 
-    public function getWorkTypeCode() : ?string;
+    public function getWorkTypeCode(): ?string;
 
     public function setWorkTypeCode(?string $value);
 
-    public function getStartingDate() : ?string;
+    public function getStartingDate(): ?string;
 
     public function setStartingDate(?string $value);
 
-    public function getEndingDate() : ?string;
+    public function getEndingDate(): ?string;
 
     public function setEndingDate(?string $value);
 
-    public function getMinimumQuantity() : ?float;
+    public function getMinimumQuantity(): ?float;
 
     public function setMinimumQuantity(?float $value);
 
-    public function getUnitOfMeasureCode() : ?string;
+    public function getUnitOfMeasureCode(): ?string;
 
     public function setUnitOfMeasureCode(?string $value);
 
-    public function getAmountType() : ?int;
+    public function getAmountType(): ?int;
 
     public function setAmountType(?int $value);
 
-    public function getUnitPrice() : ?float;
+    public function getUnitPrice(): ?float;
 
     public function setUnitPrice(?float $value);
 
-    public function getCostFactor() : ?float;
+    public function getCostFactor(): ?float;
 
     public function setCostFactor(?float $value);
 
-    public function getUnitCost() : ?float;
+    public function getUnitCost(): ?float;
 
     public function setUnitCost(?float $value);
 
-    public function getLineDiscount() : ?float;
+    public function getLineDiscount(): ?float;
 
     public function setLineDiscount(?float $value);
 
-    public function getAllowLineDisc() : ?bool;
+    public function getAllowLineDisc(): ?bool;
 
     public function setAllowLineDisc(?bool $value);
 
-    public function getAllowInvoiceDisc() : ?bool;
+    public function getAllowInvoiceDisc(): ?bool;
 
     public function setAllowInvoiceDisc(?bool $value);
 
-    public function getPriceIncludesVat() : ?bool;
+    public function getPriceIncludesVat(): ?bool;
 
     public function setPriceIncludesVat(?bool $value);
 
-    public function getVatBusPostingGrPrice() : ?string;
+    public function getVatBusPostingGrPrice(): ?string;
 
     public function setVatBusPostingGrPrice(?string $value);
 
-    public function getVatProdPostingGroup() : ?string;
+    public function getVatProdPostingGroup(): ?string;
 
     public function setVatProdPostingGroup(?string $value);
 
-    public function getAssetId() : ?string;
+    public function getAssetId(): ?string;
 
     public function setAssetId(?string $value);
 
-    public function getLineAmount() : ?float;
+    public function getLineAmount(): ?float;
 
     public function setLineAmount(?float $value);
 
-    public function getPriceType() : ?int;
+    public function getPriceType(): ?int;
 
     public function setPriceType(?int $value);
 
-    public function getDescription() : ?string;
+    public function getDescription(): ?string;
 
     public function setDescription(?string $value);
 
-    public function getStatus() : ?int;
+    public function getStatus(): ?int;
 
     public function setStatus(?int $value);
 
-    public function getDirectUnitCost() : ?float;
+    public function getDirectUnitCost(): ?float;
 
     public function setDirectUnitCost(?float $value);
 
-    public function getSourceGroup() : ?int;
+    public function getSourceGroup(): ?int;
 
     public function setSourceGroup(?int $value);
 
-    public function getProductNo() : ?string;
+    public function getProductNo(): ?string;
 
     public function setProductNo(?string $value);
 
-    public function getAssignToNo() : ?string;
+    public function getAssignToNo(): ?string;
 
     public function setAssignToNo(?string $value);
 
-    public function getAssignToParentNo() : ?string;
+    public function getAssignToParentNo(): ?string;
 
     public function setAssignToParentNo(?string $value);
 
-    public function getVariantCodeLookup() : ?string;
+    public function getVariantCodeLookup(): ?string;
 
     public function setVariantCodeLookup(?string $value);
 
-    public function getUnitOfMeasureCodeLookup() : ?string;
+    public function getUnitOfMeasureCodeLookup(): ?string;
 
     public function setUnitOfMeasureCodeLookup(?string $value);
 
-    public function getLscMarkup() : ?float;
+    public function getLscMarkup(): ?float;
 
     public function setLscMarkup(?float $value);
 
-    public function getLscProfit() : ?float;
+    public function getLscProfit(): ?float;
 
     public function setLscProfit(?float $value);
 
-    public function getLscProfitLcy() : ?float;
+    public function getLscProfitLcy(): ?float;
 
     public function setLscProfitLcy(?float $value);
 
-    public function getLscUnitPriceIncludingVat() : ?float;
+    public function getLscUnitPriceIncludingVat(): ?float;
 
     public function setLscUnitPriceIncludingVat(?float $value);
 
-    public function getLscWholesalePrice() : ?float;
+    public function getLscWholesalePrice(): ?float;
 
     public function setLscWholesalePrice(?float $value);
 
-    public function getLscWholesaleDiscount() : ?float;
+    public function getLscWholesaleDiscount(): ?float;
 
     public function setLscWholesaleDiscount(?float $value);
 
-    public function getLscCompPriceInclVat() : ?float;
+    public function getLscCompPriceInclVat(): ?float;
 
     public function setLscCompPriceInclVat(?float $value);
 
-    public function getSystemid() : ?string;
+    public function getSystemid(): ?string;
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?string;
+    public function getSystemcreatedat(): ?string;
 
     public function setSystemcreatedat(?string $value);
 
-    public function getSystemcreatedby() : ?string;
+    public function getSystemcreatedby(): ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?string;
+    public function getSystemmodifiedat(): ?string;
 
     public function setSystemmodifiedat(?string $value);
 
-    public function getSystemmodifiedby() : ?string;
+    public function getSystemmodifiedby(): ?string;
 
     public function setSystemmodifiedby(?string $value);
 
     public function setProcessed(?bool $processed);
 
-    public function getProcessed() : ?bool;
+    public function getProcessed(): ?bool;
 
     public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : ?bool;
+    public function getIsUpdated(): ?bool;
 
     public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : ?bool;
+    public function getIsFailed(): ?bool;
 
     public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : ?string;
+    public function getCreatedAt(): ?string;
 
     public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : ?string;
+    public function getUpdatedAt(): ?string;
 
     public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : ?string;
+    public function getIdentityValue(): ?string;
 
     public function setChecksum(?string $checksum);
 
-    public function getChecksum() : ?string;
+    public function getChecksum(): ?string;
 
     public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : ?string;
+    public function getProcessedAt(): ?string;
 }
 

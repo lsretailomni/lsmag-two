@@ -59,7 +59,7 @@ class ReplLscBarcodesRepositoryTest extends TestCase
      */
     private $entitySearchResultsInterface = null;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->objectFactory = $this->createPartialMock(Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcodesFactory::class, ['create']);
         $this->collectionFactory = $this->createMock(CollectionFactory::class);

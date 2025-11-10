@@ -10,126 +10,126 @@ namespace Ls\Replication\Api\Central\Data;
 
 interface ReplLscWiMixMatchOfferExtInterface
 {
-    public static function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping(): array;
 
-    public function getCustomerDiscGroup() : ?string;
+    public function getCustomerDiscGroup(): ?string;
 
     public function setCustomerDiscGroup(?string $value);
 
-    public function getDescription() : ?string;
+    public function getDescription(): ?string;
 
     public function setDescription(?string $value);
 
-    public function getExclude() : ?bool;
+    public function getExclude(): ?bool;
 
     public function setExclude(?bool $value);
 
-    public function getFromDate() : ?string;
+    public function getFromDate(): ?string;
 
     public function setFromDate(?string $value);
 
-    public function getItemNo() : ?string;
+    public function getItemNo(): ?string;
 
     public function setItemNo(?string $value);
 
-    public function getLastModifyDate() : ?string;
+    public function getLastModifyDate(): ?string;
 
     public function setLastModifyDate(?string $value);
 
-    public function getLoyaltySchemeCode() : ?string;
+    public function getLoyaltySchemeCode(): ?string;
 
     public function setLoyaltySchemeCode(?string $value);
 
-    public function getOfferNo() : ?string;
+    public function getOfferNo(): ?string;
 
     public function setOfferNo(?string $value);
 
-    public function getPopUpLine1() : ?string;
+    public function getPopUpLine1(): ?string;
 
     public function setPopUpLine1(?string $value);
 
-    public function getPopUpLine2() : ?string;
+    public function getPopUpLine2(): ?string;
 
     public function setPopUpLine2(?string $value);
 
-    public function getPopUpLine3() : ?string;
+    public function getPopUpLine3(): ?string;
 
     public function setPopUpLine3(?string $value);
 
-    public function getPriority() : ?int;
+    public function getPriority(): ?int;
 
     public function setPriority(?int $value);
 
-    public function getStoreNo() : ?string;
+    public function getStoreNo(): ?string;
 
     public function setStoreNo(?string $value);
 
-    public function getSystemcreatedat() : ?string;
+    public function getSystemcreatedat(): ?string;
 
     public function setSystemcreatedat(?string $value);
 
-    public function getSystemcreatedby() : ?string;
+    public function getSystemcreatedby(): ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?string;
+    public function getSystemmodifiedat(): ?string;
 
     public function setSystemmodifiedat(?string $value);
 
-    public function getSystemmodifiedby() : ?string;
+    public function getSystemmodifiedby(): ?string;
 
     public function setSystemmodifiedby(?string $value);
 
-    public function getToDate() : ?string;
+    public function getToDate(): ?string;
 
     public function setToDate(?string $value);
 
-    public function getType() : ?int;
+    public function getType(): ?int;
 
     public function setType(?int $value);
 
-    public function getValidationPeriodId() : ?string;
+    public function getValidationPeriodId(): ?string;
 
     public function setValidationPeriodId(?string $value);
 
-    public function getVariantCode() : ?string;
+    public function getVariantCode(): ?string;
 
     public function setVariantCode(?string $value);
 
-    public function getSystemid() : ?string;
+    public function getSystemid(): ?string;
 
     public function setSystemid(?string $value);
 
     public function setProcessed(?bool $processed);
 
-    public function getProcessed() : ?bool;
+    public function getProcessed(): ?bool;
 
     public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : ?bool;
+    public function getIsUpdated(): ?bool;
 
     public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : ?bool;
+    public function getIsFailed(): ?bool;
 
     public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : ?string;
+    public function getCreatedAt(): ?string;
 
     public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : ?string;
+    public function getUpdatedAt(): ?string;
 
     public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : ?string;
+    public function getIdentityValue(): ?string;
 
     public function setChecksum(?string $checksum);
 
-    public function getChecksum() : ?string;
+    public function getChecksum(): ?string;
 
     public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : ?string;
+    public function getProcessedAt(): ?string;
 }
 

@@ -29,7 +29,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getAmountToTrigger() : ?float
+    public function getAmountToTrigger(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::AMOUNT_TO_TRIGGER]);
     }
@@ -39,7 +39,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::AMOUNT_TO_TRIGGER], $value);
     }
 
-    public function getCouponCode() : ?string
+    public function getCouponCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUPON_CODE]);
     }
@@ -49,7 +49,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::COUPON_CODE], $value);
     }
 
-    public function getCouponQtyNeeded() : ?float
+    public function getCouponQtyNeeded(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUPON_QTY_NEEDED]);
     }
@@ -59,7 +59,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::COUPON_QTY_NEEDED], $value);
     }
 
-    public function getCurrencyCode() : ?string
+    public function getCurrencyCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
     }
@@ -69,7 +69,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
     }
 
-    public function getCustomerDiscGroup() : ?string
+    public function getCustomerDiscGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP]);
     }
@@ -79,7 +79,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP], $value);
     }
 
-    public function getDealPriceValue() : ?float
+    public function getDealPriceValue(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEAL_PRICE_VALUE]);
     }
@@ -89,7 +89,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::DEAL_PRICE_VALUE], $value);
     }
 
-    public function getDealPriceDisc() : ?float
+    public function getDealPriceDisc(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEAL_PRICEDISC]);
     }
@@ -99,7 +99,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::DEAL_PRICEDISC], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -109,7 +109,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getDiscType() : ?int
+    public function getDiscType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISC_TYPE]);
     }
@@ -119,7 +119,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::DISC_TYPE], $value);
     }
 
-    public function getDiscountValue() : ?float
+    public function getDiscountValue(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_VALUE]);
     }
@@ -129,7 +129,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_VALUE], $value);
     }
 
-    public function getDiscountAmount() : ?float
+    public function getDiscountAmount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT]);
     }
@@ -139,7 +139,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT], $value);
     }
 
-    public function getDiscountAmountIncludingVat() : ?float
+    public function getDiscountAmountIncludingVat(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_INCLUDING_VAT]);
     }
@@ -149,7 +149,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_INCLUDING_VAT], $value);
     }
 
-    public function getDiscountAmountValue() : ?float
+    public function getDiscountAmountValue(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_VALUE]);
     }
@@ -159,7 +159,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_VALUE], $value);
     }
 
-    public function getDiscountType() : ?int
+    public function getDiscountType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_TYPE]);
     }
@@ -169,7 +169,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_TYPE], $value);
     }
 
-    public function getExclude() : ?bool
+    public function getExclude(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXCLUDE]);
     }
@@ -179,7 +179,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::EXCLUDE], $value);
     }
 
-    public function getHeadPriceGroup() : ?string
+    public function getHeadPriceGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::HEAD_PRICE_GROUP]);
     }
@@ -189,7 +189,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::HEAD_PRICE_GROUP], $value);
     }
 
-    public function getHeaderType() : ?int
+    public function getHeaderType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::HEADER_TYPE]);
     }
@@ -199,7 +199,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::HEADER_TYPE], $value);
     }
 
-    public function getLineGroup() : ?string
+    public function getLineGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LINE_GROUP]);
     }
@@ -209,7 +209,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::LINE_GROUP], $value);
     }
 
-    public function getLineNo() : ?int
+    public function getLineNo(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LINE_NO]);
     }
@@ -219,7 +219,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::LINE_NO], $value);
     }
 
-    public function getLineType() : ?int
+    public function getLineType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LINE_TYPE]);
     }
@@ -229,7 +229,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::LINE_TYPE], $value);
     }
 
-    public function getMaximumDiscountAmount() : ?float
+    public function getMaximumDiscountAmount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAXIMUM_DISCOUNT_AMOUNT]);
     }
@@ -239,7 +239,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::MAXIMUM_DISCOUNT_AMOUNT], $value);
     }
 
-    public function getMemberAttribute() : ?string
+    public function getMemberAttribute(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::MEMBER_ATTRIBUTE]);
     }
@@ -249,7 +249,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::MEMBER_ATTRIBUTE], $value);
     }
 
-    public function getMemberPoints() : ?float
+    public function getMemberPoints(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MEMBER_POINTS]);
     }
@@ -259,7 +259,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::MEMBER_POINTS], $value);
     }
 
-    public function getMemberType() : ?int
+    public function getMemberType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::MEMBER_TYPE]);
     }
@@ -269,7 +269,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::MEMBER_TYPE], $value);
     }
 
-    public function getMemberValue() : ?string
+    public function getMemberValue(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::MEMBER_VALUE]);
     }
@@ -279,7 +279,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::MEMBER_VALUE], $value);
     }
 
-    public function getNo() : ?string
+    public function getNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO]);
     }
@@ -289,7 +289,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::NO], $value);
     }
 
-    public function getNoOfItemsNeeded() : ?int
+    public function getNoOfItemsNeeded(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO_OF_ITEMS_NEEDED]);
     }
@@ -299,7 +299,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::NO_OF_ITEMS_NEEDED], $value);
     }
 
-    public function getOfferNo() : ?string
+    public function getOfferNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::OFFER_NO]);
     }
@@ -309,7 +309,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::OFFER_NO], $value);
     }
 
-    public function getOfferPrice() : ?float
+    public function getOfferPrice(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::OFFER_PRICE]);
     }
@@ -319,7 +319,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::OFFER_PRICE], $value);
     }
 
-    public function getOfferPriceIncludingVat() : ?float
+    public function getOfferPriceIncludingVat(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::OFFER_PRICE_INCLUDING_VAT]);
     }
@@ -329,7 +329,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::OFFER_PRICE_INCLUDING_VAT], $value);
     }
 
-    public function getPlannedDemand() : ?float
+    public function getPlannedDemand(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::PLANNED_DEMAND]);
     }
@@ -339,7 +339,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::PLANNED_DEMAND], $value);
     }
 
-    public function getPlannedDemandType() : ?int
+    public function getPlannedDemandType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PLANNED_DEMAND_TYPE]);
     }
@@ -349,7 +349,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::PLANNED_DEMAND_TYPE], $value);
     }
 
-    public function getPopUpLine1() : ?string
+    public function getPopUpLine1(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POPUP_LINE_1]);
     }
@@ -359,7 +359,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::POPUP_LINE_1], $value);
     }
 
-    public function getPopUpLine2() : ?string
+    public function getPopUpLine2(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POPUP_LINE_2]);
     }
@@ -369,7 +369,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::POPUP_LINE_2], $value);
     }
 
-    public function getPopUpLine3() : ?string
+    public function getPopUpLine3(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POPUP_LINE_3]);
     }
@@ -379,7 +379,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::POPUP_LINE_3], $value);
     }
 
-    public function getPriceGroup() : ?string
+    public function getPriceGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRICE_GROUP]);
     }
@@ -389,7 +389,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::PRICE_GROUP], $value);
     }
 
-    public function getPriority() : ?int
+    public function getPriority(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRIORITY]);
     }
@@ -399,7 +399,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::PRIORITY], $value);
     }
 
-    public function getProdGroupCategory() : ?string
+    public function getProdGroupCategory(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PROD_GROUP_CATEGORY]);
     }
@@ -409,7 +409,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::PROD_GROUP_CATEGORY], $value);
     }
 
-    public function getPromptAtScan() : ?bool
+    public function getPromptAtScan(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PROMPT_AT_SCAN]);
     }
@@ -419,7 +419,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::PROMPT_AT_SCAN], $value);
     }
 
-    public function getPromptForAction() : ?int
+    public function getPromptForAction(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PROMPT_FOR_ACTION]);
     }
@@ -429,7 +429,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::PROMPT_FOR_ACTION], $value);
     }
 
-    public function getSplitDealPriceDisc() : ?float
+    public function getSplitDealPriceDisc(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::SPLIT_DEAL_PRICEDISC]);
     }
@@ -439,7 +439,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::SPLIT_DEAL_PRICEDISC], $value);
     }
 
-    public function getStandardPrice() : ?float
+    public function getStandardPrice(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::STANDARD_PRICE]);
     }
@@ -449,7 +449,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::STANDARD_PRICE], $value);
     }
 
-    public function getStandardPriceIncludingVat() : ?float
+    public function getStandardPriceIncludingVat(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::STANDARD_PRICE_INCLUDING_VAT]);
     }
@@ -459,7 +459,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::STANDARD_PRICE_INCLUDING_VAT], $value);
     }
 
-    public function getStatus() : ?int
+    public function getStatus(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::STATUS]);
     }
@@ -469,7 +469,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::STATUS], $value);
     }
 
-    public function getStoreGroupCodes() : ?string
+    public function getStoreGroupCodes(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_GROUP_CODES]);
     }
@@ -479,7 +479,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::STORE_GROUP_CODES], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -489,7 +489,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -499,7 +499,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -509,7 +509,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -519,7 +519,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
     }
 
-    public function getTenderOffer() : ?float
+    public function getTenderOffer(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::TENDER_OFFER]);
     }
@@ -529,7 +529,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::TENDER_OFFER], $value);
     }
 
-    public function getTenderOfferAmount() : ?float
+    public function getTenderOfferAmount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::TENDER_OFFER_AMOUNT]);
     }
@@ -539,7 +539,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::TENDER_OFFER_AMOUNT], $value);
     }
 
-    public function getTenderTypeCode() : ?string
+    public function getTenderTypeCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TENDER_TYPE_CODE]);
     }
@@ -549,7 +549,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::TENDER_TYPE_CODE], $value);
     }
 
-    public function getTenderTypeValue() : ?string
+    public function getTenderTypeValue(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TENDER_TYPE_VALUE]);
     }
@@ -559,7 +559,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::TENDER_TYPE_VALUE], $value);
     }
 
-    public function getTriggerPopUpOnPos() : ?bool
+    public function getTriggerPopUpOnPos(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::TRIGGER_POPUP_ON_POS]);
     }
@@ -569,7 +569,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::TRIGGER_POPUP_ON_POS], $value);
     }
 
-    public function getType() : ?int
+    public function getType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TYPE]);
     }
@@ -579,7 +579,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::TYPE], $value);
     }
 
-    public function getUnitOfMeasure() : ?string
+    public function getUnitOfMeasure(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE]);
     }
@@ -589,7 +589,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE], $value);
     }
 
-    public function getValidFromBeforeExpDate() : ?string
+    public function getValidFromBeforeExpDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VALID_FROM_BEFORE_EXP_DATE]);
     }
@@ -599,7 +599,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::VALID_FROM_BEFORE_EXP_DATE], $value);
     }
 
-    public function getValidToBeforeExpDate() : ?string
+    public function getValidToBeforeExpDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VALID_TO_BEFORE_EXP_DATE]);
     }
@@ -609,7 +609,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::VALID_TO_BEFORE_EXP_DATE], $value);
     }
 
-    public function getValidationPeriodId() : ?string
+    public function getValidationPeriodId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VALIDATION_PERIOD_ID]);
     }
@@ -619,7 +619,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::VALIDATION_PERIOD_ID], $value);
     }
 
-    public function getVariantCode() : ?string
+    public function getVariantCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
     }
@@ -629,7 +629,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
     }
 
-    public function getVariantType() : ?int
+    public function getVariantType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_TYPE]);
     }
@@ -639,7 +639,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_TYPE], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -656,7 +656,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -668,7 +668,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -680,7 +680,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -692,7 +692,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -704,7 +704,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -716,7 +716,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -728,7 +728,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -740,7 +740,7 @@ class ReplPeriodicdiscview extends \Ls\Omni\Client\CentralEcommerce\Entity\Perio
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }
