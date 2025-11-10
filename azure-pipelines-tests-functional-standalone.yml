@@ -246,6 +246,13 @@ jobs:
           echo "SERVICE_CLIENT_ID=$(SERVICE_CLIENT_ID)" >> dev/tests/acceptance/.env
           echo "SERVICE_CLIENT_SECRET=$(SERVICE_CLIENT_SECRET)" >> dev/tests/acceptance/.env
           cat dev/tests/acceptance/.env
+          touch dev/tests/acceptance/.credentials
+          echo "magento/MAGENTO_ADMIN_PASSWORD=$(MAGENTO_ADMIN_PASSWORD)" >> dev/tests/acceptance/.credentials
+          echo "magento/payflow_pro_partner=$(payflow_pro_partner)" >> dev/tests/acceptance/.credentials
+          echo "magento/payflow_pro_user=$(payflow_pro_user)" >> dev/tests/acceptance/.credentials
+          echo "magento/payflow_pro_pwd=$(payflow_pro_pwd)" >> dev/tests/acceptance/.credentials
+          echo "magento/payflow_pro_vendor=$(payflow_pro_vendor)" >> dev/tests/acceptance/.credentials
+          cat dev/tests/acceptance/.credentials
           cp dev/tests/acceptance/.htaccess.sample dev/tests/acceptance/.htaccess
           cd dev/tests/acceptance
           php ../../../vendor/bin/mftf doctor --verbose
