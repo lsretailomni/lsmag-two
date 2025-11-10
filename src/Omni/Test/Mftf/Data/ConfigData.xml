@@ -9,6 +9,55 @@
         <data key="scope_code">base</data>
         <data key="value">{{_ENV.CENTRAL_TYPE}}</data>
     </entity>
+    <entity name="ServiceCentralTypeOnPrem">
+        <data key="path">ls_mag/service/central_type</data>
+        <data key="label">Central Type</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.CENTRAL_TYPE_ON_PREM}}</data>
+    </entity>
+    <entity name="ServiceCentralTypeSaaS">
+        <data key="path">ls_mag/service/central_type</data>
+        <data key="label">Central Type</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.CENTRAL_TYPE_SAAS}}</data>
+    </entity>
+    <entity name="ServiceTenant">
+        <data key="path">ls_mag/service/tenant</data>
+        <data key="label">Tenant</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_TENANT}}</data>
+    </entity>
+    <entity name="ServiceEnv">
+        <data key="path">ls_mag/service/environment_name</data>
+        <data key="label">Environment</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_ENV}}</data>
+    </entity>
+    <entity name="ServiceCompany">
+        <data key="path">ls_mag/service/company_name</data>
+        <data key="label">Company</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_COMPANY}}</data>
+    </entity>
+    <entity name="ServiceClientId">
+        <data key="path">ls_mag/service/client_id</data>
+        <data key="label">Client ID</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_CLIENT_ID}}</data>
+    </entity>
+    <entity name="ServiceClientSecret">
+        <data key="path">ls_mag/service/client_secret</data>
+        <data key="label">Client Secret</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_CLIENT_SECRET}}</data>
+    </entity>
     <entity name="ServiceWebServiceUri">
         <data key="path">ls_mag/service/web_service_uri</data>
         <data key="label">Web Service URI</data>
