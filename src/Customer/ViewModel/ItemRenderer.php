@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Ls\Customer\Test\Mftf\Test\ViewModel;
+namespace Ls\Customer\ViewModel;
 
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;

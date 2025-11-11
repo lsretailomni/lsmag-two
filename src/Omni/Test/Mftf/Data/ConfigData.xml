@@ -58,6 +58,20 @@
         <data key="scope_code">base</data>
         <data key="value">{{_ENV.SERVICE_CLIENT_SECRET}}</data>
     </entity>
+    <entity name="ServiceClientIdDisabled">
+        <data key="path">ls_mag/service/client_id</data>
+        <data key="label">Client ID</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_USERNAME_DISABLED}}</data>
+    </entity>
+    <entity name="ServiceClientSecretDisabled">
+        <data key="path">ls_mag/service/client_secret</data>
+        <data key="label">Client Secret</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_PASSWORD_DISABLED}}</data>
+    </entity>
     <entity name="ServiceWebServiceUri">
         <data key="path">ls_mag/service/web_service_uri</data>
         <data key="label">Web Service URI</data>

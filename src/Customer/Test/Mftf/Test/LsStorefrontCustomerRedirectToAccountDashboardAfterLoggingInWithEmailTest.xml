@@ -51,7 +51,7 @@
         <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="assertAccountLinkInUrl">
             <argument name="indices" value=""/>
         </actionGroup>
-         <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser" after="assertAccountLinkInUrl">
+         <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser" after="reindex">
             <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
         </actionGroup>
         <actionGroup ref="ResetAdminDataGridToDefaultViewActionGroup" stepKey="resetGrid" after="deleteNewUser"/>
