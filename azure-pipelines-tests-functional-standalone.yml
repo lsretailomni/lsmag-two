@@ -196,6 +196,11 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)
+          php bin/magento module:disable Magento_TwoFactorAuth Magento_AdminAdobeImsTwoFactorAuth
+          php bin/magento config:set cms/wysiwyg/enabled disabled
+          php bin/magento config:set admin/security/admin_account_sharing 1
+          php bin/magento config:set admin/security/use_form_key 0
+          php bin/magento cache:flush
           vendor/bin/mftf build:project
           echo "MAGENTO_BASE_URL=$(MAGENTO_BASE_URL)" > dev/tests/acceptance/.env
           echo "MAGENTO_BACKEND_NAME=$(MAGENTO_BACKEND_NAME)" >> dev/tests/acceptance/.env
