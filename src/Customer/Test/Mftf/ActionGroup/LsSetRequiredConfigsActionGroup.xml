@@ -17,11 +17,11 @@
         <fillField selector="{{LsConfigManagementSection.ServiceClientId}}" userInput="{{ServiceClientId.value}}" stepKey="setServiceClientId"/>
         <fillField selector="{{LsConfigManagementSection.ServiceClientSecret}}" userInput="{{ServiceClientSecret.value}}" stepKey="setServiceClientSecret"/>
         <click selector="{{LsConfigManagementSection.ValidateBaseUrl}}" stepKey="validateBaseUrlSaaS" after="setServiceClientSecret"/>
-        <wait stepKey="waitForPopupSaaS" time="5" after="validateBaseUrlSaaS" />
+        <wait stepKey="waitForPopupSaaS" time="10" after="validateBaseUrlSaaS" />
         <acceptPopup stepKey="clickOkSaaS" after="waitForPopupSaaS"/>
-        <wait stepKey="waitForStoresLoadSaaS" time="5" after="clickOkSaaS"/>
+        <wait stepKey="waitForStoresLoadSaaS" time="10" after="clickOkSaaS"/>
         <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStoreSaaS" after="waitForStoresLoadSaaS"/>
-        <wait stepKey="waitForHierarchyLoadSaaS" time="5" after="fillStoreSaaS"/>
+        <wait stepKey="waitForHierarchyLoadSaaS" time="10" after="fillStoreSaaS"/>
         <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchySaaS" after="waitForHierarchyLoadSaaS"/>
         <comment userInput="saveStoreConfiguration" stepKey="commentSaaS"/>
         <waitForElementVisible selector="{{StoreConfigSection.Save}}" stepKey="waitForSaveButtonSaaS"/>
