@@ -49,7 +49,9 @@
         <wait stepKey="waitForSessionLoad1" time="5"/>
         <actionGroup ref="LsAvailabilityPopupActionGroup" stepKey="validateCheckAvailabilityModal"/>
         <actionGroup ref="LsDiscountRecommendationsActionGroup" stepKey="validateDiscountRecommendations"/>
-
+        <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+            <argument name="indices" value=""/>
+        </actionGroup>
         <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser">
             <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
         </actionGroup>
