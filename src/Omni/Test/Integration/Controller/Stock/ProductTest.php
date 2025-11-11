@@ -6,7 +6,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Test\Fixture\FlatDataReplication;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
-use \Ls\Replication\Cron\ReplEcommStoresTask;
+use \Ls\Replication\Cron\ReplLscStoreviewTask;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
@@ -81,7 +81,7 @@ class ProductTest extends AbstractController
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommStoresTask::class,
+                'job_url' => ReplLscStoreviewTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ],
             as: 'stores'

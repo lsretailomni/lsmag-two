@@ -27,6 +27,7 @@ if (!defined("ENABLED_1")) { define('ENABLED_1', getenv('ENABLED')); }
 if (!defined("SC_REPLICATION_CENTRAL_TYPE")) { define('SC_REPLICATION_CENTRAL_TYPE', getenv('SC_REPLICATION_CENTRAL_TYPE')); }
 if (!defined("SC_WEB_SERVICE_URI")) { define('SC_WEB_SERVICE_URI', getenv('SC_WEB_SERVICE_URI')); }
 if (!defined("SC_ODATA_URI")) { define('SC_ODATA_URI', getenv('SC_ODATA_URI')); }
+if (!defined("SC_ODATA_URI_DOWN")) { define('SC_ODATA_URI_DOWN', getenv('SC_ODATA_URI_DOWN')); }
 if (!defined("SC_USERNAME")) { define('SC_USERNAME', getenv('SC_USERNAME')); }
 if (!defined("SC_PASSWORD")) { define('SC_PASSWORD', getenv('SC_PASSWORD')); }
 if (!defined("USERNAME_1")) { define('USERNAME_1', getenv('USERNAME')); }
@@ -77,6 +78,7 @@ class AbstractIntegrationTest extends TestCase
     public const SC_USERNAME =  SC_USERNAME;
     public const SC_PASSWORD =  SC_PASSWORD;
     public const SC_ODATA_URI =  SC_ODATA_URI;
+    public const SC_ODATA_URI_DOWN =  SC_ODATA_URI_DOWN;
     public const BASE_URL = BASE_URL;
     public const WEB_STORE = WEB_STORE;
     public const SC_COMPANY_NAME = SC_COMPANY_NAME;

@@ -12,7 +12,7 @@ if (!defined("SC_CLIENT_ID")) { define('SC_CLIENT_ID', getenv('SC_CLIENT_ID')); 
 if (!defined("SC_CLIENT_SECRET")) { define('SC_CLIENT_SECRET', getenv('SC_CLIENT_SECRET')); }
 if (!defined("SC_ENVIRONMENT_NAME")) { define('SC_ENVIRONMENT_NAME', getenv('SC_ENVIRONMENT_NAME')); }
 if (!defined("SC_SERVICE_TIMEOUT")) { define('SC_SERVICE_TIMEOUT', getenv('SC_SERVICE_TIMEOUT')); }
-if (!defined("LS_VERSION_1")) { define('LS_VERSION_1', getenv('LS_VERSION')); }
+if (!defined("LS_VERSION")) { define('LS_VERSION', getenv('LS_VERSION')); }
 if (!defined("WEB_STORE")) { define('WEB_STORE', getenv('WEB_STORE')); }
 if (!defined("ENABLED_1")) { define('ENABLED_1', getenv('ENABLED'));}
 if (!defined("SAMPLE_FLAT_REPLICATION_CRON_URL")) { define('SAMPLE_FLAT_REPLICATION_CRON_URL', getenv('SAMPLE_FLAT_REPLICATION_CRON_URL')); }
@@ -79,7 +79,7 @@ class AbstractIntegrationTest extends TestCase
     public const SC_CLIENT_SECRET = SC_CLIENT_SECRET;
     public const SC_ENVIRONMENT_NAME = SC_ENVIRONMENT_NAME;
     public const SC_SERVICE_TIMEOUT = SC_SERVICE_TIMEOUT;
-    public const LS_VERSION = LS_VERSION_1;
+    public const LS_VERSION = LS_VERSION;
     public const WEB_STORE = WEB_STORE;
     public const ENABLED = ENABLED_1;
     public const SAMPLE_FLAT_REPLICATION_CRON_URL = SAMPLE_FLAT_REPLICATION_CRON_URL;
