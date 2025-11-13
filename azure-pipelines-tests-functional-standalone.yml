@@ -6,7 +6,7 @@ trigger:
 resources:
   containers:
     - container: db
-      image: mariadb:10.6
+      image: $(MARIA_DB_IMAGE)
       ports:
         - '3306:3306'
       env:
@@ -17,7 +17,7 @@ resources:
       options: --health-cmd="mysqladmin ping -h localhost -u root --password=mysql || exit 1" --health-interval=10s --health-timeout=5s --health-retries=5
 
     - container: opensearch
-      image: opensearchproject/opensearch:2.10.0
+      image: $(OPEN_SEARCH_IMAGE)
       ports:
         - "9200:9200"
         - "9600:9600"
@@ -50,12 +50,13 @@ jobs:
 
     strategy:
       matrix:
-        magento_2_4_8_php_8_4:
-          phpVersion: '8.4'
-          magentoVersion: '2.4.8-p3'
-          databaseName: 'magento_2_4_8_php_8_4'
+        magento_php:
+          phpVersion: $(PHP_VERSION)
+          magentoVersion: $(MAGENTO_VERSION)
+          databaseName: 'magento'
           composerOverride: '{}'
-          phpunitVersion: '^9'
+          phpunitVersion: $(PHP_UNIT_VERSION)
+          functionalTestingFrameworkVersion: $(FUNCTIONAL_TESTING_FRAMEWORK_VERSION)
           magentoDirectory: "/var/www/html"
 
     steps:
@@ -65,18 +66,14 @@ jobs:
           sudo apt-get install -y software-properties-common ca-certificates lsb-release apt-transport-https
           sudo add-apt-repository ppa:ondrej/php -y
           sudo apt-get update
-          sudo apt-get install -y php8.4 php8.4-cli php8.4-common php8.4-mysql php8.4-xml php8.4-gd php8.4-curl php8.4-intl php8.4-mbstring php8.4-zip php8.4-bcmath php8.4-soap
-          sudo update-alternatives --set php /usr/bin/php8.4
-          php -v
-        displayName: 'Install PHP 8.4'
-      - script: |
+          sudo apt-get install -y php$(phpVersion) php$(phpVersion)-cli php$(phpVersion)-common php$(phpVersion)-mysql php$(phpVersion)-xml php$(phpVersion)-gd php$(phpVersion)-curl php$(phpVersion)-intl php$(phpVersion)-mbstring php$(phpVersion)-zip php$(phpVersion)-bcmath php$(phpVersion)-soap
           sudo update-alternatives --set php /usr/bin/php$(phpVersion)
           sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
           sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
           sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
           sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
-          php -version
-        displayName: 'Use PHP Version $(phpVersion)'
+          php -v
+        displayName: 'Install PHP $(phpVersion)'
 
       - script: |
           sudo apt-get install default-mysql-client
@@ -86,34 +83,6 @@ jobs:
             sleep 1;
           done;
         displayName: 'Wait for Database to initialise'
-
-      - script: |
-          echo "Waiting for OpenSearch..."
-          for i in {1..40}; do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9200)
-            if [ "$STATUS" = "200" ]; then
-              echo "✅ OpenSearch is up!"
-              exit 0
-            fi
-            echo "⏳ Still waiting... ($i)"
-            sleep 5
-          done
-          echo "❌ OpenSearch failed to start"
-          docker logs $(docker ps --filter "ancestor=opensearchproject/opensearch:2.10.0" -q)
-          exit 1
-        displayName: 'Wait for OpenSearch to initialize (debug)'
-
-
-      - script: |
-          printf 'Waiting for selenium to accept connections'
-          until curl -XGET 'http://127.0.0.1:4444/wd/hub/status'; do
-          printf '.'
-          sleep 1;
-          done;
-          CONTAINER_ID=$(docker ps --filter "ancestor=selenium/standalone-chrome-debug" --format "{{.ID}}")
-          echo "##vso[task.setvariable variable=SELENIUM_CONTAINER_ID]$CONTAINER_ID"
-          echo "Selenium Container ID: $CONTAINER_ID"
-        displayName: 'Wait for Selenium to initialise'
 
       - script: |
           sudo apt-get update
@@ -152,7 +121,7 @@ jobs:
           cd $(magentoDirectory)
           mkdir -p artifacts/lsretail/lsmag-two
           cp -a /home/vsts/work/1/s/. $(magentoDirectory)/artifacts/lsretail/lsmag-two/
-          composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --require-dev magento/magento2-functional-testing-framework:^4.7 --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
+          composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --require-dev magento/magento2-functional-testing-framework:$(functionalTestingFrameworkVersion) --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
           composer config use-include-path true
           composer config --no-plugins allow-plugins true
           composer config minimum-stability stable
@@ -291,14 +260,14 @@ jobs:
 #        displayName: 'Running Functional tests for group lsCms'
 #        continueOnError: true
 
-      - script: |
-          cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsReplication --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-          cat $(magentoDirectory)/var/log/debug.log
-          cat $(magentoDirectory)/var/log/omniclient.log
-          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
-        displayName: 'Running Functional tests for group lsReplication'
-        continueOnError: true
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsReplication --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          cat $(magentoDirectory)/var/log/debug.log
+#          cat $(magentoDirectory)/var/log/omniclient.log
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsReplication'
+#        continueOnError: true
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
@@ -308,15 +277,15 @@ jobs:
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
         displayName: 'Running Functional tests for group lsConfig'
         continueOnError: true
-#
-#      - script: |
-#          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsShoppingCart --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-#          cat $(magentoDirectory)/var/log/debug.log
-#          cat $(magentoDirectory)/var/log/omniclient.log
-#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
-#        displayName: 'Running Functional tests for group lsShoppingCart'
-#        continueOnError: true
+
+      - script: |
+          cd $(magentoDirectory)/dev/tests/acceptance
+          php ../../../vendor/bin/mftf run:group lsShoppingCart --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+          cat $(magentoDirectory)/var/log/debug.log
+          cat $(magentoDirectory)/var/log/omniclient.log
+          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+        displayName: 'Running Functional tests for group lsShoppingCart'
+        continueOnError: true
 #
 #      - script: |
 #          cd $(magentoDirectory)/dev/tests/acceptance
