@@ -243,7 +243,8 @@ jobs:
           echo "RESTRICTED_ORDER_STATUSES_UPDATED=$(RESTRICTED_ORDER_STATUSES_UPDATED)" >> dev/tests/acceptance/.env
           echo 'ODATA_WEB_SERVICE_URI_DISABLED="'"$(echo "$(ODATA_WEB_SERVICE_URI_DISABLED)" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
           echo 'WEB_SERVICE_URI_DISABLED="'"$(echo "$(WEB_SERVICE_URI_DISABLED)" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
-          echo "CENTRAL_TYPE_ON_PREM=$(CENTRAL_TYPE_ON_PREM)" >> dev/tests/acceptance/.env
+          echo "CENTRAL_TYPE=$(CENTRAL_TYPE)" >> dev/tests/acceptance/.env
+          echo "CENTRAL_TYPE_SAAS=$(CENTRAL_TYPE_SAAS)" >> dev/tests/acceptance/.env
           echo "CENTRAL_TYPE_SAAS=$(CENTRAL_TYPE_SAAS)" >> dev/tests/acceptance/.env
           echo "SERVICE_TENANT=$(SERVICE_TENANT)" >> dev/tests/acceptance/.env
           echo "SERVICE_ENV=$(SERVICE_ENV)" >> dev/tests/acceptance/.env

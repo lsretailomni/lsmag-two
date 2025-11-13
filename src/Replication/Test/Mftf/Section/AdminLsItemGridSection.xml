@@ -7,4 +7,3 @@
         <element name="selectFirstRow" type="checkbox" selector="//td[@class='data-grid-checkbox-cell']"/>
     </section>
 </sections>
-
