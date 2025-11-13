@@ -27,20 +27,38 @@
             </actionGroup>
             <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
         </after>
-        <selectOption selector="{{LsConfigManagementSection.ServiceCentralType}}" userInput="On-Premise" stepKey="fillCentralType"/>
-        <fillField selector="{{LsConfigManagementSection.ServiceWebServiceUri}}" userInput="{{ServiceWebServiceUri.value}}" stepKey="setServiceWebServiceUri"/>
-        <fillField selector="{{LsConfigManagementSection.ServiceOdataWebServiceUri}}" userInput="{{ServiceOdataWebServiceUri.value}}" stepKey="setaServiceOdataWebServiceUri"/>
-        <fillField selector="{{LsConfigManagementSection.ServiceUsername}}" userInput="{{ServiceUsername.value}}" stepKey="setServiceUsername"/>
-        <fillField selector="{{LsConfigManagementSection.ServicePassword}}" userInput="{{ServicePassword.value}}" stepKey="setServicePassword"/>
-        <click selector="{{LsConfigManagementSection.ValidateBaseUrl}}" stepKey="validateBaseUrl" after="setServicePassword"/>
-        <wait stepKey="waitForPopup" time="5" after="validateBaseUrl"/>
-        <acceptPopup stepKey="clickOk" after="waitForPopup"/>
-        <wait stepKey="waitForStoresLoad" time="5" after="clickOk"/>
-        <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStore" after="waitForStoresLoad"/>
-        <wait stepKey="waitForHierarchyLoad" time="5" after="fillStore"/>
-        <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchy" after="waitForHierarchyLoad"/>
+        <selectOption selector="{{LsConfigManagementSection.ServiceCentralType}}" userInput="{{ServiceCentralTypeSaaS.value}}" stepKey="fillCentralTypeSaaS" />
+        <fillField selector="{{LsConfigManagementSection.ServiceTenant}}" userInput="{{ServiceTenant.value}}" stepKey="setServiceTenant"/>
+        <fillField selector="{{LsConfigManagementSection.ServiceEnv}}" userInput="{{ServiceEnv.value}}" stepKey="setServiceEnv"/>
+        <fillField selector="{{LsConfigManagementSection.ServiceCompany}}" userInput="{{ServiceCompany.value}}" stepKey="setServiceCompany"/>
+        <click selector="{{LsConfigManagementSection.AutopopulateBaseUrl}}" stepKey="AutopopulateBaseUrl" after="setServiceCompany"/>
+        <fillField selector="{{LsConfigManagementSection.ServiceClientId}}" userInput="{{ServiceClientId.value}}" stepKey="setServiceClientId"/>
+        <fillField selector="{{LsConfigManagementSection.ServiceClientSecret}}" userInput="{{ServiceClientSecret.value}}" stepKey="setServiceClientSecret"/>
+        <click selector="{{LsConfigManagementSection.ValidateBaseUrl}}" stepKey="validateBaseUrlSaaS" after="setServiceClientSecret"/>
+        <wait stepKey="waitForPopupSaaS" time="20" after="validateBaseUrlSaaS" />
+        <acceptPopup stepKey="clickOkSaaS" after="waitForPopupSaaS"/>
+        <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStoreSaaS"/>
+        <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchySaaS"/>
+        <comment userInput="saveStoreConfiguration" stepKey="commentSaaS"/>
+        <waitForElementVisible selector="{{StoreConfigSection.Save}}" stepKey="waitForSaveButtonSaaS"/>
+        <click selector="{{StoreConfigSection.Save}}" stepKey="clickSaveButtonSaaS"/>
+        <waitForPageLoad stepKey="waitForPageLoadSaaS"/>
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="You saved the configuration." stepKey="seeSuccessMessage3SaaS"/>
 
-        <actionGroup ref="SaveStoreConfigurationActionGroup" stepKey="saveStoreConfiguration6"/>
-        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="You saved the configuration." stepKey="seeSuccessMessage3"/>
+        <!--        <selectOption selector="{{LsConfigManagementSection.ServiceCentralType}}" userInput="{{ServiceCentralTypeOnPrem.value}}" stepKey="fillCentralTypeOnPrem" />-->
+        <!--        <fillField selector="{{LsConfigManagementSection.ServiceWebServiceUri}}" userInput="{{ServiceWebServiceUri.value}}" stepKey="setServiceWebServiceUri"/>-->
+        <!--        <fillField selector="{{LsConfigManagementSection.ServiceOdataWebServiceUri}}" userInput="{{ServiceOdataWebServiceUri.value}}" stepKey="setaServiceOdataWebServiceUri"/>-->
+        <!--        <fillField selector="{{LsConfigManagementSection.ServiceUsername}}" userInput="{{ServiceUsername.value}}" stepKey="setServiceUsername"/>-->
+        <!--        <fillField selector="{{LsConfigManagementSection.ServicePassword}}" userInput="{{ServicePassword.value}}" stepKey="setServicePassword"/>-->
+        <!--        <click selector="{{LsConfigManagementSection.ValidateBaseUrl}}" stepKey="validateBaseUrl" after="setServicePassword"/>-->
+        <!--        <wait stepKey="waitForPopup" time="20" after="validateBaseUrl" />-->
+        <!--        <acceptPopup stepKey="clickOk" after="waitForPopup"/>-->
+        <!--        <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStore"/>-->
+        <!--        <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchy"/>-->
+        <!--        <comment userInput="saveStoreConfiguration" stepKey="comment"/>-->
+        <!--        <waitForElementVisible selector="{{StoreConfigSection.Save}}" stepKey="waitForSaveButton"/>-->
+        <!--        <click selector="{{StoreConfigSection.Save}}" stepKey="clickSaveButton"/>-->
+        <!--        <waitForPageLoad stepKey="waitForPageLoad"/>-->
+        <!--        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="You saved the configuration." stepKey="seeSuccessMessage3"/>-->
     </test>
 </tests>

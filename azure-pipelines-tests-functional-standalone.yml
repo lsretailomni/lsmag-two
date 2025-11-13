@@ -286,15 +286,15 @@ jobs:
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
         displayName: 'Running Functional tests for group lsShoppingCart'
         continueOnError: true
-#
-#      - script: |
-#          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsCheckout --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-#          cat $(magentoDirectory)/var/log/debug.log
-#          cat $(magentoDirectory)/var/log/omniclient.log
-#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
-#        displayName: 'Running Functional tests for group lsCheckout'
-#        continueOnError: true
+
+      - script: |
+          cd $(magentoDirectory)/dev/tests/acceptance
+          php ../../../vendor/bin/mftf run:group lsCheckout --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+          cat $(magentoDirectory)/var/log/debug.log
+          cat $(magentoDirectory)/var/log/omniclient.log
+          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+        displayName: 'Running Functional tests for group lsCheckout'
+        continueOnError: true
 
       - script: |
           docker logs $(SELENIUM_CONTAINER_ID)
