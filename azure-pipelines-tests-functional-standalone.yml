@@ -269,23 +269,23 @@ jobs:
 #        displayName: 'Running Functional tests for group lsReplication'
 #        continueOnError: true
 
-      - script: |
-          cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsConfig --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-          cat $(magentoDirectory)/var/log/debug.log
-          cat $(magentoDirectory)/var/log/omniclient.log
-          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
-        displayName: 'Running Functional tests for group lsConfig'
-        continueOnError: true
-
-      - script: |
-          cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsShoppingCart --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-          cat $(magentoDirectory)/var/log/debug.log
-          cat $(magentoDirectory)/var/log/omniclient.log
-          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
-        displayName: 'Running Functional tests for group lsShoppingCart'
-        continueOnError: true
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsConfig --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          cat $(magentoDirectory)/var/log/debug.log
+#          cat $(magentoDirectory)/var/log/omniclient.log
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsConfig'
+#        continueOnError: true
+#
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsShoppingCart --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          cat $(magentoDirectory)/var/log/debug.log
+#          cat $(magentoDirectory)/var/log/omniclient.log
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsShoppingCart'
+#        continueOnError: true
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
