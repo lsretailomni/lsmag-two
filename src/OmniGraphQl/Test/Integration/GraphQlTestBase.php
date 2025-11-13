@@ -64,7 +64,7 @@ abstract class GraphQlTestBase extends GraphQlAbstract
         $this->productSku = (defined('WEB_API_TEST_PRODUCT_SKU')) ?
             WEB_API_TEST_PRODUCT_SKU : AbstractIntegrationTest::ITEM_SIMPLE;
         $this->email      = (defined('WEB_API_TEST_EMAIL')) ?
-            WEB_API_TEST_EMAIL : 'retail.new2@getnada.com';
+            WEB_API_TEST_EMAIL : 'pipeline_retail@lsretail.com';
         $this->password   = (defined('PASSWORD')) ?
             PASSWORD : 'Nmswer123@';
     }
