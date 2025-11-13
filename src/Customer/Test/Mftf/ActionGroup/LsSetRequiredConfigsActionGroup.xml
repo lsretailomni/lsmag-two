@@ -39,8 +39,8 @@
         <click selector="{{LsConfigManagementSection.ValidateBaseUrl}}" stepKey="validateBaseUrl" after="setServicePassword"/>
         <wait stepKey="waitForPopup" time="20" after="validateBaseUrl" />
         <acceptPopup stepKey="clickOk" after="waitForPopup"/>
-        <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStore" after="waitForStoresLoad"/>
-        <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchy" after="waitForHierarchyLoad"/>
+        <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStore"/>
+        <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchy"/>
         <comment userInput="saveStoreConfiguration" stepKey="comment"/>
         <waitForElementVisible selector="{{StoreConfigSection.Save}}" stepKey="waitForSaveButton"/>
         <click selector="{{StoreConfigSection.Save}}" stepKey="clickSaveButton"/>
