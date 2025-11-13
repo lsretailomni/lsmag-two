@@ -6,6 +6,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
+
 class StoreConfigResolverPlugin
 {
     /**
@@ -18,15 +19,21 @@ class StoreConfigResolverPlugin
      */
     private LoggerInterface $logger;
 
+    /**
+     * @param StoreManagerInterface $storeManager
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         StoreManagerInterface $storeManager,
         LoggerInterface $logger,
-    )
-    {
-        $this->storeManager = $storeManager;
-        $this->logger = $logger;
+    ){        
     }
-    
+
+    /**
+     * @param StoreConfigResolver $subject
+     * @param \Closure $proceed
+     * @return false|int|mixed
+     */
     public function aroundGetStoreId(StoreConfigResolver $subject, \Closure $proceed)
     {
         try {
