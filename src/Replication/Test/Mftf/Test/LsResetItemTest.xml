@@ -23,7 +23,7 @@
         <after>
             <!--Delete test data.-->
             <magentoCLI command="config:set ls_mag/replication/default_batch_size 2000" stepKey="resetDefaultBatchSize"/>
-            <magentoCLI command="config:set ls_mag/replication/product_batch_size 30" stepKey="resetProductBatchSize"/>
+            <magentoCLI command="config:set ls_mag/replication/product_batch_size 1" stepKey="resetProductBatchSize"/>
             <actionGroup ref="LsTruncateDataActionGroup" stepKey="truncateData"/>
             <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
         </after>
