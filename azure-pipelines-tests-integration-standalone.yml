@@ -118,7 +118,6 @@ jobs:
           php -r 'file_put_contents("composer.json", json_encode(array_merge_recursive(json_decode(file_get_contents("composer.json"), true), json_decode("{\"extra\": {\"magento-force\": \"override\"}, \"autoload\": {\"psr-4\": {\"Magento\\\\Framework\\\\\": \"lib/internal/Magento/Framework/\", \"Magento\\\\Setup\\\\\": \"setup/src/Magento/Setup/\", \"Magento\\\\\": \"app/code/Magento/\"}, \"psr-0\": {\"\": [\"app/code/\"]},\"files\": [\"app/etc/NonComposerComponentRegistration.php\"]}}", true), json_decode("$(composerOverride)", true)), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));'
           echo '{"_comment": "These credentials were set up using some dummy Magento account", "http-basic": {"repo.magento.com": {"username": "$(MAGENTO_PUBLIC_KEY)", "password": "$(MAGENTO_PRIVATE_KEY)"}}}' > auth.json
           composer install
-          composer require adobe-commerce/os-extensions-metapackage:1.0.0 --with-all-dependencies
           composer require magento/magento-coding-standard --dev
           composer require lusitanian/oauth --dev
           cat composer.json
@@ -136,6 +135,9 @@ jobs:
           cp artifacts/lsretail/lsmag-two/dev/tests/integration/$(phpunitFile) dev/tests/integration/
           cp artifacts/lsretail/lsmag-two/dev/tests/integration/etc/install-config-mysql.php dev/tests/integration/etc/
           php -d memory_limit=-1 ./vendor/bin/phpunit -c $(pwd)/dev/tests/integration/$(phpunitFile) --testsuite "Ls_Retail_Integration_Tests" --coverage-clover  $(magentoDirectory)/report/coverage.xml
+          cat $(magentoDirectory)/var/log/debug.log
+          cat $(magentoDirectory)/var/log/omniclient.log
+          cat $(magentoDirectory)/dev/tests/integration/tmp/sandbox-*/var/log/debug.log
         displayName: 'Ls Retail Modules Integration Tests Validation'
 
       - task: PublishCodeCoverageResults@2

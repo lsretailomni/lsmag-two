@@ -71,6 +71,8 @@ class CouponsTest extends AbstractController
         Config(LSR::SC_LOYALTY_ENABLE_LOYALTY_ELEMENTS, AbstractIntegrationTest::ENABLED, 'website'),
         Config(LSR::SC_LOYALTY_SHOW_COUPON_OFFERS, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_LOYALTY_SHOW_COUPON_OFFERS, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -126,6 +128,8 @@ class CouponsTest extends AbstractController
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'store', 'default'),
         Config(LSR::SC_LOYALTY_ENABLE_LOYALTY_ELEMENTS, 0, 'store', 'default'),
         Config(LSR::SC_LOYALTY_ENABLE_LOYALTY_ELEMENTS, 0, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         DataFixture(
             CustomerFixture::class,
             [
