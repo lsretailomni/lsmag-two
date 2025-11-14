@@ -135,11 +135,14 @@ jobs:
           cp artifacts/lsretail/lsmag-two/dev/tests/integration/$(phpunitFile) dev/tests/integration/
           cp artifacts/lsretail/lsmag-two/dev/tests/integration/etc/install-config-mysql.php dev/tests/integration/etc/
           php -d memory_limit=-1 ./vendor/bin/phpunit -c $(pwd)/dev/tests/integration/$(phpunitFile) --testsuite "Ls_Retail_Integration_Tests" --coverage-clover  $(magentoDirectory)/report/coverage.xml
-          cat $(magentoDirectory)/var/log/debug.log
-          cat $(magentoDirectory)/var/log/omniclient.log
-          cat $(magentoDirectory)/dev/tests/integration/tmp/sandbox-*/var/log/debug.log
         displayName: 'Ls Retail Modules Integration Tests Validation'
         env: ${{ variables }}
+
+      - script: |
+          cat $(magentoDirectory)/var/log/debug.log
+          cat $(magentoDirectory)/dev/tests/integration/tmp/sandbox-*/var/log/debug.log
+          cat $(magentoDirectory)/var/log/omniclient.log
+        displayName: 'Testing Logs'
 
       - task: PublishCodeCoverageResults@2
         inputs:
