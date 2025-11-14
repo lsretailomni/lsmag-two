@@ -2,6 +2,8 @@ trigger:
   branches:
     exclude:
       - '*'
+variables:
+  - group: standaloneIntegrationTestsVariables
 resources:
   containers:
     - container: db
