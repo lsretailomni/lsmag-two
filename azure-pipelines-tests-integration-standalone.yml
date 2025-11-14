@@ -139,6 +139,7 @@ jobs:
           cat $(magentoDirectory)/var/log/omniclient.log
           cat $(magentoDirectory)/dev/tests/integration/tmp/sandbox-*/var/log/debug.log
         displayName: 'Ls Retail Modules Integration Tests Validation'
+        env: ${{ variables }}
 
       - task: PublishCodeCoverageResults@2
         inputs:
