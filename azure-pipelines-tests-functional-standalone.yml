@@ -299,6 +299,14 @@ jobs:
         continueOnError: true
 
       - script: |
+          RANDOM_NUM=$(shuf -i 1000-9999 -n 1)
+          ORDER_PREFIX="${RANDOM_NUM}-"
+          sed -i "s/^ORDER_PREFIX=.*/ORDER_PREFIX=${ORDER_PREFIX}/" .env
+          echo "ORDER_PREFIX set to ${ORDER_PREFIX} for lsCheckout tests"
+        displayName: 'Set random ORDER_PREFIX for lsCheckout'
+        workingDirectory: $(magentoDirectory)/dev/tests/acceptance
+
+      - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
           php ../../../vendor/bin/mftf run:group lsCheckout --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
           cat $(magentoDirectory)/var/log/debug.log
