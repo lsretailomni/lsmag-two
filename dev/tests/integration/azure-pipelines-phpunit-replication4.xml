@@ -31,13 +31,13 @@
     </source>
     <coverage>
         <include>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncAttributesValue.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncAttributesValueTest.php</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncAttributesValue.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncAttributesValueTest.php</file>
         </include>
     </coverage>
     <testsuites>
         <testsuite name="Ls_Retail_Integration_Tests">
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncAttributesValueTest.php</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncAttributesValueTest.php</file>
         </testsuite>
     </testsuites>
     <!-- Code coverage filters -->

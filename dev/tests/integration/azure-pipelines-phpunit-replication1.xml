@@ -32,17 +32,17 @@
     <coverage>
         <include>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Block</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/AttributesCreateTask.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/CategoryCreateTask.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/AttributesCreateTaskTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/CategoryCreateTaskTest.php</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/AttributesCreateTask.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/CategoryCreateTask.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/AttributesCreateTaskTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/CategoryCreateTaskTest.php</file>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Block</directory>
         </include>
     </coverage>
     <testsuites>
         <testsuite name="Ls_Retail_Integration_Tests">
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/AttributesCreateTaskTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/CategoryCreateTaskTest.php</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/AttributesCreateTaskTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/CategoryCreateTaskTest.php</file>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Block</directory>
         </testsuite>
     </testsuites>

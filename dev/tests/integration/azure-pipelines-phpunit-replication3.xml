@@ -31,16 +31,16 @@
     </source>
     <coverage>
         <include>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncInventory.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncPrice.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncInventoryTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncPriceTest.php</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncInventory.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncPrice.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncInventoryTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncPriceTest.php</file>
         </include>
     </coverage>
     <testsuites>
         <testsuite name="Ls_Retail_Integration_Tests">
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncInventoryTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncPriceTest.php</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncInventoryTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncPriceTest.php</file>
         </testsuite>
     </testsuites>
     <!-- Code coverage filters -->
