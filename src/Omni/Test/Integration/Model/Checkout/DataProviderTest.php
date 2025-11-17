@@ -105,7 +105,8 @@ class DataProviderTest extends TestCase
         Config(DataProvider::XPATH_DEFAULT_LONGITUDE, '-0.04615', 'store', 'default'),
         Config(DataProvider::XPATH_DEFAULT_ZOOM, '6', 'store', 'default'),
         Config(DataProvider::XPATH_CHECKOUT_ITEM_AVAILABILITY, '0', 'store', 'default'),
-        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         DataFixture(
             FlatDataReplication::class,
             [

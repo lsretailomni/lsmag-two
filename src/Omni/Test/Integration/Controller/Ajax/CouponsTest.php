@@ -117,7 +117,6 @@ class CouponsTest extends AbstractController
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         Config(LSR::LS_CUSTOMER_INTEGRATION_ACTIVE, AbstractIntegrationTest::LS_CUSTOMER_INTEGRATION_ACTIVE, 'website'),
         Config(LSR::LS_CUSTOMER_INTEGRATION_ACTIVE, AbstractIntegrationTest::LS_CUSTOMER_INTEGRATION_ACTIVE, 'store', 'default'),
         Config(LSR::LS_BASKET_INTEGRATION_ACTIVE, AbstractIntegrationTest::LS_BASKET_INTEGRATION_ACTIVE, 'website'),

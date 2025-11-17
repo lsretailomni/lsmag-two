@@ -78,6 +78,8 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\CatalogRule\Model\ResourceModel\RuleFactory as ResourceRuleFactory;
 
 /**
+ * @internal
+ * @doesNotPerformAssertions
  * @magentoAppArea crontab
  * @magentoDbIsolation enabled
  * @magentoAppIsolation enabled
