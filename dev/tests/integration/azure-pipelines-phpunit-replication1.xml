@@ -20,8 +20,8 @@
     <source>
         <include>
             <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Replication/Block</directory>
-            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/AttributesCreateTaskTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/CategoryCreateTaskTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/AttributesCreateTask.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/CategoryCreateTask.php</file>
         </include>
         <exclude>
             <directory>../../../app/code/*/*/Test</directory>
