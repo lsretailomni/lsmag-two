@@ -67,6 +67,12 @@ jobs:
         displayName: 'Install PHP $(phpVersion)'
 
       - script: |
+          # Install Xdebug for code coverage
+          sudo apt-get install -y php$(phpVersion)-xdebug
+          php -m | grep xdebug || echo "Xdebug not found"
+        displayName: 'Install Xdebug for code coverage'
+
+      - script: |
           sudo apt-get install default-mysql-client
           printf 'Waiting for MySQL database to accept connections'
           until mysql --host 127.0.0.1 --user=mysql --password=mysql --execute "SHOW DATABASES"; do
@@ -143,6 +149,7 @@ jobs:
           cat $(magentoDirectory)/dev/tests/integration/tmp/sandbox-*/var/log/debug.log
           cat $(magentoDirectory)/var/log/omniclient.log
         displayName: 'Testing Logs'
+        condition: always()
 
       - task: PublishCodeCoverageResults@2
         inputs:
