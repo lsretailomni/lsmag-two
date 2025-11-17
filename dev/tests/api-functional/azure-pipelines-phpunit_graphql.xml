@@ -21,8 +21,8 @@
         <include>
             <directory suffix=".php">>../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/Test/GraphQl</directory>
             <directory suffix=".php">>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Plugin</directory>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCard</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/LoyaltyPoints</file>
+            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCard</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/LoyaltyPoints</directory>
             <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/Stock/CartItemsAvailabilityTest.php</file>
             <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GetCustomerCartDiscountsTest.php</file>
             <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCardBalanceTest.php</file>
@@ -45,8 +45,8 @@
         <testsuite name="Ls_Retail_Api_Tests">
             <directory>../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/Test/GraphQl</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Plugin</directory>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCard</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/LoyaltyPoints</file>
+            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCard</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/LoyaltyPoints</directory>
             <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/Stock/CartItemsAvailabilityTest.php</file>
             <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GetCustomerCartDiscountsTest.php</file>
             <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCardBalanceTest.php</file>
