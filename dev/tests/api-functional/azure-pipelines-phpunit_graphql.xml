@@ -1,42 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /**
- * PHPUnit configuration for GraphQL web API functional tests.
- *
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/9.1/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
          colors="true"
          columns="max"
          beStrictAboutTestsThatDoNotTestAnything="false"
          bootstrap="./framework/bootstrap.php"
-         testSuiteLoaderClass="Magento\TestFramework\ApiSuiteLoader"
-         testSuiteLoaderFile="framework/Magento/TestFramework/ApiSuiteLoader.php"
->
-    <coverage>
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnTestsThatTriggerErrors="true"
+         displayDetailsOnTestsThatTriggerNotices="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         displayDetailsOnPhpunitDeprecations="true"
+         stderr="true">
+    <source>
         <include>
-            <directory>../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl</directory>
+            <directory suffix=".php">>../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/Test/GraphQl</directory>
+            <directory suffix=".php">>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Plugin</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCard</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/LoyaltyPoints</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/Stock/CartItemsAvailabilityTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GetCustomerCartDiscountsTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCardBalanceTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/OrderTakingCalendarTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ReturnPolicyTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ClickAndCollectStoresTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/StoresTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/Stock/ItemsAvailabilityTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GetItemDiscountsTest.php</file>
         </include>
         <exclude>
-            <directory>../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/Helper</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/Plugin</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/registration.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Helper</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Moded/Resolver/Cart</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Moded/Resolver/IsServiceUpResolver.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Plugin/Resolver/AvailablePaymentMethodsPlugin.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Plugin/Resolver/CartProductsPlugin.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Plugin/Resolver/GetCartForUserPlugin.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Plugin/Resolver/PlaceOrderPlugin.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Plugin/Resolver/SelectedShippingMethodPlugin.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Plugin/Resolver/SetPaymentMethodOnCartPlugin.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/registration.php</directory>
+            <directory>../../../app/code/*/*/Test</directory>
+            <directory>../../../lib/internal/*/*/Test</directory>
+            <directory>../../../lib/internal/*/*/*/Test</directory>
+            <directory>../../../setup/src/*/*/Test</directory>
         </exclude>
-    </coverage>
+    </source>
     <!-- Test suites definition -->
     <testsuites>
         <testsuite name="Ls_Retail_Api_Tests">
@@ -44,18 +47,17 @@
             <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Plugin</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCard</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/LoyaltyPoints</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/Stock/CartItemsAvailabilityTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GetCustomerCartDiscountsTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCardBalanceTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/OrderTakingCalendarTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ReturnPolicyTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ClickAndCollectStoresTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/StoresTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/Stock/ItemsAvailabilityTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GetItemDiscountsTest.php</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/Stock/CartItemsAvailabilityTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GetCustomerCartDiscountsTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCardBalanceTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/OrderTakingCalendarTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ReturnPolicyTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ClickAndCollectStoresTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/StoresTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/Stock/ItemsAvailabilityTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GetItemDiscountsTest.php</file>
         </testsuite>
     </testsuites>
-
     <!-- PHP INI settings and constants definition -->
     <php>
         <includePath>./testsuite</includePath>
@@ -90,9 +92,11 @@
         <ini name="date.timezone" value="America/Los_Angeles"/>
         <ini name="xdebug.max_nesting_level" value="200"/>
     </php>
-
-    <!-- Test listeners -->
-    <listeners>
-        <listener class="Magento\TestFramework\Event\PhpUnit"/>
-    </listeners>
+    <extensions>
+        <bootstrap class="Qameta\Allure\PHPUnit\AllureExtension">
+            <!-- Path to config file (default is config/allure.config.php) -->
+            <parameter name="config" value="allure/allure.config.php" />
+        </bootstrap>
+        <bootstrap class="Magento\TestFramework\Event\Subscribers"/>
+    </extensions>
 </phpunit>
