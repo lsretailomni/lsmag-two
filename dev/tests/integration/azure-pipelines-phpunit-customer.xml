@@ -19,10 +19,6 @@
          stderr="true">
     <source>
         <include>
-            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Block</directory>
-            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Controller</directory>
-            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Observer</directory>
-            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Plugin</directory>
             <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Customer/Block</directory>
             <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Customer/Controller</directory>
             <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Customer/Observer</directory>

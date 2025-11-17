@@ -21,6 +21,7 @@
         <include>
             <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncInventory.php</file>
             <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncPrice.php</file>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Ui</directory>
         </include>
         <exclude>
             <directory>../../../app/code/*/*/Test</directory>
@@ -33,6 +34,7 @@
         <testsuite name="Ls_Retail_Integration_Tests">
             <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncInventoryTest.php</file>
             <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncPriceTest.php</file>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Ui</directory>
         </testsuite>
     </testsuites>
     <!-- Code coverage filters -->

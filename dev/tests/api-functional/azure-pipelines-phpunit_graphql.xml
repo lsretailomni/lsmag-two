@@ -19,19 +19,19 @@
          stderr="true">
     <source>
         <include>
-            <directory suffix=".php">>../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/Test/GraphQl</directory>
-            <directory suffix=".php">>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Plugin</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCard</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/LoyaltyPoints</directory>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/Stock/CartItemsAvailabilityTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GetCustomerCartDiscountsTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCardBalanceTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/OrderTakingCalendarTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ReturnPolicyTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ClickAndCollectStoresTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/StoresTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/Stock/ItemsAvailabilityTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GetItemDiscountsTest.php</file>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/Test/GraphQl</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Plugin</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/GiftCard</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/LoyaltyPoints</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/Stock/CartItemsAvailabilityTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/GetCustomerCartDiscountsTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/GiftCardBalanceTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/OrderTakingCalendarTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/ReturnPolicyTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/ClickAndCollectStoresTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/StoresTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/Stock/ItemsAvailabilityTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/GetItemDiscountsTest.php</file>
         </include>
         <exclude>
             <directory>../../../app/code/*/*/Test</directory>

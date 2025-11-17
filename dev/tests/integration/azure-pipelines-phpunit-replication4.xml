@@ -19,8 +19,8 @@
          stderr="true">
     <source>
         <include>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Controller/Adminhtml/Reset</directory>
-            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncAttributesValueTest.php</file>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Controller/Adminhtml</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncAttributesValueTest.php</file>
         </include>
         <exclude>
             <directory>../../../app/code/*/*/Test</directory>
@@ -31,7 +31,7 @@
     </source>
     <testsuites>
         <testsuite name="Ls_Retail_Integration_Tests">
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Controller/Adminhtml/Reset</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Controller/Adminhtml</directory>
             <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncAttributesValueTest.php</file>
         </testsuite>
     </testsuites>
