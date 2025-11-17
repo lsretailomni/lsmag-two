@@ -29,21 +29,21 @@
         <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="You saved the configuration." stepKey="seeSuccessMessage3SaaS"/>
 
 
-<!--        <selectOption selector="{{LsConfigManagementSection.ServiceCentralType}}" userInput="{{ServiceCentralTypeOnPrem.value}}" stepKey="fillCentralTypeOnPrem" />-->
-<!--        <fillField selector="{{LsConfigManagementSection.ServiceWebServiceUri}}" userInput="{{ServiceWebServiceUri.value}}" stepKey="setServiceWebServiceUri"/>-->
-<!--        <fillField selector="{{LsConfigManagementSection.ServiceOdataWebServiceUri}}" userInput="{{ServiceOdataWebServiceUri.value}}" stepKey="setaServiceOdataWebServiceUri"/>-->
-<!--        <fillField selector="{{LsConfigManagementSection.ServiceUsername}}" userInput="{{ServiceUsername.value}}" stepKey="setServiceUsername"/>-->
-<!--        <fillField selector="{{LsConfigManagementSection.ServicePassword}}" userInput="{{ServicePassword.value}}" stepKey="setServicePassword"/>-->
-<!--        <click selector="{{LsConfigManagementSection.ValidateBaseUrl}}" stepKey="validateBaseUrl" after="setServicePassword"/>-->
-<!--        <wait stepKey="waitForPopup" time="20" after="validateBaseUrl" />-->
-<!--        <acceptPopup stepKey="clickOk" after="waitForPopup"/>-->
-<!--        <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStore"/>-->
-<!--        <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchy"/>-->
-<!--        <comment userInput="saveStoreConfiguration" stepKey="comment"/>-->
-<!--        <waitForElementVisible selector="{{StoreConfigSection.Save}}" stepKey="waitForSaveButton"/>-->
-<!--        <click selector="{{StoreConfigSection.Save}}" stepKey="clickSaveButton"/>-->
-<!--        <waitForPageLoad stepKey="waitForPageLoad"/>-->
-<!--        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="You saved the configuration." stepKey="seeSuccessMessage3"/>-->
+        <selectOption selector="{{LsConfigManagementSection.ServiceCentralType}}" userInput="{{ServiceCentralTypeOnPrem.value}}" stepKey="fillCentralTypeOnPrem" />
+        <fillField selector="{{LsConfigManagementSection.ServiceWebServiceUri}}" userInput="{{ServiceWebServiceUri.value}}" stepKey="setServiceWebServiceUri"/>
+        <fillField selector="{{LsConfigManagementSection.ServiceOdataWebServiceUri}}" userInput="{{ServiceOdataWebServiceUri.value}}" stepKey="setaServiceOdataWebServiceUri"/>
+        <fillField selector="{{LsConfigManagementSection.ServiceUsername}}" userInput="{{ServiceUsername.value}}" stepKey="setServiceUsername"/>
+        <fillField selector="{{LsConfigManagementSection.ServicePassword}}" userInput="{{ServicePassword.value}}" stepKey="setServicePassword"/>
+        <click selector="{{LsConfigManagementSection.ValidateBaseUrl}}" stepKey="validateBaseUrl" after="setServicePassword"/>
+        <wait stepKey="waitForPopup" time="20" after="validateBaseUrl" />
+        <acceptPopup stepKey="clickOk" after="waitForPopup"/>
+        <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStore"/>
+        <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchy"/>
+        <comment userInput="saveStoreConfiguration" stepKey="comment"/>
+        <waitForElementVisible selector="{{StoreConfigSection.Save}}" stepKey="waitForSaveButton"/>
+        <click selector="{{StoreConfigSection.Save}}" stepKey="clickSaveButton"/>
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="You saved the configuration." stepKey="seeSuccessMessage3"/>
         <magentoCLI command="config:set --scope website --scope-code base {{ServiceCentralType.path}} {{ServiceCentralType.value}}" stepKey="serviceCentralType"/>
     </actionGroup>
 </actionGroups>
