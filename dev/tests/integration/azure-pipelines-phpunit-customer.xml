@@ -29,6 +29,18 @@
             <directory>../../../setup/src/*/*/Test</directory>
         </exclude>
     </source>
+    <coverage>
+        <include>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Block</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Controller</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Observer</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Plugin</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Block</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Controller</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Observer</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Plugin</directory>
+        </include>
+    </coverage>
     <testsuites>
         <!-- Memory tests run first to prevent influence of other tests on accuracy of memory measurements -->
         <testsuite name="Memory Usage Tests">
