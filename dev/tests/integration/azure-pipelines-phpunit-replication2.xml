@@ -19,9 +19,10 @@
          stderr="true">
     <source>
         <include>
+            <directory suffix=".php">../../../app/code/Magento</directory>
+            <directory suffix=".php">../../../lib/internal/Magento</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Replication/Plugin</directory>
             <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Replication/Console</directory>
-            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/ProductCreateTask.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncVersion.php</file>
         </include>
         <exclude>
             <directory>../../../app/code/*/*/Test</directory>
@@ -30,11 +31,22 @@
             <directory>../../../setup/src/*/*/Test</directory>
         </exclude>
     </source>
-    <testsuites>
-        <testsuite name="Ls_Retail_Integration_Tests">
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Console</directory>
+    <coverage>
+        <include>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/ProductCreateTask.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncVersion.php</file>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Plugin</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Console</directory>
             <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/ProductCreateTaskTestTest.php</file>
             <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncVersionTest.php</file>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Console</directory>
+        </include>
+    </coverage>
+    <testsuites>
+        <testsuite name="Ls_Retail_Integration_Tests">
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/ProductCreateTaskTestTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncVersionTest.php</file>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Console</directory>
         </testsuite>
     </testsuites>
     <!-- Code coverage filters -->

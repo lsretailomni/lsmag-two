@@ -137,12 +137,22 @@ jobs:
         displayName: 'Magento Database Creation'
 
       - script: |
+          # Generate a random 4-character alphanumeric prefix and export as pipeline variable
+          export LS_ORDER_NUMBER_PREFIX_PATH=$(cat /dev/urandom | tr -dc 'A-Za-z0-9' | head -c 4)
+          echo "##vso[task.setvariable variable=LS_ORDER_NUMBER_PREFIX_PATH]$LS_ORDER_NUMBER_PREFIX_PATH"
+          echo "Random LS_ORDER_NUMBER_PREFIX_PATH: $LS_ORDER_NUMBER_PREFIX_PATH"
+        displayName: 'Set random LS_ORDER_NUMBER_PREFIX_PATH'
+
+      - script: |
           cd $(magentoDirectory)
           cp artifacts/lsretail/lsmag-two/dev/tests/integration/$(phpunitFile) dev/tests/integration/
           cp artifacts/lsretail/lsmag-two/dev/tests/integration/etc/install-config-mysql.php dev/tests/integration/etc/
           php -d memory_limit=-1 ./vendor/bin/phpunit -c $(pwd)/dev/tests/integration/$(phpunitFile) --testsuite "Ls_Retail_Integration_Tests" --coverage-clover  $(magentoDirectory)/report/coverage.xml
         displayName: 'Ls Retail Modules Integration Tests Validation'
-        env: ${{ variables }}
+        env:
+          LS_ORDER_NUMBER_PREFIX_PATH: $(LS_ORDER_NUMBER_PREFIX_PATH)
+          # The following expands all pipeline variables as environment variables
+          ${{ variables }}
 
       - script: |
           cat $(magentoDirectory)/var/log/debug.log
