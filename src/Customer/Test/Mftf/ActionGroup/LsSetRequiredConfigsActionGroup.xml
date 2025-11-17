@@ -10,23 +10,23 @@
         <magentoCLI command="config:set --scope website --scope-code base {{OrderPrefix.path}} {{OrderPrefix.value}}" stepKey="orderPrefix"/>
         <magentoCLI command="config:set --scope website --scope-code base {{ServiceDebug.path}} {{ServiceDebug.value}}" stepKey="serviceDebug"/>
         <amOnPage url="/admin/admin/system_config/edit/section/ls_mag/website/1/#ls_mag_service-link" stepKey="navigateToConfigurationSection"/>
-        <selectOption selector="{{LsConfigManagementSection.ServiceCentralType}}" userInput="{{ServiceCentralTypeSaaS.value}}" stepKey="fillCentralTypeSaaS" />
-        <fillField selector="{{LsConfigManagementSection.ServiceTenant}}" userInput="{{ServiceTenant.value}}" stepKey="setServiceTenant"/>
-        <fillField selector="{{LsConfigManagementSection.ServiceEnv}}" userInput="{{ServiceEnv.value}}" stepKey="setServiceEnv"/>
-        <fillField selector="{{LsConfigManagementSection.ServiceCompany}}" userInput="{{ServiceCompany.value}}" stepKey="setServiceCompany"/>
-        <click selector="{{LsConfigManagementSection.AutopopulateBaseUrl}}" stepKey="AutopopulateBaseUrl" after="setServiceCompany"/>
-        <fillField selector="{{LsConfigManagementSection.ServiceClientId}}" userInput="{{ServiceClientId.value}}" stepKey="setServiceClientId"/>
-        <fillField selector="{{LsConfigManagementSection.ServiceClientSecret}}" userInput="{{ServiceClientSecret.value}}" stepKey="setServiceClientSecret"/>
-        <click selector="{{LsConfigManagementSection.ValidateBaseUrl}}" stepKey="validateBaseUrlSaaS" after="setServiceClientSecret"/>
-        <wait stepKey="waitForPopupSaaS" time="20" after="validateBaseUrlSaaS" />
-        <acceptPopup stepKey="clickOkSaaS" after="waitForPopupSaaS"/>
-        <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStoreSaaS"/>
-        <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchySaaS"/>
-        <comment userInput="saveStoreConfiguration" stepKey="commentSaaS"/>
-        <waitForElementVisible selector="{{StoreConfigSection.Save}}" stepKey="waitForSaveButtonSaaS"/>
-        <click selector="{{StoreConfigSection.Save}}" stepKey="clickSaveButtonSaaS"/>
-        <waitForPageLoad stepKey="waitForPageLoadSaaS"/>
-        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="You saved the configuration." stepKey="seeSuccessMessage3SaaS"/>
+<!--        <selectOption selector="{{LsConfigManagementSection.ServiceCentralType}}" userInput="{{ServiceCentralTypeSaaS.value}}" stepKey="fillCentralTypeSaaS" />-->
+<!--        <fillField selector="{{LsConfigManagementSection.ServiceTenant}}" userInput="{{ServiceTenant.value}}" stepKey="setServiceTenant"/>-->
+<!--        <fillField selector="{{LsConfigManagementSection.ServiceEnv}}" userInput="{{ServiceEnv.value}}" stepKey="setServiceEnv"/>-->
+<!--        <fillField selector="{{LsConfigManagementSection.ServiceCompany}}" userInput="{{ServiceCompany.value}}" stepKey="setServiceCompany"/>-->
+<!--        <click selector="{{LsConfigManagementSection.AutopopulateBaseUrl}}" stepKey="AutopopulateBaseUrl" after="setServiceCompany"/>-->
+<!--        <fillField selector="{{LsConfigManagementSection.ServiceClientId}}" userInput="{{ServiceClientId.value}}" stepKey="setServiceClientId"/>-->
+<!--        <fillField selector="{{LsConfigManagementSection.ServiceClientSecret}}" userInput="{{ServiceClientSecret.value}}" stepKey="setServiceClientSecret"/>-->
+<!--        <click selector="{{LsConfigManagementSection.ValidateBaseUrl}}" stepKey="validateBaseUrlSaaS" after="setServiceClientSecret"/>-->
+<!--        <wait stepKey="waitForPopupSaaS" time="20" after="validateBaseUrlSaaS" />-->
+<!--        <acceptPopup stepKey="clickOkSaaS" after="waitForPopupSaaS"/>-->
+<!--        <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStoreSaaS"/>-->
+<!--        <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchySaaS"/>-->
+<!--        <comment userInput="saveStoreConfiguration" stepKey="commentSaaS"/>-->
+<!--        <waitForElementVisible selector="{{StoreConfigSection.Save}}" stepKey="waitForSaveButtonSaaS"/>-->
+<!--        <click selector="{{StoreConfigSection.Save}}" stepKey="clickSaveButtonSaaS"/>-->
+<!--        <waitForPageLoad stepKey="waitForPageLoadSaaS"/>-->
+<!--        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="You saved the configuration." stepKey="seeSuccessMessage3SaaS"/>-->
 
 
         <selectOption selector="{{LsConfigManagementSection.ServiceCentralType}}" userInput="{{ServiceCentralTypeOnPrem.value}}" stepKey="fillCentralTypeOnPrem" />
