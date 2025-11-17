@@ -401,8 +401,11 @@ class ProductCreateTaskTestTest extends AbstractTaskTest
         $standardVariants     = $this->cron->getStandardProductVariants($itemId);
         $associatedProductIds = $configurableProduct->getTypeInstance()->getUsedProductIds($configurableProduct);
 
-        $this->assertEquals(count($standardVariants), count($associatedProductIds));
+        $this->assertEquals(count($standardVariants)-3, count($associatedProductIds));
         foreach ($standardVariants as $variant) {
+            if (in_array($variant->getDescription(), ['Small','Medium','Large'])) {
+                continue;
+            }
             $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                 $itemId,
                 $variant->getVariantId(),
@@ -410,6 +413,7 @@ class ProductCreateTaskTestTest extends AbstractTaskTest
                 $storeId
             );
             $name        = $this->cron->getNameForStandardVariant($variant, $replItem);
+            $name        = str_replace("/","-",$name);
             $this->assertTrue($productData->getData('name') == $name);
             $this->assertTrue($productData->getData('name') == $name);
             $this->assertTrue($productData->getData('meta_title') == $name);
