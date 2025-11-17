@@ -109,7 +109,6 @@ class ApplyGiftCardTest extends GraphQlTestBase
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-
     ]
     public function testApplyGiftCard()
     {
@@ -170,11 +169,11 @@ class ApplyGiftCardTest extends GraphQlTestBase
                 mutation {
                   applyLsGiftCard(
                     input:
-                      { 
+                      {
                         cart_id: "{$maskedQuoteId}"
-                        code: "{$giftcard}" 
-                        pin: "{$pin}" 
-                        amount: "{$amount}" 
+                        code: "{$giftcard}"
+                        pin: "{$pin}"
+                        amount: "{$amount}"
                       }
                     ) {
                         cart {
@@ -186,7 +185,7 @@ class ApplyGiftCardTest extends GraphQlTestBase
                                     currency
                                 }
                             }
-                            lstax {         
+                            lstax {
                               label
                               amount {
                                 value
@@ -196,7 +195,7 @@ class ApplyGiftCardTest extends GraphQlTestBase
                             grand_total {
                                 value
                             }
-                          }                        
+                          }
                         }
                     }
                 }

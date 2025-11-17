@@ -118,7 +118,7 @@ class AbstractIntegrationTest extends TestCase
     public const ITEM_SIMPLE = ITEM_SIMPLE;
     public const HOSP_STORE = HOSP_STORE;
     public const DISCOUNT_SKU = DISCOUNT_SKU;
-    
+
 
     protected function setUp(): void
     {

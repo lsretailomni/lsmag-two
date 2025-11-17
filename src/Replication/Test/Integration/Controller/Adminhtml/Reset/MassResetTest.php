@@ -52,7 +52,7 @@ class MassResetTest extends AbstractBackendController
     protected function setUp(): void
     {
         $this->resource   = 'Magento_Backend::admin';
-        $this->uri        = 'backend/ls_repl/reset/massreset';
+        $this->uri        = 'backend/ls_repl/reset/massResetItem';
         $this->httpMethod = HttpRequest::METHOD_POST;
         parent::setUp();
 
@@ -99,6 +99,8 @@ class MassResetTest extends AbstractBackendController
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'store', 'default'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'website'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         DataFixture(
             FlatDataReplication::class,
             [
@@ -220,6 +222,8 @@ class MassResetTest extends AbstractBackendController
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'store', 'default'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'website'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
     ]
     public function testExecuteWithoutFilter(): void
     {
