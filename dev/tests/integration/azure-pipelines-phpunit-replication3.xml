@@ -19,8 +19,8 @@
          stderr="true">
     <source>
         <include>
-            <directory suffix=".php">../../../app/code/Magento</directory>
-            <directory suffix=".php">../../../lib/internal/Magento</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncInventory.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncPrice.php</file>
         </include>
         <exclude>
             <directory>../../../app/code/*/*/Test</directory>
@@ -29,14 +29,6 @@
             <directory>../../../setup/src/*/*/Test</directory>
         </exclude>
     </source>
-    <coverage>
-        <include>
-            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncInventory.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncPrice.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncInventoryTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncPriceTest.php</file>
-        </include>
-    </coverage>
     <testsuites>
         <testsuite name="Ls_Retail_Integration_Tests">
             <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncInventoryTest.php</file>

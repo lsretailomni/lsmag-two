@@ -19,8 +19,11 @@
          stderr="true">
     <source>
         <include>
-            <directory suffix=".php">../../../app/code/Magento</directory>
-            <directory suffix=".php">../../../lib/internal/Magento</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Block</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Controller</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Model</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Observer</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Plugin</directory>
         </include>
         <exclude>
             <directory>../../../app/code/*/*/Test</directory>
@@ -29,21 +32,6 @@
             <directory>../../../setup/src/*/*/Test</directory>
         </exclude>
     </source>
-    <coverage>
-        <include>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni</directory>
-        </include>
-        <exclude>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Client</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Code</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Console</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Service</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Exception</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Unit</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Fixture</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Helper</directory>
-        </exclude>
-    </coverage>
     <testsuites>
         <testsuite name="Ls_Retail_Integration_Tests">
             <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Block</directory>
