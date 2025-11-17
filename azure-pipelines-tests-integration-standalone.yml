@@ -155,3 +155,4 @@ jobs:
         inputs:
           summaryFileLocation: '$(magentoDirectory)/report/coverage.xml'
         displayName: 'Ls Retail Modules Tests result Publishing'
+        condition: always()
