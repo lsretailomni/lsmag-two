@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Ls\OmniGraphQl\Test\Integration;
 
 use \Ls\Core\Model\LSR;
-use \Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Customer\Api\CustomerRepositoryInterface;
@@ -61,12 +60,9 @@ abstract class GraphQlTestBase extends GraphQlAbstract
         $this->sourceItem               = $this->objectManager->create(SourceItemInterfaceFactory::class);
         $this->indexerFactory           = $this->objectManager->get(IndexerRegistry::class);
 
-        $this->productSku = (defined('WEB_API_TEST_PRODUCT_SKU')) ?
-            WEB_API_TEST_PRODUCT_SKU : AbstractIntegrationTest::ITEM_SIMPLE;
-        $this->email      = (defined('WEB_API_TEST_EMAIL')) ?
-            WEB_API_TEST_EMAIL : 'pipeline_retail@lsretail.com';
-        $this->password   = (defined('PASSWORD')) ?
-            PASSWORD : 'Nmswer123@';
+        $this->productSku = AbstractIntegrationTest::ITEM_SIMPLE;
+        $this->email      = AbstractIntegrationTest::EMAIL;
+        $this->password   = AbstractIntegrationTest::PASSWORD;
     }
 
     /**
@@ -125,9 +121,9 @@ abstract class GraphQlTestBase extends GraphQlAbstract
      */
     protected function loginAndFetchToken(): string
     {
-        $email    = getenv('WEB_API_TEST_EMAIL') ?: throw new \RuntimeException('TEST_USER_EMAIL is not set in .env');
+        $email    = getenv('EMAIL') ?: throw new \RuntimeException('EMAIL is not set in .env');
         $password = getenv('PASSWORD') ?:
-            throw new \RuntimeException('WEB_API_TEST_EMAIL is not set in .env');
+            throw new \RuntimeException('PASSWORD is not set in .env');
 
         $loginMutation = <<<MUTATION
         mutation {
