@@ -18,18 +18,11 @@ class ClickAndCollectStoresTest extends GraphQlTestBase
      * @magentoAppIsolation enabled
      */
     #[
-        AppArea('graphql'),
-        DataFixture(
-            FlatDataReplication::class,
-            [
-                'job_url' => ReplLscStoreviewTask::class,
-                'scope'   => ScopeInterface::SCOPE_WEBSITE
-            ],
-            as: 'stores'
-        )
+        AppArea('graphql')
     ]
     public function testClickAndCollectStores()
     {
+        $this->replicateStoresData();
         $query = $this->getQuery();
 
         $headerMap = [];

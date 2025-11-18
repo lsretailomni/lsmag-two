@@ -2,7 +2,7 @@
 
 namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver;
 
-use Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
+use \Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Fixture\AppArea;

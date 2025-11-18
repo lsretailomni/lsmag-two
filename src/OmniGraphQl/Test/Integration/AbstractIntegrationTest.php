@@ -129,23 +129,6 @@ class AbstractIntegrationTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->objectManager = Bootstrap::getObjectManager();
-        $omniDebug = $this->getEnvironment('ENABLED');
-        $replicationHelper = $this->objectManager->get(ReplicationHelper::class);
-        $replicationHelper->updateConfigValue(LSR::SC_SERVICE_DEBUG, $omniDebug, 1, 'websites');
-        $replicationHelper->flushByTypeCode('config');
-        //parent::setUp();
-    }
-
-    /**
-     * return environment variable
-     *
-     * @param $param
-     * @return array|false|string
-     */
-    public function getEnvironment($param)
-    {
-        // phpcs:ignore Magento2.Functions.DiscouragedFunction
-        return getenv($param);
-    }
+        parent::setUp();
+    }    
 }

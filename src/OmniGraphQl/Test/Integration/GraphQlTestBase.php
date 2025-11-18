@@ -5,6 +5,8 @@ namespace Ls\OmniGraphQl\Test\Integration;
 
 use Braintree\Configuration;
 use \Ls\Core\Model\LSR;
+use \Ls\Replication\Cron\ReplEcommStoresTask;
+use \Ls\Replication\Cron\ReplLscStoreviewTask;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ProductFactory;
@@ -18,6 +20,7 @@ use Magento\Quote\Api\CartManagementInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteIdMask;
 use Magento\Quote\Model\QuoteIdMaskFactory;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\GraphQlAbstract;
 use Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory;
@@ -399,6 +402,18 @@ abstract class GraphQlTestBase extends GraphQlAbstract
         } catch (NoSuchEntityException $e) {
             $this->fail("Error:- " . $e->getMessage());
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function replicateStoresData()
+    {
+        $this->saveConfig(0, ReplEcommStoresTask::CONFIG_PATH_STATUS);
+        $storeManager = Bootstrap::getObjectManager()->get(StoreManagerInterface::class);
+        $storeData    = $storeManager->getWebsite();
+        $job          = Bootstrap::getObjectManager()->create(ReplLscStoreviewTask::class);
+        $job->executeManually($storeData);
     }
 
     /**
