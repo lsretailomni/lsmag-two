@@ -13,7 +13,7 @@ class CustomerLsAccountTest extends GraphQlTestBase
     /**
      * @throws \Exception
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->authToken = $this->loginAndFetchToken();
