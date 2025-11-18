@@ -5,9 +5,9 @@ namespace Ls\Replication\Test\Integration\Cron;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Api\ReplCountryCodeRepositoryInterface;
-use \Ls\Replication\Cron\ReplEcommCountryCodeTask;
-use \Ls\Replication\Cron\ReplEcommStoresTask;
-use \Ls\Replication\Cron\ReplEcommTaxSetupTask;
+use \Ls\Replication\Cron\ReplLscCountryviewTask;
+use \Ls\Replication\Cron\ReplLscStoreviewTask;
+use \Ls\Replication\Cron\ReplLscVatPostingSetupTask;
 use \Ls\Replication\Cron\TaxRulesCreateTask;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
@@ -33,21 +33,21 @@ use PHPUnit\Framework\TestCase;
     DataFixture(
         FlatDataReplication::class,
         [
-            'job_url' => ReplEcommTaxSetupTask::class,
+            'job_url' => ReplLscVatPostingSetupTask::class,
             'scope' => ScopeInterface::SCOPE_WEBSITE
         ]
     ),
     DataFixture(
         FlatDataReplication::class,
         [
-            'job_url' => ReplEcommCountryCodeTask::class,
+            'job_url' => ReplLscCountryviewTask::class,
             'scope' => ScopeInterface::SCOPE_WEBSITE
         ]
     ),
     DataFixture(
         FlatDataReplication::class,
         [
-            'job_url' => ReplEcommStoresTask::class,
+            'job_url' => ReplLscStoreviewTask::class,
             'scope' => ScopeInterface::SCOPE_WEBSITE
         ]
     )
@@ -87,16 +87,36 @@ class TaxCreateTaskTest extends TestCase
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'website'),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'store', 'default' ),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website' ),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'store', 'default'),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'website'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'store', 'default'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'website'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'store', 'default'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'website'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'website'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'store', 'default'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'store', 'default'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'store', 'default'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'store', 'default'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'website'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
-        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE)
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'website'),
+        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'store',  'default'),
     ]
     public function testExecute()
     {
@@ -177,7 +197,7 @@ class TaxCreateTaskTest extends TestCase
         $filters     = [
             [
                 'field' => 'code',
-                'value' => $replCountryCode->getCode() . '-*-*-' . $rate->getProductTaxGroup() . '-' . $scopeId,
+                'value' => $replCountryCode->getCode() . '-*-*-' . $rate->getProductTaxGroup(),
                 'condition_type' => 'eq'
             ],
         ];

@@ -132,6 +132,7 @@ class GetDiscountsOutput implements ResolverInterface
         }
 
         if (!empty($couponsObj != '')) {
+            
             foreach ($couponsObj as $coupon) {
                 $couponsArr[] = $this->dataHelper->getFormattedDescriptionCoupon($coupon);
             }

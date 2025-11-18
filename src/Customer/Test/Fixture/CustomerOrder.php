@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\Customer\Test\Fixture;
 
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Checkout\Model\Type\Onepage;
 use Magento\Customer\Api\AddressRepositoryInterface;

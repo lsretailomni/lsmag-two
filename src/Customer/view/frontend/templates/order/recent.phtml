@@ -70,6 +70,7 @@ $orderCount = 0;
                                     continue;
                                 }
 
+                                $magOrder   = null;
                                 $documentId = null;
                                 $documentId = !empty($_order->getCustomerDocumentId()) ? $_order->getCustomerDocumentId() : (!empty($_order->getDocumentId()) ? $_order->getDocumentId() : "");
 
@@ -102,7 +103,7 @@ $orderCount = 0;
                                         $_order['Status'] ?></td>
                                     <td data-th="<?= $escaper->escapeHtml(__('Actions')) ?>" class="col actions">
                                         <a href="<?= /* @escapeNotVerified */
-                                        ($magOrder) ? $block->getViewUrl($_order, $magOrder) : $block->getViewUrl($_order) ?>" class="action view">
+                                        (!empty($magOrder)) ? $block->getViewUrl($_order, $magOrder) : $block->getViewUrl($_order) ?>" class="action view">
                                     <span><?= /* @escapeNotVerified */
                                         __('View Order') ?></span>
                                         </a>

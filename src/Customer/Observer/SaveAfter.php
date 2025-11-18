@@ -62,7 +62,7 @@ class SaveAfter extends AbstractOmniObserver
                     if (empty($contact)) {
                         $contact = $this->contactHelper->contact($customer);
                     }
-                    if (is_object($contact) && $contact->getId()) {
+                    if (is_object($contact) && $contact->getCardId()) {
                         $customer = $this->contactHelper->setCustomerAttributesValues($contact, $customer);
                         $userName = $customer->getData('lsr_username');
                         $result = $this->contactHelper->forgotPassword($userName);

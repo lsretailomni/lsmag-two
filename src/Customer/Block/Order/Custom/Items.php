@@ -45,22 +45,25 @@ class Items extends AbstractItems
     public function getItems()
     {
         $order = $this->getOrder(true);
+        $orderLines = [];
         $documentId = $this->_request->getParam('order_id');
-        $orderLines = $order->getLscMemberSalesDocLine();
+        if($order) {
+            $orderLines = $order->getLscMemberSalesDocLine();
 
-        $orderLines = $orderLines && is_array($orderLines) ?
-            $orderLines : (($orderLines && !is_array($orderLines)) ? [$orderLines] : []);
+            $orderLines = $orderLines && is_array($orderLines) ?
+                $orderLines : (($orderLines && !is_array($orderLines)) ? [$orderLines] : []);
 
-        $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
+            $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
 
-        foreach ($orderLines as $key => $line) {
-            if ($line->getDocumentId() !== $documentId ||
-                $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID) ||
-                $line->getEntryType() == 1
-            ) {
-                unset($orderLines[$key]);
+            foreach ($orderLines as $key => $line) {
+                if ($line->getDocumentId() !== $documentId ||
+                    $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID) ||
+                    $line->getEntryType() == 1
+                ) {
+                    unset($orderLines[$key]);
+                }
             }
-        }
+        }      
 
         return $orderLines;
     }

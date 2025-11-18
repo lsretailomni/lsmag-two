@@ -72,6 +72,7 @@ class ItemsAvailabilityTest extends GraphQlTestBase
     public function testItemAvailability()
     {
         $product = $this->getOrCreateProduct();
+        $this->replicateStoresData();
         $query   = $this->getQuery('', $product->getSku());
 
         $headerMap = ['Authorization' => 'Bearer ' . $this->authToken];

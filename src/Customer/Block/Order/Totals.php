@@ -214,21 +214,25 @@ class Totals extends AbstractOrderBlock
      */
     public function getCurrentTransaction()
     {
-        $order = $this->getOrder();
-        $documentId = $order->getDocumentId() ?? $this->_request->getParam('order_id');
-        $newDocumentId = $this->_request->getParam('new_order_id');
-        $requiredTransaction = [];
-        $lscMemberSalesBuffer = $order instanceof LSCMemberSalesBuffer ? [$order] : (is_array($order->getLscMemberSalesBuffer()) ?
-            $order->getLscMemberSalesBuffer() :
-            [$order->getLscMemberSalesBuffer()]);
+        $order                = $this->getOrder();
+        $requiredTransaction  = [];
+        if ($order) {
+            $documentId           = $order->getLscMemberSalesBuffer()->getDocumentId() ?? $this->_request->getParam('order_id');
+            $newDocumentId        = $this->_request->getParam('new_order_id');
+            $newDocumentId        = ($newDocumentId) ? [$newDocumentId] : [];
+            
+            $lscMemberSalesBuffer = $order instanceof LSCMemberSalesBuffer ? [$order] : (is_array($order->getLscMemberSalesBuffer()) ?
+                $order->getLscMemberSalesBuffer() :
+                [$order->getLscMemberSalesBuffer()]);
 
-        foreach ($lscMemberSalesBuffer as $transaction) {
-            if ($transaction->getDocumentId() == $documentId || in_array($transaction->getDocumentId(), $newDocumentId)) {
-                $requiredTransaction[] = $transaction;
-                break;
+            foreach ($lscMemberSalesBuffer as $transaction) {
+                if ($transaction->getDocumentId() == $documentId || in_array($transaction->getDocumentId(),
+                        $newDocumentId)) {
+                    $requiredTransaction[] = $transaction;
+                    break;
+                }
             }
         }
-
         return $requiredTransaction;
     }
 
@@ -239,23 +243,27 @@ class Totals extends AbstractOrderBlock
      */
     public function getItems()
     {
-        $order = $this->getOrder(true);
-        $orderLines = $order->getLscMemberSalesDocLine();
-        $orderLines = $orderLines && is_array($orderLines) ?
-            $orderLines : (($orderLines && !is_array($orderLines)) ? [$orderLines] : []);
-        $documentId = $this->_request->getParam('order_id');
-        $newDocumentId = $this->_request->getParam('new_order_id');
-        $isCreditMemo = $this->orderHelper->getGivenValueFromRegistry('current_detail') == 'creditmemo';
+        $order      = $this->getOrder(true);
+        $orderLines = [];
+        if ($order) {
+            $orderLines = $order->getLscMemberSalesDocLine();
+            $orderLines = $orderLines && is_array($orderLines) ?
+                $orderLines : (($orderLines && !is_array($orderLines)) ? [$orderLines] : []);
+            $documentId = $this->_request->getParam('order_id');
+            $newDocumentId = $this->_request->getParam('new_order_id');
+            $newDocumentId = ($newDocumentId) ? [$newDocumentId] : [];
+            $isCreditMemo = $this->orderHelper->getGivenValueFromRegistry('current_detail') == 'creditmemo';
 
-        foreach ($orderLines as $key => $line) {
-            if ((!$isCreditMemo && $line->getDocumentId() !== $documentId) ||
-                ($isCreditMemo && $newDocumentId && !in_array($line->getDocumentId(), $newDocumentId)) ||
-                $line->getEntryType() == 1
-            ) {
-                unset($orderLines[$key]);
+            foreach ($orderLines as $key => $line) {
+                if ((!$isCreditMemo && $line->getDocumentId() !== $documentId) ||
+                    ($isCreditMemo && $newDocumentId && !in_array($line->getDocumentId(), $newDocumentId)) ||
+                    $line->getEntryType() == 1
+                ) {
+                    unset($orderLines[$key]);
+                }
             }
         }
-
+        
         return $orderLines;
     }
 

@@ -77,13 +77,7 @@ class RemoveGiftCardTest extends GraphQlTestBase
      * @magentoAppIsolation enabled
      */
     #[
-        AppArea('graphql'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default')
-
+        AppArea('graphql'),        
     ]
     public function testRemoveGiftCard()
     {
@@ -142,7 +136,7 @@ class RemoveGiftCardTest extends GraphQlTestBase
                 mutation {
                   removeLsGiftCard(
                     input:
-                      { 
+                      {
                         cart_id: "{$maskedQuoteId}"
                       }
                     ) {
@@ -155,7 +149,7 @@ class RemoveGiftCardTest extends GraphQlTestBase
                                     currency
                                 }
                             }
-                            lstax {         
+                            lstax {
                               label
                               amount {
                                 value
@@ -165,7 +159,7 @@ class RemoveGiftCardTest extends GraphQlTestBase
                             grand_total {
                                 value
                             }
-                          }                        
+                          }
                         }
                     }
                 }

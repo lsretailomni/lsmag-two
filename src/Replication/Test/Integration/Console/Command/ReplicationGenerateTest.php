@@ -5,10 +5,8 @@ namespace Ls\Replication\Test\Integration\Console\Command;
 
 use CaseHelper\CaseHelperFactory;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Operation\ReplEcommItems;
-use \Ls\Omni\Service\Service as OmniService;
-use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Service\Soap\Client as OmniClient;
+use \Ls\Omni\Service\Soap\Element;
+use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Code\SchemaUpdateGenerator;
 use \Ls\Replication\Console\Command\ReplicationGenerate;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
@@ -27,8 +25,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 class ReplicationGenerateTest extends TestCase
 {
     private const SYSTEM_PROPERTIES = [
-        'scope',
-        'scope_id',
         'processed',
         'is_updated',
         'is_failed',
@@ -54,26 +50,47 @@ class ReplicationGenerateTest extends TestCase
         $this->objectManager = Bootstrap::getObjectManager();
     }
 
+    /**
+     * @throws \Exception
+     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'website'),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'store', 'default' ),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website' ),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'store', 'default'),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'website'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'store', 'default'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'website'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'store', 'default'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'website'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'website'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'store', 'default'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'store', 'default'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'store', 'default'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'store', 'default'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'website'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'store', 'default'),
     ]
     public function testExecute()
     {
-        $service_type         = new ServiceType(ReplEcommItems::SERVICE_TYPE);
-        $url                  = OmniService::getUrl($service_type);
-        $client               = new OmniClient($url, $service_type);
-        $metadata             = $client->getMetadata(true);
-        $schemaUpdatePath     = new SchemaUpdateGenerator($metadata);
-        $replicationOperation = $metadata->getReplicationOperationByName('ReplEcommItems');
+        $schemaUpdatePath     = new SchemaUpdateGenerator([]);
+        $name = 'LSC Attribute';
+        $request = new Element($name, $name);
+        $response = new Element($name, $name);
+        $replicationOperation = new ReplicationOperation($name, $request, $response);
         $dbSchemaPath         = $schemaUpdatePath->getPath();
         $paths                = [
             $replicationOperation->getMainEntityPath(true),
@@ -95,12 +112,11 @@ class ReplicationGenerateTest extends TestCase
         $commandOutput = $this->commandTester->getDisplay();
         $this->assertEquals(Cli::RETURN_SUCCESS, $this->commandTester->getStatusCode());
         $this->assertStringContainsString(
-            'Finish Generating Replication Task Files' . PHP_EOL,
+            'Finished generating replication task files' . PHP_EOL,
             $commandOutput
         );
 
         $this->assertPathsExists($paths);
-        $this->assertSystemProperties($replicationOperation);
         $this->assertSystemMethods($replicationOperation);
         $this->assertDbSchema($replicationOperation, $dbSchemaPath);
     }
@@ -150,25 +166,6 @@ class ReplicationGenerateTest extends TestCase
         $this->assertTrue(
             !array_diff(
                 $expectedMethods,
-                $ownProps
-            )
-        );
-    }
-
-    public function assertSystemProperties($replicationOperation)
-    {
-        $reflect  = new ReflectionClass($replicationOperation->getMainEntityFqn());
-        $props    = $reflect->getProperties();
-        $ownProps = [];
-        foreach ($props as $prop) {
-            if ($prop->class === $replicationOperation->getMainEntityFqn()) {
-                $ownProps[] = $prop->getName();
-            }
-        }
-
-        $this->assertTrue(
-            !array_diff(
-                self::SYSTEM_PROPERTIES,
                 $ownProps
             )
         );

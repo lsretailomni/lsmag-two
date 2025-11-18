@@ -2,7 +2,7 @@
 
 namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver;
 
-use Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
+use \Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Fixture\AppArea;
@@ -46,13 +46,12 @@ class GetItemDiscountsTest extends GraphQlTestBase
             '',
             $headerMap
         );
-
         $this->assertNotNull($response);
         $this->assertArrayHasKey('discounts', $response['get_discounts']['output']);
         $this->assertArrayHasKey('coupons', $response['get_discounts']['output']);
         if (!empty($response['get_discounts']['output']['coupons'])
         ) {
-            $this->assertNotNull($response['get_discounts']['output']['coupons'][0]['coupon_description']);
+            $this->assertNotNull($response['get_discounts']['output']['coupons'][0]['offer_id']);
         }
     }
 

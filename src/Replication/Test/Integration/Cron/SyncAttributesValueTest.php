@@ -9,6 +9,7 @@ use \Ls\Replication\Cron\SyncAttributesValue;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Store\Model\ScopeInterface;
+use Magento\TestFramework\Fixture\Config;
 
 class SyncAttributesValueTest extends AbstractTaskTest
 {
@@ -28,6 +29,9 @@ class SyncAttributesValueTest extends AbstractTaskTest
         parent::tearDown();
     }
 
+    #[
+        Config(LSR::SC_SERVICE_TIMEOUT, AbstractIntegrationTest::SC_SERVICE_TIMEOUT)
+    ]
     public function actualExecute()
     {
         $storeId           = $this->storeManager->getStore()->getId();

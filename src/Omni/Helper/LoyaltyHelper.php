@@ -608,7 +608,6 @@ class LoyaltyHelper extends AbstractHelperOmni
                     }
                 }
             }
-
             return $coupons;
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -633,6 +632,7 @@ class LoyaltyHelper extends AbstractHelperOmni
             false,
             $this->lsr->getBasketIntegrationOnFrontend()
         )) {
+            
             $storeId = $this->lsr->getActiveWebStore();
             $cardId = $this->contactHelper->getCardIdFromCustomerSession();
             if (!$cardId) { //fetch card id from customer object if session value not available
@@ -641,6 +641,7 @@ class LoyaltyHelper extends AbstractHelperOmni
                 $cardId = $customer->getLsrCardid();
             }
             $rootGetDirectMarketingInfo = $this->getPublishedOffers($cardId, $storeId);
+            //print_r($rootGetDirectMarketingInfo);
             $requiredOffers = [];
             if ($rootGetDirectMarketingInfo) {
                 $publishedOffers = $rootGetDirectMarketingInfo->getPublishedoffer();
@@ -651,6 +652,7 @@ class LoyaltyHelper extends AbstractHelperOmni
                     }
                 }
             }
+            
             $itemsInCart = $this->checkoutSession->getQuote()->getAllVisibleItems();
             $coupons = $itemIdentifiers = [];
             foreach ($itemsInCart as $item) {
@@ -673,7 +675,6 @@ class LoyaltyHelper extends AbstractHelperOmni
                     ];
                 }
             }
-
             if (!empty($requiredOffers)) {
                 foreach ($requiredOffers as $each) {
                     $offerNo = $each->getNo();
@@ -878,7 +879,7 @@ class LoyaltyHelper extends AbstractHelperOmni
     {
         $loyaltyPointsRate = $this->getPointRate(null, 'LOY');
 
-        return $pointsSpent * (1 / $loyaltyPointsRate);
+        return ($loyaltyPointsRate > 0) ? $pointsSpent * (1 / $loyaltyPointsRate) : 0;
     }
 
     /**

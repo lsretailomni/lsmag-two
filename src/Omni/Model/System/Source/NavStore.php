@@ -52,7 +52,6 @@ class NavStore implements OptionSourceInterface
     {
         // get current Website Id.
         $websiteId = (int)$this->request->getParam('website');
-
         if ($this->lsr->validateBaseUrl('', [], [], $websiteId)) {
             return $this->helper->fetchWebStores();
         }

@@ -360,6 +360,7 @@ class ProductCreateTask
                                     $item->getNavId(),
                                     $this->getScopeId()
                                 );
+                                
                                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                 //Update UOM attributes for simple products
                                 if (empty($variants) && count($totalUomCodes[$item->getNavId()]) == 1) {

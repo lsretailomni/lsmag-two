@@ -7,52 +7,65 @@ declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Test\Integration;
 
+use Ls\Core\Model\LSR;
+use Ls\Replication\Helper\ReplicationHelper;
+use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
 
 //just using separate name for these one as it conflicting with customer module constant
-define('PASSWORD_1', getenv('PASSWORD'));
-define('EMAIL_1', getenv('EMAIL'));
-define('FIRST_NAME_1', getenv('FIRST_NAME'));
-define('LAST_NAME_1', getenv('LAST_NAME'));
-define('CUSTOMER_ID_1', getenv('CUSTOMER_ID'));
-define('CS_URL_1', getenv('CS_URL'));
-define('CS_VERSION_1', getenv('CS_VERSION'));
-define('LS_VERSION_1', getenv('LS_VERSION'));
-define('CS_STORE_1', getenv('CS_STORE'));
-define('ENABLED_1', getenv('ENABLED'));
-define('USERNAME_1', getenv('USERNAME'));
-define('LSR_ID_1', getenv('LSR_ID'));
-define('LSR_CARD_ID_1', getenv('LSR_CARD_ID'));
-define('LS_MAG_ENABLE', getenv('LS_MAG_ENABLE'));
-define('LS_MAG_DISABLE', getenv('LS_MAG_DISABLE'));
-define('LSR_LOY_POINTS', getenv('LSR_LOY_POINTS'));
-define('STORE_PICKUP', getenv('STORE_PICKUP'));
-define('VALID_COUPON_CODE', getenv('VALID_COUPON_CODE'));
-define('INVALID_COUPON_CODE', getenv('INVALID_COUPON_CODE'));
-define('GIFTCARD', getenv('GIFTCARD'));
-define('GIFTCARD_EXPIRED', getenv('GIFTCARD_EXPIRED'));
-define('GIFTCARD_PIN', getenv('GIFTCARD_PIN'));
-define('GIFTCARD_EXPIRED_PIN', getenv('GIFTCARD_EXPIRED_PIN'));
-define('GIFTCARD_AMOUNT', getenv('GIFTCARD_AMOUNT'));
-define('LOY_POINTS', getenv('LOY_POINTS'));
-define('LICENSE', getenv('LICENSE'));
-define('LS_CENTRAL_VERSION', getenv('LS_CENTRAL_VERSION'));
-define('RETAIL_INDUSTRY', getenv('RETAIL_INDUSTRY'));
-define('LSR_ORDER_EDIT', getenv('LSR_ORDER_EDIT'));
-define('ENABLE_COUPON_ELEMENTS', getenv('ENABLE_COUPON_ELEMENTS'));
-define('COUPONS_SHOW_ON_CHECKOUT', getenv('COUPONS_SHOW_ON_CHECKOUT'));
-define('ENABLE_LOY_ELEMENTS', getenv('ENABLE_LOY_ELEMENTS'));
-define('LOY_SHOW_ON_CHECKOUT', getenv('LOY_SHOW_ON_CHECKOUT'));
-define('ENABLE_GC_ELEMENTS', getenv('ENABLE_GC_ELEMENTS'));
-define('GC_SHOW_ON_CHECKOUT', getenv('GC_SHOW_ON_CHECKOUT'));
-define('DISCOUNT_VALIDATION_ACTIVE', getenv('DISCOUNT_VALIDATION_ACTIVE'));
-define('PICKUP_TIMESLOTS_ENABLED', getenv('PICKUP_TIMESLOTS_ENABLED'));
-define('SC_CLICKCOLLECT_ENABLED', getenv('SC_CLICKCOLLECT_ENABLED'));
-define('ITEM_SIMPLE', getenv('ITEM_SIMPLE'));
-define('HOSP_STORE', getenv('HOSP_STORE'));
-define('DISCOUNT_SKU', getenv('DISCOUNT_SKU'));
-define('TENDER_TYPE_MAPPINGS', json_decode(getenv('TENDER_TYPE_MAPPINGS'), true));
-define('ADYEN_RESPONSE', json_decode(getenv('ADYEN_RESPONSE'), true));
+if (!defined("PASSWORD_1")) { define('PASSWORD_1', getenv('PASSWORD')); }
+if (!defined("EMAIL_1")) { define('EMAIL_1', getenv('EMAIL')); }
+if (!defined("FIRST_NAME_1")) { define('FIRST_NAME_1', getenv('FIRST_NAME')); }
+if (!defined("LAST_NAME_1")) { define('LAST_NAME_1', getenv('LAST_NAME')); }
+if (!defined("CUSTOMER_ID_1")) { define('CUSTOMER_ID_1', getenv('CUSTOMER_ID')); }
+if (!defined("SC_REPLICATION_CENTRAL_TYPE")) { define('SC_REPLICATION_CENTRAL_TYPE', getenv('SC_REPLICATION_CENTRAL_TYPE')); }
+if (!defined("SC_WEB_SERVICE_URI")) { define('SC_WEB_SERVICE_URI', getenv('SC_WEB_SERVICE_URI')); }
+if (!defined("SC_ODATA_URI")) { define('SC_ODATA_URI', getenv('SC_ODATA_URI')); }
+if (!defined("SC_ODATA_URI_DOWN")) { define('SC_ODATA_URI_DOWN', getenv('SC_ODATA_URI_DOWN')); }
+if (!defined("SC_USERNAME")) { define('SC_USERNAME', getenv('SC_USERNAME')); }
+if (!defined("SC_PASSWORD")) { define('SC_PASSWORD', getenv('SC_PASSWORD')); }
+if (!defined("BASE_URL")) { define('BASE_URL', getenv('BASE_URL')); }
+if (!defined("SC_COMPANY_NAME")) { define('SC_COMPANY_NAME', getenv('SC_COMPANY_NAME')); }
+if (!defined("SC_TENANT")) { define('SC_TENANT', getenv('SC_TENANT')); }
+if (!defined("SC_CLIENT_ID")) { define('SC_CLIENT_ID', getenv('SC_CLIENT_ID')); }
+if (!defined("SC_CLIENT_SECRET")) { define('SC_CLIENT_SECRET', getenv('SC_CLIENT_SECRET'));}
+if (!defined("SC_ENVIRONMENT_NAM")) { define('SC_ENVIRONMENT_NAM', getenv('SC_ENVIRONMENT_NAM'));}
+if (!defined("LS_VERSION_1")) { define('LS_VERSION_1', getenv('LS_VERSION')); }
+if (!defined("WEB_STORE")) { define('WEB_STORE', getenv('WEB_STORE')); }
+if (!defined("ENABLED_1")) { define('ENABLED_1', getenv('ENABLED')); }
+if (!defined("USERNAME_1")) { define('USERNAME_1', getenv('USERNAME')); }
+if (!defined("LSR_ID_1")) { define('LSR_ID_1', getenv('LSR_ID')); }
+if (!defined("LSR_CARD_ID_1")) { define('LSR_CARD_ID_1', getenv('LSR_CARD_ID')); }
+if (!defined("LS_MAG_ENABLE")) { define('LS_MAG_ENABLE', getenv('LS_MAG_ENABLE')); }
+if (!defined("LS_MAG_DISABLE")) { define('LS_MAG_DISABLE', getenv('LS_MAG_DISABLE')); }
+if (!defined("LSR_LOY_POINTS")) { define('LSR_LOY_POINTS', getenv('LSR_LOY_POINTS')); }
+if (!defined("STORE_PICKUP")) { define('STORE_PICKUP', getenv('STORE_PICKUP')); }
+if (!defined("VALID_COUPON_CODE")) { define('VALID_COUPON_CODE', getenv('VALID_COUPON_CODE')); }
+if (!defined("INVALID_COUPON_CODE")) { define('INVALID_COUPON_CODE', getenv('INVALID_COUPON_CODE')); }
+if (!defined("GIFTCARD")) { define('GIFTCARD', getenv('GIFTCARD')); }
+if (!defined("GIFTCARD_EXPIRED")) { define('GIFTCARD_EXPIRED', getenv('GIFTCARD_EXPIRED')); }
+if (!defined("GIFTCARD_PIN")) { define('GIFTCARD_PIN', getenv('GIFTCARD_PIN')); }
+if (!defined("GIFTCARD_EXPIRED_PIN")) { define('GIFTCARD_EXPIRED_PIN', getenv('GIFTCARD_EXPIRED_PIN')); }
+if (!defined("GIFTCARD_AMOUNT")) { define('GIFTCARD_AMOUNT', getenv('GIFTCARD_AMOUNT')); }
+if (!defined("LOY_POINTS")) { define('LOY_POINTS', getenv('LOY_POINTS')); }
+if (!defined("LICENSE")) { define('LICENSE', getenv('LICENSE')); }
+if (!defined("LS_CENTRAL_VERSION")) { define('LS_CENTRAL_VERSION', getenv('LS_CENTRAL_VERSION')); }
+if (!defined("RETAIL_INDUSTRY")) { define('RETAIL_INDUSTRY', getenv('RETAIL_INDUSTRY')); }
+if (!defined("LSR_ORDER_EDIT")) { define('LSR_ORDER_EDIT', getenv('LSR_ORDER_EDIT')); }
+if (!defined("ENABLE_COUPON_ELEMENTS")) { define('ENABLE_COUPON_ELEMENTS', getenv('ENABLE_COUPON_ELEMENTS')); }
+if (!defined("COUPONS_SHOW_ON_CHECKOUT")) { define('COUPONS_SHOW_ON_CHECKOUT', getenv('COUPONS_SHOW_ON_CHECKOUT')); }
+if (!defined("ENABLE_LOY_ELEMENTS")) { define('ENABLE_LOY_ELEMENTS', getenv('ENABLE_LOY_ELEMENTS')); }
+if (!defined("LOY_SHOW_ON_CHECKOUT")) { define('LOY_SHOW_ON_CHECKOUT', getenv('LOY_SHOW_ON_CHECKOUT')); }
+if (!defined("ENABLE_GC_ELEMENTS")) { define('ENABLE_GC_ELEMENTS', getenv('ENABLE_GC_ELEMENTS')); }
+if (!defined("GC_SHOW_ON_CHECKOUT")) { define('GC_SHOW_ON_CHECKOUT', getenv('GC_SHOW_ON_CHECKOUT')); }
+if (!defined("DISCOUNT_VALIDATION_ACTIVE")) { define('DISCOUNT_VALIDATION_ACTIVE', getenv('DISCOUNT_VALIDATION_ACTIVE')); }
+if (!defined("PICKUP_TIMESLOTS_ENABLED")) { define('PICKUP_TIMESLOTS_ENABLED', getenv('PICKUP_TIMESLOTS_ENABLED')); }
+if (!defined("SC_CLICKCOLLECT_ENABLED")) { define('SC_CLICKCOLLECT_ENABLED', getenv('SC_CLICKCOLLECT_ENABLED')); }
+if (!defined("ITEM_SIMPLE")) { define('ITEM_SIMPLE', getenv('ITEM_SIMPLE')); }
+if (!defined("HOSP_STORE")) { define('HOSP_STORE', getenv('HOSP_STORE')); }
+if (!defined("DISCOUNT_SKU")) { define('DISCOUNT_SKU', getenv('DISCOUNT_SKU')); }
+if (!defined("TENDER_TYPE_MAPPINGS")) { define('TENDER_TYPE_MAPPINGS', json_decode(getenv('TENDER_TYPE_MAPPINGS'), true)); }
+if (!defined("ADYEN_RESPONSE")) { define('ADYEN_RESPONSE', json_decode(getenv('ADYEN_RESPONSE'), true)); }
 
 class AbstractIntegrationTest extends TestCase
 {
@@ -63,9 +76,18 @@ class AbstractIntegrationTest extends TestCase
     public const FIRST_NAME = FIRST_NAME_1;
     public const LAST_NAME = LAST_NAME_1;
     public const CUSTOMER_ID = CUSTOMER_ID_1;
-    public const CS_URL = CS_URL_1;
-    public const CS_VERSION = CS_VERSION_1;
-    public const CS_STORE = CS_STORE_1;
+    public const SC_REPLICATION_CENTRAL_TYPE = SC_REPLICATION_CENTRAL_TYPE;
+    public const SC_WEB_SERVICE_URI =  SC_WEB_SERVICE_URI;
+    public const SC_USERNAME =  SC_USERNAME;
+    public const SC_PASSWORD =  SC_PASSWORD;
+    public const SC_ODATA_URI =  SC_ODATA_URI;
+    public const SC_ODATA_URI_DOWN =  SC_ODATA_URI_DOWN;
+    public const BASE_URL = BASE_URL;
+    public const SC_COMPANY_NAME = SC_COMPANY_NAME;
+    public const SC_TENANT = SC_TENANT;
+    public const SC_CLIENT_ID = SC_CLIENT_ID;
+    public const SC_CLIENT_SECRET = SC_CLIENT_SECRET;
+    public const WEB_STORE = WEB_STORE;
     public const LS_MAG_ENABLE = LS_MAG_ENABLE;
     public const LS_MAG_DISABLE = LS_MAG_DISABLE;
     public const ENABLED = ENABLED_1;
@@ -99,10 +121,18 @@ class AbstractIntegrationTest extends TestCase
     public const ITEM_SIMPLE = ITEM_SIMPLE;
     public const HOSP_STORE = HOSP_STORE;
     public const DISCOUNT_SKU = DISCOUNT_SKU;
-    
 
+
+    /**
+     * @return void
+     */
     protected function setUp(): void
     {
         parent::setUp();
+    }
+
+    public function testExecute()
+    {
+        $this->assertEquals(1, 1);
     }
 }

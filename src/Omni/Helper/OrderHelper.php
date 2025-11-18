@@ -812,10 +812,12 @@ class OrderHelper extends AbstractHelperOmni
 
         if ($type == 'Receipt') {
             $order = $this->getOrderDetailsAgainstId($docId, $type);
-            $orderLscMemberSalesBuffer = $this->getLscMemberSalesBuffer($order);
-            $docId = !empty($orderLscMemberSalesBuffer->getCustomerDocumentId()) ?
-                $orderLscMemberSalesBuffer->getCustomerDocumentId() : $docId;
-            $fetchedOrder = $this->getSalesOrderByOrderIdNew($docId);
+            if ($order) {
+                $orderLscMemberSalesBuffer = $this->getLscMemberSalesBuffer($order);
+                $docId = !empty($orderLscMemberSalesBuffer->getCustomerDocumentId()) ?
+                    $orderLscMemberSalesBuffer->getCustomerDocumentId() : $docId;
+                $fetchedOrder = $this->getSalesOrderByOrderIdNew($docId);
+            }            
         }
 
         return $fetchedOrder && !empty($fetchedOrder->getData()) ?
@@ -1408,6 +1410,7 @@ class OrderHelper extends AbstractHelperOmni
             $orders = [$orders];
         }
         foreach ($orders as $order) {
+            if($order->getRecords())
             $order['IdType']          = $this->getOrderType($order['Document Source Type']);
             $order['CustomerOrderNo'] = ($order['Customer Document ID']) ?:
                 $order['Document ID'];

@@ -90,7 +90,7 @@ class GetCustomerCartDiscountsTest extends GraphQlTestBase
 
         $this->assertNotNull($response);
         $this->assertGreaterThan(0, $response['cart']['customer_cart_discounts']['coupons']);
-        $this->assertNotNull($response['cart']['customer_cart_discounts']['coupons'][0]['coupon_description']);
+        $this->assertNotNull($response['cart']['customer_cart_discounts']['coupons'][0]['coupon_details']);
         $this->assertNotNull($response['cart']['customer_cart_discounts']['coupons'][0]['offer_id']);
         $this->assertNotNull($response['cart']['customer_cart_discounts']['coupons'][0]['offer_id']);
     }

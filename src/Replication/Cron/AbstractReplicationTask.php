@@ -884,6 +884,7 @@ abstract class AbstractReplicationTask
                 }
                 $this->persistLastKey($lastKey, $storeId);
                 $this->persistLastEntryNo($lastEntryNo, $storeId);
+                
                 $this->rep_helper->updateCronStatus(
                     $this->cronStatus,
                     $this->getConfigPathStatus(),
