@@ -7,6 +7,9 @@ declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Test\Integration;
 
+use Ls\Core\Model\LSR;
+use Ls\Replication\Helper\ReplicationHelper;
+use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
 
 //just using separate name for these one as it conflicting with customer module constant
@@ -26,6 +29,7 @@ if (!defined("SC_COMPANY_NAME")) { define('SC_COMPANY_NAME', getenv('SC_COMPANY_
 if (!defined("SC_TENANT")) { define('SC_TENANT', getenv('SC_TENANT')); }
 if (!defined("SC_CLIENT_ID")) { define('SC_CLIENT_ID', getenv('SC_CLIENT_ID')); }
 if (!defined("SC_CLIENT_SECRET")) { define('SC_CLIENT_SECRET', getenv('SC_CLIENT_SECRET'));}
+if (!defined("SC_ENVIRONMENT_NAM")) { define('SC_ENVIRONMENT_NAM', getenv('SC_ENVIRONMENT_NAM'));}
 if (!defined("LS_VERSION_1")) { define('LS_VERSION_1', getenv('LS_VERSION')); }
 if (!defined("WEB_STORE")) { define('WEB_STORE', getenv('WEB_STORE')); }
 if (!defined("ENABLED_1")) { define('ENABLED_1', getenv('ENABLED')); }
@@ -120,8 +124,28 @@ class AbstractIntegrationTest extends TestCase
     public const DISCOUNT_SKU = DISCOUNT_SKU;
 
 
+    /**
+     * @return void
+     */
     protected function setUp(): void
     {
-        parent::setUp();
+        $this->objectManager = Bootstrap::getObjectManager();
+        $omniDebug = $this->getEnvironment('ENABLED');
+        $replicationHelper = $this->objectManager->get(ReplicationHelper::class);
+        $replicationHelper->updateConfigValue(LSR::SC_SERVICE_DEBUG, $omniDebug, 1, 'websites');
+        $replicationHelper->flushByTypeCode('config');
+        //parent::setUp();
+    }
+
+    /**
+     * return environment variable
+     *
+     * @param $param
+     * @return array|false|string
+     */
+    public function getEnvironment($param)
+    {
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction
+        return getenv($param);
     }
 }

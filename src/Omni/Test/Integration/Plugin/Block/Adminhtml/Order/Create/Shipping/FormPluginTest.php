@@ -142,7 +142,8 @@ class FormPluginTest extends AbstractIntegrationTest
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'website'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'website'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'store', 'default'),
-        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::LSR_ORDER_EDIT, AbstractIntegrationTest::LSR_ORDER_EDIT, 'website'),
         Config(LSR::LSR_ORDER_EDIT, AbstractIntegrationTest::LSR_ORDER_EDIT,  'store', 'default'),
         DataFixture(
@@ -254,7 +255,8 @@ class FormPluginTest extends AbstractIntegrationTest
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'website'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'website'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'store', 'default'),
-        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::LSR_ORDER_EDIT, AbstractIntegrationTest::LSR_ORDER_EDIT, 'website'),
         Config(LSR::LSR_ORDER_EDIT, AbstractIntegrationTest::LSR_ORDER_EDIT,  'store', 'default'),
         DataFixture(

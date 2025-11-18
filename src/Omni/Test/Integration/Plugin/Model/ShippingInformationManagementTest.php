@@ -111,8 +111,9 @@ class ShippingInformationManagementTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'store', 'default'),
         Config(LSR::LSR_ORDER_EDIT, self::LSR_ORDER_EDIT, 'store', 'default'),
         Config(LSR::LS_ENABLE_COUPON_ELEMENTS, self::ENABLE_COUPON_ELEMENTS, 'store', 'default'),
-        Config(LSR::LS_COUPONS_SHOW_ON_CHECKOUT, 0, 'store', 'default'),  
-        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
+        Config(LSR::LS_COUPONS_SHOW_ON_CHECKOUT, 0, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         DataFixture(
             CustomerFixture::class,
             [
