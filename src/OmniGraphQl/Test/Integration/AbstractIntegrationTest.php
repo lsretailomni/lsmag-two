@@ -87,7 +87,6 @@ class AbstractIntegrationTest extends TestCase
     public const SC_TENANT = SC_TENANT;
     public const SC_CLIENT_ID = SC_CLIENT_ID;
     public const SC_CLIENT_SECRET = SC_CLIENT_SECRET;
-    public const SC_ENVIRONMENT_NAME = SC_ENVIRONMENT_NAME;
     public const WEB_STORE = WEB_STORE;
     public const LS_MAG_ENABLE = LS_MAG_ENABLE;
     public const LS_MAG_DISABLE = LS_MAG_DISABLE;
@@ -130,5 +129,10 @@ class AbstractIntegrationTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-    }    
+    }
+
+    public function testExecute()
+    {
+        $this->assertEquals(1, 1);
+    }
 }
