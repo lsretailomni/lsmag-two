@@ -977,7 +977,7 @@ class BasketHelper extends AbstractHelperOmni
         $price = $price * $item->getQty();
         $price = $this->basketHelper->getPriceAddingCustomOptions($item, $price);
 
-        return $this->itemHelper->convertToCurrentStoreCurrency($price);
+        return $price;
     }
 
     /**
