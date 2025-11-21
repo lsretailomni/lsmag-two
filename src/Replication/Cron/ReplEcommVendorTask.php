@@ -8,16 +8,14 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Replication\Logger\Logger;
+use \Ls\Replication\Logger\Logger;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Config\Model\ResourceModel\Config;
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
-use Ls\Omni\Client\Ecommerce\Operation\ReplEcommVendor;
-use Ls\Replication\Api\ReplVendorRepositoryInterface as ReplVendorRepository;
-use Ls\Replication\Model\ReplVendorFactory;
-use Ls\Replication\Api\Data\ReplVendorInterface;
+use \Ls\Core\Model\Data as LsHelper;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Api\ReplVendorRepositoryInterface as ReplVendorRepository;
+use \Ls\Replication\Model\ReplVendorFactory;
+use \Ls\Replication\Api\Data\ReplVendorInterface;
 
 abstract class ReplEcommVendorTask extends AbstractReplicationTask
 {

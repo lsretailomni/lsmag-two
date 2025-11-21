@@ -558,13 +558,12 @@ class Data extends AbstractHelperOmni
                 'companyName' => $companyName['company'] ?? ''
             ]
         );
-
+       
         try {
             $response = $testConnectionOperation->execute();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-
         return $response && $response->getResponseCode() == "0000" ? current($response->getRecords()) : null;
     }
 
@@ -1213,6 +1212,9 @@ class Data extends AbstractHelperOmni
      */
     public function getBaseUrl($url)
     {
+        if (!is_string($url) || $url === '') {
+            return null;
+        }
         // phpcs:ignore Magento2.Functions.DiscouragedFunction
         $parts = parse_url($url);
 

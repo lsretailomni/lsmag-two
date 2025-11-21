@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration\Cron;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Cron\ReplEcommInventoryStatusTask;
+use \Ls\Replication\Cron\ReplLscInventoryLookupTableTask;
 use \Ls\Replication\Cron\ResetReplInvStatusTask;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
@@ -50,39 +50,49 @@ class ResetReplInvStatusTaskTest extends TestCase
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommInventoryStatusTask::class,
+                'job_url' => ReplLscInventoryLookupTableTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, '2023.0.0', 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
-        Config(LSR::SC_SERVICE_VERSION, '2023.0.0', 'website'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'website'),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'store', 'default' ),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website' ),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'store', 'default'),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'website'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'store', 'default'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'website'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'store', 'default'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'website'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'website'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'store', 'default'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'store', 'default'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'store', 'default'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'store', 'default'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'website'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
-        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE)
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'website'),
+        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'store',  'default'),
     ]
     public function testExecuteOld()
     {
-        list($fullReplicationStatus1,
-            $fullReplicationConfigPath1,
-            $fullReplicationMaxKey1
-            ) = $this->getRequiredValues();
+        $fullReplicationStatus1 = $this->getRequiredValues();
         $this->assertNotNull($fullReplicationStatus1);
-        $this->assertNotNull($fullReplicationConfigPath1);
-        $this->assertNotNull($fullReplicationMaxKey1);
         $this->cron->execute();
-        list($fullReplicationStatus2,
-            $fullReplicationConfigPath2,
-            $fullReplicationMaxKey2
-            ) = $this->getRequiredValues();
+        $fullReplicationStatus2 = $this->getRequiredValues();
         $this->assertTrue($fullReplicationStatus2 == "0");
-        $this->assertTrue($fullReplicationConfigPath2 == "0");
-        $this->assertTrue($fullReplicationMaxKey2 == "0");
     }
 
     /**
@@ -92,62 +102,57 @@ class ResetReplInvStatusTaskTest extends TestCase
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommInventoryStatusTask::class,
+                'job_url' => ReplLscInventoryLookupTableTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'website'),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'store', 'default' ),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website' ),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'store', 'default'),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'website'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'store', 'default'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'website'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'store', 'default'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'website'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'website'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'store', 'default'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'store', 'default'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'store', 'default'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'store', 'default'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'website'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
-        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE)
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'website'),
+        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'store',  'default'),
     ]
     public function testExecuteNew()
     {
-        list($fullReplicationStatus1,
-            $fullReplicationConfigPath1,
-            $fullReplicationMaxKey1
-            ) = $this->getRequiredValues();
-        $this->assertNotNull($fullReplicationStatus1);
-        $this->assertNotNull($fullReplicationConfigPath1);
-        $this->assertNotNull($fullReplicationMaxKey1);
         $this->cron->execute();
-        list($fullReplicationStatus2,
-            $fullReplicationConfigPath2,
-            $fullReplicationMaxKey2
-            ) = $this->getRequiredValues();
+        $fullReplicationStatus2 = $this->getRequiredValues();
         $this->assertNotNull($fullReplicationStatus2);
-        $this->assertNotNull($fullReplicationConfigPath2);
-        $this->assertNotNull($fullReplicationMaxKey2);
     }
 
     public function getRequiredValues()
     {
         $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
-            ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS,
+            ReplLscInventoryLookupTableTask::CONFIG_PATH_STATUS,
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getWebsite()->getId()
         );
-        $fullReplicationConfigPath = $this->lsr->getConfigValueFromDb(
-            ReplEcommInventoryStatusTask::CONFIG_PATH,
-            ScopeInterface::SCOPE_WEBSITES,
-            $this->storeManager->getWebsite()->getId()
-        );
-        $fullReplicationMaxKey = $this->lsr->getConfigValueFromDb(
-            ReplEcommInventoryStatusTask::CONFIG_PATH_MAX_KEY,
-            ScopeInterface::SCOPE_WEBSITES,
-            $this->storeManager->getWebsite()->getId()
-        );
-        return [
-            $fullReplicationStatus,
-            $fullReplicationConfigPath,
-            $fullReplicationMaxKey
-        ];
+        
+        return $fullReplicationStatus;
     }
 }

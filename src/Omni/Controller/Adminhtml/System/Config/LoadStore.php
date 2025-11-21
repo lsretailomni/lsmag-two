@@ -49,6 +49,7 @@ class LoadStore extends Action
             ['value' => '', 'label' => __('No store found for entered omni api url')]
         ];
         $lsRetailLicenseIsActive = $lsRetailLicenseUnitEcomIsActive = $lsCentralVersion = '';
+        $pong = __('Unfortunately, bc webservice ping fails. Please try with valid connection details.');
         try {
             $baseUrl = $this->getRequest()->getParam('baseUrl');
             $scopeId = $this->getRequest()->getParam('scopeId');
@@ -57,6 +58,7 @@ class LoadStore extends Action
             $clientSecret = $this->getRequest()->getParam('client_secret');
             $companyName = $this->getRequest()->getParam('company_name');
             $environmentName = $this->getRequest()->getParam('environment_name');
+
             $centralType = $this->getRequest()->getParam('central_type');
             $webServiceUri = $this->getRequest()->getParam('web_service_uri');
             $odataUri = $this->getRequest()->getParam('odata_uri');
@@ -109,7 +111,7 @@ class LoadStore extends Action
                     }
                 }
             } else {
-                $pong = __('Unfortunately, commerce service ping fails. Please try with valid connection details.');
+                $pong = __('Unfortunately, bc webservice ping fails. Please try with valid connection details.');
             }
         } catch (Exception $e) {
             $this->logger->critical($e);
@@ -123,7 +125,7 @@ class LoadStore extends Action
                 'store' => $optionList,
                 'hierarchy' => $hierarchyPlaceholder,
                 'version' => $lsCentralVersion,
-                'pong' => $pong->getData(),
+                'pong' => (method_exists($pong, 'getData')) ? $pong->getData() : $pong,
                 'licenseHtml' => $licenseHtml
             ]
         );

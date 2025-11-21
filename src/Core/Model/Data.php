@@ -342,6 +342,7 @@ class Data
         $configDataCollection->addFieldToFilter('scope', $scope);
         $configDataCollection->addFieldToFilter('scope_id', $scopeId);
         $configDataCollection->addFieldToFilter('path', $path);
+        //echo $configDataCollection->getSelectSql()->__toString();
         if ($configDataCollection->count() !== 0) {
             return $configDataCollection->getFirstItem()->getValue();
         }

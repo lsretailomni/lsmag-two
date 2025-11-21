@@ -4,7 +4,7 @@ namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver;
 
 use \Ls\Omni\Test\Fixture\FlatDataReplication;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
-use \Ls\Replication\Cron\ReplEcommStoresTask;
+use \Ls\Replication\Cron\ReplLscStoreviewTask;
 use Magento\Store\Model\ScopeInterface;
 use Magento\TestFramework\Fixture\AppArea;
 use Magento\TestFramework\Fixture\DataFixture;
@@ -18,18 +18,11 @@ class ClickAndCollectStoresTest extends GraphQlTestBase
      * @magentoAppIsolation enabled
      */
     #[
-        AppArea('graphql'),
-        DataFixture(
-            FlatDataReplication::class,
-            [
-                'job_url' => ReplEcommStoresTask::class,
-                'scope'   => ScopeInterface::SCOPE_WEBSITE
-            ],
-            as: 'stores'
-        )
+        AppArea('graphql')
     ]
     public function testClickAndCollectStores()
     {
+        $this->replicateStoresData();
         $query = $this->getQuery();
 
         $headerMap = [];

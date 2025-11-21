@@ -19,7 +19,7 @@ class StoreConfigResolverPlugin
     }
 
     /**
-     * Around plugin to fix braintree error when order is not found
+     * Around plugin to fix NoSuchEntityException when order ID is invalid
      *
      * @param StoreConfigResolver $subject
      * @param \Closure $proceed

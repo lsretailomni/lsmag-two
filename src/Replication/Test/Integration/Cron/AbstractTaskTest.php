@@ -9,7 +9,6 @@ use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Replication\Api\Data\ReplAttributeValueInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplDataTranslationInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplDiscountSetupInterfaceFactory;
-use \Ls\Replication\Api\Data\ReplDiscountInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
 use Ls\Replication\Api\Data\ReplImageLinkInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplInvStatusInterfaceFactory;
@@ -17,7 +16,6 @@ use \Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplPriceInterfaceFactory;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use \Ls\Replication\Api\ReplDataTranslationRepositoryInterface;
-use \Ls\Replication\Api\ReplDiscountRepositoryInterface;
 use \Ls\Replication\Api\ReplDiscountSetupRepositoryInterface;
 use \Ls\Replication\Api\ReplDiscountValidationRepositoryInterface;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface;
@@ -33,28 +31,28 @@ use \Ls\Replication\Cron\AttributesCreateTask;
 use \Ls\Replication\Cron\CategoryCreateTask;
 use \Ls\Replication\Cron\DataTranslationTask;
 use \Ls\Replication\Cron\ProductCreateTask;
-use \Ls\Replication\Cron\ReplEcommAttributeOptionValueTask;
-use \Ls\Replication\Cron\ReplEcommAttributeTask;
-use \Ls\Replication\Cron\ReplEcommAttributeValueTask;
-use \Ls\Replication\Cron\ReplEcommBarcodesTask;
-use \Ls\Replication\Cron\ReplEcommDataTranslationLangCodeTask;
-use \Ls\Replication\Cron\ReplEcommDataTranslationTask;
-use \Ls\Replication\Cron\ReplEcommDealHtmlTranslationTask;
-use \Ls\Replication\Cron\ReplEcommDiscountSetupTask;
-use \Ls\Replication\Cron\ReplEcommDiscountValidationsTask;
-use \Ls\Replication\Cron\ReplEcommExtendedVariantsTask;
-use \Ls\Replication\Cron\ReplEcommHierarchyLeafTask;
-use \Ls\Replication\Cron\ReplEcommHierarchyNodeTask;
-use \Ls\Replication\Cron\ReplEcommImageLinksTask;
-use \Ls\Replication\Cron\ReplEcommInventoryStatusTask;
-use \Ls\Replication\Cron\ReplEcommItemsTask;
-use \Ls\Replication\Cron\ReplEcommItemUnitOfMeasuresTask;
-use \Ls\Replication\Cron\ReplEcommItemVariantRegistrationsTask;
-use \Ls\Replication\Cron\ReplEcommItemVariantsTask;
-use \Ls\Replication\Cron\ReplEcommPricesTask;
-use \Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask;
-use \Ls\Replication\Cron\ReplEcommVendorItemMappingTask;
-use \Ls\Replication\Cron\ReplEcommVendorTask;
+use \Ls\Replication\Cron\ReplLscAttributeOptionValueTask;
+use \Ls\Replication\Cron\ReplLscAttributeTask;
+use \Ls\Replication\Cron\ReplLscAttributeValueTask;
+use \Ls\Replication\Cron\ReplLscBarcodesTask;
+use \Ls\Replication\Cron\ReplDataTranslationLanguageCodeTask;
+use \Ls\Replication\Cron\ReplLscDataTranslationTask;
+use \Ls\Replication\Cron\ReplLscItemHtmlMlTask;
+use \Ls\Replication\Cron\ReplLscPeriodicdiscviewTask;
+use \Ls\Replication\Cron\ReplLscValidationPeriodTask;
+use \Ls\Replication\Cron\ReplLscWiExtdVariantValuesTask;
+use \Ls\Replication\Cron\ReplLscHierarchynodeslinkviewTask;
+use \Ls\Replication\Cron\ReplLscHierarchynodesviewTask;
+use \Ls\Replication\Cron\ReplLscRetailImageLinkTask;
+use \Ls\Replication\Cron\ReplLscInventoryLookupTableTask;
+use \Ls\Replication\Cron\ReplLscWiItemBufferTask;
+use \Ls\Replication\Cron\ReplLscItemuomupdviewTask;
+use \Ls\Replication\Cron\ReplLscVariantregviewTask;
+use \Ls\Replication\Cron\ReplLscItemVariantTask;
+use \Ls\Replication\Cron\ReplLscWiPriceTask;
+use \Ls\Replication\Cron\ReplLscUnitOfMeasureTask;
+use \Ls\Replication\Cron\ReplLscVendoritemviewTask;
+use \Ls\Replication\Cron\ReplLscVendorTask;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
 use \Ls\Replication\Model\ReplItem;
@@ -80,6 +78,8 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\CatalogRule\Model\ResourceModel\RuleFactory as ResourceRuleFactory;
 
 /**
+ * @internal
+ * @doesNotPerformAssertions
  * @magentoAppArea crontab
  * @magentoDbIsolation enabled
  * @magentoAppIsolation enabled
@@ -134,9 +134,7 @@ abstract class AbstractTaskTest extends TestCase
     public $replVendorItemRepository;
     public $replVendorRepository;
     public $replDiscountSetupInterfaceFactory;
-    public $replDiscountInterfaceFactory;
     public $replDiscountSetupRepository;
-    public $replDiscountRepository;
     public $replDiscountValidationRepository;
     public $replDataTranslationRepository;
     public $replDataTranslationInterfaceFactory;
@@ -186,8 +184,6 @@ abstract class AbstractTaskTest extends TestCase
         $this->replVendorRepository                  = $this->objectManager->get(ReplVendorRepositoryInterface::class);
         $this->replDiscountSetupRepository           = $this->objectManager->get(ReplDiscountSetupRepositoryInterface::class);
         $this->replDiscountSetupInterfaceFactory     = $this->objectManager->get(ReplDiscountSetupInterfaceFactory::class);
-        $this->replDiscountRepository                = $this->objectManager->get(ReplDiscountRepositoryInterface::class);
-        $this->replDiscountInterfaceFactory          = $this->objectManager->get(ReplDiscountInterfaceFactory::class);
         $this->replDiscountValidationRepository      = $this->objectManager->get(ReplDiscountValidationRepositoryInterface::class);
         $this->replDataTranslationRepository         = $this->objectManager->get(ReplDataTranslationRepositoryInterface::class);
         $this->replDataTranslationInterfaceFactory   = $this->objectManager->get(ReplDataTranslationInterfaceFactory::class);
@@ -208,173 +204,193 @@ abstract class AbstractTaskTest extends TestCase
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommAttributeTask::class,
+                'job_url' => ReplLscAttributeTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommAttributeOptionValueTask::class,
+                'job_url' => ReplLscAttributeOptionValueTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommAttributeValueTask::class,
+                'job_url' => ReplLscAttributeValueTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommExtendedVariantsTask::class,
+                'job_url' => ReplLscWiExtdVariantValuesTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommItemVariantsTask::class,
+                'job_url' => ReplLscItemVariantTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommUnitOfMeasuresTask::class,
+                'job_url' => ReplLscUnitOfMeasureTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommItemUnitOfMeasuresTask::class,
+                'job_url' => ReplLscItemuomupdviewTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommVendorTask::class,
+                'job_url' => ReplLscVendorTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommHierarchyNodeTask::class,
+                'job_url' => ReplLscHierarchynodesviewTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommHierarchyLeafTask::class,
+                'job_url' => ReplLscHierarchynodeslinkviewTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommItemsTask::class,
+                'job_url' => ReplLscWiItemBufferTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommBarcodesTask::class,
+                'job_url' => ReplLscBarcodesTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommItemVariantRegistrationsTask::class,
+                'job_url' => ReplLscVariantregviewTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommPricesTask::class,
+                'job_url' => ReplLscWiPriceTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommImageLinksTask::class,
+                'job_url' => ReplLscRetailImageLinkTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommInventoryStatusTask::class,
+                'job_url' => ReplLscInventoryLookupTableTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommVendorTask::class,
+                'job_url' => ReplLscVendorTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommVendorItemMappingTask::class,
+                'job_url' => ReplLscVendoritemviewTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommDiscountSetupTask::class,
+                'job_url' => ReplLscPeriodicdiscviewTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommDiscountValidationsTask::class,
+                'job_url' => ReplLscValidationPeriodTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommDataTranslationLangCodeTask::class,
+                'job_url' => ReplDataTranslationLanguageCodeTask::class,
                 'scope' => ScopeInterface::SCOPE_STORE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommDataTranslationTask::class,
+                'job_url' => ReplLscDataTranslationTask::class,
                 'scope' => ScopeInterface::SCOPE_STORE
             ]
         ),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommDealHtmlTranslationTask::class,
+                'job_url' => ReplLscItemHtmlMlTask::class,
                 'scope' => ScopeInterface::SCOPE_STORE
             ]
         ),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'website'),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'store', 'default' ),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website' ),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'store', 'default'),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'website'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'store', 'default'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'website'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'store', 'default'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'website'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'website'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'store', 'default'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'store', 'default'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'store', 'default'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'store', 'default'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'website'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'store', 'default'),
         Config(
             LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
             AbstractIntegrationTest::SAMPLE_LANGUAGE_CODE,
@@ -394,12 +410,16 @@ abstract class AbstractTaskTest extends TestCase
             AbstractIntegrationTest::SAMPLE_HIERARCHY_NAV_ID,
             'website'
         ),
-        Config(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE, 5, 'store', 'default')
+        Config(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE, 5, 'store', 'default'),
+        Config(LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO, 1, 'store', 'default'),
+        Config(LSR::SC_SUCCESS_CRON_PRODUCT, 1, 'store', 'default'),
+        Config(LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP, 1, 'store', 'default'),
+        Config(LSR::SC_SUCCESS_CRON_DISCOUNT, 1, 'store', 'default'),
     ]
     public function testExecute()
     {
         $this->cron->store = $this->storeManager->getStore();
-        $this->cron->webStoreId = AbstractIntegrationTest::CS_STORE;
+        $this->cron->webStoreId = AbstractIntegrationTest::WEB_STORE;
         $this->addDummyData();
         $this->executePreReqCrons();
         $this->actualExecute();
@@ -600,38 +620,38 @@ abstract class AbstractTaskTest extends TestCase
     {
         $this->addDummyStandardVariantAttributeOptionData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID,
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ID,
             'Small'
         );
         $this->addDummyStandardVariantAttributeOptionData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            '001',
+            '002',
             'Medium'
         );
         $this->addDummyStandardVariantAttributeOptionData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            '002',
+            '003',
             'Large'
         );
 
         $this->addDummyPriceData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ID,
         );
 
         $this->addDummyInventoryData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
-        );
-
-        $this->addDummyInventoryData(
-            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            '001',
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ID,
         );
 
         $this->addDummyInventoryData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
             '002',
+        );
+
+        $this->addDummyInventoryData(
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
+            '003',
         );
     }
 
@@ -667,7 +687,7 @@ abstract class AbstractTaskTest extends TestCase
                 'Priority' => 0,
                 'QtyPerUnitOfMeasure' => '0.0000',
                 'StartingDate' => '1900-01-01T00:00:00',
-                'StoreId' => AbstractIntegrationTest::CS_STORE,
+                'StoreId' => AbstractIntegrationTest::WEB_STORE,
                 'UnitOfMeasure' => $uomCode,
                 'UnitPrice' => '12.0000',
                 'UnitPriceInclVat' => '14.0000',
@@ -688,7 +708,7 @@ abstract class AbstractTaskTest extends TestCase
                 'IsDeleted' => 0,
                 'ItemId' => $itemId,
                 'Quantity' => 100.0000,
-                'StoreId' => AbstractIntegrationTest::CS_STORE,
+                'StoreId' => AbstractIntegrationTest::WEB_STORE,
                 'VariantId' => $variantId,
                 'scope' => ScopeInterface::SCOPE_WEBSITES,
                 'scope_id' => $this->storeManager->getWebsite()->getId()

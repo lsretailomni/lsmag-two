@@ -701,7 +701,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
                 return false;
             }
         }
-
         $this->data->getOmniDataHelper()->setMissingParameters($baseUrl, $connectionParams, $query);
         $websiteId = ($websiteId) ?: $this->getWebsiteId();
 
@@ -722,7 +721,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if (!$this->isEnabled($storeId, $scope) || !$force) {
             return false;
         }
-
         if (isset($this->validateBaseUrlResponse) &&
             $this->validateBaseUrlStoreId == $storeId &&
             $scope == $this->validateBaseUrlScope
@@ -753,7 +751,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
                 $websiteId
             );
         }
-
         return $this->validateBaseUrlResponse;
     }
 
@@ -1373,7 +1370,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if ($storeId === null) {
             $storeId = $this->getCurrentStoreId();
         }
-
+        
         return $this->getStoreConfig(LSR::SC_MODULE_ENABLED, $storeId);
     }
 

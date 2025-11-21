@@ -87,6 +87,9 @@ class ReplDataTranslationLanguageCodeTask
                         'LSC Data Translation Language'
                     );
                     $newLanguageCodes = [];
+                    if (is_array($languageCode) && !array_key_exists(0,$languageCode)) {
+                        $languageCode = [$languageCode];
+                    }
                     foreach ($languageCode as $langCode) {
                         $newLanguageCodes[] = $langCode['Language Code'];
                     }

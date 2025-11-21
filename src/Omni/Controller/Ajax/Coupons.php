@@ -40,6 +40,7 @@ class Coupons implements HttpPostActionInterface
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;
         }
+
         $result     = $this->resultJsonFactory->create();
         $resultPage = $this->resultPageFactory->create();
         $block      = $resultPage->getLayout()

@@ -2,24 +2,24 @@
 
 namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver;
 
-use Ls\Omni\Test\Fixture\FlatDataReplication;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use Ls\Replication\Cron\ReplEcommStoresTask;
-use Magento\Store\Model\ScopeInterface;
-use Magento\TestFramework\Fixture\AppArea;
-use Magento\TestFramework\Fixture\DataFixture;
+use \Ls\Replication\Cron\ReplLscStoreviewTask;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\TestFramework\Helper\Bootstrap;
 
 /**
  * Represents StoresOutput Model Class
  */
 class StoresTest extends GraphQlTestBase
 {
-
     /**
      * @magentoAppIsolation enabled
      */
     public function testStores()
     {
+        $this->replicateStoresData();
+        
         $query = $this->getQuery();
 
         $headerMap = [];
@@ -36,6 +36,8 @@ class StoresTest extends GraphQlTestBase
         $this->assertNotNull($response['get_all_stores']['stores'][0]['store_name']);
         $this->assertNotNull($response['get_all_stores']['stores'][0]['click_and_collect_accepted']);
     }
+
+    
 
     /**
      * @param $parentSku

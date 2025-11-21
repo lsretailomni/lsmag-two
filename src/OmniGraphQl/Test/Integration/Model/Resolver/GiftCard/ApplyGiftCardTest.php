@@ -77,13 +77,7 @@ class ApplyGiftCardTest extends GraphQlTestBase
      * @magentoAppIsolation enabled
      */
     #[
-        AppArea('graphql'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default')
-
+        AppArea('graphql')        
     ]
     public function testApplyGiftCard()
     {
@@ -144,11 +138,11 @@ class ApplyGiftCardTest extends GraphQlTestBase
                 mutation {
                   applyLsGiftCard(
                     input:
-                      { 
+                      {
                         cart_id: "{$maskedQuoteId}"
-                        code: "{$giftcard}" 
-                        pin: "{$pin}" 
-                        amount: "{$amount}" 
+                        code: "{$giftcard}"
+                        pin: "{$pin}"
+                        amount: "{$amount}"
                       }
                     ) {
                         cart {
@@ -160,7 +154,7 @@ class ApplyGiftCardTest extends GraphQlTestBase
                                     currency
                                 }
                             }
-                            lstax {         
+                            lstax {
                               label
                               amount {
                                 value
@@ -170,7 +164,7 @@ class ApplyGiftCardTest extends GraphQlTestBase
                             grand_total {
                                 value
                             }
-                          }                        
+                          }
                         }
                     }
                 }

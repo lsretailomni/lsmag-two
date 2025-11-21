@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
 use \Ls\Replication\Cron\DiscountCreateSetupTask;
+use Ls\Replication\Cron\ReplLscPeriodicdiscviewTask;
 use \Ls\Replication\Model\ReplDiscountSearchResults;
 use \Ls\Replication\Model\ReplDiscountValidation;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;

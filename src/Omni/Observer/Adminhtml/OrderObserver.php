@@ -108,8 +108,8 @@ class OrderObserver implements ObserverInterface
                         $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                         $response = $this->orderHelper->placeOrder($request);
                         if ($response) {
-                            if (!empty($response->getResult()->getId())) {
-                                $documentId = $response->getResult()->getId();
+                            if (!empty($response->getCustomerOrderId())) {
+                                $documentId = $response->getCustomerOrderId();
                                 $order->setDocumentId($documentId);
                                 $this->orderResourceModel->save($order);
                                 $this->messageManager->addSuccessMessage(
