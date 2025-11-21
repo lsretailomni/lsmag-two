@@ -29,7 +29,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getCustomerDiscGroup() : ?string
+    public function getCustomerDiscGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP]);
     }
@@ -39,7 +39,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_DISC_GROUP], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -49,7 +49,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getDiscount() : ?float
+    public function getDiscount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT]);
     }
@@ -59,7 +59,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT], $value);
     }
 
-    public function getDiscountAmountValue() : ?float
+    public function getDiscountAmountValue(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_VALUE]);
     }
@@ -69,7 +69,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_AMOUNT_VALUE], $value);
     }
 
-    public function getDiscountType() : ?int
+    public function getDiscountType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_TYPE]);
     }
@@ -79,7 +79,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_TYPE], $value);
     }
 
-    public function getExclude() : ?bool
+    public function getExclude(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXCLUDE]);
     }
@@ -89,7 +89,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::EXCLUDE], $value);
     }
 
-    public function getFromDate() : ?string
+    public function getFromDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::FROM_DATE]);
     }
@@ -99,7 +99,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::FROM_DATE], $value);
     }
 
-    public function getItemNo() : ?string
+    public function getItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
     }
@@ -109,7 +109,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
     }
 
-    public function getLastModifyDate() : ?string
+    public function getLastModifyDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_MODIFY_DATE]);
     }
@@ -119,7 +119,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFY_DATE], $value);
     }
 
-    public function getLoyaltySchemeCode() : ?string
+    public function getLoyaltySchemeCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOYALTY_SCHEME_CODE]);
     }
@@ -129,7 +129,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::LOYALTY_SCHEME_CODE], $value);
     }
 
-    public function getMinimumQuantity() : ?float
+    public function getMinimumQuantity(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MINIMUM_QUANTITY]);
     }
@@ -139,7 +139,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::MINIMUM_QUANTITY], $value);
     }
 
-    public function getOfferNo() : ?string
+    public function getOfferNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::OFFER_NO]);
     }
@@ -149,7 +149,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::OFFER_NO], $value);
     }
 
-    public function getPopUpLine1() : ?string
+    public function getPopUpLine1(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POPUP_LINE_1]);
     }
@@ -159,7 +159,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::POPUP_LINE_1], $value);
     }
 
-    public function getPopUpLine2() : ?string
+    public function getPopUpLine2(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POPUP_LINE_2]);
     }
@@ -169,7 +169,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::POPUP_LINE_2], $value);
     }
 
-    public function getPopUpLine3() : ?string
+    public function getPopUpLine3(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POPUP_LINE_3]);
     }
@@ -179,7 +179,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::POPUP_LINE_3], $value);
     }
 
-    public function getPriorityNo() : ?int
+    public function getPriorityNo(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRIORITY_NO]);
     }
@@ -189,7 +189,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::PRIORITY_NO], $value);
     }
 
-    public function getStoreNo() : ?string
+    public function getStoreNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
     }
@@ -199,7 +199,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -209,7 +209,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -219,7 +219,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -229,7 +229,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -239,7 +239,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
     }
 
-    public function getToDate() : ?string
+    public function getToDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TO_DATE]);
     }
@@ -249,7 +249,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::TO_DATE], $value);
     }
 
-    public function getType() : ?int
+    public function getType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TYPE]);
     }
@@ -259,7 +259,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::TYPE], $value);
     }
 
-    public function getUnitOfMeasureCode() : ?string
+    public function getUnitOfMeasureCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE]);
     }
@@ -269,7 +269,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE], $value);
     }
 
-    public function getValidationPeriodId() : ?string
+    public function getValidationPeriodId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VALIDATION_PERIOD_ID]);
     }
@@ -279,7 +279,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::VALIDATION_PERIOD_ID], $value);
     }
 
-    public function getVariantCode() : ?string
+    public function getVariantCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
     }
@@ -289,7 +289,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -306,7 +306,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -318,7 +318,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -330,7 +330,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -342,7 +342,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -354,7 +354,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -366,7 +366,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -378,7 +378,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -390,7 +390,7 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIDi
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

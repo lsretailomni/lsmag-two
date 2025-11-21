@@ -29,7 +29,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CODE]);
     }
@@ -39,7 +39,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -49,7 +49,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getImageId() : ?string
+    public function getImageId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::IMAGE_ID]);
     }
@@ -59,7 +59,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this->setData(self::getDbColumnsMapping()[self::IMAGE_ID], $value);
     }
 
-    public function getImageBlob() : ?string
+    public function getImageBlob(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::IMAGE_BLOB]);
     }
@@ -69,7 +69,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this->setData(self::getDbColumnsMapping()[self::IMAGE_BLOB], $value);
     }
 
-    public function getHeight() : ?int
+    public function getHeight(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::HEIGHT]);
     }
@@ -79,7 +79,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this->setData(self::getDbColumnsMapping()[self::HEIGHT], $value);
     }
 
-    public function getWidth() : ?int
+    public function getWidth(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::WIDTH]);
     }
@@ -89,7 +89,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this->setData(self::getDbColumnsMapping()[self::WIDTH], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -99,7 +99,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -109,7 +109,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -119,7 +119,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -129,7 +129,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -146,7 +146,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -158,7 +158,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -170,7 +170,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -182,7 +182,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -194,7 +194,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -206,7 +206,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -218,7 +218,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -230,7 +230,7 @@ class ReplLscWiImageBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWI
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

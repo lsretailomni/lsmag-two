@@ -10,134 +10,134 @@ namespace Ls\Replication\Api\Central\Data;
 
 interface ReplStoreviewInterface
 {
-    public static function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping(): array;
 
-    public function getNo() : ?string;
+    public function getNo(): ?string;
 
     public function setNo(?string $value);
 
-    public function getName() : ?string;
+    public function getName(): ?string;
 
     public function setName(?string $value);
 
-    public function getAddress() : ?string;
+    public function getAddress(): ?string;
 
     public function setAddress(?string $value);
 
-    public function getAddress2() : ?string;
+    public function getAddress2(): ?string;
 
     public function setAddress2(?string $value);
 
-    public function getPostCode() : ?string;
+    public function getPostCode(): ?string;
 
     public function setPostCode(?string $value);
 
-    public function getCity() : ?string;
+    public function getCity(): ?string;
 
     public function setCity(?string $value);
 
-    public function getCounty() : ?string;
+    public function getCounty(): ?string;
 
     public function setCounty(?string $value);
 
-    public function getCountryCode() : ?string;
+    public function getCountryCode(): ?string;
 
     public function setCountryCode(?string $value);
 
-    public function getLatitude() : ?float;
+    public function getLatitude(): ?float;
 
     public function setLatitude(?float $value);
 
-    public function getLongitude() : ?float;
+    public function getLongitude(): ?float;
 
     public function setLongitude(?float $value);
 
-    public function getPhoneNo() : ?string;
+    public function getPhoneNo(): ?string;
 
     public function setPhoneNo(?string $value);
 
-    public function getCurrencyCode() : ?string;
+    public function getCurrencyCode(): ?string;
 
     public function setCurrencyCode(?string $value);
 
-    public function getFunctionalityProfile() : ?string;
+    public function getFunctionalityProfile(): ?string;
 
     public function setFunctionalityProfile(?string $value);
 
-    public function getStoreVatBusPostGr() : ?string;
+    public function getStoreVatBusPostGr(): ?string;
 
     public function setStoreVatBusPostGr(?string $value);
 
-    public function getClickAndCollect() : ?bool;
+    public function getClickAndCollect(): ?bool;
 
     public function setClickAndCollect(?bool $value);
 
-    public function getLoyalty() : ?bool;
+    public function getLoyalty(): ?bool;
 
     public function setLoyalty(?bool $value);
 
-    public function getWebStore() : ?bool;
+    public function getWebStore(): ?bool;
 
     public function setWebStore(?bool $value);
 
-    public function getWebStorePosTerminal() : ?string;
+    public function getWebStorePosTerminal(): ?string;
 
     public function setWebStorePosTerminal(?string $value);
 
-    public function getWebStoreStaffId() : ?string;
+    public function getWebStoreStaffId(): ?string;
 
     public function setWebStoreStaffId(?string $value);
 
-    public function getCalcInvForSourcingLocation() : ?bool;
+    public function getCalcInvForSourcingLocation(): ?bool;
 
     public function setCalcInvForSourcingLocation(?bool $value);
 
-    public function getLcyCode() : ?string;
+    public function getLcyCode(): ?string;
 
     public function setLcyCode(?string $value);
 
-    public function getStoreGroupCodes() : ?string;
+    public function getStoreGroupCodes(): ?string;
 
     public function setStoreGroupCodes(?string $value);
 
-    public function getPriceGroupCodes() : ?string;
+    public function getPriceGroupCodes(): ?string;
 
     public function setPriceGroupCodes(?string $value);
 
-    public function getSalesTypeFilter() : ?string;
+    public function getSalesTypeFilter(): ?string;
 
     public function setSalesTypeFilter(?string $value);
 
     public function setProcessed(?bool $processed);
 
-    public function getProcessed() : ?bool;
+    public function getProcessed(): ?bool;
 
     public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : ?bool;
+    public function getIsUpdated(): ?bool;
 
     public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : ?bool;
+    public function getIsFailed(): ?bool;
 
     public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : ?string;
+    public function getCreatedAt(): ?string;
 
     public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : ?string;
+    public function getUpdatedAt(): ?string;
 
     public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : ?string;
+    public function getIdentityValue(): ?string;
 
     public function setChecksum(?string $checksum);
 
-    public function getChecksum() : ?string;
+    public function getChecksum(): ?string;
 
     public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : ?string;
+    public function getProcessedAt(): ?string;
 }
 

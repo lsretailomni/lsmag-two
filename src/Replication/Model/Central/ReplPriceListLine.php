@@ -29,7 +29,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getPriceListCode() : ?string
+    public function getPriceListCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRICE_LIST_CODE]);
     }
@@ -39,7 +39,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::PRICE_LIST_CODE], $value);
     }
 
-    public function getLineNo() : ?int
+    public function getLineNo(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LINE_NO]);
     }
@@ -49,7 +49,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::LINE_NO], $value);
     }
 
-    public function getSourceType() : ?int
+    public function getSourceType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SOURCE_TYPE]);
     }
@@ -59,7 +59,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::SOURCE_TYPE], $value);
     }
 
-    public function getSourceNo() : ?string
+    public function getSourceNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SOURCE_NO]);
     }
@@ -69,7 +69,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::SOURCE_NO], $value);
     }
 
-    public function getParentSourceNo() : ?string
+    public function getParentSourceNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PARENT_SOURCE_NO]);
     }
@@ -79,7 +79,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::PARENT_SOURCE_NO], $value);
     }
 
-    public function getSourceId() : ?string
+    public function getSourceId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SOURCE_ID]);
     }
@@ -89,7 +89,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::SOURCE_ID], $value);
     }
 
-    public function getAssetType() : ?int
+    public function getAssetType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ASSET_TYPE]);
     }
@@ -99,7 +99,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::ASSET_TYPE], $value);
     }
 
-    public function getAssetNo() : ?string
+    public function getAssetNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ASSET_NO]);
     }
@@ -109,7 +109,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::ASSET_NO], $value);
     }
 
-    public function getVariantCode() : ?string
+    public function getVariantCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
     }
@@ -119,7 +119,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
     }
 
-    public function getCurrencyCode() : ?string
+    public function getCurrencyCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
     }
@@ -129,7 +129,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
     }
 
-    public function getWorkTypeCode() : ?string
+    public function getWorkTypeCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::WORK_TYPE_CODE]);
     }
@@ -139,7 +139,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::WORK_TYPE_CODE], $value);
     }
 
-    public function getStartingDate() : ?string
+    public function getStartingDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STARTING_DATE]);
     }
@@ -149,7 +149,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::STARTING_DATE], $value);
     }
 
-    public function getEndingDate() : ?string
+    public function getEndingDate(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ENDING_DATE]);
     }
@@ -159,7 +159,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::ENDING_DATE], $value);
     }
 
-    public function getMinimumQuantity() : ?float
+    public function getMinimumQuantity(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MINIMUM_QUANTITY]);
     }
@@ -169,7 +169,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::MINIMUM_QUANTITY], $value);
     }
 
-    public function getUnitOfMeasureCode() : ?string
+    public function getUnitOfMeasureCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE]);
     }
@@ -179,7 +179,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE], $value);
     }
 
-    public function getAmountType() : ?int
+    public function getAmountType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::AMOUNT_TYPE]);
     }
@@ -189,7 +189,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::AMOUNT_TYPE], $value);
     }
 
-    public function getUnitPrice() : ?float
+    public function getUnitPrice(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNIT_PRICE]);
     }
@@ -199,7 +199,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::UNIT_PRICE], $value);
     }
 
-    public function getCostFactor() : ?float
+    public function getCostFactor(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::COST_FACTOR]);
     }
@@ -209,7 +209,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::COST_FACTOR], $value);
     }
 
-    public function getUnitCost() : ?float
+    public function getUnitCost(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNIT_COST]);
     }
@@ -219,7 +219,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::UNIT_COST], $value);
     }
 
-    public function getLineDiscount() : ?float
+    public function getLineDiscount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LINE_DISCOUNT]);
     }
@@ -229,7 +229,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::LINE_DISCOUNT], $value);
     }
 
-    public function getAllowLineDisc() : ?bool
+    public function getAllowLineDisc(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALLOW_LINE_DISC]);
     }
@@ -239,7 +239,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::ALLOW_LINE_DISC], $value);
     }
 
-    public function getAllowInvoiceDisc() : ?bool
+    public function getAllowInvoiceDisc(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALLOW_INVOICE_DISC]);
     }
@@ -249,7 +249,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::ALLOW_INVOICE_DISC], $value);
     }
 
-    public function getPriceIncludesVat() : ?bool
+    public function getPriceIncludesVat(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRICE_INCLUDES_VAT]);
     }
@@ -259,7 +259,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::PRICE_INCLUDES_VAT], $value);
     }
 
-    public function getVatBusPostingGrPrice() : ?string
+    public function getVatBusPostingGrPrice(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GR_PRICE]);
     }
@@ -269,7 +269,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::VAT_BUS_POSTING_GR_PRICE], $value);
     }
 
-    public function getVatProdPostingGroup() : ?string
+    public function getVatProdPostingGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAT_PROD_POSTING_GROUP]);
     }
@@ -279,7 +279,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::VAT_PROD_POSTING_GROUP], $value);
     }
 
-    public function getAssetId() : ?string
+    public function getAssetId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ASSET_ID]);
     }
@@ -289,7 +289,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::ASSET_ID], $value);
     }
 
-    public function getLineAmount() : ?float
+    public function getLineAmount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LINE_AMOUNT]);
     }
@@ -299,7 +299,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::LINE_AMOUNT], $value);
     }
 
-    public function getPriceType() : ?int
+    public function getPriceType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRICE_TYPE]);
     }
@@ -309,7 +309,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::PRICE_TYPE], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -319,7 +319,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getStatus() : ?int
+    public function getStatus(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::STATUS]);
     }
@@ -329,7 +329,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::STATUS], $value);
     }
 
-    public function getDirectUnitCost() : ?float
+    public function getDirectUnitCost(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DIRECT_UNIT_COST]);
     }
@@ -339,7 +339,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::DIRECT_UNIT_COST], $value);
     }
 
-    public function getSourceGroup() : ?int
+    public function getSourceGroup(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SOURCE_GROUP]);
     }
@@ -349,7 +349,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::SOURCE_GROUP], $value);
     }
 
-    public function getProductNo() : ?string
+    public function getProductNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRODUCT_NO]);
     }
@@ -359,7 +359,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::PRODUCT_NO], $value);
     }
 
-    public function getAssignToNo() : ?string
+    public function getAssignToNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ASSIGNTO_NO]);
     }
@@ -369,7 +369,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::ASSIGNTO_NO], $value);
     }
 
-    public function getAssignToParentNo() : ?string
+    public function getAssignToParentNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ASSIGNTO_PARENT_NO]);
     }
@@ -379,7 +379,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::ASSIGNTO_PARENT_NO], $value);
     }
 
-    public function getVariantCodeLookup() : ?string
+    public function getVariantCodeLookup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE_LOOKUP]);
     }
@@ -389,7 +389,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE_LOOKUP], $value);
     }
 
-    public function getUnitOfMeasureCodeLookup() : ?string
+    public function getUnitOfMeasureCodeLookup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE_LOOKUP]);
     }
@@ -399,7 +399,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE_LOOKUP], $value);
     }
 
-    public function getLscMarkup() : ?float
+    public function getLscMarkup(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_MARKUP]);
     }
@@ -409,7 +409,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::LSC_MARKUP], $value);
     }
 
-    public function getLscProfit() : ?float
+    public function getLscProfit(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_PROFIT]);
     }
@@ -419,7 +419,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::LSC_PROFIT], $value);
     }
 
-    public function getLscProfitLcy() : ?float
+    public function getLscProfitLcy(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_PROFIT_LCY]);
     }
@@ -429,7 +429,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::LSC_PROFIT_LCY], $value);
     }
 
-    public function getLscUnitPriceIncludingVat() : ?float
+    public function getLscUnitPriceIncludingVat(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_UNIT_PRICE_INCLUDING_VAT]);
     }
@@ -439,7 +439,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::LSC_UNIT_PRICE_INCLUDING_VAT], $value);
     }
 
-    public function getLscWholesalePrice() : ?float
+    public function getLscWholesalePrice(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_WHOLESALE_PRICE]);
     }
@@ -449,7 +449,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::LSC_WHOLESALE_PRICE], $value);
     }
 
-    public function getLscWholesaleDiscount() : ?float
+    public function getLscWholesaleDiscount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_WHOLESALE_DISCOUNT]);
     }
@@ -459,7 +459,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::LSC_WHOLESALE_DISCOUNT], $value);
     }
 
-    public function getLscCompPriceInclVat() : ?float
+    public function getLscCompPriceInclVat(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_COMP_PRICE_INCL_VAT]);
     }
@@ -469,7 +469,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::LSC_COMP_PRICE_INCL_VAT], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -479,7 +479,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -489,7 +489,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -499,7 +499,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -509,7 +509,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -526,7 +526,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -538,7 +538,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -550,7 +550,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -562,7 +562,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -574,7 +574,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -586,7 +586,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -598,7 +598,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -610,7 +610,7 @@ class ReplPriceListLine extends \Ls\Omni\Client\CentralEcommerce\Entity\PriceLis
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

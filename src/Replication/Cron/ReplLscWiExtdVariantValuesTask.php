@@ -14,7 +14,7 @@ class ReplLscWiExtdVariantValuesTask extends ReplEcommExtendedVariantsTask
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscWiExtdVariantValues';
 
-    public function getModelName() : string
+    public function getModelName(): string
     {
         return self::MODEL_CLASS;
     }
@@ -32,7 +32,7 @@ class ReplLscWiExtdVariantValuesTask extends ReplEcommExtendedVariantsTask
         return $request;
     }
 
-    public function getConfigPathLastEntryNo() : string
+    public function getConfigPathLastEntryNo(): string
     {
         return self::CONFIG_PATH_LAST_ENTRY_NO;
     }

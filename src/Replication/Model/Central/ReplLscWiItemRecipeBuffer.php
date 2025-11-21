@@ -29,7 +29,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getParentItemNo() : ?string
+    public function getParentItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PARENT_ITEM_NO]);
     }
@@ -39,7 +39,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::PARENT_ITEM_NO], $value);
     }
 
-    public function getLineNo() : ?int
+    public function getLineNo(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LINE_NO]);
     }
@@ -49,7 +49,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::LINE_NO], $value);
     }
 
-    public function getType() : ?int
+    public function getType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TYPE]);
     }
@@ -59,7 +59,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::TYPE], $value);
     }
 
-    public function getNo() : ?string
+    public function getNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO]);
     }
@@ -69,7 +69,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::NO], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -79,7 +79,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getUnitOfMeasureCode() : ?string
+    public function getUnitOfMeasureCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE]);
     }
@@ -89,7 +89,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE], $value);
     }
 
-    public function getQuantityPer() : ?float
+    public function getQuantityPer(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::QUANTITY_PER]);
     }
@@ -99,7 +99,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::QUANTITY_PER], $value);
     }
 
-    public function getLscItemNo() : ?string
+    public function getLscItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_ITEM_NO]);
     }
@@ -109,7 +109,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::LSC_ITEM_NO], $value);
     }
 
-    public function getLscExclusion() : ?int
+    public function getLscExclusion(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_EXCLUSION]);
     }
@@ -119,7 +119,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::LSC_EXCLUSION], $value);
     }
 
-    public function getLscPriceOnExclusion() : ?float
+    public function getLscPriceOnExclusion(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_PRICE_ON_EXCLUSION]);
     }
@@ -129,7 +129,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::LSC_PRICE_ON_EXCLUSION], $value);
     }
 
-    public function getRetailImageId() : ?string
+    public function getRetailImageId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::RETAIL_IMAGE_ID]);
     }
@@ -139,7 +139,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::RETAIL_IMAGE_ID], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -149,7 +149,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -159,7 +159,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -169,7 +169,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -179,7 +179,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -196,7 +196,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -208,7 +208,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -220,7 +220,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -232,7 +232,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -244,7 +244,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -256,7 +256,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -268,7 +268,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -280,7 +280,7 @@ class ReplLscWiItemRecipeBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

@@ -2,6 +2,104 @@
 
 <entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="ServiceCentralType">
+        <data key="path">ls_mag/service/central_type</data>
+        <data key="label">Central Type</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.CENTRAL_TYPE}}</data>
+    </entity>
+    <entity name="ServiceCentralTypeOnPrem">
+        <data key="path">ls_mag/service/central_type</data>
+        <data key="label">Central Type</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.CENTRAL_TYPE_ON_PREM}}</data>
+    </entity>
+    <entity name="ServiceCentralTypeSaaS">
+        <data key="path">ls_mag/service/central_type</data>
+        <data key="label">Central Type</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.CENTRAL_TYPE_SAAS}}</data>
+    </entity>
+    <entity name="ServiceTenant">
+        <data key="path">ls_mag/service/tenant</data>
+        <data key="label">Tenant</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_TENANT}}</data>
+    </entity>
+    <entity name="ServiceEnv">
+        <data key="path">ls_mag/service/environment_name</data>
+        <data key="label">Environment</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_ENV}}</data>
+    </entity>
+    <entity name="ServiceCompany">
+        <data key="path">ls_mag/service/company_name</data>
+        <data key="label">Company</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_COMPANY}}</data>
+    </entity>
+    <entity name="ServiceClientId">
+        <data key="path">ls_mag/service/client_id</data>
+        <data key="label">Client ID</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_CLIENT_ID}}</data>
+    </entity>
+    <entity name="ServiceClientSecret">
+        <data key="path">ls_mag/service/client_secret</data>
+        <data key="label">Client Secret</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_CLIENT_SECRET}}</data>
+    </entity>
+    <entity name="ServiceClientIdDisabled">
+        <data key="path">ls_mag/service/client_id</data>
+        <data key="label">Client ID</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_USERNAME_DISABLED}}</data>
+    </entity>
+    <entity name="ServiceClientSecretDisabled">
+        <data key="path">ls_mag/service/client_secret</data>
+        <data key="label">Client Secret</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_PASSWORD_DISABLED}}</data>
+    </entity>
+    <entity name="ServiceWebServiceUri">
+        <data key="path">ls_mag/service/web_service_uri</data>
+        <data key="label">Web Service URI</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.WEB_SERVICE_URI}}</data>
+    </entity>
+    <entity name="ServiceOdataWebServiceUri">
+        <data key="path">ls_mag/service/odata_service_uri</data>
+        <data key="label">OdataV4 Web Service URI</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.ODATA_WEB_SERVICE_URI}}</data>
+    </entity>
+    <entity name="ServiceUsername">
+        <data key="path">ls_mag/service/username</data>
+        <data key="label">Service Username</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_USERNAME}}</data>
+    </entity>
+    <entity name="ServicePassword">
+        <data key="path">ls_mag/service/password</data>
+        <data key="label">Service Password</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_PASSWORD}}</data>
+    </entity>
     <entity name="ServiceStore">
         <data key="path">ls_mag/service/selected_store</data>
         <data key="label">Central Store</data>
@@ -16,19 +114,19 @@
         <data key="scope_code">base</data>
         <data key="value">{{_ENV.HIERARCHY_CODE}}</data>
     </entity>
-    <entity name="ServiceBaseUrl">
-        <data key="path">ls_mag/service/base_url</data>
-        <data key="label">Base URL</data>
+    <entity name="ServiceWebServiceUriDisabled">
+        <data key="path">ls_mag/service/web_service_uri</data>
+        <data key="label">Web Service URI</data>
         <data key="scope">websites</data>
         <data key="scope_code">base</data>
-        <data key="value">{{_ENV.SERVICE_BASE_URL}}</data>
+        <data key="value">{{_ENV.WEB_SERVICE_URI_DISABLED}}</data>
     </entity>
-    <entity name="ServiceBaseUrlDisabled">
-        <data key="path">ls_mag/service/base_url</data>
-        <data key="label">Base URL</data>
+    <entity name="ServiceOdataWebServiceUriDisabled">
+        <data key="path">ls_mag/service/odata_service_uri</data>
+        <data key="label">OdataV4 Web Service URI</data>
         <data key="scope">websites</data>
         <data key="scope_code">base</data>
-        <data key="value">{{_ENV.SERVICE_BASE_URL_DISABLED}}</data>
+        <data key="value">{{_ENV.ODATA_WEB_SERVICE_URI_DISABLED}}</data>
     </entity>
     <entity name="RestrictedOrderStatusDefault">
         <data key="path">ls_mag/ls_order_management/sync_order_statuses</data>
@@ -43,13 +141,6 @@
         <data key="scope">websites</data>
         <data key="scope_code">base</data>
         <data key="value">{{_ENV.RESTRICTED_ORDER_STATUSES_UPDATED}}</data>
-    </entity>
-    <entity name="ServiceVersion">
-        <data key="path">ls_mag/service/version</data>
-        <data key="label">CS Version</data>
-        <data key="scope">websites</data>
-        <data key="scope_code">base</data>
-        <data key="value">{{_ENV.CS_VERSION}}</data>
     </entity>
     <entity name="ServiceCentralVersion">
         <data key="path">ls_mag/service/ls_central_version</data>

@@ -15,8 +15,11 @@
         </annotations>
         <before>
             <remove keyForRemoval="createCustomer"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login" before="cleanInvalidatedCaches"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" before="cleanInvalidatedCaches"/>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="login" after="cleanInvalidatedCaches"/>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache" before="cleanInvalidatedCaches">
+                <argument name="tags" value="config"/>
+            </actionGroup>
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="login">
                 <argument name="indices" value=""/>
             </actionGroup>
@@ -30,6 +33,9 @@
             <argument name="Customer" value="Ls_Simple_US_Customer"/>
         </actionGroup>
         <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation"  after="loginToStorefrontAccount" />
+        <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" before="deleteNewUser">
+            <argument name="indices" value=""/>
+        </actionGroup>
         <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser" after="assertAccountLinkInUrl">
             <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
         </actionGroup>

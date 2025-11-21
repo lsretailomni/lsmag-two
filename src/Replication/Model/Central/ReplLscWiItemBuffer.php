@@ -29,7 +29,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getNo() : ?string
+    public function getNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO]);
     }
@@ -39,7 +39,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::NO], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -49,7 +49,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getSearchDescription() : ?string
+    public function getSearchDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SEARCH_DESCRIPTION]);
     }
@@ -59,7 +59,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::SEARCH_DESCRIPTION], $value);
     }
 
-    public function getBaseUnitOfMeasure() : ?string
+    public function getBaseUnitOfMeasure(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BASE_UNIT_OF_MEASURE]);
     }
@@ -69,7 +69,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::BASE_UNIT_OF_MEASURE], $value);
     }
 
-    public function getPriceUnitConversion() : ?int
+    public function getPriceUnitConversion(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRICE_UNIT_CONVERSION]);
     }
@@ -79,7 +79,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::PRICE_UNIT_CONVERSION], $value);
     }
 
-    public function getType() : ?int
+    public function getType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TYPE]);
     }
@@ -89,7 +89,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::TYPE], $value);
     }
 
-    public function getItemDiscGroup() : ?string
+    public function getItemDiscGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_DISC_GROUP]);
     }
@@ -99,7 +99,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_DISC_GROUP], $value);
     }
 
-    public function getAllowInvoiceDisc() : ?bool
+    public function getAllowInvoiceDisc(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALLOW_INVOICE_DISC]);
     }
@@ -109,7 +109,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::ALLOW_INVOICE_DISC], $value);
     }
 
-    public function getUnitPrice() : ?float
+    public function getUnitPrice(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNIT_PRICE]);
     }
@@ -119,7 +119,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::UNIT_PRICE], $value);
     }
 
-    public function getVendorNo() : ?string
+    public function getVendorNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VENDOR_NO]);
     }
@@ -129,7 +129,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::VENDOR_NO], $value);
     }
 
-    public function getVendorItemNo() : ?string
+    public function getVendorItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VENDOR_ITEM_NO]);
     }
@@ -139,7 +139,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::VENDOR_ITEM_NO], $value);
     }
 
-    public function getAlternativeItemNo() : ?string
+    public function getAlternativeItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ALTERNATIVE_ITEM_NO]);
     }
@@ -149,7 +149,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::ALTERNATIVE_ITEM_NO], $value);
     }
 
-    public function getGrossWeight() : ?float
+    public function getGrossWeight(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::GROSS_WEIGHT]);
     }
@@ -159,7 +159,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::GROSS_WEIGHT], $value);
     }
 
-    public function getNetWeight() : ?float
+    public function getNetWeight(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::NET_WEIGHT]);
     }
@@ -169,7 +169,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::NET_WEIGHT], $value);
     }
 
-    public function getUnitsPerParcel() : ?float
+    public function getUnitsPerParcel(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNITS_PER_PARCEL]);
     }
@@ -179,7 +179,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::UNITS_PER_PARCEL], $value);
     }
 
-    public function getUnitVolume() : ?float
+    public function getUnitVolume(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNIT_VOLUME]);
     }
@@ -189,7 +189,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::UNIT_VOLUME], $value);
     }
 
-    public function getTariffNo() : ?string
+    public function getTariffNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TARIFF_NO]);
     }
@@ -199,7 +199,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::TARIFF_NO], $value);
     }
 
-    public function getBlocked() : ?bool
+    public function getBlocked(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCKED]);
     }
@@ -209,7 +209,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::BLOCKED], $value);
     }
 
-    public function getBlockReason() : ?string
+    public function getBlockReason(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCK_REASON]);
     }
@@ -219,7 +219,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::BLOCK_REASON], $value);
     }
 
-    public function getPriceIncludesVat() : ?bool
+    public function getPriceIncludesVat(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRICE_INCLUDES_VAT]);
     }
@@ -229,7 +229,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::PRICE_INCLUDES_VAT], $value);
     }
 
-    public function getCountryRegionOfOriginCode() : ?string
+    public function getCountryRegionOfOriginCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUNTRYREGION_OF_ORIGIN_CODE]);
     }
@@ -239,7 +239,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::COUNTRYREGION_OF_ORIGIN_CODE], $value);
     }
 
-    public function getVatProdPostingGroup() : ?string
+    public function getVatProdPostingGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAT_PROD_POSTING_GROUP]);
     }
@@ -249,7 +249,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::VAT_PROD_POSTING_GROUP], $value);
     }
 
-    public function getSalesUnitOfMeasure() : ?string
+    public function getSalesUnitOfMeasure(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALES_UNIT_OF_MEASURE]);
     }
@@ -259,7 +259,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::SALES_UNIT_OF_MEASURE], $value);
     }
 
-    public function getPurchUnitOfMeasure() : ?string
+    public function getPurchUnitOfMeasure(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PURCH_UNIT_OF_MEASURE]);
     }
@@ -269,7 +269,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::PURCH_UNIT_OF_MEASURE], $value);
     }
 
-    public function getItemCategoryCode() : ?string
+    public function getItemCategoryCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_CATEGORY_CODE]);
     }
@@ -279,7 +279,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_CATEGORY_CODE], $value);
     }
 
-    public function getItemTrackingCode() : ?string
+    public function getItemTrackingCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_TRACKING_CODE]);
     }
@@ -289,7 +289,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_TRACKING_CODE], $value);
     }
 
-    public function getLscDivisionCode() : ?string
+    public function getLscDivisionCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DIVISION_CODE]);
     }
@@ -299,7 +299,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DIVISION_CODE], $value);
     }
 
-    public function getLscRetailProductCode() : ?string
+    public function getLscRetailProductCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_RETAIL_PRODUCT_CODE]);
     }
@@ -309,7 +309,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::LSC_RETAIL_PRODUCT_CODE], $value);
     }
 
-    public function getLscSpecialGroupCodes() : ?string
+    public function getLscSpecialGroupCodes(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_SPECIAL_GROUP_CODES]);
     }
@@ -319,7 +319,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::LSC_SPECIAL_GROUP_CODES], $value);
     }
 
-    public function getLscVariantFrameworkCode() : ?string
+    public function getLscVariantFrameworkCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_VARIANT_FRAMEWORK_CODE]);
     }
@@ -329,7 +329,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::LSC_VARIANT_FRAMEWORK_CODE], $value);
     }
 
-    public function getSeasonCode() : ?string
+    public function getSeasonCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SEASON_CODE]);
     }
@@ -339,7 +339,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::SEASON_CODE], $value);
     }
 
-    public function getItemHtml() : ?string
+    public function getItemHtml(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_HTML]);
     }
@@ -349,7 +349,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_HTML], $value);
     }
 
-    public function getBlockSaleOnPos() : ?bool
+    public function getBlockSaleOnPos(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCK_SALE_ON_POS]);
     }
@@ -359,7 +359,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::BLOCK_SALE_ON_POS], $value);
     }
 
-    public function getBlockPurchaseReturn() : ?bool
+    public function getBlockPurchaseReturn(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCK_PURCHASE_RETURN]);
     }
@@ -369,7 +369,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::BLOCK_PURCHASE_RETURN], $value);
     }
 
-    public function getBlockedOnEcommerce() : ?bool
+    public function getBlockedOnEcommerce(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCKED_ON_ECOMMERCE]);
     }
@@ -379,7 +379,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::BLOCKED_ON_ECOMMERCE], $value);
     }
 
-    public function getBlockDiscount() : ?bool
+    public function getBlockDiscount(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCK_DISCOUNT]);
     }
@@ -389,7 +389,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::BLOCK_DISCOUNT], $value);
     }
 
-    public function getBlockManualPriceChange() : ?bool
+    public function getBlockManualPriceChange(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCK_MANUAL_PRICE_CHANGE]);
     }
@@ -399,7 +399,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::BLOCK_MANUAL_PRICE_CHANGE], $value);
     }
 
-    public function getBlockNegativeAdjustment() : ?bool
+    public function getBlockNegativeAdjustment(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCK_NEGATIVE_ADJUSTMENT]);
     }
@@ -409,7 +409,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::BLOCK_NEGATIVE_ADJUSTMENT], $value);
     }
 
-    public function getBlockPositiveAdjustment() : ?bool
+    public function getBlockPositiveAdjustment(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCK_POSITIVE_ADJUSTMENT]);
     }
@@ -419,7 +419,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::BLOCK_POSITIVE_ADJUSTMENT], $value);
     }
 
-    public function getLscItemFamilyCode() : ?string
+    public function getLscItemFamilyCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_ITEM_FAMILY_CODE]);
     }
@@ -429,7 +429,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::LSC_ITEM_FAMILY_CODE], $value);
     }
 
-    public function getLscZeroPriceValid() : ?bool
+    public function getLscZeroPriceValid(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_ZERO_PRICE_VALID]);
     }
@@ -439,7 +439,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::LSC_ZERO_PRICE_VALID], $value);
     }
 
-    public function getLscNoDiscountAllowed() : ?bool
+    public function getLscNoDiscountAllowed(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_NO_DISCOUNT_ALLOWED]);
     }
@@ -449,7 +449,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::LSC_NO_DISCOUNT_ALLOWED], $value);
     }
 
-    public function getLscKeyingInPrice() : ?int
+    public function getLscKeyingInPrice(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_KEYING_IN_PRICE]);
     }
@@ -459,7 +459,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::LSC_KEYING_IN_PRICE], $value);
     }
 
-    public function getLscScaleItem() : ?bool
+    public function getLscScaleItem(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_SCALE_ITEM]);
     }
@@ -469,7 +469,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::LSC_SCALE_ITEM], $value);
     }
 
-    public function getLscKeyingInQuantity() : ?int
+    public function getLscKeyingInQuantity(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_KEYING_IN_QUANTITY]);
     }
@@ -479,7 +479,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::LSC_KEYING_IN_QUANTITY], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -489,7 +489,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -499,7 +499,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -509,7 +509,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -519,7 +519,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -536,7 +536,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -548,7 +548,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -560,7 +560,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -572,7 +572,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -584,7 +584,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -596,7 +596,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -608,7 +608,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -620,7 +620,7 @@ class ReplLscWiItemBuffer extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCWII
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

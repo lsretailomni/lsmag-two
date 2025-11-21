@@ -29,7 +29,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getBarcode() : ?string
+    public function getBarcode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BARCODE]);
     }
@@ -39,7 +39,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::BARCODE], $value);
     }
 
-    public function getDimension1Weight() : ?float
+    public function getDimension1Weight(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_1_WEIGHT]);
     }
@@ -49,7 +49,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_1_WEIGHT], $value);
     }
 
-    public function getDimension2Weight() : ?float
+    public function getDimension2Weight(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_2_WEIGHT]);
     }
@@ -59,7 +59,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_2_WEIGHT], $value);
     }
 
-    public function getDimension3Weight() : ?float
+    public function getDimension3Weight(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_3_WEIGHT]);
     }
@@ -69,7 +69,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_3_WEIGHT], $value);
     }
 
-    public function getDimension4Weight() : ?float
+    public function getDimension4Weight(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_4_WEIGHT]);
     }
@@ -79,7 +79,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_4_WEIGHT], $value);
     }
 
-    public function getDimension5Weight() : ?float
+    public function getDimension5Weight(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_5_WEIGHT]);
     }
@@ -89,7 +89,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_5_WEIGHT], $value);
     }
 
-    public function getDimension6Weight() : ?float
+    public function getDimension6Weight(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DIMENSION_6_WEIGHT]);
     }
@@ -99,7 +99,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::DIMENSION_6_WEIGHT], $value);
     }
 
-    public function getFrameworkCode() : ?string
+    public function getFrameworkCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::FRAMEWORK_CODE]);
     }
@@ -109,7 +109,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::FRAMEWORK_CODE], $value);
     }
 
-    public function getItemNo() : ?string
+    public function getItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
     }
@@ -119,7 +119,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
     }
 
-    public function getLogicalOrder() : ?string
+    public function getLogicalOrder(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOGICAL_ORDER]);
     }
@@ -129,7 +129,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::LOGICAL_ORDER], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -139,7 +139,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -149,7 +149,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -159,7 +159,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -169,7 +169,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY], $value);
     }
 
-    public function getVariant() : ?string
+    public function getVariant(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT]);
     }
@@ -179,7 +179,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT], $value);
     }
 
-    public function getVariantDimension1() : ?string
+    public function getVariantDimension1(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_1]);
     }
@@ -189,7 +189,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_1], $value);
     }
 
-    public function getVariantDimension2() : ?string
+    public function getVariantDimension2(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_2]);
     }
@@ -199,7 +199,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_2], $value);
     }
 
-    public function getVariantDimension3() : ?string
+    public function getVariantDimension3(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_3]);
     }
@@ -209,7 +209,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_3], $value);
     }
 
-    public function getVariantDimension4() : ?string
+    public function getVariantDimension4(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_4]);
     }
@@ -219,7 +219,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_4], $value);
     }
 
-    public function getVariantDimension5() : ?string
+    public function getVariantDimension5(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_5]);
     }
@@ -229,7 +229,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_5], $value);
     }
 
-    public function getVariantDimension6() : ?string
+    public function getVariantDimension6(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_6]);
     }
@@ -239,7 +239,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_DIMENSION_6], $value);
     }
 
-    public function getVariantWeight() : ?float
+    public function getVariantWeight(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_WEIGHT]);
     }
@@ -249,7 +249,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_WEIGHT], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -266,7 +266,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -278,7 +278,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -290,7 +290,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -302,7 +302,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -314,7 +314,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -326,7 +326,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -338,7 +338,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -350,7 +350,7 @@ class ReplLscItemVariantRegistration extends \Ls\Omni\Client\CentralEcommerce\En
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

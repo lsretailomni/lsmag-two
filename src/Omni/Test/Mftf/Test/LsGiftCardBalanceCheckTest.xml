@@ -12,7 +12,11 @@
         </annotations>
 
         <before>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
+            </actionGroup>
         </before>
 
         <!-- 1. Go to storefront home page -->

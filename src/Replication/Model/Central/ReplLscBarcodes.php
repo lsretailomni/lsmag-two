@@ -29,7 +29,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getItemNo() : ?string
+    public function getItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
     }
@@ -39,7 +39,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
     }
 
-    public function getBarcodeNo() : ?string
+    public function getBarcodeNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BARCODE_NO]);
     }
@@ -49,7 +49,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this->setData(self::getDbColumnsMapping()[self::BARCODE_NO], $value);
     }
 
-    public function getShowForItem() : ?bool
+    public function getShowForItem(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHOW_FOR_ITEM]);
     }
@@ -59,7 +59,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this->setData(self::getDbColumnsMapping()[self::SHOW_FOR_ITEM], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -69,7 +69,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getLastDateModified() : ?string
+    public function getLastDateModified(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED]);
     }
@@ -79,7 +79,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED], $value);
     }
 
-    public function getVariantCode() : ?string
+    public function getVariantCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VARIANT_CODE]);
     }
@@ -89,7 +89,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this->setData(self::getDbColumnsMapping()[self::VARIANT_CODE], $value);
     }
 
-    public function getUnitOfMeasureCode() : ?string
+    public function getUnitOfMeasureCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE]);
     }
@@ -99,7 +99,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this->setData(self::getDbColumnsMapping()[self::UNIT_OF_MEASURE_CODE], $value);
     }
 
-    public function getDiscount() : ?float
+    public function getDiscount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT]);
     }
@@ -109,7 +109,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -119,7 +119,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -129,7 +129,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -139,7 +139,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -149,7 +149,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -166,7 +166,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -178,7 +178,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -190,7 +190,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -202,7 +202,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -214,7 +214,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -226,7 +226,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -238,7 +238,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -250,7 +250,7 @@ class ReplLscBarcodes extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCBarcode
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

@@ -29,7 +29,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getStaff() : ?string
+    public function getStaff(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STAFF]);
     }
@@ -39,7 +39,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::STAFF], $value);
     }
 
-    public function getManagerPrivileges() : ?int
+    public function getManagerPrivileges(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::MANAGER_PRIVILEGES]);
     }
@@ -49,7 +49,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::MANAGER_PRIVILEGES], $value);
     }
 
-    public function getVoidTransaction() : ?int
+    public function getVoidTransaction(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VOID_TRANSACTION]);
     }
@@ -59,7 +59,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::VOID_TRANSACTION], $value);
     }
 
-    public function getXzyReportPrinting() : ?int
+    public function getXzyReportPrinting(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::XZYREPORT_PRINTING]);
     }
@@ -69,7 +69,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::XZYREPORT_PRINTING], $value);
     }
 
-    public function getTenderDeclaration() : ?int
+    public function getTenderDeclaration(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TENDER_DECLARATION]);
     }
@@ -79,7 +79,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::TENDER_DECLARATION], $value);
     }
 
-    public function getFloatingDeclaration() : ?int
+    public function getFloatingDeclaration(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::FLOATING_DECLARATION]);
     }
@@ -89,7 +89,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::FLOATING_DECLARATION], $value);
     }
 
-    public function getPriceOverride() : ?int
+    public function getPriceOverride(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRICE_OVERRIDE]);
     }
@@ -99,7 +99,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::PRICE_OVERRIDE], $value);
     }
 
-    public function getSuspendTransaction() : ?int
+    public function getSuspendTransaction(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SUSPEND_TRANSACTION]);
     }
@@ -109,7 +109,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::SUSPEND_TRANSACTION], $value);
     }
 
-    public function getReturnInTransaction() : ?int
+    public function getReturnInTransaction(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::RETURN_IN_TRANSACTION]);
     }
@@ -119,7 +119,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::RETURN_IN_TRANSACTION], $value);
     }
 
-    public function getVoidLine() : ?int
+    public function getVoidLine(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VOID_LINE]);
     }
@@ -129,7 +129,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::VOID_LINE], $value);
     }
 
-    public function getAddPayment() : ?int
+    public function getAddPayment(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADD_PAYMENT]);
     }
@@ -139,7 +139,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::ADD_PAYMENT], $value);
     }
 
-    public function getCreateCustomers() : ?int
+    public function getCreateCustomers(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::CREATE_CUSTOMERS]);
     }
@@ -149,7 +149,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::CREATE_CUSTOMERS], $value);
     }
 
-    public function getViewSalesHistory() : ?int
+    public function getViewSalesHistory(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VIEW_SALES_HISTORY]);
     }
@@ -159,7 +159,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::VIEW_SALES_HISTORY], $value);
     }
 
-    public function getCustomerComments() : ?int
+    public function getCustomerComments(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_COMMENTS]);
     }
@@ -169,7 +169,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_COMMENTS], $value);
     }
 
-    public function getUpdateCustomers() : ?int
+    public function getUpdateCustomers(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::UPDATE_CUSTOMERS]);
     }
@@ -179,7 +179,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::UPDATE_CUSTOMERS], $value);
     }
 
-    public function getMaxDiscountToGive() : ?float
+    public function getMaxDiscountToGive(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAX_DISCOUNT_TO_GIVE]);
     }
@@ -189,7 +189,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this->setData(self::getDbColumnsMapping()[self::MAX_DISCOUNT_TO_GIVE], $value);
     }
 
-    public function getMaxTotalDiscount() : ?float
+    public function getMaxTotalDiscount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAX_TOTAL_DISCOUNT]);
     }
@@ -206,7 +206,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -218,7 +218,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -230,7 +230,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -242,7 +242,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -254,7 +254,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -266,7 +266,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -278,7 +278,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -290,7 +290,7 @@ class ReplStaffpermissionview extends \Ls\Omni\Client\CentralEcommerce\Entity\St
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

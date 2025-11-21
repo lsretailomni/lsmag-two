@@ -29,7 +29,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CODE]);
     }
@@ -39,7 +39,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -49,7 +49,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getFunction() : ?int
+    public function getFunction(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::FUNCTION]);
     }
@@ -59,7 +59,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::FUNCTION], $value);
     }
 
-    public function getValidOnMobilePos() : ?bool
+    public function getValidOnMobilePos(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::VALID_ON_MOBILE_POS]);
     }
@@ -69,7 +69,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::VALID_ON_MOBILE_POS], $value);
     }
 
-    public function getScanQrCode() : ?bool
+    public function getScanQrCode(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SCAN_QR_CODE]);
     }
@@ -79,7 +79,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::SCAN_QR_CODE], $value);
     }
 
-    public function getNoInTransaction() : ?string
+    public function getNoInTransaction(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO_IN_TRANSACTION]);
     }
@@ -89,7 +89,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::NO_IN_TRANSACTION], $value);
     }
 
-    public function getChangeTendCode() : ?string
+    public function getChangeTendCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CHANGE_TEND_CODE]);
     }
@@ -99,7 +99,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::CHANGE_TEND_CODE], $value);
     }
 
-    public function getAboveMinChangeTenderType() : ?string
+    public function getAboveMinChangeTenderType(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ABOVE_MIN_CHANGE_TENDER_TYPE]);
     }
@@ -109,7 +109,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::ABOVE_MIN_CHANGE_TENDER_TYPE], $value);
     }
 
-    public function getMinChange() : ?float
+    public function getMinChange(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MIN_CHANGE]);
     }
@@ -119,7 +119,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::MIN_CHANGE], $value);
     }
 
-    public function getRounding() : ?int
+    public function getRounding(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ROUNDING]);
     }
@@ -129,7 +129,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::ROUNDING], $value);
     }
 
-    public function getRoundingTo() : ?float
+    public function getRoundingTo(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::ROUNDING_TO]);
     }
@@ -139,7 +139,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::ROUNDING_TO], $value);
     }
 
-    public function getMinAmountEntered() : ?float
+    public function getMinAmountEntered(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MIN_AMOUNT_ENTERED]);
     }
@@ -149,7 +149,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::MIN_AMOUNT_ENTERED], $value);
     }
 
-    public function getMaxAmountEntered() : ?float
+    public function getMaxAmountEntered(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAX_AMOUNT_ENTERED]);
     }
@@ -159,7 +159,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::MAX_AMOUNT_ENTERED], $value);
     }
 
-    public function getMinAmountAllowed() : ?float
+    public function getMinAmountAllowed(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MIN_AMOUNT_ALLOWED]);
     }
@@ -169,7 +169,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::MIN_AMOUNT_ALLOWED], $value);
     }
 
-    public function getMaxAmountAllowed() : ?float
+    public function getMaxAmountAllowed(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAX_AMOUNT_ALLOWED]);
     }
@@ -179,7 +179,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::MAX_AMOUNT_ALLOWED], $value);
     }
 
-    public function getMayBeUsed() : ?bool
+    public function getMayBeUsed(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAY_BE_USED]);
     }
@@ -189,7 +189,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::MAY_BE_USED], $value);
     }
 
-    public function getManagerKeyControl() : ?bool
+    public function getManagerKeyControl(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::MANAGER_KEY_CONTROL]);
     }
@@ -199,7 +199,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::MANAGER_KEY_CONTROL], $value);
     }
 
-    public function getKeyboardEntryAllowed() : ?bool
+    public function getKeyboardEntryAllowed(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::KEYBOARD_ENTRY_ALLOWED]);
     }
@@ -209,7 +209,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::KEYBOARD_ENTRY_ALLOWED], $value);
     }
 
-    public function getOvertenderAllowed() : ?bool
+    public function getOvertenderAllowed(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::OVERTENDER_ALLOWED]);
     }
@@ -219,7 +219,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::OVERTENDER_ALLOWED], $value);
     }
 
-    public function getOvertenderMaxAmt() : ?float
+    public function getOvertenderMaxAmt(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::OVERTENDER_MAX_AMT]);
     }
@@ -229,7 +229,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::OVERTENDER_MAX_AMT], $value);
     }
 
-    public function getUndertenderAllowed() : ?bool
+    public function getUndertenderAllowed(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNDERTENDER_ALLOWED]);
     }
@@ -239,7 +239,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::UNDERTENDER_ALLOWED], $value);
     }
 
-    public function getReturnMinusAllowed() : ?bool
+    public function getReturnMinusAllowed(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::RETURNMINUS_ALLOWED]);
     }
@@ -249,7 +249,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::RETURNMINUS_ALLOWED], $value);
     }
 
-    public function getDrawerOpens() : ?bool
+    public function getDrawerOpens(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::DRAWER_OPENS]);
     }
@@ -259,7 +259,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::DRAWER_OPENS], $value);
     }
 
-    public function getEndorseCheck() : ?bool
+    public function getEndorseCheck(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ENDORSE_CHECK]);
     }
@@ -269,7 +269,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::ENDORSE_CHECK], $value);
     }
 
-    public function getCardAccountNo() : ?bool
+    public function getCardAccountNo(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::CARDACCOUNT_NO]);
     }
@@ -279,7 +279,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::CARDACCOUNT_NO], $value);
     }
 
-    public function getAskForDate() : ?bool
+    public function getAskForDate(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ASK_FOR_DATE]);
     }
@@ -289,7 +289,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::ASK_FOR_DATE], $value);
     }
 
-    public function getSeekAuthorization() : ?int
+    public function getSeekAuthorization(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SEEK_AUTHORIZATION]);
     }
@@ -299,7 +299,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::SEEK_AUTHORIZATION], $value);
     }
 
-    public function getPrintSeparateInvoice() : ?bool
+    public function getPrintSeparateInvoice(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINT_SEPARATE_INVOICE]);
     }
@@ -309,7 +309,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::PRINT_SEPARATE_INVOICE], $value);
     }
 
-    public function getFrontOfCheck() : ?bool
+    public function getFrontOfCheck(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::FRONT_OF_CHECK]);
     }
@@ -319,7 +319,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::FRONT_OF_CHECK], $value);
     }
 
-    public function getKeyboardEntryRequired() : ?bool
+    public function getKeyboardEntryRequired(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::KEYBOARD_ENTRY_REQUIRED]);
     }
@@ -329,7 +329,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::KEYBOARD_ENTRY_REQUIRED], $value);
     }
 
-    public function getPayAccountBill() : ?bool
+    public function getPayAccountBill(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PAY_ACCOUNT_BILL]);
     }
@@ -339,7 +339,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::PAY_ACCOUNT_BILL], $value);
     }
 
-    public function getMarkingOnly() : ?bool
+    public function getMarkingOnly(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::MARKING_ONLY]);
     }
@@ -349,7 +349,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::MARKING_ONLY], $value);
     }
 
-    public function getForeignCurrency() : ?bool
+    public function getForeignCurrency(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::FOREIGN_CURRENCY]);
     }
@@ -359,7 +359,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::FOREIGN_CURRENCY], $value);
     }
 
-    public function getEndorsementLine1() : ?string
+    public function getEndorsementLine1(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ENDORSEMENT_LINE_1]);
     }
@@ -369,7 +369,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::ENDORSEMENT_LINE_1], $value);
     }
 
-    public function getEndorsementLine2() : ?string
+    public function getEndorsementLine2(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ENDORSEMENT_LINE_2]);
     }
@@ -379,7 +379,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::ENDORSEMENT_LINE_2], $value);
     }
 
-    public function getCheckPayee() : ?string
+    public function getCheckPayee(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CHECK_PAYEE]);
     }
@@ -389,7 +389,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::CHECK_PAYEE], $value);
     }
 
-    public function getSlipBackInPrinter() : ?string
+    public function getSlipBackInPrinter(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SLIP_BACK_IN_PRINTER]);
     }
@@ -399,7 +399,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::SLIP_BACK_IN_PRINTER], $value);
     }
 
-    public function getAskForCardAccount() : ?string
+    public function getAskForCardAccount(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ASK_FOR_CARDACCOUNT]);
     }
@@ -409,7 +409,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::ASK_FOR_CARDACCOUNT], $value);
     }
 
-    public function getInvoiceInPrinter() : ?string
+    public function getInvoiceInPrinter(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::INVOICE_IN_PRINTER]);
     }
@@ -419,7 +419,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::INVOICE_IN_PRINTER], $value);
     }
 
-    public function getSlipFrontInPrinter() : ?string
+    public function getSlipFrontInPrinter(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SLIP_FRONT_IN_PRINTER]);
     }
@@ -429,7 +429,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::SLIP_FRONT_IN_PRINTER], $value);
     }
 
-    public function getChangeLineOnReceipt() : ?string
+    public function getChangeLineOnReceipt(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CHANGE_LINE_ON_RECEIPT]);
     }
@@ -439,7 +439,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::CHANGE_LINE_ON_RECEIPT], $value);
     }
 
-    public function getPosCountEntries() : ?bool
+    public function getPosCountEntries(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::POS_COUNT_ENTRIES]);
     }
@@ -449,7 +449,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::POS_COUNT_ENTRIES], $value);
     }
 
-    public function getTakenToBank() : ?bool
+    public function getTakenToBank(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::TAKEN_TO_BANK]);
     }
@@ -459,7 +459,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::TAKEN_TO_BANK], $value);
     }
 
-    public function getCountingRequired() : ?bool
+    public function getCountingRequired(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUNTING_REQUIRED]);
     }
@@ -469,7 +469,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::COUNTING_REQUIRED], $value);
     }
 
-    public function getFloatAllowed() : ?bool
+    public function getFloatAllowed(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::FLOAT_ALLOWED]);
     }
@@ -479,7 +479,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::FLOAT_ALLOWED], $value);
     }
 
-    public function getMultiplyInTenderOperations() : ?bool
+    public function getMultiplyInTenderOperations(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::MULTIPLY_IN_TENDER_OPERATIONS]);
     }
@@ -489,7 +489,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::MULTIPLY_IN_TENDER_OPERATIONS], $value);
     }
 
-    public function getAccountType() : ?int
+    public function getAccountType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ACCOUNT_TYPE]);
     }
@@ -499,7 +499,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::ACCOUNT_TYPE], $value);
     }
 
-    public function getAccountNo() : ?string
+    public function getAccountNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ACCOUNT_NO]);
     }
@@ -509,7 +509,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::ACCOUNT_NO], $value);
     }
 
-    public function getAccountName() : ?string
+    public function getAccountName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ACCOUNT_NAME]);
     }
@@ -519,7 +519,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::ACCOUNT_NAME], $value);
     }
 
-    public function getCharge() : ?float
+    public function getCharge(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::CHARGE]);
     }
@@ -529,7 +529,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::CHARGE], $value);
     }
 
-    public function getChargeToAccountNo() : ?string
+    public function getChargeToAccountNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CHARGE_TO_ACCOUNT_NO]);
     }
@@ -539,7 +539,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::CHARGE_TO_ACCOUNT_NO], $value);
     }
 
-    public function getStoreNo() : ?string
+    public function getStoreNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
     }
@@ -549,7 +549,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
     }
 
-    public function getDifferenceGLAcc() : ?string
+    public function getDifferenceGLAcc(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DIFFERENCE_GL_ACC]);
     }
@@ -559,7 +559,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::DIFFERENCE_GL_ACC], $value);
     }
 
-    public function getLastDateModified() : ?string
+    public function getLastDateModified(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED]);
     }
@@ -569,7 +569,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED], $value);
     }
 
-    public function getPrimaryKey() : ?string
+    public function getPrimaryKey(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRIMARY_KEY]);
     }
@@ -579,7 +579,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::PRIMARY_KEY], $value);
     }
 
-    public function getRefundGLAccountNo() : ?string
+    public function getRefundGLAccountNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REFUND_GL_ACCOUNT_NO]);
     }
@@ -589,7 +589,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::REFUND_GL_ACCOUNT_NO], $value);
     }
 
-    public function getRefundDirectly() : ?bool
+    public function getRefundDirectly(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::REFUND_DIRECTLY]);
     }
@@ -599,7 +599,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::REFUND_DIRECTLY], $value);
     }
 
-    public function getCompressPaymEntries() : ?bool
+    public function getCompressPaymEntries(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::COMPRESS_PAYM_ENTRIES]);
     }
@@ -609,7 +609,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::COMPRESS_PAYM_ENTRIES], $value);
     }
 
-    public function getPrintInCidReport() : ?bool
+    public function getPrintInCidReport(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRINT_IN_CID_REPORT]);
     }
@@ -619,7 +619,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::PRINT_IN_CID_REPORT], $value);
     }
 
-    public function getPosPickupWarningAmount() : ?float
+    public function getPosPickupWarningAmount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::POS_PICKUP_WARNING_AMOUNT]);
     }
@@ -629,7 +629,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::POS_PICKUP_WARNING_AMOUNT], $value);
     }
 
-    public function getBankAccountType() : ?int
+    public function getBankAccountType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::BANK_ACCOUNT_TYPE]);
     }
@@ -639,7 +639,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::BANK_ACCOUNT_TYPE], $value);
     }
 
-    public function getBankAccountNo() : ?string
+    public function getBankAccountNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BANK_ACCOUNT_NO]);
     }
@@ -649,7 +649,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::BANK_ACCOUNT_NO], $value);
     }
 
-    public function getBankAccountName() : ?string
+    public function getBankAccountName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BANK_ACCOUNT_NAME]);
     }
@@ -659,7 +659,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::BANK_ACCOUNT_NAME], $value);
     }
 
-    public function getBankDiffGLAcc() : ?string
+    public function getBankDiffGLAcc(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BANK_DIFF_GL_ACC]);
     }
@@ -669,7 +669,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::BANK_DIFF_GL_ACC], $value);
     }
 
-    public function getTakenToSafe() : ?bool
+    public function getTakenToSafe(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::TAKEN_TO_SAFE]);
     }
@@ -679,7 +679,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::TAKEN_TO_SAFE], $value);
     }
 
-    public function getPosPickupWarningText() : ?string
+    public function getPosPickupWarningText(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POS_PICKUP_WARNING_TEXT]);
     }
@@ -689,7 +689,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::POS_PICKUP_WARNING_TEXT], $value);
     }
 
-    public function getCountByDenominations() : ?bool
+    public function getCountByDenominations(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUNT_BY_DENOMINATIONS]);
     }
@@ -699,7 +699,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::COUNT_BY_DENOMINATIONS], $value);
     }
 
-    public function getRemoveFloatType() : ?string
+    public function getRemoveFloatType(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REMOVEFLOAT_TYPE]);
     }
@@ -709,7 +709,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::REMOVEFLOAT_TYPE], $value);
     }
 
-    public function getFastClosingMethod() : ?int
+    public function getFastClosingMethod(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::FAST_CLOSING_METHOD]);
     }
@@ -719,7 +719,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::FAST_CLOSING_METHOD], $value);
     }
 
-    public function getExcludeCoinsToBank() : ?bool
+    public function getExcludeCoinsToBank(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXCLUDE_COINS_TO_BANK]);
     }
@@ -729,7 +729,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::EXCLUDE_COINS_TO_BANK], $value);
     }
 
-    public function getToBankByDenom() : ?bool
+    public function getToBankByDenom(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::TO_BANK_BY_DENOM]);
     }
@@ -739,7 +739,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::TO_BANK_BY_DENOM], $value);
     }
 
-    public function getToSafeByDenom() : ?bool
+    public function getToSafeByDenom(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::TO_SAFE_BY_DENOM]);
     }
@@ -749,7 +749,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::TO_SAFE_BY_DENOM], $value);
     }
 
-    public function getFixedFloatByDenom() : ?bool
+    public function getFixedFloatByDenom(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::FIXED_FLOAT_BY_DENOM]);
     }
@@ -759,7 +759,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::FIXED_FLOAT_BY_DENOM], $value);
     }
 
-    public function getUseBagsForBank() : ?bool
+    public function getUseBagsForBank(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::USE_BAGS_FOR_BANK]);
     }
@@ -769,7 +769,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::USE_BAGS_FOR_BANK], $value);
     }
 
-    public function getBankBagsNoType() : ?int
+    public function getBankBagsNoType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::BANK_BAGS_NO_TYPE]);
     }
@@ -779,7 +779,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::BANK_BAGS_NO_TYPE], $value);
     }
 
-    public function getBankBagsNos() : ?string
+    public function getBankBagsNos(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BANK_BAGS_NOS]);
     }
@@ -789,7 +789,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::BANK_BAGS_NOS], $value);
     }
 
-    public function getUseBagsForSafe() : ?bool
+    public function getUseBagsForSafe(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::USE_BAGS_FOR_SAFE]);
     }
@@ -799,7 +799,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::USE_BAGS_FOR_SAFE], $value);
     }
 
-    public function getSafeBagsNoType() : ?int
+    public function getSafeBagsNoType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SAFE_BAGS_NO_TYPE]);
     }
@@ -809,7 +809,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::SAFE_BAGS_NO_TYPE], $value);
     }
 
-    public function getSafeBagsNos() : ?string
+    public function getSafeBagsNos(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SAFE_BAGS_NOS]);
     }
@@ -819,7 +819,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::SAFE_BAGS_NOS], $value);
     }
 
-    public function getFixedFloat() : ?bool
+    public function getFixedFloat(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::FIXED_FLOAT]);
     }
@@ -829,7 +829,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::FIXED_FLOAT], $value);
     }
 
-    public function getUseBagsForFixedFloat() : ?bool
+    public function getUseBagsForFixedFloat(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::USE_BAGS_FOR_FIXED_FLOAT]);
     }
@@ -839,7 +839,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::USE_BAGS_FOR_FIXED_FLOAT], $value);
     }
 
-    public function getFixedFloatBagsNoType() : ?int
+    public function getFixedFloatBagsNoType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::FIXED_FLOAT_BAGS_NO_TYPE]);
     }
@@ -849,7 +849,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::FIXED_FLOAT_BAGS_NO_TYPE], $value);
     }
 
-    public function getFixedFloatBagsNos() : ?string
+    public function getFixedFloatBagsNos(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::FIXED_FLOAT_BAGS_NOS]);
     }
@@ -859,7 +859,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::FIXED_FLOAT_BAGS_NOS], $value);
     }
 
-    public function getOutboundCode() : ?string
+    public function getOutboundCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::OUTBOUND_CODE]);
     }
@@ -869,7 +869,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::OUTBOUND_CODE], $value);
     }
 
-    public function getWicTenderType() : ?bool
+    public function getWicTenderType(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::WIC_TENDER_TYPE]);
     }
@@ -879,7 +879,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::WIC_TENDER_TYPE], $value);
     }
 
-    public function getFoodStamp() : ?bool
+    public function getFoodStamp(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::FOOD_STAMP]);
     }
@@ -889,7 +889,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::FOOD_STAMP], $value);
     }
 
-    public function getAutoAccountPaymentTender() : ?bool
+    public function getAutoAccountPaymentTender(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::AUTO_ACCOUNT_PAYMENT_TENDER]);
     }
@@ -899,7 +899,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::AUTO_ACCOUNT_PAYMENT_TENDER], $value);
     }
 
-    public function getDoNotPost() : ?bool
+    public function getDoNotPost(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::DO_NOT_POST]);
     }
@@ -909,7 +909,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::DO_NOT_POST], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -919,7 +919,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -929,7 +929,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -939,7 +939,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -949,7 +949,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -966,7 +966,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -978,7 +978,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -990,7 +990,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -1002,7 +1002,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -1014,7 +1014,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -1026,7 +1026,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -1038,7 +1038,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -1050,7 +1050,7 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

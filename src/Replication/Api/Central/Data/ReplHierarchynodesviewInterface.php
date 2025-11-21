@@ -10,70 +10,70 @@ namespace Ls\Replication\Api\Central\Data;
 
 interface ReplHierarchynodesviewInterface
 {
-    public static function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping(): array;
 
-    public function getHierarchyCode() : ?string;
+    public function getHierarchyCode(): ?string;
 
     public function setHierarchyCode(?string $value);
 
-    public function getNodeId() : ?string;
+    public function getNodeId(): ?string;
 
     public function setNodeId(?string $value);
 
-    public function getParentNodeId() : ?string;
+    public function getParentNodeId(): ?string;
 
     public function setParentNodeId(?string $value);
 
-    public function getDescription() : ?string;
+    public function getDescription(): ?string;
 
     public function setDescription(?string $value);
 
-    public function getChildrenOrder() : ?int;
+    public function getChildrenOrder(): ?int;
 
     public function setChildrenOrder(?int $value);
 
-    public function getIndentation() : ?int;
+    public function getIndentation(): ?int;
 
     public function setIndentation(?int $value);
 
-    public function getPresentationOrder() : ?int;
+    public function getPresentationOrder(): ?int;
 
     public function setPresentationOrder(?int $value);
 
-    public function getRetailImageId() : ?string;
+    public function getRetailImageId(): ?string;
 
     public function setRetailImageId(?string $value);
 
     public function setProcessed(?bool $processed);
 
-    public function getProcessed() : ?bool;
+    public function getProcessed(): ?bool;
 
     public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : ?bool;
+    public function getIsUpdated(): ?bool;
 
     public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : ?bool;
+    public function getIsFailed(): ?bool;
 
     public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : ?string;
+    public function getCreatedAt(): ?string;
 
     public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : ?string;
+    public function getUpdatedAt(): ?string;
 
     public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : ?string;
+    public function getIdentityValue(): ?string;
 
     public function setChecksum(?string $checksum);
 
-    public function getChecksum() : ?string;
+    public function getChecksum(): ?string;
 
     public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : ?string;
+    public function getProcessedAt(): ?string;
 }
 

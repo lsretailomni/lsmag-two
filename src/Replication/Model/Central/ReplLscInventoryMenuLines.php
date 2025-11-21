@@ -29,7 +29,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getDeviceType() : ?int
+    public function getDeviceType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEVICE_TYPE]);
     }
@@ -39,7 +39,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::DEVICE_TYPE], $value);
     }
 
-    public function getMenuCode() : ?string
+    public function getMenuCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::MENU_CODE]);
     }
@@ -49,7 +49,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::MENU_CODE], $value);
     }
 
-    public function getStoreNo() : ?string
+    public function getStoreNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
     }
@@ -59,7 +59,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
     }
 
-    public function getLineNo() : ?int
+    public function getLineNo(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LINE_NO]);
     }
@@ -69,7 +69,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::LINE_NO], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -79,7 +79,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getText() : ?string
+    public function getText(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TEXT]);
     }
@@ -89,7 +89,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::TEXT], $value);
     }
 
-    public function getLineType() : ?int
+    public function getLineType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LINE_TYPE]);
     }
@@ -99,7 +99,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::LINE_TYPE], $value);
     }
 
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CODE]);
     }
@@ -109,7 +109,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
     }
 
-    public function getBitmap() : ?string
+    public function getBitmap(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::BITMAP]);
     }
@@ -119,7 +119,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::BITMAP], $value);
     }
 
-    public function getStatus() : ?int
+    public function getStatus(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::STATUS]);
     }
@@ -129,7 +129,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::STATUS], $value);
     }
 
-    public function getCodeType() : ?int
+    public function getCodeType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::CODE_TYPE]);
     }
@@ -139,7 +139,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::CODE_TYPE], $value);
     }
 
-    public function getLocationCode() : ?string
+    public function getLocationCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOCATION_CODE]);
     }
@@ -149,7 +149,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::LOCATION_CODE], $value);
     }
 
-    public function getVendorNo() : ?string
+    public function getVendorNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::VENDOR_NO]);
     }
@@ -159,7 +159,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::VENDOR_NO], $value);
     }
 
-    public function getCustomerNo() : ?string
+    public function getCustomerNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_NO]);
     }
@@ -169,7 +169,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_NO], $value);
     }
 
-    public function getCardViewCode() : ?string
+    public function getCardViewCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CARD_VIEW_CODE]);
     }
@@ -179,7 +179,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::CARD_VIEW_CODE], $value);
     }
 
-    public function getItemNo() : ?string
+    public function getItemNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO]);
     }
@@ -189,7 +189,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO], $value);
     }
 
-    public function getWorksheetseqno() : ?int
+    public function getWorksheetseqno(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::WORKSHEETSEQNO]);
     }
@@ -199,7 +199,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::WORKSHEETSEQNO], $value);
     }
 
-    public function getWorksheetType() : ?int
+    public function getWorksheetType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::WORKSHEET_TYPE]);
     }
@@ -209,7 +209,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::WORKSHEET_TYPE], $value);
     }
 
-    public function getWorksheetDescription() : ?string
+    public function getWorksheetDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::WORKSHEET_DESCRIPTION]);
     }
@@ -219,7 +219,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::WORKSHEET_DESCRIPTION], $value);
     }
 
-    public function getWebClientUrl() : ?string
+    public function getWebClientUrl(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::WEB_CLIENT_URL]);
     }
@@ -229,7 +229,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::WEB_CLIENT_URL], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -239,7 +239,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -249,7 +249,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -259,7 +259,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -269,7 +269,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -286,7 +286,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -298,7 +298,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -310,7 +310,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -322,7 +322,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -334,7 +334,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -346,7 +346,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -358,7 +358,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -370,7 +370,7 @@ class ReplLscInventoryMenuLines extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

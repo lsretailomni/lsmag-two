@@ -39,7 +39,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::NAV_ID], $value);
     }
 
-    public function getPassword() : ?string
+    public function getPassword(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PASSWORD]);
     }
@@ -49,7 +49,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::PASSWORD], $value);
     }
 
-    public function getChangePassword() : ?bool
+    public function getChangePassword(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::CHANGE_PASSWORD]);
     }
@@ -59,7 +59,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::CHANGE_PASSWORD], $value);
     }
 
-    public function getStoreNo() : ?string
+    public function getStoreNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
     }
@@ -69,7 +69,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
     }
 
-    public function getVoidTransaction() : ?int
+    public function getVoidTransaction(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VOID_TRANSACTION]);
     }
@@ -79,7 +79,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::VOID_TRANSACTION], $value);
     }
 
-    public function getManagerPrivileges() : ?int
+    public function getManagerPrivileges(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::MANAGER_PRIVILEGES]);
     }
@@ -89,7 +89,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::MANAGER_PRIVILEGES], $value);
     }
 
-    public function getXzyReportPrinting() : ?int
+    public function getXzyReportPrinting(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::XZYREPORT_PRINTING]);
     }
@@ -99,7 +99,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::XZYREPORT_PRINTING], $value);
     }
 
-    public function getTenderDeclaration() : ?int
+    public function getTenderDeclaration(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TENDER_DECLARATION]);
     }
@@ -109,7 +109,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::TENDER_DECLARATION], $value);
     }
 
-    public function getFloatingDeclaration() : ?int
+    public function getFloatingDeclaration(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::FLOATING_DECLARATION]);
     }
@@ -119,7 +119,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::FLOATING_DECLARATION], $value);
     }
 
-    public function getPriceOverride() : ?int
+    public function getPriceOverride(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRICE_OVERRIDE]);
     }
@@ -129,7 +129,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::PRICE_OVERRIDE], $value);
     }
 
-    public function getMaxDiscountToGive() : ?float
+    public function getMaxDiscountToGive(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAX_DISCOUNT_TO_GIVE]);
     }
@@ -139,7 +139,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::MAX_DISCOUNT_TO_GIVE], $value);
     }
 
-    public function getSuspendTransaction() : ?int
+    public function getSuspendTransaction(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SUSPEND_TRANSACTION]);
     }
@@ -149,7 +149,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::SUSPEND_TRANSACTION], $value);
     }
 
-    public function getMaxTotalDiscount() : ?float
+    public function getMaxTotalDiscount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAX_TOTAL_DISCOUNT]);
     }
@@ -159,7 +159,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::MAX_TOTAL_DISCOUNT], $value);
     }
 
-    public function getOpenDrawWithoutSale() : ?int
+    public function getOpenDrawWithoutSale(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::OPEN_DRAW_WITHOUT_SALE]);
     }
@@ -169,7 +169,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::OPEN_DRAW_WITHOUT_SALE], $value);
     }
 
-    public function getDiscountFromPermGroup() : ?int
+    public function getDiscountFromPermGroup(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::DISCOUNT_FROM_PERM_GROUP]);
     }
@@ -179,7 +179,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::DISCOUNT_FROM_PERM_GROUP], $value);
     }
 
-    public function getFirstName() : ?string
+    public function getFirstName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::FIRST_NAME]);
     }
@@ -189,7 +189,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::FIRST_NAME], $value);
     }
 
-    public function getLastName() : ?string
+    public function getLastName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_NAME]);
     }
@@ -199,7 +199,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::LAST_NAME], $value);
     }
 
-    public function getEmploymentType() : ?int
+    public function getEmploymentType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::EMPLOYMENT_TYPE]);
     }
@@ -209,7 +209,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::EMPLOYMENT_TYPE], $value);
     }
 
-    public function getFraudSortField() : ?float
+    public function getFraudSortField(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::FRAUD_SORT_FIELD]);
     }
@@ -219,7 +219,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::FRAUD_SORT_FIELD], $value);
     }
 
-    public function getLastDateModified() : ?string
+    public function getLastDateModified(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED]);
     }
@@ -229,7 +229,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED], $value);
     }
 
-    public function getNameOnReceipt() : ?string
+    public function getNameOnReceipt(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NAME_ON_RECEIPT]);
     }
@@ -239,7 +239,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::NAME_ON_RECEIPT], $value);
     }
 
-    public function getAddress() : ?string
+    public function getAddress(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADDRESS]);
     }
@@ -249,7 +249,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::ADDRESS], $value);
     }
 
-    public function getAddress2() : ?string
+    public function getAddress2(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADDRESS_2]);
     }
@@ -259,7 +259,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::ADDRESS_2], $value);
     }
 
-    public function getCity() : ?string
+    public function getCity(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CITY]);
     }
@@ -269,7 +269,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::CITY], $value);
     }
 
-    public function getPostCode() : ?string
+    public function getPostCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POST_CODE]);
     }
@@ -279,7 +279,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::POST_CODE], $value);
     }
 
-    public function getCounty() : ?string
+    public function getCounty(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUNTY]);
     }
@@ -289,7 +289,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::COUNTY], $value);
     }
 
-    public function getHomePhoneNo() : ?string
+    public function getHomePhoneNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::HOME_PHONE_NO]);
     }
@@ -299,7 +299,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::HOME_PHONE_NO], $value);
     }
 
-    public function getWorkPhoneNo() : ?string
+    public function getWorkPhoneNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::WORK_PHONE_NO]);
     }
@@ -309,7 +309,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::WORK_PHONE_NO], $value);
     }
 
-    public function getHourlyRate() : ?float
+    public function getHourlyRate(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::HOURLY_RATE]);
     }
@@ -319,7 +319,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::HOURLY_RATE], $value);
     }
 
-    public function getPayrollNo() : ?string
+    public function getPayrollNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PAYROLL_NO]);
     }
@@ -329,7 +329,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::PAYROLL_NO], $value);
     }
 
-    public function getBlocked() : ?bool
+    public function getBlocked(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::BLOCKED]);
     }
@@ -339,7 +339,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::BLOCKED], $value);
     }
 
-    public function getDateToBeBlocked() : ?string
+    public function getDateToBeBlocked(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DATE_TO_BE_BLOCKED]);
     }
@@ -349,7 +349,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::DATE_TO_BE_BLOCKED], $value);
     }
 
-    public function getLeftHanded() : ?bool
+    public function getLeftHanded(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LEFT_HANDED]);
     }
@@ -359,7 +359,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::LEFT_HANDED], $value);
     }
 
-    public function getSalesPerson() : ?string
+    public function getSalesPerson(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALES_PERSON]);
     }
@@ -369,7 +369,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::SALES_PERSON], $value);
     }
 
-    public function getNoSeries() : ?string
+    public function getNoSeries(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO_SERIES]);
     }
@@ -379,7 +379,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::NO_SERIES], $value);
     }
 
-    public function getPermissionGroup() : ?string
+    public function getPermissionGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PERMISSION_GROUP]);
     }
@@ -389,7 +389,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::PERMISSION_GROUP], $value);
     }
 
-    public function getPrivacyBlocked() : ?bool
+    public function getPrivacyBlocked(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRIVACY_BLOCKED]);
     }
@@ -399,7 +399,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::PRIVACY_BLOCKED], $value);
     }
 
-    public function getReturnInTransaction() : ?int
+    public function getReturnInTransaction(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::RETURN_IN_TRANSACTION]);
     }
@@ -409,7 +409,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::RETURN_IN_TRANSACTION], $value);
     }
 
-    public function getVoidPrepayment() : ?int
+    public function getVoidPrepayment(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VOID_PREPAYMENT]);
     }
@@ -419,7 +419,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::VOID_PREPAYMENT], $value);
     }
 
-    public function getVoidPrepaymentLine() : ?int
+    public function getVoidPrepaymentLine(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VOID_PREPAYMENT_LINE]);
     }
@@ -429,7 +429,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::VOID_PREPAYMENT_LINE], $value);
     }
 
-    public function getChangePrepaymentAmt() : ?int
+    public function getChangePrepaymentAmt(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::CHANGE_PREPAYMENT_AMT]);
     }
@@ -439,7 +439,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::CHANGE_PREPAYMENT_AMT], $value);
     }
 
-    public function getAddPrepaymentAmt() : ?int
+    public function getAddPrepaymentAmt(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADD_PREPAYMENT_AMT]);
     }
@@ -449,7 +449,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::ADD_PREPAYMENT_AMT], $value);
     }
 
-    public function getVoidLine() : ?int
+    public function getVoidLine(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VOID_LINE]);
     }
@@ -459,7 +459,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::VOID_LINE], $value);
     }
 
-    public function getAddPayment() : ?int
+    public function getAddPayment(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADD_PAYMENT]);
     }
@@ -469,7 +469,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::ADD_PAYMENT], $value);
     }
 
-    public function getTransferOrders() : ?int
+    public function getTransferOrders(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TRANSFER_ORDERS]);
     }
@@ -479,7 +479,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::TRANSFER_ORDERS], $value);
     }
 
-    public function getSplitBills() : ?int
+    public function getSplitBills(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SPLIT_BILLS]);
     }
@@ -489,7 +489,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::SPLIT_BILLS], $value);
     }
 
-    public function getSwitchDiningTableLayout() : ?int
+    public function getSwitchDiningTableLayout(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SWITCH_DINING_TABLE_LAYOUT]);
     }
@@ -499,7 +499,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::SWITCH_DINING_TABLE_LAYOUT], $value);
     }
 
-    public function getAdjustDiningTables() : ?int
+    public function getAdjustDiningTables(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADJUST_DINING_TABLES]);
     }
@@ -509,7 +509,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::ADJUST_DINING_TABLES], $value);
     }
 
-    public function getDesignDiningTableLayout() : ?int
+    public function getDesignDiningTableLayout(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESIGN_DINING_TABLE_LAYOUT]);
     }
@@ -519,7 +519,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::DESIGN_DINING_TABLE_LAYOUT], $value);
     }
 
-    public function getSeatGuests() : ?int
+    public function getSeatGuests(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SEAT_GUESTS]);
     }
@@ -529,7 +529,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::SEAT_GUESTS], $value);
     }
 
-    public function getViewKitchenStatus() : ?int
+    public function getViewKitchenStatus(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VIEW_KITCHEN_STATUS]);
     }
@@ -539,7 +539,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::VIEW_KITCHEN_STATUS], $value);
     }
 
-    public function getChangeStaff() : ?int
+    public function getChangeStaff(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::CHANGE_STAFF]);
     }
@@ -549,7 +549,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::CHANGE_STAFF], $value);
     }
 
-    public function getAddStartFloat() : ?int
+    public function getAddStartFloat(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADD_START_FLOAT]);
     }
@@ -559,7 +559,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::ADD_START_FLOAT], $value);
     }
 
-    public function getOpenSalesPosDirectly() : ?int
+    public function getOpenSalesPosDirectly(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::OPEN_SALES_POS_DIRECTLY]);
     }
@@ -569,7 +569,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::OPEN_SALES_POS_DIRECTLY], $value);
     }
 
-    public function getOpenSalesPos() : ?int
+    public function getOpenSalesPos(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::OPEN_SALES_POS]);
     }
@@ -579,7 +579,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::OPEN_SALES_POS], $value);
     }
 
-    public function getChangeDiningTblStatus() : ?int
+    public function getChangeDiningTblStatus(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::CHANGE_DINING_TBL_STATUS]);
     }
@@ -589,7 +589,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::CHANGE_DINING_TBL_STATUS], $value);
     }
 
-    public function getResetDiningTblStatus() : ?int
+    public function getResetDiningTblStatus(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::RESET_DINING_TBL_STATUS]);
     }
@@ -599,7 +599,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::RESET_DINING_TBL_STATUS], $value);
     }
 
-    public function getRushOrderInKitchen() : ?int
+    public function getRushOrderInKitchen(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::RUSH_ORDER_IN_KITCHEN]);
     }
@@ -609,7 +609,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::RUSH_ORDER_IN_KITCHEN], $value);
     }
 
-    public function getOpenDinTblLockedByStaff() : ?int
+    public function getOpenDinTblLockedByStaff(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::OPEN_DIN_TBL_LOCKED_BY_STAFF]);
     }
@@ -619,7 +619,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::OPEN_DIN_TBL_LOCKED_BY_STAFF], $value);
     }
 
-    public function getEditAvailableQty() : ?int
+    public function getEditAvailableQty(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::EDIT_AVAILABLE_QTY]);
     }
@@ -629,7 +629,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::EDIT_AVAILABLE_QTY], $value);
     }
 
-    public function getContinueOnTsErrors() : ?bool
+    public function getContinueOnTsErrors(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::CONTINUE_ON_TS_ERRORS]);
     }
@@ -639,7 +639,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::CONTINUE_ON_TS_ERRORS], $value);
     }
 
-    public function getLastZReport() : ?string
+    public function getLastZReport(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_ZREPORT]);
     }
@@ -649,7 +649,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::LAST_ZREPORT], $value);
     }
 
-    public function getPosInterfaceProfile() : ?string
+    public function getPosInterfaceProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POS_INTERFACE_PROFILE]);
     }
@@ -659,7 +659,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::POS_INTERFACE_PROFILE], $value);
     }
 
-    public function getLanguage() : ?string
+    public function getLanguage(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LANGUAGE]);
     }
@@ -669,7 +669,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::LANGUAGE], $value);
     }
 
-    public function getCreateCustomers() : ?int
+    public function getCreateCustomers(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::CREATE_CUSTOMERS]);
     }
@@ -679,7 +679,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::CREATE_CUSTOMERS], $value);
     }
 
-    public function getViewSalesHistory() : ?int
+    public function getViewSalesHistory(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VIEW_SALES_HISTORY]);
     }
@@ -689,7 +689,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::VIEW_SALES_HISTORY], $value);
     }
 
-    public function getCustomerComments() : ?int
+    public function getCustomerComments(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::CUSTOMER_COMMENTS]);
     }
@@ -699,7 +699,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::CUSTOMER_COMMENTS], $value);
     }
 
-    public function getMaxTenderDeclDifference() : ?float
+    public function getMaxTenderDeclDifference(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAX_TENDER_DECL_DIFFERENCE]);
     }
@@ -709,7 +709,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::MAX_TENDER_DECL_DIFFERENCE], $value);
     }
 
-    public function getMaxWarningCount() : ?int
+    public function getMaxWarningCount(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAX_WARNING_COUNT]);
     }
@@ -719,7 +719,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::MAX_WARNING_COUNT], $value);
     }
 
-    public function getShowDifferenceInWarning() : ?int
+    public function getShowDifferenceInWarning(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHOW_DIFFERENCE_IN_WARNING]);
     }
@@ -729,7 +729,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::SHOW_DIFFERENCE_IN_WARNING], $value);
     }
 
-    public function getActionAfterDiffWarning() : ?int
+    public function getActionAfterDiffWarning(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ACTION_AFTER_DIFF_WARNING]);
     }
@@ -739,7 +739,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::ACTION_AFTER_DIFF_WARNING], $value);
     }
 
-    public function getCidReportPrinting() : ?int
+    public function getCidReportPrinting(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::CIDREPORT_PRINTING]);
     }
@@ -749,7 +749,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::CIDREPORT_PRINTING], $value);
     }
 
-    public function getShowTransAmount() : ?int
+    public function getShowTransAmount(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::SHOW_TRANS_AMOUNT]);
     }
@@ -759,7 +759,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::SHOW_TRANS_AMOUNT], $value);
     }
 
-    public function getUpdateCustomers() : ?int
+    public function getUpdateCustomers(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::UPDATE_CUSTOMERS]);
     }
@@ -769,7 +769,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::UPDATE_CUSTOMERS], $value);
     }
 
-    public function getTipsHandling() : ?int
+    public function getTipsHandling(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::TIPS_HANDLING]);
     }
@@ -779,7 +779,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::TIPS_HANDLING], $value);
     }
 
-    public function getLastYReport() : ?string
+    public function getLastYReport(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_YREPORT]);
     }
@@ -789,7 +789,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::LAST_YREPORT], $value);
     }
 
-    public function getMaxDiffWarnFromPermGr() : ?int
+    public function getMaxDiffWarnFromPermGr(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAX_DIFFWARN_FROM_PERM_GR]);
     }
@@ -799,7 +799,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::MAX_DIFFWARN_FROM_PERM_GR], $value);
     }
 
-    public function getInventoryActive() : ?bool
+    public function getInventoryActive(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::INVENTORY_ACTIVE]);
     }
@@ -809,7 +809,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::INVENTORY_ACTIVE], $value);
     }
 
-    public function getInventoryMainMenu() : ?string
+    public function getInventoryMainMenu(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::INVENTORY_MAIN_MENU]);
     }
@@ -819,7 +819,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::INVENTORY_MAIN_MENU], $value);
     }
 
-    public function getPosStyleProfile() : ?string
+    public function getPosStyleProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POS_STYLE_PROFILE]);
     }
@@ -829,7 +829,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::POS_STYLE_PROFILE], $value);
     }
 
-    public function getPosMenuProfile() : ?string
+    public function getPosMenuProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POS_MENU_PROFILE]);
     }
@@ -839,7 +839,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::POS_MENU_PROFILE], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -849,7 +849,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -859,7 +859,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -869,7 +869,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -879,7 +879,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -896,7 +896,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -908,7 +908,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -920,7 +920,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -932,7 +932,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -944,7 +944,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -956,7 +956,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -968,7 +968,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -980,7 +980,7 @@ class ReplLscStaff extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCStaff impl
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

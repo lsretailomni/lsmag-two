@@ -29,7 +29,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getNo() : ?string
+    public function getNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO]);
     }
@@ -39,7 +39,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::NO], $value);
     }
 
-    public function getName() : ?string
+    public function getName(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NAME]);
     }
@@ -49,7 +49,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::NAME], $value);
     }
 
-    public function getAddress() : ?string
+    public function getAddress(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADDRESS]);
     }
@@ -59,7 +59,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::ADDRESS], $value);
     }
 
-    public function getAddress2() : ?string
+    public function getAddress2(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ADDRESS2]);
     }
@@ -69,7 +69,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::ADDRESS2], $value);
     }
 
-    public function getPostCode() : ?string
+    public function getPostCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POST_CODE]);
     }
@@ -79,7 +79,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::POST_CODE], $value);
     }
 
-    public function getCity() : ?string
+    public function getCity(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CITY]);
     }
@@ -89,7 +89,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::CITY], $value);
     }
 
-    public function getCounty() : ?string
+    public function getCounty(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUNTY]);
     }
@@ -99,7 +99,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::COUNTY], $value);
     }
 
-    public function getCountryCode() : ?string
+    public function getCountryCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::COUNTRY_CODE]);
     }
@@ -109,7 +109,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::COUNTRY_CODE], $value);
     }
 
-    public function getLatitude() : ?float
+    public function getLatitude(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LATITUDE]);
     }
@@ -119,7 +119,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::LATITUDE], $value);
     }
 
-    public function getLongitude() : ?float
+    public function getLongitude(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LONGITUDE]);
     }
@@ -129,7 +129,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::LONGITUDE], $value);
     }
 
-    public function getPhoneNo() : ?string
+    public function getPhoneNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PHONE_NO]);
     }
@@ -139,7 +139,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::PHONE_NO], $value);
     }
 
-    public function getCurrencyCode() : ?string
+    public function getCurrencyCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_CODE]);
     }
@@ -149,7 +149,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_CODE], $value);
     }
 
-    public function getFunctionalityProfile() : ?string
+    public function getFunctionalityProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::FUNCTIONALITY_PROFILE]);
     }
@@ -159,7 +159,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::FUNCTIONALITY_PROFILE], $value);
     }
 
-    public function getStoreVatBusPostGr() : ?string
+    public function getStoreVatBusPostGr(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_VAT_BUS_POST_GR]);
     }
@@ -169,7 +169,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::STORE_VAT_BUS_POST_GR], $value);
     }
 
-    public function getClickAndCollect() : ?bool
+    public function getClickAndCollect(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::CLICK_AND_COLLECT]);
     }
@@ -179,7 +179,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::CLICK_AND_COLLECT], $value);
     }
 
-    public function getLoyalty() : ?bool
+    public function getLoyalty(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LOYALTY]);
     }
@@ -189,7 +189,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::LOYALTY], $value);
     }
 
-    public function getWebStore() : ?bool
+    public function getWebStore(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::WEB_STORE]);
     }
@@ -199,7 +199,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::WEB_STORE], $value);
     }
 
-    public function getWebStorePosTerminal() : ?string
+    public function getWebStorePosTerminal(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::WEB_STORE_POS_TERMINAL]);
     }
@@ -209,7 +209,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::WEB_STORE_POS_TERMINAL], $value);
     }
 
-    public function getWebStoreStaffId() : ?string
+    public function getWebStoreStaffId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::WEB_STORE_STAFF_ID]);
     }
@@ -219,7 +219,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::WEB_STORE_STAFF_ID], $value);
     }
 
-    public function getCalcInvForSourcingLocation() : ?bool
+    public function getCalcInvForSourcingLocation(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::CALC_INV_FOR_SOURCING_LOCATION]);
     }
@@ -229,7 +229,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::CALC_INV_FOR_SOURCING_LOCATION], $value);
     }
 
-    public function getLcyCode() : ?string
+    public function getLcyCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LCY_CODE]);
     }
@@ -239,7 +239,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::LCY_CODE], $value);
     }
 
-    public function getStoreGroupCodes() : ?string
+    public function getStoreGroupCodes(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_GROUP_CODES]);
     }
@@ -249,7 +249,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::STORE_GROUP_CODES], $value);
     }
 
-    public function getPriceGroupCodes() : ?string
+    public function getPriceGroupCodes(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRICE_GROUP_CODES]);
     }
@@ -259,7 +259,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this->setData(self::getDbColumnsMapping()[self::PRICE_GROUP_CODES], $value);
     }
 
-    public function getSalesTypeFilter() : ?string
+    public function getSalesTypeFilter(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALES_TYPE_FILTER]);
     }
@@ -276,7 +276,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -288,7 +288,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -300,7 +300,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -312,7 +312,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -324,7 +324,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -336,7 +336,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -348,7 +348,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -360,7 +360,7 @@ class ReplStoreview extends \Ls\Omni\Client\CentralEcommerce\Entity\StoreView im
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

@@ -11,6 +11,14 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Config\Model\Config\TypePool">
+        <arguments>
+            <!-- sensitive config items -->
+            <argument name="sensitive" xsi:type="array">
+                <item name="ls_mag/service/password" xsi:type="string">1</item>
+            </argument>
+        </arguments>
+    </type>
     <type name="Magento\Checkout\Controller\Cart\CouponPost">
         <plugin name="SetCouponData" type="Ls\Omni\Model\SetCouponData" sortOrder="1"/>
     </type>

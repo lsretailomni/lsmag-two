@@ -29,7 +29,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CODE]);
     }
@@ -39,7 +39,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
     }
 
-    public function getParentCategory() : ?string
+    public function getParentCategory(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PARENT_CATEGORY]);
     }
@@ -49,7 +49,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::PARENT_CATEGORY], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -59,7 +59,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getIndentation() : ?int
+    public function getIndentation(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::INDENTATION]);
     }
@@ -69,7 +69,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::INDENTATION], $value);
     }
 
-    public function getPresentationOrder() : ?int
+    public function getPresentationOrder(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::PRESENTATION_ORDER]);
     }
@@ -79,7 +79,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::PRESENTATION_ORDER], $value);
     }
 
-    public function getHasChildren() : ?bool
+    public function getHasChildren(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::HAS_CHILDREN]);
     }
@@ -89,7 +89,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::HAS_CHILDREN], $value);
     }
 
-    public function getLastModifiedDateTime() : ?string
+    public function getLastModifiedDateTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME]);
     }
@@ -99,7 +99,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME], $value);
     }
 
-    public function getLscItemNoMiscellaneous() : ?string
+    public function getLscItemNoMiscellaneous(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_ITEM_NO_MISCELLANEOUS]);
     }
@@ -109,7 +109,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_ITEM_NO_MISCELLANEOUS], $value);
     }
 
-    public function getLscNegative() : ?bool
+    public function getLscNegative(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_NEGATIVE]);
     }
@@ -119,7 +119,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_NEGATIVE], $value);
     }
 
-    public function getLscNotDiscountable() : ?bool
+    public function getLscNotDiscountable(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_NOT_DISCOUNTABLE]);
     }
@@ -129,7 +129,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_NOT_DISCOUNTABLE], $value);
     }
 
-    public function getLscItemTemplateCode() : ?string
+    public function getLscItemTemplateCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_ITEM_TEMPLATE_CODE]);
     }
@@ -139,7 +139,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_ITEM_TEMPLATE_CODE], $value);
     }
 
-    public function getLscDifferenceLcy() : ?float
+    public function getLscDifferenceLcy(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DIFFERENCE_LCY]);
     }
@@ -149,7 +149,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DIFFERENCE_LCY], $value);
     }
 
-    public function getLscItemHierarchyValue() : ?string
+    public function getLscItemHierarchyValue(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_ITEM_HIERARCHY_VALUE]);
     }
@@ -159,7 +159,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_ITEM_HIERARCHY_VALUE], $value);
     }
 
-    public function getLscPosInventoryLookup() : ?bool
+    public function getLscPosInventoryLookup(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_INVENTORY_LOOKUP]);
     }
@@ -169,7 +169,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_POS_INVENTORY_LOOKUP], $value);
     }
 
-    public function getLscDefaultProfit() : ?float
+    public function getLscDefaultProfit(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DEFAULT_PROFIT]);
     }
@@ -179,7 +179,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DEFAULT_PROFIT], $value);
     }
 
-    public function getLscDispensePrinterGroup() : ?string
+    public function getLscDispensePrinterGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DISPENSE_PRINTER_GROUP]);
     }
@@ -189,7 +189,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DISPENSE_PRINTER_GROUP], $value);
     }
 
-    public function getLscDispensePrintSeqNo() : ?int
+    public function getLscDispensePrintSeqNo(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DISPENSE_PRINT_SEQ_NO]);
     }
@@ -199,7 +199,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DISPENSE_PRINT_SEQ_NO], $value);
     }
 
-    public function getLscDivisionCode() : ?string
+    public function getLscDivisionCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DIVISION_CODE]);
     }
@@ -209,7 +209,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DIVISION_CODE], $value);
     }
 
-    public function getLscItemErrorCheckCode() : ?string
+    public function getLscItemErrorCheckCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_ITEM_ERROR_CHECK_CODE]);
     }
@@ -219,7 +219,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_ITEM_ERROR_CHECK_CODE], $value);
     }
 
-    public function getLscSuggestedQtyOnPos() : ?float
+    public function getLscSuggestedQtyOnPos(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_SUGGESTED_QTY_ON_POS]);
     }
@@ -229,7 +229,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_SUGGESTED_QTY_ON_POS], $value);
     }
 
-    public function getLscProfitGoal() : ?float
+    public function getLscProfitGoal(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_PROFIT_GOAL]);
     }
@@ -239,7 +239,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_PROFIT_GOAL], $value);
     }
 
-    public function getLscBuyerGroupCode() : ?string
+    public function getLscBuyerGroupCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_BUYER_GROUP_CODE]);
     }
@@ -249,7 +249,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_BUYER_GROUP_CODE], $value);
     }
 
-    public function getLscReplenDataProfile() : ?string
+    public function getLscReplenDataProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_REPLEN_DATA_PROFILE]);
     }
@@ -259,7 +259,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_REPLEN_DATA_PROFILE], $value);
     }
 
-    public function getLscBuyerId() : ?string
+    public function getLscBuyerId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_BUYER_ID]);
     }
@@ -269,7 +269,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_BUYER_ID], $value);
     }
 
-    public function getLscReplenTransferRuleCode() : ?string
+    public function getLscReplenTransferRuleCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_REPLEN_TRANSFER_RULE_CODE]);
     }
@@ -279,7 +279,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_REPLEN_TRANSFER_RULE_CODE], $value);
     }
 
-    public function getLscDefItemDistrType() : ?int
+    public function getLscDefItemDistrType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DEF_ITEM_DISTR_TYPE]);
     }
@@ -289,7 +289,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DEF_ITEM_DISTR_TYPE], $value);
     }
 
-    public function getLscDefItemDistrCode() : ?string
+    public function getLscDefItemDistrCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DEF_ITEM_DISTR_CODE]);
     }
@@ -299,7 +299,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DEF_ITEM_DISTR_CODE], $value);
     }
 
-    public function getLscExcludeFromReplenishment() : ?bool
+    public function getLscExcludeFromReplenishment(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_EXCLUDE_FROM_REPLENISHMENT]);
     }
@@ -309,7 +309,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_EXCLUDE_FROM_REPLENISHMENT], $value);
     }
 
-    public function getLscExcludeFromOosCalc() : ?bool
+    public function getLscExcludeFromOosCalc(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_EXCLUDE_FROM_OOS_CALC]);
     }
@@ -319,7 +319,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_EXCLUDE_FROM_OOS_CALC], $value);
     }
 
-    public function getLscDefReplenAssortmGrCode() : ?string
+    public function getLscDefReplenAssortmGrCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DEF_REPLEN_ASSORTM_GR_CODE]);
     }
@@ -329,7 +329,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DEF_REPLEN_ASSORTM_GR_CODE], $value);
     }
 
-    public function getLscDefReplenGradeCode() : ?string
+    public function getLscDefReplenGradeCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DEF_REPLEN_GRADE_CODE]);
     }
@@ -339,7 +339,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DEF_REPLEN_GRADE_CODE], $value);
     }
 
-    public function getLscPhysInvtCountPerCode() : ?string
+    public function getLscPhysInvtCountPerCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_PHYS_INVT_COUNT_PER_CODE]);
     }
@@ -349,7 +349,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_PHYS_INVT_COUNT_PER_CODE], $value);
     }
 
-    public function getLscAllocationRuleCode() : ?string
+    public function getLscAllocationRuleCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_ALLOCATION_RULE_CODE]);
     }
@@ -359,7 +359,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_ALLOCATION_RULE_CODE], $value);
     }
 
-    public function getLscPlbCategory() : ?bool
+    public function getLscPlbCategory(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_PLB_CATEGORY]);
     }
@@ -369,7 +369,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_PLB_CATEGORY], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -379,7 +379,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -389,7 +389,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -399,7 +399,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -409,7 +409,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -426,7 +426,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -438,7 +438,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -450,7 +450,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -462,7 +462,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -474,7 +474,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -486,7 +486,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -498,7 +498,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -510,7 +510,7 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

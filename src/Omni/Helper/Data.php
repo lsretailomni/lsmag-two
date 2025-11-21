@@ -481,9 +481,12 @@ class Data extends AbstractHelperOmni
         } else {
             $query['company'] = !empty($query['company']) ?
                 $query['company'] : $this->lsr->getWebsiteConfig(LSR::SC_COMPANY_NAME, $this->getScopeId());
-
-            $baseUrl = $this->getBaseUrl(!empty($baseUrl) ?
-                $baseUrl : $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId()));
+            $baseUrl = !empty($baseUrl) ?
+                $baseUrl :
+                $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $this->getScopeId());
+            if (!empty($baseUrl)) {
+                $baseUrl = $this->getBaseUrl($baseUrl);
+            }
         }
 
         $connectionParams['token'] = $this->fetchValidToken($connectionParams);

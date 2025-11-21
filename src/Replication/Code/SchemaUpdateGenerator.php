@@ -446,6 +446,10 @@ class SchemaUpdateGenerator implements GeneratorInterface
                 $objectManager = $this->getObjectManager();
                 $mapping = $objectManager->get($originalClass);
                 $dbColumnsMapping = $mapping->getDbColumnsMapping();
+                if ($tableName == 'ls_replication_repl_hierarchy_leaf')
+                {
+                    $x = 1;
+                }
                 foreach ($methods as $method) {
                     if ($method->getDeclaringClass()->getName() !== $originalClass ||
                         $method->getName() == 'getDbColumnsMapping'
@@ -494,12 +498,6 @@ class SchemaUpdateGenerator implements GeneratorInterface
                                     $fieldType = 'blob';
                                 }
                             }
-
-                            if ($tableIncludedInIndex) {
-                                if (in_array($propertyName, self::$indexerColumnLists[$tableName]) && $fieldType == 'text') {
-                                    $fieldType = 'varchar';
-                                }
-                            }
                             $defaultColumnsArray[$constName]['field_type'] = $fieldType;
                             $defaultColumnsArray[$constName]['default'] = $default;
                         }
@@ -521,6 +519,14 @@ class SchemaUpdateGenerator implements GeneratorInterface
                                 $columnName = $columnMappings[$columnName]['name'];
                             } else {
                                 $columnName = $columnMappings[$columnName];
+                            }
+
+                            if ($tableIncludedInIndex) {
+                                if (in_array($columnName, self::$indexerColumnLists[$tableName])
+                                    && $columnType == 'text'
+                                ) {
+                                    $columnType = 'varchar';
+                                }
                             }
                         } else {
                             $isExtraColumns = false;

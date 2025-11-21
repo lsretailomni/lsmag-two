@@ -10,110 +10,110 @@ namespace Ls\Replication\Api\Central\Data;
 
 interface ReplTenderviewInterface
 {
-    public static function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping(): array;
 
-    public function getCode() : ?string;
+    public function getCode(): ?string;
 
     public function setCode(?string $value);
 
-    public function getStoreNo() : ?string;
+    public function getStoreNo(): ?string;
 
     public function setStoreNo(?string $value);
 
-    public function getDescription() : ?string;
+    public function getDescription(): ?string;
 
     public function setDescription(?string $value);
 
-    public function getFunction() : ?int;
+    public function getFunction(): ?int;
 
     public function setFunction(?int $value);
 
-    public function getValidOnMobilePos() : ?bool;
+    public function getValidOnMobilePos(): ?bool;
 
     public function setValidOnMobilePos(?bool $value);
 
-    public function getChangeTendCode() : ?string;
+    public function getChangeTendCode(): ?string;
 
     public function setChangeTendCode(?string $value);
 
-    public function getAboveMinChangeTenderType() : ?string;
+    public function getAboveMinChangeTenderType(): ?string;
 
     public function setAboveMinChangeTenderType(?string $value);
 
-    public function getMinChange() : ?float;
+    public function getMinChange(): ?float;
 
     public function setMinChange(?float $value);
 
-    public function getRounding() : ?int;
+    public function getRounding(): ?int;
 
     public function setRounding(?int $value);
 
-    public function getRoundingTo() : ?float;
+    public function getRoundingTo(): ?float;
 
     public function setRoundingTo(?float $value);
 
-    public function getReturnMinusAllowed() : ?bool;
+    public function getReturnMinusAllowed(): ?bool;
 
     public function setReturnMinusAllowed(?bool $value);
 
-    public function getForeignCurrency() : ?bool;
+    public function getForeignCurrency(): ?bool;
 
     public function setForeignCurrency(?bool $value);
 
-    public function getUndertenderAllowed() : ?bool;
+    public function getUndertenderAllowed(): ?bool;
 
     public function setUndertenderAllowed(?bool $value);
 
-    public function getOvertenderAllowed() : ?bool;
+    public function getOvertenderAllowed(): ?bool;
 
     public function setOvertenderAllowed(?bool $value);
 
-    public function getOvertenderMaxAmt() : ?float;
+    public function getOvertenderMaxAmt(): ?float;
 
     public function setOvertenderMaxAmt(?float $value);
 
-    public function getCountingRequired() : ?bool;
+    public function getCountingRequired(): ?bool;
 
     public function setCountingRequired(?bool $value);
 
-    public function getDrawerOpens() : ?bool;
+    public function getDrawerOpens(): ?bool;
 
     public function setDrawerOpens(?bool $value);
 
-    public function getDateentrycodes() : ?string;
+    public function getDateentrycodes(): ?string;
 
     public function setDateentrycodes(?string $value);
 
     public function setProcessed(?bool $processed);
 
-    public function getProcessed() : ?bool;
+    public function getProcessed(): ?bool;
 
     public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : ?bool;
+    public function getIsUpdated(): ?bool;
 
     public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : ?bool;
+    public function getIsFailed(): ?bool;
 
     public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : ?string;
+    public function getCreatedAt(): ?string;
 
     public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : ?string;
+    public function getUpdatedAt(): ?string;
 
     public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : ?string;
+    public function getIdentityValue(): ?string;
 
     public function setChecksum(?string $checksum);
 
-    public function getChecksum() : ?string;
+    public function getChecksum(): ?string;
 
     public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : ?string;
+    public function getProcessedAt(): ?string;
 }
 

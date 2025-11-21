@@ -120,6 +120,9 @@ class Request extends Action
                                 __('Order request has been sent to LS Central successfully by the admin manually.')
                             );
                             $this->orderRepository->save($order);
+                            $this->messageManager->addSuccessMessage(
+                                __('Order request has been sent to LS Central successfully')
+                            );
                         }
                     }
                 }

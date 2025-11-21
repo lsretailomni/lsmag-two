@@ -14,7 +14,13 @@
             <group value="lsCustomerAdmin"/>
         </annotations>
         <before>
-            <magentoCLI command="config:set --scope website --scope-code base {{ServiceBaseUrlDisabled.path}} {{ServiceBaseUrlDisabled.value}}" stepKey="serviceBaseUrl"/>
+            <magentoCLI command="config:set --scope website --scope-code base ls_mag/service/base_url ''" stepKey="setBaseUrl"/>
+            <magentoCLI command="config:set --scope website --scope-code base {{ServiceCentralType.path}} {{ServiceCentralType.value}}" stepKey="serviceCentralType"/>
+            <magentoCLI command="config:set --scope website --scope-code base {{ServiceWebServiceUriDisabled.path}} '{{ServiceWebServiceUriDisabled.value}}'" stepKey="ServiceWebServiceUriDisabled"/>
+            <magentoCLI command="config:set --scope website --scope-code base {{ServiceOdataWebServiceUriDisabled.path}} '{{ServiceOdataWebServiceUriDisabled.value}}'" stepKey="ServiceOdataWebServiceUriDisabled"/>
+            <magentoCLI command="config:set --scope website --scope-code base {{ServiceClientIdDisabled.path}} {{ServiceClientIdDisabled.value}}" stepKey="ServiceClientIdDisabled"/>
+            <magentoCLI command="config:set --scope website --scope-code base {{ServiceClientSecretDisabled.path}} '{{ServiceClientSecretDisabled.value}}'" stepKey="ServiceClientSecretDisabled"/>
+
             <actionGroup ref="CliCacheCleanActionGroup" stepKey="cleanCache" before="login">
                 <argument name="tags" value="config full_page"/>
             </actionGroup>
@@ -39,6 +45,9 @@
             <argument name="tags" value="config full_page"/>
         </actionGroup>
         <!-- Login as admin -->
+        <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" before="openCustomersGridPage">
+            <argument name="indices" value=""/>
+        </actionGroup>
         <actionGroup ref="AdminOpenCustomersGridActionGroup" stepKey="openCustomersGridPage" after="cleanCache"/>
         <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerPage" after="openCustomersGridPage">
             <argument name="customer" value="Simple_US_Customer"/>

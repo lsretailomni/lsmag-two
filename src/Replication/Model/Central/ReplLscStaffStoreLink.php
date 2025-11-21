@@ -29,7 +29,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getStaffId() : ?string
+    public function getStaffId(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STAFF_ID]);
     }
@@ -39,7 +39,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::STAFF_ID], $value);
     }
 
-    public function getStoreNo() : ?string
+    public function getStoreNo(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::STORE_NO]);
     }
@@ -49,7 +49,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::STORE_NO], $value);
     }
 
-    public function getPermissionGrp() : ?string
+    public function getPermissionGrp(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PERMISSION_GRP]);
     }
@@ -59,7 +59,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::PERMISSION_GRP], $value);
     }
 
-    public function getPermissionGroup() : ?string
+    public function getPermissionGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PERMISSION_GROUP]);
     }
@@ -69,7 +69,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::PERMISSION_GROUP], $value);
     }
 
-    public function getPosInterfaceProfile() : ?string
+    public function getPosInterfaceProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POS_INTERFACE_PROFILE]);
     }
@@ -79,7 +79,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::POS_INTERFACE_PROFILE], $value);
     }
 
-    public function getPosStyleProfile() : ?string
+    public function getPosStyleProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POS_STYLE_PROFILE]);
     }
@@ -89,7 +89,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::POS_STYLE_PROFILE], $value);
     }
 
-    public function getPosMenuProfile() : ?string
+    public function getPosMenuProfile(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::POS_MENU_PROFILE]);
     }
@@ -99,7 +99,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::POS_MENU_PROFILE], $value);
     }
 
-    public function getDeliveryDriver() : ?bool
+    public function getDeliveryDriver(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::DELIVERY_DRIVER]);
     }
@@ -109,7 +109,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::DELIVERY_DRIVER], $value);
     }
 
-    public function getFloat() : ?float
+    public function getFloat(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::FLOAT]);
     }
@@ -119,7 +119,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::FLOAT], $value);
     }
 
-    public function getOnCall() : ?bool
+    public function getOnCall(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::ON_CALL]);
     }
@@ -129,7 +129,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::ON_CALL], $value);
     }
 
-    public function getDefaultSalesType() : ?string
+    public function getDefaultSalesType(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DEFAULT_SALES_TYPE]);
     }
@@ -139,7 +139,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::DEFAULT_SALES_TYPE], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -149,7 +149,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -159,7 +159,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -169,7 +169,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -179,7 +179,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -196,7 +196,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -208,7 +208,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -220,7 +220,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -232,7 +232,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -244,7 +244,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -256,7 +256,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -268,7 +268,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -280,7 +280,7 @@ class ReplLscStaffStoreLink extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCS
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

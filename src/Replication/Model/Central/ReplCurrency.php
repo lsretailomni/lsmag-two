@@ -29,7 +29,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CODE]);
     }
@@ -39,7 +39,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::CODE], $value);
     }
 
-    public function getLastDateModified() : ?string
+    public function getLastDateModified(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED]);
     }
@@ -49,7 +49,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED], $value);
     }
 
-    public function getLastDateAdjusted() : ?string
+    public function getLastDateAdjusted(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_DATE_ADJUSTED]);
     }
@@ -59,7 +59,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_ADJUSTED], $value);
     }
 
-    public function getIsoCode() : ?string
+    public function getIsoCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ISO_CODE]);
     }
@@ -69,7 +69,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::ISO_CODE], $value);
     }
 
-    public function getIsoNumericCode() : ?string
+    public function getIsoNumericCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::ISO_NUMERIC_CODE]);
     }
@@ -79,7 +79,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::ISO_NUMERIC_CODE], $value);
     }
 
-    public function getUnrealizedGainsAcc() : ?string
+    public function getUnrealizedGainsAcc(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNREALIZED_GAINS_ACC]);
     }
@@ -89,7 +89,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::UNREALIZED_GAINS_ACC], $value);
     }
 
-    public function getRealizedGainsAcc() : ?string
+    public function getRealizedGainsAcc(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REALIZED_GAINS_ACC]);
     }
@@ -99,7 +99,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::REALIZED_GAINS_ACC], $value);
     }
 
-    public function getUnrealizedLossesAcc() : ?string
+    public function getUnrealizedLossesAcc(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNREALIZED_LOSSES_ACC]);
     }
@@ -109,7 +109,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::UNREALIZED_LOSSES_ACC], $value);
     }
 
-    public function getRealizedLossesAcc() : ?string
+    public function getRealizedLossesAcc(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REALIZED_LOSSES_ACC]);
     }
@@ -119,7 +119,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::REALIZED_LOSSES_ACC], $value);
     }
 
-    public function getInvoiceRoundingPrecision() : ?float
+    public function getInvoiceRoundingPrecision(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::INVOICE_ROUNDING_PRECISION]);
     }
@@ -129,7 +129,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::INVOICE_ROUNDING_PRECISION], $value);
     }
 
-    public function getInvoiceRoundingType() : ?int
+    public function getInvoiceRoundingType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::INVOICE_ROUNDING_TYPE]);
     }
@@ -139,7 +139,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::INVOICE_ROUNDING_TYPE], $value);
     }
 
-    public function getAmountRoundingPrecision() : ?float
+    public function getAmountRoundingPrecision(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::AMOUNT_ROUNDING_PRECISION]);
     }
@@ -149,7 +149,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::AMOUNT_ROUNDING_PRECISION], $value);
     }
 
-    public function getUnitAmountRoundingPrecision() : ?float
+    public function getUnitAmountRoundingPrecision(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNITAMOUNT_ROUNDING_PRECISION]);
     }
@@ -159,7 +159,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::UNITAMOUNT_ROUNDING_PRECISION], $value);
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::DESCRIPTION]);
     }
@@ -169,7 +169,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::DESCRIPTION], $value);
     }
 
-    public function getAmountDecimalPlaces() : ?string
+    public function getAmountDecimalPlaces(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::AMOUNT_DECIMAL_PLACES]);
     }
@@ -179,7 +179,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::AMOUNT_DECIMAL_PLACES], $value);
     }
 
-    public function getUnitAmountDecimalPlaces() : ?string
+    public function getUnitAmountDecimalPlaces(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::UNITAMOUNT_DECIMAL_PLACES]);
     }
@@ -189,7 +189,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::UNITAMOUNT_DECIMAL_PLACES], $value);
     }
 
-    public function getRealizedGLGainsAccount() : ?string
+    public function getRealizedGLGainsAccount(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REALIZED_GL_GAINS_ACCOUNT]);
     }
@@ -199,7 +199,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::REALIZED_GL_GAINS_ACCOUNT], $value);
     }
 
-    public function getRealizedGLLossesAccount() : ?string
+    public function getRealizedGLLossesAccount(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::REALIZED_GL_LOSSES_ACCOUNT]);
     }
@@ -209,7 +209,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::REALIZED_GL_LOSSES_ACCOUNT], $value);
     }
 
-    public function getApplnRoundingPrecision() : ?float
+    public function getApplnRoundingPrecision(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::APPLN_ROUNDING_PRECISION]);
     }
@@ -219,7 +219,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::APPLN_ROUNDING_PRECISION], $value);
     }
 
-    public function getEmuCurrency() : ?bool
+    public function getEmuCurrency(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::EMU_CURRENCY]);
     }
@@ -229,7 +229,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::EMU_CURRENCY], $value);
     }
 
-    public function getCurrencyFactor() : ?float
+    public function getCurrencyFactor(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_FACTOR]);
     }
@@ -239,7 +239,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_FACTOR], $value);
     }
 
-    public function getResidualGainsAccount() : ?string
+    public function getResidualGainsAccount(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::RESIDUAL_GAINS_ACCOUNT]);
     }
@@ -249,7 +249,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::RESIDUAL_GAINS_ACCOUNT], $value);
     }
 
-    public function getResidualLossesAccount() : ?string
+    public function getResidualLossesAccount(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::RESIDUAL_LOSSES_ACCOUNT]);
     }
@@ -259,7 +259,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::RESIDUAL_LOSSES_ACCOUNT], $value);
     }
 
-    public function getConvLcyRndgDebitAcc() : ?string
+    public function getConvLcyRndgDebitAcc(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CONV_LCY_RNDG_DEBIT_ACC]);
     }
@@ -269,7 +269,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::CONV_LCY_RNDG_DEBIT_ACC], $value);
     }
 
-    public function getConvLcyRndgCreditAcc() : ?string
+    public function getConvLcyRndgCreditAcc(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::CONV_LCY_RNDG_CREDIT_ACC]);
     }
@@ -279,7 +279,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::CONV_LCY_RNDG_CREDIT_ACC], $value);
     }
 
-    public function getMaxVatDifferenceAllowed() : ?float
+    public function getMaxVatDifferenceAllowed(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAX_VAT_DIFFERENCE_ALLOWED]);
     }
@@ -289,7 +289,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::MAX_VAT_DIFFERENCE_ALLOWED], $value);
     }
 
-    public function getVatRoundingType() : ?int
+    public function getVatRoundingType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::VAT_ROUNDING_TYPE]);
     }
@@ -299,7 +299,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::VAT_ROUNDING_TYPE], $value);
     }
 
-    public function getPaymentTolerance() : ?float
+    public function getPaymentTolerance(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::PAYMENT_TOLERANCE]);
     }
@@ -309,7 +309,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::PAYMENT_TOLERANCE], $value);
     }
 
-    public function getMaxPaymentToleranceAmount() : ?float
+    public function getMaxPaymentToleranceAmount(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::MAX_PAYMENT_TOLERANCE_AMOUNT]);
     }
@@ -319,7 +319,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::MAX_PAYMENT_TOLERANCE_AMOUNT], $value);
     }
 
-    public function getSymbol() : ?string
+    public function getSymbol(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYMBOL]);
     }
@@ -329,7 +329,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::SYMBOL], $value);
     }
 
-    public function getLastModifiedDateTime() : ?string
+    public function getLastModifiedDateTime(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME]);
     }
@@ -339,7 +339,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::LAST_MODIFIED_DATE_TIME], $value);
     }
 
-    public function getCurrencySymbolPosition() : ?int
+    public function getCurrencySymbolPosition(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::CURRENCY_SYMBOL_POSITION]);
     }
@@ -349,7 +349,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::CURRENCY_SYMBOL_POSITION], $value);
     }
 
-    public function getLscLowestAcceptDenomAmt() : ?float
+    public function getLscLowestAcceptDenomAmt(): ?float
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_LOWEST_ACCEPT_DENOM_AMT]);
     }
@@ -359,7 +359,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_LOWEST_ACCEPT_DENOM_AMT], $value);
     }
 
-    public function getLscDenominationRoundingType() : ?int
+    public function getLscDenominationRoundingType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_DENOMINATION_ROUNDING_TYPE]);
     }
@@ -369,7 +369,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DENOMINATION_ROUNDING_TYPE], $value);
     }
 
-    public function getLscPosCurrencySymbol() : ?string
+    public function getLscPosCurrencySymbol(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_CURRENCY_SYMBOL]);
     }
@@ -379,7 +379,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_POS_CURRENCY_SYMBOL], $value);
     }
 
-    public function getLscPlacementOfCurrSymbol() : ?int
+    public function getLscPlacementOfCurrSymbol(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_PLACEMENT_OF_CURR_SYMBOL]);
     }
@@ -389,7 +389,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_PLACEMENT_OF_CURR_SYMBOL], $value);
     }
 
-    public function getLscFiscalPrinterId() : ?int
+    public function getLscFiscalPrinterId(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_FISCAL_PRINTER_ID]);
     }
@@ -399,7 +399,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_FISCAL_PRINTER_ID], $value);
     }
 
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);
     }
@@ -409,7 +409,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMID], $value);
     }
 
-    public function getSystemcreatedat() : ?string
+    public function getSystemcreatedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT]);
     }
@@ -419,7 +419,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDAT], $value);
     }
 
-    public function getSystemcreatedby() : ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY]);
     }
@@ -429,7 +429,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMCREATEDBY], $value);
     }
 
-    public function getSystemmodifiedat() : ?string
+    public function getSystemmodifiedat(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT]);
     }
@@ -439,7 +439,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDAT], $value);
     }
 
-    public function getSystemmodifiedby() : ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMMODIFIEDBY]);
     }
@@ -456,7 +456,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this;
     }
 
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData('processed');
     }
@@ -468,7 +468,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this;
     }
 
-    public function getIsUpdated() : ?bool
+    public function getIsUpdated(): ?bool
     {
         return $this->getData('is_updated');
     }
@@ -480,7 +480,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this;
     }
 
-    public function getIsFailed() : ?bool
+    public function getIsFailed(): ?bool
     {
         return $this->getData('is_failed');
     }
@@ -492,7 +492,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -504,7 +504,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->getData('updated_at');
     }
@@ -516,7 +516,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this;
     }
 
-    public function getIdentityValue() : ?string
+    public function getIdentityValue(): ?string
     {
         return $this->getData('identity_value');
     }
@@ -528,7 +528,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this;
     }
 
-    public function getChecksum() : ?string
+    public function getChecksum(): ?string
     {
         return $this->getData('checksum');
     }
@@ -540,7 +540,7 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this;
     }
 
-    public function getProcessedAt() : ?string
+    public function getProcessedAt(): ?string
     {
         return $this->getData('processed_at');
     }

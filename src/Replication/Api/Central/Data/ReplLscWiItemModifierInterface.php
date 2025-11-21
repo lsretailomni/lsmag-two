@@ -10,142 +10,142 @@ namespace Ls\Replication\Api\Central\Data;
 
 interface ReplLscWiItemModifierInterface
 {
-    public static function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping(): array;
 
-    public function getParentItemNo() : ?string;
+    public function getParentItemNo(): ?string;
 
     public function setParentItemNo(?string $value);
 
-    public function getInfocodeCode() : ?string;
+    public function getInfocodeCode(): ?string;
 
     public function setInfocodeCode(?string $value);
 
-    public function getSubcode() : ?string;
+    public function getSubcode(): ?string;
 
     public function setSubcode(?string $value);
 
-    public function getExplanatoryHeaderText() : ?string;
+    public function getExplanatoryHeaderText(): ?string;
 
     public function setExplanatoryHeaderText(?string $value);
 
-    public function getPrompt() : ?string;
+    public function getPrompt(): ?string;
 
     public function setPrompt(?string $value);
 
-    public function getGroupMinSelection() : ?int;
+    public function getGroupMinSelection(): ?int;
 
     public function setGroupMinSelection(?int $value);
 
-    public function getGroupMaxSelection() : ?int;
+    public function getGroupMaxSelection(): ?int;
 
     public function setGroupMaxSelection(?int $value);
 
-    public function getUsageCategory() : ?int;
+    public function getUsageCategory(): ?int;
 
     public function setUsageCategory(?int $value);
 
-    public function getUsageSubCategory() : ?int;
+    public function getUsageSubCategory(): ?int;
 
     public function setUsageSubCategory(?int $value);
 
-    public function getTriggerFunction() : ?int;
+    public function getTriggerFunction(): ?int;
 
     public function setTriggerFunction(?int $value);
 
-    public function getItemNo() : ?string;
+    public function getItemNo(): ?string;
 
     public function setItemNo(?string $value);
 
-    public function getVariantCode() : ?string;
+    public function getVariantCode(): ?string;
 
     public function setVariantCode(?string $value);
 
-    public function getDescription() : ?string;
+    public function getDescription(): ?string;
 
     public function setDescription(?string $value);
 
-    public function getMinSelection() : ?int;
+    public function getMinSelection(): ?int;
 
     public function setMinSelection(?int $value);
 
-    public function getMaxSelection() : ?int;
+    public function getMaxSelection(): ?int;
 
     public function setMaxSelection(?int $value);
 
-    public function getPriceHandling() : ?int;
+    public function getPriceHandling(): ?int;
 
     public function setPriceHandling(?int $value);
 
-    public function getPriceType() : ?int;
+    public function getPriceType(): ?int;
 
     public function setPriceType(?int $value);
 
-    public function getAmountPercent() : ?float;
+    public function getAmountPercent(): ?float;
 
     public function setAmountPercent(?float $value);
 
-    public function getUnitOfMeasure() : ?string;
+    public function getUnitOfMeasure(): ?string;
 
     public function setUnitOfMeasure(?string $value);
 
-    public function getQtyPerUnitOfMeasure() : ?float;
+    public function getQtyPerUnitOfMeasure(): ?float;
 
     public function setQtyPerUnitOfMeasure(?float $value);
 
-    public function getTimeModifierMinutes() : ?float;
+    public function getTimeModifierMinutes(): ?float;
 
     public function setTimeModifierMinutes(?float $value);
 
-    public function getSystemid() : ?string;
+    public function getSystemid(): ?string;
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?string;
+    public function getSystemcreatedat(): ?string;
 
     public function setSystemcreatedat(?string $value);
 
-    public function getSystemcreatedby() : ?string;
+    public function getSystemcreatedby(): ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?string;
+    public function getSystemmodifiedat(): ?string;
 
     public function setSystemmodifiedat(?string $value);
 
-    public function getSystemmodifiedby() : ?string;
+    public function getSystemmodifiedby(): ?string;
 
     public function setSystemmodifiedby(?string $value);
 
     public function setProcessed(?bool $processed);
 
-    public function getProcessed() : ?bool;
+    public function getProcessed(): ?bool;
 
     public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : ?bool;
+    public function getIsUpdated(): ?bool;
 
     public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : ?bool;
+    public function getIsFailed(): ?bool;
 
     public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : ?string;
+    public function getCreatedAt(): ?string;
 
     public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : ?string;
+    public function getUpdatedAt(): ?string;
 
     public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : ?string;
+    public function getIdentityValue(): ?string;
 
     public function setChecksum(?string $checksum);
 
-    public function getChecksum() : ?string;
+    public function getChecksum(): ?string;
 
     public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : ?string;
+    public function getProcessedAt(): ?string;
 }
 

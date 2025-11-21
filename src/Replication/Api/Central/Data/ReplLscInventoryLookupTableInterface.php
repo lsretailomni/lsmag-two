@@ -10,158 +10,158 @@ namespace Ls\Replication\Api\Central\Data;
 
 interface ReplLscInventoryLookupTableInterface
 {
-    public static function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping(): array;
 
-    public function getItemNo() : ?string;
+    public function getItemNo(): ?string;
 
     public function setItemNo(?string $value);
 
-    public function getVariantCode() : ?string;
+    public function getVariantCode(): ?string;
 
     public function setVariantCode(?string $value);
 
-    public function getLocation() : ?string;
+    public function getLocation(): ?string;
 
     public function setLocation(?string $value);
 
-    public function getStoreNo() : ?string;
+    public function getStoreNo(): ?string;
 
     public function setStoreNo(?string $value);
 
-    public function getPhysInventory() : ?float;
+    public function getPhysInventory(): ?float;
 
     public function setPhysInventory(?float $value);
 
-    public function getPurchaseOrder() : ?float;
+    public function getPurchaseOrder(): ?float;
 
     public function setPurchaseOrder(?float $value);
 
-    public function getTotalSales() : ?float;
+    public function getTotalSales(): ?float;
 
     public function setTotalSales(?float $value);
 
-    public function getCoResEntries() : ?float;
+    public function getCoResEntries(): ?float;
 
     public function setCoResEntries(?float $value);
 
-    public function getVarPhysInventory() : ?float;
+    public function getVarPhysInventory(): ?float;
 
     public function setVarPhysInventory(?float $value);
 
-    public function getVarPurchaseOrder() : ?float;
+    public function getVarPurchaseOrder(): ?float;
 
     public function setVarPurchaseOrder(?float $value);
 
-    public function getVarTotalSales() : ?float;
+    public function getVarTotalSales(): ?float;
 
     public function setVarTotalSales(?float $value);
 
-    public function getVarCoResEntries() : ?float;
+    public function getVarCoResEntries(): ?float;
 
     public function setVarCoResEntries(?float $value);
 
-    public function getPostedSales() : ?float;
+    public function getPostedSales(): ?float;
 
     public function setPostedSales(?float $value);
 
-    public function getVarPostedSales() : ?float;
+    public function getVarPostedSales(): ?float;
 
     public function setVarPostedSales(?float $value);
 
-    public function getSerialNo() : ?string;
+    public function getSerialNo(): ?string;
 
     public function setSerialNo(?string $value);
 
-    public function getLotNo() : ?string;
+    public function getLotNo(): ?string;
 
     public function setLotNo(?string $value);
 
-    public function getExpirationDate() : ?string;
+    public function getExpirationDate(): ?string;
 
     public function setExpirationDate(?string $value);
 
-    public function getTotalInvAdjmt() : ?float;
+    public function getTotalInvAdjmt(): ?float;
 
     public function setTotalInvAdjmt(?float $value);
 
-    public function getVarTotalInvAdjmt() : ?float;
+    public function getVarTotalInvAdjmt(): ?float;
 
     public function setVarTotalInvAdjmt(?float $value);
 
-    public function getPostedInvAdjmt() : ?float;
+    public function getPostedInvAdjmt(): ?float;
 
     public function setPostedInvAdjmt(?float $value);
 
-    public function getVarPostedInvAdjmt() : ?float;
+    public function getVarPostedInvAdjmt(): ?float;
 
     public function setVarPostedInvAdjmt(?float $value);
 
-    public function getNetInventory() : ?float;
+    public function getNetInventory(): ?float;
 
     public function setNetInventory(?float $value);
 
-    public function getLocationProfile() : ?string;
+    public function getLocationProfile(): ?string;
 
     public function setLocationProfile(?string $value);
 
-    public function getReplicationCounter() : ?int;
+    public function getReplicationCounter(): ?int;
 
     public function setReplicationCounter(?int $value);
 
-    public function getSourcingLocationInventory() : ?float;
+    public function getSourcingLocationInventory(): ?float;
 
     public function setSourcingLocationInventory(?float $value);
 
-    public function getSystemid() : ?string;
+    public function getSystemid(): ?string;
 
     public function setSystemid(?string $value);
 
-    public function getSystemcreatedat() : ?string;
+    public function getSystemcreatedat(): ?string;
 
     public function setSystemcreatedat(?string $value);
 
-    public function getSystemcreatedby() : ?string;
+    public function getSystemcreatedby(): ?string;
 
     public function setSystemcreatedby(?string $value);
 
-    public function getSystemmodifiedat() : ?string;
+    public function getSystemmodifiedat(): ?string;
 
     public function setSystemmodifiedat(?string $value);
 
-    public function getSystemmodifiedby() : ?string;
+    public function getSystemmodifiedby(): ?string;
 
     public function setSystemmodifiedby(?string $value);
 
     public function setProcessed(?bool $processed);
 
-    public function getProcessed() : ?bool;
+    public function getProcessed(): ?bool;
 
     public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : ?bool;
+    public function getIsUpdated(): ?bool;
 
     public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : ?bool;
+    public function getIsFailed(): ?bool;
 
     public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : ?string;
+    public function getCreatedAt(): ?string;
 
     public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : ?string;
+    public function getUpdatedAt(): ?string;
 
     public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : ?string;
+    public function getIdentityValue(): ?string;
 
     public function setChecksum(?string $checksum);
 
-    public function getChecksum() : ?string;
+    public function getChecksum(): ?string;
 
     public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : ?string;
+    public function getProcessedAt(): ?string;
 }
 
