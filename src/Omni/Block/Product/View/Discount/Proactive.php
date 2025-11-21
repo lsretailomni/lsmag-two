@@ -13,6 +13,8 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use Ls\Replication\Api\ReplDiscountValidationRepositoryInterface;
+use Ls\Replication\Helper\ReplicationHelper;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Helper\Data;
@@ -92,6 +94,16 @@ class Proactive extends Template
     public $contactHelper;
 
     /**
+     * @var ReplDiscountValidationRepositoryInterface
+     */
+    public $discountValidationRepository;
+
+    /**
+     * @var ReplicationHelper
+     */
+    public $replicationHelper;
+
+    /**
      * @param Template\Context $context
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
@@ -105,6 +117,8 @@ class Proactive extends Template
      * @param LoggerInterface $logger
      * @param Data $catalogHelper
      * @param View $productBlock
+     * @param ReplDiscountValidationRepositoryInterface $discountValidationRepository
+     * @param ReplicationHelper $replicationHelper
      * @param array $data
      */
     public function __construct(
@@ -121,21 +135,25 @@ class Proactive extends Template
         LoggerInterface $logger,
         Data $catalogHelper,
         View $productBlock,
+        ReplDiscountValidationRepositoryInterface $discountValidationRepository,
+        ReplicationHelper $replicationHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->lsr               = $lsr;
-        $this->loyaltyHelper     = $loyaltyHelper;
-        $this->itemHelper        = $itemHelper;
-        $this->contactHelper     = $contactHelper;
-        $this->customerFactory   = $customerFactory;
-        $this->storeManager      = $storeManager;
-        $this->timeZoneInterface = $timeZoneInterface;
-        $this->scopeConfig       = $scopeConfig;
-        $this->urlBuilder        = $urlBuilder;
-        $this->logger            = $logger;
-        $this->catalogHelper     = $catalogHelper;
-        $this->productBlock      = $productBlock;
+        $this->lsr                          = $lsr;
+        $this->loyaltyHelper                = $loyaltyHelper;
+        $this->itemHelper                   = $itemHelper;
+        $this->contactHelper                = $contactHelper;
+        $this->customerFactory              = $customerFactory;
+        $this->storeManager                 = $storeManager;
+        $this->timeZoneInterface            = $timeZoneInterface;
+        $this->scopeConfig                  = $scopeConfig;
+        $this->urlBuilder                   = $urlBuilder;
+        $this->logger                       = $logger;
+        $this->catalogHelper                = $catalogHelper;
+        $this->productBlock                 = $productBlock;
+        $this->discountValidationRepository = $discountValidationRepository;
+        $this->replicationHelper            = $replicationHelper;
     }
 
     /**
@@ -259,6 +277,10 @@ class Proactive extends Template
             $discountPercentage = number_format((float)$discount->getPercentage(), 2, '.', '');
             $discountText       = __('Avail %1 Off ', $discountPercentage . '%') . '';
         }
+        if ($discount->getPeriodId()) {
+            $this->getDiscountValidityDatesById($discount->getPeriodId(), $description);
+        }
+        
         if ($discount->getItemIds()) {
             $itemIds = $discount->getItemIds()->getString();
 
@@ -338,6 +360,46 @@ class Proactive extends Template
         }
 
         return implode('<br/>', $description);
+    }
+
+    /**
+     * @param $validationPeriodId
+     * @param $description
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function getDiscountValidityDatesById($validationPeriodId, &$description)
+    {
+        $startDate = $endDate = "";
+        $filters   = [
+            ['field' => 'scope_id', 'value' => $this->lsr->getCurrentStoreId(), 'condition_type' => 'eq'],
+            [
+                'field'          => 'nav_id',
+                'value'          => $validationPeriodId,
+                'condition_type' => 'eq'
+            ]
+        ];
+        $criteria               = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+        $replDiscountValidation = $this->discountValidationRepository->getList($criteria);
+        foreach ($replDiscountValidation->getItems() as $replValidation) {
+            $startDate = $replValidation->getStartDate();
+            $endDate   = $replValidation->getEndDate();
+            break;
+        }
+
+        if ($startDate) {
+            $description[] = "
+        <span class='coupon-expiration-date-label discount-label'>" . __('Start Date :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $startDate . '</span>';
+        }
+
+        if ($endDate) {
+            $description[] = "
+        <span class='coupon-expiration-date-label discount-label'>" . __('End Date :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $endDate . '</span>';
+        }
+
+        return $description;
     }
 
     /**
