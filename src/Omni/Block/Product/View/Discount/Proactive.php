@@ -12,6 +12,9 @@ use \Ls\Omni\Client\CentralEcommerce\Operation\GetDiscount_GetDiscount;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Replication\Api\ReplDiscountValidationRepositoryInterface;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Model\ReplDiscountValidation;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Helper\Data;
@@ -37,6 +40,7 @@ class Proactive extends Template
      */
     public $product = null;
 
+
     /**
      * @param Context $context
      * @param LSR $lsr
@@ -51,7 +55,9 @@ class Proactive extends Template
      * @param LoggerInterface $logger
      * @param Data $catalogHelper
      * @param View $productBlock
+     * @param ReplicationHelper $replicationHelper
      * @param Registry $registry
+     * @param ReplDiscountValidationRepositoryInterface $discountValidationRepository
      * @param array $data
      */
     public function __construct(
@@ -68,7 +74,9 @@ class Proactive extends Template
         public LoggerInterface $logger,
         public Data $catalogHelper,
         public View $productBlock,
+        public ReplicationHelper $replicationHelper,
         public Registry $registry,
+        public ReplDiscountValidationRepositoryInterface $discountValidationRepository,
         public array $data = []
     ) {
         parent::__construct($context, $data);
@@ -163,9 +171,8 @@ class Proactive extends Template
     {
         $description = [];
         $additionalDetails = $this->getAdditionalInformation($discount);
-
         if ($discount->getDescription()) {
-            $description[] = "<span class='discount-description'>" . $discount->getDescription() . '</span>';
+            $description[] = "<span class='discount-description 1'>" . $discount->getDescription() . '</span>';
         }
 
         if (floatval($discount->getDiscountValue()) > 0) {
@@ -181,7 +188,52 @@ class Proactive extends Template
             $description[] = "<span>" . $additionalDetails . "</span>";
         }
 
+        if ($discount->getValidationPeriodId()) {
+            $this->getDiscountValidityDatesById($discount->getValidationPeriodId(), $description);            
+        }
+
         return implode('<br/>', $description);
+    }
+
+    /**
+     * @param $validationPeriodId
+     * @param $description
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function getDiscountValidityDatesById($validationPeriodId, &$description)
+    {
+        $startDate = $endDate = "";
+        $filters  = [
+            ['field' => 'scope_id', 'value' => $this->lsr->getCurrentStoreId(), 'condition_type' => 'eq'],
+            [
+                'field'          => 'nav_id',
+                'value'          => $validationPeriodId,
+                'condition_type' => 'eq'
+            ]
+        ];
+        $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+        /** @var ReplDiscountValidation $replDiscountValidation */
+        $replDiscountValidation = $this->discountValidationRepository->getList($criteria);
+        foreach ($replDiscountValidation->getItems() as $replValidation) {
+            $startDate = $replValidation->getStartDate();
+            $endDate   = $replValidation->getEndDate();
+            break;
+        }
+        
+        if($startDate) {
+            $description[] = "
+        <span class='coupon-expiration-date-label discount-label'>" . __('Start Date :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $startDate . '</span>';
+        }
+        
+        if($endDate) {
+            $description[] = "
+        <span class='coupon-expiration-date-label discount-label'>" . __('End Date :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $endDate . '</span>';
+        }
+        
+        return $description;
     }
 
     /**
@@ -231,7 +283,7 @@ class Proactive extends Template
         $description = [];
 
         if ($multibuyOffer->getDescription()) {
-            $description[] = "<span class='discount-description'>" . $multibuyOffer->getDescription() . '</span>';
+            $description[] = "<span class='discount-description 2'>" . $multibuyOffer->getDescription() . '</span>';
         }
 
         foreach ($discounts->getLscWiDiscounts() as $discount) {
@@ -295,7 +347,7 @@ class Proactive extends Template
             }
         }
         if ($mixAndMatchOffer->getDescription()) {
-            $description[] = "<span class='discount-description'>" . $mixAndMatchOffer->getDescription() . '</span>';
+            $description[] = "<span class='discount-description 3'>" . $mixAndMatchOffer->getDescription() . '</span>';
         }
 
         if (floatval($mixAndMatchOffer->getDiscountValue()) > 0) {
