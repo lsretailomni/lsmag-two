@@ -223,10 +223,7 @@ class Proactive extends Template
                         continue;
                     }
                     foreach ($publishedOffers as $publishedOffer) {
-                        if ($publishedOffer->getCode() == OfferDiscountType::COUPON ||
-                            $publishedOffer->getCode() == OfferDiscountType::PROMOTION ||
-                            $publishedOffer->getCode() == OfferDiscountType::DISCOUNT_OFFER
-                        ) {
+                        if ($publishedOffer->getCode() == OfferDiscountType::COUPON) {
                             $response[$publishedOffer->getOfferId()] = $publishedOffer;
                         }
                     }
