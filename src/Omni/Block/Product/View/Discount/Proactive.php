@@ -280,7 +280,7 @@ class Proactive extends Template
         if ($discount->getPeriodId()) {
             $this->getDiscountValidityDatesById($discount->getPeriodId(), $description);
         }
-        
+
         if ($discount->getItemIds()) {
             $itemIds = $discount->getItemIds()->getString();
 
@@ -363,6 +363,8 @@ class Proactive extends Template
     }
 
     /**
+     * Get discount validity dates by id
+     *
      * @param $validationPeriodId
      * @param $description
      * @return mixed
@@ -372,7 +374,7 @@ class Proactive extends Template
     {
         $startDate = $endDate = "";
         $filters   = [
-            ['field' => 'scope_id', 'value' => $this->lsr->getCurrentStoreId(), 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->lsr->getCurrentWebsiteId(), 'condition_type' => 'eq'],
             [
                 'field'          => 'nav_id',
                 'value'          => $validationPeriodId,
