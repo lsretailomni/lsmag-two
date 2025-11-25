@@ -104,7 +104,7 @@ class Offers extends Template
         try {
             $images = [];
             $index  = 0;
-            $img    = $coupon['ImageId'];
+            $img    = $coupon['ImageId'] ?? '';
             if (empty($img)) {
                 return $img;
             }

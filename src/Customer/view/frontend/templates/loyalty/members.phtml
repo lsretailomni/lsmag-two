@@ -29,7 +29,7 @@ $c      = 0;
                         <div class="item-img-cont">
                             <?php
                             // @codingStandardsIgnoreStart
-                            if (count($images) && !empty($images[0])) :
+                            if ($images && count($images) && !empty($images[0])) :
                                 // @codingStandardsIgnoreEnd
                                 ?>
                                 <img id="coupon-collection-image-<?php echo $c ?>"
@@ -55,7 +55,7 @@ $c      = 0;
                                     </div>
                                 <?php }
                             }
-                            ?>                            
+                            ?>
                             <div class="coupon-description">
                                 <p><?php echo $offer['Offer']->getSecondarytext(); ?></p>
                             </div>
