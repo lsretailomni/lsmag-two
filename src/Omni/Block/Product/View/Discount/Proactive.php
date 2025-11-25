@@ -289,7 +289,6 @@ class Proactive extends Template
             $popupLink    = '';
             $popupHtml    = '';
             $productsData = [];
-            $productHtml  = '';
             if (!empty($itemIds)) {
                 $productsData = $this->itemHelper->getProductsInfoByItemIds($itemIds);
             }
@@ -387,8 +386,7 @@ class Proactive extends Template
 
         if ($startDate) {
             $input      = $startDate . ' ' . $startTime;
-            $sDateInUTC = $this->getDateTimeInUTC($input);
-            $formattedStartDate = $this->getFormattedOfferExpiryDate($sDateInUTC);
+            $formattedStartDate = $this->getFormattedDateTime($input);
             $description[] = "
         <span class='coupon-expiration-date-label discount-label'>" . __('From :') . "</span>
         <span class='coupon-expiration-date-value discount-value'>" . $formattedStartDate . '</span>';
@@ -396,8 +394,7 @@ class Proactive extends Template
 
         if ($endDate) {
             $input      = $endDate . ' ' . $endTime;
-            $eDateInUTC = $this->getDateTimeInUTC($input);
-            $formattedEndDate = $this->getFormattedOfferExpiryDate($eDateInUTC);
+            $formattedEndDate = $this->getFormattedDateTime($input);
             $description[] = "
         <span class='coupon-expiration-date-label discount-label'>" . __('To :') . "</span>
         <span class='coupon-expiration-date-value discount-value'>" . $formattedEndDate .'</span>';
@@ -420,6 +417,30 @@ class Proactive extends Template
             throw new \DateException("Invalid date string: ". $input);
         }
         return $this->timeZoneInterface->date($date)->format('Y-m-d\TH:i:s');
+    }
+
+    /**
+     * Format date time
+     *
+     * @param $input
+     * @return string
+     * @throws \DateException
+     */
+    public function getFormattedDateTime($input)
+    {
+        try {
+            $format  = $this->scopeConfig->getValue(
+                LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                $this->lsr->getActiveWebStore()
+            );
+            $dateObj = new \DateTime($input, new \DateTimeZone('UTC'));
+            return $dateObj->format($format);
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+
+        return $input;
     }
 
     /**
