@@ -196,6 +196,8 @@ class Proactive extends Template
     }
 
     /**
+     * Get discount validity dates by id
+     *
      * @param $validationPeriodId
      * @param $description
      * @return mixed
@@ -203,36 +205,39 @@ class Proactive extends Template
      */
     public function getDiscountValidityDatesById($validationPeriodId, &$description)
     {
-        $startDate = $endDate = "";
-        $filters  = [
-            ['field' => 'scope_id', 'value' => $this->lsr->getCurrentStoreId(), 'condition_type' => 'eq'],
+        $startDate = $endDate = $startTime = $endTime = "";
+        $filters   = [
+            ['field' => 'scope_id', 'value' => $this->lsr->getCurrentWebsiteId(), 'condition_type' => 'eq'],
             [
                 'field'          => 'nav_id',
                 'value'          => $validationPeriodId,
                 'condition_type' => 'eq'
             ]
         ];
-        $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
-        /** @var ReplDiscountValidation $replDiscountValidation */
+        $criteria               = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
         $replDiscountValidation = $this->discountValidationRepository->getList($criteria);
-        foreach ($replDiscountValidation->getItems() as $replValidation) {
-            $startDate = $replValidation->getStartDate();
-            $endDate   = $replValidation->getEndDate();
-            break;
+        $items                  = $replDiscountValidation->getItems();
+        $validationPeriod       = reset($items);
+        if ($validationPeriod) {
+            $startDate = $validationPeriod->getStartDate();
+            $endDate   = $validationPeriod->getEndDate();
+
+            $startTime = $validationPeriod->getStartTime();
+            $endTime   = $validationPeriod->getEndTime();
         }
-        
-        if($startDate) {
+
+        if ($startDate) {
             $description[] = "
-        <span class='coupon-expiration-date-label discount-label'>" . __('Start Date :') . "</span>
-        <span class='coupon-expiration-date-value discount-value'>" . $startDate . '</span>';
+        <span class='coupon-expiration-date-label discount-label'>" . __('From :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $startDate . ' '.$startTime.'</span>';
         }
-        
-        if($endDate) {
+
+        if ($endDate) {
             $description[] = "
-        <span class='coupon-expiration-date-label discount-label'>" . __('End Date :') . "</span>
-        <span class='coupon-expiration-date-value discount-value'>" . $endDate . '</span>';
+        <span class='coupon-expiration-date-label discount-label'>" . __('To :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $endDate . ' '.$endTime.'</span>';
         }
-        
+
         return $description;
     }
 
