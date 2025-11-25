@@ -375,13 +375,14 @@ class Proactive extends Template
         ];
         $criteria               = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
         $replDiscountValidation = $this->discountValidationRepository->getList($criteria);
-        foreach ($replDiscountValidation->getItems() as $replValidation) {
-            $startDate = $replValidation->getStartDate();
-            $endDate   = $replValidation->getEndDate();
+        $items                  = $replDiscountValidation->getItems();
+        $validationPeriod       = reset($items);
+        if ($validationPeriod) {
+            $startDate = $validationPeriod->getStartDate();
+            $endDate   = $validationPeriod->getEndDate();
 
-            $startTime = $replValidation->getStartTime();
-            $endTime   = $replValidation->getEndTime();
-            break;
+            $startTime = $validationPeriod->getStartTime();
+            $endTime   = $validationPeriod->getEndTime();
         }
 
         if ($startDate) {
