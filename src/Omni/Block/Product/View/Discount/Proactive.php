@@ -265,6 +265,8 @@ class Proactive extends Template
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
+        
+        return $input;
     }
 
     /**
