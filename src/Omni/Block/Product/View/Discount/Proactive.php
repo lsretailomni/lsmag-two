@@ -364,7 +364,7 @@ class Proactive extends Template
      */
     public function getDiscountValidityDatesById($validationPeriodId, &$description)
     {
-        $startDate = $endDate = "";
+        $startDate = $endDate = $startTime = $endTime = "";
         $filters   = [
             ['field' => 'scope_id', 'value' => $this->lsr->getCurrentWebsiteId(), 'condition_type' => 'eq'],
             [
@@ -378,19 +378,22 @@ class Proactive extends Template
         foreach ($replDiscountValidation->getItems() as $replValidation) {
             $startDate = $replValidation->getStartDate();
             $endDate   = $replValidation->getEndDate();
+
+            $startTime = $replValidation->getStartTime();
+            $endTime   = $replValidation->getEndTime();
             break;
         }
 
         if ($startDate) {
             $description[] = "
-        <span class='coupon-expiration-date-label discount-label'>" . __('Start Date :') . "</span>
-        <span class='coupon-expiration-date-value discount-value'>" . $startDate . '</span>';
+        <span class='coupon-expiration-date-label discount-label'>" . __('From :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $startDate . ' '.$startTime.'</span>';
         }
 
         if ($endDate) {
             $description[] = "
-        <span class='coupon-expiration-date-label discount-label'>" . __('End Date :') . "</span>
-        <span class='coupon-expiration-date-value discount-value'>" . $endDate . '</span>';
+        <span class='coupon-expiration-date-label discount-label'>" . __('To :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $endDate . ' '.$endTime.'</span>';
         }
 
         return $description;
