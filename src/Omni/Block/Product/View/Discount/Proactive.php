@@ -222,23 +222,49 @@ class Proactive extends Template
             $startDate = $validationPeriod->getStartDate();
             $endDate   = $validationPeriod->getEndDate();
 
-            $startTime = $validationPeriod->getStartTime();
-            $endTime   = $validationPeriod->getEndTime();
+            $startTime = ($validationPeriod->getStartTime()) ?? "00:00:00 AM";
+            $endTime   = ($validationPeriod->getEndTime()) ?? "11:59:00 PM";
         }
 
         if ($startDate) {
+            $input      = $startDate . ' ' . $startTime;
+            $formattedStartDate = $this->getFormattedDateTime($input);
             $description[] = "
         <span class='coupon-expiration-date-label discount-label'>" . __('From :') . "</span>
-        <span class='coupon-expiration-date-value discount-value'>" . $startDate . ' '.$startTime.'</span>';
+        <span class='coupon-expiration-date-value discount-value'>" . $formattedStartDate . '</span>';
         }
 
         if ($endDate) {
+            $input      = $endDate . ' ' . $endTime;
+            $formattedEndDate = $this->getFormattedDateTime($input);
             $description[] = "
         <span class='coupon-expiration-date-label discount-label'>" . __('To :') . "</span>
-        <span class='coupon-expiration-date-value discount-value'>" . $endDate . ' '.$endTime.'</span>';
+        <span class='coupon-expiration-date-value discount-value'>" . $formattedEndDate .'</span>';
         }
 
         return $description;
+    }
+
+    /**
+     * Format date time
+     *
+     * @param $input
+     * @return string
+     * @throws \DateException
+     */
+    public function getFormattedDateTime($input)
+    {
+        try {
+            $format  = $this->scopeConfig->getValue(
+                LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                $this->lsr->getActiveWebStore()
+            );
+            $dateObj = new \DateTime($input, new \DateTimeZone('UTC'));        
+            return $dateObj->format($format);
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
     }
 
     /**
