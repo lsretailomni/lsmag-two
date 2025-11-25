@@ -68,7 +68,7 @@ class Offers extends Template
     {
         $offersArr = [];
         $result = $this->loyaltyHelper->getOffers();
-        
+
         $publishedOffers = $result->getPublishedOffer();
         foreach ($publishedOffers as $pubOffer) {
             $offersArr[$pubOffer->getNo()]['Offer']  = $pubOffer;
@@ -89,7 +89,7 @@ class Offers extends Template
                 $offersArr[$offerKey]['OfferLines'][] = $pubOfferLine;
             }
         }
-        
+
         return $offersArr;
     }
 
@@ -104,7 +104,7 @@ class Offers extends Template
         try {
             $images = [];
             $index  = 0;
-            $img    = $coupon['ImageId'];
+            $img    = $coupon['ImageId'] ?? '';
             if (empty($img)) {
                 return $img;
             }
@@ -227,7 +227,7 @@ class Offers extends Template
         if (count($offerLines) == 1) {
             try {
                 $lineType     = $this->getDiscountLineType($offer, $offerLines[0]->getDiscountLineType());
-                
+
                 if ($lineType == OfferDiscountLineType::ITEM) {
                     $product = $this->replicationHelper->getProductDataByIdentificationAttributes(
                         $offerLines[0]->getDiscountLineId()
@@ -341,7 +341,7 @@ class Offers extends Template
                 }
                 break;
         }
-        
+
         return $this->getOfferDiscountLineType($lineType);
     }
 
@@ -425,7 +425,7 @@ class Offers extends Template
                 //Club and scheme, offer is part of member mgt,
                 //got offer since you were in club,scheme,account or contact
                 return OfferType::CLUB;
-            
+
         }
     }
 }

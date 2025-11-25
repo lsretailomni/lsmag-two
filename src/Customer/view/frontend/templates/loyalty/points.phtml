@@ -28,7 +28,7 @@ $c      = 0;
                         <div class="item-img-cont">
                             <?php
                             // @codingStandardsIgnoreStart
-                            if (count($images) && !empty($images[0])) :
+                            if ($images && count($images) && !empty($images[0])) :
                                 // @codingStandardsIgnoreEnd
                                 ?>
                                 <img id="coupon-collection-image-<?php echo $c ?>"
