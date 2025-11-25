@@ -96,8 +96,6 @@ class PlaceOrderPlugin
             }
         }
 
-        $result = $proceed($field, $context, $info, $value, $args);
-
         if (isset($result['order']['order_number'])) {
             $order = $this->dataHelper->getOrderByIncrementId($result['order']['order_number']);
 
@@ -111,6 +109,8 @@ class PlaceOrderPlugin
             $result['order']['pickup_store_name'] = !empty($order) && $order->getPickupStore() ?
                 $this->dataHelper->getStoreNameById($order->getPickupStore()) : '';
         }
+
+        $result = $proceed($field, $context, $info, $value, $args);
 
         return $result;
     }
