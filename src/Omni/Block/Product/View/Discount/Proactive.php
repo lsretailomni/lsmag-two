@@ -12,6 +12,9 @@ use \Ls\Omni\Client\CentralEcommerce\Operation\GetDiscount_GetDiscount;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Replication\Api\ReplDiscountValidationRepositoryInterface;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Model\ReplDiscountValidation;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Helper\Data;
@@ -37,6 +40,7 @@ class Proactive extends Template
      */
     public $product = null;
 
+
     /**
      * @param Context $context
      * @param LSR $lsr
@@ -51,7 +55,9 @@ class Proactive extends Template
      * @param LoggerInterface $logger
      * @param Data $catalogHelper
      * @param View $productBlock
+     * @param ReplicationHelper $replicationHelper
      * @param Registry $registry
+     * @param ReplDiscountValidationRepositoryInterface $discountValidationRepository
      * @param array $data
      */
     public function __construct(
@@ -68,7 +74,9 @@ class Proactive extends Template
         public LoggerInterface $logger,
         public Data $catalogHelper,
         public View $productBlock,
+        public ReplicationHelper $replicationHelper,
         public Registry $registry,
+        public ReplDiscountValidationRepositoryInterface $discountValidationRepository,
         public array $data = []
     ) {
         parent::__construct($context, $data);
@@ -163,9 +171,8 @@ class Proactive extends Template
     {
         $description = [];
         $additionalDetails = $this->getAdditionalInformation($discount);
-
         if ($discount->getDescription()) {
-            $description[] = "<span class='discount-description'>" . $discount->getDescription() . '</span>';
+            $description[] = "<span class='discount-description 1'>" . $discount->getDescription() . '</span>';
         }
 
         if (floatval($discount->getDiscountValue()) > 0) {
@@ -181,7 +188,85 @@ class Proactive extends Template
             $description[] = "<span>" . $additionalDetails . "</span>";
         }
 
+        if ($discount->getValidationPeriodId()) {
+            $this->getDiscountValidityDatesById($discount->getValidationPeriodId(), $description);            
+        }
+
         return implode('<br/>', $description);
+    }
+
+    /**
+     * Get discount validity dates by id
+     *
+     * @param $validationPeriodId
+     * @param $description
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function getDiscountValidityDatesById($validationPeriodId, &$description)
+    {
+        $startDate = $endDate = $startTime = $endTime = "";
+        $filters   = [
+            ['field' => 'scope_id', 'value' => $this->lsr->getCurrentWebsiteId(), 'condition_type' => 'eq'],
+            [
+                'field'          => 'nav_id',
+                'value'          => $validationPeriodId,
+                'condition_type' => 'eq'
+            ]
+        ];
+        $criteria               = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+        $replDiscountValidation = $this->discountValidationRepository->getList($criteria);
+        $items                  = $replDiscountValidation->getItems();
+        $validationPeriod       = reset($items);
+        if ($validationPeriod) {
+            $startDate = $validationPeriod->getStartDate();
+            $endDate   = $validationPeriod->getEndDate();
+
+            $startTime = ($validationPeriod->getStartTime()) ?? "00:00:00 AM";
+            $endTime   = ($validationPeriod->getEndTime()) ?? "11:59:00 PM";
+        }
+
+        if ($startDate) {
+            $input      = $startDate . ' ' . $startTime;
+            $formattedStartDate = $this->getFormattedDateTime($input);
+            $description[] = "
+        <span class='coupon-expiration-date-label discount-label'>" . __('From :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $formattedStartDate . '</span>';
+        }
+
+        if ($endDate) {
+            $input      = $endDate . ' ' . $endTime;
+            $formattedEndDate = $this->getFormattedDateTime($input);
+            $description[] = "
+        <span class='coupon-expiration-date-label discount-label'>" . __('To :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $formattedEndDate .'</span>';
+        }
+
+        return $description;
+    }
+
+    /**
+     * Format date time
+     *
+     * @param $input
+     * @return string
+     * @throws \DateException
+     */
+    public function getFormattedDateTime($input)
+    {
+        try {
+            $format  = $this->scopeConfig->getValue(
+                LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                $this->lsr->getActiveWebStore()
+            );
+            $dateObj = new \DateTime($input, new \DateTimeZone('UTC'));        
+            return $dateObj->format($format);
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+        
+        return $input;
     }
 
     /**
@@ -231,7 +316,11 @@ class Proactive extends Template
         $description = [];
 
         if ($multibuyOffer->getDescription()) {
-            $description[] = "<span class='discount-description'>" . $multibuyOffer->getDescription() . '</span>';
+            $description[] = "<span class='discount-description 2'>" . $multibuyOffer->getDescription() . '</span>';
+        }
+
+        if ($multibuyOffer->getValidationPeriodId()) {
+            $this->getDiscountValidityDatesById($multibuyOffer->getValidationPeriodId(), $description);
         }
 
         foreach ($discounts->getLscWiDiscounts() as $discount) {
@@ -296,6 +385,11 @@ class Proactive extends Template
         }
         if ($mixAndMatchOffer->getDescription()) {
             $description[] = "<span class='discount-description'>" . $mixAndMatchOffer->getDescription() . '</span>';
+        }
+
+
+        if ($discount->getValidationPeriodId()) {
+            $this->getDiscountValidityDatesById($discount->getValidationPeriodId(), $description);
         }
 
         if (floatval($mixAndMatchOffer->getDiscountValue()) > 0) {
