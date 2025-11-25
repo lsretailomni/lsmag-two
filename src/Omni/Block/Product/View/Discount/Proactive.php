@@ -381,23 +381,45 @@ class Proactive extends Template
             $startDate = $validationPeriod->getStartDate();
             $endDate   = $validationPeriod->getEndDate();
 
-            $startTime = $validationPeriod->getStartTime();
-            $endTime   = $validationPeriod->getEndTime();
+            $startTime = ($validationPeriod->getStartTime()) ?? "00:00:00 AM";
+            $endTime   = ($validationPeriod->getEndTime()) ?? "11:59:00 PM";
         }
 
         if ($startDate) {
+            $input      = $startDate . ' ' . $startTime;
+            $sDateInUTC = $this->getDateTimeInUTC($input);
+            $formattedStartDate = $this->getFormattedOfferExpiryDate($sDateInUTC);
             $description[] = "
         <span class='coupon-expiration-date-label discount-label'>" . __('From :') . "</span>
-        <span class='coupon-expiration-date-value discount-value'>" . $startDate . ' '.$startTime.'</span>';
+        <span class='coupon-expiration-date-value discount-value'>" . $formattedStartDate . '</span>';
         }
 
         if ($endDate) {
+            $input      = $endDate . ' ' . $endTime;
+            $eDateInUTC = $this->getDateTimeInUTC($input);
+            $formattedEndDate = $this->getFormattedOfferExpiryDate($eDateInUTC);
             $description[] = "
         <span class='coupon-expiration-date-label discount-label'>" . __('To :') . "</span>
-        <span class='coupon-expiration-date-value discount-value'>" . $endDate . ' '.$endTime.'</span>';
+        <span class='coupon-expiration-date-value discount-value'>" . $formattedEndDate .'</span>';
         }
 
         return $description;
+    }
+
+    /**
+     * Convert date time to UTC
+     *
+     * @param $input
+     * @return string
+     * @throws \DateException
+     */
+    public function getDateTimeInUTC($input)
+    {
+        $date = \DateTime::createFromFormat('Y-m-d h:i:s A', $input, new \DateTimeZone('UTC'));
+        if ($date === false) {
+            throw new \DateException("Invalid date string: ". $input);
+        }
+        return $this->timeZoneInterface->date($date)->format('Y-m-d\TH:i:s');
     }
 
     /**
