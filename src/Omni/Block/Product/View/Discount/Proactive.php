@@ -319,6 +319,10 @@ class Proactive extends Template
             $description[] = "<span class='discount-description 2'>" . $multibuyOffer->getDescription() . '</span>';
         }
 
+        if ($multibuyOffer->getValidationPeriodId()) {
+            $this->getDiscountValidityDatesById($multibuyOffer->getValidationPeriodId(), $description);
+        }
+
         foreach ($discounts->getLscWiDiscounts() as $discount) {
             if ($discount->getOfferNo() !== $multibuyOffer->getNo()) {
                 continue;
@@ -380,7 +384,12 @@ class Proactive extends Template
             }
         }
         if ($mixAndMatchOffer->getDescription()) {
-            $description[] = "<span class='discount-description 3'>" . $mixAndMatchOffer->getDescription() . '</span>';
+            $description[] = "<span class='discount-description'>" . $mixAndMatchOffer->getDescription() . '</span>';
+        }
+
+
+        if ($discount->getValidationPeriodId()) {
+            $this->getDiscountValidityDatesById($discount->getValidationPeriodId(), $description);
         }
 
         if (floatval($mixAndMatchOffer->getDiscountValue()) > 0) {
