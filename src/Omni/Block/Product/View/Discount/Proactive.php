@@ -380,7 +380,8 @@ class Proactive extends Template
             $startDate = $validationPeriod->getStartDate();
             $endDate   = $validationPeriod->getEndDate();
 
-            $startTime = ($validationPeriod->getStartTime()) ?? "00:00:00 AM";
+            //$startTime = ($validationPeriod->getStartTime()) ?? "00:00:00 AM";
+            $startTime = ($validationPeriod->getStartTime()) ?? "00:00:00";
             $endTime   = ($validationPeriod->getEndTime()) ?? "11:59:00 PM";
         }
 
