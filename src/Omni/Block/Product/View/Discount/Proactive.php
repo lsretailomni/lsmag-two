@@ -13,6 +13,8 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Replication\Api\ReplDiscountValidationRepositoryInterface;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Helper\Data;
@@ -92,6 +94,16 @@ class Proactive extends Template
     public $contactHelper;
 
     /**
+     * @var ReplDiscountValidationRepositoryInterface
+     */
+    public $discountValidationRepository;
+
+    /**
+     * @var ReplicationHelper
+     */
+    public $replicationHelper;
+
+    /**
      * @param Template\Context $context
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
@@ -105,6 +117,8 @@ class Proactive extends Template
      * @param LoggerInterface $logger
      * @param Data $catalogHelper
      * @param View $productBlock
+     * @param ReplDiscountValidationRepositoryInterface $discountValidationRepository
+     * @param ReplicationHelper $replicationHelper
      * @param array $data
      */
     public function __construct(
@@ -121,21 +135,25 @@ class Proactive extends Template
         LoggerInterface $logger,
         Data $catalogHelper,
         View $productBlock,
+        ReplDiscountValidationRepositoryInterface $discountValidationRepository,
+        ReplicationHelper $replicationHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->lsr               = $lsr;
-        $this->loyaltyHelper     = $loyaltyHelper;
-        $this->itemHelper        = $itemHelper;
-        $this->contactHelper     = $contactHelper;
-        $this->customerFactory   = $customerFactory;
-        $this->storeManager      = $storeManager;
-        $this->timeZoneInterface = $timeZoneInterface;
-        $this->scopeConfig       = $scopeConfig;
-        $this->urlBuilder        = $urlBuilder;
-        $this->logger            = $logger;
-        $this->catalogHelper     = $catalogHelper;
-        $this->productBlock      = $productBlock;
+        $this->lsr                          = $lsr;
+        $this->loyaltyHelper                = $loyaltyHelper;
+        $this->itemHelper                   = $itemHelper;
+        $this->contactHelper                = $contactHelper;
+        $this->customerFactory              = $customerFactory;
+        $this->storeManager                 = $storeManager;
+        $this->timeZoneInterface            = $timeZoneInterface;
+        $this->scopeConfig                  = $scopeConfig;
+        $this->urlBuilder                   = $urlBuilder;
+        $this->logger                       = $logger;
+        $this->catalogHelper                = $catalogHelper;
+        $this->productBlock                 = $productBlock;
+        $this->discountValidationRepository = $discountValidationRepository;
+        $this->replicationHelper            = $replicationHelper;
     }
 
     /**
@@ -166,17 +184,12 @@ class Proactive extends Template
             if (!is_array($response)) {
                 $response = [$response];
             }
-            $tempArray = [];
             foreach ($response as $key => $responseData) {
-                $uniqueKey = $responseData->getId();
-                if (!in_array($uniqueKey, $tempArray, true)
-                    && !$responseData->getMemberAttribute()
-                    && !$responseData->getMemberAttributeValue()
+                if (!empty($responseData->getMemberAttribute())
+                    && !empty($responseData->getMemberAttributeValue())
                 ) {
-                    $tempArray[] = $uniqueKey;
-                    continue;
+                    unset($response[$key]);
                 }
-                unset($response[$key]);
             }
 
             return $response;
@@ -205,10 +218,7 @@ class Proactive extends Template
                         continue;
                     }
                     foreach ($publishedOffers as $publishedOffer) {
-                        if ($publishedOffer->getCode() == OfferDiscountType::COUPON ||
-                            $publishedOffer->getCode() == OfferDiscountType::PROMOTION ||
-                            $publishedOffer->getCode() == OfferDiscountType::DISCOUNT_OFFER
-                        ) {
+                        if ($publishedOffer->getCode() == OfferDiscountType::COUPON) {
                             $response[$publishedOffer->getOfferId()] = $publishedOffer;
                         }
                     }
@@ -259,6 +269,10 @@ class Proactive extends Template
             $discountPercentage = number_format((float)$discount->getPercentage(), 2, '.', '');
             $discountText       = __('Avail %1 Off ', $discountPercentage . '%') . '';
         }
+        if ($discount->getPeriodId()) {
+            $this->getDiscountValidityDatesById($discount->getPeriodId(), $description);
+        }
+
         if ($discount->getItemIds()) {
             $itemIds = $discount->getItemIds()->getString();
 
@@ -275,7 +289,6 @@ class Proactive extends Template
             $popupLink    = '';
             $popupHtml    = '';
             $productsData = [];
-            $productHtml  = '';
             if (!empty($itemIds)) {
                 $productsData = $this->itemHelper->getProductsInfoByItemIds($itemIds);
             }
@@ -338,6 +351,97 @@ class Proactive extends Template
         }
 
         return implode('<br/>', $description);
+    }
+
+    /**
+     * Get discount validity dates by id
+     *
+     * @param $validationPeriodId
+     * @param $description
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function getDiscountValidityDatesById($validationPeriodId, &$description)
+    {
+        $startDate = $endDate = $startTime = $endTime = "";
+        $filters   = [
+            ['field' => 'scope_id', 'value' => $this->lsr->getCurrentWebsiteId(), 'condition_type' => 'eq'],
+            [
+                'field'          => 'nav_id',
+                'value'          => $validationPeriodId,
+                'condition_type' => 'eq'
+            ]
+        ];
+        $criteria               = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+        $replDiscountValidation = $this->discountValidationRepository->getList($criteria);
+        $items                  = $replDiscountValidation->getItems();
+        $validationPeriod       = reset($items);
+        if ($validationPeriod) {
+            $startDate = $validationPeriod->getStartDate();
+            $endDate   = $validationPeriod->getEndDate();
+
+            //$startTime = ($validationPeriod->getStartTime()) ?? "00:00:00 AM";
+            $startTime = ($validationPeriod->getStartTime()) ?? "00:00:00";
+            $endTime   = ($validationPeriod->getEndTime()) ?? "11:59:00 PM";
+        }
+
+        if ($startDate) {
+            $input      = $startDate . ' ' . $startTime;
+            $formattedStartDate = $this->getFormattedDateTime($input);
+            $description[] = "
+        <span class='coupon-expiration-date-label discount-label'>" . __('From :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $formattedStartDate . '</span>';
+        }
+
+        if ($endDate) {
+            $input      = $endDate . ' ' . $endTime;
+            $formattedEndDate = $this->getFormattedDateTime($input);
+            $description[] = "
+        <span class='coupon-expiration-date-label discount-label'>" . __('To :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $formattedEndDate .'</span>';
+        }
+
+        return $description;
+    }
+
+    /**
+     * Convert date time to UTC
+     *
+     * @param $input
+     * @return string
+     * @throws \DateException
+     */
+    public function getDateTimeInUTC($input)
+    {
+        $date = \DateTime::createFromFormat('Y-m-d h:i:s A', $input, new \DateTimeZone('UTC'));
+        if ($date === false) {
+            throw new \DateException("Invalid date string: ". $input);
+        }
+        return $this->timeZoneInterface->date($date)->format('Y-m-d\TH:i:s');
+    }
+
+    /**
+     * Format date time
+     *
+     * @param $input
+     * @return string
+     * @throws \DateException
+     */
+    public function getFormattedDateTime($input)
+    {
+        try {
+            $format  = $this->scopeConfig->getValue(
+                LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                $this->lsr->getActiveWebStore()
+            );
+            $dateObj = new \DateTime($input, new \DateTimeZone('UTC'));
+            return $dateObj->format($format);
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+
+        return $input;
     }
 
     /**
