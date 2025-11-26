@@ -1,9 +1,9 @@
 trigger:
   branches:
     include:
-      - master
+      - standalone
 variables:
-  BRANCH_NAME: master
+  BRANCH_NAME: standalone
 steps:
   - script: |
       CORE_MODULE_REPO_URL=$(AZURE_MODULE_REPO_URL)
