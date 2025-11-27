@@ -1092,12 +1092,6 @@ class ReplicationHelper extends AbstractHelper
     public function buildCriteriaGetDeletedOnly(array $filters, $pagesize = 100)
     {
         $this->searchCriteriaBuilder->setPageSize($pagesize);
-        if (!empty($filters)) {
-            foreach ($filters as $filter) {
-                $this->searchCriteriaBuilder->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
-            }
-        }
-        $this->searchCriteriaBuilder->addFilter('IsDeleted', 1, 'eq');
 
         $orFilters = [];
 
@@ -1120,7 +1114,12 @@ class ReplicationHelper extends AbstractHelper
             ->create();
 
         $this->searchCriteriaBuilder->setFilterGroups([$filterGroup]);
-
+        if (!empty($filters)) {
+            foreach ($filters as $filter) {
+                $this->searchCriteriaBuilder->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
+            }
+        }
+        $this->searchCriteriaBuilder->addFilter('IsDeleted', 1, 'eq');
         return $this->searchCriteriaBuilder->create();
     }
 
