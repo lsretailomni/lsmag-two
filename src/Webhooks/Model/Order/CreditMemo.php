@@ -61,7 +61,7 @@ class CreditMemo
     }
 
     /**
-     * To process refund for that item which is cancelled
+     * To process refund for that item which is cancelled or returns
      *
      * @param $magOrder
      * @param $items
