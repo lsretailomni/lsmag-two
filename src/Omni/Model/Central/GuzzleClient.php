@@ -71,7 +71,9 @@ class GuzzleClient
             }
 
             $handlerStack = HandlerStack::create();
-            if ($this->lsr->getWebsiteConfig(LSR::SC_SERVICE_DEBUG, $this->lsr->getCurrentWebsiteId())) {
+            if ($this->lsr->getWebsiteConfig(LSR::SC_SERVICE_DEBUG, $this->lsr->getCurrentWebsiteId()) &&
+                !str_starts_with($action, 'TestConnectionOData_')
+            ) {
                 $handlerStack->push($this->getLoggingMiddleware());
             }
 
@@ -161,7 +163,7 @@ class GuzzleClient
                         );
                         $timeElapsed = $requestTime->diff($responseTime);
                         $seconds = $timeElapsed->s + $timeElapsed->f;
-                        $this->omniLogger->debug(
+                        $this->currentLogger->debug(
                             sprintf(
                                 "==== Time Elapsed ==== %s ====  ====",
                                 $timeElapsed->format("%i minute(s) " . $seconds . " second(s)")
