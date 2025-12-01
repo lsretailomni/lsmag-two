@@ -90,7 +90,6 @@ use Magento\InventoryApi\Api\SourceItemRepositoryInterface;
 use Magento\InventoryApi\Api\SourceItemsDeleteInterface;
 use Magento\InventoryCatalog\Model\DefaultSourceProvider;
 use Magento\InventoryCatalog\Model\GetProductIdsBySkus;
-use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterface;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
 use Magento\InventoryCatalogApi\Model\IsSingleSourceModeInterface;
 use Magento\InventorySales\Model\ResourceModel\GetAssignedStockIdForWebsite;
@@ -1081,8 +1080,7 @@ class ReplicationHelper extends AbstractHelper
         public StockItemRepositoryInterface $stockItemRepository,
         public StockConfigurationInterface $stockConfiguration,
         public IsSingleSourceModeInterface $isSingleSourceMode,
-        public Type $pageCache,
-        public DefaultSourceProviderInterface $defaultSourceProvider
+        public Type $pageCache
     ) {
         parent::__construct(
             $context
@@ -3867,7 +3865,7 @@ class ReplicationHelper extends AbstractHelper
             }
         }
 
-        if ($parentStockItem->getSourceCode() !== $this->defaultSourceProvider->getCode()) {
+        if ($parentStockItem->getSourceCode() !== $this->defaultSourceProviderFactory->create()->getCode()) {
             $childrenIsInStock = true;
         }
 
