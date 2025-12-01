@@ -54,11 +54,11 @@ class Returns
     public function returns($data)
     {
         try {
-            $magOrder     = $this->helper->getOrderByDocumentId($data['OrderId']);
-            $items        = [];
-            $itemToCredit = [];
-            $invoice      = null;
-
+            $magOrder       = $this->helper->getOrderByDocumentId($data['OrderId']);
+            $items          = [];
+            $itemToCredit   = [];
+            $invoice        = null;
+            $shippingItemId = $this->helper->getShippingItemId();
             foreach ($data['Lines'] as $returnItem) {
                 $orderItem = null;
                 foreach ($magOrder->getAllItems() as $item) {
@@ -94,12 +94,19 @@ class Returns
                 }
             }
 
-            $creditMemoData                 = $this->creditMemo->setCreditMemoParameters($magOrder, [], null);
+            $creditMemoData                 = $this->creditMemo->setCreditMemoParameters($magOrder, $data['Lines'],
+                $shippingItemId);
             $creditMemoData['comment_text'] = __('RETURN PROCESSED FROM LS CENTRAL THROUGH WEBHOOK - Return Type: %1',
                 $data['ReturnType']);
             $creditMemoData['items']        = $itemToCredit;
             if (strcasecmp($data['ReturnType'], 'Online') === 0) {
                 $creditMemoData['do_offline'] = 0;
+            } else {
+                $creditMemoData['do_offline'] = 1;
+            }
+
+            if (isset($creditMemoData['shipping_amount'])) {
+                $creditMemoData['shipping_amount'] = abs($creditMemoData['shipping_amount']);
             }
 
             $this->logger->info('Creating credit memo for return', [
