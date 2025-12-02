@@ -162,6 +162,9 @@ class OrderHelper extends AbstractHelperOmni
                     CustomerOrderCreateCOHeaderV6::EXTERNAL_ID => $order->getIncrementId(),
                     CustomerOrderCreateCOHeaderV6::CREATED_AT_STORE => $storeId,
                     CustomerOrderCreateCOHeaderV6::SHIP_ORDER => !$isClickCollect,
+                    CustomerOrderCreateCOHeaderV6::CURRENCY_FACTOR =>
+                        $this->loyaltyHelper->getPointRate($order->getStoreId()),
+                    CustomerOrderCreateCOHeaderV6::CURRENCY_CODE => $order->getOrderCurrencyCode(),
                 ]
             );
             if (!$isClickCollect) {
@@ -817,7 +820,7 @@ class OrderHelper extends AbstractHelperOmni
                 $docId = !empty($orderLscMemberSalesBuffer->getCustomerDocumentId()) ?
                     $orderLscMemberSalesBuffer->getCustomerDocumentId() : $docId;
                 $fetchedOrder = $this->getSalesOrderByOrderIdNew($docId);
-            }            
+            }
         }
 
         return $fetchedOrder && !empty($fetchedOrder->getData()) ?
