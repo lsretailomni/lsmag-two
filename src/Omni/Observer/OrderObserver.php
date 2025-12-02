@@ -80,7 +80,6 @@ class OrderObserver implements ObserverInterface
             }
             //checking for Adyen payment gateway
             $adyenResponse = $observer->getEvent()->getData('adyen_response');
-            $order = $this->orderHelper->setAdyenParameters($adyenResponse, $order);
             if (!empty($order->getIncrementId())) {
                 $paymentMethod = $order->getPayment();
                 if (!empty($paymentMethod)) {
