@@ -145,10 +145,9 @@ class OrderObserverTest extends AbstractIntegrationTest
     public function testOrderUpdatesWithFreeMethod()
     {
         $order         = $this->fixtures->get('order');
-        $adyenResponse = [];
 
         $result = new DataObject();
-        $this->event->setOrder($order)->setAdyenResponse($adyenResponse)->setResult($result);
+        $this->event->setOrder($order)->setResult($result);
         // Execute the observer method
         $this->orderObserver->execute(new Observer(
             [
@@ -239,10 +238,9 @@ class OrderObserverTest extends AbstractIntegrationTest
     public function testOrderUpdatesWithOtherPaymentMethod()
     {
         $order         = $this->fixtures->get('order');
-        $adyenResponse = [];
 
         $result = new DataObject();
-        $this->event->setOrder($order)->setAdyenResponse($adyenResponse)->setResult($result);
+        $this->event->setOrder($order)->setResult($result);
         // Execute the observer method
         $this->orderObserver->execute(new Observer(
             [
@@ -253,101 +251,5 @@ class OrderObserverTest extends AbstractIntegrationTest
         $this->assertNotNull($order->getDocumentId());
         $this->assertNotNull($this->basketHelper->getLastDocumentIdFromCheckoutSession());
         $this->assertNull($this->basketHelper->getOneListCalculationFromCheckoutSession());
-    }
-
-    #[
-        AppArea('frontend'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'store', 'default'),
-        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'website'),
-        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'store', 'default' ),
-        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website' ),
-        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'store', 'default'),
-        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'website'),
-        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'store', 'default'),
-        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'website'),
-        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'store', 'default'),
-        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'website'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'website'),
-        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'store', 'default'),
-        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
-        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'store', 'default'),
-        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
-        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'store', 'default'),
-        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
-        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'store', 'default'),
-        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
-        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'store', 'default'),
-        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'website'),
-        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
-        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'website'),
-        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'website'),
-        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'store', 'default'),
-        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
-        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        DataFixture(
-            CustomerFixture::class,
-            [
-                'lsr_username' => AbstractIntegrationTest::USERNAME,
-                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
-                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
-            ],
-            as: 'customer'
-        ),
-        DataFixture(
-            CreateSimpleProductFixture::class,
-            [
-                LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180'
-            ],
-            as: 'p1'
-        ),
-        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
-        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
-        DataFixture(
-            CustomerAddressFixture::class,
-            [
-                'customer_id' => '$customer.entity_id$'
-            ],
-            as: 'address'
-        ),
-        DataFixture(
-            CustomerOrder::class,
-            [
-                'customer' => '$customer$',
-                'cart1'    => '$cart1$',
-                'address'  => '$address$',
-                'payment'  => 'CC'
-            ],
-            as: 'order'
-        )
-    ]
-    /**
-     * Verify Order updates with adyen payment method
-     *
-     * @magentoAppIsolation enabled
-     */
-    public function testOrderUpdatesWithAdyenPaymentMethod()
-    {
-        $order    = $this->fixtures->get('order');
-
-        $result = new DataObject();
-        $this->event->setOrder($order)->setData('adyen_response', AbstractIntegrationTest::ADYEN_RESPONSE)
-            ->setResult($result);
-        // Execute the observer method
-        $this->orderObserver->execute(new Observer(
-            [
-                'event' => $this->event
-            ]
-        ));
-
-        $this->assertNotNull($order->getDocumentId());
-        $this->assertNotNull($this->basketHelper->getLastDocumentIdFromCheckoutSession());
-        $this->assertEquals("adyen_cc", $order->getPayment()->getCCType());
-        $this->assertEquals("pspreference", $order->getPayment()->getLastTransId());
-        $this->assertTrue($order->getPayment()->getCcStatus());
     }
 }
