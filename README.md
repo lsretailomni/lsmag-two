@@ -4,7 +4,6 @@
 
 1. Magento Open Source 2.4.4 - current version
 2. LS Central 14.02 - current version
-3. LS Commerce Service (formerly Omni Server) 4.5.x - current version
 
 ## Installation:
 
@@ -17,10 +16,6 @@ Please visit [ General Configuration ](https://help.lscentral.lsretail.com/Conte
 ## Supported Features:
 
 Please visit [ Features ](https://help.lscentral.lsretail.com/Content/LS-Retail/eCommerce/eCommerce-Magento/Features/Introduction.htm "LS eCommerce - Magento - Supported Features") section on our Online Help for list of supported features.
-
-## LS Commerce Service (formerly Omni Server):
-
-To understand more about the LS Commerce Service API's, please visit [ eCommerce API for LS Commerce ](https://help.lscentral.lsretail.com/Content/LS-Retail/eCommerce/eCommerce-APIs/Unified-Commerce-Inferface/Introduction.htm "eCommerce API for LS Commerce") section on our Online Help.
 
 ## Support
 All LS Retail active partners can use [ LS Retail Portal](https://portal.lsretail.com/ "LS Retail Partner & Customer Portal") to submit the technical support request.
