@@ -132,7 +132,7 @@ class GetDiscountsOutput implements ResolverInterface
         }
 
         if (!empty($couponsObj != '')) {
-            
+
             foreach ($couponsObj as $coupon) {
                 $couponsArr[] = $this->dataHelper->getFormattedDescriptionCoupon($coupon);
             }
@@ -286,14 +286,14 @@ class GetDiscountsOutput implements ResolverInterface
             $responseArr['discount_description_title'] = $mixAndMatchOffer->getDescription();
         }
         $additionalDetails = $this->getAdditionalInformation($mixAndMatchOffer);
-        $itemIds = [];
+        $items = [];
         $counter = 0;
         foreach ($discounts->getLscWiMixMatchOfferExt() as $discount) {
             if ($discount->getOfferNo() == $mixAndMatchOffer->getNo() &&
                 $discount->getCustomerDiscGroup() == '--EXT--' &&
                 $discount->getItemNo() != $itemId
             ) {
-                $itemIds[] = $discount->getItemNo();
+                $items[] = $discount;
             }
         }
 
@@ -303,10 +303,8 @@ class GetDiscountsOutput implements ResolverInterface
         }
 
         $currency     = $this->priceCurrency->getCurrency($this->lsr->getCurrentStoreId())->getCurrencyCode();
-        if (!empty($itemIds)) {
-            $productsData = $this->itemHelper->getProductsInfoByItemIds($itemIds);
-        }
-        foreach ($productsData as $productInfo) {
+        foreach ($items as $item) {
+            $productInfo = $this->itemHelper->getProductByIdentificationAttributes($item->getItemNo());
             $productName  = '';
 
             if ($this->getMixandMatchProductLimit() == $counter) {
