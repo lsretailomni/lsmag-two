@@ -55,10 +55,9 @@ class Returns
     {
         try {
             $magOrder       = $this->helper->getOrderByDocumentId($data['OrderId']);
-            $items          = [];
-            $itemToCredit   = [];
-            $invoice        = null;
             $shippingItemId = $this->helper->getShippingItemId();
+            $itemsByInvoice = [];
+
             foreach ($data['Lines'] as $returnItem) {
                 $orderItem = null;
                 foreach ($magOrder->getAllItems() as $item) {
@@ -69,60 +68,90 @@ class Returns
                 }
 
                 if ($orderItem) {
-                    $itemQty    = $returnItem['Qty'];
-                    $itemId     = $returnItem['ItemId'];
-                    $variantId  = $returnItem['VariantId'];
-                    $itemAmount = isset($returnItem['Amount']) ? $returnItem['Amount'] : null;
-
-                    $items[] = [
-                        [
-                            'item'   => $orderItem,
-                            'qty'    => $itemQty,
-                            'amount' => $itemAmount
-                        ]
-                    ];
-
-                    $itemToCredit[$orderItem->getItemId()] = [
-                        'qty' => $itemQty
-                    ];
+                    $itemQty   = $returnItem['Qty'];
+                    $itemId    = $returnItem['ItemId'];
+                    $variantId = $returnItem['VariantId'];
 
                     $invoice = $this->helper->getItemInvoice($magOrder, $itemId, $variantId);
 
-                    if ($itemAmount !== null) {
-                        $itemToCredit[$orderItem->getItemId()]['back_to_stock'] = false;
+                    if ($invoice) {
+                        $invoiceId = $invoice->getId();
+
+                        if (!isset($itemsByInvoice[$invoiceId])) {
+                            $itemsByInvoice[$invoiceId] = [
+                                'invoice'          => $invoice,
+                                'items'            => [],
+                                'itemToCredit'     => [],
+                                'totalItemsRefund' => 0
+                            ];
+                        }
+
+                        $itemsByInvoice[$invoiceId]['items'][] = [
+                            [
+                                'item' => $orderItem,
+                                'qty'  => $itemQty
+                            ]
+                        ];
+
+                        $itemsByInvoice[$invoiceId]['itemToCredit'][$orderItem->getItemId()] = [
+                            'qty'           => $itemQty,
+                            'back_to_stock' => false
+                        ];
+
+                        $itemsByInvoice[$invoiceId]['totalItemsRefund'] += $invoice->getSubtotalInclTax();
                     }
                 }
             }
 
-            $creditMemoData                 = $this->creditMemo->setCreditMemoParameters($magOrder, $data['Lines'],
-                $shippingItemId);
-            $creditMemoData['comment_text'] = __('RETURN PROCESSED FROM LS CENTRAL THROUGH WEBHOOK - Return Type: %1',
-                $data['ReturnType']);
-            $creditMemoData['items']        = $itemToCredit;
-            if (strcasecmp($data['ReturnType'], 'Online') === 0) {
-                $creditMemoData['do_offline'] = 0;
-            } else {
-                $creditMemoData['do_offline'] = 1;
+            $results = [];
+            foreach ($itemsByInvoice as $invoiceData) {
+                $creditMemoData = $this->creditMemo->setCreditMemoParameters(
+                    $magOrder,
+                    $data['Lines'],
+                    $shippingItemId
+                );
+
+                $creditMemoData['comment_text'] = __('RETURN PROCESSED FROM LS CENTRAL THROUGH WEBHOOK - Return Type: %1, Invoice: %2',
+                    $data['ReturnType'],
+                    $invoiceData['invoice']->getIncrementId()
+                );
+                $creditMemoData['items']        = $invoiceData['itemToCredit'];
+
+                if (strcasecmp($data['ReturnType'], 'Online') === 0) {
+                    $creditMemoData['do_offline'] = 0;
+                } else {
+                    $creditMemoData['do_offline'] = 1;
+                }
+
+                if (isset($data['Amount'])) {
+                    $amountDifference = $invoiceData['totalItemsRefund'] - abs($data['Amount']);
+                    if ($amountDifference > 0) {
+                        $creditMemoData['adjustment_negative'] = $amountDifference;
+                    }
+                }
+
+                if (isset($creditMemoData['shipping_amount'])) {
+                    $creditMemoData['shipping_amount'] = abs($creditMemoData['shipping_amount']);
+                }
+
+                $result    = $this->creditMemo->refund($magOrder, $invoiceData['items'], $creditMemoData,
+                    $invoiceData['invoice']);
+                $results[] = $result;
             }
 
-            if (isset($creditMemoData['shipping_amount'])) {
-                $creditMemoData['shipping_amount'] = abs($creditMemoData['shipping_amount']);
+            $allSuccess = true;
+            foreach ($results as $result) {
+                if (!is_array($result) || !isset($result['data']['success']) || !$result['data']['success']) {
+                    $allSuccess = false;
+                    break;
+                }
             }
 
-            $this->logger->info('Creating credit memo for return', [
-                'order_id'    => $data['OrderId'],
-                'return_type' => $data['ReturnType'],
-                'items_count' => count($items),
-                'amount'      => $data['Amount'] ?? 'auto'
-            ]);
-
-            $result = $this->creditMemo->refund($magOrder, $items, $creditMemoData, $invoice);
-
-            if (is_array($result) && isset($result['success']) && $result['success']) {
-                return $this->helper->outputMessage(true, 'Return processed successfully.');
+            if ($allSuccess) {
+                return $this->helper->outputMessage(true, 'Return processed successfully for all invoices.');
             }
 
-            return $result;
+            return end($results);
         } catch (\Exception $e) {
             $this->logger->error('Failed to create return: ' . $e->getMessage());
             return $this->helper->outputMessage(false, $e->getMessage());
