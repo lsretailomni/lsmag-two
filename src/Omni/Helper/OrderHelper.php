@@ -162,6 +162,9 @@ class OrderHelper extends AbstractHelperOmni
                     CustomerOrderCreateCOHeaderV6::EXTERNAL_ID => $order->getIncrementId(),
                     CustomerOrderCreateCOHeaderV6::CREATED_AT_STORE => $storeId,
                     CustomerOrderCreateCOHeaderV6::SHIP_ORDER => !$isClickCollect,
+                    CustomerOrderCreateCOHeaderV6::CURRENCY_FACTOR =>
+                        $this->loyaltyHelper->getPointRate($order->getStoreId()),
+                    CustomerOrderCreateCOHeaderV6::CURRENCY_CODE => $order->getOrderCurrencyCode(),
                 ]
             );
             if (!$isClickCollect) {
@@ -817,7 +820,7 @@ class OrderHelper extends AbstractHelperOmni
                 $docId = !empty($orderLscMemberSalesBuffer->getCustomerDocumentId()) ?
                     $orderLscMemberSalesBuffer->getCustomerDocumentId() : $docId;
                 $fetchedOrder = $this->getSalesOrderByOrderIdNew($docId);
-            }            
+            }
         }
 
         return $fetchedOrder && !empty($fetchedOrder->getData()) ?
@@ -1064,38 +1067,6 @@ class OrderHelper extends AbstractHelperOmni
         }
         $this->basketHelper->unSetLastDocumentId();
         $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
-    }
-
-    /**
-     * Setting Adyen payment gateway parameters
-     * @param $adyenResponse
-     * @param $order
-     * @return OrderInterface|mixed
-     * @throws AlreadyExistsException
-     * @throws NoSuchEntityException
-     * @throws InputException
-     */
-    public function setAdyenParameters($adyenResponse, $order)
-    {
-        if (!empty($adyenResponse)) {
-            if (isset($adyenResponse['pspReference'])) {
-                $order->getPayment()->setLastTransId($adyenResponse['pspReference']);
-                $order->getPayment()->setCcTransId($adyenResponse['pspReference']);
-            }
-            if (isset($adyenResponse['paymentMethod'])) {
-                $order->getPayment()->setCcType($adyenResponse['paymentMethod']);
-            }
-            if (isset($adyenResponse['authResult'])) {
-                $order->getPayment()->setCcStatus($adyenResponse['authResult']);
-            }
-            try {
-                $this->orderRepository->save($order);
-                $order = $this->orderRepository->get($order->getEntityId());
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
-            }
-        }
-        return $order;
     }
 
     /**

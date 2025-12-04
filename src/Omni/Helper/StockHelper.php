@@ -320,7 +320,9 @@ class StockHelper extends AbstractHelperOmni
                     continue;
                 }
 
-                if ($this->lsr->inventoryLookupBeforeAddToCartEnabled()) {
+                if ($this->lsr->inventoryLookupBeforeAddToCartEnabled() &&
+                $this->lsr->getBasketIntegrationOnFrontend()
+                ) {
                     $uomQty = $child->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
 
                     if (!empty($uomQty)) {

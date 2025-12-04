@@ -922,9 +922,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * check if inventory lookup is enabled
+     * Check if inventory lookup is enabled
      *
-     * @param null $storeId
+     * @param ?string $storeId
      * @return array|string
      * @throws NoSuchEntityException
      */
@@ -1370,7 +1370,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if ($storeId === null) {
             $storeId = $this->getCurrentStoreId();
         }
-        
+
         return $this->getStoreConfig(LSR::SC_MODULE_ENABLED, $storeId);
     }
 
