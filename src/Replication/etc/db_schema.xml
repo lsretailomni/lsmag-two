@@ -1,5 +1,44 @@
 <?xml version="1.0"?>
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="ls_replication_repl_country_code" resource="default" engine="innodb" comment="ReplEcommCountryCode">
+    <column xsi:type="int" name="repl_country_code_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_country_code_id"/>
+    <column xsi:type="text" name="Code" nullable="true" comment="Code"/>
+    <column xsi:type="text" name="CustomerNo" nullable="true" comment="CustomerNo"/>
+    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
+    <column xsi:type="varchar" name="Name" length="200" nullable="true" comment="Name"/>
+    <column xsi:type="text" name="TaxPostGroup" nullable="true" comment="TaxPostGroup"/>
+    <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
+    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
+    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
+    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
+    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
+    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_country_code_id"/>
+    </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_NAME">
+      <column name="Name"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_SCOPE_ID">
+      <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
+  </table>
   <table name="ls_replication_repl_store_tender_type" resource="default" engine="innodb" comment="ReplEcommStoreTenderTypes">
     <column xsi:type="int" name="repl_store_tender_type_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_store_tender_type_id"/>
     <column xsi:type="text" name="AboveMinimumTenderId" nullable="true" comment="AboveMinimumTenderId"/>
@@ -1604,10 +1643,13 @@
     <column xsi:type="text" name="Details" nullable="true" comment="Details"/>
     <column xsi:type="decimal" name="DiscountValue" scale="4" precision="20" nullable="true" comment="DiscountValue"/>
     <column xsi:type="text" name="DiscountValueType" nullable="true" comment="DiscountValueType"/>
+    <column xsi:type="boolean" name="Exclude" default="0" nullable="true" comment="Exclude"/>
     <column xsi:type="text" name="FromDate" nullable="true" comment="FromDate"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="ItemId"/>
     <column xsi:type="varchar" name="LoyaltySchemeCode" length="200" nullable="true" comment="LoyaltySchemeCode"/>
+    <column xsi:type="text" name="MemberAttribute" nullable="true" comment="MemberAttribute"/>
+    <column xsi:type="text" name="MemberAttributeValue" nullable="true" comment="MemberAttributeValue"/>
     <column xsi:type="decimal" name="MinimumQuantity" scale="4" precision="20" nullable="true" comment="MinimumQuantity"/>
     <column xsi:type="text" name="ModifyDate" nullable="true" comment="ModifyDate"/>
     <column xsi:type="varchar" name="OfferNo" length="200" nullable="true" comment="OfferNo"/>
@@ -1757,6 +1799,8 @@
     <column xsi:type="boolean" name="MondayEndAfterMidnight" default="0" nullable="true" comment="MondayEndAfterMidnight"/>
     <column xsi:type="text" name="MondayStart" nullable="true" comment="MondayStart"/>
     <column xsi:type="boolean" name="MondayWithinBounds" default="0" nullable="true" comment="MondayWithinBounds"/>
+    <column xsi:type="text" name="OfferEndTime" nullable="true" comment="OfferEndTime"/>
+    <column xsi:type="text" name="OfferStartTime" nullable="true" comment="OfferStartTime"/>
     <column xsi:type="text" name="SaturdayEnd" nullable="true" comment="SaturdayEnd"/>
     <column xsi:type="boolean" name="SaturdayEndAfterMidnight" default="0" nullable="true" comment="SaturdayEndAfterMidnight"/>
     <column xsi:type="text" name="SaturdayStart" nullable="true" comment="SaturdayStart"/>
@@ -1917,45 +1961,6 @@
       <column name="IsDeleted"/>
     </index>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_CUSTOMER_IDENTITY_VALUE">
-      <column name="identity_value"/>
-    </constraint>
-  </table>
-  <table name="ls_replication_repl_country_code" resource="default" engine="innodb" comment="ReplEcommCountryCode">
-    <column xsi:type="int" name="repl_country_code_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_country_code_id"/>
-    <column xsi:type="text" name="Code" nullable="true" comment="Code"/>
-    <column xsi:type="text" name="CustomerNo" nullable="true" comment="CustomerNo"/>
-    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
-    <column xsi:type="varchar" name="Name" length="200" nullable="true" comment="Name"/>
-    <column xsi:type="text" name="TaxPostGroup" nullable="true" comment="TaxPostGroup"/>
-    <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
-    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
-    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
-    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
-    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
-    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
-    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
-    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
-    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
-    <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_country_code_id"/>
-    </constraint>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_NAME">
-      <column name="Name"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_SCOPE_ID">
-      <column name="scope_id"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_PROCESSED">
-      <column name="processed"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_IS_UPDATED">
-      <column name="is_updated"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_ISDELETED">
-      <column name="IsDeleted"/>
-    </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
   </table>

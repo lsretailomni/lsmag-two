@@ -59,7 +59,7 @@ class ReplDiscountValidationRepositoryTest extends TestCase
      */
     private $entitySearchResultsInterface = null;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->objectFactory = $this->createPartialMock(ReplDiscountValidationFactory::class, ['create']);
         $this->collectionFactory = $this->createMock(CollectionFactory::class);
