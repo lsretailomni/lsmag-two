@@ -10,7 +10,7 @@ namespace Ls\Replication\Cron;
 
 class ReplLscUnitOfMeasureTask extends ReplEcommUnitOfMeasuresTask
 {
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_unit_of_measures';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_unit_of_measure';
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplUnitOfMeasure';
 

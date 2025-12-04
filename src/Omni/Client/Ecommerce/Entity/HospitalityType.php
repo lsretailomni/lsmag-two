@@ -11,6 +11,16 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 class HospitalityType
 {
     /**
+     * @property string $IncomeAccount1
+     */
+    protected $IncomeAccount1 = null;
+
+    /**
+     * @property string $IncomeAccount2
+     */
+    protected $IncomeAccount2 = null;
+
+    /**
      * @property string $SalesType
      */
     protected $SalesType = null;
@@ -39,6 +49,42 @@ class HospitalityType
      * @property boolean $TipInclTax
      */
     protected $TipInclTax = null;
+
+    /**
+     * @param string $IncomeAccount1
+     * @return $this
+     */
+    public function setIncomeAccount1($IncomeAccount1)
+    {
+        $this->IncomeAccount1 = $IncomeAccount1;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIncomeAccount1()
+    {
+        return $this->IncomeAccount1;
+    }
+
+    /**
+     * @param string $IncomeAccount2
+     * @return $this
+     */
+    public function setIncomeAccount2($IncomeAccount2)
+    {
+        $this->IncomeAccount2 = $IncomeAccount2;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIncomeAccount2()
+    {
+        return $this->IncomeAccount2;
+    }
 
     /**
      * @param string $SalesType

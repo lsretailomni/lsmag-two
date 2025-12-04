@@ -7,6 +7,7 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\Data as LsHelper;
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Client\CentralEcommerce\Entity\LSCValidationPeriod;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyDealType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyLeafType;
@@ -220,32 +221,26 @@ abstract class AbstractReplicationTask
             $uniqueAttributes = ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
         }
         $confPath = $this->getConfigPath();
-        if ($confPath == "ls_mag/replication/repl_discount_validation") {
-            $source->setStartDate($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
-                $source->getStartDate(),
-                LSR::DATE_FORMAT,
-                false
-            ));
+        if ($confPath == ReplLscValidationPeriodTask::CONFIG_PATH) {
+            $source->setData(
+                LSCValidationPeriod::TIME_WITHIN_BOUNDS,
+                $source->getData(LSCValidationPeriod::TIME_WITHIN_BOUNDS) ?? true
+            );
 
-            $source->setStartTime($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
-                $source->getStartTime(),
-                LSR::TIME_FORMAT,
-                false
-            ));
-            $source->setEndDate($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
-                $source->getEndDate(),
-                LSR::DATE_FORMAT,
-                false
-            ));
+            if (!empty($source->getData(LSCValidationPeriod::OFFER_STARTING_TIME))) {
+                $source->setData(
+                    LSCValidationPeriod::OFFER_STARTING_TIME,
+                    '1900-01-01T'. $source->getData(LSCValidationPeriod::OFFER_STARTING_TIME)
+                );
+            }
 
-            $source->setEndTime($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
-                $source->getEndTime(),
-                LSR::TIME_FORMAT,
-                false
-            ));
-        }
-
-        if ($confPath == ReplLscHierarchyviewTask::CONFIG_PATH) {
+            if (!empty($source->getData(LSCValidationPeriod::OFFER_ENDING_TIME))) {
+                $source->setData(
+                    LSCValidationPeriod::OFFER_ENDING_TIME,
+                    '1900-01-01T'. $source->getData(LSCValidationPeriod::OFFER_ENDING_TIME)
+                );
+            }
+        } elseif ($confPath == ReplLscHierarchyviewTask::CONFIG_PATH) {
             $value = $this->getConstantByIndex(HierarchyType::class, (int) $source->getData(HierarchyView::TYPE));
             $source->setData(HierarchyView::TYPE, $value);
         } elseif ($confPath == ReplLscHierarchynodeslinkviewTask::CONFIG_PATH) {
@@ -884,7 +879,7 @@ abstract class AbstractReplicationTask
                 }
                 $this->persistLastKey($lastKey, $storeId);
                 $this->persistLastEntryNo($lastEntryNo, $storeId);
-                
+
                 $this->rep_helper->updateCronStatus(
                     $this->cronStatus,
                     $this->getConfigPathStatus(),
