@@ -44,6 +44,9 @@ class CronJobGenerator extends AbstractGenerator
         if (isset($replicationEntityMapping[$this->operation->getName(true)])) {
             $mappingExists = true;
             $mappedModelName = $replicationEntityMapping[$this->operation->getName(true)];
+            if ($mappedModelName == 'DiscountValidations') {
+                $id = 1;
+            }
         }
         $this->class->setName($this->operation->getJobName());
         $this->class->setNamespaceName($this->operation->getJobNamespace());
@@ -69,6 +72,15 @@ class CronJobGenerator extends AbstractGenerator
             $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$tableName}");
             $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$tableName}");
             $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE', "ls_mag/replication/last_execute_{$tableName}");
+        } else {
+            $dbTablesMapping = ReplicationHelper::DB_TABLES_MAPPING;
+            if (str_starts_with($jobCode, 'replication_')) {
+                $tName = substr($jobCode, strlen('replication_'));
+
+                if (isset($dbTablesMapping[$tName])) {
+                    $tableName = $dbTablesMapping[$tName]['table_name'];
+                }
+            }
         }
 
         $this->class->addConstant('CONFIG_PATH_LAST_ENTRY_NO', "ls_mag/replication/last_entry_no_{$tableName}");

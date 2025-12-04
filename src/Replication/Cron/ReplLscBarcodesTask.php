@@ -10,7 +10,7 @@ namespace Ls\Replication\Cron;
 
 class ReplLscBarcodesTask extends ReplEcommBarcodesTask
 {
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_barcodes';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_barcode';
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscBarcodes';
 

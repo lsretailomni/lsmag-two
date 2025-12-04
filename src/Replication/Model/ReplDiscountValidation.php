@@ -91,6 +91,16 @@ class ReplDiscountValidation extends AbstractModel implements ReplDiscountValida
     protected $MondayWithinBounds = null;
 
     /**
+     * @property string $OfferEndTime
+     */
+    protected $OfferEndTime = null;
+
+    /**
+     * @property string $OfferStartTime
+     */
+    protected $OfferStartTime = null;
+
+    /**
      * @property string $SaturdayEnd
      */
     protected $SaturdayEnd = null;
@@ -543,6 +553,46 @@ class ReplDiscountValidation extends AbstractModel implements ReplDiscountValida
     public function getMondayWithinBounds()
     {
         return $this->getData( 'MondayWithinBounds' );
+    }
+
+    /**
+     * @param string $OfferEndTime
+     * @return $this
+     */
+    public function setOfferEndTime($OfferEndTime)
+    {
+        $this->setData( 'OfferEndTime', $OfferEndTime );
+        $this->OfferEndTime = $OfferEndTime;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOfferEndTime()
+    {
+        return $this->getData( 'OfferEndTime' );
+    }
+
+    /**
+     * @param string $OfferStartTime
+     * @return $this
+     */
+    public function setOfferStartTime($OfferStartTime)
+    {
+        $this->setData( 'OfferStartTime', $OfferStartTime );
+        $this->OfferStartTime = $OfferStartTime;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOfferStartTime()
+    {
+        return $this->getData( 'OfferStartTime' );
     }
 
     /**

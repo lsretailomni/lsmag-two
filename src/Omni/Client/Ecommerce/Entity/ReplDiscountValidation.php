@@ -81,6 +81,16 @@ class ReplDiscountValidation
     protected $MondayWithinBounds = null;
 
     /**
+     * @property string $OfferEndTime
+     */
+    protected $OfferEndTime = null;
+
+    /**
+     * @property string $OfferStartTime
+     */
+    protected $OfferStartTime = null;
+
+    /**
      * @property string $SaturdayEnd
      */
     protected $SaturdayEnd = null;
@@ -455,6 +465,42 @@ class ReplDiscountValidation
     public function getMondayWithinBounds()
     {
         return $this->MondayWithinBounds;
+    }
+
+    /**
+     * @param string $OfferEndTime
+     * @return $this
+     */
+    public function setOfferEndTime($OfferEndTime)
+    {
+        $this->OfferEndTime = $OfferEndTime;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOfferEndTime()
+    {
+        return $this->OfferEndTime;
+    }
+
+    /**
+     * @param string $OfferStartTime
+     * @return $this
+     */
+    public function setOfferStartTime($OfferStartTime)
+    {
+        $this->OfferStartTime = $OfferStartTime;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOfferStartTime()
+    {
+        return $this->OfferStartTime;
     }
 
     /**

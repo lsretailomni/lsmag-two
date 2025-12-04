@@ -10,7 +10,7 @@ namespace Ls\Replication\Cron;
 
 class ReplLscValidationPeriodTask extends ReplEcommDiscountValidationsTask
 {
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_discount_validations';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_discount_validation';
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscValidationPeriod';
 

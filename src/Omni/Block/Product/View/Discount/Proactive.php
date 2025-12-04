@@ -166,6 +166,9 @@ class Proactive extends Template
      *
      * @param LSCPeriodicDiscount $discount
      * @return string
+     * @throws NoSuchEntityException
+     * @throws \DateException
+     * @throws \DateMalformedStringException
      */
     public function getFormattedDescriptionForDiscountOffer(LSCPeriodicDiscount $discount): string
     {
@@ -189,7 +192,7 @@ class Proactive extends Template
         }
 
         if ($discount->getValidationPeriodId()) {
-            $this->getDiscountValidityDatesById($discount->getValidationPeriodId(), $description);            
+            $this->getDiscountValidityDatesById($discount->getValidationPeriodId(), $description);
         }
 
         return implode('<br/>', $description);
@@ -202,6 +205,8 @@ class Proactive extends Template
      * @param $description
      * @return mixed
      * @throws NoSuchEntityException
+     * @throws \DateException
+     * @throws \DateMalformedStringException
      */
     public function getDiscountValidityDatesById($validationPeriodId, &$description)
     {
@@ -222,8 +227,12 @@ class Proactive extends Template
             $startDate = $validationPeriod->getStartDate();
             $endDate   = $validationPeriod->getEndDate();
 
-            $startTime = ($validationPeriod->getStartTime()) ?? "00:00:00 AM";
-            $endTime   = ($validationPeriod->getEndTime()) ?? "11:59:00 PM";
+            $startTime = ($validationPeriod->getOfferStartTime())
+                ? (new \DateTime($validationPeriod->getOfferStartTime()))->format('h:i:s A')
+                : "00:00:00";
+            $endTime   = ($validationPeriod->getOfferEndTime())
+                ? (new \DateTime($validationPeriod->getOfferEndTime()))->format('h:i:s A')
+                : "11:59:00 PM";
         }
 
         if ($startDate) {
@@ -250,7 +259,6 @@ class Proactive extends Template
      *
      * @param $input
      * @return string
-     * @throws \DateException
      */
     public function getFormattedDateTime($input)
     {
@@ -260,12 +268,12 @@ class Proactive extends Template
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
                 $this->lsr->getActiveWebStore()
             );
-            $dateObj = new \DateTime($input, new \DateTimeZone('UTC'));        
+            $dateObj = new \DateTime($input, new \DateTimeZone('UTC'));
             return $dateObj->format($format);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
-        
+
         return $input;
     }
 
@@ -307,6 +315,9 @@ class Proactive extends Template
      * @param LSCPeriodicDiscount $multibuyOffer
      * @param \Ls\Omni\Client\CentralEcommerce\Entity\GetDiscount_GetDiscount $discounts
      * @return string
+     * @throws NoSuchEntityException
+     * @throws \DateException
+     * @throws \DateMalformedStringException
      */
     public function getFormattedDescriptionForMultibuyOffer(
         LSCPeriodicDiscount $multibuyOffer,
@@ -365,6 +376,8 @@ class Proactive extends Template
      * @param string $itemId
      * @return string
      * @throws NoSuchEntityException
+     * @throws \DateException
+     * @throws \DateMalformedStringException
      */
     public function getFormattedDescriptionForMixAndMatchOffer(
         LSCPeriodicDiscount $mixAndMatchOffer,
@@ -386,7 +399,6 @@ class Proactive extends Template
         if ($mixAndMatchOffer->getDescription()) {
             $description[] = "<span class='discount-description'>" . $mixAndMatchOffer->getDescription() . '</span>';
         }
-
 
         if ($discount->getValidationPeriodId()) {
             $this->getDiscountValidityDatesById($discount->getValidationPeriodId(), $description);
@@ -568,7 +580,7 @@ class Proactive extends Template
      * Check if commerce service is responding
      *
      * @return bool|null
-     * @throws NoSuchEntityException|GuzzleException
+     * @throws NoSuchEntityException
      */
     public function isValid(): ?bool
     {
