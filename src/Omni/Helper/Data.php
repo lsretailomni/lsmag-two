@@ -303,7 +303,7 @@ class Data extends AbstractHelperOmni
             $loyaltyAmount = 0;
             if (!empty($basketData) && is_object($basketData)) {
                 if ($loyaltyPoints > 0) {
-                    $loyaltyAmount = $this->loyaltyHelper->getLsPointsDiscount($loyaltyPoints) ;
+                    $loyaltyAmount = $this->loyaltyHelper->getLsPointsDiscount($loyaltyPoints);
                 }
                 $quote          = $this->cartRepository->get($this->checkoutSession->getQuoteId());
                 $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
@@ -558,7 +558,7 @@ class Data extends AbstractHelperOmni
                 'companyName' => $companyName['company'] ?? ''
             ]
         );
-       
+
         try {
             $response = $testConnectionOperation->execute();
         } catch (Exception $e) {

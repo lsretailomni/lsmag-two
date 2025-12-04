@@ -34,7 +34,7 @@ class SalesObserver implements ObserverInterface
         $shippingAssignment = $event->getShippingAssignment();
         $addressType = $shippingAssignment->getShipping()->getAddress()->getAddressType();
         $total = $event->getTotal();
-        $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+        $pointDiscount  = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
         $giftCardAmount = $quote->getLsGiftCardAmountUsed();
 
         if ($pointDiscount > 0.001) {
