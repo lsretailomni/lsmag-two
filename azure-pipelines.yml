@@ -169,14 +169,14 @@ jobs:
       - script: |
           cd $(magentoDirectory)
           cp artifacts/lsretail/lsmag-two/dev/tests/unit/azure-pipelines-phpunit.xml dev/tests/unit/
-          ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --log-junit ../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
+          ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --log-junit ../$(magentoDirectory)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
         displayName: 'Ls Retail Modules Unit Tests Validation'
 
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'JUnit'
           testResultsFiles: 'junit-report_$(magentoVersion)_$(phpVersion).xml'
-          searchFolder: '../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)'
+          searchFolder: '../$(magentoDirectory)/$(System.DefaultWorkingDirectory)'
         displayName: 'Ls Retail Modules Unit Tests results Publishing'
 
       - task: Bash@3
