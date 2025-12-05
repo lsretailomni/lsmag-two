@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
          colors="true"
          columns="max"
          beStrictAboutTestsThatDoNotTestAnything="false"
          bootstrap="./framework/bootstrap.php"
-         stderr="true"
-         testSuiteLoaderClass="Magento\TestFramework\SuiteLoader"
-         testSuiteLoaderFile="framework/Magento/TestFramework/SuiteLoader.php">
-    <!-- Test suites definition -->
-    <coverage>
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnTestsThatTriggerErrors="true"
+         displayDetailsOnTestsThatTriggerNotices="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         displayDetailsOnPhpunitDeprecations="true"
+         stderr="true">
+    <source>
         <include>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/ProductCreateTask.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncVersion.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Plugin</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Console</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/ProductCreateTaskTestTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncVersionTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Plugin</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Console</directory>
+            <directory suffix=".php">../../../app/code/Magento</directory>
+            <directory suffix=".php">../../../lib/internal/Magento</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Replication/Plugin</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Replication/Console</directory>
         </include>
-    </coverage>
+        <exclude>
+            <directory>../../../app/code/*/*/Test</directory>
+            <directory>../../../lib/internal/*/*/Test</directory>
+            <directory>../../../lib/internal/*/*/*/Test</directory>
+            <directory>../../../setup/src/*/*/Test</directory>
+        </exclude>
+    </source>
     <testsuites>
         <testsuite name="Ls_Retail_Integration_Tests">
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/ProductCreateTaskTestTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncVersionTest.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Plugin</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/ProductCreateTaskTestTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncVersionTest.php</file>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Console</directory>
         </testsuite>
     </testsuites>
@@ -45,7 +54,6 @@
         <!-- Semicolon-separated 'glob' patterns, that match global XML configuration files -->
         <const name="TESTS_GLOBAL_CONFIG_DIR" value="../../../app/etc"/>
         <!-- Whether to cleanup the application before running tests or not -->
-        <const name="TESTS_MAGENTO_INSTALLATION" value="disabled"/>
         <const name="TESTS_CLEANUP" value="disabled"/>
         <!-- Memory usage and estimated leaks thresholds -->
         <!--<const name="TESTS_MEM_USAGE_LIMIT" value="1024M"/>-->
@@ -74,13 +82,12 @@
         <!--<const name="TESTS_PARALLEL_RUN" value="1"/>-->
         <const name="USE_OVERRIDE_CONFIG" value="enabled"/>
         <ini name="memory_limit" value="-1"/>
-        <ini name="date.timezone" value="America/Los_Angeles"/>
-        <ini name="xdebug.max_nesting_level" value="200"/>
     </php>
-    <!-- Test listeners -->
-    <listeners>
-        <!-- Run after AllureAdapter to allow it to initialize properly -->
-        <listener class="Magento\TestFramework\Event\PhpUnit"/>
-        <listener class="Magento\TestFramework\ErrorLog\Listener"/>
-    </listeners>
+    <extensions>
+        <bootstrap class="Qameta\Allure\PHPUnit\AllureExtension">
+            <!-- Path to config file (default is config/allure.config.php) -->
+            <parameter name="config" value="allure/allure.config.php" />
+        </bootstrap>
+        <bootstrap class="Magento\TestFramework\Event\Subscribers"/>
+    </extensions>
 </phpunit>
