@@ -131,68 +131,68 @@ jobs:
           find var vendor artifacts pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor artifacts pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
         displayName: 'Magento Code Preparation'
 
-  - script: |
-      cd ../magento_$(magentoVersion)_$(phpVersion)
-      ./vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --ignore=artifacts/lsretail/lsmag-two/dev --warning-severity=8 --extensions=php artifacts/lsretail/
-    displayName: 'Magento2 Coding Standards Validation'
+      - script: |
+          cd ../magento_$(magentoVersion)_$(phpVersion)
+          ./vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --ignore=artifacts/lsretail/lsmag-two/dev --warning-severity=8 --extensions=php artifacts/lsretail/
+        displayName: 'Magento2 Coding Standards Validation'
 
-  - script: |
-      telnet 127.0.0.1 3306
-      mysql --host 127.0.0.1 --user=root --password=mysql -e "CREATE DATABASE $(databaseName)"
-    displayName: 'Magento Database Creation'
+      - script: |
+          telnet 127.0.0.1 3306
+          mysql --host 127.0.0.1 --user=root --password=mysql -e "CREATE DATABASE $(databaseName)"
+        displayName: 'Magento Database Creation'
 
-  - script: |
-      cd $(magentoDirectory)
-      php bin/magento setup:install --base-url=http://mag.localhost.com/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=mysql --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=opensearch --opensearch-host=127.0.0.1 --opensearch-port=9200
-    displayName: 'Magento Installation Testing'
+      - script: |
+          cd $(magentoDirectory)
+          php bin/magento setup:install --base-url=http://mag.localhost.com/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=mysql --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=opensearch --opensearch-host=127.0.0.1 --opensearch-port=9200
+        displayName: 'Magento Installation Testing'
 
-  - script: |
-      cd $(magentoDirectory)
-      php -d memory_limit=-1 bin/magento deploy:mode:set developer
-    displayName: 'Magento developer mode Testing'
+      - script: |
+          cd $(magentoDirectory)
+          php -d memory_limit=-1 bin/magento deploy:mode:set developer
+        displayName: 'Magento developer mode Testing'
 
-  - script: |
-      cd $(magentoDirectory)
-      php -d memory_limit=-1 bin/magento setup:upgrade -vvv || cat var/log/exception.log
-    displayName: 'Magento setup upgrade'
+      - script: |
+          cd $(magentoDirectory)
+          php -d memory_limit=-1 bin/magento setup:upgrade -vvv || cat var/log/exception.log
+        displayName: 'Magento setup upgrade'
 
-  - script: |
-      cd $(magentoDirectory)
-      php -d memory_limit=-1 bin/magento setup:di:compile -vvv || cat var/log/exception.log
-    displayName: 'Magento setup di compile'
+      - script: |
+          cd $(magentoDirectory)
+          php -d memory_limit=-1 bin/magento setup:di:compile -vvv || cat var/log/exception.log
+        displayName: 'Magento setup di compile'
 
-  - script: |
-      cd $(magentoDirectory)
-      php -d memory_limit=-1 bin/magento setup:static-content:deploy -f -vvv || cat var/log/exception.log
-    displayName: 'Magento static content deploy'
+      - script: |
+          cd $(magentoDirectory)
+          php -d memory_limit=-1 bin/magento setup:static-content:deploy -f -vvv || cat var/log/exception.log
+        displayName: 'Magento static content deploy'
 
-  - script: |
-      cd $(magentoDirectory)
-      cp artifacts/lsretail/lsmag-two/dev/tests/unit/azure-pipelines-phpunit.xml dev/tests/unit/
-      ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --log-junit ../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
-    displayName: 'Ls Retail Modules Unit Tests Validation'
+      - script: |
+          cd $(magentoDirectory)
+          cp artifacts/lsretail/lsmag-two/dev/tests/unit/azure-pipelines-phpunit.xml dev/tests/unit/
+          ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --log-junit ../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
+        displayName: 'Ls Retail Modules Unit Tests Validation'
 
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFormat: 'JUnit'
-      testResultsFiles: 'junit-report_$(magentoVersion)_$(phpVersion).xml'
-      searchFolder: '../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)'
-    displayName: 'Ls Retail Modules Unit Tests results Publishing'
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: 'junit-report_$(magentoVersion)_$(phpVersion).xml'
+          searchFolder: '../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)'
+        displayName: 'Ls Retail Modules Unit Tests results Publishing'
 
-  - task: Bash@3
-    displayName: "Output Magento Logs"
-    inputs:
-      targetType: 'inline'
-      script: |
-        echo "Showing Magento Logs..."
+      - task: Bash@3
+        displayName: "Output Magento Logs"
+        inputs:
+          targetType: 'inline'
+          script: |
+            echo "Showing Magento Logs..."
 
-        # Check if logs directory exists
-        if [ -d "var/log" ]; then
-          echo "=== SYSTEM LOG ==="
-          cat var/log/system.log || echo "system.log not found"
+            # Check if logs directory exists
+            if [ -d "var/log" ]; then
+              echo "=== SYSTEM LOG ==="
+              cat var/log/system.log || echo "system.log not found"
 
-          echo "=== EXCEPTION LOG ==="
-          cat var/log/exception.log || echo "exception.log not found"
-        else
-          echo "Log directory does not exist."
-        fi
+              echo "=== EXCEPTION LOG ==="
+              cat var/log/exception.log || echo "exception.log not found"
+            else
+              echo "Log directory does not exist."
+            fi
