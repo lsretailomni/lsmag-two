@@ -62,7 +62,7 @@ class Recent extends Template
         )) {
             $response = [];
             $orders   = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
-            if (is_array($orders) && !array_key_exists(0,$orders)) {
+            if (is_array($orders) && count($orders) > 0) {
                 try {
                     $response = $this->orderHelper->processOrderData($orders);
                 } catch (Exception $e) {
