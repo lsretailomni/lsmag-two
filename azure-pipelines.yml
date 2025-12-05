@@ -132,7 +132,7 @@ jobs:
         displayName: 'Magento Code Preparation'
 
       - script: |
-          cd ../magento_$(magentoVersion)_$(phpVersion)
+          cd $(magentoDirectory)
           ./vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --ignore=artifacts/lsretail/lsmag-two/dev --warning-severity=8 --extensions=php artifacts/lsretail/
         displayName: 'Magento2 Coding Standards Validation'
 
