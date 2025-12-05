@@ -117,7 +117,7 @@ class Returns
         $errors         = [];
 
         foreach ($returnLines as $returnItem) {
-            $orderItem = $orderItemsMap[$returnItem['ItemId']] ?? null;
+            $orderItem         = $orderItemsMap[$returnItem['ItemId']] ?? null;
             $returnItem['Qty'] = abs($returnItem['Qty']);
             if (!$orderItem) {
                 $error = "Order item not found for ItemId: {$returnItem['ItemId']}";
@@ -146,7 +146,8 @@ class Returns
 
             $qtyToRefund = min($returnItem['Qty'], $invoiceItem->getQty());
 
-            $qtyAvailableToRefund = $orderItem->getQtyToRefund();
+            $qtyAvailableToRefund = $orderItem->getQtyOrdered() - $orderItem->getQtyRefunded() -
+                $orderItem->getQtyCanceled();
             if ($qtyAvailableToRefund < $qtyToRefund) {
                 $error = "Insufficient refundable quantity for item: {$returnItem['ItemId']}. Available: {$qtyAvailableToRefund}, Requested: {$qtyToRefund}";
                 $this->logger->warning($error);
