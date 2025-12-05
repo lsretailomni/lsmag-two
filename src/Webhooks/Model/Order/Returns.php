@@ -75,12 +75,12 @@ class Returns
 
             // Check if all refunds were successful
             if ($this->areAllRefundsSuccessful($results)) {
-                return $this->helper->outputMessage(true, 'Return processed successfully.');
+                return $this->helper->outputMessage(true, 'Refund Processed successfully.');
             }
 
             return end($results);
         } catch (\Exception $e) {
-            $this->logger->error('Failed to create return: ' . $e->getMessage());
+            $this->logger->error('Failed to create refund: ' . $e->getMessage());
             return $this->helper->outputMessage(false, $e->getMessage());
         }
     }
@@ -118,7 +118,7 @@ class Returns
 
         foreach ($returnLines as $returnItem) {
             $orderItem = $orderItemsMap[$returnItem['ItemId']] ?? null;
-
+            $returnItem['Qty'] = abs($returnItem['Qty']);
             if (!$orderItem) {
                 $error = "Order item not found for ItemId: {$returnItem['ItemId']}";
                 $this->logger->warning($error);
@@ -301,7 +301,7 @@ class Returns
             $invoiceItem = $invoiceData['invoiceItemsMap'][$orderItemId] ?? null;
 
             if ($invoiceItem && $invoiceItem->getQty() > 0) {
-                $pricePerUnit     = $invoiceItem->getSubTotal() / $invoiceItem->getQty();
+                $pricePerUnit     = $invoiceItem->getRowTotalInclTax() / $invoiceItem->getQty();
                 $totalItemsRefund += $pricePerUnit * $itemData['qty'];
             }
         }
