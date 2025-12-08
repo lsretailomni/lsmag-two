@@ -76,7 +76,7 @@ class CreditMemo
             foreach ($itemData as $itemData) {
                 $item                       = $itemData['item'];
                 $orderItemId                = $item->getItemId();
-                $itemToCredit[$orderItemId] = ['qty' => $itemData['qty']];
+                $itemToCredit[$orderItemId] = ['qty' => $itemData['qty'], 'back_to_stock' => 0];
                 $creditMemoData['items']    = $itemToCredit;
             }
         }

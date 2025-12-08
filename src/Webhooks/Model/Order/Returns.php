@@ -95,9 +95,16 @@ class Returns
     {
         $itemsMap = [];
         foreach ($order->getAllItems() as $item) {
-            $lsItemId = $item->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+            if ($item->getProductType() === 'configurable') {
+                continue;
+            }
+            $lsItemId  = $item->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+            $variantId = $item->getProduct()->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
+            $uomId     = $item->getProduct()->getData('uom');
+
             if ($lsItemId) {
-                $itemsMap[$lsItemId] = $item;
+                $key            = $lsItemId . '-' . $variantId . '-' . $uomId;
+                $itemsMap[$key] = $item;
             }
         }
         return $itemsMap;
@@ -117,10 +124,15 @@ class Returns
         $errors         = [];
 
         foreach ($returnLines as $returnItem) {
-            $orderItem         = $orderItemsMap[$returnItem['ItemId']] ?? null;
-            $returnItem['Qty'] = abs($returnItem['Qty']);
+            $lsItemId  = $returnItem['ItemId'] ?? '';
+            $variantId = $returnItem['VariantId'] ?? '';
+            $uomId     = $returnItem['UnitOfMeasureId'] ?? '';
+            $key       = $lsItemId . '-' . $variantId . '-' . $uomId;
+
+            $orderItem              = $orderItemsMap[$key] ?? null;
+            $returnItem['Quantity'] = abs($returnItem['Quantity']);
             if (!$orderItem) {
-                $error = "Order item not found for ItemId: {$returnItem['ItemId']}";
+                $error = "Order item not found for ItemId: {$lsItemId}, VariantId: {$variantId}, UnitOfMeasureId: {$uomId}";
                 $this->logger->warning($error);
                 $errors[] = $error;
                 continue;
@@ -129,7 +141,7 @@ class Returns
             $invoice = $this->helper->getItemInvoice($order, $returnItem['ItemId'], $returnItem['VariantId']);
 
             if (!$invoice || !$invoice->canRefund()) {
-                $error = "Invoice cannot be refunded for item: {$returnItem['ItemId']}";
+                $error = "Invoice cannot be refunded for item: {$lsItemId}, VariantId: {$variantId}, UnitOfMeasureId: {$uomId}";
                 $this->logger->warning($error);
                 $errors[] = $error;
                 continue;
@@ -138,25 +150,25 @@ class Returns
             $invoiceItem = $this->findInvoiceItem($invoice, $orderItem->getItemId());
 
             if (!$invoiceItem) {
-                $error = "Invoice item not found for order item: {$returnItem['ItemId']}";
+                $error = "Invoice item not found for order item: {$lsItemId}, VariantId: {$variantId}, UnitOfMeasureId: {$uomId}";
                 $this->logger->warning($error);
                 $errors[] = $error;
                 continue;
             }
 
-            $qtyToRefund = min($returnItem['Qty'], $invoiceItem->getQty());
+            $qtyToRefund = min($returnItem['Quantity'], $invoiceItem->getQty());
 
             $qtyAvailableToRefund = $orderItem->getQtyOrdered() - $orderItem->getQtyRefunded() -
                 $orderItem->getQtyCanceled();
             if ($qtyAvailableToRefund < $qtyToRefund) {
-                $error = "Insufficient refundable quantity for item: {$returnItem['ItemId']}. Available: {$qtyAvailableToRefund}, Requested: {$qtyToRefund}";
+                $error = "Insufficient refundable quantity for item: {$lsItemId}, VariantId: {$variantId}, UnitOfMeasureId: {$uomId}. Available: {$qtyAvailableToRefund}, Requested: {$qtyToRefund}";
                 $this->logger->warning($error);
                 $errors[] = $error;
                 continue;
             }
 
             if ($qtyToRefund <= 0 || $qtyAvailableToRefund <= 0) {
-                $error = "No refundable quantity for item: {$returnItem['ItemId']}";
+                $error = "No refundable quantity for item: {$lsItemId}, VariantId: {$variantId}, UnitOfMeasureId: {$uomId}";
                 $this->logger->warning($error);
                 $errors[] = $error;
                 continue;
@@ -173,7 +185,10 @@ class Returns
                 ];
             }
 
-            // Maintain nested array structure expected by refund method
+            if ($orderItem->getParentItem() && $orderItem->getParentItem()->getProductType() === 'configurable') {
+                $orderItem = $orderItem->getParentItem();
+            }
+
             $itemsByInvoice[$invoiceId]['items'][] = [
                 [
                     'item' => $orderItem,
@@ -260,7 +275,6 @@ class Returns
                 $data['ReturnType'],
                 $invoiceData['invoice']->getIncrementId()
             );
-            $creditMemoData['items']        = $invoiceData['itemToCredit'];
             $creditMemoData['do_offline']   = (strcasecmp($data['ReturnType'], 'Online') !== 0) ? 1 : 0;
 
             // Apply amount adjustment if provided
@@ -301,9 +315,17 @@ class Returns
         foreach ($invoiceData['itemToCredit'] as $orderItemId => $itemData) {
             $invoiceItem = $invoiceData['invoiceItemsMap'][$orderItemId] ?? null;
 
-            if ($invoiceItem && $invoiceItem->getQty() > 0) {
-                $pricePerUnit     = $invoiceItem->getRowTotalInclTax() / $invoiceItem->getQty();
-                $totalItemsRefund += $pricePerUnit * $itemData['qty'];
+            if ($invoiceItem) {
+                $orderItem = $invoiceItem->getOrderItem();
+
+                if ($orderItem->getParentItem() && $orderItem->getParentItem()->getProductType() === 'configurable') {
+                    $orderItem = $orderItem->getParentItem();
+                }
+
+                if ($orderItem->getQtyOrdered() > 0 && $orderItem->getRowTotalInclTax() > 0) {
+                    $pricePerUnit     = ($orderItem->getRowTotalInclTax() / $orderItem->getQtyOrdered());
+                    $totalItemsRefund += $pricePerUnit * $itemData['qty'];
+                }
             }
         }
 
