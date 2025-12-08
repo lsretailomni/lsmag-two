@@ -14,6 +14,8 @@ use \Ls\Omni\Client\CentralEcommerce\Entity\PublishedOfferLine;
 use \Ls\Omni\Client\CentralEcommerce\Operation\GetImage_GetImage;
 use \Ls\Omni\Client\CentralEcommerce\Operation\GetDirectMarketingInfo;
 use \Ls\Omni\Client\CentralEcommerce\Operation\GetDiscount_GetDiscount;
+use Ls\Omni\Client\Ecommerce\Entity\ArrayOfPublishedOffer;
+use Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetByCardIdResponse;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Filesystem\DirectoryList;
@@ -29,7 +31,7 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * To get all customer offers
      *
-     * @return \Ls\Omni\Client\Ecommerce\Entity\ArrayOfPublishedOffer|\Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetByCardIdResponse|ResponseInterface|null
+     * @return ArrayOfPublishedOffer|PublishedOffersGetByCardIdResponse|ResponseInterface|null
      */
     public function getOffers()
     {
@@ -138,7 +140,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      *
      * @return float
      * @throws GuzzleException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function getLoyaltyPointsAvailableToCustomer()
     {
@@ -220,7 +222,7 @@ class LoyaltyHelper extends AbstractHelperOmni
             if ($currentClubCode == $clubCode && $updateSequence > $currentSequence) {
                 $requiredScheme = $schemes;
             }
-         }
+        }
 
         return $requiredScheme;
     }
@@ -335,7 +337,6 @@ class LoyaltyHelper extends AbstractHelperOmni
      * @param $storeId
      * @param $currencyCode
      * @return float|int|string|null
-     * @throws GuzzleException
      * @throws NoSuchEntityException
      */
     public function getPointRate($storeId = null, $currencyCode = null)
@@ -460,7 +461,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      *
      * @param int $loyaltyPoints
      * @return bool
-     * @throws NoSuchEntityException|GuzzleException
+     * @throws NoSuchEntityException|GuzzleException|LocalizedException
      */
     public function isPointsAreValid($loyaltyPoints)
     {
@@ -632,7 +633,7 @@ class LoyaltyHelper extends AbstractHelperOmni
             false,
             $this->lsr->getBasketIntegrationOnFrontend()
         )) {
-            
+
             $storeId = $this->lsr->getActiveWebStore();
             $cardId = $this->contactHelper->getCardIdFromCustomerSession();
             if (!$cardId) { //fetch card id from customer object if session value not available
@@ -652,7 +653,7 @@ class LoyaltyHelper extends AbstractHelperOmni
                     }
                 }
             }
-            
+
             $itemsInCart = $this->checkoutSession->getQuote()->getAllVisibleItems();
             $coupons = $itemIdentifiers = [];
             foreach ($itemsInCart as $item) {

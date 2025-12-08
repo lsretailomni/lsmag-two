@@ -155,8 +155,6 @@ jobs:
 
       - script: |
           cat $(magentoDirectory)/var/log/debug.log
-          cat $(magentoDirectory)/dev/tests/integration/tmp/sandbox-*/var/log/debug.log
-          cat $(magentoDirectory)/var/log/omniclient.log
         displayName: 'Testing Logs'
         condition: always()
 
