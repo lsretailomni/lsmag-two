@@ -33,7 +33,7 @@
     </source>
     <testsuites>
         <testsuite name="Ls_Retail_Integration_Tests">
-            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/ProductCreateTaskTestTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/ProductCreateTaskTest.php</file>
             <file>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncVersionTest.php</file>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Console</directory>
         </testsuite>
