@@ -111,5 +111,11 @@
             <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
         </arguments>
     </type>
+
+    <type name="PayPal\Braintree\Model\StoreConfigResolver">
+        <plugin name="ls_customer_braintree_storeconfigresolver_safe"
+                type="Ls\Customer\Plugin\Sales\Paypal\Braintree\StoreConfigResolverPlugin"
+                sortOrder="10"/>
+    </type>
 </config>
 
