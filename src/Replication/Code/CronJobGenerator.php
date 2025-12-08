@@ -43,10 +43,7 @@ class CronJobGenerator extends AbstractGenerator
         $mappedModelName = $modelName;
         if (isset($replicationEntityMapping[$this->operation->getName(true)])) {
             $mappingExists = true;
-            $mappedModelName = $replicationEntityMapping[$this->operation->getName(true)];
-            if ($mappedModelName == 'DiscountValidations') {
-                $id = 1;
-            }
+            $mappedModelName = $replicationEntityMapping[$this->operation->getName(true)];            
         }
         $this->class->setName($this->operation->getJobName());
         $this->class->setNamespaceName($this->operation->getJobNamespace());
