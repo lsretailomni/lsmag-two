@@ -152,9 +152,17 @@ jobs:
         env: ${{ variables }}
 
       - script: |
-          cat $(magentoDirectory)/var/log/debug.log
-          cat $(magentoDirectory)/dev/tests/integration/tmp/sandbox-*/var/log/debug.log
-          cat $(magentoDirectory)/var/log/omniclient.log
+          LOGS=(
+            "$(magentoDirectory)/var/log/debug.log"
+            "$(magentoDirectory)/dev/tests/integration/tmp/sandbox-*/var/log/debug.log"
+            "$(magentoDirectory)/var/log/omniclient.log"
+          )
+          for LOG in "${LOGS[@]}"; do
+            for FILE in $(ls $LOG 2>/dev/null); do
+              echo "===== $FILE ====="
+              cat "$FILE"
+            done
+          done
         displayName: 'Testing Logs'
         condition: always()
 
