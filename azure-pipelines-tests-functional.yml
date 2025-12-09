@@ -14,21 +14,27 @@ resources:
         MYSQL_USER: mysql
         MYSQL_PASSWORD: mysql
         MYSQL_ROOT_PASSWORD: mysql
-    - container: elasticsearch
-      image: $(ELASTIC_SEARCH_IMAGE)
+      options: --health-cmd="mysqladmin ping -h localhost -u root --password=mysql || exit 1" --health-interval=10s --health-timeout=5s --health-retries=5
+
+    - container: opensearch
+      image: $(OPEN_SEARCH_IMAGE)
       ports:
         - "9200:9200"
-        - "9300:9300"
+        - "9600:9600"
       env:
         discovery.type: single-node
-        ES_JAVA_OPTS: -Xms1g -Xmx1g
-        cluster.routing.allocation.disk.threshold_enabled: false
+        plugins.security.disabled: "true"
+        bootstrap.memory_lock: "false"
+        OPENSEARCH_JAVA_OPTS: "-Xms256m -Xmx256m"
+      options: --health-cmd="curl -f http://localhost:9200 || exit 1" --health-interval=15s --health-timeout=10s --health-retries=10
+
     - container: selenium
       image: selenium/standalone-chrome-debug:latest
       ports:
         - "5900:5900"
         - "4444:4444"
-      options: --add-host=mag.localhost.com:host-gateway
+      options: --add-host=mag.localhost.com:host-gateway --shm-size=2g --health-cmd="curl -f http://localhost:4444/wd/hub/status || exit 1" --health-interval=10s --health-timeout=5s --health-retries=5
+
 
 jobs:
   - job: MainJob
@@ -39,29 +45,35 @@ jobs:
 
     services:
       db: db
-      elasticsearch: elasticsearch
+      opensearch: opensearch
       selenium: selenium
 
     strategy:
       matrix:
-        magento_2_4_7_php_8_3:
-          phpVersion: '8.3'
-          magentoVersion: '2.4.7-p3'
-          databaseName: 'magento_2_4_7_php_8_2'
+        magento_php:
+          phpVersion: $(PHP_VERSION)
+          magentoVersion: $(MAGENTO_VERSION)
+          databaseName: 'magento'
           composerOverride: '{}'
-          phpunitVersion: '^9'
+          phpunitVersion: $(PHP_UNIT_VERSION)
+          functionalTestingFrameworkVersion: $(FUNCTIONAL_TESTING_FRAMEWORK_VERSION)
           magentoDirectory: "/var/www/html"
 
     steps:
 
       - script: |
+          sudo apt-get update
+          sudo apt-get install -y software-properties-common ca-certificates lsb-release apt-transport-https
+          sudo add-apt-repository ppa:ondrej/php -y
+          sudo apt-get update
+          sudo apt-get install -y php$(phpVersion) php$(phpVersion)-cli php$(phpVersion)-common php$(phpVersion)-mysql php$(phpVersion)-xml php$(phpVersion)-gd php$(phpVersion)-curl php$(phpVersion)-intl php$(phpVersion)-mbstring php$(phpVersion)-zip php$(phpVersion)-bcmath php$(phpVersion)-soap
           sudo update-alternatives --set php /usr/bin/php$(phpVersion)
           sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
           sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
           sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
           sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
-          php -version
-        displayName: 'Use PHP Version $(phpVersion)'
+          php -v
+        displayName: 'Install PHP $(phpVersion)'
 
       - script: |
           sudo apt-get install default-mysql-client
@@ -71,14 +83,6 @@ jobs:
             sleep 1;
           done;
         displayName: 'Wait for Database to initialise'
-
-      - script: |
-          printf 'Waiting for elasticsearch to accept connections'
-          until curl -XGET '0.0.0.0:9200/'; do
-          printf '.'
-          sleep 1;
-          done;
-        displayName: 'Wait for Elasticsearch to initialise'
 
       - script: |
           printf 'Waiting for selenium to accept connections'
@@ -128,7 +132,7 @@ jobs:
           cd $(magentoDirectory)
           mkdir -p artifacts/lsretail/lsmag-two
           cp -a /home/vsts/work/1/s/. $(magentoDirectory)/artifacts/lsretail/lsmag-two/
-          composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --require-dev magento/magento2-functional-testing-framework:^4.7 --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
+          composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --require-dev magento/magento2-functional-testing-framework:$(functionalTestingFrameworkVersion) --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
           composer config use-include-path true
           composer config --no-plugins allow-plugins true
           composer config minimum-stability stable
@@ -150,7 +154,7 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)
-          php bin/magento setup:install --base-url=http://mag.localhost.com/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=mysql --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=127.0.0.1 --elasticsearch-port=9200
+          php bin/magento setup:install --base-url=http://mag.localhost.com/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=mysql --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=opensearch --opensearch-host=127.0.0.1 --opensearch-port=9200
         displayName: 'Magento Installation Testing'
 
       - script: |
@@ -232,8 +236,8 @@ jobs:
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
           php ../../../vendor/bin/mftf run:group lsCustomer --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-          tail -f $(magentoDirectory)/var/log/*.log &
-          sleep 60
+          cat $(magentoDirectory)/var/log/debug.log
+          cat $(magentoDirectory)/var/log/omniclient.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
         displayName: 'Running Functional tests for group lsCustomer'
         continueOnError: true
@@ -241,8 +245,8 @@ jobs:
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
           php ../../../vendor/bin/mftf run:group lsPDP --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-          tail -f $(magentoDirectory)/var/log/*.log &
-          sleep 60
+          cat $(magentoDirectory)/var/log/debug.log
+          cat $(magentoDirectory)/var/log/omniclient.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
         displayName: 'Running Functional tests for group lsPDP'
         continueOnError: true
@@ -282,6 +286,14 @@ jobs:
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
         displayName: 'Running Functional tests for group lsShoppingCart'
         continueOnError: true
+
+      - script: |
+          RANDOM_NUM=$(shuf -i 1000-9999 -n 1)
+          ORDER_PREFIX="${RANDOM_NUM}-"
+          sed -i "s/^ORDER_PREFIX=.*/ORDER_PREFIX=${ORDER_PREFIX}/" .env
+          echo "ORDER_PREFIX set to ${ORDER_PREFIX} for lsCheckout tests"
+        displayName: 'Set random ORDER_PREFIX for lsCheckout'
+        workingDirectory: $(magentoDirectory)/dev/tests/acceptance
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
