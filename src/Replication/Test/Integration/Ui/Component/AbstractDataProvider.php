@@ -54,15 +54,18 @@ abstract class AbstractDataProvider extends TestCase
 
     /**
      * @return array
+     * @throws \ReflectionException
      */
-    public function getDataByIdProvider(): array
+    public static function getDataByIdProvider(): array
     {
+        $reflection = new \ReflectionClass(static::class);
+        $self = $reflection->newInstanceWithoutConstructor();
         return [
             [[
-                 'condition_type' => 'eq',
-                 'field' => $this->getSearchFieldName(),
-                 'value' => $this->getSearchFieldValue()
-             ]],
+                'condition_type' => 'eq',
+                'field' => $self->getSearchFieldName(),
+                'value' => $self->getSearchFieldValue()
+            ]],
         ];
     }
 

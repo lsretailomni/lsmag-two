@@ -52,7 +52,7 @@ class MassResetTest extends AbstractBackendController
     protected function setUp(): void
     {
         $this->resource   = 'Magento_Backend::admin';
-        $this->uri        = 'backend/ls_repl/reset/massreset';
+        $this->uri        = 'backend/ls_repl/reset/massResetItem';
         $this->httpMethod = HttpRequest::METHOD_POST;
         parent::setUp();
 
