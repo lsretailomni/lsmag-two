@@ -30,7 +30,7 @@ class DataTranslationLanguageCodeDataProviderTest extends AbstractDataProvider
 
     public function getSearchFieldValue()
     {
-        return AbstractIntegrationTest::SAMPLE_LANGUAGE_CDOE;
+        return AbstractIntegrationTest::SAMPLE_LANGUAGE_CODE;
     }
 
     public function getDataSourceName()
