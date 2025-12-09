@@ -19,7 +19,7 @@
          stderr="true">
     <source>
         <include>
-            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Webhooks/Api</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Webhooks/Model</directory>
         </include>
         <exclude>
             <directory>../../../app/code/*/*/Test</directory>

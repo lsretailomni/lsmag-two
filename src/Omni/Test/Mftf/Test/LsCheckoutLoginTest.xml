@@ -13,8 +13,11 @@
         </annotations>
         <before>
             <magentoCLI command="config:set checkout/options/enable_guest_checkout_login 1" stepKey="EnablingGuestCheckoutLogin"/>
-            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin" />
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" />
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
+            </actionGroup>
             <!--Create test data.-->
             <createData entity="LsSimpleProduct1" stepKey="product1" />
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
@@ -36,6 +39,9 @@
         </actionGroup>
         <amOnPage url="{{StorefrontCustomerLogoutPage.url}}" stepKey="storefrontSignOut"/>
         <waitForPageLoad time="10" stepKey="waitForSignOut"/>
+        <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+            <argument name="indices" value=""/>
+        </actionGroup>
         <!-- Add Simple Product to cart -->
         <actionGroup ref="LsStorefrontAddSimpleProductToShoppingCartActionGroup" stepKey="addProductToCart1">
             <argument name="product" value="$product1$"/>

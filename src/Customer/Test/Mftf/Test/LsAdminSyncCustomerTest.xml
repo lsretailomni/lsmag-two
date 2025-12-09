@@ -39,6 +39,9 @@
             <argument name="tags" value="config full_page"/>
         </actionGroup>
         <!-- Login as admin -->
+        <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" before="openCustomersGridPage">
+            <argument name="indices" value=""/>
+        </actionGroup>
         <actionGroup ref="AdminOpenCustomersGridActionGroup" stepKey="openCustomersGridPage" after="cleanCache"/>
         <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerPage" after="openCustomersGridPage">
             <argument name="customer" value="Simple_US_Customer"/>
