@@ -213,13 +213,15 @@ class BasketHelper extends AbstractHelperOmni
 
     /**
      * Get Order Lines and Discount Lines
-     *
+     * 
      * @param Quote $quote
+     * @param $order
      * @return array
      * @throws InvalidEnumException
+     * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function getOrderLinesQuote(Quote $quote)
+    public function getOrderLinesQuote(Quote $quote, $order)
     {
         // @codingStandardsIgnoreLine
         $orderLinesArray = new Entity\ArrayOfOrderLine();
@@ -1126,7 +1128,7 @@ class BasketHelper extends AbstractHelperOmni
 
             $orderEntity->setCardId($customer->getData('lsr_cardid'));
         }
-        $orderDetails            = $this->getOrderLinesQuote($quote);
+        $orderDetails            = $this->getOrderLinesQuote($quote, $order);
         $orderLinesArray         = $orderDetails['orderLinesArray'];
         $orderDiscountLinesArray = $orderDetails['orderDiscountLinesArray'];
         $orderEntity->setOrderLines($orderLinesArray);
