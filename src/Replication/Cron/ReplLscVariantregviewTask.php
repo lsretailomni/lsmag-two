@@ -10,7 +10,7 @@ namespace Ls\Replication\Cron;
 
 class ReplLscVariantregviewTask extends ReplEcommItemVariantRegistrationsTask
 {
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_item_variant_registrations';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_item_variant_registration';
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplVariantregview';
 

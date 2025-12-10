@@ -510,6 +510,8 @@ class ReplicationHelper extends AbstractHelper
                 'description' => 'Description',
                 'starting_date' => 'StartDate',
                 'ending_date' => 'EndDate',
+                'offer_starting_time' => 'OfferStartTime',
+                'offer_ending_time' => 'OfferEndTime',
                 'starting_time' => 'StartTime',
                 'ending_time' => 'EndTime',
                 'monday_starting_time' => 'MondayStart',

@@ -1001,6 +1001,8 @@
     <column xsi:type="text" name="MondayEnd" nullable="true" comment="monday_ending_time"/>
     <column xsi:type="text" name="MondayStart" nullable="true" comment="monday_starting_time"/>
     <column xsi:type="text" name="nav_id" nullable="true" comment="nav_id"/>
+    <column xsi:type="text" name="OfferEndTime" nullable="true" comment="offer_ending_time"/>
+    <column xsi:type="text" name="OfferStartTime" nullable="true" comment="offer_starting_time"/>
     <column xsi:type="boolean" name="SaturdayEndAfterMidnight" default="0" nullable="true" comment="sat_end_time_after_midnight"/>
     <column xsi:type="boolean" name="SaturdayWithinBounds" default="0" nullable="true" comment="sat_time_within_bounds"/>
     <column xsi:type="text" name="SaturdayEnd" nullable="true" comment="saturday_ending_time"/>

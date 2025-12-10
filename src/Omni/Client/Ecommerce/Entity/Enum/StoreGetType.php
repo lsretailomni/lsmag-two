@@ -14,6 +14,10 @@ use MyCLabs\Enum\Enum;
  * @$method static StoreGetType ALL()
  * @$method static StoreGetType CLICK_AND_COLLECT()
  * @$method static StoreGetType WEB_STORE()
+ * @$method static StoreGetType SEARCH()
+ * @$method static StoreGetType RESTAURANT()
+ * @$method static StoreGetType LOYALTY()
+ * @$method static StoreGetType MOBILE()
  */
 class StoreGetType extends Enum
 {
@@ -22,5 +26,13 @@ class StoreGetType extends Enum
     public const CLICK_AND_COLLECT = 'ClickAndCollect';
 
     public const WEB_STORE = 'WebStore';
+
+    public const SEARCH = 'Search';
+
+    public const RESTAURANT = 'Restaurant';
+
+    public const LOYALTY = 'Loyalty';
+
+    public const MOBILE = 'Mobile';
 }
 

@@ -10,7 +10,7 @@ namespace Ls\Replication\Cron;
 
 class ReplLscItemuomupdviewTask extends ReplEcommItemUnitOfMeasuresTask
 {
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_item_unit_of_measures';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_item_unit_of_measure';
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplItemuomupdview';
 

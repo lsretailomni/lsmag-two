@@ -33,7 +33,7 @@ class ArrayOfProfile implements IteratorAggregate
     /**
      * @return \Traversable
      */
-    public function getIterator() : \Traversable
+    public function getIterator(): \Traversable
     {
         return new ArrayIterator( $this->Profile );
     }

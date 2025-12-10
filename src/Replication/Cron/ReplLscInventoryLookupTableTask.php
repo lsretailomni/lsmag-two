@@ -10,7 +10,7 @@ namespace Ls\Replication\Cron;
 
 class ReplLscInventoryLookupTableTask extends ReplEcommInventoryStatusTask
 {
-    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_inventory_status';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_inv_status';
 
     public const MODEL_CLASS = 'Ls\\Replication\\Model\\Central\\ReplLscInventoryLookupTable';
 
