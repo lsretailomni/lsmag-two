@@ -390,9 +390,19 @@ abstract class AbstractReplicationTask
                     $columnsMapping = $mapping['columns_mapping'];
                     foreach ($columnsMapping as $columnName => $columnMapping) {
                         if ($entity->hasData($columnName)) {
+
+                            $value = $entity->getData($columnName);
+                            
+                            if (($columnName == 'offer_starting_time' || $columnName == 'offer_ending_time') &&
+                                !empty($value)
+                            ) {
+                                $timeObj   = new \DateTime($value);
+                                $value     = $timeObj->format('H:i:s');
+                            }
+
                             $entity->setData(
                                 is_array($columnMapping) ? $columnMapping['name'] : $columnMapping,
-                                $entity->getData($columnName)
+                                $value
                             );
                         }
                     }
