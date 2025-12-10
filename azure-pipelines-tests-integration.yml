@@ -145,10 +145,6 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)
-          cat /var/www/html/artifacts/lsretail/lsmag-two/src/Customer/Block/Order/History.php
-          cat /var/www/html/artifacts/lsretail/lsmag-two/src/Customer/view/frontend/templates/order/history.phtml
-          cat /var/www/html/artifacts/lsretail/lsmag-two/src/Customer/Block/Order/Recent.php
-          cat /var/www/html/artifacts/lsretail/lsmag-two/src/Customer/view/frontend/templates/order/recent.phtml
           cp artifacts/lsretail/lsmag-two/dev/tests/integration/$(phpunitFile) dev/tests/integration/
           cp artifacts/lsretail/lsmag-two/dev/tests/integration/etc/install-config-mysql.php dev/tests/integration/etc/
           php -d memory_limit=-1 ./vendor/bin/phpunit -c $(pwd)/dev/tests/integration/$(phpunitFile) --testsuite "Ls_Retail_Integration_Tests" --coverage-clover  $(magentoDirectory)/report/coverage.xml
