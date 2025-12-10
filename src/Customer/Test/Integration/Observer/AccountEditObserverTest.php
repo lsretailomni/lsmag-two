@@ -48,6 +48,7 @@ class AccountEditObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -103,6 +104,7 @@ class AccountEditObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -158,6 +160,7 @@ class AccountEditObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -204,6 +207,7 @@ class AccountEditObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CustomerFixture::class,
             [

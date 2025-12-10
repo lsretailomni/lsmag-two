@@ -51,6 +51,7 @@ class GridTest extends AbstractBackendController
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
     ]
     public function testExecuteRedirect(): void
     {
@@ -69,6 +70,7 @@ class GridTest extends AbstractBackendController
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
     ]
     public function testExecuteWithParams(): void
     {
@@ -96,7 +98,8 @@ class GridTest extends AbstractBackendController
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(StoreManager::XML_PATH_SINGLE_STORE_MODE_ENABLED, AbstractIntegrationTest::ENABLED, 'store', 'default')
+        Config(StoreManager::XML_PATH_SINGLE_STORE_MODE_ENABLED, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
     ]
     public function testExecuteWithSingleStoreModeEnabledAndWithParams(): void
     {
@@ -125,7 +128,8 @@ class GridTest extends AbstractBackendController
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(StoreManager::XML_PATH_SINGLE_STORE_MODE_ENABLED, AbstractIntegrationTest::ENABLED, 'store', 'default')
+        Config(StoreManager::XML_PATH_SINGLE_STORE_MODE_ENABLED, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
     ]
     public function testExecuteWithSingleStoreModeEnabledAndWithoutParams(): void
     {
