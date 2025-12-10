@@ -552,7 +552,8 @@ class OrderEdit
                                         ->setLineType(Entity\Enum\LineType::ITEM)
                                         ->setLineNumber($lineNumber)
                                         ->setQuantity($qtyDifference)
-                                        ->setDiscountAmount($discountAmount);
+                                        ->setDiscountAmount($discountAmount)
+                                        ->setItemImageId('NEW_COLINE_INDICATOR');
                                     $lineOrderArray[] = $lineOrder;
                                     $orderLine->setAmount($orderLine->getAmount() - $amount);
                                     $orderLine->setNetAmount($orderLine->getNetAmount() - $netAmount);
