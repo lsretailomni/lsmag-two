@@ -301,7 +301,7 @@
                    type="text"
                    sortOrder="120"
                    showInDefault="1"
-                   showInWebsite="0"
+                   showInWebsite="1"
                    showInStore="0">
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
@@ -320,6 +320,28 @@
                     <comment>
                         Enable this if you want to calculate tax based on shipping address parameters like postcode &amp; state. The tax is calculated using basket calculation request. In order to use it properly for both guest &amp; registered user make sure Calculate Basket At = Every Cart Update and on checkout.
                     </comment>
+                </field>
+                <field id="disable_order_create_on_basket_fail"
+                       translate="label"
+                       type="select"
+                       sortOrder="5"
+                       showInWebsite="1"
+                       showInDefault="0"
+                       showInStore="1">
+                    <label>Disable Order Creation on Basket Calculation Fail</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="error_message_on_basket_fail"
+                       translate="label"
+                       type="text"
+                       sortOrder="6"
+                       showInWebsite="1"
+                       showInDefault="0"
+                       showInStore="1">
+                    <label>Error Message on Basket Calculation Fail</label>
+                    <depends>
+                        <field id="ls_mag/ls_basket_calculation/disable_order_create_on_basket_fail">1</field>
+                    </depends>
                 </field>
             </group>
             <group id="ls_order_management"

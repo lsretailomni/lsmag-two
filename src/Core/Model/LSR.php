@@ -427,6 +427,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Basket Calculation
     const LS_PLACE_TO_SYNC_BASKET_CALCULATION = 'ls_mag/ls_basket_calculation/place_to_sync';
     const LS_BASKET_CALCULATION_SHIP_TO_PARAMS = 'ls_mag/ls_basket_calculation/ship_to_params';
+    const LS_DISABLE_ORDER_CREATE_ON_BASKET_FAIL = 'ls_mag/ls_basket_calculation/disable_order_create_on_basket_fail';
+    const LS_ERROR_MESSAGE_ON_BASKET_FAIL = 'ls_mag/ls_basket_calculation/error_message_on_basket_fail';
 
     //Order Management
     const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_management/prefix';
