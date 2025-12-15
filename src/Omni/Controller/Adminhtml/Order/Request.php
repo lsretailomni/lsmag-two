@@ -97,7 +97,6 @@ class Request extends Action
         $orderId = $this->getRequest()->getParam('order_id');
         $order   = $this->orderRepository->get($orderId);
         $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
-        $this->basketHelper->setCalculateBasket(false);
         $this->lsr->setStoreId($order->getStoreId());
         $response       = null;
         $resultRedirect = $this->resultRedirectFactory->create();
