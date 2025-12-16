@@ -276,10 +276,13 @@ class Returns
                 $invoiceData['invoice']->getIncrementId()
             );
             $creditMemoData['do_offline']   = (strcasecmp($data['ReturnType'], 'Online') !== 0) ? 1 : 0;
+            $lineAmount                     = 0;
+            foreach ($data['Lines'] as $line) {
+                $lineAmount += $line['Amount'] ?? 0;
+            }
 
-            // Apply amount adjustment if provided
-            if (isset($data['Amount'])) {
-                $this->applyAmountAdjustment($creditMemoData, $invoiceData, $data['Amount']);
+            if ($lineAmount > 0) {
+                $this->applyAmountAdjustment($creditMemoData, $invoiceData, $lineAmount);
             }
 
             // Ensure shipping amount is positive
