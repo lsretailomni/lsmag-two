@@ -77,6 +77,17 @@ interface ReplDiscountInterface
     public function getDiscountValueType();
 
     /**
+     * @param boolean $Exclude
+     * @return $this
+     */
+    public function setExclude($Exclude);
+
+    /**
+     * @return boolean
+     */
+    public function getExclude();
+
+    /**
      * @param string $FromDate
      * @return $this
      */
@@ -119,6 +130,28 @@ interface ReplDiscountInterface
      * @return string
      */
     public function getLoyaltySchemeCode();
+
+    /**
+     * @param string $MemberAttribute
+     * @return $this
+     */
+    public function setMemberAttribute($MemberAttribute);
+
+    /**
+     * @return string
+     */
+    public function getMemberAttribute();
+
+    /**
+     * @param string $MemberAttributeValue
+     * @return $this
+     */
+    public function setMemberAttributeValue($MemberAttributeValue);
+
+    /**
+     * @return string
+     */
+    public function getMemberAttributeValue();
 
     /**
      * @param float $MinimumQuantity
