@@ -278,11 +278,18 @@ class Returns
             $creditMemoData['do_offline']   = (strcasecmp($data['ReturnType'], 'Online') !== 0) ? 1 : 0;
             $lineAmount                     = 0;
             foreach ($data['Lines'] as $line) {
-                $lineAmount += $line['Amount'] ?? 0;
+                if ($line['ItemId'] == $shippingItemId) {
+                    continue;
+                }
+                $lineAmount += abs($line['Amount']) ?? 0;
             }
 
             if ($lineAmount > 0) {
-                $this->applyAmountAdjustment($creditMemoData, $invoiceData, $lineAmount);
+                $groupResult = $this->applyAmountAdjustment($creditMemoData, $invoiceData, $lineAmount);
+                if (!$groupResult['success']) {
+                    $results[] = $this->helper->outputMessage(false, $groupResult['message']);
+                    return $results;
+                }
             }
 
             // Ensure shipping amount is positive
@@ -326,10 +333,25 @@ class Returns
                 }
 
                 if ($orderItem->getQtyOrdered() > 0 && $orderItem->getRowTotalInclTax() > 0) {
-                    $pricePerUnit     = ($orderItem->getRowTotalInclTax() / $orderItem->getQtyOrdered());
+                    $pricePerUnit     = ($orderItem->getRowTotal() / $orderItem->getQtyOrdered());
                     $totalItemsRefund += $pricePerUnit * $itemData['qty'];
                 }
             }
+        }
+
+        if (abs($lsCentralAmount) > ($totalItemsRefund + 0.0001)) {
+            $currencyCode = $invoiceData['invoice']->getOrderCurrencyCode();
+            return [
+                'success' => false,
+                'message' => sprintf(
+                    'Refund amount (%s %s) is greater than the allowed subtotal (%s %s) for the items.',
+                    $currencyCode,
+                    number_format($lsCentralAmount, 2),
+                    $currencyCode,
+                    number_format($totalItemsRefund, 2)
+                ),
+                'data'    => []
+            ];
         }
 
         $amountDifference = $totalItemsRefund - abs($lsCentralAmount);
@@ -337,6 +359,12 @@ class Returns
         if ($amountDifference > 0) {
             $creditMemoData['adjustment_negative'] = $amountDifference;
         }
+
+        return [
+            'success' => true,
+            'message' => '',
+            'data'    => []
+        ];
     }
 
     /**
