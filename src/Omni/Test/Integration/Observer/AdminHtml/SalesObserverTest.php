@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Ls\Omni\Test\Integration\Observer\AdminHtml;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ContactHelper;
@@ -18,6 +19,7 @@ use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Fixture\CustomerFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use Magento\Checkout\Test\Fixture\SetBillingAddress as SetBillingAddress;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote\Address\Total\CollectorInterface;
 use Magento\Quote\Model\Quote\Address\TotalFactory;
 use Magento\Checkout\Test\Fixture\SetShippingAddress as SetShippingAddress;
@@ -276,7 +278,7 @@ class SalesObserverTest extends AbstractIntegrationTest
             ]
         ));
 
-        $expectedLsPointsDiscount = AbstractIntegrationTest::LSR_LOY_POINTS * $this->loyaltyHelper->getPointRate();
+        $expectedLsPointsDiscount = $this->getLsPointsDiscount(AbstractIntegrationTest::LSR_LOY_POINTS);
 
         $mobileTransaction = current((array)$this->basketHelper->getOneListCalculationFromCheckoutSession()->getMobiletransaction());
         $this->assertNotEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
@@ -291,5 +293,19 @@ class SalesObserverTest extends AbstractIntegrationTest
         $cart->delete();
         $this->checkoutSession->clearQuote();
         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
+    }
+
+    /**
+     * Get Ls points discount
+     *
+     * @param $pointsSpent
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    public function getLsPointsDiscount($pointsSpent)
+    {
+        $loyaltyPointsRate = $this->loyaltyHelper->getPointRate(null, 'LOY');
+
+        return ($loyaltyPointsRate > 0) ? $pointsSpent * (1 / $loyaltyPointsRate) : 0;
     }
 }
