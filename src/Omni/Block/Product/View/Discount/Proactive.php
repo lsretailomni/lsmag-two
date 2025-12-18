@@ -240,6 +240,8 @@ class Proactive extends Template
      * @param ProactiveDiscount $discount
      * @return string
      * @throws NoSuchEntityException
+     * @throws \DateException
+     * @throws \DateMalformedStringException
      */
     // @codingStandardsIgnoreLine
     public function getFormattedDescriptionDiscount(
@@ -360,6 +362,8 @@ class Proactive extends Template
      * @param $description
      * @return mixed
      * @throws NoSuchEntityException
+     * @throws \DateException
+     * @throws \DateMalformedStringException
      */
     public function getDiscountValidityDatesById($validationPeriodId, &$description)
     {
@@ -380,9 +384,12 @@ class Proactive extends Template
             $startDate = $validationPeriod->getStartDate();
             $endDate   = $validationPeriod->getEndDate();
 
-            //$startTime = ($validationPeriod->getStartTime()) ?? "00:00:00 AM";
-            $startTime = ($validationPeriod->getStartTime()) ?? "00:00:00";
-            $endTime   = ($validationPeriod->getEndTime()) ?? "11:59:00 PM";
+            $startTime = ($validationPeriod->getOfferStartTime())
+                ? (new \DateTime($validationPeriod->getOfferStartTime()))->format('h:i:s A')
+                : "00:00:00";
+            $endTime   = ($validationPeriod->getOfferEndTime())
+                ? (new \DateTime($validationPeriod->getOfferEndTime()))->format('h:i:s A')
+                : "11:59:00 PM";
         }
 
         if ($startDate) {
@@ -405,27 +412,10 @@ class Proactive extends Template
     }
 
     /**
-     * Convert date time to UTC
-     *
-     * @param $input
-     * @return string
-     * @throws \DateException
-     */
-    public function getDateTimeInUTC($input)
-    {
-        $date = \DateTime::createFromFormat('Y-m-d h:i:s A', $input, new \DateTimeZone('UTC'));
-        if ($date === false) {
-            throw new \DateException("Invalid date string: ". $input);
-        }
-        return $this->timeZoneInterface->date($date)->format('Y-m-d\TH:i:s');
-    }
-
-    /**
      * Format date time
      *
      * @param $input
      * @return string
-     * @throws \DateException
      */
     public function getFormattedDateTime($input)
     {
@@ -530,20 +520,6 @@ class Proactive extends Template
             return null;
         }
         return $currentProduct->getSku();
-    }
-
-    /**
-     * Check if discount block is enabled in the config
-     *
-     * @return string
-     * @throws NoSuchEntityException
-     */
-    public function isDiscountEnable()
-    {
-        return $this->lsr->getStoreConfig(
-            LSR::LS_DISCOUNT_SHOW_ON_PRODUCT,
-            $this->lsr->getCurrentStoreId()
-        );
     }
 
     /**

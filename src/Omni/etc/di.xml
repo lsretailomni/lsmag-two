@@ -67,6 +67,9 @@
         <plugin name="ls_update_shipment_email_modification" type="Ls\Omni\Plugin\Email\Sender\ShipmentSender"
                 sortOrder="1"/>
     </type>
+    <type name="Magento\Sales\Model\Order\Email\Sender\CreditmemoSender">
+        <plugin name="ls_omni_creditmemo_sender_plugin" type="Ls\Omni\Plugin\Email\Sender\CreditmemoSender" />
+    </type>
     <type name="Magento\ConfigurableProduct\Block\Product\View\Type\Configurable">
         <plugin disabled="false" name="Ls_Omni_Plugin_ConfigurableProduct_Block_Product_View_Type_Configurable"
                 sortOrder="10" type="Ls\Omni\Plugin\ConfigurableProduct\Block\Product\View\Type\Configurable"/>
