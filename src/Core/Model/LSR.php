@@ -1172,8 +1172,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getStopFpcPurge(&$tags)
     {
         $config = $this->fpcInvalidateFlag && (bool)$this->scopeConfig->getValue(
-                self::SC_REPLICATION_DEFAULT_STOP_FPC_PURGE
-            );
+            self::SC_REPLICATION_DEFAULT_STOP_FPC_PURGE
+        );
 
         if (!$config) {
             return false;
@@ -1482,8 +1482,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isPushNotificationsEnabled()
     {
-        $configuredNotificationType = $this->getNotificationType() != null ? explode(',',
-            $this->getNotificationType()) : [];
+        $configuredNotificationType = $this->getNotificationType() != null ? explode(
+            ',',
+            $this->getNotificationType()
+        ) : [];
 
         return in_array(LSR::LS_NOTIFICATION_PUSH_NOTIFICATION, $configuredNotificationType);
     }
@@ -1500,5 +1502,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getStore()->getWebsiteId()
         );
+    }
+
+    /**
+     * Determines if order creation shoulbe be blocked on basket calculation fail.
+     *
+     * @return bool True if the basket data is valid or if order creation is allowed; false otherwise.
+     * @throws NoSuchEntityException
+     */
+    public function getDisableProcessOnBasketFailFlag()
+    {
+        $websiteId = $this->getCurrentWebsiteId();
+        return $this->getWebsiteConfig(LSR::LS_DISABLE_ORDER_CREATE_ON_BASKET_FAIL, $websiteId);
     }
 }

@@ -13,6 +13,7 @@ use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Logger\FlatReplicationLogger;
 use \Ls\Replication\Logger\OmniLogger;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Exception\InputException;
 use Magento\Framework\Session\SessionManagerInterface;
 use Psr\Log\LoggerInterface;
 use SoapFault;
@@ -74,6 +75,11 @@ abstract class AbstractOperation implements OperationInterface
     public $flatReplicationLogger;
 
     /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
      * @param ServiceType $service_type
      */
     public function __construct(
@@ -86,6 +92,7 @@ abstract class AbstractOperation implements OperationInterface
         $this->flatReplicationLogger = $this->objectManager->get(FlatReplicationLogger::class);
         $this->session = $this->objectManager->get(SessionManagerInterface::class);
         $this->cacheHelper = $this->objectManager->get(CacheHelper::class);
+        $this->lsr = $this->objectManager->get(LSR::class);
     }
 
     /**
@@ -141,8 +148,27 @@ abstract class AbstractOperation implements OperationInterface
             $navException = $this->parseException($e);
             $this->magentoLogger->critical($navException);
             if ($e->getMessage() != "") {
-                if ($e->faultcode == 's:Error' && $operation_name == 'OneListCalculate') {
+                if ($e->faultcode == 's:Error' &&
+                    ($operation_name == 'OneListCalculate' || $operation_name == 'OneListHospCalculate')) {
                     $response = $e->getMessage();
+                    $errMsg = $this->lsr->getStoreConfig(LSR::LS_ERROR_MESSAGE_ON_BASKET_FAIL);
+                    $this->magentoLogger->critical($errMsg);
+                    if ($this->lsr->getDisableProcessOnBasketFailFlag() && $operation_name == 'OneListHospCalculate') {
+                        throw new InputException(
+                            __($errMsg)
+                        );
+                    }
+                } elseif ($e->faultcode == "WSDL" &&
+                    ($operation_name == 'OneListCalculate' || $operation_name == 'OneListHospCalculate')
+                ) {
+                    $response = $e->getMessage();
+                    $errMsg = $this->lsr->getStoreConfig(LSR::LS_ERROR_MESSAGE_ON_BASKET_FAIL);
+                    $this->magentoLogger->critical($errMsg);
+                    if ($this->lsr->getDisableProcessOnBasketFailFlag() && $operation_name == 'OneListHospCalculate') {
+                        throw new InputException(
+                            __($errMsg)
+                        );
+                    }
                 } elseif ($e->getCode() == 504 && $operation_name == 'ContactCreate') {
                     $response = null;
                 } elseif ($operation_name == 'Ping') {
