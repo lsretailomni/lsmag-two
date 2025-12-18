@@ -426,9 +426,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_ORDER_INTEGRATION_ACTIVE = 'ls_mag/standalone_integration/order';
     //Basket Calculation
     const LS_PLACE_TO_SYNC_BASKET_CALCULATION = 'ls_mag/ls_basket_calculation/place_to_sync';
-    const LS_BASKET_CALCULATION_SHIP_TO_PARAMS = 'ls_mag/ls_basket_calculation/ship_to_params';
-    const LS_DISABLE_ORDER_CREATE_ON_BASKET_FAIL = 'ls_mag/ls_basket_calculation/disable_order_create_on_basket_fail';
-    const LS_ERROR_MESSAGE_ON_BASKET_FAIL = 'ls_mag/ls_basket_calculation/error_message_on_basket_fail';
+    const LS_BASKET_CALCULATION_SHIP_TO_PARAMS = 'ls_mag/ls_basket_calculation/ship_to_params';    
 
     //Order Management
     const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_management/prefix';
@@ -439,6 +437,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/stock_validation_active';
     const LSR_GRAPHQL_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/graphql_stock_validation_active';
     const LSR_DISCOUNT_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/discount_validation_active';
+    const LS_DISABLE_ORDER_CREATE_ON_BASKET_FAIL = 'ls_mag/ls_order_management/disable_order_create_on_basket_fail';
+    const LS_ERROR_MESSAGE_ON_BASKET_FAIL = 'ls_mag/ls_order_management/error_message_on_basket_fail';
 
     const LSR_DISCOUNT_VALIDATION_MSG = 'ls_mag/ls_order_management/discount_validation_msg';
     const LSR_GIFTCARD_VALIDATION_MSG = 'ls_mag/ls_order_management/giftcard_validation_msg';

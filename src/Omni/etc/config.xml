@@ -42,9 +42,7 @@
             </ls_stores>
             <ls_basket_calculation>
                 <place_to_sync>0</place_to_sync>
-                <ship_to_params>0</ship_to_params>
-                <disable_order_create_on_basket_fail>0</disable_order_create_on_basket_fail>
-                <error_message_on_basket_fail>An error occurred please refresh and try again.</error_message_on_basket_fail>
+                <ship_to_params>0</ship_to_params>                
             </ls_basket_calculation>
             <ls_order_management>
                 <shipping_item_id>66010</shipping_item_id>
@@ -52,6 +50,8 @@
                 <sync_order_statuses>canceled,fraud,payment_review</sync_order_statuses>
                 <stock_validation_active>0</stock_validation_active>
                 <graphql_stock_validation_active>0</graphql_stock_validation_active>
+                <disable_order_create_on_basket_fail>0</disable_order_create_on_basket_fail>
+                <error_message_on_basket_fail>An error occurred please refresh and try again.</error_message_on_basket_fail>
                 <discount_validation_active>1</discount_validation_active>
                 <discount_validation_msg>Unfortunately since your discount is no longer valid your order summary has been updated.</discount_validation_msg>
                 <giftcard_validation_msg>Unfortunately since your applied gift card has been expired order summary has been updated.</giftcard_validation_msg>

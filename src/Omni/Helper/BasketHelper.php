@@ -965,7 +965,13 @@ class BasketHelper extends AbstractHelperOmni
             );
             $price      = $item->getPrice();
             $basketData = $this->getOneListCalculation();
-            $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+            
+            if ($basketData instanceof Entity\OrderHosp) {
+                    $orderLines = $basketData ? $basketData->getOrderLines()->getOrderHospLine() : [];    
+            } else {
+                $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];    
+            }
+            
 
             foreach ($orderLines as $line) {
                 if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
