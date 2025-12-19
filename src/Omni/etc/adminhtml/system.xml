@@ -375,7 +375,7 @@
                        showInWebsite="1"
                        showInDefault="0"
                        showInStore="1">
-                    <label>Disable Order Creation on Basket Calculation Fail</label>
+                    <label>Block Order Creation on Basket Calculation Fail</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
                         <field id="ls_mag/ls_industry/ls_choose_industry">hospitality</field>
