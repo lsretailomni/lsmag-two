@@ -7,6 +7,8 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use PHPUnit\Framework\TestCase;
 use Laminas\Uri\UriFactory;
+use Magento\Framework\App\Bootstrap;
+use Magento\Framework\App\Http;
 
 class OmniClientSetupTest extends TestCase
 {
@@ -15,6 +17,7 @@ class OmniClientSetupTest extends TestCase
 
     protected function setUp(): void
     {
+        Bootstrap::create(BP, $_SERVER)->createApplication(Http::class);
         $baseUrl      = $this->getEnvironmentVariableValueGivenName('BASE_URL');
         $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
         $service_type = new ServiceType(ServiceType::ECOMMERCE);

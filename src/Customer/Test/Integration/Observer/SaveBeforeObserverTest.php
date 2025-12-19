@@ -43,7 +43,8 @@ class SaveBeforeObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
+        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
     ]
     public function testExecuteWithValidParameters()
     {
@@ -80,7 +81,8 @@ class SaveBeforeObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
+        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
     ]
     public function testExecuteWithLsPassword()
     {
@@ -116,7 +118,8 @@ class SaveBeforeObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
+        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
     ]
     public function testExecuteWithLsPasswordAndCustomerExists()
     {
@@ -147,7 +150,8 @@ class SaveBeforeObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
+        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
     ]
     public function testExecuteWithInvalidParameters()
     {

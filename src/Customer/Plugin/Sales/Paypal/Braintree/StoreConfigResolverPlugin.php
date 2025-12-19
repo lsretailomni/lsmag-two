@@ -1,5 +1,4 @@
 <?php
-
 namespace Ls\Customer\Plugin\Sales\Paypal\Braintree;
 
 use PayPal\Braintree\Model\StoreConfigResolver;

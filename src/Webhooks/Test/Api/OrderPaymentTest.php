@@ -5,7 +5,7 @@ namespace Ls\Webhooks\Test\Api;
 use Magento\Framework\Webapi\Rest\Request;
 use Magento\TestFramework\Helper\Bootstrap;
 
-class OrderPaymentTest extends AbstractWebhookTest
+class OrderPaymentTest extends AbstractWebhookBase
 {
     /**
      * @var $product

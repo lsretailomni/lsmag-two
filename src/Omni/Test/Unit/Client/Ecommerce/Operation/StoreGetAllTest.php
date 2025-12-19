@@ -5,7 +5,7 @@ namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore;
 use PHPUnit\Framework\TestCase;
 
-class StoresGetAllTest extends OmniClientSetupTest
+class StoreGetAllTest extends OmniClientSetupTest
 {
     public function testExecute()
     {

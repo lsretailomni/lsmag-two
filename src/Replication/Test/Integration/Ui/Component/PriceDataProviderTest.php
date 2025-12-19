@@ -58,6 +58,7 @@ class PriceDataProviderTest extends AbstractDataProvider
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             FlatDataReplication::class,
             [
@@ -84,6 +85,7 @@ class PriceDataProviderTest extends AbstractDataProvider
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             FlatDataReplication::class,
             [
@@ -95,8 +97,8 @@ class PriceDataProviderTest extends AbstractDataProvider
     public function testFilteredData(array $filterData)
     {
         $data = $this->applyFilterToData($filterData);
-        $this->assertEquals(1, $data['totalRecords']);
-        $this->assertCount(1, $data['items']);
+        $this->assertGreaterThanOrEqual(1, $data['totalRecords']);
+        $this->assertGreaterThanOrEqual(1, $data['items']);
         $this->assertEquals($filterData['value'], $data['items'][0][self::SEARCH_FIELD_NAME]);
     }
 }

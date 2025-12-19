@@ -394,7 +394,8 @@ abstract class AbstractTaskTest extends TestCase
             AbstractIntegrationTest::SAMPLE_HIERARCHY_NAV_ID,
             'website'
         ),
-        Config(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE, 5, 'store', 'default')
+        Config(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE, 5, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
     ]
     public function testExecute()
     {

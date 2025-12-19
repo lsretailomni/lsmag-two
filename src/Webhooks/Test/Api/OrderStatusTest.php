@@ -8,7 +8,7 @@ use Magento\TestFramework\Helper\Bootstrap;
 /**
  * Test for order status web hooks
  */
-class OrderStatusTest extends AbstractWebhookTest
+class OrderStatusTest extends AbstractWebhookBase
 {
     /**
      * @var $product
