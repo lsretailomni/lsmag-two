@@ -368,31 +368,6 @@
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\RestrictedOrderStatuses</source_model>
                     <comment>Order will not be synced to LS Central based on the selected order status, please leave it empty if you want to sync all orders to LS Central independent of the order status</comment>
                 </field>
-                <field id="disable_order_create_on_basket_fail"
-                       translate="label"
-                       type="select"
-                       sortOrder="7"
-                       showInWebsite="1"
-                       showInDefault="0"
-                       showInStore="1">
-                    <label>Block Order Creation on Basket Calculation Fail</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="ls_mag/ls_industry/ls_choose_industry">hospitality</field>
-                    </depends>
-                </field>
-                <field id="error_message_on_basket_fail"
-                       translate="label"
-                       type="text"
-                       sortOrder="8"
-                       showInWebsite="1"
-                       showInDefault="0"
-                       showInStore="1">
-                    <label>Error Message on Basket Calculation Fail</label>
-                    <depends>
-                        <field id="ls_mag/ls_industry/ls_choose_industry">hospitality</field>
-                    </depends>
-                </field>
                 <field id="stock_validation_active" translate="label" type="select" sortOrder="8" showInWebsite="1" showInDefault="1" showInStore="1">
                     <label>Enable Stock Validation Before Order Creation</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

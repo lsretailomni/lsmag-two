@@ -1688,21 +1688,4 @@ class BasketHelper extends AbstractHelperOmni
     {
         return $this->cartRepository;
     }
-
-    /**
-     * Verifies the validity of basket data and determines if order creation should be disabled.
-     *
-     * @param mixed $basketData The basket data to be verified.
-     * @return bool True if the basket data is valid or if order creation is allowed; false otherwise.
-     */
-    public function verifyBasketySync($basketData)
-    {
-        $lsr       = $this->basketHelper->getLsrModel();
-        $websiteId = $lsr->getCurrentWebsiteId();
-        $disableOrderCreateFlag = $lsr->getWebsiteConfig(LSR::LS_DISABLE_ORDER_CREATE_ON_BASKET_FAIL,$websiteId);
-        if($disableOrderCreateFlag == 1 && $basketData == null) {
-            return false;
-        }
-        return true;
-    }
 }

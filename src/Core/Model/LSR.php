@@ -426,7 +426,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_ORDER_INTEGRATION_ACTIVE = 'ls_mag/standalone_integration/order';
     //Basket Calculation
     const LS_PLACE_TO_SYNC_BASKET_CALCULATION = 'ls_mag/ls_basket_calculation/place_to_sync';
-    const LS_BASKET_CALCULATION_SHIP_TO_PARAMS = 'ls_mag/ls_basket_calculation/ship_to_params';    
+    const LS_BASKET_CALCULATION_SHIP_TO_PARAMS = 'ls_mag/ls_basket_calculation/ship_to_params';
 
     //Order Management
     const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_management/prefix';
@@ -1172,8 +1172,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getStopFpcPurge(&$tags)
     {
         $config = $this->fpcInvalidateFlag && (bool)$this->scopeConfig->getValue(
-            self::SC_REPLICATION_DEFAULT_STOP_FPC_PURGE
-        );
+                self::SC_REPLICATION_DEFAULT_STOP_FPC_PURGE
+            );
 
         if (!$config) {
             return false;
@@ -1505,7 +1505,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * Determines if order creation shoulbe be blocked on basket calculation fail.
+     * Determines if order creation should be blocked on basket calculation fail.
      *
      * @return bool True if the basket data is valid or if order creation is allowed; false otherwise.
      * @throws NoSuchEntityException

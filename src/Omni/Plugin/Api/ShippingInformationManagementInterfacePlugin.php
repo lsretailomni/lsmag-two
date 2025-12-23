@@ -60,16 +60,7 @@ class ShippingInformationManagementInterfacePlugin
             return $result;
         }
         
-        $basketData = $this->basketHelper->syncBasketWithCentral($cartId);
-        if (!$this->basketHelper->verifyBasketySync($basketData)) {
-            $lsr    = $this->basketHelper->getLsrModel();
-            $errMsg = $lsr->getStoreConfig(LSR::LS_ERROR_MESSAGE_ON_BASKET_FAIL);
-            $this->logger->critical($errMsg);
-            throw new InputException(
-                __($errMsg)
-            );
-        }
-        
+        $this->basketHelper->syncBasketWithCentral($cartId);
         return $result;
     }
 }
