@@ -3472,7 +3472,7 @@ class ReplicationHelper extends AbstractHelper
             }
         }
 
-        if ($parentStockItem->getSourceCode() !== $this->defaultSourceProviderFactory->create()->getCode()) {
+        if ($parentStockItem->getStockId() !== 1) {
             $childrenIsInStock = true;
         }
 
@@ -4048,5 +4048,4 @@ class ReplicationHelper extends AbstractHelper
 
         return $collection;
     }
-
 }

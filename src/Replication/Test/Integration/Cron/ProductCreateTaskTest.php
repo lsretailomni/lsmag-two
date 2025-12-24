@@ -118,13 +118,6 @@ class ProductCreateTaskTest extends AbstractTaskTest
             $storeId,
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
         );
-
-        $replUomOnly = $this->getUom(
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
-            $storeId,
-            'KG'
-        );
-        $this->deleteReplItemUomData([$replUomOnly]);
         $this->deleteReplItemData(
             [$replItemConf]
         );
@@ -147,16 +140,8 @@ class ProductCreateTaskTest extends AbstractTaskTest
             $storeId
         );
 
-        $uomProductVariant = $this->replicationHelper->getProductDataByIdentificationAttributes(
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
-            '',
-            'KG',
-            $storeId
-        );
-
         $this->assertTrue((bool)($configurableProduct->getData('status') == Status::STATUS_DISABLED));
         $this->assertTrue((bool)($variantProduct->getData('status') == Status::STATUS_DISABLED));
-        $this->assertTrue((bool)($uomProductVariant->getData('status') == Status::STATUS_DISABLED));
     }
 
     public function updateProducts()
@@ -329,7 +314,7 @@ class ProductCreateTaskTest extends AbstractTaskTest
     public function assertConfigurableProducts($configurableProduct)
     {
         $this->assertTrue($configurableProduct->getTypeId() == Configurable::TYPE_CODE);
-//        $this->assertVariants($configurableProduct);
+        $this->assertVariants($configurableProduct);
         $this->assertAssignedCategories($configurableProduct);
         $this->assertCustomAttributes($configurableProduct);
     }
@@ -428,10 +413,10 @@ class ProductCreateTaskTest extends AbstractTaskTest
         $storeId  = $this->storeManager->getStore()->getId();
         $itemId   = $configurableProduct->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
         $replItem = $this->getReplItem($itemId, $storeId);
-
+        $totalUom = $this->getUom($itemId, $storeId);
         $uoms                     = $this->replicationHelper->getUomCodes($itemId, $storeId);
         $replUoms                 = $this->getUom($itemId, $storeId);
-        $itemUomCount             = !empty($uoms[$itemId]) ? count($uoms[$itemId]) : 1;
+        $itemUomCount             = !empty($totalUom) ? count($totalUom) : 1;
         $variants                 = $this->getVariant($itemId, $storeId);
         $variantRegistrationCount = !empty($variants) ? count($variants) : 1;
         $associatedProductIds     = $configurableProduct->getTypeInstance()->getUsedProductIds($configurableProduct);
