@@ -115,12 +115,12 @@
     <!-- In order to calculate basket on checkout for guest user -->
     <type name="Magento\Checkout\Api\GuestShippingInformationManagementInterface">
         <plugin name="calculate_basket"
-                type="Ls\Omni\Plugin\Api\ShippingInformationManagementInterfacePlugin"/>
+                type="Ls\Omni\Plugin\Api\ShippingInformationManagementInterfacePlugin" sortOrder="1"/>
     </type>
     <!-- In order to calculate basket on checkout for logged in user -->
     <type name="Magento\Checkout\Api\ShippingInformationManagementInterface">
         <plugin name="calculate_basket"
-                type="Ls\Omni\Plugin\Api\ShippingInformationManagementInterfacePlugin"/>
+                type="Ls\Omni\Plugin\Api\ShippingInformationManagementInterfacePlugin" sortOrder="1"/>
     </type>
     <!-- In order to fix klarna api items total -->
     <type name="Klarna\Core\Model\Checkout\Orderline\Items">

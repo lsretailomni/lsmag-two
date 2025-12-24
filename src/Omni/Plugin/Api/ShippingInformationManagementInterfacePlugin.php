@@ -2,11 +2,14 @@
 
 namespace Ls\Omni\Plugin\Api;
 
+use Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Api\Data\ShippingInformationInterface;
+use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Psr\Log\LoggerInterface;
 
 /**
  * Interceptor to intercept ShippingInformationManagementInterface methods
@@ -19,12 +22,20 @@ class ShippingInformationManagementInterfacePlugin
     private $basketHelper;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @param BasketHelper $basketHelper
+     * @param LoggerInterface $logger
      */
     public function __construct(
-        BasketHelper $basketHelper
+        BasketHelper $basketHelper,
+        LoggerInterface $logger,
     ) {
         $this->basketHelper = $basketHelper;
+        $this->logger       = $logger;
     }
 
     /**
@@ -48,9 +59,8 @@ class ShippingInformationManagementInterfacePlugin
         if (!is_numeric($cartId)) {
             return $result;
         }
-
+        
         $this->basketHelper->syncBasketWithCentral($cartId);
-
         return $result;
     }
 }

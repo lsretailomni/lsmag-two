@@ -88,7 +88,6 @@ class SyncOrders
     public function execute($storeData = null)
     {
         $info = [];
-
         if (!$this->lsr->isSSM()) {
             if (!empty($storeData) && $storeData instanceof StoreInterface) {
                 $stores = [$storeData];

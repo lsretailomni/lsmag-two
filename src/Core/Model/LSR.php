@@ -437,6 +437,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/stock_validation_active';
     const LSR_GRAPHQL_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/graphql_stock_validation_active';
     const LSR_DISCOUNT_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/discount_validation_active';
+    const LS_DISABLE_ORDER_CREATE_ON_BASKET_FAIL = 'ls_mag/ls_order_management/disable_order_create_on_basket_fail';
+    const LS_ERROR_MESSAGE_ON_BASKET_FAIL = 'ls_mag/ls_order_management/error_message_on_basket_fail';
 
     const LSR_DISCOUNT_VALIDATION_MSG = 'ls_mag/ls_order_management/discount_validation_msg';
     const LSR_GIFTCARD_VALIDATION_MSG = 'ls_mag/ls_order_management/giftcard_validation_msg';
@@ -1480,8 +1482,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isPushNotificationsEnabled()
     {
-        $configuredNotificationType = $this->getNotificationType() != null ? explode(',',
-            $this->getNotificationType()) : [];
+        $configuredNotificationType = $this->getNotificationType() != null ? explode(
+            ',',
+            $this->getNotificationType()
+        ) : [];
 
         return in_array(LSR::LS_NOTIFICATION_PUSH_NOTIFICATION, $configuredNotificationType);
     }
@@ -1498,5 +1502,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getStore()->getWebsiteId()
         );
+    }
+
+    /**
+     * Determines if order creation should be blocked on basket calculation fail.
+     *
+     * @return bool True if the basket data is valid or if order creation is allowed; false otherwise.
+     * @throws NoSuchEntityException
+     */
+    public function getDisableProcessOnBasketFailFlag()
+    {
+        $websiteId = $this->getCurrentWebsiteId();
+        return $this->getWebsiteConfig(LSR::LS_DISABLE_ORDER_CREATE_ON_BASKET_FAIL, $websiteId);
     }
 }

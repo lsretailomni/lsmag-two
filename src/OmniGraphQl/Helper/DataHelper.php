@@ -492,6 +492,10 @@ class DataHelper extends AbstractHelper
             $formattedData[] = ['date' => $index, 'slots' => $slot];
         }
 
+        if (empty($formattedData)) {
+            $formattedData[] = ['date' => __('Not Available'), 'slots' => []];
+        }
+
         return $formattedData;
     }
 
