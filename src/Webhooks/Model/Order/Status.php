@@ -250,13 +250,12 @@ class Status
         foreach ($itemsInfo as $item) {
             $itemId    = $item['ItemId'];
             $variantId = $item['VariantId'];
-            $exists2   = $this->getItemInvoice($magOrder, $itemId, $variantId);
+            $exists2   = $this->helper->getItemInvoice($magOrder, $itemId, $variantId);
             $exists1   = $exists1 && $exists2;
         }
 
         return $exists1;
     }
-
 
 
     /**
