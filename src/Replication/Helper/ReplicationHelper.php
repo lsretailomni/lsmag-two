@@ -3866,8 +3866,7 @@ class ReplicationHelper extends AbstractHelper
                 break;
             }
         }
-
-        if ($parentStockItem->getSourceCode() !== $this->defaultSourceProviderFactory->create()->getCode()) {
+        if ($parentStockItem->getStockId() !== 1) {
             $childrenIsInStock = true;
         }
 
