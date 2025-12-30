@@ -148,8 +148,8 @@ class DataProvider implements ConfigProviderInterface
         }
 
         $config['ls_enabled'] = (bool)$this->lsr->isEnabled();
-
-        $config['gift_card_pin_enable'] = $this->giftCardHelper->isPinCodeFieldEnable();
+        $config['ls_discount_validator'] = (bool)$this->lsr->isDiscountValidationEnabled();
+        $config['gift_card_pin_enable'] = (bool)$this->giftCardHelper->isPinCodeFieldEnable();
 
         return $config;
     }
