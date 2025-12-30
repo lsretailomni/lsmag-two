@@ -29,7 +29,7 @@ var config = {
                 'Ls_Omni/js/model/shipping-save-processor/checkout': true
             },
             'Magento_Checkout/js/action/place-order': {
-                'Ls_Omni/js/mixin/discount-validator-place-order-mixin' : true
+                'Ls_Omni/js/mixin/discount-validator-place-order-mixin-wrapper' : true
             }
         },
         shim: {

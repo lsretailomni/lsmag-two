@@ -67,8 +67,6 @@ class LayoutProcessorPluginTest extends AbstractIntegrationTest
         $this->jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['payments-list']['children']['ls_payment_method_pay_at_store-form'] = 'ls_payment_method_pay_at_store';
         $this->jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['afterMethods']['children']['loyalty-points']                       = 'loyalty-points';
         $this->jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['afterMethods']['children']['gift-card']                            = 'gift-card';
-        $this->jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['additional-payment-validators']['children']['discount-validator']  = 'discount-validator';
-        $this->jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['additional-payment-validators']['children']['discount-validator']  = 'discount-validator';
 
         $this->jsLayout['components']['checkout']['children']['sidebar']['children']['summary']['children']['totals']['children']['ls_gift_card_amount_used'] = 'ls_gift_card_amount_used';
         $this->jsLayout['components']['checkout']['children']['sidebar']['children']['summary']['children']['totals']['children']['ls_points_discount']       = 'ls_points_discount';
@@ -117,7 +115,6 @@ class LayoutProcessorPluginTest extends AbstractIntegrationTest
 
         $this->assertArrayNotHasKey('gift-card', $billingStep['children']['payment']['children']['afterMethods']['children']);
 
-        $this->assertArrayNotHasKey('discount-validator', $payment['children']['additional-payment-validators']['children']);
         $this->assertArrayNotHasKey('ls-pickup-additional-options-wrapper', $shippingAdditional['children']);
 
         $this->assertArrayNotHasKey('component', $shippingAdditional['children']['select_store']);
@@ -164,7 +161,6 @@ class LayoutProcessorPluginTest extends AbstractIntegrationTest
 
         $this->assertArrayHasKey('gift-card', $billingStep['children']['payment']['children']['afterMethods']['children']);
 
-        $this->assertArrayHasKey('discount-validator', $payment['children']['additional-payment-validators']['children']);
         $this->assertArrayHasKey('ls-pickup-additional-options-wrapper', $shippingAdditional['children']);
 
         $this->assertEquals('Ls_Omni/js/view/checkout/shipping/select-store', $shippingAdditional['children']['select_store']['component']);
