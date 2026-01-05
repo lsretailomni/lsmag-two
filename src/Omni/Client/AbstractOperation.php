@@ -154,6 +154,8 @@ abstract class AbstractOperation implements OperationInterface
                     $errMsg = $this->lsr->getStoreConfig(LSR::LS_ERROR_MESSAGE_ON_BASKET_FAIL);
                     $this->magentoLogger->critical($errMsg);
                     if ($this->lsr->getDisableProcessOnBasketFailFlag() && $operation_name == 'OneListHospCalculate') {
+                        $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+                        $this->debugLog($operation_name, $requestTime, $responseTime, $lsr->getWebsiteId());
                         throw new InputException(
                             __($errMsg)
                         );
@@ -165,6 +167,8 @@ abstract class AbstractOperation implements OperationInterface
                     $errMsg = $this->lsr->getStoreConfig(LSR::LS_ERROR_MESSAGE_ON_BASKET_FAIL);
                     $this->magentoLogger->critical($errMsg);
                     if ($this->lsr->getDisableProcessOnBasketFailFlag() && $operation_name == 'OneListHospCalculate') {
+                        $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+                        $this->debugLog($operation_name, $requestTime, $responseTime, $lsr->getWebsiteId());
                         throw new InputException(
                             __($errMsg)
                         );
