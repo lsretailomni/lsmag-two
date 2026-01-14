@@ -288,6 +288,8 @@ class OrderHelper extends AbstractHelper
                 $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
             }
             $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+            $this->basketHelper->getItemHelper()->checkAndUpdateServiceItems($orderLinesArray);
+            
             //For click and collect we need to remove shipment charge orderline
             //For flat shipment it will set the correct shipment value into the order
             $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
@@ -454,6 +456,7 @@ class OrderHelper extends AbstractHelper
                 ->setItemId($shipmentFeeId)
                 ->setLineType(Entity\Enum\LineType::ITEM)
                 ->setQuantity(1)
+                ->setServiceItem(true)
                 ->setDiscountAmount($order->getShippingDiscountAmount());
             array_push($orderLines, $shipmentOrderLine);
         }

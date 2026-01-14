@@ -7,7 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
 use \Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\Order as CommerceOrder;
@@ -73,7 +73,7 @@ class OrderEdit
         ItemHelper $itemHelper,
         LoggerInterface $logger,
         LSR $LSR,
-        LoyaltyHelper $loyaltyHelper,
+        LoyaltyHelper $loyaltyHelper
     ) {
         $this->orderHelper   = $orderHelper;
         $this->itemHelper    = $itemHelper;
@@ -196,6 +196,7 @@ class OrderEdit
                 $oldItemsArray[$oldItem->getSku()] = $oldItem->getSku();
             }
             $this->addNewItems($this->newItemsArray, $oldItemsArray, $orderLinesArray, $order);
+            $this->itemHelper->checkAndUpdateServiceItems($orderLinesArray);
             $this->updateItemLineNumber($orderLinesArray, $customerOrder);
             $lineOrderArray    = $this->modifyItemQuantity($newItems, $this->oldItems, $orderLinesArray, $order);
             $orderLinesArray   = array_merge($orderLinesArray, $lineOrderArray);
@@ -386,6 +387,7 @@ class OrderEdit
                         ->setLineType(Entity\Enum\LineType::ITEM)
                         ->setLineNumber($line->getLineNumber())
                         ->setQuantity(1)
+                        ->setServiceItem(true)
                         ->setDiscountAmount($order->getShippingDiscountAmount());
                     array_push($orderLines, $shipmentOrderLine);
                 }

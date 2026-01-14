@@ -18,6 +18,7 @@ use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Directory\Model\CurrencyFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -26,6 +27,7 @@ use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\Quote\Model\ResourceModel\Quote;
@@ -848,5 +850,31 @@ class ItemHelper extends AbstractHelper
 
         $rate = $this->currencyFactory->create()->load($currentCurrencyCode)->getAnyRate($baseCurrencyCode);
         return $price * $rate;
+    }
+
+    /**
+     * Validate order lines array and set Service Item flag if them item is non-inventory.
+     *
+     * @param array $orderLinesArray
+     * @return void
+     */
+    public function checkAndUpdateServiceItems(&$orderLinesArray)
+    {
+        foreach ($orderLinesArray as $orderLine) {
+            if (!empty($orderLine->getVariantId())) {
+                continue;
+            }
+            $itemId  = $orderLine->getItemId();
+            $product = $this->getProductByIdentificationAttributes($itemId);
+            $typeId  = $product->getTypeId();
+            if (in_array($typeId, [
+                Type::TYPE_VIRTUAL,
+                Configurable::TYPE_CODE,
+                Grouped::TYPE_CODE,
+                \Magento\Downloadable\Model\Product\Type::TYPE_DOWNLOADABLE
+            ], true)) {
+                $orderLine->setServiceItem(true);
+            }
+        }
     }
 }
