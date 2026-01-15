@@ -15,10 +15,12 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Type;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 
 /**
  * Useful helper functions for item
@@ -641,5 +643,30 @@ class ItemHelper extends AbstractHelperOmni
         $rate = $this->currencyFactory->create()->load($currentCurrencyCode)->getAnyRate($baseCurrencyCode);
 
         return $price * $rate;
+    }
+
+    /**
+     * Validate order line and set Service Item flag if them item is non-inventory.
+     *
+     * @param $orderLine
+     * @return true|false
+     */
+    public function checkAndUpdateServiceItems($orderLine)
+    {
+        if (empty($orderLine->getVariantcode())) {
+            $itemId  = $orderLine->getItemId();
+            $product = $this->itemHelper->getProductByIdentificationAttributes($itemId);
+            $typeId  = $product->getTypeId();
+            if (in_array($typeId, [
+                Type::TYPE_VIRTUAL,
+                Configurable::TYPE_CODE,
+                Grouped::TYPE_CODE,
+                \Magento\Downloadable\Model\Product\Type::TYPE_DOWNLOADABLE
+            ], true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

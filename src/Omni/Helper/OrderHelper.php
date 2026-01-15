@@ -15,7 +15,6 @@ use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCOLineV6;
 use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCOPaymentV6;
 use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateV6;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
@@ -190,6 +189,9 @@ class OrderHelper extends AbstractHelperOmni
 
             foreach ($oneListCalculateResponse->getMobiletransactionline() ?? [] as $id => $orderLine) {
                 if ($orderLine->getLinetype() == 0) {
+
+                    $serviceItem = $this->itemHelper->checkAndUpdateServiceItems($orderLine);
+
                     $customerOrderCoLine = $this->createInstance(
                         CustomerOrderCreateCOLineV6::class
                     );
@@ -203,6 +205,7 @@ class OrderHelper extends AbstractHelperOmni
                         CustomerOrderCreateCOLineV6::NET_PRICE => $orderLine->getNetprice(),
                         CustomerOrderCreateCOLineV6::PRICE => $orderLine->getPrice(),
                         CustomerOrderCreateCOLineV6::QUANTITY => $orderLine->getQuantity(),
+                        CustomerOrderCreateCOLineV6::SERVICE_ITEM => $serviceItem,
                         CustomerOrderCreateCOLineV6::DISCOUNT_AMOUNT => $orderLine->getDiscountamount(),
                         CustomerOrderCreateCOLineV6::DISCOUNT_PERCENT => $orderLine->getDiscountpercent(),
                         CustomerOrderCreateCOLineV6::NET_AMOUNT => $orderLine->getNetamount(),
@@ -304,6 +307,7 @@ class OrderHelper extends AbstractHelperOmni
                 CustomerOrderCreateCOLineV6::NET_PRICE => $netPrice,
                 CustomerOrderCreateCOLineV6::PRICE => $shippingAmount,
                 CustomerOrderCreateCOLineV6::QUANTITY => 1,
+                CustomerOrderCreateCOLineV6::SERVICE_ITEM => true,
                 CustomerOrderCreateCOLineV6::NET_AMOUNT => $netPrice,
                 CustomerOrderCreateCOLineV6::VAT_AMOUNT => $taxAmount,
                 CustomerOrderCreateCOLineV6::AMOUNT => $netPrice + $taxAmount,

@@ -497,6 +497,7 @@ class OrderEdit
                         COEditLine::NET_PRICE => $netPrice,
                         COEditLine::PRICE => $shippingAmount,
                         COEditLine::QUANTITY => 1,
+                        COEditLine::SERVICE_ITEM => true,
                         COEditLine::NET_AMOUNT => $netPrice,
                         COEditLine::VAT_AMOUNT => $taxAmount,
                         COEditLine::AMOUNT => $shippingAmount,
@@ -613,6 +614,9 @@ class OrderEdit
         $orderEditCoLines = [];
         foreach ($orderLinesArray as $line) {
             if ($line->getLinetype() == 0) {
+
+                $serviceItem = $this->itemHelper->checkAndUpdateServiceItems($line);
+                
                 $coEditLine = $this->orderHelper->createInstance(
                     COEditLine::class
                 );
@@ -627,6 +631,7 @@ class OrderEdit
                     COEditLine::NET_PRICE           => $line->getNetPrice(),
                     COEditLine::PRICE               => $line->getPrice(),
                     COEditLine::QUANTITY            => $line->getQuantity(),
+                    COEditLine::SERVICE_ITEM        => $serviceItem,
                     COEditLine::DISCOUNT_AMOUNT     => $line->getDiscountAmount(),
                     COEditLine::DISCOUNT_PERCENT    => $line->getDiscountPercent(),
                     COEditLine::NET_AMOUNT          => $line->getNetAmount(),
