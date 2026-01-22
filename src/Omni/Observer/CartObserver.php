@@ -9,6 +9,7 @@ use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Psr\Log\LoggerInterface;
@@ -99,6 +100,9 @@ class CartObserver implements ObserverInterface
                 }
                 $this->basketHelper->updateBasketAndSaveTotals($oneList, $quote);
             }
+        } catch (InputException $e) {
+            $this->logger->error($e->getMessage());
+            throw new LocalizedException(__($e->getMessage()));
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }

@@ -18,12 +18,14 @@
             <group value="lsConfig"/>
         </annotations>
         <before>
-            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin" />
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" />
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
+            </actionGroup>
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" >
                 <argument name="indices" value=""/>
             </actionGroup>
-
         </before>
         <after>
             <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">

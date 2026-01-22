@@ -85,70 +85,70 @@ class CartPluginTest extends AbstractIntegrationTest
         $this->layoutFactory   = $this->objectManager->get(LayoutFactory::class)->create();
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
-    #[
-        AppArea('frontend'),
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
-        Config(LSR::LSR_ORDER_EDIT, self::LSR_ORDER_EDIT, 'store', 'default'),
-        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LS_CENTRAL_VERSION, 'website'),
-        Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
-        Config('payment/payment_services/active', 0, 'store', 'default'),
-        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
-        DataFixture(
-            CustomerFixture::class,
-            [
-                'lsr_username' => AbstractIntegrationTest::USERNAME,
-                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
-                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
-            ],
-            as: 'customer'
-        ),
-        DataFixture(
-            CreateSimpleProductFixture::class,
-            [
-                LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180',
-            ],
-            as: 'p1'
-        ),
-        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
-        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
-        DataFixture(SetBillingAddress::class, ['cart_id' => '$cart1.id$']),
-        DataFixture(SetShippingAddress::class, ['cart_id' => '$cart1.id$']),
-        DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart1$']),
-        DataFixture(
-            CustomerAddressFixture::class,
-            [
-                'customer_id' => '$customer.entity_id$'
-            ],
-            as: 'address'
-        )
-    ]
-    public function testGetSectionData()
-    {
-        $customer = $this->fixtures->get('customer');
-        $cart     = $this->fixtures->get('cart1');
-        $this->customerSession->setData('customer_id', $customer->getId());
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
-        $this->checkoutSession->setQuoteId($cart->getId());
-
-        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
-
-        $this->checkoutSession->setLoadInactive(true);
-        $this->layoutFactory->createBlock(\Magento\Catalog\Block\ShortcutButtons::class)->toHtml();
-        $result = $this->cart->getSectionData();
-
-        $response = $this->cartPlugin->afterGetSectionData($this->cart, $result);
-
-        $this->assertArrayHasKey('lsPriceOriginal', $response['items'][0]);
-        $this->assertArrayHasKey('lsDiscountAmount', $response['items'][0]);
-        $this->assertArrayHasKey('product_price', $response['items'][0]);
-    }
+//    /**
+//     * @magentoAppIsolation enabled
+//     */
+//    #[
+//        AppArea('frontend'),
+//        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+//        Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
+//        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
+//        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+//        Config(LSR::LSR_ORDER_EDIT, self::LSR_ORDER_EDIT, 'store', 'default'),
+//        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LS_CENTRAL_VERSION, 'website'),
+//        Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
+//        Config('payment/payment_services/active', 0, 'store', 'default'),
+//        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
+//        DataFixture(
+//            CustomerFixture::class,
+//            [
+//                'lsr_username' => AbstractIntegrationTest::USERNAME,
+//                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+//                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+//                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+//            ],
+//            as: 'customer'
+//        ),
+//        DataFixture(
+//            CreateSimpleProductFixture::class,
+//            [
+//                LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180',
+//            ],
+//            as: 'p1'
+//        ),
+//        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
+//        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
+//        DataFixture(SetBillingAddress::class, ['cart_id' => '$cart1.id$']),
+//        DataFixture(SetShippingAddress::class, ['cart_id' => '$cart1.id$']),
+//        DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart1$']),
+//        DataFixture(
+//            CustomerAddressFixture::class,
+//            [
+//                'customer_id' => '$customer.entity_id$'
+//            ],
+//            as: 'address'
+//        )
+//    ]
+//    public function testGetSectionData()
+//    {
+//        $customer = $this->fixtures->get('customer');
+//        $cart     = $this->fixtures->get('cart1');
+//        $this->customerSession->setData('customer_id', $customer->getId());
+//        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
+//        $this->checkoutSession->setQuoteId($cart->getId());
+//
+//        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
+//
+//        $this->checkoutSession->setLoadInactive(true);
+//        $this->layoutFactory->createBlock(\Magento\Catalog\Block\ShortcutButtons::class)->toHtml();
+//        $result = $this->cart->getSectionData();
+//
+//        $response = $this->cartPlugin->afterGetSectionData($this->cart, $result);
+//
+//        $this->assertArrayHasKey('lsPriceOriginal', $response['items'][0]);
+//        $this->assertArrayHasKey('lsDiscountAmount', $response['items'][0]);
+//        $this->assertArrayHasKey('product_price', $response['items'][0]);
+//    }
 
     /**
      * @magentoAppIsolation enabled

@@ -12,9 +12,12 @@
             <group value="lsPDP"/>
         </annotations>
         <before>
-            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin" />
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" />
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
+            </actionGroup>
             <magentoCLI command="config:set {{ReturnPolicy.path}} {{ReturnPolicy.value}}" stepKey="enableReturnPolicy"/>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
             <actionGroup ref="LsReplicateStoreDataActionGroup" stepKey="replicateStores"/>
             <!--Create test data.-->
             <createData entity="LsSimpleProduct1" stepKey="product1" />

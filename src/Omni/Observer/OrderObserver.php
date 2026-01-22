@@ -106,9 +106,6 @@ class OrderObserver implements ObserverInterface
             if (empty($oneListCalculation) && empty($order->getDocumentId())) {
                 $oneListCalculation = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
             }
-            //checking for Adyen payment gateway
-            $adyenResponse = $observer->getEvent()->getData('adyen_response');
-            $order         = $this->orderHelper->setAdyenParameters($adyenResponse, $order);
             if (!empty($order->getIncrementId())) {
                 $paymentMethod = $order->getPayment();
                 if (!empty($paymentMethod)) {

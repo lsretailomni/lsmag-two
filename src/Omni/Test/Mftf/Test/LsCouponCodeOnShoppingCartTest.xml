@@ -12,8 +12,11 @@
         </annotations>
 
         <before>
-            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin" before="reindexInvalidatedIndices"/>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" before="reindexInvalidatedIndices"/>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache" before="reindexInvalidatedIndices">
+                <argument name="tags" value="config"/>
+            </actionGroup>
             <!--Create test data.-->
             <createData entity="LsSimpleProduct3" stepKey="product1" />
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
@@ -61,6 +64,9 @@
             <actualResult type="variable">grabDiscountsDescription1</actualResult>
             <expectedResult type="string">1</expectedResult>
         </assertCount>
+        <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices" before="deleteNewUser">
+            <argument name="indices" value=""/>
+        </actionGroup>
         <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser">
             <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
         </actionGroup>

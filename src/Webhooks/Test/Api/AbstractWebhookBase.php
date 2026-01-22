@@ -2,15 +2,13 @@
 
 namespace Ls\Webhooks\Test\Api;
 
+use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
-use Magento\InventoryApi\Api\SourceItemsSaveInterface;
-use Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\Customer;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Model\Quote;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -22,7 +20,7 @@ use Magento\Framework\Encryption\Encryptor;
 use Magento\TestFramework\TestCase\WebapiAbstract;
 use Braintree\Configuration;
 
-abstract class AbstractWebhookTest extends WebapiAbstract
+abstract class AbstractWebhookBase extends WebapiAbstract
 {
     /** @var \Magento\Framework\ObjectManagerInterface */
     protected $objectManager;
@@ -41,37 +39,68 @@ abstract class AbstractWebhookTest extends WebapiAbstract
         $braintreePrivateKey = $this->getEnvironment('BRAINTREE_PRIVATE_KEY');
         $braintreePublicKey  = $this->getEnvironment('BRAINTREE_PUBLIC_KEY');
         $braintreeMerchantId = $this->getEnvironment('BRAINTREE_MERCHANT_ID');
+        $debug = $this->getEnvironment('ENABLED');
+        $baseUrl = $this->getEnvironment('BASE_URL');
+        $webStore = $this->getEnvironment('WEB_STORE');
+        $industry = $this->getEnvironment('SC_INDUSTRY');
 
-        if ($braintreePrivateKey && $braintreePublicKey && $braintreeMerchantId) {
-            $encryptor                  = $this->objectManager->get(Encryptor::class);
-            $privateKeyPath             = 'payment/braintree/sandbox_private_key';
-            $publicKeyPath              = 'payment/braintree/sandbox_public_key';
-            $merchantIdPath             = 'payment/braintree/sandbox_merchant_id';
-            $debug                      = 'payment/braintree/debug';
-            $sendLies                   = 'payment/braintree/send_line_items';
-            $braintreePublicKeyEncrypt  = $encryptor->encrypt($braintreePublicKey);
-            $braintreePrivateKeyEncrypt = $encryptor->encrypt($braintreePrivateKey);
-            Configuration::environment('sandbox');
-            Configuration::merchantId($braintreeMerchantId);
-            Configuration::publicKey($braintreePublicKey);
-            Configuration::privateKey($braintreePrivateKey);
-            Configuration::gateway()->plan()->all();
-            $replicationHelper = $this->objectManager->get(ReplicationHelper::class);
-            $replicationHelper->updateConfigValue($braintreePublicKeyEncrypt, $publicKeyPath);
-            $replicationHelper->updateConfigValue($braintreePrivateKeyEncrypt, $privateKeyPath);
-            $replicationHelper->updateConfigValue($braintreeMerchantId, $merchantIdPath);
-            $replicationHelper->updateConfigValue($braintreeMerchantId, $merchantIdPath);
-            $replicationHelper->updateConfigValue('1', $debug);
-            $replicationHelper->updateConfigValue('0', $sendLies);
-            $replicationHelper->flushByTypeCode('config');
+        $industryConfig = 'ls_mag/ls_industry/ls_choose_industry';
+        $debugConfig = 'ls_mag/service/debug';
+        $baseUrlConfig = 'ls_mag/service/base_url';
+        $webStoreConfig = 'ls_mag/service/selected_store';
+
+        $this->saveConfig($industry, $industryConfig);
+        $this->saveConfig($debug, $debugConfig);
+        $this->saveConfig($baseUrl, $baseUrlConfig);
+        $this->saveConfig($webStore, $webStoreConfig);
+
+        $privateKeyPath = 'payment/braintree/sandbox_private_key';
+        $publicKeyPath = 'payment/braintree/sandbox_public_key';
+        $merchantIdPath = 'payment/braintree/sandbox_merchant_id';
+        $debug = 'payment/braintree/debug';
+        $sendLies = 'payment/braintree/send_line_items';
+        Configuration::environment('sandbox');
+        Configuration::merchantId($braintreeMerchantId);
+        Configuration::publicKey($braintreePublicKey);
+        Configuration::privateKey($braintreePrivateKey);
+        Configuration::gateway()->plan()->all();
+        $this->saveConfig($braintreePublicKey, $publicKeyPath, true);
+        $this->saveConfig($braintreePrivateKey, $privateKeyPath, true);
+        $this->saveConfig($braintreeMerchantId, $merchantIdPath);
+        $this->saveConfig('1', $debug);
+        $this->saveConfig('0', $sendLies);
+
+        $replicationHelper = $this->objectManager->get(ReplicationHelper::class);
+        $replicationHelper->flushByTypeCode('config');
+    }
+
+    /**
+     * Save configuration value
+     *
+     * @param mixed $value
+     * @param string $path
+     * @param bool $isSensitive
+     * @return void
+     */
+    public function saveConfig($value, $path, $isSensitive = false)
+    {
+        if ($value === false || $value === null) {
+            return;
         }
+        $replicationHelper = $this->objectManager->get(ReplicationHelper::class);
+
+        if ($isSensitive) {
+            $encryptor = $this->objectManager->get(Encryptor::class);
+            $value     = $encryptor->encrypt($value);
+        }
+        $replicationHelper->updateConfigValue($value, $path, 1);
     }
 
     /**
      * Get or create a product by SKU.
      *
-     * @return \Magento\Catalog\Model\Product
-     * @throws \Exception
+     * @return Product
+     * @throws Exception
      */
     protected function getOrCreateProduct()
     {
@@ -103,9 +132,10 @@ abstract class AbstractWebhookTest extends WebapiAbstract
      * @param $documentId
      * @param $customer
      * @param $product
-     * @param $isShipping
+     * @param bool $isShipping
+     * @param bool $isOffline
+     * @param int $qty
      * @return OrderInterface
-     * @throws LocalizedException
      */
     protected function getOrCreateOrder(
         $incrementId,
@@ -126,8 +156,8 @@ abstract class AbstractWebhookTest extends WebapiAbstract
     /**
      * Create a simple product
      *
-     * @return \Magento\Catalog\Model\Product
-     * @throws \Exception
+     * @return Product
+     * @throws Exception
      */
     private function createProduct()
     {
@@ -156,7 +186,7 @@ abstract class AbstractWebhookTest extends WebapiAbstract
                 $singleIndexer = $indexerFactory->create();
                 $singleIndexer->load($indexerCode);
                 $singleIndexer->reindexAll();
-            }
+        }
 
         return $product;
     }
@@ -164,7 +194,7 @@ abstract class AbstractWebhookTest extends WebapiAbstract
     /**
      * Create Customer
      *
-     * @return \Magento\Customer\Model\Customer
+     * @return Customer
      */
     private function createCustomer()
     {
@@ -190,6 +220,7 @@ abstract class AbstractWebhookTest extends WebapiAbstract
      * @param Product $product
      * @param bool $isShipping
      * @param bool $isOffline
+     * @param int $qty
      * @return OrderInterface
      */
     private function createOrder(

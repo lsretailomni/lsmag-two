@@ -15,7 +15,8 @@
         <selectOption selector="{{AdminLsItemGridFiltersSection.processedSelect}}" userInput="1" stepKey="selectFlatToMagento"/>
         <click selector="{{AdminLsItemGridFiltersSection.apply}}" stepKey="applyFilter"/>
         <waitForPageLoad stepKey="waitForPageToLoad"/>
-        <click selector="{{AdminLsItemGridSection.selectFirstRow}}" stepKey="clickOnFirstRecord"/>
+        <click selector="{{AdminGridSelectRows.multicheckDropdown}}" stepKey="openMulticheckDropdown"/>
+        <click selector="{{AdminGridSelectRows.multicheckOption('Select All')}}" stepKey="selectAllRows"/>
         <click selector="{{AdminLsItemGridMainActionsSection.actions}}" stepKey="clickActionsDropdown"/>
         <click selector="{{AdminLsItemGridMainActionsSection.reset}}" stepKey="clickReset"/>
         <waitForElementVisible selector="{{AdminLsItemGridMainActionsSection.ok}}" stepKey="waitForOkToVisible"/>

@@ -213,10 +213,11 @@ class BasketHelper extends AbstractHelperOmni
 
     /**
      * Get Order Lines and Discount Lines
-     *
+     * 
      * @param Quote $quote
      * @return array
      * @throws InvalidEnumException
+     * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function getOrderLinesQuote(Quote $quote)
@@ -964,7 +965,13 @@ class BasketHelper extends AbstractHelperOmni
             );
             $price      = $item->getPrice();
             $basketData = $this->getOneListCalculation();
-            $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+            
+            if ($basketData instanceof Entity\OrderHosp) {
+                    $orderLines = $basketData ? $basketData->getOrderLines()->getOrderHospLine() : [];    
+            } else {
+                $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];    
+            }
+            
 
             foreach ($orderLines as $line) {
                 if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {

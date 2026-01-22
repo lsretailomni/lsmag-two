@@ -17,7 +17,6 @@ use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ManagerInterface;
-use Magento\Framework\Mail\TransportInterface;
 use Magento\Framework\View\LayoutInterface;
 use Magento\Quote\Test\Fixture\AddProductToCart;
 use Magento\Quote\Test\Fixture\CustomerCart;
@@ -25,7 +24,6 @@ use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
-use Magento\Quote\Model\QuoteFactory;
 use Magento\TestFramework\Fixture\AppArea;
 use Magento\Framework\Registry;
 use Magento\Framework\DataObject;
@@ -83,11 +81,6 @@ class BlockObserverTest extends AbstractIntegrationTest
     private $pageFactory;
 
     /**
-     * @var TransportInterface
-     */
-    private $transport;
-
-    /**
      * @var mixed
      */
     public $page;
@@ -109,7 +102,6 @@ class BlockObserverTest extends AbstractIntegrationTest
         $this->event         = $this->objectManager->get(Event::class);
         $this->blockObserver = $this->objectManager->get(BlockObserver::class);
         $this->registry      = $this->objectManager->get(Registry::class);
-        $this->transport     = $this->objectManager->get(TransportInterface::class);
         $this->block         = $this->objectManager->get(
             LayoutInterface::class
         );
@@ -126,6 +118,7 @@ class BlockObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LICENSE, 'website'),
@@ -162,7 +155,8 @@ class BlockObserverTest extends AbstractIntegrationTest
                 'customer' => '$customer$',
                 'cart1'    => '$cart1$',
                 'address'  => '$address$',
-                'payment'  => 'checkmo'
+                'payment'  => 'checkmo',
+                'area_code' => 'adminhtml'
             ],
             as: 'order'
         )
@@ -222,6 +216,7 @@ class BlockObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LICENSE, 'website'),
@@ -258,7 +253,8 @@ class BlockObserverTest extends AbstractIntegrationTest
                 'customer' => '$customer$',
                 'cart1'    => '$cart1$',
                 'address'  => '$address$',
-                'payment'  => 'checkmo'
+                'payment'  => 'checkmo',
+                'area_code' => 'adminhtml'
             ],
             as: 'order'
         )

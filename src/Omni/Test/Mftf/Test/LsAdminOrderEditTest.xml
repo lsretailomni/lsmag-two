@@ -62,8 +62,8 @@
             <argument name="documentId" value="$grabOrderNumber"/>
         </actionGroup>
         <waitForLoadingMaskToDisappear stepKey="waitForSearchingOrder" before="deleteNewUser"/>
-        <actionGroup ref="AdminOrderGridClickFirstRowActionGroup" stepKey="clickOrderRow" before="deleteNewUser"/>        
-        
+        <actionGroup ref="AdminOrderGridClickFirstRowActionGroup" stepKey="clickOrderRow" before="deleteNewUser"/>
+
         <!-- Navigate to order edit page -->
         <wait stepKey="waitForSessionLoad" time="5" before="deleteNewUser"/>
         <waitForElementVisible selector="#order_edit" time="30" stepKey="waitForOrderEdit"  before="deleteNewUser"/>
@@ -75,11 +75,11 @@
         <fillField userInput="2" selector="{{AdminCustomerCreateNewOrderSection.productQty}}" stepKey="updateQty" before="deleteNewUser"/>
         <click selector="{{AdminOrderFormItemsSection.updateItemsAndQuantities}}" stepKey="clickUpdateItemsAndQuantitiesButton" before="deleteNewUser"/>
 
-        <wait stepKey="waitForShippingLoad" time="5" after="clickUpdateItemsAndQuantitiesButton"/>
+        <wait stepKey="waitForShippingLoad" time="10" after="clickUpdateItemsAndQuantitiesButton"/>
         <actionGroup ref="OrderSelectFlatRateShippingActionGroup" stepKey="selectFlatRateShipping" after="waitForShippingLoad"/>
-        <wait stepKey="waitForPaymentLoad" time="5" after="selectFlatRateShipping"/>
+        <wait stepKey="waitForPaymentLoad" time="10" after="selectFlatRateShipping"/>
         <actionGroup ref="SelectCheckMoneyPaymentMethodActionGroup" stepKey="selectCheckMoneyPayment" after="waitForPaymentLoad"/>
-        <wait stepKey="waitBeforeSubmitOrder" time="5" after="selectCheckMoneyPayment"/>
+        <wait stepKey="waitBeforeSubmitOrder" time="10" after="selectCheckMoneyPayment"/>
         <actionGroup ref="AdminSubmitOrderActionGroup" stepKey="submitOrder" after="waitBeforeSubmitOrder"/>
 
         <actionGroup ref="AssertMessageInAdminPanelActionGroup" stepKey="assertSuccessMessage" before="deleteNewUser">

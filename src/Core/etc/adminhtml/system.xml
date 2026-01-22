@@ -58,7 +58,7 @@
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
                 </depends>
-                <label>Standalone Integrations</label>
+                <label>Integration Management</label>
                 <field id="customer"
                        translate="label comment"
                        type="select"

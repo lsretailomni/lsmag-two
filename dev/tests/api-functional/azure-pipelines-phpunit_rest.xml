@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /**
- * PHPUnit configuration for REST web API functional tests.
- *
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/9.1/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
          colors="true"
          columns="max"
          beStrictAboutTestsThatDoNotTestAnything="false"
          bootstrap="./framework/bootstrap.php"
-         testSuiteLoaderClass="Magento\TestFramework\ApiSuiteLoader"
-         testSuiteLoaderFile="framework/Magento/TestFramework/ApiSuiteLoader.php"
->
-    <coverage>
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnTestsThatTriggerErrors="true"
+         displayDetailsOnTestsThatTriggerNotices="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         displayDetailsOnPhpunitDeprecations="true"
+         stderr="true">
+    <source>
         <include>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Webhooks</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Webhooks/Model</directory>
         </include>
         <exclude>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Webhooks/Helper</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Webhooks/etc</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Webhooks/i18n</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Webhooks/Block</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Webhooks/Logger</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Webhooks/Model</directory>
+            <directory>../../../app/code/*/*/Test</directory>
+            <directory>../../../lib/internal/*/*/Test</directory>
+            <directory>../../../lib/internal/*/*/*/Test</directory>
+            <directory>../../../setup/src/*/*/Test</directory>
         </exclude>
-    </coverage>
+    </source>
     <!-- Test suites definition -->
     <testsuites>
         <testsuite name="Ls_Retail_Api_Tests">
@@ -75,8 +74,11 @@
         <ini name="xdebug.max_nesting_level" value="200"/>
     </php>
 
-    <!-- Test listeners -->
-    <listeners>
-        <listener class="Magento\TestFramework\Event\PhpUnit"/>
-    </listeners>
+    <extensions>
+        <bootstrap class="Qameta\Allure\PHPUnit\AllureExtension">
+            <!-- Path to config file (default is config/allure.config.php) -->
+            <parameter name="config" value="allure/allure.config.php" />
+        </bootstrap>
+        <bootstrap class="Magento\TestFramework\Event\Subscribers"/>
+    </extensions>
 </phpunit>

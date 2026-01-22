@@ -165,6 +165,28 @@ interface ReplDiscountValidationInterface
     public function getMondayWithinBounds();
 
     /**
+     * @param string $OfferEndTime
+     * @return $this
+     */
+    public function setOfferEndTime($OfferEndTime);
+
+    /**
+     * @return string
+     */
+    public function getOfferEndTime();
+
+    /**
+     * @param string $OfferStartTime
+     * @return $this
+     */
+    public function setOfferStartTime($OfferStartTime);
+
+    /**
+     * @return string
+     */
+    public function getOfferStartTime();
+
+    /**
      * @param string $SaturdayEnd
      * @return $this
      */

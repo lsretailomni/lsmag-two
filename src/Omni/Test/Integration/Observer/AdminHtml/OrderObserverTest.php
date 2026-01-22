@@ -98,6 +98,7 @@ class OrderObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LICENSE, 'website'),
@@ -136,7 +137,8 @@ class OrderObserverTest extends AbstractIntegrationTest
                 'customer' => '$customer$',
                 'cart1'    => '$cart1$',
                 'address'  => '$address$',
-                'payment'  => 'checkmo'
+                'payment'  => 'checkmo',
+                'area_code' => 'adminhtml'
             ],
             as: 'order'
         ),
@@ -155,7 +157,8 @@ class OrderObserverTest extends AbstractIntegrationTest
                 'customer' => '$customer$',
                 'cart1'    => '$cart2$',
                 'address'  => '$address2$',
-                'payment'  => 'checkmo'
+                'payment'  => 'checkmo',
+                'area_code' => 'adminhtml'
             ],
             as: 'order2'
         )
@@ -216,6 +219,7 @@ class OrderObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LICENSE, 'website'),
@@ -252,7 +256,8 @@ class OrderObserverTest extends AbstractIntegrationTest
                 'customer' => '$customer$',
                 'cart1'    => '$cart1$',
                 'address'  => '$address$',
-                'payment'  => 'checkmo'
+                'payment'  => 'checkmo',
+                'area_code' => 'adminhtml'
             ],
             as: 'order'
         )

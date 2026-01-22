@@ -84,7 +84,8 @@ class CustomerOrder implements DataFixtureInterface
      */
     public function apply(array $data = []): ?DataObject
     {
-        $this->state->setAreaCode(Area::AREA_FRONTEND);
+        $areaCode = $data['area_code'] ?? Area::AREA_FRONTEND;
+        $this->state->setAreaCode($areaCode);
         $data     = array_merge(self::DEFAULT_DATA, $data);
         $customer = $data['customer'];
         $quote    = $data['cart1'];

@@ -812,6 +812,9 @@ class LoyaltyHelper extends AbstractHelperOmni
 
         $loyaltyPointsRate = $loyPointRate / $currentCurrencyPointRate;
 
+        if (!$loyaltyPointsRate) {
+            return 0;
+        }
         return $pointsSpent * (1 / $loyaltyPointsRate);
     }
 
