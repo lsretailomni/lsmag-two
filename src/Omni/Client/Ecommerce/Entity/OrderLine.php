@@ -99,6 +99,11 @@ class OrderLine extends Entity
     protected $SerialNumber = null;
 
     /**
+     * @property boolean $ServiceItem
+     */
+    protected $ServiceItem = null;
+
+    /**
      * @property string $SourcingLocation
      */
     protected $SourcingLocation = null;
@@ -452,6 +457,24 @@ class OrderLine extends Entity
     public function getSerialNumber()
     {
         return $this->SerialNumber;
+    }
+
+    /**
+     * @param boolean $ServiceItem
+     * @return $this
+     */
+    public function setServiceItem($ServiceItem)
+    {
+        $this->ServiceItem = $ServiceItem;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getServiceItem()
+    {
+        return $this->ServiceItem;
     }
 
     /**
