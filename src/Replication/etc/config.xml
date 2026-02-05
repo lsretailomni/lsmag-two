@@ -8,6 +8,7 @@
                 <gift_card_items_list>69000</gift_card_items_list>
                 <identical_table_web_service_list>ReplEcommHtmlTranslation,ReplEcommDealHtmlTranslation</identical_table_web_service_list>
                 <replicate_all_stores_items>0</replicate_all_stores_items>
+                <unit_of_measure_configuration>configurable</unit_of_measure_configuration>
                 <default_batch_size>2000</default_batch_size>
                 <product_batch_size>30</product_batch_size>
                 <discount_batch_size>-1</discount_batch_size>
