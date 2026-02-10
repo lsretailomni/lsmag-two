@@ -89,6 +89,11 @@
                     <backend_model>Ls\Replication\Model\System\Config\Backend\UomConfiguration</backend_model>
                     <comment>Select whether Unit of Measure items should be created as Simple or Configurable products.</comment>
                 </field>
+                <field id="uom_allow_purchase_unit" translate="label" type="select" sortOrder="52" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>UOM Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable to allow all UOMs, disable to filter based on purchase unit of measure</comment>
+                </field>
                 <field id="default_batch_size"
                        translate="label"
                        type="text"

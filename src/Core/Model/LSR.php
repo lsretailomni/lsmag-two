@@ -108,6 +108,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_ATTRIBUTE_SETS_MECHANISM = 'ls_mag/replication/attribute_sets_mechanism';
     const GIFT_CARD_IDENTIFIER = 'ls_mag/replication/gift_card_items_list';
     const SC_REPLICATION_UNIT_OF_MEASURE_CONFIG = 'ls_mag/replication/unit_of_measure_configuration';
+    const SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT = 'ls_mag/replication/uom_allow_purchase_unit';
     //Attribute Set
     const SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE = 'ITEM_CATEGORY_CODE';
     const SC_REPLICATION_ATTRIBUTE_SET_PRODUCT_GROUP_ID = 'PRODUCT_GROUP_ID';
@@ -1515,23 +1516,5 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         $websiteId = $this->getCurrentWebsiteId();
         return $this->getWebsiteConfig(LSR::LS_DISABLE_ORDER_CREATE_ON_BASKET_FAIL, $websiteId);
-    }
-
-    /**
-     * Get Unit of Measure product type configuration
-     *
-     * @param int|null $storeId
-     * @return string
-     * @throws NoSuchEntityException
-     */
-    public function getUomProductType($storeId = null)
-    {
-        if ($storeId === null) {
-            $storeId = $this->getCurrentStoreId();
-        }
-        return $this->getStoreConfig(
-            LSR::SC_REPLICATION_UNIT_OF_MEASURE_CONFIG,
-            $storeId
-        );
     }
 }
