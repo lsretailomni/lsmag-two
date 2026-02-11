@@ -547,6 +547,8 @@ class ProductCreateTask
                                     'global'
                                 );
 
+                                $productData->setStoreId($store->getId());
+
                                 $langCode = $this->lsr->getStoreConfig(
                                     LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
                                     $store->getId()
