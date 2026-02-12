@@ -11,7 +11,7 @@ interface OrderPaymentInterface
      * Accepts the incoming order status update webhook
      *
      * @param \Ls\Webhooks\Api\Data\OrderPaymentMessageInterface $orderPayment
-     * @return bool
+     * @return \Ls\Webhooks\Api\Data\OrderPaymentResponseInterface
      */
     public function set(OrderPaymentMessageInterface $orderPayment);
 }

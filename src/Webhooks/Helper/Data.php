@@ -5,15 +5,12 @@ namespace Ls\Webhooks\Helper;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\CentralEcommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId;
-use Ls\Omni\Client\CentralEcommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
+use \Ls\Omni\Client\CentralEcommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
-use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Webhooks\Api\Data\OrderPaymentResponseInterface;
+use \Ls\Webhooks\Api\Data\OrderPaymentResponseInterfaceFactory;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -44,6 +41,7 @@ class Data
      * @param LoyaltyHelper $loyaltyHelper
      * @param SerializerJson $jsonSerializer
      * @param ProductRepository $productRepository
+     * @param OrderPaymentResponseInterfaceFactory $paymentResponseFactory
      */
     public function __construct(
         public Logger $logger,
@@ -55,7 +53,8 @@ class Data
         public ItemHelper $itemHelper,
         public LoyaltyHelper $loyaltyHelper,
         public SerializerJson $jsonSerializer,
-        public ProductRepository $productRepository
+        public ProductRepository $productRepository,
+        public OrderPaymentResponseInterfaceFactory $paymentResponseFactory
     ) {
     }
 
@@ -330,6 +329,21 @@ class Data
     public function isClickAndcollectOrder($magOrder)
     {
         return $magOrder->getShippingMethod() == 'clickandcollect_clickandcollect';
+    }
+
+    /**
+     * Create payment output message
+     *
+     * @param bool $status
+     * @param string $statusMsg
+     * @return OrderPaymentResponseInterface
+     */
+    public function formulatePaymentOutputMessage($status, $statusMsg)
+    {
+        $response = $this->paymentResponseFactory->create();
+        return $response
+            ->setOrderMessagePaymentResult($status)
+            ->setMessage($statusMsg);
     }
 
     /**

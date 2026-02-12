@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\Webhooks\Model;
 
+use \Ls\Webhooks\Api\Data\OrderPaymentResponseInterfaceFactory;
 use \Ls\Webhooks\Api\OrderPaymentInterface;
 use \Ls\Webhooks\Model\Order\Payment;
 use \Ls\Webhooks\Helper\Data;
@@ -17,11 +18,13 @@ class OrderPayment implements OrderPaymentInterface
      * @param Logger $logger
      * @param Payment $payment
      * @param Data $helper
+     * @param OrderPaymentResponseInterfaceFactory $responseFactory
      */
     public function __construct(
         public Logger $logger,
         public Payment $payment,
-        public Data $helper
+        public Data $helper,
+        public OrderPaymentResponseInterfaceFactory $responseFactory
     ) {
     }
 
@@ -45,10 +48,11 @@ class OrderPayment implements OrderPaymentInterface
             if (!empty($data['OrderId'])) {
                 return $this->payment->generateInvoice($data);
             }
-            return $this->helper->outputMessage(false, 'Document Id is not valid.');
+
+            return $this->helper->formulatePaymentOutputMessage(false, 'Document Id is not valid.');
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
-            return $this->helper->outputMessage(false, $e->getMessage());
+            return $this->helper->formulatePaymentOutputMessage(false, $e->getMessage());
         }
     }
 

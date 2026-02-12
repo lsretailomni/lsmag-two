@@ -6,6 +6,7 @@ namespace Ls\Webhooks\Model\Order;
 use Exception;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Webhooks\Api\Data\OrderPaymentResponseInterface;
 use \Ls\Webhooks\Helper\NotificationHelper;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
@@ -65,7 +66,7 @@ class Payment
      * @param $data
      * @param bool $linesMerged
      * @param null $magentoOrder
-     * @return array[]
+     * @return OrderPaymentResponseInterface
      */
     public function generateInvoice($data, $linesMerged = true, $magentoOrder = null)
     {
@@ -177,7 +178,7 @@ class Payment
                         );
                     }
 
-                    return $this->helper->outputMessage(
+                    return $this->helper->formulatePaymentOutputMessage(
                         true,
                         $message
                     );
@@ -185,7 +186,7 @@ class Payment
                     $this->logger->error('We can\'t send the invoice email right now for document id #'
                         . $documentId);
 
-                    return $this->helper->outputMessage(
+                    return $this->helper->formulatePaymentOutputMessage(
                         false,
                         "We can\'t send the invoice email right now for document id #" . $documentId
                     );
@@ -196,7 +197,7 @@ class Payment
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
 
-            return $this->helper->outputMessage(
+            return $this->helper->formulatePaymentOutputMessage(
                 false,
                 $e->getMessage()
             );
@@ -208,7 +209,7 @@ class Payment
      *
      * @param $order
      * @param $documentId
-     * @return array[]
+     * @return OrderPaymentResponseInterface
      */
     public function validateOrder($order, $documentId)
     {
@@ -220,7 +221,7 @@ class Payment
             $validate = false;
         }
 
-        return $this->helper->outputMessage($validate, $message);
+        return $this->helper->formulatePaymentOutputMessage($validate, $message);
     }
 
     /**
@@ -230,7 +231,7 @@ class Payment
      * @param $amount
      * @param $documentId
      * @param $shippingAmount
-     * @return array[]
+     * @return OrderPaymentResponseInterface
      */
     public function validatePayment($order, $amount, $documentId, $shippingAmount)
     {
@@ -245,7 +246,7 @@ class Payment
             $validate = false;
         }
 
-        return $this->helper->outputMessage($validate, $message);
+        return $this->helper->formulatePaymentOutputMessage($validate, $message);
     }
 
     /**
