@@ -88,7 +88,7 @@ class Payment
             $validateOrder   = $this->validateOrder($order, $documentId);
             $validateInvoice = false;
             $invoice         = null;
-            if ($validateOrder['data']['success'] && $order->canInvoice()) {
+            if ($validateOrder->getOrderMessagePaymentResult() && $order->canInvoice()) {
                 $items = $this->helper->getItems($order, $lines, $linesMerged);
                 foreach ($items as $itemsData) {
                     foreach ($itemsData as $itemData) {
@@ -123,7 +123,7 @@ class Payment
                 $invoice         = $this->invoiceService->prepareInvoice($order, $itemsToInvoice);
                 $validateInvoice = $this->validateInvoice($invoice, $documentId);
             }
-            if ($validateInvoice && $validateOrder['data']['success']) {
+            if ($validateInvoice && $validateOrder->getOrderMessagePaymentResult()) {
                 $baseTotalAmount = $totalAmount;
                 $baseSubtotal    = $subtotal;
 
