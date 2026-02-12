@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Ls\Webhooks\Model;
 
-use \Ls\Webhooks\Api\Data\OrderPaymentResponseInterfaceFactory;
 use \Ls\Webhooks\Api\OrderPaymentInterface;
 use \Ls\Webhooks\Model\Order\Payment;
 use \Ls\Webhooks\Helper\Data;
@@ -18,13 +17,11 @@ class OrderPayment implements OrderPaymentInterface
      * @param Logger $logger
      * @param Payment $payment
      * @param Data $helper
-     * @param OrderPaymentResponseInterfaceFactory $responseFactory
      */
     public function __construct(
         public Logger $logger,
         public Payment $payment,
-        public Data $helper,
-        public OrderPaymentResponseInterfaceFactory $responseFactory
+        public Data $helper
     ) {
     }
 
