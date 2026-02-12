@@ -742,7 +742,7 @@ class ProductCreateTask
                                 );
 
                                 $filteredUomCodes = [];
-                                $allUomCodes = $totalUomCodes[$item->getNavId()] ?? [];
+                                $allUomCodes      = $totalUomCodes[$item->getNavId()] ?? [];
 
                                 if ($isSimpleMode) {
                                     foreach ($allUomCodes as $description => $code) {
@@ -2076,7 +2076,7 @@ class ProductCreateTask
     ) {
 
         // Handle UOM type switching
-        $skipConfigurable = $this->handleUomProductTypeSwitch($configProduct, $uomCodesNotProcessed, $variants);
+        $checkUomType = $this->handleUomProductTypeSwitch($configProduct, $uomCodesNotProcessed, $variants);
 
         // Get those attribute codes which are assigned to product.
         $attributesCode = $this->replicationHelper->_getAttributesCodes($item->getNavId(), $this->getScopeId());
@@ -2327,7 +2327,7 @@ class ProductCreateTask
                 $this->replItemVariantRegistrationRepository->save($value);
             }
         }
-        if (!$skipConfigurable) {
+        if (!$checkUomType) {
             $this->finalizeConfigurableProduct($configProduct, $attributesCode, $associatedProductIds);
         }
     }
@@ -3044,40 +3044,60 @@ class ProductCreateTask
 
         $isSimpleMode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_CONFIG, $this->getScopeId());
 
-        if ($isSimpleMode && $configProduct->getTypeId() == Configurable::TYPE_CODE) {
-            $configProduct->setStatus(Status::STATUS_DISABLED)
+        if ($isSimpleMode === 'simple' && $configProduct->getTypeId() == Configurable::TYPE_CODE) {
+            $parentProduct = $this->productRepository->getById($configProduct->getId(), false, 0);
+            $parentProduct->setStatus(Status::STATUS_DISABLED)
                 ->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
-            $this->productRepository->save($configProduct);
+            $this->productRepository->save($parentProduct);
+
+            $parentProductStore = $this->productRepository->getById($configProduct->getId(), false,
+                $this->store->getId());
+            $parentProductStore->setStatus(Status::STATUS_DISABLED)
+                ->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
+            $this->productRepository->save($parentProductStore);
 
             foreach ($configProduct->getTypeInstance()->getUsedProductIds($configProduct) as $childId) {
-                $child = $this->productRepository->getById($childId);
+                $child = $this->productRepository->getById($childId, false, 0);
                 $child->setStatus(Status::STATUS_ENABLED)
                     ->setVisibility(Visibility::VISIBILITY_BOTH);
                 $this->productRepository->save($child);
+
+                $childStore = $this->productRepository->getById($childId, false, $this->store->getId());
+                $childStore->setStatus(Status::STATUS_ENABLED)
+                    ->setVisibility(Visibility::VISIBILITY_BOTH);
+                $this->productRepository->save($childStore);
             }
             return true;
         }
 
-        if (!$isSimpleMode && $configProduct->getTypeId() != Configurable::TYPE_CODE) {
-            $filters  = [
-                [
-                    'field'          => LSR::LS_ITEM_ID_ATTRIBUTE_CODE,
-                    'value'          => $configProduct->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
-                    'condition_type' => 'eq'
-                ]
-            ];
-            $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
-            $children = $this->productRepository->getList($criteria)->getItems();
+        if ($isSimpleMode === 'configurable' && $configProduct->getTypeId() == Configurable::TYPE_CODE) {
+            $parentProduct = $this->productRepository->getById($configProduct->getId(), false, 0);
+            $parentProduct->setStatus(Status::STATUS_ENABLED)
+                ->setVisibility(Visibility::VISIBILITY_BOTH);
+            $this->productRepository->save($parentProduct);
 
-            foreach ($children as $child) {
-                if ($child->getId() != $configProduct->getId()) {
-                    $child->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
-                    $this->productRepository->save($child);
-                }
+            $parentProductStore = $this->productRepository->getById($configProduct->getId(), false,
+                $this->store->getId());
+            $parentProductStore->setStatus(Status::STATUS_ENABLED)
+                ->setVisibility(Visibility::VISIBILITY_BOTH);
+            $this->productRepository->save($parentProductStore);
+
+            foreach ($parentProduct->getTypeInstance()->getUsedProductIds($parentProduct) as $childId) {
+                $child = $this->productRepository->getById($childId, false, 0);
+                $child->setStatus(Status::STATUS_ENABLED)
+                    ->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
+                $this->productRepository->save($child);
+
+                $childStore = $this->productRepository->getById($childId, false, $this->store->getId());
+                $childStore->setStatus(Status::STATUS_ENABLED)
+                    ->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
+                $this->productRepository->save($childStore);
             }
+
+            return false;
         }
 
-        return $isSimpleMode;
+        return false;
     }
 
     /**
