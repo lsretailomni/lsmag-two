@@ -571,7 +571,7 @@ class OrderHelper extends AbstractHelper
             // @codingStandardsIgnoreEnd
             //default values for all payment typoes.
             $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
-                ->setCurrencyFactor(1)
+                ->setCurrencyFactor(0)
                 ->setLineNumber('1')
                 ->setExternalReference($order->getIncrementId())
                 ->setAmount($order->getGrandTotal());
