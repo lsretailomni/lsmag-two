@@ -656,7 +656,7 @@ class ProductCreateTask
                                 try {
                                     // @codingStandardsIgnoreLine
                                     $productSaved = $this->productRepository->save($product);
-                                    $this->updateProductStatusGlobal($productSaved);
+                                    $this->updateProductStatusByScope($productSaved, $store->getId(), $item);
                                 } catch (Exception $e) {
                                     $this->logDetailedException(
                                         __METHOD__,
@@ -2374,7 +2374,10 @@ class ProductCreateTask
             } catch (Exception $e) {
                 // @codingStandardsIgnoreLine
                 $this->logger->debug(sprintf('Issue while saving Attribute Id : %s and Product Id : %s - %s',
-                    $attribute->getId(), $productId, $e->getMessage()));
+                    $attribute->getId(),
+                    $productId,
+                    $e->getMessage()
+                ));
             }
             $position++;
         }
@@ -3199,15 +3202,21 @@ class ProductCreateTask
     }
 
     /**
-     * Updating the product status on global level
+     * Updating the product status on store level if use default is unchecked
      *
      * @param $product
+     * @param $storeId
+     * @param $item
      */
-    public function updateProductStatusGlobal($product)
+    public function updateProductStatusByScope($product, $storeId, $item)
     {
         try {
-            $product->setStoreId(0);
-            $product->getResource()->saveAttribute($product, 'status');
+            $productData = $this->productRepository->getById($product->getId(), false, $storeId);
+            $isOverridden = $productData->getExistsStoreValueFlag('status');
+            if ($isOverridden) {
+                $productData = $this->setProductStatus($productData, $item->getBlockedOnECom());                
+                $productData->getResource()->saveAttribute($productData, 'status');
+            }
         } catch (Exception $e) {
             $this->logDetailedException(
                 __METHOD__,
