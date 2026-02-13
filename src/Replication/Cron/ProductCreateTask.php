@@ -2575,9 +2575,6 @@ class ProductCreateTask
     public function updateConfigProduct($productData, $item, $name, $uomCode = null, $value = null)
     {
         $productStatus = true;
-        if (!empty($uomCode)) {
-            $name = $this->getNameForUom($name, $uomCode->getDescription());
-        }
         $productData->setName($name);
         $productData->setMetaTitle($name);
         $productData->setDescription($item->getDetails());
@@ -2870,10 +2867,6 @@ class ProductCreateTask
         $productStatus = true;
         $productV      = $this->productFactory->create();
 
-        if (!empty($uomCode)) {
-            $name = $this->getNameForUom($name, $uomCode->getDescription());
-        }
-
         $productV->setName($name);
         $productV->setStoreId(0);
         $productV->setWebsiteIds([$this->store->getWebsiteId()]);
@@ -3096,8 +3089,11 @@ class ProductCreateTask
 
             return false;
         }
-
-        return false;
+        if ($isSimpleMode === 'simple') {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
