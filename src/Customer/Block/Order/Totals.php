@@ -217,7 +217,18 @@ class Totals extends AbstractOrderBlock
         $order                = $this->getOrder();
         $requiredTransaction  = [];
         if ($order) {
-            $documentId           = $order->getLscMemberSalesBuffer()->getDocumentId() ?? $this->_request->getParam('order_id');
+            if (is_array($order->getLscMemberSalesBuffer())) {
+                foreach ($order->getLscMemberSalesBuffer() as $saleLine) {
+                    if($saleLine->getDocumentSourceType() == 1) {
+                        $documentId = $saleLine->getDocumentId();
+                        break;
+                    } else {
+                        $documentId = $this->_request->getParam('order_id');
+                    }
+                }
+            } else {
+                $documentId = $order->getLscMemberSalesBuffer()->getDocumentId() ?? $this->_request->getParam('order_id');
+            }
             $newDocumentId        = $this->_request->getParam('new_order_id');
             $newDocumentId        = ($newDocumentId) ? [$newDocumentId] : [];
             
