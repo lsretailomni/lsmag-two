@@ -226,6 +226,8 @@ class Totals extends AbstractOrderBlock
                         $documentId = $this->_request->getParam('order_id');
                     }
                 }
+            } elseif ($order instanceof LSCMemberSalesBuffer) {
+                $documentId = $order->getDocumentId();
             } else {
                 $documentId = $order->getLscMemberSalesBuffer()->getDocumentId() ?? $this->_request->getParam('order_id');
             }
