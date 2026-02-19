@@ -606,7 +606,7 @@ class OrderHelper extends AbstractHelper
             // @codingStandardsIgnoreEnd
             //default values for all payment types.
             $orderPaymentLoyalty->setCurrencyCode('LOY')
-                ->setCurrencyFactor($pointRate)
+                ->setCurrencyFactor(0)
                 ->setLineNumber('2')
                 ->setCardNumber($cardId)
                 ->setExternalReference($order->getIncrementId())
