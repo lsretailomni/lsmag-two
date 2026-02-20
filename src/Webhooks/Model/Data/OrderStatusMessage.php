@@ -140,4 +140,46 @@ class OrderStatusMessage extends AbstractExtensibleModel implements OrderStatusM
     {
         return $this->setData(self::LINES, $lines);
     }
+
+    /**
+     * Retrieve the Queue Counter for the order
+     *
+     * @return string|null The queue counter associated with the order, indicating its position in the processing queue
+     */
+    public function getQueueCounter()
+    {
+        return $this->getData(self::QUEUE_COUNTER);
+    }
+
+    /**
+     * Set the Queue Counter for the order
+     *
+     * @param string|null $queueCounter
+     * @return $this
+     */
+    public function setQueueCounter($queueCounter)
+    {
+        return $this->setData(self::QUEUE_COUNTER, $queueCounter);
+    }
+
+    /**
+     * Retrieve the Order KOT (Kitchen Order Ticket) number
+     *
+     * @return string|null The KOT status of the order
+     */
+    public function getKOTNo()
+    {
+        return $this->getData(self::KOT_NO);
+    }
+
+    /**
+     * Set the Order KOT (Kitchen Order Ticket) number
+     *
+     * @param string|null $kotNo
+     * @return $this
+     */
+    public function setKOTNo($kotNo)
+    {
+        return $this->setData(self::KOT_NO, $kotNo);
+    }
 }
