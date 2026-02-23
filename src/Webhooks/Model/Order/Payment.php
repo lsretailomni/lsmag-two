@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Ls\Webhooks\Model\Order;
 
 use Exception;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Webhooks\Api\Data\OrderPaymentResponseInterface;
@@ -72,6 +73,7 @@ class Payment
     {
         $documentId = $data['OrderId'];
         $lines      = $data['Lines'];
+
         if (array_key_exists('Amount', $data)) {
             $totalAmount = $data['Amount'];
         } else {
@@ -80,9 +82,14 @@ class Payment
         $shippingAmount = 0;
         $itemsToInvoice = [];
         $subtotal       = 0;
+        $isRetail = true;
         try {
             $order           = (!empty($magentoOrder)) ? $magentoOrder :
                 $this->helper->getOrderByDocumentId($documentId);
+            $industry = $this->helper->getLsrObject()->getStoreConfig(LSR::LS_INDUSTRY_VALUE, $order->getStoreId());
+            if ($industry !== LSR::LS_INDUSTRY_VALUE_RETAIL) {
+                $isRetail = false;
+            }
             $storeId         = $order->getStoreId();
             $isOffline       = $order->getPayment()->getMethodInstance()->isOffline();
             $validateOrder   = $this->validateOrder($order, $documentId);
@@ -96,7 +103,7 @@ class Payment
                         $orderItemId                  = $item->getItemId();
                         $itemsToInvoice[$orderItemId] = $itemData['qty'];
                         $subtotal                     += $itemData['amount_with_discount'];
-                        if ($isOffline) {
+                        if ($isOffline || !$isRetail) {
                             $totalAmount += $itemData['amount'];
                         }
                     }
@@ -105,12 +112,12 @@ class Payment
                 foreach ($lines as $line) {
                     if ($line['ItemId'] == $this->helper->getShippingItemId()) {
                         $shippingAmount = $line['Amount'];
-                        if ($isOffline) {
+                        if ($isOffline || !$isRetail) {
                             $totalAmount += $shippingAmount;
                         }
                     }
                 }
-                if ($isOffline && !$order->hasInvoices()) {
+                if (($isOffline || !$isRetail) && !$order->hasInvoices()) {
                     if ($order->getLsGiftCardAmountUsed() > 0) {
                         $totalAmount = $totalAmount - $order->getLsGiftCardAmountUsed();
                     }
