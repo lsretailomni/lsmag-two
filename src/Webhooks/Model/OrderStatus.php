@@ -38,7 +38,9 @@ class OrderStatus implements OrderStatusInterface
                 'Lines' => $this->formatOrderLines(
                     !is_array($orderMessage->getLines()) ? [] : $orderMessage->getLines()
                 ),
-                'orderKOTStatus' => $orderMessage->getOrderKOTStatus()
+                'orderKOTStatus' => $orderMessage->getOrderKOTStatus(),
+                'QueueCounter' => $orderMessage->getQueueCounter(),
+                'KOTNo' => $orderMessage->getKOTNO(),
             ];
             $this->logger->info('OrderStatus = ', $data);
 

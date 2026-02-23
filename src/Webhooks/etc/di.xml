@@ -30,4 +30,5 @@
     <preference for="Ls\Webhooks\Api\Data\OrderStatusMessageInterface" type="Ls\Webhooks\Model\Data\OrderStatusMessage"/>
     <preference for="Ls\Webhooks\Api\Data\OrderPaymentMessageInterface" type="Ls\Webhooks\Model\Data\OrderPaymentMessage"/>
     <preference for="Ls\Webhooks\Api\Data\OrderShipmentMessageInterface" type="Ls\Webhooks\Model\Data\OrderShipmentMessage"/>
+    <preference for="Ls\Webhooks\Api\Data\OrderPaymentResponseInterface" type="Ls\Webhooks\Model\Data\OrderPaymentResponse"/>
 </config>

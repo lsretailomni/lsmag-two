@@ -18,6 +18,8 @@ interface OrderStatusMessageInterface
     public const EXT_ORDER_STATUS = 'ExtOrderStatus';
     public const ORDER_KOT_STATUS = 'OrderKOTStatus';
     public const LINES = 'Lines';
+    public const QUEUE_COUNTER = 'QueueCounter';
+    public const KOT_NO = 'KOTNo';
 
     /**
      * Retrieve the Order ID
@@ -138,4 +140,34 @@ interface OrderStatusMessageInterface
      * @return $this
      */
     public function setLines(?array $lines = null);
+
+    /**
+     * Retrieve the Queue Counter for the order
+     *
+     * @return string|null The queue counter associated with the order, indicating its position in the processing queue
+     */
+    public function getQueueCounter();
+
+    /**
+     * Set the Queue Counter for the order
+     *
+     * @param string|null $queueCounter
+     * @return $this
+     */
+    public function setQueueCounter($queueCounter);
+
+    /**
+     * Retrieve the Order KOT (Kitchen Order Ticket) number
+     *
+     * @return string|null The KOT status of the order
+     */
+    public function getKOTNo();
+
+    /**
+     * Set the Order KOT (Kitchen Order Ticket) number
+     *
+     * @param string|null $kotNo
+     * @return $this
+     */
+    public function setKOTNo($kotNo);
 }

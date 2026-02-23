@@ -654,7 +654,7 @@ class ItemHelper extends AbstractHelperOmni
     public function checkAndUpdateServiceItems($orderLine)
     {
         if (empty($orderLine->getVariantcode())) {
-            $itemId  = $orderLine->getItemId();
+            $itemId  = $orderLine->getNumber();
             $product = $this->itemHelper->getProductByIdentificationAttributes($itemId);
             $typeId  = $product->getTypeId();
             if (in_array($typeId, [

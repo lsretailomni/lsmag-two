@@ -45,10 +45,11 @@ class OrderPayment implements OrderPaymentInterface
             if (!empty($data['OrderId'])) {
                 return $this->payment->generateInvoice($data);
             }
-            return $this->helper->outputMessage(false, 'Document Id is not valid.');
+
+            return $this->helper->formulatePaymentOutputMessage(false, 'Document Id is not valid.');
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
-            return $this->helper->outputMessage(false, $e->getMessage());
+            return $this->helper->formulatePaymentOutputMessage(false, $e->getMessage());
         }
     }
 
