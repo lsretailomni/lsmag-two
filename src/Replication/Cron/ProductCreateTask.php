@@ -530,6 +530,8 @@ class ProductCreateTask
                         );
                         $uomMode          = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT,
                             $store->getId());
+                        $isUomMode        = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_CONFIG,
+                            $store->getId());
                         $criteria         = $this->replicationHelper->buildCriteriaForNewItems(
                             'scope_id',
                             $this->getScopeId(),
@@ -623,13 +625,24 @@ class ProductCreateTask
 
                                 $filteredUomCodes = [];
                                 $allUomCodes      = $totalUomCodes[$item->getNavId()] ?? [];
-                                foreach ($allUomCodes as $description => $code) {
-                                    if ($code !== $baseUom) {
-                                        $filteredUomCodes[$item->getNavId()][$description] = $code;
+                                if ($isUomMode == 'simple') {
+                                    foreach ($allUomCodes as $description => $code) {
+                                        if ($code !== $baseUom) {
+                                            $filteredUomCodes[$item->getNavId()][$description] = $code;
+                                        }
                                     }
+                                } else {
+                                    $filteredUomCodes[$item->getNavId()] = $allUomCodes;
                                 }
-
                                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
+                                if (!empty($uomCodesNotProcessed) && $isUomMode == 'simple') {
+                                    $uomCodesNotProcessed = array_filter(
+                                        $uomCodesNotProcessed,
+                                        function ($uomCode) use ($baseUom) {
+                                            return $uomCode->getCode() !== $baseUom;
+                                        }
+                                    );
+                                }
                                 if (empty($variants) && (count($filteredUomCodes) == 0 || (count($filteredUomCodes) <= 1))) {
                                     foreach ($uomCodesNotProcessed as $uomCode) {
                                         if (!empty($uomCode)) {
@@ -728,16 +741,20 @@ class ProductCreateTask
 
                                 $filteredUomCodes = [];
                                 $allUomCodes      = $totalUomCodes[$item->getNavId()] ?? [];
-                                foreach ($allUomCodes as $description => $code) {
-                                    if ($code !== $baseUom) {
-                                        $filteredUomCodes[$item->getNavId()][$description] = $code;
+                                if ($isUomMode == 'simple') {
+                                    foreach ($allUomCodes as $description => $code) {
+                                        if ($code !== $baseUom) {
+                                            $filteredUomCodes[$item->getNavId()][$description] = $code;
+                                        }
                                     }
+                                } else {
+                                    $filteredUomCodes[$item->getNavId()] = $allUomCodes;
                                 }
-
 
                                 $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
                                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
-                                if (!empty($uomCodesNotProcessed)) {
+
+                                if (!empty($uomCodesNotProcessed) && $isUomMode == 'simple') {
                                     $uomCodesNotProcessed = array_filter(
                                         $uomCodesNotProcessed,
                                         function ($uomCode) use ($baseUom) {
@@ -2052,7 +2069,7 @@ class ProductCreateTask
     ) {
 
         // Handle UOM type switching
-        $checkUomType = $this->handleUomProductTypeSwitch($configProduct, $uomCodesNotProcessed, $variants);
+        $checkUomType = $this->handleUomProductTypeSwitch($configProduct, $uomCodesNotProcessed, $variants, $item);
 
         // Get those attribute codes which are assigned to product.
         $attributesCode = $this->replicationHelper->_getAttributesCodes($item->getNavId(), $this->getScopeId());
@@ -2559,6 +2576,10 @@ class ProductCreateTask
         $productData->setDescription($item->getDetails());
         $productData->setWeight($item->getGrossWeight());
         $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
+        $isUomMode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_CONFIG, $this->getScopeId());
+        if (isset($uomCode) && $isUomMode == 'configurable') {
+            $productData->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
+        }
         if (!empty($item->getTaxItemGroupId())) {
             $taxClass = $this->replicationHelper->getTaxClassGivenName(
                 $item->getTaxItemGroupId()
@@ -3030,93 +3051,188 @@ class ProductCreateTask
     }
 
     /**
-     * Handle UOM product type switching between configurable and simple
+     * Handle product type switch based on UOM changes and configuration, and mark UOM codes as processed if needed
      *
      * @param $configProduct
      * @param $uomCodesNotProcessed
      * @param $variants
+     * @param $item
      * @return bool
+     * @throws CouldNotSaveException
+     * @throws InputException
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws StateException
      */
-    private function handleUomProductTypeSwitch($configProduct, $uomCodesNotProcessed, $variants)
+    private function handleUomProductTypeSwitch($configProduct, $uomCodesNotProcessed, $variants, $item)
     {
         if (empty($uomCodesNotProcessed) || !empty($variants)) {
             return false;
         }
 
         $isSimpleMode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_CONFIG, $this->getScopeId());
+        $connection   = $this->resourceConnection->getConnection();
+        $productTable = $connection->getTableName('catalog_product_entity_int');
+
+        $statusAttributeId     = $this->eavConfig->getAttribute(Product::ENTITY, 'status')->getId();
+        $visibilityAttributeId = $this->eavConfig->getAttribute(Product::ENTITY, 'visibility')->getId();
 
         if ($isSimpleMode === 'simple' && $configProduct->getTypeId() == Configurable::TYPE_CODE) {
-            $parentProduct = $this->productRepository->getById($configProduct->getId(), false, 0);
-            $parentProduct->setStatus(Status::STATUS_DISABLED)
-                ->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
-            $this->productRepository->save($parentProduct);
+            // Disable parent
+            $this->updateProductAttributes($connection, $productTable, $configProduct->getId(),
+                $statusAttributeId, Status::STATUS_DISABLED, $visibilityAttributeId,
+                Visibility::VISIBILITY_NOT_VISIBLE);
 
-            $parentProductStore = $this->productRepository->getById($configProduct->getId(), false,
-                $this->store->getId());
-            $parentProductStore->setStatus(Status::STATUS_DISABLED)
-                ->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
-            $this->productRepository->save($parentProductStore);
-
-            foreach ($configProduct->getTypeInstance()->getUsedProductIds($configProduct) as $childId) {
-                $child = $this->productRepository->getById($childId, false, 0);
-                $child->setStatus(Status::STATUS_ENABLED)
-                    ->setVisibility(Visibility::VISIBILITY_BOTH);
-                $this->productRepository->save($child);
-
-                $childStore = $this->productRepository->getById($childId, false, $this->store->getId());
-                $childStore->setStatus(Status::STATUS_ENABLED)
-                    ->setVisibility(Visibility::VISIBILITY_BOTH);
-                $this->productRepository->save($childStore);
+            // Enable children
+            $childIds = $configProduct->getTypeInstance()->getUsedProductIds($configProduct);
+            foreach ($childIds as $childId) {
+                $this->updateProductAttributes($connection, $productTable, $childId,
+                    $statusAttributeId, Status::STATUS_ENABLED, $visibilityAttributeId,
+                    Visibility::VISIBILITY_BOTH);
             }
             return true;
         }
 
         if ($isSimpleMode === 'configurable' && $configProduct->getTypeId() == Configurable::TYPE_CODE) {
-            $parentProduct = $this->productRepository->getById($configProduct->getId(), false, 0);
-            $parentProduct->setStatus(Status::STATUS_ENABLED)
-                ->setVisibility(Visibility::VISIBILITY_BOTH);
-            $this->productRepository->save($parentProduct);
+            $childIds = $configProduct->getTypeInstance()->getUsedProductIds($configProduct);
 
-            $parentProductStore = $this->productRepository->getById($configProduct->getId(), false,
-                $this->store->getId());
-            $parentProductStore->setStatus(Status::STATUS_ENABLED)
-                ->setVisibility(Visibility::VISIBILITY_BOTH);
-            $this->productRepository->save($parentProductStore);
-
-            foreach ($parentProduct->getTypeInstance()->getUsedProductIds($parentProduct) as $childId) {
-                $child = $this->productRepository->getById($childId, false, 0);
-                $child->setStatus(Status::STATUS_ENABLED)
-                    ->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
-                $this->productRepository->save($child);
-
-                $childStore = $this->productRepository->getById($childId, false, $this->store->getId());
-                $childStore->setStatus(Status::STATUS_ENABLED)
-                    ->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
-                $this->productRepository->save($childStore);
+            if (empty($childIds)) {
+                return false; // Let normal flow create children
             }
 
+            // Update children first
+            foreach ($childIds as $childId) {
+                $this->updateProductAttributes($connection, $productTable, $childId,
+                    $statusAttributeId, Status::STATUS_ENABLED, $visibilityAttributeId,
+                    Visibility::VISIBILITY_NOT_VISIBLE);
+            }
+
+            // Update parent
+            if ($item->getBlockedOnECom() == 1) {
+                $configProduct->setStatus(Status::STATUS_DISABLED);
+            } else {
+                $configProduct->setStatus(Status::STATUS_ENABLED);
+            }
+            $configProduct->setVisibility(Visibility::VISIBILITY_BOTH);
+            $this->productRepository->save($configProduct);
+            $configProduct->setStoreId(0);
+            $configProduct->setVisibility(Visibility::VISIBILITY_BOTH);
+            $this->productRepository->save($configProduct);
+
             return false;
         }
+
         if ($isSimpleMode === 'simple' && $configProduct->getTypeId() != Configurable::TYPE_CODE) {
-            $parentProduct = $this->productRepository->getById($configProduct->getId(), false, 0);
-            $parentProduct->setStatus(Status::STATUS_ENABLED)
-                ->setVisibility(Visibility::VISIBILITY_BOTH);
-            $this->productRepository->save($parentProduct);
-
-            $parentProductStore = $this->productRepository->getById($configProduct->getId(), false,
-                $this->store->getId());
-            $parentProductStore->setStatus(Status::STATUS_ENABLED)
-                ->setVisibility(Visibility::VISIBILITY_BOTH);
-            $this->productRepository->save($parentProductStore);
-
+            $this->updateProductAttributes($connection, $productTable, $configProduct->getId(),
+                $statusAttributeId, Status::STATUS_ENABLED, $visibilityAttributeId,
+                Visibility::VISIBILITY_BOTH);
             return true;
         }
+
         if ($isSimpleMode === 'simple') {
+            $this->markUomCodesAsProcessed($uomCodesNotProcessed);
             return true;
-        } else {
-            return false;
+        }
+
+        return false;
+    }
+
+    /**
+     * Update product attributes without triggering inventory recalculation
+     */
+    private function updateProductAttributes(
+        $connection,
+        $productTable,
+        $productId,
+        $statusAttributeId,
+        $statusValue,
+        $visibilityAttributeId,
+        $visibilityValue
+    ) {
+        $storeId = $this->store->getId();
+
+        // Cast values to integers
+        $productId             = (int)$productId;
+        $statusAttributeId     = (int)$statusAttributeId;
+        $visibilityAttributeId = (int)$visibilityAttributeId;
+        $statusValue           = (int)$statusValue;
+        $visibilityValue       = (int)$visibilityValue;
+        $storeId               = (int)$storeId;
+
+        // Update global scope (store_id = 0)
+        $connection->insertOnDuplicate(
+            $productTable,
+            [
+                'attribute_id' => $statusAttributeId,
+                'store_id'     => 0,
+                'entity_id'    => $productId,
+                'value'        => $statusValue
+            ],
+            ['value']
+        );
+
+        $connection->insertOnDuplicate(
+            $productTable,
+            [
+                'attribute_id' => $visibilityAttributeId,
+                'store_id'     => 0,
+                'entity_id'    => $productId,
+                'value'        => $visibilityValue
+            ],
+            ['value']
+        );
+
+        // Delete existing store-level values first
+        $connection->delete(
+            $productTable,
+            [
+                'entity_id = ?'       => $productId,
+                'attribute_id IN (?)' => [$statusAttributeId, $visibilityAttributeId],
+                'store_id = ?'        => $storeId
+            ]
+        );
+
+        // Insert fresh store-level values
+        $connection->insert(
+            $productTable,
+            [
+                'attribute_id' => $statusAttributeId,
+                'store_id'     => $storeId,
+                'entity_id'    => $productId,
+                'value'        => $statusValue
+            ]
+        );
+
+        $connection->insert(
+            $productTable,
+            [
+                'attribute_id' => $visibilityAttributeId,
+                'store_id'     => $storeId,
+                'entity_id'    => $productId,
+                'value'        => $visibilityValue
+            ]
+        );
+    }
+
+    /**
+     * Mark UOM codes as processed
+     *
+     * @param $uomCodesNotProcessed
+     * @return void
+     */
+    private function markUomCodesAsProcessed($uomCodesNotProcessed)
+    {
+        if (!empty($uomCodesNotProcessed)) {
+            foreach ($uomCodesNotProcessed as $uomCode) {
+                try {
+                    $uomCode->setData('processed_at', $this->replicationHelper->getDateTime());
+                    $uomCode->setData('processed', 1);
+                    $uomCode->setData('is_updated', 0);
+                    $uomCode->setData('IsDeleted', 0);
+                    $this->replItemUomRepository->save($uomCode);
+                } catch (Exception $e) {
+                    $this->logger->debug('Error marking UOM as processed: ' . $e->getMessage());
+                }
+            }
         }
     }
 
