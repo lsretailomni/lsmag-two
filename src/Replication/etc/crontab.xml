@@ -167,7 +167,7 @@
             <schedule>0 0 * * 0</schedule>
         </job>
         <job name="sync_orders" instance="Ls\Replication\Cron\SyncOrders" method="execute">
-            <schedule>*/15 * * * *</schedule>
+            <schedule>*/1 * * * *</schedule>
         </job>
         <job name="sync_orders_edit" instance="Ls\Replication\Cron\SyncOrdersEdit" method="execute">
             <schedule>*/15 * * * *</schedule>

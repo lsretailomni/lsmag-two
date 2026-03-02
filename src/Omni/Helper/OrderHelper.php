@@ -1347,8 +1347,13 @@ class OrderHelper extends AbstractHelper
         );
 
         $status = $order->getStatus();
+        $paymentMethod = $order->getPayment()->getMethodInstance()->getCode();
+        $noPaymentLineMethods = $this->paymentLineNotRequiredPaymentMethods($order);
 
-        $check = empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
+        $check = empty($orderStatuses) ||
+            !(in_array($status, explode(',', $orderStatuses))) ||
+            in_array($paymentMethod, $noPaymentLineMethods);
+
         return $check;
     }
 
