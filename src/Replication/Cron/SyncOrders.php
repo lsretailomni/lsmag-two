@@ -102,12 +102,10 @@ class SyncOrders
             foreach ($stores as $store) {
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
-                $this->logger->info("Sync orders started" . $store->getWebsiteId());
                 if ($this->lsr->isLSR($this->store->getId())) {
                     $orders = $this->orderHelper->getOrders($this->store->getId(),
                         -1, true, 0, null, false, $store->getWebsiteId()
                     );
-
                     if (!empty($orders)) {
                         foreach ($orders as $order) {
                             try {

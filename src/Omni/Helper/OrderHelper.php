@@ -1067,13 +1067,10 @@ class OrderHelper extends AbstractHelper
         $orderStatuses = null;
         try {
             if ($websiteId) {
-                $this->_logger->info("Sync orders started website id" . $websiteId);
                 $orderStatuses = $this->lsr->getWebsiteConfig(
                     LSR::LSR_RESTRICTED_ORDER_STATUSES,
                     $websiteId
                 );
-
-                $this->_logger->info("Sync orders started website id" . json_encode($orderStatuses));
             }
             $criteriaBuilder = $this->basketHelper->getSearchCriteriaBuilder();
 
