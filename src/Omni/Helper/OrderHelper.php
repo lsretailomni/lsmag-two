@@ -598,9 +598,7 @@ class OrderHelper extends AbstractHelper
 
         if ($order->getLsPointsSpent()) {
             $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
-            $loyPointRate = $this->loyaltyHelper->getPointRate(null, 'LOY');
-            $currentCurrencyPointRate = $this->loyaltyHelper->getPointRate();
-            $pointRate = $currentCurrencyPointRate / $loyPointRate;
+            $pointDiscount = $this->loyaltyHelper->getLsPointsDiscount($order->getLsPointsSpent(), true);
             // @codingStandardsIgnoreStart
             $orderPaymentLoyalty = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
@@ -610,7 +608,7 @@ class OrderHelper extends AbstractHelper
                 ->setLineNumber('2')
                 ->setCardNumber($cardId)
                 ->setExternalReference($order->getIncrementId())
-                ->setAmount($order->getLsPointsSpent())
+                ->setAmount($pointDiscount)
                 ->setPreApprovedValidDate($preApprovedDate)
                 ->setPaymentType(Entity\Enum\PaymentType::PAYMENT)
                 ->setTenderType($tenderTypeId);
