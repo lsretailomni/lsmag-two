@@ -213,7 +213,7 @@ class BasketHelper extends AbstractHelperOmni
 
     /**
      * Get Order Lines and Discount Lines
-     * 
+     *
      * @param Quote $quote
      * @return array
      * @throws InvalidEnumException
@@ -377,20 +377,22 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
+     * Updating wishlist at omni side when there is any change in magento wishlist
+     *
      * @param Entity\OneList $oneList
      * @return bool|Entity\OneList
      * @throws NoSuchEntityException
      */
-    // @codingStandardsIgnoreLine
-
     public function updateWishlistAtOmni(Entity\OneList $oneList)
     {
         return $this->saveWishlistToOmni($oneList);
     }
 
     /**
+     * Save the wishlist to omni and set the response in session
+     *
      * @param Entity\OneList $list
-     * @return bool|Entity\OneList
+     * @return false|Entity\OneList|null
      * @throws NoSuchEntityException
      */
     public function saveWishlistToOmni(Entity\OneList $list)
@@ -853,6 +855,28 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
+     * Get oneList from omni by id. This function is used for fetching the onelist for guest users and also for logged in users if the onelist is not stored in session or registry
+     *
+     * @param string $oneListId
+     * @return \Ls\Omni\Client\Ecommerce\Entity\OneList
+     */
+    public function getOneListById($oneListId)
+    {
+        if ($oneListId) {
+            try {
+                $entity = new Entity\OneListGetById();
+                $entity->setId($oneListId);
+                $entity->setIncludeLines(true);
+                $request  = new Operation\OneListGetById();
+                $response = $request->execute($entity);
+            } catch (Exception $e) {
+                $this->_logger->critical($e);
+            }
+        }
+
+        return $response?->getOneListGetByIdResult();
+    }
+    /**
      * @return array|bool|Entity\OneList|Entity\OneList[]|mixed
      * @throws InvalidEnumException|NoSuchEntityException
      */
@@ -888,8 +912,11 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * @return Entity\OneList|mixed
-     * @throws InvalidEnumException|NoSuchEntityException
+     * Fetch wishlist for current customer. If not exist then create new one with list type wish and return
+     *
+     * @return Entity\OneList|mixed|null
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
      */
     public function fetchCurrentCustomerWishlist()
     {
@@ -903,7 +930,7 @@ class BasketHelper extends AbstractHelperOmni
         $store_id = $this->getDefaultWebStore();
         return (new Entity\OneList())
             ->setCardId($cardId)
-            ->setDescription('List ' . $cardId)
+            ->setName('Wish List:' . $cardId)
             ->setListType(Entity\Enum\ListType::WISH)
             ->setItems(new Entity\ArrayOfOneListItem())
             ->setStoreId($store_id);
@@ -965,13 +992,13 @@ class BasketHelper extends AbstractHelperOmni
             );
             $price      = $item->getPrice();
             $basketData = $this->getOneListCalculation();
-            
+
             if ($basketData instanceof Entity\OrderHosp) {
-                    $orderLines = $basketData ? $basketData->getOrderLines()->getOrderHospLine() : [];    
+                    $orderLines = $basketData ? $basketData->getOrderLines()->getOrderHospLine() : [];
             } else {
-                $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];    
+                $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
             }
-            
+
 
             foreach ($orderLines as $line) {
                 if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
