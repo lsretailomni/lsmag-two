@@ -39,7 +39,7 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -57,7 +57,7 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -75,7 +75,7 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getApplicationversion() : ?string
+    public function getApplicationversion(): ?string
     {
         return $this->getData(self::APPLICATION_VERSION);
     }
@@ -93,7 +93,7 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getApplicationbuild() : ?string
+    public function getApplicationbuild(): ?string
     {
         return $this->getData(self::APPLICATION_BUILD);
     }
@@ -111,7 +111,7 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getLsretailversion() : ?string
+    public function getLsretailversion(): ?string
     {
         return $this->getData(self::LSRETAIL_VERSION);
     }
@@ -129,7 +129,7 @@ class TestConnection extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getLsretailcopyright() : ?string
+    public function getLsretailcopyright(): ?string
     {
         return $this->getData(self::LSRETAIL_COPYRIGHT);
     }

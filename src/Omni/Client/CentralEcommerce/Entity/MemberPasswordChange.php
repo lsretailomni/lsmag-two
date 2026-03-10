@@ -39,7 +39,7 @@ class MemberPasswordChange extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -57,7 +57,7 @@ class MemberPasswordChange extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -75,7 +75,7 @@ class MemberPasswordChange extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getLoginid() : ?string
+    public function getLoginid(): ?string
     {
         return $this->getData(self::LOGIN_ID);
     }
@@ -93,7 +93,7 @@ class MemberPasswordChange extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getToken() : ?string
+    public function getToken(): ?string
     {
         return $this->getData(self::TOKEN);
     }
@@ -111,7 +111,7 @@ class MemberPasswordChange extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getOldpassword() : ?string
+    public function getOldpassword(): ?string
     {
         return $this->getData(self::OLD_PASSWORD);
     }
@@ -129,7 +129,7 @@ class MemberPasswordChange extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getNewpassword() : ?string
+    public function getNewpassword(): ?string
     {
         return $this->getData(self::NEW_PASSWORD);
     }

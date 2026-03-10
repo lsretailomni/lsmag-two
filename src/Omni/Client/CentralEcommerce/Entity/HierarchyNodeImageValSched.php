@@ -31,7 +31,7 @@ class HierarchyNodeImageValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getKeyvalue() : ?string
+    public function getKeyvalue(): ?string
     {
         return $this->getData(self::KEY_VALUE);
     }
@@ -67,7 +67,7 @@ class HierarchyNodeImageValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getImageid() : ?string
+    public function getImageid(): ?string
     {
         return $this->getData(self::IMAGE_ID);
     }

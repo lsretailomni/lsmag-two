@@ -49,7 +49,7 @@ class GetDocumentListV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -67,7 +67,7 @@ class GetDocumentListV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -85,7 +85,7 @@ class GetDocumentListV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getPhhtId() : ?string
+    public function getPhhtId(): ?string
     {
         return $this->getData(self::PHHT_ID);
     }
@@ -103,7 +103,7 @@ class GetDocumentListV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getPvalueType() : ?string
+    public function getPvalueType(): ?string
     {
         return $this->getData(self::PVALUE_TYPE);
     }
@@ -121,7 +121,7 @@ class GetDocumentListV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getPvalue() : ?string
+    public function getPvalue(): ?string
     {
         return $this->getData(self::PVALUE);
     }
@@ -139,7 +139,7 @@ class GetDocumentListV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getPprocessType() : ?string
+    public function getPprocessType(): ?string
     {
         return $this->getData(self::PPROCESS_TYPE);
     }
@@ -157,7 +157,7 @@ class GetDocumentListV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getPdocumentType() : ?string
+    public function getPdocumentType(): ?string
     {
         return $this->getData(self::PDOCUMENT_TYPE);
     }
@@ -175,7 +175,7 @@ class GetDocumentListV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getPstoreNo() : ?string
+    public function getPstoreNo(): ?string
     {
         return $this->getData(self::PSTORE_NO);
     }
@@ -193,7 +193,7 @@ class GetDocumentListV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getPlocationCode() : ?string
+    public function getPlocationCode(): ?string
     {
         return $this->getData(self::PLOCATION_CODE);
     }
@@ -211,7 +211,7 @@ class GetDocumentListV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getPitemNo() : ?string
+    public function getPitemNo(): ?string
     {
         return $this->getData(self::PITEM_NO);
     }

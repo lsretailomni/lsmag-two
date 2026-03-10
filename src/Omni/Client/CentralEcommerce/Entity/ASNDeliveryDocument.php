@@ -39,7 +39,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAsndocumentno() : ?string
+    public function getAsndocumentno(): ?string
     {
         return $this->getData(self::ASNDOCUMENT_NO);
     }
@@ -57,7 +57,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVendorno() : ?string
+    public function getVendorno(): ?string
     {
         return $this->getData(self::VENDOR_NO);
     }
@@ -75,7 +75,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVendorname() : ?string
+    public function getVendorname(): ?string
     {
         return $this->getData(self::VENDOR_NAME);
     }
@@ -93,7 +93,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTrustlevel() : ?string
+    public function getTrustlevel(): ?string
     {
         return $this->getData(self::TRUST_LEVEL);
     }
@@ -111,7 +111,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEstimatedarrivaldate() : ?string
+    public function getEstimatedarrivaldate(): ?string
     {
         return $this->getData(self::ESTIMATED_ARRIVAL_DATE);
     }
@@ -129,7 +129,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getManifestno() : ?string
+    public function getManifestno(): ?string
     {
         return $this->getData(self::MANIFEST_NO);
     }
@@ -147,7 +147,7 @@ class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDispatchno() : ?string
+    public function getDispatchno(): ?string
     {
         return $this->getData(self::DISPATCH_NO);
     }

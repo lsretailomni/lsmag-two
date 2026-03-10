@@ -90,8 +90,8 @@ class BasketHelper extends AbstractHelperOmni
 
         $transactionId = $oneList->getMobiletransaction()
             ->getId();
-        $storeCode = $this->getDefaultWebStore();
-        $lineNumber = 0;
+        $storeCode     = $this->getDefaultWebStore();
+        $lineNumber    = 0;
         foreach ($items as $quoteItem) {
             $children = [];
             $isBundle = 0;
@@ -107,7 +107,7 @@ class BasketHelper extends AbstractHelperOmni
                     $lineNumber += 10000;
                     list($itemId, $variantId, $uom, $barCode) =
                         $this->itemHelper->getItemAttributesGivenQuoteItem($child);
-                    $match = false;
+                    $match              = false;
                     $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
 
                     if (in_array($itemId, explode(',', $giftCardIdentifier))) {
@@ -135,28 +135,28 @@ class BasketHelper extends AbstractHelperOmni
                     }
 
                     if (!$match) {
-                        $price = ($quoteItem->getProductType() == LSR::TYPE_GIFT_CARD) ?
+                        $price  = ($quoteItem->getProductType() == LSR::TYPE_GIFT_CARD) ?
                             $quoteItem->getPrice() :
                             $quoteItem->getProduct()->getPrice();
-                        $price = $this->itemHelper->convertToCurrentStoreCurrency($price);
-                        $qty = $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
+                        $price  = $this->itemHelper->convertToCurrentStoreCurrency($price);
+                        $qty    = $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
                             $quoteItem->getData('qty');
                         $amount = $this->itemHelper->convertToCurrentStoreCurrency($quoteItem->getPrice() * $qty);
                         // @codingStandardsIgnoreLine
-                        $listItem = $this->createInstance(
+                        $listItem     = $this->createInstance(
                             MobileTransactionLine::class,
                             [
                                 'data' => [
-                                    MobileTransactionLine::ID => $transactionId,
-                                    MobileTransactionLine::LINE_NO => $lineNumber,
-                                    MobileTransactionLine::STORE_ID => $storeCode,
-                                    MobileTransactionLine::QUANTITY => $qty,
-                                    MobileTransactionLine::NUMBER => $itemId,
-                                    MobileTransactionLine::VARIANT_CODE => $variantId,
-                                    MobileTransactionLine::UOM_ID => $uom,
-                                    MobileTransactionLine::PRICE => $price,
-                                    MobileTransactionLine::NET_AMOUNT => $amount,
-                                    MobileTransactionLine::TRANS_DATE => $this->getCompatibleDateTime(),
+                                    MobileTransactionLine::ID              => $transactionId,
+                                    MobileTransactionLine::LINE_NO         => $lineNumber,
+                                    MobileTransactionLine::STORE_ID        => $storeCode,
+                                    MobileTransactionLine::QUANTITY        => $qty,
+                                    MobileTransactionLine::NUMBER          => $itemId,
+                                    MobileTransactionLine::VARIANT_CODE    => $variantId,
+                                    MobileTransactionLine::UOM_ID          => $uom,
+                                    MobileTransactionLine::PRICE           => $price,
+                                    MobileTransactionLine::NET_AMOUNT      => $amount,
+                                    MobileTransactionLine::TRANS_DATE      => $this->getCompatibleDateTime(),
                                     MobileTransactionLine::CURRENCY_FACTOR => 1
                                 ]
                             ]
@@ -183,8 +183,8 @@ class BasketHelper extends AbstractHelperOmni
     {
         $transactionId = $oneList->getMobiletransaction()
             ->getId();
-        $itemsArray = [];
-        $storeCode = $this->getDefaultWebStore();
+        $itemsArray    = [];
+        $storeCode     = $this->getDefaultWebStore();
         foreach ($wishlistItems as $lineNumber => $item) {
             $lineNumber = (++$lineNumber) * 10000;
             if ($item->getOptionByCode('simple_product')) {
@@ -195,19 +195,19 @@ class BasketHelper extends AbstractHelperOmni
             list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
                 $product->getSku()
             );
-            $qty = $item->getData('qty');
+            $qty      = $item->getData('qty');
             $listItem = $this->createInstance(
                 MobileTransactionLine::class,
                 [
                     'data' => [
-                        MobileTransactionLine::ID => $transactionId,
-                        MobileTransactionLine::LINE_NO => $lineNumber,
-                        MobileTransactionLine::STORE_ID => $storeCode,
-                        MobileTransactionLine::QUANTITY => $qty,
-                        MobileTransactionLine::NUMBER => $itemId,
-                        MobileTransactionLine::VARIANT_CODE => $variantId,
-                        MobileTransactionLine::UOM_ID => $uom,
-                        MobileTransactionLine::TRANS_DATE => $this->getCompatibleDateTime(),
+                        MobileTransactionLine::ID              => $transactionId,
+                        MobileTransactionLine::LINE_NO         => $lineNumber,
+                        MobileTransactionLine::STORE_ID        => $storeCode,
+                        MobileTransactionLine::QUANTITY        => $qty,
+                        MobileTransactionLine::NUMBER          => $itemId,
+                        MobileTransactionLine::VARIANT_CODE    => $variantId,
+                        MobileTransactionLine::UOM_ID          => $uom,
+                        MobileTransactionLine::TRANS_DATE      => $this->getCompatibleDateTime(),
                         MobileTransactionLine::CURRENCY_FACTOR => 1
                     ]
                 ]
@@ -230,22 +230,22 @@ class BasketHelper extends AbstractHelperOmni
      */
     public function getOrderLinesQuote(\Magento\Sales\Model\Order $order)
     {
-        $quote = $this->cartRepository->get($order->getQuoteId());
-        $websiteId = $quote->getStore()->getWebsiteId();
-        $storeCode = $this->lsr->getWebsiteConfig(
+        $quote             = $this->cartRepository->get($order->getQuoteId());
+        $websiteId         = $quote->getStore()->getWebsiteId();
+        $storeCode         = $this->lsr->getWebsiteConfig(
             LSR::SC_SERVICE_STORE,
             $websiteId
         );
-        $customerEmail = $order->getCustomerEmail();
-        $basketResponse = $quote->getBasketResponse();
+        $customerEmail     = $order->getCustomerEmail();
+        $basketResponse    = $quote->getBasketResponse();
         $mobileTransaction = $mobileTransactionLines = $mobileTransactionDiscountLines = [];
 
         if (!empty($basketResponse)) {
             // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
-            $basketData = $this->restoreModel(unserialize($basketResponse));
-            $mobileTransaction = $basketData->getMobiletransaction();
+            $basketData                     = $this->restoreModel(unserialize($basketResponse));
+            $mobileTransaction              = $basketData->getMobiletransaction();
             $mobileTransactionDiscountLines = $basketData->getMobiletransdiscountline();
-            $mobileTransactionLines = $basketData->getMobiletransactionline();
+            $mobileTransactionLines         = $basketData->getMobiletransactionline();
         }
 
         $quoteItems = $quote->getAllVisibleItems();
@@ -277,46 +277,46 @@ class BasketHelper extends AbstractHelperOmni
                 list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                     $quoteItem->getSku()
                 );
-                $priceIncTax = $discountPercentage = $discount = null;
+                $priceIncTax  = $discountPercentage = $discount = null;
                 $regularPrice = $quoteItem->getOriginalPrice();
-                $finalPrice = $quoteItem->getPriceInclTax();
+                $finalPrice   = $quoteItem->getPriceInclTax();
 
                 if ($finalPrice < $regularPrice) {
-                    $priceIncTax = $regularPrice;
-                    $discount = ($regularPrice - $finalPrice) * $quoteItem->getData('qty');
+                    $priceIncTax        = $regularPrice;
+                    $discount           = ($regularPrice - $finalPrice) * $quoteItem->getData('qty');
                     $discountPercentage = (($regularPrice - $finalPrice) / $regularPrice) * 100;
                 }
 
                 if ($quoteItem->getDiscountAmount() > 0) {
                     if (!$discount && !$discountPercentage) {
-                        $discount = $quoteItem->getDiscountAmount();
+                        $discount           = $quoteItem->getDiscountAmount();
                         $discountPercentage = $quoteItem->getDiscountPercent();
 
                         if ($discountPercentage == 0) {
-                            $rowTotalInclTax = $quoteItem->getRowTotalInclTax();
+                            $rowTotalInclTax    = $quoteItem->getRowTotalInclTax();
                             $discountPercentage = ($discount / $rowTotalInclTax) * 100;
                         }
                     } else {
-                        $rowTotalInclTax = $quoteItem->getRowTotalInclTax() + $discount;
-                        $discount += $quoteItem->getDiscountAmount();
+                        $rowTotalInclTax    = $quoteItem->getRowTotalInclTax() + $discount;
+                        $discount           += $quoteItem->getDiscountAmount();
                         $discountPercentage = ($discount / $rowTotalInclTax) * 100;
                     }
                 }
 
                 $orderLine = $this->createInstance(MobileTransactionLine::class);
                 $orderLine->addData([
-                    MobileTransactionLine::LINE_NO => $lineNumber,
-                    MobileTransactionLine::LINE_TYPE => 0,
-                    MobileTransactionLine::STORE_ID => $storeCode,
-                    MobileTransactionLine::QUANTITY => $quoteItem->getData('qty'),
-                    MobileTransactionLine::NUMBER => $itemId,
-                    MobileTransactionLine::VARIANT_CODE => $variantId,
-                    MobileTransactionLine::UOM_ID => $uom,
-                    MobileTransactionLine::NET_PRICE => $quoteItem->getPrice(),
-                    MobileTransactionLine::PRICE => $priceIncTax ?? $quoteItem->getPriceInclTax(),
-                    MobileTransactionLine::NET_AMOUNT => $quoteItem->getRowTotal(),
-                    MobileTransactionLine::TAXAMOUNT => $quoteItem->getTaxAmount(),
-                    MobileTransactionLine::DISCOUNT_AMOUNT => $discount,
+                    MobileTransactionLine::LINE_NO          => $lineNumber,
+                    MobileTransactionLine::LINE_TYPE        => 0,
+                    MobileTransactionLine::STORE_ID         => $storeCode,
+                    MobileTransactionLine::QUANTITY         => $quoteItem->getData('qty'),
+                    MobileTransactionLine::NUMBER           => $itemId,
+                    MobileTransactionLine::VARIANT_CODE     => $variantId,
+                    MobileTransactionLine::UOM_ID           => $uom,
+                    MobileTransactionLine::NET_PRICE        => $quoteItem->getPrice(),
+                    MobileTransactionLine::PRICE            => $priceIncTax ?? $quoteItem->getPriceInclTax(),
+                    MobileTransactionLine::NET_AMOUNT       => $quoteItem->getRowTotal(),
+                    MobileTransactionLine::TAXAMOUNT        => $quoteItem->getTaxAmount(),
+                    MobileTransactionLine::DISCOUNT_AMOUNT  => $discount,
                     MobileTransactionLine::DISCOUNT_PERCENT => $discountPercentage,
                 ]);
 
@@ -325,10 +325,10 @@ class BasketHelper extends AbstractHelperOmni
                 if ($discountPercentage && $discount) {
                     $orderDiscountLine = $this->createInstance(MobileTransDiscountLine::class);
                     $orderDiscountLine->addData([
-                        MobileTransDiscountLine::LINE_NO => $lineNumber,
-                        MobileTransDiscountLine::NO => $lineNumber,
-                        MobileTransDiscountLine::DISCOUNT_TYPE => 4,
-                        MobileTransDiscountLine::DISCOUNT_AMOUNT => $discount,
+                        MobileTransDiscountLine::LINE_NO          => $lineNumber,
+                        MobileTransDiscountLine::NO               => $lineNumber,
+                        MobileTransDiscountLine::DISCOUNT_TYPE    => 4,
+                        MobileTransDiscountLine::DISCOUNT_AMOUNT  => $discount,
                         MobileTransDiscountLine::DISCOUNT_PERCENT => $discountPercentage,
                     ]);
                     $mobileTransactionDiscountLines[] = $orderDiscountLine;
@@ -399,10 +399,10 @@ class BasketHelper extends AbstractHelperOmni
 
             return null;
         }
-        $this->couponCode = $couponCode;
-        $status = $this->fetchUpdatedBasket();
+        $this->couponCode         = $couponCode;
+        $status                   = $this->fetchUpdatedBasket();
         $mobileTransDiscountLines = $status ? $status->getMobiletransdiscountline() : [];
-        $checkCouponAmount = $this->dataHelper->orderBalanceCheck(
+        $checkCouponAmount        = $this->dataHelper->orderBalanceCheck(
             $this->checkoutSession->getQuote()->getLsGiftCardNo(),
             $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed(),
             $this->checkoutSession->getQuote()->getLsPointsSpent(),
@@ -424,7 +424,8 @@ class BasketHelper extends AbstractHelperOmni
         } elseif (!empty($mobileTransDiscountLines)) {
             if (is_array($mobileTransDiscountLines)) {
                 foreach ($mobileTransDiscountLines as $orderDiscountLine) {
-                    if ($orderDiscountLine->getDiscounttype() == '12') {
+                    if ($orderDiscountLine->getDiscounttype() == '12' || $orderDiscountLine->getCouponcode()
+                        == $couponCode || $orderDiscountLine->getCouponbarcodeno() == $couponCode) {
                         $status = "success";
                         $this->itemHelper->setDiscountedPricesForItems(
                             $this->checkoutSession->getQuote(),
@@ -477,7 +478,7 @@ class BasketHelper extends AbstractHelperOmni
      */
     public function fetchUpdatedBasket()
     {
-        $quote = $this->getCurrentQuote();
+        $quote   = $this->getCurrentQuote();
         $oneList = $this->basketHelper->setOneListQuote($quote, $this->get());
 
         return $this->update($oneList);
@@ -529,24 +530,24 @@ class BasketHelper extends AbstractHelperOmni
         }
 
         if ($this->getCouponCode() != "" && $this->getCouponCode() != null) {
-            $mobileTransactionLines = $oneList->getMobiletransactionline();
-            $lineNumber = (count($mobileTransactionLines) + 1) * 10000;
-            $transactionId = $oneList->getMobiletransaction()
+            $mobileTransactionLines   = $oneList->getMobiletransactionline();
+            $lineNumber               = (count($mobileTransactionLines) + 1) * 10000;
+            $transactionId            = $oneList->getMobiletransaction()
                 ->getId();
-            $storeCode = $this->getDefaultWebStore();
-            $listItem = $this->createInstance(
+            $storeCode                = $this->getDefaultWebStore();
+            $listItem                 = $this->createInstance(
                 MobileTransactionLine::class,
                 [
                     'data' => [
-                        MobileTransactionLine::ID => $transactionId,
-                        MobileTransactionLine::LINE_NO => $lineNumber,
-                        MobileTransactionLine::STORE_ID => $storeCode,
-                        MobileTransactionLine::QUANTITY => 1,
-                        MobileTransactionLine::NUMBER => $this->getCouponCode(),
-                        MobileTransactionLine::BARCODE => $this->getCouponCode(),
-                        MobileTransactionLine::TRANS_DATE => $this->getCompatibleDateTime(),
+                        MobileTransactionLine::ID              => $transactionId,
+                        MobileTransactionLine::LINE_NO         => $lineNumber,
+                        MobileTransactionLine::STORE_ID        => $storeCode,
+                        MobileTransactionLine::QUANTITY        => 1,
+                        MobileTransactionLine::NUMBER          => $this->getCouponCode(),
+                        MobileTransactionLine::BARCODE         => $this->getCouponCode(),
+                        MobileTransactionLine::TRANS_DATE      => $this->getCompatibleDateTime(),
                         MobileTransactionLine::CURRENCY_FACTOR => 1,
-                        MobileTransactionLine::LINE_TYPE => 6
+                        MobileTransactionLine::LINE_TYPE       => 6
                     ]
                 ]
             );
@@ -587,10 +588,10 @@ class BasketHelper extends AbstractHelperOmni
                 $this->adminOrderCardId = $customer->getData('lsr_cardid');
             }
         }
-        $webStore       = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
+        $webStore      = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         $this->storeId = $webStore;
         // @codingStandardsIgnoreStart
-        $list    = $this->get();
+        $list = $this->get();
         return $list;
         // @codingStandardsIgnoreEnd
     }
@@ -628,22 +629,24 @@ class BasketHelper extends AbstractHelperOmni
             MobileTransaction::class,
             [
                 'data' => [
-                    MobileTransaction::ID => $this->generateGuid(),
-                    MobileTransaction::TRANS_DATE => $this->getCompatibleDateTime(),
+                    MobileTransaction::ID               => $this->generateGuid(),
+                    MobileTransaction::TRANS_DATE       => $this->getCompatibleDateTime(),
                     MobileTransaction::TRANSACTION_TYPE => 2,
-                    MobileTransaction::SOURCE_TYPE => 1,
-                    MobileTransaction::SALES_TYPE => 'POS',
-                    MobileTransaction::MEMBER_CARD_NO => $cardId,
-                    MobileTransaction::STORE_ID => $storeCode
+                    MobileTransaction::SOURCE_TYPE      => 1,
+                    MobileTransaction::SALES_TYPE       => 'POS',
+                    MobileTransaction::MEMBER_CARD_NO   => $cardId,
+                    MobileTransaction::STORE_ID         => $storeCode
                 ]
             ]
         );
 
         return $this->createInstance(
             RootMobileTransaction::class,
-            ['data' => [
-                RootMobileTransaction::MOBILE_TRANSACTION => $mobileTransaction
-            ]]
+            [
+                'data' => [
+                    RootMobileTransaction::MOBILE_TRANSACTION => $mobileTransaction
+                ]
+            ]
         );
     }
 
@@ -755,7 +758,7 @@ class BasketHelper extends AbstractHelperOmni
             $orderLines = $lines;
         }
         if ($item->getProductType() == Type::TYPE_BUNDLE) {
-            $children = !empty($lines) ? $item->getChildrenItems() : $item->getChildren();
+            $children      = !empty($lines) ? $item->getChildrenItems() : $item->getChildren();
             $bundleProduct = 1;
         } else {
             $children[] = $item;
@@ -767,7 +770,7 @@ class BasketHelper extends AbstractHelperOmni
                     ($child->getItemId() == $line->getId() && $line->getDiscountamount() > 0) :
                     ($this->itemHelper->isSameItem($child, $line) && $line->getDiscountamount() > 0)
                 ) {
-                    $qty = !empty($lines) ?
+                    $qty         = !empty($lines) ?
                         $item->getQtyOrdered() :
                         ($bundleProduct ? $child->getData('qty') * $item->getData('qty') :
                             $child->getQty()
@@ -870,8 +873,8 @@ class BasketHelper extends AbstractHelperOmni
             ) = $this->getOrderLinesQuote($order);
 
         $orderEntity->addData([
-            RootMobileTransaction::MOBILE_TRANSACTION => $mobileTransaction,
-            RootMobileTransaction::MOBILE_TRANSACTION_LINE => $mobileTransactionLines,
+            RootMobileTransaction::MOBILE_TRANSACTION         => $mobileTransaction,
+            RootMobileTransaction::MOBILE_TRANSACTION_LINE    => $mobileTransactionLines,
             RootMobileTransaction::MOBILE_TRANS_DISCOUNT_LINE => $mobileTransactionDiscountLines,
         ]);
 
@@ -922,7 +925,7 @@ class BasketHelper extends AbstractHelperOmni
         $oneList->getMobiletransaction()->setShiptocountryregioncode($country);
 
         $basketData = $this->update($oneList);
-        $quote = $this->getCurrentQuote();
+        $quote      = $this->getCurrentQuote();
         if (is_object($basketData)) {
             $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
             $cartQuote = $this->checkoutSession->getQuote();
@@ -1037,7 +1040,7 @@ class BasketHelper extends AbstractHelperOmni
                     $itemOption = $item->getOptionByCode('option_' . $option->getId());
                     if ($itemOption) {
                         $optionValue = $itemOption->getValue();
-                        $values = explode(',', $optionValue); // Handle multiple selected values
+                        $values      = explode(',', $optionValue); // Handle multiple selected values
 
                         foreach ($values as $valueId) {
                             $value = $option->getValueById($valueId);

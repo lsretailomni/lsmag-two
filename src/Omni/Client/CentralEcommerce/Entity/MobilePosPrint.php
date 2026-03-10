@@ -45,7 +45,7 @@ class MobilePosPrint extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -63,7 +63,7 @@ class MobilePosPrint extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -81,7 +81,7 @@ class MobilePosPrint extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getPrintmethod() : ?string
+    public function getPrintmethod(): ?string
     {
         return $this->getData(self::PRINT_METHOD);
     }
@@ -99,7 +99,7 @@ class MobilePosPrint extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getMailrecipient() : ?string
+    public function getMailrecipient(): ?string
     {
         return $this->getData(self::MAIL_RECIPIENT);
     }
@@ -117,7 +117,7 @@ class MobilePosPrint extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getExternalprinterid() : ?string
+    public function getExternalprinterid(): ?string
     {
         return $this->getData(self::EXTERNAL_PRINTER_ID);
     }
@@ -135,7 +135,7 @@ class MobilePosPrint extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -153,7 +153,7 @@ class MobilePosPrint extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getTerminalno() : ?string
+    public function getTerminalno(): ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }

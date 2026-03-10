@@ -55,7 +55,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -73,7 +73,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -127,7 +127,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOffertype() : ?string
+    public function getOffertype(): ?string
     {
         return $this->getData(self::OFFER_TYPE);
     }
@@ -145,7 +145,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOfferno() : ?string
+    public function getOfferno(): ?string
     {
         return $this->getData(self::OFFER_NO);
     }
@@ -181,7 +181,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getType() : ?string
+    public function getType(): ?string
     {
         return $this->getData(self::TYPE);
     }
@@ -199,7 +199,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNo() : ?string
+    public function getNo(): ?string
     {
         return $this->getData(self::NO);
     }
@@ -217,7 +217,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -235,7 +235,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -253,7 +253,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getValuetype() : ?string
+    public function getValuetype(): ?string
     {
         return $this->getData(self::VALUE_TYPE);
     }
@@ -271,7 +271,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getValue() : ?float
+    public function getValue(): ?float
     {
         return $this->getData(self::VALUE);
     }
@@ -289,7 +289,7 @@ class TransDiscBenefitEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }

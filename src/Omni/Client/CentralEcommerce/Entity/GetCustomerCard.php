@@ -41,7 +41,7 @@ class GetCustomerCard extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -59,7 +59,7 @@ class GetCustomerCard extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -77,7 +77,7 @@ class GetCustomerCard extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getTerminalno() : ?string
+    public function getTerminalno(): ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -95,7 +95,7 @@ class GetCustomerCard extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -113,7 +113,7 @@ class GetCustomerCard extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getCustomerno() : ?string
+    public function getCustomerno(): ?string
     {
         return $this->getData(self::CUSTOMER_NO);
     }
@@ -131,7 +131,7 @@ class GetCustomerCard extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getView() : ?string
+    public function getView(): ?string
     {
         return $this->getData(self::VIEW);
     }

@@ -45,6 +45,7 @@ class Currency extends AbstractModel
     public const CURRENCY_SYMBOL_POSITION = 'Currency Symbol Position';
     public const LSC_LOWEST_ACCEPT_DENOM_AMT = 'LSC Lowest Accept. Denom. Amt.';
     public const LSC_DENOMINATION_ROUNDING_TYPE = 'LSC Denomination Rounding Type';
+    public const LSC_BLOCK_UNDERTENDER_COMPL = 'LSC Block UnderTender Compl.';
     public const LSC_POS_CURRENCY_SYMBOL = 'LSC POS Currency Symbol';
     public const LSC_PLACEMENT_OF_CURR_SYMBOL = 'LSC Placement Of Curr. Symbol';
     public const LSC_FISCAL_PRINTER_ID = 'LSC Fiscal Printer ID';
@@ -89,6 +90,7 @@ class Currency extends AbstractModel
 	self::CURRENCY_SYMBOL_POSITION => 'currency_symbol_position',
 	self::LSC_LOWEST_ACCEPT_DENOM_AMT => 'lsc_lowest_accept_denom_amt',
 	self::LSC_DENOMINATION_ROUNDING_TYPE => 'lsc_denomination_rounding_type',
+	self::LSC_BLOCK_UNDERTENDER_COMPL => 'lsc_block_undertender_compl',
 	self::LSC_POS_CURRENCY_SYMBOL => 'lsc_pos_currency_symbol',
 	self::LSC_PLACEMENT_OF_CURR_SYMBOL => 'lsc_placement_of_curr_symbol',
 	self::LSC_FISCAL_PRINTER_ID => 'lsc_fiscal_printer_id',
@@ -443,6 +445,16 @@ class Currency extends AbstractModel
     public function setLscDenominationRoundingType(?int $value)
     {
         return $this->setData(self::LSC_DENOMINATION_ROUNDING_TYPE, $value);
+    }
+
+    public function getLscBlockUndertenderCompl(): ?bool
+    {
+        return $this->getData(self::LSC_BLOCK_UNDERTENDER_COMPL);
+    }
+
+    public function setLscBlockUndertenderCompl(?bool $value)
+    {
+        return $this->setData(self::LSC_BLOCK_UNDERTENDER_COMPL, $value);
     }
 
     public function getLscPosCurrencySymbol(): ?string

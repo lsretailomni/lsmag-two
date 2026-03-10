@@ -169,7 +169,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPassword() : ?string
+    public function getPassword(): ?string
     {
         return $this->getData(self::PASSWORD);
     }
@@ -187,7 +187,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getChangePassword() : ?bool
+    public function getChangePassword(): ?bool
     {
         return $this->getData(self::CHANGE_PASSWORD);
     }
@@ -205,7 +205,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -223,7 +223,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVoidTransaction() : ?string
+    public function getVoidTransaction(): ?string
     {
         return $this->getData(self::VOID_TRANSACTION);
     }
@@ -241,7 +241,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getManagerPrivileges() : ?string
+    public function getManagerPrivileges(): ?string
     {
         return $this->getData(self::MANAGER_PRIVILEGES);
     }
@@ -259,7 +259,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getXzyReportPrinting() : ?string
+    public function getXzyReportPrinting(): ?string
     {
         return $this->getData(self::XZY_REPORT_PRINTING);
     }
@@ -277,7 +277,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTenderDeclaration() : ?string
+    public function getTenderDeclaration(): ?string
     {
         return $this->getData(self::TENDER_DECLARATION);
     }
@@ -295,7 +295,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFloatingDeclaration() : ?string
+    public function getFloatingDeclaration(): ?string
     {
         return $this->getData(self::FLOATING_DECLARATION);
     }
@@ -313,7 +313,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPriceOverride() : ?string
+    public function getPriceOverride(): ?string
     {
         return $this->getData(self::PRICE_OVERRIDE);
     }
@@ -331,7 +331,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getMaxDiscountToGive() : ?float
+    public function getMaxDiscountToGive(): ?float
     {
         return $this->getData(self::MAX_DISCOUNT_TO_GIVE);
     }
@@ -349,7 +349,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSuspendTransaction() : ?string
+    public function getSuspendTransaction(): ?string
     {
         return $this->getData(self::SUSPEND_TRANSACTION);
     }
@@ -367,7 +367,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getMaxTotalDiscount() : ?float
+    public function getMaxTotalDiscount(): ?float
     {
         return $this->getData(self::MAX_TOTAL_DISCOUNT);
     }
@@ -385,7 +385,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOpenDrawWithoutSale() : ?string
+    public function getOpenDrawWithoutSale(): ?string
     {
         return $this->getData(self::OPEN_DRAW_WITHOUT_SALE);
     }
@@ -403,7 +403,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFirstName() : ?string
+    public function getFirstName(): ?string
     {
         return $this->getData(self::FIRST_NAME);
     }
@@ -421,7 +421,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLastName() : ?string
+    public function getLastName(): ?string
     {
         return $this->getData(self::LAST_NAME);
     }
@@ -439,7 +439,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEmploymentType() : ?string
+    public function getEmploymentType(): ?string
     {
         return $this->getData(self::EMPLOYMENT_TYPE);
     }
@@ -457,7 +457,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLastDateModified() : ?string
+    public function getLastDateModified(): ?string
     {
         return $this->getData(self::LAST_DATE_MODIFIED);
     }
@@ -475,7 +475,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNameOnReceipt() : ?string
+    public function getNameOnReceipt(): ?string
     {
         return $this->getData(self::NAME_ON_RECEIPT);
     }
@@ -493,7 +493,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddress() : ?string
+    public function getAddress(): ?string
     {
         return $this->getData(self::ADDRESS);
     }
@@ -511,7 +511,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddress2() : ?string
+    public function getAddress2(): ?string
     {
         return $this->getData(self::ADDRESS_2);
     }
@@ -529,7 +529,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCity() : ?string
+    public function getCity(): ?string
     {
         return $this->getData(self::CITY);
     }
@@ -547,7 +547,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPostCode() : ?string
+    public function getPostCode(): ?string
     {
         return $this->getData(self::POST_CODE);
     }
@@ -565,7 +565,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHomePhoneNo() : ?string
+    public function getHomePhoneNo(): ?string
     {
         return $this->getData(self::HOME_PHONE_NO);
     }
@@ -583,7 +583,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getWorkPhoneNo() : ?string
+    public function getWorkPhoneNo(): ?string
     {
         return $this->getData(self::WORK_PHONE_NO);
     }
@@ -601,7 +601,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getHourlyRate() : ?float
+    public function getHourlyRate(): ?float
     {
         return $this->getData(self::HOURLY_RATE);
     }
@@ -619,7 +619,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPayrollNo() : ?string
+    public function getPayrollNo(): ?string
     {
         return $this->getData(self::PAYROLL_NO);
     }
@@ -637,7 +637,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getBlocked() : ?bool
+    public function getBlocked(): ?bool
     {
         return $this->getData(self::BLOCKED);
     }
@@ -655,7 +655,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateToBeBlocked() : ?string
+    public function getDateToBeBlocked(): ?string
     {
         return $this->getData(self::DATE_TO_BE_BLOCKED);
     }
@@ -673,7 +673,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getLeftHanded() : ?bool
+    public function getLeftHanded(): ?bool
     {
         return $this->getData(self::LEFT_HANDED);
     }
@@ -691,7 +691,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalesPerson() : ?string
+    public function getSalesPerson(): ?string
     {
         return $this->getData(self::SALES_PERSON);
     }
@@ -709,7 +709,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNoSeries() : ?string
+    public function getNoSeries(): ?string
     {
         return $this->getData(self::NO_SERIES);
     }
@@ -727,7 +727,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPermissionGroup() : ?string
+    public function getPermissionGroup(): ?string
     {
         return $this->getData(self::PERMISSION_GROUP);
     }
@@ -745,7 +745,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReturnInTransaction() : ?string
+    public function getReturnInTransaction(): ?string
     {
         return $this->getData(self::RETURN_IN_TRANSACTION);
     }
@@ -763,7 +763,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVoidPrepayment() : ?string
+    public function getVoidPrepayment(): ?string
     {
         return $this->getData(self::VOID_PREPAYMENT);
     }
@@ -781,7 +781,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVoidPrepaymentLine() : ?string
+    public function getVoidPrepaymentLine(): ?string
     {
         return $this->getData(self::VOID_PREPAYMENT_LINE);
     }
@@ -799,7 +799,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getChangePrepmtAmt() : ?string
+    public function getChangePrepmtAmt(): ?string
     {
         return $this->getData(self::CHANGE_PREPMT_AMT);
     }
@@ -817,7 +817,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddPrepmtAmt() : ?string
+    public function getAddPrepmtAmt(): ?string
     {
         return $this->getData(self::ADD_PREPMT_AMT);
     }
@@ -835,7 +835,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVoidLine() : ?string
+    public function getVoidLine(): ?string
     {
         return $this->getData(self::VOID_LINE);
     }
@@ -853,7 +853,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddPayment() : ?string
+    public function getAddPayment(): ?string
     {
         return $this->getData(self::ADD_PAYMENT);
     }
@@ -871,7 +871,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransferOrders() : ?string
+    public function getTransferOrders(): ?string
     {
         return $this->getData(self::TRANSFER_ORDERS);
     }
@@ -889,7 +889,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSplitBill() : ?string
+    public function getSplitBill(): ?string
     {
         return $this->getData(self::SPLIT_BILL);
     }
@@ -907,7 +907,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSwitchDiningTableLayout() : ?string
+    public function getSwitchDiningTableLayout(): ?string
     {
         return $this->getData(self::SWITCH_DINING_TABLE_LAYOUT);
     }
@@ -925,7 +925,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAdjustDiningTables() : ?string
+    public function getAdjustDiningTables(): ?string
     {
         return $this->getData(self::ADJUST_DINING_TABLES);
     }
@@ -943,7 +943,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDesignDiningTableLayout() : ?string
+    public function getDesignDiningTableLayout(): ?string
     {
         return $this->getData(self::DESIGN_DINING_TABLE_LAYOUT);
     }
@@ -961,7 +961,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getContinueOnTsErrors() : ?bool
+    public function getContinueOnTsErrors(): ?bool
     {
         return $this->getData(self::CONTINUE_ON_TS_ERRORS);
     }
@@ -979,7 +979,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLastZReport() : ?string
+    public function getLastZReport(): ?string
     {
         return $this->getData(self::LAST_Z_REPORT);
     }
@@ -997,7 +997,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosInterfaceProfile() : ?string
+    public function getPosInterfaceProfile(): ?string
     {
         return $this->getData(self::POS_INTERFACE_PROFILE);
     }
@@ -1015,7 +1015,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosstyleprofile() : ?string
+    public function getPosstyleprofile(): ?string
     {
         return $this->getData(self::POSSTYLE_PROFILE);
     }
@@ -1033,7 +1033,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosmenuprofile() : ?string
+    public function getPosmenuprofile(): ?string
     {
         return $this->getData(self::POSMENU_PROFILE);
     }
@@ -1051,7 +1051,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLanguage() : ?string
+    public function getLanguage(): ?string
     {
         return $this->getData(self::LANGUAGE);
     }
@@ -1069,7 +1069,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreateCustomers() : ?string
+    public function getCreateCustomers(): ?string
     {
         return $this->getData(self::CREATE_CUSTOMERS);
     }
@@ -1087,7 +1087,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getViewSalesHistory() : ?string
+    public function getViewSalesHistory(): ?string
     {
         return $this->getData(self::VIEW_SALES_HISTORY);
     }
@@ -1105,7 +1105,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerComments() : ?string
+    public function getCustomerComments(): ?string
     {
         return $this->getData(self::CUSTOMER_COMMENTS);
     }
@@ -1123,7 +1123,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getMaxTenderDeclDifference() : ?float
+    public function getMaxTenderDeclDifference(): ?float
     {
         return $this->getData(self::MAX_TENDER_DECL_DIFFERENCE);
     }
@@ -1159,7 +1159,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShowDifferenceInWarning() : ?string
+    public function getShowDifferenceInWarning(): ?string
     {
         return $this->getData(self::SHOW_DIFFERENCE_IN_WARNING);
     }
@@ -1177,7 +1177,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getActionAfterDiffWarning() : ?string
+    public function getActionAfterDiffWarning(): ?string
     {
         return $this->getData(self::ACTION_AFTER_DIFF_WARNING);
     }
@@ -1195,7 +1195,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCidReportPrintingAllowed() : ?string
+    public function getCidReportPrintingAllowed(): ?string
     {
         return $this->getData(self::CID_REPORT_PRINTING_ALLOWED);
     }
@@ -1213,7 +1213,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShowTransAmount() : ?string
+    public function getShowTransAmount(): ?string
     {
         return $this->getData(self::SHOW_TRANS_AMOUNT);
     }
@@ -1231,7 +1231,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUpdateCustomers() : ?string
+    public function getUpdateCustomers(): ?string
     {
         return $this->getData(self::UPDATE_CUSTOMERS);
     }
@@ -1249,7 +1249,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDiscountFromPermGroup() : ?string
+    public function getDiscountFromPermGroup(): ?string
     {
         return $this->getData(self::DISCOUNT_FROM_PERM_GROUP);
     }
@@ -1267,7 +1267,7 @@ class Staff extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMaxDiffWarnFromPermGr() : ?string
+    public function getMaxDiffWarnFromPermGr(): ?string
     {
         return $this->getData(self::MAX_DIFF_WARN_FROM_PERM_GR);
     }

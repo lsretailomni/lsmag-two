@@ -39,7 +39,7 @@ class MemberContactBlock extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -57,7 +57,7 @@ class MemberContactBlock extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -75,7 +75,7 @@ class MemberContactBlock extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getAccountid() : ?string
+    public function getAccountid(): ?string
     {
         return $this->getData(self::ACCOUNT_ID);
     }
@@ -93,7 +93,7 @@ class MemberContactBlock extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getContactid() : ?string
+    public function getContactid(): ?string
     {
         return $this->getData(self::CONTACT_ID);
     }
@@ -111,7 +111,7 @@ class MemberContactBlock extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getReasonid() : ?string
+    public function getReasonid(): ?string
     {
         return $this->getData(self::REASON_ID);
     }
@@ -129,7 +129,7 @@ class MemberContactBlock extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getBlockyesno() : ?string
+    public function getBlockyesno(): ?string
     {
         return $this->getData(self::BLOCK_YES_NO);
     }

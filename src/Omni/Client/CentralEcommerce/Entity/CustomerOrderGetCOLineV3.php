@@ -129,7 +129,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -165,7 +165,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatus() : ?string
+    public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);
     }
@@ -183,7 +183,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLinetype() : ?string
+    public function getLinetype(): ?string
     {
         return $this->getData(self::LINE_TYPE);
     }
@@ -201,7 +201,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNumber() : ?string
+    public function getNumber(): ?string
     {
         return $this->getData(self::NUMBER);
     }
@@ -219,7 +219,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -237,7 +237,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitofmeasurecode() : ?string
+    public function getUnitofmeasurecode(): ?string
     {
         return $this->getData(self::UNITOF_MEASURE_CODE);
     }
@@ -255,7 +255,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetprice() : ?float
+    public function getNetprice(): ?float
     {
         return $this->getData(self::NET_PRICE);
     }
@@ -273,7 +273,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPrice() : ?float
+    public function getPrice(): ?float
     {
         return $this->getData(self::PRICE);
     }
@@ -291,7 +291,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -309,7 +309,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountamount() : ?float
+    public function getDiscountamount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
@@ -327,7 +327,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountpercent() : ?float
+    public function getDiscountpercent(): ?float
     {
         return $this->getData(self::DISCOUNT_PERCENT);
     }
@@ -345,7 +345,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetamount() : ?float
+    public function getNetamount(): ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
@@ -363,7 +363,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getVatamount() : ?float
+    public function getVatamount(): ?float
     {
         return $this->getData(self::VAT_AMOUNT);
     }
@@ -381,7 +381,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmount() : ?float
+    public function getAmount(): ?float
     {
         return $this->getData(self::AMOUNT);
     }
@@ -399,7 +399,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatprodpostinggroup() : ?string
+    public function getVatprodpostinggroup(): ?string
     {
         return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
@@ -417,7 +417,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemdescription() : ?string
+    public function getItemdescription(): ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
@@ -435,7 +435,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantdescription() : ?string
+    public function getVariantdescription(): ?string
     {
         return $this->getData(self::VARIANT_DESCRIPTION);
     }
@@ -453,7 +453,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUomdescription() : ?string
+    public function getUomdescription(): ?string
     {
         return $this->getData(self::UO_MDESCRIPTION);
     }
@@ -489,7 +489,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourcinglocation() : ?string
+    public function getSourcinglocation(): ?string
     {
         return $this->getData(self::SOURCING_LOCATION);
     }
@@ -507,7 +507,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrderreference() : ?string
+    public function getOrderreference(): ?string
     {
         return $this->getData(self::ORDER_REFERENCE);
     }
@@ -525,7 +525,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getInventorytransfer() : ?bool
+    public function getInventorytransfer(): ?bool
     {
         return $this->getData(self::INVENTORY_TRANSFER);
     }
@@ -543,7 +543,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getVendorsourcing() : ?bool
+    public function getVendorsourcing(): ?bool
     {
         return $this->getData(self::VENDOR_SOURCING);
     }
@@ -561,7 +561,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLeadtime() : ?string
+    public function getLeadtime(): ?string
     {
         return $this->getData(self::LEAD_TIME);
     }
@@ -579,7 +579,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPrepaymentamount() : ?float
+    public function getPrepaymentamount(): ?float
     {
         return $this->getData(self::PREPAYMENT_AMOUNT);
     }
@@ -597,7 +597,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPurchaseorderno() : ?string
+    public function getPurchaseorderno(): ?string
     {
         return $this->getData(self::PURCHASE_ORDER_NO);
     }
@@ -615,7 +615,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantityreceived() : ?float
+    public function getQuantityreceived(): ?float
     {
         return $this->getData(self::QUANTITY_RECEIVED);
     }
@@ -633,7 +633,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRetailimageid() : ?string
+    public function getRetailimageid(): ?string
     {
         return $this->getData(self::RETAIL_IMAGE_ID);
     }
@@ -651,7 +651,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -669,7 +669,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCollectshelf() : ?string
+    public function getCollectshelf(): ?string
     {
         return $this->getData(self::COLLECT_SHELF);
     }
@@ -687,7 +687,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTerminalno() : ?string
+    public function getTerminalno(): ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -705,7 +705,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCollecttimelimit() : ?string
+    public function getCollecttimelimit(): ?string
     {
         return $this->getData(self::COLLECT_TIME_LIMIT);
     }
@@ -723,7 +723,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getClickandcollectline() : ?bool
+    public function getClickandcollectline(): ?bool
     {
         return $this->getData(self::CLICK_AND_COLLECT_LINE);
     }
@@ -741,7 +741,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingagentcode() : ?string
+    public function getShippingagentcode(): ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
@@ -759,7 +759,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingagentservicecode() : ?string
+    public function getShippingagentservicecode(): ?string
     {
         return $this->getData(self::SHIPPING_AGENT_SERVICE_CODE);
     }
@@ -777,7 +777,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourcingordertype() : ?string
+    public function getSourcingordertype(): ?string
     {
         return $this->getData(self::SOURCING_ORDER_TYPE);
     }
@@ -795,7 +795,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequesteddeliverydate() : ?string
+    public function getRequesteddeliverydate(): ?string
     {
         return $this->getData(self::REQUESTED_DELIVERY_DATE);
     }
@@ -813,7 +813,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalid() : ?string
+    public function getExternalid(): ?string
     {
         return $this->getData(self::EXTERNAL_ID);
     }
@@ -831,7 +831,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBoxno() : ?string
+    public function getBoxno(): ?string
     {
         return $this->getData(self::BOX_NO);
     }
@@ -849,7 +849,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getShipline() : ?bool
+    public function getShipline(): ?bool
     {
         return $this->getData(self::SHIP_LINE);
     }
@@ -867,7 +867,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getServiceitem() : ?bool
+    public function getServiceitem(): ?bool
     {
         return $this->getData(self::SERVICE_ITEM);
     }
@@ -885,7 +885,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtypicked() : ?float
+    public function getQtypicked(): ?float
     {
         return $this->getData(self::QTY_PICKED);
     }
@@ -903,7 +903,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtyshortage() : ?float
+    public function getQtyshortage(): ?float
     {
         return $this->getData(self::QTY_SHORTAGE);
     }
@@ -921,7 +921,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtycanceledinpicking() : ?float
+    public function getQtycanceledinpicking(): ?float
     {
         return $this->getData(self::QTY_CANCELED_IN_PICKING);
     }
@@ -939,7 +939,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtycollected() : ?float
+    public function getQtycollected(): ?float
     {
         return $this->getData(self::QTY_COLLECTED);
     }
@@ -957,7 +957,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtycanceledincollecting() : ?float
+    public function getQtycanceledincollecting(): ?float
     {
         return $this->getData(self::QTY_CANCELED_IN_COLLECTING);
     }
@@ -975,7 +975,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotransferint() : ?float
+    public function getTotransferint(): ?float
     {
         return $this->getData(self::TO_TRANSFER_INT);
     }
@@ -993,7 +993,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrepaymentdocumenttype() : ?string
+    public function getPrepaymentdocumenttype(): ?string
     {
         return $this->getData(self::PREPAYMENT_DOCUMENT_TYPE);
     }
@@ -1011,7 +1011,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrepaymentdocumentno() : ?string
+    public function getPrepaymentdocumentno(): ?string
     {
         return $this->getData(self::PREPAYMENT_DOCUMENT_NO);
     }
@@ -1029,7 +1029,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSerialno() : ?string
+    public function getSerialno(): ?string
     {
         return $this->getData(self::SERIAL_NO);
     }
@@ -1047,7 +1047,7 @@ class CustomerOrderGetCOLineV3 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLotno() : ?string
+    public function getLotno(): ?string
     {
         return $this->getData(self::LOT_NO);
     }

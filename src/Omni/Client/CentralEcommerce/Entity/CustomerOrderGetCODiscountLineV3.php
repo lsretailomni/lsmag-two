@@ -49,7 +49,7 @@ class CustomerOrderGetCODiscountLineV3 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -121,7 +121,7 @@ class CustomerOrderGetCODiscountLineV3 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getOfferno() : ?string
+    public function getOfferno(): ?string
     {
         return $this->getData(self::OFFER_NO);
     }
@@ -157,7 +157,7 @@ class CustomerOrderGetCODiscountLineV3 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getPeriodicdiscgroup() : ?string
+    public function getPeriodicdiscgroup(): ?string
     {
         return $this->getData(self::PERIODIC_DISC_GROUP);
     }
@@ -175,7 +175,7 @@ class CustomerOrderGetCODiscountLineV3 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -193,7 +193,7 @@ class CustomerOrderGetCODiscountLineV3 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?float
      */
-    public function getDiscountpercent() : ?float
+    public function getDiscountpercent(): ?float
     {
         return $this->getData(self::DISCOUNT_PERCENT);
     }
@@ -211,7 +211,7 @@ class CustomerOrderGetCODiscountLineV3 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?float
      */
-    public function getDiscountamount() : ?float
+    public function getDiscountamount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
@@ -229,7 +229,7 @@ class CustomerOrderGetCODiscountLineV3 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getSequencecode() : ?string
+    public function getSequencecode(): ?string
     {
         return $this->getData(self::SEQUENCE_CODE);
     }
@@ -247,7 +247,7 @@ class CustomerOrderGetCODiscountLineV3 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getSequencefunction() : ?string
+    public function getSequencefunction(): ?string
     {
         return $this->getData(self::SEQUENCE_FUNCTION);
     }

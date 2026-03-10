@@ -43,7 +43,7 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -61,7 +61,7 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -79,7 +79,7 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getLoginid() : ?string
+    public function getLoginid(): ?string
     {
         return $this->getData(self::LOGIN_ID);
     }
@@ -97,7 +97,7 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getPassword() : ?string
+    public function getPassword(): ?string
     {
         return $this->getData(self::PASSWORD);
     }
@@ -115,7 +115,7 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getDeviceid() : ?string
+    public function getDeviceid(): ?string
     {
         return $this->getData(self::DEVICE_ID);
     }
@@ -133,7 +133,7 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getDevicefriendlyname() : ?string
+    public function getDevicefriendlyname(): ?string
     {
         return $this->getData(self::DEVICE_FRIENDLY_NAME);
     }
@@ -151,7 +151,7 @@ class MemberLogon extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?float
      */
-    public function getTotalremainingpoints() : ?float
+    public function getTotalremainingpoints(): ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }

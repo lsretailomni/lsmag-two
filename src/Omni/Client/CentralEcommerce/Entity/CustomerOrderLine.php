@@ -47,7 +47,7 @@ class CustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -83,7 +83,7 @@ class CustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLinetype() : ?string
+    public function getLinetype(): ?string
     {
         return $this->getData(self::LINE_TYPE);
     }
@@ -101,7 +101,7 @@ class CustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNumber() : ?string
+    public function getNumber(): ?string
     {
         return $this->getData(self::NUMBER);
     }
@@ -119,7 +119,7 @@ class CustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -137,7 +137,7 @@ class CustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitofmeasurecode() : ?string
+    public function getUnitofmeasurecode(): ?string
     {
         return $this->getData(self::UNITOF_MEASURE_CODE);
     }
@@ -155,7 +155,7 @@ class CustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -173,7 +173,7 @@ class CustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmount() : ?float
+    public function getAmount(): ?float
     {
         return $this->getData(self::AMOUNT);
     }
@@ -191,7 +191,7 @@ class CustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourcingordertype() : ?string
+    public function getSourcingordertype(): ?string
     {
         return $this->getData(self::SOURCING_ORDER_TYPE);
     }
@@ -209,7 +209,7 @@ class CustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatus() : ?string
+    public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);
     }
@@ -227,7 +227,7 @@ class CustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtycollected() : ?float
+    public function getQtycollected(): ?float
     {
         return $this->getData(self::QTY_COLLECTED);
     }

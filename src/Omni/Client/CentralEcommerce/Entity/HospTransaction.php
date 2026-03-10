@@ -129,7 +129,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreid() : ?string
+    public function getStoreid(): ?string
     {
         return $this->getData(self::STORE_ID);
     }
@@ -147,7 +147,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTerminalid() : ?string
+    public function getTerminalid(): ?string
     {
         return $this->getData(self::TERMINAL_ID);
     }
@@ -165,7 +165,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -219,7 +219,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -255,7 +255,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransdate() : ?string
+    public function getTransdate(): ?string
     {
         return $this->getData(self::TRANS_DATE);
     }
@@ -273,7 +273,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencycode() : ?string
+    public function getCurrencycode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -291,7 +291,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCurrencyfactor() : ?float
+    public function getCurrencyfactor(): ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
     }
@@ -309,7 +309,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGenbuspostinggroup() : ?string
+    public function getGenbuspostinggroup(): ?string
     {
         return $this->getData(self::GEN_BUS_POSTING_GROUP);
     }
@@ -327,7 +327,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatbuspostinggroup() : ?string
+    public function getVatbuspostinggroup(): ?string
     {
         return $this->getData(self::VATBUS_POSTING_GROUP);
     }
@@ -345,7 +345,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPricegroupcode() : ?string
+    public function getPricegroupcode(): ?string
     {
         return $this->getData(self::PRICE_GROUP_CODE);
     }
@@ -363,7 +363,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerid() : ?string
+    public function getCustomerid(): ?string
     {
         return $this->getData(self::CUSTOMER_ID);
     }
@@ -381,7 +381,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustdiscgroup() : ?string
+    public function getCustdiscgroup(): ?string
     {
         return $this->getData(self::CUST_DISC_GROUP);
     }
@@ -399,7 +399,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMembercardno() : ?string
+    public function getMembercardno(): ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -417,7 +417,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberpricegroupcode() : ?string
+    public function getMemberpricegroupcode(): ?string
     {
         return $this->getData(self::MEMBER_PRICE_GROUP_CODE);
     }
@@ -435,7 +435,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getManualtotaldiscpercent() : ?float
+    public function getManualtotaldiscpercent(): ?float
     {
         return $this->getData(self::MANUAL_TOTAL_DISC_PERCENT);
     }
@@ -453,7 +453,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getManualtotaldiscamount() : ?float
+    public function getManualtotaldiscamount(): ?float
     {
         return $this->getData(self::MANUAL_TOTAL_DISC_AMOUNT);
     }
@@ -471,7 +471,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourcetype() : ?string
+    public function getSourcetype(): ?string
     {
         return $this->getData(self::SOURCE_TYPE);
     }
@@ -489,7 +489,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetamount() : ?float
+    public function getNetamount(): ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
@@ -507,7 +507,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getGrossamount() : ?float
+    public function getGrossamount(): ?float
     {
         return $this->getData(self::GROSS_AMOUNT);
     }
@@ -525,7 +525,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPayment() : ?float
+    public function getPayment(): ?float
     {
         return $this->getData(self::PAYMENT);
     }
@@ -543,7 +543,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getLinediscount() : ?float
+    public function getLinediscount(): ?float
     {
         return $this->getData(self::LINE_DISCOUNT);
     }
@@ -561,7 +561,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotaldiscount() : ?float
+    public function getTotaldiscount(): ?float
     {
         return $this->getData(self::TOTAL_DISCOUNT);
     }
@@ -579,7 +579,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getIncomeexpamount() : ?float
+    public function getIncomeexpamount(): ?float
     {
         return $this->getData(self::INCOME_EXP_AMOUNT);
     }
@@ -597,7 +597,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPrepayment() : ?float
+    public function getPrepayment(): ?float
     {
         return $this->getData(self::PREPAYMENT);
     }
@@ -615,7 +615,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSaleisreturnsale() : ?bool
+    public function getSaleisreturnsale(): ?bool
     {
         return $this->getData(self::SALE_IS_RETURN_SALE);
     }
@@ -633,7 +633,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRefundedreceiptno() : ?string
+    public function getRefundedreceiptno(): ?string
     {
         return $this->getData(self::REFUNDED_RECEIPT_NO);
     }
@@ -651,7 +651,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRefundedfromstoreno() : ?string
+    public function getRefundedfromstoreno(): ?string
     {
         return $this->getData(self::REFUNDED_FROM_STORE_NO);
     }
@@ -669,7 +669,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRefundedfrompostermno() : ?string
+    public function getRefundedfrompostermno(): ?string
     {
         return $this->getData(self::REFUNDED_FROM_POSTERM_NO);
     }
@@ -741,7 +741,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDiningtbldescription() : ?string
+    public function getDiningtbldescription(): ?string
     {
         return $this->getData(self::DINING_TBL_DESCRIPTION);
     }
@@ -777,7 +777,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalestype() : ?string
+    public function getSalestype(): ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
@@ -795,7 +795,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPointbalance() : ?float
+    public function getPointbalance(): ?float
     {
         return $this->getData(self::POINT_BALANCE);
     }
@@ -813,7 +813,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPointsusedinbasket() : ?float
+    public function getPointsusedinbasket(): ?float
     {
         return $this->getData(self::POINTS_USED_IN_BASKET);
     }
@@ -831,7 +831,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmountremaining() : ?float
+    public function getAmountremaining(): ?float
     {
         return $this->getData(self::AMOUNT_REMAINING);
     }
@@ -849,7 +849,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getBasketinpoints() : ?float
+    public function getBasketinpoints(): ?float
     {
         return $this->getData(self::BASKET_IN_POINTS);
     }
@@ -867,7 +867,7 @@ class HospTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getIssuedpoints() : ?float
+    public function getIssuedpoints(): ?float
     {
         return $this->getData(self::ISSUED_POINTS);
     }

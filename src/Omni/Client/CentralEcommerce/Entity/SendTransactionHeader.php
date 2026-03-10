@@ -35,7 +35,7 @@ class SendTransactionHeader extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -53,7 +53,7 @@ class SendTransactionHeader extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -71,7 +71,7 @@ class SendTransactionHeader extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?bool
      */
-    public function getUpdatereplicationcounter() : ?bool
+    public function getUpdatereplicationcounter(): ?bool
     {
         return $this->getData(self::UPDATE_REPLICATION_COUNTER);
     }

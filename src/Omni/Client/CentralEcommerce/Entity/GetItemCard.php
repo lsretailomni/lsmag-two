@@ -47,7 +47,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -65,7 +65,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -83,7 +83,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getTerminalno() : ?string
+    public function getTerminalno(): ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -101,7 +101,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -119,7 +119,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getLocationno() : ?string
+    public function getLocationno(): ?string
     {
         return $this->getData(self::LOCATION_NO);
     }
@@ -137,7 +137,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -155,7 +155,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -173,7 +173,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getBarcodeno() : ?string
+    public function getBarcodeno(): ?string
     {
         return $this->getData(self::BARCODE_NO);
     }
@@ -191,7 +191,7 @@ class GetItemCard extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getViewcode() : ?string
+    public function getViewcode(): ?string
     {
         return $this->getData(self::VIEW_CODE);
     }

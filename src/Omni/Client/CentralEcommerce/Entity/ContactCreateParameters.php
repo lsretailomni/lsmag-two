@@ -85,7 +85,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLoginid() : ?string
+    public function getLoginid(): ?string
     {
         return $this->getData(self::LOGIN_ID);
     }
@@ -103,7 +103,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPassword() : ?string
+    public function getPassword(): ?string
     {
         return $this->getData(self::PASSWORD);
     }
@@ -121,7 +121,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEmail() : ?string
+    public function getEmail(): ?string
     {
         return $this->getData(self::EMAIL);
     }
@@ -139,7 +139,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFirstname() : ?string
+    public function getFirstname(): ?string
     {
         return $this->getData(self::FIRST_NAME);
     }
@@ -157,7 +157,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLastname() : ?string
+    public function getLastname(): ?string
     {
         return $this->getData(self::LAST_NAME);
     }
@@ -175,7 +175,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMiddlename() : ?string
+    public function getMiddlename(): ?string
     {
         return $this->getData(self::MIDDLE_NAME);
     }
@@ -193,7 +193,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGender() : ?string
+    public function getGender(): ?string
     {
         return $this->getData(self::GENDER);
     }
@@ -211,7 +211,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPhone() : ?string
+    public function getPhone(): ?string
     {
         return $this->getData(self::PHONE);
     }
@@ -229,7 +229,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddress1() : ?string
+    public function getAddress1(): ?string
     {
         return $this->getData(self::ADDRESS1);
     }
@@ -247,7 +247,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddress2() : ?string
+    public function getAddress2(): ?string
     {
         return $this->getData(self::ADDRESS2);
     }
@@ -265,7 +265,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCity() : ?string
+    public function getCity(): ?string
     {
         return $this->getData(self::CITY);
     }
@@ -283,7 +283,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPostcode() : ?string
+    public function getPostcode(): ?string
     {
         return $this->getData(self::POST_CODE);
     }
@@ -301,7 +301,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStateprovinceregion() : ?string
+    public function getStateprovinceregion(): ?string
     {
         return $this->getData(self::STATE_PROVINCE_REGION);
     }
@@ -319,7 +319,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCountry() : ?string
+    public function getCountry(): ?string
     {
         return $this->getData(self::COUNTRY);
     }
@@ -337,7 +337,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccountid() : ?string
+    public function getAccountid(): ?string
     {
         return $this->getData(self::ACCOUNT_ID);
     }
@@ -355,7 +355,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeviceid() : ?string
+    public function getDeviceid(): ?string
     {
         return $this->getData(self::DEVICE_ID);
     }
@@ -373,7 +373,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDevicefriendlyname() : ?string
+    public function getDevicefriendlyname(): ?string
     {
         return $this->getData(self::DEVICE_FRIENDLY_NAME);
     }
@@ -391,7 +391,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalid() : ?string
+    public function getExternalid(): ?string
     {
         return $this->getData(self::EXTERNAL_ID);
     }
@@ -409,7 +409,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalsystem() : ?string
+    public function getExternalsystem(): ?string
     {
         return $this->getData(self::EXTERNAL_SYSTEM);
     }
@@ -427,7 +427,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContactid() : ?string
+    public function getContactid(): ?string
     {
         return $this->getData(self::CONTACT_ID);
     }
@@ -445,7 +445,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubid() : ?string
+    public function getClubid(): ?string
     {
         return $this->getData(self::CLUB_ID);
     }
@@ -463,7 +463,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSchemeid() : ?string
+    public function getSchemeid(): ?string
     {
         return $this->getData(self::SCHEME_ID);
     }
@@ -481,7 +481,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateofbirth() : ?string
+    public function getDateofbirth(): ?string
     {
         return $this->getData(self::DATE_OF_BIRTH);
     }
@@ -499,7 +499,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMobilephoneno() : ?string
+    public function getMobilephoneno(): ?string
     {
         return $this->getData(self::MOBILE_PHONE_NO);
     }
@@ -517,7 +517,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHouseapartmentno() : ?string
+    public function getHouseapartmentno(): ?string
     {
         return $this->getData(self::HOUSE_APARTMENT_NO);
     }
@@ -535,7 +535,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTerritorycode() : ?string
+    public function getTerritorycode(): ?string
     {
         return $this->getData(self::TERRITORY_CODE);
     }
@@ -553,7 +553,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSendreceiptbyemail() : ?string
+    public function getSendreceiptbyemail(): ?string
     {
         return $this->getData(self::SEND_RECEIPTBY_EMAIL);
     }
@@ -571,7 +571,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAuthenticator() : ?string
+    public function getAuthenticator(): ?string
     {
         return $this->getData(self::AUTHENTICATOR);
     }
@@ -589,7 +589,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAuthenticationid() : ?string
+    public function getAuthenticationid(): ?string
     {
         return $this->getData(self::AUTHENTICATION_ID);
     }
@@ -607,7 +607,7 @@ class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGuesttype() : ?string
+    public function getGuesttype(): ?string
     {
         return $this->getData(self::GUEST_TYPE);
     }

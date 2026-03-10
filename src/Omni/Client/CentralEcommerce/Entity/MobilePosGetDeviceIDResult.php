@@ -35,7 +35,7 @@ class MobilePosGetDeviceIDResult extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -53,7 +53,7 @@ class MobilePosGetDeviceIDResult extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -71,7 +71,7 @@ class MobilePosGetDeviceIDResult extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getDeviceuniqueid() : ?string
+    public function getDeviceuniqueid(): ?string
     {
         return $this->getData(self::DEVICE_UNIQUE_ID);
     }
@@ -89,7 +89,7 @@ class MobilePosGetDeviceIDResult extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getDevicelicensekey() : ?string
+    public function getDevicelicensekey(): ?string
     {
         return $this->getData(self::DEVICE_LICENSE_KEY);
     }

@@ -49,7 +49,7 @@ class FieldFilter extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFieldname() : ?string
+    public function getFieldname(): ?string
     {
         return $this->getData(self::FIELD_NAME);
     }
@@ -67,7 +67,7 @@ class FieldFilter extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFieldvalue() : ?string
+    public function getFieldvalue(): ?string
     {
         return $this->getData(self::FIELD_VALUE);
     }

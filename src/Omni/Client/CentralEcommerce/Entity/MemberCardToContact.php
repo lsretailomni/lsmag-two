@@ -39,7 +39,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -57,7 +57,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -75,7 +75,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getCardno() : ?string
+    public function getCardno(): ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -93,7 +93,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getAccountno() : ?string
+    public function getAccountno(): ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
@@ -111,7 +111,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getContactno() : ?string
+    public function getContactno(): ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
@@ -129,7 +129,7 @@ class MemberCardToContact extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?float
      */
-    public function getTotalremainingpoints() : ?float
+    public function getTotalremainingpoints(): ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }

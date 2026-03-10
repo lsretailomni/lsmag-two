@@ -43,7 +43,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentno() : ?string
+    public function getDocumentno(): ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -79,7 +79,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcode() : ?string
+    public function getBarcode(): ?string
     {
         return $this->getData(self::BARCODE);
     }
@@ -97,7 +97,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -115,7 +115,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -133,7 +133,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -151,7 +151,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitofmeasurecode() : ?string
+    public function getUnitofmeasurecode(): ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
@@ -169,7 +169,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirydate() : ?string
+    public function getExpirydate(): ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
@@ -187,7 +187,7 @@ class ASNScannedLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBatchorlotnumber() : ?string
+    public function getBatchorlotnumber(): ?string
     {
         return $this->getData(self::BATCH_OR_LOT_NUMBER);
     }

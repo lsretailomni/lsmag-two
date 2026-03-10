@@ -87,7 +87,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrderno() : ?string
+    public function getOrderno(): ?string
     {
         return $this->getData(self::ORDER_NO);
     }
@@ -105,7 +105,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientemail() : ?string
+    public function getClientemail(): ?string
     {
         return $this->getData(self::CLIENT_EMAIL);
     }
@@ -123,7 +123,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientphoneno() : ?string
+    public function getClientphoneno(): ?string
     {
         return $this->getData(self::CLIENT_PHONE_NO);
     }
@@ -141,7 +141,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientaddress() : ?string
+    public function getClientaddress(): ?string
     {
         return $this->getData(self::CLIENT_ADDRESS);
     }
@@ -159,7 +159,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientname() : ?string
+    public function getClientname(): ?string
     {
         return $this->getData(self::CLIENT_NAME);
     }
@@ -177,7 +177,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientstreetno() : ?string
+    public function getClientstreetno(): ?string
     {
         return $this->getData(self::CLIENT_STREET_NO);
     }
@@ -195,7 +195,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -213,7 +213,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientaddress2() : ?string
+    public function getClientaddress2(): ?string
     {
         return $this->getData(self::CLIENT_ADDRESS2);
     }
@@ -231,7 +231,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientcity() : ?string
+    public function getClientcity(): ?string
     {
         return $this->getData(self::CLIENT_CITY);
     }
@@ -249,7 +249,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -267,7 +267,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientpostcode() : ?string
+    public function getClientpostcode(): ?string
     {
         return $this->getData(self::CLIENT_POST_CODE);
     }
@@ -285,7 +285,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientterritorycode() : ?string
+    public function getClientterritorycode(): ?string
     {
         return $this->getData(self::CLIENT_TERRITORY_CODE);
     }
@@ -303,7 +303,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClientcountryregion() : ?string
+    public function getClientcountryregion(): ?string
     {
         return $this->getData(self::CLIENT_COUNTRY_REGION);
     }
@@ -321,7 +321,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedonpostermnial() : ?string
+    public function getCreatedonpostermnial(): ?string
     {
         return $this->getData(self::CREATED_ON_POSTERMNIAL);
     }
@@ -339,7 +339,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -357,7 +357,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPickupdate() : ?string
+    public function getPickupdate(): ?string
     {
         return $this->getData(self::PICKUP_DATE);
     }
@@ -375,7 +375,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPickuptime() : ?string
+    public function getPickuptime(): ?string
     {
         return $this->getData(self::PICKUP_TIME);
     }
@@ -393,7 +393,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getKitchenstatus() : ?string
+    public function getKitchenstatus(): ?string
     {
         return $this->getData(self::KITCHEN_STATUS);
     }
@@ -411,7 +411,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrderstatus() : ?string
+    public function getOrderstatus(): ?string
     {
         return $this->getData(self::ORDER_STATUS);
     }
@@ -429,7 +429,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getGrossamount() : ?float
+    public function getGrossamount(): ?float
     {
         return $this->getData(self::GROSS_AMOUNT);
     }
@@ -447,7 +447,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalestype() : ?string
+    public function getSalestype(): ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
@@ -465,7 +465,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPickupdatetime() : ?string
+    public function getPickupdatetime(): ?string
     {
         return $this->getData(self::PICKUP_DATE_TIME);
     }
@@ -483,7 +483,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getContactcomment() : ?bool
+    public function getContactcomment(): ?bool
     {
         return $this->getData(self::CONTACT_COMMENT);
     }
@@ -501,7 +501,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContactcommenticon() : ?string
+    public function getContactcommenticon(): ?string
     {
         return $this->getData(self::CONTACT_COMMENT_ICON);
     }
@@ -519,7 +519,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomercomment() : ?string
+    public function getCustomercomment(): ?string
     {
         return $this->getData(self::CUSTOMER_COMMENT);
     }
@@ -555,7 +555,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPreorder() : ?bool
+    public function getPreorder(): ?bool
     {
         return $this->getData(self::PRE_ORDER);
     }
@@ -573,7 +573,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getQueuecounter() : ?string
+    public function getQueuecounter(): ?string
     {
         return $this->getData(self::QUEUE_COUNTER);
     }
@@ -609,7 +609,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalid() : ?string
+    public function getExternalid(): ?string
     {
         return $this->getData(self::EXTERNAL_ID);
     }
@@ -627,7 +627,7 @@ class FABOrder extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getQrmessage() : ?string
+    public function getQrmessage(): ?string
     {
         return $this->getData(self::QRMESSAGE);
     }

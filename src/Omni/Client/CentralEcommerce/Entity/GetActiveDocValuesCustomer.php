@@ -31,7 +31,7 @@ class GetActiveDocValuesCustomer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNo() : ?string
+    public function getNo(): ?string
     {
         return $this->getData(self::NO);
     }
@@ -49,7 +49,7 @@ class GetActiveDocValuesCustomer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getName() : ?string
+    public function getName(): ?string
     {
         return $this->getData(self::NAME);
     }
@@ -67,7 +67,7 @@ class GetActiveDocValuesCustomer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDatecreated() : ?string
+    public function getDatecreated(): ?string
     {
         return $this->getData(self::DATE_CREATED);
     }

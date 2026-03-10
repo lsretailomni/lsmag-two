@@ -173,7 +173,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreid() : ?string
+    public function getStoreid(): ?string
     {
         return $this->getData(self::STORE_ID);
     }
@@ -191,7 +191,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTerminalid() : ?string
+    public function getTerminalid(): ?string
     {
         return $this->getData(self::TERMINAL_ID);
     }
@@ -263,7 +263,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNumber() : ?string
+    public function getNumber(): ?string
     {
         return $this->getData(self::NUMBER);
     }
@@ -281,7 +281,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcode() : ?string
+    public function getBarcode(): ?string
     {
         return $this->getData(self::BARCODE);
     }
@@ -299,7 +299,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencycode() : ?string
+    public function getCurrencycode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -317,7 +317,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCurrencyfactor() : ?float
+    public function getCurrencyfactor(): ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
     }
@@ -335,7 +335,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -353,7 +353,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUomid() : ?string
+    public function getUomid(): ?string
     {
         return $this->getData(self::UOM_ID);
     }
@@ -407,7 +407,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCouponcode() : ?string
+    public function getCouponcode(): ?string
     {
         return $this->getData(self::COUPON_CODE);
     }
@@ -425,7 +425,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetprice() : ?float
+    public function getNetprice(): ?float
     {
         return $this->getData(self::NET_PRICE);
     }
@@ -443,7 +443,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPrice() : ?float
+    public function getPrice(): ?float
     {
         return $this->getData(self::PRICE);
     }
@@ -461,7 +461,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -479,7 +479,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountamount() : ?float
+    public function getDiscountamount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
@@ -497,7 +497,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountpercent() : ?float
+    public function getDiscountpercent(): ?float
     {
         return $this->getData(self::DISCOUNT_PERCENT);
     }
@@ -515,7 +515,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetamount() : ?float
+    public function getNetamount(): ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
@@ -533,7 +533,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTaxamount() : ?float
+    public function getTaxamount(): ?float
     {
         return $this->getData(self::TAXAMOUNT);
     }
@@ -551,7 +551,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatbuspostinggroup() : ?string
+    public function getVatbuspostinggroup(): ?string
     {
         return $this->getData(self::VAT_BUS_POSTING_GROUP);
     }
@@ -569,7 +569,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatprodpostinggroup() : ?string
+    public function getVatprodpostinggroup(): ?string
     {
         return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
@@ -587,7 +587,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGenbuspostinggroup() : ?string
+    public function getGenbuspostinggroup(): ?string
     {
         return $this->getData(self::GEN_BUS_POSTING_GROUP);
     }
@@ -605,7 +605,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGenprodpostinggroup() : ?string
+    public function getGenprodpostinggroup(): ?string
     {
         return $this->getData(self::GEN_PROD_POSTING_GROUP);
     }
@@ -623,7 +623,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getManualprice() : ?float
+    public function getManualprice(): ?float
     {
         return $this->getData(self::MANUAL_PRICE);
     }
@@ -641,7 +641,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardorcustno() : ?string
+    public function getCardorcustno(): ?string
     {
         return $this->getData(self::CARD_OR_CUST_NO);
     }
@@ -659,7 +659,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getManualdiscountpercent() : ?float
+    public function getManualdiscountpercent(): ?float
     {
         return $this->getData(self::MANUAL_DISCOUNT_PERCENT);
     }
@@ -677,7 +677,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getManualdiscountamount() : ?float
+    public function getManualdiscountamount(): ?float
     {
         return $this->getData(self::MANUAL_DISCOUNT_AMOUNT);
     }
@@ -731,7 +731,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemdescription() : ?string
+    public function getItemdescription(): ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
@@ -749,7 +749,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantdescription() : ?string
+    public function getVariantdescription(): ?string
     {
         return $this->getData(self::VARIANT_DESCRIPTION);
     }
@@ -767,7 +767,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUomdescription() : ?string
+    public function getUomdescription(): ?string
     {
         return $this->getData(self::UOM_DESCRIPTION);
     }
@@ -785,7 +785,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTenderdescription() : ?string
+    public function getTenderdescription(): ?string
     {
         return $this->getData(self::TENDER_DESCRIPTION);
     }
@@ -803,7 +803,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransdate() : ?string
+    public function getTransdate(): ?string
     {
         return $this->getData(self::TRANS_DATE);
     }
@@ -839,7 +839,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftcardnumber() : ?string
+    public function getEftcardnumber(): ?string
     {
         return $this->getData(self::EFTCARD_NUMBER);
     }
@@ -857,7 +857,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftcardname() : ?string
+    public function getEftcardname(): ?string
     {
         return $this->getData(self::EFTCARD_NAME);
     }
@@ -875,7 +875,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftauthcode() : ?string
+    public function getEftauthcode(): ?string
     {
         return $this->getData(self::EFTAUTH_CODE);
     }
@@ -893,7 +893,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftmessage() : ?string
+    public function getEftmessage(): ?string
     {
         return $this->getData(self::EFTMESSAGE);
     }
@@ -929,7 +929,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEfttransactionno() : ?string
+    public function getEfttransactionno(): ?string
     {
         return $this->getData(self::EFTTRANSACTION_NO);
     }
@@ -983,7 +983,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftdatetime() : ?string
+    public function getEftdatetime(): ?string
     {
         return $this->getData(self::EFTDATE_TIME);
     }
@@ -1037,7 +1037,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -1055,7 +1055,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalestype() : ?string
+    public function getSalestype(): ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
@@ -1073,7 +1073,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPricegroupcode() : ?string
+    public function getPricegroupcode(): ?string
     {
         return $this->getData(self::PRICE_GROUP_CODE);
     }
@@ -1109,7 +1109,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRestmenutypecode() : ?string
+    public function getRestmenutypecode(): ?string
     {
         return $this->getData(self::REST_MENU_TYPE_CODE);
     }
@@ -1181,7 +1181,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLinekitchenstatuscode() : ?string
+    public function getLinekitchenstatuscode(): ?string
     {
         return $this->getData(self::LINE_KITCHEN_STATUS_CODE);
     }
@@ -1199,7 +1199,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getRecommendeditem() : ?bool
+    public function getRecommendeditem(): ?bool
     {
         return $this->getData(self::RECOMMENDED_ITEM);
     }
@@ -1217,7 +1217,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrigtransstore() : ?string
+    public function getOrigtransstore(): ?string
     {
         return $this->getData(self::ORIG_TRANS_STORE);
     }
@@ -1235,7 +1235,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrigtranspos() : ?string
+    public function getOrigtranspos(): ?string
     {
         return $this->getData(self::ORIG_TRANS_POS);
     }
@@ -1289,7 +1289,7 @@ class MobileTransactionLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRetailimageid() : ?string
+    public function getRetailimageid(): ?string
     {
         return $this->getData(self::RETAIL_IMAGE_ID);
     }

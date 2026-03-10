@@ -35,7 +35,7 @@ class BlockMemberAccount extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -53,7 +53,7 @@ class BlockMemberAccount extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -71,7 +71,7 @@ class BlockMemberAccount extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getMemberaccountno() : ?string
+    public function getMemberaccountno(): ?string
     {
         return $this->getData(self::MEMBER_ACCOUNT_NO);
     }
@@ -89,7 +89,7 @@ class BlockMemberAccount extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getMembershipcardno() : ?string
+    public function getMembershipcardno(): ?string
     {
         return $this->getData(self::MEMBERSHIP_CARD_NO);
     }

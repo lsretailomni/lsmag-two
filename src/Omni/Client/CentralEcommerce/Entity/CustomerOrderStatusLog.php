@@ -45,7 +45,7 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -63,7 +63,7 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUserid() : ?string
+    public function getUserid(): ?string
     {
         return $this->getData(self::USER_ID);
     }
@@ -81,7 +81,7 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -99,7 +99,7 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTerminalno() : ?string
+    public function getTerminalno(): ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -135,7 +135,7 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -153,7 +153,7 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -171,7 +171,7 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatuscode() : ?string
+    public function getStatuscode(): ?string
     {
         return $this->getData(self::STATUS_CODE);
     }
@@ -189,7 +189,7 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -207,7 +207,7 @@ class CustomerOrderStatusLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtcode() : ?string
+    public function getExtcode(): ?string
     {
         return $this->getData(self::EXT_CODE);
     }

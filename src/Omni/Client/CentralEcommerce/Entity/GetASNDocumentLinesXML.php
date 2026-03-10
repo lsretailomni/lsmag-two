@@ -22,6 +22,8 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
 
     public const BOX_NO = 'BoxNo';
 
+    public const BOX_BARCODE_NO = 'BoxBarcodeNo';
+
     public const REMAINING_QTY = 'RemainingQty';
 
     public const BATCH_LOT = 'BatchLot';
@@ -43,7 +45,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAsndocumentno() : ?string
+    public function getAsndocumentno(): ?string
     {
         return $this->getData(self::ASNDOCUMENT_NO);
     }
@@ -79,7 +81,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -97,7 +99,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -115,9 +117,27 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBoxno() : ?string
+    public function getBoxno(): ?string
     {
         return $this->getData(self::BOX_NO);
+    }
+
+    /**
+     * @param ?string $BoxBarcodeNo
+     * @return $this
+     */
+    public function setBoxbarcodeno(?string $BoxBarcodeNo)
+    {
+        $this->setData(self::BOX_BARCODE_NO, $BoxBarcodeNo);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getBoxbarcodeno(): ?string
+    {
+        return $this->getData(self::BOX_BARCODE_NO);
     }
 
     /**
@@ -133,7 +153,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getRemainingqty() : ?float
+    public function getRemainingqty(): ?float
     {
         return $this->getData(self::REMAINING_QTY);
     }
@@ -151,7 +171,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBatchlot() : ?string
+    public function getBatchlot(): ?string
     {
         return $this->getData(self::BATCH_LOT);
     }
@@ -169,7 +189,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirationdate() : ?string
+    public function getExpirationdate(): ?string
     {
         return $this->getData(self::EXPIRATION_DATE);
     }
@@ -187,7 +207,7 @@ class GetASNDocumentLinesXML extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTrustlevel() : ?string
+    public function getTrustlevel(): ?string
     {
         return $this->getData(self::TRUST_LEVEL);
     }

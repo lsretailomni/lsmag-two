@@ -38,7 +38,14 @@ class ContactView extends AbstractModel
     public const CONTACT_GENDER = 'Contact Gender';
     public const MARITAL_STATUS = 'Marital Status';
     public const GUEST_TYPE = 'Guest Type';
+    public const EXPIRED_POINTS = 'Expired Points';
+    public const ISSUED_AWARD_POINTS = 'Issued Award Points';
+    public const ISSUED_OTHER_POINTS = 'Issued Other Points';
+    public const TOTAL_ISSUED_POINTS = 'Total Issued Points';
+    public const USED_POINTS = 'Used Points';
+    public const EXPIRATION_IN_PERIOD = 'Expiration in Period';
     public const EXPIRATION_PERIOD_TYPE = 'Expiration Period Type';
+    public const BALANCE = 'Balance';
     public const BLOCKED = 'Blocked';
     public const REASON_BLOCKED = 'Reason Blocked';
     public const DATE_BLOCKED = 'Date Blocked';
@@ -96,7 +103,14 @@ class ContactView extends AbstractModel
 	self::CONTACT_GENDER => 'contact_gender',
 	self::MARITAL_STATUS => 'marital_status',
 	self::GUEST_TYPE => 'guest_type',
+	self::EXPIRED_POINTS => 'expired_points',
+	self::ISSUED_AWARD_POINTS => 'issued_award_points',
+	self::ISSUED_OTHER_POINTS => 'issued_other_points',
+	self::TOTAL_ISSUED_POINTS => 'total_issued_points',
+	self::USED_POINTS => 'used_points',
+	self::EXPIRATION_IN_PERIOD => 'expiration_in_period',
 	self::EXPIRATION_PERIOD_TYPE => 'expiration_period_type',
+	self::BALANCE => 'balance',
 	self::BLOCKED => 'blocked',
 	self::REASON_BLOCKED => 'reason_blocked',
 	self::DATE_BLOCKED => 'date_blocked',
@@ -403,6 +417,66 @@ class ContactView extends AbstractModel
         return $this->setData(self::GUEST_TYPE, $value);
     }
 
+    public function getExpiredPoints(): ?float
+    {
+        return $this->getData(self::EXPIRED_POINTS);
+    }
+
+    public function setExpiredPoints(?float $value)
+    {
+        return $this->setData(self::EXPIRED_POINTS, $value);
+    }
+
+    public function getIssuedAwardPoints(): ?float
+    {
+        return $this->getData(self::ISSUED_AWARD_POINTS);
+    }
+
+    public function setIssuedAwardPoints(?float $value)
+    {
+        return $this->setData(self::ISSUED_AWARD_POINTS, $value);
+    }
+
+    public function getIssuedOtherPoints(): ?float
+    {
+        return $this->getData(self::ISSUED_OTHER_POINTS);
+    }
+
+    public function setIssuedOtherPoints(?float $value)
+    {
+        return $this->setData(self::ISSUED_OTHER_POINTS, $value);
+    }
+
+    public function getTotalIssuedPoints(): ?float
+    {
+        return $this->getData(self::TOTAL_ISSUED_POINTS);
+    }
+
+    public function setTotalIssuedPoints(?float $value)
+    {
+        return $this->setData(self::TOTAL_ISSUED_POINTS, $value);
+    }
+
+    public function getUsedPoints(): ?float
+    {
+        return $this->getData(self::USED_POINTS);
+    }
+
+    public function setUsedPoints(?float $value)
+    {
+        return $this->setData(self::USED_POINTS, $value);
+    }
+
+    public function getExpirationInPeriod(): ?float
+    {
+        return $this->getData(self::EXPIRATION_IN_PERIOD);
+    }
+
+    public function setExpirationInPeriod(?float $value)
+    {
+        return $this->setData(self::EXPIRATION_IN_PERIOD, $value);
+    }
+
     public function getExpirationPeriodType(): ?int
     {
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
@@ -411,6 +485,16 @@ class ContactView extends AbstractModel
     public function setExpirationPeriodType(?int $value)
     {
         return $this->setData(self::EXPIRATION_PERIOD_TYPE, $value);
+    }
+
+    public function getBalance(): ?float
+    {
+        return $this->getData(self::BALANCE);
+    }
+
+    public function setBalance(?float $value)
+    {
+        return $this->setData(self::BALANCE, $value);
     }
 
     public function getBlocked(): ?bool

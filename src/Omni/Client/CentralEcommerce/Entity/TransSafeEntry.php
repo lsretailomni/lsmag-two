@@ -127,7 +127,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSafeno() : ?string
+    public function getSafeno(): ?string
     {
         return $this->getData(self::SAFE_NO);
     }
@@ -145,7 +145,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -163,7 +163,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactiontype() : ?string
+    public function getTransactiontype(): ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
@@ -181,7 +181,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSafetype() : ?string
+    public function getSafetype(): ?string
     {
         return $this->getData(self::SAFE_TYPE);
     }
@@ -199,7 +199,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementcode() : ?string
+    public function getStatementcode(): ?string
     {
         return $this->getData(self::STATEMENT_CODE);
     }
@@ -217,7 +217,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBankbagno() : ?string
+    public function getBankbagno(): ?string
     {
         return $this->getData(self::BANK_BAG_NO);
     }
@@ -235,7 +235,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getExchangerate() : ?float
+    public function getExchangerate(): ?float
     {
         return $this->getData(self::EXCHANGE_RATE);
     }
@@ -253,7 +253,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTendertype() : ?string
+    public function getTendertype(): ?string
     {
         return $this->getData(self::TENDER_TYPE);
     }
@@ -271,7 +271,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -289,7 +289,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmounttendered() : ?float
+    public function getAmounttendered(): ?float
     {
         return $this->getData(self::AMOUNT_TENDERED);
     }
@@ -307,7 +307,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencycode() : ?string
+    public function getCurrencycode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -325,7 +325,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmountincurrency() : ?float
+    public function getAmountincurrency(): ?float
     {
         return $this->getData(self::AMOUNTIN_CURRENCY);
     }
@@ -343,7 +343,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getUncounted() : ?bool
+    public function getUncounted(): ?bool
     {
         return $this->getData(self::UNCOUNTED);
     }
@@ -361,7 +361,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDate() : ?string
+    public function getDate(): ?string
     {
         return $this->getData(self::DATE);
     }
@@ -379,7 +379,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTime() : ?string
+    public function getTime(): ?string
     {
         return $this->getData(self::TIME);
     }
@@ -397,7 +397,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiftno() : ?string
+    public function getShiftno(): ?string
     {
         return $this->getData(self::SHIFT_NO);
     }
@@ -415,7 +415,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiftdate() : ?string
+    public function getShiftdate(): ?string
     {
         return $this->getData(self::SHIFT_DATE);
     }
@@ -433,7 +433,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -451,7 +451,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -469,7 +469,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -487,7 +487,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionstatus() : ?string
+    public function getTransactionstatus(): ?string
     {
         return $this->getData(self::TRANSACTION_STATUS);
     }
@@ -505,7 +505,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementno() : ?string
+    public function getStatementno(): ?string
     {
         return $this->getData(self::STATEMENT_NO);
     }
@@ -523,7 +523,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBalaccounttype() : ?string
+    public function getBalaccounttype(): ?string
     {
         return $this->getData(self::BAL_ACCOUNT_TYPE);
     }
@@ -541,7 +541,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBalaccountno() : ?string
+    public function getBalaccountno(): ?string
     {
         return $this->getData(self::BAL_ACCOUNT_NO);
     }
@@ -559,7 +559,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getManagerskeylive() : ?bool
+    public function getManagerskeylive(): ?bool
     {
         return $this->getData(self::MANAGERS_KEY_LIVE);
     }
@@ -577,7 +577,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getChangeline() : ?bool
+    public function getChangeline(): ?bool
     {
         return $this->getData(self::CHANGE_LINE);
     }
@@ -595,7 +595,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCounter() : ?float
+    public function getCounter(): ?float
     {
         return $this->getData(self::COUNTER);
     }
@@ -613,7 +613,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getReplicated() : ?bool
+    public function getReplicated(): ?bool
     {
         return $this->getData(self::REPLICATED);
     }
@@ -631,7 +631,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -649,7 +649,7 @@ class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getZReportid() : ?string
+    public function getZReportid(): ?string
     {
         return $this->getData(self::Z_REPORT_ID);
     }

@@ -69,7 +69,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getAllowcancel() : ?bool
+    public function getAllowcancel(): ?bool
     {
         return $this->getData(self::ALLOW_CANCEL);
     }
@@ -87,7 +87,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getAllowmodify() : ?bool
+    public function getAllowmodify(): ?bool
     {
         return $this->getData(self::ALLOW_MODIFY);
     }
@@ -105,7 +105,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -123,7 +123,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItenno() : ?string
+    public function getItenno(): ?string
     {
         return $this->getData(self::ITEN_NO);
     }
@@ -159,7 +159,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatuscode() : ?string
+    public function getStatuscode(): ?string
     {
         return $this->getData(self::STATUS_CODE);
     }
@@ -177,7 +177,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -195,7 +195,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitofmeasure() : ?string
+    public function getUnitofmeasure(): ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE);
     }
@@ -213,7 +213,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -231,7 +231,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatuschanged() : ?string
+    public function getStatuschanged(): ?string
     {
         return $this->getData(self::STATUS_CHANGED);
     }
@@ -249,7 +249,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtcode() : ?string
+    public function getExtcode(): ?string
     {
         return $this->getData(self::EXT_CODE);
     }
@@ -267,7 +267,7 @@ class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmount() : ?float
+    public function getAmount(): ?float
     {
         return $this->getData(self::AMOUNT);
     }

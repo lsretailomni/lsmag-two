@@ -109,7 +109,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
@@ -127,7 +127,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -145,7 +145,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPointcalculation() : ?bool
+    public function getPointcalculation(): ?bool
     {
         return $this->getData(self::POINT_CALCULATION);
     }
@@ -163,7 +163,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubtype() : ?string
+    public function getClubtype(): ?string
     {
         return $this->getData(self::CLUB_TYPE);
     }
@@ -181,7 +181,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardregistration() : ?string
+    public function getCardregistration(): ?string
     {
         return $this->getData(self::CARD_REGISTRATION);
     }
@@ -199,7 +199,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStartingcardno() : ?string
+    public function getStartingcardno(): ?string
     {
         return $this->getData(self::STARTING_CARD_NO);
     }
@@ -235,7 +235,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodemask() : ?string
+    public function getBarcodemask(): ?string
     {
         return $this->getData(self::BARCODE_MASK);
     }
@@ -253,7 +253,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContacthandling() : ?string
+    public function getContacthandling(): ?string
     {
         return $this->getData(self::CONTACT_HANDLING);
     }
@@ -271,7 +271,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDefaultscheme() : ?string
+    public function getDefaultscheme(): ?string
     {
         return $this->getData(self::DEFAULT_SCHEME);
     }
@@ -289,7 +289,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnassignedaccountno() : ?string
+    public function getUnassignedaccountno(): ?string
     {
         return $this->getData(self::UNASSIGNED_ACCOUNT_NO);
     }
@@ -307,7 +307,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShowpointsonreceipt() : ?string
+    public function getShowpointsonreceipt(): ?string
     {
         return $this->getData(self::SHOW_POINTSON_RECEIPT);
     }
@@ -325,7 +325,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDisplaymessageonpos() : ?string
+    public function getDisplaymessageonpos(): ?string
     {
         return $this->getData(self::DISPLAY_MESSAGEON_POS);
     }
@@ -343,7 +343,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDefaultcustdiscgroup() : ?string
+    public function getDefaultcustdiscgroup(): ?string
     {
         return $this->getData(self::DEFAULT_CUST_DISC_GROUP);
     }
@@ -361,7 +361,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberpointtendertype() : ?string
+    public function getMemberpointtendertype(): ?string
     {
         return $this->getData(self::MEMBER_POINT_TENDER_TYPE);
     }
@@ -379,7 +379,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDefaultpricegroup() : ?string
+    public function getDefaultpricegroup(): ?string
     {
         return $this->getData(self::DEFAULT_PRICE_GROUP);
     }
@@ -397,7 +397,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardexpiration() : ?string
+    public function getCardexpiration(): ?string
     {
         return $this->getData(self::CARD_EXPIRATION);
     }
@@ -415,7 +415,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnassignedcardexp() : ?string
+    public function getUnassignedcardexp(): ?string
     {
         return $this->getData(self::UNASSIGNED_CARD_EXP);
     }
@@ -433,7 +433,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPointexpiration() : ?string
+    public function getPointexpiration(): ?string
     {
         return $this->getData(self::POINT_EXPIRATION);
     }
@@ -451,7 +451,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPointroundingtype() : ?string
+    public function getPointroundingtype(): ?string
     {
         return $this->getData(self::POINT_ROUNDING_TYPE);
     }
@@ -469,7 +469,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPointroundingprecision() : ?float
+    public function getPointroundingprecision(): ?float
     {
         return $this->getData(self::POINT_ROUNDING_PRECISION);
     }
@@ -487,7 +487,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPointvalue() : ?float
+    public function getPointvalue(): ?float
     {
         return $this->getData(self::POINT_VALUE);
     }
@@ -505,7 +505,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPeriodcalcforupDowngrade() : ?string
+    public function getPeriodcalcforupDowngrade(): ?string
     {
         return $this->getData(self::PERIOD_CALCFOR_UP_DOWNGRADE);
     }
@@ -523,7 +523,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getMintransamtforpointcalc() : ?float
+    public function getMintransamtforpointcalc(): ?float
     {
         return $this->getData(self::MIN_TRANS_AMTFOR_POINT_CALC);
     }
@@ -541,7 +541,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransferredpointtype() : ?string
+    public function getTransferredpointtype(): ?string
     {
         return $this->getData(self::TRANSFERRED_POINT_TYPE);
     }
@@ -559,7 +559,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransferredpointexpir() : ?string
+    public function getTransferredpointexpir(): ?string
     {
         return $this->getData(self::TRANSFERRED_POINT_EXPIR);
     }
@@ -577,7 +577,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMinremainperiodfortrans() : ?string
+    public function getMinremainperiodfortrans(): ?string
     {
         return $this->getData(self::MIN_REMAIN_PERIODFOR_TRANS);
     }
@@ -595,7 +595,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTransfervaluefactor() : ?float
+    public function getTransfervaluefactor(): ?float
     {
         return $this->getData(self::TRANSFER_VALUE_FACTOR);
     }
@@ -613,7 +613,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDiscbenefitpointtype() : ?string
+    public function getDiscbenefitpointtype(): ?string
     {
         return $this->getData(self::DISC_BENEFIT_POINT_TYPE);
     }
@@ -631,7 +631,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasoncodesaccounts() : ?string
+    public function getReasoncodesaccounts(): ?string
     {
         return $this->getData(self::REASON_CODES_ACCOUNTS);
     }
@@ -649,7 +649,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasoncodescontacts() : ?string
+    public function getReasoncodescontacts(): ?string
     {
         return $this->getData(self::REASON_CODES_CONTACTS);
     }
@@ -667,7 +667,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasoncodescards() : ?string
+    public function getReasoncodescards(): ?string
     {
         return $this->getData(self::REASON_CODES_CARDS);
     }
@@ -685,7 +685,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasoncodespointjournals() : ?string
+    public function getReasoncodespointjournals(): ?string
     {
         return $this->getData(self::REASON_CODES_POINT_JOURNALS);
     }
@@ -703,7 +703,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccountnoseries() : ?string
+    public function getAccountnoseries(): ?string
     {
         return $this->getData(self::ACCOUNT_NO_SERIES);
     }
@@ -721,7 +721,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardsetuptype() : ?string
+    public function getCardsetuptype(): ?string
     {
         return $this->getData(self::CARD_SETUP_TYPE);
     }
@@ -739,7 +739,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardnoseries() : ?string
+    public function getCardnoseries(): ?string
     {
         return $this->getData(self::CARD_NO_SERIES);
     }
@@ -757,7 +757,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContactnoseries() : ?string
+    public function getContactnoseries(): ?string
     {
         return $this->getData(self::CONTACT_NO_SERIES);
     }
@@ -775,7 +775,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPosttogl() : ?bool
+    public function getPosttogl(): ?bool
     {
         return $this->getData(self::POSTTO_GL);
     }
@@ -793,7 +793,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccountno() : ?string
+    public function getAccountno(): ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
@@ -811,7 +811,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBalaccountno() : ?string
+    public function getBalaccountno(): ?string
     {
         return $this->getData(self::BAL_ACCOUNT_NO);
     }
@@ -829,7 +829,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirationperiodtype() : ?string
+    public function getExpirationperiodtype(): ?string
     {
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
     }
@@ -847,7 +847,7 @@ class MemberClub extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShowfbpcouponsonreceipt() : ?string
+    public function getShowfbpcouponsonreceipt(): ?string
     {
         return $this->getData(self::SHOW_FBPCOUPONSON_RECEIPT);
     }

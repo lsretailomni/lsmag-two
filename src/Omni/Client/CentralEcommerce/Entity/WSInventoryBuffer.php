@@ -55,7 +55,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -73,7 +73,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -91,7 +91,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLocationcode() : ?string
+    public function getLocationcode(): ?string
     {
         return $this->getData(self::LOCATION_CODE);
     }
@@ -109,7 +109,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getActualinventory() : ?float
+    public function getActualinventory(): ?float
     {
         return $this->getData(self::ACTUAL_INVENTORY);
     }
@@ -145,7 +145,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBaseunitofmeasure() : ?string
+    public function getBaseunitofmeasure(): ?string
     {
         return $this->getData(self::BASE_UNIT_OF_MEASURE);
     }
@@ -163,7 +163,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -181,7 +181,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getInventory() : ?float
+    public function getInventory(): ?float
     {
         return $this->getData(self::INVENTORY);
     }
@@ -199,7 +199,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtysoldnotposted() : ?float
+    public function getQtysoldnotposted(): ?float
     {
         return $this->getData(self::QTY_SOLDNOT_POSTED);
     }
@@ -217,7 +217,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getColour() : ?string
+    public function getColour(): ?string
     {
         return $this->getData(self::COLOUR);
     }
@@ -235,7 +235,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSize() : ?string
+    public function getSize(): ?string
     {
         return $this->getData(self::SIZE);
     }
@@ -253,7 +253,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStyle() : ?string
+    public function getStyle(): ?string
     {
         return $this->getData(self::STYLE);
     }
@@ -271,7 +271,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getExpectedstock() : ?float
+    public function getExpectedstock(): ?float
     {
         return $this->getData(self::EXPECTED_STOCK);
     }
@@ -289,7 +289,7 @@ class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getReorderpoint() : ?float
+    public function getReorderpoint(): ?float
     {
         return $this->getData(self::REORDER_POINT);
     }

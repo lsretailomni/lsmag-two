@@ -37,7 +37,7 @@ class GetMemberCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -55,7 +55,7 @@ class GetMemberCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -73,7 +73,7 @@ class GetMemberCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getCardno() : ?string
+    public function getCardno(): ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -91,7 +91,7 @@ class GetMemberCard extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?float
      */
-    public function getTotalremainingpoints() : ?float
+    public function getTotalremainingpoints(): ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }

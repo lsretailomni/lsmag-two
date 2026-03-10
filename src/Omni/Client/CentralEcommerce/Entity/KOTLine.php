@@ -31,7 +31,7 @@ class KOTLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getKotno() : ?string
+    public function getKotno(): ?string
     {
         return $this->getData(self::KOT_NO);
     }
@@ -67,7 +67,7 @@ class KOTLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }

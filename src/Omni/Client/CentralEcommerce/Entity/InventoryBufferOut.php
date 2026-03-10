@@ -35,7 +35,7 @@ class InventoryBufferOut extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNumber() : ?string
+    public function getNumber(): ?string
     {
         return $this->getData(self::NUMBER);
     }
@@ -53,7 +53,7 @@ class InventoryBufferOut extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariant() : ?string
+    public function getVariant(): ?string
     {
         return $this->getData(self::VARIANT);
     }
@@ -71,7 +71,7 @@ class InventoryBufferOut extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStore() : ?string
+    public function getStore(): ?string
     {
         return $this->getData(self::STORE);
     }
@@ -89,7 +89,7 @@ class InventoryBufferOut extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLocation() : ?string
+    public function getLocation(): ?string
     {
         return $this->getData(self::LOCATION);
     }
@@ -107,7 +107,7 @@ class InventoryBufferOut extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getInventory() : ?float
+    public function getInventory(): ?float
     {
         return $this->getData(self::INVENTORY);
     }

@@ -93,7 +93,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getTransactionno() : ?string
+    public function getTransactionno(): ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -129,7 +129,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -147,7 +147,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getBarcode() : ?string
+    public function getBarcode(): ?string
     {
         return $this->getData(self::BARCODE);
     }
@@ -165,7 +165,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -183,7 +183,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getUnitofmeasurecode() : ?string
+    public function getUnitofmeasurecode(): ?string
     {
         return $this->getData(self::UNITOF_MEASURE_CODE);
     }
@@ -201,7 +201,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -219,7 +219,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?float
      */
-    public function getCompetitorprice() : ?float
+    public function getCompetitorprice(): ?float
     {
         return $this->getData(self::COMPETITOR_PRICE);
     }
@@ -237,7 +237,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getAreacode() : ?string
+    public function getAreacode(): ?string
     {
         return $this->getData(self::AREA_CODE);
     }
@@ -255,7 +255,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getSerialno() : ?string
+    public function getSerialno(): ?string
     {
         return $this->getData(self::SERIAL_NO);
     }
@@ -273,7 +273,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getLotno() : ?string
+    public function getLotno(): ?string
     {
         return $this->getData(self::LOT_NO);
     }
@@ -291,7 +291,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getExpirydate() : ?string
+    public function getExpirydate(): ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
@@ -309,7 +309,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getReasoncode() : ?string
+    public function getReasoncode(): ?string
     {
         return $this->getData(self::REASON_CODE);
     }
@@ -327,7 +327,7 @@ class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?bool
      */
-    public function getEndoftransaction() : ?bool
+    public function getEndoftransaction(): ?bool
     {
         return $this->getData(self::END_OF_TRANSACTION);
     }

@@ -33,7 +33,7 @@ class SPGOrderCheckCOPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardtype() : ?string
+    public function getCardtype(): ?string
     {
         return $this->getData(self::CARD_TYPE);
     }
@@ -51,7 +51,7 @@ class SPGOrderCheckCOPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalref() : ?string
+    public function getExternalref(): ?string
     {
         return $this->getData(self::EXTERNAL_REF);
     }
@@ -69,7 +69,7 @@ class SPGOrderCheckCOPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPaymentamount() : ?float
+    public function getPaymentamount(): ?float
     {
         return $this->getData(self::PAYMENT_AMOUNT);
     }
@@ -87,7 +87,7 @@ class SPGOrderCheckCOPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAutorizationcode() : ?string
+    public function getAutorizationcode(): ?string
     {
         return $this->getData(self::AUTORIZATION_CODE);
     }

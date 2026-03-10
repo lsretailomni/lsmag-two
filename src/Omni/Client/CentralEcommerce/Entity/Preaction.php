@@ -55,7 +55,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLocationgroupfilter() : ?string
+    public function getLocationgroupfilter(): ?string
     {
         return $this->getData(self::LOCATION_GROUP_FILTER);
     }
@@ -73,7 +73,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAction() : ?string
+    public function getAction(): ?string
     {
         return $this->getData(self::ACTION);
     }
@@ -109,7 +109,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getKeyvalue() : ?string
+    public function getKeyvalue(): ?string
     {
         return $this->getData(self::KEY_VALUE);
     }
@@ -127,7 +127,7 @@ class Preaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBatch() : ?string
+    public function getBatch(): ?string
     {
         return $this->getData(self::BATCH);
     }

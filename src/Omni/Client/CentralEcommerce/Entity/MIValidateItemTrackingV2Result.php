@@ -33,7 +33,7 @@ class MIValidateItemTrackingV2Result extends \Magento\Catalog\Model\AbstractMode
     /**
      * @return ?bool
      */
-    public function getValidtracking() : ?bool
+    public function getValidtracking(): ?bool
     {
         return $this->getData(self::VALID_TRACKING);
     }
@@ -51,7 +51,7 @@ class MIValidateItemTrackingV2Result extends \Magento\Catalog\Model\AbstractMode
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -69,7 +69,7 @@ class MIValidateItemTrackingV2Result extends \Magento\Catalog\Model\AbstractMode
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

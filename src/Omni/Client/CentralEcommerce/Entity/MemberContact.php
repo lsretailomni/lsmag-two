@@ -103,7 +103,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccountno() : ?string
+    public function getAccountno(): ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
@@ -121,7 +121,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubcode() : ?string
+    public function getClubcode(): ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
@@ -139,7 +139,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSchemecode() : ?string
+    public function getSchemecode(): ?string
     {
         return $this->getData(self::SCHEME_CODE);
     }
@@ -157,7 +157,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContactno() : ?string
+    public function getContactno(): ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
@@ -175,7 +175,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getMaincontact() : ?bool
+    public function getMaincontact(): ?bool
     {
         return $this->getData(self::MAIN_CONTACT);
     }
@@ -193,7 +193,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getName() : ?string
+    public function getName(): ?string
     {
         return $this->getData(self::NAME);
     }
@@ -211,7 +211,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSearchname() : ?string
+    public function getSearchname(): ?string
     {
         return $this->getData(self::SEARCH_NAME);
     }
@@ -229,7 +229,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getName2() : ?string
+    public function getName2(): ?string
     {
         return $this->getData(self::NAME2);
     }
@@ -247,7 +247,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddress() : ?string
+    public function getAddress(): ?string
     {
         return $this->getData(self::ADDRESS);
     }
@@ -265,7 +265,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddress2() : ?string
+    public function getAddress2(): ?string
     {
         return $this->getData(self::ADDRESS2);
     }
@@ -283,7 +283,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCity() : ?string
+    public function getCity(): ?string
     {
         return $this->getData(self::CITY);
     }
@@ -301,7 +301,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHouseapartmentno() : ?string
+    public function getHouseapartmentno(): ?string
     {
         return $this->getData(self::HOUSE_APARTMENT_NO);
     }
@@ -319,7 +319,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPostcode() : ?string
+    public function getPostcode(): ?string
     {
         return $this->getData(self::POST_CODE);
     }
@@ -337,7 +337,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEMail() : ?string
+    public function getEMail(): ?string
     {
         return $this->getData(self::E_MAIL);
     }
@@ -355,7 +355,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHomepage() : ?string
+    public function getHomepage(): ?string
     {
         return $this->getData(self::HOME_PAGE);
     }
@@ -373,7 +373,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPhoneno() : ?string
+    public function getPhoneno(): ?string
     {
         return $this->getData(self::PHONE_NO);
     }
@@ -391,7 +391,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMobilephoneno() : ?string
+    public function getMobilephoneno(): ?string
     {
         return $this->getData(self::MOBILE_PHONE_NO);
     }
@@ -409,7 +409,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTerritorycode() : ?string
+    public function getTerritorycode(): ?string
     {
         return $this->getData(self::TERRITORY_CODE);
     }
@@ -427,7 +427,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCounty() : ?string
+    public function getCounty(): ?string
     {
         return $this->getData(self::COUNTY);
     }
@@ -445,7 +445,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCountry() : ?string
+    public function getCountry(): ?string
     {
         return $this->getData(self::COUNTRY);
     }
@@ -463,7 +463,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGender() : ?string
+    public function getGender(): ?string
     {
         return $this->getData(self::GENDER);
     }
@@ -481,7 +481,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateofbirth() : ?string
+    public function getDateofbirth(): ?string
     {
         return $this->getData(self::DATEOF_BIRTH);
     }
@@ -499,7 +499,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBirthday() : ?string
+    public function getBirthday(): ?string
     {
         return $this->getData(self::BIRTHDAY);
     }
@@ -517,7 +517,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMaritalstatus() : ?string
+    public function getMaritalstatus(): ?string
     {
         return $this->getData(self::MARITAL_STATUS);
     }
@@ -535,7 +535,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getBlocked() : ?bool
+    public function getBlocked(): ?bool
     {
         return $this->getData(self::BLOCKED);
     }
@@ -553,7 +553,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasonblocked() : ?string
+    public function getReasonblocked(): ?string
     {
         return $this->getData(self::REASON_BLOCKED);
     }
@@ -571,7 +571,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateblocked() : ?string
+    public function getDateblocked(): ?string
     {
         return $this->getData(self::DATE_BLOCKED);
     }
@@ -589,7 +589,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBlockedby() : ?string
+    public function getBlockedby(): ?string
     {
         return $this->getData(self::BLOCKEDBY);
     }
@@ -607,7 +607,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreateddate() : ?string
+    public function getCreateddate(): ?string
     {
         return $this->getData(self::CREATED_DATE);
     }
@@ -625,7 +625,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedby() : ?string
+    public function getCreatedby(): ?string
     {
         return $this->getData(self::CREATEDBY);
     }
@@ -643,7 +643,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNoseries() : ?string
+    public function getNoseries(): ?string
     {
         return $this->getData(self::NO_SERIES);
     }
@@ -661,7 +661,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalid() : ?string
+    public function getExternalid(): ?string
     {
         return $this->getData(self::EXTERNAL_ID);
     }
@@ -679,7 +679,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalsystem() : ?string
+    public function getExternalsystem(): ?string
     {
         return $this->getData(self::EXTERNAL_SYSTEM);
     }
@@ -697,7 +697,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFirstname() : ?string
+    public function getFirstname(): ?string
     {
         return $this->getData(self::FIRST_NAME);
     }
@@ -715,7 +715,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMiddlename() : ?string
+    public function getMiddlename(): ?string
     {
         return $this->getData(self::MIDDLE_NAME);
     }
@@ -733,7 +733,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSurname() : ?string
+    public function getSurname(): ?string
     {
         return $this->getData(self::SURNAME);
     }
@@ -751,7 +751,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalutationcode() : ?string
+    public function getSalutationcode(): ?string
     {
         return $this->getData(self::SALUTATION_CODE);
     }
@@ -769,7 +769,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSearcheMail() : ?string
+    public function getSearcheMail(): ?string
     {
         return $this->getData(self::SEARCH_E_MAIL);
     }
@@ -787,7 +787,7 @@ class MemberContact extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSendreceiptbyeMail() : ?string
+    public function getSendreceiptbyeMail(): ?string
     {
         return $this->getData(self::SEND_RECEIPTBY_E_MAIL);
     }

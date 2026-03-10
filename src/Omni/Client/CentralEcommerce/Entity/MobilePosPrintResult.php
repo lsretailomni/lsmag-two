@@ -39,7 +39,7 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -57,7 +57,7 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -75,7 +75,7 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getPrintmethod() : ?string
+    public function getPrintmethod(): ?string
     {
         return $this->getData(self::PRINT_METHOD);
     }
@@ -93,7 +93,7 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getMailrecipient() : ?string
+    public function getMailrecipient(): ?string
     {
         return $this->getData(self::MAIL_RECIPIENT);
     }
@@ -111,7 +111,7 @@ class MobilePosPrintResult extends \Magento\Catalog\Model\AbstractModel implemen
     /**
      * @return ?string
      */
-    public function getExternalprinterid() : ?string
+    public function getExternalprinterid(): ?string
     {
         return $this->getData(self::EXTERNAL_PRINTER_ID);
     }

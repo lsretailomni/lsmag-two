@@ -46,6 +46,8 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
 
     public const SCAN_DATE_TIME = 'ScanDateTime';
 
+    public const STAFF_ID = 'StaffID';
+
     /**
      * @param int $WorksheetSeqNo
      * @return $this
@@ -95,7 +97,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getTransactionno() : ?string
+    public function getTransactionno(): ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -131,7 +133,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -149,7 +151,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getBarcode() : ?string
+    public function getBarcode(): ?string
     {
         return $this->getData(self::BARCODE);
     }
@@ -167,7 +169,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -185,7 +187,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getUnitofmeasurecode() : ?string
+    public function getUnitofmeasurecode(): ?string
     {
         return $this->getData(self::UNITOF_MEASURE_CODE);
     }
@@ -203,7 +205,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -221,7 +223,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?float
      */
-    public function getCompetitorprice() : ?float
+    public function getCompetitorprice(): ?float
     {
         return $this->getData(self::COMPETITOR_PRICE);
     }
@@ -239,7 +241,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getAreacode() : ?string
+    public function getAreacode(): ?string
     {
         return $this->getData(self::AREA_CODE);
     }
@@ -257,7 +259,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getSerialno() : ?string
+    public function getSerialno(): ?string
     {
         return $this->getData(self::SERIAL_NO);
     }
@@ -275,7 +277,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getLotno() : ?string
+    public function getLotno(): ?string
     {
         return $this->getData(self::LOT_NO);
     }
@@ -293,7 +295,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getExpirationdate() : ?string
+    public function getExpirationdate(): ?string
     {
         return $this->getData(self::EXPIRATION_DATE);
     }
@@ -311,7 +313,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getReasoncode() : ?string
+    public function getReasoncode(): ?string
     {
         return $this->getData(self::REASON_CODE);
     }
@@ -329,7 +331,7 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?bool
      */
-    public function getEndoftransaction() : ?bool
+    public function getEndoftransaction(): ?bool
     {
         return $this->getData(self::END_OF_TRANSACTION);
     }
@@ -347,9 +349,27 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getScandatetime() : ?string
+    public function getScandatetime(): ?string
     {
         return $this->getData(self::SCAN_DATE_TIME);
+    }
+
+    /**
+     * @param ?string $StaffID
+     * @return $this
+     */
+    public function setStaffid(?string $StaffID)
+    {
+        $this->setData(self::STAFF_ID, $StaffID);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getStaffid(): ?string
+    {
+        return $this->getData(self::STAFF_ID);
     }
 }
 

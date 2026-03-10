@@ -45,7 +45,7 @@ class SalesShipmentHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNo() : ?string
+    public function getNo(): ?string
     {
         return $this->getData(self::NO);
     }
@@ -63,7 +63,7 @@ class SalesShipmentHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSelltocustomerno() : ?string
+    public function getSelltocustomerno(): ?string
     {
         return $this->getData(self::SELL_TO_CUSTOMER_NO);
     }
@@ -81,7 +81,7 @@ class SalesShipmentHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSelltocustomername() : ?string
+    public function getSelltocustomername(): ?string
     {
         return $this->getData(self::SELL_TO_CUSTOMER_NAME);
     }
@@ -99,7 +99,7 @@ class SalesShipmentHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPostingdate() : ?string
+    public function getPostingdate(): ?string
     {
         return $this->getData(self::POSTING_DATE);
     }
@@ -117,7 +117,7 @@ class SalesShipmentHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipmentdate() : ?string
+    public function getShipmentdate(): ?string
     {
         return $this->getData(self::SHIPMENT_DATE);
     }
@@ -135,7 +135,7 @@ class SalesShipmentHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiptocode() : ?string
+    public function getShiptocode(): ?string
     {
         return $this->getData(self::SHIP_TO_CODE);
     }
@@ -153,7 +153,7 @@ class SalesShipmentHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiptoname() : ?string
+    public function getShiptoname(): ?string
     {
         return $this->getData(self::SHIP_TO_NAME);
     }
@@ -171,7 +171,7 @@ class SalesShipmentHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingagentcode() : ?string
+    public function getShippingagentcode(): ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
@@ -189,7 +189,7 @@ class SalesShipmentHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingagentservicecode() : ?string
+    public function getShippingagentservicecode(): ?string
     {
         return $this->getData(self::SHIPPING_AGENT_SERVICE_CODE);
     }
@@ -207,7 +207,7 @@ class SalesShipmentHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPackagetrackingno() : ?string
+    public function getPackagetrackingno(): ?string
     {
         return $this->getData(self::PACKAGE_TRACKING_NO);
     }

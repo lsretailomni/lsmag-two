@@ -43,7 +43,7 @@ class MIValidateItemTrackingV2 extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -61,7 +61,7 @@ class MIValidateItemTrackingV2 extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -79,7 +79,7 @@ class MIValidateItemTrackingV2 extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getItemtrackingid() : ?string
+    public function getItemtrackingid(): ?string
     {
         return $this->getData(self::ITEM_TRACKING_ID);
     }
@@ -115,7 +115,7 @@ class MIValidateItemTrackingV2 extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getDocumentno() : ?string
+    public function getDocumentno(): ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -133,7 +133,7 @@ class MIValidateItemTrackingV2 extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?bool
      */
-    public function getValidtracking() : ?bool
+    public function getValidtracking(): ?bool
     {
         return $this->getData(self::VALID_TRACKING);
     }
@@ -151,7 +151,7 @@ class MIValidateItemTrackingV2 extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -169,7 +169,7 @@ class MIValidateItemTrackingV2 extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

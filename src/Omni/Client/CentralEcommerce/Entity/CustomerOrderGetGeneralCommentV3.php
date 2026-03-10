@@ -29,7 +29,7 @@ class CustomerOrderGetGeneralCommentV3 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -47,7 +47,7 @@ class CustomerOrderGetGeneralCommentV3 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getComment() : ?string
+    public function getComment(): ?string
     {
         return $this->getData(self::COMMENT);
     }

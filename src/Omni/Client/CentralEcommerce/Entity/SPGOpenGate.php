@@ -45,7 +45,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getQrcode() : ?string
+    public function getQrcode(): ?string
     {
         return $this->getData(self::QRCODE);
     }
@@ -63,7 +63,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -81,7 +81,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getDevicelocation() : ?string
+    public function getDevicelocation(): ?string
     {
         return $this->getData(self::DEVICE_LOCATION);
     }
@@ -99,7 +99,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getMemberaccountno() : ?string
+    public function getMemberaccountno(): ?string
     {
         return $this->getData(self::MEMBER_ACCOUNT_NO);
     }
@@ -117,7 +117,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?bool
      */
-    public function getExitwithoutshopping() : ?bool
+    public function getExitwithoutshopping(): ?bool
     {
         return $this->getData(self::EXIT_WITHOUT_SHOPPING);
     }
@@ -135,7 +135,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?bool
      */
-    public function getIsentering() : ?bool
+    public function getIsentering(): ?bool
     {
         return $this->getData(self::IS_ENTERING);
     }
@@ -153,7 +153,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?bool
      */
-    public function getReturnvalue() : ?bool
+    public function getReturnvalue(): ?bool
     {
         return $this->getData(self::RETURN_VALUE);
     }
@@ -171,7 +171,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -189,7 +189,7 @@ class SPGOpenGate extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

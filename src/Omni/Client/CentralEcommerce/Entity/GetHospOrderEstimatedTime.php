@@ -37,7 +37,7 @@ class GetHospOrderEstimatedTime extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -55,7 +55,7 @@ class GetHospOrderEstimatedTime extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -73,7 +73,7 @@ class GetHospOrderEstimatedTime extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -91,7 +91,7 @@ class GetHospOrderEstimatedTime extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getOrderno() : ?string
+    public function getOrderno(): ?string
     {
         return $this->getData(self::ORDER_NO);
     }

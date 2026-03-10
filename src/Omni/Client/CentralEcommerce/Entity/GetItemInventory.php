@@ -49,7 +49,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -67,7 +67,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -85,7 +85,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -103,7 +103,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -121,7 +121,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -139,7 +139,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getLocationcode() : ?string
+    public function getLocationcode(): ?string
     {
         return $this->getData(self::LOCATION_CODE);
     }
@@ -157,7 +157,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getColour() : ?string
+    public function getColour(): ?string
     {
         return $this->getData(self::COLOUR);
     }
@@ -175,7 +175,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getSize() : ?string
+    public function getSize(): ?string
     {
         return $this->getData(self::SIZE);
     }
@@ -193,7 +193,7 @@ class GetItemInventory extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getStyle() : ?string
+    public function getStyle(): ?string
     {
         return $this->getData(self::STYLE);
     }

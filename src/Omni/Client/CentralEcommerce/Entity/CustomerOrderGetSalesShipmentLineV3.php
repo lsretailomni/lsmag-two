@@ -49,7 +49,7 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -85,7 +85,7 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -103,7 +103,7 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -121,7 +121,7 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -139,7 +139,7 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getUnitofmeasure() : ?string
+    public function getUnitofmeasure(): ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE);
     }
@@ -157,7 +157,7 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getPlanneddeliverydate() : ?string
+    public function getPlanneddeliverydate(): ?string
     {
         return $this->getData(self::PLANNED_DELIVERY_DATE);
     }
@@ -175,7 +175,7 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getPlannedshipmentdate() : ?string
+    public function getPlannedshipmentdate(): ?string
     {
         return $this->getData(self::PLANNED_SHIPMENT_DATE);
     }
@@ -193,7 +193,7 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?string
      */
-    public function getShipmentdate() : ?string
+    public function getShipmentdate(): ?string
     {
         return $this->getData(self::SHIPMENT_DATE);
     }
@@ -211,7 +211,7 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?float
      */
-    public function getGrossweight() : ?float
+    public function getGrossweight(): ?float
     {
         return $this->getData(self::GROSS_WEIGHT);
     }
@@ -229,7 +229,7 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?float
      */
-    public function getNetweight() : ?float
+    public function getNetweight(): ?float
     {
         return $this->getData(self::NET_WEIGHT);
     }
@@ -247,7 +247,7 @@ class CustomerOrderGetSalesShipmentLineV3 extends \Magento\Catalog\Model\Abstrac
     /**
      * @return ?float
      */
-    public function getUnitvolume() : ?float
+    public function getUnitvolume(): ?float
     {
         return $this->getData(self::UNIT_VOLUME);
     }

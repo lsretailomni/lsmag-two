@@ -49,7 +49,7 @@ class POSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionno() : ?string
+    public function getTransactionno(): ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -67,7 +67,7 @@ class POSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactiontype() : ?string
+    public function getTransactiontype(): ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
@@ -85,7 +85,7 @@ class POSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentmember() : ?string
+    public function getDocumentmember(): ?string
     {
         return $this->getData(self::DOCUMENT_MEMBER);
     }
@@ -103,7 +103,7 @@ class POSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentmembername() : ?string
+    public function getDocumentmembername(): ?string
     {
         return $this->getData(self::DOCUMENT_MEMBER_NAME);
     }
@@ -121,7 +121,7 @@ class POSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumenttype() : ?string
+    public function getDocumenttype(): ?string
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
@@ -139,7 +139,7 @@ class POSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentno() : ?string
+    public function getDocumentno(): ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -157,7 +157,7 @@ class POSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrcountingheaderno() : ?string
+    public function getPrcountingheaderno(): ?string
     {
         return $this->getData(self::PRCOUNTING_HEADER_NO);
     }
@@ -175,7 +175,7 @@ class POSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpecteddate() : ?string
+    public function getExpecteddate(): ?string
     {
         return $this->getData(self::EXPECTED_DATE);
     }
@@ -193,7 +193,7 @@ class POSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNoOfitems() : ?float
+    public function getNoOfitems(): ?float
     {
         return $this->getData(self::NO_OF_ITEMS);
     }
@@ -211,7 +211,7 @@ class POSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalqty() : ?float
+    public function getTotalqty(): ?float
     {
         return $this->getData(self::TOTAL_QTY);
     }
@@ -229,7 +229,7 @@ class POSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtyleft() : ?float
+    public function getQtyleft(): ?float
     {
         return $this->getData(self::QTY_LEFT);
     }
@@ -247,7 +247,7 @@ class POSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVendortrustlevel() : ?string
+    public function getVendortrustlevel(): ?string
     {
         return $this->getData(self::VENDOR_TRUST_LEVEL);
     }

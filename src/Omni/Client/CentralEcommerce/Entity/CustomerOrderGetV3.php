@@ -43,7 +43,7 @@ class CustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -61,7 +61,7 @@ class CustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -79,7 +79,7 @@ class CustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getDocumentstatus() : ?string
+    public function getDocumentstatus(): ?string
     {
         return $this->getData(self::DOCUMENT_STATUS);
     }
@@ -97,7 +97,7 @@ class CustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -115,7 +115,7 @@ class CustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POS_TERMINAL_NO);
     }
@@ -151,7 +151,7 @@ class CustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?float
      */
-    public function getPointsearned() : ?float
+    public function getPointsearned(): ?float
     {
         return $this->getData(self::POINTS_EARNED);
     }
@@ -169,7 +169,7 @@ class CustomerOrderGetV3 extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?float
      */
-    public function getPointsused() : ?float
+    public function getPointsused(): ?float
     {
         return $this->getData(self::POINTS_USED);
     }

@@ -45,7 +45,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequeststoreno() : ?string
+    public function getRequeststoreno(): ?string
     {
         return $this->getData(self::REQUEST_STORE_NO);
     }
@@ -63,7 +63,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequestposterminalno() : ?string
+    public function getRequestposterminalno(): ?string
     {
         return $this->getData(self::REQUEST_POSTERMINAL_NO);
     }
@@ -81,7 +81,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequestid() : ?string
+    public function getRequestid(): ?string
     {
         return $this->getData(self::REQUEST_ID);
     }
@@ -117,7 +117,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrimarykey() : ?string
+    public function getPrimarykey(): ?string
     {
         return $this->getData(self::PRIMARY_KEY);
     }
@@ -135,7 +135,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequestparameter() : ?string
+    public function getRequestparameter(): ?string
     {
         return $this->getData(self::REQUEST_PARAMETER);
     }
@@ -153,7 +153,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequestdatetime() : ?string
+    public function getRequestdatetime(): ?string
     {
         return $this->getData(self::REQUEST_DATE_TIME);
     }
@@ -171,7 +171,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLastprocessdatetime() : ?string
+    public function getLastprocessdatetime(): ?string
     {
         return $this->getData(self::LAST_PROCESS_DATE_TIME);
     }
@@ -189,7 +189,7 @@ class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getErrormessage() : ?string
+    public function getErrormessage(): ?string
     {
         return $this->getData(self::ERROR_MESSAGE);
     }

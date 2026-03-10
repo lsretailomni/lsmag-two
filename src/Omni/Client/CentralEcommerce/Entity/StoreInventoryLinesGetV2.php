@@ -39,7 +39,7 @@ class StoreInventoryLinesGetV2 extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -57,7 +57,7 @@ class StoreInventoryLinesGetV2 extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -75,7 +75,7 @@ class StoreInventoryLinesGetV2 extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getWorksheetseqno() : ?string
+    public function getWorksheetseqno(): ?string
     {
         return $this->getData(self::WORKSHEET_SEQ_NO);
     }
@@ -93,7 +93,7 @@ class StoreInventoryLinesGetV2 extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getAreacode() : ?string
+    public function getAreacode(): ?string
     {
         return $this->getData(self::AREA_CODE);
     }
@@ -111,7 +111,7 @@ class StoreInventoryLinesGetV2 extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?bool
      */
-    public function getAddcyclecountitems() : ?bool
+    public function getAddcyclecountitems(): ?bool
     {
         return $this->getData(self::ADD_CYCLE_COUNT_ITEMS);
     }

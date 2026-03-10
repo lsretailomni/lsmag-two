@@ -39,7 +39,7 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHierarchycode() : ?string
+    public function getHierarchycode(): ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
@@ -57,7 +57,7 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNodeid() : ?string
+    public function getNodeid(): ?string
     {
         return $this->getData(self::NODE_ID);
     }
@@ -75,7 +75,7 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getParentnodeid() : ?string
+    public function getParentnodeid(): ?string
     {
         return $this->getData(self::PARENT_NODE_ID);
     }
@@ -93,7 +93,7 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -147,7 +147,7 @@ class HierarchyNodesV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getHaschildren() : ?bool
+    public function getHaschildren(): ?bool
     {
         return $this->getData(self::HAS_CHILDREN);
     }

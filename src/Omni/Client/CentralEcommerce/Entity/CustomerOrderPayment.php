@@ -71,7 +71,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -89,7 +89,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -125,7 +125,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPreapprovedamount() : ?float
+    public function getPreapprovedamount(): ?float
     {
         return $this->getData(self::PRE_APPROVED_AMOUNT);
     }
@@ -143,7 +143,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getFinalisedamount() : ?float
+    public function getFinalisedamount(): ?float
     {
         return $this->getData(self::FINALISED_AMOUNT);
     }
@@ -161,7 +161,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTendertype() : ?string
+    public function getTendertype(): ?string
     {
         return $this->getData(self::TENDER_TYPE);
     }
@@ -179,7 +179,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardtype() : ?string
+    public function getCardtype(): ?string
     {
         return $this->getData(self::CARD_TYPE);
     }
@@ -197,7 +197,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencycode() : ?string
+    public function getCurrencycode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -215,7 +215,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCurrencyfactor() : ?float
+    public function getCurrencyfactor(): ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
     }
@@ -233,7 +233,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAuthorisationcode() : ?string
+    public function getAuthorisationcode(): ?string
     {
         return $this->getData(self::AUTHORISATION_CODE);
     }
@@ -251,7 +251,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPreapprovedvaliddate() : ?string
+    public function getPreapprovedvaliddate(): ?string
     {
         return $this->getData(self::PRE_APPROVED_VALID_DATE);
     }
@@ -269,7 +269,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardorcustomernumber() : ?string
+    public function getCardorcustomernumber(): ?string
     {
         return $this->getData(self::CARDOR_CUSTOMERNUMBER);
     }
@@ -287,7 +287,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getIncexpaccountno() : ?string
+    public function getIncexpaccountno(): ?string
     {
         return $this->getData(self::INC_EXP_ACCOUNT_NO);
     }
@@ -305,7 +305,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPreapprovedamountlcy() : ?float
+    public function getPreapprovedamountlcy(): ?float
     {
         return $this->getData(self::PRE_APPROVED_AMOUNT_LCY);
     }
@@ -323,7 +323,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getFinalisedamountlcy() : ?float
+    public function getFinalisedamountlcy(): ?float
     {
         return $this->getData(self::FINALISED_AMOUNT_LCY);
     }
@@ -341,7 +341,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getLoyaltypointpayment() : ?bool
+    public function getLoyaltypointpayment(): ?bool
     {
         return $this->getData(self::LOYALTY_POINTPAYMENT);
     }
@@ -359,7 +359,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getDepositpayment() : ?bool
+    public function getDepositpayment(): ?bool
     {
         return $this->getData(self::DEPOSIT_PAYMENT);
     }
@@ -377,7 +377,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPostransreceiptno() : ?string
+    public function getPostransreceiptno(): ?string
     {
         return $this->getData(self::POS_TRANS_RECEIPT_NO);
     }
@@ -395,7 +395,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getType() : ?string
+    public function getType(): ?string
     {
         return $this->getData(self::TYPE);
     }
@@ -413,7 +413,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreated() : ?string
+    public function getCreated(): ?string
     {
         return $this->getData(self::CREATED);
     }
@@ -431,7 +431,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getAuthorizationexpired() : ?bool
+    public function getAuthorizationexpired(): ?bool
     {
         return $this->getData(self::AUTHORIZATION_EXPIRED);
     }
@@ -449,7 +449,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTokenno() : ?string
+    public function getTokenno(): ?string
     {
         return $this->getData(self::TOKEN_NO);
     }
@@ -467,7 +467,7 @@ class CustomerOrderPayment extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalreference() : ?string
+    public function getExternalreference(): ?string
     {
         return $this->getData(self::EXTERNAL_REFERENCE);
     }
