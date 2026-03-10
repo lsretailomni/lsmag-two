@@ -47,7 +47,6 @@ class LSCValidationPeriod extends AbstractModel
     public const FRI_END_TIME_AFTER_MIDNIGHT = 'Fri. End. Time After Midnight';
     public const SAT_END_TIME_AFTER_MIDNIGHT = 'Sat. End. Time After Midnight';
     public const SUN_END_TIME_AFTER_MIDNIGHT = 'Sun. End. Time After Midnight';
-    public const NUMBER_SERIES = 'Number Series';
     public const NO_SERIES = 'No. Series';
     public const OFFER_STARTING_TIME = 'Offer Starting Time';
     public const OFFER_ENDING_TIME = 'Offer Ending Time';
@@ -94,7 +93,6 @@ class LSCValidationPeriod extends AbstractModel
 	self::FRI_END_TIME_AFTER_MIDNIGHT => 'fri_end_time_after_midnight',
 	self::SAT_END_TIME_AFTER_MIDNIGHT => 'sat_end_time_after_midnight',
 	self::SUN_END_TIME_AFTER_MIDNIGHT => 'sun_end_time_after_midnight',
-	self::NUMBER_SERIES => 'number_series',
 	self::NO_SERIES => 'no_series',
 	self::OFFER_STARTING_TIME => 'offer_starting_time',
 	self::OFFER_ENDING_TIME => 'offer_ending_time',
@@ -469,16 +467,6 @@ class LSCValidationPeriod extends AbstractModel
     public function setSunEndTimeAfterMidnight(?bool $value)
     {
         return $this->setData(self::SUN_END_TIME_AFTER_MIDNIGHT, $value);
-    }
-
-    public function getNumberSeries(): ?string
-    {
-        return $this->getData(self::NUMBER_SERIES);
-    }
-
-    public function setNumberSeries(?string $value)
-    {
-        return $this->setData(self::NUMBER_SERIES, $value);
     }
 
     public function getNoSeries(): ?string

@@ -82,8 +82,6 @@ class CustomerOrderCreateCOLineV6 extends \Magento\Catalog\Model\AbstractModel
 
     public const LOT_NO = 'LotNo';
 
-    public const WISH_LIST_NO = 'WishListNo';
-
     /**
      * @param ?string $DocumentID
      * @return $this
@@ -712,24 +710,6 @@ class CustomerOrderCreateCOLineV6 extends \Magento\Catalog\Model\AbstractModel
     public function getLotno(): ?string
     {
         return $this->getData(self::LOT_NO);
-    }
-
-    /**
-     * @param ?string $WishListNo
-     * @return $this
-     */
-    public function setWishlistno(?string $WishListNo)
-    {
-        $this->setData(self::WISH_LIST_NO, $WishListNo);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getWishlistno(): ?string
-    {
-        return $this->getData(self::WISH_LIST_NO);
     }
 }
 

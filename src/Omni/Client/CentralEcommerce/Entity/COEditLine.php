@@ -116,8 +116,6 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
 
     public const PREPAYMENT_DOCUMENT_NO = 'PrepaymentDocumentNo';
 
-    public const WISH_LIST_NO = 'WishListNo';
-
     /**
      * @param ?string $DocumentID
      * @return $this
@@ -1052,24 +1050,6 @@ class COEditLine extends \Magento\Catalog\Model\AbstractModel
     public function getPrepaymentdocumentno(): ?string
     {
         return $this->getData(self::PREPAYMENT_DOCUMENT_NO);
-    }
-
-    /**
-     * @param ?string $WishListNo
-     * @return $this
-     */
-    public function setWishlistno(?string $WishListNo)
-    {
-        $this->setData(self::WISH_LIST_NO, $WishListNo);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getWishlistno(): ?string
-    {
-        return $this->getData(self::WISH_LIST_NO);
     }
 }
 

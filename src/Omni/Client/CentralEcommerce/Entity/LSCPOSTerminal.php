@@ -38,18 +38,12 @@ class LSCPOSTerminal extends AbstractModel
     public const AUTOLOGOFF_AFTER_MIN = 'AutoLogoff After (Min.)';
     public const ALLOW_AUTOLOGOFF_IN_SALES_MODE = 'Allow AutoLogoff in Sales Mode';
     public const RETURN_IN_TRANSACTION = 'Return in Transaction';
-    public const IDLE_TIMEOUT_SEC = 'Idle Timeout (Sec.)';
-    public const IDLE_TIMEOUT_COUNTDOWN_SEC = 'Idle Timeout Countdown (Sec.)';
-    public const IDLE_TIMEOUT_COMMAND = 'Idle Timeout Command';
-    public const IDLE_TIMEOUT_PARAMETER = 'Idle Timeout Parameter';
     public const ITEM_NO_ON_RECEIPT = 'Item No. on Receipt';
-    public const ALLOW_IDLE_TIMEOUT_IN_TRANS = 'Allow Idle Timeout in Trans.';
     public const PRINT_RECEIPT_FOR_NEG_ADJ = 'Print Receipt for Neg. Adj.';
     public const EFT_EMBEDDED_RECEIPT = 'EFT Embedded Receipt';
     public const USE_REFERENCED_REFUNDS = 'Use Referenced Refunds';
     public const USE_REFUND_SELECTION = 'Use Refund Selection';
     public const LAST_DATE_MODIFIED = 'Last Date Modified';
-    public const MULTIPLE_PRINTERS_HANDLING = 'Multiple Printers Handling';
     public const PRINT_RECEIPT_LOGO = 'Print Receipt Logo';
     public const PRINT_RECEIPT_BITMAP_NO = 'Print Receipt Bitmap No.';
     public const RCPT_TEXT_MAX_LENGTH = 'Rcpt. Text Max. Length';
@@ -66,7 +60,6 @@ class LSCPOSTerminal extends AbstractModel
     public const SUM_OF_TRANS_NO = 'Sum of Trans. No.';
     public const COUNT_OF_TRANS = 'Count of Trans.';
     public const NO_SERIES = 'No. Series';
-    public const NUMBER_SERIES = 'Number Series';
     public const TABLE_GROUP = 'Table Group';
     public const TABLE_VIEW_AT_LOGON = 'Table View at Logon';
     public const OPERATIONAL_MODE = 'Operational Mode';
@@ -74,7 +67,6 @@ class LSCPOSTerminal extends AbstractModel
     public const DEFAULT_SALES_TYPE = 'Default Sales Type';
     public const FB_TAKEAWAY_SALES_TYPE = 'F&B Takeaway Sales Type';
     public const DELIVERY_SALES_TYPE = 'Delivery Sales Type';
-    public const QUEUE_COUNTER_PREFIX = 'Queue Counter Prefix';
     public const SAFE_NO = 'Safe No.';
     public const STAFF_LOGIN_VALIDATION = 'Staff Login Validation';
     public const EXCLUDE_FROM_CASH_MGNT = 'Exclude from Cash Mgnt.';
@@ -130,8 +122,6 @@ class LSCPOSTerminal extends AbstractModel
     public const OPEN_DRAWER_THEN_PRINT = 'Open drawer then print';
     public const EFT_AUTO_RECOVERY_ATTEMPTS = 'EFT Auto Recovery Attempts';
     public const EFT_TERMINAL_OFFLINE_HANDLING = 'EFT Terminal Offline Handling';
-    public const TIPS_INCOME_ACCOUNT = 'Tips Income Account';
-    public const TIPS_LINE_CREATION_METHOD = 'Tips Line Creation Method';
     public const POS_SEARCH_ENGINE = 'POS Search Engine';
     public const SALES_ORDER_NOS = 'Sales Order Nos.';
     public const ITEM_FILTERING_METHOD = 'Item Filtering Method';
@@ -175,18 +165,12 @@ class LSCPOSTerminal extends AbstractModel
 	self::AUTOLOGOFF_AFTER_MIN => 'autologoff_after_min',
 	self::ALLOW_AUTOLOGOFF_IN_SALES_MODE => 'allow_autologoff_in_sales_mode',
 	self::RETURN_IN_TRANSACTION => 'return_in_transaction',
-	self::IDLE_TIMEOUT_SEC => 'idle_timeout_sec',
-	self::IDLE_TIMEOUT_COUNTDOWN_SEC => 'idle_timeout_countdown_sec',
-	self::IDLE_TIMEOUT_COMMAND => 'idle_timeout_command',
-	self::IDLE_TIMEOUT_PARAMETER => 'idle_timeout_parameter',
 	self::ITEM_NO_ON_RECEIPT => 'item_no_on_receipt',
-	self::ALLOW_IDLE_TIMEOUT_IN_TRANS => 'allow_idle_timeout_in_trans',
 	self::PRINT_RECEIPT_FOR_NEG_ADJ => 'print_receipt_for_neg_adj',
 	self::EFT_EMBEDDED_RECEIPT => 'eft_embedded_receipt',
 	self::USE_REFERENCED_REFUNDS => 'use_referenced_refunds',
 	self::USE_REFUND_SELECTION => 'use_refund_selection',
 	self::LAST_DATE_MODIFIED => 'last_date_modified',
-	self::MULTIPLE_PRINTERS_HANDLING => 'multiple_printers_handling',
 	self::PRINT_RECEIPT_LOGO => 'print_receipt_logo',
 	self::PRINT_RECEIPT_BITMAP_NO => 'print_receipt_bitmap_no',
 	self::RCPT_TEXT_MAX_LENGTH => 'rcpt_text_max_length',
@@ -203,7 +187,6 @@ class LSCPOSTerminal extends AbstractModel
 	self::SUM_OF_TRANS_NO => 'sum_of_trans_no',
 	self::COUNT_OF_TRANS => 'count_of_trans',
 	self::NO_SERIES => 'no_series',
-	self::NUMBER_SERIES => 'number_series',
 	self::TABLE_GROUP => 'table_group',
 	self::TABLE_VIEW_AT_LOGON => 'table_view_at_logon',
 	self::OPERATIONAL_MODE => 'operational_mode',
@@ -211,7 +194,6 @@ class LSCPOSTerminal extends AbstractModel
 	self::DEFAULT_SALES_TYPE => 'default_sales_type',
 	self::FB_TAKEAWAY_SALES_TYPE => 'fb_takeaway_sales_type',
 	self::DELIVERY_SALES_TYPE => 'delivery_sales_type',
-	self::QUEUE_COUNTER_PREFIX => 'queue_counter_prefix',
 	self::SAFE_NO => 'safe_no',
 	self::STAFF_LOGIN_VALIDATION => 'staff_login_validation',
 	self::EXCLUDE_FROM_CASH_MGNT => 'exclude_from_cash_mgnt',
@@ -267,8 +249,6 @@ class LSCPOSTerminal extends AbstractModel
 	self::OPEN_DRAWER_THEN_PRINT => 'open_drawer_then_print',
 	self::EFT_AUTO_RECOVERY_ATTEMPTS => 'eft_auto_recovery_attempts',
 	self::EFT_TERMINAL_OFFLINE_HANDLING => 'eft_terminal_offline_handling',
-	self::TIPS_INCOME_ACCOUNT => 'tips_income_account',
-	self::TIPS_LINE_CREATION_METHOD => 'tips_line_creation_method',
 	self::POS_SEARCH_ENGINE => 'pos_search_engine',
 	self::SALES_ORDER_NOS => 'sales_order_nos',
 	self::ITEM_FILTERING_METHOD => 'item_filtering_method',
@@ -561,46 +541,6 @@ class LSCPOSTerminal extends AbstractModel
         return $this->setData(self::RETURN_IN_TRANSACTION, $value);
     }
 
-    public function getIdleTimeoutSec(): ?int
-    {
-        return $this->getData(self::IDLE_TIMEOUT_SEC);
-    }
-
-    public function setIdleTimeoutSec(?int $value)
-    {
-        return $this->setData(self::IDLE_TIMEOUT_SEC, $value);
-    }
-
-    public function getIdleTimeoutCountdownSec(): ?int
-    {
-        return $this->getData(self::IDLE_TIMEOUT_COUNTDOWN_SEC);
-    }
-
-    public function setIdleTimeoutCountdownSec(?int $value)
-    {
-        return $this->setData(self::IDLE_TIMEOUT_COUNTDOWN_SEC, $value);
-    }
-
-    public function getIdleTimeoutCommand(): ?string
-    {
-        return $this->getData(self::IDLE_TIMEOUT_COMMAND);
-    }
-
-    public function setIdleTimeoutCommand(?string $value)
-    {
-        return $this->setData(self::IDLE_TIMEOUT_COMMAND, $value);
-    }
-
-    public function getIdleTimeoutParameter(): ?string
-    {
-        return $this->getData(self::IDLE_TIMEOUT_PARAMETER);
-    }
-
-    public function setIdleTimeoutParameter(?string $value)
-    {
-        return $this->setData(self::IDLE_TIMEOUT_PARAMETER, $value);
-    }
-
     public function getItemNoOnReceipt(): ?int
     {
         return $this->getData(self::ITEM_NO_ON_RECEIPT);
@@ -609,16 +549,6 @@ class LSCPOSTerminal extends AbstractModel
     public function setItemNoOnReceipt(?int $value)
     {
         return $this->setData(self::ITEM_NO_ON_RECEIPT, $value);
-    }
-
-    public function getAllowIdleTimeoutInTrans(): ?bool
-    {
-        return $this->getData(self::ALLOW_IDLE_TIMEOUT_IN_TRANS);
-    }
-
-    public function setAllowIdleTimeoutInTrans(?bool $value)
-    {
-        return $this->setData(self::ALLOW_IDLE_TIMEOUT_IN_TRANS, $value);
     }
 
     public function getPrintReceiptForNegAdj(): ?bool
@@ -669,16 +599,6 @@ class LSCPOSTerminal extends AbstractModel
     public function setLastDateModified(?string $value)
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
-    }
-
-    public function getMultiplePrintersHandling(): ?int
-    {
-        return $this->getData(self::MULTIPLE_PRINTERS_HANDLING);
-    }
-
-    public function setMultiplePrintersHandling(?int $value)
-    {
-        return $this->setData(self::MULTIPLE_PRINTERS_HANDLING, $value);
     }
 
     public function getPrintReceiptLogo(): ?string
@@ -841,16 +761,6 @@ class LSCPOSTerminal extends AbstractModel
         return $this->setData(self::NO_SERIES, $value);
     }
 
-    public function getNumberSeries(): ?string
-    {
-        return $this->getData(self::NUMBER_SERIES);
-    }
-
-    public function setNumberSeries(?string $value)
-    {
-        return $this->setData(self::NUMBER_SERIES, $value);
-    }
-
     public function getTableGroup(): ?string
     {
         return $this->getData(self::TABLE_GROUP);
@@ -919,16 +829,6 @@ class LSCPOSTerminal extends AbstractModel
     public function setDeliverySalesType(?string $value)
     {
         return $this->setData(self::DELIVERY_SALES_TYPE, $value);
-    }
-
-    public function getQueueCounterPrefix(): ?string
-    {
-        return $this->getData(self::QUEUE_COUNTER_PREFIX);
-    }
-
-    public function setQueueCounterPrefix(?string $value)
-    {
-        return $this->setData(self::QUEUE_COUNTER_PREFIX, $value);
     }
 
     public function getSafeNo(): ?string
@@ -1479,26 +1379,6 @@ class LSCPOSTerminal extends AbstractModel
     public function setEftTerminalOfflineHandling(?int $value)
     {
         return $this->setData(self::EFT_TERMINAL_OFFLINE_HANDLING, $value);
-    }
-
-    public function getTipsIncomeAccount(): ?string
-    {
-        return $this->getData(self::TIPS_INCOME_ACCOUNT);
-    }
-
-    public function setTipsIncomeAccount(?string $value)
-    {
-        return $this->setData(self::TIPS_INCOME_ACCOUNT, $value);
-    }
-
-    public function getTipsLineCreationMethod(): ?int
-    {
-        return $this->getData(self::TIPS_LINE_CREATION_METHOD);
-    }
-
-    public function setTipsLineCreationMethod(?int $value)
-    {
-        return $this->setData(self::TIPS_LINE_CREATION_METHOD, $value);
     }
 
     public function getPosSearchEngine(): ?int

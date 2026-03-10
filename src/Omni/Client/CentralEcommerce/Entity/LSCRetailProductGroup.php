@@ -50,7 +50,6 @@ class LSCRetailProductGroup extends AbstractModel
     public const ALLOCATION_RULE_CODE = 'Allocation Rule Code';
     public const OUTBOUND_CODE = 'Outbound Code';
     public const SORT_ORDER = 'Sort Order';
-    public const SORT_ORDER_ON_KDS = 'Sort Order On KDS';
     public const PLB_GROUP = 'PLB Group';
     public const SYSTEMID = '$systemId';
     public const SYSTEMCREATEDAT = 'SystemCreatedAt';
@@ -98,7 +97,6 @@ class LSCRetailProductGroup extends AbstractModel
 	self::ALLOCATION_RULE_CODE => 'allocation_rule_code',
 	self::OUTBOUND_CODE => 'outbound_code',
 	self::SORT_ORDER => 'sort_order',
-	self::SORT_ORDER_ON_KDS => 'sort_order_on_kds',
 	self::PLB_GROUP => 'plb_group',
 	self::SYSTEMID => 'systemid',
 	self::SYSTEMCREATEDAT => 'systemcreatedat',
@@ -501,16 +499,6 @@ class LSCRetailProductGroup extends AbstractModel
     public function setSortOrder(?int $value)
     {
         return $this->setData(self::SORT_ORDER, $value);
-    }
-
-    public function getSortOrderOnKds(): ?int
-    {
-        return $this->getData(self::SORT_ORDER_ON_KDS);
-    }
-
-    public function setSortOrderOnKds(?int $value)
-    {
-        return $this->setData(self::SORT_ORDER_ON_KDS, $value);
     }
 
     public function getPlbGroup(): ?bool

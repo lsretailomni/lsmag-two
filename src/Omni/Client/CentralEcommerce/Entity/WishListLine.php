@@ -40,8 +40,6 @@ class WishListLine extends \Magento\Catalog\Model\AbstractModel
 
     public const MARKED_INT = 'MarkedInt';
 
-    public const PURCHASED_QTY = 'PurchasedQty';
-
     /**
      * @param ?string $WishListNo
      * @return $this
@@ -115,19 +113,19 @@ class WishListLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param ?float $Quantity
+     * @param ?string $Quantity
      * @return $this
      */
-    public function setQuantity(?float $Quantity)
+    public function setQuantity(?string $Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return ?float
+     * @return ?string
      */
-    public function getQuantity(): ?float
+    public function getQuantity(): ?string
     {
         return $this->getData(self::QUANTITY);
     }
@@ -169,19 +167,19 @@ class WishListLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param ?bool $IsDeal
+     * @param ?string $IsDeal
      * @return $this
      */
-    public function setIsdeal(?bool $IsDeal)
+    public function setIsdeal(?string $IsDeal)
     {
         $this->setData(self::IS_DEAL, $IsDeal);
         return $this;
     }
 
     /**
-     * @return ?bool
+     * @return ?string
      */
-    public function getIsdeal(): ?bool
+    public function getIsdeal(): ?string
     {
         return $this->getData(self::IS_DEAL);
     }
@@ -259,57 +257,39 @@ class WishListLine extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param ?float $PurchasedQtyInt
+     * @param ?string $PurchasedQtyInt
      * @return $this
      */
-    public function setPurchasedqtyint(?float $PurchasedQtyInt)
+    public function setPurchasedqtyint(?string $PurchasedQtyInt)
     {
         $this->setData(self::PURCHASED_QTY_INT, $PurchasedQtyInt);
         return $this;
     }
 
     /**
-     * @return ?float
+     * @return ?string
      */
-    public function getPurchasedqtyint(): ?float
+    public function getPurchasedqtyint(): ?string
     {
         return $this->getData(self::PURCHASED_QTY_INT);
     }
 
     /**
-     * @param ?bool $MarkedInt
+     * @param ?string $MarkedInt
      * @return $this
      */
-    public function setMarkedint(?bool $MarkedInt)
+    public function setMarkedint(?string $MarkedInt)
     {
         $this->setData(self::MARKED_INT, $MarkedInt);
         return $this;
     }
 
     /**
-     * @return ?bool
+     * @return ?string
      */
-    public function getMarkedint(): ?bool
+    public function getMarkedint(): ?string
     {
         return $this->getData(self::MARKED_INT);
-    }
-
-    /**
-     * @param ?float $PurchasedQty
-     * @return $this
-     */
-    public function setPurchasedqty(?float $PurchasedQty)
-    {
-        $this->setData(self::PURCHASED_QTY, $PurchasedQty);
-        return $this;
-    }
-
-    /**
-     * @return ?float
-     */
-    public function getPurchasedqty(): ?float
-    {
-        return $this->getData(self::PURCHASED_QTY);
     }
 }
 

@@ -26,10 +26,6 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
 
     public const SORT_ORDER = 'SortOrder';
 
-    public const ITEM_PRICE_INCL_TAX = 'ItemPriceInclTax';
-
-    public const ITEM_PRICE_EXCL_TAX = 'ItemPriceExclTax';
-
     /**
      * @param ?string $HierarchyCode
      * @return $this
@@ -154,42 +150,6 @@ class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
     public function getSortorder()
     {
         return $this->getData(self::SORT_ORDER);
-    }
-
-    /**
-     * @param ?string $ItemPriceInclTax
-     * @return $this
-     */
-    public function setItempriceincltax(?string $ItemPriceInclTax)
-    {
-        $this->setData(self::ITEM_PRICE_INCL_TAX, $ItemPriceInclTax);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getItempriceincltax(): ?string
-    {
-        return $this->getData(self::ITEM_PRICE_INCL_TAX);
-    }
-
-    /**
-     * @param ?string $ItemPriceExclTax
-     * @return $this
-     */
-    public function setItempriceexcltax(?string $ItemPriceExclTax)
-    {
-        $this->setData(self::ITEM_PRICE_EXCL_TAX, $ItemPriceExclTax);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getItempriceexcltax(): ?string
-    {
-        return $this->getData(self::ITEM_PRICE_EXCL_TAX);
     }
 }
 

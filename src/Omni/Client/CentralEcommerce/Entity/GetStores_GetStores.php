@@ -15,7 +15,6 @@ class GetStores_GetStores extends AbstractModel
     public const LSC_STORE_GROUP_SETUP = 'LSC Store Group Setup';
     public const LSC_STORE_PRICE_GROUP = 'LSC Store Price Group';
     public const LSC_SALES_TYPE = 'LSC Sales Type';
-    public const LSC_HOSPITALITY_TYPE = 'LSC Hospitality Type';
     public const LSC_CO_SOURCING_LOCATIONS = 'LSC CO Sourcing Locations';
     public const LSC_ATTRIBUTE = 'LSC Attribute';
     public const LSC_ATTRIBUTE_VALUE = 'LSC Attribute Value';
@@ -28,7 +27,6 @@ class GetStores_GetStores extends AbstractModel
 	self::LSC_STORE_GROUP_SETUP => 'lsc_store_group_setup',
 	self::LSC_STORE_PRICE_GROUP => 'lsc_store_price_group',
 	self::LSC_SALES_TYPE => 'lsc_sales_type',
-	self::LSC_HOSPITALITY_TYPE => 'lsc_hospitality_type',
 	self::LSC_CO_SOURCING_LOCATIONS => 'lsc_co_sourcing_locations',
 	self::LSC_ATTRIBUTE => 'lsc_attribute',
 	self::LSC_ATTRIBUTE_VALUE => 'lsc_attribute_value',
@@ -81,16 +79,6 @@ class GetStores_GetStores extends AbstractModel
     public function setLscSalesType(?array $value)
     {
         return $this->setData(self::LSC_SALES_TYPE, $value);
-    }
-
-    public function getLscHospitalityType()
-    {
-        return $this->getData(self::LSC_HOSPITALITY_TYPE);
-    }
-
-    public function setLscHospitalityType(?array $value)
-    {
-        return $this->setData(self::LSC_HOSPITALITY_TYPE, $value);
     }
 
     public function getLscCoSourcingLocations()

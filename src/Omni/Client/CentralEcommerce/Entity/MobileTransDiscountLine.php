@@ -32,10 +32,6 @@ class MobileTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
 
     public const DISCOUNT_AMOUNT = 'DiscountAmount';
 
-    public const COUPON_CODE = 'CouponCode';
-
-    public const COUPON_BARCODE_NO = 'CouponBarcodeNo';
-
     /**
      * @param string $Id
      * @return $this
@@ -214,42 +210,6 @@ class MobileTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
     public function getDiscountamount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
-    }
-
-    /**
-     * @param ?string $CouponCode
-     * @return $this
-     */
-    public function setCouponcode(?string $CouponCode)
-    {
-        $this->setData(self::COUPON_CODE, $CouponCode);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getCouponcode(): ?string
-    {
-        return $this->getData(self::COUPON_CODE);
-    }
-
-    /**
-     * @param ?string $CouponBarcodeNo
-     * @return $this
-     */
-    public function setCouponbarcodeno(?string $CouponBarcodeNo)
-    {
-        $this->setData(self::COUPON_BARCODE_NO, $CouponBarcodeNo);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getCouponbarcodeno(): ?string
-    {
-        return $this->getData(self::COUPON_BARCODE_NO);
     }
 }
 

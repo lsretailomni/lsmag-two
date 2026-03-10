@@ -188,8 +188,6 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
 
     public const TABLE_DESCRIPTION = 'TableDescription';
 
-    public const REFUND_STATUS = 'RefundStatus';
-
     /**
      * @param int $TransactionNo
      * @return $this
@@ -1754,24 +1752,6 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     public function getTabledescription(): ?string
     {
         return $this->getData(self::TABLE_DESCRIPTION);
-    }
-
-    /**
-     * @param ?string $RefundStatus
-     * @return $this
-     */
-    public function setRefundstatus(?string $RefundStatus)
-    {
-        $this->setData(self::REFUND_STATUS, $RefundStatus);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getRefundstatus(): ?string
-    {
-        return $this->getData(self::REFUND_STATUS);
     }
 }
 

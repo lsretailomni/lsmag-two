@@ -250,8 +250,6 @@ class TransSalesEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const DISCOUNT_PERC = 'DiscountPerc';
 
-    public const WISH_LIST = 'WishList';
-
     /**
      * @param int $TransactionNo
      * @return $this
@@ -2392,24 +2390,6 @@ class TransSalesEntry extends \Magento\Catalog\Model\AbstractModel
     public function getDiscountperc(): ?float
     {
         return $this->getData(self::DISCOUNT_PERC);
-    }
-
-    /**
-     * @param ?string $WishList
-     * @return $this
-     */
-    public function setWishlist(?string $WishList)
-    {
-        $this->setData(self::WISH_LIST, $WishList);
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
-    public function getWishlist(): ?string
-    {
-        return $this->getData(self::WISH_LIST);
     }
 }
 
