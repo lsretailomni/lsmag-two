@@ -5,9 +5,13 @@ namespace Ls\Omni\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\OneList;
 use \Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse;
+use Ls\Omni\Client\Ecommerce\Entity\OneListItem;
+use Ls\Omni\Client\Ecommerce\Entity\OneListItemModify;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\Ecommerce\Operation\OneListItemModify as OneListItemModifyOperation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Model\Product\Type;
@@ -15,6 +19,7 @@ use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Catalog\Pricing\Price\RegularPrice;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -22,6 +27,7 @@ use Magento\Framework\Phrase;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Item;
+use Magento\Wishlist\Model\ResourceModel\Item\Collection;
 
 /**
  * Useful helper functions for basket
@@ -54,11 +60,11 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Compared a OneList with a quote and returns an array which contains
      * the items present only in the quote and only in the OneList (basket)
-     * @param Entity\OneList $oneList
+     * @param OneList $oneList
      * @param Quote $quote
      * @return array
      */
-    public function compare(Entity\OneList $oneList, Quote $quote)
+    public function compare(OneList $oneList, Quote $quote)
     {
         /** @var Entity\OneListItem[] $onlyInOneList */
         /** @var Entity\OneListItem[] $onlyInQuote */
@@ -124,11 +130,11 @@ class BasketHelper extends AbstractHelperOmni
      *
      * Populating items in the oneList from magneto quote
      * @param Quote $quote
-     * @param Entity\OneList $oneList
-     * @return Entity\OneList
+     * @param OneList $oneList
+     * @return OneList
      * @throws NoSuchEntityException
      */
-    public function setOneListQuote(Quote $quote, Entity\OneList $oneList)
+    public function setOneListQuote(Quote $quote, OneList $oneList)
     {
         $quoteItems = $quote->getAllVisibleItems();
 
@@ -319,18 +325,18 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Generating commerce services wishlist from magento wishlist
      *
-     * @param Entity\OneList $oneList
-     * @param $wishlistItems
-     * @return Entity\OneList
+     * @param OneList $oneList
+     * @param Collection $wishlistItems
+     * @return OneList
      * @throws NoSuchEntityException
      */
-    public function addProductToExistingWishlist(Entity\OneList $oneList, $wishlistItems)
+    public function addProductToExistingWishlist(OneList $oneList, $wishlistItems)
     {
         // @codingStandardsIgnoreLine
-        $items      = new Entity\ArrayOfOneListItem();
+        $items = new Entity\ArrayOfOneListItem();
         $itemsArray = [];
 
-        foreach ($wishlistItems as $item) {
+        foreach ($wishlistItems->getItems() as $item) {
             if ($item->getOptionByCode('simple_product')) {
                 $product = $item->getOptionByCode('simple_product')->getProduct();
             } else {
@@ -358,10 +364,222 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * @param Entity\OneList $oneList
-     * @return bool
+     * Handle adding a single product to the wishlist
+     *
+     * @param DataObject $buyRequest
+     * @param int $productId
+     * @param float $qty
+     * @param OneList $oneList
+     * @param array $oneListItems
+     * @return OneList
+     * @throws NoSuchEntityException
      */
-    public function delete(Entity\OneList $oneList)
+    public function handleSingleProductAdd($buyRequest, $productId, $qty, $oneList, $oneListItems)
+    {
+        try {
+            $product = $this->productRepository->getById($productId);
+        } catch (NoSuchEntityException $e) {
+            return $oneList;
+        }
+
+        if (!empty($buyRequest->getSuperAttribute())) {
+            $cartCandidates = $product->getTypeInstance()->processConfiguration($buyRequest, clone $product);
+
+            foreach ($cartCandidates as $candidate) {
+                if ($candidate->getParentProductId()) {
+                    $product = $candidate;
+                    break;
+                }
+            }
+        }
+
+        [$itemId, $variantId, $uom, $barCode] = $this->getComparisonValuesForProduct($product);
+        $found    = $this->findInOneListItems($oneListItems, $itemId, $variantId, $uom);
+        $listItem = $this->buildOneListItem($itemId, $variantId, $uom, $barCode, $qty);
+
+        if ($found) {
+            $listItem->setLineNumber($found->getLineNumber());
+        }
+
+        return $this->executeOneListItemModify($listItem, $oneList, false) ?? $oneList;
+    }
+
+    /**
+     * Handle updating quantities for multiple wishlist items
+     *
+     * @param array $qty
+     * @param Collection $wishlistItems
+     * @param OneList $oneList
+     * @param array $oneListItems
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function handleQtyUpdate($qty, $wishlistItems, $oneList, $oneListItems)
+    {
+        foreach ($qty as $key => $value) {
+            $product = null;
+            foreach ($wishlistItems->getItems() as $wishListItem) {
+                if ($wishListItem->getId() == $key) {
+                    $product = $wishListItem->getProduct();
+                    break;
+                }
+            }
+
+            if (!$product) {
+                continue;
+            }
+
+            [$itemId, $variantId, $uom, $barCode] = $this->getComparisonValuesForProduct($product);
+            $found    = $this->findInOneListItems($oneListItems, $itemId, $variantId, $uom);
+            $listItem = $this->buildOneListItem($itemId, $variantId, $uom, $barCode, $value);
+
+            if ($found) {
+                $listItem->setLineNumber($found->getLineNumber());
+            }
+
+            $oneList = $this->executeOneListItemModify($listItem, $oneList, false) ?? $oneList;
+        }
+
+        return $oneList;
+    }
+
+    /**
+     * Handle removal of items no longer in the wishlist
+     *
+     * @param Collection $wishlistItems
+     * @param OneList $oneList
+     * @param array $oneListItems
+     * @return mixed
+     */
+    public function handleRemovedItems($wishlistItems, $oneList, $oneListItems)
+    {
+        $finalWishlistItems = $wishlistItems->getItems();
+
+        foreach ($oneListItems as $oneListItem) {
+            $currentItemId = $oneListItem->getItemId();
+            $currentVariantId = $oneListItem->getVariantId();
+            $found = false;
+
+            foreach ($finalWishlistItems as $finalWishlistItem) {
+                $finalItemId = $finalWishlistItem->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+                $finalVariantId = $finalWishlistItem->getProduct()->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
+
+                if ($currentItemId == $finalItemId && $currentVariantId == $finalVariantId) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (!$found) {
+                $oneList = $this->executeOneListItemModify($oneListItem, $oneList, true) ?? $oneList;
+            }
+        }
+
+        return $oneList;
+    }
+
+    /**
+     * Execute OneListItemModify operation and update session
+     *
+     * @param OneListItem $listItem
+     * @param OneList $oneList
+     * @param bool $remove
+     * @return OneList|null
+     */
+    public function executeOneListItemModify($listItem, $oneList, bool $remove)
+    {
+        // @codingStandardsIgnoreLine
+        $operation = new OneListItemModifyOperation();
+        // @codingStandardsIgnoreLine
+        $request = (new OneListItemModify())
+            ->setItem($listItem)
+            ->setOneListId($oneList->getId())
+            ->setRemove($remove)
+            ->setCalculate(true)
+            ->setCardId($this->getCardId());
+
+        if ($oneList = $operation->execute($request)->getOneListItemModifyResult()) {
+            $this->basketHelper->setWishListInCustomerSession($oneList);
+            return $oneList;
+        }
+
+        return null;
+    }
+
+    /**
+     * Build a OneListItem object
+     *
+     * @param string $itemId
+     * @param string|null $variantId
+     * @param string|null $uom
+     * @param string|null $barCode
+     * @param float $qty
+     * @return OneListItem
+     */
+    public function buildOneListItem($itemId, $variantId, $uom, $barCode, $qty)
+    {
+        // @codingStandardsIgnoreLine
+        return (new OneListItem())
+            ->setQuantity($qty)
+            ->setItemId($itemId)
+            ->setId('')
+            ->setBarcodeId($barCode)
+            ->setVariantId($variantId)
+            ->setUnitOfMeasureId($uom);
+    }
+
+    /**
+     * Get card ID from customer session
+     *
+     * @return string
+     */
+    public function getCardId()
+    {
+        return $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) ?? '';
+    }
+
+    /**
+     * Get comparison values from product SKU
+     *
+     * @param mixed $product
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getComparisonValuesForProduct($product)
+    {
+        return $this->itemHelper->getComparisonValues($product->getSku());
+    }
+
+    /**
+     * Find a matching OneListItem in the list of items
+     *
+     * @param array $oneListItems
+     * @param string $itemId
+     * @param string|null $variantId
+     * @param string|null $uom
+     * @return OneListItem|false
+     */
+    public function findInOneListItems($oneListItems, $itemId, $variantId, $uom)
+    {
+        foreach ($oneListItems as $oneListItem) {
+            if ($oneListItem->getItemId() == $itemId &&
+                $oneListItem->getVariantId() == $variantId &&
+                $oneListItem->getUnitOfMeasureId() == $uom
+            ) {
+                return $oneListItem;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Delete the wishlist in Central
+     *
+     * @param OneList $oneList
+     * @return bool|null
+     */
+    public function delete(OneList $oneList)
     {
         // @codingStandardsIgnoreLine
         $entity = new Entity\OneListDeleteById();
@@ -379,11 +597,11 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Updating wishlist at omni side when there is any change in magento wishlist
      *
-     * @param Entity\OneList $oneList
-     * @return bool|Entity\OneList
+     * @param OneList $oneList
+     * @return bool|OneList
      * @throws NoSuchEntityException
      */
-    public function updateWishlistAtOmni(Entity\OneList $oneList)
+    public function updateWishlistAtOmni(OneList $oneList)
     {
         return $this->saveWishlistToOmni($oneList);
     }
@@ -391,11 +609,11 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Save the wishlist to omni and set the response in session
      *
-     * @param Entity\OneList $list
-     * @return false|Entity\OneList|null
+     * @param OneList $list
+     * @return false|OneList|null
      * @throws NoSuchEntityException
      */
-    public function saveWishlistToOmni(Entity\OneList $list)
+    public function saveWishlistToOmni(OneList $list)
     {
         // @codingStandardsIgnoreLine
         $operation = new Operation\OneListSave();
@@ -430,11 +648,11 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * @param Entity\OneList $oneList
+     * @param OneList $oneList
      * @return bool|Entity\OrderAvailabilityResponse|Entity\OrderCheckAvailabilityResponse|ResponseInterface
      * @throws NoSuchEntityException
      */
-    public function availability(Entity\OneList $oneList)
+    public function availability(OneList $oneList)
     {
         $oneListItems = $oneList->getItems();
         $response     = false;
@@ -597,22 +815,22 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * @param Entity\OneList $oneList
+     * @param OneList $oneList
      * @return Entity\OneListCalculateResponse|Order
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function update(Entity\OneList $oneList)
+    public function update(OneList $oneList)
     {
         return $this->calculate($oneList);
     }
 
     /**
-     * @param Entity\OneList $list
-     * @return bool|Entity\OneList
+     * @param OneList $list
+     * @return bool|OneList
      * @throws NoSuchEntityException
      */
-    public function saveToOmni(Entity\OneList $list)
+    public function saveToOmni(OneList $list)
     {
         // @codingStandardsIgnoreLine
         $operation = new Operation\OneListSave();
@@ -641,12 +859,12 @@ class BasketHelper extends AbstractHelperOmni
 
     /**
      * This function is overriding in hospitality module
-     * @param Entity\OneList $oneList
+     * @param OneList $oneList
      * @return Entity\OneListCalculateResponse|Entity\Order
      * @throws InvalidEnumException|NoSuchEntityException
      * @throws Exception
      */
-    public function calculate(Entity\OneList $oneList)
+    public function calculate(OneList $oneList)
     {
         if (!$this->lsr->isLSR(
             $this->lsr->getCurrentStoreId(),
@@ -682,7 +900,7 @@ class BasketHelper extends AbstractHelperOmni
                     $listItems = $items;
                 }
                 // @codingStandardsIgnoreStart
-                $oneListRequest = (new Entity\OneList())
+                $oneListRequest = (new OneList())
                     ->setCardId($cardId)
                     ->setListType(Entity\Enum\ListType::BASKET)
                     ->setItems($listItems)
@@ -756,7 +974,7 @@ class BasketHelper extends AbstractHelperOmni
      * @param $customerEmail
      * @param $websiteId
      * @param $isGuest
-     * @return bool|Entity\OneList
+     * @return bool|OneList
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -775,8 +993,8 @@ class BasketHelper extends AbstractHelperOmni
         $webStore       = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         $this->store_id = $webStore;
         // @codingStandardsIgnoreStart
-        /** @var Entity\OneList $list */
-        $list = (new Entity\OneList())
+        /** @var OneList $list */
+        $list = (new OneList())
             ->setCardId($cardId)
             ->setDescription('OneList Magento')
             ->setListType(Entity\Enum\ListType::BASKET)
@@ -790,13 +1008,13 @@ class BasketHelper extends AbstractHelperOmni
 
     /**
      * @param null $id
-     * @return array|bool|Entity\OneList|Entity\OneList[]|mixed|null
+     * @return array|bool|OneList|OneList[]|mixed|null
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
     public function get($id = null)
     {
-        /** @var Entity\OneList $list */
+        /** @var OneList $list */
         $list = null;
 
         //check if onelist is created and stored in session. if it is, than return it.
@@ -814,7 +1032,7 @@ class BasketHelper extends AbstractHelperOmni
         // For logged in users check if onelist is already stored in registry.
         if ($loginContact = $this->registry->registry(LSR::REGISTRY_LOYALTY_LOGINRESULT)) {
             try {
-                if ($loginContact->getOneLists()->getOneList() instanceof Entity\OneList) {
+                if ($loginContact->getOneLists()->getOneList() instanceof OneList) {
                     $this->setOneListInCustomerSession($loginContact->getOneLists()->getOneList());
                     return $loginContact->getOneLists()->getOneList();
                 } else {
@@ -858,7 +1076,7 @@ class BasketHelper extends AbstractHelperOmni
      * Get oneList from omni by id. This function is used for fetching the onelist for guest users and also for logged in users if the onelist is not stored in session or registry
      *
      * @param string $oneListId
-     * @return \Ls\Omni\Client\Ecommerce\Entity\OneList
+     * @return OneList
      */
     public function getOneListById($oneListId)
     {
@@ -877,7 +1095,7 @@ class BasketHelper extends AbstractHelperOmni
         return $response?->getOneListGetByIdResult();
     }
     /**
-     * @return array|bool|Entity\OneList|Entity\OneList[]|mixed
+     * @return array|bool|OneList|OneList[]|mixed
      * @throws InvalidEnumException|NoSuchEntityException
      */
     public function fetchFromOmni()
@@ -895,7 +1113,7 @@ class BasketHelper extends AbstractHelperOmni
          */
 
         // @codingStandardsIgnoreStart
-        $list = (new Entity\OneList())
+        $list = (new OneList())
             ->setCardId($cardId)
             ->setDescription('OneList Magento')
             ->setListType(Entity\Enum\ListType::BASKET)
@@ -914,7 +1132,7 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Fetch wishlist for current customer. If not exist then create new one with list type wish and return
      *
-     * @return Entity\OneList|mixed|null
+     * @return OneList|mixed|null
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
@@ -928,7 +1146,7 @@ class BasketHelper extends AbstractHelperOmni
             ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
 
         $store_id = $this->getDefaultWebStore();
-        return (new Entity\OneList())
+        return (new OneList())
             ->setCardId($cardId)
             ->setName('Wish List:' . $cardId)
             ->setListType(Entity\Enum\ListType::WISH)
