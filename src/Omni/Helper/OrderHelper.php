@@ -244,7 +244,7 @@ class OrderHelper extends AbstractHelperOmni
 
                 $customerOrderDiscountCoLines[] = $customerOrderDiscountCoLine;
 
-                if (!empty($orderDiscountLine->getCouponcode() || $orderDiscountLine->getCouponbarcodeno())) {
+                if (!empty($orderDiscountLine->getCouponbarcodeno())) {
                     foreach ($oneListCalculateResponse->getMobiletransactionline() ?? [] as $id => $orderLine) {
                         if ($orderLine->getLinetype() == 6) {
                             $orderLine->setNumber($orderDiscountLine->getCouponbarcodeno() ?: $orderDiscountLine->getCouponcode());
