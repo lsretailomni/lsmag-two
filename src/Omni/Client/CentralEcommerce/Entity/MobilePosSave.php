@@ -39,7 +39,7 @@ class MobilePosSave extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -57,7 +57,7 @@ class MobilePosSave extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -75,7 +75,7 @@ class MobilePosSave extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -93,7 +93,7 @@ class MobilePosSave extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getMenutype() : ?string
+    public function getMenutype(): ?string
     {
         return $this->getData(self::MENU_TYPE);
     }
@@ -111,7 +111,7 @@ class MobilePosSave extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?bool
      */
-    public function getUnlocktrans() : ?bool
+    public function getUnlocktrans(): ?bool
     {
         return $this->getData(self::UNLOCK_TRANS);
     }

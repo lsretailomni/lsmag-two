@@ -39,7 +39,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -57,7 +57,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -75,7 +75,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getCardid() : ?string
+    public function getCardid(): ?string
     {
         return $this->getData(self::CARD_ID);
     }
@@ -93,7 +93,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -111,7 +111,7 @@ class GetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }

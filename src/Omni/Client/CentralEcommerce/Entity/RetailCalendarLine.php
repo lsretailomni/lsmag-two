@@ -51,7 +51,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCalendartype() : ?string
+    public function getCalendartype(): ?string
     {
         return $this->getData(self::CALENDAR_TYPE);
     }
@@ -69,7 +69,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGrouptype() : ?string
+    public function getGrouptype(): ?string
     {
         return $this->getData(self::GROUP_TYPE);
     }
@@ -87,7 +87,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCalendarid() : ?string
+    public function getCalendarid(): ?string
     {
         return $this->getData(self::CALENDAR_ID);
     }
@@ -105,7 +105,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLinetype() : ?string
+    public function getLinetype(): ?string
     {
         return $this->getData(self::LINE_TYPE);
     }
@@ -123,7 +123,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStartingdate() : ?string
+    public function getStartingdate(): ?string
     {
         return $this->getData(self::STARTING_DATE);
     }
@@ -141,7 +141,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEndingdate() : ?string
+    public function getEndingdate(): ?string
     {
         return $this->getData(self::ENDING_DATE);
     }
@@ -177,7 +177,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDayname() : ?string
+    public function getDayname(): ?string
     {
         return $this->getData(self::DAY_NAME);
     }
@@ -195,7 +195,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTimefrom() : ?string
+    public function getTimefrom(): ?string
     {
         return $this->getData(self::TIME_FROM);
     }
@@ -213,7 +213,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTimeto() : ?string
+    public function getTimeto(): ?string
     {
         return $this->getData(self::TIME_TO);
     }
@@ -231,7 +231,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getMidnightopen() : ?bool
+    public function getMidnightopen(): ?bool
     {
         return $this->getData(self::MIDNIGHT_OPEN);
     }
@@ -249,7 +249,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getIncludeallweekdays() : ?bool
+    public function getIncludeallweekdays(): ?bool
     {
         return $this->getData(self::INCLUDE_ALL_WEEK_DAYS);
     }
@@ -267,7 +267,7 @@ class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasonclosed() : ?string
+    public function getReasonclosed(): ?string
     {
         return $this->getData(self::REASON_CLOSED);
     }

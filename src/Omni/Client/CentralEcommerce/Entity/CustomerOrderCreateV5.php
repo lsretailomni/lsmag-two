@@ -35,7 +35,7 @@ class CustomerOrderCreateV5 extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -53,7 +53,7 @@ class CustomerOrderCreateV5 extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -89,7 +89,7 @@ class CustomerOrderCreateV5 extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getCustomerorderid() : ?string
+    public function getCustomerorderid(): ?string
     {
         return $this->getData(self::CUSTOMER_ORDER_ID);
     }

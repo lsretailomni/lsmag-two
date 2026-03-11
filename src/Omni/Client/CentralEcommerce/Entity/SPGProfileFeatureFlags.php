@@ -33,7 +33,7 @@ class SPGProfileFeatureFlags extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getProfilecode() : ?string
+    public function getProfilecode(): ?string
     {
         return $this->getData(self::PROFILE_CODE);
     }
@@ -51,7 +51,7 @@ class SPGProfileFeatureFlags extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFeatureid() : ?string
+    public function getFeatureid(): ?string
     {
         return $this->getData(self::FEATURE_ID);
     }
@@ -69,7 +69,7 @@ class SPGProfileFeatureFlags extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -87,7 +87,7 @@ class SPGProfileFeatureFlags extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFeaturevalue() : ?string
+    public function getFeaturevalue(): ?string
     {
         return $this->getData(self::FEATURE_VALUE);
     }

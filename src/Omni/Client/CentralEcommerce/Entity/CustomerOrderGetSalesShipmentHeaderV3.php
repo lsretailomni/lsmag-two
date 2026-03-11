@@ -61,7 +61,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -79,7 +79,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getRequesteddate() : ?string
+    public function getRequesteddate(): ?string
     {
         return $this->getData(self::REQUESTED_DATE);
     }
@@ -97,7 +97,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getOrderno() : ?string
+    public function getOrderno(): ?string
     {
         return $this->getData(self::ORDER_NO);
     }
@@ -115,7 +115,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getCustomerorderid() : ?string
+    public function getCustomerorderid(): ?string
     {
         return $this->getData(self::CUSTOMER_ORDER_ID);
     }
@@ -133,7 +133,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getShiptoname() : ?string
+    public function getShiptoname(): ?string
     {
         return $this->getData(self::SHIP_TO_NAME);
     }
@@ -151,7 +151,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getShiptoname2() : ?string
+    public function getShiptoname2(): ?string
     {
         return $this->getData(self::SHIP_TO_NAME2);
     }
@@ -169,7 +169,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getShiptoaddress() : ?string
+    public function getShiptoaddress(): ?string
     {
         return $this->getData(self::SHIP_TO_ADDRESS);
     }
@@ -187,7 +187,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getShiptoaddress2() : ?string
+    public function getShiptoaddress2(): ?string
     {
         return $this->getData(self::SHIP_TO_ADDRESS2);
     }
@@ -205,7 +205,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getShiptopostcode() : ?string
+    public function getShiptopostcode(): ?string
     {
         return $this->getData(self::SHIP_TO_POST_CODE);
     }
@@ -223,7 +223,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getShiptocity() : ?string
+    public function getShiptocity(): ?string
     {
         return $this->getData(self::SHIP_TO_CITY);
     }
@@ -241,7 +241,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getShiptocounty() : ?string
+    public function getShiptocounty(): ?string
     {
         return $this->getData(self::SHIP_TO_COUNTY);
     }
@@ -259,7 +259,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getShiptocountry() : ?string
+    public function getShiptocountry(): ?string
     {
         return $this->getData(self::SHIP_TO_COUNTRY);
     }
@@ -277,7 +277,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getShiptocontact() : ?string
+    public function getShiptocontact(): ?string
     {
         return $this->getData(self::SHIP_TO_CONTACT);
     }
@@ -295,7 +295,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getShippingagentcode() : ?string
+    public function getShippingagentcode(): ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
@@ -313,7 +313,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getShippingagentservicecode() : ?string
+    public function getShippingagentservicecode(): ?string
     {
         return $this->getData(self::SHIPPING_AGENT_SERVICE_CODE);
     }
@@ -331,7 +331,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getPackagetrackingno() : ?string
+    public function getPackagetrackingno(): ?string
     {
         return $this->getData(self::PACKAGE_TRACKING_NO);
     }
@@ -349,7 +349,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getPackagetrackingurl() : ?string
+    public function getPackagetrackingurl(): ?string
     {
         return $this->getData(self::PACKAGE_TRACKING_URL);
     }
@@ -367,7 +367,7 @@ class CustomerOrderGetSalesShipmentHeaderV3 extends \Magento\Catalog\Model\Abstr
     /**
      * @return ?string
      */
-    public function getShipmentdate() : ?string
+    public function getShipmentdate(): ?string
     {
         return $this->getData(self::SHIPMENT_DATE);
     }

@@ -67,7 +67,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVoucherno() : ?string
+    public function getVoucherno(): ?string
     {
         return $this->getData(self::VOUCHER_NO);
     }
@@ -85,7 +85,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -103,7 +103,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -157,7 +157,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptNumber() : ?string
+    public function getReceiptNumber(): ?string
     {
         return $this->getData(self::RECEIPT_NUMBER);
     }
@@ -175,7 +175,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getUnposted() : ?bool
+    public function getUnposted(): ?bool
     {
         return $this->getData(self::UNPOSTED);
     }
@@ -193,7 +193,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEntrytype() : ?string
+    public function getEntrytype(): ?string
     {
         return $this->getData(self::ENTRY_TYPE);
     }
@@ -211,7 +211,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDate() : ?string
+    public function getDate(): ?string
     {
         return $this->getData(self::DATE);
     }
@@ -229,7 +229,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTime() : ?string
+    public function getTime(): ?string
     {
         return $this->getData(self::TIME);
     }
@@ -247,7 +247,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmount() : ?float
+    public function getAmount(): ?float
     {
         return $this->getData(self::AMOUNT);
     }
@@ -265,7 +265,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getVoided() : ?bool
+    public function getVoided(): ?bool
     {
         return $this->getData(self::VOIDED);
     }
@@ -283,7 +283,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getRemainingamountnow() : ?float
+    public function getRemainingamountnow(): ?float
     {
         return $this->getData(self::REMAINING_AMOUNT_NOW);
     }
@@ -319,7 +319,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getOnetimeredemption() : ?bool
+    public function getOnetimeredemption(): ?bool
     {
         return $this->getData(self::ONE_TIME_REDEMPTION);
     }
@@ -337,7 +337,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getWriteoffamount() : ?float
+    public function getWriteoffamount(): ?float
     {
         return $this->getData(self::WRITE_OFF_AMOUNT);
     }
@@ -355,7 +355,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVouchertype() : ?string
+    public function getVouchertype(): ?string
     {
         return $this->getData(self::VOUCHER_TYPE);
     }
@@ -373,7 +373,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencycode() : ?string
+    public function getCurrencycode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -391,7 +391,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCurrencyfactor() : ?float
+    public function getCurrencyfactor(): ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
     }
@@ -409,7 +409,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStorecurrencycode() : ?string
+    public function getStorecurrencycode(): ?string
     {
         return $this->getData(self::STORE_CURRENCY_CODE);
     }
@@ -427,7 +427,7 @@ class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmountinstorecurrency() : ?float
+    public function getAmountinstorecurrency(): ?float
     {
         return $this->getData(self::AMOUNT_IN_STORE_CURRENCY);
     }

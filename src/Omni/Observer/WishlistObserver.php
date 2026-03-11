@@ -1,16 +1,14 @@
 <?php
-declare(strict_types=1);
 
 namespace Ls\Omni\Observer;
 
-use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Framework\DataObject;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Wishlist\Model\Wishlist;
 
@@ -19,18 +17,38 @@ use Magento\Wishlist\Model\Wishlist;
  */
 class WishlistObserver implements ObserverInterface
 {
+    /** @var BasketHelper */
+    private $basketHelper;
+
+    /** @var CustomerSession $customerSession */
+    private $customerSession;
+
+    /**
+     * @var LSR
+     */
+    private $lsr;
+
+    /**
+     * @var Wishlist
+     */
+    private $wishlist;
+
     /**
      * @param BasketHelper $basketHelper
      * @param CustomerSession $customerSession
-     * @param LSR $lsr
+     * @param LSR $LSR
      * @param Wishlist $wishlist
      */
     public function __construct(
-        public BasketHelper $basketHelper,
-        public CustomerSession $customerSession,
-        public LSR $lsr,
-        public Wishlist $wishlist
+        BasketHelper $basketHelper,
+        CustomerSession $customerSession,
+        LSR $LSR,
+        Wishlist $wishlist
     ) {
+        $this->basketHelper = $basketHelper;
+        $this->customerSession = $customerSession;
+        $this->lsr = $LSR;
+        $this->wishlist = $wishlist;
     }
 
     /**
@@ -38,26 +56,44 @@ class WishlistObserver implements ObserverInterface
      *
      * @param Observer $observer
      * @return $this
-     * @throws NoSuchEntityException|GuzzleException|InvalidEnumException
-     * @throws AlreadyExistsException
+     * @throws NoSuchEntityException|InvalidEnumException
      */
     public function execute(Observer $observer)
     {
-        /*
-          * Adding condition to only process if LSR is enabled.
-          */
         if ($this->lsr->isLSR(
             $this->lsr->getCurrentStoreId(),
             false,
             $this->lsr->getOrderIntegrationOnFrontend()
         )) {
-            $customerId = $this->customerSession->getCustomer()->getId();
-            $wishlistItems = $this->wishlist->loadByCustomerId($customerId)->getItemCollection()->getItems();
+            $session = $this->customerSession;
+            $data = empty($session->getBeforeWishlistUrl())
+                ? $observer->getRequest()->getParams() : null;
+            $buyRequest = new DataObject($data);
+            $productId = isset($data['product']) ? (int)$data['product'] : null;
 
-            if (!empty($wishlistItems)) {
-                $oneList = $this->basketHelper->fetchCurrentCustomerWishlist();
+            $qty = $data['qty'] ?? 1;
+            $customerId = $this->customerSession->getCustomer()->getId();
+            $wishlistItems = $this->wishlist->loadByCustomerId($customerId)->getItemCollection();
+            $oneList = $this->basketHelper->fetchCurrentCustomerWishlist();
+            $oneListItems = $oneList
+                ? $oneList->getItems()
+                : [];
+
+            if (!$oneList->getId()) {
                 $oneList = $this->basketHelper->addProductToExistingWishlist($oneList, $wishlistItems);
-                $this->basketHelper->update($oneList, 2);
+                $this->basketHelper->updateWishlistAtOmni($oneList);
+            } elseif ($productId) {
+                $oneList = $this->basketHelper->handleSingleProductAdd(
+                    $buyRequest,
+                    $productId,
+                    $qty,
+                    $oneList,
+                    $oneListItems
+                );
+            } elseif (is_array($qty)) {
+                $oneList = $this->basketHelper->handleQtyUpdate($qty, $wishlistItems, $oneList, $oneListItems);
+            } else {
+                $oneList = $this->basketHelper->handleRemovedItems($wishlistItems, $oneList, $oneListItems);
             }
         }
 

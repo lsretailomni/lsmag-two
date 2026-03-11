@@ -39,7 +39,7 @@ class GetDataEntryBalanceV2 extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -57,7 +57,7 @@ class GetDataEntryBalanceV2 extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -75,7 +75,7 @@ class GetDataEntryBalanceV2 extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getEntrytype() : ?string
+    public function getEntrytype(): ?string
     {
         return $this->getData(self::ENTRY_TYPE);
     }
@@ -93,7 +93,7 @@ class GetDataEntryBalanceV2 extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getEntrycode() : ?string
+    public function getEntrycode(): ?string
     {
         return $this->getData(self::ENTRY_CODE);
     }

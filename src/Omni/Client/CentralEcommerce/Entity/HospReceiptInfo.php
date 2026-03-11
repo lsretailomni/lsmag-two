@@ -75,7 +75,7 @@ class HospReceiptInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getKey() : ?string
+    public function getKey(): ?string
     {
         return $this->getData(self::KEY);
     }
@@ -93,7 +93,7 @@ class HospReceiptInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getValue() : ?string
+    public function getValue(): ?string
     {
         return $this->getData(self::VALUE);
     }
@@ -129,7 +129,7 @@ class HospReceiptInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getType() : ?string
+    public function getType(): ?string
     {
         return $this->getData(self::TYPE);
     }
@@ -147,7 +147,7 @@ class HospReceiptInfo extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLargevalue() : ?string
+    public function getLargevalue(): ?string
     {
         return $this->getData(self::LARGE_VALUE);
     }

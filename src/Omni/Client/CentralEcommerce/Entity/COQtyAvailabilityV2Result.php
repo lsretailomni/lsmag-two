@@ -35,7 +35,7 @@ class COQtyAvailabilityV2Result extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -53,7 +53,7 @@ class COQtyAvailabilityV2Result extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -71,7 +71,7 @@ class COQtyAvailabilityV2Result extends \Magento\Catalog\Model\AbstractModel imp
     /**
      * @return ?string
      */
-    public function getPreferredsourcinglocation() : ?string
+    public function getPreferredsourcinglocation(): ?string
     {
         return $this->getData(self::PREFERRED_SOURCING_LOCATION);
     }

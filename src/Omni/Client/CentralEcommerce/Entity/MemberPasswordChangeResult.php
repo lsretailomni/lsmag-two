@@ -31,7 +31,7 @@ class MemberPasswordChangeResult extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -49,7 +49,7 @@ class MemberPasswordChangeResult extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

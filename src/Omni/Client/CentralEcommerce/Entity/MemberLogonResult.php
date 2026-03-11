@@ -35,7 +35,7 @@ class MemberLogonResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -53,7 +53,7 @@ class MemberLogonResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -71,7 +71,7 @@ class MemberLogonResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?float
      */
-    public function getTotalremainingpoints() : ?float
+    public function getTotalremainingpoints(): ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }

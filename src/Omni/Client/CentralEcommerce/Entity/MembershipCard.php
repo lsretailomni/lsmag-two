@@ -57,7 +57,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardno() : ?string
+    public function getCardno(): ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -75,7 +75,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatus() : ?string
+    public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);
     }
@@ -93,7 +93,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getLinkedtoaccount() : ?bool
+    public function getLinkedtoaccount(): ?bool
     {
         return $this->getData(self::LINKEDTO_ACCOUNT);
     }
@@ -111,7 +111,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubcode() : ?string
+    public function getClubcode(): ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
@@ -129,7 +129,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSchemecode() : ?string
+    public function getSchemecode(): ?string
     {
         return $this->getData(self::SCHEME_CODE);
     }
@@ -147,7 +147,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccountno() : ?string
+    public function getAccountno(): ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
@@ -165,7 +165,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContactno() : ?string
+    public function getContactno(): ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
@@ -183,7 +183,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFirstdateused() : ?string
+    public function getFirstdateused(): ?string
     {
         return $this->getData(self::FIRST_DATE_USED);
     }
@@ -201,7 +201,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLastvaliddate() : ?string
+    public function getLastvaliddate(): ?string
     {
         return $this->getData(self::LAST_VALID_DATE);
     }
@@ -219,7 +219,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasonblocked() : ?string
+    public function getReasonblocked(): ?string
     {
         return $this->getData(self::REASON_BLOCKED);
     }
@@ -237,7 +237,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateblocked() : ?string
+    public function getDateblocked(): ?string
     {
         return $this->getData(self::DATE_BLOCKED);
     }
@@ -255,7 +255,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBlockedby() : ?string
+    public function getBlockedby(): ?string
     {
         return $this->getData(self::BLOCKEDBY);
     }
@@ -273,7 +273,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDatecreated() : ?string
+    public function getDatecreated(): ?string
     {
         return $this->getData(self::DATE_CREATED);
     }
@@ -291,7 +291,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedby() : ?string
+    public function getCreatedby(): ?string
     {
         return $this->getData(self::CREATEDBY);
     }
@@ -309,7 +309,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNoseries() : ?string
+    public function getNoseries(): ?string
     {
         return $this->getData(self::NO_SERIES);
     }
@@ -327,7 +327,7 @@ class MembershipCard extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAllocatedtostore() : ?string
+    public function getAllocatedtostore(): ?string
     {
         return $this->getData(self::ALLOCATEDTO_STORE);
     }

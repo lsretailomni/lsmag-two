@@ -31,7 +31,7 @@ class AttributeOptionValueValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAttributecode() : ?string
+    public function getAttributecode(): ?string
     {
         return $this->getData(self::ATTRIBUTE_CODE);
     }
@@ -67,7 +67,7 @@ class AttributeOptionValueValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOptionvalue() : ?string
+    public function getOptionvalue(): ?string
     {
         return $this->getData(self::OPTION_VALUE);
     }

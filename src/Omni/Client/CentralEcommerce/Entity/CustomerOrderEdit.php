@@ -37,7 +37,7 @@ class CustomerOrderEdit extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -55,7 +55,7 @@ class CustomerOrderEdit extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -91,7 +91,7 @@ class CustomerOrderEdit extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getCustomerorderid() : ?string
+    public function getCustomerorderid(): ?string
     {
         return $this->getData(self::CUSTOMER_ORDER_ID);
     }
@@ -109,7 +109,7 @@ class CustomerOrderEdit extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getCoedittype() : ?string
+    public function getCoedittype(): ?string
     {
         return $this->getData(self::CO_EDIT_TYPE);
     }

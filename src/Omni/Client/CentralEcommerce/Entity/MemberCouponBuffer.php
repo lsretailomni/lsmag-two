@@ -26,6 +26,10 @@ class MemberCouponBuffer extends \Magento\Catalog\Model\AbstractModel
 
     public const BARCODE = 'Barcode';
 
+    public const FIRST_VALID_DATE = 'FirstValidDate';
+
+    public const LAST_VALID_DATE = 'LastValidDate';
+
     /**
      * @param ?string $StoreNo
      * @return $this
@@ -39,7 +43,7 @@ class MemberCouponBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -57,7 +61,7 @@ class MemberCouponBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -93,7 +97,7 @@ class MemberCouponBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCouponcode() : ?string
+    public function getCouponcode(): ?string
     {
         return $this->getData(self::COUPON_CODE);
     }
@@ -129,7 +133,7 @@ class MemberCouponBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -147,9 +151,45 @@ class MemberCouponBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcode() : ?string
+    public function getBarcode(): ?string
     {
         return $this->getData(self::BARCODE);
+    }
+
+    /**
+     * @param ?string $FirstValidDate
+     * @return $this
+     */
+    public function setFirstvaliddate(?string $FirstValidDate)
+    {
+        $this->setData(self::FIRST_VALID_DATE, $FirstValidDate);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getFirstvaliddate(): ?string
+    {
+        return $this->getData(self::FIRST_VALID_DATE);
+    }
+
+    /**
+     * @param ?string $LastValidDate
+     * @return $this
+     */
+    public function setLastvaliddate(?string $LastValidDate)
+    {
+        $this->setData(self::LAST_VALID_DATE, $LastValidDate);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getLastvaliddate(): ?string
+    {
+        return $this->getData(self::LAST_VALID_DATE);
     }
 }
 

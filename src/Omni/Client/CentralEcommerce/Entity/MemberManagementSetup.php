@@ -69,7 +69,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
@@ -87,7 +87,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCampaignnoseries() : ?string
+    public function getCampaignnoseries(): ?string
     {
         return $this->getData(self::CAMPAIGN_NO_SERIES);
     }
@@ -105,7 +105,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDiscounttrackingnoseries() : ?string
+    public function getDiscounttrackingnoseries(): ?string
     {
         return $this->getData(self::DISCOUNT_TRACKING_NO_SERIES);
     }
@@ -123,7 +123,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberpointoffernoseries() : ?string
+    public function getMemberpointoffernoseries(): ?string
     {
         return $this->getData(self::MEMBER_POINT_OFFER_NO_SERIES);
     }
@@ -141,7 +141,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMissingattributehandling() : ?string
+    public function getMissingattributehandling(): ?string
     {
         return $this->getData(self::MISSING_ATTRIBUTE_HANDLING);
     }
@@ -159,7 +159,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasonblockingbyattribute() : ?string
+    public function getReasonblockingbyattribute(): ?string
     {
         return $this->getData(self::REASON_BLOCKING_BY_ATTRIBUTE);
     }
@@ -177,7 +177,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasoncodesdevices() : ?string
+    public function getReasoncodesdevices(): ?string
     {
         return $this->getData(self::REASON_CODES_DEVICES);
     }
@@ -195,7 +195,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAmounttypeforpointcalc() : ?string
+    public function getAmounttypeforpointcalc(): ?string
     {
         return $this->getData(self::AMOUNT_TYPEFOR_POINT_CALC);
     }
@@ -213,7 +213,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMobiledefaultclubcode() : ?string
+    public function getMobiledefaultclubcode(): ?string
     {
         return $this->getData(self::MOBILE_DEFAULT_CLUB_CODE);
     }
@@ -231,7 +231,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMobilecardnoseries() : ?string
+    public function getMobilecardnoseries(): ?string
     {
         return $this->getData(self::MOBILE_CARD_NO_SERIES);
     }
@@ -249,7 +249,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtraprintsetup() : ?string
+    public function getExtraprintsetup(): ?string
     {
         return $this->getData(self::EXTRA_PRINT_SETUP);
     }
@@ -267,7 +267,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodemask() : ?string
+    public function getBarcodemask(): ?string
     {
         return $this->getData(self::BARCODE_MASK);
     }
@@ -285,7 +285,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFirstvaliddateformula() : ?string
+    public function getFirstvaliddateformula(): ?string
     {
         return $this->getData(self::FIRST_VALID_DATE_FORMULA);
     }
@@ -303,7 +303,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLastvaliddateformula() : ?string
+    public function getLastvaliddateformula(): ?string
     {
         return $this->getData(self::LAST_VALID_DATE_FORMULA);
     }
@@ -321,7 +321,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeelement1() : ?string
+    public function getBarcodeelement1(): ?string
     {
         return $this->getData(self::BARCODE_ELEMENT1);
     }
@@ -339,7 +339,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeelement2() : ?string
+    public function getBarcodeelement2(): ?string
     {
         return $this->getData(self::BARCODE_ELEMENT2);
     }
@@ -357,7 +357,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeelement3() : ?string
+    public function getBarcodeelement3(): ?string
     {
         return $this->getData(self::BARCODE_ELEMENT3);
     }
@@ -375,7 +375,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeelement4() : ?string
+    public function getBarcodeelement4(): ?string
     {
         return $this->getData(self::BARCODE_ELEMENT4);
     }
@@ -393,7 +393,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeelement5() : ?string
+    public function getBarcodeelement5(): ?string
     {
         return $this->getData(self::BARCODE_ELEMENT5);
     }
@@ -411,7 +411,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeelement6() : ?string
+    public function getBarcodeelement6(): ?string
     {
         return $this->getData(self::BARCODE_ELEMENT6);
     }
@@ -429,7 +429,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeelement7() : ?string
+    public function getBarcodeelement7(): ?string
     {
         return $this->getData(self::BARCODE_ELEMENT7);
     }
@@ -447,7 +447,7 @@ class MemberManagementSetup extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeelement8() : ?string
+    public function getBarcodeelement8(): ?string
     {
         return $this->getData(self::BARCODE_ELEMENT8);
     }

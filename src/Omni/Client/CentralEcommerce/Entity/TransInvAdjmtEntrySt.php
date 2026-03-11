@@ -47,7 +47,7 @@ class TransInvAdjmtEntrySt extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -65,7 +65,7 @@ class TransInvAdjmtEntrySt extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -119,7 +119,7 @@ class TransInvAdjmtEntrySt extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLocationcode() : ?string
+    public function getLocationcode(): ?string
     {
         return $this->getData(self::LOCATION_CODE);
     }
@@ -137,7 +137,7 @@ class TransInvAdjmtEntrySt extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatus() : ?string
+    public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);
     }
@@ -155,7 +155,7 @@ class TransInvAdjmtEntrySt extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -173,7 +173,7 @@ class TransInvAdjmtEntrySt extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -191,7 +191,7 @@ class TransInvAdjmtEntrySt extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -209,7 +209,7 @@ class TransInvAdjmtEntrySt extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDate() : ?string
+    public function getDate(): ?string
     {
         return $this->getData(self::DATE);
     }

@@ -33,7 +33,7 @@ class POSDataEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getBalance() : ?float
+    public function getBalance(): ?float
     {
         return $this->getData(self::BALANCE);
     }
@@ -51,7 +51,7 @@ class POSDataEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirydate() : ?string
+    public function getExpirydate(): ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
@@ -69,7 +69,7 @@ class POSDataEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencycode() : ?string
+    public function getCurrencycode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }

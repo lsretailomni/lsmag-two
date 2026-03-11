@@ -37,7 +37,7 @@ class GetASNDocumentList extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getVendornoP() : ?string
+    public function getVendornoP(): ?string
     {
         return $this->getData(self::VENDOR_NO_P);
     }
@@ -55,7 +55,7 @@ class GetASNDocumentList extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getLocationcodeP() : ?string
+    public function getLocationcodeP(): ?string
     {
         return $this->getData(self::LOCATION_CODE_P);
     }
@@ -91,7 +91,7 @@ class GetASNDocumentList extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -109,7 +109,7 @@ class GetASNDocumentList extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

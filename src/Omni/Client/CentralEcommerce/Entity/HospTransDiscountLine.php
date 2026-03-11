@@ -117,7 +117,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOfferno() : ?string
+    public function getOfferno(): ?string
     {
         return $this->getData(self::OFFER_NO);
     }
@@ -153,7 +153,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPeriodicdiscgroup() : ?string
+    public function getPeriodicdiscgroup(): ?string
     {
         return $this->getData(self::PERIODIC_DISC_GROUP);
     }
@@ -171,7 +171,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -189,7 +189,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountpercent() : ?float
+    public function getDiscountpercent(): ?float
     {
         return $this->getData(self::DISCOUNT_PERCENT);
     }
@@ -207,7 +207,7 @@ class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountamount() : ?float
+    public function getDiscountamount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }

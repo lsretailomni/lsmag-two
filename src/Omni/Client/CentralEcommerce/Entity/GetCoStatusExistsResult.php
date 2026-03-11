@@ -33,7 +33,7 @@ class GetCoStatusExistsResult extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?bool
      */
-    public function getCustomerordersexist() : ?bool
+    public function getCustomerordersexist(): ?bool
     {
         return $this->getData(self::CUSTOMER_ORDERS_EXIST);
     }
@@ -51,7 +51,7 @@ class GetCoStatusExistsResult extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -69,7 +69,7 @@ class GetCoStatusExistsResult extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

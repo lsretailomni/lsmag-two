@@ -45,7 +45,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -63,7 +63,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -99,7 +99,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getTransactionno() : ?string
+    public function getTransactionno(): ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -153,7 +153,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getDocumentno() : ?string
+    public function getDocumentno(): ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -171,7 +171,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getImage() : ?string
+    public function getImage(): ?string
     {
         return $this->getData(self::IMAGE);
     }
@@ -189,7 +189,7 @@ class SendDocumentImage extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getImagedescription() : ?string
+    public function getImagedescription(): ?string
     {
         return $this->getData(self::IMAGE_DESCRIPTION);
     }

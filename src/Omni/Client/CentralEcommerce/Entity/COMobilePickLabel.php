@@ -53,7 +53,7 @@ class COMobilePickLabel extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -71,7 +71,7 @@ class COMobilePickLabel extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -107,7 +107,7 @@ class COMobilePickLabel extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBoxno() : ?string
+    public function getBoxno(): ?string
     {
         return $this->getData(self::BOX_NO);
     }

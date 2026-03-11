@@ -91,7 +91,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEntrytype() : ?string
+    public function getEntrytype(): ?string
     {
         return $this->getData(self::ENTRY_TYPE);
     }
@@ -127,7 +127,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -145,7 +145,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcode() : ?string
+    public function getBarcode(): ?string
     {
         return $this->getData(self::BARCODE);
     }
@@ -163,7 +163,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getIssuedamount() : ?float
+    public function getIssuedamount(): ?float
     {
         return $this->getData(self::ISSUED_AMOUNT);
     }
@@ -181,7 +181,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getUsedquantity() : ?float
+    public function getUsedquantity(): ?float
     {
         return $this->getData(self::USED_QUANTITY);
     }
@@ -199,7 +199,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getIssuedquantity() : ?float
+    public function getIssuedquantity(): ?float
     {
         return $this->getData(self::ISSUED_QUANTITY);
     }
@@ -217,7 +217,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getUsedamount() : ?float
+    public function getUsedamount(): ?float
     {
         return $this->getData(self::USED_AMOUNT);
     }
@@ -235,7 +235,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscount() : ?float
+    public function getDiscount(): ?float
     {
         return $this->getData(self::DISCOUNT);
     }
@@ -253,7 +253,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountamount() : ?float
+    public function getDiscountamount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
@@ -271,7 +271,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCouponissuer() : ?string
+    public function getCouponissuer(): ?string
     {
         return $this->getData(self::COUPON_ISSUER);
     }
@@ -289,7 +289,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -307,7 +307,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCouponfunction() : ?string
+    public function getCouponfunction(): ?string
     {
         return $this->getData(self::COUPON_FUNCTION);
     }
@@ -325,7 +325,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionstatus() : ?string
+    public function getTransactionstatus(): ?string
     {
         return $this->getData(self::TRANSACTION_STATUS);
     }
@@ -343,7 +343,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -361,7 +361,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -379,7 +379,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCouponcode() : ?string
+    public function getCouponcode(): ?string
     {
         return $this->getData(self::COUPON_CODE);
     }
@@ -397,7 +397,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDate() : ?string
+    public function getDate(): ?string
     {
         return $this->getData(self::DATE);
     }
@@ -415,7 +415,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberaccountno() : ?string
+    public function getMemberaccountno(): ?string
     {
         return $this->getData(self::MEMBER_ACCOUNT_NO);
     }
@@ -433,7 +433,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getValidfromdate() : ?string
+    public function getValidfromdate(): ?string
     {
         return $this->getData(self::VALID_FROM_DATE);
     }
@@ -451,7 +451,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getValidtodate() : ?string
+    public function getValidtodate(): ?string
     {
         return $this->getData(self::VALID_TO_DATE);
     }
@@ -469,7 +469,7 @@ class TransCouponEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedbyofferno() : ?string
+    public function getCreatedbyofferno(): ?string
     {
         return $this->getData(self::CREATEDBY_OFFER_NO);
     }

@@ -67,7 +67,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionno() : ?string
+    public function getTransactionno(): ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -103,7 +103,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -121,7 +121,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -139,7 +139,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -157,7 +157,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -175,7 +175,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -193,7 +193,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeno() : ?string
+    public function getBarcodeno(): ?string
     {
         return $this->getData(self::BAR_CODE_NO);
     }
@@ -211,7 +211,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemdescription() : ?string
+    public function getItemdescription(): ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
@@ -229,7 +229,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemdescription2() : ?string
+    public function getItemdescription2(): ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION2);
     }
@@ -247,7 +247,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -265,7 +265,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitofmeasure() : ?string
+    public function getUnitofmeasure(): ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE);
     }
@@ -283,7 +283,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getUomqty() : ?float
+    public function getUomqty(): ?float
     {
         return $this->getData(self::UOMQTY);
     }
@@ -301,7 +301,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getItemnoscanned() : ?bool
+    public function getItemnoscanned(): ?bool
     {
         return $this->getData(self::ITEM_NO_SCANNED);
     }
@@ -319,7 +319,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getKeyboarditementry() : ?bool
+    public function getKeyboarditementry(): ?bool
     {
         return $this->getData(self::KEYBOARD_ITEM_ENTRY);
     }
@@ -337,7 +337,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtfield1() : ?string
+    public function getExtfield1(): ?string
     {
         return $this->getData(self::EXT_FIELD1);
     }
@@ -355,7 +355,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtfield2() : ?string
+    public function getExtfield2(): ?string
     {
         return $this->getData(self::EXT_FIELD2);
     }
@@ -373,7 +373,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtfield3() : ?string
+    public function getExtfield3(): ?string
     {
         return $this->getData(self::EXT_FIELD3);
     }
@@ -391,7 +391,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLotno() : ?string
+    public function getLotno(): ?string
     {
         return $this->getData(self::LOT_NO);
     }
@@ -409,7 +409,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirationdate() : ?string
+    public function getExpirationdate(): ?string
     {
         return $this->getData(self::EXPIRATION_DATE);
     }
@@ -427,7 +427,7 @@ class TransInventoryLines extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSerialno() : ?string
+    public function getSerialno(): ?string
     {
         return $this->getData(self::SERIAL_NO);
     }

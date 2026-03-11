@@ -123,7 +123,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -141,7 +141,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNo() : ?string
+    public function getNo(): ?string
     {
         return $this->getData(self::NO);
     }
@@ -159,7 +159,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -177,7 +177,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -195,7 +195,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -213,7 +213,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionstatus() : ?string
+    public function getTransactionstatus(): ?string
     {
         return $this->getData(self::TRANSACTION_STATUS);
     }
@@ -231,7 +231,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatcode() : ?string
+    public function getVatcode(): ?string
     {
         return $this->getData(self::VATCODE);
     }
@@ -249,7 +249,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmount() : ?float
+    public function getAmount(): ?float
     {
         return $this->getData(self::AMOUNT);
     }
@@ -267,7 +267,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccounttype() : ?string
+    public function getAccounttype(): ?string
     {
         return $this->getData(self::ACCOUNT_TYPE);
     }
@@ -285,7 +285,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetamount() : ?float
+    public function getNetamount(): ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
@@ -303,7 +303,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementno() : ?string
+    public function getStatementno(): ?string
     {
         return $this->getData(self::STATEMENT_NO);
     }
@@ -321,7 +321,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementcode() : ?string
+    public function getStatementcode(): ?string
     {
         return $this->getData(self::STATEMENT_CODE);
     }
@@ -339,7 +339,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getVatamount() : ?float
+    public function getVatamount(): ?float
     {
         return $this->getData(self::VATAMOUNT);
     }
@@ -357,7 +357,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCounter() : ?float
+    public function getCounter(): ?float
     {
         return $this->getData(self::COUNTER);
     }
@@ -375,7 +375,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDate() : ?string
+    public function getDate(): ?string
     {
         return $this->getData(self::DATE);
     }
@@ -393,7 +393,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTime() : ?string
+    public function getTime(): ?string
     {
         return $this->getData(self::TIME);
     }
@@ -411,7 +411,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiftno() : ?string
+    public function getShiftno(): ?string
     {
         return $this->getData(self::SHIFT_NO);
     }
@@ -429,7 +429,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiftdate() : ?string
+    public function getShiftdate(): ?string
     {
         return $this->getData(self::SHIFT_DATE);
     }
@@ -447,7 +447,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRetailchargecode() : ?string
+    public function getRetailchargecode(): ?string
     {
         return $this->getData(self::RETAIL_CHARGE_CODE);
     }
@@ -465,7 +465,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getReplicated() : ?bool
+    public function getReplicated(): ?bool
     {
         return $this->getData(self::REPLICATED);
     }
@@ -483,7 +483,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getZReportid() : ?string
+    public function getZReportid(): ?string
     {
         return $this->getData(self::Z_REPORT_ID);
     }
@@ -501,7 +501,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getExchangerate() : ?float
+    public function getExchangerate(): ?float
     {
         return $this->getData(self::EXCHANGE_RATE);
     }
@@ -519,7 +519,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencycode() : ?string
+    public function getCurrencycode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -537,7 +537,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmountincurrency() : ?float
+    public function getAmountincurrency(): ?float
     {
         return $this->getData(self::AMOUNTIN_CURRENCY);
     }
@@ -555,7 +555,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getYReportid() : ?string
+    public function getYReportid(): ?string
     {
         return $this->getData(self::Y_REPORT_ID);
     }
@@ -591,7 +591,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxgroupcode() : ?string
+    public function getTaxgroupcode(): ?string
     {
         return $this->getData(self::TAX_GROUP_CODE);
     }
@@ -609,7 +609,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getSalestaxrounding() : ?float
+    public function getSalestaxrounding(): ?float
     {
         return $this->getData(self::SALES_TAX_ROUNDING);
     }
@@ -627,7 +627,7 @@ class TransIncomeExpenseEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getToaccount() : ?bool
+    public function getToaccount(): ?bool
     {
         return $this->getData(self::TO_ACCOUNT);
     }

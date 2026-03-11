@@ -47,7 +47,7 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionno() : ?string
+    public function getTransactionno(): ?string
     {
         return $this->getData(self::TRANSACTION_NO);
     }
@@ -65,7 +65,7 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactiontype() : ?string
+    public function getTransactiontype(): ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
@@ -83,7 +83,7 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -101,7 +101,7 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -119,7 +119,7 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -137,7 +137,7 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentmember() : ?string
+    public function getDocumentmember(): ?string
     {
         return $this->getData(self::DOCUMENT_MEMBER);
     }
@@ -155,7 +155,7 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumenttype() : ?string
+    public function getDocumenttype(): ?string
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
@@ -173,7 +173,7 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentno() : ?string
+    public function getDocumentno(): ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -191,7 +191,7 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentmembername() : ?string
+    public function getDocumentmembername(): ?string
     {
         return $this->getData(self::DOCUMENT_MEMBER_NAME);
     }
@@ -209,7 +209,7 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrcountingheaderno() : ?string
+    public function getPrcountingheaderno(): ?string
     {
         return $this->getData(self::PRCOUNTING_HEADER_NO);
     }
@@ -227,7 +227,7 @@ class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpecteddate() : ?string
+    public function getExpecteddate(): ?string
     {
         return $this->getData(self::EXPECTED_DATE);
     }

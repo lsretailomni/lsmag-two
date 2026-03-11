@@ -45,7 +45,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -63,7 +63,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -81,7 +81,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -99,7 +99,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getValuetype() : ?string
+    public function getValuetype(): ?string
     {
         return $this->getData(self::VALUE_TYPE);
     }
@@ -117,7 +117,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getProcesstype() : ?string
+    public function getProcesstype(): ?string
     {
         return $this->getData(self::PROCESS_TYPE);
     }
@@ -135,7 +135,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getDocumenttype() : ?string
+    public function getDocumenttype(): ?string
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
@@ -153,7 +153,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -171,7 +171,7 @@ class GetActiveDocValues extends \Magento\Catalog\Model\AbstractModel implements
     /**
      * @return ?string
      */
-    public function getLocationno() : ?string
+    public function getLocationno(): ?string
     {
         return $this->getData(self::LOCATION_NO);
     }

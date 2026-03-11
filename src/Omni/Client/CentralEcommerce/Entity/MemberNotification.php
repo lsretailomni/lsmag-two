@@ -51,7 +51,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNo() : ?string
+    public function getNo(): ?string
     {
         return $this->getData(self::NO);
     }
@@ -69,7 +69,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContactno() : ?string
+    public function getContactno(): ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
@@ -87,7 +87,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrimarytext() : ?string
+    public function getPrimarytext(): ?string
     {
         return $this->getData(self::PRIMARY_TEXT);
     }
@@ -105,7 +105,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSecondarytext() : ?string
+    public function getSecondarytext(): ?string
     {
         return $this->getData(self::SECONDARY_TEXT);
     }
@@ -123,7 +123,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getWhendisplay() : ?string
+    public function getWhendisplay(): ?string
     {
         return $this->getData(self::WHEN_DISPLAY);
     }
@@ -141,7 +141,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getValidfromdate() : ?string
+    public function getValidfromdate(): ?string
     {
         return $this->getData(self::VALID_FROM_DATE);
     }
@@ -159,7 +159,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getValidtodate() : ?string
+    public function getValidtodate(): ?string
     {
         return $this->getData(self::VALID_TO_DATE);
     }
@@ -177,7 +177,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberattribute() : ?string
+    public function getMemberattribute(): ?string
     {
         return $this->getData(self::MEMBER_ATTRIBUTE);
     }
@@ -195,7 +195,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberattributevalue() : ?string
+    public function getMemberattributevalue(): ?string
     {
         return $this->getData(self::MEMBER_ATTRIBUTE_VALUE);
     }
@@ -213,7 +213,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getWeblink() : ?string
+    public function getWeblink(): ?string
     {
         return $this->getData(self::WEB_LINK);
     }
@@ -231,7 +231,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEMaildisclaimer() : ?string
+    public function getEMaildisclaimer(): ?string
     {
         return $this->getData(self::E_MAIL_DISCLAIMER);
     }
@@ -249,7 +249,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPersonalizedeMail() : ?bool
+    public function getPersonalizedeMail(): ?bool
     {
         return $this->getData(self::PERSONALIZED_E_MAIL);
     }
@@ -267,7 +267,7 @@ class MemberNotification extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSendhtml() : ?bool
+    public function getSendhtml(): ?bool
     {
         return $this->getData(self::SEND_HTML);
     }

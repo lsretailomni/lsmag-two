@@ -43,7 +43,7 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getAuthenticator() : ?string
+    public function getAuthenticator(): ?string
     {
         return $this->getData(self::AUTHENTICATOR);
     }
@@ -61,7 +61,7 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getAuthenticationid() : ?string
+    public function getAuthenticationid(): ?string
     {
         return $this->getData(self::AUTHENTICATION_ID);
     }
@@ -79,7 +79,7 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getDeviceid() : ?string
+    public function getDeviceid(): ?string
     {
         return $this->getData(self::DEVICE_ID);
     }
@@ -97,7 +97,7 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getDevicefriendlyname() : ?string
+    public function getDevicefriendlyname(): ?string
     {
         return $this->getData(self::DEVICE_FRIENDLY_NAME);
     }
@@ -115,7 +115,7 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?float
      */
-    public function getTotalremainingpoints() : ?float
+    public function getTotalremainingpoints(): ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
@@ -151,7 +151,7 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -169,7 +169,7 @@ class MemberAuthenticatorLogin extends \Magento\Catalog\Model\AbstractModel impl
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

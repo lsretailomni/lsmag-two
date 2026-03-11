@@ -51,7 +51,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -69,7 +69,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -123,7 +123,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDealno() : ?string
+    public function getDealno(): ?string
     {
         return $this->getData(self::DEAL_NO);
     }
@@ -159,7 +159,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -177,7 +177,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmount() : ?float
+    public function getAmount(): ?float
     {
         return $this->getData(self::AMOUNT);
     }
@@ -195,7 +195,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPrice() : ?float
+    public function getPrice(): ?float
     {
         return $this->getData(self::PRICE);
     }
@@ -213,7 +213,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDealpricelistcode() : ?string
+    public function getDealpricelistcode(): ?string
     {
         return $this->getData(self::DEAL_PRICE_LIST_CODE);
     }
@@ -231,7 +231,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDate() : ?string
+    public function getDate(): ?string
     {
         return $this->getData(self::DATE);
     }
@@ -249,7 +249,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotaldeallineaddedamt() : ?float
+    public function getTotaldeallineaddedamt(): ?float
     {
         return $this->getData(self::TOTAL_DEAL_LINE_ADDED_AMT);
     }
@@ -267,7 +267,7 @@ class TransDealEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotaldealmodifieraddedamt() : ?float
+    public function getTotaldealmodifieraddedamt(): ?float
     {
         return $this->getData(self::TOTAL_DEAL_MODIFIER_ADDED_AMT);
     }

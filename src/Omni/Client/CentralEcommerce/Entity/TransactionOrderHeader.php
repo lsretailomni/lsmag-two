@@ -151,7 +151,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -169,7 +169,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -205,7 +205,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransdate() : ?string
+    public function getTransdate(): ?string
     {
         return $this->getData(self::TRANS_DATE);
     }
@@ -223,7 +223,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -241,7 +241,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getProcessed() : ?bool
+    public function getProcessed(): ?bool
     {
         return $this->getData(self::PROCESSED);
     }
@@ -259,7 +259,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getOrdercollect() : ?bool
+    public function getOrdercollect(): ?bool
     {
         return $this->getData(self::ORDER_COLLECT);
     }
@@ -277,7 +277,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getAdditionalpayment() : ?bool
+    public function getAdditionalpayment(): ?bool
     {
         return $this->getData(self::ADDITIONAL_PAYMENT);
     }
@@ -295,7 +295,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFirstname() : ?string
+    public function getFirstname(): ?string
     {
         return $this->getData(self::FIRST_NAME);
     }
@@ -313,7 +313,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMiddlename() : ?string
+    public function getMiddlename(): ?string
     {
         return $this->getData(self::MIDDLE_NAME);
     }
@@ -331,7 +331,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLastname() : ?string
+    public function getLastname(): ?string
     {
         return $this->getData(self::LAST_NAME);
     }
@@ -349,7 +349,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFullname() : ?string
+    public function getFullname(): ?string
     {
         return $this->getData(self::FULL_NAME);
     }
@@ -367,7 +367,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddress() : ?string
+    public function getAddress(): ?string
     {
         return $this->getData(self::ADDRESS);
     }
@@ -385,7 +385,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddress2() : ?string
+    public function getAddress2(): ?string
     {
         return $this->getData(self::ADDRESS2);
     }
@@ -403,7 +403,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCity() : ?string
+    public function getCity(): ?string
     {
         return $this->getData(self::CITY);
     }
@@ -421,7 +421,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCounty() : ?string
+    public function getCounty(): ?string
     {
         return $this->getData(self::COUNTY);
     }
@@ -439,7 +439,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPostcode() : ?string
+    public function getPostcode(): ?string
     {
         return $this->getData(self::POST_CODE);
     }
@@ -457,7 +457,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPhoneno() : ?string
+    public function getPhoneno(): ?string
     {
         return $this->getData(self::PHONE_NO);
     }
@@ -475,7 +475,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEmail() : ?string
+    public function getEmail(): ?string
     {
         return $this->getData(self::EMAIL);
     }
@@ -493,7 +493,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCountryregioncode() : ?string
+    public function getCountryregioncode(): ?string
     {
         return $this->getData(self::COUNTRY_REGION_CODE);
     }
@@ -511,7 +511,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHouseapartmentno() : ?string
+    public function getHouseapartmentno(): ?string
     {
         return $this->getData(self::HOUSE_APARTMENT_NO);
     }
@@ -529,7 +529,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMobilephoneno() : ?string
+    public function getMobilephoneno(): ?string
     {
         return $this->getData(self::MOBILE_PHONE_NO);
     }
@@ -547,7 +547,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDaytimephoneno() : ?string
+    public function getDaytimephoneno(): ?string
     {
         return $this->getData(self::DAYTIME_PHONE_NO);
     }
@@ -565,7 +565,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerno() : ?string
+    public function getCustomerno(): ?string
     {
         return $this->getData(self::CUSTOMER_NO);
     }
@@ -583,7 +583,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrimarycontact() : ?string
+    public function getPrimarycontact(): ?string
     {
         return $this->getData(self::PRIMARY_CONTACT);
     }
@@ -601,7 +601,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipTofirstname() : ?string
+    public function getShipTofirstname(): ?string
     {
         return $this->getData(self::SHIP_TO_FIRST_NAME);
     }
@@ -619,7 +619,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipTolastname() : ?string
+    public function getShipTolastname(): ?string
     {
         return $this->getData(self::SHIP_TO_LAST_NAME);
     }
@@ -637,7 +637,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipToaddress1() : ?string
+    public function getShipToaddress1(): ?string
     {
         return $this->getData(self::SHIP_TO_ADDRESS1);
     }
@@ -655,7 +655,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipToaddress2() : ?string
+    public function getShipToaddress2(): ?string
     {
         return $this->getData(self::SHIP_TO_ADDRESS2);
     }
@@ -673,7 +673,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipTocity() : ?string
+    public function getShipTocity(): ?string
     {
         return $this->getData(self::SHIP_TO_CITY);
     }
@@ -691,7 +691,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipTocounty() : ?string
+    public function getShipTocounty(): ?string
     {
         return $this->getData(self::SHIP_TO_COUNTY);
     }
@@ -709,7 +709,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipTopostcode() : ?string
+    public function getShipTopostcode(): ?string
     {
         return $this->getData(self::SHIP_TO_POST_CODE);
     }
@@ -727,7 +727,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipTophoneno() : ?string
+    public function getShipTophoneno(): ?string
     {
         return $this->getData(self::SHIP_TO_PHONE_NO);
     }
@@ -745,7 +745,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipTocountryregioncode() : ?string
+    public function getShipTocountryregioncode(): ?string
     {
         return $this->getData(self::SHIP_TO_COUNTRY_REGION_CODE);
     }
@@ -763,7 +763,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShipTohouseapartmentno() : ?string
+    public function getShipTohouseapartmentno(): ?string
     {
         return $this->getData(self::SHIP_TO_HOUSE_APARTMENT_NO);
     }
@@ -781,7 +781,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getContactviamail() : ?bool
+    public function getContactviamail(): ?bool
     {
         return $this->getData(self::CONTACT_VIA_MAIL);
     }
@@ -799,7 +799,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getContactviaphone() : ?bool
+    public function getContactviaphone(): ?bool
     {
         return $this->getData(self::CONTACT_VIA_PHONE);
     }
@@ -817,7 +817,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getContactviaemail() : ?bool
+    public function getContactviaemail(): ?bool
     {
         return $this->getData(self::CONTACT_VIA_EMAIL);
     }
@@ -835,7 +835,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGeneralcomments() : ?string
+    public function getGeneralcomments(): ?string
     {
         return $this->getData(self::GENERAL_COMMENTS);
     }
@@ -853,7 +853,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeliveryinstructions() : ?string
+    public function getDeliveryinstructions(): ?string
     {
         return $this->getData(self::DELIVERY_INSTRUCTIONS);
     }
@@ -871,7 +871,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMembercardno() : ?string
+    public function getMembercardno(): ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -889,7 +889,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourcetype() : ?string
+    public function getSourcetype(): ?string
     {
         return $this->getData(self::SOURCE_TYPE);
     }
@@ -907,7 +907,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getReplicated() : ?bool
+    public function getReplicated(): ?bool
     {
         return $this->getData(self::REPLICATED);
     }
@@ -943,7 +943,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getRetailspecialorder() : ?bool
+    public function getRetailspecialorder(): ?bool
     {
         return $this->getData(self::RETAIL_SPECIAL_ORDER);
     }
@@ -961,7 +961,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourcecode() : ?string
+    public function getSourcecode(): ?string
     {
         return $this->getData(self::SOURCE_CODE);
     }
@@ -979,7 +979,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingzonescode() : ?string
+    public function getShippingzonescode(): ?string
     {
         return $this->getData(self::SHIPPING_ZONES_CODE);
     }
@@ -997,7 +997,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingzonesdescription() : ?string
+    public function getShippingzonesdescription(): ?string
     {
         return $this->getData(self::SHIPPING_ZONES_DESCRIPTION);
     }
@@ -1015,7 +1015,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrderno() : ?string
+    public function getOrderno(): ?string
     {
         return $this->getData(self::ORDER_NO);
     }
@@ -1033,7 +1033,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternaldocumentno() : ?string
+    public function getExternaldocumentno(): ?string
     {
         return $this->getData(self::EXTERNAL_DOCUMENT_NO);
     }
@@ -1051,7 +1051,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReservedbyposno() : ?string
+    public function getReservedbyposno(): ?string
     {
         return $this->getData(self::RESERVED_BY_POSNO);
     }
@@ -1069,7 +1069,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getWebtransactionguid() : ?string
+    public function getWebtransactionguid(): ?string
     {
         return $this->getData(self::WEB_TRANSACTION_GUID);
     }
@@ -1087,7 +1087,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getOrderamountforprinting() : ?float
+    public function getOrderamountforprinting(): ?float
     {
         return $this->getData(self::ORDER_AMOUNTFOR_PRINTING);
     }
@@ -1105,7 +1105,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDepositamountforprinting() : ?float
+    public function getDepositamountforprinting(): ?float
     {
         return $this->getData(self::DEPOSIT_AMOUNTFOR_PRINTING);
     }
@@ -1123,7 +1123,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSellTocontactno() : ?string
+    public function getSellTocontactno(): ?string
     {
         return $this->getData(self::SELL_TO_CONTACT_NO);
     }
@@ -1141,7 +1141,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -1159,7 +1159,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getErrorinprocess() : ?bool
+    public function getErrorinprocess(): ?bool
     {
         return $this->getData(self::ERRORIN_PROCESS);
     }
@@ -1177,7 +1177,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getCancelation() : ?bool
+    public function getCancelation(): ?bool
     {
         return $this->getData(self::CANCELATION);
     }
@@ -1195,7 +1195,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPrecancelation() : ?bool
+    public function getPrecancelation(): ?bool
     {
         return $this->getData(self::PRE_CANCELATION);
     }
@@ -1213,7 +1213,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxareacode() : ?string
+    public function getTaxareacode(): ?string
     {
         return $this->getData(self::TAX_AREA_CODE);
     }
@@ -1231,7 +1231,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getTaxliable() : ?bool
+    public function getTaxliable(): ?bool
     {
         return $this->getData(self::TAX_LIABLE);
     }
@@ -1249,7 +1249,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxexemptionno() : ?string
+    public function getTaxexemptionno(): ?string
     {
         return $this->getData(self::TAX_EXEMPTION_NO);
     }
@@ -1267,7 +1267,7 @@ class TransactionOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetincexpamount() : ?float
+    public function getNetincexpamount(): ?float
     {
         return $this->getData(self::NET_INC_EXP_AMOUNT);
     }

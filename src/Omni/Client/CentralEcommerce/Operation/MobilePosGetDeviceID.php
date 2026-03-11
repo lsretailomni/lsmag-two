@@ -92,7 +92,7 @@ class MobilePosGetDeviceID extends AbstractOperation
         return $this;
     }
 
-    public function getClient() : OmniClient
+    public function getClient(): OmniClient
     {
         return $this->client;
     }
@@ -103,7 +103,7 @@ class MobilePosGetDeviceID extends AbstractOperation
         return $this;
     }
 
-    public function getRequest() : MobilePosGetDeviceIDRequest
+    public function getRequest(): MobilePosGetDeviceIDRequest
     {
         return $this->request;
     }
@@ -114,7 +114,7 @@ class MobilePosGetDeviceID extends AbstractOperation
         return $this;
     }
 
-    public function getResponse() : MobilePosGetDeviceIDResponse
+    public function getResponse(): MobilePosGetDeviceIDResponse
     {
         return $this->response;
     }
@@ -125,7 +125,7 @@ class MobilePosGetDeviceID extends AbstractOperation
         return $this;
     }
 
-    public function getRequestXml() : string
+    public function getRequestXml(): string
     {
         return $this->requestXml;
     }
@@ -136,7 +136,7 @@ class MobilePosGetDeviceID extends AbstractOperation
         return $this;
     }
 
-    public function getResponseXml() : string
+    public function getResponseXml(): string
     {
         return $this->responseXml;
     }
@@ -147,7 +147,7 @@ class MobilePosGetDeviceID extends AbstractOperation
         return $this;
     }
 
-    public function getError() : \Exception
+    public function getError(): \Exception
     {
         return $this->error;
     }

@@ -188,6 +188,8 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
 
     public const TABLE_DESCRIPTION = 'TableDescription';
 
+    public const REFUND_STATUS = 'RefundStatus';
+
     /**
      * @param int $TransactionNo
      * @return $this
@@ -219,7 +221,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactiontype() : ?string
+    public function getTransactiontype(): ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
@@ -237,7 +239,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -255,7 +257,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatbuspostinggroup() : ?string
+    public function getVatbuspostinggroup(): ?string
     {
         return $this->getData(self::VATBUS_POSTING_GROUP);
     }
@@ -273,7 +275,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -291,7 +293,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -309,7 +311,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedonposterminal() : ?string
+    public function getCreatedonposterminal(): ?string
     {
         return $this->getData(self::CREATEDON_POSTERMINAL);
     }
@@ -327,7 +329,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -345,7 +347,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDate() : ?string
+    public function getDate(): ?string
     {
         return $this->getData(self::DATE);
     }
@@ -363,7 +365,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOriginaldate() : ?string
+    public function getOriginaldate(): ?string
     {
         return $this->getData(self::ORIGINAL_DATE);
     }
@@ -381,7 +383,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTime() : ?string
+    public function getTime(): ?string
     {
         return $this->getData(self::TIME);
     }
@@ -399,7 +401,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiftno() : ?string
+    public function getShiftno(): ?string
     {
         return $this->getData(self::SHIFT_NO);
     }
@@ -417,7 +419,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiftdate() : ?string
+    public function getShiftdate(): ?string
     {
         return $this->getData(self::SHIFT_DATE);
     }
@@ -435,7 +437,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getWrongshift() : ?bool
+    public function getWrongshift(): ?bool
     {
         return $this->getData(self::WRONG_SHIFT);
     }
@@ -453,7 +455,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getInfocodediscgroup() : ?string
+    public function getInfocodediscgroup(): ?string
     {
         return $this->getData(self::INFOCODE_DISC_GROUP);
     }
@@ -471,7 +473,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerno() : ?string
+    public function getCustomerno(): ?string
     {
         return $this->getData(self::CUSTOMER_NO);
     }
@@ -489,7 +491,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactioncode() : ?string
+    public function getTransactioncode(): ?string
     {
         return $this->getData(self::TRANSACTION_CODE);
     }
@@ -507,7 +509,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTranssalepmtdiff() : ?float
+    public function getTranssalepmtdiff(): ?float
     {
         return $this->getData(self::TRANS_SALE_PMT_DIFF);
     }
@@ -525,7 +527,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetamount() : ?float
+    public function getNetamount(): ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
@@ -543,7 +545,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCostamount() : ?float
+    public function getCostamount(): ?float
     {
         return $this->getData(self::COST_AMOUNT);
     }
@@ -561,7 +563,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getGrossamount() : ?float
+    public function getGrossamount(): ?float
     {
         return $this->getData(self::GROSS_AMOUNT);
     }
@@ -579,7 +581,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPayment() : ?float
+    public function getPayment(): ?float
     {
         return $this->getData(self::PAYMENT);
     }
@@ -597,7 +599,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountamount() : ?float
+    public function getDiscountamount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
@@ -615,7 +617,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCustomerdiscount() : ?float
+    public function getCustomerdiscount(): ?float
     {
         return $this->getData(self::CUSTOMER_DISCOUNT);
     }
@@ -633,7 +635,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotaldiscount() : ?float
+    public function getTotaldiscount(): ?float
     {
         return $this->getData(self::TOTAL_DISCOUNT);
     }
@@ -651,7 +653,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNoofitems() : ?float
+    public function getNoofitems(): ?float
     {
         return $this->getData(self::NOOF_ITEMS);
     }
@@ -669,7 +671,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmounttoaccount() : ?float
+    public function getAmounttoaccount(): ?float
     {
         return $this->getData(self::AMOUNTTO_ACCOUNT);
     }
@@ -687,7 +689,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getRounded() : ?float
+    public function getRounded(): ?float
     {
         return $this->getData(self::ROUNDED);
     }
@@ -705,7 +707,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerdiscgroup() : ?string
+    public function getCustomerdiscgroup(): ?string
     {
         return $this->getData(self::CUSTOMER_DISC_GROUP);
     }
@@ -723,7 +725,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEntrystatus() : ?string
+    public function getEntrystatus(): ?string
     {
         return $this->getData(self::ENTRY_STATUS);
     }
@@ -759,7 +761,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNoofitemlines() : ?float
+    public function getNoofitemlines(): ?float
     {
         return $this->getData(self::NOOF_ITEM_LINES);
     }
@@ -777,7 +779,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementcode() : ?string
+    public function getStatementcode(): ?string
     {
         return $this->getData(self::STATEMENT_CODE);
     }
@@ -795,7 +797,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementnoNotused() : ?string
+    public function getStatementnoNotused(): ?string
     {
         return $this->getData(self::STATEMENT_NO_NOTUSED);
     }
@@ -813,7 +815,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRefundreceiptno() : ?string
+    public function getRefundreceiptno(): ?string
     {
         return $this->getData(self::REFUND_RECEIPT_NO);
     }
@@ -831,7 +833,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getIncomeexpamount() : ?float
+    public function getIncomeexpamount(): ?float
     {
         return $this->getData(self::INCOME_EXP_AMOUNT);
     }
@@ -849,7 +851,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getToaccount() : ?bool
+    public function getToaccount(): ?bool
     {
         return $this->getData(self::TO_ACCOUNT);
     }
@@ -867,7 +869,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNoofpaymentlines() : ?float
+    public function getNoofpaymentlines(): ?float
     {
         return $this->getData(self::NOOF_PAYMENT_LINES);
     }
@@ -885,7 +887,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSaleisreturnsale() : ?bool
+    public function getSaleisreturnsale(): ?bool
     {
         return $this->getData(self::SALE_IS_RETURN_SALE);
     }
@@ -903,7 +905,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSaleisexchangesale() : ?bool
+    public function getSaleisexchangesale(): ?bool
     {
         return $this->getData(self::SALE_IS_EXCHANGE_SALE);
     }
@@ -921,7 +923,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getTransismixedsalerefund() : ?bool
+    public function getTransismixedsalerefund(): ?bool
     {
         return $this->getData(self::TRANS_IS_MIXED_SALE_REFUND);
     }
@@ -939,7 +941,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getRevertedgrossamount() : ?float
+    public function getRevertedgrossamount(): ?float
     {
         return $this->getData(self::REVERTED_GROSS_AMOUNT);
     }
@@ -975,7 +977,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTimewhentotalpressed() : ?string
+    public function getTimewhentotalpressed(): ?string
     {
         return $this->getData(self::TIMEWHEN_TOTAL_PRESSED);
     }
@@ -993,7 +995,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTimewhentransclosed() : ?string
+    public function getTimewhentransclosed(): ?string
     {
         return $this->getData(self::TIMEWHEN_TRANS_CLOSED);
     }
@@ -1011,7 +1013,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTranscurrency() : ?string
+    public function getTranscurrency(): ?string
     {
         return $this->getData(self::TRANS_CURRENCY);
     }
@@ -1029,7 +1031,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getItemsposted() : ?bool
+    public function getItemsposted(): ?bool
     {
         return $this->getData(self::ITEMS_POSTED);
     }
@@ -1047,7 +1049,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPostasshipment() : ?bool
+    public function getPostasshipment(): ?bool
     {
         return $this->getData(self::POSTAS_SHIPMENT);
     }
@@ -1083,7 +1085,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSafecode() : ?string
+    public function getSafecode(): ?string
     {
         return $this->getData(self::SAFE_CODE);
     }
@@ -1101,7 +1103,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getManagerid() : ?string
+    public function getManagerid(): ?string
     {
         return $this->getData(self::MANAGER_ID);
     }
@@ -1137,7 +1139,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNoofcovers() : ?float
+    public function getNoofcovers(): ?float
     {
         return $this->getData(self::NOOF_COVERS);
     }
@@ -1173,7 +1175,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getComment() : ?string
+    public function getComment(): ?string
     {
         return $this->getData(self::COMMENT);
     }
@@ -1191,7 +1193,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSellTocontactno() : ?string
+    public function getSellTocontactno(): ?string
     {
         return $this->getData(self::SELL_TO_CONTACT_NO);
     }
@@ -1209,7 +1211,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGiftregistrationno() : ?string
+    public function getGiftregistrationno(): ?string
     {
         return $this->getData(self::GIFT_REGISTRATION_NO);
     }
@@ -1227,7 +1229,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMembercardno() : ?string
+    public function getMembercardno(): ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -1245,7 +1247,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalestype() : ?string
+    public function getSalestype(): ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
@@ -1263,7 +1265,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getStartingpointbalance() : ?float
+    public function getStartingpointbalance(): ?float
     {
         return $this->getData(self::STARTING_POINT_BALANCE);
     }
@@ -1281,7 +1283,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getContainsforecourtitems() : ?bool
+    public function getContainsforecourtitems(): ?bool
     {
         return $this->getData(self::CONTAINS_FORECOURT_ITEMS);
     }
@@ -1299,7 +1301,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getApplytodocno() : ?string
+    public function getApplytodocno(): ?string
     {
         return $this->getData(self::APPLYTO_DOC_NO);
     }
@@ -1317,7 +1319,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourcetype() : ?string
+    public function getSourcetype(): ?string
     {
         return $this->getData(self::SOURCE_TYPE);
     }
@@ -1335,7 +1337,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getOpendrawer() : ?bool
+    public function getOpendrawer(): ?bool
     {
         return $this->getData(self::OPEN_DRAWER);
     }
@@ -1353,7 +1355,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getReplicated() : ?bool
+    public function getReplicated(): ?bool
     {
         return $this->getData(self::REPLICATED);
     }
@@ -1389,7 +1391,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRetrievedfromreceiptno() : ?string
+    public function getRetrievedfromreceiptno(): ?string
     {
         return $this->getData(self::RETRIEVEDFROM_RECEIPT_NO);
     }
@@ -1407,7 +1409,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getZReportid() : ?string
+    public function getZReportid(): ?string
     {
         return $this->getData(self::Z_REPORT_ID);
     }
@@ -1425,7 +1427,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getYReportid() : ?string
+    public function getYReportid(): ?string
     {
         return $this->getData(self::Y_REPORT_ID);
     }
@@ -1443,7 +1445,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerorderno() : ?string
+    public function getCustomerorderno(): ?string
     {
         return $this->getData(self::CUSTOMER_ORDER_NO);
     }
@@ -1461,7 +1463,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPlaybackrecordingid() : ?string
+    public function getPlaybackrecordingid(): ?string
     {
         return $this->getData(self::PLAYBACK_RECORDING_ID);
     }
@@ -1497,7 +1499,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBitimestamp() : ?string
+    public function getBitimestamp(): ?string
     {
         return $this->getData(self::BITIMESTAMP);
     }
@@ -1515,7 +1517,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getCustomerorder() : ?bool
+    public function getCustomerorder(): ?bool
     {
         return $this->getData(self::CUSTOMER_ORDER);
     }
@@ -1533,7 +1535,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGenbuspostinggroup() : ?string
+    public function getGenbuspostinggroup(): ?string
     {
         return $this->getData(self::GEN_BUS_POSTING_GROUP);
     }
@@ -1551,7 +1553,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getOverrideplbitem() : ?bool
+    public function getOverrideplbitem(): ?bool
     {
         return $this->getData(self::OVERRIDE_PLBITEM);
     }
@@ -1569,7 +1571,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOverridestaffid() : ?string
+    public function getOverridestaffid(): ?string
     {
         return $this->getData(self::OVERRIDE_STAFF_ID);
     }
@@ -1587,7 +1589,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOverridedatetime() : ?string
+    public function getOverridedatetime(): ?string
     {
         return $this->getData(self::OVERRIDE_DATE_TIME);
     }
@@ -1605,7 +1607,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getRestrictedflag() : ?bool
+    public function getRestrictedflag(): ?bool
     {
         return $this->getData(self::RESTRICTED_FLAG);
     }
@@ -1623,7 +1625,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxareacode() : ?string
+    public function getTaxareacode(): ?string
     {
         return $this->getData(self::TAX_AREA_CODE);
     }
@@ -1641,7 +1643,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getWictransaction() : ?bool
+    public function getWictransaction(): ?bool
     {
         return $this->getData(self::WICTRANSACTION);
     }
@@ -1659,7 +1661,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getTaxliable() : ?bool
+    public function getTaxliable(): ?bool
     {
         return $this->getData(self::TAX_LIABLE);
     }
@@ -1677,7 +1679,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxexemptionno() : ?string
+    public function getTaxexemptionno(): ?string
     {
         return $this->getData(self::TAX_EXEMPTION_NO);
     }
@@ -1695,7 +1697,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetincexpamount() : ?float
+    public function getNetincexpamount(): ?float
     {
         return $this->getData(self::NET_INC_EXP_AMOUNT);
     }
@@ -1713,7 +1715,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getRetrievedfromsuspendedtrans() : ?bool
+    public function getRetrievedfromsuspendedtrans(): ?bool
     {
         return $this->getData(self::RETRIEVED_FROM_SUSPENDED_TRANS);
     }
@@ -1731,7 +1733,7 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getVatamount() : ?float
+    public function getVatamount(): ?float
     {
         return $this->getData(self::VATAMOUNT);
     }
@@ -1749,9 +1751,27 @@ class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTabledescription() : ?string
+    public function getTabledescription(): ?string
     {
         return $this->getData(self::TABLE_DESCRIPTION);
+    }
+
+    /**
+     * @param ?string $RefundStatus
+     * @return $this
+     */
+    public function setRefundstatus(?string $RefundStatus)
+    {
+        $this->setData(self::REFUND_STATUS, $RefundStatus);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getRefundstatus(): ?string
+    {
+        return $this->getData(self::REFUND_STATUS);
     }
 }
 

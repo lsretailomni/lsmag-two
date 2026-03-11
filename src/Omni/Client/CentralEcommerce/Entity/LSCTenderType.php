@@ -99,6 +99,7 @@ class LSCTenderType extends AbstractModel
     public const FOOD_STAMP = 'Food Stamp';
     public const AUTO_ACCOUNT_PAYMENT_TENDER = 'Auto Account Payment Tender';
     public const DO_NOT_POST = 'Do Not Post';
+    public const GROUP_SEPARATELY_FROM_CURRENCY = 'Group separately from Currency';
     public const SYSTEMID = '$systemId';
     public const SYSTEMCREATEDAT = 'SystemCreatedAt';
     public const SYSTEMCREATEDBY = 'SystemCreatedBy';
@@ -194,6 +195,7 @@ class LSCTenderType extends AbstractModel
 	self::FOOD_STAMP => 'food_stamp',
 	self::AUTO_ACCOUNT_PAYMENT_TENDER => 'auto_account_payment_tender',
 	self::DO_NOT_POST => 'do_not_post',
+	self::GROUP_SEPARATELY_FROM_CURRENCY => 'group_separately_from_currency',
 	self::SYSTEMID => 'systemid',
 	self::SYSTEMCREATEDAT => 'systemcreatedat',
 	self::SYSTEMCREATEDBY => 'systemcreatedby',
@@ -1085,6 +1087,16 @@ class LSCTenderType extends AbstractModel
     public function setDoNotPost(?bool $value)
     {
         return $this->setData(self::DO_NOT_POST, $value);
+    }
+
+    public function getGroupSeparatelyFromCurrency(): ?bool
+    {
+        return $this->getData(self::GROUP_SEPARATELY_FROM_CURRENCY);
+    }
+
+    public function setGroupSeparatelyFromCurrency(?bool $value)
+    {
+        return $this->setData(self::GROUP_SEPARATELY_FROM_CURRENCY, $value);
     }
 
     public function getSystemid(): ?string

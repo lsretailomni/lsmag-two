@@ -110,6 +110,14 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const REPLICATION_COUNTER = 'ReplicationCounter';
 
+    public const EFTMERCHANT_ORDER_ID = 'EFTMerchantOrderID';
+
+    public const CLIENT_TRANSACTION_IDEXT = 'ClientTransactionIDExt';
+
+    public const REFUNDED_AMOUNT = 'RefundedAmount';
+
+    public const REFUND_STATUS = 'RefundStatus';
+
     /**
      * @param ?string $StoreNo
      * @return $this
@@ -123,7 +131,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -141,7 +149,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -213,7 +221,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -231,7 +239,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftposterminalno() : ?string
+    public function getEftposterminalno(): ?string
     {
         return $this->getData(self::EFTPOSTERMINAL_NO);
     }
@@ -249,7 +257,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTendertype() : ?string
+    public function getTendertype(): ?string
     {
         return $this->getData(self::TENDER_TYPE);
     }
@@ -267,7 +275,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactiontype() : ?string
+    public function getTransactiontype(): ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
@@ -285,7 +293,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getMsrinput() : ?bool
+    public function getMsrinput(): ?bool
     {
         return $this->getData(self::MSRINPUT);
     }
@@ -303,7 +311,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDate() : ?string
+    public function getDate(): ?string
     {
         return $this->getData(self::DATE);
     }
@@ -321,7 +329,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTime() : ?string
+    public function getTime(): ?string
     {
         return $this->getData(self::TIME);
     }
@@ -339,7 +347,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getAuthorisationok() : ?bool
+    public function getAuthorisationok(): ?bool
     {
         return $this->getData(self::AUTHORISATION_OK);
     }
@@ -357,7 +365,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getVoided() : ?bool
+    public function getVoided(): ?bool
     {
         return $this->getData(self::VOIDED);
     }
@@ -375,7 +383,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardnumber() : ?string
+    public function getCardnumber(): ?string
     {
         return $this->getData(self::CARD_NUMBER);
     }
@@ -393,7 +401,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardtype() : ?string
+    public function getCardtype(): ?string
     {
         return $this->getData(self::CARD_TYPE);
     }
@@ -411,7 +419,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardtypename() : ?string
+    public function getCardtypename(): ?string
     {
         return $this->getData(self::CARD_TYPE_NAME);
     }
@@ -429,7 +437,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirydate() : ?string
+    public function getExpirydate(): ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
@@ -447,7 +455,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAuthcode() : ?string
+    public function getAuthcode(): ?string
     {
         return $this->getData(self::AUTHCODE);
     }
@@ -465,7 +473,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRescode() : ?string
+    public function getRescode(): ?string
     {
         return $this->getData(self::RESCODE);
     }
@@ -483,7 +491,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMessage() : ?string
+    public function getMessage(): ?string
     {
         return $this->getData(self::MESSAGE);
     }
@@ -501,7 +509,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardclass() : ?string
+    public function getCardclass(): ?string
     {
         return $this->getData(self::CARD_CLASS);
     }
@@ -519,7 +527,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftmerchantno() : ?string
+    public function getEftmerchantno(): ?string
     {
         return $this->getData(self::EFTMERCHANT_NO);
     }
@@ -537,7 +545,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftterminalid() : ?string
+    public function getEftterminalid(): ?string
     {
         return $this->getData(self::EFTTERMINAL_ID);
     }
@@ -555,7 +563,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEfttransno() : ?string
+    public function getEfttransno(): ?string
     {
         return $this->getData(self::EFTTRANS_NO);
     }
@@ -573,7 +581,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEfttransactionid() : ?string
+    public function getEfttransactionid(): ?string
     {
         return $this->getData(self::EFTTRANSACTION_ID);
     }
@@ -591,7 +599,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftadditionalid() : ?string
+    public function getEftadditionalid(): ?string
     {
         return $this->getData(self::EFTADDITIONAL_ID);
     }
@@ -609,7 +617,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftbatchno() : ?string
+    public function getEftbatchno(): ?string
     {
         return $this->getData(self::EFTBATCH_NO);
     }
@@ -627,7 +635,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAuthsourcecode() : ?string
+    public function getAuthsourcecode(): ?string
     {
         return $this->getData(self::AUTH_SOURCE_CODE);
     }
@@ -645,7 +653,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEfttranstime() : ?string
+    public function getEfttranstime(): ?string
     {
         return $this->getData(self::EFTTRANS_TIME);
     }
@@ -663,7 +671,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEfttransdate() : ?string
+    public function getEfttransdate(): ?string
     {
         return $this->getData(self::EFTTRANS_DATE);
     }
@@ -681,7 +689,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmount() : ?float
+    public function getAmount(): ?float
     {
         return $this->getData(self::AMOUNT);
     }
@@ -699,7 +707,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getVat() : ?float
+    public function getVat(): ?float
     {
         return $this->getData(self::VAT);
     }
@@ -717,7 +725,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCashback() : ?float
+    public function getCashback(): ?float
     {
         return $this->getData(self::CASHBACK);
     }
@@ -735,7 +743,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftstoreno() : ?string
+    public function getEftstoreno(): ?string
     {
         return $this->getData(self::EFTSTORE_NO);
     }
@@ -753,7 +761,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftservername() : ?string
+    public function getEftservername(): ?string
     {
         return $this->getData(self::EFTSERVER_NAME);
     }
@@ -771,7 +779,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftverificationmethod() : ?string
+    public function getEftverificationmethod(): ?string
     {
         return $this->getData(self::EFTVERIFICATION_METHOD);
     }
@@ -789,7 +797,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftauthorizationstatus() : ?string
+    public function getEftauthorizationstatus(): ?string
     {
         return $this->getData(self::EFTAUTHORIZATION_STATUS);
     }
@@ -807,7 +815,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEfttransactiontype() : ?string
+    public function getEfttransactiontype(): ?string
     {
         return $this->getData(self::EFTTRANSACTION_TYPE);
     }
@@ -825,7 +833,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftstaffid() : ?string
+    public function getEftstaffid(): ?string
     {
         return $this->getData(self::EFTSTAFF_ID);
     }
@@ -843,7 +851,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEftdatetime() : ?string
+    public function getEftdatetime(): ?string
     {
         return $this->getData(self::EFTDATE_TIME);
     }
@@ -861,7 +869,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExtradata() : ?string
+    public function getExtradata(): ?string
     {
         return $this->getData(self::EXTRA_DATA);
     }
@@ -879,7 +887,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVoidedslipno() : ?string
+    public function getVoidedslipno(): ?string
     {
         return $this->getData(self::VOIDED_SLIP_NO);
     }
@@ -915,7 +923,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVoidedefttransno() : ?string
+    public function getVoidedefttransno(): ?string
     {
         return $this->getData(self::VOIDED_EFTTRANS_NO);
     }
@@ -933,7 +941,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVoidedefttransactionid() : ?string
+    public function getVoidedefttransactionid(): ?string
     {
         return $this->getData(self::VOIDED_EFTTRANSACTION_ID);
     }
@@ -951,7 +959,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getEncrypted() : ?bool
+    public function getEncrypted(): ?bool
     {
         return $this->getData(self::ENCRYPTED);
     }
@@ -969,7 +977,7 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getReplicated() : ?bool
+    public function getReplicated(): ?bool
     {
         return $this->getData(self::REPLICATED);
     }
@@ -990,6 +998,78 @@ class POSCardEntry extends \Magento\Catalog\Model\AbstractModel
     public function getReplicationcounter()
     {
         return $this->getData(self::REPLICATION_COUNTER);
+    }
+
+    /**
+     * @param ?string $EFTMerchantOrderID
+     * @return $this
+     */
+    public function setEftmerchantorderid(?string $EFTMerchantOrderID)
+    {
+        $this->setData(self::EFTMERCHANT_ORDER_ID, $EFTMerchantOrderID);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getEftmerchantorderid(): ?string
+    {
+        return $this->getData(self::EFTMERCHANT_ORDER_ID);
+    }
+
+    /**
+     * @param ?string $ClientTransactionIDExt
+     * @return $this
+     */
+    public function setClienttransactionidext(?string $ClientTransactionIDExt)
+    {
+        $this->setData(self::CLIENT_TRANSACTION_IDEXT, $ClientTransactionIDExt);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getClienttransactionidext(): ?string
+    {
+        return $this->getData(self::CLIENT_TRANSACTION_IDEXT);
+    }
+
+    /**
+     * @param ?float $RefundedAmount
+     * @return $this
+     */
+    public function setRefundedamount(?float $RefundedAmount)
+    {
+        $this->setData(self::REFUNDED_AMOUNT, $RefundedAmount);
+        return $this;
+    }
+
+    /**
+     * @return ?float
+     */
+    public function getRefundedamount(): ?float
+    {
+        return $this->getData(self::REFUNDED_AMOUNT);
+    }
+
+    /**
+     * @param ?string $RefundStatus
+     * @return $this
+     */
+    public function setRefundstatus(?string $RefundStatus)
+    {
+        $this->setData(self::REFUND_STATUS, $RefundStatus);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getRefundstatus(): ?string
+    {
+        return $this->getData(self::REFUND_STATUS);
     }
 }
 

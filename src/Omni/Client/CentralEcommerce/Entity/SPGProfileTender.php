@@ -31,7 +31,7 @@ class SPGProfileTender extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getProfilecode() : ?string
+    public function getProfilecode(): ?string
     {
         return $this->getData(self::PROFILE_CODE);
     }
@@ -49,7 +49,7 @@ class SPGProfileTender extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTendertype() : ?string
+    public function getTendertype(): ?string
     {
         return $this->getData(self::TENDER_TYPE);
     }
@@ -67,7 +67,7 @@ class SPGProfileTender extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }

@@ -47,7 +47,7 @@ class SPGOrderCheckCOLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -83,7 +83,7 @@ class SPGOrderCheckCOLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNumber() : ?string
+    public function getNumber(): ?string
     {
         return $this->getData(self::NUMBER);
     }
@@ -101,7 +101,7 @@ class SPGOrderCheckCOLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemdescription() : ?string
+    public function getItemdescription(): ?string
     {
         return $this->getData(self::ITEM_DESCRIPTION);
     }
@@ -119,7 +119,7 @@ class SPGOrderCheckCOLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -137,7 +137,7 @@ class SPGOrderCheckCOLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantdescription() : ?string
+    public function getVariantdescription(): ?string
     {
         return $this->getData(self::VARIANT_DESCRIPTION);
     }
@@ -155,7 +155,7 @@ class SPGOrderCheckCOLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitofmeasurecode() : ?string
+    public function getUnitofmeasurecode(): ?string
     {
         return $this->getData(self::UNITOF_MEASURE_CODE);
     }
@@ -173,7 +173,7 @@ class SPGOrderCheckCOLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUomdescription() : ?string
+    public function getUomdescription(): ?string
     {
         return $this->getData(self::UO_MDESCRIPTION);
     }
@@ -191,7 +191,7 @@ class SPGOrderCheckCOLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -209,7 +209,7 @@ class SPGOrderCheckCOLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmount() : ?float
+    public function getAmount(): ?float
     {
         return $this->getData(self::AMOUNT);
     }
@@ -227,7 +227,7 @@ class SPGOrderCheckCOLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getAlwayscheck() : ?bool
+    public function getAlwayscheck(): ?bool
     {
         return $this->getData(self::ALWAYS_CHECK);
     }

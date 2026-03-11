@@ -183,7 +183,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getNewtransaction() : ?bool
+    public function getNewtransaction(): ?bool
     {
         return $this->getData(self::NEW_TRANSACTION);
     }
@@ -201,7 +201,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactiontype() : ?string
+    public function getTransactiontype(): ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
@@ -219,7 +219,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -237,7 +237,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalesstaff() : ?string
+    public function getSalesstaff(): ?string
     {
         return $this->getData(self::SALES_STAFF);
     }
@@ -255,7 +255,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatbuspostinggroup() : ?string
+    public function getVatbuspostinggroup(): ?string
     {
         return $this->getData(self::VATBUS_POSTING_GROUP);
     }
@@ -273,7 +273,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPricegroupcode() : ?string
+    public function getPricegroupcode(): ?string
     {
         return $this->getData(self::PRICE_GROUP_CODE);
     }
@@ -291,7 +291,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -309,7 +309,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -327,7 +327,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedonposterminal() : ?string
+    public function getCreatedonposterminal(): ?string
     {
         return $this->getData(self::CREATEDON_POSTERMINAL);
     }
@@ -345,7 +345,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -363,7 +363,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSupervisorrights() : ?bool
+    public function getSupervisorrights(): ?bool
     {
         return $this->getData(self::SUPERVISOR_RIGHTS);
     }
@@ -381,7 +381,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransdate() : ?string
+    public function getTransdate(): ?string
     {
         return $this->getData(self::TRANS_DATE);
     }
@@ -399,7 +399,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOriginaldate() : ?string
+    public function getOriginaldate(): ?string
     {
         return $this->getData(self::ORIGINAL_DATE);
     }
@@ -417,7 +417,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTranstime() : ?string
+    public function getTranstime(): ?string
     {
         return $this->getData(self::TRANS_TIME);
     }
@@ -435,7 +435,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiftno() : ?string
+    public function getShiftno(): ?string
     {
         return $this->getData(self::SHIFT_NO);
     }
@@ -453,7 +453,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiftdate() : ?string
+    public function getShiftdate(): ?string
     {
         return $this->getData(self::SHIFT_DATE);
     }
@@ -471,7 +471,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getInfocodediscgroup() : ?string
+    public function getInfocodediscgroup(): ?string
     {
         return $this->getData(self::INFOCODE_DISC_GROUP);
     }
@@ -489,7 +489,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerno() : ?string
+    public function getCustomerno(): ?string
     {
         return $this->getData(self::CUSTOMER_NO);
     }
@@ -507,7 +507,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerdiscgroup() : ?string
+    public function getCustomerdiscgroup(): ?string
     {
         return $this->getData(self::CUSTOMER_DISC_GROUP);
     }
@@ -525,7 +525,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTranssalepmtdiff() : ?float
+    public function getTranssalepmtdiff(): ?float
     {
         return $this->getData(self::TRANS_SALE_PMT_DIFF);
     }
@@ -543,7 +543,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNoofitems() : ?float
+    public function getNoofitems(): ?float
     {
         return $this->getData(self::NOOF_ITEMS);
     }
@@ -561,7 +561,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getRounded() : ?float
+    public function getRounded(): ?float
     {
         return $this->getData(self::ROUNDED);
     }
@@ -579,7 +579,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEntrystatus() : ?string
+    public function getEntrystatus(): ?string
     {
         return $this->getData(self::ENTRY_STATUS);
     }
@@ -597,7 +597,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getVatofdiscount() : ?float
+    public function getVatofdiscount(): ?float
     {
         return $this->getData(self::VATOF_DISCOUNT);
     }
@@ -615,7 +615,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNoofitemlines() : ?float
+    public function getNoofitemlines(): ?float
     {
         return $this->getData(self::NOOF_ITEM_LINES);
     }
@@ -633,7 +633,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNoofincomeexplines() : ?float
+    public function getNoofincomeexplines(): ?float
     {
         return $this->getData(self::NOOF_INCOME_EXP_LINES);
     }
@@ -651,7 +651,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNoofpaymentlines() : ?float
+    public function getNoofpaymentlines(): ?float
     {
         return $this->getData(self::NOOF_PAYMENT_LINES);
     }
@@ -669,7 +669,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getNosaleopendrawer() : ?bool
+    public function getNosaleopendrawer(): ?bool
     {
         return $this->getData(self::NO_SALE_OPEN_DRAWER);
     }
@@ -687,7 +687,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSaleisreturnsale() : ?bool
+    public function getSaleisreturnsale(): ?bool
     {
         return $this->getData(self::SALE_IS_RETURN_SALE);
     }
@@ -705,7 +705,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSaleisexchangesale() : ?bool
+    public function getSaleisexchangesale(): ?bool
     {
         return $this->getData(self::SALE_IS_EXCHANGE_SALE);
     }
@@ -723,7 +723,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getReceiptprintedforreturn() : ?bool
+    public function getReceiptprintedforreturn(): ?bool
     {
         return $this->getData(self::RECEIPT_PRINTEDFOR_RETURN);
     }
@@ -741,7 +741,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getVatbyinfocode() : ?bool
+    public function getVatbyinfocode(): ?bool
     {
         return $this->getData(self::VATBY_INFO_CODE);
     }
@@ -759,7 +759,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCounter() : ?float
+    public function getCounter(): ?float
     {
         return $this->getData(self::COUNTER);
     }
@@ -777,7 +777,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTimewhentotalpressed() : ?string
+    public function getTimewhentotalpressed(): ?string
     {
         return $this->getData(self::TIMEWHEN_TOTAL_PRESSED);
     }
@@ -795,7 +795,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTimewhentransclosed() : ?string
+    public function getTimewhentransclosed(): ?string
     {
         return $this->getData(self::TIMEWHEN_TRANS_CLOSED);
     }
@@ -813,7 +813,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustidnumber() : ?string
+    public function getCustidnumber(): ?string
     {
         return $this->getData(self::CUST_IDNUMBER);
     }
@@ -831,7 +831,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTranscurrencycode() : ?string
+    public function getTranscurrencycode(): ?string
     {
         return $this->getData(self::TRANS_CURRENCY_CODE);
     }
@@ -849,7 +849,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCurrencyfactor() : ?float
+    public function getCurrencyfactor(): ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
     }
@@ -867,7 +867,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPostasshipment() : ?bool
+    public function getPostasshipment(): ?bool
     {
         return $this->getData(self::POSTAS_SHIPMENT);
     }
@@ -885,7 +885,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getManagerkey() : ?string
+    public function getManagerkey(): ?string
     {
         return $this->getData(self::MANAGER_KEY);
     }
@@ -903,7 +903,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getManagerid() : ?string
+    public function getManagerid(): ?string
     {
         return $this->getData(self::MANAGER_ID);
     }
@@ -921,7 +921,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRetrievedfromreceiptno() : ?string
+    public function getRetrievedfromreceiptno(): ?string
     {
         return $this->getData(self::RETRIEVEDFROM_RECEIPT_NO);
     }
@@ -939,7 +939,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRetrievedfromstoreno() : ?string
+    public function getRetrievedfromstoreno(): ?string
     {
         return $this->getData(self::RETRIEVEDFROM_STORE_NO);
     }
@@ -957,7 +957,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRetrievedfrompostermno() : ?string
+    public function getRetrievedfrompostermno(): ?string
     {
         return $this->getData(self::RETRIEVEDFROM_POSTERM_NO);
     }
@@ -1029,7 +1029,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getServicecharge() : ?float
+    public function getServicecharge(): ?float
     {
         return $this->getData(self::SERVICE_CHARGE);
     }
@@ -1047,7 +1047,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedbystaffid() : ?string
+    public function getCreatedbystaffid(): ?string
     {
         return $this->getData(self::CREATEDBY_STAFF_ID);
     }
@@ -1083,7 +1083,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTablegroup() : ?string
+    public function getTablegroup(): ?string
     {
         return $this->getData(self::TABLE_GROUP);
     }
@@ -1101,7 +1101,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentno() : ?string
+    public function getDocumentno(): ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -1119,7 +1119,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSelltocontactno() : ?string
+    public function getSelltocontactno(): ?string
     {
         return $this->getData(self::SELLTO_CONTACT_NO);
     }
@@ -1137,7 +1137,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGiftregistrationno() : ?string
+    public function getGiftregistrationno(): ?string
     {
         return $this->getData(self::GIFT_REGISTRATION_NO);
     }
@@ -1155,7 +1155,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMembercardno() : ?string
+    public function getMembercardno(): ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -1173,7 +1173,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalestype() : ?string
+    public function getSalestype(): ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
@@ -1191,7 +1191,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getComment() : ?string
+    public function getComment(): ?string
     {
         return $this->getData(self::COMMENT);
     }
@@ -1227,7 +1227,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOriginalsalestype() : ?string
+    public function getOriginalsalestype(): ?string
     {
         return $this->getData(self::ORIGINAL_SALES_TYPE);
     }
@@ -1245,7 +1245,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getStartingpointbalance() : ?float
+    public function getStartingpointbalance(): ?float
     {
         return $this->getData(self::STARTING_POINT_BALANCE);
     }
@@ -1281,7 +1281,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getOrderlimit() : ?float
+    public function getOrderlimit(): ?float
     {
         return $this->getData(self::ORDER_LIMIT);
     }
@@ -1317,7 +1317,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getStartfloatentry() : ?bool
+    public function getStartfloatentry(): ?bool
     {
         return $this->getData(self::START_FLOAT_ENTRY);
     }
@@ -1335,7 +1335,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSuspendsalestype() : ?string
+    public function getSuspendsalestype(): ?string
     {
         return $this->getData(self::SUSPEND_SALES_TYPE);
     }
@@ -1353,7 +1353,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getContainsforecourtitems() : ?bool
+    public function getContainsforecourtitems(): ?bool
     {
         return $this->getData(self::CONTAINS_FORECOURT_ITEMS);
     }
@@ -1371,7 +1371,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getIndexfield() : ?string
+    public function getIndexfield(): ?string
     {
         return $this->getData(self::INDEX_FIELD);
     }
@@ -1389,7 +1389,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getApplytodocno() : ?string
+    public function getApplytodocno(): ?string
     {
         return $this->getData(self::APPLYTO_DOC_NO);
     }
@@ -1407,7 +1407,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSearchkey() : ?string
+    public function getSearchkey(): ?string
     {
         return $this->getData(self::SEARCH_KEY);
     }
@@ -1425,7 +1425,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getOverrideplbitem() : ?bool
+    public function getOverrideplbitem(): ?bool
     {
         return $this->getData(self::OVERRIDE_PLBITEM);
     }
@@ -1443,7 +1443,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOverridestaffid() : ?string
+    public function getOverridestaffid(): ?string
     {
         return $this->getData(self::OVERRIDE_STAFF_ID);
     }
@@ -1461,7 +1461,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOverridedatetime() : ?string
+    public function getOverridedatetime(): ?string
     {
         return $this->getData(self::OVERRIDE_DATE_TIME);
     }
@@ -1479,7 +1479,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getRestrictedflag() : ?bool
+    public function getRestrictedflag(): ?bool
     {
         return $this->getData(self::RESTRICTED_FLAG);
     }
@@ -1497,7 +1497,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getGrossamountint() : ?float
+    public function getGrossamountint(): ?float
     {
         return $this->getData(self::GROSS_AMOUNT_INT);
     }
@@ -1515,7 +1515,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxareacode() : ?string
+    public function getTaxareacode(): ?string
     {
         return $this->getData(self::TAX_AREA_CODE);
     }
@@ -1533,7 +1533,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getWictransaction() : ?bool
+    public function getWictransaction(): ?bool
     {
         return $this->getData(self::WICTRANSACTION);
     }
@@ -1551,7 +1551,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getTaxliable() : ?bool
+    public function getTaxliable(): ?bool
     {
         return $this->getData(self::TAX_LIABLE);
     }
@@ -1569,7 +1569,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxexemptionno() : ?string
+    public function getTaxexemptionno(): ?string
     {
         return $this->getData(self::TAX_EXEMPTION_NO);
     }
@@ -1587,7 +1587,7 @@ class POSTransaction extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetincexpamount() : ?float
+    public function getNetincexpamount(): ?float
     {
         return $this->getData(self::NET_INC_EXP_AMOUNT);
     }

@@ -43,7 +43,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getTerminalno() : ?string
+    public function getTerminalno(): ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -61,7 +61,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getRequesttype() : ?string
+    public function getRequesttype(): ?string
     {
         return $this->getData(self::REQUEST_TYPE);
     }
@@ -79,7 +79,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getPostmethod() : ?string
+    public function getPostmethod(): ?string
     {
         return $this->getData(self::POST_METHOD);
     }
@@ -115,7 +115,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getDocumentno() : ?string
+    public function getDocumentno(): ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -133,7 +133,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -151,7 +151,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getResponse() : ?string
+    public function getResponse(): ?string
     {
         return $this->getData(self::RESPONSE);
     }
@@ -169,7 +169,7 @@ class IMDocumentPost extends \Magento\Catalog\Model\AbstractModel implements Req
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

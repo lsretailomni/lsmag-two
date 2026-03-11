@@ -35,7 +35,7 @@ class COFilteredListV2 extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -53,7 +53,7 @@ class COFilteredListV2 extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -71,7 +71,7 @@ class COFilteredListV2 extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?bool
      */
-    public function getIncludepostedcustomerorders() : ?bool
+    public function getIncludepostedcustomerorders(): ?bool
     {
         return $this->getData(self::INCLUDE_POSTED_CUSTOMER_ORDERS);
     }

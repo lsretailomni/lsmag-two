@@ -53,7 +53,7 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -71,7 +71,7 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -107,7 +107,7 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTendertype() : ?string
+    public function getTendertype(): ?string
     {
         return $this->getData(self::TENDER_TYPE);
     }
@@ -125,7 +125,7 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCurrencycode() : ?string
+    public function getCurrencycode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -143,7 +143,7 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getType() : ?string
+    public function getType(): ?string
     {
         return $this->getData(self::TYPE);
     }
@@ -161,7 +161,7 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmount() : ?float
+    public function getAmount(): ?float
     {
         return $this->getData(self::AMOUNT);
     }
@@ -197,7 +197,7 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotal() : ?float
+    public function getTotal(): ?float
     {
         return $this->getData(self::TOTAL);
     }
@@ -215,7 +215,7 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -233,7 +233,7 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -251,7 +251,7 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -269,7 +269,7 @@ class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDecltype() : ?string
+    public function getDecltype(): ?string
     {
         return $this->getData(self::DECL_TYPE);
     }

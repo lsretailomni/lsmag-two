@@ -145,7 +145,7 @@ class PosPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLinetype() : ?string
+    public function getLinetype(): ?string
     {
         return $this->getData(self::LINE_TYPE);
     }
@@ -163,7 +163,7 @@ class PosPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHostid() : ?string
+    public function getHostid(): ?string
     {
         return $this->getData(self::HOST_ID);
     }
@@ -181,7 +181,7 @@ class PosPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getProfileid() : ?string
+    public function getProfileid(): ?string
     {
         return $this->getData(self::PROFILE_ID);
     }
@@ -217,7 +217,7 @@ class PosPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getText() : ?string
+    public function getText(): ?string
     {
         return $this->getData(self::TEXT);
     }
@@ -271,7 +271,7 @@ class PosPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBctype() : ?string
+    public function getBctype(): ?string
     {
         return $this->getData(self::BCTYPE);
     }
@@ -307,7 +307,7 @@ class PosPrintBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSetbackprinting() : ?bool
+    public function getSetbackprinting(): ?bool
     {
         return $this->getData(self::SET_BACK_PRINTING);
     }

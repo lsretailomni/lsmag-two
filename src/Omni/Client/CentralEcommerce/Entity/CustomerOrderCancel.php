@@ -37,7 +37,7 @@ class CustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -55,7 +55,7 @@ class CustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -73,7 +73,7 @@ class CustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getCustomerorderdocumentid() : ?string
+    public function getCustomerorderdocumentid(): ?string
     {
         return $this->getData(self::CUSTOMER_ORDER_DOCUMENT_ID);
     }

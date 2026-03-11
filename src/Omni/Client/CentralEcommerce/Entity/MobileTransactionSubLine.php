@@ -215,7 +215,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNumber() : ?string
+    public function getNumber(): ?string
     {
         return $this->getData(self::NUMBER);
     }
@@ -233,7 +233,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcode() : ?string
+    public function getBarcode(): ?string
     {
         return $this->getData(self::BARCODE);
     }
@@ -251,7 +251,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -269,7 +269,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUomid() : ?string
+    public function getUomid(): ?string
     {
         return $this->getData(self::UOM_ID);
     }
@@ -287,7 +287,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetprice() : ?float
+    public function getNetprice(): ?float
     {
         return $this->getData(self::NET_PRICE);
     }
@@ -305,7 +305,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPrice() : ?float
+    public function getPrice(): ?float
     {
         return $this->getData(self::PRICE);
     }
@@ -323,7 +323,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -341,7 +341,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountamount() : ?float
+    public function getDiscountamount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
@@ -359,7 +359,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountpercent() : ?float
+    public function getDiscountpercent(): ?float
     {
         return $this->getData(self::DISCOUNT_PERCENT);
     }
@@ -377,7 +377,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetamount() : ?float
+    public function getNetamount(): ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
@@ -395,7 +395,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTaxamount() : ?float
+    public function getTaxamount(): ?float
     {
         return $this->getData(self::TAXAMOUNT);
     }
@@ -413,7 +413,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatbuspostinggroup() : ?string
+    public function getVatbuspostinggroup(): ?string
     {
         return $this->getData(self::VAT_BUS_POSTING_GROUP);
     }
@@ -431,7 +431,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatprodpostinggroup() : ?string
+    public function getVatprodpostinggroup(): ?string
     {
         return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
@@ -449,7 +449,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGenbuspostinggroup() : ?string
+    public function getGenbuspostinggroup(): ?string
     {
         return $this->getData(self::GEN_BUS_POSTING_GROUP);
     }
@@ -467,7 +467,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getGenprodpostinggroup() : ?string
+    public function getGenprodpostinggroup(): ?string
     {
         return $this->getData(self::GEN_PROD_POSTING_GROUP);
     }
@@ -485,7 +485,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getManualdiscountpercent() : ?float
+    public function getManualdiscountpercent(): ?float
     {
         return $this->getData(self::MANUAL_DISCOUNT_PERCENT);
     }
@@ -503,7 +503,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getManualdiscountamount() : ?float
+    public function getManualdiscountamount(): ?float
     {
         return $this->getData(self::MANUAL_DISCOUNT_AMOUNT);
     }
@@ -557,7 +557,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -575,7 +575,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantdescription() : ?string
+    public function getVariantdescription(): ?string
     {
         return $this->getData(self::VARIANT_DESCRIPTION);
     }
@@ -593,7 +593,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUomdescription() : ?string
+    public function getUomdescription(): ?string
     {
         return $this->getData(self::UOM_DESCRIPTION);
     }
@@ -611,7 +611,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransdate() : ?string
+    public function getTransdate(): ?string
     {
         return $this->getData(self::TRANS_DATE);
     }
@@ -665,7 +665,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -719,7 +719,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLinekitchenstatuscode() : ?string
+    public function getLinekitchenstatuscode(): ?string
     {
         return $this->getData(self::LINE_KITCHEN_STATUS_CODE);
     }
@@ -737,7 +737,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getModifiergroupcode() : ?string
+    public function getModifiergroupcode(): ?string
     {
         return $this->getData(self::MODIFIER_GROUP_CODE);
     }
@@ -755,7 +755,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getModifiersubcode() : ?string
+    public function getModifiersubcode(): ?string
     {
         return $this->getData(self::MODIFIER_SUB_CODE);
     }
@@ -809,7 +809,7 @@ class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDealid() : ?string
+    public function getDealid(): ?string
     {
         return $this->getData(self::DEAL_ID);
     }

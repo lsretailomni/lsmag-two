@@ -37,7 +37,7 @@ class SPGLogSecurityCheckResponse extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getOrderid() : ?string
+    public function getOrderid(): ?string
     {
         return $this->getData(self::ORDER_ID);
     }
@@ -55,7 +55,7 @@ class SPGLogSecurityCheckResponse extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?bool
      */
-    public function getValidationsuccessful() : ?bool
+    public function getValidationsuccessful(): ?bool
     {
         return $this->getData(self::VALIDATION_SUCCESSFUL);
     }
@@ -73,7 +73,7 @@ class SPGLogSecurityCheckResponse extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getValidationerror() : ?string
+    public function getValidationerror(): ?string
     {
         return $this->getData(self::VALIDATION_ERROR);
     }
@@ -91,7 +91,7 @@ class SPGLogSecurityCheckResponse extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -109,7 +109,7 @@ class SPGLogSecurityCheckResponse extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

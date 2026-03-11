@@ -59,7 +59,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSecuritytoken() : ?string
+    public function getSecuritytoken(): ?string
     {
         return $this->getData(self::SECURITY_TOKEN);
     }
@@ -77,7 +77,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFriendlyname() : ?string
+    public function getFriendlyname(): ?string
     {
         return $this->getData(self::FRIENDLY_NAME);
     }
@@ -95,7 +95,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatus() : ?string
+    public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);
     }
@@ -113,7 +113,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasonblocked() : ?string
+    public function getReasonblocked(): ?string
     {
         return $this->getData(self::REASON_BLOCKED);
     }
@@ -131,7 +131,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateblocked() : ?string
+    public function getDateblocked(): ?string
     {
         return $this->getData(self::DATE_BLOCKED);
     }
@@ -149,7 +149,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBlockedby() : ?string
+    public function getBlockedby(): ?string
     {
         return $this->getData(self::BLOCKED_BY);
     }
@@ -167,7 +167,7 @@ class MemberDevice extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
     }

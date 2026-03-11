@@ -83,7 +83,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNo() : ?string
+    public function getNo(): ?string
     {
         return $this->getData(self::NO);
     }
@@ -101,7 +101,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatus() : ?string
+    public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);
     }
@@ -119,7 +119,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccounttype() : ?string
+    public function getAccounttype(): ?string
     {
         return $this->getData(self::ACCOUNT_TYPE);
     }
@@ -137,7 +137,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -155,7 +155,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLinkedtocustomerno() : ?string
+    public function getLinkedtocustomerno(): ?string
     {
         return $this->getData(self::LINKED_TO_CUSTOMER_NO);
     }
@@ -173,7 +173,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateactivated() : ?string
+    public function getDateactivated(): ?string
     {
         return $this->getData(self::DATE_ACTIVATED);
     }
@@ -191,7 +191,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getActivatedby() : ?string
+    public function getActivatedby(): ?string
     {
         return $this->getData(self::ACTIVATED_BY);
     }
@@ -209,7 +209,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubcode() : ?string
+    public function getClubcode(): ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
@@ -227,7 +227,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSchemecode() : ?string
+    public function getSchemecode(): ?string
     {
         return $this->getData(self::SCHEME_CODE);
     }
@@ -245,7 +245,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPricegroup() : ?string
+    public function getPricegroup(): ?string
     {
         return $this->getData(self::PRICE_GROUP);
     }
@@ -263,7 +263,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustdiscgroup() : ?string
+    public function getCustdiscgroup(): ?string
     {
         return $this->getData(self::CUST_DISC_GROUP);
     }
@@ -281,7 +281,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNoseries() : ?string
+    public function getNoseries(): ?string
     {
         return $this->getData(self::NO_SERIES);
     }
@@ -299,7 +299,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirationperiodtype() : ?string
+    public function getExpirationperiodtype(): ?string
     {
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
     }
@@ -317,7 +317,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getSalescurrentyear() : ?float
+    public function getSalescurrentyear(): ?float
     {
         return $this->getData(self::SALES_CURRENT_YEAR);
     }
@@ -335,7 +335,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLastsalesdate() : ?string
+    public function getLastsalesdate(): ?string
     {
         return $this->getData(self::LAST_SALES_DATE);
     }
@@ -353,7 +353,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getBlocked() : ?bool
+    public function getBlocked(): ?bool
     {
         return $this->getData(self::BLOCKED);
     }
@@ -371,7 +371,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReasonblocked() : ?string
+    public function getReasonblocked(): ?string
     {
         return $this->getData(self::REASON_BLOCKED);
     }
@@ -389,7 +389,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDateblocked() : ?string
+    public function getDateblocked(): ?string
     {
         return $this->getData(self::DATE_BLOCKED);
     }
@@ -407,7 +407,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBlockedby() : ?string
+    public function getBlockedby(): ?string
     {
         return $this->getData(self::BLOCKED_BY);
     }
@@ -425,7 +425,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreateddate() : ?string
+    public function getCreateddate(): ?string
     {
         return $this->getData(self::CREATED_DATE);
     }
@@ -443,7 +443,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedby() : ?string
+    public function getCreatedby(): ?string
     {
         return $this->getData(self::CREATED_BY);
     }
@@ -461,7 +461,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalremainingpoints() : ?float
+    public function getTotalremainingpoints(): ?float
     {
         return $this->getData(self::TOTAL_REMAINING_POINTS);
     }
@@ -479,7 +479,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalsales() : ?float
+    public function getTotalsales(): ?float
     {
         return $this->getData(self::TOTAL_SALES);
     }
@@ -497,7 +497,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getExpirationinperiodint() : ?float
+    public function getExpirationinperiodint(): ?float
     {
         return $this->getData(self::EXPIRATIONIN_PERIOD_INT);
     }
@@ -515,7 +515,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccountno() : ?string
+    public function getAccountno(): ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
@@ -533,7 +533,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMaincontact() : ?string
+    public function getMaincontact(): ?string
     {
         return $this->getData(self::MAIN_CONTACT);
     }
@@ -551,7 +551,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMaincontactname() : ?string
+    public function getMaincontactname(): ?string
     {
         return $this->getData(self::MAIN_CONTACT_NAME);
     }
@@ -569,7 +569,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerno() : ?string
+    public function getCustomerno(): ?string
     {
         return $this->getData(self::CUSTOMER_NO);
     }
@@ -587,7 +587,7 @@ class MemberAccount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLanguagecode() : ?string
+    public function getLanguagecode(): ?string
     {
         return $this->getData(self::LANGUAGE_CODE);
     }

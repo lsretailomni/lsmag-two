@@ -31,7 +31,7 @@ class PublishedOfferDetailLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOfferno() : ?string
+    public function getOfferno(): ?string
     {
         return $this->getData(self::OFFER_NO);
     }
@@ -67,7 +67,7 @@ class PublishedOfferDetailLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }

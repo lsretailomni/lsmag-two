@@ -49,7 +49,7 @@ class LeftRightLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLeftline() : ?string
+    public function getLeftline(): ?string
     {
         return $this->getData(self::LEFT_LINE);
     }
@@ -67,7 +67,7 @@ class LeftRightLine extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRightline() : ?string
+    public function getRightline(): ?string
     {
         return $this->getData(self::RIGHT_LINE);
     }

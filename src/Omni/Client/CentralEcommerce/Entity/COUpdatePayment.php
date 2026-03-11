@@ -35,7 +35,7 @@ class COUpdatePayment extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -53,7 +53,7 @@ class COUpdatePayment extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -71,7 +71,7 @@ class COUpdatePayment extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?bool
      */
-    public function getWebpreauthnotauthorize() : ?bool
+    public function getWebpreauthnotauthorize(): ?bool
     {
         return $this->getData(self::WEB_PRE_AUTH_NOT_AUTHORIZE);
     }

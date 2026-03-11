@@ -35,7 +35,7 @@ class SendDocument extends \Magento\Catalog\Model\AbstractModel implements Reque
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -53,7 +53,7 @@ class SendDocument extends \Magento\Catalog\Model\AbstractModel implements Reque
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -71,7 +71,7 @@ class SendDocument extends \Magento\Catalog\Model\AbstractModel implements Reque
     /**
      * @return ?bool
      */
-    public function getAddonly() : ?bool
+    public function getAddonly(): ?bool
     {
         return $this->getData(self::ADD_ONLY);
     }

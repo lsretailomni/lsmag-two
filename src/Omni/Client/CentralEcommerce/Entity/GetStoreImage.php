@@ -37,7 +37,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getRespondcode() : ?string
+    public function getRespondcode(): ?string
     {
         return $this->getData(self::RESPOND_CODE);
     }
@@ -55,7 +55,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -73,7 +73,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -109,7 +109,7 @@ class GetStoreImage extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getStoreimage() : ?string
+    public function getStoreimage(): ?string
     {
         return $this->getData(self::STORE_IMAGE);
     }

@@ -33,7 +33,7 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -51,7 +51,7 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedatstore() : ?string
+    public function getCreatedatstore(): ?string
     {
         return $this->getData(self::CREATED_AT_STORE);
     }
@@ -69,7 +69,7 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMembercardno() : ?string
+    public function getMembercardno(): ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -87,7 +87,7 @@ class CustomerOrderHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getShiporder() : ?bool
+    public function getShiporder(): ?bool
     {
         return $this->getData(self::SHIP_ORDER);
     }

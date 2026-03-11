@@ -57,6 +57,32 @@ class BasketHelper extends AbstractHelperOmni
         $this->calculateBasket = $this->lsr->getPlaceToCalculateBasket();
     }
 
+    public function updateWishlistAtOmni(OneList $oneList)
+    {
+        return $this->saveWishlistToOmni($oneList);
+    }
+
+    public function saveWishlistToOmni(OneList $list)
+    {
+        // @codingStandardsIgnoreLine
+        $operation = new Operation\OneListSave();
+
+        $list->setStoreId($this->getDefaultWebStore());
+
+        // @codingStandardsIgnoreLine
+        $request = (new Entity\OneListSave())
+            ->setOneList($list)
+            ->setCalculate(true);
+
+        /** @var Entity\OneListSaveResponse $response */
+        $response = $operation->execute($request);
+        if ($response) {
+            $this->setWishListInCustomerSession($response->getOneListSaveResult());
+            return $response->getOneListSaveResult();
+        }
+        return false;
+    }
+
     /**
      * This function is overriding in hospitality module
      *

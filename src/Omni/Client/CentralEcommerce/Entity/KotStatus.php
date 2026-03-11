@@ -24,6 +24,8 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
 
     public const ORDER_ID = 'OrderID';
 
+    public const STATUS_MESSAGE = 'StatusMessage';
+
     /**
      * @param ?string $ReceiptNo
      * @return $this
@@ -37,7 +39,7 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -55,7 +57,7 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getKotno() : ?string
+    public function getKotno(): ?string
     {
         return $this->getData(self::KOT_NO);
     }
@@ -73,7 +75,7 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatus() : ?string
+    public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);
     }
@@ -91,7 +93,7 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getConfirmedbyexp() : ?bool
+    public function getConfirmedbyexp(): ?bool
     {
         return $this->getData(self::CONFIRMEDBY_EXP);
     }
@@ -109,7 +111,7 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getKotprodtime() : ?float
+    public function getKotprodtime(): ?float
     {
         return $this->getData(self::KOT_PROD_TIME);
     }
@@ -127,9 +129,27 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrderid() : ?string
+    public function getOrderid(): ?string
     {
         return $this->getData(self::ORDER_ID);
+    }
+
+    /**
+     * @param ?string $StatusMessage
+     * @return $this
+     */
+    public function setStatusmessage(?string $StatusMessage)
+    {
+        $this->setData(self::STATUS_MESSAGE, $StatusMessage);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getStatusmessage(): ?string
+    {
+        return $this->getData(self::STATUS_MESSAGE);
     }
 }
 
