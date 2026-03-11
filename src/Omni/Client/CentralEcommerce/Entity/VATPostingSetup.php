@@ -32,9 +32,6 @@ class VATPostingSetup extends AbstractModel
     public const BLOCKED = 'Blocked';
     public const SALE_VAT_REPORTING_CODE = 'Sale VAT Reporting Code';
     public const PURCH_VAT_REPORTING_CODE = 'Purch. VAT Reporting Code';
-    public const SALES_TAX_CODE_SAFT = 'Sales Tax Code SAF-T';
-    public const PURCHASE_TAX_CODE_SAFT = 'Purchase Tax Code SAF-T';
-    public const STARTING_DATE = 'Starting Date';
     public const NONDEDUCTIBLE_VAT = 'Non-Deductible VAT %';
     public const NONDED_PURCHASE_VAT_ACCOUNT = 'Non-Ded. Purchase VAT Account';
     public const ALLOW_NONDEDUCTIBLE_VAT = 'Allow Non-Deductible VAT';
@@ -68,9 +65,6 @@ class VATPostingSetup extends AbstractModel
 	self::BLOCKED => 'blocked',
 	self::SALE_VAT_REPORTING_CODE => 'sale_vat_reporting_code',
 	self::PURCH_VAT_REPORTING_CODE => 'purch_vat_reporting_code',
-	self::SALES_TAX_CODE_SAFT => 'sales_tax_code_saft',
-	self::PURCHASE_TAX_CODE_SAFT => 'purchase_tax_code_saft',
-	self::STARTING_DATE => 'starting_date',
 	self::NONDEDUCTIBLE_VAT => 'nondeductible_vat',
 	self::NONDED_PURCHASE_VAT_ACCOUNT => 'nonded_purchase_vat_account',
 	self::ALLOW_NONDEDUCTIBLE_VAT => 'allow_nondeductible_vat',
@@ -297,36 +291,6 @@ class VATPostingSetup extends AbstractModel
     public function setPurchVatReportingCode(?string $value)
     {
         return $this->setData(self::PURCH_VAT_REPORTING_CODE, $value);
-    }
-
-    public function getSalesTaxCodeSafT(): ?string
-    {
-        return $this->getData(self::SALES_TAX_CODE_SAFT);
-    }
-
-    public function setSalesTaxCodeSafT(?string $value)
-    {
-        return $this->setData(self::SALES_TAX_CODE_SAFT, $value);
-    }
-
-    public function getPurchaseTaxCodeSafT(): ?string
-    {
-        return $this->getData(self::PURCHASE_TAX_CODE_SAFT);
-    }
-
-    public function setPurchaseTaxCodeSafT(?string $value)
-    {
-        return $this->setData(self::PURCHASE_TAX_CODE_SAFT, $value);
-    }
-
-    public function getStartingDate(): ?string
-    {
-        return $this->getData(self::STARTING_DATE);
-    }
-
-    public function setStartingDate(?string $value)
-    {
-        return $this->setData(self::STARTING_DATE, $value);
     }
 
     public function getNonDeductibleVat(): ?float

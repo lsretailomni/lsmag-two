@@ -46,6 +46,8 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
 
     public const SCAN_DATE_TIME = 'ScanDateTime';
 
+    public const STAFF_ID = 'StaffID';
+
     /**
      * @param int $WorksheetSeqNo
      * @return $this
@@ -350,6 +352,24 @@ class StoreInvTransactionSendV2StoreInvLine extends \Magento\Catalog\Model\Abstr
     public function getScandatetime(): ?string
     {
         return $this->getData(self::SCAN_DATE_TIME);
+    }
+
+    /**
+     * @param ?string $StaffID
+     * @return $this
+     */
+    public function setStaffid(?string $StaffID)
+    {
+        $this->setData(self::STAFF_ID, $StaffID);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getStaffid(): ?string
+    {
+        return $this->getData(self::STAFF_ID);
     }
 }
 

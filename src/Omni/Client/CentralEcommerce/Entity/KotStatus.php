@@ -24,6 +24,8 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
 
     public const ORDER_ID = 'OrderID';
 
+    public const STATUS_MESSAGE = 'StatusMessage';
+
     /**
      * @param ?string $ReceiptNo
      * @return $this
@@ -130,6 +132,24 @@ class KotStatus extends \Magento\Catalog\Model\AbstractModel
     public function getOrderid(): ?string
     {
         return $this->getData(self::ORDER_ID);
+    }
+
+    /**
+     * @param ?string $StatusMessage
+     * @return $this
+     */
+    public function setStatusmessage(?string $StatusMessage)
+    {
+        $this->setData(self::STATUS_MESSAGE, $StatusMessage);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getStatusmessage(): ?string
+    {
+        return $this->getData(self::STATUS_MESSAGE);
     }
 }
 

@@ -18,6 +18,7 @@ class LSCRetailCalendarLine extends AbstractModel
     public const STARTING_DATE = 'Starting Date';
     public const ENDING_DATE = 'Ending Date';
     public const DAY_NO = 'Day No.';
+    public const DAY_NAME = 'Day - Name';
     public const REASON_CLOSED = 'Reason Closed';
     public const LINE_TYPE = 'Line Type';
 
@@ -29,6 +30,7 @@ class LSCRetailCalendarLine extends AbstractModel
 	self::STARTING_DATE => 'starting_date',
 	self::ENDING_DATE => 'ending_date',
 	self::DAY_NO => 'day_no',
+	self::DAY_NAME => 'day_name',
 	self::REASON_CLOSED => 'reason_closed',
 	self::LINE_TYPE => 'line_type',
     ];
@@ -107,6 +109,16 @@ class LSCRetailCalendarLine extends AbstractModel
     public function setDayNo(?int $value)
     {
         return $this->setData(self::DAY_NO, $value);
+    }
+
+    public function getDayName(): ?string
+    {
+        return $this->getData(self::DAY_NAME);
+    }
+
+    public function setDayName(?string $value)
+    {
+        return $this->setData(self::DAY_NAME, $value);
     }
 
     public function getReasonClosed(): ?string

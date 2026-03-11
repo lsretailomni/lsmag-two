@@ -26,6 +26,10 @@ class MemberCouponBuffer extends \Magento\Catalog\Model\AbstractModel
 
     public const BARCODE = 'Barcode';
 
+    public const FIRST_VALID_DATE = 'FirstValidDate';
+
+    public const LAST_VALID_DATE = 'LastValidDate';
+
     /**
      * @param ?string $StoreNo
      * @return $this
@@ -150,6 +154,42 @@ class MemberCouponBuffer extends \Magento\Catalog\Model\AbstractModel
     public function getBarcode(): ?string
     {
         return $this->getData(self::BARCODE);
+    }
+
+    /**
+     * @param ?string $FirstValidDate
+     * @return $this
+     */
+    public function setFirstvaliddate(?string $FirstValidDate)
+    {
+        $this->setData(self::FIRST_VALID_DATE, $FirstValidDate);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getFirstvaliddate(): ?string
+    {
+        return $this->getData(self::FIRST_VALID_DATE);
+    }
+
+    /**
+     * @param ?string $LastValidDate
+     * @return $this
+     */
+    public function setLastvaliddate(?string $LastValidDate)
+    {
+        $this->setData(self::LAST_VALID_DATE, $LastValidDate);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getLastvaliddate(): ?string
+    {
+        return $this->getData(self::LAST_VALID_DATE);
     }
 }
 

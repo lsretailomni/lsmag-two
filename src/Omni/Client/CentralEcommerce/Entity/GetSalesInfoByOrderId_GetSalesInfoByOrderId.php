@@ -48,7 +48,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->getData(self::LSC_MEMBER_SALES_DOC_LINE);
     }
 
-    public function setLscMemberSalesDocLine(?array $value)
+    public function setLscMemberSalesDocLine(?LSCMemberSalesDocLine $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
     }

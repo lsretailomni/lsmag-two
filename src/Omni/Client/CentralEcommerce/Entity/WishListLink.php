@@ -18,9 +18,13 @@ class WishListLink extends \Magento\Catalog\Model\AbstractModel implements Reque
 
     public const CARD_NO = 'CardNo';
 
+    public const OWNER = 'Owner';
+
     public const STATUS = 'Status';
 
     public const CAN_EDIT = 'CanEdit';
+
+    public const NAME = 'Name';
 
     public const CONTACT_NO = 'ContactNo';
 
@@ -61,6 +65,24 @@ class WishListLink extends \Magento\Catalog\Model\AbstractModel implements Reque
     }
 
     /**
+     * @param ?bool $Owner
+     * @return $this
+     */
+    public function setOwner(?bool $Owner)
+    {
+        $this->setData(self::OWNER, $Owner);
+        return $this;
+    }
+
+    /**
+     * @return ?bool
+     */
+    public function getOwner(): ?bool
+    {
+        return $this->getData(self::OWNER);
+    }
+
+    /**
      * @param ?string $Status
      * @return $this
      */
@@ -79,21 +101,39 @@ class WishListLink extends \Magento\Catalog\Model\AbstractModel implements Reque
     }
 
     /**
-     * @param ?string $CanEdit
+     * @param ?bool $CanEdit
      * @return $this
      */
-    public function setCanedit(?string $CanEdit)
+    public function setCanedit(?bool $CanEdit)
     {
         $this->setData(self::CAN_EDIT, $CanEdit);
         return $this;
     }
 
     /**
-     * @return ?string
+     * @return ?bool
      */
-    public function getCanedit(): ?string
+    public function getCanedit(): ?bool
     {
         return $this->getData(self::CAN_EDIT);
+    }
+
+    /**
+     * @param ?string $Name
+     * @return $this
+     */
+    public function setName(?string $Name)
+    {
+        $this->setData(self::NAME, $Name);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getName(): ?string
+    {
+        return $this->getData(self::NAME);
     }
 
     /**

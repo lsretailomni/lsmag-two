@@ -16,6 +16,8 @@ class RootWishLists extends \Magento\Catalog\Model\AbstractModel
 
     public const WISH_LIST_LINE = 'WishListLine';
 
+    public const WISH_LIST_LINK = 'WishListLink';
+
     /**
      * @param WishListHeader $WishListHeader
      * @return $this
@@ -50,6 +52,24 @@ class RootWishLists extends \Magento\Catalog\Model\AbstractModel
     public function getWishlistline()
     {
         return $this->getData(self::WISH_LIST_LINE);
+    }
+
+    /**
+     * @param WishListLink $WishListLink
+     * @return $this
+     */
+    public function setWishlistlink($WishListLink)
+    {
+        $this->setData(self::WISH_LIST_LINK, $WishListLink);
+        return $this;
+    }
+
+    /**
+     * @return WishListLink
+     */
+    public function getWishlistlink()
+    {
+        return $this->getData(self::WISH_LIST_LINK);
     }
 }
 
