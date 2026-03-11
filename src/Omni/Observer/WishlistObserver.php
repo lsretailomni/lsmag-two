@@ -75,8 +75,8 @@ class WishlistObserver implements ObserverInterface
             $customerId = $this->customerSession->getCustomer()->getId();
             $wishlistItems = $this->wishlist->loadByCustomerId($customerId)->getItemCollection();
             $oneList = $this->basketHelper->fetchCurrentCustomerWishlist();
-            $oneListItems = $this->basketHelper->getWishListFromCustomerSession()
-                ? $this->basketHelper->getWishListFromCustomerSession()->getItems()
+            $oneListItems = $oneList
+                ? $oneList->getItems()
                 : [];
 
             if (!$oneList->getId()) {

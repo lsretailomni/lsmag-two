@@ -1672,7 +1672,7 @@ class ContactHelper extends AbstractHelper
      * @throws NoSuchEntityException
      * @throws Exception
      */
-    public function updateBasketAndWishlistAfterLogin($result)
+    public function updateRequiredOneListAfterLogin($result)
     {
         $quote = $this->checkoutSession->getQuote();
         $items = $quote->getAllVisibleItems();
