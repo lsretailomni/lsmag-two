@@ -213,7 +213,7 @@ class BasketHelper extends AbstractHelperOmni
 
     /**
      * Get Order Lines and Discount Lines
-     * 
+     *
      * @param Quote $quote
      * @return array
      * @throws InvalidEnumException
@@ -545,7 +545,8 @@ class BasketHelper extends AbstractHelperOmni
         } elseif (!empty($status->getOrderDiscountLines()->getOrderDiscountLine())) {
             if (is_array($status->getOrderDiscountLines()->getOrderDiscountLine())) {
                 foreach ($status->getOrderDiscountLines()->getOrderDiscountLine() as $orderDiscountLine) {
-                    if ($orderDiscountLine->getDiscountType() == 'Coupon') {
+                    if ($orderDiscountLine->getDiscountType() == 'Coupon' || $orderDiscountLine->getCouponCode()
+                        == $couponCode || $orderDiscountLine->getCouponBarcodeNo() == $couponCode) {
                         $status = "success";
                         $this->itemHelper->setDiscountedPricesForItems(
                             $this->checkoutSession->getQuote(),
@@ -555,7 +556,9 @@ class BasketHelper extends AbstractHelperOmni
                     }
                 }
             } else {
-                if ($status->getOrderDiscountLines()->getOrderDiscountLine()->getDiscountType() == 'Coupon') {
+                if ($status->getOrderDiscountLines()->getOrderDiscountLine()->getDiscountType() == 'Coupon' ||
+                    $status->getOrderDiscountLines()->getOrderDiscountLine()->getCouponCode() == $couponCode ||
+                    $status->getOrderDiscountLines()->getOrderDiscountLine()->getCouponBarcodeNo() == $couponCode) {
                     $status = "success";
                     $this->itemHelper->setDiscountedPricesForItems(
                         $this->checkoutSession->getQuote(),
@@ -659,7 +662,7 @@ class BasketHelper extends AbstractHelperOmni
             return null;
         }
 
-        $cardId  = $oneList->getCardId();
+        $cardId = $oneList->getCardId();
 
         /** @var Entity\ArrayOfOneListItem $oneListItems */
         $oneListItems = $oneList->getItems();
@@ -965,13 +968,13 @@ class BasketHelper extends AbstractHelperOmni
             );
             $price      = $item->getPrice();
             $basketData = $this->getOneListCalculation();
-            
+
             if ($basketData instanceof Entity\OrderHosp) {
-                    $orderLines = $basketData ? $basketData->getOrderLines()->getOrderHospLine() : [];    
+                $orderLines = $basketData ? $basketData->getOrderLines()->getOrderHospLine() : [];
             } else {
-                $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];    
+                $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
             }
-            
+
 
             foreach ($orderLines as $line) {
                 if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
@@ -1183,11 +1186,11 @@ class BasketHelper extends AbstractHelperOmni
     {
         if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
             $shippingAddress = $quote->getShippingAddress();
-            $country = $shippingAddress->getCountryId();
+            $country         = $shippingAddress->getCountryId();
             $oneList->setShipToCountryCode($country);
             $storeId = $this->getDefaultWebStore();
             $oneList->setStoreId($storeId);
-            $carrierCode = $shippingAddress->getShippingMethod();
+            $carrierCode    = $shippingAddress->getShippingMethod();
             $isClickCollect = $carrierCode == 'clickandcollect_clickandcollect';
 
             if ($isClickCollect) {
@@ -1200,7 +1203,7 @@ class BasketHelper extends AbstractHelperOmni
                 }
             }
             if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
-                $carrierCode = $shippingAddress->getShippingMethod();
+                $carrierCode    = $shippingAddress->getShippingMethod();
                 $isClickCollect = $carrierCode == 'clickandcollect_clickandcollect';
 
                 if (!$isClickCollect) {
