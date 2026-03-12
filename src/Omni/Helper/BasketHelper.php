@@ -65,7 +65,7 @@ class BasketHelper extends AbstractHelperOmni
      *
      * @return void
      */
-    public function initialize(): void
+    public function initialize() : void
     {
         parent::initialize();
         $this->calculateBasket = $this->lsr->getPlaceToCalculateBasket();
@@ -869,7 +869,8 @@ class BasketHelper extends AbstractHelperOmni
         } elseif (!empty($mobileTransDiscountLines)) {
             if (is_array($mobileTransDiscountLines)) {
                 foreach ($mobileTransDiscountLines as $orderDiscountLine) {
-                    if ($orderDiscountLine->getDiscounttype() == '12') {
+                    if ($orderDiscountLine->getDiscounttype() == '12' || $orderDiscountLine->getCouponcode()
+                        == $couponCode || $orderDiscountLine->getCouponbarcodeno() == $couponCode) {
                         $status = "success";
                         $this->itemHelper->setDiscountedPricesForItems(
                             $this->checkoutSession->getQuote(),
@@ -1032,10 +1033,10 @@ class BasketHelper extends AbstractHelperOmni
                 $this->adminOrderCardId = $customer->getData('lsr_cardid');
             }
         }
-        $webStore       = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
+        $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         $this->storeId = $webStore;
         // @codingStandardsIgnoreStart
-        $list    = $this->get();
+        $list = $this->get();
         return $list;
         // @codingStandardsIgnoreEnd
     }
@@ -1046,7 +1047,7 @@ class BasketHelper extends AbstractHelperOmni
      * @return RootMobileTransaction
      * @throws NoSuchEntityException
      */
-    public function get(): RootMobileTransaction
+    public function get() : RootMobileTransaction
     {
         return $this->fetchFromOmni();
     }
@@ -1057,7 +1058,7 @@ class BasketHelper extends AbstractHelperOmni
      * @return RootMobileTransaction
      * @throws NoSuchEntityException
      */
-    public function fetchFromOmni(): RootMobileTransaction
+    public function fetchFromOmni() : RootMobileTransaction
     {
         // if guest, then empty card id
         $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) ?? $this->adminOrderCardId ?? '';
@@ -1086,9 +1087,11 @@ class BasketHelper extends AbstractHelperOmni
 
         return $this->createInstance(
             RootMobileTransaction::class,
-            ['data' => [
-                RootMobileTransaction::MOBILE_TRANSACTION => $mobileTransaction
-            ]]
+            [
+                'data' => [
+                    RootMobileTransaction::MOBILE_TRANSACTION => $mobileTransaction
+                ]
+            ]
         );
     }
 
@@ -1112,7 +1115,7 @@ class BasketHelper extends AbstractHelperOmni
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $item->getSku()
             );
-            $rowTotal   = $item->getRowTotalInclTax();
+            $rowTotal = $item->getRowTotalInclTax();
             $basketData = $this->getOneListCalculation();
             $orderLines = $basketData ? $basketData->getMobiletransactionline() : [];
 
@@ -1151,7 +1154,7 @@ class BasketHelper extends AbstractHelperOmni
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $item->getSku()
             );
-            $price      = $item->getPrice();
+            $price = $item->getPrice();
             $basketData = $this->getOneListCalculation();
             $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
 
@@ -1272,13 +1275,13 @@ class BasketHelper extends AbstractHelperOmni
     public function calculateOneListFromOrder($order)
     {
         $couponCode = $order->getCouponCode();
-        $quote      = $this->cartRepository->get($order->getQuoteId());
-        $oneList    = $this->getOneListAdmin(
+        $quote = $this->cartRepository->get($order->getQuoteId());
+        $oneList = $this->getOneListAdmin(
             $order->getCustomerEmail(),
             $order->getStore()->getWebsiteId(),
             $order->getCustomerIsGuest()
         );
-        $oneList    = $this->setOneListQuote($quote, $oneList);
+        $oneList = $this->setOneListQuote($quote, $oneList);
         $this->setCouponCodeInAdmin($couponCode);
 
         return $this->update($oneList);
@@ -1324,9 +1327,9 @@ class BasketHelper extends AbstractHelperOmni
      */
     public function syncBasketWithCentral($cartId)
     {
-        $quote      = $this->quoteRepository->getActive($cartId);
+        $quote = $this->quoteRepository->getActive($cartId);
         $basketData = null;
-        $oneList    = $this->get();
+        $oneList = $this->get();
         // add items from the quote to the oneList and return the updated onelist
         $oneList = $this->setOneListQuote($quote, $oneList);
 
@@ -1409,8 +1412,8 @@ class BasketHelper extends AbstractHelperOmni
             $cartQuote->getLsPointsSpent(),
             $basketData
         );
-        $loyaltyPoints      = $cartQuote->getLsPointsSpent();
-        $orderBalance       = $this->dataHelper->getOrderBalance(
+        $loyaltyPoints = $cartQuote->getLsPointsSpent();
+        $orderBalance = $this->dataHelper->getOrderBalance(
             $cartQuote->getLsGiftCardAmountUsed(),
             0,
             $this->getBasketSessionValue()
@@ -1436,15 +1439,15 @@ class BasketHelper extends AbstractHelperOmni
         $pickupDateTimeslot = '';
 
         if (!empty($pickupDate) && !empty($pickupTimeslot)) {
-            $pickupDateFormat   = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
-            $pickupTimeFormat   = $this->lsr->getStoreConfig(LSR::PICKUP_TIME_FORMAT);
+            $pickupDateFormat = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
+            $pickupTimeFormat = $this->lsr->getStoreConfig(LSR::PICKUP_TIME_FORMAT);
             $pickupDateTimeslot = $pickupDate . ' ' . $pickupTimeslot;
             $pickupDateTimeslot = $this->dateTime->date(
                 $pickupDateFormat . ' ' . $pickupTimeFormat,
                 strtotime($pickupDateTimeslot)
             );
         } elseif (!empty($pickupDate)) {
-            $pickupDateFormat   = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
+            $pickupDateFormat = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
             $pickupDateTimeslot = $this->dateTime->date(
                 $pickupDateFormat,
                 strtotime($pickupDate)
