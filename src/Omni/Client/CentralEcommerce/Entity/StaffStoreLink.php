@@ -61,7 +61,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -79,7 +79,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStafffirstname() : ?string
+    public function getStafffirstname(): ?string
     {
         return $this->getData(self::STAFF_FIRST_NAME);
     }
@@ -97,7 +97,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStafflastname() : ?string
+    public function getStafflastname(): ?string
     {
         return $this->getData(self::STAFF_LAST_NAME);
     }
@@ -115,7 +115,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffnameonreceipt() : ?string
+    public function getStaffnameonreceipt(): ?string
     {
         return $this->getData(self::STAFF_NAME_ON_RECEIPT);
     }
@@ -133,7 +133,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -151,7 +151,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStorename() : ?string
+    public function getStorename(): ?string
     {
         return $this->getData(self::STORE_NAME);
     }
@@ -169,7 +169,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPermissiongroup() : ?string
+    public function getPermissiongroup(): ?string
     {
         return $this->getData(self::PERMISSION_GROUP);
     }
@@ -187,7 +187,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosinterfaceprofile() : ?string
+    public function getPosinterfaceprofile(): ?string
     {
         return $this->getData(self::POSINTERFACE_PROFILE);
     }
@@ -205,7 +205,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosstyleprofile() : ?string
+    public function getPosstyleprofile(): ?string
     {
         return $this->getData(self::POSSTYLE_PROFILE);
     }
@@ -223,7 +223,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosmenuprofile() : ?string
+    public function getPosmenuprofile(): ?string
     {
         return $this->getData(self::POSMENU_PROFILE);
     }
@@ -241,7 +241,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getDeliverydriver() : ?bool
+    public function getDeliverydriver(): ?bool
     {
         return $this->getData(self::DELIVERY_DRIVER);
     }
@@ -259,7 +259,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getFloat() : ?float
+    public function getFloat(): ?float
     {
         return $this->getData(self::FLOAT);
     }
@@ -295,7 +295,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getOncall() : ?bool
+    public function getOncall(): ?bool
     {
         return $this->getData(self::ON_CALL);
     }
@@ -331,7 +331,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDefaultsalestype() : ?string
+    public function getDefaultsalestype(): ?string
     {
         return $this->getData(self::DEFAULT_SALES_TYPE);
     }
@@ -367,7 +367,7 @@ class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getDefaultstore() : ?bool
+    public function getDefaultstore(): ?bool
     {
         return $this->getData(self::DEFAULT_STORE);
     }

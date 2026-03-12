@@ -349,7 +349,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -367,7 +367,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeno() : ?string
+    public function getBarcodeno(): ?string
     {
         return $this->getData(self::BARCODE_NO);
     }
@@ -385,7 +385,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -403,7 +403,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalesstaff() : ?string
+    public function getSalesstaff(): ?string
     {
         return $this->getData(self::SALES_STAFF);
     }
@@ -421,7 +421,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemcategorycode() : ?string
+    public function getItemcategorycode(): ?string
     {
         return $this->getData(self::ITEM_CATEGORY_CODE);
     }
@@ -439,7 +439,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getProductgroupcode() : ?string
+    public function getProductgroupcode(): ?string
     {
         return $this->getData(self::PRODUCT_GROUP_CODE);
     }
@@ -457,7 +457,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPrice() : ?float
+    public function getPrice(): ?float
     {
         return $this->getData(self::PRICE);
     }
@@ -475,7 +475,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetprice() : ?float
+    public function getNetprice(): ?float
     {
         return $this->getData(self::NET_PRICE);
     }
@@ -493,7 +493,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -511,7 +511,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPricegroupcode() : ?string
+    public function getPricegroupcode(): ?string
     {
         return $this->getData(self::PRICE_GROUP_CODE);
     }
@@ -529,7 +529,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatbuspostinggroup() : ?string
+    public function getVatbuspostinggroup(): ?string
     {
         return $this->getData(self::VATBUS_POSTING_GROUP);
     }
@@ -547,7 +547,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVatcode() : ?string
+    public function getVatcode(): ?string
     {
         return $this->getData(self::VATCODE);
     }
@@ -565,7 +565,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getXtransactionstatus() : ?string
+    public function getXtransactionstatus(): ?string
     {
         return $this->getData(self::XTRANSACTION_STATUS);
     }
@@ -583,7 +583,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountamount() : ?float
+    public function getDiscountamount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
@@ -601,7 +601,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCostamount() : ?float
+    public function getCostamount(): ?float
     {
         return $this->getData(self::COST_AMOUNT);
     }
@@ -619,7 +619,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDate() : ?string
+    public function getDate(): ?string
     {
         return $this->getData(self::DATE);
     }
@@ -637,7 +637,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTime() : ?string
+    public function getTime(): ?string
     {
         return $this->getData(self::TIME);
     }
@@ -655,7 +655,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiftno() : ?string
+    public function getShiftno(): ?string
     {
         return $this->getData(self::SHIFT_NO);
     }
@@ -673,7 +673,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiftdate() : ?string
+    public function getShiftdate(): ?string
     {
         return $this->getData(self::SHIFT_DATE);
     }
@@ -691,7 +691,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetamount() : ?float
+    public function getNetamount(): ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
@@ -709,7 +709,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getVatamount() : ?float
+    public function getVatamount(): ?float
     {
         return $this->getData(self::VATAMOUNT);
     }
@@ -727,7 +727,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPromotionno() : ?string
+    public function getPromotionno(): ?string
     {
         return $this->getData(self::PROMOTION_NO);
     }
@@ -745,7 +745,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getStandardnetprice() : ?float
+    public function getStandardnetprice(): ?float
     {
         return $this->getData(self::STANDARD_NET_PRICE);
     }
@@ -763,7 +763,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscamountfromstdprice() : ?float
+    public function getDiscamountfromstdprice(): ?float
     {
         return $this->getData(self::DISC_AMOUNT_FROM_STD_PRICE);
     }
@@ -781,7 +781,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getXstatementno() : ?string
+    public function getXstatementno(): ?string
     {
         return $this->getData(self::XSTATEMENT_NO);
     }
@@ -799,7 +799,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerno() : ?string
+    public function getCustomerno(): ?string
     {
         return $this->getData(self::CUSTOMER_NO);
     }
@@ -817,7 +817,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSection() : ?string
+    public function getSection(): ?string
     {
         return $this->getData(self::SECTION);
     }
@@ -835,7 +835,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShelf() : ?string
+    public function getShelf(): ?string
     {
         return $this->getData(self::SHELF);
     }
@@ -853,7 +853,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementcode() : ?string
+    public function getStatementcode(): ?string
     {
         return $this->getData(self::STATEMENT_CODE);
     }
@@ -871,7 +871,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemdiscgroup() : ?string
+    public function getItemdiscgroup(): ?string
     {
         return $this->getData(self::ITEM_DISC_GROUP);
     }
@@ -889,7 +889,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactioncode() : ?string
+    public function getTransactioncode(): ?string
     {
         return $this->getData(self::TRANSACTION_CODE);
     }
@@ -907,7 +907,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -925,7 +925,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getItemnumberscanned() : ?bool
+    public function getItemnumberscanned(): ?bool
     {
         return $this->getData(self::ITEM_NUMBER_SCANNED);
     }
@@ -943,7 +943,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getKeyboarditementry() : ?bool
+    public function getKeyboarditementry(): ?bool
     {
         return $this->getData(self::KEYBOARD_ITEM_ENTRY);
     }
@@ -961,7 +961,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPriceinbarcode() : ?bool
+    public function getPriceinbarcode(): ?bool
     {
         return $this->getData(self::PRICEIN_BARCODE);
     }
@@ -979,7 +979,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPricechange() : ?bool
+    public function getPricechange(): ?bool
     {
         return $this->getData(self::PRICE_CHANGE);
     }
@@ -997,7 +997,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getWeightmanuallyentered() : ?bool
+    public function getWeightmanuallyentered(): ?bool
     {
         return $this->getData(self::WEIGHT_MANUALLY_ENTERED);
     }
@@ -1015,7 +1015,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getLinewasdiscounted() : ?bool
+    public function getLinewasdiscounted(): ?bool
     {
         return $this->getData(self::LINEWAS_DISCOUNTED);
     }
@@ -1033,7 +1033,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getScaleitem() : ?bool
+    public function getScaleitem(): ?bool
     {
         return $this->getData(self::SCALE_ITEM);
     }
@@ -1051,7 +1051,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getWeightitem() : ?bool
+    public function getWeightitem(): ?bool
     {
         return $this->getData(self::WEIGHT_ITEM);
     }
@@ -1069,7 +1069,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getReturnnosale() : ?bool
+    public function getReturnnosale(): ?bool
     {
         return $this->getData(self::RETURN_NO_SALE);
     }
@@ -1087,7 +1087,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getItemcorrectedline() : ?bool
+    public function getItemcorrectedline(): ?bool
     {
         return $this->getData(self::ITEM_CORRECTED_LINE);
     }
@@ -1105,7 +1105,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTypeofsale() : ?string
+    public function getTypeofsale(): ?string
     {
         return $this->getData(self::TYPEOF_SALE);
     }
@@ -1123,7 +1123,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getLinkednonotorig() : ?bool
+    public function getLinkednonotorig(): ?bool
     {
         return $this->getData(self::LINKED_NONOT_ORIG);
     }
@@ -1141,7 +1141,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getOrigofalinkeditemlist() : ?bool
+    public function getOrigofalinkeditemlist(): ?bool
     {
         return $this->getData(self::ORIGOFA_LINKED_ITEM_LIST);
     }
@@ -1159,7 +1159,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -1177,7 +1177,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -1195,7 +1195,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItempostinggroup() : ?string
+    public function getItempostinggroup(): ?string
     {
         return $this->getData(self::ITEM_POSTING_GROUP);
     }
@@ -1213,7 +1213,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalroundedamt() : ?float
+    public function getTotalroundedamt(): ?float
     {
         return $this->getData(self::TOTAL_ROUNDED_AMT);
     }
@@ -1231,7 +1231,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCounter() : ?float
+    public function getCounter(): ?float
     {
         return $this->getData(self::COUNTER);
     }
@@ -1249,7 +1249,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -1267,7 +1267,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSerialno() : ?string
+    public function getSerialno(): ?string
     {
         return $this->getData(self::SERIAL_NO);
     }
@@ -1285,7 +1285,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSeriallotnonotvalid() : ?bool
+    public function getSeriallotnonotvalid(): ?bool
     {
         return $this->getData(self::SERIAL_LOT_NO_NOT_VALID);
     }
@@ -1303,7 +1303,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLotno() : ?string
+    public function getLotno(): ?string
     {
         return $this->getData(self::LOT_NO);
     }
@@ -1321,7 +1321,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirationdate() : ?string
+    public function getExpirationdate(): ?string
     {
         return $this->getData(self::EXPIRATION_DATE);
     }
@@ -1339,7 +1339,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberpointstype() : ?string
+    public function getMemberpointstype(): ?string
     {
         return $this->getData(self::MEMBER_POINTS_TYPE);
     }
@@ -1357,7 +1357,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getMemberpoints() : ?float
+    public function getMemberpoints(): ?float
     {
         return $this->getData(self::MEMBER_POINTS);
     }
@@ -1375,7 +1375,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getOfferblockedpoints() : ?bool
+    public function getOfferblockedpoints(): ?bool
     {
         return $this->getData(self::OFFER_BLOCKED_POINTS);
     }
@@ -1393,7 +1393,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getLinediscount() : ?float
+    public function getLinediscount(): ?float
     {
         return $this->getData(self::LINE_DISCOUNT);
     }
@@ -1411,7 +1411,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getReplicated() : ?bool
+    public function getReplicated(): ?bool
     {
         return $this->getData(self::REPLICATED);
     }
@@ -1429,7 +1429,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCustomerdiscount() : ?float
+    public function getCustomerdiscount(): ?float
     {
         return $this->getData(self::CUSTOMER_DISCOUNT);
     }
@@ -1447,7 +1447,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getInfocodediscount() : ?float
+    public function getInfocodediscount(): ?float
     {
         return $this->getData(self::INFOCODE_DISCOUNT);
     }
@@ -1465,7 +1465,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCustinvoicediscount() : ?float
+    public function getCustinvoicediscount(): ?float
     {
         return $this->getData(self::CUST_INVOICE_DISCOUNT);
     }
@@ -1483,7 +1483,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitofmeasure() : ?string
+    public function getUnitofmeasure(): ?string
     {
         return $this->getData(self::UNITOF_MEASURE);
     }
@@ -1501,7 +1501,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getUomquantity() : ?float
+    public function getUomquantity(): ?float
     {
         return $this->getData(self::UOMQUANTITY);
     }
@@ -1519,7 +1519,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getUomprice() : ?float
+    public function getUomprice(): ?float
     {
         return $this->getData(self::UOMPRICE);
     }
@@ -1537,7 +1537,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotaldiscount() : ?float
+    public function getTotaldiscount(): ?float
     {
         return $this->getData(self::TOTAL_DISCOUNT);
     }
@@ -1555,7 +1555,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotaldisc() : ?float
+    public function getTotaldisc(): ?float
     {
         return $this->getData(self::TOTAL_DISC);
     }
@@ -1591,7 +1591,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPeriodicdisctype() : ?string
+    public function getPeriodicdisctype(): ?string
     {
         return $this->getData(self::PERIODIC_DISC_TYPE);
     }
@@ -1609,7 +1609,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPeriodicdiscgroup() : ?string
+    public function getPeriodicdiscgroup(): ?string
     {
         return $this->getData(self::PERIODIC_DISC_GROUP);
     }
@@ -1627,7 +1627,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPeriodicdiscount() : ?float
+    public function getPeriodicdiscount(): ?float
     {
         return $this->getData(self::PERIODIC_DISCOUNT);
     }
@@ -1645,7 +1645,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getDealline() : ?bool
+    public function getDealline(): ?bool
     {
         return $this->getData(self::DEAL_LINE);
     }
@@ -1699,7 +1699,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDeallineaddedamt() : ?float
+    public function getDeallineaddedamt(): ?float
     {
         return $this->getData(self::DEAL_LINE_ADDED_AMT);
     }
@@ -1717,7 +1717,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDealmodifieraddedamt() : ?float
+    public function getDealmodifieraddedamt(): ?float
     {
         return $this->getData(self::DEAL_MODIFIER_ADDED_AMT);
     }
@@ -1753,7 +1753,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountamtforprinting() : ?float
+    public function getDiscountamtforprinting(): ?float
     {
         return $this->getData(self::DISCOUNT_AMT_FOR_PRINTING);
     }
@@ -1771,7 +1771,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCoupondiscount() : ?float
+    public function getCoupondiscount(): ?float
     {
         return $this->getData(self::COUPON_DISCOUNT);
     }
@@ -1789,7 +1789,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getCouponamtforprinting() : ?float
+    public function getCouponamtforprinting(): ?float
     {
         return $this->getData(self::COUPON_AMT_FOR_PRINTING);
     }
@@ -1825,7 +1825,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalestype() : ?string
+    public function getSalestype(): ?string
     {
         return $this->getData(self::SALES_TYPE);
     }
@@ -1843,7 +1843,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrigfrominfocode() : ?string
+    public function getOrigfrominfocode(): ?string
     {
         return $this->getData(self::ORIGFROM_INFOCODE);
     }
@@ -1861,7 +1861,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrigfromsubcode() : ?string
+    public function getOrigfromsubcode(): ?string
     {
         return $this->getData(self::ORIGFROM_SUBCODE);
     }
@@ -1933,7 +1933,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getInfocodeselectedqty() : ?float
+    public function getInfocodeselectedqty(): ?float
     {
         return $this->getData(self::INFOCODE_SELECTED_QTY);
     }
@@ -1951,7 +1951,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getParentitemno() : ?string
+    public function getParentitemno(): ?string
     {
         return $this->getData(self::PARENT_ITEM_NO);
     }
@@ -1969,7 +1969,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrigtransstore() : ?string
+    public function getOrigtransstore(): ?string
     {
         return $this->getData(self::ORIG_TRANS_STORE);
     }
@@ -1987,7 +1987,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOrigtranspos() : ?string
+    public function getOrigtranspos(): ?string
     {
         return $this->getData(self::ORIG_TRANS_POS);
     }
@@ -2041,7 +2041,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getRefundqty() : ?float
+    public function getRefundqty(): ?float
     {
         return $this->getData(self::REFUND_QTY);
     }
@@ -2095,7 +2095,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRefundedposno() : ?string
+    public function getRefundedposno(): ?string
     {
         return $this->getData(self::REFUNDED_POSNO);
     }
@@ -2113,7 +2113,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRefundedstoreno() : ?string
+    public function getRefundedstoreno(): ?string
     {
         return $this->getData(self::REFUNDED_STORE_NO);
     }
@@ -2131,7 +2131,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getRetailspecialorder() : ?bool
+    public function getRetailspecialorder(): ?bool
     {
         return $this->getData(self::RETAIL_SPECIAL_ORDER);
     }
@@ -2149,7 +2149,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeliveringmethod() : ?string
+    public function getDeliveringmethod(): ?string
     {
         return $this->getData(self::DELIVERING_METHOD);
     }
@@ -2167,7 +2167,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVendordeliversto() : ?string
+    public function getVendordeliversto(): ?string
     {
         return $this->getData(self::VENDOR_DELIVERSTO);
     }
@@ -2185,7 +2185,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourcing() : ?string
+    public function getSourcing(): ?string
     {
         return $this->getData(self::SOURCING);
     }
@@ -2203,7 +2203,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeliverfrom() : ?string
+    public function getDeliverfrom(): ?string
     {
         return $this->getData(self::DELIVERFROM);
     }
@@ -2221,7 +2221,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeliverylocationcode() : ?string
+    public function getDeliverylocationcode(): ?string
     {
         return $this->getData(self::DELIVERY_LOCATION_CODE);
     }
@@ -2239,7 +2239,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getSpoprepayment() : ?float
+    public function getSpoprepayment(): ?float
     {
         return $this->getData(self::SPOPREPAYMENT);
     }
@@ -2257,7 +2257,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPaymentActual() : ?float
+    public function getPaymentActual(): ?float
     {
         return $this->getData(self::PAYMENT_ACTUAL);
     }
@@ -2275,7 +2275,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getWhseprocess() : ?string
+    public function getWhseprocess(): ?string
     {
         return $this->getData(self::WHSE_PROCESS);
     }
@@ -2293,7 +2293,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatus() : ?string
+    public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);
     }
@@ -2311,7 +2311,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeliverystatus() : ?string
+    public function getDeliverystatus(): ?string
     {
         return $this->getData(self::DELIVERY_STATUS);
     }
@@ -2329,7 +2329,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getConfigurationid() : ?string
+    public function getConfigurationid(): ?string
     {
         return $this->getData(self::CONFIGURATION_ID);
     }
@@ -2347,7 +2347,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getMandatoryoptionsexist() : ?bool
+    public function getMandatoryoptionsexist(): ?bool
     {
         return $this->getData(self::MANDATORY_OPTIONS_EXIST);
     }
@@ -2365,7 +2365,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddchargeoption() : ?string
+    public function getAddchargeoption(): ?string
     {
         return $this->getData(self::ADD_CHARGE_OPTION);
     }
@@ -2383,7 +2383,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeliveryreferenceno() : ?string
+    public function getDeliveryreferenceno(): ?string
     {
         return $this->getData(self::DELIVERY_REFERENCE_NO);
     }
@@ -2401,7 +2401,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeliveryuserid() : ?string
+    public function getDeliveryuserid(): ?string
     {
         return $this->getData(self::DELIVERY_USER_ID);
     }
@@ -2419,7 +2419,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDeliverydatetime() : ?string
+    public function getDeliverydatetime(): ?string
     {
         return $this->getData(self::DELIVERY_DATE_TIME);
     }
@@ -2437,7 +2437,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOptionvaluetext() : ?string
+    public function getOptionvaluetext(): ?string
     {
         return $this->getData(self::OPTION_VALUE_TEXT);
     }
@@ -2455,7 +2455,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEstimateddeliverydate() : ?string
+    public function getEstimateddeliverydate(): ?string
     {
         return $this->getData(self::ESTIMATED_DELIVERY_DATE);
     }
@@ -2473,7 +2473,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNolaterthandate() : ?string
+    public function getNolaterthandate(): ?string
     {
         return $this->getData(self::NOLATERTHAN_DATE);
     }
@@ -2491,7 +2491,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPaymentAtorderentryLimit() : ?float
+    public function getPaymentAtorderentryLimit(): ?float
     {
         return $this->getData(self::PAYMENT_AT_ORDER_ENTRY_LIMIT);
     }
@@ -2509,7 +2509,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPaymentAtdeliveryLimit() : ?float
+    public function getPaymentAtdeliveryLimit(): ?float
     {
         return $this->getData(self::PAYMENT_AT_DELIVERY_LIMIT);
     }
@@ -2527,7 +2527,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReturnpolicy() : ?string
+    public function getReturnpolicy(): ?string
     {
         return $this->getData(self::RETURN_POLICY);
     }
@@ -2545,7 +2545,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNonrefundamount() : ?float
+    public function getNonrefundamount(): ?float
     {
         return $this->getData(self::NON_REFUND_AMOUNT);
     }
@@ -2563,7 +2563,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourcingstatus() : ?string
+    public function getSourcingstatus(): ?string
     {
         return $this->getData(self::SOURCING_STATUS);
     }
@@ -2581,7 +2581,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPaymentAtpurchaseorderLimit() : ?float
+    public function getPaymentAtpurchaseorderLimit(): ?float
     {
         return $this->getData(self::PAYMENT_AT_PURCHASE_ORDER_LIMIT);
     }
@@ -2599,7 +2599,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSpodocumentmethod() : ?string
+    public function getSpodocumentmethod(): ?string
     {
         return $this->getData(self::SPODOCUMENT_METHOD);
     }
@@ -2617,7 +2617,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoresaleslocation() : ?string
+    public function getStoresaleslocation(): ?string
     {
         return $this->getData(self::STORE_SALES_LOCATION);
     }
@@ -2635,7 +2635,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSpowhselocation() : ?string
+    public function getSpowhselocation(): ?string
     {
         return $this->getData(self::SPOWHSE_LOCATION);
     }
@@ -2653,7 +2653,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVendorno() : ?string
+    public function getVendorno(): ?string
     {
         return $this->getData(self::VENDOR_NO);
     }
@@ -2671,7 +2671,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAdditionalchargecode() : ?string
+    public function getAdditionalchargecode(): ?string
     {
         return $this->getData(self::ADDITIONAL_CHARGE_CODE);
     }
@@ -2689,7 +2689,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPaymentprofilecode() : ?string
+    public function getPaymentprofilecode(): ?string
     {
         return $this->getData(self::PAYMENT_PROFILE_CODE);
     }
@@ -2707,7 +2707,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getDelivernow() : ?bool
+    public function getDelivernow(): ?bool
     {
         return $this->getData(self::DELIVER_NOW);
     }
@@ -2725,7 +2725,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCancelpermitted() : ?string
+    public function getCancelpermitted(): ?string
     {
         return $this->getData(self::CANCEL_PERMITTED);
     }
@@ -2743,7 +2743,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getCancelnow() : ?bool
+    public function getCancelnow(): ?bool
     {
         return $this->getData(self::CANCEL_NOW);
     }
@@ -2779,7 +2779,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQtytohandle() : ?float
+    public function getQtytohandle(): ?float
     {
         return $this->getData(self::QTYTO_HANDLE);
     }
@@ -2797,7 +2797,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrecancelsourcingstatus() : ?string
+    public function getPrecancelsourcingstatus(): ?string
     {
         return $this->getData(self::PRE_CANCEL_SOURCING_STATUS);
     }
@@ -2815,7 +2815,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPostavilableqty() : ?float
+    public function getPostavilableqty(): ?float
     {
         return $this->getData(self::POST_AVILABLE_QTY);
     }
@@ -2833,7 +2833,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPostdeliveredqty() : ?float
+    public function getPostdeliveredqty(): ?float
     {
         return $this->getData(self::POST_DELIVERED_QTY);
     }
@@ -2851,7 +2851,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxgroupcode() : ?string
+    public function getTaxgroupcode(): ?string
     {
         return $this->getData(self::TAX_GROUP_CODE);
     }
@@ -2869,7 +2869,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxcalculationtype() : ?string
+    public function getTaxcalculationtype(): ?string
     {
         return $this->getData(self::TAX_CALCULATION_TYPE);
     }
@@ -2887,7 +2887,7 @@ class TransactionOrderEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getSalestaxrounding() : ?float
+    public function getSalestaxrounding(): ?float
     {
         return $this->getData(self::SALES_TAX_ROUNDING);
     }

@@ -43,7 +43,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -61,7 +61,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -79,7 +79,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -97,7 +97,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getPosterminal() : ?string
+    public function getPosterminal(): ?string
     {
         return $this->getData(self::POS_TERMINAL);
     }
@@ -115,7 +115,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -133,7 +133,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getXzreport() : ?string
+    public function getXzreport(): ?string
     {
         return $this->getData(self::XZREPORT);
     }
@@ -151,7 +151,7 @@ class MobilePosZReport extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getZreportid() : ?string
+    public function getZreportid(): ?string
     {
         return $this->getData(self::ZREPORT_ID);
     }

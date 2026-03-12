@@ -35,7 +35,7 @@ class MobilelPosGetLastReceiptNo extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getRespondcode() : ?string
+    public function getRespondcode(): ?string
     {
         return $this->getData(self::RESPOND_CODE);
     }
@@ -53,7 +53,7 @@ class MobilelPosGetLastReceiptNo extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -71,7 +71,7 @@ class MobilelPosGetLastReceiptNo extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getTerminalno() : ?string
+    public function getTerminalno(): ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -89,7 +89,7 @@ class MobilelPosGetLastReceiptNo extends \Magento\Catalog\Model\AbstractModel im
     /**
      * @return ?string
      */
-    public function getLastreceiptno() : ?string
+    public function getLastreceiptno(): ?string
     {
         return $this->getData(self::LAST_RECEIPT_NO);
     }

@@ -73,7 +73,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getTerminalno() : ?string
+    public function getTerminalno(): ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -91,7 +91,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -109,7 +109,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -145,7 +145,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -163,7 +163,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -181,7 +181,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?float
      */
-    public function getQuntity() : ?float
+    public function getQuntity(): ?float
     {
         return $this->getData(self::QUNTITY);
     }
@@ -199,7 +199,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?float
      */
-    public function getQuantitybase() : ?float
+    public function getQuantitybase(): ?float
     {
         return $this->getData(self::QUANTITY_BASE);
     }
@@ -217,7 +217,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?bool
      */
-    public function getPicked() : ?bool
+    public function getPicked(): ?bool
     {
         return $this->getData(self::PICKED);
     }
@@ -235,7 +235,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?bool
      */
-    public function getNotinstock() : ?bool
+    public function getNotinstock(): ?bool
     {
         return $this->getData(self::NOT_IN_STOCK);
     }
@@ -253,7 +253,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getLinecomment() : ?string
+    public function getLinecomment(): ?string
     {
         return $this->getData(self::LINE_COMMENT);
     }
@@ -271,7 +271,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getBoxno() : ?string
+    public function getBoxno(): ?string
     {
         return $this->getData(self::BOX_NO);
     }
@@ -289,7 +289,7 @@ class COMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getBoxlocation() : ?string
+    public function getBoxlocation(): ?string
     {
         return $this->getData(self::BOX_LOCATION);
     }

@@ -37,7 +37,7 @@ class GetCoStatusExists extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -73,7 +73,7 @@ class GetCoStatusExists extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?bool
      */
-    public function getCustomerordersexist() : ?bool
+    public function getCustomerordersexist(): ?bool
     {
         return $this->getData(self::CUSTOMER_ORDERS_EXIST);
     }
@@ -91,7 +91,7 @@ class GetCoStatusExists extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -109,7 +109,7 @@ class GetCoStatusExists extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

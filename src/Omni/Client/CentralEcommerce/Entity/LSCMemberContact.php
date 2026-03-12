@@ -14,6 +14,7 @@ class LSCMemberContact extends AbstractModel
     public const ACCOUNT_NO = 'Account No.';
     public const ADDRESS = 'Address';
     public const ADDRESS_2 = 'Address 2';
+    public const BALANCE = 'Balance';
     public const BIRTHDAY = 'Birthday';
     public const BLOCKED = 'Blocked';
     public const BLOCKED_BY = 'Blocked by';
@@ -30,7 +31,9 @@ class LSCMemberContact extends AbstractModel
     public const DATE_OF_BIRTH = 'Date of Birth';
     public const DEFAULT_TOKEN = 'Default Token';
     public const EMAIL = 'E-Mail';
+    public const EXPIRATION_IN_PERIOD = 'Expiration in Period';
     public const EXPIRATION_PERIOD_TYPE = 'Expiration Period Type';
+    public const EXPIRED_POINTS = 'Expired Points';
     public const EXTERNAL_ID = 'External ID';
     public const EXTERNAL_SYSTEM = 'External System';
     public const FIRST_NAME = 'First Name';
@@ -38,6 +41,8 @@ class LSCMemberContact extends AbstractModel
     public const GUEST_TYPE = 'Guest Type';
     public const HOME_PAGE = 'Home Page';
     public const HOUSEAPARTMENT_NO = 'House/Apartment No.';
+    public const ISSUED_AWARD_POINTS = 'Issued Award Points';
+    public const ISSUED_OTHER_POINTS = 'Issued Other Points';
     public const LANGUAGE_CODE = 'Language Code';
     public const MAIN_CONTACT = 'Main Contact';
     public const MARITAL_STATUS = 'Marital Status';
@@ -63,12 +68,15 @@ class LSCMemberContact extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
     public const TERRITORY_CODE = 'Territory Code';
+    public const TOTAL_ISSUED_POINTS = 'Total Issued Points';
+    public const USED_POINTS = 'Used Points';
     public const SYSTEMID = '$systemId';
 
     public static array $dbColumnsMapping = [
 	self::ACCOUNT_NO => 'account_no',
 	self::ADDRESS => 'address',
 	self::ADDRESS_2 => 'address_2',
+	self::BALANCE => 'balance',
 	self::BIRTHDAY => 'birthday',
 	self::BLOCKED => 'blocked',
 	self::BLOCKED_BY => 'blocked_by',
@@ -85,7 +93,9 @@ class LSCMemberContact extends AbstractModel
 	self::DATE_OF_BIRTH => 'date_of_birth',
 	self::DEFAULT_TOKEN => 'default_token',
 	self::EMAIL => 'email',
+	self::EXPIRATION_IN_PERIOD => 'expiration_in_period',
 	self::EXPIRATION_PERIOD_TYPE => 'expiration_period_type',
+	self::EXPIRED_POINTS => 'expired_points',
 	self::EXTERNAL_ID => 'external_id',
 	self::EXTERNAL_SYSTEM => 'external_system',
 	self::FIRST_NAME => 'first_name',
@@ -93,6 +103,8 @@ class LSCMemberContact extends AbstractModel
 	self::GUEST_TYPE => 'guest_type',
 	self::HOME_PAGE => 'home_page',
 	self::HOUSEAPARTMENT_NO => 'houseapartment_no',
+	self::ISSUED_AWARD_POINTS => 'issued_award_points',
+	self::ISSUED_OTHER_POINTS => 'issued_other_points',
 	self::LANGUAGE_CODE => 'language_code',
 	self::MAIN_CONTACT => 'main_contact',
 	self::MARITAL_STATUS => 'marital_status',
@@ -118,6 +130,8 @@ class LSCMemberContact extends AbstractModel
 	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
 	self::TERRITORY_CODE => 'territory_code',
+	self::TOTAL_ISSUED_POINTS => 'total_issued_points',
+	self::USED_POINTS => 'used_points',
 	self::SYSTEMID => 'systemid',
     ];
 
@@ -155,6 +169,16 @@ class LSCMemberContact extends AbstractModel
     public function setAddress2(?string $value)
     {
         return $this->setData(self::ADDRESS_2, $value);
+    }
+
+    public function getBalance(): ?float
+    {
+        return $this->getData(self::BALANCE);
+    }
+
+    public function setBalance(?float $value)
+    {
+        return $this->setData(self::BALANCE, $value);
     }
 
     public function getBirthday(): ?string
@@ -317,6 +341,16 @@ class LSCMemberContact extends AbstractModel
         return $this->setData(self::EMAIL, $value);
     }
 
+    public function getExpirationInPeriod(): ?float
+    {
+        return $this->getData(self::EXPIRATION_IN_PERIOD);
+    }
+
+    public function setExpirationInPeriod(?float $value)
+    {
+        return $this->setData(self::EXPIRATION_IN_PERIOD, $value);
+    }
+
     public function getExpirationPeriodType(): ?int
     {
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
@@ -325,6 +359,16 @@ class LSCMemberContact extends AbstractModel
     public function setExpirationPeriodType(?int $value)
     {
         return $this->setData(self::EXPIRATION_PERIOD_TYPE, $value);
+    }
+
+    public function getExpiredPoints(): ?float
+    {
+        return $this->getData(self::EXPIRED_POINTS);
+    }
+
+    public function setExpiredPoints(?float $value)
+    {
+        return $this->setData(self::EXPIRED_POINTS, $value);
     }
 
     public function getExternalId(): ?string
@@ -395,6 +439,26 @@ class LSCMemberContact extends AbstractModel
     public function setHouseApartmentNo(?string $value)
     {
         return $this->setData(self::HOUSEAPARTMENT_NO, $value);
+    }
+
+    public function getIssuedAwardPoints(): ?float
+    {
+        return $this->getData(self::ISSUED_AWARD_POINTS);
+    }
+
+    public function setIssuedAwardPoints(?float $value)
+    {
+        return $this->setData(self::ISSUED_AWARD_POINTS, $value);
+    }
+
+    public function getIssuedOtherPoints(): ?float
+    {
+        return $this->getData(self::ISSUED_OTHER_POINTS);
+    }
+
+    public function setIssuedOtherPoints(?float $value)
+    {
+        return $this->setData(self::ISSUED_OTHER_POINTS, $value);
     }
 
     public function getLanguageCode(): ?string
@@ -645,6 +709,26 @@ class LSCMemberContact extends AbstractModel
     public function setTerritoryCode(?string $value)
     {
         return $this->setData(self::TERRITORY_CODE, $value);
+    }
+
+    public function getTotalIssuedPoints(): ?float
+    {
+        return $this->getData(self::TOTAL_ISSUED_POINTS);
+    }
+
+    public function setTotalIssuedPoints(?float $value)
+    {
+        return $this->setData(self::TOTAL_ISSUED_POINTS, $value);
+    }
+
+    public function getUsedPoints(): ?float
+    {
+        return $this->getData(self::USED_POINTS);
+    }
+
+    public function setUsedPoints(?float $value)
+    {
+        return $this->setData(self::USED_POINTS, $value);
     }
 
     public function getSystemid(): ?string

@@ -43,7 +43,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -61,7 +61,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -79,7 +79,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getCardno() : ?string
+    public function getCardno(): ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -97,7 +97,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getAccountno() : ?string
+    public function getAccountno(): ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
@@ -115,7 +115,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getContactno() : ?string
+    public function getContactno(): ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
@@ -133,7 +133,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getLoginid() : ?string
+    public function getLoginid(): ?string
     {
         return $this->getData(self::LOGIN_ID);
     }
@@ -151,7 +151,7 @@ class GetMemberContact2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getEmail() : ?string
+    public function getEmail(): ?string
     {
         return $this->getData(self::EMAIL);
     }

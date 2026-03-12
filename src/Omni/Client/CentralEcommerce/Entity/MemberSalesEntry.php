@@ -69,7 +69,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberaccountno() : ?string
+    public function getMemberaccountno(): ?string
     {
         return $this->getData(self::MEMBER_ACCOUNT_NO);
     }
@@ -87,7 +87,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMembercontactno() : ?string
+    public function getMembercontactno(): ?string
     {
         return $this->getData(self::MEMBER_CONTACT_NO);
     }
@@ -105,7 +105,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMembercardno() : ?string
+    public function getMembercardno(): ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -123,7 +123,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSourcetype() : ?string
+    public function getSourcetype(): ?string
     {
         return $this->getData(self::SOURCE_TYPE);
     }
@@ -141,7 +141,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -159,7 +159,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStorename() : ?string
+    public function getStorename(): ?string
     {
         return $this->getData(self::STORE_NAME);
     }
@@ -177,7 +177,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -213,7 +213,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentno() : ?string
+    public function getDocumentno(): ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -231,7 +231,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDate() : ?string
+    public function getDate(): ?string
     {
         return $this->getData(self::DATE);
     }
@@ -249,7 +249,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -267,7 +267,7 @@ class MemberSalesEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getGrossamount() : ?float
+    public function getGrossamount(): ?float
     {
         return $this->getData(self::GROSS_AMOUNT);
     }

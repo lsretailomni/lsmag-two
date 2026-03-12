@@ -59,7 +59,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
@@ -77,7 +77,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -95,7 +95,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStartingcardno() : ?string
+    public function getStartingcardno(): ?string
     {
         return $this->getData(self::STARTING_CARD_NO);
     }
@@ -131,7 +131,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodemask() : ?string
+    public function getBarcodemask(): ?string
     {
         return $this->getData(self::BARCODE_MASK);
     }
@@ -149,7 +149,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDefaultcustdiscgroup() : ?string
+    public function getDefaultcustdiscgroup(): ?string
     {
         return $this->getData(self::DEFAULT_CUST_DISC_GROUP);
     }
@@ -167,7 +167,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDefaultpricegroup() : ?string
+    public function getDefaultpricegroup(): ?string
     {
         return $this->getData(self::DEFAULT_PRICE_GROUP);
     }
@@ -185,7 +185,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubcode() : ?string
+    public function getClubcode(): ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
@@ -221,7 +221,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getMinpointforupgrade() : ?float
+    public function getMinpointforupgrade(): ?float
     {
         return $this->getData(self::MIN_POINTFOR_UPGRADE);
     }
@@ -239,7 +239,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getWhencheckforupgraded() : ?string
+    public function getWhencheckforupgraded(): ?string
     {
         return $this->getData(self::WHEN_CHECKFOR_UPGRADED);
     }
@@ -275,7 +275,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPointlimitfordowngrade() : ?float
+    public function getPointlimitfordowngrade(): ?float
     {
         return $this->getData(self::POINT_LIMITFOR_DOWNGRADE);
     }
@@ -293,7 +293,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNextscheme() : ?string
+    public function getNextscheme(): ?string
     {
         return $this->getData(self::NEXT_SCHEME);
     }
@@ -311,7 +311,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNextschemebenefits() : ?string
+    public function getNextschemebenefits(): ?string
     {
         return $this->getData(self::NEXT_SCHEME_BENEFITS);
     }
@@ -329,7 +329,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardnoseries() : ?string
+    public function getCardnoseries(): ?string
     {
         return $this->getData(self::CARD_NO_SERIES);
     }
@@ -347,7 +347,7 @@ class MemberScheme extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirationperiodtype() : ?string
+    public function getExpirationperiodtype(): ?string
     {
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
     }

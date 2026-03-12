@@ -99,7 +99,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTerminalno() : ?string
+    public function getTerminalno(): ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -117,7 +117,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -135,7 +135,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPickingarea() : ?string
+    public function getPickingarea(): ?string
     {
         return $this->getData(self::PICKING_AREA);
     }
@@ -153,7 +153,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreated() : ?string
+    public function getCreated(): ?string
     {
         return $this->getData(self::CREATED);
     }
@@ -171,7 +171,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerno() : ?string
+    public function getCustomerno(): ?string
     {
         return $this->getData(self::CUSTOMER_NO);
     }
@@ -189,7 +189,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMembercardno() : ?string
+    public function getMembercardno(): ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -207,7 +207,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getName() : ?string
+    public function getName(): ?string
     {
         return $this->getData(self::NAME);
     }
@@ -225,7 +225,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddress() : ?string
+    public function getAddress(): ?string
     {
         return $this->getData(self::ADDRESS);
     }
@@ -243,7 +243,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCity() : ?string
+    public function getCity(): ?string
     {
         return $this->getData(self::CITY);
     }
@@ -261,7 +261,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPostcode() : ?string
+    public function getPostcode(): ?string
     {
         return $this->getData(self::POST_CODE);
     }
@@ -279,7 +279,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPhoneno() : ?string
+    public function getPhoneno(): ?string
     {
         return $this->getData(self::PHONE_NO);
     }
@@ -297,7 +297,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEmail() : ?string
+    public function getEmail(): ?string
     {
         return $this->getData(self::EMAIL);
     }
@@ -315,7 +315,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalid() : ?string
+    public function getExternalid(): ?string
     {
         return $this->getData(self::EXTERNAL_ID);
     }
@@ -333,7 +333,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequesteddeliverydate() : ?string
+    public function getRequesteddeliverydate(): ?string
     {
         return $this->getData(self::REQUESTED_DELIVERY_DATE);
     }
@@ -351,7 +351,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getShiporder() : ?bool
+    public function getShiporder(): ?bool
     {
         return $this->getData(self::SHIP_ORDER);
     }
@@ -369,7 +369,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPickbymethod() : ?string
+    public function getPickbymethod(): ?string
     {
         return $this->getData(self::PICK_BY_METHOD);
     }
@@ -387,7 +387,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPickmultipleorder() : ?bool
+    public function getPickmultipleorder(): ?bool
     {
         return $this->getData(self::PICK_MULTIPLE_ORDER);
     }
@@ -405,7 +405,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShowlinesas() : ?string
+    public function getShowlinesas(): ?string
     {
         return $this->getData(self::SHOW_LINES_AS);
     }
@@ -423,7 +423,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getQuantitymethod() : ?string
+    public function getQuantitymethod(): ?string
     {
         return $this->getData(self::QUANTITY_METHOD);
     }
@@ -441,7 +441,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -459,7 +459,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getOrdervalue() : ?float
+    public function getOrdervalue(): ?float
     {
         return $this->getData(self::ORDER_VALUE);
     }
@@ -513,7 +513,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuntity() : ?float
+    public function getQuntity(): ?float
     {
         return $this->getData(self::QUNTITY);
     }
@@ -531,7 +531,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantitybase() : ?float
+    public function getQuantitybase(): ?float
     {
         return $this->getData(self::QUANTITY_BASE);
     }
@@ -549,7 +549,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getWeight() : ?float
+    public function getWeight(): ?float
     {
         return $this->getData(self::WEIGHT);
     }
@@ -567,7 +567,7 @@ class COMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getVolume() : ?float
+    public function getVolume(): ?float
     {
         return $this->getData(self::VOLUME);
     }

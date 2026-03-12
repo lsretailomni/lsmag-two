@@ -43,7 +43,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getType() : ?string
+    public function getType(): ?string
     {
         return $this->getData(self::TYPE);
     }
@@ -61,7 +61,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
@@ -79,7 +79,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -97,7 +97,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getValue() : ?string
+    public function getValue(): ?string
     {
         return $this->getData(self::VALUE);
     }
@@ -115,7 +115,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getActiontype() : ?string
+    public function getActiontype(): ?string
     {
         return $this->getData(self::ACTION_TYPE);
     }
@@ -133,7 +133,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLimitationtype() : ?string
+    public function getLimitationtype(): ?string
     {
         return $this->getData(self::LIMITATION_TYPE);
     }
@@ -151,7 +151,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAttributetype() : ?string
+    public function getAttributetype(): ?string
     {
         return $this->getData(self::ATTRIBUTE_TYPE);
     }
@@ -169,7 +169,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLookuptype() : ?string
+    public function getLookuptype(): ?string
     {
         return $this->getData(self::LOOKUP_TYPE);
     }
@@ -187,7 +187,7 @@ class MemberAttributeList extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVisibletype() : ?string
+    public function getVisibletype(): ?string
     {
         return $this->getData(self::VISIBLE_TYPE);
     }

@@ -53,7 +53,7 @@ class SendASNScannedLines extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResult() : ?string
+    public function getResult(): ?string
     {
         return $this->getData(self::RESULT);
     }
@@ -71,7 +71,7 @@ class SendASNScannedLines extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -89,7 +89,7 @@ class SendASNScannedLines extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

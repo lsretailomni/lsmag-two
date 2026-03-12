@@ -57,7 +57,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -75,7 +75,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -111,7 +111,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactiontype() : ?string
+    public function getTransactiontype(): ?string
     {
         return $this->getData(self::TRANSACTION_TYPE);
     }
@@ -129,7 +129,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -147,7 +147,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransdate() : ?string
+    public function getTransdate(): ?string
     {
         return $this->getData(self::TRANS_DATE);
     }
@@ -165,7 +165,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTranstime() : ?string
+    public function getTranstime(): ?string
     {
         return $this->getData(self::TRANS_TIME);
     }
@@ -183,7 +183,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getCreditsale() : ?bool
+    public function getCreditsale(): ?bool
     {
         return $this->getData(self::CREDIT_SALE);
     }
@@ -219,7 +219,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getTraining() : ?bool
+    public function getTraining(): ?bool
     {
         return $this->getData(self::TRAINING);
     }
@@ -255,7 +255,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNetamount() : ?float
+    public function getNetamount(): ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
@@ -273,7 +273,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmount() : ?float
+    public function getAmount(): ?float
     {
         return $this->getData(self::AMOUNT);
     }
@@ -291,7 +291,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPrivatekeyversion() : ?string
+    public function getPrivatekeyversion(): ?string
     {
         return $this->getData(self::PRIVATE_KEY_VERSION);
     }
@@ -309,7 +309,7 @@ class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSignature() : ?string
+    public function getSignature(): ?string
     {
         return $this->getData(self::SIGNATURE);
     }

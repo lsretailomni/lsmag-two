@@ -41,7 +41,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getRecordidP() : ?string
+    public function getRecordidP(): ?string
     {
         return $this->getData(self::RECORD_ID_P);
     }
@@ -59,7 +59,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getMembercardno() : ?string
+    public function getMembercardno(): ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -77,7 +77,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getTokenid() : ?string
+    public function getTokenid(): ?string
     {
         return $this->getData(self::TOKEN_ID);
     }
@@ -95,7 +95,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getExpirydate() : ?string
+    public function getExpirydate(): ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
@@ -113,7 +113,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getResult() : ?string
+    public function getResult(): ?string
     {
         return $this->getData(self::RESULT);
     }
@@ -131,7 +131,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -149,7 +149,7 @@ class GetTokenEntry extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

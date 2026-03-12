@@ -91,7 +91,7 @@ class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -109,7 +109,7 @@ class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -127,7 +127,7 @@ class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -145,7 +145,7 @@ class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberattribute() : ?string
+    public function getMemberattribute(): ?string
     {
         return $this->getData(self::MEMBER_ATTRIBUTE);
     }
@@ -163,7 +163,7 @@ class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMemberattributevalue() : ?string
+    public function getMemberattributevalue(): ?string
     {
         return $this->getData(self::MEMBER_ATTRIBUTE_VALUE);
     }
@@ -181,7 +181,7 @@ class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTrackingno() : ?string
+    public function getTrackingno(): ?string
     {
         return $this->getData(self::TRACKING_NO);
     }
@@ -199,7 +199,7 @@ class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOffertype() : ?string
+    public function getOffertype(): ?string
     {
         return $this->getData(self::OFFER_TYPE);
     }
@@ -217,7 +217,7 @@ class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getOfferno() : ?string
+    public function getOfferno(): ?string
     {
         return $this->getData(self::OFFER_NO);
     }
@@ -235,7 +235,7 @@ class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscountamount() : ?float
+    public function getDiscountamount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
@@ -253,7 +253,7 @@ class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPoints() : ?float
+    public function getPoints(): ?float
     {
         return $this->getData(self::POINTS);
     }
@@ -271,7 +271,7 @@ class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSequencecode() : ?string
+    public function getSequencecode(): ?string
     {
         return $this->getData(self::SEQUENCE_CODE);
     }
@@ -289,7 +289,7 @@ class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSequencefunction() : ?string
+    public function getSequencefunction(): ?string
     {
         return $this->getData(self::SEQUENCE_FUNCTION);
     }

@@ -37,7 +37,7 @@ class SPGResetPassword extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getEmailaddress() : ?string
+    public function getEmailaddress(): ?string
     {
         return $this->getData(self::EMAIL_ADDRESS);
     }
@@ -55,7 +55,7 @@ class SPGResetPassword extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getResetcode() : ?string
+    public function getResetcode(): ?string
     {
         return $this->getData(self::RESET_CODE);
     }
@@ -73,7 +73,7 @@ class SPGResetPassword extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getNewpassword() : ?string
+    public function getNewpassword(): ?string
     {
         return $this->getData(self::NEW_PASSWORD);
     }
@@ -91,7 +91,7 @@ class SPGResetPassword extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -109,7 +109,7 @@ class SPGResetPassword extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

@@ -33,7 +33,7 @@ class CustomerOrderGetCOLineDataEntryV3 extends \Magento\Catalog\Model\AbstractM
     /**
      * @return ?string
      */
-    public function getDataentrytype() : ?string
+    public function getDataentrytype(): ?string
     {
         return $this->getData(self::DATA_ENTRY_TYPE);
     }
@@ -51,7 +51,7 @@ class CustomerOrderGetCOLineDataEntryV3 extends \Magento\Catalog\Model\AbstractM
     /**
      * @return ?string
      */
-    public function getDataentrycode() : ?string
+    public function getDataentrycode(): ?string
     {
         return $this->getData(self::DATA_ENTRY_CODE);
     }

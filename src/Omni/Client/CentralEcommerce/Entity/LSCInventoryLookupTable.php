@@ -36,6 +36,7 @@ class LSCInventoryLookupTable extends AbstractModel
     public const LOCATION_PROFILE = 'Location Profile';
     public const REPLICATION_COUNTER = 'Replication Counter';
     public const SOURCING_LOCATION_INVENTORY = 'Sourcing Location Inventory';
+    public const CALC_WITHOUT_SERIALNOLOTNO = 'Calc. Without SerialNo/LotNo ';
     public const SYSTEMID = '$systemId';
     public const SYSTEMCREATEDAT = 'SystemCreatedAt';
     public const SYSTEMCREATEDBY = 'SystemCreatedBy';
@@ -68,6 +69,7 @@ class LSCInventoryLookupTable extends AbstractModel
 	self::LOCATION_PROFILE => 'location_profile',
 	self::REPLICATION_COUNTER => 'replication_counter',
 	self::SOURCING_LOCATION_INVENTORY => 'sourcing_location_inventory',
+	self::CALC_WITHOUT_SERIALNOLOTNO => 'calc_without_serialnolotno',
 	self::SYSTEMID => 'systemid',
 	self::SYSTEMCREATEDAT => 'systemcreatedat',
 	self::SYSTEMCREATEDBY => 'systemcreatedby',
@@ -329,6 +331,16 @@ class LSCInventoryLookupTable extends AbstractModel
     public function setSourcingLocationInventory(?float $value)
     {
         return $this->setData(self::SOURCING_LOCATION_INVENTORY, $value);
+    }
+
+    public function getCalcWithoutSerialnoLotno(): ?bool
+    {
+        return $this->getData(self::CALC_WITHOUT_SERIALNOLOTNO);
+    }
+
+    public function setCalcWithoutSerialnoLotno(?bool $value)
+    {
+        return $this->setData(self::CALC_WITHOUT_SERIALNOLOTNO, $value);
     }
 
     public function getSystemid(): ?string

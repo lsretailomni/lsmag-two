@@ -37,7 +37,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubcode() : ?string
+    public function getClubcode(): ?string
     {
         return $this->getData(self::CLUB_CODE);
     }
@@ -55,7 +55,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubdescription() : ?string
+    public function getClubdescription(): ?string
     {
         return $this->getData(self::CLUB_DESCRIPTION);
     }
@@ -73,7 +73,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardno() : ?string
+    public function getCardno(): ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -91,7 +91,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getClubholdername() : ?string
+    public function getClubholdername(): ?string
     {
         return $this->getData(self::CLUB_HOLDER_NAME);
     }
@@ -109,7 +109,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getBlocked() : ?bool
+    public function getBlocked(): ?bool
     {
         return $this->getData(self::BLOCKED);
     }
@@ -127,7 +127,7 @@ class LoginCardBuffer extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSystemid() : ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
     }

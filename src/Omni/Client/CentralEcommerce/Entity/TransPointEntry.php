@@ -51,7 +51,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -69,7 +69,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getPoints() : ?float
+    public function getPoints(): ?float
     {
         return $this->getData(self::POINTS);
     }
@@ -87,7 +87,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDate() : ?string
+    public function getDate(): ?string
     {
         return $this->getData(self::DATE);
     }
@@ -105,7 +105,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -123,7 +123,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardno() : ?string
+    public function getCardno(): ?string
     {
         return $this->getData(self::CARD_NO);
     }
@@ -141,7 +141,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEntrytype() : ?string
+    public function getEntrytype(): ?string
     {
         return $this->getData(self::ENTRY_TYPE);
     }
@@ -159,7 +159,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -195,7 +195,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPointtype() : ?string
+    public function getPointtype(): ?string
     {
         return $this->getData(self::POINT_TYPE);
     }
@@ -213,7 +213,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getValueperpoint() : ?float
+    public function getValueperpoint(): ?float
     {
         return $this->getData(self::VALUE_PER_POINT);
     }
@@ -231,7 +231,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscbenefitpoints() : ?float
+    public function getDiscbenefitpoints(): ?float
     {
         return $this->getData(self::DISC_BENEFIT_POINTS);
     }
@@ -249,7 +249,7 @@ class TransPointEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTenderpoints() : ?float
+    public function getTenderpoints(): ?float
     {
         return $this->getData(self::TENDER_POINTS);
     }

@@ -39,7 +39,7 @@ class CustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -111,7 +111,7 @@ class CustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getDocumenttype() : ?string
+    public function getDocumenttype(): ?string
     {
         return $this->getData(self::DOCUMENT_TYPE);
     }
@@ -129,7 +129,7 @@ class CustomerOrderStatus extends \Magento\Catalog\Model\AbstractModel implement
     /**
      * @return ?string
      */
-    public function getDocumentno() : ?string
+    public function getDocumentno(): ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }

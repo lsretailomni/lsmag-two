@@ -29,7 +29,7 @@ class HierarchyAttributeFilter extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAttribute() : ?string
+    public function getAttribute(): ?string
     {
         return $this->getData(self::ATTRIBUTE);
     }
@@ -47,7 +47,7 @@ class HierarchyAttributeFilter extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getValue() : ?string
+    public function getValue(): ?string
     {
         return $this->getData(self::VALUE);
     }

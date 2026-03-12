@@ -31,7 +31,7 @@ class CODefaultShippingAgent extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -49,7 +49,7 @@ class CODefaultShippingAgent extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShippingagentcode() : ?string
+    public function getShippingagentcode(): ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
@@ -67,7 +67,7 @@ class CODefaultShippingAgent extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAgentservicecode() : ?string
+    public function getAgentservicecode(): ?string
     {
         return $this->getData(self::AGENT_SERVICE_CODE);
     }

@@ -79,7 +79,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -97,7 +97,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -133,7 +133,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatus() : ?string
+    public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);
     }
@@ -151,7 +151,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementno() : ?string
+    public function getStatementno(): ?string
     {
         return $this->getData(self::STATEMENT_NO);
     }
@@ -169,7 +169,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPostedstatementno() : ?string
+    public function getPostedstatementno(): ?string
     {
         return $this->getData(self::POSTED_STATEMENT_NO);
     }
@@ -187,7 +187,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDate() : ?string
+    public function getDate(): ?string
     {
         return $this->getData(self::DATE);
     }
@@ -205,7 +205,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getBlockedcustomer() : ?bool
+    public function getBlockedcustomer(): ?bool
     {
         return $this->getData(self::BLOCKED_CUSTOMER);
     }
@@ -223,7 +223,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getItemsblocked() : ?float
+    public function getItemsblocked(): ?float
     {
         return $this->getData(self::ITEMS_BLOCKED);
     }
@@ -241,7 +241,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getSalepmtdifference() : ?bool
+    public function getSalepmtdifference(): ?bool
     {
         return $this->getData(self::SALE_PMT_DIFFERENCE);
     }
@@ -259,7 +259,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCustomerno() : ?string
+    public function getCustomerno(): ?string
     {
         return $this->getData(self::CUSTOMER_NO);
     }
@@ -277,7 +277,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getAmounttoaccount() : ?float
+    public function getAmounttoaccount(): ?float
     {
         return $this->getData(self::AMOUNTTO_ACCOUNT);
     }
@@ -295,7 +295,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getItemsbarcnotonfile() : ?float
+    public function getItemsbarcnotonfile(): ?float
     {
         return $this->getData(self::ITEMS_BARC_NOTON_FILE);
     }
@@ -313,7 +313,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTransonwrongshift() : ?float
+    public function getTransonwrongshift(): ?float
     {
         return $this->getData(self::TRANSON_WRONG_SHIFT);
     }
@@ -331,7 +331,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getSalesamount() : ?float
+    public function getSalesamount(): ?float
     {
         return $this->getData(self::SALES_AMOUNT);
     }
@@ -349,7 +349,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getVatamount() : ?float
+    public function getVatamount(): ?float
     {
         return $this->getData(self::VATAMOUNT);
     }
@@ -367,7 +367,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotaldiscount() : ?float
+    public function getTotaldiscount(): ?float
     {
         return $this->getData(self::TOTAL_DISCOUNT);
     }
@@ -385,7 +385,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getLinediscount() : ?float
+    public function getLinediscount(): ?float
     {
         return $this->getData(self::LINE_DISCOUNT);
     }
@@ -403,7 +403,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getIncome() : ?float
+    public function getIncome(): ?float
     {
         return $this->getData(self::INCOME);
     }
@@ -421,7 +421,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getExpenses() : ?float
+    public function getExpenses(): ?float
     {
         return $this->getData(self::EXPENSES);
     }
@@ -439,7 +439,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getDiscounttotalamount() : ?float
+    public function getDiscounttotalamount(): ?float
     {
         return $this->getData(self::DISCOUNT_TOTAL_AMOUNT);
     }
@@ -457,7 +457,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getNooftranssalesentries() : ?float
+    public function getNooftranssalesentries(): ?float
     {
         return $this->getData(self::NOOF_TRANS_SALES_ENTRIES);
     }
@@ -475,7 +475,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getInvtransaction() : ?float
+    public function getInvtransaction(): ?float
     {
         return $this->getData(self::INV_TRANSACTION);
     }
@@ -493,7 +493,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getSeriallotnonotvalid() : ?float
+    public function getSeriallotnonotvalid(): ?float
     {
         return $this->getData(self::SERIAL_LOT_NO_NOT_VALID);
     }
@@ -511,7 +511,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAdvancedshiftno() : ?string
+    public function getAdvancedshiftno(): ?string
     {
         return $this->getData(self::ADVANCED_SHIFT_NO);
     }
@@ -547,7 +547,7 @@ class TransactionStatus extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getIncludedinstatistics() : ?bool
+    public function getIncludedinstatistics(): ?bool
     {
         return $this->getData(self::INCLUDEDIN_STATISTICS);
     }

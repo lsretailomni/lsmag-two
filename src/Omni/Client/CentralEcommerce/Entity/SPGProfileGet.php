@@ -33,7 +33,7 @@ class SPGProfileGet extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
@@ -51,7 +51,7 @@ class SPGProfileGet extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -69,7 +69,7 @@ class SPGProfileGet extends \Magento\Catalog\Model\AbstractModel implements Requ
     /**
      * @return ?string
      */
-    public function getSecuritychecktrigger() : ?string
+    public function getSecuritychecktrigger(): ?string
     {
         return $this->getData(self::SECURITY_CHECK_TRIGGER);
     }

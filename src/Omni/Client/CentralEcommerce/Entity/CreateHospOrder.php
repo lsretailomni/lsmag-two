@@ -37,7 +37,7 @@ class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -55,7 +55,7 @@ class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -73,7 +73,7 @@ class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getMenutype() : ?string
+    public function getMenutype(): ?string
     {
         return $this->getData(self::MENU_TYPE);
     }
@@ -91,7 +91,7 @@ class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getHosporderreceiptno() : ?string
+    public function getHosporderreceiptno(): ?string
     {
         return $this->getData(self::HOSP_ORDER_RECEIPT_NO);
     }

@@ -243,6 +243,29 @@ class OrderHelper extends AbstractHelperOmni
                 ]);
 
                 $customerOrderDiscountCoLines[] = $customerOrderDiscountCoLine;
+
+                if (!empty($orderDiscountLine->getCouponbarcodeno())) {
+                    foreach ($oneListCalculateResponse->getMobiletransactionline() ?? [] as $id => $orderLine) {
+                        if ($orderLine->getLinetype() == 6) {
+                            $orderLine->setNumber($orderDiscountLine->getCouponbarcodeno() ?: $orderDiscountLine->getCouponcode());
+
+                            $customerOrderCoLine = $this->createInstance(
+                                CustomerOrderCreateCOLineV6::class
+                            );
+
+                            $customerOrderCoLine->addData([
+                                CustomerOrderCreateCOLineV6::LINE_NO => $orderLine->getLineno(),
+                                CustomerOrderCreateCOLineV6::LINE_TYPE => $orderLine->getLinetype(),
+                                CustomerOrderCreateCOLineV6::NUMBER => $orderLine->getNumber(),
+                                CustomerOrderCreateCOLineV6::QUANTITY => 1,
+                                CustomerOrderCreateCOLineV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId
+                            ]);
+
+                            $customerOrderCoLines[] = $customerOrderCoLine;
+                        }
+                    }
+                }
+
             }
             //For click and collect we need to remove shipment charge orderline
             //For flat shipment it will set the correct shipment value into the order
@@ -253,7 +276,8 @@ class OrderHelper extends AbstractHelperOmni
                 ->setCustomerordercreatecolinev6($customerOrderCoLines)
                 ->setCustomerordercreatecodiscountlinev6($customerOrderDiscountCoLines);
 
-        } catch (Exception $e) {
+        } catch
+        (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
@@ -421,7 +445,7 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function getParameterValues($orderObj, $param)
     {
-        $value    = null;
+        $value = null;
         if (array_key_exists($param, $orderObj->getData())) {
             $value = $orderObj->getData($param);
         }
@@ -592,7 +616,7 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function getPaymentType($order)
     {
-        $paidAmount       = $order->getPayment()->getAmountPaid();
+        $paidAmount = $order->getPayment()->getAmountPaid();
         $authorizedAmount = $order->getPayment()->getAmountAuthorized();
         if (!empty($paidAmount)) {
             return "1";
@@ -627,7 +651,7 @@ class OrderHelper extends AbstractHelperOmni
     public function getCurrentCustomerOrderHistory($maxNumberOfEntries = null)
     {
         $response = null;
-        $cardId   = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         if ($cardId == null) {
             return $response;
         }
@@ -642,8 +666,8 @@ class OrderHelper extends AbstractHelperOmni
                 'memberCardNo' => $cardId,
                 'storeNo' => "",
                 'dateFilter' => "1990-01-01",
-                'dateGreaterThan'=> true,
-                'maxResultContacts'=> 0
+                'dateGreaterThan' => true,
+                'maxResultContacts' => 0
             ]
         );
 
@@ -683,7 +707,7 @@ class OrderHelper extends AbstractHelperOmni
     public function getOrderDetailsAgainstId($docId, $type = DocumentIdType::ORDER)
     {
         $response = null;
-        $typeId   = $this->getOrderTypeId($type);
+        $typeId = $this->getOrderTypeId($type);
         $request = $this->createInstance(
             GetSelectedSalesDoc_GetSelectedSalesDoc::class,
             []
@@ -704,7 +728,7 @@ class OrderHelper extends AbstractHelperOmni
 
         return $response &&
         $response->getResponsecode() == "0000" &&
-        !empty(current((array) $response->getRecords())->getData()) ? current((array) $response->getRecords()) : null;
+        !empty(current((array)$response->getRecords())->getData()) ? current((array)$response->getRecords()) : null;
     }
 
     /**
@@ -758,7 +782,8 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function isAuthorizedForOrder(
         $order
-    ) {
+    )
+    {
         $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         $order = $this->getOrder();
         $orderLscMemberSalesBuffer = $this->getLscMemberSalesBuffer($order);
@@ -779,7 +804,7 @@ class OrderHelper extends AbstractHelperOmni
     public function getLscMemberSalesBuffer($salesEntry)
     {
         return is_array($salesEntry->getLscMemberSalesBuffer()) ?
-        current($salesEntry->getLscMemberSalesBuffer()) : $salesEntry->getLscMemberSalesBuffer();
+            current($salesEntry->getLscMemberSalesBuffer()) : $salesEntry->getLscMemberSalesBuffer();
     }
 
     /**
@@ -787,10 +812,10 @@ class OrderHelper extends AbstractHelperOmni
      * @param $order
      * @return bool
      */
-    public function isAuthorizedForReturnOrder($order): bool
+    public function isAuthorizedForReturnOrder($order) : bool
     {
         $orderCardId = null;
-        $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         foreach ($order as $ordItem) {
             $orderCardId = $ordItem->getCardId();
             break;
@@ -912,7 +937,7 @@ class OrderHelper extends AbstractHelperOmni
         try {
             if (!empty($documentId)) {
                 $customerId = $this->customerSession->getCustomerId();
-                $orderList  = $this->orderRepository->getList(
+                $orderList = $this->orderRepository->getList(
                     $this->basketHelper->getSearchCriteriaBuilder()->
                     addFilter('document_id', $documentId, 'eq')->
                     addFilter('customer_id', $customerId, 'eq')->create()
@@ -935,7 +960,7 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function getMagentoOrderGivenDocumentId($documentId)
     {
-        $order     = null;
+        $order = null;
         $orderList = $this->orderRepository->getList(
             $this->basketHelper->getSearchCriteriaBuilder()->
             addFilter('document_id', $documentId)->create()
@@ -956,7 +981,7 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function getMagentoOrderGivenExternalId($incrementId)
     {
-        $order     = null;
+        $order = null;
         $orderList = $this->orderRepository->getList(
             $this->basketHelper->getSearchCriteriaBuilder()->
             addFilter('increment_id', $incrementId)->create()
@@ -999,12 +1024,13 @@ class OrderHelper extends AbstractHelperOmni
         $customerId = 0,
         $sortOrder = null,
         $isOrderEdit = false
-    ) {
-        $orders    = null;
-        $store     = $this->storeManager->getStore($storeId);
+    )
+    {
+        $orders = null;
+        $store = $this->storeManager->getStore($storeId);
         $websiteId = $store->getWebsiteId();
         try {
-            $orderStatuses   = $this->lsr->getWebsiteConfig(
+            $orderStatuses = $this->lsr->getWebsiteConfig(
                 LSR::LSR_RESTRICTED_ORDER_STATUSES,
                 $websiteId
             );
@@ -1036,7 +1062,7 @@ class OrderHelper extends AbstractHelperOmni
             }
 
             $searchCriteria = $criteriaBuilder->create();
-            $orders         = $this->orderRepository->getList($searchCriteria)->getItems();
+            $orders = $this->orderRepository->getList($searchCriteria)->getItems();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -1178,7 +1204,7 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function getPaymentTenderTypeId($code)
     {
-        $tenderTypeId            = 0;
+        $tenderTypeId = 0;
         $paymentTenderTypesArray = $this->getPaymentTenderMapping();
         if (array_key_exists($code, $paymentTenderTypesArray)) {
             $tenderTypeId = $paymentTenderTypesArray[$code];
@@ -1206,7 +1232,7 @@ class OrderHelper extends AbstractHelperOmni
     public function getFormattedDate($date)
     {
         try {
-            $format   = 'd/m/y h:i:s A';
+            $format = 'd/m/y h:i:s A';
             $dateTime = $this->timezone->date($date)->format($format);
 
             return $dateTime;
@@ -1225,7 +1251,7 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function isAllowed($order)
     {
-        $websiteId     = $this->storeManager->getStore($order->getStoreId())->getWebsiteId();
+        $websiteId = $this->storeManager->getStore($order->getStoreId())->getWebsiteId();
         $orderStatuses = $this->lsr->getWebsiteConfig(
             LSR::LSR_RESTRICTED_ORDER_STATUSES,
             $websiteId
@@ -1254,7 +1280,8 @@ class OrderHelper extends AbstractHelperOmni
         $currency,
         $storeId,
         $orderType = null
-    ) {
+    )
+    {
         $magentoOrder = $this->getGivenValueFromRegistry('current_mag_order');
         $currencyObject = null;
         $currentStoreCurrencyCode = $this->storeManager->getStore()->getCurrentCurrency()->getCode();
@@ -1278,14 +1305,14 @@ class OrderHelper extends AbstractHelperOmni
             if (is_array($this->currentOrder)) {
                 foreach ($this->currentOrder as $order) {
                     if (!is_array($order)) {
-                        $currency  = $order->getStoreCurrencyCode();
+                        $currency = $order->getStoreCurrencyCode();
                         $orderType = $order->getDocumentSourceType();
                         $orderType = $this->getOrderType($orderType);
                     }
 
                 }
             } else {
-                $currency  = $this->currentOrder->getStoreCurrency();
+                $currency = $this->currentOrder->getStoreCurrency();
                 $orderType = $this->currentOrder->getIdType();
             }
         }
@@ -1329,7 +1356,7 @@ class OrderHelper extends AbstractHelperOmni
     public function getOrderStatus($orderObj)
     {
         $sourceType = $this->getParameterValues($orderObj, "Document Source Type");
-        $orderType  = $this->getOrderType($sourceType);
+        $orderType = $this->getOrderType($sourceType);
         switch ($orderType) {
             case DocumentIdType::RECEIPT: //Receipt
                 return SalesEntryStatus::COMPLETE;
@@ -1385,35 +1412,35 @@ class OrderHelper extends AbstractHelperOmni
             $orders = [$orders];
         }
         foreach ($orders as $order) {
-            $order['IdType']          = $this->getOrderType($order['Document Source Type']);
+            $order['IdType'] = $this->getOrderType($order['Document Source Type']);
             $order['CustomerOrderNo'] = ($order['Customer Document ID']) ?:
                 $order['Document ID'];
 
             switch ($order['IdType']) {
                 case DocumentIdType::RECEIPT: //Receipt
-                    $order['Status']               = SalesEntryStatus::COMPLETE;
-                    $order['ShippingStatus']       = ShippingStatus::SHIPPED;
+                    $order['Status'] = SalesEntryStatus::COMPLETE;
+                    $order['ShippingStatus'] = ShippingStatus::SHIPPED;
                     $order['ClickAndCollectOrder'] = ($order['Customer Document ID'] === null ||
                             $order['Customer Document ID'] === '') == false;
                     if (($order['Ship-to Name'] === null || $order['Ship-to Name'] === '')) {
-                        $order['Ship-to Name']  = $order['Name'];
+                        $order['Ship-to Name'] = $order['Name'];
                         $order['Ship-to Email'] = $order['Email'];
                     }
                     break;
                 case DocumentIdType::ORDER: //Order
-                    $order['Status']               = $order['Sale Is Return Sale'] ?
+                    $order['Status'] = $order['Sale Is Return Sale'] ?
                         SalesEntryStatus::CANCELED : SalesEntryStatus::CREATED;
-                    $order['ShippingStatus']       = ShippingStatus::NOT_YET_SHIPPED;
-                    $order['CreateAtStoreId']      = $order['Store No.'];
+                    $order['ShippingStatus'] = ShippingStatus::NOT_YET_SHIPPED;
+                    $order['CreateAtStoreId'] = $order['Store No.'];
                     $order['ClickAndCollectOrder'] = "Need to implement";
                     break;
                 case DocumentIdType::HOSP_ORDER: //HOSP ORDER
-                    $order['CreateTime']           = $order['Date Time'];
-                    $order['CreateAtStoreId']      = $order['Store No.'];
-                    $order['Status']               = SalesEntryStatus::PROCESSING;
-                    $order['ShippingStatus']       = ShippingStatus::SHIPPIG_NOT_REQUIRED;
+                    $order['CreateTime'] = $order['Date Time'];
+                    $order['CreateAtStoreId'] = $order['Store No.'];
+                    $order['Status'] = SalesEntryStatus::PROCESSING;
+                    $order['ShippingStatus'] = ShippingStatus::SHIPPIG_NOT_REQUIRED;
                     if ($order['Ship-to Name'] === null || $order['Ship-to Name'] === '') {
-                        $order['Ship-to Name']  = $order['Name'];
+                        $order['Ship-to Name'] = $order['Name'];
                         $order['Ship-to Email'] = $order['Email'];
                     }
                     break;

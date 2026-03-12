@@ -121,7 +121,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }
@@ -139,7 +139,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getBarcodeno() : ?string
+    public function getBarcodeno(): ?string
     {
         return $this->getData(self::BARCODE_NO);
     }
@@ -157,7 +157,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEpc() : ?string
+    public function getEpc(): ?string
     {
         return $this->getData(self::EPC);
     }
@@ -175,7 +175,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -193,7 +193,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -211,7 +211,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTransactionstatus() : ?string
+    public function getTransactionstatus(): ?string
     {
         return $this->getData(self::TRANSACTION_STATUS);
     }
@@ -229,7 +229,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDate() : ?string
+    public function getDate(): ?string
     {
         return $this->getData(self::DATE);
     }
@@ -247,7 +247,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTime() : ?string
+    public function getTime(): ?string
     {
         return $this->getData(self::TIME);
     }
@@ -265,7 +265,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatementno() : ?string
+    public function getStatementno(): ?string
     {
         return $this->getData(self::STATEMENT_NO);
     }
@@ -283,7 +283,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -301,7 +301,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getItemnumberscanned() : ?bool
+    public function getItemnumberscanned(): ?bool
     {
         return $this->getData(self::ITEM_NUMBER_SCANNED);
     }
@@ -319,7 +319,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getKeyboarditementry() : ?bool
+    public function getKeyboarditementry(): ?bool
     {
         return $this->getData(self::KEYBOARD_ITEM_ENTRY);
     }
@@ -337,7 +337,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPriceinbarcode() : ?bool
+    public function getPriceinbarcode(): ?bool
     {
         return $this->getData(self::PRICEIN_BARCODE);
     }
@@ -355,7 +355,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getWeightmanuallyentered() : ?bool
+    public function getWeightmanuallyentered(): ?bool
     {
         return $this->getData(self::WEIGHT_MANUALLY_ENTERED);
     }
@@ -373,7 +373,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getScaleitem() : ?bool
+    public function getScaleitem(): ?bool
     {
         return $this->getData(self::SCALE_ITEM);
     }
@@ -391,7 +391,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getWeightitem() : ?bool
+    public function getWeightitem(): ?bool
     {
         return $this->getData(self::WEIGHT_ITEM);
     }
@@ -409,7 +409,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -427,7 +427,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -445,7 +445,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariantcode() : ?string
+    public function getVariantcode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
     }
@@ -463,7 +463,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSerialno() : ?string
+    public function getSerialno(): ?string
     {
         return $this->getData(self::SERIAL_NO);
     }
@@ -481,7 +481,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getLotno() : ?string
+    public function getLotno(): ?string
     {
         return $this->getData(self::LOT_NO);
     }
@@ -499,7 +499,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirationdate() : ?string
+    public function getExpirationdate(): ?string
     {
         return $this->getData(self::EXPIRATION_DATE);
     }
@@ -517,7 +517,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getReplicated() : ?bool
+    public function getReplicated(): ?bool
     {
         return $this->getData(self::REPLICATED);
     }
@@ -535,7 +535,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getUnitofmeasure() : ?string
+    public function getUnitofmeasure(): ?string
     {
         return $this->getData(self::UNITOF_MEASURE);
     }
@@ -553,7 +553,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getUomquantity() : ?float
+    public function getUomquantity(): ?float
     {
         return $this->getData(self::UOMQUANTITY);
     }
@@ -571,7 +571,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getUomprice() : ?float
+    public function getUomprice(): ?float
     {
         return $this->getData(self::UOMPRICE);
     }
@@ -607,7 +607,7 @@ class TransInventoryEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalestype() : ?string
+    public function getSalestype(): ?string
     {
         return $this->getData(self::SALES_TYPE);
     }

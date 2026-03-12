@@ -29,7 +29,7 @@ class InventoryBufferIn extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getNumber() : ?string
+    public function getNumber(): ?string
     {
         return $this->getData(self::NUMBER);
     }
@@ -47,7 +47,7 @@ class InventoryBufferIn extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getVariant() : ?string
+    public function getVariant(): ?string
     {
         return $this->getData(self::VARIANT);
     }

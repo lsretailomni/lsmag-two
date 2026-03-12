@@ -27,7 +27,7 @@ class CrossSellingItems extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }

@@ -35,7 +35,7 @@ class StoreInventoryLinesGet extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getItemno() : ?string
+    public function getItemno(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
@@ -53,7 +53,7 @@ class StoreInventoryLinesGet extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getVariant() : ?string
+    public function getVariant(): ?string
     {
         return $this->getData(self::VARIANT);
     }
@@ -71,7 +71,7 @@ class StoreInventoryLinesGet extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?float
      */
-    public function getQuantitycalculated() : ?float
+    public function getQuantitycalculated(): ?float
     {
         return $this->getData(self::QUANTITY_CALCULATED);
     }
@@ -89,7 +89,7 @@ class StoreInventoryLinesGet extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getScandatetime() : ?string
+    public function getScandatetime(): ?string
     {
         return $this->getData(self::SCAN_DATE_TIME);
     }

@@ -41,7 +41,7 @@ class CreateNewCardForContact extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -59,7 +59,7 @@ class CreateNewCardForContact extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -77,7 +77,7 @@ class CreateNewCardForContact extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getCardid() : ?string
+    public function getCardid(): ?string
     {
         return $this->getData(self::CARD_ID);
     }
@@ -95,7 +95,7 @@ class CreateNewCardForContact extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getClubid() : ?string
+    public function getClubid(): ?string
     {
         return $this->getData(self::CLUB_ID);
     }
@@ -113,7 +113,7 @@ class CreateNewCardForContact extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getSchemeid() : ?string
+    public function getSchemeid(): ?string
     {
         return $this->getData(self::SCHEME_ID);
     }
@@ -131,7 +131,7 @@ class CreateNewCardForContact extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getAccountid() : ?string
+    public function getAccountid(): ?string
     {
         return $this->getData(self::ACCOUNT_ID);
     }
@@ -149,7 +149,7 @@ class CreateNewCardForContact extends \Magento\Catalog\Model\AbstractModel imple
     /**
      * @return ?string
      */
-    public function getContactid() : ?string
+    public function getContactid(): ?string
     {
         return $this->getData(self::CONTACT_ID);
     }

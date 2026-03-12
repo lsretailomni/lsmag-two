@@ -61,7 +61,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -79,7 +79,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreatedatstore() : ?string
+    public function getCreatedatstore(): ?string
     {
         return $this->getData(self::CREATEDAT_STORE);
     }
@@ -97,7 +97,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreated() : ?string
+    public function getCreated(): ?string
     {
         return $this->getData(self::CREATED);
     }
@@ -115,7 +115,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getMembercardno() : ?string
+    public function getMembercardno(): ?string
     {
         return $this->getData(self::MEMBER_CARD_NO);
     }
@@ -133,7 +133,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getFullname() : ?string
+    public function getFullname(): ?string
     {
         return $this->getData(self::FULL_NAME);
     }
@@ -151,7 +151,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAddress() : ?string
+    public function getAddress(): ?string
     {
         return $this->getData(self::ADDRESS);
     }
@@ -169,7 +169,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPhoneno() : ?string
+    public function getPhoneno(): ?string
     {
         return $this->getData(self::PHONE_NO);
     }
@@ -187,7 +187,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getEmail() : ?string
+    public function getEmail(): ?string
     {
         return $this->getData(self::EMAIL);
     }
@@ -205,7 +205,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getShiporderposflag() : ?string
+    public function getShiporderposflag(): ?string
     {
         return $this->getData(self::SHIP_ORDER_POSFLAG);
     }
@@ -223,7 +223,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalamount() : ?float
+    public function getTotalamount(): ?float
     {
         return $this->getData(self::TOTAL_AMOUNT);
     }
@@ -241,7 +241,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTotalquantity() : ?float
+    public function getTotalquantity(): ?float
     {
         return $this->getData(self::TOTAL_QUANTITY);
     }
@@ -259,7 +259,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getProcessingstatus() : ?string
+    public function getProcessingstatus(): ?string
     {
         return $this->getData(self::PROCESSING_STATUS);
     }
@@ -277,7 +277,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatusint() : ?string
+    public function getStatusint(): ?string
     {
         return $this->getData(self::STATUS_INT);
     }
@@ -295,7 +295,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getRequesteddeliverydate() : ?string
+    public function getRequesteddeliverydate(): ?string
     {
         return $this->getData(self::REQUESTED_DELIVERY_DATE);
     }
@@ -313,7 +313,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getShiporder() : ?bool
+    public function getShiporder(): ?bool
     {
         return $this->getData(self::SHIP_ORDER);
     }
@@ -331,7 +331,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExternalid() : ?string
+    public function getExternalid(): ?string
     {
         return $this->getData(self::EXTERNAL_ID);
     }
@@ -349,7 +349,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getCompressedlinesint() : ?bool
+    public function getCompressedlinesint(): ?bool
     {
         return $this->getData(self::COMPRESSED_LINES_INT);
     }
@@ -367,7 +367,7 @@ class CustomerOrderHeaderV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPicktype() : ?string
+    public function getPicktype(): ?string
     {
         return $this->getData(self::PICK_TYPE);
     }

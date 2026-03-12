@@ -41,7 +41,7 @@ class GetHierarchyNode extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -59,7 +59,7 @@ class GetHierarchyNode extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -77,7 +77,7 @@ class GetHierarchyNode extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getHierarchycode() : ?string
+    public function getHierarchycode(): ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
@@ -95,7 +95,7 @@ class GetHierarchyNode extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getNodeid() : ?string
+    public function getNodeid(): ?string
     {
         return $this->getData(self::NODE_ID);
     }
@@ -113,7 +113,7 @@ class GetHierarchyNode extends \Magento\Catalog\Model\AbstractModel implements R
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }

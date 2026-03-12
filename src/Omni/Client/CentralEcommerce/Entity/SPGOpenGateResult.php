@@ -43,7 +43,7 @@ class SPGOpenGateResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -61,7 +61,7 @@ class SPGOpenGateResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getDevicelocation() : ?string
+    public function getDevicelocation(): ?string
     {
         return $this->getData(self::DEVICE_LOCATION);
     }
@@ -79,7 +79,7 @@ class SPGOpenGateResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getMemberaccountno() : ?string
+    public function getMemberaccountno(): ?string
     {
         return $this->getData(self::MEMBER_ACCOUNT_NO);
     }
@@ -97,7 +97,7 @@ class SPGOpenGateResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?bool
      */
-    public function getExitwithoutshopping() : ?bool
+    public function getExitwithoutshopping(): ?bool
     {
         return $this->getData(self::EXIT_WITHOUT_SHOPPING);
     }
@@ -115,7 +115,7 @@ class SPGOpenGateResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?bool
      */
-    public function getIsentering() : ?bool
+    public function getIsentering(): ?bool
     {
         return $this->getData(self::IS_ENTERING);
     }
@@ -133,7 +133,7 @@ class SPGOpenGateResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?bool
      */
-    public function getReturnvalue() : ?bool
+    public function getReturnvalue(): ?bool
     {
         return $this->getData(self::RETURN_VALUE);
     }
@@ -151,7 +151,7 @@ class SPGOpenGateResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -169,7 +169,7 @@ class SPGOpenGateResult extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

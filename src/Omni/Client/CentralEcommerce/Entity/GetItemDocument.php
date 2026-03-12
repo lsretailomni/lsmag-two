@@ -53,7 +53,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -71,7 +71,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -89,7 +89,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getHhtId() : ?string
+    public function getHhtId(): ?string
     {
         return $this->getData(self::HHT_ID);
     }
@@ -107,7 +107,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getValueType() : ?string
+    public function getValueType(): ?string
     {
         return $this->getData(self::VALUE_TYPE);
     }
@@ -125,7 +125,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getValue() : ?string
+    public function getValue(): ?string
     {
         return $this->getData(self::VALUE);
     }
@@ -143,7 +143,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getProcessType() : ?string
+    public function getProcessType(): ?string
     {
         return $this->getData(self::PROCESS_TYPE);
     }
@@ -161,7 +161,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getStoreNo() : ?string
+    public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -179,7 +179,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getLocationCode() : ?string
+    public function getLocationCode(): ?string
     {
         return $this->getData(self::LOCATION_CODE);
     }
@@ -197,7 +197,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getItemNo1() : ?string
+    public function getItemNo1(): ?string
     {
         return $this->getData(self::ITEM_NO_1);
     }
@@ -215,7 +215,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getVariant1() : ?string
+    public function getVariant1(): ?string
     {
         return $this->getData(self::VARIANT_1);
     }
@@ -233,7 +233,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getItemNo2() : ?string
+    public function getItemNo2(): ?string
     {
         return $this->getData(self::ITEM_NO_2);
     }
@@ -251,7 +251,7 @@ class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getVariant2() : ?string
+    public function getVariant2(): ?string
     {
         return $this->getData(self::VARIANT_2);
     }

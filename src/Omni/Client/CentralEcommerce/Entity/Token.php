@@ -65,7 +65,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccountno() : ?string
+    public function getAccountno(): ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
@@ -83,7 +83,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTokenid() : ?string
+    public function getTokenid(): ?string
     {
         return $this->getData(self::TOKEN_ID);
     }
@@ -101,7 +101,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTokenvalue() : ?string
+    public function getTokenvalue(): ?string
     {
         return $this->getData(self::TOKEN_VALUE);
     }
@@ -119,7 +119,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTokentype() : ?string
+    public function getTokentype(): ?string
     {
         return $this->getData(self::TOKEN_TYPE);
     }
@@ -137,7 +137,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPspid() : ?string
+    public function getPspid(): ?string
     {
         return $this->getData(self::PSPID);
     }
@@ -155,7 +155,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardmask() : ?string
+    public function getCardmask(): ?string
     {
         return $this->getData(self::CARD_MASK);
     }
@@ -173,7 +173,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getExpirydate() : ?string
+    public function getExpirydate(): ?string
     {
         return $this->getData(self::EXPIRY_DATE);
     }
@@ -191,7 +191,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getDefaulttoken() : ?bool
+    public function getDefaulttoken(): ?bool
     {
         return $this->getData(self::DEFAULT_TOKEN);
     }
@@ -209,7 +209,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreateddatetime() : ?string
+    public function getCreateddatetime(): ?string
     {
         return $this->getData(self::CREATED_DATE_TIME);
     }
@@ -227,7 +227,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getInitiator() : ?string
+    public function getInitiator(): ?string
     {
         return $this->getData(self::INITIATOR);
     }
@@ -245,7 +245,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getInitiatorreason() : ?string
+    public function getInitiatorreason(): ?string
     {
         return $this->getData(self::INITIATOR_REASON);
     }
@@ -263,7 +263,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTokenidexternal() : ?string
+    public function getTokenidexternal(): ?string
     {
         return $this->getData(self::TOKEN_IDEXTERNAL);
     }
@@ -281,7 +281,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardnumber() : ?string
+    public function getCardnumber(): ?string
     {
         return $this->getData(self::CARD_NUMBER);
     }
@@ -299,7 +299,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardtypename() : ?string
+    public function getCardtypename(): ?string
     {
         return $this->getData(self::CARD_TYPE_NAME);
     }
@@ -317,7 +317,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCardissuerid() : ?string
+    public function getCardissuerid(): ?string
     {
         return $this->getData(self::CARD_ISSUER_ID);
     }
@@ -335,7 +335,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPar() : ?string
+    public function getPar(): ?string
     {
         return $this->getData(self::PAR);
     }
@@ -371,7 +371,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getToken() : ?string
+    public function getToken(): ?string
     {
         return $this->getData(self::TOKEN);
     }
@@ -389,7 +389,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getContactno() : ?string
+    public function getContactno(): ?string
     {
         return $this->getData(self::CONTACT_NO);
     }
@@ -407,7 +407,7 @@ class Token extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCreated() : ?string
+    public function getCreated(): ?string
     {
         return $this->getData(self::CREATED);
     }

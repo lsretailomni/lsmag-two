@@ -33,7 +33,7 @@ class HierarchyDateValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHierarchycode() : ?string
+    public function getHierarchycode(): ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
@@ -51,7 +51,7 @@ class HierarchyDateValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getValidationscheduleid() : ?string
+    public function getValidationscheduleid(): ?string
     {
         return $this->getData(self::VALIDATION_SCHEDULE_ID);
     }
@@ -69,7 +69,7 @@ class HierarchyDateValSched extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getSalestypefilter() : ?string
+    public function getSalestypefilter(): ?string
     {
         return $this->getData(self::SALES_TYPE_FILTER);
     }

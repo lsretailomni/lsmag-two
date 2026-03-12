@@ -29,7 +29,7 @@ class SPGOrderCheckCOHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatus() : ?string
+    public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);
     }
@@ -47,7 +47,7 @@ class SPGOrderCheckCOHeader extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStatusdatetime() : ?string
+    public function getStatusdatetime(): ?string
     {
         return $this->getData(self::STATUS_DATE_TIME);
     }

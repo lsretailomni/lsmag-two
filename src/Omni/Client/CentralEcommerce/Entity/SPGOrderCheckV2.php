@@ -41,7 +41,7 @@ class SPGOrderCheckV2 extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getDocumentid() : ?string
+    public function getDocumentid(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
@@ -59,7 +59,7 @@ class SPGOrderCheckV2 extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?bool
      */
-    public function getOrderpaid() : ?bool
+    public function getOrderpaid(): ?bool
     {
         return $this->getData(self::ORDER_PAID);
     }
@@ -77,7 +77,7 @@ class SPGOrderCheckV2 extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?bool
      */
-    public function getDocheck() : ?bool
+    public function getDocheck(): ?bool
     {
         return $this->getData(self::DO_CHECK);
     }
@@ -131,7 +131,7 @@ class SPGOrderCheckV2 extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -149,7 +149,7 @@ class SPGOrderCheckV2 extends \Magento\Catalog\Model\AbstractModel implements Re
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

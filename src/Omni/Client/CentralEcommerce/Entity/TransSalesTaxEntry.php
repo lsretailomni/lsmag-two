@@ -67,7 +67,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -85,7 +85,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getPosterminalno() : ?string
+    public function getPosterminalno(): ?string
     {
         return $this->getData(self::POSTERMINAL_NO);
     }
@@ -139,7 +139,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxareacode() : ?string
+    public function getTaxareacode(): ?string
     {
         return $this->getData(self::TAX_AREA_CODE);
     }
@@ -157,7 +157,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxjurisdictioncode() : ?string
+    public function getTaxjurisdictioncode(): ?string
     {
         return $this->getData(self::TAX_JURISDICTION_CODE);
     }
@@ -175,7 +175,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxgroupcode() : ?string
+    public function getTaxgroupcode(): ?string
     {
         return $this->getData(self::TAX_GROUP_CODE);
     }
@@ -193,7 +193,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getExpensecapitalize() : ?bool
+    public function getExpensecapitalize(): ?bool
     {
         return $this->getData(self::EXPENSE_CAPITALIZE);
     }
@@ -211,7 +211,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTaxtype() : ?string
+    public function getTaxtype(): ?string
     {
         return $this->getData(self::TAX_TYPE);
     }
@@ -229,7 +229,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getUsetax() : ?bool
+    public function getUsetax(): ?bool
     {
         return $this->getData(self::USE_TAX);
     }
@@ -247,7 +247,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getPositive() : ?bool
+    public function getPositive(): ?bool
     {
         return $this->getData(self::POSITIVE);
     }
@@ -265,7 +265,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?bool
      */
-    public function getTaxliable() : ?bool
+    public function getTaxliable(): ?bool
     {
         return $this->getData(self::TAX_LIABLE);
     }
@@ -283,7 +283,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getQuantity() : ?float
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
@@ -301,7 +301,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTaxpercentage() : ?float
+    public function getTaxpercentage(): ?float
     {
         return $this->getData(self::TAX_PERCENTAGE);
     }
@@ -319,7 +319,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTaxbaseamount() : ?float
+    public function getTaxbaseamount(): ?float
     {
         return $this->getData(self::TAX_BASE_AMOUNT);
     }
@@ -337,7 +337,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTaxamount() : ?float
+    public function getTaxamount(): ?float
     {
         return $this->getData(self::TAX_AMOUNT);
     }
@@ -355,7 +355,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?float
      */
-    public function getTaxdifference() : ?float
+    public function getTaxdifference(): ?float
     {
         return $this->getData(self::TAX_DIFFERENCE);
     }
@@ -373,7 +373,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAvataxjurisdiction() : ?string
+    public function getAvataxjurisdiction(): ?string
     {
         return $this->getData(self::AVA_TAX_JURISDICTION);
     }
@@ -391,7 +391,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAvataxname() : ?string
+    public function getAvataxname(): ?string
     {
         return $this->getData(self::AVA_TAX_NAME);
     }
@@ -409,7 +409,7 @@ class TransSalesTaxEntry extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAvataxcustomerusagetype() : ?string
+    public function getAvataxcustomerusagetype(): ?string
     {
         return $this->getData(self::AVA_TAX_CUSTOMER_USAGE_TYPE);
     }

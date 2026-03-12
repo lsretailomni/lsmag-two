@@ -33,7 +33,7 @@ class ShippingAgent extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getCode() : ?string
+    public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
@@ -51,7 +51,7 @@ class ShippingAgent extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getName() : ?string
+    public function getName(): ?string
     {
         return $this->getData(self::NAME);
     }
@@ -69,7 +69,7 @@ class ShippingAgent extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getInternetaddress() : ?string
+    public function getInternetaddress(): ?string
     {
         return $this->getData(self::INTERNET_ADDRESS);
     }
@@ -87,7 +87,7 @@ class ShippingAgent extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getAccountno() : ?string
+    public function getAccountno(): ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }

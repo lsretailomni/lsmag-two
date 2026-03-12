@@ -92,7 +92,7 @@ class MobilePosPost extends AbstractOperation
         return $this;
     }
 
-    public function getClient() : OmniClient
+    public function getClient(): OmniClient
     {
         return $this->client;
     }
@@ -103,7 +103,7 @@ class MobilePosPost extends AbstractOperation
         return $this;
     }
 
-    public function getRequest() : MobilePosPostRequest
+    public function getRequest(): MobilePosPostRequest
     {
         return $this->request;
     }
@@ -114,7 +114,7 @@ class MobilePosPost extends AbstractOperation
         return $this;
     }
 
-    public function getResponse() : MobilePosPostResponse
+    public function getResponse(): MobilePosPostResponse
     {
         return $this->response;
     }
@@ -125,7 +125,7 @@ class MobilePosPost extends AbstractOperation
         return $this;
     }
 
-    public function getRequestXml() : string
+    public function getRequestXml(): string
     {
         return $this->requestXml;
     }
@@ -136,7 +136,7 @@ class MobilePosPost extends AbstractOperation
         return $this;
     }
 
-    public function getResponseXml() : string
+    public function getResponseXml(): string
     {
         return $this->responseXml;
     }
@@ -147,7 +147,7 @@ class MobilePosPost extends AbstractOperation
         return $this;
     }
 
-    public function getError() : \Exception
+    public function getError(): \Exception
     {
         return $this->error;
     }

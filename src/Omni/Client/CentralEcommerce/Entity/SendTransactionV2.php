@@ -37,7 +37,7 @@ class SendTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -55,7 +55,7 @@ class SendTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -73,7 +73,7 @@ class SendTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?bool
      */
-    public function getAddonly() : ?bool
+    public function getAddonly(): ?bool
     {
         return $this->getData(self::ADD_ONLY);
     }
@@ -91,7 +91,7 @@ class SendTransactionV2 extends \Magento\Catalog\Model\AbstractModel implements 
     /**
      * @return ?bool
      */
-    public function getUpdatereplicationcounter() : ?bool
+    public function getUpdatereplicationcounter(): ?bool
     {
         return $this->getData(self::UPDATE_REPLICATION_COUNTER);
     }

@@ -31,7 +31,7 @@ class HierarchyV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getHierarchycode() : ?string
+    public function getHierarchycode(): ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
@@ -49,7 +49,7 @@ class HierarchyV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -67,7 +67,7 @@ class HierarchyV2 extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getType() : ?string
+    public function getType(): ?string
     {
         return $this->getData(self::TYPE);
     }

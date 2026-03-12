@@ -33,7 +33,7 @@ class HierarchyNodeLinkImage extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getKeyvalue() : ?string
+    public function getKeyvalue(): ?string
     {
         return $this->getData(self::KEY_VALUE);
     }
@@ -69,7 +69,7 @@ class HierarchyNodeLinkImage extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getImageid() : ?string
+    public function getImageid(): ?string
     {
         return $this->getData(self::IMAGE_ID);
     }
@@ -87,7 +87,7 @@ class HierarchyNodeLinkImage extends \Magento\Catalog\Model\AbstractModel
     /**
      * @return ?string
      */
-    public function getTablename() : ?string
+    public function getTablename(): ?string
     {
         return $this->getData(self::TABLE_NAME);
     }

@@ -39,7 +39,7 @@ class SPGOrderCheckV2Result extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?bool
      */
-    public function getOrderpaid() : ?bool
+    public function getOrderpaid(): ?bool
     {
         return $this->getData(self::ORDER_PAID);
     }
@@ -57,7 +57,7 @@ class SPGOrderCheckV2Result extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?bool
      */
-    public function getDocheck() : ?bool
+    public function getDocheck(): ?bool
     {
         return $this->getData(self::DO_CHECK);
     }
@@ -111,7 +111,7 @@ class SPGOrderCheckV2Result extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -129,7 +129,7 @@ class SPGOrderCheckV2Result extends \Magento\Catalog\Model\AbstractModel impleme
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

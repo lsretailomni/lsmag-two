@@ -39,7 +39,7 @@ class GetDocument extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -57,7 +57,7 @@ class GetDocument extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
@@ -75,7 +75,7 @@ class GetDocument extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getTerminalno() : ?string
+    public function getTerminalno(): ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -93,7 +93,7 @@ class GetDocument extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getRequesttype() : ?string
+    public function getRequesttype(): ?string
     {
         return $this->getData(self::REQUEST_TYPE);
     }
@@ -111,7 +111,7 @@ class GetDocument extends \Magento\Catalog\Model\AbstractModel implements Reques
     /**
      * @return ?string
      */
-    public function getDocumentno() : ?string
+    public function getDocumentno(): ?string
     {
         return $this->getData(self::DOCUMENT_NO);
     }

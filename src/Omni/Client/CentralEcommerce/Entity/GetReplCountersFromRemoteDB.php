@@ -55,7 +55,7 @@ class GetReplCountersFromRemoteDB extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getReplcountfieldname() : ?string
+    public function getReplcountfieldname(): ?string
     {
         return $this->getData(self::REPL_COUNT_FIELD_NAME);
     }
@@ -73,7 +73,7 @@ class GetReplCountersFromRemoteDB extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getReplicationcounter() : ?string
+    public function getReplicationcounter(): ?string
     {
         return $this->getData(self::REPLICATION_COUNTER);
     }
@@ -91,7 +91,7 @@ class GetReplCountersFromRemoteDB extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -109,7 +109,7 @@ class GetReplCountersFromRemoteDB extends \Magento\Catalog\Model\AbstractModel i
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }

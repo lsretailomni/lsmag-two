@@ -37,7 +37,7 @@ class CustomerOrderCreateCOStatusLogV5 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -55,7 +55,7 @@ class CustomerOrderCreateCOStatusLogV5 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getUserid() : ?string
+    public function getUserid(): ?string
     {
         return $this->getData(self::USER_ID);
     }
@@ -73,7 +73,7 @@ class CustomerOrderCreateCOStatusLogV5 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getStaffid() : ?string
+    public function getStaffid(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
@@ -91,7 +91,7 @@ class CustomerOrderCreateCOStatusLogV5 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getTerminalno() : ?string
+    public function getTerminalno(): ?string
     {
         return $this->getData(self::TERMINAL_NO);
     }
@@ -127,7 +127,7 @@ class CustomerOrderCreateCOStatusLogV5 extends \Magento\Catalog\Model\AbstractMo
     /**
      * @return ?string
      */
-    public function getReceiptno() : ?string
+    public function getReceiptno(): ?string
     {
         return $this->getData(self::RECEIPT_NO);
     }

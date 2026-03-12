@@ -41,7 +41,7 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getStoreno() : ?string
+    public function getStoreno(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
@@ -59,7 +59,7 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getLocationcode() : ?string
+    public function getLocationcode(): ?string
     {
         return $this->getData(self::LOCATION_CODE);
     }
@@ -77,7 +77,7 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?bool
      */
-    public function getSourcinglocationavailability() : ?bool
+    public function getSourcinglocationavailability(): ?bool
     {
         return $this->getData(self::SOURCING_LOCATION_AVAILABILITY);
     }
@@ -113,7 +113,7 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getResponsecode() : ?string
+    public function getResponsecode(): ?string
     {
         return $this->getData(self::RESPONSE_CODE);
     }
@@ -131,7 +131,7 @@ class GetInventoryMultipleV2 extends \Magento\Catalog\Model\AbstractModel implem
     /**
      * @return ?string
      */
-    public function getErrortext() : ?string
+    public function getErrortext(): ?string
     {
         return $this->getData(self::ERROR_TEXT);
     }
