@@ -8,6 +8,7 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Webhooks\Helper\NotificationHelper;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\DB\TransactionFactory;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -156,9 +157,14 @@ class Payment
         $shippingAmount = 0;
         $itemsToInvoice = [];
         $subtotal       = 0;
+        $isRetail = true;
         try {
             $order           = (!empty($magentoOrder)) ? $magentoOrder :
                 $this->helper->getOrderByDocumentId($documentId);
+            $industry = $this->helper->getLsrObject()->getStoreConfig(LSR::LS_INDUSTRY_VALUE, $order->getStoreId());
+            if ($industry !== LSR::LS_INDUSTRY_VALUE_RETAIL) {
+                $isRetail = false;
+            }
             $storeId         = $order->getStoreId();
             $isOffline       = $order->getPayment()->getMethodInstance()->isOffline();
             $validateOrder   = $this->validateOrder($order, $documentId);
@@ -172,7 +178,7 @@ class Payment
                         $orderItemId                  = $item->getItemId();
                         $itemsToInvoice[$orderItemId] = $itemData['qty'];
                         $subtotal                     += $itemData['amount_with_discount'];
-                        if ($isOffline) {
+                        if ($isOffline || !$isRetail) {
                             $totalAmount += $itemData['amount'];
                         }
                     }
@@ -181,12 +187,12 @@ class Payment
                 foreach ($lines as $line) {
                     if ($line['ItemId'] == $this->helper->getShippingItemId()) {
                         $shippingAmount = $line['Amount'];
-                        if ($isOffline) {
+                        if ($isOffline || !$isRetail) {
                             $totalAmount += $shippingAmount;
                         }
                     }
                 }
-                if ($isOffline && !$order->hasInvoices()) {
+                if (($isOffline || !$isRetail) && !$order->hasInvoices()) {
                     if ($order->getLsGiftCardAmountUsed() > 0) {
                         $totalAmount = $totalAmount - $order->getLsGiftCardAmountUsed();
                     }
