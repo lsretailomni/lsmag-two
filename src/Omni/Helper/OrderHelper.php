@@ -598,7 +598,7 @@ class OrderHelper extends AbstractHelper
 
         if ($order->getLsPointsSpent()) {
             $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
-            $pointRate = 0;
+            $pointRate    = 0;
             // @codingStandardsIgnoreStart
             $orderPaymentLoyalty = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
@@ -1060,16 +1060,18 @@ class OrderHelper extends AbstractHelper
         $filterOptions = true,
         $customerId = 0,
         $sortOrder = null,
-        $isOrderEdit = false
+        $isOrderEdit = false,
+        $websiteId = null
     ) {
-        $orders    = null;
-        $store     = $this->storeManager->getStore($storeId);
-        $websiteId = $store->getWebsiteId();
+        $orders        = null;
+        $orderStatuses = null;
         try {
-            $orderStatuses   = $this->lsr->getWebsiteConfig(
-                LSR::LSR_RESTRICTED_ORDER_STATUSES,
-                $websiteId
-            );
+            if ($websiteId) {
+                $orderStatuses = $this->lsr->getWebsiteConfig(
+                    LSR::LSR_RESTRICTED_ORDER_STATUSES,
+                    $websiteId
+                );
+            }
             $criteriaBuilder = $this->basketHelper->getSearchCriteriaBuilder();
 
             if ($filterOptions) {
@@ -1078,6 +1080,10 @@ class OrderHelper extends AbstractHelper
                 }
 
                 $criteriaBuilder->addFilter('document_id', null, 'null');
+            }
+
+            if ($storeId !== null) {
+                $criteriaBuilder->addFilter('store_id', $storeId, 'eq');
             }
 
             if ($customerId) {
@@ -1346,9 +1352,14 @@ class OrderHelper extends AbstractHelper
             $websiteId
         );
 
-        $status = $order->getStatus();
+        $status               = $order->getStatus();
+        $paymentMethod        = $order->getPayment()->getMethodInstance()->getCode();
+        $noPaymentLineMethods = $this->paymentLineNotRequiredPaymentMethods($order);
 
-        $check = empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
+        $check = empty($orderStatuses) ||
+            !(in_array($status, explode(',', $orderStatuses))) ||
+            in_array($paymentMethod, $noPaymentLineMethods);
+
         return $check;
     }
 
@@ -1370,8 +1381,8 @@ class OrderHelper extends AbstractHelper
         $storeId,
         $orderType = null
     ) {
-        $magentoOrder = $this->getGivenValueFromRegistry('current_mag_order');
-        $currencyObject = null;
+        $magentoOrder             = $this->getGivenValueFromRegistry('current_mag_order');
+        $currencyObject           = null;
         $currentStoreCurrencyCode = $this->storeManager->getStore()->getCurrentCurrency()->getCode();
 
         if ($magentoOrder) {
