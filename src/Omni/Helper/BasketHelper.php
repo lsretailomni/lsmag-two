@@ -9,12 +9,26 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\CentralEcommerce\Entity\MobileTransaction;
 use \Ls\Omni\Client\CentralEcommerce\Entity\MobileTransactionLine;
 use \Ls\Omni\Client\CentralEcommerce\Entity\MobileTransDiscountLine;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootWishListDelete;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootWishLists;
+use \Ls\Omni\Client\CentralEcommerce\Entity\WishListCreate;
+use \Ls\Omni\Client\CentralEcommerce\Entity\WishListCreateResult;
+use \Ls\Omni\Client\CentralEcommerce\Entity\WishListDelete;
+use \Ls\Omni\Client\CentralEcommerce\Entity\WishListDeleteByID;
+use \Ls\Omni\Client\CentralEcommerce\Entity\WishListGet;
+use \Ls\Omni\Client\CentralEcommerce\Entity\WishListHeader;
+use \Ls\Omni\Client\CentralEcommerce\Entity\WishListLine;
+use \Ls\Omni\Client\CentralEcommerce\Entity\WishListLink;
+use \Ls\Omni\Client\CentralEcommerce\Operation\WishListCreate as WishListCreateOperation;
+use \Ls\Omni\Client\CentralEcommerce\Operation\WishListGet as WishListGetOperation;
+use \Ls\Omni\Client\CentralEcommerce\Operation\WishListItemModify;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\CentralEcommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\CentralEcommerce\Operation\EcomCalculateBasket;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -57,30 +71,435 @@ class BasketHelper extends AbstractHelperOmni
         $this->calculateBasket = $this->lsr->getPlaceToCalculateBasket();
     }
 
-    public function updateWishlistAtOmni(OneList $oneList)
+    /**
+     * Fetch current customer wishlist
+     *
+     * @return RootWishLists|null
+     */
+    public function fetchCurrentCustomerWishlist()
     {
-        return $this->saveWishlistToOmni($oneList);
+        if ($this->getWishListFromCustomerSession()) {
+            return $this->getWishListFromCustomerSession();
+        }
+
+        return null;
     }
 
-    public function saveWishlistToOmni(OneList $list)
+    /**
+     * Create new wishlist in central for current customer
+     *
+     * @return WishListCreateResult|null
+     */
+    public function createNewWishlist()
     {
-        // @codingStandardsIgnoreLine
-        $operation = new Operation\OneListSave();
+        $cardId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) == null)
+            ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
 
-        $list->setStoreId($this->getDefaultWebStore());
+        $wishListRequest = [
+            WishListCreate::WISH_LIST_CREATE_XML => $this->createInstance(
+                RootWishLists::class,
+                [
+                    'data' => [
+                        RootWishLists::WISH_LIST_HEADER => $this->createInstance(
+                            WishListHeader::class,
+                            [
+                                'data' => [
+                                    WishListHeader::WISH_LIST_NAME => 'Wish List:'. $cardId,
+                                    WishListHeader::CALCULATION_TYPE => 0,
+                                    WishListHeader::WISH_LIST_NO => null
+                                ]
+                            ]
+                        )
+                    ]
+                ]
+            ),
+            WishListCreate::CARD_ID => $cardId
+        ];
 
-        // @codingStandardsIgnoreLine
-        $request = (new Entity\OneListSave())
-            ->setOneList($list)
-            ->setCalculate(true);
+        return $this->saveWishlistToCentral($wishListRequest);
+    }
 
-        /** @var Entity\OneListSaveResponse $response */
-        $response = $operation->execute($request);
-        if ($response) {
-            $this->setWishListInCustomerSession($response->getOneListSaveResult());
-            return $response->getOneListSaveResult();
+    /**
+     * Create new wishlist in central for current customer
+     *
+     * @param array $wishlistItems
+     * @return WishListCreateResult|null
+     * @throws NoSuchEntityException
+     */
+    public function createNewWishlistWithItems($wishlistItems)
+    {
+        $cardId = (!($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) == null)
+            ? $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) : '');
+        $oneListItems = [];
+
+        $lineNo = 10000;
+        foreach ($wishlistItems as $wishlistItem) {
+            $product = $wishlistItem->getProduct();
+
+            [$itemId, $variantId, $uom, $barCode] = $this->getComparisonValuesForProduct($product);
+            $qty = $wishlistItem->getQty();
+            $oneListItem = $this->buildOneListItem($itemId, $variantId, $uom, $barCode, $qty);
+            $oneListItem->setWishlistno(null);
+            $oneListItem->setLineno($lineNo);
+            $oneListItems[] = $oneListItem;
+            $lineNo += 10000;
         }
+        $wishListRequest = [
+            WishListCreate::WISH_LIST_CREATE_XML => $this->createInstance(
+                RootWishLists::class,
+                [
+                    'data' => [
+                        RootWishLists::WISH_LIST_HEADER => $this->createInstance(
+                            WishListHeader::class,
+                            [
+                                'data' => [
+                                    WishListHeader::WISH_LIST_NAME => 'Wish List:'. $cardId,
+                                    WishListHeader::CALCULATION_TYPE => 0,
+                                    WishListHeader::WISH_LIST_NO => null
+                                ]
+                            ]
+                        ),
+                        RootWishLists::WISH_LIST_LINE => $oneListItems
+                    ]
+                ]
+            ),
+            WishListCreate::CARD_ID => $cardId
+        ];
+
+        return $this->saveWishlistToCentral($wishListRequest);
+    }
+
+    /**
+     * Save wishlist to central
+     *
+     * @param array $wishListRequest
+     * @return WishListCreateResult|null
+     */
+    public function saveWishlistToCentral($wishListRequest)
+    {
+        $operation = $this->createInstance(WishListCreateOperation::class);
+        $operation->setOperationInput($wishListRequest);
+        $response = $operation->execute();
+
+        return $response && $response->getResponsecode() == "0000" ? $response : null;
+    }
+
+    /**
+     * Get wishlist from central using wish list number
+     *
+     * @param string $wishListNo
+     * @return RootWishLists|null
+     */
+    public function getWishListFromCentralAgainstWishListNo($wishListNo)
+    {
+        $operation = $this->createInstance(WishListGetOperation::class);
+        $operation->setOperationInput([
+            WishListGet::WISH_LIST_NO => $wishListNo,
+            WishListGet::WISH_LIST_GET_XML => null
+        ]);
+        $response = $operation->execute();
+
+        return $response &&
+        $response->getResponsecode() == "0000"
+            ? $response->getWishlistgetxml() : null;
+    }
+
+    /**
+     * Get wishlist from central using card ID when wish list number is not available
+     *
+     * @param string $cardId
+     * @return WishListHeader|null
+     */
+    public function getWishListFromCentralAgainstCardId($cardId)
+    {
+        $operation = $this->createInstance(WishListGetOperation::class);
+        $operation->setOperationInput([
+            WishListGet::WISH_LIST_NO => null,
+            WishListGet::WISH_LIST_GET_XML => $this->createInstance(
+                RootWishLists::class,
+                [
+                    'data' => [
+                        RootWishLists::WISH_LIST_LINK => $this->createInstance(
+                            WishListLink::class,
+                            [
+                                'data' => [
+                                    WishListLink::CARD_NO => $cardId,
+                                    WishListLink::WISH_LIST_NO => null,
+                                    WishListLink::CAN_EDIT => false,
+                                    WishListLink::OWNER => null,
+                                    WishListLink::STATUS => null
+                                ]
+                            ]
+                        )
+                    ]
+                ]
+            ),
+        ]);
+        $response = $operation->execute();
+
+        return $response &&
+        $response->getResponsecode() == "0000" &&
+        $response->getWishlistgetxml()->getWishlistheader()
+            ? $response->getWishlistgetxml()->getWishlistheader() : null;
+    }
+
+    /**
+     * Handle added items to wishlist
+     *
+     * @param DataObject $buyRequest
+     * @param int $productId
+     * @param int $qty
+     * @param RootWishLists $oneList
+     * @param array $oneListItems
+     * @return RootWishLists
+     * @throws NoSuchEntityException
+     */
+    public function handleSingleProductAdd($buyRequest, $productId, $qty, $oneList, $oneListItems)
+    {
+        try {
+            $product = $this->productRepository->getById($productId);
+        } catch (NoSuchEntityException $e) {
+            return $oneList;
+        }
+
+        if (!empty($buyRequest->getSuperAttribute())) {
+            $cartCandidates = $product->getTypeInstance()->processConfiguration($buyRequest, clone $product);
+
+            foreach ($cartCandidates as $candidate) {
+                if ($candidate->getParentProductId()) {
+                    $product = $candidate;
+                    break;
+                }
+            }
+        }
+
+        [$itemId, $variantId, $uom, $barCode] = $this->getComparisonValuesForProduct($product);
+        $found    = $this->findInOneListItems($oneListItems, $itemId, $variantId, $uom);
+        $listItem = $this->buildOneListItem($itemId, $variantId, $uom, $barCode, $qty);
+        $listItem->setWishlistno(current((array) $oneList->getWishlistheader())->getData(WishListHeader::WISH_LIST_NO));
+
+        if ($found) {
+            $listItem->setData(WishListLine::LINE_NO, $found->getData(WishListLine::LINE_NO));
+        } else {
+            $listItem->setData(WishListLine::LINE_NO, $this->getMaxLineNo($oneListItems) + 10000);
+        }
+
+        $this->executeOneListItemModify($listItem, $oneList, false);
+
+        return $oneList;
+    }
+
+    /**
+     * Handle removed items from wishlist
+     *
+     * @param array $wishlistItems
+     * @param RootWishLists $oneList
+     * @param array $oneListItems
+     * @return RootWishLists
+     */
+    public function handleRemovedItems($wishlistItems, $oneList, $oneListItems)
+    {
+        foreach ($oneListItems as $oneListItem) {
+            $currentItemId = $oneListItem->getData(WishListLine::ITEM_NO);
+            $currentVariantId = $oneListItem->getData(WishListLine::VARIANT_CODE);
+            $found = false;
+
+            foreach ($wishlistItems as $finalWishlistItem) {
+                $finalItemId = $finalWishlistItem->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+                $finalVariantId = $finalWishlistItem->getProduct()->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
+
+                if ($currentItemId == $finalItemId && $currentVariantId == $finalVariantId) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (!$found) {
+                $this->executeOneListItemModify($oneListItem, $oneList, true) ?? $oneList;
+            }
+        }
+
+        return $oneList;
+    }
+
+    /**
+     * Execute add/remove operation for one list item
+     *
+     * @param WishListLine $listItem
+     * @param RootWishLists $oneList
+     * @param bool $remove
+     * @return RootWishLists|null
+     */
+    public function executeOneListItemModify($listItem, $oneList, bool $remove)
+    {
+        $operation = $this->createInstance(WishListItemModify::class);
+        $operation->setOperationInput([
+            \Ls\Omni\Client\CentralEcommerce\Entity\WishListItemModify::WISH_LIST_NO =>
+                current((array) $oneList->getWishlistheader())->getData(WishListHeader::WISH_LIST_NO),
+            \Ls\Omni\Client\CentralEcommerce\Entity\WishListItemModify::REMOVE => $remove,
+            \Ls\Omni\Client\CentralEcommerce\Entity\WishListItemModify::WISH_LIST_ITEM_MODIFY_XML =>
+                $this->createInstance(
+                    RootWishLists::class,
+                    [
+                        'data' => [
+                            RootWishLists::WISH_LIST_LINE => $listItem,
+                            RootWishLists::WISH_LIST_HEADER => current($oneList->getWishlistheader())
+                        ]
+                    ]
+                )
+        ]);
+
+        $response = $operation->execute();
+
+        return $response && $response->getResponsecode() == "0000" ? $response : null;
+    }
+
+    /**
+     * Build wishlist line item for given details
+     *
+     * @param string $itemId
+     * @param string $variantId
+     * @param string $uom
+     * @param string $barCode
+     * @param int $qty
+     * @return WishListLine
+     */
+    public function buildOneListItem($itemId, $variantId, $uom, $barCode, $qty)
+    {
+        return $this->createInstance(WishListLine::class, [
+            'data' => [
+                WishListLine::ITEM_NO => $itemId,
+                WishListLine::VARIANT_CODE => $variantId,
+                WishListLine::UNIT_OF_MEASURE_CODE => $uom,
+                WishListLine::BARCODE => $barCode,
+                WishListLine::QUANTITY => $qty
+            ]
+        ]);
+    }
+
+    /**
+     * Get card ID from customer session
+     *
+     * @return string
+     */
+    public function getCardId()
+    {
+        return $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID) ?? '';
+    }
+
+    /**
+     * Get comparison values from product SKU
+     *
+     * @param mixed $product
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getComparisonValuesForProduct($product)
+    {
+        return $this->itemHelper->getComparisonValues($product->getSku());
+    }
+
+    /**
+     * Get max line number from given one list items
+     *
+     * @param array $oneListItems
+     * @param string $itemId
+     * @param ?string $variantId
+     * @param ?string $uom
+     * @return false|WishListLine
+     */
+    public function findInOneListItems($oneListItems, $itemId, $variantId, $uom)
+    {
+        foreach ($oneListItems as $oneListItem) {
+            if ($oneListItem->getData(WishListLine::ITEM_NO) == $itemId &&
+                $oneListItem->getData(WishListLine::VARIANT_CODE) == $variantId &&
+                $oneListItem->getData(WishListLine::UNIT_OF_MEASURE_CODE) == $uom
+            ) {
+                return $oneListItem;
+            }
+        }
+
         return false;
+    }
+
+    /**
+     * Handle quantity update for wishlist items
+     *
+     * @param array $qty
+     * @param array $wishlistItems
+     * @param RootWishLists $oneList
+     * @param array $oneListItems
+     * @return RootWishLists
+     * @throws NoSuchEntityException
+     */
+    public function handleQtyUpdate($qty, $wishlistItems, $oneList, $oneListItems)
+    {
+        foreach ($qty as $key => $value) {
+            $product = null;
+            foreach ($wishlistItems as $wishListItem) {
+                if ($wishListItem->getId() == $key) {
+                    $product = $wishListItem->getProduct();
+                    break;
+                }
+            }
+
+            if (!$product) {
+                continue;
+            }
+
+            [$itemId, $variantId, $uom, $barCode] = $this->getComparisonValuesForProduct($product);
+            $found    = $this->findInOneListItems($oneListItems, $itemId, $variantId, $uom);
+            $listItem = $this->buildOneListItem($itemId, $variantId, $uom, $barCode, $value);
+            $listItem->setWishlistno(
+                current((array) $oneList->getWishlistheader())->getData(WishListHeader::WISH_LIST_NO)
+            );
+
+            if ($found) {
+                $listItem->setData(WishListLine::LINE_NO, $found->getData(WishListLine::LINE_NO));
+            }
+
+            $this->executeOneListItemModify($listItem, $oneList, false) ?? $oneList;
+        }
+
+        return $oneList;
+    }
+
+    /**
+     * Get max line number from given one list items
+     *
+     * @param $oneList
+     * @return null|WishListDelete
+     */
+    public function delete($oneList)
+    {
+        $operation = $this->createInstance(\Ls\Omni\Client\CentralEcommerce\Operation\WishListDeleteByID::class);
+        $operation->setOperationInput([
+            WishListDeleteByID::WISH_LIST_DELETE_BY_IDXML =>
+                $this->createInstance(
+                    RootWishListDelete::class,
+                    [
+                        'data' => [
+                            RootWishListDelete::WISH_LIST_DELETE =>
+                                $this->createInstance(
+                                    WishListDelete::class,
+                                    [
+                                        'data' => [
+                                            WishListDelete::WISH_LIST_NO =>
+                                                current((array) $oneList->getWishlistheader())
+                                                    ->getData(WishListHeader::WISH_LIST_NO)
+                                        ]
+                                    ]
+                                )
+                        ]
+                    ]
+                ),
+            WishListDeleteByID::WISH_LIST_NO =>
+                current($oneList->getWishlistheader())->getData(WishListHeader::WISH_LIST_NO)
+        ]);
+
+        $response = $operation->execute();
+
+        return $response && $response->getResponsecode() == "0000" ? $response : null;
     }
 
     /**
@@ -200,12 +619,12 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Generating commerce services wishlist from magento wishlist
      *
-     * @param RootMobileTransaction $oneList
+     * @param RootWishLists $oneList
      * @param array $wishlistItems
-     * @return RootMobileTransaction
+     * @return RootWishLists
      * @throws NoSuchEntityException
      */
-    public function addProductToExistingWishlist(RootMobileTransaction $oneList, array $wishlistItems)
+    public function addProductToExistingWishlist(RootWishLists $oneList, array $wishlistItems)
     {
         $transactionId = $oneList->getMobiletransaction()
             ->getId();
@@ -674,17 +1093,6 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * Get wishlist wrapper
-     *
-     * @return RootMobileTransaction
-     * @throws NoSuchEntityException
-     */
-    public function fetchCurrentCustomerWishlist(): RootMobileTransaction
-    {
-        return $this->fetchFromOmni();
-    }
-
-    /**
      * This function is overriding in hospitality module
      *
      * Get Correct Item Row Total for mini-cart after comparison
@@ -1106,19 +1514,25 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * @param $wishList
+     * Set WishList in customer session
+     *
+     * @param RootWishLists $wishList
      */
     public function setWishListInCustomerSession($wishList)
     {
+        $wishList = $wishList ? $this->flattenModel($wishList) : null;
         $this->customerSession->setData(LSR::SESSION_CART_WISHLIST, $wishList);
     }
 
     /**
-     * @return mixed|null
+     * Get WishList from customer session
+     *
+     * @return RootWishLists
      */
     public function getWishListFromCustomerSession()
     {
-        return $this->customerSession->getData(LSR::SESSION_CART_WISHLIST);
+        $value = $this->customerSession->getData(LSR::SESSION_CART_WISHLIST);
+        return ($value) ? $this->restoreModel($value) : $value;
     }
 
     /**
@@ -1449,5 +1863,16 @@ class BasketHelper extends AbstractHelperOmni
     public function getCartRepositoryObject()
     {
         return $this->cartRepository;
+    }
+
+    private function getMaxLineNo($oneListItems)
+    {
+        $lineNo = 0;
+        foreach ($oneListItems as $item) {
+            if ($item->getLineNo() > $lineNo) {
+                $lineNo = $item->getLineNo();
+            }
+        }
+        return $lineNo;
     }
 }

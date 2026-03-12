@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\CentralEcommerce\Entity;
 use \Ls\Omni\Client\CentralEcommerce\Entity\ContactCreateParameters;
+use \Ls\Omni\Client\CentralEcommerce\Entity\WishListLine;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use \Ls\Omni\Client\CentralEcommerce\Entity\GetMemberCard;
 use \Ls\Omni\Client\CentralEcommerce\Entity\GetMemberCardResult;
@@ -722,10 +723,14 @@ class ContactHelper extends AbstractHelperOmni
      * @param array $credentials
      * @param string $is_email
      * @throws AlreadyExistsException
+     * @throws EmailNotConfirmedException
+     * @throws GuzzleException
      * @throws InputException
+     * @throws InvalidEnumException
+     * @throws InvalidTransitionException
      * @throws LocalizedException
      * @throws NoSuchEntityException
-     * @throws InvalidTransitionException
+     * @throws UserLockedException
      */
     public function processCustomerLogin($result, $credentials, $is_email)
     {
@@ -780,6 +785,10 @@ class ContactHelper extends AbstractHelperOmni
         $this->setLsrIdInCustomerSession($customer->getData('lsr_id'));
         $this->setCardIdInCustomerSession($customer->getData('lsr_cardid'));
         $this->customerSession->setCustomerAsLoggedIn($customer);
+        $wishLists = $this->basketHelper->getWishListFromCentralAgainstCardId($customer->getData('lsr_cardid'));
+        $wishList = $wishLists ? current((array) $wishLists) : null;
+        $wishList = $wishList ? $this->basketHelper->getWishListFromCentralAgainstWishListNo($wishList->getWishlistno()) : null;
+        $this->updateWishlistAfterLogin($wishList);
     }
 
     /**
@@ -1237,7 +1246,7 @@ class ContactHelper extends AbstractHelperOmni
             $cardNo
         );
         /** Update Wishlist to Omni */
-        $this->eventManager->dispatch('controller_action_postdispatch_wishlist_index_update');
+//        $this->eventManager->dispatch('controller_action_postdispatch_wishlist_index_update');
         $this->setBasketUpdateChecking();
     }
 
@@ -1291,89 +1300,85 @@ class ContactHelper extends AbstractHelperOmni
     }
 
     /**
-     * Update wishlist after login
+     * Update wishlist after login, if oneListWishlist is null then recreate it
      *
-     * @param \Ls\Omni\Client\Ecommerce\Entity\OneList $oneListWishlist
-     * @return void
+     * @param mixed $oneListWishlist
+     * @throws InvalidEnumException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException|GuzzleException
+     * @throws Exception
      */
-    public function updateWishlistAfterLogin(\Ls\Omni\Client\Ecommerce\Entity\OneList $oneListWishlist)
+    public function updateWishlistAfterLogin($oneListWishlist)
     {
-        // @codingStandardsIgnoreStart
         $customerId = $this->customerSession->getCustomer()->getId();
-        $wishlist   = $this->wishlist->loadByCustomerId($customerId);
-        $this->removeWishlist($wishlist);
-        $wishlist = $this->wishlistFactory->create();
-        $wishlist->loadByCustomerId($customerId, true);
-        $itemsCollection = $oneListWishlist->getItems()->getOneListItem();
-        if (!is_array($itemsCollection)) {
-            $itemsCollection = [$itemsCollection];
+        $wishlist = $this->wishlist->loadByCustomerId($customerId);
+        $wishListItems = $wishlist->getItemCollection()->getItems();
+
+        if (!$oneListWishlist) {
+            $oneList = $this->basketHelper->createNewWishlist();
+            $oneList = $oneList ?
+                $this->basketHelper->getWishListFromCentralAgainstWishListNo($oneList->getWishlistno()) :
+                null;
+            $this->basketHelper->setWishListInCustomerSession($oneList);
+        } else {
+            $oneListItems = $oneListWishlist->getWishlistline() ?? [];
+
+            if (count($wishListItems) === count($oneListItems) &&
+                !$this->hasWishlistMismatch($wishListItems, $oneListItems)
+            ) {
+                $this->basketHelper->setWishListInCustomerSession($oneListWishlist);
+            } else {
+                $this->basketHelper->delete($oneListWishlist);
+                $oneList = $this->basketHelper->createNewWishlistWithItems($wishListItems);
+
+                $oneList = $oneList ?
+                    $this->basketHelper->getWishListFromCentralAgainstWishListNo($oneList->getWishlistno()) :
+                    null;
+                $this->basketHelper->setWishListInCustomerSession($oneList);
+            }
         }
-        try {
-            foreach ($itemsCollection as $item) {
-                $buyRequest = [];
-                $sku        = $item->getItemId();
-                $product    = $this->itemHelper->getProductByIdentificationAttributes($sku);
+    }
 
-                if ($product) {
-                    $qty               = $item->getQuantity();
-                    $buyRequest['qty'] = $qty;
-                    if ($item->getVariantId()) {
-                        $simProduct = $this->itemHelper->getProductByIdentificationAttributes(
-                            $item->getItemId(),
-                            $item->getVariantId()
-                        );
+    /**
+     * Check if there is a mismatch between Magento wishlist items and oneList items
+     *
+     * Based on ItemId, VariantId, UOM and Qty
+     *
+     * @param array $wishListItems
+     * @param array $oneListItems
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    private function hasWishlistMismatch(array $wishListItems, array $oneListItems): bool
+    {
+        foreach ($wishListItems as $wishlistItem) {
+            $product = $wishlistItem->getProduct();
+            [$itemId, $variantId, $uom] = $this->basketHelper->getComparisonValuesForProduct($product);
+            $qty = (float)$wishlistItem->getQty();
+            $found = false;
 
-                        if ($simProduct) {
-                            $optionsData                   = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
-                            $buyRequest['super_attribute'] = [];
-                            foreach ($optionsData as $key => $option) {
-                                $code                                = $option['attribute_code'];
-                                $value                               = $simProduct->getData($code);
-                                $buyRequest['super_attribute'][$key] = $value;
-                            }
-                        }
-                    }
-                    $result = $wishlist->addNewItem($product, $buyRequest);
-                    $this->wishlistResourceModel->save($wishlist);
-                    $this->_eventManager->dispatch(
-                        'wishlist_add_product',
-                        ['wishlist' => $wishlist, 'product' => $product, 'item' => $result]
-                    );
+            foreach ($oneListItems as $oneListItem) {
+                $oneItemId = $oneListItem->getData(WishListLine::ITEM_NO);
+                $oneVariantId = $oneListItem->getData(WishListLine::VARIANT_CODE);
+                $oneUom = $oneListItem->getData(WishListLine::UNIT_OF_MEASURE_CODE);
+                $oneQty = (float)$oneListItem->getData(WishListLine::QUANTITY);
+
+                if ($oneItemId == $itemId &&
+                    $oneVariantId == $variantId &&
+                    $oneUom == $uom &&
+                    $oneQty == $qty
+                ) {
+                    $found = true;
+                    break;
                 }
             }
 
-            if (!is_array($oneListWishlist) &&
-                $oneListWishlist instanceof \Ls\Omni\Client\Ecommerce\Entity\OneList) {
-                $this->customerSession->setData(LSR::SESSION_CART_WISHLIST, $oneListWishlist);
+            if (!$found) {
+                return true;
             }
-        } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
         }
-        // @codingStandardsIgnoreEnd
-    }
 
-    /**
-     * Function to remove wishlist
-     *
-     * @param object $wishlist
-     */
-    public function removeWishlist(&$wishlist)
-    {
-        // @codingStandardsIgnoreStart
-        try {
-            $wishlist->delete();
-        } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
-        }
-        // @codingStandardsIgnoreEnd
-    }
-
-    /**
-     * Update basket data checking after login
-     */
-    public function setBasketUpdateChecking()
-    {
-        return $this->customerSession->setData('isBasketUpdate', 1);
+        return false;
     }
 
     /**
@@ -1550,5 +1555,13 @@ class ContactHelper extends AbstractHelperOmni
         }
 
         return $response;
+    }
+
+    /**
+     * Update basket data checking after login
+     */
+    public function setBasketUpdateChecking()
+    {
+        return $this->customerSession->setData('isBasketUpdate', 1);
     }
 }
