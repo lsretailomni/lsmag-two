@@ -36,18 +36,18 @@ class WishlistObserver implements ObserverInterface
     /**
      * @param BasketHelper $basketHelper
      * @param CustomerSession $customerSession
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param Wishlist $wishlist
      */
     public function __construct(
         BasketHelper $basketHelper,
         CustomerSession $customerSession,
-        LSR $LSR,
+        LSR $lsr,
         Wishlist $wishlist
     ) {
         $this->basketHelper = $basketHelper;
         $this->customerSession = $customerSession;
-        $this->lsr = $LSR;
+        $this->lsr = $lsr;
         $this->wishlist = $wishlist;
     }
 
@@ -63,7 +63,7 @@ class WishlistObserver implements ObserverInterface
         if ($this->lsr->isLSR(
             $this->lsr->getCurrentStoreId(),
             false,
-            $this->lsr->getOrderIntegrationOnFrontend()
+            $this->lsr->getBasketIntegrationOnFrontend()
         )) {
             $session = $this->customerSession;
             $data = empty($session->getBeforeWishlistUrl())
@@ -73,7 +73,7 @@ class WishlistObserver implements ObserverInterface
 
             $qty = $data['qty'] ?? 1;
             $customerId = $this->customerSession->getCustomer()->getId();
-            $wishlistItems = $this->wishlist->loadByCustomerId($customerId)->getItemCollection();
+            $wishlistItems = $this->wishlist->loadByCustomerId($customerId)->getItemCollection()->getItems();
             $oneList = $this->basketHelper->fetchCurrentCustomerWishlist();
             $oneListItems = $oneList
                 ? $oneList->getItems()

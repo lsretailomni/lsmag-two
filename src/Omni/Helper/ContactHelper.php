@@ -1782,7 +1782,7 @@ class ContactHelper extends AbstractHelper
     {
         $customerId = $this->customerSession->getCustomer()->getId();
         $wishlist = $this->wishlist->loadByCustomerId($customerId);
-        $wishListItems = $wishlist->getItemCollection();
+        $wishListItems = $wishlist->getItemCollection()->getItems();
         if (!$oneListWishlist) {
             $oneList = $this->basketHelper->fetchCurrentCustomerWishlist();
             $oneList = $this->basketHelper->addProductToExistingWishlist($oneList, $wishListItems);
@@ -1790,7 +1790,9 @@ class ContactHelper extends AbstractHelper
         } else {
             $oneListItems = $oneListWishlist->getItems()->getOneListItem();
 
-            if (count($wishListItems->getItems()) === count($oneListItems)) {
+            if (count($wishListItems) === count($oneListItems) &&
+                !$this->hasWishlistMismatch($wishListItems, $oneListItems)
+            ) {
                 $this->basketHelper->setWishListInCustomerSession($oneListWishlist);
             } else {
                 $this->basketHelper->delete($oneListWishlist);
@@ -1799,6 +1801,48 @@ class ContactHelper extends AbstractHelper
                 $this->basketHelper->updateWishlistAtOmni($oneList);
             }
         }
+    }
+
+    /**
+     * Check if there is a mismatch between Magento wishlist items and oneList items
+     *
+     * Based on ItemId, VariantId, UOM and Qty
+     *
+     * @param array $wishListItems
+     * @param array $oneListItems
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    private function hasWishlistMismatch(array $wishListItems, array $oneListItems): bool
+    {
+        foreach ($wishListItems as $wishlistItem) {
+            $product = $wishlistItem->getProduct();
+            [$itemId, $variantId, $uom] = $this->basketHelper->getComparisonValuesForProduct($product);
+            $qty = (float)$wishlistItem->getQty();
+            $found = false;
+
+            foreach ($oneListItems as $oneListItem) {
+                $oneItemId = $oneListItem->getItemId();
+                $oneVariantId = $oneListItem->getVariantId();
+                $oneUom = $oneListItem->getUnitOfMeasureId();
+                $oneQty = (float)$oneListItem->getQuantity();
+
+                if ($oneItemId == $itemId &&
+                    $oneVariantId == $variantId &&
+                    $oneUom == $uom &&
+                    $oneQty == $qty
+                ) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (!$found) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -326,7 +326,7 @@ class BasketHelper extends AbstractHelperOmni
      * Generating commerce services wishlist from magento wishlist
      *
      * @param OneList $oneList
-     * @param Collection $wishlistItems
+     * @param array $wishlistItems
      * @return OneList
      * @throws NoSuchEntityException
      */
@@ -336,7 +336,7 @@ class BasketHelper extends AbstractHelperOmni
         $items = new Entity\ArrayOfOneListItem();
         $itemsArray = [];
 
-        foreach ($wishlistItems->getItems() as $item) {
+        foreach ($wishlistItems as $item) {
             if ($item->getOptionByCode('simple_product')) {
                 $product = $item->getOptionByCode('simple_product')->getProduct();
             } else {
@@ -408,7 +408,7 @@ class BasketHelper extends AbstractHelperOmni
      * Handle updating quantities for multiple wishlist items
      *
      * @param array $qty
-     * @param Collection $wishlistItems
+     * @param array $wishlistItems
      * @param OneList $oneList
      * @param array $oneListItems
      * @return mixed
@@ -418,7 +418,7 @@ class BasketHelper extends AbstractHelperOmni
     {
         foreach ($qty as $key => $value) {
             $product = null;
-            foreach ($wishlistItems->getItems() as $wishListItem) {
+            foreach ($wishlistItems as $wishListItem) {
                 if ($wishListItem->getId() == $key) {
                     $product = $wishListItem->getProduct();
                     break;
@@ -446,14 +446,14 @@ class BasketHelper extends AbstractHelperOmni
     /**
      * Handle removal of items no longer in the wishlist
      *
-     * @param Collection $wishlistItems
+     * @param array $wishlistItems
      * @param OneList $oneList
      * @param array $oneListItems
      * @return mixed
      */
     public function handleRemovedItems($wishlistItems, $oneList, $oneListItems)
     {
-        $finalWishlistItems = $wishlistItems->getItems();
+        $finalWishlistItems = $wishlistItems;
 
         foreach ($oneListItems as $oneListItem) {
             $currentItemId = $oneListItem->getItemId();
