@@ -7,16 +7,14 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use Ls\Omni\Client\Ecommerce\Entity\OneList;
 use \Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse;
-use Ls\Omni\Client\Ecommerce\Entity\OneListItem;
-use Ls\Omni\Client\Ecommerce\Entity\OneListItemModify;
+use \Ls\Omni\Client\Ecommerce\Entity\OneListItem;
+use \Ls\Omni\Client\Ecommerce\Entity\OneListItemModify;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Omni\Client\Ecommerce\Operation\OneListItemModify as OneListItemModifyOperation;
+use \Ls\Omni\Client\Ecommerce\Operation\OneListItemModify as OneListItemModifyOperation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Model\Product\Type;
-use Magento\Catalog\Pricing\Price\FinalPrice;
-use Magento\Catalog\Pricing\Price\RegularPrice;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\DataObject;
@@ -27,7 +25,6 @@ use Magento\Framework\Phrase;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Item;
-use Magento\Wishlist\Model\ResourceModel\Item\Collection;
 
 /**
  * Useful helper functions for basket
@@ -371,10 +368,11 @@ class BasketHelper extends AbstractHelperOmni
      * @param float $qty
      * @param OneList $oneList
      * @param array $oneListItems
+     * @param array $wishlistItems
      * @return OneList
      * @throws NoSuchEntityException
      */
-    public function handleSingleProductAdd($buyRequest, $productId, $qty, $oneList, $oneListItems)
+    public function handleSingleProductAdd($buyRequest, $productId, $qty, $oneList, $oneListItems, $wishlistItems)
     {
         try {
             $product = $this->productRepository->getById($productId);
@@ -393,12 +391,28 @@ class BasketHelper extends AbstractHelperOmni
             }
         }
 
+        $selectedWishListItem = null;
+        foreach ($wishlistItems as $wishlistItem) {
+            $sku = $wishlistItem->getProduct()->getSku();
+            $wishListProduct = $this->productRepository->get($sku);
+
+            if ($wishListProduct->getId() == $product->getId()) {
+                $selectedWishListItem = $wishlistItem;
+                break;
+            }
+        }
+        $lineNo = $selectedWishListItem->getWishlistItemId();
+
         [$itemId, $variantId, $uom, $barCode] = $this->getComparisonValuesForProduct($product);
-        $found    = $this->findInOneListItems($oneListItems, $itemId, $variantId, $uom);
+        $found    = $this->findInOneListItems($oneListItems, $lineNo);
         $listItem = $this->buildOneListItem($itemId, $variantId, $uom, $barCode, $qty);
 
         if ($found) {
             $listItem->setLineNumber($found->getLineNumber());
+        } else {
+            if ($lineNo) {
+                $listItem->setLineNumber($lineNo);
+            }
         }
 
         return $this->executeOneListItemModify($listItem, $oneList, false) ?? $oneList;
@@ -417,9 +431,10 @@ class BasketHelper extends AbstractHelperOmni
     public function handleQtyUpdate($qty, $wishlistItems, $oneList, $oneListItems)
     {
         foreach ($qty as $key => $value) {
-            $product = null;
+            $product = $lineNo = null;
             foreach ($wishlistItems as $wishListItem) {
                 if ($wishListItem->getId() == $key) {
+                    $lineNo = $wishListItem->getWishlistItemId();
                     $product = $wishListItem->getProduct();
                     break;
                 }
@@ -430,11 +445,15 @@ class BasketHelper extends AbstractHelperOmni
             }
 
             [$itemId, $variantId, $uom, $barCode] = $this->getComparisonValuesForProduct($product);
-            $found    = $this->findInOneListItems($oneListItems, $itemId, $variantId, $uom);
+            $found    = $this->findInOneListItems($oneListItems, $lineNo);
             $listItem = $this->buildOneListItem($itemId, $variantId, $uom, $barCode, $value);
 
             if ($found) {
                 $listItem->setLineNumber($found->getLineNumber());
+            } else {
+                if ($lineNo) {
+                    $listItem->setLineNumber($lineNo);
+                }
             }
 
             $oneList = $this->executeOneListItemModify($listItem, $oneList, false) ?? $oneList;
@@ -450,19 +469,18 @@ class BasketHelper extends AbstractHelperOmni
      * @param OneList $oneList
      * @param array $oneListItems
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function handleRemovedItems($wishlistItems, $oneList, $oneListItems)
     {
-        $finalWishlistItems = $wishlistItems;
-
         foreach ($oneListItems as $oneListItem) {
             $currentItemId = $oneListItem->getItemId();
             $currentVariantId = $oneListItem->getVariantId();
             $found = false;
 
-            foreach ($finalWishlistItems as $finalWishlistItem) {
-                $finalItemId = $finalWishlistItem->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
-                $finalVariantId = $finalWishlistItem->getProduct()->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
+            foreach ($wishlistItems as $finalWishlistItem) {
+                $product = $finalWishlistItem->getProduct();
+                [$finalItemId, $finalVariantId] = $this->getComparisonValuesForProduct($product);
 
                 if ($currentItemId == $finalItemId && $currentVariantId == $finalVariantId) {
                     $found = true;
@@ -498,7 +516,10 @@ class BasketHelper extends AbstractHelperOmni
             ->setCalculate(true)
             ->setCardId($this->getCardId());
 
-        if ($oneList = $operation->execute($request)->getOneListItemModifyResult()) {
+        $oneList = $operation->execute($request);
+
+        if ($oneList && $oneList->getOneListItemModifyResult()) {
+            $oneList = $oneList->getOneListItemModifyResult();
             $this->basketHelper->setWishListInCustomerSession($oneList);
             return $oneList;
         }
@@ -555,16 +576,13 @@ class BasketHelper extends AbstractHelperOmni
      *
      * @param array $oneListItems
      * @param string $itemId
-     * @param string|null $variantId
-     * @param string|null $uom
+     * @param string $lineNo
      * @return OneListItem|false
      */
-    public function findInOneListItems($oneListItems, $itemId, $variantId, $uom)
+    public function findInOneListItems($oneListItems, $lineNo)
     {
         foreach ($oneListItems as $oneListItem) {
-            if ($oneListItem->getItemId() == $itemId &&
-                $oneListItem->getVariantId() == $variantId &&
-                $oneListItem->getUnitOfMeasureId() == $uom
+            if ($oneListItem->getLineNumber() == $lineNo
             ) {
                 return $oneListItem;
             }
