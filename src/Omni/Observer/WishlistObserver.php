@@ -64,7 +64,6 @@ class WishlistObserver implements ObserverInterface
                 $oneListItems = $oneList && $oneList->getWishlistline()
                     ? $oneList->getWishlistline()
                     : [];
-
                 if (!$oneList) {
                     $oneList = $this->basketHelper->createNewWishlist();
                     $oneListNo = $oneList->getWishlistno();
@@ -74,13 +73,29 @@ class WishlistObserver implements ObserverInterface
                         $productId,
                         $qty,
                         $oneList,
-                        $oneListItems
+                        $oneListItems,
+                        $wishlistItems
                     );
                     $oneListNo = current((array)$oneList->getWishlistheader())->getData(WishListHeader::WISH_LIST_NO);
+
                 } elseif (is_array($qty)) {
                     $oneList = $this->basketHelper->handleQtyUpdate($qty, $wishlistItems, $oneList, $oneListItems);
                     $oneListNo = current((array)$oneList->getWishlistheader())->getData(WishListHeader::WISH_LIST_NO);
                 } else {
+                    $oneList = $this->basketHelper->handleRemovedItems($wishlistItems, $oneList, $oneListItems);
+                    $oneListNo = current((array)$oneList->getWishlistheader())->getData(WishListHeader::WISH_LIST_NO);
+                }
+
+                if ($observer->getEvent()->getName() ==
+                    'controller_action_postdispatch_wishlist_index_updateitemoptions'
+                ) {
+                    $oneList = $oneListNo ?
+                        $this->basketHelper->getWishListFromCentralAgainstWishListNo($oneListNo) :
+                        null;
+                    $oneListItems = $oneList && $oneList->getWishlistline()
+                        ? $oneList->getWishlistline()
+                        : [];
+                    $wishlistItems = $this->wishlist->loadByCustomerId($customerId)->getItemCollection()->getItems();
                     $oneList = $this->basketHelper->handleRemovedItems($wishlistItems, $oneList, $oneListItems);
                     $oneListNo = current((array)$oneList->getWishlistheader())->getData(WishListHeader::WISH_LIST_NO);
                 }
