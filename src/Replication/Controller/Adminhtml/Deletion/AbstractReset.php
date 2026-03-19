@@ -15,7 +15,6 @@ abstract class AbstractReset extends Action
         'ls_replication_repl_item_variant',
         'ls_replication_repl_item_variant_registration',
         'ls_replication_repl_price',
-        'ls_replication_repl_base_price',
         'ls_replication_repl_barcode',
         'ls_replication_repl_inv_status',
         'ls_replication_repl_hierarchy_leaf',

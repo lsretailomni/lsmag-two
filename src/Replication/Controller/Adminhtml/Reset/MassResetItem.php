@@ -22,7 +22,6 @@ class MassResetItem extends Action
         ['table' => 'ls_replication_repl_item_variant', 'id' => 'ItemId'],
         ['table' => 'ls_replication_repl_extended_variant_value', 'id' => 'ItemId'],
         ['table' => 'ls_replication_repl_price', 'id' => 'ItemId'],
-        ['table' => 'ls_replication_repl_base_price', 'id' => 'ItemId'],
         ['table' => 'ls_replication_repl_barcode', 'id' => 'ItemId'],
         ['table' => 'ls_replication_repl_inv_status', 'id' => 'ItemId'],
         ['table' => 'ls_replication_repl_hierarchy_leaf', 'id' => 'nav_id'],
