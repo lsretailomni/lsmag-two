@@ -14,7 +14,6 @@ use \Ls\Webhooks\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Webhooks\Helper\NotificationHelper;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Sales\Api\ShipmentRepositoryInterface;
 use Magento\Sales\Api\Data\ShipmentCreationArgumentsExtensionInterfaceFactory;
 use Magento\Sales\Api\Data\ShipmentCreationArgumentsInterfaceFactory;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
@@ -26,86 +25,12 @@ use \Ls\Core\Model\LSR;
  */
 class Shipment
 {
-    /**
-     * @var ShipOrderInterface
-     */
-    private $shipOrderInterface;
-
-    /**
-     * @var ShipmentItemCreationInterface
-     */
-    private $shipmentItemCreationInterface;
-
-    /**
-     * @var ShipmentInterface
-     */
-    private $shipmentInterface;
-
-    /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
-     * @var NotificationHelper
-     */
-    private $notificationHelper;
-
-    /**
-     * @var TrackFactory
-     */
-    private $trackFactory;
-
-    /**
-     * @var ShipmentCommentCreationInterface
-     */
-    private $shipmentCommentCreation;
-
-    /**
-     * @var ShippingHelper
-     */
-    private $shippingHelper;
-
-    /**
-     * @var ShipmentRepositoryInterface
-     */
-    private $shipmentRepository;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    protected $searchCriteriaBuilder;
-
-    /**
-     * @var ShipmentCreationArgumentsInterfaceFactory
-     */
-    private $shipmentArgumentsFactory;
-
-    /**
-     * @var ShipmentCreationArgumentsExtensionInterfaceFactory
-     */
-    private $argumentExtensionFactory;
-
-    /**
-     * @var ReplicationHelper
-     */
-    private $replicationHelper;
-
-    /**
-     * @var DefaultSourceProviderInterfaceFactory
-     */
-    private $defaultSourceProviderFactory;
-
-    /**
-     * @var Logger
-     */
-    private $logger;
 
     /**
      * @param ShipOrderInterface $shipOrderInterface
      * @param ShipmentItemCreationInterface $shipmentItemCreationInterface
-     * @param ShipmentCreationArgumentsInterfaceFactory $shipmentCreationArgumentsInterfaceFactory
-     * @param ShipmentCreationArgumentsExtensionInterfaceFactory $shipmentCreationArgumentsExtensionInterfaceFactory
+     * @param ShipmentCreationArgumentsInterfaceFactory $shipmentArgumentsFactory
+     * @param ShipmentCreationArgumentsExtensionInterfaceFactory $argumentExtensionFactory
      * @param ReplicationHelper $replicationHelper
      * @param DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory
      * @param ShipmentInterface $shipmentInterface
@@ -114,42 +39,27 @@ class Shipment
      * @param Data $helper
      * @param NotificationHelper $notificationHelper
      * @param ShippingHelper $shippingHelper
-     * @param ShipmentRepositoryInterface $shipmentRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param Logger $logger
+     * @param LSR $lsr
      */
     public function __construct(
-        ShipOrderInterface $shipOrderInterface,
-        ShipmentItemCreationInterface $shipmentItemCreationInterface,
-        ShipmentCreationArgumentsInterfaceFactory $shipmentCreationArgumentsInterfaceFactory,
-        ShipmentCreationArgumentsExtensionInterfaceFactory $shipmentCreationArgumentsExtensionInterfaceFactory,
-        ReplicationHelper $replicationHelper,
-        DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
-        ShipmentInterface $shipmentInterface,
-        TrackFactory $trackFactory,
-        ShipmentCommentCreationInterface $shipmentCommentCreation,
-        Data $helper,
-        NotificationHelper $notificationHelper,
-        ShippingHelper $shippingHelper,
-        ShipmentRepositoryInterface $shipmentRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        Logger $logger
+        private ShipOrderInterface $shipOrderInterface,
+        private ShipmentItemCreationInterface $shipmentItemCreationInterface,
+        private ShipmentCreationArgumentsInterfaceFactory $shipmentArgumentsFactory,
+        private ShipmentCreationArgumentsExtensionInterfaceFactory $argumentExtensionFactory,
+        private ReplicationHelper $replicationHelper,
+        private DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
+        private ShipmentInterface $shipmentInterface,
+        private TrackFactory $trackFactory,
+        private ShipmentCommentCreationInterface $shipmentCommentCreation,
+        private Data $helper,
+        private NotificationHelper $notificationHelper,
+        private ShippingHelper $shippingHelper,
+        protected SearchCriteriaBuilder $searchCriteriaBuilder,
+        private Logger $logger,
+        private LSR $lsr
     ) {
-        $this->shipOrderInterface            = $shipOrderInterface;
-        $this->shipmentItemCreationInterface = $shipmentItemCreationInterface;
-        $this->shipmentArgumentsFactory      = $shipmentCreationArgumentsInterfaceFactory;
-        $this->argumentExtensionFactory      = $shipmentCreationArgumentsExtensionInterfaceFactory;
-        $this->replicationHelper             = $replicationHelper;
-        $this->defaultSourceProviderFactory  = $defaultSourceProviderFactory;
-        $this->shipmentInterface             = $shipmentInterface;
-        $this->trackFactory                  = $trackFactory;
-        $this->shipmentCommentCreation       = $shipmentCommentCreation;
-        $this->helper                        = $helper;
-        $this->notificationHelper            = $notificationHelper;
-        $this->shippingHelper                = $shippingHelper;
-        $this->shipmentRepository            = $shipmentRepository;
-        $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
-        $this->logger                        = $logger;
     }
 
     /**
@@ -209,6 +119,15 @@ class Shipment
                         $shipmentTracks->setDescription($data['service']);
                         $shipmentTracks->setTrackNumber($trackingId);
                     }
+                    $shipmentTracks = [$shipmentTracks];
+                    
+                    if ($this->lsr->getWebsiteConfig(
+                        LSR::LSR_SHIPMENT_WITHOUT_TRACKING,
+                        $magOrder->getStore()->getWebsiteId()
+                    )
+                    ) {
+                        $shipmentTracks = [];
+                    }
 
                     $this->shipmentCommentCreation->setComment(__("Shipment added from LS Central"))
                         ->setIsVisibleOnFront(0);
@@ -232,7 +151,7 @@ class Shipment
                         true,
                         false,
                         $this->shipmentCommentCreation,
-                        [$shipmentTracks],
+                        $shipmentTracks,
                         [],
                         $arguments
                     );
