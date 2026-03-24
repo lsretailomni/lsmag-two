@@ -279,6 +279,16 @@ class ReplLscInventoryLookupTable extends \Ls\Omni\Client\CentralEcommerce\Entit
         return $this->setData(self::getDbColumnsMapping()[self::SOURCING_LOCATION_INVENTORY], $value);
     }
 
+    public function getCalcWithoutSerialnoLotno(): ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::CALC_WITHOUT_SERIALNOLOTNO]);
+    }
+
+    public function setCalcWithoutSerialnoLotno(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::CALC_WITHOUT_SERIALNOLOTNO], $value);
+    }
+
     public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);

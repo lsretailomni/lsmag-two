@@ -161,6 +161,7 @@ class ReplicationHelper extends AbstractHelper
         'LscWiItemBuffer' => 'Items',
         'LscRetailImageLink' => 'ImageLinks',
         'LscWiPrice' => 'Prices',
+        'Salepriceview' => 'BasePrices',
         'LscInventoryLookupTable' => 'InventoryStatus',
         'LscTenderType' => 'StoreTenderTypes',
         'VatPostingSetup' => 'TaxSetup',
@@ -385,20 +386,27 @@ class ReplicationHelper extends AbstractHelper
                 'image_description' => 'ImageDescription'
             ]
         ],
-        'repl_lsc_wi_price' => [
+        'repl_salepriceview' => [
             'table_name' => 'repl_price',
             'columns_mapping' => [
-                'store_no' => 'StoreId',
-                'item_no' => 'ItemId',
-                'unit_of_measure_code' => 'UnitOfMeasure',
-                'variant_code' => 'VariantId',
-                'customer_disc_group' => 'CustomerDiscountGroup',
-                'loyalty_scheme_code' => 'LoyaltySchemeCode',
+                'asset_no' => 'ItemId',
                 'currency_code' => 'CurrencyCode',
-                'last_modify_date' => 'ModifyDate',
-                'unit_price' => 'UnitPriceInclVat',
-                'net_unit_price' => 'UnitPrice',
-                'qty_per_unit_of_measure' => 'QtyPerUnitOfMeasure'
+                'ending_date' => 'EndingDate',
+                'line_no' => 'LineNumber',
+                'lsc_unit_price_including_vat' => 'UnitPriceInclVat',
+                'minimum_quantity' => 'MinimumQuantity',
+                'price_includes_vat' => 'PriceInclVat',
+                'price_list_code' => 'PriceListCode',
+                'priority' => 'Priority',
+                'source_no' => 'SaleCode',
+                'source_type' => 'SaleType',
+                'starting_date' => 'StartingDate',
+                'status' => 'Status',
+                'unit_of_measure_code' => 'UnitOfMeasure',
+                'unit_price' => 'UnitPrice',
+                'variant_code' => 'VariantId',
+                'vat_bus_posting_gr_price' => 'VatBusPostingGrPrice',
+                'store_id' => 'StoreId'
             ]
         ],
         'repl_lsc_inventory_lookup_table' => [

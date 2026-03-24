@@ -120,9 +120,37 @@ interface ReplContactviewInterface
 
     public function setGuestType(?string $value);
 
+    public function getExpiredPoints(): ?float;
+
+    public function setExpiredPoints(?float $value);
+
+    public function getIssuedAwardPoints(): ?float;
+
+    public function setIssuedAwardPoints(?float $value);
+
+    public function getIssuedOtherPoints(): ?float;
+
+    public function setIssuedOtherPoints(?float $value);
+
+    public function getTotalIssuedPoints(): ?float;
+
+    public function setTotalIssuedPoints(?float $value);
+
+    public function getUsedPoints(): ?float;
+
+    public function setUsedPoints(?float $value);
+
+    public function getExpirationInPeriod(): ?float;
+
+    public function setExpirationInPeriod(?float $value);
+
     public function getExpirationPeriodType(): ?int;
 
     public function setExpirationPeriodType(?int $value);
+
+    public function getBalance(): ?float;
+
+    public function setBalance(?float $value);
 
     public function getBlocked(): ?bool;
 

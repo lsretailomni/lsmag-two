@@ -120,9 +120,29 @@ interface ReplLscPosTerminalInterface
 
     public function setReturnInTransaction(?bool $value);
 
+    public function getIdleTimeoutSec(): ?int;
+
+    public function setIdleTimeoutSec(?int $value);
+
+    public function getIdleTimeoutCountdownSec(): ?int;
+
+    public function setIdleTimeoutCountdownSec(?int $value);
+
+    public function getIdleTimeoutCommand(): ?string;
+
+    public function setIdleTimeoutCommand(?string $value);
+
+    public function getIdleTimeoutParameter(): ?string;
+
+    public function setIdleTimeoutParameter(?string $value);
+
     public function getItemNoOnReceipt(): ?int;
 
     public function setItemNoOnReceipt(?int $value);
+
+    public function getAllowIdleTimeoutInTrans(): ?bool;
+
+    public function setAllowIdleTimeoutInTrans(?bool $value);
 
     public function getPrintReceiptForNegAdj(): ?bool;
 
@@ -143,6 +163,10 @@ interface ReplLscPosTerminalInterface
     public function getLastDateModified(): ?string;
 
     public function setLastDateModified(?string $value);
+
+    public function getMultiplePrintersHandling(): ?int;
+
+    public function setMultiplePrintersHandling(?int $value);
 
     public function getPrintReceiptLogo(): ?string;
 
@@ -208,6 +232,10 @@ interface ReplLscPosTerminalInterface
 
     public function setNoSeries(?string $value);
 
+    public function getNumberSeries(): ?string;
+
+    public function setNumberSeries(?string $value);
+
     public function getTableGroup(): ?string;
 
     public function setTableGroup(?string $value);
@@ -235,6 +263,10 @@ interface ReplLscPosTerminalInterface
     public function getDeliverySalesType(): ?string;
 
     public function setDeliverySalesType(?string $value);
+
+    public function getQueueCounterPrefix(): ?string;
+
+    public function setQueueCounterPrefix(?string $value);
 
     public function getSafeNo(): ?string;
 
@@ -455,6 +487,14 @@ interface ReplLscPosTerminalInterface
     public function getEftTerminalOfflineHandling(): ?int;
 
     public function setEftTerminalOfflineHandling(?int $value);
+
+    public function getTipsIncomeAccount(): ?string;
+
+    public function setTipsIncomeAccount(?string $value);
+
+    public function getTipsLineCreationMethod(): ?int;
+
+    public function setTipsLineCreationMethod(?int $value);
 
     public function getPosSearchEngine(): ?int;
 

@@ -21,7 +21,7 @@
         <job name="repl_item_unit_of_measure" instance="Ls\Replication\Cron\ReplLscItemuomupdviewTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
-        <job name="repl_price" instance="Ls\Replication\Cron\ReplLscWiPriceTask" method="execute">
+        <job name="repl_price" instance="Ls\Replication\Cron\ReplLscSalepriceviewTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
         <job name="repl_inv_status" instance="Ls\Replication\Cron\ReplLscInventoryLookupTableTask" method="execute">

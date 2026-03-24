@@ -389,6 +389,16 @@ class ReplLscValidationPeriod extends \Ls\Omni\Client\CentralEcommerce\Entity\LS
         return $this->setData(self::getDbColumnsMapping()[self::SUN_END_TIME_AFTER_MIDNIGHT], $value);
     }
 
+    public function getNumberSeries(): ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NUMBER_SERIES]);
+    }
+
+    public function setNumberSeries(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NUMBER_SERIES], $value);
+    }
+
     public function getNoSeries(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::NO_SERIES]);
