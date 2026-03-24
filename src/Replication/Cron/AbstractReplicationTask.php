@@ -349,8 +349,6 @@ abstract class AbstractReplicationTask
                 (int)$source->getData(HierarchyDealView::TYPE)
             );
             $source->setData(HierarchyDealView::TYPE, $value1);
-        } elseif ($confPath == ReplLscSalepriceviewTask::CONFIG_PATH) {
-            $source->setData('store_id', $this->getLsrModel()->getActiveWebStore());
         }
         $checksum = $this->getHashGivenString($source->getData());
         $uniqueAttributesHash = $this->generateIdentityValue($uniqueAttributes, $source, $properties);
@@ -372,7 +370,9 @@ abstract class AbstractReplicationTask
         }
 
         $entity->setData('IsDeleted', $isDeleted);
-
+        if ($confPath == ReplLscSalepriceviewTask::CONFIG_PATH) {
+            $entity->setData('store_id', $this->getLsrModel()->getActiveWebStore());
+        }
         if ($entity->getChecksum() != $checksum) {
             $entity->addData(
                 [
