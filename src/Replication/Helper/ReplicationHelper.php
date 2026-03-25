@@ -869,11 +869,10 @@ class ReplicationHelper extends AbstractHelper
             'scope_id' => 'scope_id'
         ],
         'ls_mag/replication/repl_price' => [
-            'store_no' => 'StoreId',
-            'item_no' => 'ItemId',
+            'store_id' => 'StoreId',
+            'asset_no' => 'ItemId',
             'unit_of_measure_code' => 'UnitOfMeasure',
             'variant_code' => 'VariantId',
-            'qty_per_unit_of_measure' => 'QtyPerUnitOfMeasure',
             'scope_id' => 'scope_id'
         ],
         'ls_mag/replication/repl_inv_status' => [

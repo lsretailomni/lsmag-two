@@ -371,6 +371,7 @@ abstract class AbstractReplicationTask
 
         $entity->setData('IsDeleted', $isDeleted);
         if ($confPath == ReplLscSalepriceviewTask::CONFIG_PATH) {
+            $this->getLsrModel()->setStoreId($source->getScopeId());
             $entity->setData('store_id', $this->getLsrModel()->getActiveWebStore());
         }
         if ($entity->getChecksum() != $checksum) {
