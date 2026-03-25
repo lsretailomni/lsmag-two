@@ -179,7 +179,12 @@ class BasketHelper extends AbstractHelperOmni
                     }
 
                     if (!$match) {
-                        $price  = $quoteItem->getProduct()->getPrice();
+                        if (in_array($itemId, explode(',', $giftCardIdentifier))) {
+                            $price  = $quoteItem->getPrice();
+                        } else {
+                            $price = $quoteItem->getProduct()->getPrice();
+                        }
+                        
                         $price  = $this->itemHelper->convertToCurrentStoreCurrency($price);
                         $qty    = $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
                             $quoteItem->getData('qty');
