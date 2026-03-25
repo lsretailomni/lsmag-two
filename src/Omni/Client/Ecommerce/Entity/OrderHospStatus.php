@@ -54,11 +54,6 @@ class OrderHospStatus
     protected $Status = null;
 
     /**
-     * @property string $StatusMessage
-     */
-    protected $StatusMessage = null;
-
-    /**
      * @param ArrayOfOrderHospStatusLine $Lines
      * @return $this
      */
@@ -210,24 +205,6 @@ class OrderHospStatus
     public function getStatus()
     {
         return $this->Status;
-    }
-
-    /**
-     * @param string $StatusMessage
-     * @return $this
-     */
-    public function setStatusMessage($StatusMessage)
-    {
-        $this->StatusMessage = $StatusMessage;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatusMessage()
-    {
-        return $this->StatusMessage;
     }
 }
 

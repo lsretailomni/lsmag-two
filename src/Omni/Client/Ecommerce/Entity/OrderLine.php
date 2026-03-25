@@ -144,11 +144,6 @@ class OrderLine extends Entity
     protected $VendorSourcing = null;
 
     /**
-     * @property string $WishListNo
-     */
-    protected $WishListNo = null;
-
-    /**
      * @param float $Amount
      * @return $this
      */
@@ -624,24 +619,6 @@ class OrderLine extends Entity
     public function getVendorSourcing()
     {
         return $this->VendorSourcing;
-    }
-
-    /**
-     * @param string $WishListNo
-     * @return $this
-     */
-    public function setWishListNo($WishListNo)
-    {
-        $this->WishListNo = $WishListNo;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getWishListNo()
-    {
-        return $this->WishListNo;
     }
 }
 

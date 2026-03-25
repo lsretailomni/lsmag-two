@@ -69,16 +69,6 @@ class HierarchyLeaf extends HierarchyPoint
     protected $Prepayment = null;
 
     /**
-     * @property float $Price
-     */
-    protected $Price = null;
-
-    /**
-     * @property float $PriceWithTax
-     */
-    protected $PriceWithTax = null;
-
-    /**
      * @property int $SortOrder
      */
     protected $SortOrder = null;
@@ -289,42 +279,6 @@ class HierarchyLeaf extends HierarchyPoint
     public function getPrepayment()
     {
         return $this->Prepayment;
-    }
-
-    /**
-     * @param float $Price
-     * @return $this
-     */
-    public function setPrice($Price)
-    {
-        $this->Price = $Price;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPrice()
-    {
-        return $this->Price;
-    }
-
-    /**
-     * @param float $PriceWithTax
-     * @return $this
-     */
-    public function setPriceWithTax($PriceWithTax)
-    {
-        $this->PriceWithTax = $PriceWithTax;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPriceWithTax()
-    {
-        return $this->PriceWithTax;
     }
 
     /**

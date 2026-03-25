@@ -15,16 +15,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 class OrderDiscountLine extends Entity
 {
     /**
-     * @property string $CouponBarcodeNo
-     */
-    protected $CouponBarcodeNo = null;
-
-    /**
-     * @property string $CouponCode
-     */
-    protected $CouponCode = null;
-
-    /**
      * @property string $Description
      */
     protected $Description = null;
@@ -73,42 +63,6 @@ class OrderDiscountLine extends Entity
      * @property PeriodicDiscType $PeriodicDiscType
      */
     protected $PeriodicDiscType = null;
-
-    /**
-     * @param string $CouponBarcodeNo
-     * @return $this
-     */
-    public function setCouponBarcodeNo($CouponBarcodeNo)
-    {
-        $this->CouponBarcodeNo = $CouponBarcodeNo;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCouponBarcodeNo()
-    {
-        return $this->CouponBarcodeNo;
-    }
-
-    /**
-     * @param string $CouponCode
-     * @return $this
-     */
-    public function setCouponCode($CouponCode)
-    {
-        $this->CouponCode = $CouponCode;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCouponCode()
-    {
-        return $this->CouponCode;
-    }
 
     /**
      * @param string $Description

@@ -13,14 +13,9 @@ use Ls\Omni\Client\RequestInterface;
 class MenuGet implements RequestInterface
 {
     /**
-     * @property string $restaurantNo
+     * @property string $storeId
      */
-    protected $restaurantNo = null;
-
-    /**
-     * @property string $terminalNo
-     */
-    protected $terminalNo = null;
+    protected $storeId = null;
 
     /**
      * @property string $salesType
@@ -38,39 +33,21 @@ class MenuGet implements RequestInterface
     protected $imageSize = null;
 
     /**
-     * @param string $restaurantNo
+     * @param string $storeId
      * @return $this
      */
-    public function setRestaurantNo($restaurantNo)
+    public function setStoreId($storeId)
     {
-        $this->restaurantNo = $restaurantNo;
+        $this->storeId = $storeId;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getRestaurantNo()
+    public function getStoreId()
     {
-        return $this->restaurantNo;
-    }
-
-    /**
-     * @param string $terminalNo
-     * @return $this
-     */
-    public function setTerminalNo($terminalNo)
-    {
-        $this->terminalNo = $terminalNo;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTerminalNo()
-    {
-        return $this->terminalNo;
+        return $this->storeId;
     }
 
     /**

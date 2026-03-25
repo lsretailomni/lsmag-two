@@ -134,11 +134,6 @@ class SalesEntryLine extends Entity
     protected $VariantId = null;
 
     /**
-     * @property string $WishListNo
-     */
-    protected $WishListNo = null;
-
-    /**
      * @param float $Amount
      * @return $this
      */
@@ -578,24 +573,6 @@ class SalesEntryLine extends Entity
     public function getVariantId()
     {
         return $this->VariantId;
-    }
-
-    /**
-     * @param string $WishListNo
-     * @return $this
-     */
-    public function setWishListNo($WishListNo)
-    {
-        $this->WishListNo = $WishListNo;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getWishListNo()
-    {
-        return $this->WishListNo;
     }
 }
 

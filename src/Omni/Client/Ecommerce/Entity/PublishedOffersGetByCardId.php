@@ -23,11 +23,6 @@ class PublishedOffersGetByCardId implements RequestInterface
     protected $itemId = null;
 
     /**
-     * @property string $storeId
-     */
-    protected $storeId = null;
-
-    /**
      * @param string $cardId
      * @return $this
      */
@@ -61,24 +56,6 @@ class PublishedOffersGetByCardId implements RequestInterface
     public function getItemId()
     {
         return $this->itemId;
-    }
-
-    /**
-     * @param string $storeId
-     * @return $this
-     */
-    public function setStoreId($storeId)
-    {
-        $this->storeId = $storeId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStoreId()
-    {
-        return $this->storeId;
     }
 }
 
