@@ -33,6 +33,17 @@ interface ReplCustomerInterface
     public function getAccountNumber();
 
     /**
+     * @param string $BirthDay
+     * @return $this
+     */
+    public function setBirthDay($BirthDay);
+
+    /**
+     * @return string
+     */
+    public function getBirthDay();
+
+    /**
      * @param int $Blocked
      * @return $this
      */

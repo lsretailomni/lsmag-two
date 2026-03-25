@@ -4,7 +4,6 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Api\Data\ReplPriceInterface;
 use \Ls\Replication\Model\ReplPrice;
 use \Ls\Replication\Model\ResourceModel\ReplPrice\Collection;
 use Magento\Framework\Exception\LocalizedException;
@@ -121,6 +120,21 @@ class SyncPrice extends ProductCreateTask
                     continue;
                 }
 
+                // Check if price is scheduled for future (don't mark as processed)
+                if ($this->isFuturePrice($replPrice)) {
+                    $this->logger->debug(
+                        sprintf(
+                            'Skipping future price for store: %s, item id: %s, variant id: %s, start date: %s (not marking as processed)',
+                            $this->store->getName(),
+                            $replPrice->getItemId(),
+                            $replPrice->getVariantId(),
+                            $replPrice->getStartingDate()
+                        )
+                    );
+                    // Don't mark as processed - allow it to be picked up in next cron run
+                    continue;
+                }
+
                 // Validate price record
                 if (!$this->isValidPrice($replPrice)) {
                     $this->logger->debug(
@@ -177,6 +191,57 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
+     * Check if price is scheduled for future (start date not reached yet)
+     *
+     * @param ReplPrice $replPrice
+     * @return bool
+     */
+    protected function isFuturePrice($replPrice)
+    {
+        // Only check if status is Active
+        if ($replPrice->getStatus() !== 'Active') {
+            return false;
+        }
+
+        $startingDate = $replPrice->getStartingDate();
+        $invalidDate = '1900-01-01T00:00:00';
+        $invalidDateAlt = '1900-01-01';
+
+        // If starting date is empty or invalid, it's not a future price
+        $isStartingDateInvalid = empty($startingDate) ||
+            strpos($startingDate, $invalidDate) === 0 ||
+            strpos($startingDate, $invalidDateAlt) === 0;
+
+        if ($isStartingDateInvalid) {
+            return false;
+        }
+
+        try {
+            $currentDateTimeString = $this->replicationHelper->getDateTime();
+            $currentDate = $this->replicationHelper->timezone->date($currentDateTimeString);
+            $startDateTime = $this->replicationHelper->timezone->date($startingDate);
+
+            // If current date is before start date, it's a future price
+            if ($currentDate < $startDateTime) {
+                return true;
+            }
+        } catch (\Exception $e) {
+            $this->logger->debug(
+                sprintf(
+                    'Error checking future price for item: %s, variant: %s, start date: %s - Error: %s',
+                    $replPrice->getItemId(),
+                    $replPrice->getVariantId(),
+                    $startingDate,
+                    $e->getMessage()
+                )
+            );
+            return false;
+        }
+
+        return false;
+    }
+
+    /**
      * Validate if price record is active and within valid date range
      *
      * @param ReplPrice $replPrice
@@ -202,6 +267,7 @@ class SyncPrice extends ProductCreateTask
             strpos($endingDate, $invalidDate) === 0 ||
             strpos($endingDate, $invalidDateAlt) === 0;
 
+        // If both dates are invalid/empty, allow the price (no date restrictions)
         if ($isStartingDateInvalid && $isEndingDateInvalid) {
             return true;
         }
@@ -210,10 +276,11 @@ class SyncPrice extends ProductCreateTask
             $currentDateTimeString = $this->replicationHelper->getDateTime();
             $currentDate = $this->replicationHelper->timezone->date($currentDateTimeString);
 
+            // Case 1: Only start date is valid (check if current date is after start)
             if (!$isStartingDateInvalid && $isEndingDateInvalid) {
                 $startDateTime = $this->replicationHelper->timezone->date($startingDate);
                 if ($currentDate < $startDateTime) {
-                    return false;
+                    return false; // Start date not reached yet
                 }
                 return true;
             }
@@ -249,7 +316,7 @@ class SyncPrice extends ProductCreateTask
                     $e->getMessage()
                 )
             );
-            return true;
+            return true; // On date parsing error, allow the price
         }
 
         return true;
@@ -278,6 +345,11 @@ class SyncPrice extends ProductCreateTask
                     $price = $replItemPrice;
                 }
             }
+
+            if ($this->isFuturePrice($price)) {
+                continue;
+            }
+
             if ($productData->getPrice() != $price->getUnitPriceInclVat()) {
                 $productData->setPrice($price->getUnitPriceInclVat());
                 $this->productResourceModel->saveAttribute($productData, 'price');
