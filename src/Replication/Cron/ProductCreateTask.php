@@ -2090,7 +2090,7 @@ class ProductCreateTask
         }
 
         if (!empty($totalUomCodes)) {
-            if (count($totalUomCodes[$item->getNavId()]) > 0 && !empty($uomCodesNotProcessed)) {
+            if (count($totalUomCodes[$item->getNavId()]) > 1 && !empty($uomCodesNotProcessed)) {
                 $attributesCode [] = LSR::LS_UOM_ATTRIBUTE;
             } else {
                 $uomCodesNotProcessed = null;
