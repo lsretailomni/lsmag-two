@@ -217,8 +217,6 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "StoreId",
             "QtyPerUnitOfMeasure",
             "UnitOfMeasure",
-            "StartingDate",
-            "EndingDate",
             "scope_id",
             "processed",
             "is_updated",
