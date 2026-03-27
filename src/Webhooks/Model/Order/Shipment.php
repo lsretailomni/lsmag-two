@@ -13,7 +13,6 @@ use Magento\Shipping\Helper\Data as ShippingHelper;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Webhooks\Helper\NotificationHelper;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Sales\Api\Data\ShipmentCreationArgumentsExtensionInterfaceFactory;
 use Magento\Sales\Api\Data\ShipmentCreationArgumentsInterfaceFactory;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
@@ -39,7 +38,6 @@ class Shipment
      * @param Data $helper
      * @param NotificationHelper $notificationHelper
      * @param ShippingHelper $shippingHelper
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param Logger $logger
      * @param LSR $lsr
      */
@@ -56,7 +54,6 @@ class Shipment
         private Data $helper,
         private NotificationHelper $notificationHelper,
         private ShippingHelper $shippingHelper,
-        protected SearchCriteriaBuilder $searchCriteriaBuilder,
         private Logger $logger,
         private LSR $lsr
     ) {
@@ -120,7 +117,7 @@ class Shipment
                         $shipmentTracks->setTrackNumber($trackingId);
                     }
                     $shipmentTracks = [$shipmentTracks];
-                    
+
                     if ($this->lsr->getWebsiteConfig(
                         LSR::LSR_SHIPMENT_WITHOUT_TRACKING,
                         $magOrder->getStore()->getWebsiteId()
