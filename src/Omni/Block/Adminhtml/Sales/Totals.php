@@ -114,6 +114,7 @@ class Totals extends Template
         $this->getInvoice();
         $this->getCreditmemo();
         $this->getSource();
+        $this->loyaltyHelper->getLsr()->setStoreId($order->getStoreId());
 
         if ($this->getSource()->getLsGiftCardAmountUsed() > 0) {
             // @codingStandardsIgnoreLine

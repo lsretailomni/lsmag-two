@@ -53,6 +53,7 @@ class Returns
     {
         try {
             $magOrder       = $this->helper->getOrderByDocumentId($data['OrderId']);
+            $this->helper->getLsrObject()->setStoreId($magOrder->getStoreId());
             $shippingItemId = $this->helper->getShippingItemId();
 
             $orderItemsMap = $this->buildOrderItemsMap($magOrder);
