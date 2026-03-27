@@ -217,9 +217,12 @@ class SyncPrice extends ProductCreateTask
         }
 
         try {
-            $currentDateTimeString = $this->replicationHelper->getDateTime();
-            $currentDate = $this->replicationHelper->timezone->date($currentDateTimeString);
-            $startDateTime = $this->replicationHelper->timezone->date($startingDate);
+            $currentDate = $this->replicationHelper->getCurrentDate();
+            $format      = LSR::DATE_FORMAT;
+            $startDateTime = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
+                $startingDate,
+                $format
+            );
 
             // If current date is before start date, it's a future price
             if ($currentDate < $startDateTime) {
@@ -273,12 +276,15 @@ class SyncPrice extends ProductCreateTask
         }
 
         try {
-            $currentDateTimeString = $this->replicationHelper->getDateTime();
-            $currentDate = $this->replicationHelper->timezone->date($currentDateTimeString);
+            $currentDate = $this->replicationHelper->getCurrentDate();
+            $format      = LSR::DATE_FORMAT;
 
             // Case 1: Only start date is valid (check if current date is after start)
             if (!$isStartingDateInvalid && $isEndingDateInvalid) {
-                $startDateTime = $this->replicationHelper->timezone->date($startingDate);
+                $startDateTime = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
+                    $startingDate,
+                    $format
+                );
                 if ($currentDate < $startDateTime) {
                     return false; // Start date not reached yet
                 }
@@ -287,17 +293,26 @@ class SyncPrice extends ProductCreateTask
 
             // Case 2: Only end date is valid (no start date restriction)
             if ($isStartingDateInvalid && !$isEndingDateInvalid) {
-                $endDateTime = $this->replicationHelper->timezone->date($endingDate);
+                $endDateTime = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
+                    $endingDate,
+                    $format
+                );
                 if ($currentDate > $endDateTime) {
-                    return false; // Price has expired
+                    return false;
                 }
                 return true;
             }
 
             // Case 3: Both dates are valid - check if current date is within range
             if (!$isStartingDateInvalid && !$isEndingDateInvalid) {
-                $startDateTime = $this->replicationHelper->timezone->date($startingDate);
-                $endDateTime = $this->replicationHelper->timezone->date($endingDate);
+                $startDateTime = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
+                    $startingDate,
+                    $format
+                );
+                $endDateTime = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
+                    $endingDate,
+                    $format
+                );
 
                 if ($currentDate < $startDateTime || $currentDate > $endDateTime) {
                     return false;
