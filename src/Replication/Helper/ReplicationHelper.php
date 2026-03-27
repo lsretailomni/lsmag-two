@@ -873,6 +873,7 @@ class ReplicationHelper extends AbstractHelper
             'asset_no' => 'ItemId',
             'unit_of_measure_code' => 'UnitOfMeasure',
             'variant_code' => 'VariantId',
+            'price_list_code' => 'PriceListCode',
             'scope_id' => 'scope_id'
         ],
         'ls_mag/replication/repl_inv_status' => [
