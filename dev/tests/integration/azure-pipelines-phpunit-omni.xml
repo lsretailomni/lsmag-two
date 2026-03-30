@@ -38,7 +38,8 @@
 <!--            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Controller</directory>-->
 <!--            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Model</directory>-->
 <!--            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Observer</directory>-->
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Plugin</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Plugin/AdminOrder/CreatePluginTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Plugin/Quote/CartTotalRepositoryTest.php</file>
         </testsuite>
     </testsuites>
     <!-- Code coverage filters -->

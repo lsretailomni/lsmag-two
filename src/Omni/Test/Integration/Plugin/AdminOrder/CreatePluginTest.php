@@ -83,9 +83,6 @@ class CreatePluginTest extends AbstractIntegrationTest
         $this->itemHelper    = $this->objectManager->get(ItemHelper::class);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         AppArea('adminhtml'),
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
@@ -117,6 +114,9 @@ class CreatePluginTest extends AbstractIntegrationTest
         DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
         DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart1$'])
     ]
+    /**
+     * @magentoAppIsolation enabled
+     */
     public function testCreatePlugin()
     {
         $quote = $this->fixtures->get('cart1');
