@@ -104,8 +104,6 @@ class CartTotalRepositoryTest extends AbstractIntegrationTest
         $result = $this->cartTotalRepository->get($quote->getId());
 
         $extensionAttributes = $result->getExtensionAttributes()->__toArray();
-        echo "\n";
-        print_r($extensionAttributes);
         $this->assertNotNull($result->getExtensionAttributes());
         $this->assertArrayHasKey('loyalty_points', $extensionAttributes);
         $this->assertNotEquals(0, $extensionAttributes['loyalty_points']['rateLabel']);

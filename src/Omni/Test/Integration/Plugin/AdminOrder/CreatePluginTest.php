@@ -121,35 +121,18 @@ class CreatePluginTest extends AbstractIntegrationTest
     {
         $quote = $this->fixtures->get('cart1');
 
-//        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $quote->getAllVisibleItems()]);
-
         $this->quoteSession->setQuoteId($quote->getId());
 
-//        $oneList = $this->basketHelper->getOneListAdmin(
-//            $quote->getCustomerEmail(),
-//            $quote->getStore()->getWebsiteId(),
-//            false
-//        );
-
-//        $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
-//        $this->basketHelper->setOneListCalculationInCheckoutSession($oneList);
-//        $basketData = $this->basketHelper->update($oneList);
         $quote      = $this->quoteSession->getQuote();
-//        $this->itemHelper->setDiscountedPricesForItems($quote, $basketData, 2);
-//        $quote->getShippingAddress()->setShippingMethod('flatrate_flatrate');
 
         $this->quoteSession->setQuote($quote);
         $this->model->setQuote($quote);
 
         $result = new DataObject();
-        echo "\n";
-        print_r($this->quoteSession->getQuote()->getData());
-        echo "\n";
+
         $this->createPlugin->afterSaveQuote($this->model, $result);
         $basketData = $this->basketHelper->getOneListCalculationFromCheckoutSession();
-        print_r($this->quoteSession->getQuote()->getData());
-        echo "\npoints rewarded: " . $basketData->getPointsRewarded();
-        echo "\npoints spent: " . $this->quoteSession->getQuote()->getLsPointsEarn() . "\n";
+
         $this->assertEquals($basketData->getPointsRewarded(), $this->quoteSession->getQuote()->getLsPointsEarn());
         $this->assertEquals(self::LSR_LOY_POINTS, $this->quoteSession->getQuote()->getLsPointsSpent());
     }
