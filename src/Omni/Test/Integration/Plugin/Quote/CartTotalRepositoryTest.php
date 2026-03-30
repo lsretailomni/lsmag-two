@@ -9,6 +9,7 @@ use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use Magento\Checkout\Test\Fixture\SetBillingAddress as SetBillingAddress;
 use Magento\Checkout\Test\Fixture\SetShippingAddress as SetShippingAddress;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteRepository;
 use Magento\Quote\Model\Cart\CartTotalRepository;
@@ -43,6 +44,11 @@ class CartTotalRepositoryTest extends AbstractIntegrationTest
     public $cartTotalRepository;
 
     /**
+     * @var CustomerSession
+     */
+    public $customerSession;
+
+    /**
      * @return void
      */
     protected function setUp(): void
@@ -52,6 +58,7 @@ class CartTotalRepositoryTest extends AbstractIntegrationTest
         $this->fixtures            = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
         $this->quoteRepository     = $this->objectManager->get(CartRepositoryInterface::class);
         $this->cartTotalRepository = $this->objectManager->get(CartTotalRepository::class);
+        $this->customerSession  = $this->objectManager->get(CustomerSession::class);
     }
 
     /**
@@ -90,11 +97,14 @@ class CartTotalRepositoryTest extends AbstractIntegrationTest
     ]
     public function testAroundGet()
     {
+        $customer      = $this->fixtures->get('customer');
+        $this->customerSession->setData('customer_id', $customer->getId());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
         $quote  = $this->fixtures->get('cart1');
         $result = $this->cartTotalRepository->get($quote->getId());
 
         $extensionAttributes = $result->getExtensionAttributes()->__toArray();
-
+        print_r($extensionAttributes);
         $this->assertNotNull($result->getExtensionAttributes());
         $this->assertArrayHasKey('loyalty_points', $extensionAttributes);
         $this->assertNotEquals(0, $extensionAttributes['loyalty_points']['rateLabel']);

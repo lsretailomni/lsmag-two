@@ -142,8 +142,13 @@ class CreatePluginTest extends AbstractIntegrationTest
         $this->model->setQuote($quote);
 
         $result = new DataObject();
+        echo "\n";
+        print_r($this->quoteSession->getQuote()->getData());
+        echo "\n";
         $this->createPlugin->afterSaveQuote($this->model, $result);
-
+        print_r($this->quoteSession->getQuote()->getData());
+        echo "\npoints rewarded: " . $basketData->getPointsRewarded();
+        echo "\npoints spent: " . $this->quoteSession->getQuote()->getLsPointsEarn() . "\n";
         $this->assertEquals($basketData->getPointsRewarded(), $this->quoteSession->getQuote()->getLsPointsEarn());
         $this->assertEquals(self::LSR_LOY_POINTS, $this->quoteSession->getQuote()->getLsPointsSpent());
     }

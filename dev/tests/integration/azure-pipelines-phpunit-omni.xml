@@ -34,10 +34,10 @@
     </source>
     <testsuites>
         <testsuite name="Ls_Retail_Integration_Tests">
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Block</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Controller</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Model</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Observer</directory>
+<!--            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Block</directory>-->
+<!--            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Controller</directory>-->
+<!--            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Model</directory>-->
+<!--            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Observer</directory>-->
             <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Plugin</directory>
         </testsuite>
     </testsuites>
