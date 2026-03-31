@@ -168,6 +168,7 @@ jobs:
           LOGS=(
             "$(magentoDirectory)/var/log/debug.log"
             "$(magentoDirectory)/var/log/omniclient.log"
+            "$(magentoDirectory)/var/log/flat_replication.log"
           )
           for LOG in "${LOGS[@]}"; do
             for FILE in $(ls $LOG 2>/dev/null); do
