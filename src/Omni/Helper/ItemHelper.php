@@ -27,7 +27,6 @@ use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\GiftCard\Model\Catalog\Product\Type\Giftcard;
 use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteFactory;
@@ -708,9 +707,7 @@ class ItemHelper extends AbstractHelper
      */
     public function getItemAttributesGivenQuoteItem($quoteItem)
     {
-        if ($quoteItem->getProductType() != Type::DEFAULT_TYPE &&
-            $quoteItem->getProductType() != Giftcard::TYPE_GIFTCARD
-        ) {
+        if ($quoteItem->getProductType() != Type::DEFAULT_TYPE) {
             $quoteItem = current($quoteItem->getChildren());
         }
 
