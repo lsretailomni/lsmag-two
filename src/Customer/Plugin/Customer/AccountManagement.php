@@ -138,7 +138,7 @@ class AccountManagement
                     $login['username'] = $username;
                     $login['password'] = $password;
                     $this->contactHelper->processCustomerLogin($result, $login, $isEmail);
-                    $this->contactHelper->updateBasketAndWishlistAfterLogin($result);
+                    $this->contactHelper->updateRequiredOneListAfterLogin($result);
                     $email = $result->getEmail();
                 }
             } else {

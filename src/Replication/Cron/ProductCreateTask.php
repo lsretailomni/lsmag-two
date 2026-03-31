@@ -2089,8 +2089,14 @@ class ProductCreateTask
             );
         }
 
+        $uomCount = 1;
+        $isSimpleMode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_CONFIG, $this->getScopeId());
+        if ($isSimpleMode == 'simple') {
+            $uomCount = 0;
+        }
+
         if (!empty($totalUomCodes)) {
-            if (count($totalUomCodes[$item->getNavId()]) > 0 && !empty($uomCodesNotProcessed)) {
+            if (count($totalUomCodes[$item->getNavId()]) > $uomCount && !empty($uomCodesNotProcessed)) {
                 $attributesCode [] = LSR::LS_UOM_ATTRIBUTE;
             } else {
                 $uomCodesNotProcessed = null;

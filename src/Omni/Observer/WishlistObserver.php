@@ -6,10 +6,12 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Framework\DataObject;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Wishlist\Model\Wishlist;
+use Psr\Log\LoggerInterface;
 
 /**
  * This observer is responsible for wishlist sync
@@ -33,21 +35,29 @@ class WishlistObserver implements ObserverInterface
     private $wishlist;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @param BasketHelper $basketHelper
      * @param CustomerSession $customerSession
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param Wishlist $wishlist
+     * @param LoggerInterface $logger
      */
     public function __construct(
         BasketHelper $basketHelper,
         CustomerSession $customerSession,
-        LSR $LSR,
-        Wishlist $wishlist
+        LSR $lsr,
+        Wishlist $wishlist,
+        LoggerInterface $logger
     ) {
-        $this->basketHelper    = $basketHelper;
+        $this->basketHelper = $basketHelper;
         $this->customerSession = $customerSession;
-        $this->lsr             = $LSR;
-        $this->wishlist        = $wishlist;
+        $this->lsr = $lsr;
+        $this->wishlist = $wishlist;
+        $this->logger = $logger;
     }
 
     /**
@@ -59,20 +69,58 @@ class WishlistObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        /*
-          * Adding condition to only process if LSR is enabled.
-          */
-        if ($this->lsr->isLSR(
-            $this->lsr->getCurrentStoreId(),
-            false,
-            $this->lsr->getOrderIntegrationOnFrontend()
-        )) {
-            $customerId = $this->customerSession->getCustomer()->getId();
-            $wishlist   = $this->wishlist->loadByCustomerId($customerId)->getItemCollection();
-            $oneList    = $this->basketHelper->fetchCurrentCustomerWishlist();
-            $oneList    = $this->basketHelper->addProductToExistingWishlist($oneList, $wishlist);
-            $this->basketHelper->updateWishlistAtOmni($oneList);
+        try {
+            if ($this->lsr->isLSR(
+                $this->lsr->getCurrentStoreId(),
+                false,
+                $this->lsr->getBasketIntegrationOnFrontend()
+            )) {
+                $session = $this->customerSession;
+                $data = empty($session->getBeforeWishlistUrl())
+                    ? $observer->getRequest()->getParams() : null;
+                $buyRequest = new DataObject($data);
+                $productId = isset($data['product']) ? (int)$data['product'] : null;
+
+                $qty = $data['qty'] ?? 1;
+                $customerId = $this->customerSession->getCustomer()->getId();
+                $wishlistItems = $this->wishlist->loadByCustomerId($customerId)->getItemCollection()->getItems();
+                $oneList = $this->basketHelper->fetchCurrentCustomerWishlist();
+                $oneListItems = $oneList
+                    ? $oneList->getItems()
+                    : [];
+
+                if (!$oneList->getId()) {
+                    $oneList = $this->basketHelper->addProductToExistingWishlist($oneList, $wishlistItems);
+                    $this->basketHelper->updateWishlistAtOmni($oneList);
+                } elseif ($productId) {
+                    $oneList = $this->basketHelper->handleSingleProductAdd(
+                        $buyRequest,
+                        $productId,
+                        $qty,
+                        $oneList,
+                        $oneListItems,
+                        $wishlistItems
+                    );
+                } elseif (is_array($qty)) {
+                    $oneList = $this->basketHelper->handleQtyUpdate($qty, $wishlistItems, $oneList, $oneListItems);
+                } else {
+                    $oneList = $this->basketHelper->handleRemovedItems($wishlistItems, $oneList, $oneListItems);
+                }
+
+                if ($observer->getEvent()->getName() ==
+                    'controller_action_postdispatch_wishlist_index_updateitemoptions'
+                ) {
+                    $oneListItems = $oneList
+                        ? $oneList->getItems()
+                        : [];
+                    $wishlistItems = $this->wishlist->loadByCustomerId($customerId)->getItemCollection()->getItems();
+                    $oneList = $this->basketHelper->handleRemovedItems($wishlistItems, $oneList, $oneListItems);
+                }
+            }
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
         }
+
         return $this;
     }
 }

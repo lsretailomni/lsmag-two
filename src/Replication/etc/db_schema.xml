@@ -670,7 +670,7 @@
     <column xsi:type="int" name="repl_price_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_price_id"/>
     <column xsi:type="text" name="CurrencyCode" nullable="true" comment="CurrencyCode"/>
     <column xsi:type="text" name="CustomerDiscountGroup" nullable="true" comment="CustomerDiscountGroup"/>
-    <column xsi:type="text" name="EndingDate" nullable="true" comment="EndingDate"/>
+    <column xsi:type="varchar" name="EndingDate" length="200" nullable="true" comment="EndingDate"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="ItemId"/>
     <column xsi:type="int" name="LineNumber" padding="11" nullable="true" comment="LineNumber"/>
@@ -683,7 +683,7 @@
     <column xsi:type="decimal" name="QtyPerUnitOfMeasure" scale="4" precision="20" nullable="true" comment="QtyPerUnitOfMeasure"/>
     <column xsi:type="text" name="SaleCode" nullable="true" comment="SaleCode"/>
     <column xsi:type="text" name="SaleType" nullable="true" comment="SaleType"/>
-    <column xsi:type="text" name="StartingDate" nullable="true" comment="StartingDate"/>
+    <column xsi:type="varchar" name="StartingDate" length="200" nullable="true" comment="StartingDate"/>
     <column xsi:type="text" name="Status" nullable="true" comment="Status"/>
     <column xsi:type="varchar" name="StoreId" length="200" nullable="true" comment="StoreId"/>
     <column xsi:type="varchar" name="UnitOfMeasure" length="200" nullable="true" comment="UnitOfMeasure"/>
@@ -718,6 +718,12 @@
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_UNITOFMEASURE">
       <column name="UnitOfMeasure"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_STARTINGDATE">
+      <column name="StartingDate"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_ENDINGDATE">
+      <column name="EndingDate"/>
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_SCOPE_ID">
       <column name="scope_id"/>
@@ -1898,6 +1904,7 @@
   <table name="ls_replication_repl_customer" resource="default" engine="innodb" comment="ReplEcommMember">
     <column xsi:type="int" name="repl_customer_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_customer_id"/>
     <column xsi:type="varchar" name="AccountNumber" length="200" nullable="true" comment="AccountNumber"/>
+    <column xsi:type="text" name="BirthDay" nullable="true" comment="BirthDay"/>
     <column xsi:type="int" name="Blocked" padding="11" nullable="true" comment="Blocked"/>
     <column xsi:type="text" name="CellularPhone" nullable="true" comment="CellularPhone"/>
     <column xsi:type="text" name="City" nullable="true" comment="City"/>

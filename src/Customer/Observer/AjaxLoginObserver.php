@@ -125,7 +125,7 @@ class AjaxLoginObserver implements ObserverInterface
                              * Fetch customer related info from omni and create user in magento
                              */
                             $this->contactHelper->processCustomerLogin($result, $credentials, $is_email);
-                            $this->contactHelper->updateBasketAndWishlistAfterLogin($result);
+                            $this->contactHelper->updateRequiredOneListAfterLogin($result);
                             $this->customerSession->regenerateId();
                             $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
                             return $resultJson->setData($response);

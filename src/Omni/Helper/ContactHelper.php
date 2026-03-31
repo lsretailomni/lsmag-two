@@ -1140,6 +1140,15 @@ class ContactHelper extends AbstractHelper
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
         $this->customerSession->setCustomerAsLoggedIn($customer);
+
+        $oneListWish = $this->getOneListTypeObject(
+            $result->getOneLists()->getOneList(),
+            Entity\Enum\ListType::WISH
+        );
+        /** Update Wishlist to Omni */
+        $this->updateWishlistAfterLogin(
+            $oneListWish
+        );
     }
 
     /**
@@ -1663,7 +1672,7 @@ class ContactHelper extends AbstractHelper
      * @throws NoSuchEntityException
      * @throws Exception
      */
-    public function updateBasketAndWishlistAfterLogin($result)
+    public function updateRequiredOneListAfterLogin($result)
     {
         $quote = $this->checkoutSession->getQuote();
         $items = $quote->getAllVisibleItems();
@@ -1680,16 +1689,6 @@ class ContactHelper extends AbstractHelper
             $oneListBasket,
             $result->getCards()->getCard()[0]->getId()
         );
-        $oneListWish = $this->getOneListTypeObject(
-            $result->getOneLists()->getOneList(),
-            Entity\Enum\ListType::WISH
-        );
-        if ($oneListWish) {
-            /** Update Wishlist to Omni */
-            $this->updateWishlistAfterLogin(
-                $oneListWish
-            );
-        }
 
         $this->setBasketUpdateChecking();
     }
@@ -1697,18 +1696,16 @@ class ContactHelper extends AbstractHelper
     /**
      * Get one list type
      *
-     * @param object $arrayOneLists
+     * @param array $arrayOneLists
      * @param string $type
      * @return Entity\OneList|null
-     * @throws NoSuchEntityException
      */
     public function getOneListTypeObject($arrayOneLists, $type)
     {
         if (is_array($arrayOneLists)) {
             /** @var Entity\OneList $oneList */
             foreach ($arrayOneLists as $oneList) {
-                if ($oneList->getListType() == $type &&
-                    $oneList->getStoreId() == $this->basketHelper->getDefaultWebStore()
+                if ($oneList->getListType() == $type
                 ) {
                     return $oneList;
                 }
@@ -1777,79 +1774,75 @@ class ContactHelper extends AbstractHelper
     /**
      * Update wishlist after login
      *
-     * @param Entity\OneList $oneListWishlist
+     * @param Entity\OneList|null $oneListWishlist
      * @return void
+     * @throws NoSuchEntityException|InvalidEnumException
      */
-    public function updateWishlistAfterLogin(Entity\OneList $oneListWishlist)
+    public function updateWishlistAfterLogin($oneListWishlist)
     {
-        // @codingStandardsIgnoreStart
         $customerId = $this->customerSession->getCustomer()->getId();
-        $wishlist   = $this->wishlist->loadByCustomerId($customerId);
-        $this->removeWishlist($wishlist);
-        $wishlist = $this->wishlistFactory->create();
-        $wishlist->loadByCustomerId($customerId, true);
-        $itemsCollection = $oneListWishlist->getItems()->getOneListItem();
-        if (!is_array($itemsCollection)) {
-            $itemsCollection = [$itemsCollection];
-        }
-        try {
-            foreach ($itemsCollection as $item) {
-                $buyRequest = [];
-                $sku        = $item->getItemId();
-                $product    = $this->itemHelper->getProductByIdentificationAttributes($sku);
+        $wishlist = $this->wishlist->loadByCustomerId($customerId);
+        $wishListItems = $wishlist->getItemCollection()->getItems();
+        if (!$oneListWishlist) {
+            $oneList = $this->basketHelper->fetchCurrentCustomerWishlist();
+            $oneList = $this->basketHelper->addProductToExistingWishlist($oneList, $wishListItems);
+            $this->basketHelper->updateWishlistAtOmni($oneList);
+        } else {
+            $oneListItems = $oneListWishlist->getItems()->getOneListItem();
 
-                if ($product) {
-                    $qty               = $item->getQuantity();
-                    $buyRequest['qty'] = $qty;
-                    if ($item->getVariantId()) {
-                        $simProduct = $this->itemHelper->getProductByIdentificationAttributes(
-                            $item->getItemId(),
-                            $item->getVariantId()
-                        );
-
-                        if ($simProduct) {
-                            $optionsData                   = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
-                            $buyRequest['super_attribute'] = [];
-                            foreach ($optionsData as $key => $option) {
-                                $code                                = $option['attribute_code'];
-                                $value                               = $simProduct->getData($code);
-                                $buyRequest['super_attribute'][$key] = $value;
-                            }
-                        }
-                    }
-                    $result = $wishlist->addNewItem($product, $buyRequest);
-                    $this->wishlistResourceModel->save($wishlist);
-                    $this->_eventManager->dispatch(
-                        'wishlist_add_product',
-                        ['wishlist' => $wishlist, 'product' => $product, 'item' => $result]
-                    );
-                }
+            if (count($wishListItems) === count($oneListItems) &&
+                !$this->hasWishlistMismatch($wishListItems, $oneListItems)
+            ) {
+                $this->basketHelper->setWishListInCustomerSession($oneListWishlist);
+            } else {
+                $this->basketHelper->delete($oneListWishlist);
+                $oneList = $this->basketHelper->fetchCurrentCustomerWishlist();
+                $oneList = $this->basketHelper->addProductToExistingWishlist($oneList, $wishListItems);
+                $this->basketHelper->updateWishlistAtOmni($oneList);
             }
-
-            if (!is_array($oneListWishlist) &&
-                $oneListWishlist instanceof Entity\OneList) {
-                $this->customerSession->setData(LSR::SESSION_CART_WISHLIST, $oneListWishlist);
-            }
-        } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
         }
-        // @codingStandardsIgnoreEnd
     }
 
     /**
-     * Function to remove wishlist
+     * Check if there is a mismatch between Magento wishlist items and oneList items
      *
-     * @param object $wishlist
+     * Based on ItemId, VariantId, UOM and Qty
+     *
+     * @param array $wishListItems
+     * @param array $oneListItems
+     * @return bool
+     * @throws NoSuchEntityException
      */
-    public function removeWishlist(&$wishlist)
+    private function hasWishlistMismatch(array $wishListItems, array $oneListItems): bool
     {
-        // @codingStandardsIgnoreStart
-        try {
-            $wishlist->delete();
-        } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
+        foreach ($wishListItems as $wishlistItem) {
+            $product = $wishlistItem->getProduct();
+            [$itemId, $variantId, $uom] = $this->basketHelper->getComparisonValuesForProduct($product);
+            $qty = (float)$wishlistItem->getQty();
+            $found = false;
+
+            foreach ($oneListItems as $oneListItem) {
+                $oneItemId = $oneListItem->getItemId();
+                $oneVariantId = $oneListItem->getVariantId();
+                $oneUom = $oneListItem->getUnitOfMeasureId();
+                $oneQty = (float)$oneListItem->getQuantity();
+
+                if ($oneItemId == $itemId &&
+                    $oneVariantId == $variantId &&
+                    $oneUom == $uom &&
+                    $oneQty == $qty
+                ) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (!$found) {
+                return true;
+            }
         }
-        // @codingStandardsIgnoreEnd
+
+        return false;
     }
 
     /**
