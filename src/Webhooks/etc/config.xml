@@ -29,6 +29,9 @@
                 <notification_cancel>1</notification_cancel>
                 <template_cancel>ls_mag_webhooks_template_cancel</template_cancel>
             </webhooks>
+        <ls_order_management>
+            <shipment_without_tracking>0</shipment_without_tracking>
+        </ls_order_management>
         </ls_mag>
     </default>
 </config>

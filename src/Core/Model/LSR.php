@@ -448,6 +448,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_GRAPHQL_DISCOUNT_VALIDATION_MSG = 'ls_mag/ls_order_management/graphql_discount_validation_msg';
     const LSR_GRAPHQL_GIFTCARD_VALIDATION_MSG = 'ls_mag/ls_order_management/graphql_giftcard_validation_msg';
     const LSR_ORDER_EDIT = 'ls_mag/ls_order_management/order_edit';
+    const LSR_SHIPMENT_WITHOUT_TRACKING = 'ls_mag/ls_order_management/shipment_without_tracking';
     const LSR_DATETIME_RANGE_VALIDATION_ACTIVE = 'ls_mag/hospitality/dateandtime_range_validation_active';
     const LSR_GRAPHQL_DATETIME_RANGE_VALIDATION_ACTIVE
         = 'ls_mag/hospitality/graphql_dateandtime_range_validation_active';
