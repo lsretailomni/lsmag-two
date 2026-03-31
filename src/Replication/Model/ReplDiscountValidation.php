@@ -561,14 +561,9 @@ class ReplDiscountValidation extends AbstractModel implements ReplDiscountValida
      */
     public function setOfferEndTime($OfferEndTime)
     {
-        if ($OfferEndTime) {
-            $endTimeObj = new \DateTime($OfferEndTime);
-            $OfferEndTime = $endTimeObj->format('H:i:s');
-            $this->setData( 'OfferEndTime', $OfferEndTime );
-            $this->OfferEndTime = $OfferEndTime;
-            $this->setDataChanges( TRUE );
-        }
-        
+        $this->setData( 'OfferEndTime', $OfferEndTime );
+        $this->OfferEndTime = $OfferEndTime;
+        $this->setDataChanges( TRUE );
         return $this;
     }
 
@@ -586,13 +581,9 @@ class ReplDiscountValidation extends AbstractModel implements ReplDiscountValida
      */
     public function setOfferStartTime($OfferStartTime)
     {
-        if ($OfferStartTime) {
-            $startTimeObj = new \DateTime($OfferStartTime);
-            $OfferStartTime = $startTimeObj->format('H:i:s');
-            $this->setData( 'OfferStartTime', $OfferStartTime );
-            $this->OfferStartTime = $OfferStartTime;
-            $this->setDataChanges( TRUE );
-        }        
+        $this->setData( 'OfferStartTime', $OfferStartTime );
+        $this->OfferStartTime = $OfferStartTime;
+        $this->setDataChanges( TRUE );
         return $this;
     }
 

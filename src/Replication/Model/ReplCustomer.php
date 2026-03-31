@@ -31,6 +31,11 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     protected $AccountNumber = null;
 
     /**
+     * @property string $BirthDay
+     */
+    protected $BirthDay = null;
+
+    /**
      * @property int $Blocked
      */
     protected $Blocked = null;
@@ -298,6 +303,26 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     public function getAccountNumber()
     {
         return $this->getData( 'AccountNumber' );
+    }
+
+    /**
+     * @param string $BirthDay
+     * @return $this
+     */
+    public function setBirthDay($BirthDay)
+    {
+        $this->setData( 'BirthDay', $BirthDay );
+        $this->BirthDay = $BirthDay;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBirthDay()
+    {
+        return $this->getData( 'BirthDay' );
     }
 
     /**
