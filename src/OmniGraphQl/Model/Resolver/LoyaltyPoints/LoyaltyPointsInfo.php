@@ -36,6 +36,9 @@ class LoyaltyPointsInfo implements ResolverInterface
         if (!isset($value['model'])) {
             throw new LocalizedException(__('"model" value should be specified'));
         }
+        if ($context->getUserId() === 0) {
+            return null;
+        }
         $cart = $value['model'];
         $cartId = $cart->getId();
         $loyaltyPoints = $this->loyaltyPointsManagement->get($cartId);
