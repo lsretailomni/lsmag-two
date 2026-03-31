@@ -9,186 +9,27 @@ use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
 use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\Ecommerce\Operation\Ping;
-use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
-use \Ls\Replication\Api\ReplStoreRepositoryInterface;
-use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
-use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Config\Storage\WriterInterface;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Filesystem\DirectoryList;
-use Magento\Framework\Filesystem\Driver\File;
 use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
-use Magento\Framework\Message\ManagerInterface;
-use Magento\Framework\Session\SessionManagerInterface;
-use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\Quote\Api\CartRepositoryInterface;
-use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
-use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
+use Magento\Framework\Phrase;
 use Magento\Sales\Model\Order\Creditmemo;
+use Magento\Sales\Model\Order\Invoice\Item;
 use Magento\Store\Model\ScopeInterface;
 
 /**
  * Helper class that is used on multiple areas
  */
-class Data extends AbstractHelper
+class Data extends AbstractHelperOmni
 {
-    /** @var ReplStoreRepositoryInterface */
-    public $storeRepository;
-
-    /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
-    public $searchCriteriaBuilder;
-
-    /**
-     * @var SessionManagerInterface
-     */
-    public $session;
-
-    /**
-     * @var CheckoutSession
-     */
-    public $checkoutSession;
-
-    /** @var ManagerInterface */
-    public $messageManager;
-
-    /**
-     * @var \Magento\Framework\Pricing\Helper\Data
-     */
-    public $priceHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var CartRepositoryInterface
-     */
-    public $cartRepository;
-
-    /**
-     * @var CacheHelper
-     */
-    public $cacheHelper;
-
-    /**
-     * @var DateTime
-     */
-    public $date;
-
-    /**
-     * @var WriterInterface
-     */
-    public $configWriter;
-
-    /**
-     * @var DirectoryList
-     */
-    public $directoryList;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var ReplStoreTenderTypeRepositoryInterface
-     */
-    public $replStoreTenderTypeRepository;
-    /**
-     * @var GetCartForUser
-     */
-    public GetCartForUser $getCartForUser;
-    /**
-     * @var MaskedQuoteIdToQuoteIdInterface
-     */
-    public MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId;
-    /**
-     * @var StockHelper
-     */
-    public StockHelper $stockHelper;
-
-    /**
-     * @var File
-     */
-    public File $fileSystemDriver;
-
-    /**
-     * Data constructor.
-     * @param Context $context
-     * @param ReplStoreRepositoryInterface $storeRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param SessionManagerInterface $session
-     * @param CheckoutSession $checkoutSession
-     * @param ManagerInterface $messageManager
-     * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
-     * @param LoyaltyHelper $loyaltyHelper
-     * @param CartRepositoryInterface $cartRepository
-     * @param CacheHelper $cacheHelper
-     * @param LSR $lsr
-     * @param DateTime $date
-     * @param WriterInterface $configWriter
-     * @param DirectoryList $directoryList
-     * @param StockHelper $stockHelper
-     * @param GetCartForUser $getCartForUser
-     * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
-     * @param ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository
-     * @param File $fileSystemDriver
-     */
-    public function __construct(
-        Context $context,
-        ReplStoreRepositoryInterface $storeRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        SessionManagerInterface $session,
-        CheckoutSession $checkoutSession,
-        ManagerInterface $messageManager,
-        \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        LoyaltyHelper $loyaltyHelper,
-        CartRepositoryInterface $cartRepository,
-        CacheHelper $cacheHelper,
-        LSR $lsr,
-        DateTime $date,
-        WriterInterface $configWriter,
-        DirectoryList $directoryList,
-        StockHelper $stockHelper,
-        GetCartForUser $getCartForUser,
-        MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
-        ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository,
-        File $fileSystemDriver
-    ) {
-        $this->storeRepository               = $storeRepository;
-        $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
-        $this->session                       = $session;
-        $this->checkoutSession               = $checkoutSession;
-        $this->messageManager                = $messageManager;
-        $this->priceHelper                   = $priceHelper;
-        $this->cartRepository                = $cartRepository;
-        $this->loyaltyHelper                 = $loyaltyHelper;
-        $this->cacheHelper                   = $cacheHelper;
-        $this->lsr                           = $lsr;
-        $this->date                          = $date;
-        $this->configWriter                  = $configWriter;
-        $this->directoryList                 = $directoryList;
-        $this->maskedQuoteIdToQuoteId        = $maskedQuoteIdToQuoteId;
-        $this->getCartForUser                = $getCartForUser;
-        $this->stockHelper                   = $stockHelper;
-        $this->replStoreTenderTypeRepository = $storeTenderTypeRepository;
-        $this->fileSystemDriver              = $fileSystemDriver;
-        parent::__construct($context);
-    }
-
     /**
      * @param $storeId
      * @return mixed
@@ -206,27 +47,25 @@ class Data extends AbstractHelper
     /**
      * Get Store hours
      *
-     * @param string $storeId
+     * @param string $webStoreId
      * @return array
      */
-    public function getStoreHours($storeId)
+    public function getStoreHours($webStoreId)
     {
         $storeHours = null;
         try {
-            $cacheId        = LSR::STORE_HOURS . $storeId;
+            $cacheId        = LSR::STORE_HOURS . $webStoreId;
             $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($cachedResponse) {
                 $storeResults = $cachedResponse;
             } else {
-                // @codingStandardsIgnoreLine
-                $request = new StoreGetById();
-                $request->getOperationInput()->setStoreId($storeId);
-                $response     = $request->execute();
                 $storeResults = [];
+                $websideId = $this->lsr->getCurrentWebsiteId();
+                $response = $this->storeHelper->getStore($websideId, $webStoreId);
 
                 if (!empty($response)) {
-                    $storeResults = $response->getResult()->getStoreHours()->getStoreHours();
+                    $storeResults = $response->getStoreHours()->getStoreHours();
                     $this->cacheHelper->persistContentInCache(
                         $cacheId,
                         $storeResults,
@@ -236,7 +75,7 @@ class Data extends AbstractHelper
                 }
             }
             $storeHours = [];
-            $today      = $this->date->gmtDate("Y-m-d");
+            $today      = $this->dateTime->gmtDate("Y-m-d");
 
             for ($i = 0; $i < 7; $i++) {
                 $current          = date("Y-m-d", strtotime($today) + ($i * 86400));
@@ -402,7 +241,7 @@ class Data extends AbstractHelper
      * @param $loyaltyPoints
      * @param $basketData
      * @param bool $showMessage
-     * @return \Magento\Framework\Phrase|string
+     * @return Phrase|string
      */
     public function orderBalanceCheck($giftCardNo, $giftCardAmount, $loyaltyPoints, $basketData, $showMessage = true)
     {
@@ -670,7 +509,7 @@ class Data extends AbstractHelper
             $invoiceCreditMemo->setLsPointsEarn($pointsEarn);
             $invoiceCreditMemo->setLsDiscountAmount($lsDiscountAmount);
             $allVisibleItems = $invoiceCreditMemo->getOrder()->getAllVisibleItems();
-            /** @var $item \Magento\Sales\Model\Order\Invoice\Item */
+            /** @var $item Item */
             foreach ($allVisibleItems as $item) {
                 if (!$item->getParentItem()) {
                     $totalItemsQuantities = $totalItemsQuantities + $item->getQtyOrdered();
@@ -888,7 +727,7 @@ class Data extends AbstractHelper
      * @return string
      * @throws NoSuchEntityException
      */
-    function getLicenseStatusHtml($string)
+    public function getLicenseStatusHtml($string)
     {
         $licenseHtml = "";
         if (trim($string) && strpos($string, 'CL:') !== false) {

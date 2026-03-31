@@ -740,6 +740,7 @@ class ProductCreateTask
 
 
                                 $filteredUomCodes = [];
+                                $UomCodesCountCriteria = 1;
                                 $allUomCodes      = $totalUomCodes[$item->getNavId()] ?? [];
                                 if ($isUomMode == 'simple') {
                                     foreach ($allUomCodes as $description => $code) {
@@ -747,6 +748,7 @@ class ProductCreateTask
                                             $filteredUomCodes[$item->getNavId()][$description] = $code;
                                         }
                                     }
+                                    $UomCodesCountCriteria = 0;
                                 } else {
                                     $filteredUomCodes[$item->getNavId()] = $allUomCodes;
                                 }
@@ -782,7 +784,7 @@ class ProductCreateTask
                                     }
 
                                     // Create configurable or multiple simple products
-                                    if (!empty($variants) || count($filteredUomCodes) > 0) {
+                                    if (!empty($variants) || count($filteredUomCodes) > $UomCodesCountCriteria) {
                                         $this->createConfigurableProducts(
                                             $productSaved,
                                             $item,
@@ -2088,7 +2090,7 @@ class ProductCreateTask
         }
 
         if (!empty($totalUomCodes)) {
-            if (count($totalUomCodes[$item->getNavId()]) > 0 && !empty($uomCodesNotProcessed)) {
+            if (count($totalUomCodes[$item->getNavId()]) > 1 && !empty($uomCodesNotProcessed)) {
                 $attributesCode [] = LSR::LS_UOM_ATTRIBUTE;
             } else {
                 $uomCodesNotProcessed = null;
