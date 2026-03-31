@@ -161,6 +161,9 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode NO_H_M_P_MENU_FOUND()
  * @$method static StatusCode H_M_P_MENU_NOT_ENABLED()
  * @$method static StatusCode H_M_P_MENU_NO_DYNAMIC_CONTENT_FOUND_TODAY()
+ * @$method static StatusCode WISH_LIST_EMPTY()
+ * @$method static StatusCode WISH_LIST_NUMBER_MISSING()
+ * @$method static StatusCode WISH_LIST_NOT_FOUND()
  * @$method static StatusCode VENDOR_NOT_FOUND()
  * @$method static StatusCode DOCUMENT_ERROR()
  * @$method static StatusCode TEMPLATE_NOT_FOUND()
@@ -495,6 +498,12 @@ class StatusCode extends Enum
     public const H_M_P_MENU_NOT_ENABLED = 'HMPMenuNotEnabled';
 
     public const H_M_P_MENU_NO_DYNAMIC_CONTENT_FOUND_TODAY = 'HMPMenuNoDynamicContentFoundToday';
+
+    public const WISH_LIST_EMPTY = 'WishListEmpty';
+
+    public const WISH_LIST_NUMBER_MISSING = 'WishListNumberMissing';
+
+    public const WISH_LIST_NOT_FOUND = 'WishListNotFound';
 
     public const VENDOR_NOT_FOUND = 'VendorNotFound';
 

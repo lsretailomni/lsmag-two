@@ -528,6 +528,10 @@ class ProductCreateTask
                             LSR::SC_REPLICATION_PRODUCT_BATCHSIZE,
                             $store->getId()
                         );
+                        $uomMode          = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT,
+                            $store->getId());
+                        $isUomMode        = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_CONFIG,
+                            $store->getId());
                         $criteria         = $this->replicationHelper->buildCriteriaForNewItems(
                             'scope_id',
                             $this->getScopeId(),
@@ -595,9 +599,13 @@ class ProductCreateTask
                                     LSR::LS_ITEM_SPECIAL_GROUP,
                                     $item->getSpecialGroups()
                                 );
-                                if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) &&
-                                    !empty($item->getSalseUnitOfMeasure())) {
-                                    $productData->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+                                if (!$uomMode) {
+                                    if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) &&
+                                        !empty($item->getSalseUnitOfMeasure())) {
+                                        $productData->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+                                    } else {
+                                        $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+                                    }
                                 } else {
                                     $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 }
@@ -608,14 +616,34 @@ class ProductCreateTask
                                     $item->getType()
                                 );
 
-                                $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
-                                $totalUomCodes        = $this->replicationHelper->getUomCodes(
+                                $variants      = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
+                                $baseUom       = $productData->getCustomAttribute('uom')?->getValue();
+                                $totalUomCodes = $this->replicationHelper->getUomCodes(
                                     $item->getNavId(),
                                     $this->getScopeId()
                                 );
+
+                                $filteredUomCodes = [];
+                                $allUomCodes      = $totalUomCodes[$item->getNavId()] ?? [];
+                                if ($isUomMode == 'simple') {
+                                    foreach ($allUomCodes as $description => $code) {
+                                        if ($code !== $baseUom) {
+                                            $filteredUomCodes[$item->getNavId()][$description] = $code;
+                                        }
+                                    }
+                                } else {
+                                    $filteredUomCodes[$item->getNavId()] = $allUomCodes;
+                                }
                                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
-                                //Update UOM attributes for simple products
-                                if (empty($variants) && count($totalUomCodes[$item->getNavId()]) == 1) {
+                                if (!empty($uomCodesNotProcessed) && $isUomMode == 'simple') {
+                                    $uomCodesNotProcessed = array_filter(
+                                        $uomCodesNotProcessed,
+                                        function ($uomCode) use ($baseUom) {
+                                            return $uomCode->getCode() !== $baseUom;
+                                        }
+                                    );
+                                }
+                                if (empty($variants) && (count($filteredUomCodes) == 0 || (count($filteredUomCodes) <= 1))) {
                                     foreach ($uomCodesNotProcessed as $uomCode) {
                                         if (!empty($uomCode)) {
                                             $this->syncUomAdditionalAttributes($product, $uomCode, $item);
@@ -626,7 +654,7 @@ class ProductCreateTask
                                 try {
                                     // @codingStandardsIgnoreLine
                                     $productSaved = $this->productRepository->save($product);
-                                    $this->updateProductStatusGlobal($productSaved);
+                                    $this->updateProductStatusByScope($productSaved, $store->getId(), $item);
                                 } catch (Exception $e) {
                                     $this->logDetailedException(
                                         __METHOD__,
@@ -686,9 +714,13 @@ class ProductCreateTask
                                     LSR::LS_ITEM_SPECIAL_GROUP,
                                     $item->getSpecialGroups()
                                 );
-                                if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) &&
-                                    !empty($item->getSalseUnitOfMeasure())) {
-                                    $product->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+                                if (!$uomMode) {
+                                    if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) &&
+                                        !empty($item->getSalseUnitOfMeasure())) {
+                                        $product->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+                                    } else {
+                                        $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+                                    }
                                 } else {
                                     $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 }
@@ -700,16 +732,40 @@ class ProductCreateTask
                                     $product->setCustomAttribute('barcode', $itemBarcodes[$item->getNavId()]);
                                 }
 
+                                $baseUom       = $item->getBaseUnitOfMeasure();
                                 $totalUomCodes = $this->replicationHelper->getUomCodes(
                                     $item->getNavId(),
                                     $this->getScopeId()
                                 );
 
+
+                                $filteredUomCodes = [];
+                                $UomCodesCountCriteria = 1;
+                                $allUomCodes      = $totalUomCodes[$item->getNavId()] ?? [];
+                                if ($isUomMode == 'simple') {
+                                    foreach ($allUomCodes as $description => $code) {
+                                        if ($code !== $baseUom) {
+                                            $filteredUomCodes[$item->getNavId()][$description] = $code;
+                                        }
+                                    }
+                                    $UomCodesCountCriteria = 0;
+                                } else {
+                                    $filteredUomCodes[$item->getNavId()] = $allUomCodes;
+                                }
+
                                 $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
                                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
 
-                                //Set UOM attributes for simple products
-                                if (empty($variants) && count($totalUomCodes[$item->getNavId()]) == 1) {
+                                if (!empty($uomCodesNotProcessed) && $isUomMode == 'simple') {
+                                    $uomCodesNotProcessed = array_filter(
+                                        $uomCodesNotProcessed,
+                                        function ($uomCode) use ($baseUom) {
+                                            return $uomCode->getCode() !== $baseUom;
+                                        }
+                                    );
+                                }
+
+                                if (empty($variants) && (count($filteredUomCodes) == 0 || (count($filteredUomCodes) <= 1))) {
                                     foreach ($uomCodesNotProcessed as $uomCode) {
                                         if (!empty($uomCode)) {
                                             $this->syncUomAdditionalAttributes($product, $uomCode, $item);
@@ -727,13 +783,14 @@ class ProductCreateTask
                                         $this->replicationHelper->updateInventory($productSaved, $itemStock);
                                     }
 
-                                    if (!empty($variants) || count($totalUomCodes[$item->getNavId()]) > 1) {
+                                    // Create configurable or multiple simple products
+                                    if (!empty($variants) || count($filteredUomCodes) > $UomCodesCountCriteria) {
                                         $this->createConfigurableProducts(
                                             $productSaved,
                                             $item,
                                             $itemBarcodes,
                                             $variants,
-                                            $totalUomCodes,
+                                            $filteredUomCodes,
                                             $uomCodesNotProcessed
                                         );
                                     }
@@ -2012,6 +2069,10 @@ class ProductCreateTask
         $totalUomCodes = null,
         $uomCodesNotProcessed = null
     ) {
+
+        // Handle UOM type switching
+        $checkUomType = $this->handleUomProductTypeSwitch($configProduct, $uomCodesNotProcessed, $variants, $item);
+
         // Get those attribute codes which are assigned to product.
         $attributesCode = $this->replicationHelper->_getAttributesCodes($item->getNavId(), $this->getScopeId());
 
@@ -2261,8 +2322,9 @@ class ProductCreateTask
                 $this->replItemVariantRegistrationRepository->save($value);
             }
         }
-
-        $this->finalizeConfigurableProduct($configProduct, $attributesCode, $associatedProductIds);
+        if (!$checkUomType) {
+            $this->finalizeConfigurableProduct($configProduct, $attributesCode, $associatedProductIds);
+        }
     }
 
     /**
@@ -2307,7 +2369,10 @@ class ProductCreateTask
             } catch (Exception $e) {
                 // @codingStandardsIgnoreLine
                 $this->logger->debug(sprintf('Issue while saving Attribute Id : %s and Product Id : %s - %s',
-                    $attribute->getId(), $productId, $e->getMessage()));
+                    $attribute->getId(),
+                    $productId,
+                    $e->getMessage()
+                ));
             }
             $position++;
         }
@@ -2513,6 +2578,10 @@ class ProductCreateTask
         $productData->setDescription($item->getDetails());
         $productData->setWeight($item->getGrossWeight());
         $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
+        $isUomMode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_CONFIG, $this->getScopeId());
+        if (isset($uomCode) && $isUomMode == 'configurable') {
+            $productData->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
+        }
         if (!empty($item->getTaxItemGroupId())) {
             $taxClass = $this->replicationHelper->getTaxClassGivenName(
                 $item->getTaxItemGroupId()
@@ -2536,9 +2605,15 @@ class ProductCreateTask
                 $productStatus = false;
             }
         } else {
-            if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) &&
-                !empty($item->getSalseUnitOfMeasure())) {
-                $productData->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+            $uomMode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT,
+                $this->store->getId());
+            if (!$uomMode) {
+                if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) &&
+                    !empty($item->getSalseUnitOfMeasure())) {
+                    $productData->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+                } else {
+                    $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+                }
             } else {
                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
             }
@@ -2577,7 +2652,9 @@ class ProductCreateTask
      */
     public function syncUomAdditionalAttributes($product, $uomCode, $item)
     {
-        $product->setCustomAttribute('uom', $uomCode->getCode());
+        if (empty($product->getCustomAttribute('uom'))) {
+            $product->setCustomAttribute('uom', $uomCode->getCode());
+        }
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_QTY, $uomCode->getQtyPrUOM());
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_HEIGHT, $uomCode->getHeight());
         $weight = ($uomCode->getWeight() != "0" && $uomCode->getWeight()) ?
@@ -2605,9 +2682,15 @@ class ProductCreateTask
         $productData->setDescription($item->getDetails());
         $productData->setWeight($item->getGrossWeight());
         $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
-        if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure())
-            && !empty($item->getSalseUnitOfMeasure())) {
-            $productData->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+        $uomMode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT,
+            $this->store->getId());
+        if (!$uomMode) {
+            if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure())
+                && !empty($item->getSalseUnitOfMeasure())) {
+                $productData->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+            } else {
+                $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+            }
         } else {
             $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
         }
@@ -2711,9 +2794,15 @@ class ProductCreateTask
         if ($value->getVariantId()) {
             $productV->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
         }
-        if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure())
-            && !empty($item->getSalseUnitOfMeasure())) {
-            $productV->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+        $uomMode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT,
+            $this->store->getId());
+        if (!$uomMode) {
+            if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure())
+                && !empty($item->getSalseUnitOfMeasure())) {
+                $productV->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+            } else {
+                $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+            }
         } else {
             $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
         }
@@ -2799,6 +2888,7 @@ class ProductCreateTask
     ) {
         $productStatus = true;
         $productV      = $this->productFactory->create();
+
         $productV->setName($name);
         $productV->setStoreId(0);
         $productV->setWebsiteIds([$this->store->getWebsiteId()]);
@@ -2843,7 +2933,12 @@ class ProductCreateTask
             }
         }
         $productV->setAttributeSetId($configProduct->getAttributeSetId());
-        $productV->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
+        $isSimpleMode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_CONFIG, $this->getScopeId());
+        if (isset($uomCode) && $isSimpleMode == 'simple') {
+            $productV->setVisibility(Visibility::VISIBILITY_BOTH);
+        } else {
+            $productV->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
+        }
 
         //Set variant status as per BlockedOnEcom status of each variant
         if ($value && $value->getBlockedOnECom() == 1) {
@@ -2900,9 +2995,15 @@ class ProductCreateTask
         if ($uomCode) {
             $this->syncUomAdditionalAttributes($productV, $uomCode, $item);
         } else {
-            if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure())
-                && !empty($item->getSalseUnitOfMeasure())) {
-                $productV->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+            $uomMode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT,
+                $this->store->getId());
+            if (!$uomMode) {
+                if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure())
+                    && !empty($item->getSalseUnitOfMeasure())) {
+                    $productV->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+                } else {
+                    $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+                }
             } else {
                 $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
             }
@@ -2948,6 +3049,192 @@ class ProductCreateTask
                 $uomCode
             );
             $this->logger->debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Handle product type switch based on UOM changes and configuration, and mark UOM codes as processed if needed
+     *
+     * @param $configProduct
+     * @param $uomCodesNotProcessed
+     * @param $variants
+     * @param $item
+     * @return bool
+     * @throws CouldNotSaveException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws StateException
+     */
+    private function handleUomProductTypeSwitch($configProduct, $uomCodesNotProcessed, $variants, $item)
+    {
+        if (empty($uomCodesNotProcessed) || !empty($variants)) {
+            return false;
+        }
+
+        $isSimpleMode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_CONFIG, $this->getScopeId());
+        $connection   = $this->resourceConnection->getConnection();
+        $productTable = $connection->getTableName('catalog_product_entity_int');
+
+        $statusAttributeId     = $this->eavConfig->getAttribute(Product::ENTITY, 'status')->getId();
+        $visibilityAttributeId = $this->eavConfig->getAttribute(Product::ENTITY, 'visibility')->getId();
+
+        if ($isSimpleMode === 'simple' && $configProduct->getTypeId() == Configurable::TYPE_CODE) {
+            // Disable parent
+            $this->updateProductAttributes($connection, $productTable, $configProduct->getId(),
+                $statusAttributeId, Status::STATUS_DISABLED, $visibilityAttributeId,
+                Visibility::VISIBILITY_NOT_VISIBLE);
+
+            // Enable children
+            $childIds = $configProduct->getTypeInstance()->getUsedProductIds($configProduct);
+            foreach ($childIds as $childId) {
+                $this->updateProductAttributes($connection, $productTable, $childId,
+                    $statusAttributeId, Status::STATUS_ENABLED, $visibilityAttributeId,
+                    Visibility::VISIBILITY_BOTH);
+            }
+            return true;
+        }
+
+        if ($isSimpleMode === 'configurable' && $configProduct->getTypeId() == Configurable::TYPE_CODE) {
+            $childIds = $configProduct->getTypeInstance()->getUsedProductIds($configProduct);
+
+            if (empty($childIds)) {
+                return false; // Let normal flow create children
+            }
+
+            // Update children first
+            foreach ($childIds as $childId) {
+                $this->updateProductAttributes($connection, $productTable, $childId,
+                    $statusAttributeId, Status::STATUS_ENABLED, $visibilityAttributeId,
+                    Visibility::VISIBILITY_NOT_VISIBLE);
+            }
+
+            // Update parent
+            if ($item->getBlockedOnECom() == 1) {
+                $configProduct->setStatus(Status::STATUS_DISABLED);
+            } else {
+                $configProduct->setStatus(Status::STATUS_ENABLED);
+            }
+            $configProduct->setVisibility(Visibility::VISIBILITY_BOTH);
+            $this->productRepository->save($configProduct);
+            $configProduct->setStoreId(0);
+            $configProduct->setVisibility(Visibility::VISIBILITY_BOTH);
+            $this->productRepository->save($configProduct);
+
+            return false;
+        }
+
+        if ($isSimpleMode === 'simple' && $configProduct->getTypeId() != Configurable::TYPE_CODE) {
+            $this->updateProductAttributes($connection, $productTable, $configProduct->getId(),
+                $statusAttributeId, Status::STATUS_ENABLED, $visibilityAttributeId,
+                Visibility::VISIBILITY_BOTH);
+            return true;
+        }
+
+        if ($isSimpleMode === 'simple') {
+            $this->markUomCodesAsProcessed($uomCodesNotProcessed);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Update product attributes without triggering inventory recalculation
+     */
+    private function updateProductAttributes(
+        $connection,
+        $productTable,
+        $productId,
+        $statusAttributeId,
+        $statusValue,
+        $visibilityAttributeId,
+        $visibilityValue
+    ) {
+        $storeId = $this->store->getId();
+
+        // Cast values to integers
+        $productId             = (int)$productId;
+        $statusAttributeId     = (int)$statusAttributeId;
+        $visibilityAttributeId = (int)$visibilityAttributeId;
+        $statusValue           = (int)$statusValue;
+        $visibilityValue       = (int)$visibilityValue;
+        $storeId               = (int)$storeId;
+
+        // Update global scope (store_id = 0)
+        $connection->insertOnDuplicate(
+            $productTable,
+            [
+                'attribute_id' => $statusAttributeId,
+                'store_id'     => 0,
+                'entity_id'    => $productId,
+                'value'        => $statusValue
+            ],
+            ['value']
+        );
+
+        $connection->insertOnDuplicate(
+            $productTable,
+            [
+                'attribute_id' => $visibilityAttributeId,
+                'store_id'     => 0,
+                'entity_id'    => $productId,
+                'value'        => $visibilityValue
+            ],
+            ['value']
+        );
+
+        // Delete existing store-level values first
+        $connection->delete(
+            $productTable,
+            [
+                'entity_id = ?'       => $productId,
+                'attribute_id IN (?)' => [$statusAttributeId, $visibilityAttributeId],
+                'store_id = ?'        => $storeId
+            ]
+        );
+
+        // Insert fresh store-level values
+        $connection->insert(
+            $productTable,
+            [
+                'attribute_id' => $statusAttributeId,
+                'store_id'     => $storeId,
+                'entity_id'    => $productId,
+                'value'        => $statusValue
+            ]
+        );
+
+        $connection->insert(
+            $productTable,
+            [
+                'attribute_id' => $visibilityAttributeId,
+                'store_id'     => $storeId,
+                'entity_id'    => $productId,
+                'value'        => $visibilityValue
+            ]
+        );
+    }
+
+    /**
+     * Mark UOM codes as processed
+     *
+     * @param $uomCodesNotProcessed
+     * @return void
+     */
+    private function markUomCodesAsProcessed($uomCodesNotProcessed)
+    {
+        if (!empty($uomCodesNotProcessed)) {
+            foreach ($uomCodesNotProcessed as $uomCode) {
+                try {
+                    $uomCode->setData('processed_at', $this->replicationHelper->getDateTime());
+                    $uomCode->setData('processed', 1);
+                    $uomCode->setData('is_updated', 0);
+                    $uomCode->setData('IsDeleted', 0);
+                    $this->replItemUomRepository->save($uomCode);
+                } catch (Exception $e) {
+                    $this->logger->debug('Error marking UOM as processed: ' . $e->getMessage());
+                }
+            }
         }
     }
 
@@ -3054,15 +3341,21 @@ class ProductCreateTask
     }
 
     /**
-     * Updating the product status on global level
+     * Updating the product status on store level if use default is unchecked
      *
      * @param $product
+     * @param $storeId
+     * @param $item
      */
-    public function updateProductStatusGlobal($product)
+    public function updateProductStatusByScope($product, $storeId, $item)
     {
         try {
-            $product->setStoreId(0);
-            $product->getResource()->saveAttribute($product, 'status');
+            $productData  = $this->productRepository->getById($product->getId(), false, $storeId);
+            $isOverridden = $productData->getExistsStoreValueFlag('status');
+            if ($isOverridden) {
+                $productData = $this->setProductStatus($productData, $item->getBlockedOnECom());
+                $productData->getResource()->saveAttribute($productData, 'status');
+            }
         } catch (Exception $e) {
             $this->logDetailedException(
                 __METHOD__,

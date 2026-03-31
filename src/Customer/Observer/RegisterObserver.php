@@ -108,7 +108,7 @@ class RegisterObserver implements ObserverInterface
                     } else {
                         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
                         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $loginResult);
-                        $this->contactHelper->updateBasketAndWishlistAfterLogin($loginResult);
+                        $this->contactHelper->updateRequiredOneListAfterLogin($loginResult);
                     }
                 } else {
                     $customer->setData(

@@ -24,6 +24,11 @@ class ReplCustomer
     protected $AccountNumber = null;
 
     /**
+     * @property string $BirthDay
+     */
+    protected $BirthDay = null;
+
+    /**
      * @property int $Blocked
      */
     protected $Blocked = null;
@@ -237,6 +242,24 @@ class ReplCustomer
     public function getAccountNumber()
     {
         return $this->AccountNumber;
+    }
+
+    /**
+     * @param string $BirthDay
+     * @return $this
+     */
+    public function setBirthDay($BirthDay)
+    {
+        $this->BirthDay = $BirthDay;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBirthDay()
+    {
+        return $this->BirthDay;
     }
 
     /**

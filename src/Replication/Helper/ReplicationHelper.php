@@ -3053,6 +3053,13 @@ class ReplicationHelper extends AbstractHelper
      * @param string $storeId
      * @return array
      */
+    /**
+     * Getting all available uom codes
+     *
+     * @param string $itemId
+     * @param string $storeId
+     * @return array
+     */
     public function getUomCodes($itemId, $storeId)
     {
         $filters = [
@@ -3071,7 +3078,9 @@ class ReplicationHelper extends AbstractHelper
         $searchCriteriaItem    = $this->buildCriteriaForDirect($itemFilters, -1);
         $purchaseUnitOfMeasure = null;
         $salesUnitOfMeasure    = null;
-        /** @var ReplItemUnitOfMeasure $items */
+        $uomMode               = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT,
+            $storeId);
+
         try {
             $items    = $this->replItemUomRepository->getList($searchCriteria)->getItems();
             $replItem = $this->itemRepository->getList($searchCriteriaItem)->getItems();
@@ -3081,15 +3090,17 @@ class ReplicationHelper extends AbstractHelper
             }
             foreach ($items as $item) {
                 $allowUom = true;
-                if (($purchaseUnitOfMeasure != $salesUnitOfMeasure && $item->getCode() == $purchaseUnitOfMeasure) ||
-                    ($item->getEComSelection() == 1)) {
-                    $allowUom = false;
-                    $item->setData('IsDeleted', 1);
-                }
-                if ($allowUom) {
-                    $uomDescription = $this->getUomDescription($item);
-                    /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $item */
 
+                if (!$uomMode) {
+                    if (($purchaseUnitOfMeasure != $salesUnitOfMeasure && $item->getCode() == $purchaseUnitOfMeasure) ||
+                        ($item->getEComSelection() == 1)) {
+                        $allowUom = false;
+                        $item->setData('IsDeleted', 1);
+                    }
+                }
+
+                if ($allowUom) {
+                    $uomDescription                    = $this->getUomDescription($item);
                     $itemUom[$itemId][$uomDescription] = $item->getCode();
                 } else {
                     $item->setData('processed_at', $this->getDateTime());
