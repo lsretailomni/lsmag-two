@@ -299,6 +299,66 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
         return $this->setData(self::getDbColumnsMapping()[self::GUEST_TYPE], $value);
     }
 
+    public function getExpiredPoints(): ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EXPIRED_POINTS]);
+    }
+
+    public function setExpiredPoints(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EXPIRED_POINTS], $value);
+    }
+
+    public function getIssuedAwardPoints(): ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ISSUED_AWARD_POINTS]);
+    }
+
+    public function setIssuedAwardPoints(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ISSUED_AWARD_POINTS], $value);
+    }
+
+    public function getIssuedOtherPoints(): ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ISSUED_OTHER_POINTS]);
+    }
+
+    public function setIssuedOtherPoints(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ISSUED_OTHER_POINTS], $value);
+    }
+
+    public function getTotalIssuedPoints(): ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TOTAL_ISSUED_POINTS]);
+    }
+
+    public function setTotalIssuedPoints(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TOTAL_ISSUED_POINTS], $value);
+    }
+
+    public function getUsedPoints(): ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::USED_POINTS]);
+    }
+
+    public function setUsedPoints(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::USED_POINTS], $value);
+    }
+
+    public function getExpirationInPeriod(): ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::EXPIRATION_IN_PERIOD]);
+    }
+
+    public function setExpirationInPeriod(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::EXPIRATION_IN_PERIOD], $value);
+    }
+
     public function getExpirationPeriodType(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::EXPIRATION_PERIOD_TYPE]);
@@ -307,6 +367,16 @@ class ReplContactview extends \Ls\Omni\Client\CentralEcommerce\Entity\ContactVie
     public function setExpirationPeriodType(?int $value)
     {
         return $this->setData(self::getDbColumnsMapping()[self::EXPIRATION_PERIOD_TYPE], $value);
+    }
+
+    public function getBalance(): ?float
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::BALANCE]);
+    }
+
+    public function setBalance(?float $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::BALANCE], $value);
     }
 
     public function getBlocked(): ?bool

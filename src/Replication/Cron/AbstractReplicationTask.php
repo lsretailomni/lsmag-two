@@ -27,6 +27,7 @@ use \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemHTMLML;
 use \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIItemBuffer;
 use \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIItemModifier;
 use \Ls\Omni\Client\CentralEcommerce\Entity\PeriodicDiscView;
+use Ls\Omni\Client\Ecommerce\Entity\ReplEcommBasePrices;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
@@ -72,11 +73,12 @@ abstract class AbstractReplicationTask
      */
     public function __construct(
         public ScopeConfigInterface $scope_config,
-        public Config $resource_config,
-        public Logger $logger,
-        public LsHelper $ls_helper,
-        public ReplicationHelper $rep_helper
-    ) {
+        public Config               $resource_config,
+        public Logger               $logger,
+        public LsHelper             $ls_helper,
+        public ReplicationHelper    $rep_helper
+    )
+    {
         $this->setDefaultScope();
     }
 
@@ -230,38 +232,38 @@ abstract class AbstractReplicationTask
             if (!empty($source->getData(LSCValidationPeriod::OFFER_STARTING_TIME))) {
                 $source->setData(
                     LSCValidationPeriod::OFFER_STARTING_TIME,
-                    '1900-01-01T'. $source->getData(LSCValidationPeriod::OFFER_STARTING_TIME)
+                    '1900-01-01T' . $source->getData(LSCValidationPeriod::OFFER_STARTING_TIME)
                 );
             }
 
             if (!empty($source->getData(LSCValidationPeriod::OFFER_ENDING_TIME))) {
                 $source->setData(
                     LSCValidationPeriod::OFFER_ENDING_TIME,
-                    '1900-01-01T'. $source->getData(LSCValidationPeriod::OFFER_ENDING_TIME)
+                    '1900-01-01T' . $source->getData(LSCValidationPeriod::OFFER_ENDING_TIME)
                 );
             }
         } elseif ($confPath == ReplLscHierarchyviewTask::CONFIG_PATH) {
-            $value = $this->getConstantByIndex(HierarchyType::class, (int) $source->getData(HierarchyView::TYPE));
+            $value = $this->getConstantByIndex(HierarchyType::class, (int)$source->getData(HierarchyView::TYPE));
             $source->setData(HierarchyView::TYPE, $value);
         } elseif ($confPath == ReplLscHierarchynodeslinkviewTask::CONFIG_PATH) {
-            $value = $this->getConstantByIndex(HierarchyLeafType::class, (int) $source->getData(HierarchyView::TYPE));
+            $value = $this->getConstantByIndex(HierarchyLeafType::class, (int)$source->getData(HierarchyView::TYPE));
             $source->setData(HierarchyView::TYPE, $value);
         } elseif ($confPath == ReplLscPeriodicdiscviewTask::CONFIG_PATH) {
             $value1 = $this->getConstantByIndex(
                 DiscountValueType::class,
-                (int) $source->getData(PeriodicDiscView::DISCOUNT_TYPE)
+                (int)$source->getData(PeriodicDiscView::DISCOUNT_TYPE)
             );
             $value2 = $this->getConstantByIndex(
                 ReplDiscMemberType::class,
-                (int) $source->getData(PeriodicDiscView::MEMBER_TYPE)
+                (int)$source->getData(PeriodicDiscView::MEMBER_TYPE)
             );
             $value3 = $this->getConstantByIndex(
                 ReplDiscountType::class,
-                (int) $source->getData(PeriodicDiscView::TYPE)
+                (int)$source->getData(PeriodicDiscView::TYPE)
             );
             $value4 = $this->getConstantByIndex(
                 ReplDiscountLineType::class,
-                (int) $source->getData(PeriodicDiscView::LINE_TYPE)
+                (int)$source->getData(PeriodicDiscView::LINE_TYPE)
             );
             $source->setData(PeriodicDiscView::DISCOUNT_TYPE, $value1);
             $source->setData(PeriodicDiscView::MEMBER_TYPE, $value2);
@@ -317,23 +319,23 @@ abstract class AbstractReplicationTask
         } elseif ($confPath == ReplLscWiItemModifierTask::CONFIG_PATH) {
             $value1 = $this->getConstantByIndex(
                 ItemModifierPriceType::class,
-                (int) $source->getData(LSCWIItemModifier::PRICE_TYPE)
+                (int)$source->getData(LSCWIItemModifier::PRICE_TYPE)
             );
             $value2 = $this->getConstantByIndex(
                 ItemModifierPriceHandling::class,
-                (int) $source->getData(LSCWIItemModifier::PRICE_HANDLING)
+                (int)$source->getData(LSCWIItemModifier::PRICE_HANDLING)
             );
             $value3 = $this->getConstantByIndex(
                 ItemTriggerFunction::class,
-                (int) $source->getData(LSCWIItemModifier::TRIGGER_FUNCTION)
+                (int)$source->getData(LSCWIItemModifier::TRIGGER_FUNCTION)
             );
             $value4 = $this->getConstantByIndex(
                 ItemModifierType::class,
-                (int) $source->getData(LSCWIItemModifier::USAGE_SUBCATEGORY)
+                (int)$source->getData(LSCWIItemModifier::USAGE_SUBCATEGORY)
             );
             $value5 = $this->getConstantByIndex(
                 ItemUsageCategory::class,
-                (int) $source->getData(LSCWIItemModifier::USAGE_CATEGORY)
+                (int)$source->getData(LSCWIItemModifier::USAGE_CATEGORY)
             );
 
             $source->setData(LSCWIItemModifier::PRICE_TYPE, $value1);
@@ -344,13 +346,13 @@ abstract class AbstractReplicationTask
         } elseif ($confPath == ReplLscHierarchydealviewTask::CONFIG_PATH) {
             $value1 = $this->getConstantByIndex(
                 HierarchyDealType::class,
-                (int) $source->getData(HierarchyDealView::TYPE)
+                (int)$source->getData(HierarchyDealView::TYPE)
             );
             $source->setData(HierarchyDealView::TYPE, $value1);
         }
-        $checksum             = $this->getHashGivenString($source->getData());
+        $checksum = $this->getHashGivenString($source->getData());
         $uniqueAttributesHash = $this->generateIdentityValue($uniqueAttributes, $source, $properties);
-        $entityArray          = $this->checkEntityExistByAttributes(
+        $entityArray = $this->checkEntityExistByAttributes(
             $uniqueAttributes,
             $source,
             $uniqueAttributesHash,
@@ -368,7 +370,10 @@ abstract class AbstractReplicationTask
         }
 
         $entity->setData('IsDeleted', $isDeleted);
-
+        if ($confPath == ReplLscSalepriceviewTask::CONFIG_PATH) {
+            $this->getLsrModel()->setStoreId($source->getScopeId());
+            $entity->setData('store_id', $this->getLsrModel()->getActiveWebStore());
+        }
         if ($entity->getChecksum() != $checksum) {
             $entity->addData(
                 [
@@ -392,12 +397,12 @@ abstract class AbstractReplicationTask
                         if ($entity->hasData($columnName)) {
 
                             $value = $entity->getData($columnName);
-                            
+
                             if (($columnName == 'offer_starting_time' || $columnName == 'offer_ending_time') &&
                                 !empty($value)
                             ) {
-                                $timeObj   = new \DateTime($value);
-                                $value     = $timeObj->format('H:i:s');
+                                $timeObj = new \DateTime($value);
+                                $value = $timeObj->format('H:i:s');
                             }
 
                             $entity->setData(
@@ -426,7 +431,7 @@ abstract class AbstractReplicationTask
      * @return string|null
      * @throws ReflectionException
      */
-    public function getConstantByIndex(string $class, int $index): ?string
+    public function getConstantByIndex(string $class, int $index) : ?string
     {
         $reflection = new ReflectionClass($class);
 
@@ -471,10 +476,11 @@ abstract class AbstractReplicationTask
      */
     public function checkEntityExistByAttributes(
         array $uniqueAttributes,
-        $source,
-        int $uniqueAttributesHash,
+              $source,
+        int   $uniqueAttributesHash,
         array $properties
-    ) {
+    )
+    {
         $criteria = $this->getSearchCriteria();
         $criteria->addFilter(ReplicationHelper::UNIQUE_HASH_COLUMN_NAME, $uniqueAttributesHash);
 
@@ -731,7 +737,7 @@ abstract class AbstractReplicationTask
      */
     public function getBatchSize($lsr, $storeId)
     {
-        $batchSize      = 100;
+        $batchSize = 100;
         $isBatchSizeSet = $lsr->getStoreConfig(
             LSR::SC_REPLICATION_DEFAULT_BATCHSIZE
         );
@@ -785,11 +791,11 @@ abstract class AbstractReplicationTask
      */
     public function getRequiredParamsForMakingRequest($lsr, $storeId)
     {
-        $lastKey    = $this->getLastKey($storeId);
+        $lastKey = $this->getLastKey($storeId);
         $lastEntryNo = $this->getLastEntryNo($storeId);
-        $batchSize  = $this->getBatchSize($lsr, $storeId);
+        $batchSize = $this->getBatchSize($lsr, $storeId);
         $webStoreID = $this->getWebStoreId($lsr, $storeId);
-        $baseUrl    = $this->getBaseUrl($lsr, $storeId);
+        $baseUrl = $this->getBaseUrl($lsr, $storeId);
 
         return [$lastKey ?? '', true, $batchSize, $webStoreID, $lastEntryNo ?? 0, $baseUrl, ''];
     }
@@ -826,7 +832,7 @@ abstract class AbstractReplicationTask
                     return;
                 }
                 if ($lastEntryNo === 0) {
-                    $lastEntryNo = (int) $lastKey;
+                    $lastEntryNo = (int)$lastKey;
                     $lastKey = "";
                 }
             }
@@ -836,9 +842,9 @@ abstract class AbstractReplicationTask
                 [],
                 '',
                 $fullRepl,
-                (int) $batchSize,
+                (int)$batchSize,
                 $webStoreID,
-                (int) $lastEntryNo,
+                (int)$lastEntryNo,
                 $lastKey
             );
 
@@ -859,8 +865,8 @@ abstract class AbstractReplicationTask
     public function processResponseGivenRequest($request, $storeId)
     {
         try {
-            $properties       = $this->getProperties();
-            $response         = $request->execute();
+            $properties = $this->getProperties();
+            $response = $request->execute();
             $this->cronStatus = false;
 
             if ($response && method_exists($response, 'getRecords')) {
@@ -972,12 +978,12 @@ abstract class AbstractReplicationTask
      */
     abstract public function makeRequest(
         string $baseUrl = '',
-        array $connectionParams = [],
+        array  $connectionParams = [],
         string $companyName = '',
-        bool $fullRepl = false,
-        int $batchSize = 100,
+        bool   $fullRepl = false,
+        int    $batchSize = 100,
         string $storeNo = '',
-        int $lastEntryNo = 0,
+        int    $lastEntryNo = 0,
         string $lastKey = ''
     );
 

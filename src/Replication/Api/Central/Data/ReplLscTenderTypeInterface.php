@@ -364,6 +364,10 @@ interface ReplLscTenderTypeInterface
 
     public function setDoNotPost(?bool $value);
 
+    public function getGroupSeparatelyFromCurrency(): ?bool;
+
+    public function setGroupSeparatelyFromCurrency(?bool $value);
+
     public function getSystemid(): ?string;
 
     public function setSystemid(?string $value);

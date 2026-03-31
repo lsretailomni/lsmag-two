@@ -299,6 +299,46 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::RETURN_IN_TRANSACTION], $value);
     }
 
+    public function getIdleTimeoutSec(): ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::IDLE_TIMEOUT_SEC]);
+    }
+
+    public function setIdleTimeoutSec(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::IDLE_TIMEOUT_SEC], $value);
+    }
+
+    public function getIdleTimeoutCountdownSec(): ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::IDLE_TIMEOUT_COUNTDOWN_SEC]);
+    }
+
+    public function setIdleTimeoutCountdownSec(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::IDLE_TIMEOUT_COUNTDOWN_SEC], $value);
+    }
+
+    public function getIdleTimeoutCommand(): ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::IDLE_TIMEOUT_COMMAND]);
+    }
+
+    public function setIdleTimeoutCommand(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::IDLE_TIMEOUT_COMMAND], $value);
+    }
+
+    public function getIdleTimeoutParameter(): ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::IDLE_TIMEOUT_PARAMETER]);
+    }
+
+    public function setIdleTimeoutParameter(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::IDLE_TIMEOUT_PARAMETER], $value);
+    }
+
     public function getItemNoOnReceipt(): ?int
     {
         return $this->getData(self::getDbColumnsMapping()[self::ITEM_NO_ON_RECEIPT]);
@@ -307,6 +347,16 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
     public function setItemNoOnReceipt(?int $value)
     {
         return $this->setData(self::getDbColumnsMapping()[self::ITEM_NO_ON_RECEIPT], $value);
+    }
+
+    public function getAllowIdleTimeoutInTrans(): ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::ALLOW_IDLE_TIMEOUT_IN_TRANS]);
+    }
+
+    public function setAllowIdleTimeoutInTrans(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::ALLOW_IDLE_TIMEOUT_IN_TRANS], $value);
     }
 
     public function getPrintReceiptForNegAdj(): ?bool
@@ -357,6 +407,16 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
     public function setLastDateModified(?string $value)
     {
         return $this->setData(self::getDbColumnsMapping()[self::LAST_DATE_MODIFIED], $value);
+    }
+
+    public function getMultiplePrintersHandling(): ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::MULTIPLE_PRINTERS_HANDLING]);
+    }
+
+    public function setMultiplePrintersHandling(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::MULTIPLE_PRINTERS_HANDLING], $value);
     }
 
     public function getPrintReceiptLogo(): ?string
@@ -519,6 +579,16 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
         return $this->setData(self::getDbColumnsMapping()[self::NO_SERIES], $value);
     }
 
+    public function getNumberSeries(): ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::NUMBER_SERIES]);
+    }
+
+    public function setNumberSeries(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::NUMBER_SERIES], $value);
+    }
+
     public function getTableGroup(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::TABLE_GROUP]);
@@ -587,6 +657,16 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
     public function setDeliverySalesType(?string $value)
     {
         return $this->setData(self::getDbColumnsMapping()[self::DELIVERY_SALES_TYPE], $value);
+    }
+
+    public function getQueueCounterPrefix(): ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::QUEUE_COUNTER_PREFIX]);
+    }
+
+    public function setQueueCounterPrefix(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::QUEUE_COUNTER_PREFIX], $value);
     }
 
     public function getSafeNo(): ?string
@@ -1137,6 +1217,26 @@ class ReplLscPosTerminal extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCPOST
     public function setEftTerminalOfflineHandling(?int $value)
     {
         return $this->setData(self::getDbColumnsMapping()[self::EFT_TERMINAL_OFFLINE_HANDLING], $value);
+    }
+
+    public function getTipsIncomeAccount(): ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TIPS_INCOME_ACCOUNT]);
+    }
+
+    public function setTipsIncomeAccount(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TIPS_INCOME_ACCOUNT], $value);
+    }
+
+    public function getTipsLineCreationMethod(): ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::TIPS_LINE_CREATION_METHOD]);
+    }
+
+    public function setTipsLineCreationMethod(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::TIPS_LINE_CREATION_METHOD], $value);
     }
 
     public function getPosSearchEngine(): ?int

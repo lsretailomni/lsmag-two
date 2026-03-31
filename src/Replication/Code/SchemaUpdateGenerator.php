@@ -211,6 +211,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             'StoreId',
             'QtyPerUnitOfMeasure',
             'UnitOfMeasure',
+            "PriceListCode",
             'scope_id',
             'processed',
             'is_updated',
@@ -563,6 +564,36 @@ class SchemaUpdateGenerator implements GeneratorInterface
                     $extraColumn->setAttribute('comment', $columnValue['comment']);
                     $table->appendChild($extraColumn);
                 }
+
+                // Add custom columns for specific tables that are not in service response
+                $customColumns = $this->getCustomColumnsForTable($tableName);
+                foreach ($customColumns as $customColumn) {
+                    $customExtraColumn = $dom->createElement('column');
+                    $customExtraColumn->setAttribute('xsi:type', $customColumn['field_type']);
+                    $customExtraColumn->setAttribute('name', $customColumn['name']);
+
+                    if ($customColumn['field_type'] == 'decimal') {
+                        $customExtraColumn->setAttribute('scale', '4');
+                        $customExtraColumn->setAttribute('precision', '20');
+                    }
+
+                    if ($customColumn['field_type'] == 'varchar') {
+                        $customExtraColumn->setAttribute('length', '200');
+                    }
+
+                    if ($customColumn['field_type'] == 'int') {
+                        $customExtraColumn->setAttribute('padding', '11');
+                    }
+
+                    if (!empty($customColumn['default'])) {
+                        $customExtraColumn->setAttribute('default', $customColumn['default']);
+                    }
+
+                    $customExtraColumn->setAttribute('nullable', 'true');
+                    $customExtraColumn->setAttribute('comment', $customColumn['comment']);
+                    $table->appendChild($customExtraColumn);
+                }
+
                 // for primary key
                 $constraint = $dom->createElement('constraint');
                 $constraint->setAttribute('xsi:type', 'primary');
@@ -636,6 +667,37 @@ class SchemaUpdateGenerator implements GeneratorInterface
 
         $dom->appendChild($schema);
         $dom->save($this->getPath());
+    }
+
+    /**
+     * Get custom columns for specific tables that are not in service response
+     *
+     * @param string $tableName
+     * @return array
+     */
+    private function getCustomColumnsForTable(string $tableName): array
+    {
+        $customColumns = [];
+
+        // Add custom columns for repl_price table
+        if ($tableName == 'ls_replication_repl_price') {
+            $customColumns = [
+                [
+                    'name' => 'StoreId',
+                    'field_type' => 'varchar',
+                    'default' => '',
+                    'comment' => 'store_id'
+                ],
+                [
+                    'name' => 'QtyPerUnitOfMeasure',
+                    'field_type' => 'decimal',
+                    'default' => '',
+                    'comment' => 'qty_per_unit_of_measure'
+                ]
+            ];
+        }
+
+        return $customColumns;
     }
 
     /**

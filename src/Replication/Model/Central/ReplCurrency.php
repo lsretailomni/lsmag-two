@@ -369,6 +369,16 @@ class ReplCurrency extends \Ls\Omni\Client\CentralEcommerce\Entity\Currency impl
         return $this->setData(self::getDbColumnsMapping()[self::LSC_DENOMINATION_ROUNDING_TYPE], $value);
     }
 
+    public function getLscBlockUndertenderCompl(): ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_BLOCK_UNDERTENDER_COMPL]);
+    }
+
+    public function setLscBlockUndertenderCompl(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_BLOCK_UNDERTENDER_COMPL], $value);
+    }
+
     public function getLscPosCurrencySymbol(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::LSC_POS_CURRENCY_SYMBOL]);

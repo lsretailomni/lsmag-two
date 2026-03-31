@@ -156,6 +156,10 @@ interface ReplLscValidationPeriodInterface
 
     public function setSunEndTimeAfterMidnight(?bool $value);
 
+    public function getNumberSeries(): ?string;
+
+    public function setNumberSeries(?string $value);
+
     public function getNoSeries(): ?string;
 
     public function setNoSeries(?string $value);

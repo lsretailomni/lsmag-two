@@ -168,6 +168,10 @@ interface ReplLscRetailProductGroupInterface
 
     public function setSortOrder(?int $value);
 
+    public function getSortOrderOnKds(): ?int;
+
+    public function setSortOrderOnKds(?int $value);
+
     public function getPlbGroup(): ?bool;
 
     public function setPlbGroup(?bool $value);

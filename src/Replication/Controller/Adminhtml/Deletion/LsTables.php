@@ -34,7 +34,9 @@ class LsTables extends AbstractReset
         'ls_replication_repl_store',
         'ls_replication_repl_store_tender_type',
         'ls_replication_repl_unit_of_measure',
-        'ls_replication_repl_vendor'
+        'ls_replication_repl_vendor',
+        'ls_replication_repl_price',
+        'ls_replication_repl_inv_status'
     ];
 
     public const TABLE_CONFIGS = [

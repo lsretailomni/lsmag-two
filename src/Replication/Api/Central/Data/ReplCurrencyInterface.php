@@ -148,6 +148,10 @@ interface ReplCurrencyInterface
 
     public function setLscDenominationRoundingType(?int $value);
 
+    public function getLscBlockUndertenderCompl(): ?bool;
+
+    public function setLscBlockUndertenderCompl(?bool $value);
+
     public function getLscPosCurrencySymbol(): ?string;
 
     public function setLscPosCurrencySymbol(?string $value);

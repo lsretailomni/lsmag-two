@@ -24,6 +24,10 @@ interface ReplLscMemberContactInterface
 
     public function setAddress2(?string $value);
 
+    public function getBalance(): ?float;
+
+    public function setBalance(?float $value);
+
     public function getBirthday(): ?string;
 
     public function setBirthday(?string $value);
@@ -88,9 +92,17 @@ interface ReplLscMemberContactInterface
 
     public function setEMail(?string $value);
 
+    public function getExpirationInPeriod(): ?float;
+
+    public function setExpirationInPeriod(?float $value);
+
     public function getExpirationPeriodType(): ?int;
 
     public function setExpirationPeriodType(?int $value);
+
+    public function getExpiredPoints(): ?float;
+
+    public function setExpiredPoints(?float $value);
 
     public function getExternalId(): ?string;
 
@@ -119,6 +131,14 @@ interface ReplLscMemberContactInterface
     public function getHouseApartmentNo(): ?string;
 
     public function setHouseApartmentNo(?string $value);
+
+    public function getIssuedAwardPoints(): ?float;
+
+    public function setIssuedAwardPoints(?float $value);
+
+    public function getIssuedOtherPoints(): ?float;
+
+    public function setIssuedOtherPoints(?float $value);
 
     public function getLanguageCode(): ?string;
 
@@ -219,6 +239,14 @@ interface ReplLscMemberContactInterface
     public function getTerritoryCode(): ?string;
 
     public function setTerritoryCode(?string $value);
+
+    public function getTotalIssuedPoints(): ?float;
+
+    public function setTotalIssuedPoints(?float $value);
+
+    public function getUsedPoints(): ?float;
+
+    public function setUsedPoints(?float $value);
 
     public function getSystemid(): ?string;
 

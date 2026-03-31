@@ -909,6 +909,16 @@ class ReplLscTenderType extends \Ls\Omni\Client\CentralEcommerce\Entity\LSCTende
         return $this->setData(self::getDbColumnsMapping()[self::DO_NOT_POST], $value);
     }
 
+    public function getGroupSeparatelyFromCurrency(): ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::GROUP_SEPARATELY_FROM_CURRENCY]);
+    }
+
+    public function setGroupSeparatelyFromCurrency(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::GROUP_SEPARATELY_FROM_CURRENCY], $value);
+    }
+
     public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);

@@ -419,6 +419,16 @@ class ReplLscRetailProductGroup extends \Ls\Omni\Client\CentralEcommerce\Entity\
         return $this->setData(self::getDbColumnsMapping()[self::SORT_ORDER], $value);
     }
 
+    public function getSortOrderOnKds(): ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SORT_ORDER_ON_KDS]);
+    }
+
+    public function setSortOrderOnKds(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SORT_ORDER_ON_KDS], $value);
+    }
+
     public function getPlbGroup(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::PLB_GROUP]);

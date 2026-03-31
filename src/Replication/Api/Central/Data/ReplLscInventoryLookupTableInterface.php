@@ -112,6 +112,10 @@ interface ReplLscInventoryLookupTableInterface
 
     public function setSourcingLocationInventory(?float $value);
 
+    public function getCalcWithoutSerialnoLotno(): ?bool;
+
+    public function setCalcWithoutSerialnoLotno(?bool $value);
+
     public function getSystemid(): ?string;
 
     public function setSystemid(?string $value);
