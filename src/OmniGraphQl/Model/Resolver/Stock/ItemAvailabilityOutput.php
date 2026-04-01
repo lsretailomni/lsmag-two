@@ -56,7 +56,6 @@ class ItemAvailabilityOutput implements ResolverInterface
         } catch (\Exception $exception) {
             throw new GraphQlInputException(__('Parameter "sku" is incorrect!'));
         }
-        $this->logger->debug('Product loaded with SKU: ' . $product->getSku());
 
         $response = $this->stockHelper->fetchAllStoresItemInStockPlusApplyJoin(
             $parentProduct ? $product->getId() : "",
