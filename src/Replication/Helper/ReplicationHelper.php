@@ -3079,8 +3079,10 @@ class ReplicationHelper extends AbstractHelper
         $searchCriteriaItem    = $this->buildCriteriaForDirect($itemFilters, -1);
         $purchaseUnitOfMeasure = null;
         $salesUnitOfMeasure    = null;
-        $uomMode               = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT,
-            $storeId);
+        $uomMode               = $this->lsr->getStoreConfig(
+            LSR::SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT,
+            $storeId
+        );
 
         try {
             $items    = $this->replItemUomRepository->getList($searchCriteria)->getItems();
@@ -3095,6 +3097,11 @@ class ReplicationHelper extends AbstractHelper
                 if (!$uomMode) {
                     if (($purchaseUnitOfMeasure != $salesUnitOfMeasure && $item->getCode() == $purchaseUnitOfMeasure) ||
                         ($item->getEComSelection() == 1)) {
+                        $allowUom = false;
+                        $item->setData('IsDeleted', 1);
+                    }
+                } else {
+                    if ($item->getEComSelection() == 1) {
                         $allowUom = false;
                         $item->setData('IsDeleted', 1);
                     }
