@@ -31,6 +31,11 @@ class ItemAvailabilityOutput implements ResolverInterface
     public $dataHelper;
 
     /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    public $logger;
+
+    /**
      * @param StockHelper $stockHelper
      * @param ProductRepositoryInterface $productRepository
      * @param DataHelper $dataHelper
@@ -38,19 +43,22 @@ class ItemAvailabilityOutput implements ResolverInterface
     public function __construct(
         StockHelper $stockHelper,
         ProductRepositoryInterface $productRepository,
-        DataHelper $dataHelper
+        DataHelper $dataHelper,
+        \Psr\Log\LoggerInterface $logger
     ) {
         $this->stockHelper       = $stockHelper;
         $this->productRepository = $productRepository;
         $this->dataHelper        = $dataHelper;
+        $this->logger           = $logger;
     }
     /**
      * @inheritdoc
      */
     public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
+        $this->logger->debug(__METHOD__);
         $parentProduct = null;
-
+        $this->logger->debug('Input parameter: ' . json_encode($args));
         if (!empty($args['parent_sku'])) {
             try {
                 $parentProduct = $this->productRepository->get($args['parent_sku']);
@@ -64,6 +72,7 @@ class ItemAvailabilityOutput implements ResolverInterface
         } catch (\Exception $exception) {
             throw new GraphQlInputException(__('Parameter "sku" is incorrect!'));
         }
+        $this->logger->debug('Product loaded with SKU: ' . $product->getSku());
 
         $response = $this->stockHelper->fetchAllStoresItemInStockPlusApplyJoin(
             $parentProduct ? $product->getId() : "",
