@@ -216,6 +216,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "VariantId",
             "StoreId",
             "QtyPerUnitOfMeasure",
+            "PriceListCode",
             "UnitOfMeasure",
             "scope_id",
             "processed",

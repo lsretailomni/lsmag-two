@@ -213,6 +213,7 @@ class ReplicationHelper extends AbstractHelper
             "StoreId",
             "QtyPerUnitOfMeasure",
             "UnitOfMeasure",
+            "PriceListCode",
             "scope_id"
         ],
         "ls_mag/replication/repl_inv_status"                 => ["ItemId", "VariantId", "StoreId", "scope_id"],

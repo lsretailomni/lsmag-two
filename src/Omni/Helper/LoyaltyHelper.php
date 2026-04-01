@@ -331,6 +331,10 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function getPointRate($storeId = null, $currencyCode = null)
     {
+        if (!$this->customerSession->isLoggedIn()) {
+            return null;
+        }
+
         if (!$storeId) {
             $storeId = $this->lsr->getCurrentStoreId();
         }
