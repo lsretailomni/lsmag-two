@@ -52,7 +52,7 @@
 <!--            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCardBalanceTest.php</file>-->
 <!--            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/OrderTakingCalendarTest.php</file>-->
 <!--            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ReturnPolicyTest.php</file>-->
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ClickAndCollectStoresTest.php</file>
+<!--            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ClickAndCollectStoresTest.php</file>-->
 <!--            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/StoresTest.php</file>-->
             <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/Stock/ItemsAvailabilityTest.php</file>
 <!--            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GetItemDiscountsTest.php</file>-->
