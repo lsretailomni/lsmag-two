@@ -37,6 +37,7 @@ class ItemAvailabilityOutput implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
+        $this->logger->debug('Input parameter: ' . json_encode($args));
         if ($this->lsr->getCurrentIndustry($this->lsr->getCurrentStoreId()) == LSR::LS_INDUSTRY_VALUE_HOSPITALITY ||
             !$this->lsr->inventoryLookupBeforeAddToCartEnabled()
         ) {
@@ -46,7 +47,6 @@ class ItemAvailabilityOutput implements ResolverInterface
         }
 
         $parentProduct = null;
-        $this->logger->debug('Input parameter: ' . json_encode($args));
         if (!empty($args['parent_sku'])) {
             try {
                 $parentProduct = $this->productRepository->get($args['parent_sku']);
