@@ -218,7 +218,6 @@ class StockHelper extends AbstractHelper
      */
     public function getItemsStockInStoreFromSourcingLocation($storeId, $items)
     {
-        $this->_logger->debug(__METHOD__);
         $response  = null;
         $request   = new Operation\ItemsInStoreGetEx();
         $itemStock = new Entity\ItemsInStoreGetEx();
@@ -308,7 +307,6 @@ class StockHelper extends AbstractHelper
      */
     public function getAllStoresItemInStock($simpleProductId, $itemId)
     {
-        $this->_logger->debug(__METHOD__);
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
 
             $simpleProductSku = '';
@@ -317,9 +315,7 @@ class StockHelper extends AbstractHelper
                 $simpleProductSku = $this->productRepository->getById($simpleProductId)
                     ->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
             }
-            $this->_logger->debug('Item ID: ' . $itemId);
             if ($this->checkVersion()) {
-                $this->_logger->debug('Inside check version');
                 $items[] = ['parent' => $itemId, 'child' => $simpleProductSku];
                 return $this->getItemsStockInStoreFromSourcingLocation('', $items);
             }
@@ -382,9 +378,7 @@ class StockHelper extends AbstractHelper
      */
     public function fetchAllStoresItemInStockPlusApplyJoin($simpleProductId, $productSku)
     {
-        $this->_logger->debug(__METHOD__);
         $itemId      = $this->itemHelper->getLsCentralItemIdBySku($productSku);
-        $this->_logger->debug('ItemId: ' . $itemId);
         $storesNavId = [];
         $response    = $this->getAllStoresItemInStock(
             $simpleProductId,

@@ -10,7 +10,6 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
-use Psr\Log\LoggerInterface;
 
 /**
  * Resolver for finding item availability in all the stores
@@ -22,14 +21,12 @@ class ItemAvailabilityOutput implements ResolverInterface
      * @param ProductRepositoryInterface $productRepository
      * @param DataHelper $dataHelper
      * @param LSR $lsr
-     * @param LoggerInterface $logger
      */
     public function __construct(
         public StockHelper $stockHelper,
         public ProductRepositoryInterface $productRepository,
         public DataHelper $dataHelper,
-        public LSR $lsr,
-        public \Psr\Log\LoggerInterface $logger
+        public LSR $lsr
     ) {
     }
     /**
@@ -37,7 +34,6 @@ class ItemAvailabilityOutput implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
-        $this->logger->debug('Input parameter: ' . json_encode($args));
         if ($this->lsr->getCurrentIndustry($this->lsr->getCurrentStoreId()) == LSR::LS_INDUSTRY_VALUE_HOSPITALITY ||
             !$this->lsr->inventoryLookupBeforeAddToCartEnabled()
         ) {
