@@ -63,8 +63,6 @@ class SuccessTest extends TestCase
         parent::setUp();
 
         $this->objectManager   = Bootstrap::getObjectManager();
-        $this->objectManager->get(\Magento\Framework\App\State::class)
-            ->setAreaCode('frontend');
         $this->block           = $this->objectManager->get(
             LayoutInterface::class
         )->createBlock(
@@ -156,7 +154,6 @@ class SuccessTest extends TestCase
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
         Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
-        Config(LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         DataFixture(
             CreateSimpleProduct::class,
             [

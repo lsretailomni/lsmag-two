@@ -74,7 +74,9 @@ class CartTotalRepository
         if ($this->lsr->isLSR($quote->getStoreId())) {
             $loyPointRate = $this->loyaltyHelper->getPointRate(null, 'LOY');
             $currentCurrencyPointRate = $this->loyaltyHelper->getPointRate();
-            $pointRate = $this->loyaltyHelper->formatValue($loyPointRate / $currentCurrencyPointRate);
+            $pointRate = !$currentCurrencyPointRate ?
+                0 :
+                $this->loyaltyHelper->formatValue($loyPointRate / $currentCurrencyPointRate);
             if ($pointRate > 0) {
                 $pointsConfig = [
                     'rateLabel' => $pointRate,
