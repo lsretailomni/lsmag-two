@@ -528,10 +528,14 @@ class ProductCreateTask
                             LSR::SC_REPLICATION_PRODUCT_BATCHSIZE,
                             $store->getId()
                         );
-                        $uomMode          = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT,
-                            $store->getId());
-                        $isUomMode        = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_UNIT_OF_MEASURE_CONFIG,
-                            $store->getId());
+                        $uomMode          = $this->lsr->getStoreConfig(
+                            LSR::SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT,
+                            $store->getId()
+                        );
+                        $isUomMode        = $this->lsr->getStoreConfig(
+                            LSR::SC_REPLICATION_UNIT_OF_MEASURE_CONFIG,
+                            $store->getId()
+                        );
                         $criteria         = $this->replicationHelper->buildCriteriaForNewItems(
                             'scope_id',
                             $this->getScopeId(),
@@ -765,7 +769,7 @@ class ProductCreateTask
                                     );
                                 }
 
-                                if (empty($variants) && (count($filteredUomCodes) == 0 || (count($filteredUomCodes) <= 1))) {
+                                if (empty($variants) && (count($filteredUomCodes[$item->getNavId()]) <= 1)) {
                                     foreach ($uomCodesNotProcessed as $uomCode) {
                                         if (!empty($uomCode)) {
                                             $this->syncUomAdditionalAttributes($product, $uomCode, $item);
