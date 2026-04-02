@@ -69,21 +69,33 @@ class MembershipInfoTest extends TestCase
         );
     }
 
+    /**
+     * @magentoAppIsolation enabled
+     */
     public function testGetTabLabel()
     {
         $this->assertEquals(__('LS Central Membership'), $this->block->getTabLabel());
     }
 
+    /**
+     * @magentoAppIsolation enabled
+     */
     public function testGetTabTitle()
     {
         $this->assertEquals(__('LS Central Membership'), $this->block->getTabTitle());
     }
 
+    /**
+     * @magentoAppIsolation enabled
+     */
     public function testCanShowTab()
     {
         $this->assertTrue($this->block->canShowTab());
     }
 
+    /**
+     * @magentoAppIsolation enabled
+     */
     public function testIsHiddenNot()
     {
         $this->assertFalse($this->block->isHidden());

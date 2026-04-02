@@ -42,8 +42,7 @@ class SyncLsCentralTest extends TestCase
     }
 
     /**
-     * @return void
-     * @throws NoSuchEntityException
+     * @magentoAppIsolation enabled
      */
     public function testGetButtonDataWithoutCustomer(): void
     {

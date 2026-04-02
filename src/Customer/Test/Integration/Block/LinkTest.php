@@ -36,6 +36,9 @@ class LinkTest extends TestCase
         $this->httpContext = $this->objectManager->get(Context::class);
     }
 
+    /**
+     * @magentoAppIsolation enabled
+     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -63,6 +66,9 @@ class LinkTest extends TestCase
         );
     }
 
+    /**
+     * @magentoAppIsolation enabled
+     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
