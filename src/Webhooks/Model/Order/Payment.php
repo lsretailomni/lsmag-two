@@ -161,7 +161,9 @@ class Payment
         try {
             $order           = (!empty($magentoOrder)) ? $magentoOrder :
                 $this->helper->getOrderByDocumentId($documentId);
+            $this->helper->getLsrObject()->setStoreId($order->getStoreId());
             $industry = $this->helper->getLsrObject()->getStoreConfig(LSR::LS_INDUSTRY_VALUE, $order->getStoreId());
+
             if ($industry !== LSR::LS_INDUSTRY_VALUE_RETAIL) {
                 $isRetail = false;
             }

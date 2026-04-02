@@ -574,7 +574,7 @@ class OrderHelper extends AbstractHelper
             // @codingStandardsIgnoreEnd
             //default values for all payment typoes.
             $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
-                ->setCurrencyFactor(1)
+                ->setCurrencyFactor(0)
                 ->setLineNumber('1')
                 ->setExternalReference($order->getIncrementId())
                 ->setAmount($order->getGrandTotal());
@@ -601,17 +601,18 @@ class OrderHelper extends AbstractHelper
 
         if ($order->getLsPointsSpent()) {
             $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
+            $pointDiscount = $this->loyaltyHelper->getLsPointsDiscount($order->getLsPointsSpent(), true);
             $pointRate    = 0;
             // @codingStandardsIgnoreStart
             $orderPaymentLoyalty = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
             //default values for all payment types.
             $orderPaymentLoyalty->setCurrencyCode('LOY')
-                ->setCurrencyFactor($pointRate)
+                ->setCurrencyFactor(0)
                 ->setLineNumber('2')
                 ->setCardNumber($cardId)
                 ->setExternalReference($order->getIncrementId())
-                ->setAmount($order->getLsPointsSpent())
+                ->setAmount($pointDiscount)
                 ->setPreApprovedValidDate($preApprovedDate)
                 ->setPaymentType(Entity\Enum\PaymentType::PAYMENT)
                 ->setTenderType($tenderTypeId);

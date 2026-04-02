@@ -815,7 +815,7 @@ class ItemHelper extends AbstractHelper
      * @param string $currentCurrencyCode
      * @param string $baseCurrencyCode
      * @return float|int
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function convertToCurrentStoreCurrency($price, $currentCurrencyCode = null, $baseCurrencyCode = null)
     {
@@ -838,7 +838,7 @@ class ItemHelper extends AbstractHelper
      * @param string $currentCurrencyCode
      * @param string $baseCurrencyCode
      * @return float|int
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function convertToBaseCurrency($price, $currentCurrencyCode = null, $baseCurrencyCode = null)
     {

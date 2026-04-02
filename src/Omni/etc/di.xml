@@ -2,6 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Ls\Omni\Api\DiscountManagementInterface" type="Ls\Omni\Model\Api\DiscountManagement"/>
+    <preference for="Magento\Sales\Block\Order\Totals" type="Ls\Omni\Block\Order\Totals"/>
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
