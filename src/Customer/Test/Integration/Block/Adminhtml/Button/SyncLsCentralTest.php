@@ -47,6 +47,10 @@ class SyncLsCentralTest extends TestCase
         $this->assertEmpty($this->button->getButtonData());
     }
 
+    /**
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
+     */
     #[
         AppArea('adminhtml'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),

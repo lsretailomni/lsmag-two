@@ -42,6 +42,10 @@ class RecentTest extends TestCase
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
     }
 
+    /**
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
+     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -111,6 +115,10 @@ class RecentTest extends TestCase
         }
     }
 
+    /**
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
+     */
     #[
         DataFixture(
             CustomerFixture::class,
