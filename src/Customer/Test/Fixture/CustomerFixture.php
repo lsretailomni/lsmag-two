@@ -79,6 +79,7 @@ class CustomerFixture implements DataFixtureInterface
      */
     public function apply(array $data = []): ?DataObject
     {
+        echo "\n";
         print_r($data);
         echo "\n";
         if (isset($data['random_email'])) {
@@ -101,8 +102,10 @@ class CustomerFixture implements DataFixtureInterface
             echo "Error saving customer: " . $e->getMessage() . "\n";
         }
 
-        print_r($customer->getData());
         echo "\n";
+        echo "customer Id : " . $customer->getId() . "\n";
+        echo "\n";
+
         $this->customerRegistry->remove($customer->getId());
 
         return $customer;
