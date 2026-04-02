@@ -14,6 +14,8 @@ use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Helper\Xpath;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Framework\Registry;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -27,6 +29,8 @@ class HistoryTest extends TestCase
     public $customerSession;
     public $fixtures;
     public $objectManager;
+    public $customerRepository;
+    public $registry;
 
     protected function setUp(): void
     {
@@ -40,6 +44,24 @@ class HistoryTest extends TestCase
 
         $this->customerSession = $this->objectManager->get(Session::class);
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
+        $this->customerRepository = $this->objectManager->get(CustomerRepositoryInterface::class);
+        $this->registry           = $this->objectManager->get(Registry::class);
+    }
+
+    protected function tearDown(): void
+    {
+        try {
+            $customer = $this->fixtures->get('customer');
+            if ($customer) {
+                $this->registry->unregister('isSecureArea');
+                $this->registry->register('isSecureArea', true);
+                $this->customerRepository->deleteById($customer->getId());
+                $this->registry->unregister('isSecureArea');
+            }
+        } catch (\Exception $e) {
+            // Customer may already be deleted
+        }
+        parent::tearDown();
     }
 
     /**

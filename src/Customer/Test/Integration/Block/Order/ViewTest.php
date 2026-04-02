@@ -12,6 +12,7 @@ use \Ls\Customer\Test\Fixture\CustomerOrder;
 use \Ls\Customer\Test\Integration\AbstractIntegrationTest;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Helper\OrderHelper;
+use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Registry;
 use Magento\Framework\View\LayoutInterface;
@@ -39,6 +40,7 @@ class ViewTest extends TestCase
     public $orderHelper;
     public $pageFactory;
     public $registry;
+    public $customerRepository;
 
     protected function setUp(): void
     {
@@ -54,6 +56,23 @@ class ViewTest extends TestCase
         $this->pageFactory     = $this->objectManager->get(PageFactory::class);
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
         $this->registry        = $this->objectManager->get(Registry::class);
+        $this->customerRepository = $this->objectManager->get(CustomerRepositoryInterface::class);
+    }
+
+    protected function tearDown(): void
+    {
+        try {
+            $customer = $this->fixtures->get('customer');
+            if ($customer) {
+                $this->registry->unregister('isSecureArea');
+                $this->registry->register('isSecureArea', true);
+                $this->customerRepository->deleteById($customer->getId());
+                $this->registry->unregister('isSecureArea');
+            }
+        } catch (\Exception $e) {
+            // Customer may already be deleted
+        }
+        parent::tearDown();
     }
 
     /**

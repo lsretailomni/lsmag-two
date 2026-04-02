@@ -15,6 +15,7 @@ use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
+use Magento\Customer\Api\CustomerRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,6 +29,7 @@ class SyncLsCentralTest extends TestCase
     private $button;
     private $registry;
     public $fixtures;
+    private $customerRepository;
 
     /**
      * @inheritdoc
@@ -40,6 +42,23 @@ class SyncLsCentralTest extends TestCase
         $this->button   = $this->objectManager->get(SyncLsCentral::class);
         $this->registry = $this->objectManager->get(Registry::class);
         $this->fixtures = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
+        $this->customerRepository = $this->objectManager->get(CustomerRepositoryInterface::class);
+    }
+
+    protected function tearDown(): void
+    {
+        try {
+            $customer = $this->fixtures->get('customer');
+            if ($customer) {
+                $this->registry->unregister('isSecureArea');
+                $this->registry->register('isSecureArea', true);
+                $this->customerRepository->deleteById($customer->getId());
+                $this->registry->unregister('isSecureArea');
+            }
+        } catch (\Exception $e) {
+            // Customer may already be deleted
+        }
+        parent::tearDown();
     }
 
     public function testGetButtonDataWithoutCustomer(): void

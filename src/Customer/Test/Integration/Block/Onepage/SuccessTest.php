@@ -33,6 +33,8 @@ use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Helper\Xpath;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Framework\Registry;
 use PHPUnit\Framework\TestCase;
 define(__NAMESPACE__ . '\\RESERVED_ORDER_ID', 'test1'. rand(111111111,999999999));
 /**
@@ -50,6 +52,8 @@ class SuccessTest extends TestCase
     public $checkoutSession;
     public $eventManager;
     private $pageFactory;
+    public $customerRepository;
+    public $registry;
 
     protected function setUp(): void
     {
@@ -66,6 +70,8 @@ class SuccessTest extends TestCase
         $this->checkoutSession = $this->objectManager->get(CheckoutSession::class);
         $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
         $this->pageFactory     = $this->objectManager->get(PageFactory::class);
+        $this->customerRepository = $this->objectManager->get(CustomerRepositoryInterface::class);
+        $this->registry           = $this->objectManager->get(Registry::class);
         $this->block->setNameInLayout('checkout.success');
         $this->block->setTemplate('Magento_Checkout::success.phtml');
         $page = $this->pageFactory->create();
@@ -74,6 +80,22 @@ class SuccessTest extends TestCase
             'checkout_onepage_success',
         ]);
         $page->getLayout()->generateXml();
+    }
+
+    protected function tearDown(): void
+    {
+        try {
+            $customer = $this->fixtures->get('customer');
+            if ($customer) {
+                $this->registry->unregister('isSecureArea');
+                $this->registry->register('isSecureArea', true);
+                $this->customerRepository->deleteById($customer->getId());
+                $this->registry->unregister('isSecureArea');
+            }
+        } catch (\Exception $e) {
+            // Customer may already be deleted
+        }
+        parent::tearDown();
     }
 
     /**
