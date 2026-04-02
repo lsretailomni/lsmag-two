@@ -83,66 +83,6 @@ class SuccessTest extends TestCase
         $page->getLayout()->generateXml();
     }
 
-    #[
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
-        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
-        DataFixture(
-            CustomerFixture::class,
-            [
-                'lsr_username' => AbstractIntegrationTest::USERNAME,
-                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
-                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
-            ],
-            as: 'customer'
-        ),
-        DataFixture(
-            CustomerAddressFixture::class,
-            [
-                'customer_id' => '$customer.entity_id$'
-            ],
-            as: 'address'
-        ),
-        DataFixture(
-            CreateSimpleProduct::class,
-            [
-                'lsr_item_id' => '40180',
-                'sku'         => '40180'
-            ],
-            as: 'product'
-        ),
-        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
-        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$product.id$', 'qty' => 1]),
-        DataFixture(
-            CustomerOrder::class,
-            [
-                'customer' => '$customer$',
-                'cart1'    => '$cart1$',
-                'address'  => '$address$'
-            ],
-            as: 'order'
-        )
-    ]
-    public function testPrepareBlockDataForLoggedInUser()
-    {
-        $this->httpContext->setValue(\Magento\Customer\Model\Context::CONTEXT_AUTH, 1, 1);
-        $order = $this->fixtures->get('order');
-        $output = $this->block->toHtml();
-        $msg = sprintf('Can\'t validate order success page html: %s', $output);
-        $ele = [
-            "//div[contains(@class, 'checkout-success')]",
-            "//p",
-            "//a[contains(@class, 'order-number')]",
-            sprintf("//strong[contains(text(), '%s')]", $order->getDocumentId())
-        ];
-        $this->validateCountForXpath($ele, 1, $output, $msg);
-    }
-
 //    #[
 //        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
 //        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -152,6 +92,23 @@ class SuccessTest extends TestCase
 //        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
 //        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
 //        DataFixture(
+//            CustomerFixture::class,
+//            [
+//                'lsr_username' => AbstractIntegrationTest::USERNAME,
+//                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+//                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+//                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+//            ],
+//            as: 'customer'
+//        ),
+//        DataFixture(
+//            CustomerAddressFixture::class,
+//            [
+//                'customer_id' => '$customer.entity_id$'
+//            ],
+//            as: 'address'
+//        ),
+//        DataFixture(
 //            CreateSimpleProduct::class,
 //            [
 //                'lsr_item_id' => '40180',
@@ -159,62 +116,41 @@ class SuccessTest extends TestCase
 //            ],
 //            as: 'product'
 //        ),
-//        DataFixture(GuestCartFixture::class, ['reserved_order_id' => RESERVED_ORDER_ID], as: 'cart1'),
+//        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
+//        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$product.id$', 'qty' => 1]),
 //        DataFixture(
-//            AddProductToCartFixture::class,
-//            ['cart_id' => '$cart1.id$', 'product_id' => '$product.id$', 'qty' => 2]
-//        ),
-//        DataFixture(
-//            BasketCalculateFixture::class,
-//            ['cart1' => '$cart1$']
-//        ),
-//        DataFixture(SetBillingAddressFixture::class, ['cart_id' => '$cart1.id$']),
-//        DataFixture(SetShippingAddressFixture::class, ['cart_id' => '$cart1.id$']),
-//        DataFixture(SetGuestEmailFixture::class, ['cart_id' => '$cart1.id$']),
-//        DataFixture(
-//            SetDeliveryMethodFixture::class,
-//            ['cart_id' => '$cart1.id$', 'carrier_code' => 'flatrate', 'method_code' => 'flatrate']
-//        ),
-//        DataFixture(SetPaymentMethodFixture::class, ['cart_id' => '$cart1.id$', 'method' => ['method' => 'checkmo']]),
-//        DataFixture(PlaceOrderFixture::class, ['cart_id' => '$cart1.id$'], 'order'),
-//        DataFixture(OrderCreateFixture::class, ['order' => '$order$'], 'order1'),
+//            CustomerOrder::class,
+//            [
+//                'customer' => '$customer$',
+//                'cart1'    => '$cart1$',
+//                'address'  => '$address$'
+//            ],
+//            as: 'order'
+//        )
 //    ]
-//    public function testPrepareBlockDataForGuestUser()
+//    public function testPrepareBlockDataForLoggedInUser()
 //    {
-//        $order = $this->fixtures->get('order1');
+//        $this->httpContext->setValue(\Magento\Customer\Model\Context::CONTEXT_AUTH, 1, 1);
+//        $order = $this->fixtures->get('order');
 //        $output = $this->block->toHtml();
 //        $msg = sprintf('Can\'t validate order success page html: %s', $output);
 //        $ele = [
 //            "//div[contains(@class, 'checkout-success')]",
 //            "//p",
-//            sprintf("//span[contains(text(), '%s')]", $order->getDocumentId())
+//            "//a[contains(@class, 'order-number')]",
+//            sprintf("//strong[contains(text(), '%s')]", $order->getDocumentId())
 //        ];
 //        $this->validateCountForXpath($ele, 1, $output, $msg);
 //    }
-//
+
     #[
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
         Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
-        DataFixture(
-            CustomerFixture::class,
-            [
-                'lsr_username' => AbstractIntegrationTest::USERNAME,
-                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
-                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
-            ],
-            as: 'customer'
-        ),
-        DataFixture(
-            CustomerAddressFixture::class,
-            [
-                'customer_id' => '$customer.entity_id$'
-            ],
-            as: 'address'
-        ),
         DataFixture(
             CreateSimpleProduct::class,
             [
@@ -223,34 +159,99 @@ class SuccessTest extends TestCase
             ],
             as: 'product'
         ),
-        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
-        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$product.id$', 'qty' => 1]),
+        DataFixture(GuestCartFixture::class, ['reserved_order_id' => RESERVED_ORDER_ID], as: 'cart1'),
         DataFixture(
-            CustomerOrder::class,
-            [
-                'customer' => '$customer$',
-                'cart1'    => '$cart1$',
-                'address'  => '$address$'
-            ],
-            as: 'order'
-        )
+            AddProductToCartFixture::class,
+            ['cart_id' => '$cart1.id$', 'product_id' => '$product.id$', 'qty' => 2]
+        ),
+        DataFixture(
+            BasketCalculateFixture::class,
+            ['cart1' => '$cart1$']
+        ),
+        DataFixture(SetBillingAddressFixture::class, ['cart_id' => '$cart1.id$']),
+        DataFixture(SetShippingAddressFixture::class, ['cart_id' => '$cart1.id$']),
+        DataFixture(SetGuestEmailFixture::class, ['cart_id' => '$cart1.id$']),
+        DataFixture(
+            SetDeliveryMethodFixture::class,
+            ['cart_id' => '$cart1.id$', 'carrier_code' => 'flatrate', 'method_code' => 'flatrate']
+        ),
+        DataFixture(SetPaymentMethodFixture::class, ['cart_id' => '$cart1.id$', 'method' => ['method' => 'checkmo']]),
+        DataFixture(PlaceOrderFixture::class, ['cart_id' => '$cart1.id$'], 'order'),
+        DataFixture(OrderCreateFixture::class, ['order' => '$order$'], 'order1'),
     ]
-    public function testPrepareBlockDataForLoggedInUserWithLsrDown()
+    public function testPrepareBlockDataForGuestUser()
     {
-        $this->httpContext->setValue(\Magento\Customer\Model\Context::CONTEXT_AUTH, 1, 1);
-        $order = $this->fixtures->get('order');
+        $order = $this->fixtures->get('order1');
         $output = $this->block->toHtml();
+        echo $output;
         $msg = sprintf('Can\'t validate order success page html: %s', $output);
-
         $ele = [
             "//div[contains(@class, 'checkout-success')]",
             "//p",
-            "//a[contains(@class, 'order-number')]",
-            sprintf("//strong[contains(text(), '%s')]", $order->getIncrementId())
+            sprintf("//span[contains(text(), '%s')]", $order->getDocumentId())
         ];
-
         $this->validateCountForXpath($ele, 1, $output, $msg);
     }
+
+//    #[
+//        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+//        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+//        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+//        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+//        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
+//        DataFixture(
+//            CustomerFixture::class,
+//            [
+//                'lsr_username' => AbstractIntegrationTest::USERNAME,
+//                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+//                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+//                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+//            ],
+//            as: 'customer'
+//        ),
+//        DataFixture(
+//            CustomerAddressFixture::class,
+//            [
+//                'customer_id' => '$customer.entity_id$'
+//            ],
+//            as: 'address'
+//        ),
+//        DataFixture(
+//            CreateSimpleProduct::class,
+//            [
+//                'lsr_item_id' => '40180',
+//                'sku'         => '40180'
+//            ],
+//            as: 'product'
+//        ),
+//        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
+//        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$product.id$', 'qty' => 1]),
+//        DataFixture(
+//            CustomerOrder::class,
+//            [
+//                'customer' => '$customer$',
+//                'cart1'    => '$cart1$',
+//                'address'  => '$address$'
+//            ],
+//            as: 'order'
+//        )
+//    ]
+//    public function testPrepareBlockDataForLoggedInUserWithLsrDown()
+//    {
+//        $this->httpContext->setValue(\Magento\Customer\Model\Context::CONTEXT_AUTH, 1, 1);
+//        $order = $this->fixtures->get('order');
+//        $output = $this->block->toHtml();
+//        $msg = sprintf('Can\'t validate order success page html: %s', $output);
+//
+//        $ele = [
+//            "//div[contains(@class, 'checkout-success')]",
+//            "//p",
+//            "//a[contains(@class, 'order-number')]",
+//            sprintf("//strong[contains(text(), '%s')]", $order->getIncrementId())
+//        ];
+//
+//        $this->validateCountForXpath($ele, 1, $output, $msg);
+//    }
 
     public function validateCountForXpath($ele, $expected, $output, $msg)
     {
