@@ -1448,6 +1448,8 @@ class BasketHelper extends AbstractHelperOmni
     public function updateBasketAndSaveTotals($oneList, $quote)
     {
         if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
+            echo "Method: " . __METHOD__;
+            echo "Line: " . __LINE__;
             $shippingAddress = $quote->getShippingAddress();
             $country         = $shippingAddress->getCountryId();
             $oneList->setShipToCountryCode($country);

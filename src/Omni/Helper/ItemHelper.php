@@ -511,6 +511,8 @@ class ItemHelper extends AbstractHelper
      */
     public function setGrandTotalGivenQuote(&$quote, $basketData, $type)
     {
+        echo "Method: " . __METHOD__;
+        echo "Line: " . __LINE__;
         if ($quote->getId()) {
             if (isset($basketData)) {
                 $pointDiscount  = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
