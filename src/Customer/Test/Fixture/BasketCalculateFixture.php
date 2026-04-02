@@ -54,7 +54,11 @@ class BasketCalculateFixture implements DataFixtureInterface
     {
         echo "Method: " . __METHOD__;
         echo "Line: " . __LINE__;
-        $this->state->setAreaCode(Area::AREA_FRONTEND);
+        try {
+            $this->state->setAreaCode(Area::AREA_FRONTEND);
+        } catch (\Exception $e) {
+            echo 'Unable to set area:' . $e->getMessage();
+        }
         $data     = array_merge(self::DEFAULT_DATA, $data);
 
         $quote    = $data['cart1'];
@@ -65,13 +69,14 @@ class BasketCalculateFixture implements DataFixtureInterface
             $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
         }
 
+        echo "Line: " . __LINE__;
         $this->checkoutSession->setQuoteId($quote->getId());
 
+        echo "Line: " . __LINE__;
         $this->eventManager->dispatch(
             'checkout_cart_save_after',
             ['items' => $quote->getAllVisibleItems()]
         );
-        echo "Method: " . __METHOD__;
         echo "Line: " . __LINE__;
 
         return new DataObject();
