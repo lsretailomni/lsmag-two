@@ -615,10 +615,10 @@ abstract class AbstractTaskTest extends TestCase
             'Large'
         );
 
-//        $this->addDummyPriceData(
-//            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-//            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
-//        );
+        $this->addDummyPriceData(
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
+        );
 
         $this->addDummyInventoryData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
