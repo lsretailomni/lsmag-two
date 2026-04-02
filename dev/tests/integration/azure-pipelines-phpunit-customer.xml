@@ -43,7 +43,7 @@
         </testsuite>
         <testsuite name="Ls_Retail_Integration_Tests">
 <!--            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Block</directory>-->
-<!--            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Controller</directory>-->
+            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Controller</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Observer</directory>
 <!--            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Plugin</directory>-->
         </testsuite>
