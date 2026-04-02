@@ -198,8 +198,11 @@ class SuccessTest extends TestCase
         DataFixture(SetDeliveryMethodFixture::class, ['cart_id' => '$quote.id$']),
         DataFixture(SetPaymentMethodFixture::class, ['cart_id' => '$quote.id$']),
         DataFixture(PlaceOrderFixture::class, ['cart_id' => '$quote.id$'], 'order'),
-        DataFixture(OrderCreateFixture::class, ['order' => '$order$'], 'order1'),
+        DataFixture(OrderCreateFixture::class, ['order' => '$order$', 'cart1' => '$quote$'], 'order1'),
     ]
+//    /**
+//     * @magentoDbIsolation disabled
+//     */
     public function testPrepareBlockDataForGuestUser()
     {
         $order = $this->fixtures->get('order');

@@ -14,6 +14,7 @@ use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\TestFramework\Fixture\DataFixtureInterface;
+use Magento\Checkout\Model\Cart;
 
 class BasketCalculateFixture implements DataFixtureInterface
 {
@@ -22,6 +23,7 @@ class BasketCalculateFixture implements DataFixtureInterface
     public $checkoutSession;
     public $eventManager;
     public $state;
+    private Cart $cart;
 
     /**
      * @param CustomerSession $customerSession
@@ -33,12 +35,14 @@ class BasketCalculateFixture implements DataFixtureInterface
         CustomerSession $customerSession,
         CheckoutSession $checkoutSession,
         ManagerInterface $eventManager,
-        State $state
+        State $state,
+        Cart $cart,
     ) {
         $this->customerSession             = $customerSession;
         $this->checkoutSession             = $checkoutSession;
         $this->eventManager                = $eventManager;
         $this->state                       = $state;
+        $this->cart            = $cart;
     }
 
     /**
@@ -71,13 +75,16 @@ class BasketCalculateFixture implements DataFixtureInterface
 
         echo "Line: " . __LINE__;
         $this->checkoutSession->setQuoteId($quote->getId());
+        $quote = $data['cart1'];
 
+        $this->cart->setQuote($quote);
         echo "Line: " . __LINE__;
-        $this->eventManager->dispatch(
-            'checkout_cart_save_after',
-            ['items' => $quote->getAllVisibleItems()]
-        );
+        $this->cart->save();
         echo "Line: " . __LINE__;
+//        $this->eventManager->dispatch(
+//            'checkout_cart_save_after',
+//            ['items' => $quote->getAllVisibleItems()]
+//        );
 
         return new DataObject();
     }
