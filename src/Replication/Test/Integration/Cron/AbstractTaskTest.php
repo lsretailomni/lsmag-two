@@ -615,10 +615,10 @@ abstract class AbstractTaskTest extends TestCase
             'Large'
         );
 
-        $this->addDummyPriceData(
-            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
-        );
+//        $this->addDummyPriceData(
+//            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
+//            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
+//        );
 
         $this->addDummyInventoryData(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
@@ -673,6 +673,7 @@ abstract class AbstractTaskTest extends TestCase
                 'UnitPrice' => '12.0000',
                 'UnitPriceInclVat' => '14.0000',
                 'VariantId' => $variantId,
+                'Status' => 'Active',
                 'scope' => ScopeInterface::SCOPE_WEBSITES,
                 'scope_id' => $this->storeManager->getWebsite()->getId()
             ]
