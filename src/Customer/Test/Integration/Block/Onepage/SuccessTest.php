@@ -14,10 +14,12 @@ use \Ls\Customer\Test\Fixture\OrderCreateFixture;
 use \Ls\Customer\Test\Integration\AbstractIntegrationTest;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Checkout\Test\Fixture\PlaceOrder as PlaceOrderFixture;
+use Magento\Checkout\Test\Fixture\SetBillingAddress;
 use Magento\Checkout\Test\Fixture\SetBillingAddress as SetBillingAddressFixture;
 use Magento\Checkout\Test\Fixture\SetDeliveryMethod as SetDeliveryMethodFixture;
 use Magento\Checkout\Test\Fixture\SetGuestEmail as SetGuestEmailFixture;
 use Magento\Checkout\Test\Fixture\SetPaymentMethod as SetPaymentMethodFixture;
+use Magento\Checkout\Test\Fixture\SetShippingAddress;
 use Magento\Checkout\Test\Fixture\SetShippingAddress as SetShippingAddressFixture;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Http\Context;
@@ -59,7 +61,10 @@ class SuccessTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->objectManager   = Bootstrap::getObjectManager();
+        $this->objectManager->get(\Magento\Framework\App\State::class)
+            ->setAreaCode('frontend');
         $this->block           = $this->objectManager->get(
             LayoutInterface::class
         )->createBlock(
@@ -159,24 +164,40 @@ class SuccessTest extends TestCase
             ],
             as: 'product'
         ),
-        DataFixture(GuestCartFixture::class, ['reserved_order_id' => RESERVED_ORDER_ID], as: 'cart1'),
-        DataFixture(
-            AddProductToCartFixture::class,
-            ['cart_id' => '$cart1.id$', 'product_id' => '$product.id$', 'qty' => 2]
-        ),
+//        DataFixture(GuestCartFixture::class, ['reserved_order_id' => RESERVED_ORDER_ID], as: '$quote'),
+//        DataFixture(
+//            AddProductToCartFixture::class,
+//            ['cart_id' => '$cart1.id$', 'product_id' => '$product.id$', 'qty' => 2]
+//        ),
+//        DataFixture(
+//            BasketCalculateFixture::class,
+//            ['cart1' => '$cart1$']
+//        ),
+//        DataFixture(SetBillingAddressFixture::class, ['cart_id' => '$cart1.id$']),
+//        DataFixture(SetShippingAddressFixture::class, ['cart_id' => '$cart1.id$']),
+//        DataFixture(SetGuestEmailFixture::class, ['cart_id' => '$cart1.id$']),
+//        DataFixture(
+//            SetDeliveryMethodFixture::class,
+//            ['cart_id' => '$cart1.id$', 'carrier_code' => 'flatrate', 'method_code' => 'flatrate']
+//        ),
+//        DataFixture(SetPaymentMethodFixture::class, ['cart_id' => '$cart1.id$', 'method' => ['method' => 'checkmo']]),
+//        DataFixture(PlaceOrderFixture::class, ['cart_id' => '$cart1.id$'], 'order'),
+//        DataFixture(OrderCreateFixture::class, ['order' => '$order$'], 'order1'),
+
+        DataFixture(GuestCartFixture::class, ['reserved_order_id' => RESERVED_ORDER_ID], as: 'quote'),
+        DataFixture(AddProductToCart::class, ['cart_id' => '$quote.id$', 'product_id' => '$product.id$', 'qty' => 1]),
         DataFixture(
             BasketCalculateFixture::class,
-            ['cart1' => '$cart1$']
+            ['cart1' => '$quote$']
         ),
-        DataFixture(SetBillingAddressFixture::class, ['cart_id' => '$cart1.id$']),
-        DataFixture(SetShippingAddressFixture::class, ['cart_id' => '$cart1.id$']),
-        DataFixture(SetGuestEmailFixture::class, ['cart_id' => '$cart1.id$']),
-        DataFixture(
-            SetDeliveryMethodFixture::class,
-            ['cart_id' => '$cart1.id$', 'carrier_code' => 'flatrate', 'method_code' => 'flatrate']
-        ),
-        DataFixture(SetPaymentMethodFixture::class, ['cart_id' => '$cart1.id$', 'method' => ['method' => 'checkmo']]),
-        DataFixture(PlaceOrderFixture::class, ['cart_id' => '$cart1.id$'], 'order'),
+        DataFixture(SetBillingAddress::class, [
+            'cart_id' => '$quote.id$'
+        ]),
+        DataFixture(SetShippingAddress::class, ['cart_id' => '$quote.id$']),
+        DataFixture(SetGuestEmailFixture::class, ['cart_id' => '$quote.id$']),
+        DataFixture(SetDeliveryMethodFixture::class, ['cart_id' => '$quote.id$']),
+        DataFixture(SetPaymentMethodFixture::class, ['cart_id' => '$quote.id$']),
+        DataFixture(PlaceOrderFixture::class, ['cart_id' => '$quote.id$'], 'order'),
         DataFixture(OrderCreateFixture::class, ['order' => '$order$'], 'order1'),
     ]
     public function testPrepareBlockDataForGuestUser()
