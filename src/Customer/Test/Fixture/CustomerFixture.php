@@ -79,6 +79,8 @@ class CustomerFixture implements DataFixtureInterface
      */
     public function apply(array $data = []): ?DataObject
     {
+        print_r($data);
+        echo "\n";
         if (isset($data['random_email'])) {
             $append = 'test' . substr(sha1((uniqid((string)rand(), true))), 0, 40);
             $data['email'] = $append . AbstractIntegrationTest::EMAIL;
@@ -93,8 +95,14 @@ class CustomerFixture implements DataFixtureInterface
 
         $customer = $this->customerFactory->create();
         $customer->addData($data);
-        $this->customerResourceModel->save($customer);
+        try {
+            $this->customerResourceModel->save($customer);
+        } catch(\Exception $e) {
+            echo "Error saving customer: " . $e->getMessage() . "\n";
+        }
 
+        print_r($customer->getData());
+        echo "\n";
         $this->customerRegistry->remove($customer->getId());
 
         return $customer;

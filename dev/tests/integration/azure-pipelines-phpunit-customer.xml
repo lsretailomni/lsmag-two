@@ -47,6 +47,8 @@
 <!--            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Observer</directory>-->
 <!--            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Plugin</directory>-->
             <file>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Block/Order/HistoryTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Block/Order/InfoTest.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Block/Order/RecentTest.php</file>
         </testsuite>
     </testsuites>
     <!-- Code coverage filters -->

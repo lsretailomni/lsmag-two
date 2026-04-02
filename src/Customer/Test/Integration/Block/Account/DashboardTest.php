@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @magentoAppArea frontend
  * @magentoDbIsolation enabled
+ * @magentoAppIsolation enabled
  */
 class DashboardTest extends TestCase
 {
@@ -40,9 +41,6 @@ class DashboardTest extends TestCase
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -85,9 +83,6 @@ class DashboardTest extends TestCase
         }
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         DataFixture(
             CustomerFixture::class,

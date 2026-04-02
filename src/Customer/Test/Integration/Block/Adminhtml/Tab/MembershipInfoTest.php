@@ -27,6 +27,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @magentoAppArea adminhtml
  * @magentoDbIsolation enabled
+ * @magentoAppIsolation enabled
  */
 class MembershipInfoTest extends TestCase
 {
@@ -69,41 +70,26 @@ class MembershipInfoTest extends TestCase
         );
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     public function testGetTabLabel()
     {
         $this->assertEquals(__('LS Central Membership'), $this->block->getTabLabel());
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     public function testGetTabTitle()
     {
         $this->assertEquals(__('LS Central Membership'), $this->block->getTabTitle());
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     public function testCanShowTab()
     {
         $this->assertTrue($this->block->canShowTab());
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     public function testIsHiddenNot()
     {
         $this->assertFalse($this->block->isHidden());
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -135,9 +121,6 @@ class MembershipInfoTest extends TestCase
         $this->assertStringContainsString((string)__('Member Username:'), $output);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -169,9 +152,6 @@ class MembershipInfoTest extends TestCase
         $this->validateMemberUsername($output, $memberInformation);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),

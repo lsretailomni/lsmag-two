@@ -20,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @magentoAppArea adminhtml
  * @magentoDbIsolation enabled
+ * @magentoAppIsolation enabled
  */
 class SyncLsCentralTest extends TestCase
 {
@@ -41,17 +42,11 @@ class SyncLsCentralTest extends TestCase
         $this->fixtures = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     public function testGetButtonDataWithoutCustomer(): void
     {
         $this->assertEmpty($this->button->getButtonData());
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         AppArea('adminhtml'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),

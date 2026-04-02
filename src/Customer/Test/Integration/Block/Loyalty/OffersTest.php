@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @magentoAppArea frontend
  * @magentoDbIsolation enabled
+ * @magentoAppIsolation enabled
  */
 class OffersTest extends TestCase
 {
@@ -41,9 +42,6 @@ class OffersTest extends TestCase
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -75,9 +73,6 @@ class OffersTest extends TestCase
         $this->assertStringContainsString((string)__('No offers'), $output);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -118,9 +113,6 @@ class OffersTest extends TestCase
         $this->assertStringNotContainsString((string)__('No offers'), $output);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -151,9 +143,6 @@ class OffersTest extends TestCase
         $this->assertStringNotContainsString((string)__('Go To Product'), $output);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -194,9 +183,6 @@ class OffersTest extends TestCase
         $this->assertStringNotContainsString((string)__('No offers'), $output);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -227,9 +213,6 @@ class OffersTest extends TestCase
         $this->assertStringNotContainsString((string)__('Go To Product'), $output);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -261,9 +244,6 @@ class OffersTest extends TestCase
         $this->assertStringContainsString((string)__('No offers'), $output);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -304,9 +284,6 @@ class OffersTest extends TestCase
         $this->assertStringNotContainsString((string)__('No offers'), $output);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
@@ -337,9 +314,6 @@ class OffersTest extends TestCase
         $this->assertStringNotContainsString((string)__('Go To Product'), $output);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
