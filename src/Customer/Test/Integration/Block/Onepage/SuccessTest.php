@@ -202,7 +202,7 @@ class SuccessTest extends TestCase
     ]
     public function testPrepareBlockDataForGuestUser()
     {
-        $order = $this->fixtures->get('order1');
+        $order = $this->fixtures->get('order');
 
         $this->checkoutSession->setLastOrderId($order->getId());
         $this->checkoutSession->setLastRealOrderId($order->getIncrementId());

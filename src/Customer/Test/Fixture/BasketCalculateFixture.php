@@ -52,6 +52,8 @@ class BasketCalculateFixture implements DataFixtureInterface
      */
     public function apply(array $data = []): ?DataObject
     {
+        echo "Method: " . __METHOD__;
+        echo "Line: " . __LINE__;
         $this->state->setAreaCode(Area::AREA_FRONTEND);
         $data     = array_merge(self::DEFAULT_DATA, $data);
 
@@ -69,6 +71,8 @@ class BasketCalculateFixture implements DataFixtureInterface
             'checkout_cart_save_after',
             ['items' => $quote->getAllVisibleItems()]
         );
+        echo "Method: " . __METHOD__;
+        echo "Line: " . __LINE__;
 
         return new DataObject();
     }

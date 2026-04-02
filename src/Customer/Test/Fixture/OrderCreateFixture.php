@@ -41,6 +41,8 @@ class OrderCreateFixture implements DataFixtureInterface
      */
     public function apply(array $data = []): ?DataObject
     {
+        echo "Method: " . __METHOD__;
+        echo "Line: " . __LINE__;
         $this->state->setAreaCode(Area::AREA_FRONTEND);
         $data     = array_merge(self::DEFAULT_DATA, $data);
 
@@ -51,6 +53,8 @@ class OrderCreateFixture implements DataFixtureInterface
             ['order' => $order]
         );
 
+        echo "Method: " . __METHOD__;
+        echo "Line: " . __LINE__;
         return $order;
     }
 }
