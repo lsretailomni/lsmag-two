@@ -42,7 +42,9 @@
             <exclude>testsuite/Magento/MemoryUsageTest.php</exclude>
         </testsuite>
         <testsuite name="Ls_Retail_Integration_Tests">
-            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Block</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Block/Onepage</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Block/Order</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Block/Loyalty</directory>
 <!--            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Controller</directory>-->
 <!--            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Observer</directory>-->
 <!--            <directory>../../../vendor/lsretail/lsmag-two/src/Customer/Test/Integration/Plugin</directory>-->
