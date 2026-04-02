@@ -182,6 +182,10 @@ class SuccessTest extends TestCase
     public function testPrepareBlockDataForGuestUser()
     {
         $order = $this->fixtures->get('order1');
+
+        $this->checkoutSession->setLastOrderId($order->getId());
+        $this->checkoutSession->setLastRealOrderId($order->getIncrementId());
+        $this->checkoutSession->setLastSuccessQuoteId($order->getQuoteId());
         $output = $this->block->toHtml();
         echo $output;
         $msg = sprintf('Can\'t validate order success page html: %s', $output);
