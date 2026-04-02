@@ -9,7 +9,6 @@ use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\DataObject;
-use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -28,19 +27,16 @@ class BasketCalculateFixture implements DataFixtureInterface
     /**
      * @param CustomerSession $customerSession
      * @param CheckoutSession $checkoutSession
-     * @param ManagerInterface $eventManager
      * @param State $state
      */
     public function __construct(
         CustomerSession $customerSession,
         CheckoutSession $checkoutSession,
-        ManagerInterface $eventManager,
         State $state,
         Cart $cart,
     ) {
         $this->customerSession             = $customerSession;
         $this->checkoutSession             = $checkoutSession;
-        $this->eventManager                = $eventManager;
         $this->state                       = $state;
         $this->cart            = $cart;
     }
@@ -79,7 +75,12 @@ class BasketCalculateFixture implements DataFixtureInterface
 
         $this->cart->setQuote($quote);
         echo "Line: " . __LINE__;
-        $this->cart->save();
+        try {
+            $this->cart->save();
+        } catch (\Exception $e) {
+            echo 'Unable to set quote:' . $e->getMessage();
+        }
+
         echo "Line: " . __LINE__;
 //        $this->eventManager->dispatch(
 //            'checkout_cart_save_after',
