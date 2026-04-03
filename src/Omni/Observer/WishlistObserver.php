@@ -77,7 +77,7 @@ class WishlistObserver implements ObserverInterface
             )) {
                 $session = $this->customerSession;
                 $data = empty($session->getBeforeWishlistUrl())
-                    ? $observer->getRequest()->getParams() : null;
+                    ? $observer->getRequest()->getParams() : [];
                 $buyRequest = new DataObject($data);
                 $productId = isset($data['product']) ? (int)$data['product'] : null;
 
