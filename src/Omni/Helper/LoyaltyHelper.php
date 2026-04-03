@@ -806,16 +806,27 @@ class LoyaltyHelper extends AbstractHelperOmni
      * Get Ls points discount
      *
      * @param $pointsSpent
+     * @param bool $format
      * @return float|int
      * @throws NoSuchEntityException
      */
-    public function getLsPointsDiscount($pointsSpent)
+    public function getLsPointsDiscount($pointsSpent, $format = false)
     {
-        $loyaltyPointsRate = $this->getPointRate(null, 'LOY');
+        $loyPointRate = $this->getPointRate(null, 'LOY');
+        $currentCurrencyPointRate = $this->getPointRate();
+
+        $loyaltyPointsRate = $loyPointRate / $currentCurrencyPointRate;
+
         if (!$loyaltyPointsRate) {
             return 0;
         }
-        return $pointsSpent * (1 / $loyaltyPointsRate);
+        $lsPointsDiscount = $pointsSpent * (1 / $loyaltyPointsRate);
+
+        if ($format) {
+            $lsPointsDiscount = $this->formatValue($lsPointsDiscount);
+        }
+
+        return $lsPointsDiscount;
     }
 
     /**

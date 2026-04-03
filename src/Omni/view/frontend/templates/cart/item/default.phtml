@@ -113,9 +113,7 @@ $_item->setDiscountAmount($viewModel->getItemRowDiscount($_item));
                         <?php if ($_item->getDiscountAmount() > 0): ?>
                             <div class="lsdiscountprice2">
                             <strike>
-                                <?= $priceCurrency->format($viewModel->getConvertedAmount(
-                                    $viewModel->getItemPriceIncludeCustomOptions($_item), true)
-                                ); ?>
+                                <?= $priceCurrency->format($viewModel->getItemPriceIncludeCustomOptions($_item), true); ?>
                             </strike>
                             </div>
                         <?php endif; ?>

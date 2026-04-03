@@ -6,7 +6,7 @@
     <update handle="sales_email_item_price"/>
     <body>
         <referenceBlock name="invoice_totals">
-            <block class="Ls\Omni\Block\Order\Totals" name="new.order.invoice.totals"/>
+            <block class="Ls\Omni\Block\Order\Custom\Totals" name="new.order.invoice.totals"/>
         </referenceBlock>
     </body>
 </page>

@@ -529,6 +529,7 @@ class Data extends AbstractHelperOmni
 
             $totalPointsAmount = $this->loyaltyHelper->getLsPointsDiscount($pointsSpent);
             $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
+            $baseTotalPointsAmount = $this->loyaltyHelper->itemHelper->convertToBaseCurrency($totalPointsAmount);
             $pointsSpent       = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
             $giftCardAmount    = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
 
@@ -539,7 +540,7 @@ class Data extends AbstractHelperOmni
             $invoiceCreditMemo->setLsGiftCardNo($giftCardNo);
 
             $grandTotalAmount     = $invoiceCreditMemo->getGrandTotal() - $totalPointsAmount - $giftCardAmount;
-            $baseGrandTotalAmount = $invoiceCreditMemo->getBaseGrandTotal() - $totalPointsAmount - $giftCardAmount;
+            $baseGrandTotalAmount = $invoiceCreditMemo->getBaseGrandTotal() - $baseTotalPointsAmount - $giftCardAmount;
             $invoiceCreditMemo->setGrandTotal($grandTotalAmount);
             $invoiceCreditMemo->setBaseGrandTotal($baseGrandTotalAmount);
         }
