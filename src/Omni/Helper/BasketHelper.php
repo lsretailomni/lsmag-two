@@ -943,7 +943,7 @@ class BasketHelper extends AbstractHelperOmni
                 }
 
                 if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
-                    $oneListRequest->setCurrencyFactor($this->loyaltyHelper->getPointRate());
+                    $oneListRequest->setCurrencyFactor($this->loyaltyHelper->getPointRate(null, null, true));
                     $oneListRequest->setCurrency($this->lsr->getStoreCurrencyCode());
                 }
 

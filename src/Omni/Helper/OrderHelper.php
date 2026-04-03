@@ -262,7 +262,7 @@ class OrderHelper extends AbstractHelper
                 ->setStoreId($storeId);
 
             if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
-                $oneListCalculateResponse->setCurrencyFactor($this->loyaltyHelper->getPointRate($order->getStoreId()));
+                $oneListCalculateResponse->setCurrencyFactor($this->loyaltyHelper->getPointRate($order->getStoreId(), null, true));
                 $oneListCalculateResponse->setCurrency($order->getOrderCurrencyCode());
             }
 
@@ -289,7 +289,7 @@ class OrderHelper extends AbstractHelper
             }
             $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
             $this->basketHelper->getItemHelper()->checkAndUpdateServiceItems($orderLinesArray);
-            
+
             //For click and collect we need to remove shipment charge orderline
             //For flat shipment it will set the correct shipment value into the order
             $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
