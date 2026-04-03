@@ -1399,6 +1399,24 @@ class BasketHelper extends AbstractHelperOmni
 
             $orderEntity->setCardId($customer->getData('lsr_cardid'));
         }
+
+        $basketResponse  = $quote->getBasketResponse();
+        if (!empty($basketResponse)) {
+            // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
+            $basketData = unserialize($basketResponse);
+            $orderEntity
+                ->setCustomerId($basketData->getCustomerId())
+                ->setPointsRewarded($basketData->getPointsRewarded())
+                ->setPointBalance($basketData->getPointBalance())
+                ->setPointsUsedInOrder($basketData->getPointsUsedInOrder())
+                ->setPointAmount($basketData->getPointAmount())
+                ->setPointCashAmountNeeded($basketData->getPointCashAmountNeeded())
+                ->setTotalAmount($basketData->getTotalAmount())
+                ->setTotalDiscount($basketData->getTotalDiscount())
+                ->setTotalNetAmount($basketData->getTotalNetAmount())
+                ->setOrderType($basketData->getOrderType());
+        }
+
         $orderDetails            = $this->getOrderLinesQuote($quote);
         $orderLinesArray         = $orderDetails['orderLinesArray'];
         $orderDiscountLinesArray = $orderDetails['orderDiscountLinesArray'];
