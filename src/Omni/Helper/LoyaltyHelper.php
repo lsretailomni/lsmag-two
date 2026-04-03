@@ -7,6 +7,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
@@ -163,7 +164,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      * Get loyalty points available to customer
      *
      * @return int|Entity\CardGetPointBalanceResponse|ResponseInterface|null
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function getLoyaltyPointsAvailableToCustomer()
     {
@@ -324,14 +325,15 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Convert Point Rate into Values
      *
-     * @param $storeId
-     * @param $currencyCode
-     * @return float|Entity\GetPointRateResponse|ResponseInterface|string|null
+     * @param ?string $storeId
+     * @param ?string $currencyCode
+     * @param bool $force
+     * @return float|GetPointRateResponse|ResponseInterface|string|null
      * @throws NoSuchEntityException
      */
-    public function getPointRate($storeId = null, $currencyCode = null)
+    public function getPointRate($storeId = null, $currencyCode = null, $force = false)
     {
-        if (!$this->customerSession->isLoggedIn()) {
+        if (!$this->customerSession->isLoggedIn() && $force === false) {
             return null;
         }
 
@@ -815,6 +817,9 @@ class LoyaltyHelper extends AbstractHelperOmni
         $loyPointRate = $this->getPointRate(null, 'LOY');
         $currentCurrencyPointRate = $this->getPointRate();
 
+        if (!$currentCurrencyPointRate) {
+            return 0;
+        }
         $loyaltyPointsRate = $loyPointRate / $currentCurrencyPointRate;
 
         if (!$loyaltyPointsRate) {
