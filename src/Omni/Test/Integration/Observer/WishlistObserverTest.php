@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Ls\Omni\Test\Integration\Observer;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
@@ -116,7 +117,8 @@ class WishlistObserverTest extends AbstractIntegrationTest
         $found = false;
 
         foreach ((array)$oneListItems as $oneListItem) {
-            if ($oneListItem->getItemId() == $product->getSku()) {
+            if ($oneListItem->getItemId() == $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE) &&
+            $oneListItem->getVariantId() == $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE)) {
                 $found = true;
                 break;
             }
@@ -176,7 +178,7 @@ class WishlistObserverTest extends AbstractIntegrationTest
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $loginResult);
         $oneListWish = $this->contactHelper->getOneListTypeObject(
             $loginResult->getOneLists()->getOneList(),
-            \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType::WISH
+            ListType::WISH
         );
         $this->basketHelper->setWishListInCustomerSession($oneListWish);
 
@@ -203,7 +205,8 @@ class WishlistObserverTest extends AbstractIntegrationTest
         $found = false;
 
         foreach ((array)$oneListItems as $oneListItem) {
-            if ($oneListItem->getItemId() == $product->getSku()) {
+            if ($oneListItem->getItemId() == $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE) &&
+                $oneListItem->getVariantId() == $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE)) {
                 $found = true;
                 break;
             }
@@ -249,8 +252,9 @@ class WishlistObserverTest extends AbstractIntegrationTest
 //     */
 //    public function testUpdateWishlistItemQtyInOmni(): void
 //    {
-//        $customer         = $this->fixtures->get('customer');
-//        $product          = $this->fixtures->get('p1');
+//        $customer = $this->fixtures->get('customer');
+//        $product = $this->fixtures->get('p1');
+//        $wishlist = $this->fixtures->get('wishlist');
 //        $this->customerId = $customer->getId();
 //
 //        $this->customerSession->setData('customer_id', $customer->getId());
@@ -263,31 +267,34 @@ class WishlistObserverTest extends AbstractIntegrationTest
 //        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $loginResult);
 //
 //        // Fetch the wishlist item created by fixture
-//        $wishlist      = $this->objectManager->get(\Magento\Wishlist\Model\Wishlist::class);
-//        $wishlistItems = $wishlist->loadByCustomerId($customer->getId())->getItemCollection()->getItems();
-//        $wishlistItem  = reset($wishlistItems);
+//        $wishlistItems = $wishlist->getItemCollection()->getItems();
+//        $wishlistItem = reset($wishlistItems);
 //
 //        $this->assertNotEmpty($wishlistItem, 'Wishlist item should exist before update');
 //
 //        $this->requestInterface->setMethod(HttpRequest::METHOD_POST);
 //        $this->requestInterface->setParams([
 //            'form_key' => $this->formKey->getFormKey(),
-//            'qty'      => [$wishlistItem->getId() => 2],
+//            'qty' => [$wishlistItem->getId() => 2],
 //        ]);
 //        $this->requestInterface->setRequestUri('wishlist/index/update/');
 //        $this->frontController->dispatch($this->requestInterface);
 //
 //        $response = $this->contactHelper->getOneListGetByCardId($customer->getLsrCardid());
-//        $result   = $response ? $response->getResult() : null;
-//
+//        $result = $response ? $response->getResult() : null;
+//        $this->oneLists = $result->getOneList();
 //        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
 //
 //        $oneListItems = $result->getOneList()[0]->getItems()->getOneListItem();
 //        $this->assertNotEmpty($oneListItems, 'CS wishlist should have items after update');
 //
 //        $updatedItem = null;
+//
 //        foreach ((array)$oneListItems as $oneListItem) {
-//            if ($oneListItem->getItemId() == $product->getSku()) {
+//            if ($oneListItem->getItemId() == $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE) &&
+//                $oneListItem->getVariantId() == $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE) &&
+//                $oneListItem->getQuantity() == 2
+//            ) {
 //                $updatedItem = $oneListItem;
 //                break;
 //            }
