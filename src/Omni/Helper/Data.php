@@ -529,7 +529,7 @@ class Data extends AbstractHelperOmni
 
             $totalPointsAmount = $this->loyaltyHelper->getLsPointsDiscount($pointsSpent);
             $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
-            $baseTotalPointsAmount = $this->loyaltyHelper->itemHelper->convertToBaseCurrency($totalPointsAmount);
+            $baseTotalPointsAmount = $this->itemHelper->convertToBaseCurrency($totalPointsAmount);
             $pointsSpent       = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
             $giftCardAmount    = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
 

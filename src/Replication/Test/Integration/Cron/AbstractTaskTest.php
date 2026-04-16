@@ -673,6 +673,7 @@ abstract class AbstractTaskTest extends TestCase
                 'UnitPrice' => '12.0000',
                 'UnitPriceInclVat' => '14.0000',
                 'VariantId' => $variantId,
+                'Status' => 'Active',
                 'scope' => ScopeInterface::SCOPE_WEBSITES,
                 'scope_id' => $this->storeManager->getWebsite()->getId()
             ]

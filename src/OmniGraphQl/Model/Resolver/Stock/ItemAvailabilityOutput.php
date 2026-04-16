@@ -41,9 +41,8 @@ class ItemAvailabilityOutput implements ResolverInterface
                 'stores' => [],
             ];
         }
-        
-        $parentProduct = null;
 
+        $parentProduct = null;
         if (!empty($args['parent_sku'])) {
             try {
                 $parentProduct = $this->productRepository->get($args['parent_sku']);

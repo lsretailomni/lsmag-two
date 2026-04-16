@@ -334,6 +334,7 @@ class BasketHelper extends AbstractHelperOmni
         $itemsArray = [];
 
         foreach ($wishlistItems as $item) {
+            $lineNo = $item->getWishlistItemId();
             if ($item->getOptionByCode('simple_product')) {
                 $product = $item->getOptionByCode('simple_product')->getProduct();
             } else {
@@ -347,10 +348,11 @@ class BasketHelper extends AbstractHelperOmni
             $list_item = (new Entity\OneListItem())
                 ->setQuantity($qty)
                 ->setItemId($itemId)
-                ->setId('')
+                ->setId($lineNo)
                 ->setBarcodeId($barCode)
                 ->setVariantId($variantId)
-                ->setUnitOfMeasureId($uom);
+                ->setUnitOfMeasureId($uom)
+                ->setLineNumber($lineNo);
 
             $itemsArray[] = $list_item;
         }
@@ -513,7 +515,7 @@ class BasketHelper extends AbstractHelperOmni
             ->setItem($listItem)
             ->setOneListId($oneList->getId())
             ->setRemove($remove)
-            ->setCalculate(true)
+            ->setCalculate(false)
             ->setCardId($this->getCardId());
 
         $oneList = $operation->execute($request);
@@ -641,7 +643,7 @@ class BasketHelper extends AbstractHelperOmni
         // @codingStandardsIgnoreLine
         $request = (new Entity\OneListSave())
             ->setOneList($list)
-            ->setCalculate(true);
+            ->setCalculate(false);
 
         /** @var Entity\OneListSaveResponse $response */
         $response = $operation->execute($request);

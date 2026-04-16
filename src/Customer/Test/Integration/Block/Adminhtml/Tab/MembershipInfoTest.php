@@ -27,6 +27,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @magentoAppArea adminhtml
  * @magentoDbIsolation enabled
+ * @magentoAppIsolation enabled
  */
 class MembershipInfoTest extends TestCase
 {
@@ -69,6 +70,22 @@ class MembershipInfoTest extends TestCase
         );
     }
 
+    protected function tearDown(): void
+    {
+        try {
+            $customer = $this->fixtures->get('customer');
+            if ($customer) {
+                $this->coreRegistry->unregister('isSecureArea');
+                $this->coreRegistry->register('isSecureArea', true);
+                $this->customerRepository->deleteById($customer->getId());
+                $this->coreRegistry->unregister('isSecureArea');
+            }
+        } catch (\Exception $e) {
+            // Customer may already be deleted
+        }
+        parent::tearDown();
+    }
+
     public function testGetTabLabel()
     {
         $this->assertEquals(__('LS Central Membership'), $this->block->getTabLabel());
@@ -90,6 +107,7 @@ class MembershipInfoTest extends TestCase
     }
 
     /**
+     * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      */
     #[
@@ -124,6 +142,7 @@ class MembershipInfoTest extends TestCase
     }
 
     /**
+     * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      */
     #[
@@ -158,6 +177,7 @@ class MembershipInfoTest extends TestCase
     }
 
     /**
+     * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      */
     #[
