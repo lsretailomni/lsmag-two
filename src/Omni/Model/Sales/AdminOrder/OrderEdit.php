@@ -34,6 +34,16 @@ use Psr\Log\LoggerInterface;
 class OrderEdit
 {
     /**
+     * @var array Old items
+     */
+    public $oldItems;
+
+    /**
+     * @var array New items
+     */
+    public $newItemsArray;
+
+    /**
      * @param OrderHelper $orderHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
@@ -74,15 +84,17 @@ class OrderEdit
     }
 
     /**
+     *
      * Prepare order edit
-     * 
+     *
      * @param Order $order
      * @param $oneListCalculateResponse
-     * @param Order $oldOrder
+     * @param $oldOrder
      * @param $documentId
+     * @param $customerOrder
      * @return mixed|void
      */
-    public function prepareOrder(Order $order, $oneListCalculateResponse, Order $oldOrder, $documentId)
+    public function prepareOrder(Order $order, $oneListCalculateResponse, $oldOrder, $documentId, $customerOrder)
     {
         try {
             $isClickCollect = false;
@@ -685,11 +697,10 @@ class OrderEdit
      * @param $newItemsArray
      * @param $customerOrder
      * @param $documentId
-     * @param $oldOrder
      * @return void
      * @throws NoSuchEntityException
      */
-    public function removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId, $oldOrder)
+    public function removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId)
     {
         $itemsToCancel = [];
         foreach ($oldItems as $oldItem) {
@@ -697,14 +708,14 @@ class OrderEdit
                 list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                     $oldItem->getSku()
                 );
-                $orderLines = $customerOrder->getLscMemberSalesDocLine();
+                $orderLines = $customerOrder->getLines()->getSalesEntryLine();
                 foreach ($orderLines as $line) {
-                    if ($itemId == $line->getNumber() && $variantId == $line->getVariantCode() &&
-                        $uom == $line->getUnitOfMeasure() && !in_array($line->getLineNo(), $itemsToCancel)) {
+                    if ($itemId == $line->getItemId() && $variantId == $line->getVariantId() &&
+                        $uom == $line->getUomId() && !in_array($line->getLineNumber(), $itemsToCancel)) {
                         $itemsToCancel[$line->getLineNumber()] = [
-                            'lineNo' => $line->getLineNo(),
+                            'lineNo' => $line->getLineNumber(),
                             'qty'    => $line->getQuantity(),
-                            'itemId' => $line->getNumber(),
+                            'itemId' => $line->getItemId(),
                         ];
                     }
                 }
@@ -712,8 +723,7 @@ class OrderEdit
         }
 
         if (!empty($itemsToCancel)) {
-            $storeId = $customerOrder->getLscMemberSalesBuffer()->getStoreNo();
-            $this->orderCancel($documentId, $storeId, $itemsToCancel);
+            $this->orderCancel($documentId, $customerOrder->getStoreId(), $itemsToCancel);
         }
     }
 
@@ -828,5 +838,36 @@ class OrderEdit
                 }
             }
         }
+    }
+
+    /**
+     * Return old items
+     *
+     * @return array
+     */
+    public function getOldItems()
+    {
+        return $this->oldItems;
+    }
+
+    /**
+     * Return new items
+     *
+     * @return array
+     */
+    public function getNewItems()
+    {
+        return $this->newItemsArray;
+    }
+
+    /**
+     * Unset items array
+     *
+     * @return void
+     */
+    public function unsetItemsArray()
+    {
+        unset($this->newItemsArray);
+        unset($this->oldItems);
     }
 }

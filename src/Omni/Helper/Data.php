@@ -100,11 +100,29 @@ class Data extends AbstractHelperOmni
      * @param string $storeId
      * @return array
      */
-    public function getStoreHours($storeId)
+    public function getStoreHours($webStoreId)
     {
         $storeHours = null;
         try {
-            $storeResults = $this->fetchAllStoreHoursGivenStore($storeId);
+            $cacheId        = LSR::STORE_HOURS . $webStoreId;
+            $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
+            if ($cachedResponse) {
+                $storeResults = $cachedResponse;
+            } else {
+                $storeResults = [];
+                $websiteId = $this->lsr->getCurrentWebsiteId();
+                $response = $this->storeHelper->getStore($websiteId, $webStoreId);
+                if (!empty($response)) {
+                    $storeResults = $this->fetchAllStoreHoursGivenStore($webStoreId);
+                    $this->cacheHelper->persistContentInCache(
+                        $cacheId,
+                        $storeResults,
+                        [Type::CACHE_TAG],
+                        86400
+                    );
+                }
+            }
+
             $storeHours = [];
             $today = $this->dateTime->gmtDate("Y-m-d");
 

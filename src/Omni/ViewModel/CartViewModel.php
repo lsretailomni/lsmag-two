@@ -68,12 +68,14 @@ class CartViewModel implements ArgumentInterface
      * Get Item price including custom options price
      *
      * @param $item
-     * @param $price
-     * @return float|int|mixed
+     * @return string
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getItemPriceIncludeCustomOptions($item, $price)
+    public function getItemPriceIncludeCustomOptions($item)
     {
-        return $this->basketHelper->getPriceAddingCustomOptions($item, $price);
+        return $this->basketHelper->getPrice($item);
     }
 
     /**

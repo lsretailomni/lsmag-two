@@ -40,9 +40,8 @@ class AbstractOrderController
     /**
      * Register Values in registry
      *
-     * @return ResultInterface|void
+     * @return ResultInterface|null
      * @throws InvalidEnumException
-     * @throws NoSuchEntityException
      */
     public function registerValuesInRegistry()
     {
@@ -67,7 +66,7 @@ class AbstractOrderController
                 $response = current($response);
             }
 
-            $this->orderHelper->setCurrentMagOrderInRegistry($response);
+            return $this->orderHelper->setCurrentMagOrderInRegistry($response);
         } else {
             $redirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
             $redirect->setUrl($this->url->getUrl('sales/order/history'));

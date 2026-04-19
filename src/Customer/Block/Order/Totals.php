@@ -195,7 +195,7 @@ class Totals extends AbstractOrderBlock
 
                         $loyaltyTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
                         if ($loyaltyTenderId == $tenderTypeId) {
-                            $this->loyaltyPointAmount = $this->convertLoyaltyPointsToAmount($line->getAmount());
+                            $this->loyaltyPointAmount = $this->formatLoyaltyPoints($line->getAmount());
                         }
                     } else {
                         $methods[] = __('Unknown');
@@ -303,9 +303,8 @@ class Totals extends AbstractOrderBlock
      * @return float|int
      * @throws NoSuchEntityException|GuzzleException
      */
-    public function convertLoyaltyPointsToAmount($loyaltyPoints)
+    public function formatLoyaltyPoints($loyaltyPoints)
     {
-        $points = number_format((float)$loyaltyPoints, 2, '.', '');
-        return  $this->loyaltyHelper->getLsPointsDiscount($points);
+        return number_format((float)$loyaltyPoints, 2, '.', '');
     }
 }

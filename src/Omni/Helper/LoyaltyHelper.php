@@ -334,13 +334,18 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Convert Point Rate into Values
      *
-     * @param $storeId
-     * @param $currencyCode
+     * @param null $storeId
+     * @param null $currencyCode
+     * @param bool $force
      * @return float|int|string|null
      * @throws NoSuchEntityException
      */
-    public function getPointRate($storeId = null, $currencyCode = null)
+    public function getPointRate($storeId = null, $currencyCode = null, $force = false)
     {
+        if (!$this->customerSession->isLoggedIn() && $force === false) {
+            return null;
+        }
+
         if (!$storeId) {
             $storeId = $this->lsr->getCurrentStoreId();
         }
@@ -873,14 +878,30 @@ class LoyaltyHelper extends AbstractHelperOmni
      * Get Ls points discount
      *
      * @param $pointsSpent
+     * @param bool $format
      * @return float|int
-     * @throws NoSuchEntityException|GuzzleException
+     * @throws NoSuchEntityException
      */
-    public function getLsPointsDiscount($pointsSpent)
+    public function getLsPointsDiscount($pointsSpent, $format = false)
     {
-        $loyaltyPointsRate = $this->getPointRate(null, 'LOY');
+        $loyPointRate = $this->getPointRate(null, 'LOY');
+        $currentCurrencyPointRate = $this->getPointRate();
 
-        return ($loyaltyPointsRate > 0) ? $pointsSpent * (1 / $loyaltyPointsRate) : 0;
+        if (!$currentCurrencyPointRate) {
+            return 0;
+        }
+        $loyaltyPointsRate = $loyPointRate / $currentCurrencyPointRate;
+
+        if (!$loyaltyPointsRate) {
+            return 0;
+        }
+        $lsPointsDiscount = $pointsSpent * (1 / $loyaltyPointsRate);
+
+        if ($format) {
+            $lsPointsDiscount = $this->formatValue($lsPointsDiscount);
+        }
+
+        return $lsPointsDiscount;
     }
 
     /**

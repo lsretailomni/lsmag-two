@@ -22,11 +22,12 @@ class SubtotalPlugin
         $baseSubTotal        = 0;
 
         foreach ($invoiceCreditMemo->getAllItems() as $item) {
-            $orderItem      = $invoiceCreditMemo->getOrder()->getItemById($item->getOrderItemId());
+            $orderItem = $invoiceCreditMemo->getOrder()->getItemById($item->getOrderItemId());
             $discountAmount = ($orderItem->getDiscountAmount() / $orderItem->getQtyOrdered()) * $item->getQty();
-            $taxAmount           = ($orderItem->getTaxAmount() / $orderItem->getQtyOrdered()) * $item->getQty();
-            $subtotal            += ($item->getRowTotal() + $discountAmount) - $taxAmount;
-            $baseSubTotal        += ($item->getBaseRowTotal()) - $taxAmount;
+            $taxAmount = ($orderItem->getTaxAmount() / $orderItem->getQtyOrdered()) * $item->getQty();
+            $baseTaxAmount = ($orderItem->getBaseTaxAmount() / $orderItem->getQtyOrdered()) * $item->getQty();
+            $subtotal += ($item->getRowTotal() + $discountAmount) - $taxAmount;
+            $baseSubTotal += ($item->getBaseRowTotal()) - $baseTaxAmount;
         }
 
         $invoiceCreditMemo->setSubtotal($subtotal);

@@ -60,6 +60,7 @@ class CreatePlugin
         $quote = $subject->getQuote();
         $this->orderHelper->storeManager->setCurrentStore($quote->getStoreId());
         $this->basketHelper->setCorrectStoreIdInCheckoutSession($quote->getStoreId());
+        $this->basketHelper->getCustomerSession()->setCustomerId($quote->getCustomer()->getId());
         if (!empty($quote)) {
             $this->basketHelper->getCheckoutSession()->setQuoteId($quote->getId());
             $quote->setIsActive(1);

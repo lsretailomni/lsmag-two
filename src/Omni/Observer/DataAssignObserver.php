@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Omni\Helper\BasketHelper;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -38,7 +39,8 @@ class DataAssignObserver implements ObserverInterface
         public StoreHelper $storeHelper,
         public Http $request,
         public LSR $lsr,
-        public QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
+        public QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId,
+        public CheckoutSession $checkoutSession
     ) {
     }
 
@@ -188,14 +190,15 @@ class DataAssignObserver implements ObserverInterface
             $storeId,
             $quote
         );
-
-        if (!$stockCollection) {
-            $message = __('Oops! Unable to do stock lookup currently.');
-        }
-        if ($stockCollection) {
-            foreach ($stockCollection as $stock) {
-                if (!$stock['status']) {
-                    $message = __('Unable to use selected shipping method since some or all of the cart items are not available in selected store.');
+        if (empty($this->checkoutSession->getNoManageStock())) {
+            if (!$stockCollection) {
+                $message = __('Oops! Unable to do stock lookup currently.');
+            }
+            if ($stockCollection) {
+                foreach ($stockCollection as $stock) {
+                    if (!$stock['status']) {
+                        $message = __('Unable to use selected shipping method since some or all of the cart items are not available in selected store.');
+                    }
                 }
             }
         }

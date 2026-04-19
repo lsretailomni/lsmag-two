@@ -5,7 +5,7 @@
     <update handle="sales_email_order_shipment_renderers"/>
     <body>
         <referenceBlock name="shipment_totals">
-            <block class="Ls\Omni\Block\Order\Totals" name="new.order.shipment.totals"/>
+            <block class="Ls\Omni\Block\Order\Custom\Totals" name="new.order.shipment.totals"/>
         </referenceBlock>
     </body>
 </page>

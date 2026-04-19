@@ -138,18 +138,18 @@ class StockHelper extends AbstractHelperOmni
     public function getItemsStockInStoreFromSourcingLocation(string $storeId, array $items)
     {
         // @codingStandardsIgnoreStart
-        $operation = $this->createInstance(Operation\GetInventoryMultipleV2::class);
+        $operation       = $this->createInstance(Operation\GetInventoryMultipleV2::class);
         $itemsCollection = [];
         foreach ($items as $item) {
-            $payload = [];
-            $itemId = reset($item);
-            $variantId = end($item);
+            $payload                            = [];
+            $itemId                             = reset($item);
+            $variantId                          = end($item);
             $payload[InventoryBufferIn::NUMBER] = $itemId;
             if (!empty($itemId) && !empty($variantId)) {
                 $payload[InventoryBufferIn::VARIANT] = $variantId;
             }
 
-            $item = $operation->createInstance(
+            $item              = $operation->createInstance(
                 InventoryBufferIn::class,
                 ['data' => $payload]
             );
@@ -162,9 +162,9 @@ class StockHelper extends AbstractHelperOmni
         );
 
         $operation->setOperationInput([
-            GetInventoryMultipleV2::STORE_NO => $storeId,
+            GetInventoryMultipleV2::STORE_NO                       => $storeId,
             GetInventoryMultipleV2::SOURCING_LOCATION_AVAILABILITY => 1,
-            GetInventoryMultipleV2::GET_INVENTORY_MULTIPLE_IN_XML => $getInventoryMultipleInXML,
+            GetInventoryMultipleV2::GET_INVENTORY_MULTIPLE_IN_XML  => $getInventoryMultipleInXML,
         ]);
         $response = $operation->execute();
         // @codingStandardsIgnoreEnd
@@ -321,7 +321,7 @@ class StockHelper extends AbstractHelperOmni
                 }
 
                 if ($this->lsr->inventoryLookupBeforeAddToCartEnabled() &&
-                $this->lsr->getBasketIntegrationOnFrontend()
+                    $this->lsr->getBasketIntegrationOnFrontend()
                 ) {
                     $uomQty = $child->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
 

@@ -41,7 +41,10 @@ class RegisterObserver extends AbstractOmniObserver
                     $this->lsr->getCustomerIntegrationOnFrontend()
                 )) {
                     /** @var Entity\MemberContact $contact */
-                    if (is_array($additionalParams) && $additionalParams['lsr_id']) {
+                    if (is_array($additionalParams) &&
+                        array_key_exists('lsr_id', $additionalParams) &&
+                        $additionalParams['lsr_id']
+                    ) {
                         $customer = $this->contactHelper->setCustomerAttributesValues($additionalParams, $customer);
                         $this->customerResourceModel->save($customer);
                         $contact = $additionalParams['contact'];

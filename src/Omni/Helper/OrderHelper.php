@@ -162,7 +162,7 @@ class OrderHelper extends AbstractHelperOmni
                     CustomerOrderCreateCOHeaderV6::CREATED_AT_STORE => $storeId,
                     CustomerOrderCreateCOHeaderV6::SHIP_ORDER => !$isClickCollect,
                     CustomerOrderCreateCOHeaderV6::CURRENCY_FACTOR =>
-                        $this->loyaltyHelper->getPointRate($order->getStoreId()),
+                        $this->loyaltyHelper->getPointRate($order->getStoreId(), null, true),
                     CustomerOrderCreateCOHeaderV6::CURRENCY_CODE => $order->getOrderCurrencyCode(),
                 ]
             );
@@ -337,6 +337,12 @@ class OrderHelper extends AbstractHelperOmni
                 CustomerOrderCreateCOLineV6::AMOUNT => $netPrice + $taxAmount,
                 CustomerOrderCreateCOLineV6::STORE_NO => $storeCode
             ]);
+            if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
+                $customerOrderCoLine->addData([
+                    CustomerOrderCreateCOLineV6::VALIDATE_TAX_PARAMETER => 1
+                ]);
+            }
+
             $customerOrderCoLines[] = $customerOrderCoLine;
         }
 
@@ -501,7 +507,7 @@ class OrderHelper extends AbstractHelperOmni
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_VALID_DATE => $preApprovedDate,
                     CustomerOrderCreateCOPaymentV6::EXTERNAL_REFERENCE => $order->getIncrementId(),
                     CustomerOrderCreateCOPaymentV6::CURRENCY_CODE => $order->getOrderCurrency()->getCurrencyCode(),
-                    CustomerOrderCreateCOPaymentV6::CURRENCY_FACTOR => 1,
+                    CustomerOrderCreateCOPaymentV6::CURRENCY_FACTOR => 0,
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT_LCY => $order->getGrandTotal() * 1
                 ]
             );
@@ -541,7 +547,7 @@ class OrderHelper extends AbstractHelperOmni
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_VALID_DATE => $preApprovedDate,
                     CustomerOrderCreateCOPaymentV6::EXTERNAL_REFERENCE => $order->getIncrementId(),
                     CustomerOrderCreateCOPaymentV6::CURRENCY_CODE => 'LOY',
-                    CustomerOrderCreateCOPaymentV6::CURRENCY_FACTOR => $pointRate,
+                    CustomerOrderCreateCOPaymentV6::CURRENCY_FACTOR => 0,
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT_LCY => $order->getLsPointsSpent() * $pointRate,
                     CustomerOrderCreateCOPaymentV6::CARDOR_CUSTOMERNUMBER => $cardId,
                     CustomerOrderCreateCOPaymentV6::TYPE => '1',
@@ -1023,17 +1029,18 @@ class OrderHelper extends AbstractHelperOmni
         $filterOptions = true,
         $customerId = 0,
         $sortOrder = null,
-        $isOrderEdit = false
-    )
-    {
-        $orders = null;
-        $store = $this->storeManager->getStore($storeId);
-        $websiteId = $store->getWebsiteId();
+        $isOrderEdit = false,
+        $websiteId = null
+    ) {
+        $orders        = null;
+        $orderStatuses = null;
         try {
-            $orderStatuses = $this->lsr->getWebsiteConfig(
-                LSR::LSR_RESTRICTED_ORDER_STATUSES,
-                $websiteId
-            );
+            if ($websiteId) {
+                $orderStatuses = $this->lsr->getWebsiteConfig(
+                    LSR::LSR_RESTRICTED_ORDER_STATUSES,
+                    $websiteId
+                );
+            }
             $criteriaBuilder = $this->basketHelper->getSearchCriteriaBuilder();
 
             if ($filterOptions) {
@@ -1042,6 +1049,10 @@ class OrderHelper extends AbstractHelperOmni
                 }
 
                 $criteriaBuilder->addFilter('document_id', null, 'null');
+            }
+
+            if ($storeId !== null) {
+                $criteriaBuilder->addFilter('store_id', $storeId, 'eq');
             }
 
             if ($customerId) {
@@ -1062,7 +1073,7 @@ class OrderHelper extends AbstractHelperOmni
             }
 
             $searchCriteria = $criteriaBuilder->create();
-            $orders = $this->orderRepository->getList($searchCriteria)->getItems();
+            $orders         = $this->orderRepository->getList($searchCriteria)->getItems();
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -1251,15 +1262,20 @@ class OrderHelper extends AbstractHelperOmni
      */
     public function isAllowed($order)
     {
-        $websiteId = $this->storeManager->getStore($order->getStoreId())->getWebsiteId();
+        $websiteId     = $this->storeManager->getStore($order->getStoreId())->getWebsiteId();
         $orderStatuses = $this->lsr->getWebsiteConfig(
             LSR::LSR_RESTRICTED_ORDER_STATUSES,
             $websiteId
         );
 
-        $status = $order->getStatus();
+        $status               = $order->getStatus();
+        $paymentMethod        = $order->getPayment()->getMethodInstance()->getCode();
+        $noPaymentLineMethods = $this->paymentLineNotRequiredPaymentMethods($order);
 
-        $check = empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
+        $check = empty($orderStatuses) ||
+            !(in_array($status, explode(',', $orderStatuses))) ||
+            in_array($paymentMethod, $noPaymentLineMethods);
+
         return $check;
     }
 
