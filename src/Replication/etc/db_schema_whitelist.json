@@ -152,6 +152,13 @@
             "created_at": true,
             "updated_at": true
         },
+        "index": {
+            "LS_REPLICATION_REPL_COUNTRY_CODE_NAME": true,
+            "LS_REPLICATION_REPL_COUNTRY_CODE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_COUNTRY_CODE_PROCESSED": true,
+            "LS_REPLICATION_REPL_COUNTRY_CODE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_COUNTRY_CODE_ISDELETED": true
+        },
         "constraint": {
             "PRIMARY": true,
             "LS_REPLICATION_REPL_COUNTRY_CODE_IDENTITY_VALUE": true
@@ -250,6 +257,15 @@
             "processed_at": true,
             "created_at": true,
             "updated_at": true
+        },
+        "index": {
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_TRANSLATIONID": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_KEY": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_LANGUAGECODE": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_PROCESSED": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_ISDELETED": true
         },
         "constraint": {
             "PRIMARY": true,
@@ -424,6 +440,16 @@
             "created_at": true,
             "updated_at": true
         },
+        "index": {
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_DEALNO": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_NO": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINENO": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_UNITOFMEASURE": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_PROCESSED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_ISDELETED": true
+        },
         "constraint": {
             "PRIMARY": true,
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_IDENTITY_VALUE": true
@@ -457,6 +483,16 @@
             "processed_at": true,
             "created_at": true,
             "updated_at": true
+        },
+        "index": {
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_DEALNO": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_ITEMNO": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_LINENO": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_UNITOFMEASURE": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_PROCESSED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_ISDELETED": true
         },
         "constraint": {
             "PRIMARY": true,
@@ -741,8 +777,8 @@
             "LS_REPLICATION_REPL_PRICE_VARIANTID": true,
             "LS_REPLICATION_REPL_PRICE_STOREID": true,
             "LS_REPLICATION_REPL_PRICE_QTYPERUNITOFMEASURE": true,
-            "LS_REPLICATION_REPL_PRICE_UNITOFMEASURE": true,
             "LS_REPLICATION_REPL_PRICE_PRICELISTCODE": true,
+            "LS_REPLICATION_REPL_PRICE_UNITOFMEASURE": true,
             "LS_REPLICATION_REPL_PRICE_SCOPE_ID": true,
             "LS_REPLICATION_REPL_PRICE_PROCESSED": true,
             "LS_REPLICATION_REPL_PRICE_IS_UPDATED": true,
@@ -785,6 +821,10 @@
             "created_at": true,
             "updated_at": true
         },
+        "index": {
+            "LS_REPLICATION_REPL_STORE_NAV_ID": true,
+            "LS_REPLICATION_REPL_STORE_SCOPE_ID": true
+        },
         "constraint": {
             "PRIMARY": true,
             "LS_REPLICATION_REPL_STORE_IDENTITY_VALUE": true
@@ -820,6 +860,10 @@
             "processed_at": true,
             "created_at": true,
             "updated_at": true
+        },
+        "index": {
+            "LS_REPLICATION_REPL_STORE_TENDER_TYPE_TENDERTYPEID": true,
+            "LS_REPLICATION_REPL_STORE_TENDER_TYPE_SCOPE_ID": true
         },
         "constraint": {
             "PRIMARY": true,
@@ -931,6 +975,13 @@
             "created_at": true,
             "updated_at": true
         },
+        "index": {
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_NAV_ID": true,
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_PROCESSED": true,
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_ISDELETED": true
+        },
         "constraint": {
             "PRIMARY": true,
             "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_IDENTITY_VALUE": true
@@ -995,7 +1046,7 @@
             "updated_at": true
         },
         "index": {
-            "LS_REPLICATION_REPL_VENDOR_NAV_ID": true,
+            "LS_REPLICATION_REPL_VENDOR_NAME": true,
             "LS_REPLICATION_REPL_VENDOR_SCOPE_ID": true,
             "LS_REPLICATION_REPL_VENDOR_PROCESSED": true,
             "LS_REPLICATION_REPL_VENDOR_IS_UPDATED": true,
@@ -1023,6 +1074,14 @@
             "processed_at": true,
             "created_at": true,
             "updated_at": true
+        },
+        "index": {
+            "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_NAVMANUFACTURERID": true,
+            "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_NAVPRODUCTID": true,
+            "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_PROCESSED": true,
+            "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_ISDELETED": true
         },
         "constraint": {
             "PRIMARY": true,
@@ -1124,6 +1183,18 @@
             "created_at": true,
             "updated_at": true
         },
+        "index": {
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_NAV_ID": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_VARIANTCODE": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_CODE": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_SUBCODE": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_TRIGGERCODE": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_UNITOFMEASURE": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_PROCESSED": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_ISDELETED": true
+        },
         "constraint": {
             "PRIMARY": true,
             "LS_REPLICATION_REPL_ITEM_MODIFIER_IDENTITY_VALUE": true
@@ -1152,6 +1223,15 @@
             "processed_at": true,
             "created_at": true,
             "updated_at": true
+        },
+        "index": {
+            "LS_REPLICATION_REPL_ITEM_RECIPE_ITEMNO": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_RECIPENO": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_UNITOFMEASURE": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_PROCESSED": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_ISDELETED": true
         },
         "constraint": {
             "PRIMARY": true,
