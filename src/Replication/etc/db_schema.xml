@@ -182,7 +182,7 @@
     <column xsi:type="int" name="repl_country_code_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_country_code_id"/>
     <column xsi:type="text" name="Code" nullable="true" comment="code"/>
     <column xsi:type="text" name="CustomerNo" nullable="true" comment="lsc_web_store_customer_no"/>
-    <column xsi:type="text" name="Name" nullable="true" comment="name"/>
+    <column xsi:type="varchar" name="Name" length="200" nullable="true" comment="name"/>
     <column xsi:type="text" name="TaxPostGroup" nullable="true" comment="taxpostgroup"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
@@ -198,6 +198,21 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_country_code_id"/>
     </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_NAME">
+      <column name="Name"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_SCOPEID">
+      <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_ISUPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
@@ -295,10 +310,10 @@
   </table>
   <table name="ls_replication_repl_data_translation" resource="default" engine="innodb" comment="LSC Data Translation">
     <column xsi:type="int" name="repl_data_translation_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_data_translation_id"/>
-    <column xsi:type="text" name="Key" nullable="true" comment="key"/>
-    <column xsi:type="text" name="LanguageCode" nullable="true" comment="language_code"/>
+    <column xsi:type="varchar" name="Key" length="200" nullable="true" comment="key"/>
+    <column xsi:type="varchar" name="LanguageCode" length="200" nullable="true" comment="language_code"/>
     <column xsi:type="text" name="Text" nullable="true" comment="translation"/>
-    <column xsi:type="text" name="TranslationId" nullable="true" comment="translation_id"/>
+    <column xsi:type="varchar" name="TranslationId" length="200" nullable="true" comment="translation_id"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -313,6 +328,27 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_data_translation_id"/>
     </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_TRANSLATIONID">
+      <column name="TranslationId"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_KEY">
+      <column name="Key"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_LANGUAGECODE">
+      <column name="LanguageCode"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_SCOPEID">
+      <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_ISUPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_DATA_TRANSLATION_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
@@ -487,12 +523,12 @@
     <column xsi:type="int" name="MaxSelection" padding="11" nullable="true" comment="max_selection"/>
     <column xsi:type="int" name="MinSelection" padding="11" nullable="true" comment="min_selection"/>
     <column xsi:type="decimal" name="AddedAmount" scale="4" precision="20" nullable="true" comment="modifier_added_amount"/>
-    <column xsi:type="text" name="No" nullable="true" comment="no"/>
+    <column xsi:type="varchar" name="No" length="200" nullable="true" comment="no"/>
     <column xsi:type="text" name="ParentNode" nullable="true" comment="node_id"/>
-    <column xsi:type="text" name="DealNo" nullable="true" comment="offer_no"/>
+    <column xsi:type="varchar" name="DealNo" length="200" nullable="true" comment="offer_no"/>
     <column xsi:type="text" name="ImageId" nullable="true" comment="retail_image_id"/>
     <column xsi:type="text" name="Type" nullable="true" comment="type"/>
-    <column xsi:type="text" name="UnitOfMeasure" nullable="true" comment="unit_of_measure"/>
+    <column xsi:type="varchar" name="UnitOfMeasure" length="200" nullable="true" comment="unit_of_measure"/>
     <column xsi:type="text" name="VariantCode" nullable="true" comment="variant_code"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
@@ -508,6 +544,30 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_hierarchy_hosp_deal_id"/>
     </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_DEALNO">
+      <column name="DealNo"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_NO">
+      <column name="No"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINENO">
+      <column name="LineNo"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_UNITOFMEASURE">
+      <column name="UnitOfMeasure"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_SCOPEID">
+      <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_ISUPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
@@ -519,14 +579,14 @@
     <column xsi:type="int" name="LineNo" padding="11" nullable="true" comment="deal_modifier_line_no"/>
     <column xsi:type="text" name="Description" nullable="true" comment="description"/>
     <column xsi:type="text" name="HierarchyCode" nullable="true" comment="hierarchy_code"/>
-    <column xsi:type="text" name="ItemNo" nullable="true" comment="item_no"/>
+    <column xsi:type="varchar" name="ItemNo" length="200" nullable="true" comment="item_no"/>
     <column xsi:type="int" name="MaxSelection" padding="11" nullable="true" comment="max_item_selection"/>
     <column xsi:type="int" name="MinSelection" padding="11" nullable="true" comment="min_selection"/>
     <column xsi:type="text" name="ParentNode" nullable="true" comment="node_id"/>
     <column xsi:type="int" name="DealLineNo" padding="11" nullable="true" comment="offer_line_no"/>
-    <column xsi:type="text" name="DealNo" nullable="true" comment="offer_no"/>
+    <column xsi:type="varchar" name="DealNo" length="200" nullable="true" comment="offer_no"/>
     <column xsi:type="text" name="ImageId" nullable="true" comment="retail_image_id"/>
-    <column xsi:type="text" name="UnitOfMeasure" nullable="true" comment="unit_of_measure"/>
+    <column xsi:type="varchar" name="UnitOfMeasure" length="200" nullable="true" comment="unit_of_measure"/>
     <column xsi:type="text" name="VariantCode" nullable="true" comment="variant_code"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
@@ -542,6 +602,30 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_hierarchy_hosp_deal_line_id"/>
     </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_DEALNO">
+      <column name="DealNo"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_ITEMNO">
+      <column name="ItemNo"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_LINENO">
+      <column name="LineNo"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_UNITOFMEASURE">
+      <column name="UnitOfMeasure"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_SCOPEID">
+      <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_ISUPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
@@ -900,11 +984,11 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_QTYPERUNITOFMEASURE">
       <column name="QtyPerUnitOfMeasure"/>
     </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_UNITOFMEASURE">
-      <column name="UnitOfMeasure"/>
-    </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_PRICELISTCODE">
       <column name="PriceListCode"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_UNITOFMEASURE">
+      <column name="UnitOfMeasure"/>
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_PRICE_SCOPEID">
       <column name="scope_id"/>
@@ -935,7 +1019,7 @@
     <column xsi:type="decimal" name="Latitute" scale="4" precision="20" nullable="true" comment="latitude"/>
     <column xsi:type="decimal" name="Longitude" scale="4" precision="20" nullable="true" comment="longitude"/>
     <column xsi:type="text" name="Name" nullable="true" comment="name"/>
-    <column xsi:type="text" name="nav_id" nullable="true" comment="no"/>
+    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="no"/>
     <column xsi:type="text" name="Phone" nullable="true" comment="phone_no"/>
     <column xsi:type="text" name="ZipCode" nullable="true" comment="post_code"/>
     <column xsi:type="text" name="PriceGroupCodes" nullable="true" comment="price_group_codes"/>
@@ -955,6 +1039,12 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_store_id"/>
     </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_NAVID">
+      <column name="nav_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_SCOPEID">
+      <column name="scope_id"/>
+    </index>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_STORE_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
@@ -963,7 +1053,7 @@
     <column xsi:type="int" name="repl_store_tender_type_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_store_tender_type_id"/>
     <column xsi:type="text" name="AboveMinimumTenderId" nullable="true" comment="above_min_change_tender_type"/>
     <column xsi:type="text" name="ChangeTenderId" nullable="true" comment="change_tend_code"/>
-    <column xsi:type="text" name="TenderTypeId" nullable="true" comment="code"/>
+    <column xsi:type="varchar" name="TenderTypeId" length="200" nullable="true" comment="code"/>
     <column xsi:type="boolean" name="CountingRequired" default="0" nullable="true" comment="counting_required"/>
     <column xsi:type="text" name="Name" nullable="true" comment="description"/>
     <column xsi:type="boolean" name="OpenDrawer" default="0" nullable="true" comment="drawer_opens"/>
@@ -991,6 +1081,12 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_store_tender_type_id"/>
     </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_TENDERTYPEID">
+      <column name="TenderTypeId"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_SCOPEID">
+      <column name="scope_id"/>
+    </index>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
@@ -1069,7 +1165,7 @@
     <column xsi:type="boolean" name="MondayWithinBounds" default="0" nullable="true" comment="mon_time_within_bounds"/>
     <column xsi:type="text" name="MondayEnd" nullable="true" comment="monday_ending_time"/>
     <column xsi:type="text" name="MondayStart" nullable="true" comment="monday_starting_time"/>
-    <column xsi:type="text" name="nav_id" nullable="true" comment="nav_id"/>
+    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="nav_id"/>
     <column xsi:type="text" name="OfferEndTime" nullable="true" comment="offer_ending_time"/>
     <column xsi:type="text" name="OfferStartTime" nullable="true" comment="offer_starting_time"/>
     <column xsi:type="boolean" name="SaturdayEndAfterMidnight" default="0" nullable="true" comment="sat_end_time_after_midnight"/>
@@ -1109,6 +1205,21 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_discount_validation_id"/>
     </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_VALIDATION_NAVID">
+      <column name="nav_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_VALIDATION_SCOPEID">
+      <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_VALIDATION_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_VALIDATION_ISUPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_DISCOUNT_VALIDATION_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_DISCOUNT_VALIDATION_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
@@ -1166,8 +1277,8 @@
     <column xsi:type="int" name="repl_vendor_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_vendor_id"/>
     <column xsi:type="int" name="Blocked" padding="11" nullable="true" comment="blocked"/>
     <column xsi:type="text" name="UpdatedOnUtc" nullable="true" comment="last_date_modified"/>
-    <column xsi:type="text" name="Name" nullable="true" comment="name"/>
-    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="no"/>
+    <column xsi:type="varchar" name="Name" length="200" nullable="true" comment="name"/>
+    <column xsi:type="text" name="nav_id" nullable="true" comment="no"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -1182,8 +1293,8 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_vendor_id"/>
     </constraint>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDOR_NAVID">
-      <column name="nav_id"/>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDOR_NAME">
+      <column name="Name"/>
     </index>
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_VENDOR_SCOPEID">
       <column name="scope_id"/>
@@ -1203,9 +1314,9 @@
   </table>
   <table name="ls_replication_repl_loy_vendor_item_mapping" resource="default" engine="innodb" comment="VendorItemView">
     <column xsi:type="int" name="repl_loy_vendor_item_mapping_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_loy_vendor_item_mapping_id"/>
-    <column xsi:type="text" name="NavProductId" nullable="true" comment="itemno"/>
+    <column xsi:type="varchar" name="NavProductId" length="200" nullable="true" comment="itemno"/>
     <column xsi:type="text" name="NavManufacturerItemId" nullable="true" comment="vendoritemno"/>
-    <column xsi:type="text" name="NavManufacturerId" nullable="true" comment="vendorno"/>
+    <column xsi:type="varchar" name="NavManufacturerId" length="200" nullable="true" comment="vendorno"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -1220,6 +1331,24 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_loy_vendor_item_mapping_id"/>
     </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_NAVMANUFACTURERID">
+      <column name="NavManufacturerId"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_NAVPRODUCTID">
+      <column name="NavProductId"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_SCOPEID">
+      <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_ISUPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
@@ -1303,21 +1432,21 @@
     <column xsi:type="text" name="ExplanatoryHeaderText" nullable="true" comment="explanatory_header_text"/>
     <column xsi:type="int" name="GroupMaxSelection" padding="11" nullable="true" comment="group_max_selection"/>
     <column xsi:type="int" name="GroupMinSelection" padding="11" nullable="true" comment="group_min_selection"/>
-    <column xsi:type="text" name="Code" nullable="true" comment="infocode_code"/>
-    <column xsi:type="text" name="TriggerCode" nullable="true" comment="item_no"/>
+    <column xsi:type="varchar" name="Code" length="200" nullable="true" comment="infocode_code"/>
+    <column xsi:type="varchar" name="TriggerCode" length="200" nullable="true" comment="item_no"/>
     <column xsi:type="int" name="MaxSelection" padding="11" nullable="true" comment="max_selection"/>
     <column xsi:type="int" name="MinSelection" padding="11" nullable="true" comment="min_selection"/>
-    <column xsi:type="text" name="nav_id" nullable="true" comment="parent_item_no"/>
+    <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="parent_item_no"/>
     <column xsi:type="text" name="AlwaysCharge" nullable="true" comment="price_handling"/>
     <column xsi:type="text" name="PriceType" nullable="true" comment="price_type"/>
     <column xsi:type="text" name="Prompt" nullable="true" comment="prompt"/>
-    <column xsi:type="text" name="SubCode" nullable="true" comment="subcode"/>
+    <column xsi:type="varchar" name="SubCode" length="200" nullable="true" comment="subcode"/>
     <column xsi:type="decimal" name="TimeModifierMinutes" scale="4" precision="20" nullable="true" comment="time_modifier_minutes"/>
     <column xsi:type="text" name="TriggerFunction" nullable="true" comment="trigger_function"/>
-    <column xsi:type="text" name="UnitOfMeasure" nullable="true" comment="unit_of_measure"/>
+    <column xsi:type="varchar" name="UnitOfMeasure" length="200" nullable="true" comment="unit_of_measure"/>
     <column xsi:type="text" name="UsageCategory" nullable="true" comment="usage_category"/>
     <column xsi:type="text" name="Type" nullable="true" comment="usage_subcategory"/>
-    <column xsi:type="text" name="VariantCode" nullable="true" comment="variant_code"/>
+    <column xsi:type="varchar" name="VariantCode" length="200" nullable="true" comment="variant_code"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -1332,6 +1461,36 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_item_modifier_id"/>
     </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_NAVID">
+      <column name="nav_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_VARIANTCODE">
+      <column name="VariantCode"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_CODE">
+      <column name="Code"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_SUBCODE">
+      <column name="SubCode"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_TRIGGERCODE">
+      <column name="TriggerCode"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_UNITOFMEASURE">
+      <column name="UnitOfMeasure"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_SCOPEID">
+      <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_ISUPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ITEM_MODIFIER_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
@@ -1342,11 +1501,11 @@
     <column xsi:type="int" name="LineNo" padding="11" nullable="true" comment="line_no"/>
     <column xsi:type="int" name="Exclusion" padding="11" nullable="true" comment="lsc_exclusion"/>
     <column xsi:type="decimal" name="ExclusionPrice" scale="4" precision="20" nullable="true" comment="lsc_price_on_exclusion"/>
-    <column xsi:type="text" name="ItemNo" nullable="true" comment="no"/>
-    <column xsi:type="text" name="RecipeNo" nullable="true" comment="parent_item_no"/>
+    <column xsi:type="varchar" name="ItemNo" length="200" nullable="true" comment="no"/>
+    <column xsi:type="varchar" name="RecipeNo" length="200" nullable="true" comment="parent_item_no"/>
     <column xsi:type="decimal" name="QuantityPer" scale="4" precision="20" nullable="true" comment="quantity_per"/>
     <column xsi:type="text" name="ImageId" nullable="true" comment="retail_image_id"/>
-    <column xsi:type="text" name="UnitOfMeasure" nullable="true" comment="unit_of_measure_code"/>
+    <column xsi:type="varchar" name="UnitOfMeasure" length="200" nullable="true" comment="unit_of_measure_code"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -1361,6 +1520,27 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_item_recipe_id"/>
     </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_ITEMNO">
+      <column name="ItemNo"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_RECIPENO">
+      <column name="RecipeNo"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_UNITOFMEASURE">
+      <column name="UnitOfMeasure"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_SCOPEID">
+      <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_ISUPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_ITEM_RECIPE_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
