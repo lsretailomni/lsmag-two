@@ -702,6 +702,57 @@
             "LS_REPLICATION_REPL_ITEM_VARIANT_IDENTITY_VALUE": true
         }
     },
+    "ls_replication_repl_price": {
+        "column": {
+            "repl_price_id": true,
+            "ItemId": true,
+            "CurrencyCode": true,
+            "EndingDate": true,
+            "LineNumber": true,
+            "UnitPriceInclVat": true,
+            "MinimumQuantity": true,
+            "PriceInclVat": true,
+            "PriceListCode": true,
+            "Priority": true,
+            "SaleCode": true,
+            "SaleType": true,
+            "StartingDate": true,
+            "Status": true,
+            "UnitOfMeasure": true,
+            "UnitPrice": true,
+            "VariantId": true,
+            "VatBusPostingGrPrice": true,
+            "scope": true,
+            "scope_id": true,
+            "IsDeleted": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "identity_value": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true,
+            "StoreId": true,
+            "QtyPerUnitOfMeasure": true
+        },
+        "index": {
+            "LS_REPLICATION_REPL_PRICE_ITEMID": true,
+            "LS_REPLICATION_REPL_PRICE_VARIANTID": true,
+            "LS_REPLICATION_REPL_PRICE_STOREID": true,
+            "LS_REPLICATION_REPL_PRICE_QTYPERUNITOFMEASURE": true,
+            "LS_REPLICATION_REPL_PRICE_UNITOFMEASURE": true,
+            "LS_REPLICATION_REPL_PRICE_PRICELISTCODE": true,
+            "LS_REPLICATION_REPL_PRICE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_PRICE_PROCESSED": true,
+            "LS_REPLICATION_REPL_PRICE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_PRICE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_PRICE_IDENTITY_VALUE": true
+        }
+    },
     "ls_replication_repl_store": {
         "column": {
             "repl_store_id": true,
@@ -833,7 +884,6 @@
             "Description": true,
             "EndDate": true,
             "EndTime": true,
-            "OfferEndTime": true,
             "EndAfterMidnight": true,
             "FridayEndAfterMidnight": true,
             "FridayWithinBounds": true,
@@ -844,13 +894,14 @@
             "MondayEnd": true,
             "MondayStart": true,
             "nav_id": true,
+            "OfferEndTime": true,
+            "OfferStartTime": true,
             "SaturdayEndAfterMidnight": true,
             "SaturdayWithinBounds": true,
             "SaturdayEnd": true,
             "SaturdayStart": true,
             "StartDate": true,
             "StartTime": true,
-            "OfferStartTime": true,
             "SundayEndAfterMidnight": true,
             "SundayWithinBounds": true,
             "SundayEnd": true,
@@ -1105,48 +1156,6 @@
         "constraint": {
             "PRIMARY": true,
             "LS_REPLICATION_REPL_ITEM_RECIPE_IDENTITY_VALUE": true
-        }
-    },
-    "ls_replication_repl_price": {
-        "column": {
-            "repl_price_id": true,
-            "CurrencyCode": true,
-            "CustomerDiscountGroup": true,
-            "ItemId": true,
-            "ModifyDate": true,
-            "LoyaltySchemeCode": true,
-            "UnitPrice": true,
-            "QtyPerUnitOfMeasure": true,
-            "StoreId": true,
-            "UnitOfMeasure": true,
-            "UnitPriceInclVat": true,
-            "VariantId": true,
-            "scope": true,
-            "scope_id": true,
-            "IsDeleted": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "identity_value": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "index": {
-            "LS_REPLICATION_REPL_PRICE_ITEMID": true,
-            "LS_REPLICATION_REPL_PRICE_VARIANTID": true,
-            "LS_REPLICATION_REPL_PRICE_STOREID": true,
-            "LS_REPLICATION_REPL_PRICE_QTYPERUNITOFMEASURE": true,
-            "LS_REPLICATION_REPL_PRICE_UNITOFMEASURE": true,
-            "LS_REPLICATION_REPL_PRICE_SCOPE_ID": true,
-            "LS_REPLICATION_REPL_PRICE_PROCESSED": true,
-            "LS_REPLICATION_REPL_PRICE_IS_UPDATED": true,
-            "LS_REPLICATION_REPL_PRICE_ISDELETED": true
-        },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_PRICE_IDENTITY_VALUE": true
         }
     }
 }
