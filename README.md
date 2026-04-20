@@ -1,4 +1,4 @@
-# LS Ecommerce - Magento Integration (V2.10.0)
+# LS Ecommerce - Magento Integration (V2.11.0)
 
 ## Compatibility
 
