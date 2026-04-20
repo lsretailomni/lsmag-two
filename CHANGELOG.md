@@ -14,7 +14,6 @@ All notable changes to this project will be documented in this file.
 - Added displayed discount start and expiry date/time on promotions shown on the products page. [73801](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/73801)
 - Added in Hospitality, unavailable items and modifiers are now displayed in a grayed‑out state on category, product, and search pages in Magento to improve visibility and user awareness. [74249](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/74249)
 - Added Kitchen Order Status Page to Magento Classic Interface. [72844](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/72844)
-- Added Kitchen Order Status Page to Magento Classic Interface. [72844](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/72844)
 - Added auto refresh on kitchen order status. [72845](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/72845)
 - Added PHP 8.4 compatibility with Magento 2.4.8. [72850](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/72850)
 - Added data translation for modifiers. [67668](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/67668)
@@ -38,7 +37,7 @@ All notable changes to this project will be documented in this file.
 - Fixed order synchronization failures for orders with discount offers. [75676](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/75676)
 - Fixed issue with discount validator conditional load on checkout. [76306](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/76306)
 - Fixed from and to date handling in discount recommendations. [75516](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/75516)
-- Fixed: Order emails are now sent only after the Order Id number is generated. [75408](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/75408)
+- Fixed Order emails are sent only after the Order ID number is generated. [75408](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/75408)
 - Fixed kitchen status info display incase of multiple KOTs. [68869](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/68869)
 - Fixed discount offer triggers. [49314](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/49314)
 
