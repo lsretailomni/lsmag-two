@@ -71,14 +71,18 @@ class PostLoginObserver implements ObserverInterface
                 );
             }
             if (empty($this->contactHelper->getBasketUpdateChecking()) &&
-                $this->contactHelper->lsr->isLSR($this->contactHelper->lsr->getCurrentStoreId())
+                $this->contactHelper->lsr->isLSR(
+                    $this->contactHelper->lsr->getCurrentStoreId(),
+                    false,
+                    $this->lsr->getCustomerIntegrationOnFrontend()
+                )
             ) {
                 $contact = $this->contactHelper->getCustomerByUsernameOrEmailFromLsCentral(
                     $customer->getEmail(),
                     ContactSearchType::EMAIL
                 );
                 if (!empty($contact)) {
-                    $this->contactHelper->updateBasketAndWishlistAfterLogin($contact);
+                    $this->contactHelper->updateRequiredOneListAfterLogin($contact);
                 }
             } else {
                 $this->contactHelper->unsetBasketUpdateChecking();

@@ -112,7 +112,7 @@ class OperationGenerator extends AbstractOmniGenerator
 COMMENT;
         $content          = str_replace($execute_docblock, "$no_inspection\n$execute_docblock", $content);
         // USE SIMPLIFIED FULLY QUALIFIED NAME
-        $content = str_replace('execute(\\RequestInterface', 'execute(RequestInterface', $content);
+        $content = str_replace('execute(?\\RequestInterface', 'execute(?RequestInterface', $content);
         $content = str_replace(
             'implements Ls\\Omni\\Client\\OperationInterface',
             'implements OperationInterface',
@@ -162,7 +162,7 @@ CODE
         $method->setName('execute');
         $method->setParameter(ParameterGenerator::fromArray([
             'name'         => 'request',
-            'type'         => 'RequestInterface',
+            'type'         => '?RequestInterface',
             'defaultvalue' => null
         ]));
         // @codingStandardsIgnoreStart

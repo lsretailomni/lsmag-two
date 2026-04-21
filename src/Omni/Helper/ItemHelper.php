@@ -18,6 +18,8 @@ use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
+use Magento\Directory\Model\CurrencyFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -25,10 +27,12 @@ use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\Quote\Model\ResourceModel\Quote;
 use Magento\Quote\Model\ResourceModel\Quote\Item;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Useful helper functions for item
@@ -85,6 +89,16 @@ class ItemHelper extends AbstractHelper
     public $lsr;
 
     /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    public $storeManager;
+
+    /**
+     * @var \Magento\Directory\Model\CurrencyFactory
+     */
+    public $currencyFactory;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param ReplBarcodeRepository $barcodeRepository
@@ -97,6 +111,9 @@ class ItemHelper extends AbstractHelper
      * @param Quote $quoteResourceModel
      * @param QuoteFactory $quoteFactory
      * @param ProductLinkManagementInterface $productLinkManagement
+     * @param LSR $lsr
+     * @param StoreManagerInterface $storeManager
+     * @param CurrencyFactory $currencyFactory
      */
     public function __construct(
         Context $context,
@@ -111,7 +128,9 @@ class ItemHelper extends AbstractHelper
         Quote $quoteResourceModel,
         QuoteFactory $quoteFactory,
         ProductLinkManagementInterface $productLinkManagement,
-        LSR $lsr
+        LSR $lsr,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Directory\Model\CurrencyFactory $currencyFactory
     ) {
         parent::__construct($context);
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -126,6 +145,8 @@ class ItemHelper extends AbstractHelper
         $this->quoteFactory          = $quoteFactory;
         $this->productLinkManagement = $productLinkManagement;
         $this->lsr                   = $lsr;
+        $this->storeManager          = $storeManager;
+        $this->currencyFactory       = $currencyFactory;
     }
 
     /**
@@ -492,7 +513,7 @@ class ItemHelper extends AbstractHelper
     {
         if ($quote->getId()) {
             if (isset($basketData)) {
-                $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+                $pointDiscount  = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
                 $giftCardAmount = $quote->getLsGiftCardAmountUsed();
                 $quote->getShippingAddress()
                     ->setGrandTotal(
@@ -528,6 +549,7 @@ class ItemHelper extends AbstractHelper
      * @param $quoteItem
      * @param $unitPrice
      * @param int $type
+     * @throws NoSuchEntityException
      */
     public function setRelatedAmountsAgainstGivenQuoteItem($line, &$quoteItem, $unitPrice, $type = 1)
     {
@@ -569,14 +591,20 @@ class ItemHelper extends AbstractHelper
         $quoteItem->setCustomPrice($customPrice)
             ->setOriginalCustomPrice($customPrice)
             ->setTaxAmount($taxAmount)
-            ->setBaseTaxAmount($taxAmount)
+            ->setBaseTaxAmount($this->convertToBaseCurrency($taxAmount))
             ->setPriceInclTax($unitPrice)
-            ->setBasePriceInclTax($unitPrice)
+            ->setBasePriceInclTax($this->convertToBaseCurrency($unitPrice))
             ->setLsDiscountAmount($lsDiscountAmount)
             ->setRowTotal($type == 1 ? $netAmount : $rowTotal)
-            ->setBaseRowTotal($type == 1 ? $netAmount : $rowTotal)
+            ->setBaseRowTotal(
+                $type == 1 ? $this->convertToBaseCurrency($netAmount) :
+                    $this->convertToBaseCurrency($rowTotal)
+            )
             ->setRowTotalInclTax($type == 1 ? $amount : $rowTotalIncTax)
-            ->setBaseRowTotalInclTax($type == 1 ? $amount : $rowTotalIncTax);
+            ->setBaseRowTotalInclTax(
+                $type == 1 ? $this->convertToBaseCurrency($amount) :
+                    $this->convertToBaseCurrency($rowTotalIncTax)
+            );
     }
 
     /**
@@ -776,5 +804,77 @@ class ItemHelper extends AbstractHelper
         );
 
         return $this->isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure);
+    }
+
+    /**
+     * Convert to current store currency
+     *
+     * @param $price
+     * @param string $currentCurrencyCode
+     * @param string $baseCurrencyCode
+     * @return float|int
+     * @throws NoSuchEntityException|LocalizedException
+     */
+    public function convertToCurrentStoreCurrency($price, $currentCurrencyCode = null, $baseCurrencyCode = null)
+    {
+        if (!$currentCurrencyCode) {
+            $currentCurrencyCode = $this->storeManager->getStore()->getCurrentCurrency()->getCode();
+        }
+
+        if (!$baseCurrencyCode) {
+            $baseCurrencyCode = $this->storeManager->getStore()->getBaseCurrency()->getCode();
+        }
+
+        $rate = $this->currencyFactory->create()->load($baseCurrencyCode)->getAnyRate($currentCurrencyCode);
+        return $price * $rate;
+    }
+
+    /**
+     * Convert to base currency
+     *
+     * @param $price
+     * @param string $currentCurrencyCode
+     * @param string $baseCurrencyCode
+     * @return float|int
+     * @throws NoSuchEntityException|LocalizedException
+     */
+    public function convertToBaseCurrency($price, $currentCurrencyCode = null, $baseCurrencyCode = null)
+    {
+        if (!$currentCurrencyCode) {
+            $currentCurrencyCode = $this->storeManager->getStore()->getCurrentCurrency()->getCode();
+        }
+
+        if (!$baseCurrencyCode) {
+            $baseCurrencyCode = $this->storeManager->getStore()->getBaseCurrency()->getCode();
+        }
+
+        $rate = $this->currencyFactory->create()->load($currentCurrencyCode)->getAnyRate($baseCurrencyCode);
+        return $price * $rate;
+    }
+
+    /**
+     * Validate order lines array and set Service Item flag if them item is non-inventory.
+     *
+     * @param array $orderLinesArray
+     * @return void
+     */
+    public function checkAndUpdateServiceItems(&$orderLinesArray)
+    {
+        foreach ($orderLinesArray as $orderLine) {
+            if (!empty($orderLine->getVariantId())) {
+                continue;
+            }
+            $itemId  = $orderLine->getItemId();
+            $product = $this->getProductByIdentificationAttributes($itemId);
+            $typeId  = $product->getTypeId();
+            if (in_array($typeId, [
+                Type::TYPE_VIRTUAL,
+                Configurable::TYPE_CODE,
+                Grouped::TYPE_CODE,
+                \Magento\Downloadable\Model\Product\Type::TYPE_DOWNLOADABLE
+            ], true)) {
+                $orderLine->setServiceItem(true);
+            }
+        }
     }
 }

@@ -213,6 +213,7 @@ class ReplicationHelper extends AbstractHelper
             "StoreId",
             "QtyPerUnitOfMeasure",
             "UnitOfMeasure",
+            "PriceListCode",
             "scope_id"
         ],
         "ls_mag/replication/repl_inv_status"                 => ["ItemId", "VariantId", "StoreId", "scope_id"],
@@ -230,14 +231,11 @@ class ReplicationHelper extends AbstractHelper
             "scope_id"
         ],
         "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo", "UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/repl_item_recipe"                => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_item_recipe"                => ["RecipeNo", "LineNo", "scope_id"],
         "ls_mag/replication/repl_item_modifier"              => [
             "nav_id",
-            "VariantCode",
             "Code",
             "SubCode",
-            "TriggerCode",
-            "UnitOfMeasure",
             "scope_id"
         ],
         "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"],
@@ -1094,18 +1092,36 @@ class ReplicationHelper extends AbstractHelper
      */
     public function buildCriteriaGetDeletedOnly(array $filters, $pagesize = 100)
     {
-        $criteria = $this->searchCriteriaBuilder;
+        $this->searchCriteriaBuilder->setPageSize($pagesize);
+
+        $orFilters = [];
+
+        $filter1     = $this->filterBuilder
+            ->setField('is_updated')
+            ->setValue(1)
+            ->setConditionType('eq')
+            ->create();
+        $orFilters[] = $filter1;
+
+        $filter2     = $this->filterBuilder
+            ->setField('processed')
+            ->setValue(0)
+            ->setConditionType('eq')
+            ->create();
+        $orFilters[] = $filter2;
+
+        $filterGroup = $this->filterGroupBuilder
+            ->setFilters($orFilters)
+            ->create();
+
+        $this->searchCriteriaBuilder->setFilterGroups([$filterGroup]);
         if (!empty($filters)) {
             foreach ($filters as $filter) {
-                $criteria->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
+                $this->searchCriteriaBuilder->addFilter($filter['field'], $filter['value'], $filter['condition_type']);
             }
         }
-        $criteria->addFilter('IsDeleted', 1, 'eq');
-        $criteria->addFilter('is_updated', 1, 'eq');
-        if ($pagesize != -1) {
-            $criteria->setPageSize($pagesize);
-        }
-        return $criteria->create();
+        $this->searchCriteriaBuilder->addFilter('IsDeleted', 1, 'eq');
+        return $this->searchCriteriaBuilder->create();
     }
 
     /**
@@ -1611,7 +1627,7 @@ class ReplicationHelper extends AbstractHelper
                 $primaryTableColumnName2,
                 $groupColumns
             );
-        } else {
+        } elseif (!empty($primaryTableColumnName)) {
             $this->applyItemIdJoin($collection, 'main_table', $primaryTableColumnName, $groupColumns, $isItemCategory);
         }
         /** For Xdebug only to check the query */
@@ -3038,6 +3054,13 @@ class ReplicationHelper extends AbstractHelper
      * @param string $storeId
      * @return array
      */
+    /**
+     * Getting all available uom codes
+     *
+     * @param string $itemId
+     * @param string $storeId
+     * @return array
+     */
     public function getUomCodes($itemId, $storeId)
     {
         $filters = [
@@ -3056,7 +3079,11 @@ class ReplicationHelper extends AbstractHelper
         $searchCriteriaItem    = $this->buildCriteriaForDirect($itemFilters, -1);
         $purchaseUnitOfMeasure = null;
         $salesUnitOfMeasure    = null;
-        /** @var ReplItemUnitOfMeasure $items */
+        $uomMode               = $this->lsr->getStoreConfig(
+            LSR::SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT,
+            $storeId
+        );
+
         try {
             $items    = $this->replItemUomRepository->getList($searchCriteria)->getItems();
             $replItem = $this->itemRepository->getList($searchCriteriaItem)->getItems();
@@ -3066,18 +3093,26 @@ class ReplicationHelper extends AbstractHelper
             }
             foreach ($items as $item) {
                 $allowUom = true;
-                if ($purchaseUnitOfMeasure != $salesUnitOfMeasure && $item->getCode() == $purchaseUnitOfMeasure) {
-                    $allowUom = false;
-                }
-                if ($allowUom) {
-                    $uomDescription = $this->getUomDescription($item);
-                    /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $item */
 
+                if (!$uomMode) {
+                    if (($purchaseUnitOfMeasure != $salesUnitOfMeasure && $item->getCode() == $purchaseUnitOfMeasure) ||
+                        ($item->getEComSelection() == 1)) {
+                        $allowUom = false;
+                        $item->setData('IsDeleted', 1);
+                    }
+                } else {
+                    if ($item->getEComSelection() == 1) {
+                        $allowUom = false;
+                        $item->setData('IsDeleted', 1);
+                    }
+                }
+
+                if ($allowUom) {
+                    $uomDescription                    = $this->getUomDescription($item);
                     $itemUom[$itemId][$uomDescription] = $item->getCode();
                 } else {
                     $item->setData('processed_at', $this->getDateTime());
                     $item->setData('processed', 1);
-                    $item->setData('is_updated', 0);
                     $this->replItemUomRepository->save($item);
                 }
             }
@@ -3456,6 +3491,10 @@ class ReplicationHelper extends AbstractHelper
             }
         }
 
+        if ($parentStockItem->getStockId() !== 1) {
+            $childrenIsInStock = true;
+        }
+
         $parentStockItem
             ->setStockStatusChangedAuto(1)
             ->setStockStatusChangedAutomaticallyFlag(1)
@@ -3823,14 +3862,15 @@ class ReplicationHelper extends AbstractHelper
             $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, true, 'null');
         }
 
-        if ($storeId !== '' && $storeId !== 'global') {
+        if ($storeId !== '' && $storeId !== 'global' && $storeId !== 'all') {
             $searchCriteria = $searchCriteria->addFilter(
                 'store_id',
                 $storeId
             )->create();
-        } elseif ($storeId === 'global') {
+        } elseif ($storeId === 'global' || $storeId === 'all') {
             //add no store filter to fetch item id present in any store view
             $searchCriteria = $searchCriteria->create();
+            $this->lsr->setStoreId(0);
         } else {
             $searchCriteria = $searchCriteria->addFilter(
                 'store_id',
@@ -3985,5 +4025,46 @@ class ReplicationHelper extends AbstractHelper
         }
 
         return $variantIds;
+    }
+
+    /**
+     * Get products based on receipe ID and Sku
+     *
+     * @param $lsModifierRecipeIds
+     * @param null $sku
+     * @return Collection
+     */
+    public function getProductsByRecipeId($lsModifierRecipeIds, $sku = null)
+    {
+        $connection = $this->resource->getConnection();
+
+        $productOptionTable   = $connection->getTableName('catalog_product_option');
+        $optionTypeValueTable = $connection->getTableName('catalog_product_option_type_value');
+
+        $collection = $this->productCollectionFactory->create();
+        $collection->addAttributeToSelect('*');
+
+        $select = $collection->getSelect();
+
+        $select->join(
+            ['cpo' => $productOptionTable],
+            'e.entity_id = cpo.product_id',
+            []
+        );
+
+        // Add where condition for recipe ID
+        $select->where('cpo.ls_modifier_recipe_id IN (?)', $lsModifierRecipeIds);
+
+        if (!empty($sku)) {
+            $select->join(
+                ['optv' => $optionTypeValueTable],
+                'cpo.option_id = optv.option_id',
+                []
+            )->where('optv.sku = ?', $sku);
+        }
+
+        $query = $collection->getSelect()->__toString();
+
+        return $collection;
     }
 }

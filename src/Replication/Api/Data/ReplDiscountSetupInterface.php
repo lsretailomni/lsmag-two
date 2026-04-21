@@ -297,6 +297,17 @@ interface ReplDiscountSetupInterface
     public function getMemberAttribute();
 
     /**
+     * @param string $MemberAttributeValue
+     * @return $this
+     */
+    public function setMemberAttributeValue($MemberAttributeValue);
+
+    /**
+     * @return string
+     */
+    public function getMemberAttributeValue();
+
+    /**
      * @param float $MemberPoints
      * @return $this
      */

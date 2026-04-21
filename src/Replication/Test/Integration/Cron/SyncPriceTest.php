@@ -124,7 +124,8 @@ class SyncPriceTest extends AbstractTaskTest
         $simpleItemPrice->addData(
             [
                 'UnitPriceInclVat' => '10.0000',
-                'is_updated' => 1
+                'is_updated' => 1,
+                'Status' => 'Active'
             ]
         );
 

@@ -67,7 +67,7 @@ class GiftCardGetHistory extends AbstractOperation
      * @param GiftCardGetHistoryRequest $request
      * @return ResponseInterface|GiftCardGetHistoryResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

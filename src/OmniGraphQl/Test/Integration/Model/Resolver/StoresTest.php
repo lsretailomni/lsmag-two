@@ -2,7 +2,7 @@
 
 namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver;
 
-use Ls\Omni\Test\Fixture\FlatDataReplication;
+use \Ls\Omni\Test\Fixture\FlatDataReplication;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use Ls\Replication\Cron\ReplEcommStoresTask;
 use Magento\Store\Model\ScopeInterface;
@@ -15,6 +15,17 @@ use Magento\TestFramework\Fixture\DataFixture;
 class StoresTest extends GraphQlTestBase
 {
 
+    #[
+        AppArea('graphql'),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommStoresTask::class,
+                'scope'   => ScopeInterface::SCOPE_WEBSITE
+            ],
+            as: 'stores'
+        )
+    ]
     /**
      * @magentoAppIsolation enabled
      */

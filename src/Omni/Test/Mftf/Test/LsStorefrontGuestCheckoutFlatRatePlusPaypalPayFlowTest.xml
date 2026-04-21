@@ -15,8 +15,11 @@
             <magentoCLI command="config:set checkout/options/enable_guest_checkout_login 1" stepKey="EnablingGuestCheckoutLogin"/>
             <magentoCLI command="config:set carriers/clickandcollect/payment_option payflowpro,ls_payment_method_pay_at_store" stepKey="EnablingRequiredPaymentMethods"/>
 
-            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
+            </actionGroup>
             <actionGroup ref="LsSetRequiredPaypalPayflowConfigsActionGroup" stepKey="setRequiredPaypalflowConfigs"/>
 
             <!--Create test data.-->

@@ -2,6 +2,7 @@
 
 namespace Ls\OmniGraphQl\Model\Resolver\Stock;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -16,41 +17,32 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 class ItemAvailabilityOutput implements ResolverInterface
 {
     /**
-     * @var StockHelper
-     */
-    public $stockHelper;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    public $productRepository;
-
-    /**
-     * @var DataHelper
-     */
-    public $dataHelper;
-
-    /**
      * @param StockHelper $stockHelper
      * @param ProductRepositoryInterface $productRepository
      * @param DataHelper $dataHelper
+     * @param LSR $lsr
      */
     public function __construct(
-        StockHelper $stockHelper,
-        ProductRepositoryInterface $productRepository,
-        DataHelper $dataHelper
+        public StockHelper $stockHelper,
+        public ProductRepositoryInterface $productRepository,
+        public DataHelper $dataHelper,
+        public LSR $lsr
     ) {
-        $this->stockHelper       = $stockHelper;
-        $this->productRepository = $productRepository;
-        $this->dataHelper        = $dataHelper;
     }
     /**
      * @inheritdoc
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
-        $parentProduct = null;
+        if ($this->lsr->getCurrentIndustry($this->lsr->getCurrentStoreId()) == LSR::LS_INDUSTRY_VALUE_HOSPITALITY ||
+            !$this->lsr->inventoryLookupBeforeAddToCartEnabled()
+        ) {
+            return [
+                'stores' => [],
+            ];
+        }
 
+        $parentProduct = null;
         if (!empty($args['parent_sku'])) {
             try {
                 $parentProduct = $this->productRepository->get($args['parent_sku']);

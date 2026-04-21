@@ -2,6 +2,10 @@
 <actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
     <actionGroup name="LsGuestCheckoutFillingShippingFieldsPlusClickNCollectActionGroup" extends="GuestCheckoutFillingShippingSectionActionGroup">
+        <waitForElementClickable selector="{{CheckoutShippingMethodsSection.checkShippingMethodByName('Click And Collect')}}" stepKey="waitForShippingMethod1" before="waitForNextButton"/>
+        <click selector="{{CheckoutShippingMethodsSection.checkShippingMethodByName('Click And Collect')}}" stepKey="selectShippingMethod1" before="waitForNextButton"/>
+        <waitForPageLoad stepKey="waitForShippingLoading1" before="waitForNextButton"/>
+
         <waitForElementVisible selector=".cnc-stores-container" time="30" stepKey="waitForClickNCollectStoresContainer" before="waitForNextButton"/>
         <grabMultiple selector=".cnc-stores-container .cnc-stores-dropdown .block-dropdown .dropdown-content-wrapper" stepKey="grabClickNCollectStoresFromDropdown" before="waitForNextButton"/>
         <assertGreaterOrEquals stepKey="assertClickNCollectStoresFromDropdown" before="waitForNextButton">

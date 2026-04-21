@@ -184,10 +184,16 @@ class GetDiscountsOutput implements ResolverInterface
     /**
      * @inheritdoc
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         if (empty($args['item_id'])) {
             throw new GraphQlInputException(__('Required parameter "item_id" is missing'));
+        }
+
+        if (!empty($context->getUserId())) {
+            $websiteId       = (int)$context->getExtensionAttributes()->getStore()->getWebsiteId();
+            $userId          = $context->getUserId();
+            $this->dataHelper->setCustomerValuesInSession($userId, $websiteId);
         }
 
         $itemId     = $args['item_id'];

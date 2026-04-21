@@ -53,7 +53,11 @@ class Subtotal
         ShippingAssignmentInterface $shippingAssignment,
         Total $total
     ) {
-        if (!$this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if (!$this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getBasketIntegrationOnFrontend()
+        )) {
             return $proceed($quote, $shippingAssignment, $total);
         }
 

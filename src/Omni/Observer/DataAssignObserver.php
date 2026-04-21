@@ -6,6 +6,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Omni\Helper\BasketHelper;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -50,12 +51,18 @@ class DataAssignObserver implements ObserverInterface
     private $quoteIdToMaskedQuoteId;
 
     /**
+     * @var CheckoutSession
+     */
+    private $checkoutSession;
+
+    /**
      * @param Data $helper
      * @param BasketHelper $basketHelper
      * @param StoreHelper $storeHelper
      * @param Http $request
      * @param LSR $lsr
      * @param QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
+     * @param CheckoutSession $checkoutSession
      */
     public function __construct(
         Data $helper,
@@ -63,7 +70,8 @@ class DataAssignObserver implements ObserverInterface
         StoreHelper $storeHelper,
         Http $request,
         LSR $lsr,
-        QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
+        QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId,
+        CheckoutSession $checkoutSession
     ) {
         $this->helper                 = $helper;
         $this->basketHelper           = $basketHelper;
@@ -71,6 +79,7 @@ class DataAssignObserver implements ObserverInterface
         $this->request                = $request;
         $this->lsr                    = $lsr;
         $this->quoteIdToMaskedQuoteId = $quoteIdToMaskedQuoteId;
+        $this->checkoutSession        = $checkoutSession;
     }
 
     /***
@@ -220,16 +229,19 @@ class DataAssignObserver implements ObserverInterface
             $quote
         );
 
-        if (!$stockCollection) {
-            $message = __('Oops! Unable to do stock lookup currently.');
-        }
-        if ($stockCollection) {
-            foreach ($stockCollection as $stock) {
-                if (!$stock['status']) {
-                    $message = __('Unable to use selected shipping method since some or all of the cart items are not available in selected store.');
+        if (empty($this->checkoutSession->getNoManageStock())) {
+            if (!$stockCollection) {
+                $message = __('Oops! Unable to do stock lookup currently.');
+            }
+            if ($stockCollection) {
+                foreach ($stockCollection as $stock) {
+                    if (!$stock['status']) {
+                        $message = __('Unable to use selected shipping method since some or all of the cart items are not available in selected store.');
+                    }
                 }
             }
         }
+
         return $message;
     }
 

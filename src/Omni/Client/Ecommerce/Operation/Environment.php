@@ -67,7 +67,7 @@ class Environment extends AbstractOperation
      * @param EnvironmentRequest $request
      * @return ResponseInterface|EnvironmentResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

@@ -67,7 +67,7 @@ class OrderHospCreate extends AbstractOperation
      * @param OrderHospCreateRequest $request
      * @return ResponseInterface|OrderHospCreateResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

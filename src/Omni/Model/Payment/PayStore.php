@@ -178,10 +178,10 @@ class PayStore extends AbstractExtensibleModel implements
      * @param ScopeConfigInterface $scopeConfig
      * @param DataObject $dataObject
      * @param Logger $logger
+     * @param DirectoryHelper $directory
      * @param AbstractResource|null $resource
      * @param AbstractDb|null $resourceCollection
      * @param array $data
-     * @param DirectoryHelper|null $directory
      */
     public function __construct(
         Context $context,
@@ -193,8 +193,8 @@ class PayStore extends AbstractExtensibleModel implements
         DataObject $dataObject,
         Logger $logger,
         DirectoryHelper $directory,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct(
@@ -606,7 +606,7 @@ class PayStore extends AbstractExtensibleModel implements
      * @return bool|mixed
      * @throws LocalizedException
      */
-    public function isAvailable(CartInterface $quote = null)
+    public function isAvailable(?CartInterface $quote = null)
     {
         if (!$this->isActive($quote ? $quote->getStoreId() : null)) {
             return false;

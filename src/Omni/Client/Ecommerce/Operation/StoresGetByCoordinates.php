@@ -67,7 +67,7 @@ class StoresGetByCoordinates extends AbstractOperation
      * @param StoresGetByCoordinatesRequest $request
      * @return ResponseInterface|StoresGetByCoordinatesResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

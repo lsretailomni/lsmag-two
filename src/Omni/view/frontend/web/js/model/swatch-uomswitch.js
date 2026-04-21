@@ -7,6 +7,7 @@ define([
 
     return function (targetModule) {
         var updatePrice = targetModule.prototype._UpdatePrice;
+        var _UpdateOnClick = targetModule.prototype._OnClick;
         targetModule.prototype.configurableUom = $('div.lsr_uom .swatch-attribute-selected-option').html();
         var updatePriceWrapper = wrapper.wrap(updatePrice, function (original) {
             var allSelected = true;
@@ -27,7 +28,13 @@ define([
             return original();
         });
 
+        var _UpdateOnClickWrapper = wrapper.wrap(_UpdateOnClick, function (original, $this, widget) {
+            original($this, widget);
+            $('input[name="selected_configurable_option"]').val(widget.getProductId());
+        });
+
         targetModule.prototype._UpdatePrice = updatePriceWrapper;
+        targetModule.prototype._OnClick = _UpdateOnClickWrapper;
         return targetModule;
     };
 });

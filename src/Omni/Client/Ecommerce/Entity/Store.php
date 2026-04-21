@@ -21,6 +21,11 @@ class Store extends Entity
     protected $HospSalesTypes = null;
 
     /**
+     * @property ArrayOfHospitalityType $HospTypes
+     */
+    protected $HospTypes = null;
+
+    /**
      * @property ArrayOfImageView $Images
      */
     protected $Images = null;
@@ -174,6 +179,24 @@ class Store extends Entity
     public function getHospSalesTypes()
     {
         return $this->HospSalesTypes;
+    }
+
+    /**
+     * @param ArrayOfHospitalityType $HospTypes
+     * @return $this
+     */
+    public function setHospTypes($HospTypes)
+    {
+        $this->HospTypes = $HospTypes;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfHospitalityType
+     */
+    public function getHospTypes()
+    {
+        return $this->HospTypes;
     }
 
     /**

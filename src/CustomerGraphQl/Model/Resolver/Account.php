@@ -42,7 +42,7 @@ class Account implements ResolverInterface
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         return  $this->dataHelper->getMembersInfo($context);
     }

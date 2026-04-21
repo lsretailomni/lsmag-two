@@ -67,7 +67,7 @@ class GetPointRate extends AbstractOperation
      * @param GetPointRateRequest $request
      * @return ResponseInterface|GetPointRateResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

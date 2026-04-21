@@ -6,7 +6,9 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntriesGetByCardIdResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -83,14 +85,21 @@ class History extends \Magento\Sales\Block\Order\History
     }
 
     /**
-     * @return array|bool|ArrayOfSalesEntry|Collection|null
+     * Get order history
+     *
+     * @return array|bool|ArrayOfSalesEntry|SalesEntriesGetByCardIdResponse|ResponseInterface|Collection
+     * @throws NoSuchEntityException
      */
     public function getOrderHistory()
     {
         /*
         * Adding condition to only process if LSR is enabled.
         */
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getCustomerIntegrationOnFrontend()
+        )) {
             $response = [];
             $orders   = $this->orderHelper->getCurrentCustomerOrderHistory();
             if ($orders) {
@@ -113,6 +122,7 @@ class History extends \Magento\Sales\Block\Order\History
      * @param $storeId
      * @param $orderType
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function getFormattedPrice($amount, $currency = null, $storeId = null, $orderType = null)
     {
@@ -142,6 +152,8 @@ class History extends \Magento\Sales\Block\Order\History
     }
 
     /**
+     * Get order view url
+     *
      * @param object $order
      * @param null $magOrder
      * @return string
@@ -152,7 +164,11 @@ class History extends \Magento\Sales\Block\Order\History
         /*
         * Adding condition to only process if LSR is enabled.
         */
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getCustomerIntegrationOnFrontend()
+        )) {
             if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
                 // This condition is added to support viewing of orders created by POS
                 if (!empty($magOrder)) {
@@ -260,5 +276,16 @@ class History extends \Magento\Sales\Block\Order\History
     public function getOmniVersion()
     {
         return $this->lsr->getOmniVersion();
+    }
+
+    /**
+     * Register magento order in registry as current_mag_order
+     *
+     * @param $value
+     * @return void
+     */
+    public function registerValueInRegistry($value)
+    {
+        $this->orderHelper->registerGivenValueInRegistry('current_mag_order', $value);
     }
 }

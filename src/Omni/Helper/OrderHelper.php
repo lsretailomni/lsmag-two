@@ -13,7 +13,6 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
-use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Locale\ConfigInterface;
@@ -124,12 +123,7 @@ class OrderHelper extends AbstractHelper
     /**
      * @var mixed
      */
-    private $currentOrder;
-
-    /**
-     * @var mixed
-     */
-    private $storeData;
+    public $currentOrder;
 
     /**
      *
@@ -266,6 +260,12 @@ class OrderHelper extends AbstractHelper
                 ->setContactAddress($contactAddress)
                 ->setShipToAddress($shipToAddress)
                 ->setStoreId($storeId);
+
+            if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
+                $oneListCalculateResponse->setCurrencyFactor($this->loyaltyHelper->getPointRate($order->getStoreId(), null, true));
+                $oneListCalculateResponse->setCurrency($order->getOrderCurrencyCode());
+            }
+
             if ($isClickCollect) {
                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
             } else {
@@ -288,6 +288,8 @@ class OrderHelper extends AbstractHelper
                 $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
             }
             $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+            $this->basketHelper->getItemHelper()->checkAndUpdateServiceItems($orderLinesArray);
+
             //For click and collect we need to remove shipment charge orderline
             //For flat shipment it will set the correct shipment value into the order
             $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
@@ -419,7 +421,10 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Update shipping amount to shipment order line
+     *
      * @param $orderLines
      * @param $order
      * @return mixed
@@ -432,12 +437,18 @@ class OrderHelper extends AbstractHelper
         $shippingAmount     = $order->getShippingInclTax();
 
         if (isset($shipmentTaxPercent) && $shippingAmount > 0) {
+            // @codingStandardsIgnoreLine
+            $shipmentOrderLine = new Entity\OrderLine();
+            $shipmentOrderLine->setPrice($shippingAmount);
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
-            // @codingStandardsIgnoreLine
-            $shipmentOrderLine = new Entity\OrderLine();
-            $shipmentOrderLine->setPrice($shippingAmount)
+
+            if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
+                $shipmentOrderLine->setValidateTax(1);
+            }
+
+            $shipmentOrderLine
                 ->setAmount($shippingAmount)
                 ->setNetPrice($netPrice)
                 ->setNetAmount($netPrice)
@@ -445,6 +456,7 @@ class OrderHelper extends AbstractHelper
                 ->setItemId($shipmentFeeId)
                 ->setLineType(Entity\Enum\LineType::ITEM)
                 ->setQuantity(1)
+                ->setServiceItem(true)
                 ->setDiscountAmount($order->getShippingDiscountAmount());
             array_push($orderLines, $shipmentOrderLine);
         }
@@ -498,7 +510,8 @@ class OrderHelper extends AbstractHelper
             $method = 'setAddress' . strval($i + 1);
             $omniAddress->$method($street);
         }
-        $region = $magentoAddress->getRegion() ? substr($magentoAddress->getRegion(), 0, 30) : null;
+        $region = $magentoAddress->getRegionCode() ??
+            ($magentoAddress->getRegion() ? substr($magentoAddress->getRegion(), 0, 30) : null);
         $omniAddress
             ->setCity($magentoAddress->getCity())
             ->setCountry($magentoAddress->getCountryId())
@@ -561,7 +574,7 @@ class OrderHelper extends AbstractHelper
             // @codingStandardsIgnoreEnd
             //default values for all payment typoes.
             $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
-                ->setCurrencyFactor($order->getBaseToOrderRate())
+                ->setCurrencyFactor(0)
                 ->setLineNumber('1')
                 ->setExternalReference($order->getIncrementId())
                 ->setAmount($order->getGrandTotal());
@@ -588,17 +601,18 @@ class OrderHelper extends AbstractHelper
 
         if ($order->getLsPointsSpent()) {
             $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
-            $pointRate    = $this->loyaltyHelper->getPointRate();
+            $pointDiscount = $this->loyaltyHelper->getLsPointsDiscount($order->getLsPointsSpent(), true);
+            $pointRate    = 0;
             // @codingStandardsIgnoreStart
             $orderPaymentLoyalty = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
             //default values for all payment types.
             $orderPaymentLoyalty->setCurrencyCode('LOY')
-                ->setCurrencyFactor($pointRate)
+                ->setCurrencyFactor(0)
                 ->setLineNumber('2')
                 ->setCardNumber($cardId)
                 ->setExternalReference($order->getIncrementId())
-                ->setAmount($order->getLsPointsSpent())
+                ->setAmount($pointDiscount)
                 ->setPreApprovedValidDate($preApprovedDate)
                 ->setPaymentType(Entity\Enum\PaymentType::PAYMENT)
                 ->setTenderType($tenderTypeId);
@@ -1050,16 +1064,18 @@ class OrderHelper extends AbstractHelper
         $filterOptions = true,
         $customerId = 0,
         $sortOrder = null,
-        $isOrderEdit = false
+        $isOrderEdit = false,
+        $websiteId = null
     ) {
-        $orders    = null;
-        $store     = $this->storeManager->getStore($storeId);
-        $websiteId = $store->getWebsiteId();
+        $orders        = null;
+        $orderStatuses = null;
         try {
-            $orderStatuses   = $this->lsr->getWebsiteConfig(
-                LSR::LSR_RESTRICTED_ORDER_STATUSES,
-                $websiteId
-            );
+            if ($websiteId) {
+                $orderStatuses = $this->lsr->getWebsiteConfig(
+                    LSR::LSR_RESTRICTED_ORDER_STATUSES,
+                    $websiteId
+                );
+            }
             $criteriaBuilder = $this->basketHelper->getSearchCriteriaBuilder();
 
             if ($filterOptions) {
@@ -1068,6 +1084,10 @@ class OrderHelper extends AbstractHelper
                 }
 
                 $criteriaBuilder->addFilter('document_id', null, 'null');
+            }
+
+            if ($storeId !== null) {
+                $criteriaBuilder->addFilter('store_id', $storeId, 'eq');
             }
 
             if ($customerId) {
@@ -1336,9 +1356,14 @@ class OrderHelper extends AbstractHelper
             $websiteId
         );
 
-        $status = $order->getStatus();
+        $status               = $order->getStatus();
+        $paymentMethod        = $order->getPayment()->getMethodInstance()->getCode();
+        $noPaymentLineMethods = $this->paymentLineNotRequiredPaymentMethods($order);
 
-        $check = empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
+        $check = empty($orderStatuses) ||
+            !(in_array($status, explode(',', $orderStatuses))) ||
+            in_array($paymentMethod, $noPaymentLineMethods);
+
         return $check;
     }
 
@@ -1349,12 +1374,31 @@ class OrderHelper extends AbstractHelper
      * @param $amount
      * @param $currency
      * @param $storeId
-     * @param $orderType
+     * @param null $orderType
      * @return mixed
+     * @throws NoSuchEntityException
      */
-    public function getPriceWithCurrency($priceCurrency, $amount, $currency, $storeId, $orderType = null)
-    {
-        $currencyObject = null;
+    public function getPriceWithCurrency(
+        $priceCurrency,
+        $amount,
+        $currency,
+        $storeId,
+        $orderType = null
+    ) {
+        $magentoOrder             = $this->getGivenValueFromRegistry('current_mag_order');
+        $currencyObject           = null;
+        $currentStoreCurrencyCode = $this->storeManager->getStore()->getCurrentCurrency()->getCode();
+
+        if ($magentoOrder) {
+            if ($magentoOrder->getOrderCurrencyCode() !== $currentStoreCurrencyCode) {
+                $amount = $this->basketHelper->getItemHelper()->convertToCurrentStoreCurrency(
+                    $amount,
+                    $currentStoreCurrencyCode,
+                    $magentoOrder->getOrderCurrencyCode()
+                );
+            }
+            $currency = $currentStoreCurrencyCode;
+        }
 
         if (empty($currency) && empty($storeId) && !$this->currentOrder) {
             $this->currentOrder = $this->getGivenValueFromRegistry('current_order');

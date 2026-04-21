@@ -228,6 +228,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                         ->setLsGiftCardPin(null)
                         ->setLsGiftCardCnyFactor(null)
                         ->setLsGiftCardCnyCode(null)
+                        ->setLsGiftCardAmountUsed($giftCardAmount)
                         ->save();
                 }
                 $this->messageManager->addSuccessMessage(__('You have successfully cancelled the gift card.'));

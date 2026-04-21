@@ -26,6 +26,11 @@ class MemberContact extends Entity
     protected $Cards = null;
 
     /**
+     * @property ArrayOfProfile $MemberAttributes
+     */
+    protected $MemberAttributes = null;
+
+    /**
      * @property ArrayOfNotification $Notifications
      */
     protected $Notifications = null;
@@ -204,6 +209,24 @@ class MemberContact extends Entity
     public function getCards()
     {
         return $this->Cards;
+    }
+
+    /**
+     * @param ArrayOfProfile $MemberAttributes
+     * @return $this
+     */
+    public function setMemberAttributes($MemberAttributes)
+    {
+        $this->MemberAttributes = $MemberAttributes;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfProfile
+     */
+    public function getMemberAttributes()
+    {
+        return $this->MemberAttributes;
     }
 
     /**

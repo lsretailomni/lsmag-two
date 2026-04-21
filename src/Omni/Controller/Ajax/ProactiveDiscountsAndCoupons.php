@@ -15,10 +15,6 @@ use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\RedirectFactory;
 
-/**
- * Class ProactiveDiscountsAndCoupons
- * @package Ls\Omni\Controller\Ajax
- */
 class ProactiveDiscountsAndCoupons implements HttpGetActionInterface
 {
 
@@ -89,12 +85,7 @@ class ProactiveDiscountsAndCoupons implements HttpGetActionInterface
         $resultPage        = $this->resultPageFactory->create();
         $currentProductSku = $this->request->getParam('currentProduct');
         $data              = ['productSku' => $currentProductSku];
-        $blockCoupons      = $resultPage->getLayout()
-            ->createBlock(Proactive::class)
-            ->setTemplate('Ls_Omni::product/view/coupons.phtml')
-            ->setData('data', $data)
-            ->toHtml();
-        $data              = array_merge($data, ['coupons' => $blockCoupons]);
+
         $block             = $resultPage->getLayout()
             ->createBlock(Proactive::class)
             ->setTemplate('Ls_Omni::product/view/proactive.phtml')

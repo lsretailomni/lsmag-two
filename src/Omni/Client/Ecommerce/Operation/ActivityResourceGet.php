@@ -67,7 +67,7 @@ class ActivityResourceGet extends AbstractOperation
      * @param ActivityResourceGetRequest $request
      * @return ResponseInterface|ActivityResourceGetResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

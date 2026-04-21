@@ -26,7 +26,7 @@ class Operation
      * @param Element|null $response
      * @throws \Exception
      */
-    public function __construct($name, Element $request, Element $response = null)
+    public function __construct($name, Element $request, ?Element $response = null)
     {
         $this->name        = $name;
         $this->request     = $request;

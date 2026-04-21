@@ -5,14 +5,16 @@ namespace Ls\Omni\Block\Product\View\Discount;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Helper\ContactHelper;
+use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Replication\Api\ReplDiscountValidationRepositoryInterface;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Helper\Data;
@@ -92,6 +94,16 @@ class Proactive extends Template
     public $contactHelper;
 
     /**
+     * @var ReplDiscountValidationRepositoryInterface
+     */
+    public $discountValidationRepository;
+
+    /**
+     * @var ReplicationHelper
+     */
+    public $replicationHelper;
+
+    /**
      * @param Template\Context $context
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
@@ -105,6 +117,8 @@ class Proactive extends Template
      * @param LoggerInterface $logger
      * @param Data $catalogHelper
      * @param View $productBlock
+     * @param ReplDiscountValidationRepositoryInterface $discountValidationRepository
+     * @param ReplicationHelper $replicationHelper
      * @param array $data
      */
     public function __construct(
@@ -121,21 +135,38 @@ class Proactive extends Template
         LoggerInterface $logger,
         Data $catalogHelper,
         View $productBlock,
+        ReplDiscountValidationRepositoryInterface $discountValidationRepository,
+        ReplicationHelper $replicationHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->lsr               = $lsr;
-        $this->loyaltyHelper     = $loyaltyHelper;
-        $this->itemHelper        = $itemHelper;
-        $this->contactHelper     = $contactHelper;
-        $this->customerFactory   = $customerFactory;
-        $this->storeManager      = $storeManager;
-        $this->timeZoneInterface = $timeZoneInterface;
-        $this->scopeConfig       = $scopeConfig;
-        $this->urlBuilder        = $urlBuilder;
-        $this->logger            = $logger;
-        $this->catalogHelper     = $catalogHelper;
-        $this->productBlock      = $productBlock;
+        $this->lsr                          = $lsr;
+        $this->loyaltyHelper                = $loyaltyHelper;
+        $this->itemHelper                   = $itemHelper;
+        $this->contactHelper                = $contactHelper;
+        $this->customerFactory              = $customerFactory;
+        $this->storeManager                 = $storeManager;
+        $this->timeZoneInterface            = $timeZoneInterface;
+        $this->scopeConfig                  = $scopeConfig;
+        $this->urlBuilder                   = $urlBuilder;
+        $this->logger                       = $logger;
+        $this->catalogHelper                = $catalogHelper;
+        $this->productBlock                 = $productBlock;
+        $this->discountValidationRepository = $discountValidationRepository;
+        $this->replicationHelper            = $replicationHelper;
+    }
+
+    /**
+     * Return discounts recommendation only if we are doing basket calculation on frontend
+     *
+     * @return string
+     */
+    public function toHtml()
+    {
+        if (!$this->lsr->getBasketIntegrationOnFrontend()) {
+            return '';
+        }
+        return parent::toHtml();
     }
 
     /**
@@ -153,14 +184,12 @@ class Proactive extends Template
             if (!is_array($response)) {
                 $response = [$response];
             }
-            $tempArray = [];
             foreach ($response as $key => $responseData) {
-                $uniqueKey = $responseData->getId();
-                if (!in_array($uniqueKey, $tempArray, true)) {
-                    $tempArray[] = $uniqueKey;
-                    continue;
+                if (!empty($responseData->getMemberAttribute())
+                    && !empty($responseData->getMemberAttributeValue())
+                ) {
+                    unset($response[$key]);
                 }
-                unset($response[$key]);
             }
 
             return $response;
@@ -185,9 +214,13 @@ class Proactive extends Template
 
                 foreach ($itemId as $id) {
                     $publishedOffers = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $id);
-
+                    if (!is_array($publishedOffers)) {
+                        continue;
+                    }
                     foreach ($publishedOffers as $publishedOffer) {
-                        $response[$publishedOffer->getOfferId()] = $publishedOffer;
+                        if ($publishedOffer->getCode() == OfferDiscountType::COUPON) {
+                            $response[$publishedOffer->getOfferId()] = $publishedOffer;
+                        }
                     }
                 }
 
@@ -207,6 +240,8 @@ class Proactive extends Template
      * @param ProactiveDiscount $discount
      * @return string
      * @throws NoSuchEntityException
+     * @throws \DateException
+     * @throws \DateMalformedStringException
      */
     // @codingStandardsIgnoreLine
     public function getFormattedDescriptionDiscount(
@@ -236,6 +271,10 @@ class Proactive extends Template
             $discountPercentage = number_format((float)$discount->getPercentage(), 2, '.', '');
             $discountText       = __('Avail %1 Off ', $discountPercentage . '%') . '';
         }
+        if ($discount->getPeriodId()) {
+            $this->getDiscountValidityDatesById($discount->getPeriodId(), $description);
+        }
+
         if ($discount->getItemIds()) {
             $itemIds = $discount->getItemIds()->getString();
 
@@ -252,7 +291,6 @@ class Proactive extends Template
             $popupLink    = '';
             $popupHtml    = '';
             $productsData = [];
-            $productHtml  = '';
             if (!empty($itemIds)) {
                 $productsData = $this->itemHelper->getProductsInfoByItemIds($itemIds);
             }
@@ -318,6 +356,85 @@ class Proactive extends Template
     }
 
     /**
+     * Get discount validity dates by id
+     *
+     * @param $validationPeriodId
+     * @param $description
+     * @return mixed
+     * @throws NoSuchEntityException
+     * @throws \DateException
+     * @throws \DateMalformedStringException
+     */
+    public function getDiscountValidityDatesById($validationPeriodId, &$description)
+    {
+        $startDate = $endDate = $startTime = $endTime = "";
+        $filters   = [
+            ['field' => 'scope_id', 'value' => $this->lsr->getCurrentWebsiteId(), 'condition_type' => 'eq'],
+            [
+                'field'          => 'nav_id',
+                'value'          => $validationPeriodId,
+                'condition_type' => 'eq'
+            ]
+        ];
+        $criteria               = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+        $replDiscountValidation = $this->discountValidationRepository->getList($criteria);
+        $items                  = $replDiscountValidation->getItems();
+        $validationPeriod       = reset($items);
+        if ($validationPeriod) {
+            $startDate = $validationPeriod->getStartDate();
+            $endDate   = $validationPeriod->getEndDate();
+
+            $startTime = ($validationPeriod->getOfferStartTime())
+                ? (new \DateTime($validationPeriod->getOfferStartTime()))->format('h:i:s A')
+                : "00:00:00";
+            $endTime   = ($validationPeriod->getOfferEndTime())
+                ? (new \DateTime($validationPeriod->getOfferEndTime()))->format('h:i:s A')
+                : "11:59:00 PM";
+        }
+
+        if ($startDate) {
+            $input      = $startDate . ' ' . $startTime;
+            $formattedStartDate = $this->getFormattedDateTime($input);
+            $description[] = "
+        <span class='coupon-expiration-date-label discount-label'>" . __('From :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $formattedStartDate . '</span>';
+        }
+
+        if ($endDate) {
+            $input      = $endDate . ' ' . $endTime;
+            $formattedEndDate = $this->getFormattedDateTime($input);
+            $description[] = "
+        <span class='coupon-expiration-date-label discount-label'>" . __('To :') . "</span>
+        <span class='coupon-expiration-date-value discount-value'>" . $formattedEndDate .'</span>';
+        }
+
+        return $description;
+    }
+
+    /**
+     * Format date time
+     *
+     * @param $input
+     * @return string
+     */
+    public function getFormattedDateTime($input)
+    {
+        try {
+            $format  = $this->scopeConfig->getValue(
+                LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                $this->lsr->getActiveWebStore()
+            );
+            $dateObj = new \DateTime($input, new \DateTimeZone('UTC'));
+            return $dateObj->format($format);
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+
+        return $input;
+    }
+
+    /**
      * Get mix and match product limit
      *
      * @return string
@@ -343,14 +460,14 @@ class Proactive extends Template
         if ($coupon->getDetails()) {
             $description[] = "<span class='coupon-details'>" . $coupon->getDetails() . '</span>';
         }
-        if ($coupon->getCode() != DiscountType::PROMOTION) {
+        if ($coupon->getCode() != OfferDiscountType::PROMOTION) {
             if ($coupon->getExpirationDate()) {
                 $description[] = "
         <span class='coupon-expiration-date-label discount-label'>" . __('Expiry :') . "</span>
         <span class='coupon-expiration-date-value discount-value'>" .
                     $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . '</span>';
             }
-            if ($coupon->getOfferId()) {
+            if ($coupon->getOfferId() && $coupon->getCode() != OfferDiscountType::DISCOUNT_OFFER) {
                 $description[] = "
         <span class='coupon-offer-id-label discount-label'>" . __('Coupon Code :') . "</span>
         <span class='coupon-offer-id-value discount-value'>" . $coupon->getOfferId() . '</span>';
@@ -403,20 +520,6 @@ class Proactive extends Template
             return null;
         }
         return $currentProduct->getSku();
-    }
-
-    /**
-     * Check if discount block is enabled in the config
-     *
-     * @return string
-     * @throws NoSuchEntityException
-     */
-    public function isDiscountEnable()
-    {
-        return $this->lsr->getStoreConfig(
-            LSR::LS_DISCOUNT_SHOW_ON_PRODUCT,
-            $this->lsr->getCurrentStoreId()
-        );
     }
 
     /**

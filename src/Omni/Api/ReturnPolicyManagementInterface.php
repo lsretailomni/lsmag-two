@@ -13,11 +13,13 @@ interface ReturnPolicyManagementInterface
      * @param string $itemId
      * @param string $variantId
      * @param string $storeId
+     * @param boolean $variantIdIsSku
      * @return mixed
      */
     public function getReturnPolicy(
         $itemId,
         $variantId,
-        $storeId
+        $storeId,
+        $variantIdIsSku = false
     );
 }

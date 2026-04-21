@@ -89,7 +89,7 @@ class Request extends Action
     /**
      * Send order to Ls Central admin controller execute
      *
-     * @return ResponseInterface|Redirect|ResultInterface
+     * @return Redirect
      * @throws NoSuchEntityException
      */
     public function execute()
@@ -115,14 +115,23 @@ class Request extends Action
                         if ($oldOrder && $this->lsr->getStoreConfig(LSR::LSR_ORDER_EDIT, $order->getStoreId())) {
                             $documentId = $oldOrder->getDocumentId();
                             if ($documentId) {
+                                $customerOrder = $this->orderHelper->getOrderDetailsAgainstId($documentId);
+                                $this->orderEdit->unsetItemsArray();
                                 $req      = $this->orderEdit->prepareOrder(
                                     $order,
                                     $oneListCalculation,
                                     $oldOrder,
-                                    $documentId
+                                    $documentId,
+                                    $customerOrder
                                 );
                                 $response = $this->orderEdit->orderEdit($req);
                                 if ($response) {
+                                    $this->orderEdit->removeItemsFromOrder(
+                                        $this->orderEdit->getOldItems(),
+                                        $this->orderEdit->getNewItems(),
+                                        $customerOrder,
+                                        $documentId
+                                    );
                                     $order->setDocumentId($documentId);
                                     $order->setLsOrderEdit(true);
                                     $isClickCollect = false;
@@ -154,6 +163,9 @@ class Request extends Action
                             if (!empty($response->getResult()->getId())) {
                                 $documentId = $response->getResult()->getId();
                                 $order->setDocumentId($documentId);
+                                $order->addCommentToStatusHistory(
+                                    __('Order request has been sent to LS Central successfully by the admin manually.')
+                                );
                                 $this->orderRepository->save($order);
                             }
                             $this->messageManager->addSuccessMessage(

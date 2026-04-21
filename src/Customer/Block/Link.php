@@ -7,13 +7,8 @@ use Magento\Customer\Model\Context;
 use Magento\Framework\Phrase;
 use \Ls\Core\Model\LSR;
 
-/**
- * Class Link
- * @package Ls\Customer\Block
- */
 class Link extends \Magento\Framework\View\Element\Html\Link implements SortLinkInterface
 {
-
     /** @var string */
     public $template = 'Ls_Customer::link.phtml';
 
@@ -26,9 +21,9 @@ class Link extends \Magento\Framework\View\Element\Html\Link implements SortLink
     public $lsr;
 
     /**
-     * Link constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Framework\App\Http\Context $httpContext
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
@@ -43,18 +38,27 @@ class Link extends \Magento\Framework\View\Element\Html\Link implements SortLink
     }
 
     /**
+     * Check if we need to render block or not
+     *
      * @return string
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function _toHtml()
     {
-        if ($this->isLoggedIn() && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->isLoggedIn() &&
+            $this->lsr->isLSR(
+                $this->lsr->getCurrentStoreId(),
+                false,
+                $this->lsr->getCustomerIntegrationOnFrontend()
+            )) {
             return parent::_toHtml();
         }
         return '';
     }
 
     /**
+     * Get anchor tag href attribute
+     *
      * @return string
      */
     public function getHref()
@@ -63,6 +67,8 @@ class Link extends \Magento\Framework\View\Element\Html\Link implements SortLink
     }
 
     /**
+     * Get anchor tag label attribute
+     *
      * @return Phrase
      */
     public function getLabel()
@@ -71,8 +77,9 @@ class Link extends \Magento\Framework\View\Element\Html\Link implements SortLink
     }
 
     /**
-     * {@inheritdoc}
-     * @since 100.2.0
+     * Get link sort order
+     *
+     * @return array|int|mixed|null
      */
     public function getSortOrder()
     {

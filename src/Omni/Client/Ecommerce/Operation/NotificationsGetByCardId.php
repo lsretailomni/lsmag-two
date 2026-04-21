@@ -67,7 +67,7 @@ class NotificationsGetByCardId extends AbstractOperation
      * @param NotificationsGetByCardIdRequest $request
      * @return ResponseInterface|NotificationsGetByCardIdResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

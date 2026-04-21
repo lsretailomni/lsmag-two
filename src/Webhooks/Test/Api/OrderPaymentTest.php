@@ -5,7 +5,7 @@ namespace Ls\Webhooks\Test\Api;
 use Magento\Framework\Webapi\Rest\Request;
 use Magento\TestFramework\Helper\Bootstrap;
 
-class OrderPaymentTest extends AbstractWebhookTest
+class OrderPaymentTest extends AbstractWebhookBase
 {
     /**
      * @var $product
@@ -74,7 +74,7 @@ class OrderPaymentTest extends AbstractWebhookTest
         ];
 
         // Using the Magento Web API client to send the request
-        $response = $this->_webApiCall($serviceInfo, $requestData);
+        $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         if ($response) {
             foreach ($response as $result) {
                 $this->assertEquals(true, $result['success']);
@@ -131,7 +131,7 @@ class OrderPaymentTest extends AbstractWebhookTest
         ];
 
         // Using the Magento Web API client to send the request
-        $response = $this->_webApiCall($serviceInfo, $requestData);
+        $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         if ($response) {
             foreach ($response as $result) {
                 $this->assertEquals(true, $result['success']);
@@ -188,7 +188,7 @@ class OrderPaymentTest extends AbstractWebhookTest
         ];
 
         // Using the Magento Web API client to send the request
-        $response = $this->_webApiCall($serviceInfo, $requestData);
+        $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         if ($response) {
             foreach ($response as $result) {
                 $this->assertEquals(true, $result['success']);

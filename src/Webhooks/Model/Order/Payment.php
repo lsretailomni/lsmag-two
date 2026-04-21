@@ -8,6 +8,7 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Webhooks\Helper\NotificationHelper;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\DB\TransactionFactory;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -141,9 +142,10 @@ class Payment
      *
      * @param $data
      * @param bool $linesMerged
+     * @param null $magentoOrder
      * @return array[]
      */
-    public function generateInvoice($data, $linesMerged = true)
+    public function generateInvoice($data, $linesMerged = true, $magentoOrder = null)
     {
         $documentId = $data['OrderId'];
         $lines      = $data['Lines'];
@@ -155,8 +157,16 @@ class Payment
         $shippingAmount = 0;
         $itemsToInvoice = [];
         $subtotal       = 0;
+        $isRetail = true;
         try {
-            $order           = $this->helper->getOrderByDocumentId($documentId);
+            $order           = (!empty($magentoOrder)) ? $magentoOrder :
+                $this->helper->getOrderByDocumentId($documentId);
+            $this->helper->getLsrObject()->setStoreId($order->getStoreId());
+            $industry = $this->helper->getLsrObject()->getStoreConfig(LSR::LS_INDUSTRY_VALUE, $order->getStoreId());
+
+            if ($industry !== LSR::LS_INDUSTRY_VALUE_RETAIL) {
+                $isRetail = false;
+            }
             $storeId         = $order->getStoreId();
             $isOffline       = $order->getPayment()->getMethodInstance()->isOffline();
             $validateOrder   = $this->validateOrder($order, $documentId);
@@ -170,7 +180,7 @@ class Payment
                         $orderItemId                  = $item->getItemId();
                         $itemsToInvoice[$orderItemId] = $itemData['qty'];
                         $subtotal                     += $itemData['amount_with_discount'];
-                        if ($isOffline) {
+                        if ($isOffline || !$isRetail) {
                             $totalAmount += $itemData['amount'];
                         }
                     }
@@ -179,17 +189,17 @@ class Payment
                 foreach ($lines as $line) {
                     if ($line['ItemId'] == $this->helper->getShippingItemId()) {
                         $shippingAmount = $line['Amount'];
-                        if ($isOffline) {
+                        if ($isOffline || !$isRetail) {
                             $totalAmount += $shippingAmount;
                         }
                     }
                 }
-                if ($isOffline && !$order->hasInvoices()) {
+                if (($isOffline || !$isRetail) && !$order->hasInvoices()) {
                     if ($order->getLsGiftCardAmountUsed() > 0) {
                         $totalAmount = $totalAmount - $order->getLsGiftCardAmountUsed();
                     }
                     if ($order->getLsPointsSpent() > 0) {
-                        $totalAmount = $totalAmount - ($order->getLsPointsSpent() * $this->helper->getPointRate());
+                        $totalAmount = $totalAmount - $this->helper->getLsPointsDiscount($order->getLsPointsSpent());
                     }
                 }
 
@@ -198,16 +208,31 @@ class Payment
                 $validateInvoice = $this->validateInvoice($invoice, $documentId);
             }
             if ($validateInvoice && $validateOrder['data']['success']) {
+                $baseTotalAmount = $totalAmount;
+                $baseSubtotal    = $subtotal;
+
+                if ($order->getBaseCurrencyCode() !== $order->getOrderCurrencyCode()) {
+                    $baseTotalAmount = $this->helper->getItemHelper()->convertToBaseCurrency(
+                        $totalAmount,
+                        $order->getOrderCurrencyCode(),
+                        $order->getBaseCurrencyCode()
+                    );
+                    $baseSubtotal    = $this->helper->getItemHelper()->convertToBaseCurrency(
+                        $subtotal,
+                        $order->getOrderCurrencyCode(),
+                        $order->getBaseCurrencyCode()
+                    );
+                }
                 $invoice->setRequestedCaptureCase(Invoice::CAPTURE_ONLINE);
                 $invoice->getOrder()->setCustomerNoteNotify(false);
                 $invoice->getOrder()->setIsInProcess(true);
                 $invoice->setShippingAmount($shippingAmount);
                 $invoice->setSubtotal($subtotal);
-                $invoice->setBaseSubtotal($subtotal);
+                $invoice->setBaseSubtotal($baseSubtotal);
                 $invoice->setSubtotalInclTax($subtotal);
-                $invoice->setBaseSubtotalInclTax($subtotal);
+                $invoice->setBaseSubtotalInclTax($baseSubtotal);
                 $invoice->setGrandTotal($totalAmount);
-                $invoice->setBaseGrandTotal($totalAmount);
+                $invoice->setBaseGrandTotal($baseTotalAmount);
                 $invoice->register();
                 $order->addCommentToStatusHistory('INVOICED FROM LS CENTRAL THROUGH WEBHOOK', false);
                 $transactionSave = $this->transactionFactory->create()->addObject($invoice)->
@@ -345,8 +370,8 @@ class Payment
             );
         }
         $orderShipment = $this->convertOrder->toShipment($order);
-
-        $parentItems = [];
+        $qty           = 0;
+        $parentItems   = [];
         foreach ($order->getAllItems() as $orderItem) {
             $parentItem = $orderItem->getParentItem();
 
@@ -369,6 +394,9 @@ class Payment
             $shipmentItem = $this->convertOrder->itemToShipmentItem($parentItem)->setQty($qty);
             $orderShipment->addItem($shipmentItem);
             $parentItems[] = $parentItem->getItemId();
+        }
+        if ($qty == 0) {
+            return;
         }
         $orderShipment->register();
         $defaultSourceCode = $this->defaultSourceProviderFactory->create()->getCode();

@@ -3,12 +3,11 @@
 namespace Ls\Webhooks\Test\Api;
 
 use Magento\Framework\Webapi\Rest\Request;
-use Magento\TestFramework\Helper\Bootstrap;
 
 /**
  * Class for testing order shipping endpoint
  */
-class OrderShipmentTest extends AbstractWebhookTest
+class OrderShipmentTest extends AbstractWebhookBase
 {
     /**
      * @var $product
@@ -41,7 +40,6 @@ class OrderShipmentTest extends AbstractWebhookTest
         $order = $this->getOrCreateOrder($incrementId, $documentId, $this->customer, $this->product, true, false);
 
         // Bootstrapping Magento
-        $objectManager = Bootstrap::getObjectManager();
         $serviceInfo   = [
             'rest' => [
                 'resourcePath' => '/V1/ordershipping',
@@ -69,7 +67,7 @@ class OrderShipmentTest extends AbstractWebhookTest
         ];
 
         // Using the Magento Web API client to send the request
-        $response = $this->_webApiCall($serviceInfo, $requestData);
+        $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         if ($response) {
             foreach ($response as $result) {
                 $this->assertEquals(true, $result['success']);

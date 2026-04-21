@@ -45,6 +45,11 @@ class ReplDiscount
     protected $DiscountValueType = null;
 
     /**
+     * @property boolean $Exclude
+     */
+    protected $Exclude = null;
+
+    /**
      * @property string $FromDate
      */
     protected $FromDate = null;
@@ -63,6 +68,16 @@ class ReplDiscount
      * @property string $LoyaltySchemeCode
      */
     protected $LoyaltySchemeCode = null;
+
+    /**
+     * @property string $MemberAttribute
+     */
+    protected $MemberAttribute = null;
+
+    /**
+     * @property string $MemberAttributeValue
+     */
+    protected $MemberAttributeValue = null;
 
     /**
      * @property float $MinimumQuantity
@@ -243,6 +258,24 @@ class ReplDiscount
     }
 
     /**
+     * @param boolean $Exclude
+     * @return $this
+     */
+    public function setExclude($Exclude)
+    {
+        $this->Exclude = $Exclude;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getExclude()
+    {
+        return $this->Exclude;
+    }
+
+    /**
      * @param string $FromDate
      * @return $this
      */
@@ -312,6 +345,42 @@ class ReplDiscount
     public function getLoyaltySchemeCode()
     {
         return $this->LoyaltySchemeCode;
+    }
+
+    /**
+     * @param string $MemberAttribute
+     * @return $this
+     */
+    public function setMemberAttribute($MemberAttribute)
+    {
+        $this->MemberAttribute = $MemberAttribute;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberAttribute()
+    {
+        return $this->MemberAttribute;
+    }
+
+    /**
+     * @param string $MemberAttributeValue
+     * @return $this
+     */
+    public function setMemberAttributeValue($MemberAttributeValue)
+    {
+        $this->MemberAttributeValue = $MemberAttributeValue;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberAttributeValue()
+    {
+        return $this->MemberAttributeValue;
     }
 
     /**

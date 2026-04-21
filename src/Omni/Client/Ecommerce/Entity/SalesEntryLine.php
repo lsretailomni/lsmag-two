@@ -69,6 +69,11 @@ class SalesEntryLine extends Entity
     protected $LineType = null;
 
     /**
+     * @property string $LotNumber
+     */
+    protected $LotNumber = null;
+
+    /**
      * @property float $NetAmount
      */
     protected $NetAmount = null;
@@ -92,6 +97,11 @@ class SalesEntryLine extends Entity
      * @property float $Quantity
      */
     protected $Quantity = null;
+
+    /**
+     * @property string $SerialNumber
+     */
+    protected $SerialNumber = null;
 
     /**
      * @property string $StoreId
@@ -122,6 +132,11 @@ class SalesEntryLine extends Entity
      * @property string $VariantId
      */
     protected $VariantId = null;
+
+    /**
+     * @property string $WishListNo
+     */
+    protected $WishListNo = null;
 
     /**
      * @param float $Amount
@@ -332,6 +347,24 @@ class SalesEntryLine extends Entity
     }
 
     /**
+     * @param string $LotNumber
+     * @return $this
+     */
+    public function setLotNumber($LotNumber)
+    {
+        $this->LotNumber = $LotNumber;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLotNumber()
+    {
+        return $this->LotNumber;
+    }
+
+    /**
      * @param float $NetAmount
      * @return $this
      */
@@ -419,6 +452,24 @@ class SalesEntryLine extends Entity
     public function getQuantity()
     {
         return $this->Quantity;
+    }
+
+    /**
+     * @param string $SerialNumber
+     * @return $this
+     */
+    public function setSerialNumber($SerialNumber)
+    {
+        $this->SerialNumber = $SerialNumber;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSerialNumber()
+    {
+        return $this->SerialNumber;
     }
 
     /**
@@ -527,6 +578,24 @@ class SalesEntryLine extends Entity
     public function getVariantId()
     {
         return $this->VariantId;
+    }
+
+    /**
+     * @param string $WishListNo
+     * @return $this
+     */
+    public function setWishListNo($WishListNo)
+    {
+        $this->WishListNo = $WishListNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWishListNo()
+    {
+        return $this->WishListNo;
     }
 }
 

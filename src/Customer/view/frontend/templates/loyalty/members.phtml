@@ -6,7 +6,7 @@ use \Ls\Customer\Block\Loyalty\Offers;
 
 $type   = 'SpecialMember';
 $offers = $this->getOffers();
-$total  = count($offers);
+$total  = is_array($offers) ? count($offers) : 0;
 $c      = 0;
 ?>
 

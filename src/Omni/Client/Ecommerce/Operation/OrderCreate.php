@@ -67,7 +67,7 @@ class OrderCreate extends AbstractOperation
      * @param OrderCreateRequest $request
      * @return ResponseInterface|OrderCreateResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

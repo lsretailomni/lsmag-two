@@ -67,7 +67,7 @@ class ItemCategoriesGetById extends AbstractOperation
      * @param ItemCategoriesGetByIdRequest $request
      * @return ResponseInterface|ItemCategoriesGetByIdResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

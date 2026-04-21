@@ -67,7 +67,7 @@ class ActivityPromotionsGet extends AbstractOperation
      * @param ActivityPromotionsGetRequest $request
      * @return ResponseInterface|ActivityPromotionsGetResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

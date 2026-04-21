@@ -7,7 +7,7 @@ use \Ls\Customer\Block\Loyalty\Offers;
 $should_use_block = false;
 $type             = $this->getType();
 $offers           = $this->getOffers();
-$total            = count($offers);
+$total            = is_array($offers) ? count($offers) : 0;
 $c                = 0;
 ?>
 <div class="coupons-view">

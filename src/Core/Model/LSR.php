@@ -107,6 +107,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_IDENTICAL_TABLE_WEB_SERVICE_LIST = 'ls_mag/replication/identical_table_web_service_list';
     const SC_REPLICATION_ATTRIBUTE_SETS_MECHANISM = 'ls_mag/replication/attribute_sets_mechanism';
     const GIFT_CARD_IDENTIFIER = 'ls_mag/replication/gift_card_items_list';
+    const SC_REPLICATION_UNIT_OF_MEASURE_CONFIG = 'ls_mag/replication/unit_of_measure_configuration';
+    const SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT = 'ls_mag/replication/uom_allow_purchase_unit';
     //Attribute Set
     const SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE = 'ITEM_CATEGORY_CODE';
     const SC_REPLICATION_ATTRIBUTE_SET_PRODUCT_GROUP_ID = 'PRODUCT_GROUP_ID';
@@ -226,6 +228,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     // CART
     const SC_CART_CHECK_INVENTORY = 'ls_mag/one_list/availability_check';
+    const SC_CART_CHECK_INVENTORY_FROM_SOURCING_LOCATION = 'ls_mag/one_list/sourcing_location';
     const SC_CART_PRODUCT_AVAILABILITY = 'ls_mag/one_list/product_availability';
     const SC_CART_DISPLAY_STORES = 'ls_mag/one_list/display_stores';
     const SC_CART_UPDATE_INVENTORY = 'ls_mag/one_list/update_inventory';
@@ -420,8 +423,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //offer with no time limit for the discounts
     const NO_TIME_LIMIT = '1753-01-01T00:00:00';
 
+    const LS_CUSTOMER_INTEGRATION_ACTIVE = 'ls_mag/standalone_integration/customer';
+    const LS_BASKET_INTEGRATION_ACTIVE = 'ls_mag/standalone_integration/basket';
+    const LS_ORDER_INTEGRATION_ACTIVE = 'ls_mag/standalone_integration/order';
     //Basket Calculation
     const LS_PLACE_TO_SYNC_BASKET_CALCULATION = 'ls_mag/ls_basket_calculation/place_to_sync';
+    const LS_BASKET_CALCULATION_SHIP_TO_PARAMS = 'ls_mag/ls_basket_calculation/ship_to_params';
 
     //Order Management
     const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_management/prefix';
@@ -432,6 +439,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/stock_validation_active';
     const LSR_GRAPHQL_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/graphql_stock_validation_active';
     const LSR_DISCOUNT_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/discount_validation_active';
+    const LS_DISABLE_ORDER_CREATE_ON_BASKET_FAIL = 'ls_mag/ls_order_management/disable_order_create_on_basket_fail';
+    const LS_ERROR_MESSAGE_ON_BASKET_FAIL = 'ls_mag/ls_order_management/error_message_on_basket_fail';
 
     const LSR_DISCOUNT_VALIDATION_MSG = 'ls_mag/ls_order_management/discount_validation_msg';
     const LSR_GIFTCARD_VALIDATION_MSG = 'ls_mag/ls_order_management/giftcard_validation_msg';
@@ -439,6 +448,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_GRAPHQL_DISCOUNT_VALIDATION_MSG = 'ls_mag/ls_order_management/graphql_discount_validation_msg';
     const LSR_GRAPHQL_GIFTCARD_VALIDATION_MSG = 'ls_mag/ls_order_management/graphql_giftcard_validation_msg';
     const LSR_ORDER_EDIT = 'ls_mag/ls_order_management/order_edit';
+    const LSR_SHIPMENT_WITHOUT_TRACKING = 'ls_mag/ls_order_management/shipment_without_tracking';
     const LSR_DATETIME_RANGE_VALIDATION_ACTIVE = 'ls_mag/hospitality/dateandtime_range_validation_active';
     const LSR_GRAPHQL_DATETIME_RANGE_VALIDATION_ACTIVE
         = 'ls_mag/hospitality/graphql_dateandtime_range_validation_active';
@@ -680,9 +690,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function isLSR($storeId = false, $scope = false)
+    public function isLSR($storeId = false, $scope = false, $force = true)
     {
-        if (!$this->isEnabled($storeId, $scope)) {
+        if (!$this->isEnabled($storeId, $scope) || !$force) {
             return false;
         }
 
@@ -974,7 +984,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getOmniVersion($storeId = null, $scope = null)
     {
-        if(!$this->isEnabled($storeId)) {
+        if (!$this->isEnabled($storeId, $scope)) {
             $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
         }
 
@@ -1108,6 +1118,56 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Returns whether we need to pass address params in basket calculation
+     *
+     * @return bool
+     */
+    public function shipToParamsInBasketCalculationIsEnabled(): bool
+    {
+        return (bool)$this->scopeConfig->getValue(self::LS_BASKET_CALCULATION_SHIP_TO_PARAMS);
+    }
+
+    /**
+     * Returns customer integration flag on frontend
+     *
+     * @return bool
+     */
+    public function getCustomerIntegrationOnFrontend(): bool
+    {
+        return (bool)$this->scopeConfig->getValue(self::LS_CUSTOMER_INTEGRATION_ACTIVE);
+    }
+
+    /**
+     * Returns basket integration flag on frontend
+     *
+     * @param bool $computed
+     * @return bool
+     */
+    public function getBasketIntegrationOnFrontend(bool $computed = true): bool
+    {
+        if (!$computed) {
+            return (bool)$this->scopeConfig->getValue(self::LS_BASKET_INTEGRATION_ACTIVE);
+        }
+
+        return $this->getCustomerIntegrationOnFrontend() && $this->getBasketIntegrationOnFrontend(false);
+    }
+
+    /**
+     * Returns order integration flag on frontend
+     *
+     * @param bool $computed
+     * @return bool
+     */
+    public function getOrderIntegrationOnFrontend(bool $computed = true): bool
+    {
+        if (!$computed) {
+            return (bool)$this->scopeConfig->getValue(self::LS_ORDER_INTEGRATION_ACTIVE);
+        }
+
+        return $this->getCustomerIntegrationOnFrontend() && $this->getOrderIntegrationOnFrontend(false);
+    }
+
+    /**
      * Returns configured value for fpc purge
      *
      * @return bool
@@ -1115,8 +1175,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getStopFpcPurge(&$tags)
     {
         $config = $this->fpcInvalidateFlag && (bool)$this->scopeConfig->getValue(
-            self::SC_REPLICATION_DEFAULT_STOP_FPC_PURGE
-        );
+                self::SC_REPLICATION_DEFAULT_STOP_FPC_PURGE
+            );
 
         if (!$config) {
             return false;
@@ -1425,7 +1485,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isPushNotificationsEnabled()
     {
-        $configuredNotificationType = $this->getNotificationType() != null ? explode(',', $this->getNotificationType()) : [];
+        $configuredNotificationType = $this->getNotificationType() != null ? explode(
+            ',',
+            $this->getNotificationType()
+        ) : [];
 
         return in_array(LSR::LS_NOTIFICATION_PUSH_NOTIFICATION, $configuredNotificationType);
     }
@@ -1442,5 +1505,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getStore()->getWebsiteId()
         );
+    }
+
+    /**
+     * Determines if order creation should be blocked on basket calculation fail.
+     *
+     * @return bool True if the basket data is valid or if order creation is allowed; false otherwise.
+     * @throws NoSuchEntityException
+     */
+    public function getDisableProcessOnBasketFailFlag()
+    {
+        $websiteId = $this->getCurrentWebsiteId();
+        return $this->getWebsiteConfig(LSR::LS_DISABLE_ORDER_CREATE_ON_BASKET_FAIL, $websiteId);
     }
 }

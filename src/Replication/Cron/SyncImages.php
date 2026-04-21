@@ -619,7 +619,7 @@ class SyncImages extends ProductCreateTask
         foreach ($mediaAttributes as $mediaAttrCode) {
             if ($customProduct->getData($mediaAttrCode) == 'no_selection' && $mediaAttrCode != 'swatch_image') {
                 $saveMe = true;
-                $customProduct->unsetData($mediaAttrCode);
+                $customProduct->setData($mediaAttrCode, null);
             }
         }
 

@@ -45,6 +45,7 @@ class PointoffersTest extends AbstractController
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_LOYALTY_ENABLE_LOYALTY_ELEMENTS, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_LOYALTY_SHOW_POINT_OFFERS, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -75,6 +76,7 @@ class PointoffersTest extends AbstractController
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, 0, 'store', 'default'),
         Config(LSR::SC_LOYALTY_SHOW_POINT_OFFERS, 0, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CustomerFixture::class,
             [

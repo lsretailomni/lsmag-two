@@ -67,7 +67,7 @@ class OrderStatusCheck extends AbstractOperation
      * @param OrderStatusCheckRequest $request
      * @return ResponseInterface|OrderStatusCheckResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

@@ -7,6 +7,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
@@ -163,7 +164,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      * Get loyalty points available to customer
      *
      * @return int|Entity\CardGetPointBalanceResponse|ResponseInterface|null
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function getLoyaltyPointsAvailableToCustomer()
     {
@@ -324,37 +325,36 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Convert Point Rate into Values
      *
-     * @return float|Entity\GetPointRateResponse|ResponseInterface|null
+     * @param ?string $storeId
+     * @param ?string $currencyCode
+     * @param bool $force
+     * @return float|GetPointRateResponse|ResponseInterface|string|null
      * @throws NoSuchEntityException
      */
-    public function getPointRate($storeId = null)
+    public function getPointRate($storeId = null, $currencyCode = null, $force = false)
     {
+        if (!$this->customerSession->isLoggedIn() && $force === false) {
+            return null;
+        }
+
         if (!$storeId) {
             $storeId = $this->lsr->getCurrentStoreId();
         }
 
         $response = null;
+        if (!$currencyCode) {
+            $currencyCode = $this->lsr->getStoreCurrencyCode();
+        }
 
         if ($this->lsr->isLSR($storeId) && $this->isEnabledLoyaltyPoints()) {
-            $cacheId  = LSR::POINTRATE . $storeId;
+            $cacheId  = LSR::POINTRATE . $currencyCode . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($response !== false) {
                 return $this->formatValue($response);
             }
-            // @codingStandardsIgnoreStart
-            $request = new Operation\GetPointRate();
-            $entity  = new Entity\GetPointRate();
-            // @codingStandardsIgnoreEnd
 
-            $currency = $this->lsr->getStoreCurrencyCode();
-            $entity->setCurrency($currency);
-
-            try {
-                $response = $request->execute($entity);
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
-            }
+            $response = $this->fetchGetPointsRate($currencyCode);
             if (!empty($response)) {
                 $this->cacheHelper->persistContentInCache(
                     $cacheId,
@@ -366,6 +366,31 @@ class LoyaltyHelper extends AbstractHelperOmni
                 return $this->formatValue($response->getResult());
             }
         }
+
+        return $response;
+    }
+
+    /**
+     * Fetch point rate from central
+     *
+     * @param $currencyCode
+     * @return Entity\GetPointRateResponse|ResponseInterface|null
+     */
+    public function fetchGetPointsRate($currencyCode)
+    {
+        // @codingStandardsIgnoreStart
+        $request = new Operation\GetPointRate();
+        $entity  = new Entity\GetPointRate();
+        // @codingStandardsIgnoreEnd
+
+        $entity->setCurrency($currencyCode);
+        $response = null;
+        try {
+            $response = $request->execute($entity);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
         return $response;
     }
 
@@ -544,7 +569,11 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function getAvailableCouponsForLoggedInCustomers()
     {
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getBasketIntegrationOnFrontend()
+        )) {
             $storeId = $this->lsr->getActiveWebStore();
             $cardId  = $this->contactHelper->getCardIdFromCustomerSession();
             if (!$cardId) { //fetch card id from customer object if session value not available
@@ -773,6 +802,36 @@ class LoyaltyHelper extends AbstractHelperOmni
             LSR::IMAGE_CACHE_INDEPENDENT_OF_STORE_ID,
             $this->lsr->getCurrentStoreId()
         );
+    }
+
+    /**
+     * Get Ls points discount
+     *
+     * @param $pointsSpent
+     * @param bool $format
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    public function getLsPointsDiscount($pointsSpent, $format = false)
+    {
+        $loyPointRate = $this->getPointRate(null, 'LOY');
+        $currentCurrencyPointRate = $this->getPointRate();
+
+        if (!$currentCurrencyPointRate) {
+            return 0;
+        }
+        $loyaltyPointsRate = $loyPointRate / $currentCurrencyPointRate;
+
+        if (!$loyaltyPointsRate) {
+            return 0;
+        }
+        $lsPointsDiscount = $pointsSpent * (1 / $loyaltyPointsRate);
+
+        if ($format) {
+            $lsPointsDiscount = $this->formatValue($lsPointsDiscount);
+        }
+
+        return $lsPointsDiscount;
     }
 
     /**

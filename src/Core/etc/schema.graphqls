@@ -1,0 +1,5 @@
+type StoreConfig {
+    standalone_integration_customer: Boolean @doc(description:"Indicates whether customer standalone integration is enabled (true) or disabled (false).")
+    standalone_integration_basket: Boolean @resolver(class: "\\Ls\\Core\\Model\\Resolver\\IsBasketIntegrationEnabledResolver") @doc(description:"Indicates whether basket standalone integration is enabled (true) or disabled (false).")
+    standalone_integration_order: Boolean @resolver(class: "\\Ls\\Core\\Model\\Resolver\\IsOrderIntegrationEnabledResolver") @doc(description:"Indicates whether order standalone integration is enabled (true) or disabled (false).")
+}

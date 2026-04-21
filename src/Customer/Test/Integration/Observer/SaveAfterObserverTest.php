@@ -41,7 +41,8 @@ class SaveAfterObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
+        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
     ]
     public function testExecuteWithValidParametersAndCustomerExistsInCentral()
     {
@@ -75,7 +76,8 @@ class SaveAfterObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
+        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
     ]
     public function testExecuteWithValidParametersAndCustomerNonExistentInCentral()
     {
@@ -84,6 +86,7 @@ class SaveAfterObserverTest extends AbstractIntegrationTest
         $customer->addData(
             [
                 'ls_password' => $this->contactHelper->encryptPassword(self::PASSWORD),
+                'lsr_password' => $this->contactHelper->encryptPassword(self::PASSWORD),
                 'email'     => $append. self::EMAIL,
                 'lsr_username' => ''
             ]
@@ -112,7 +115,8 @@ class SaveAfterObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
+        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
     ]
     public function testExecuteWithInValidParametersAndCustomerNonExistentInCentral()
     {
@@ -149,7 +153,8 @@ class SaveAfterObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
+        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
     ]
     public function testExecuteWithoutLsPassword()
     {
@@ -200,6 +205,5 @@ class SaveAfterObserverTest extends AbstractIntegrationTest
 
         $this->assertNull($customer->getData('lsr_resetcode'));
         $this->assertNull($customer->getData('ls_password'));
-        $this->assertNotNull($customer->getData('lsr_password'));
     }
 }

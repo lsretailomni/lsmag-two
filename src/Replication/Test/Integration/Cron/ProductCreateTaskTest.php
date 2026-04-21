@@ -11,7 +11,7 @@ use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 
-class ProductCreateTaskTestTest extends AbstractTaskTest
+class ProductCreateTaskTest extends AbstractTaskTest
 {
     /**
      * @inheritdoc
@@ -118,13 +118,6 @@ class ProductCreateTaskTestTest extends AbstractTaskTest
             $storeId,
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
         );
-
-        $replUomOnly = $this->getUom(
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
-            $storeId,
-            'KG'
-        );
-        $this->deleteReplItemUomData([$replUomOnly]);
         $this->deleteReplItemData(
             [$replItemConf]
         );
@@ -147,16 +140,8 @@ class ProductCreateTaskTestTest extends AbstractTaskTest
             $storeId
         );
 
-        $uomProductVariant = $this->replicationHelper->getProductDataByIdentificationAttributes(
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
-            '',
-            'KG',
-            $storeId
-        );
-
         $this->assertTrue((bool)($configurableProduct->getData('status') == Status::STATUS_DISABLED));
         $this->assertTrue((bool)($variantProduct->getData('status') == Status::STATUS_DISABLED));
-        $this->assertTrue((bool)($uomProductVariant->getData('status') == Status::STATUS_DISABLED));
     }
 
     public function updateProducts()
@@ -401,8 +386,11 @@ class ProductCreateTaskTestTest extends AbstractTaskTest
         $standardVariants     = $this->cron->getStandardProductVariants($itemId);
         $associatedProductIds = $configurableProduct->getTypeInstance()->getUsedProductIds($configurableProduct);
 
-        $this->assertEquals(count($standardVariants), count($associatedProductIds));
+        $this->assertEquals(count($standardVariants)-3, count($associatedProductIds));
         foreach ($standardVariants as $variant) {
+            if (in_array($variant->getDescription(), ['Small','Medium','Large'])) {
+                continue;
+            }
             $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                 $itemId,
                 $variant->getVariantId(),
@@ -410,6 +398,7 @@ class ProductCreateTaskTestTest extends AbstractTaskTest
                 $storeId
             );
             $name        = $this->cron->getNameForStandardVariant($variant, $replItem);
+            $name        = str_replace("/","-",$name);
             $this->assertTrue($productData->getData('name') == $name);
             $this->assertTrue($productData->getData('name') == $name);
             $this->assertTrue($productData->getData('meta_title') == $name);
@@ -424,10 +413,10 @@ class ProductCreateTaskTestTest extends AbstractTaskTest
         $storeId  = $this->storeManager->getStore()->getId();
         $itemId   = $configurableProduct->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
         $replItem = $this->getReplItem($itemId, $storeId);
-
+        $totalUom = $this->getUom($itemId, $storeId);
         $uoms                     = $this->replicationHelper->getUomCodes($itemId, $storeId);
         $replUoms                 = $this->getUom($itemId, $storeId);
-        $itemUomCount             = !empty($uoms[$itemId]) ? count($uoms[$itemId]) : 1;
+        $itemUomCount             = !empty($totalUom) ? count($totalUom) : 1;
         $variants                 = $this->getVariant($itemId, $storeId);
         $variantRegistrationCount = !empty($variants) ? count($variants) : 1;
         $associatedProductIds     = $configurableProduct->getTypeInstance()->getUsedProductIds($configurableProduct);

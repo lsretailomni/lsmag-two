@@ -67,7 +67,7 @@ class ActivityAvailabilityGet extends AbstractOperation
      * @param ActivityAvailabilityGetRequest $request
      * @return ResponseInterface|ActivityAvailabilityGetResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

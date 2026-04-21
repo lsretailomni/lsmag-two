@@ -67,7 +67,7 @@ class ActivityReservationAdditionalChargesGet extends AbstractOperation
      * @param ActivityReservationAdditionalChargesGetRequest $request
      * @return ResponseInterface|ActivityReservationAdditionalChargesGetResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

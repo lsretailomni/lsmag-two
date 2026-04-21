@@ -88,7 +88,6 @@ class SyncOrders
     public function execute($storeData = null)
     {
         $info = [];
-
         if (!$this->lsr->isSSM()) {
             if (!empty($storeData) && $storeData instanceof StoreInterface) {
                 $stores = [$storeData];
@@ -103,16 +102,16 @@ class SyncOrders
             foreach ($stores as $store) {
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
-
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    $orders = $this->orderHelper->getOrders($this->store->getId());
-
+                    $orders = $this->orderHelper->getOrders($this->store->getId(),
+                        -1, true, 0, null, false, $store->getWebsiteId()
+                    );
                     if (!empty($orders)) {
                         foreach ($orders as $order) {
                             try {
                                 $documentId = null;
                                 if ($order->getRelationParentId()) {
-                                    $oldOrder   = $this->orderHelper->getMagentoOrderGivenEntityId(
+                                    $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId(
                                         $order->getRelationParentId()
                                     );
                                     if ($oldOrder) {
@@ -134,6 +133,9 @@ class SyncOrders
                                             if (!empty($response->getResult()->getId())) {
                                                 $documentId = $response->getResult()->getId();
                                                 $order->setDocumentId($documentId);
+                                                $order->addCommentToStatusHistory(
+                                                    __('Order request has been sent to LS Central successfully by the cron.')
+                                                );
                                                 $this->orderResourceModel->save($order);
                                             }
                                         }

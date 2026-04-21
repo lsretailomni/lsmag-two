@@ -67,7 +67,7 @@ class OneListSave extends AbstractOperation
      * @param OneListSaveRequest $request
      * @return ResponseInterface|OneListSaveResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

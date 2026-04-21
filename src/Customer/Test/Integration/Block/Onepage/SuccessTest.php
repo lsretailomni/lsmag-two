@@ -33,6 +33,8 @@ use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Helper\Xpath;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Framework\Registry;
 use PHPUnit\Framework\TestCase;
 define(__NAMESPACE__ . '\\RESERVED_ORDER_ID', 'test1'. rand(111111111,999999999));
 /**
@@ -50,10 +52,13 @@ class SuccessTest extends TestCase
     public $checkoutSession;
     public $eventManager;
     private $pageFactory;
+    public $customerRepository;
+    public $registry;
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->objectManager   = Bootstrap::getObjectManager();
         $this->block           = $this->objectManager->get(
             LayoutInterface::class
@@ -66,6 +71,8 @@ class SuccessTest extends TestCase
         $this->checkoutSession = $this->objectManager->get(CheckoutSession::class);
         $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
         $this->pageFactory     = $this->objectManager->get(PageFactory::class);
+        $this->customerRepository = $this->objectManager->get(CustomerRepositoryInterface::class);
+        $this->registry           = $this->objectManager->get(Registry::class);
         $this->block->setNameInLayout('checkout.success');
         $this->block->setTemplate('Magento_Checkout::success.phtml');
         $page = $this->pageFactory->create();
@@ -83,6 +90,7 @@ class SuccessTest extends TestCase
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -142,6 +150,7 @@ class SuccessTest extends TestCase
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CreateSimpleProduct::class,
             [
@@ -172,7 +181,11 @@ class SuccessTest extends TestCase
     ]
     public function testPrepareBlockDataForGuestUser()
     {
-        $order = $this->fixtures->get('order1');
+        $order = $this->fixtures->get('order');
+
+        $this->checkoutSession->setLastOrderId($order->getId());
+        $this->checkoutSession->setLastRealOrderId($order->getIncrementId());
+        $this->checkoutSession->setLastSuccessQuoteId($order->getQuoteId());
         $output = $this->block->toHtml();
         $msg = sprintf('Can\'t validate order success page html: %s', $output);
         $ele = [
@@ -188,6 +201,7 @@ class SuccessTest extends TestCase
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CustomerFixture::class,
             [

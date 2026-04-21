@@ -15,12 +15,12 @@ use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Client\Ecommerce\Entity\RecommendedActive as RecommendedActiveRequest;
-use Ls\Omni\Client\Ecommerce\Entity\RecommendedActiveResponse as RecommendedActiveResponse;
+use Ls\Omni\Client\Ecommerce\Entity\ContactCreateCard as ContactCreateCardRequest;
+use Ls\Omni\Client\Ecommerce\Entity\ContactCreateCardResponse as ContactCreateCardResponse;
 
-class RecommendedActive extends AbstractOperation
+class ContactCreateCard extends AbstractOperation
 {
-    public const OPERATION_NAME = 'RECOMMENDED_ACTIVE';
+    public const OPERATION_NAME = 'CONTACT_CREATE_CARD';
 
     public const SERVICE_TYPE = 'ecommerce';
 
@@ -30,12 +30,12 @@ class RecommendedActive extends AbstractOperation
     protected $client = null;
 
     /**
-     * @property RecommendedActiveRequest $request
+     * @property ContactCreateCardRequest $request
      */
     protected $request = null;
 
     /**
-     * @property RecommendedActiveResponse $response
+     * @property ContactCreateCardResponse $response
      */
     protected $response = null;
 
@@ -64,24 +64,24 @@ class RecommendedActive extends AbstractOperation
     }
 
     /**
-     * @param RecommendedActiveRequest $request
-     * @return ResponseInterface|RecommendedActiveResponse
+     * @param ContactCreateCardRequest $request
+     * @return ResponseInterface|ContactCreateCardResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'RecommendedActive' );
+        return $this->makeRequest( 'ContactCreateCard' );
     }
 
     /**
-     * @return RecommendedActiveRequest
+     * @return ContactCreateCardRequest
      */
     public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
-            $this->request = new RecommendedActiveRequest();
+            $this->request = new ContactCreateCardRequest();
         }
         return $this->request;
     }
@@ -118,7 +118,7 @@ class RecommendedActive extends AbstractOperation
     }
 
     /**
-     * @param RecommendedActiveRequest $request
+     * @param ContactCreateCardRequest $request
      * @return $this
      */
     public function setRequest($request)
@@ -128,7 +128,7 @@ class RecommendedActive extends AbstractOperation
     }
 
     /**
-     * @return RecommendedActiveRequest
+     * @return ContactCreateCardRequest
      */
     public function getRequest()
     {
@@ -136,7 +136,7 @@ class RecommendedActive extends AbstractOperation
     }
 
     /**
-     * @param RecommendedActiveResponse $response
+     * @param ContactCreateCardResponse $response
      * @return $this
      */
     public function setResponse($response)
@@ -146,7 +146,7 @@ class RecommendedActive extends AbstractOperation
     }
 
     /**
-     * @return RecommendedActiveResponse
+     * @return ContactCreateCardResponse
      */
     public function getResponse()
     {

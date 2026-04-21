@@ -41,7 +41,7 @@ class IsServiceUpResolver implements ResolverInterface
      * @return bool
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) &&
             isset(self::CONFIG_PATHS_MAPPING[$field->getName()])

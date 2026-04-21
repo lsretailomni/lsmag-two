@@ -4,7 +4,6 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Api\Data\ReplPriceInterface;
 use \Ls\Replication\Model\ReplPrice;
 use \Ls\Replication\Model\ResourceModel\ReplPrice\Collection;
 use Magento\Framework\Exception\LocalizedException;
@@ -66,7 +65,8 @@ class SyncPrice extends ProductCreateTask
 
                     /** Get list of only those prices whose items are already processed */
                     $filters = [
-                        ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
+                        ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
+                        ['field' => 'main_table.Status', 'value' => 'Active', 'condition_type' => 'eq']
                     ];
 
                     $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -119,6 +119,44 @@ class SyncPrice extends ProductCreateTask
                 if (in_array($replPrice->getId(), $this->processed)) {
                     continue;
                 }
+
+                // Check if price is scheduled for future (don't mark as processed)
+                if ($this->isFuturePrice($replPrice)) {
+                    $this->logger->debug(
+                        sprintf(
+                            'Skipping future price for store: %s, item id: %s, variant id: %s, start date: %s (not marking as processed)',
+                            $this->store->getName(),
+                            $replPrice->getItemId(),
+                            $replPrice->getVariantId(),
+                            $replPrice->getStartingDate()
+                        )
+                    );
+                    // Don't mark as processed - allow it to be picked up in next cron run
+                    continue;
+                }
+
+                // Validate price record
+                if (!$this->isValidPrice($replPrice)) {
+                    $this->logger->debug(
+                        sprintf(
+                            'Skipping invalid price for store: %s, item id: %s, variant id: %s, status: %s, start date: %s, end date: %s',
+                            $this->store->getName(),
+                            $replPrice->getItemId(),
+                            $replPrice->getVariantId(),
+                            $replPrice->getStatus(),
+                            $replPrice->getStartingDate(),
+                            $replPrice->getEndingDate()
+                        )
+                    );
+                    // Mark as processed but don't update the product
+                    $replPrice->setData('is_updated', 0);
+                    $replPrice->setData('processed', 1);
+                    $replPrice->setData('processed_at', $this->replicationHelper->getDateTime());
+                    $this->replPriceRepository->save($replPrice);
+                    $this->processed[$replPrice->getId()] = $replPrice->getId();
+                    continue;
+                }
+
                 $productDataArray = $this->replicationHelper->getProductDataByIdentificationAttributes(
                     $replPrice->getItemId(),
                     $replPrice->getVariantId(),
@@ -153,6 +191,153 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
+     * Check if price is scheduled for future (start date not reached yet)
+     *
+     * @param ReplPrice $replPrice
+     * @return bool
+     */
+    protected function isFuturePrice($replPrice)
+    {
+        // Only check if status is Active
+        if ($replPrice->getStatus() !== 'Active') {
+            return false;
+        }
+
+        $startingDate = $replPrice->getStartingDate();
+        $invalidDate = '1900-01-01T00:00:00';
+        $invalidDateAlt = '1900-01-01';
+
+        // If starting date is empty or invalid, it's not a future price
+        $isStartingDateInvalid = empty($startingDate) ||
+            strpos($startingDate, $invalidDate) === 0 ||
+            strpos($startingDate, $invalidDateAlt) === 0;
+
+        if ($isStartingDateInvalid) {
+            return false;
+        }
+
+        try {
+            $currentDate = $this->replicationHelper->getCurrentDate();
+            $format      = LSR::DATE_FORMAT;
+            $startDateTime = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
+                $startingDate,
+                $format
+            );
+
+            // If current date is before start date, it's a future price
+            if ($currentDate < $startDateTime) {
+                return true;
+            }
+        } catch (\Exception $e) {
+            $this->logger->debug(
+                sprintf(
+                    'Error checking future price for item: %s, variant: %s, start date: %s - Error: %s',
+                    $replPrice->getItemId(),
+                    $replPrice->getVariantId(),
+                    $startingDate,
+                    $e->getMessage()
+                )
+            );
+            return false;
+        }
+
+        return false;
+    }
+
+    /**
+     * Validate if price record is active and within valid date range
+     *
+     * @param ReplPrice $replPrice
+     * @return bool
+     */
+    protected function isValidPrice($replPrice)
+    {
+        // Check if status is Active
+        if ($replPrice->getStatus() !== 'Active') {
+            return false;
+        }
+
+        $startingDate = $replPrice->getStartingDate();
+        $endingDate = $replPrice->getEndingDate();
+        $invalidDate = '1900-01-01T00:00:00';
+        $invalidDateAlt = '1900-01-01';
+
+        $isStartingDateInvalid = empty($startingDate) ||
+            strpos($startingDate, $invalidDate) === 0 ||
+            strpos($startingDate, $invalidDateAlt) === 0;
+
+        $isEndingDateInvalid = empty($endingDate) ||
+            strpos($endingDate, $invalidDate) === 0 ||
+            strpos($endingDate, $invalidDateAlt) === 0;
+
+        // If both dates are invalid/empty, allow the price (no date restrictions)
+        if ($isStartingDateInvalid && $isEndingDateInvalid) {
+            return true;
+        }
+
+        try {
+            $currentDate = $this->replicationHelper->getCurrentDate();
+            $format      = LSR::DATE_FORMAT;
+
+            // Case 1: Only start date is valid (check if current date is after start)
+            if (!$isStartingDateInvalid && $isEndingDateInvalid) {
+                $startDateTime = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
+                    $startingDate,
+                    $format
+                );
+                if ($currentDate < $startDateTime) {
+                    return false; // Start date not reached yet
+                }
+                return true;
+            }
+
+            // Case 2: Only end date is valid (no start date restriction)
+            if ($isStartingDateInvalid && !$isEndingDateInvalid) {
+                $endDateTime = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
+                    $endingDate,
+                    $format
+                );
+                if ($currentDate > $endDateTime) {
+                    return false;
+                }
+                return true;
+            }
+
+            // Case 3: Both dates are valid - check if current date is within range
+            if (!$isStartingDateInvalid && !$isEndingDateInvalid) {
+                $startDateTime = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
+                    $startingDate,
+                    $format
+                );
+                $endDateTime = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
+                    $endingDate,
+                    $format
+                );
+
+                if ($currentDate < $startDateTime || $currentDate > $endDateTime) {
+                    return false;
+                }
+                return true;
+            }
+
+        } catch (\Exception $e) {
+            $this->logger->debug(
+                sprintf(
+                    'Invalid date format in price record for item: %s, variant: %s, start date: %s, end date: %s - Error: %s',
+                    $replPrice->getItemId(),
+                    $replPrice->getVariantId(),
+                    $startingDate,
+                    $endingDate,
+                    $e->getMessage()
+                )
+            );
+            return true; // On date parsing error, allow the price
+        }
+
+        return true;
+    }
+
+    /**
      * Process product price
      *
      * @param array $productDataArray
@@ -175,6 +360,11 @@ class SyncPrice extends ProductCreateTask
                     $price = $replItemPrice;
                 }
             }
+
+            if ($this->isFuturePrice($price)) {
+                continue;
+            }
+
             if ($productData->getPrice() != $price->getUnitPriceInclVat()) {
                 $productData->setPrice($price->getUnitPriceInclVat());
                 $this->productResourceModel->saveAttribute($productData, 'price');
@@ -226,7 +416,11 @@ class SyncPrice extends ProductCreateTask
         }
         $key = $itemId . '-' . $variantId . '-' . $uom;
         if (array_key_exists($key, $replItemPriceList)) {
-            return $replItemPriceList[$key];
+            $price = $replItemPriceList[$key];
+            // Validate the price before returning
+            if ($this->isValidPrice($price)) {
+                return $price;
+            }
         }
         if ($uom) {
             $variantId         = '';
@@ -236,14 +430,18 @@ class SyncPrice extends ProductCreateTask
             }
             $key = $itemId . '-' . $variantId . '-' . $uom;
             if (array_key_exists($key, $replItemPriceList)) {
-                return $replItemPriceList[$key];
+                $price = $replItemPriceList[$key];
+                // Validate the price before returning
+                if ($this->isValidPrice($price)) {
+                    return $price;
+                }
             }
         }
         return null;
     }
 
     /**
-     * Get item price lis price
+     * Get item price list price
      *
      * @param string $itemId
      * @return array
@@ -259,6 +457,7 @@ class SyncPrice extends ProductCreateTask
             ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
             ['field' => 'StoreId', 'value' => $webStoreId, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
+            ['field' => 'Status', 'value' => 'Active', 'condition_type' => 'eq']
         ];
         $searchCriteria         = $this->replicationHelper
             ->buildCriteriaForDirect($filters, -1)
@@ -273,9 +472,12 @@ class SyncPrice extends ProductCreateTask
             $replItemPriceList = $this->replPriceRepository->getList($searchCriteria);
             /** @var ReplPrice $replPrice */
             foreach ($replItemPriceList->getItems() as $replPrice) {
-                $key                          = $replPrice->getItemId() . '-' . $replPrice->getVariantId() . '-' .
-                    $replPrice->getUnitOfMeasure();
-                $replItemPriceListArray[$key] = $replPrice;
+                // Validate price before adding to array
+                if ($this->isValidPrice($replPrice)) {
+                    $key                          = $replPrice->getItemId() . '-' . $replPrice->getVariantId() . '-' .
+                        $replPrice->getUnitOfMeasure();
+                    $replItemPriceListArray[$key] = $replPrice;
+                }
             }
         } catch (Exception $e) {
             $this->logger->debug(
@@ -305,7 +507,8 @@ class SyncPrice extends ProductCreateTask
         if (!$this->remainingRecords) {
             /** Get list of only those prices whose items are already processed */
             $filters = [
-                ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
+                ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
+                ['field' => 'main_table.Status', 'value' => 'Active', 'condition_type' => 'eq']
             ];
 
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(

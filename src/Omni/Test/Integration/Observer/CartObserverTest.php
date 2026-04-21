@@ -19,7 +19,6 @@ use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Registry;
 use Magento\Quote\Test\Fixture\AddProductToCart;
 use Magento\Quote\Test\Fixture\CustomerCart;
@@ -79,11 +78,6 @@ class CartObserverTest extends AbstractIntegrationTest
     /**
      * @var mixed
      */
-    public $eventManager;
-
-    /**
-     * @var mixed
-     */
     public $cartObserver;
 
     /**
@@ -100,13 +94,9 @@ class CartObserverTest extends AbstractIntegrationTest
         $this->controllerAction = $this->objectManager->get(Action::class);
         $this->contactHelper    = $this->objectManager->get(ContactHelper::class);
         $this->basketHelper     = $this->objectManager->get(BasketHelper::class);
-        $this->eventManager     = $this->objectManager->create(ManagerInterface::class);
         $this->cartObserver     = $this->objectManager->get(CartObserver::class);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
@@ -114,6 +104,7 @@ class CartObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -136,20 +127,18 @@ class CartObserverTest extends AbstractIntegrationTest
     ]
     /**
      * Test cart observer with items
+     *
+     * @magentoAppIsolation enabled
      */
     public function testCartObserverWithOneListSave()
     {
         $customer      = $this->fixtures->get('customer');
         $cart          = $this->fixtures->get('cart1');
-        $expectedTotal = "85.5";
+        $result = $this->contactHelper->login(AbstractIntegrationTest::USERNAME, AbstractIntegrationTest::PASSWORD);
+        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
         $this->checkoutSession->setQuoteId($cart->getId());
-
-        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
-
-        $result = $this->contactHelper->login(AbstractIntegrationTest::USERNAME, AbstractIntegrationTest::PASSWORD);
-        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
 
         // Execute the observer method
         $this->cartObserver->execute(new Observer(
@@ -165,23 +154,15 @@ class CartObserverTest extends AbstractIntegrationTest
         $this->assertNotEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
         $this->assertNotNull($this->basketHelper->getOneListCalculationFromCheckoutSession());
         $this->assertEquals(
-            $this->basketHelper->getOneListCalculationFromCheckoutSession()->getPointsRewarded(),
-            $this->checkoutSession->getQuote()->getLsPointsEarn()
+            (float) $this->basketHelper->getOneListCalculationFromCheckoutSession()->getPointsRewarded(),
+            (float) $this->checkoutSession->getQuote()->getLsPointsEarn()
         );
         $this->assertEquals(
-            $this->basketHelper->getOneListCalculationFromCheckoutSession()->getTotalAmount(),
-            $this->checkoutSession->getQuote()->getGrandTotal()
+            (float) $this->basketHelper->getOneListCalculationFromCheckoutSession()->getTotalAmount(),
+            (float) $this->checkoutSession->getQuote()->getGrandTotal()
         );
-
-        $cart->delete();
-        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
-        $this->checkoutSession->clearQuote();
-        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
@@ -189,6 +170,7 @@ class CartObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -205,19 +187,18 @@ class CartObserverTest extends AbstractIntegrationTest
      * Test cart observer with null items in cart.
      *
      * @return void
+     *
+     * @magentoAppIsolation enabled
      */
     public function testCartObserverWithOneListNull()
     {
         $customer = $this->fixtures->get('customer2');
         $cart     = $this->fixtures->get('cart2');
+        $result = $this->contactHelper->login(AbstractIntegrationTest::USERNAME, AbstractIntegrationTest::PASSWORD);
+        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
         $this->checkoutSession->setQuoteId($cart->getId());
-
-        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
-
-        $result = $this->contactHelper->login(AbstractIntegrationTest::USERNAME, AbstractIntegrationTest::PASSWORD);
-        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
 
         // Execute the observer method
         $this->cartObserver->execute(new Observer(
@@ -226,8 +207,6 @@ class CartObserverTest extends AbstractIntegrationTest
                 'controller_action' => $this->controllerAction
             ]
         ));
-
-        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
 
         $quoteId = $this->checkoutSession->getQuoteId();
         $this->assertNotNull($quoteId);

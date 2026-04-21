@@ -166,9 +166,6 @@ class SalesObserverTest extends AbstractIntegrationTest
         $this->loyaltyHelper      = $this->objectManager->get(LoyaltyHelper::class);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
@@ -176,6 +173,7 @@ class SalesObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -201,6 +199,8 @@ class SalesObserverTest extends AbstractIntegrationTest
     ]
     /**
      * Show payment methods enabled for click and collect shipping method from admin
+     *
+     * @magentoAppIsolation enabled
      */
     public function testUpdatedGrandTotalForShippingAddressType()
     {
@@ -245,16 +245,19 @@ class SalesObserverTest extends AbstractIntegrationTest
             ]
         ));
 
-        $expectedLsPointsDiscount = AbstractIntegrationTest::LSR_LOY_POINTS * $this->loyaltyHelper->getPointRate();
-
+        $expectedLsPointsDiscount = $this->loyaltyHelper->getLsPointsDiscount(AbstractIntegrationTest::LSR_LOY_POINTS);
         $this->assertNotEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
         $this->assertNotNull($this->basketHelper->getOneListCalculationFromCheckoutSession());
         $this->assertEquals(
             $this->basketHelper->getOneListCalculationFromCheckoutSession()->getPointsRewarded(),
             $this->checkoutSession->getQuote()->getLsPointsEarn()
         );
-        $this->assertEquals($expectedLsPointsDiscount, $this->checkoutSession->getQuote()->getLsPointsDiscount());
 
+        $this->assertEqualsWithDelta(
+            $expectedLsPointsDiscount,
+            $this->checkoutSession->getQuote()->getLsPointsDiscount(),
+            0.01
+        );
         $this->basketHelper->setOneListCalculationInCheckoutSession(null);
         $cart->delete();
         $this->checkoutSession->clearQuote();

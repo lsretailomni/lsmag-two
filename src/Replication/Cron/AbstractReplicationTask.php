@@ -253,7 +253,7 @@ abstract class AbstractReplicationTask
             $source->setStartTime($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
                 $source->getStartTime(),
                 LSR::TIME_FORMAT,
-                false                
+                false
             ));
             $source->setEndDate($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
                 $source->getEndDate(),
@@ -738,8 +738,9 @@ abstract class AbstractReplicationTask
     public function processResponseGivenRequest($request, $storeId, $isFirstTime = 1)
     {
         try {
-            $properties = $this->getProperties();
-            $response   = $request->execute();
+            $properties       = $this->getProperties();
+            $response         = $request->execute();
+            $this->cronStatus = false;
 
             if ($response && method_exists($response, 'getResult')) {
                 $result                 = $response->getResult();

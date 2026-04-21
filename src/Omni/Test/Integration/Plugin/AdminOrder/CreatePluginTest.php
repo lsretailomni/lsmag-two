@@ -83,17 +83,16 @@ class CreatePluginTest extends AbstractIntegrationTest
         $this->itemHelper    = $this->objectManager->get(ItemHelper::class);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         AppArea('adminhtml'),
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LS_CENTRAL_VERSION, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -115,32 +114,24 @@ class CreatePluginTest extends AbstractIntegrationTest
         DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
         DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart1$'])
     ]
+    /**
+     * @magentoAppIsolation enabled
+     */
     public function testCreatePlugin()
     {
         $quote = $this->fixtures->get('cart1');
 
-        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $quote->getAllVisibleItems()]);
-
         $this->quoteSession->setQuoteId($quote->getId());
 
-        $oneList = $this->basketHelper->getOneListAdmin(
-            $quote->getCustomerEmail(),
-            $quote->getStore()->getWebsiteId(),
-            false
-        );
-
-        $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
-        $this->basketHelper->setOneListCalculationInCheckoutSession($oneList);
-        $basketData = $this->basketHelper->update($oneList);
         $quote      = $this->quoteSession->getQuote();
-        $this->itemHelper->setDiscountedPricesForItems($quote, $basketData, 2);
-        $quote->getShippingAddress()->setShippingMethod('flatrate_flatrate');
 
         $this->quoteSession->setQuote($quote);
         $this->model->setQuote($quote);
 
         $result = new DataObject();
+
         $this->createPlugin->afterSaveQuote($this->model, $result);
+        $basketData = $this->basketHelper->getOneListCalculationFromCheckoutSession();
 
         $this->assertEquals($basketData->getPointsRewarded(), $this->quoteSession->getQuote()->getLsPointsEarn());
         $this->assertEquals(self::LSR_LOY_POINTS, $this->quoteSession->getQuote()->getLsPointsSpent());

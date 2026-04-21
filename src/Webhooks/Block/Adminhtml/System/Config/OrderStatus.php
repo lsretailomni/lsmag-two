@@ -8,6 +8,8 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 use Magento\Email\Model\Template\Config;
 use Magento\Framework\Data\Form\Element\Factory as ElementFactory;
+use Magento\Email\Model\ResourceModel\Template\CollectionFactory;
+use Magento\Config\Model\Config\Source\Email\Template as DefaultEmailTemplates;
 
 class OrderStatus extends AbstractFieldArray
 {
@@ -21,8 +23,15 @@ class OrderStatus extends AbstractFieldArray
      */
     private $emailConfig;
 
+    private $defaultTemplates;
+
     /**
-     * @var ExpectedOrderStatus
+     * @var CollectionFactory
+     */
+    private $customTemplateFactory;
+
+    /**
+     * @var DefaultEmailTemplates
      */
     private $expectedOrderStatus;
 
@@ -31,6 +40,8 @@ class OrderStatus extends AbstractFieldArray
      * @param ElementFactory $elementFactory
      * @param Config $emailConfig
      * @param ExpectedOrderStatus $expectedOrderStatus
+     * @param DefaultEmailTemplates $defaultTemplates
+     * @param CollectionFactory $customTemplateFactory
      * @param array $data
      */
     public function __construct(
@@ -38,12 +49,16 @@ class OrderStatus extends AbstractFieldArray
         ElementFactory $elementFactory,
         Config $emailConfig,
         ExpectedOrderStatus $expectedOrderStatus,
+        DefaultEmailTemplates $defaultTemplates,
+        CollectionFactory $customTemplateFactory,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->emailConfig         = $emailConfig;
-        $this->elementFactory      = $elementFactory;
-        $this->expectedOrderStatus = $expectedOrderStatus;
+        $this->emailConfig           = $emailConfig;
+        $this->elementFactory        = $elementFactory;
+        $this->expectedOrderStatus   = $expectedOrderStatus;
+        $this->defaultTemplates      = $defaultTemplates;
+        $this->customTemplateFactory = $customTemplateFactory;
     }
 
     /**
@@ -111,7 +126,39 @@ class OrderStatus extends AbstractFieldArray
             ->setForm($this->getData('form'))
             ->setData('name', $this->_getCellInputElementName($columnName))
             ->setData('html_id', $this->_getCellInputElementId('<%- _id %>', $columnName))
-            ->setData('values', $this->emailConfig->getAvailableTemplates())
+            ->setData('values', $this->toOptionArray())
             ->getElementHtml();
+    }
+
+    /**
+     * Merged system emails and marketing emails
+     *
+     * @return array
+     */
+    public function toOptionArray()
+    {
+        $options = [];
+
+        $default = $this->emailConfig->getAvailableTemplates();
+        if (!empty($default)) {
+            $options[] = ['label' => __('System Templates'), 'value' => $default];
+        }
+
+        $customOptions    = [];
+        $customCollection = $this->customTemplateFactory->create();
+        $customCollection->load();
+
+        foreach ($customCollection as $template) {
+            $customOptions[] = [
+                'value' => $template->getId(),
+                'label' => $template->getTemplateCode(),
+            ];
+        }
+
+        if (!empty($customOptions)) {
+            $options[] = ['label' => __('Custom Templates'), 'value' => $customOptions];
+        }
+
+        return $options;
     }
 }

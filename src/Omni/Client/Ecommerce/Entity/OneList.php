@@ -104,6 +104,16 @@ class OneList extends Entity
     protected $ShipToCountryCode = null;
 
     /**
+     * @property string $ShipToCounty
+     */
+    protected $ShipToCounty = null;
+
+    /**
+     * @property string $ShipToPostCode
+     */
+    protected $ShipToPostCode = null;
+
+    /**
      * @property float $ShippingAmount
      */
     protected $ShippingAmount = null;
@@ -465,6 +475,42 @@ class OneList extends Entity
     public function getShipToCountryCode()
     {
         return $this->ShipToCountryCode;
+    }
+
+    /**
+     * @param string $ShipToCounty
+     * @return $this
+     */
+    public function setShipToCounty($ShipToCounty)
+    {
+        $this->ShipToCounty = $ShipToCounty;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShipToCounty()
+    {
+        return $this->ShipToCounty;
+    }
+
+    /**
+     * @param string $ShipToPostCode
+     * @return $this
+     */
+    public function setShipToPostCode($ShipToPostCode)
+    {
+        $this->ShipToPostCode = $ShipToPostCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShipToPostCode()
+    {
+        return $this->ShipToPostCode;
     }
 
     /**

@@ -67,8 +67,6 @@ class LayoutProcessorPluginTest extends AbstractIntegrationTest
         $this->jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['payments-list']['children']['ls_payment_method_pay_at_store-form'] = 'ls_payment_method_pay_at_store';
         $this->jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['afterMethods']['children']['loyalty-points']                       = 'loyalty-points';
         $this->jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['afterMethods']['children']['gift-card']                            = 'gift-card';
-        $this->jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['additional-payment-validators']['children']['discount-validator']  = 'discount-validator';
-        $this->jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']['payment']['children']['additional-payment-validators']['children']['discount-validator']  = 'discount-validator';
 
         $this->jsLayout['components']['checkout']['children']['sidebar']['children']['summary']['children']['totals']['children']['ls_gift_card_amount_used'] = 'ls_gift_card_amount_used';
         $this->jsLayout['components']['checkout']['children']['sidebar']['children']['summary']['children']['totals']['children']['ls_points_discount']       = 'ls_points_discount';
@@ -89,7 +87,6 @@ class LayoutProcessorPluginTest extends AbstractIntegrationTest
         Config(LSR::LS_COUPONS_SHOW_ON_CHECKOUT, 0, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LS_CENTRAL_VERSION, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
-
         Config(LSR::LS_ENABLE_COUPON_ELEMENTS, 0, 'store', 'default'),
         Config(LSR::LS_COUPONS_SHOW_ON_CHECKOUT, 0, 'store', 'default'),
         Config(LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS, 0, 'store', 'default'),
@@ -99,6 +96,7 @@ class LayoutProcessorPluginTest extends AbstractIntegrationTest
         Config(LSR::LSR_DISCOUNT_VALIDATION_ACTIVE, 0, 'store', 'default'),
         Config(LSR::PICKUP_TIMESLOTS_ENABLED, 0, 'website'),
         Config(LSR::SC_CLICKCOLLECT_ENABLED, 0, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website')
 
     ]
     public function testAfterProcessWithCouponsAndLoyDisabled()
@@ -117,7 +115,6 @@ class LayoutProcessorPluginTest extends AbstractIntegrationTest
 
         $this->assertArrayNotHasKey('gift-card', $billingStep['children']['payment']['children']['afterMethods']['children']);
 
-        $this->assertArrayNotHasKey('discount-validator', $payment['children']['additional-payment-validators']['children']);
         $this->assertArrayNotHasKey('ls-pickup-additional-options-wrapper', $shippingAdditional['children']);
 
         $this->assertArrayNotHasKey('component', $shippingAdditional['children']['select_store']);
@@ -144,7 +141,7 @@ class LayoutProcessorPluginTest extends AbstractIntegrationTest
         Config(LSR::SC_CLICKCOLLECT_ENABLED, self::SC_CLICKCOLLECT_ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LS_CENTRAL_VERSION, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
-
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website')
     ]
     public function testAfterProcessWithAllDiscountOptionsEnabled()
     {
@@ -164,7 +161,6 @@ class LayoutProcessorPluginTest extends AbstractIntegrationTest
 
         $this->assertArrayHasKey('gift-card', $billingStep['children']['payment']['children']['afterMethods']['children']);
 
-        $this->assertArrayHasKey('discount-validator', $payment['children']['additional-payment-validators']['children']);
         $this->assertArrayHasKey('ls-pickup-additional-options-wrapper', $shippingAdditional['children']);
 
         $this->assertEquals('Ls_Omni/js/view/checkout/shipping/select-store', $shippingAdditional['children']['select_store']['component']);

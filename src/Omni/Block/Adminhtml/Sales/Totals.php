@@ -6,15 +6,12 @@ use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Directory\Model\Currency;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Model\Order;
 
-/**
- * Class Totals
- * @package Ls\Omni\Block\Adminhtml\Sales
- */
 class Totals extends Template
 {
     /**
@@ -33,7 +30,6 @@ class Totals extends Template
     public $loyaltyHelper;
 
     /**
-     * Totals constructor.
      * @param Context $context
      * @param OrderHelper $orderHelper
      * @param LoyaltyHelper $loyaltyHelper
@@ -107,7 +103,7 @@ class Totals extends Template
      * Initiate all totals
      *
      * @return $this
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function initTotals()
     {
@@ -118,6 +114,7 @@ class Totals extends Template
         $this->getInvoice();
         $this->getCreditmemo();
         $this->getSource();
+        $this->loyaltyHelper->getLsr()->setStoreId($order->getStoreId());
 
         if ($this->getSource()->getLsGiftCardAmountUsed() > 0) {
             // @codingStandardsIgnoreLine
@@ -125,6 +122,9 @@ class Totals extends Template
                 [
                     'code'  => 'ls_gift_card_amount_used',
                     'value' => -$this->getSource()->getLsGiftCardAmountUsed(),
+                    'base_value' => -$this->loyaltyHelper->itemHelper->convertToBaseCurrency(
+                        $this->getSource()->getLsGiftCardAmountUsed()
+                    ),
                     'label' => __('Gift Card Redeemed ') . '(' . $this->getSource()->getLsGiftCardNo() . ')',
                 ]
             );
@@ -132,12 +132,13 @@ class Totals extends Template
         }
 
         if ($this->getSource()->getLsPointsSpent() > 0) {
-            $loyaltyAmount = $this->getSource()->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $loyaltyAmount = $this->loyaltyHelper->getLsPointsDiscount($this->getSource()->getLsPointsSpent());
             // @codingStandardsIgnoreLine
             $loyaltyPoints = new DataObject(
                 [
                     'code'  => 'ls_points_spent',
                     'value' => -$loyaltyAmount,
+                    'base_value' => -$this->loyaltyHelper->itemHelper->convertToBaseCurrency($loyaltyAmount),
                     'label' => __('Loyalty Points Redeemed'),
                 ]
             );
@@ -151,6 +152,7 @@ class Totals extends Template
                 [
                     'code'  => 'ls_discount_amount',
                     'value' => -$lsDiscountAmount,
+                    'base_value' => -$this->loyaltyHelper->itemHelper->convertToBaseCurrency($lsDiscountAmount),
                     'label' => __('Discount'),
                 ]
             );

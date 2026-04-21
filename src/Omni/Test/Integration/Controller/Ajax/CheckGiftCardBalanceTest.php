@@ -58,11 +58,15 @@ class CheckGiftCardBalanceTest extends AbstractController
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default')
+        Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
     ]
     public function testExecute()
     {
-        $giftCardData = ['gift_card_code' => AbstractIntegrationTest::GIFTCARD, 'gift_card_pin' => AbstractIntegrationTest::GIFTCARD_PIN];
+        $giftCardData = [
+            'gift_card_code' => AbstractIntegrationTest::GIFTCARD,
+            'gift_card_pin' => AbstractIntegrationTest::GIFTCARD_PIN
+        ];
         $content      = json_encode($giftCardData);
         $this->getRequest()->setContent($content);
         $this->getRequest()->setMethod(HttpRequest::METHOD_POST);

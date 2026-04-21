@@ -67,7 +67,7 @@ class ActivityPreSellProduct extends AbstractOperation
      * @param ActivityPreSellProductRequest $request
      * @return ResponseInterface|ActivityPreSellProductResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

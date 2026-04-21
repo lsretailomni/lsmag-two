@@ -18,8 +18,11 @@
             <group value="lsConfig"/>
         </annotations>
         <before>
-            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin" />
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" />
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
+            </actionGroup>
             <actionGroup ref="LsReplicateTaxRulesAndZonesActionGroup" stepKey="replicateTaxRules">
                 <argument name="newWebsiteName" value="Default Store View" />
             </actionGroup>

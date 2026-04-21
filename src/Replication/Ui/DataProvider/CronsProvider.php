@@ -136,18 +136,18 @@ class CronsProvider extends DataProvider implements DataProviderInterface
      */
     public function getData()
     {
-        $scopeId           = $this->request->getParam('scope_id');
-        $items             = [];
-        $counter           = 1;
-        $scope             = $this->request->getParam('scope');
-        $pagingParam       = $this->request->getParam('paging');
+        $scopeId     = $this->request->getParam('scope_id');
+        $items       = [];
+        $counter     = 1;
+        $scope       = $this->request->getParam('scope');
+        $pagingParam = $this->request->getParam('paging');
 
-        if ($scopeId === null || !$this->lsr->isEnabled($scopeId)) {
+        if ($scopeId === null || !$this->lsr->isEnabled($scopeId, $scope)) {
             $scopeId = $this->getDefaultStoreId();
         }
 
         $cronsGroupListing = $this->readCronFile($scopeId);
-        $versionRes = version_compare($this->lsr->getOmniVersion($scopeId, $scope), '2024.4.0', '>=');
+        $versionRes        = version_compare($this->lsr->getOmniVersion($scopeId, $scope), '2024.4.0', '>=');
 
         foreach ($cronsGroupListing as $cronlist) {
             $path = '';
@@ -230,15 +230,16 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                     'store'                 => $scope == ScopeInterface::SCOPE_WEBSITES ?
                         $this->storeManager->getWebsiteName($scopeId) :
                         (
-                            $scope == ScopeConfigInterface::SCOPE_TYPE_DEFAULT ?
+                        $scope == ScopeConfigInterface::SCOPE_TYPE_DEFAULT ?
                             $this->lsr->getAdminStore()->getName() :
                             $this->storeManager->getStoreName($scopeId)
                         ),
-                    'scope_id'               => $scopeId,
+                    'scope_id'              => $scopeId,
                     'fullreplicationstatus' => $statusStr,
                     'label'                 => $cronName,
                     'lastexecuted'          => $lastExecute,
                     'value'                 => $joblist['_attribute']['instance'],
+                    'frequency'             => $joblist['_value']['schedule'],
                     'condition'             => $condition,
                     'scope'                 => $scope
                 ];
@@ -450,7 +451,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         $storeId = '';
 
         foreach ($this->storeManager->getStoreCollection() as $store) {
-            if($this->lsr->isEnabled($store->getId())) {
+            if ($this->lsr->isEnabled($store->getId())) {
                 return $store->getId();
             }
         }

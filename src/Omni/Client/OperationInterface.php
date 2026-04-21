@@ -17,7 +17,7 @@ interface OperationInterface
      *
      * @return ResponseInterface
      */
-    public function execute(RequestInterface $request = null);
+    public function execute(?RequestInterface $request = null);
 
     /**
      * @return Client

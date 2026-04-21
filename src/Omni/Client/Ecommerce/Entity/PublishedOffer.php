@@ -15,6 +15,11 @@ use Ls\Omni\Exception\InvalidEnumException;
 class PublishedOffer extends Entity
 {
     /**
+     * @property ArrayOfCoupon $Coupons
+     */
+    protected $Coupons = null;
+
+    /**
      * @property ArrayOfImageView $Images
      */
     protected $Images = null;
@@ -50,6 +55,16 @@ class PublishedOffer extends Entity
     protected $ExpirationDate = null;
 
     /**
+     * @property string $MemberAttribute
+     */
+    protected $MemberAttribute = null;
+
+    /**
+     * @property string $MemberAttributeValue
+     */
+    protected $MemberAttributeValue = null;
+
+    /**
      * @property string $OfferId
      */
     protected $OfferId = null;
@@ -68,6 +83,24 @@ class PublishedOffer extends Entity
      * @property string $ValidationText
      */
     protected $ValidationText = null;
+
+    /**
+     * @param ArrayOfCoupon $Coupons
+     * @return $this
+     */
+    public function setCoupons($Coupons)
+    {
+        $this->Coupons = $Coupons;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfCoupon
+     */
+    public function getCoupons()
+    {
+        return $this->Coupons;
+    }
 
     /**
      * @param ArrayOfImageView $Images
@@ -203,6 +236,42 @@ class PublishedOffer extends Entity
     public function getExpirationDate()
     {
         return $this->ExpirationDate;
+    }
+
+    /**
+     * @param string $MemberAttribute
+     * @return $this
+     */
+    public function setMemberAttribute($MemberAttribute)
+    {
+        $this->MemberAttribute = $MemberAttribute;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberAttribute()
+    {
+        return $this->MemberAttribute;
+    }
+
+    /**
+     * @param string $MemberAttributeValue
+     * @return $this
+     */
+    public function setMemberAttributeValue($MemberAttributeValue)
+    {
+        $this->MemberAttributeValue = $MemberAttributeValue;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberAttributeValue()
+    {
+        return $this->MemberAttributeValue;
     }
 
     /**

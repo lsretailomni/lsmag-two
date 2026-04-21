@@ -67,7 +67,7 @@ class DiscountsGet extends AbstractOperation
      * @param DiscountsGetRequest $request
      * @return ResponseInterface|DiscountsGetResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

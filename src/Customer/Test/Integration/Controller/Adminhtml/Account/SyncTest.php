@@ -58,13 +58,15 @@ class SyncTest extends AbstractBackendController
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
                 'random_email' => 1,
                 'lsr_username' => null,
                 'lsr_id'       => null,
-                'lsr_cardid'   => null
+                'lsr_cardid'   => null,
+                'lsr_password' => AbstractIntegrationTest::PASSWORD
             ],
             'customer'
         )
@@ -97,6 +99,7 @@ class SyncTest extends AbstractBackendController
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -115,8 +118,8 @@ class SyncTest extends AbstractBackendController
         $this->dispatch('backend/lscustomer/account/sync');
 
         $updatedCustomer = $this->contactHelper->getCustomerByEmail($customer->getEmail());
-        $this->assertNull($updatedCustomer->getData('lsr_username'));
-        $this->assertNull($updatedCustomer->getData('lsr_id'));
+        $this->assertNotNull($updatedCustomer->getData('lsr_username'));
+        $this->assertNotNull($updatedCustomer->getData('lsr_id'));
         $messages = $this->messageManager->getMessages(false)->getItems();
         $this->assertTrue(count($messages) > 0);
     }

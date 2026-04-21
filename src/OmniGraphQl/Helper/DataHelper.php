@@ -331,12 +331,12 @@ class DataHelper extends AbstractHelper
     /**
      * Format store timing
      *
-     * @param string $storeId
+     * @param string $webStoreId
      * @return array
      */
-    public function formatStoreTiming($storeId)
+    public function formatStoreTiming($webStoreId)
     {
-        $storeHours = $this->omniDataHelper->getStoreHours($storeId);
+        $storeHours = $this->omniDataHelper->getStoreHours($webStoreId);
         $hours      = [];
         $i          = 0;
 
@@ -490,6 +490,10 @@ class DataHelper extends AbstractHelper
 
         foreach ($slots as $index => $slot) {
             $formattedData[] = ['date' => $index, 'slots' => $slot];
+        }
+
+        if (empty($formattedData)) {
+            $formattedData[] = ['date' => __('Not Available'), 'slots' => []];
         }
 
         return $formattedData;

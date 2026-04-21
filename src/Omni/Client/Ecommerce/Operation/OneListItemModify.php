@@ -67,7 +67,7 @@ class OneListItemModify extends AbstractOperation
      * @param OneListItemModifyRequest $request
      * @return ResponseInterface|OneListItemModifyResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

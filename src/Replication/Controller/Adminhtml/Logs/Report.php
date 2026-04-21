@@ -27,6 +27,7 @@ class Report extends Action
         'debug.log',
         'exception.log',
         'replication.log',
+        'flat_replication.log',
         'webhookstatus.log',
         'system.log'
     ];

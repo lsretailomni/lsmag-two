@@ -35,6 +35,19 @@
             </argument>
         </arguments>
     </type>
+    <type name="Ls\Replication\Logger\FlatReplicationLoggerHandler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Ls\Replication\Logger\FlatReplicationLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">FlatReplicationLogger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Ls\Replication\Logger\FlatReplicationLoggerHandler</item>
+            </argument>
+        </arguments>
+    </type>
     <!--Replication API Repository Interfaces-->
     <preference for="Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValueRepository"/>

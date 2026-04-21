@@ -590,9 +590,12 @@ class ContactHelper extends AbstractHelper
             do {
                 $parameters['lsr_username'] = $this->generateRandomUsername();
             } while ($this->isUsernameExist($parameters['lsr_username']) ||
-            $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
-                $this->isUsernameExistInLsCentral($parameters['lsr_username']) : false
-            );
+            ($this->lsr->isLSR(
+                $this->lsr->getCurrentStoreId(),
+                false,
+                $this->lsr->getCustomerIntegrationOnFrontend()
+            ) && $this->isUsernameExistInLsCentral($parameters['lsr_username'])
+            ));
             /** @var Customer $customer */
             $customer = $session->getCustomer();
             $request  = $observer->getControllerAction()->getRequest();
@@ -606,9 +609,9 @@ class ContactHelper extends AbstractHelper
                 $customer->setData('firstname', $parameters['firstname']);
                 $customer->setData('lastname', $parameters['lastname']);
                 $customer->setData('middlename', (array_key_exists(
-                        'middlename',
-                        $parameters
-                    ) && $parameters['middlename']) ? $parameters['middlename'] : null);
+                    'middlename',
+                    $parameters
+                ) && $parameters['middlename']) ? $parameters['middlename'] : null);
                 $customer->setData(
                     'gender',
                     (array_key_exists('gender', $parameters) && $parameters['gender']) ? $parameters['gender'] : null
@@ -617,7 +620,11 @@ class ContactHelper extends AbstractHelper
                     'dob',
                     (array_key_exists('dob', $parameters) && $parameters['dob']) ? $parameters['dob'] : null
                 );
-                if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+                if ($this->lsr->isLSR(
+                    $this->lsr->getCurrentStoreId(),
+                    false,
+                    $this->lsr->getCustomerIntegrationOnFrontend()
+                )) {
                     /** @var Entity\MemberContact $contact */
                     $contact = $this->contact($customer);
                     if (is_object($contact) && $contact->getId()) {
@@ -1110,19 +1117,22 @@ class ContactHelper extends AbstractHelper
         $customer         = $this->setCustomerAttributesValues($result, $customer);
         $customer         = $this->setCustomerAdditionalValues($result, $customer);
         $customerSecure   = $this->customerRegistry->retrieveSecureData($customer->getId());
-        $validatePassword = $this->encryptorInterface->validateHash(
-            $credentials['password'],
-            $customerSecure->getPasswordHash()
-        );
-        if (!$validatePassword) {
-            $passwordHash = $this->encryptorInterface->getHash($credentials['password'], true);
-            $customerSecure->setRpToken(null);
-            $customerSecure->setRpTokenCreatedAt(null);
-            $customerSecure->setPasswordHash($passwordHash);
-            $customer->setPasswordHash($passwordHash);
+
+        if (isset($credentials['password'])) {
+            $validatePassword = $this->encryptorInterface->validateHash(
+                $credentials['password'],
+                $customerSecure->getPasswordHash()
+            );
+            if (!$validatePassword) {
+                $passwordHash = $this->encryptorInterface->getHash($credentials['password'], true);
+                $customerSecure->setRpToken(null);
+                $customerSecure->setRpTokenCreatedAt(null);
+                $customerSecure->setPasswordHash($passwordHash);
+                $customer->setPasswordHash($passwordHash);
+            }
         }
         $this->customerResourceModel->save($customer);
-        $this->customerRegistry->_resetState();
+        $this->customerRegistry->remove($customer->getId());
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
         $this->basketHelper->unSetOneList();
         $this->basketHelper->unSetOneListCalculation();
@@ -1130,6 +1140,15 @@ class ContactHelper extends AbstractHelper
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
         $this->customerSession->setCustomerAsLoggedIn($customer);
+
+        $oneListWish = $this->getOneListTypeObject(
+            $result->getOneLists()->getOneList(),
+            Entity\Enum\ListType::WISH
+        );
+        /** Update Wishlist to Omni */
+        $this->updateWishlistAfterLogin(
+            $oneListWish
+        );
     }
 
     /**
@@ -1211,10 +1230,10 @@ class ContactHelper extends AbstractHelper
             throw new UserLockedException(__('The account is locked.'));
         }
         if ($customer->getConfirmation() && $this->accountConfirmation->isConfirmationRequired(
-                $websiteId,
-                $customerId,
-                $customer->getEmail()
-            )) {
+            $websiteId,
+            $customerId,
+            $customer->getEmail()
+        )) {
             throw new EmailNotConfirmedException(__("This account isn't confirmed. Verify and try again."));
         }
     }
@@ -1388,31 +1407,21 @@ class ContactHelper extends AbstractHelper
             if (empty($userName)) {
                 do {
                     $userName = $this->generateRandomUsername();
-                } while ($this->isUsernameExist($userName) ?
-                    $this->isUsernameExistInLsCentral($userName) : false
-                );
+                } while ($this->isUsernameExist($userName) && $this->isUsernameExistInLsCentral($userName));
                 $customer->setData('lsr_username', $userName);
             }
-            //Incase if lsr_password not set due to some exception from LS Central/ Migrating the existing customer.
-            // Setting username as password.
-            if (empty($customer->getData('lsr_password'))) {
-                $customer->setData('lsr_password', $this->encryptorInterface->encrypt($userName));
-            }
-            $contactUserName = $this->getCustomerByUsernameOrEmailFromLsCentral(
-                $customer->getData('lsr_username'),
-                Entity\Enum\ContactSearchType::USER_NAME
-            );
             $contactEmail    = $this->getCustomerByUsernameOrEmailFromLsCentral(
                 $customer->getEmail(),
                 Entity\Enum\ContactSearchType::EMAIL
             );
-            if (!empty($contactUserName) && !empty($contactEmail)) {
-                $contact  = $contactUserName;
+            if (!empty($contactEmail)) {
+                $contact  = $contactEmail;
                 $password = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
                 if (!empty($password)) {
                     $customerPost['password'] = $password;
-                    $resetCode                = $this->forgotPassword($userName);
+                    $resetCode                = $this->forgotPassword($contact->getUsername());
                     $customer->setData('lsr_resetcode', $resetCode);
+                    $customer->setData('lsr_username', $contact->getUsername());
                     $this->resetPassword($customer, $customerPost);
                     $customer->setData('lsr_resetcode', null);
                 }
@@ -1425,6 +1434,7 @@ class ContactHelper extends AbstractHelper
                     $token = $contact->getLoggedOnToDevice()->getSecurityToken();
                     $customer->setData('lsr_token', $token);
                 }
+
                 $customer->setData('lsr_id', $contact->getId());
                 $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
                 $customer->setData('lsr_password', null);
@@ -1662,7 +1672,7 @@ class ContactHelper extends AbstractHelper
      * @throws NoSuchEntityException
      * @throws Exception
      */
-    public function updateBasketAndWishlistAfterLogin($result)
+    public function updateRequiredOneListAfterLogin($result)
     {
         $quote = $this->checkoutSession->getQuote();
         $items = $quote->getAllVisibleItems();
@@ -1679,16 +1689,6 @@ class ContactHelper extends AbstractHelper
             $oneListBasket,
             $result->getCards()->getCard()[0]->getId()
         );
-        $oneListWish = $this->getOneListTypeObject(
-            $result->getOneLists()->getOneList(),
-            Entity\Enum\ListType::WISH
-        );
-        if ($oneListWish) {
-            /** Update Wishlist to Omni */
-            $this->updateWishlistAfterLogin(
-                $oneListWish
-            );
-        }
 
         $this->setBasketUpdateChecking();
     }
@@ -1696,18 +1696,16 @@ class ContactHelper extends AbstractHelper
     /**
      * Get one list type
      *
-     * @param object $arrayOneLists
+     * @param array $arrayOneLists
      * @param string $type
      * @return Entity\OneList|null
-     * @throws NoSuchEntityException
      */
     public function getOneListTypeObject($arrayOneLists, $type)
     {
         if (is_array($arrayOneLists)) {
             /** @var Entity\OneList $oneList */
             foreach ($arrayOneLists as $oneList) {
-                if ($oneList->getListType() == $type &&
-                    $oneList->getStoreId() == $this->basketHelper->getDefaultWebStore()
+                if ($oneList->getListType() == $type
                 ) {
                     return $oneList;
                 }
@@ -1776,79 +1774,75 @@ class ContactHelper extends AbstractHelper
     /**
      * Update wishlist after login
      *
-     * @param Entity\OneList $oneListWishlist
+     * @param Entity\OneList|null $oneListWishlist
      * @return void
+     * @throws NoSuchEntityException|InvalidEnumException
      */
-    public function updateWishlistAfterLogin(Entity\OneList $oneListWishlist)
+    public function updateWishlistAfterLogin($oneListWishlist)
     {
-        // @codingStandardsIgnoreStart
         $customerId = $this->customerSession->getCustomer()->getId();
-        $wishlist   = $this->wishlist->loadByCustomerId($customerId);
-        $this->removeWishlist($wishlist);
-        $wishlist = $this->wishlistFactory->create();
-        $wishlist->loadByCustomerId($customerId, true);
-        $itemsCollection = $oneListWishlist->getItems()->getOneListItem();
-        if (!is_array($itemsCollection)) {
-            $itemsCollection = [$itemsCollection];
-        }
-        try {
-            foreach ($itemsCollection as $item) {
-                $buyRequest = [];
-                $sku        = $item->getItemId();
-                $product    = $this->itemHelper->getProductByIdentificationAttributes($sku);
+        $wishlist = $this->wishlist->loadByCustomerId($customerId);
+        $wishListItems = $wishlist->getItemCollection()->getItems();
+        if (!$oneListWishlist) {
+            $oneList = $this->basketHelper->fetchCurrentCustomerWishlist();
+            $oneList = $this->basketHelper->addProductToExistingWishlist($oneList, $wishListItems);
+            $this->basketHelper->updateWishlistAtOmni($oneList);
+        } else {
+            $oneListItems = $oneListWishlist->getItems()->getOneListItem();
 
-                if ($product) {
-                    $qty               = $item->getQuantity();
-                    $buyRequest['qty'] = $qty;
-                    if ($item->getVariantId()) {
-                        $simProduct = $this->itemHelper->getProductByIdentificationAttributes(
-                            $item->getItemId(),
-                            $item->getVariantId()
-                        );
-
-                        if ($simProduct) {
-                            $optionsData                   = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
-                            $buyRequest['super_attribute'] = [];
-                            foreach ($optionsData as $key => $option) {
-                                $code                                = $option['attribute_code'];
-                                $value                               = $simProduct->getData($code);
-                                $buyRequest['super_attribute'][$key] = $value;
-                            }
-                        }
-                    }
-                    $result = $wishlist->addNewItem($product, $buyRequest);
-                    $this->wishlistResourceModel->save($wishlist);
-                    $this->_eventManager->dispatch(
-                        'wishlist_add_product',
-                        ['wishlist' => $wishlist, 'product' => $product, 'item' => $result]
-                    );
-                }
+            if (count($wishListItems) === count($oneListItems) &&
+                !$this->hasWishlistMismatch($wishListItems, $oneListItems)
+            ) {
+                $this->basketHelper->setWishListInCustomerSession($oneListWishlist);
+            } else {
+                $this->basketHelper->delete($oneListWishlist);
+                $oneList = $this->basketHelper->fetchCurrentCustomerWishlist();
+                $oneList = $this->basketHelper->addProductToExistingWishlist($oneList, $wishListItems);
+                $this->basketHelper->updateWishlistAtOmni($oneList);
             }
-
-            if (!is_array($oneListWishlist) &&
-                $oneListWishlist instanceof Entity\OneList) {
-                $this->customerSession->setData(LSR::SESSION_CART_WISHLIST, $oneListWishlist);
-            }
-        } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
         }
-        // @codingStandardsIgnoreEnd
     }
 
     /**
-     * Function to remove wishlist
+     * Check if there is a mismatch between Magento wishlist items and oneList items
      *
-     * @param object $wishlist
+     * Based on ItemId, VariantId, UOM and Qty
+     *
+     * @param array $wishListItems
+     * @param array $oneListItems
+     * @return bool
+     * @throws NoSuchEntityException
      */
-    public function removeWishlist(&$wishlist)
+    private function hasWishlistMismatch(array $wishListItems, array $oneListItems): bool
     {
-        // @codingStandardsIgnoreStart
-        try {
-            $wishlist->delete();
-        } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
+        foreach ($wishListItems as $wishlistItem) {
+            $product = $wishlistItem->getProduct();
+            [$itemId, $variantId, $uom] = $this->basketHelper->getComparisonValuesForProduct($product);
+            $qty = (float)$wishlistItem->getQty();
+            $found = false;
+
+            foreach ($oneListItems as $oneListItem) {
+                $oneItemId = $oneListItem->getItemId();
+                $oneVariantId = $oneListItem->getVariantId();
+                $oneUom = $oneListItem->getUnitOfMeasureId();
+                $oneQty = (float)$oneListItem->getQuantity();
+
+                if ($oneItemId == $itemId &&
+                    $oneVariantId == $variantId &&
+                    $oneUom == $uom &&
+                    $oneQty == $qty
+                ) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (!$found) {
+                return true;
+            }
         }
-        // @codingStandardsIgnoreEnd
+
+        return false;
     }
 
     /**

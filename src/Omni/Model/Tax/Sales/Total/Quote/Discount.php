@@ -15,6 +15,7 @@ use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 use Magento\SalesRule\Api\Data\DiscountDataInterfaceFactory;
 use Magento\SalesRule\Api\Data\RuleDiscountInterfaceFactory;
+use Magento\SalesRule\Model\RulesApplier;
 use Magento\SalesRule\Model\Validator;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -70,6 +71,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
      * @param CheckoutSession $checkoutSession
      * @param RuleDiscountInterfaceFactory|null $discountInterfaceFactory
      * @param DiscountDataInterfaceFactory|null $discountDataInterfaceFactory
+     * @param RulesApplier|null $rulesApplier
      */
     public function __construct(
         ManagerInterface $eventManager,
@@ -79,8 +81,9 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
         CheckoutSession $checkoutSession,
-        RuleDiscountInterfaceFactory $discountInterfaceFactory = null,
-        DiscountDataInterfaceFactory $discountDataInterfaceFactory = null
+        ?RuleDiscountInterfaceFactory $discountInterfaceFactory = null,
+        ?DiscountDataInterfaceFactory $discountDataInterfaceFactory = null,
+        ?RulesApplier $rulesApplier = null
     ) {
         parent::__construct(
             $eventManager,
@@ -88,7 +91,8 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             $validator,
             $priceCurrency,
             $discountInterfaceFactory,
-            $discountDataInterfaceFactory
+            $discountDataInterfaceFactory,
+            $rulesApplier
         );
         $this->eventManager = $eventManager;
         $this->calculator = $validator;
@@ -115,8 +119,11 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
     ) {
         $lsr = $this->basketHelper->getLsrModel();
 
-        if (!$lsr->isLSR($lsr->getCurrentStoreId())) {
-            return parent::collect($quote, $shippingAssignment, $total);
+        if (!$lsr->isLSR($lsr->getCurrentStoreId(),
+            false,
+            $lsr->getBasketIntegrationOnFrontend()
+        )) {
+            parent::collect($quote, $shippingAssignment, $total);
         }
         $total->setData('discount_description', ''); //For fixing explode issue on graph ql
         $items = $shippingAssignment->getItems();
@@ -143,6 +150,15 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
      */
     public function fetch(Quote $quote, Total $total)
     {
+        $lsr = $this->basketHelper->getLsrModel();
+
+        if (!$lsr->isLSR($lsr->getCurrentStoreId(),
+            false,
+            $lsr->getBasketIntegrationOnFrontend()
+        )) {
+            return parent::fetch($quote, $total);
+        }
+
         $result = null;
         $amount = $this->getTotalDiscount($quote);
         $title = __('Discount');
@@ -207,7 +223,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         $amount = 0;
         $pointDiscount = 0;
         if ($quote->getLsPointsSpent() > 0) {
-            $pointDiscount = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+            $pointDiscount = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
             if ($pointDiscount > 0.001) {
                 $quote->setLsPointsDiscount($pointDiscount);
             }

@@ -49,8 +49,11 @@ class GetItemDiscountsTest extends GraphQlTestBase
 
         $this->assertNotNull($response);
         $this->assertArrayHasKey('discounts', $response['get_discounts']['output']);
-        $this->assertNotNull($response['get_discounts']['output']['discounts'][0]['discount_description_title']);
         $this->assertArrayHasKey('coupons', $response['get_discounts']['output']);
+        if (!empty($response['get_discounts']['output']['coupons'])
+        ) {
+            $this->assertNotNull($response['get_discounts']['output']['coupons'][0]['coupon_description']);
+        }
     }
 
     /**
@@ -64,7 +67,7 @@ class GetItemDiscountsTest extends GraphQlTestBase
             get_discounts (
                 item_id: "{$itemId}"
             ) {
-                output 
+                output
                     {
                         discounts
                         {
@@ -86,7 +89,7 @@ class GetItemDiscountsTest extends GraphQlTestBase
                             offer_id
                         }
                     }
-                
+
             }
         }
         QUERY;

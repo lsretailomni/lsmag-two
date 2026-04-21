@@ -5,7 +5,7 @@ use \Ls\Customer\Block\Loyalty\Offers;
 
 $type   = 'PointOffer';
 $offers = $this->getOffers();
-$total  = count($offers);
+$total  = is_array($offers) ? count($offers) : 0;
 $c      = 0;
 ?>
 

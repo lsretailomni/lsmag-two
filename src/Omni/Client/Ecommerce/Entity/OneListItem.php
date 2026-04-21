@@ -8,6 +8,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
+use Ls\Omni\Client\Ecommerce\Entity\Enum\LineType;
+use Ls\Omni\Exception\InvalidEnumException;
+
 class OneListItem extends Entity
 {
     /**
@@ -129,6 +132,11 @@ class OneListItem extends Entity
      * @property float $TaxAmount
      */
     protected $TaxAmount = null;
+
+    /**
+     * @property LineType $Type
+     */
+    protected $Type = null;
 
     /**
      * @property string $UnitOfMeasureDescription
@@ -585,6 +593,34 @@ class OneListItem extends Entity
     public function getTaxAmount()
     {
         return $this->TaxAmount;
+    }
+
+    /**
+     * @param LineType|string $Type
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setType($Type)
+    {
+        if ( ! $Type instanceof LineType ) {
+            if ( LineType::isValid( $Type ) )
+                $Type = new LineType( $Type );
+            elseif ( LineType::isValidKey( $Type ) )
+                $Type = new LineType( constant( "LineType::$Type" ) );
+            elseif ( ! $Type instanceof LineType )
+                throw new InvalidEnumException();
+        }
+        $this->Type = $Type->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return LineType
+     */
+    public function getType()
+    {
+        return $this->Type;
     }
 
     /**

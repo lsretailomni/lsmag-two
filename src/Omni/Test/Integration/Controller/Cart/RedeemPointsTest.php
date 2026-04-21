@@ -8,8 +8,6 @@ use \Ls\Customer\Test\Fixture\CustomerFixture;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
-use \Ls\Omni\Controller\Cart\RedeemPoints;
-use Magento\Framework\Message\Manager;
 use Magento\GiftMessage\Api\Data\MessageExtension;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\Checkout\Model\Session as CheckoutSession;
@@ -21,7 +19,6 @@ use Magento\Quote\Test\Fixture\CustomerCart;
 use Magento\TestFramework\Fixture\AppArea;
 use Magento\TestFramework\Fixture\Config;
 use Magento\Framework\App\Request\Http as HttpRequest;
-use Magento\Store\Model\Store;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\AbstractController;
@@ -37,16 +34,6 @@ class RedeemPointsTest extends AbstractController
      * @var \Magento\Framework\ObjectManagerInterface
      */
     public $objectManager;
-
-    /**
-     * @var Store
-     */
-    public $store;
-
-    /**
-     * @var RedeemPoints
-     */
-    public $redeemPoints;
 
     /**
      * @var Registry
@@ -74,11 +61,6 @@ class RedeemPointsTest extends AbstractController
     public $contactHelper;
 
     /**
-     * @var Manager
-     */
-    public $messageManager;
-
-    /**
      * @return void
      */
     protected function setUp(): void
@@ -86,14 +68,11 @@ class RedeemPointsTest extends AbstractController
         parent::setUp();
         $this->objectManager   = Bootstrap::getObjectManager();
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
-        $this->store           = $this->objectManager->get(Store::class);
-        $this->redeemPoints    = $this->objectManager->get(RedeemPoints::class);
         $this->registry        = $this->objectManager->get(Registry::class);
         $this->customerSession = $this->objectManager->get(CustomerSession::class);
         $this->checkoutSession = $this->objectManager->get(CheckoutSession::class);
         $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
         $this->contactHelper   = $this->objectManager->get(ContactHelper::class);
-        $this->messageManager  = $this->objectManager->get(Manager::class);
     }
 
     /**
@@ -106,6 +85,7 @@ class RedeemPointsTest extends AbstractController
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -133,18 +113,16 @@ class RedeemPointsTest extends AbstractController
         ];
         $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
         $this->getRequest()->setParams($loyData);
-
         $customer = $this->fixtures->get('customer');
         $cart     = $this->fixtures->get('cart1');
-        $this->customerSession->setData('customer_id', $customer->getId());
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
-        $this->checkoutSession->setQuoteId($cart->getId());
-
-        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
         $result = $this->contactHelper->login(AbstractIntegrationTest::USERNAME, AbstractIntegrationTest::PASSWORD);
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
+        $this->customerSession->setData('customer_id', $customer->getId());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
+        $this->checkoutSession->setQuoteId($cart->getId());
+
+        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
         $this->dispatch('omni/cart/redeemPoints');
 
@@ -164,6 +142,7 @@ class RedeemPointsTest extends AbstractController
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -195,15 +174,15 @@ class RedeemPointsTest extends AbstractController
 
         $customer = $this->fixtures->get('customer');
         $cart     = $this->fixtures->get('cart1');
+
+        $result = $this->contactHelper->login(AbstractIntegrationTest::USERNAME, AbstractIntegrationTest::PASSWORD);
+        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
         $this->checkoutSession->setQuoteId($cart->getId());
         $this->checkoutSession->getQuote()->setLsPointsSpent(AbstractIntegrationTest::LOY_POINTS);
 
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
-
-        $result = $this->contactHelper->login(AbstractIntegrationTest::USERNAME, AbstractIntegrationTest::PASSWORD);
-        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
 
         $this->dispatch('omni/cart/redeemPoints');
 

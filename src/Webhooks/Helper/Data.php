@@ -5,7 +5,6 @@ namespace Ls\Webhooks\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
@@ -24,6 +23,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
+use Magento\Sales\Model\Order\Invoice;
 
 /**
  * Helper class to handle webhooks function
@@ -76,11 +76,15 @@ class Data
      */
     public $jsonSerializer;
 
-
     /**
      * @var ProductRepository
      */
-    private ProductRepository $productRepository;
+    public ProductRepository $productRepository;
+
+    /**
+     * @var Invoice
+     */
+    public $invoice;
 
     /**
      * @param Logger $logger
@@ -93,6 +97,7 @@ class Data
      * @param LoyaltyHelper $loyaltyHelper
      * @param SerializerJson $jsonSerializer
      * @param ProductRepository $productRepository
+     * @param Invoice $invoice
      */
     public function __construct(
         Logger $logger,
@@ -104,9 +109,9 @@ class Data
         ItemHelper $itemHelper,
         LoyaltyHelper $loyaltyHelper,
         SerializerJson $jsonSerializer,
-        \Magento\Catalog\Model\ProductRepository $productRepository
+        ProductRepository $productRepository,
+        Invoice $invoice
     ) {
-
         $this->logger                = $logger;
         $this->orderRepository       = $orderRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -117,6 +122,7 @@ class Data
         $this->loyaltyHelper         = $loyaltyHelper;
         $this->jsonSerializer        = $jsonSerializer;
         $this->productRepository     = $productRepository;
+        $this->invoice               = $invoice;
     }
 
     /**
@@ -249,6 +255,10 @@ class Data
                 if ($item['order_status'] == $orderStatus) {
                     $template = $item['email_template'];
                     break;
+                } else {
+                    if ($item['order_status'] == 'MISC') {
+                        $template = $item['email_template'];
+                    }
                 }
             }
         }
@@ -425,14 +435,15 @@ class Data
     }
 
     /**
-     * Get point rate
+     * Get points discount
      *
-     * @return float|GetPointRateResponse|ResponseInterface|null
+     * @param $loyaltyPoints
+     * @return float|int
      * @throws NoSuchEntityException
      */
-    public function getPointRate()
+    public function getLsPointsDiscount($loyaltyPoints)
     {
-        return $this->loyaltyHelper->getPointRate();
+        return $this->loyaltyHelper->getLsPointsDiscount($loyaltyPoints);
     }
 
     /**
@@ -608,6 +619,46 @@ class Data
     public function getLsrObject()
     {
         return $this->lsr;
+    }
 
+    /**
+     * Get item helper object
+     *
+     * @return ItemHelper
+     */
+    public function getItemHelper()
+    {
+        return $this->itemHelper;
+    }
+
+    /**
+     * Get item invoice
+     *
+     * @param $magOrder
+     * @param $itemId
+     * @param $variantId
+     * @return false|Invoice
+     * @throws NoSuchEntityException
+     */
+    public function getItemInvoice($magOrder, $itemId, $variantId)
+    {
+        $invoices        = $magOrder->getInvoiceCollection();
+        $requiredInvoice = false;
+
+        foreach ($invoices as $invoice) {
+            $invoiceIncrementId = $invoice->getIncrementId();
+            $invoiceObj         = $this->invoice->loadByIncrementId($invoiceIncrementId);
+
+            foreach ($invoiceObj->getItems() as $invoiceItem) {
+                $product = $this->getProductById($invoiceItem->getProductId());
+
+                if ($product->getLsrItemId() == $itemId && $product->getLsrVariantId() == $variantId) {
+                    $requiredInvoice = $invoiceObj;
+                    break;
+                }
+            }
+        }
+
+        return $requiredInvoice;
     }
 }

@@ -10,12 +10,12 @@ use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class AccountEditObserver
- * @package Ls\Customer\Observer
+ * Observer responsible for syncing customer password change
  */
 class AccountEditObserver implements ObserverInterface
 {
@@ -41,7 +41,6 @@ class AccountEditObserver implements ObserverInterface
     private $lsr;
 
     /**
-     * AccountEditObserver constructor.
      * @param ContactHelper $contactHelper
      * @param ManagerInterface $messageManager
      * @param LoggerInterface $logger
@@ -74,10 +73,15 @@ class AccountEditObserver implements ObserverInterface
      * changing customer password and is not focusing on changing the customer account information.
      * @param Observer $observer
      * @return $this
+     * @throws NoSuchEntityException
      */
     public function execute(Observer $observer)
     {
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getCustomerIntegrationOnFrontend()
+        )) {
             $controller_action  = $observer->getData('controller_action');
             $customer_edit_post = $controller_action->getRequest()->getParams();
             $customer           = $this->customerSession->getCustomer();

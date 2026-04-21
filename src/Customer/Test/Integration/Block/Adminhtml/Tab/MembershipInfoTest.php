@@ -27,6 +27,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @magentoAppArea adminhtml
  * @magentoDbIsolation enabled
+ * @magentoAppIsolation enabled
  */
 class MembershipInfoTest extends TestCase
 {
@@ -69,6 +70,22 @@ class MembershipInfoTest extends TestCase
         );
     }
 
+    protected function tearDown(): void
+    {
+        try {
+            $customer = $this->fixtures->get('customer');
+            if ($customer) {
+                $this->coreRegistry->unregister('isSecureArea');
+                $this->coreRegistry->register('isSecureArea', true);
+                $this->customerRepository->deleteById($customer->getId());
+                $this->coreRegistry->unregister('isSecureArea');
+            }
+        } catch (\Exception $e) {
+            // Customer may already be deleted
+        }
+        parent::tearDown();
+    }
+
     public function testGetTabLabel()
     {
         $this->assertEquals(__('LS Central Membership'), $this->block->getTabLabel());
@@ -90,6 +107,7 @@ class MembershipInfoTest extends TestCase
     }
 
     /**
+     * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      */
     #[
@@ -99,6 +117,7 @@ class MembershipInfoTest extends TestCase
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -123,6 +142,7 @@ class MembershipInfoTest extends TestCase
     }
 
     /**
+     * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      */
     #[
@@ -132,6 +152,7 @@ class MembershipInfoTest extends TestCase
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -156,6 +177,7 @@ class MembershipInfoTest extends TestCase
     }
 
     /**
+     * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      */
     #[
@@ -165,6 +187,7 @@ class MembershipInfoTest extends TestCase
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
         DataFixture(
             CustomerFixture::class,
             [

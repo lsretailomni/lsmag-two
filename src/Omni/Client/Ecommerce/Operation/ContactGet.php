@@ -67,7 +67,7 @@ class ContactGet extends AbstractOperation
      * @param ContactGetRequest $request
      * @return ResponseInterface|ContactGetResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

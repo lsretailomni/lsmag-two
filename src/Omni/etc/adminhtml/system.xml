@@ -86,8 +86,8 @@
                 </field>
                 <field id="ls_central_timezone" translate="label comment" type="text" sortOrder="150" showInDefault="1"
                        showInWebsite="1" showInStore="0">
-                    <label>LS Central Timezone</label>                    
-                    <comment><![CDATA[Configure the timezone code corresponding to timezone configured under the My Settings page in LS Central. Default value is UTC. <br/> 
+                    <label>LS Central Timezone</label>
+                    <comment><![CDATA[Configure the timezone code corresponding to timezone configured under the My Settings page in LS Central. Default value is UTC. <br/>
                     Refer <a href="https://www.php.net/manual/en/timezones.php" targe="_blank">here</a> to select desired region and timezone.( For eg:- UTC, Asia/Kuala_Lumpur, Europe/Belgrade, etc).
                     ]]></comment>
                 </field>
@@ -123,6 +123,7 @@
                    showInStore="1">
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
+                    <field id="ls_mag/standalone_integration/customer">1</field>
                 </depends>
                 <label>Loyalty Points</label>
                 <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"
@@ -158,6 +159,8 @@
                    showInStore="1">
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
+                    <field id="ls_mag/standalone_integration/basket">1</field>
+                    <field id="ls_mag/standalone_integration/customer">1</field>
                 </depends>
                 <label>Coupons</label>
                 <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"
@@ -244,6 +247,8 @@
                    showInStore="1">
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
+                    <field id="ls_mag/standalone_integration/basket">1</field>
+                    <field id="ls_mag/standalone_integration/customer">1</field>
                 </depends>
                 <label>Discount Management</label>
                 <field id="discount" translate="label" type="select" sortOrder="1" showInDefault="1"
@@ -300,6 +305,7 @@
                    showInStore="0">
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
+                    <field id="ls_mag/standalone_integration/basket">1</field>
                 </depends>
                 <label>Basket Calculation</label>
                 <field id="place_to_sync" translate="label comment" type="select" sortOrder="3"
@@ -307,6 +313,13 @@
                     <label>Calculate basket at</label>
                     <comment>Please select the desired area where you want to synchronize basket with Central</comment>
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\BasketCalculation</source_model>
+                </field>
+                <field id="ship_to_params" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="0">
+                    <label>Calculate tax based on shipping address parameters like postcode &amp; state</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        Enable this if you want to calculate tax based on shipping address parameters like postcode &amp; state. The tax is calculated using basket calculation request. In order to use it properly for both guest &amp; registered user make sure Calculate Basket At = Every Cart Update and on checkout.
+                    </comment>
                 </field>
             </group>
             <group id="ls_order_management"
@@ -355,22 +368,22 @@
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\RestrictedOrderStatuses</source_model>
                     <comment>Order will not be synced to LS Central based on the selected order status, please leave it empty if you want to sync all orders to LS Central independent of the order status</comment>
                 </field>
-                <field id="stock_validation_active" translate="label" type="select" sortOrder="7" showInWebsite="1" showInDefault="1" showInStore="1">
+                <field id="stock_validation_active" translate="label" type="select" sortOrder="8" showInWebsite="1" showInDefault="1" showInStore="1">
                     <label>Enable Stock Validation Before Order Creation</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="graphql_stock_validation_active" translate="label" type="select" sortOrder="8" showInWebsite="1" showInDefault="1" showInStore="1">
+                <field id="graphql_stock_validation_active" translate="label" type="select" sortOrder="9" showInWebsite="1" showInDefault="1" showInStore="1">
                     <label>Enable Stock Validation Before Order Creation via GraphQl</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="discount_validation_active" translate="label" type="select" sortOrder="9" showInWebsite="1" showInDefault="1" showInStore="1">
+                <field id="discount_validation_active" translate="label" type="select" sortOrder="10" showInWebsite="1" showInDefault="1" showInStore="1">
                     <label>Enable discount &amp; applied gift card Validation Before Order Creation</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="discount_validation_msg"
                        translate="label"
                        type="text"
-                       sortOrder="10"
+                       sortOrder="11"
                        showInWebsite="1"
                        showInDefault="1"
                        showInStore="1">
@@ -382,7 +395,7 @@
                 <field id="giftcard_validation_msg"
                        translate="label"
                        type="text"
-                       sortOrder="10"
+                       sortOrder="12"
                        showInWebsite="1"
                        showInDefault="1"
                        showInStore="1">
@@ -391,14 +404,14 @@
                         <field id="*/*/discount_validation_active">1</field>
                     </depends>
                 </field>
-                <field id="graphql_discount_validation_active" translate="label" type="select" sortOrder="10" showInWebsite="1" showInDefault="1" showInStore="1">
+                <field id="graphql_discount_validation_active" translate="label" type="select" sortOrder="13" showInWebsite="1" showInDefault="1" showInStore="1">
                     <label>Enable discount &amp; applied gift card Validation Before Order Creation via GraphQl</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="graphql_discount_validation_msg"
                        translate="label"
                        type="text"
-                       sortOrder="10"
+                       sortOrder="14"
                        showInWebsite="1"
                        showInDefault="1"
                        showInStore="1">
@@ -410,7 +423,7 @@
                 <field id="graphql_giftcard_validation_msg"
                        translate="label"
                        type="text"
-                       sortOrder="10"
+                       sortOrder="15"
                        showInWebsite="1"
                        showInDefault="1"
                        showInStore="1">
@@ -419,7 +432,7 @@
                         <field id="*/*/graphql_discount_validation_active">1</field>
                     </depends>
                 </field>
-                <field id="order_edit" translate="label" type="select" sortOrder="11" showInWebsite="1" showInDefault="1" showInStore="1">
+                <field id="order_edit" translate="label" type="select" sortOrder="16" showInWebsite="1" showInDefault="1" showInStore="1">
                     <label>Enable order edit</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Edit LS Central Order From Admin Sales->Orders Section</comment>

@@ -10,6 +10,7 @@ use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplCountryCodeRepository;
 use \Ls\Replication\Model\ReplTaxSetupRepository;
 use \Ls\Replication\Model\SearchResultInterface;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -186,8 +187,15 @@ class TaxRulesCreateTask
                                     $taxClass = $this->replicationHelper->getTaxClassGivenName(
                                         $rate->getProductTaxGroup()
                                     );
-                                    $taxRate  = $this->createTaxCalculationRateGivenInfo($countryCode, $rate);
-                                    $this->createTaxCalculationRuleGivenInfo($taxRate, $taxClass);
+                                    try {
+                                        $taxRate  = $this->createTaxCalculationRateGivenInfo($countryCode, $rate);
+                                    } catch (AlreadyExistsException $e) {
+                                        $taxRate = null;
+                                    }
+
+                                    if ($taxRate) {
+                                        $this->createTaxCalculationRuleGivenInfo($taxRate, $taxClass);
+                                    }
                                 }
                             } catch (Exception $e) {
                                 $this->logger->debug(
@@ -298,7 +306,7 @@ class TaxRulesCreateTask
             ->setTaxCountryId($countryCode->getCode())
             ->setTaxRegionId(0)
             ->setTaxPostcode('*')
-            ->setCode($countryCode->getCode() . '-*-*-' . $rate->getProductTaxGroup() . '-' . $this->getScopeId());
+            ->setCode($countryCode->getCode() . '-*-*-' . $rate->getProductTaxGroup());
         return $this->taxRateRepository->save($taxRate);
     }
 

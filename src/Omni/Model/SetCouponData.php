@@ -47,7 +47,11 @@ class SetCouponData
     {
         $lsr = $this->basketHelper->getLsrModel();
 
-        if (!$lsr->isLSR($lsr->getCurrentStoreId())) {
+        if (!$lsr->isLSR(
+            $lsr->getCurrentStoreId(),
+            false,
+            $lsr->getBasketIntegrationOnFrontend()
+        )) {
             return $proceed();
         }
         // redirect to basket

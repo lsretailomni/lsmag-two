@@ -67,7 +67,7 @@ class ReplEcommFullItem extends AbstractOperation
      * @param ReplEcommFullItemRequest $request
      * @return ResponseInterface|ReplEcommFullItemResponse
      */
-    public function execute(RequestInterface $request = null)
+    public function execute(?RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );

@@ -180,6 +180,7 @@ class SalesObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -250,9 +251,7 @@ class SalesObserverTest extends AbstractIntegrationTest
                 'controller_action' => $this->controllerAction
             ]
         ));
-
-        $expectedLsPointsDiscount = AbstractIntegrationTest::LSR_LOY_POINTS * $this->loyaltyHelper->getPointRate();
-
+        $expectedLsPointsDiscount = $this->loyaltyHelper->getLsPointsDiscount(AbstractIntegrationTest::LSR_LOY_POINTS);
         $this->assertNotEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
         $this->assertNotNull($this->basketHelper->getOneListCalculationFromCheckoutSession());
         $this->assertEquals(
