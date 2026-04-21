@@ -1172,7 +1172,7 @@ class BasketHelper extends AbstractHelperOmni
             );
             $price = $item->getPrice();
             $basketData = $this->getOneListCalculation();
-            $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+            $orderLines = $basketData ? $basketData->getMobiletransactionline(): [];
 
             foreach ($orderLines as $line) {
                 if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
