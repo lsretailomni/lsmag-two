@@ -7,8 +7,10 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\GiftCard;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\Currency;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
@@ -95,21 +97,21 @@ class GiftCardHelper extends AbstractHelperOmni
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == 'cart') {
                 return ($this->lsr->getStoreConfig(
-                        LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
-                        $this->lsr->getCurrentStoreId()
-                    ) && $this->lsr->getStoreConfig(
-                        LSR::LS_GIFTCARD_SHOW_ON_CART,
-                        $this->lsr->getCurrentStoreId()
-                    )
-                );
-            }
-            return ($this->lsr->getStoreConfig(
                     LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
                     $this->lsr->getCurrentStoreId()
                 ) && $this->lsr->getStoreConfig(
-                    LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,
+                    LSR::LS_GIFTCARD_SHOW_ON_CART,
                     $this->lsr->getCurrentStoreId()
                 )
+                );
+            }
+            return ($this->lsr->getStoreConfig(
+                LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
+                $this->lsr->getCurrentStoreId()
+            ) && $this->lsr->getStoreConfig(
+                LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,
+                $this->lsr->getCurrentStoreId()
+            )
             );
         } else {
             return false;
@@ -132,8 +134,8 @@ class GiftCardHelper extends AbstractHelperOmni
      *
      * @param $giftCardCurrency
      * @param $storeId
-     * @return false|Entity\GetPointRateResponse|\Ls\Omni\Client\ResponseInterface|null
-     * @throws NoSuchEntityException
+     * @return false|Entity\GetPointRateResponse|ResponseInterface|null
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function getPointRate($giftCardCurrency = null, $storeId = null)
     {
@@ -207,17 +209,42 @@ class GiftCardHelper extends AbstractHelperOmni
      * Format value to two decimal places
      *
      * @param float $value
-     * @return string
+     * @param bool $format
+     * @return array|string|string[]
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
-    public function formatValue($value)
+    public function formatValue($value, $format = false)
     {
-        return str_replace(
-            ',',
-            '.',
-            $this->currencyHelper->format($value, ['display' => Currency::NO_SYMBOL],
-                false
-            )
+        $currency = $this->storeManager->getStore()->getCurrentCurrency();
+
+        return $currency->format(
+            $value,
+            ['display' => $format ? Currency\Data\Currency::USE_SYMBOL : Currency\Data\Currency::NO_SYMBOL],
+            false
         );
+    }
+
+    /**
+     * Format expiry date, showing time only if it exists
+     *
+     * @param string|null $expireDate
+     * @return string|null
+     */
+    public function formatExpireDate(?string $expireDate): ?string
+    {
+        if (empty($expireDate)) {
+            return null;
+        }
+        try {
+            $dateTime = new \DateTime($expireDate);
+            $time     = $dateTime->format('H:i:s');
+            return $time !== '00:00:00'
+                ? $dateTime->format('Y-m-d H:i:s')
+                : $dateTime->format('Y-m-d');
+        } catch (\Exception $e) {
+            return $expireDate;
+        }
     }
 
     /**
@@ -239,7 +266,7 @@ class GiftCardHelper extends AbstractHelperOmni
      *
      * @param $giftCardResponse
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function getConvertedGiftCardBalance($giftCardResponse)
     {
