@@ -171,7 +171,7 @@ class GiftCardHelper extends AbstractHelperOmni
      */
     public function formatExpireDate(?string $expireDate): ?string
     {
-        if (empty($expireDate)) {
+        if (empty($expireDate) || $expireDate == '0001-01-01') {
             return null;
         }
         try {
