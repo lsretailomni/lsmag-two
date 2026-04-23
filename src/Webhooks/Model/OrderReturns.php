@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Model;
 
@@ -14,34 +15,15 @@ use \Ls\Webhooks\Logger\Logger;
 class OrderReturns implements OrderReturnsInterface
 {
     /**
-     * @var Logger
-     */
-    public $logger;
-
-    /**
-     * @var Returns
-     */
-    public $returns;
-
-    /**
-     * @var Data
-     */
-    public $helper;
-
-    /**
-     * OrderReturns constructor.
      * @param Logger $logger
      * @param Returns $returns
      * @param Data $helper
      */
     public function __construct(
-        Logger $logger,
-        Returns $returns,
-        Data $helper
+        public Logger $logger,
+        public Returns $returns,
+        public Data $helper
     ) {
-        $this->logger  = $logger;
-        $this->returns = $returns;
-        $this->helper  = $helper;
     }
 
     /**
@@ -54,7 +36,7 @@ class OrderReturns implements OrderReturnsInterface
                 'OrderId'    => $orderReturns->getOrderId(),
                 'ReturnType' => $orderReturns->getReturnType(),
                 'Amount'     => $orderReturns->getAmount(),
-                'Lines'      => $orderReturns->setLines()
+                'Lines'      => $orderReturns->getLines()
             ];
 
             $this->logger->info('OrderReturns = ', $data);

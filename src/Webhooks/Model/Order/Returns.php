@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Model\Order;
 
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Core\Model\LSR;
 use \Ls\Webhooks\Logger\Logger;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class for processing returns
@@ -12,41 +14,21 @@ use \Ls\Webhooks\Logger\Logger;
 class Returns
 {
     /**
-     * @var CreditMemo
-     */
-    public $creditMemo;
-
-    /**
-     * @var Data
-     */
-    public $helper;
-
-    /**
-     * @var Logger
-     */
-    public $logger;
-
-    /**
-     * Returns constructor.
-     *
      * @param CreditMemo $creditMemo
      * @param Data $helper
      * @param Logger $logger
      */
     public function __construct(
-        CreditMemo $creditMemo,
-        Data $helper,
-        Logger $logger
+        public CreditMemo $creditMemo,
+        public Data $helper,
+        public Logger $logger
     ) {
-        $this->creditMemo = $creditMemo;
-        $this->helper     = $helper;
-        $this->logger     = $logger;
     }
 
     /**
      * Create returns for invoiced items
      *
-     * @param $data
+     * @param array $data
      * @return array[]|false|mixed
      */
     public function returns($data)
@@ -118,6 +100,7 @@ class Returns
      * @param \Magento\Sales\Api\Data\OrderInterface $order
      * @param array $orderItemsMap
      * @return array
+     * @throws NoSuchEntityException
      */
     private function groupItemsByInvoice($returnLines, $order, $orderItemsMap)
     {
@@ -317,7 +300,7 @@ class Returns
      * @param array &$creditMemoData
      * @param array $invoiceData
      * @param float $lsCentralAmount
-     * @return void
+     * @return array
      */
     private function applyAmountAdjustment(&$creditMemoData, $invoiceData, $lsCentralAmount)
     {
