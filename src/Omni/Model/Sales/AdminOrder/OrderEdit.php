@@ -41,6 +41,11 @@ class OrderEdit
     /**
      * @var array New items
      */
+    public $newItems;
+
+    /**
+     * @var array New items
+     */
     public $newItemsArray;
 
     /**
@@ -182,18 +187,18 @@ class OrderEdit
             $orderLinesArray = $oneListCalculateResponse->getMobiletransactionline();
             $lineOrderArray  = [];
             /** @var OrderItemInterface[] $olditems */
-            $oldItems = $oldOrder->getItems();
+            $this->oldItems = $oldOrder->getItems();
             /** @var OrderItemInterface[] $newItems */
-            $newItems      = $order->getItems();
+            $this->newItems      = $order->getItems();
             $newItemsArray = [];
-            foreach ($newItems as $newItem) {
+            foreach ($this->newItems as $newItem) {
                 $newItemsArray[$newItem->getSku()] = $newItem->getSku();
             }
             $oldItemsArray = [];
-            foreach ($oldItems as $oldItem) {
+            foreach ($this->oldItems as $oldItem) {
                 $oldItemsArray[$oldItem->getSku()] = $oldItem->getSku();
             }
-            $this->removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId, $oldOrder);
+            //$this->removeItemsFromOrder($this->oldItems, $newItemsArray, $customerOrder, $documentId, $oldOrder);
             $coEditLines = $this->generateAndAddNewItemLines(
                 $newItemsArray,
                 $oldItemsArray,
@@ -205,8 +210,8 @@ class OrderEdit
             );
             $this->updateItemLineNumber($coEditLines, $customerOrder);
             $lineOrderArray  = $this->modifyItemQuantity(
-                $newItems,
-                $oldItems,
+                $this->newItems,
+                $this->oldItems,
                 $coEditLines,
                 $order,
                 $createdAtStore,
@@ -708,14 +713,14 @@ class OrderEdit
                 list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                     $oldItem->getSku()
                 );
-                $orderLines = $customerOrder->getLines()->getSalesEntryLine();
+                $orderLines = $customerOrder->getLscMemberSalesDocLine();
                 foreach ($orderLines as $line) {
-                    if ($itemId == $line->getItemId() && $variantId == $line->getVariantId() &&
-                        $uom == $line->getUomId() && !in_array($line->getLineNumber(), $itemsToCancel)) {
-                        $itemsToCancel[$line->getLineNumber()] = [
-                            'lineNo' => $line->getLineNumber(),
+                    if ($itemId == $line->getNumber() && $variantId == $line->getVariantCode() &&
+                        $uom == $line->getUnitOfMeasure() && !in_array($line->getLineNo(), $itemsToCancel)) {
+                        $itemsToCancel[$line->getLineNo()] = [
+                            'lineNo' => $line->getLineNo(),
                             'qty'    => $line->getQuantity(),
-                            'itemId' => $line->getItemId(),
+                            'itemId' => $line->getNumber(),
                         ];
                     }
                 }
@@ -723,7 +728,7 @@ class OrderEdit
         }
 
         if (!empty($itemsToCancel)) {
-            $this->orderCancel($documentId, $customerOrder->getStoreId(), $itemsToCancel);
+            $this->orderCancel($documentId, $customerOrder->getLscMemberSalesBuffer()->getStoreNo(), $itemsToCancel);
         }
     }
 
@@ -857,7 +862,7 @@ class OrderEdit
      */
     public function getNewItems()
     {
-        return $this->newItemsArray;
+        return $this->newItems;
     }
 
     /**
