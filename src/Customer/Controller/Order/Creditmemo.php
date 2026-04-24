@@ -54,7 +54,7 @@ class Creditmemo extends AbstractOrderController implements HttpGetActionInterfa
         );
         $newOrderId = null;
 
-        if (!empty($returnTransactions)) {
+        if (!empty($returnTransactions) && !empty($returnTransactions->getLscMemberSalesBuffer())) {
             $lscMemberSalesBuffer = is_array($returnTransactions->getLscMemberSalesBuffer()) ?
                 $returnTransactions->getLscMemberSalesBuffer() :
                 [$returnTransactions->getLscMemberSalesBuffer()];
@@ -64,6 +64,8 @@ class Creditmemo extends AbstractOrderController implements HttpGetActionInterfa
             }
             $this->request->setParam('new_order_id', $newOrderId);
             $this->orderHelper->registerGivenValueInRegistry('current_order', $returnTransactions);
+        } else {
+            $returnTransactions = $this->orderHelper->getOrder(true);
         }
 
         return $returnTransactions;
