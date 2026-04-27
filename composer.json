@@ -3,6 +3,7 @@
     "description": "LS Ecommerce - Magento Integration",
     "type": "magento2-module",
     "license": "proprietary",
+    "version": "dev-standalone",
     "authors": [
         {
             "name": "LS Retail - Ecommerce Team",
