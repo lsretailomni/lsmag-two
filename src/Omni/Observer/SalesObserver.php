@@ -46,7 +46,7 @@ class SalesObserver implements ObserverInterface
         $loyaltyPointsSpent = $quote->getLsPointsSpent();
         $pointDiscount = 0;
         if (!empty($loyaltyPointsSpent)) {
-            $pointDiscount = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
+            $pointDiscount = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent(), true);
         }
 
         $giftCardAmount     = $quote->getLsGiftCardAmountUsed();

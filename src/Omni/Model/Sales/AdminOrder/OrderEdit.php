@@ -34,6 +34,21 @@ use Psr\Log\LoggerInterface;
 class OrderEdit
 {
     /**
+     * @var array Old items
+     */
+    public $oldItems;
+
+    /**
+     * @var array New items
+     */
+    public $newItems;
+
+    /**
+     * @var array New items
+     */
+    public $newItemsArray;
+
+    /**
      * @param OrderHelper $orderHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
@@ -74,15 +89,17 @@ class OrderEdit
     }
 
     /**
+     *
      * Prepare order edit
-     * 
+     *
      * @param Order $order
      * @param $oneListCalculateResponse
-     * @param Order $oldOrder
+     * @param $oldOrder
      * @param $documentId
+     * @param $customerOrder
      * @return mixed|void
      */
-    public function prepareOrder(Order $order, $oneListCalculateResponse, Order $oldOrder, $documentId)
+    public function prepareOrder(Order $order, $oneListCalculateResponse, $oldOrder, $documentId, $customerOrder)
     {
         try {
             $isClickCollect = false;
@@ -170,18 +187,18 @@ class OrderEdit
             $orderLinesArray = $oneListCalculateResponse->getMobiletransactionline();
             $lineOrderArray  = [];
             /** @var OrderItemInterface[] $olditems */
-            $oldItems = $oldOrder->getItems();
+            $this->oldItems = $oldOrder->getItems();
             /** @var OrderItemInterface[] $newItems */
-            $newItems      = $order->getItems();
+            $this->newItems      = $order->getItems();
             $newItemsArray = [];
-            foreach ($newItems as $newItem) {
+            foreach ($this->newItems as $newItem) {
                 $newItemsArray[$newItem->getSku()] = $newItem->getSku();
             }
             $oldItemsArray = [];
-            foreach ($oldItems as $oldItem) {
+            foreach ($this->oldItems as $oldItem) {
                 $oldItemsArray[$oldItem->getSku()] = $oldItem->getSku();
             }
-            $this->removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId, $oldOrder);
+            //$this->removeItemsFromOrder($this->oldItems, $newItemsArray, $customerOrder, $documentId, $oldOrder);
             $coEditLines = $this->generateAndAddNewItemLines(
                 $newItemsArray,
                 $oldItemsArray,
@@ -193,8 +210,8 @@ class OrderEdit
             );
             $this->updateItemLineNumber($coEditLines, $customerOrder);
             $lineOrderArray  = $this->modifyItemQuantity(
-                $newItems,
-                $oldItems,
+                $this->newItems,
+                $this->oldItems,
                 $coEditLines,
                 $order,
                 $createdAtStore,
@@ -685,11 +702,10 @@ class OrderEdit
      * @param $newItemsArray
      * @param $customerOrder
      * @param $documentId
-     * @param $oldOrder
      * @return void
      * @throws NoSuchEntityException
      */
-    public function removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId, $oldOrder)
+    public function removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId)
     {
         $itemsToCancel = [];
         foreach ($oldItems as $oldItem) {
@@ -701,7 +717,7 @@ class OrderEdit
                 foreach ($orderLines as $line) {
                     if ($itemId == $line->getNumber() && $variantId == $line->getVariantCode() &&
                         $uom == $line->getUnitOfMeasure() && !in_array($line->getLineNo(), $itemsToCancel)) {
-                        $itemsToCancel[$line->getLineNumber()] = [
+                        $itemsToCancel[$line->getLineNo()] = [
                             'lineNo' => $line->getLineNo(),
                             'qty'    => $line->getQuantity(),
                             'itemId' => $line->getNumber(),
@@ -712,8 +728,7 @@ class OrderEdit
         }
 
         if (!empty($itemsToCancel)) {
-            $storeId = $customerOrder->getLscMemberSalesBuffer()->getStoreNo();
-            $this->orderCancel($documentId, $storeId, $itemsToCancel);
+            $this->orderCancel($documentId, $customerOrder->getLscMemberSalesBuffer()->getStoreNo(), $itemsToCancel);
         }
     }
 
@@ -828,5 +843,36 @@ class OrderEdit
                 }
             }
         }
+    }
+
+    /**
+     * Return old items
+     *
+     * @return array
+     */
+    public function getOldItems()
+    {
+        return $this->oldItems;
+    }
+
+    /**
+     * Return new items
+     *
+     * @return array
+     */
+    public function getNewItems()
+    {
+        return $this->newItems;
+    }
+
+    /**
+     * Unset items array
+     *
+     * @return void
+     */
+    public function unsetItemsArray()
+    {
+        unset($this->newItemsArray);
+        unset($this->oldItems);
     }
 }

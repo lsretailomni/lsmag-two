@@ -47,7 +47,8 @@ class Items extends AbstractItems
         foreach ($orderLines as $key => $line) {
             if ($line->getDocumentId() !== $documentId ||
                 $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID) ||
-                $line->getEntryType() == 1
+                $line->getEntryType() == 1 ||
+                $line->getEntryType() == 4
             ) {
                 unset($orderLines[$key]);
             }

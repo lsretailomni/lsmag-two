@@ -593,9 +593,11 @@ class BasketHelper extends AbstractHelperOmni
                     }
 
                     if (!$match) {
-                        $price = ($quoteItem->getProductType() == LSR::TYPE_GIFT_CARD) ?
-                            $quoteItem->getPrice() :
-                            $quoteItem->getProduct()->getPrice();
+                        if (in_array($itemId, explode(',', $giftCardIdentifier))) {
+                            $price  = $quoteItem->getPrice();
+                        } else {
+                            $price = $quoteItem->getProduct()->getPrice();
+                        }
                         $price = $this->itemHelper->convertToCurrentStoreCurrency($price);
                         $qty = $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
                             $quoteItem->getData('qty');
@@ -689,6 +691,7 @@ class BasketHelper extends AbstractHelperOmni
     public function getOrderLinesQuote(\Magento\Sales\Model\Order $order)
     {
         $quote = $this->cartRepository->get($order->getQuoteId());
+        $basketData = null;
         $websiteId = $quote->getStore()->getWebsiteId();
         $storeCode = $this->lsr->getWebsiteConfig(
             LSR::SC_SERVICE_STORE,
@@ -1014,7 +1017,7 @@ class BasketHelper extends AbstractHelperOmni
         }
         $oneList->getMobiletransaction()
             ->setCurrencycode($this->lsr->getStoreCurrencyCode())
-            ->setCurrencyfactor((float)$this->loyaltyHelper->getPointRate());
+            ->setCurrencyfactor((float)$this->loyaltyHelper->getPointRate(null, null, true));
         $operation = $this->createInstance(EcomCalculateBasket::class);
         $operation->setOperationInput(
             [\Ls\Omni\Client\CentralEcommerce\Entity\EcomCalculateBasket::MOBILE_TRANSACTION_XML => $oneList]
@@ -1161,7 +1164,7 @@ class BasketHelper extends AbstractHelperOmni
     public function getPrice($item)
     {
         if ($item->getProductType() == Type::TYPE_BUNDLE) {
-            $rowTotal = $this->getRowTotalBundleProduct($item);
+            $price = $item->getRowTotal();
         } else {
             $baseUnitOfMeasure = $item->getProduct()->getData('uom');
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
@@ -1169,7 +1172,7 @@ class BasketHelper extends AbstractHelperOmni
             );
             $price = $item->getPrice();
             $basketData = $this->getOneListCalculation();
-            $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+            $orderLines = $basketData ? $basketData->getMobiletransactionline(): [];
 
             foreach ($orderLines as $line) {
                 if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
@@ -1179,7 +1182,8 @@ class BasketHelper extends AbstractHelperOmni
             }
         }
 
-        return $price;
+        $price = $price * $item->getQty();
+        return $this->basketHelper->getPriceAddingCustomOptions($item, $price);
     }
 
     /**
@@ -1295,6 +1299,9 @@ class BasketHelper extends AbstractHelperOmni
             $order->getCustomerIsGuest()
         );
         $oneList = $this->setOneListQuote($quote, $oneList);
+        if ($couponCode == null) {
+            $couponCode = '';
+        }
         $this->setCouponCodeInAdmin($couponCode);
 
         return $this->update($oneList);
@@ -1368,8 +1375,33 @@ class BasketHelper extends AbstractHelperOmni
      */
     public function updateBasketAndSaveTotals($oneList, $quote)
     {
-        $country = $quote->getShippingAddress()->getCountryId();
+        $shippingAddress = $quote->getShippingAddress();
+        $country         = $shippingAddress->getCountryId();
         $oneList->getMobiletransaction()->setShiptocountryregioncode($country);
+        $storeId = $this->getDefaultWebStore();
+        $oneList->getMobiletransaction()->setStoreid($storeId);
+        $carrierCode    = $shippingAddress->getShippingMethod();
+        $isClickCollect = $carrierCode == 'clickandcollect_clickandcollect';
+
+        if ($isClickCollect) {
+            if (!empty($pickupStore = $quote->getPickupStore())) {
+                $oneList->getMobiletransaction()
+                    ->setShiptopostcode(null)
+                    ->setShiptocounty(null)
+                    ->setShiptocountryregioncode(null)
+                    ->setStoreId($pickupStore);
+            }
+        }
+        if ($this->lsr->shipToParamsInBasketCalculationIsEnabled()) {
+            $carrierCode    = $shippingAddress->getShippingMethod();
+            $isClickCollect = $carrierCode == 'clickandcollect_clickandcollect';
+
+            if (!$isClickCollect) {
+                $oneList->getMobiletransaction()
+                    ->setShiptopostcode($shippingAddress->getPostcode())
+                    ->setShiptocounty($shippingAddress->getRegionCode());
+            }
+        }
 
         $basketData = $this->update($oneList);
         $quote = $this->getCurrentQuote();

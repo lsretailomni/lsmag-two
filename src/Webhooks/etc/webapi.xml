@@ -20,4 +20,10 @@
             <resource ref="Ls_Replication::ls_retail_webhooks"/>
         </resources>
     </route>
+    <route url="/V1/OrderMessageReturns" method="POST">
+        <service class="Ls\Webhooks\Api\OrderReturnsInterface" method="set"/>
+        <resources>
+            <resource ref="Ls_Replication::ls_retail_webhooks"/>
+        </resources>
+    </route>
 </routes>

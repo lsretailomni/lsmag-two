@@ -85,7 +85,7 @@ class Totals extends Template
      * Initiate all totals
      *
      * @return $this
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function initTotals()
     {
@@ -96,6 +96,7 @@ class Totals extends Template
         $this->getInvoice();
         $this->getCreditmemo();
         $this->getSource();
+        $this->loyaltyHelper->getLsr()->setStoreId($order->getStoreId());
 
         if ($this->getSource()->getLsGiftCardAmountUsed() > 0) {
             // @codingStandardsIgnoreLine
@@ -103,6 +104,9 @@ class Totals extends Template
                 [
                     'code'  => 'ls_gift_card_amount_used',
                     'value' => -$this->getSource()->getLsGiftCardAmountUsed(),
+                    'base_value' => -$this->loyaltyHelper->itemHelper->convertToBaseCurrency(
+                        $this->getSource()->getLsGiftCardAmountUsed()
+                    ),
                     'label' => __('Gift Card Redeemed ') . '(' . $this->getSource()->getLsGiftCardNo() . ')',
                 ]
             );
@@ -116,6 +120,7 @@ class Totals extends Template
                 [
                     'code'  => 'ls_points_spent',
                     'value' => -$loyaltyAmount,
+                    'base_value' => -$this->loyaltyHelper->itemHelper->convertToBaseCurrency($loyaltyAmount),
                     'label' => __('Loyalty Points Redeemed'),
                 ]
             );
@@ -129,6 +134,7 @@ class Totals extends Template
                 [
                     'code'  => 'ls_discount_amount',
                     'value' => -$lsDiscountAmount,
+                    'base_value' => -$this->loyaltyHelper->itemHelper->convertToBaseCurrency($lsDiscountAmount),
                     'label' => __('Discount'),
                 ]
             );

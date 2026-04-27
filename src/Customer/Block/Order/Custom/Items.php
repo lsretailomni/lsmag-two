@@ -47,7 +47,7 @@ class Items extends AbstractItems
         $order = $this->getOrder(true);
         $orderLines = [];
         $documentId = $this->_request->getParam('order_id');
-        if($order) {
+        if ($order) {
             $orderLines = $order->getLscMemberSalesDocLine();
 
             $orderLines = $orderLines && is_array($orderLines) ?
@@ -58,12 +58,13 @@ class Items extends AbstractItems
             foreach ($orderLines as $key => $line) {
                 if ($line->getDocumentId() !== $documentId ||
                     $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID) ||
-                    $line->getEntryType() == 1
+                    $line->getEntryType() == 1 ||
+                    $line->getEntryType() == 4
                 ) {
                     unset($orderLines[$key]);
                 }
             }
-        }      
+        }
 
         return $orderLines;
     }

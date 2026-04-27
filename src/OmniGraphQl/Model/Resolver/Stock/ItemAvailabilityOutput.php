@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Ls\OmniGraphQl\Model\Resolver\Stock;
 
 use \Ls\Omni\Helper\StockHelper;
+use \Ls\Core\Model\LSR;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\GraphQl\Config\Element\Field;
@@ -24,7 +25,8 @@ class ItemAvailabilityOutput implements ResolverInterface
     public function __construct(
         public StockHelper $stockHelper,
         public ProductRepositoryInterface $productRepository,
-        public DataHelper $dataHelper
+        public DataHelper $dataHelper,
+        public LSR $lsr
     ) {
     }
     /**
@@ -32,6 +34,13 @@ class ItemAvailabilityOutput implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
+        if ($this->lsr->getCurrentIndustry($this->lsr->getCurrentStoreId()) == LSR::LS_INDUSTRY_VALUE_HOSPITALITY ||
+            !$this->lsr->inventoryLookupBeforeAddToCartEnabled()
+        ) {
+            return [
+                'stores' => [],
+            ];
+        }
         $parentProduct = null;
 
         if (!empty($args['parent_sku'])) {

@@ -2,6 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Ls\Omni\Api\DiscountManagementInterface" type="Ls\Omni\Model\Api\DiscountManagement"/>
+    <preference for="Magento\Sales\Block\Order\Totals" type="Ls\Omni\Block\Order\Totals"/>
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
@@ -75,6 +76,9 @@
         <plugin name="ls_update_shipment_email_modification" type="Ls\Omni\Plugin\Email\Sender\ShipmentSender"
                 sortOrder="1"/>
     </type>
+    <type name="Magento\Sales\Model\Order\Email\Sender\CreditmemoSender">
+        <plugin name="ls_omni_creditmemo_sender_plugin" type="Ls\Omni\Plugin\Email\Sender\CreditmemoSender" />
+    </type>
     <type name="Magento\ConfigurableProduct\Block\Product\View\Type\Configurable">
         <plugin disabled="false" name="Ls_Omni_Plugin_ConfigurableProduct_Block_Product_View_Type_Configurable"
                 sortOrder="10" type="Ls\Omni\Plugin\ConfigurableProduct\Block\Product\View\Type\Configurable"/>
@@ -120,12 +124,12 @@
     <!-- In order to calculate basket on checkout for guest user -->
     <type name="Magento\Checkout\Api\GuestShippingInformationManagementInterface">
         <plugin name="calculate_basket"
-                type="Ls\Omni\Plugin\Api\ShippingInformationManagementInterfacePlugin"/>
+                type="Ls\Omni\Plugin\Api\ShippingInformationManagementInterfacePlugin" sortOrder="1"/>
     </type>
     <!-- In order to calculate basket on checkout for logged in user -->
     <type name="Magento\Checkout\Api\ShippingInformationManagementInterface">
         <plugin name="calculate_basket"
-                type="Ls\Omni\Plugin\Api\ShippingInformationManagementInterfacePlugin"/>
+                type="Ls\Omni\Plugin\Api\ShippingInformationManagementInterfacePlugin"  sortOrder="1"/>
     </type>
     <!-- In order to fix klarna api items total -->
     <type name="Klarna\Core\Model\Checkout\Orderline\Items">

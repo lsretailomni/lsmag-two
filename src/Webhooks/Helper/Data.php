@@ -24,6 +24,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
+use Magento\Sales\Model\Order\Invoice;
 
 /**
  * Helper class to handle webhooks function
@@ -54,7 +55,8 @@ class Data
         public LoyaltyHelper $loyaltyHelper,
         public SerializerJson $jsonSerializer,
         public ProductRepository $productRepository,
-        public OrderPaymentResponseInterfaceFactory $paymentResponseFactory
+        public OrderPaymentResponseInterfaceFactory $paymentResponseFactory,
+        public Invoice $invoice
     ) {
     }
 
@@ -578,5 +580,36 @@ class Data
     public function getItemHelper()
     {
         return $this->itemHelper;
+    }
+
+    /**
+     * Get item invoice
+     *
+     * @param $magOrder
+     * @param $itemId
+     * @param $variantId
+     * @return false|Invoice
+     * @throws NoSuchEntityException
+     */
+    public function getItemInvoice($magOrder, $itemId, $variantId)
+    {
+        $invoices        = $magOrder->getInvoiceCollection();
+        $requiredInvoice = false;
+
+        foreach ($invoices as $invoice) {
+            $invoiceIncrementId = $invoice->getIncrementId();
+            $invoiceObj         = $this->invoice->loadByIncrementId($invoiceIncrementId);
+
+            foreach ($invoiceObj->getItems() as $invoiceItem) {
+                $product = $this->getProductById($invoiceItem->getProductId());
+
+                if ($product->getLsrItemId() == $itemId && $product->getLsrVariantId() == $variantId) {
+                    $requiredInvoice = $invoiceObj;
+                    break;
+                }
+            }
+        }
+
+        return $requiredInvoice;
     }
 }

@@ -14,7 +14,6 @@ use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Replication\Api\ReplDiscountValidationRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Model\ReplDiscountValidation;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Helper\Data;
