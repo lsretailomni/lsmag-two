@@ -277,8 +277,7 @@ class SalesObserverTest extends AbstractIntegrationTest
                 'controller_action' => $this->controllerAction
             ]
         ));
-
-        $expectedLsPointsDiscount = $this->getLsPointsDiscount(AbstractIntegrationTest::LSR_LOY_POINTS);
+        $expectedLsPointsDiscount = $this->loyaltyHelper->getLsPointsDiscount(AbstractIntegrationTest::LSR_LOY_POINTS);
 
         $mobileTransaction = current((array)$this->basketHelper->getOneListCalculationFromCheckoutSession()->getMobiletransaction());
         $this->assertNotEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
@@ -293,19 +292,5 @@ class SalesObserverTest extends AbstractIntegrationTest
         $cart->delete();
         $this->checkoutSession->clearQuote();
         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
-    }
-
-    /**
-     * Get Ls points discount
-     *
-     * @param $pointsSpent
-     * @return float|int
-     * @throws NoSuchEntityException
-     */
-    public function getLsPointsDiscount($pointsSpent)
-    {
-        $loyaltyPointsRate = $this->loyaltyHelper->getPointRate(null, 'LOY');
-
-        return ($loyaltyPointsRate > 0) ? $pointsSpent * (1 / $loyaltyPointsRate) : 0;
     }
 }

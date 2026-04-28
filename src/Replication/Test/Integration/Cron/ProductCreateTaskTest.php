@@ -118,7 +118,6 @@ class ProductCreateTaskTest extends AbstractTaskTest
             $storeId,
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
         );
-
         $this->deleteReplItemData(
             [$replItemConf]
         );
@@ -411,8 +410,8 @@ class ProductCreateTaskTest extends AbstractTaskTest
 
     public function assertVariants($configurableProduct)
     {
-        $itemId   = $configurableProduct->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
         $storeId  = $this->storeManager->getStore()->getId();
+        $itemId   = $configurableProduct->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
         $replItem = $this->getReplItem($itemId, $storeId);
         $totalUom = $this->getUom($itemId, $storeId);
         $uoms                     = $this->replicationHelper->getUomCodes($itemId, $storeId);
