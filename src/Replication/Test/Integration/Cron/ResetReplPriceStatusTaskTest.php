@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration\Cron;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Cron\ReplLscWiPriceTask;
+use \Ls\Replication\Cron\ReplLscSalepriceviewTask;
 use \Ls\Replication\Cron\ResetReplPriceStatusTask;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
@@ -50,7 +50,7 @@ class ResetReplPriceStatusTaskTest extends TestCase
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplLscWiPriceTask::class,
+                'job_url' => ReplLscSalepriceviewTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
@@ -85,7 +85,7 @@ class ResetReplPriceStatusTaskTest extends TestCase
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'store', 'default'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'website'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'store',  'default'),
-        
+
     ]
     public function testExecuteOld()
     {
@@ -103,7 +103,7 @@ class ResetReplPriceStatusTaskTest extends TestCase
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplLscWiPriceTask::class,
+                'job_url' => ReplLscSalepriceviewTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
@@ -149,7 +149,7 @@ class ResetReplPriceStatusTaskTest extends TestCase
     public function getRequiredValues()
     {
         $fullReplicationPriceStatus = $this->lsr->getConfigValueFromDb(
-            ReplLscWiPriceTask::CONFIG_PATH_STATUS,
+            ReplLscSalepriceviewTask::CONFIG_PATH_STATUS,
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getWebsite()->getId()
         );

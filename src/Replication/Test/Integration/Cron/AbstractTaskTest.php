@@ -49,7 +49,7 @@ use \Ls\Replication\Cron\ReplLscWiItemBufferTask;
 use \Ls\Replication\Cron\ReplLscItemuomupdviewTask;
 use \Ls\Replication\Cron\ReplLscVariantregviewTask;
 use \Ls\Replication\Cron\ReplLscItemVariantTask;
-use \Ls\Replication\Cron\ReplLscWiPriceTask;
+use \Ls\Replication\Cron\ReplLscSalepriceviewTask;
 use \Ls\Replication\Cron\ReplLscUnitOfMeasureTask;
 use \Ls\Replication\Cron\ReplLscVendoritemviewTask;
 use \Ls\Replication\Cron\ReplLscVendorTask;
@@ -295,7 +295,7 @@ abstract class AbstractTaskTest extends TestCase
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplLscWiPriceTask::class,
+                'job_url' => ReplLscSalepriceviewTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
