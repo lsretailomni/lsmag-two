@@ -66,13 +66,23 @@ class ItemsAvailabilityTest extends GraphQlTestBase
         $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
     }
 
+    #[
+        AppArea('graphql'),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommStoresTask::class,
+                'scope'   => ScopeInterface::SCOPE_WEBSITE
+            ],
+            as: 'stores'
+        )
+    ]
     /**
      * @magentoAppIsolation enabled
      */
     public function testItemAvailability()
     {
         $product = $this->getOrCreateProduct();
-        $this->replicateStoresData();
         $query   = $this->getQuery('', $product->getSku());
 
         $headerMap = ['Authorization' => 'Bearer ' . $this->authToken];
@@ -103,7 +113,7 @@ class ItemsAvailabilityTest extends GraphQlTestBase
              parent_sku: "{$parentSku}",
              sku: "{$sku}"
             ) {
-                stores 
+                stores
                     {
                         store_id
                         store_name
@@ -123,7 +133,7 @@ class ItemsAvailabilityTest extends GraphQlTestBase
                             }
                         }
                     }
-                
+
             }
         }
         QUERY;
