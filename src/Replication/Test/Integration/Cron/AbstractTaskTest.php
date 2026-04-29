@@ -10,7 +10,7 @@ use \Ls\Replication\Api\Data\ReplAttributeValueInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplDataTranslationInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplDiscountSetupInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
-use Ls\Replication\Api\Data\ReplImageLinkInterfaceFactory;
+use \Ls\Replication\Api\Data\ReplImageLinkInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplInvStatusInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplPriceInterfaceFactory;
@@ -682,7 +682,7 @@ abstract class AbstractTaskTest extends TestCase
         $price->addData(
             [
                 'CurrencyCode' => AbstractIntegrationTest::SAMPLE_CURRENCY_CODE,
-                'EndingDate' => '1900-01-01T00:00:00',
+                'EndingDate' => '2027-02-02',
                 'IsDeleted' => 0,
                 'ItemId' => $itemId,
                 'Status' => 1,
@@ -691,7 +691,7 @@ abstract class AbstractTaskTest extends TestCase
                 'PriceInclVat' => 0,
                 'Priority' => 0,
                 'QtyPerUnitOfMeasure' => '0.0000',
-                'StartingDate' => '1900-01-01T00:00:00',
+                'StartingDate' => '2026-03-25',
                 'StoreId' => AbstractIntegrationTest::WEB_STORE,
                 'UnitOfMeasure' => $uomCode,
                 'UnitPrice' => '12.0000',
