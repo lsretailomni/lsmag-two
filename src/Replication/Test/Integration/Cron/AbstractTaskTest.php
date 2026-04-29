@@ -685,6 +685,7 @@ abstract class AbstractTaskTest extends TestCase
                 'EndingDate' => '1900-01-01T00:00:00',
                 'IsDeleted' => 0,
                 'ItemId' => $itemId,
+                'Status' => 1,
                 'MinimumQuantity' => '0.0000',
                 'ModifyDate' => '2024-08-01T00:00:00',
                 'PriceInclVat' => 0,
