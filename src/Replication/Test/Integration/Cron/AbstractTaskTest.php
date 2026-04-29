@@ -577,7 +577,11 @@ abstract class AbstractTaskTest extends TestCase
             $itemPrice = $this->cron->getItemPrice($itemId);
         }
 
-        $this->assertTrue($product->getPrice() == $itemPrice->getUnitPriceInclVat());
+        if (!empty($itemPrice)) {
+            $this->assertTrue($product->getPrice() == $itemPrice->getUnitPriceInclVat());
+        } else {
+            $this->assertTrue($product->getPrice() == $item->getUnitPrice());
+        }
     }
 
     public function assertInventory($product, $isStandardVariant = 0)
