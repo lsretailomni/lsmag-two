@@ -385,7 +385,7 @@ class ProductCreateTask
                                 } else {
                                     $filteredUomCodes[$item->getNavId()] = $allUomCodes;
                                 }
-                                
+
                                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                 if (!empty($uomCodesNotProcessed) && $isUomMode == 'simple') {
                                     foreach ($uomCodesNotProcessed as $uomCode) {
@@ -1200,15 +1200,20 @@ class ProductCreateTask
 
         if ($variantId) {
             $parameter = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
+        } else {
+            $filters[] = ['field' => 'VariantId', 'value' => true, 'condition_type' => 'null'];
         }
 
         if ($unitOfMeasure) {
             $parameter = ['field' => 'UnitOfMeasure', 'value' => $unitOfMeasure, 'condition_type' => 'eq'];
+        } else {
+            $filters[] = ['field' => 'UnitOfMeasure', 'value' => true, 'condition_type' => 'null'];
         }
 
         if (isset($unitOfMeasure) && isset($variantId)) {
-            $parameter  = ['field' => 'UnitOfMeasure', 'value' => $unitOfMeasure, 'condition_type' => 'eq'];
-            $parameter2 = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
+            $parameter = null;
+            $filters[]  = ['field' => 'UnitOfMeasure', 'value' => $unitOfMeasure, 'condition_type' => 'eq'];
+            $filters[] = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
         }
 
         $item           = null;
@@ -1218,8 +1223,6 @@ class ProductCreateTask
             $items = $this->replPriceRepository->getList($searchCriteria)->getItems();
             if (!empty($items)) {
                 $item = reset($items);
-                /** @var ReplInvStatus $invStatus */
-
                 if ($process) {
                     $item->setData('is_updated', 0);
                     $item->setData('processed', 1);

@@ -548,24 +548,36 @@ abstract class AbstractTaskTest extends TestCase
         $variantId     = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
         $uomCode       = $product->getData("uom");
         $item          = $this->getReplItem($itemId, $storeId);
-        $unitOfMeasure = null;
+        $unitOfMeasure = $itemPrice = null;
 
         if (!empty($uomCode)) {
             if ($uomCode != $item->getBaseUnitOfMeasure()) {
                 $unitOfMeasure = $uomCode;
             }
         }
-        $itemPrice = $this->cron->getItemPrice($itemId, $variantId, $unitOfMeasure);
-        if (isset($itemPrice)) {
-            $this->assertTrue($product->getPrice() == $itemPrice->getUnitPriceInclVat());
-        } else {
-            $itemPrice = $this->cron->getItemPrice($itemId);
-            if (!empty($itemPrice)) {
-                $this->assertTrue($product->getPrice() == $itemPrice->getUnitPriceInclVat());
-            } else {
-                $this->assertTrue($product->getPrice() == $item->getUnitPrice());
+
+        if (isset($variantId) && isset($unitOfMeasure)) {
+            $itemPrice = $this->cron->getItemPrice($itemId, $variantId, $unitOfMeasure);
+
+            if (!$itemPrice) {
+                $itemPrice = $this->cron->getItemPrice($itemId, $variantId, null);
+
+                if (!$itemPrice) {
+                    $itemPrice = $this->cron->getItemPrice($itemId, null, $unitOfMeasure);
+                }
             }
+
+        } elseif (isset($variantId) && !isset($unitOfMeasure)) {
+            $itemPrice = $this->cron->getItemPrice($itemId, $variantId, null);
+        } elseif (isset($unitOfMeasure) && !isset($variantId)) {
+            $itemPrice = $this->cron->getItemPrice($itemId, null, $unitOfMeasure);
         }
+
+        if (!$itemPrice) {
+            $itemPrice = $this->cron->getItemPrice($itemId);
+        }
+
+        $this->assertTrue($product->getPrice() == $itemPrice->getUnitPriceInclVat());
     }
 
     public function assertInventory($product, $isStandardVariant = 0)
