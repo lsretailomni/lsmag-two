@@ -557,24 +557,24 @@ abstract class AbstractTaskTest extends TestCase
         }
 
         if (isset($variantId) && isset($unitOfMeasure)) {
-            $itemPrice = $this->cron->getItemPrice($itemId, $variantId, $unitOfMeasure);
+            $itemPrice = $this->cron->getItemPrice($itemId, $variantId, $unitOfMeasure, 0);
 
             if (!$itemPrice) {
-                $itemPrice = $this->cron->getItemPrice($itemId, $variantId, null);
+                $itemPrice = $this->cron->getItemPrice($itemId, $variantId, null, 0);
 
                 if (!$itemPrice) {
-                    $itemPrice = $this->cron->getItemPrice($itemId, null, $unitOfMeasure);
+                    $itemPrice = $this->cron->getItemPrice($itemId, null, $unitOfMeasure, 0);
                 }
             }
 
         } elseif (isset($variantId) && !isset($unitOfMeasure)) {
-            $itemPrice = $this->cron->getItemPrice($itemId, $variantId, null);
+            $itemPrice = $this->cron->getItemPrice($itemId, $variantId, null, 0);
         } elseif (isset($unitOfMeasure) && !isset($variantId)) {
-            $itemPrice = $this->cron->getItemPrice($itemId, null, $unitOfMeasure);
+            $itemPrice = $this->cron->getItemPrice($itemId, null, $unitOfMeasure, 0);
         }
 
         if (!$itemPrice) {
-            $itemPrice = $this->cron->getItemPrice($itemId);
+            $itemPrice = $this->cron->getItemPrice($itemId, null, null, 0);
         }
 
         if (!empty($itemPrice)) {
