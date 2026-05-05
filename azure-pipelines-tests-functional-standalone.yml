@@ -60,21 +60,31 @@ jobs:
 
     steps:
       - script: |
+          set -e
           export DEBIAN_FRONTEND=noninteractive
 
-          # Use IPv4 to prevent common Launchpad connection timeouts on Azure
-          sudo apt-get -o Acquire::ForceIPv4=true update
-          sudo apt-get -o Acquire::ForceIPv4=true install -y software-properties-common ca-certificates lsb-release apt-transport-https
+          # 1. Remove the broken PPA if it was partially added
+          sudo add-apt-repository --remove ppa:ondrej/php -y || true
+          sudo rm -f /etc/apt/sources.list.d/ondrej-ubuntu-php-noble.list
 
-          # Retry adding PPA in case of network timeout
+          # 2. Fetch the GPG key directly using curl with retries
+          # This is more robust than add-apt-repository in CI
+          sudo mkdir -p /usr/share/keyrings
           for i in {1..5}; do
-            sudo add-apt-repository ppa:ondrej/php -y && break || sleep 15
+            curl -fsSL https://packages.sury.org/php/apt.gpg | sudo gpg --dearmor -o /usr/share/keyrings/php.gpg && break || (echo "Retry $i..." && sleep 10)
           done
 
+          # 3. Add the repository manually using the primary mirror
+          # We use the 'noble' distribution since you are on 24.04
+          echo "deb [signed-by=/usr/share/keyrings/php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
+
+          # 4. Update apt using IPv4 to avoid common Azure IPv6 routing issues
           sudo apt-get -o Acquire::ForceIPv4=true update
 
-          # Install PHP 8.4 and extensions
-          sudo apt-get install -y php$(phpVersion) \
+          # 5. Install PHP 8.4 and extensions
+          # We use explicit versioning to ensure we don't fall back to system 8.3
+          sudo apt-get install -y \
+            php$(phpVersion) \
             php$(phpVersion)-cli \
             php$(phpVersion)-common \
             php$(phpVersion)-mysql \
@@ -85,14 +95,15 @@ jobs:
             php$(phpVersion)-mbstring \
             php$(phpVersion)-zip \
             php$(phpVersion)-bcmath \
-            php$(phpVersion)-soap
+            php$(phpVersion)-soap \
+            libapache2-mod-php$(phpVersion)
 
-          # Register versions
+          # 6. Force the update-alternatives
           sudo update-alternatives --install /usr/bin/php php /usr/bin/php$(phpVersion) 100
           sudo update-alternatives --set php /usr/bin/php$(phpVersion)
 
           php -v
-        displayName: 'Install PHP $(phpVersion)'
+          displayName: 'Install PHP $(phpVersion) (Hardened Mirror Method)'
 
       - script: |
           sudo apt-get install -y default-mysql-client
