@@ -193,6 +193,10 @@ jobs:
       - script: |
           cd $(magentoDirectory)
           cp artifacts/lsretail/lsmag-two/dev/tests/api-functional/$(phpunitFile) dev/tests/api-functional/
+          mkdir -p $(magentoDirectory)/report
+
+          # CRITICAL: Export XDEBUG_MODE here
+          export XDEBUG_MODE=coverage
           ./vendor/bin/phpunit -c $(pwd)/dev/tests/api-functional/$(phpunitFile) --testsuite "Ls_Retail_Api_Tests" --coverage-clover  $(magentoDirectory)/report/coverage.xml
         displayName: 'Ls Retail Modules API Tests Validation'
         env: ${{ variables }}
