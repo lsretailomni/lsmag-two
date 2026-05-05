@@ -1,8 +1,8 @@
-# LS Ecommerce - Magento Integration (V2.10.0)
+# LS Ecommerce - Magento Integration (V3.0.0)
 
 ## Compatibility
 
-1. Magento Open Source 2.4.4 - current version
+1. Magento Open Source 2.4.8 - current version
 2. LS Central 14.02 - current version
 
 ## Installation:
