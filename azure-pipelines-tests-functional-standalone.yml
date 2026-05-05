@@ -43,7 +43,9 @@ jobs:
     pool:
       vmImage: ubuntu-24.04
 
-    container: php:8.4-apache   # ✅ PHP 8.4 here
+    container:
+      image: php:8.4-apache
+      options: --user root
 
     services:
       db: db
@@ -68,25 +70,25 @@ jobs:
 
           apt-get update
           apt-get install -y \
-            git unzip curl wget gnupg \
+            wget gnupg curl git unzip \
             libzip-dev libicu-dev libxml2-dev libpng-dev \
             default-mysql-client
 
-          # ✅ Install PowerShell (fix for pwsh error)
+          # Install PowerShell (needed for Azure DevOps tasks)
           wget -q https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb
           dpkg -i packages-microsoft-prod.deb
           apt-get update
           apt-get install -y powershell
 
-          # ✅ PHP extensions
+          # PHP extensions
           docker-php-ext-install pdo_mysql mysqli intl zip soap bcmath gd
 
-          # ✅ Composer
+          # Composer
           curl -sS https://getcomposer.org/installer | php
           mv composer.phar /usr/local/bin/composer
 
           php -v
-          pwsh -v   # sanity check
+          pwsh -v
         displayName: 'Setup PHP 8.4 (CLI + Apache)'
       - script: |
           printf 'Waiting for selenium to accept connections'
