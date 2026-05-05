@@ -63,28 +63,31 @@ jobs:
 
     steps:
 
-      # ✅ Replace PHP install step with this
       - script: |
           set -e
-          apt-get update
-          apt-get install -y git unzip curl libzip-dev libicu-dev libxml2-dev libpng-dev default-mysql-client
 
+          apt-get update
+          apt-get install -y \
+            git unzip curl wget gnupg \
+            libzip-dev libicu-dev libxml2-dev libpng-dev \
+            default-mysql-client
+
+          # ✅ Install PowerShell (fix for pwsh error)
+          wget -q https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb
+          dpkg -i packages-microsoft-prod.deb
+          apt-get update
+          apt-get install -y powershell
+
+          # ✅ PHP extensions
           docker-php-ext-install pdo_mysql mysqli intl zip soap bcmath gd
 
+          # ✅ Composer
           curl -sS https://getcomposer.org/installer | php
           mv composer.phar /usr/local/bin/composer
 
           php -v
+          pwsh -v   # sanity check
         displayName: 'Setup PHP 8.4 (CLI + Apache)'
-
-      - script: |
-          printf 'Waiting for MySQL database to accept connections'
-          until mysql --host db --user=mysql --password=mysql --execute "SHOW DATABASES"; do
-            printf '.'
-            sleep 1;
-          done;
-        displayName: 'Wait for Database to initialise'
-
       - script: |
           printf 'Waiting for selenium to accept connections'
           until curl -XGET 'http://selenium:4444/wd/hub/status'; do
