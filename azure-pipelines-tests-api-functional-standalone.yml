@@ -56,53 +56,41 @@ jobs:
           set -e
           export DEBIAN_FRONTEND=noninteractive
 
-          # 1. Remove the broken PPA if it was partially added
-          sudo add-apt-repository --remove ppa:ondrej/php -y || true
-          sudo rm -f /etc/apt/sources.list.d/ondrej-ubuntu-php-noble.list
-
-          # 2. Fetch the GPG key directly using curl with retries
-          # This is more robust than add-apt-repository in CI
+          # 1. Add Sury Repository
           sudo mkdir -p /usr/share/keyrings
-          for i in {1..5}; do
-            curl -fsSL https://packages.sury.org/php/apt.gpg | sudo gpg --dearmor -o /usr/share/keyrings/php.gpg && break || (echo "Retry $i..." && sleep 10)
-          done
-
-          # 3. Add the repository manually using the primary mirror
-          # We use the 'noble' distribution since you are on 24.04
+          curl -fsSL https://packages.sury.org/php/apt.gpg | sudo gpg --dearmor -o /usr/share/keyrings/php.gpg
           echo "deb [signed-by=/usr/share/keyrings/php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
 
-          # 4. Update apt using IPv4 to avoid common Azure IPv6 routing issues
-          sudo apt-get -o Acquire::ForceIPv4=true update
+          # 2. Update and Install Core PHP + Dev Tools
+          sudo apt-get update
+          sudo apt-get install -y php$(phpVersion) php$(phpVersion)-cli php$(phpVersion)-common php$(phpVersion)-mysql \
+            php$(phpVersion)-xml php$(phpVersion)-gd php$(phpVersion)-curl php$(phpVersion)-intl \
+            php$(phpVersion)-mbstring php$(phpVersion)-zip php$(phpVersion)-bcmath php$(phpVersion)-soap \
+            php$(phpVersion)-dev php-pear libapache2-mod-php$(phpVersion)
 
-          # 5. Install PHP 8.4 and extensions
-          # We use explicit versioning to ensure we don't fall back to system 8.3
-          sudo apt-get install -y \
-            php$(phpVersion) \
-            php$(phpVersion)-cli \
-            php$(phpVersion)-common \
-            php$(phpVersion)-mysql \
-            php$(phpVersion)-xml \
-            php$(phpVersion)-gd \
-            php$(phpVersion)-curl \
-            php$(phpVersion)-intl \
-            php$(phpVersion)-mbstring \
-            php$(phpVersion)-zip \
-            php$(phpVersion)-bcmath \
-            php$(phpVersion)-soap \
-            libapache2-mod-php$(phpVersion)
+          # 3. Resilient Xdebug Installation
+          if sudo apt-get install -y php$(phpVersion)-xdebug; then
+            echo "Xdebug installed via apt."
+          else
+            echo "php$(phpVersion)-xdebug not found in apt. Installing via PECL..."
+            sudo pecl channel-update pecl.php.net
+            sudo pecl install xdebug
+            # Manual link for PECL installation
+            echo "zend_extension=xdebug.so" | sudo tee /etc/php/$(phpVersion)/mods-available/xdebug.ini
+            sudo phpenmod xdebug
+          fi
 
-          # 6. Force the update-alternatives
-          sudo update-alternatives --install /usr/bin/php php /usr/bin/php$(phpVersion) 100
+          # 4. Global Configuration for Coverage
+          echo "xdebug.mode=coverage" | sudo tee -a /etc/php/$(phpVersion)/cli/conf.d/20-xdebug.ini
+          echo "xdebug.mode=coverage" | sudo tee -a /etc/php/$(phpVersion)/apache2/conf.d/20-xdebug.ini
+
+          # 5. Set version as default
           sudo update-alternatives --set php /usr/bin/php$(phpVersion)
 
+          # 6. Verify
           php -v
-        displayName: 'Install PHP $(phpVersion)'
-
-      - script: |
-          # Install Xdebug for code coverage
-          sudo apt-get install -y php$(phpVersion)-xdebug
-          php -m | grep xdebug || echo "Xdebug not found"
-        displayName: 'Install Xdebug for code coverage'
+          php -m | grep -i xdebug
+        displayName: "Install PHP $(phpVersion) and Xdebug"
 
       - script: |
           sudo apt-get install default-mysql-client
