@@ -51,18 +51,49 @@ jobs:
           magentoDirectory: "/var/www/html"
 
     steps:
-
       - script: |
-          sudo apt-get update
-          sudo apt-get install -y software-properties-common ca-certificates lsb-release apt-transport-https
-          sudo add-apt-repository ppa:ondrej/php -y
-          sudo apt-get update
-          sudo apt-get install -y php$(phpVersion) php$(phpVersion)-cli php$(phpVersion)-common php$(phpVersion)-mysql php$(phpVersion)-xml php$(phpVersion)-gd php$(phpVersion)-curl php$(phpVersion)-intl php$(phpVersion)-mbstring php$(phpVersion)-zip php$(phpVersion)-bcmath php$(phpVersion)-soap
+          set -e
+          export DEBIAN_FRONTEND=noninteractive
+
+          # 1. Remove the broken PPA if it was partially added
+          sudo add-apt-repository --remove ppa:ondrej/php -y || true
+          sudo rm -f /etc/apt/sources.list.d/ondrej-ubuntu-php-noble.list
+
+          # 2. Fetch the GPG key directly using curl with retries
+          # This is more robust than add-apt-repository in CI
+          sudo mkdir -p /usr/share/keyrings
+          for i in {1..5}; do
+            curl -fsSL https://packages.sury.org/php/apt.gpg | sudo gpg --dearmor -o /usr/share/keyrings/php.gpg && break || (echo "Retry $i..." && sleep 10)
+          done
+
+          # 3. Add the repository manually using the primary mirror
+          # We use the 'noble' distribution since you are on 24.04
+          echo "deb [signed-by=/usr/share/keyrings/php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
+
+          # 4. Update apt using IPv4 to avoid common Azure IPv6 routing issues
+          sudo apt-get -o Acquire::ForceIPv4=true update
+
+          # 5. Install PHP 8.4 and extensions
+          # We use explicit versioning to ensure we don't fall back to system 8.3
+          sudo apt-get install -y \
+            php$(phpVersion) \
+            php$(phpVersion)-cli \
+            php$(phpVersion)-common \
+            php$(phpVersion)-mysql \
+            php$(phpVersion)-xml \
+            php$(phpVersion)-gd \
+            php$(phpVersion)-curl \
+            php$(phpVersion)-intl \
+            php$(phpVersion)-mbstring \
+            php$(phpVersion)-zip \
+            php$(phpVersion)-bcmath \
+            php$(phpVersion)-soap \
+            libapache2-mod-php$(phpVersion)
+
+          # 6. Force the update-alternatives
+          sudo update-alternatives --install /usr/bin/php php /usr/bin/php$(phpVersion) 100
           sudo update-alternatives --set php /usr/bin/php$(phpVersion)
-          sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
-          sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
-          sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
-          sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
+
           php -v
         displayName: 'Install PHP $(phpVersion)'
 
