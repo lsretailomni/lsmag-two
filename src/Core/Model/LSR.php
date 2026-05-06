@@ -127,7 +127,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const GIFT_CARD_IDENTIFIER = 'ls_mag/replication/gift_card_items_list';
     const SC_REPLICATION_UNIT_OF_MEASURE_CONFIG = 'ls_mag/replication/unit_of_measure_configuration';
     const SC_REPLICATION_UNIT_OF_MEASURE_ALLOW_PURCHASE_UNIT = 'ls_mag/replication/uom_allow_purchase_unit';
-
     //Attribute Set
     const SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE = 'ITEM_CATEGORY_CODE';
     const SC_REPLICATION_ATTRIBUTE_SET_PRODUCT_GROUP_ID = 'PRODUCT_GROUP_ID';

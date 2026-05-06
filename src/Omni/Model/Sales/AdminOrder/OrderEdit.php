@@ -12,7 +12,6 @@ use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\Data as OmniHelper;
-use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\CentralEcommerce\Entity\RootCustomerOrderCancel;
 use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCancelCOLine;
 use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderStatusLog;
@@ -68,7 +67,7 @@ class OrderEdit
 
     /**
      * For sending order edit request
-     * 
+     *
      * @param $request
      * @return null
      */
@@ -131,7 +130,7 @@ class OrderEdit
             $method = ($method) ? substr($method, 0, 10) : "";
             $createdAtStore = ($oldOrder->getPickupStore()) ? $oldOrder->getPickupStore() :
                 current((array)$oneListCalculateResponse->getMobiletransaction())->getStoreId();
-            
+
             $orderEditHeader      = $this->omniHelper->createInstance(COEditHeader::class);
             $orderEditHeader->addData(
                 [
@@ -182,7 +181,7 @@ class OrderEdit
             );
 
             $rootCustomerOrderEdit->setCOEditHeader($orderEditHeader);
-            
+
             /** @var Entity\OneListItem[] $orderLinesArray */
             $orderLinesArray = $oneListCalculateResponse->getMobiletransactionline();
             $lineOrderArray  = [];
@@ -219,9 +218,9 @@ class OrderEdit
             );
             $coEditLines = array_merge($coEditLines, $lineOrderArray);
             $coEditLines = $this->updateShippingAmount($coEditLines, $order, $customerOrder, $oldOrder);
-            
+
             $rootCustomerOrderEdit->setCoeditline($coEditLines);
-            
+
             //Set discount lines
             $orderDiscountLines     = $oneListCalculateResponse->getMobiletransdiscountline();
             $orderEditDiscountLines = [];
@@ -251,9 +250,9 @@ class OrderEdit
                     $orderEditDiscountLines[] = $coDiscountLine;
                 }
                 $rootCustomerOrderEdit->setCoeditdiscountline($orderEditDiscountLines);
-                
+
             }
-            
+
             /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
             // @codingStandardsIgnoreStart
             $orderEditPaymentLines      = $this->omniHelper->createInstance(COEditPayment::class);
@@ -336,7 +335,7 @@ class OrderEdit
                         COEditPayment::PRE_APPROVED_AMOUNT_LCY => $amount * $order->getBaseToOrderRate(),
                     ]
                 );
-                
+
                 // For CreditCard/Debit Card payment use Tender Type 1 for Cards
                 if (!empty($transId)) {
                     $orderPayment->addData(
@@ -431,7 +430,7 @@ class OrderEdit
                             $paymentType == "0")) {
                         $paymentCode  = $oldOrder->getPayment()->getMethodInstance()->getCode();
                         $tenderTypeId = $this->orderHelper->getPaymentTenderTypeId($paymentCode);
-                        
+
                         $lineNo += 10000;
                         $orderPaymentUpdate = $this->orderHelper->createInstance(COEditPayment::class);
                         $orderPaymentUpdate->addData(
@@ -473,7 +472,7 @@ class OrderEdit
                 }
             }
         }
-        
+
         return $orderPaymentArray;
     }
 
@@ -498,7 +497,7 @@ class OrderEdit
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
             $salesOrderLines = $customerOrder->getLscMemberSalesDocLine();
-            
+
             foreach ($salesOrderLines as $line) {
                 if ($shipmentFeeId == $line->getNumber()) {
                     // @codingStandardsIgnoreLine
@@ -540,7 +539,7 @@ class OrderEdit
     {
         $response          = null;
         $cancelRequest = $this->prepareCancelItemRequest($documentId, $storeId, $itemsToCancel);
-        
+
             $request = $this->orderHelper->createInstance(
                 CustomerOrderCancel::class
             );
@@ -602,7 +601,7 @@ class OrderEdit
 
         $rootCustomerOrderCancel->setCustomerorderstatuslog($customerOrderStatusLog);
         $rootCustomerOrderCancel->setCustomerordercancelcoline($customerOrderCancelCOLine);
-        
+
         return $rootCustomerOrderCancel;
     }
 
@@ -633,7 +632,7 @@ class OrderEdit
             if ($line->getLinetype() == 0) {
 
                 $serviceItem = $this->itemHelper->checkAndUpdateServiceItems($line);
-                
+
                 $coEditLine = $this->orderHelper->createInstance(
                     COEditLine::class
                 );
@@ -674,7 +673,7 @@ class OrderEdit
                 $maxLineNo = (int)$line->getLineNo();
             }
         }
-        
+
         foreach ($newItemsArray as $newItem) {
             if (!in_array($newItem, $oldItemsArray)) {
                 list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
@@ -686,7 +685,7 @@ class OrderEdit
                         $lineNumber = ($maxLineNo + 10000);
                         $line->setLineNo($lineNumber);
                         $line->setRetailImageId("NEW_COLINE_INDICATOR"); //To indicate as new line item
-                        
+
                     }
                 }
             }

@@ -3,7 +3,6 @@
 namespace Ls\Customer\Block\Order;
 
 use Exception;
-use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Helper\OrderHelper;
@@ -206,14 +205,6 @@ class Recent extends Template
     public function getOrderByDocumentId($salesEntry)
     {
         return $this->orderHelper->getOrderByDocumentId($salesEntry);
-    }
-
-    /**
-     * @return string
-     */
-    public function getOmniVersion()
-    {
-        return $this->lsr->getOmniVersion();
     }
 
     /**

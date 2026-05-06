@@ -17,7 +17,6 @@ use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateV6;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
-use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
 use \Ls\Omni\Client\CentralEcommerce\Entity\RootCustomerOrderCreateV6;
 use \Ls\Omni\Client\CentralEcommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\CentralEcommerce\Operation;
@@ -300,6 +299,8 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Update shipping amount to shipment order line
      *
      * @param array $customerOrderCoLines
@@ -314,6 +315,9 @@ class OrderHelper extends AbstractHelperOmni
         $shippingAmount = $order->getShippingInclTax();
 
         if (isset($shipmentTaxPercent) && $shippingAmount > 0) {
+            // @codingStandardsIgnoreLine
+            $shipmentOrderLine = new Entity\OrderLine();
+            $shipmentOrderLine->setPrice($shippingAmount);
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice = (float)$shippingAmount / $netPriceFormula;
             $taxAmount = (float)number_format(($shippingAmount - $netPrice), 2);
@@ -416,7 +420,8 @@ class OrderHelper extends AbstractHelperOmni
             $method = 'setAddress' . strval($i + 1);
             $omniAddress->$method($street);
         }
-        $region = $magentoAddress->getRegion() ? substr($magentoAddress->getRegion(), 0, 30) : null;
+        $region = $magentoAddress->getRegionCode() ??
+            ($magentoAddress->getRegion() ? substr($magentoAddress->getRegion(), 0, 30) : null);
         $omniAddress
             ->setCity($magentoAddress->getCity())
             ->setCountry($magentoAddress->getCountryId())
@@ -1296,8 +1301,7 @@ class OrderHelper extends AbstractHelperOmni
         $currency,
         $storeId,
         $orderType = null
-    )
-    {
+    ) {
         $magentoOrder = $this->getGivenValueFromRegistry('current_mag_order');
         $currencyObject = null;
         $currentStoreCurrencyCode = $this->storeManager->getStore()->getCurrentCurrency()->getCode();

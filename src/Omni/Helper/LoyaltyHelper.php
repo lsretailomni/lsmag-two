@@ -14,8 +14,6 @@ use \Ls\Omni\Client\CentralEcommerce\Entity\PublishedOfferLine;
 use \Ls\Omni\Client\CentralEcommerce\Operation\GetImage_GetImage;
 use \Ls\Omni\Client\CentralEcommerce\Operation\GetDirectMarketingInfo;
 use \Ls\Omni\Client\CentralEcommerce\Operation\GetDiscount_GetDiscount;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfPublishedOffer;
-use Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetByCardIdResponse;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Filesystem\DirectoryList;
@@ -138,8 +136,12 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Get loyalty points available to customer
      *
+<<<<<<< HEAD
      * @return float
      * @throws GuzzleException
+=======
+     * @return int|Entity\CardGetPointBalanceResponse|ResponseInterface|null
+>>>>>>> master
      * @throws NoSuchEntityException|LocalizedException
      */
     public function getLoyaltyPointsAvailableToCustomer()
@@ -334,10 +336,17 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Convert Point Rate into Values
      *
+<<<<<<< HEAD
      * @param null $storeId
      * @param null $currencyCode
      * @param bool $force
      * @return float|int|string|null
+=======
+     * @param ?string $storeId
+     * @param ?string $currencyCode
+     * @param bool $force
+     * @return float|GetPointRateResponse|ResponseInterface|string|null
+>>>>>>> master
      * @throws NoSuchEntityException
      */
     public function getPointRate($storeId = null, $currencyCode = null, $force = false)

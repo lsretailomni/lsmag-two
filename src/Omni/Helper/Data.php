@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Ls\Omni\Helper;
 
-use DomDocument;
-use DOMXPath;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
@@ -27,11 +25,10 @@ use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Sales\Model\Order\Invoice\Item;
+use Magento\Framework\Phrase;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Phrase;
-use SimpleXMLElement;
 
 /**
  * Helper class that is used on multiple areas
@@ -97,7 +94,7 @@ class Data extends AbstractHelperOmni
     /**
      * Get Store hours
      *
-     * @param string $storeId
+     * @param string $webStoreId
      * @return array
      */
     public function getStoreHours($webStoreId)
@@ -110,7 +107,7 @@ class Data extends AbstractHelperOmni
                 $storeResults = $cachedResponse;
             } else {
                 $storeResults = [];
-                $websiteId = $this->lsr->getCurrentWebsiteId();
+                $websiteId = (string) $this->lsr->getCurrentWebsiteId();
                 $response = $this->storeHelper->getStore($websiteId, $webStoreId);
                 if (!empty($response)) {
                     $storeResults = $this->fetchAllStoreHoursGivenStore($webStoreId);
@@ -1027,6 +1024,7 @@ class Data extends AbstractHelperOmni
 
             $totalPointsAmount = $this->loyaltyHelper->getLsPointsDiscount($pointsSpent);
             $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
+            $baseTotalPointsAmount = $this->itemHelper->convertToBaseCurrency($totalPointsAmount);
             $pointsSpent       = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
             $giftCardAmount    = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
 
@@ -1037,7 +1035,7 @@ class Data extends AbstractHelperOmni
             $invoiceCreditMemo->setLsGiftCardNo($giftCardNo);
 
             $grandTotalAmount     = $invoiceCreditMemo->getGrandTotal() - $totalPointsAmount - $giftCardAmount;
-            $baseGrandTotalAmount = $invoiceCreditMemo->getBaseGrandTotal() - $totalPointsAmount - $giftCardAmount;
+            $baseGrandTotalAmount = $invoiceCreditMemo->getBaseGrandTotal() - $baseTotalPointsAmount - $giftCardAmount;
             $invoiceCreditMemo->setGrandTotal($grandTotalAmount);
             $invoiceCreditMemo->setBaseGrandTotal($baseGrandTotalAmount);
         }

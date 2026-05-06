@@ -9,7 +9,6 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\CentralEcommerce\Entity;
 use \Ls\Omni\Client\CentralEcommerce\Entity\GetDataEntryBalanceV2;
 use \Ls\Omni\Client\Ecommerce\Entity\GiftCard;
-use \Ls\Omni\Client\CentralEcommerce\Operation;
 use Magento\Framework\Currency;
 use Magento\Framework\Exception\NoSuchEntityException;
 
@@ -30,7 +29,7 @@ class GiftCardHelper extends AbstractHelperOmni
         $response = null;
         $giftCardPin = empty($giftCardPin) ? 0 : $giftCardPin;
         $operation = $this->createInstance(
-            Operation\GetDataEntryBalanceV2::class
+            \Ls\Omni\Client\CentralEcommerce\Operation\GetDataEntryBalanceV2::class
         );
         $operationInput = [
             GetDataEntryBalanceV2::ENTRY_TYPE => 'GIFTCARDNO',

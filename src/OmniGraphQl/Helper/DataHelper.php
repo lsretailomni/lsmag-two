@@ -218,7 +218,7 @@ class DataHelper extends AbstractHelper
     /**
      * Format store timing
      *
-     * @param string $storeId
+     * @param string $webStoreId
      * @return array
      */
     public function formatStoreTiming($webStoreId)
@@ -369,6 +369,10 @@ class DataHelper extends AbstractHelper
 
         foreach ($slots as $index => $slot) {
             $formattedData[] = ['date' => $index, 'slots' => $slot];
+        }
+
+        if (empty($formattedData)) {
+            $formattedData[] = ['date' => __('Not Available'), 'slots' => []];
         }
 
         return $formattedData;

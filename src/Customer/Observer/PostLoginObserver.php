@@ -58,7 +58,7 @@ class PostLoginObserver extends AbstractOmniObserver
                 $contact = $this->contactHelper->getCentralCustomerByEmail($customer->getEmail());
 
                 if (!empty($contact)) {
-                    $this->contactHelper->updateBasketAndWishlistAfterLogin($contact);
+                    $this->contactHelper->updateRequiredOneListAfterLogin($contact);
                 }
             } else {
                 $this->contactHelper->unsetBasketUpdateChecking();

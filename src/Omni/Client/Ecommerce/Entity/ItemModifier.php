@@ -15,7 +15,7 @@ use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemModifierType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemUsageCategory;
 use Ls\Omni\Exception\InvalidEnumException;
 
-class ItemModifier
+class ItemModifier extends Entity
 {
     /**
      * @property ItemModifierPriceHandling $AlwaysCharge

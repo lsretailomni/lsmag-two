@@ -32,7 +32,7 @@ class CreditMemo
     }
 
     /**
-     * To process refund for that item which is cancelled
+     * To process refund for that item which is cancelled or returns
      *
      * @param $magOrder
      * @param $items
@@ -47,7 +47,7 @@ class CreditMemo
             foreach ($itemData as $itemData) {
                 $item                       = $itemData['item'];
                 $orderItemId                = $item->getItemId();
-                $itemToCredit[$orderItemId] = ['qty' => $itemData['qty']];
+                $itemToCredit[$orderItemId] = ['qty' => $itemData['qty'], 'back_to_stock' => 0];
                 $creditMemoData['items']    = $itemToCredit;
             }
         }

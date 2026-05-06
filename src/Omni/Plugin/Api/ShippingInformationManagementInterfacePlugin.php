@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Api;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Api\Data\ShippingInformationInterface;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
@@ -33,6 +35,8 @@ class ShippingInformationManagementInterfacePlugin
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
+     * @throws GuzzleException
+     * @throws AlreadyExistsException
      */
     public function afterSaveAddressInformation(
         $subject,
@@ -45,7 +49,6 @@ class ShippingInformationManagementInterfacePlugin
         }
 
         $this->basketHelper->syncBasketWithCentral($cartId);
-
         return $result;
     }
 }
