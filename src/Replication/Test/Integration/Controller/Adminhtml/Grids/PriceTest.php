@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration\Controller\Adminhtml\Grids;
 
 use Ls\Core\Model\LSR;
-use \Ls\Replication\Cron\ReplLscWiPriceTask;
+use \Ls\Replication\Cron\ReplLscSalepriceviewTask;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Store\Model\ScopeInterface;
@@ -53,7 +53,7 @@ class PriceTest extends AbstractGrid
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplLscWiPriceTask::class,
+                'job_url' => ReplLscSalepriceviewTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )

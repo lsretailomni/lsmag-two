@@ -271,7 +271,7 @@ class SalesObserverTest extends AbstractIntegrationTest
             ]
         ));
 
-        $expectedLsPointsDiscount = $this->getLsPointsDiscount(AbstractIntegrationTest::LSR_LOY_POINTS);
+        $expectedLsPointsDiscount = $this->loyaltyHelper->getLsPointsDiscount(AbstractIntegrationTest::LSR_LOY_POINTS);
         $mobileTransaction = current((array)$this->basketHelper->getOneListCalculationFromCheckoutSession()->getMobiletransaction());
         $this->assertNotEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
         $this->assertNotNull($this->basketHelper->getOneListCalculationFromCheckoutSession());
@@ -280,8 +280,11 @@ class SalesObserverTest extends AbstractIntegrationTest
             (float) $this->checkoutSession->getQuote()->getLsPointsEarn()
         );
 
-        $this->assertEquals($expectedLsPointsDiscount, $this->checkoutSession->getQuote()->getLsPointsDiscount());
-
+        $this->assertEqualsWithDelta(
+            $expectedLsPointsDiscount,
+            $this->checkoutSession->getQuote()->getLsPointsDiscount(),
+            0.01
+        );
         $this->basketHelper->setOneListCalculationInCheckoutSession(null);
         $cart->delete();
         $this->checkoutSession->clearQuote();

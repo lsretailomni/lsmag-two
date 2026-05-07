@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration\Ui\Component;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Cron\ReplLscWiPriceTask;
+use \Ls\Replication\Cron\ReplLscSalepriceviewTask;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Store\Model\ScopeInterface;
@@ -80,10 +80,12 @@ class PriceDataProviderTest extends AbstractDataProvider
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'store', 'default'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'website'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'store',  'default'),
+        Config(LSR::SC_SERVICE_DEBUG, \Ls\Customer\Test\Integration\AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplLscWiPriceTask::class,
+                'job_url' => ReplLscSalepriceviewTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )
@@ -128,10 +130,12 @@ class PriceDataProviderTest extends AbstractDataProvider
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'store', 'default'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'website'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE, 'store',  'default'),
+        Config(LSR::SC_SERVICE_DEBUG, \Ls\Customer\Test\Integration\AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplLscWiPriceTask::class,
+                'job_url' => ReplLscSalepriceviewTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )
