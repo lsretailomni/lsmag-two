@@ -336,17 +336,10 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Convert Point Rate into Values
      *
-<<<<<<< HEAD
-     * @param null $storeId
-     * @param null $currencyCode
-     * @param bool $force
-     * @return float|int|string|null
-=======
      * @param ?string $storeId
      * @param ?string $currencyCode
      * @param bool $force
-     * @return float|GetPointRateResponse|ResponseInterface|string|null
->>>>>>> master
+     * @return float|int|string|null
      * @throws NoSuchEntityException
      */
     public function getPointRate($storeId = null, $currencyCode = null, $force = false)
@@ -893,8 +886,8 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function getLsPointsDiscount($pointsSpent, $format = false)
     {
-        $loyPointRate = $this->getPointRate(null, 'LOY');
-        $currentCurrencyPointRate = $this->getPointRate();
+        $loyPointRate = $this->getPointRate(null, 'LOY', true);
+        $currentCurrencyPointRate = $this->getPointRate(null, null, true);
 
         if (!$currentCurrencyPointRate) {
             return 0;

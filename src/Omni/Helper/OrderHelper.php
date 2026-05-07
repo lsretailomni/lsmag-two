@@ -275,8 +275,7 @@ class OrderHelper extends AbstractHelperOmni
                 ->setCustomerordercreatecolinev6($customerOrderCoLines)
                 ->setCustomerordercreatecodiscountlinev6($customerOrderDiscountCoLines);
 
-        } catch
-        (Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
@@ -315,9 +314,6 @@ class OrderHelper extends AbstractHelperOmni
         $shippingAmount = $order->getShippingInclTax();
 
         if (isset($shipmentTaxPercent) && $shippingAmount > 0) {
-            // @codingStandardsIgnoreLine
-            $shipmentOrderLine = new Entity\OrderLine();
-            $shipmentOrderLine->setPrice($shippingAmount);
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice = (float)$shippingAmount / $netPriceFormula;
             $taxAmount = (float)number_format(($shippingAmount - $netPrice), 2);
@@ -420,8 +416,7 @@ class OrderHelper extends AbstractHelperOmni
             $method = 'setAddress' . strval($i + 1);
             $omniAddress->$method($street);
         }
-        $region = $magentoAddress->getRegionCode() ??
-            ($magentoAddress->getRegion() ? substr($magentoAddress->getRegion(), 0, 30) : null);
+        $region = $magentoAddress->getRegion() ? substr($magentoAddress->getRegion(), 0, 30) : null;
         $omniAddress
             ->setCity($magentoAddress->getCity())
             ->setCountry($magentoAddress->getCountryId())
