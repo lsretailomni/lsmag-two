@@ -12,7 +12,7 @@ use \Ls\Replication\Cron\ReplLscInventoryLookupTableTask;
 use \Ls\Replication\Cron\ReplLscWiItemBufferTask;
 use \Ls\Replication\Cron\ReplLscItemuomupdviewTask;
 use \Ls\Replication\Cron\ReplLscVariantregviewTask;
-use \Ls\Replication\Cron\ReplLscWiPriceTask;
+use \Ls\Replication\Cron\ReplLscSalepriceviewTask;
 use \Ls\Replication\Cron\ReplLscUnitOfMeasureTask;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Model\ReplItem;
@@ -153,7 +153,7 @@ class MassResetTest extends AbstractBackendController
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplLscWiPriceTask::class,
+                'job_url' => ReplLscSalepriceviewTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         ),

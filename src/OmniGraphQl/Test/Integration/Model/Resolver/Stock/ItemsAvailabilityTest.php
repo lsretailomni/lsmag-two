@@ -5,7 +5,7 @@ namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver\Stock;
 use \Ls\Omni\Test\Fixture\FlatDataReplication;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Replication\Cron\ReplEcommStoresTask;
+use Ls\Replication\Cron\ReplLscStoreviewTask;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
@@ -71,7 +71,7 @@ class ItemsAvailabilityTest extends GraphQlTestBase
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommStoresTask::class,
+                'job_url' => ReplLscStoreviewTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ],
             as: 'stores'
@@ -83,7 +83,6 @@ class ItemsAvailabilityTest extends GraphQlTestBase
     public function testItemAvailability()
     {
         $product = $this->getOrCreateProduct();
-        $this->replicateStoresData();
         $query   = $this->getQuery('', $product->getSku());
 
         $headerMap = ['Authorization' => 'Bearer ' . $this->authToken];

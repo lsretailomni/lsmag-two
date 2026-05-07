@@ -40,7 +40,7 @@ class OrderPaymentTest extends AbstractWebhookBase
         // Create order
         $order = $this->getOrCreateOrder($incrementId, $documentId, $this->customer, $this->product, true, false);
         // Bootstrapping Magento
-        
+
         $serviceInfo   = [
             'rest' => [
                 'resourcePath' => '/V1/OrderMessagePayment',
@@ -81,9 +81,7 @@ class OrderPaymentTest extends AbstractWebhookBase
         // Using the Magento Web API client to send the request
         $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         if ($response) {
-            foreach ($response as $result) {
-                $this->assertEquals(true, $result['success']);
-            }
+            $this->assertEquals(1, $response['OrderMessagePaymentResult']);
         }
     }
 
@@ -134,15 +132,13 @@ class OrderPaymentTest extends AbstractWebhookBase
                         'Amount'          => 5.0,
                     ]
                 ]
-            ]
+                ]
         ];
 
         // Using the Magento Web API client to send the request
         $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         if ($response) {
-            foreach ($response as $result) {
-                $this->assertEquals(true, $result['success']);
-            }
+            $this->assertEquals(1, $response['OrderMessagePaymentResult']);
         }
     }
 
@@ -199,9 +195,7 @@ class OrderPaymentTest extends AbstractWebhookBase
         // Using the Magento Web API client to send the request
         $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         if ($response) {
-            foreach ($response as $result) {
-                $this->assertEquals(true, $result['success']);
-            }
+            $this->assertEquals(1, $response['OrderMessagePaymentResult']);
         }
     }
 }

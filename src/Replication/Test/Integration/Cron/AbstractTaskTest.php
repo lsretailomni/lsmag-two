@@ -10,7 +10,7 @@ use \Ls\Replication\Api\Data\ReplAttributeValueInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplDataTranslationInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplDiscountSetupInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
-use Ls\Replication\Api\Data\ReplImageLinkInterfaceFactory;
+use \Ls\Replication\Api\Data\ReplImageLinkInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplInvStatusInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplPriceInterfaceFactory;
@@ -49,7 +49,7 @@ use \Ls\Replication\Cron\ReplLscWiItemBufferTask;
 use \Ls\Replication\Cron\ReplLscItemuomupdviewTask;
 use \Ls\Replication\Cron\ReplLscVariantregviewTask;
 use \Ls\Replication\Cron\ReplLscItemVariantTask;
-use \Ls\Replication\Cron\ReplLscWiPriceTask;
+use \Ls\Replication\Cron\ReplLscSalepriceviewTask;
 use \Ls\Replication\Cron\ReplLscUnitOfMeasureTask;
 use \Ls\Replication\Cron\ReplLscVendoritemviewTask;
 use \Ls\Replication\Cron\ReplLscVendorTask;
@@ -295,7 +295,7 @@ abstract class AbstractTaskTest extends TestCase
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplLscWiPriceTask::class,
+                'job_url' => ReplLscSalepriceviewTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
@@ -391,6 +391,10 @@ abstract class AbstractTaskTest extends TestCase
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'website'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_TIMEOUT, AbstractIntegrationTest::SC_SERVICE_TIMEOUT, 'store', 'default'),
+        Config(LSR::SC_SERVICE_TIMEOUT, AbstractIntegrationTest::SC_SERVICE_TIMEOUT, 'website'),
         Config(
             LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
             AbstractIntegrationTest::SAMPLE_LANGUAGE_CODE,
@@ -544,23 +548,39 @@ abstract class AbstractTaskTest extends TestCase
         $variantId     = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
         $uomCode       = $product->getData("uom");
         $item          = $this->getReplItem($itemId, $storeId);
-        $unitOfMeasure = null;
+        $unitOfMeasure = $itemPrice = null;
 
         if (!empty($uomCode)) {
             if ($uomCode != $item->getBaseUnitOfMeasure()) {
                 $unitOfMeasure = $uomCode;
             }
         }
-        $itemPrice = $this->cron->getItemPrice($itemId, $variantId, $unitOfMeasure);
-        if (isset($itemPrice)) {
+
+        if (isset($variantId) && isset($unitOfMeasure)) {
+            $itemPrice = $this->cron->getItemPrice($itemId, $variantId, $unitOfMeasure, 0);
+
+            if (!$itemPrice) {
+                $itemPrice = $this->cron->getItemPrice($itemId, $variantId, null, 0);
+
+                if (!$itemPrice) {
+                    $itemPrice = $this->cron->getItemPrice($itemId, null, $unitOfMeasure, 0);
+                }
+            }
+
+        } elseif (isset($variantId) && !isset($unitOfMeasure)) {
+            $itemPrice = $this->cron->getItemPrice($itemId, $variantId, null, 0);
+        } elseif (isset($unitOfMeasure) && !isset($variantId)) {
+            $itemPrice = $this->cron->getItemPrice($itemId, null, $unitOfMeasure, 0);
+        }
+
+        if (!$itemPrice) {
+            $itemPrice = $this->cron->getItemPrice($itemId, null, null, 0);
+        }
+
+        if (!empty($itemPrice)) {
             $this->assertTrue($product->getPrice() == $itemPrice->getUnitPriceInclVat());
         } else {
-            $itemPrice = $this->cron->getItemPrice($itemId);
-            if (!empty($itemPrice)) {
-                $this->assertTrue($product->getPrice() == $itemPrice->getUnitPriceInclVat());
-            } else {
-                $this->assertTrue($product->getPrice() == $item->getUnitPrice());
-            }
+            $this->assertTrue($product->getPrice() == $item->getUnitPrice());
         }
     }
 
@@ -678,15 +698,16 @@ abstract class AbstractTaskTest extends TestCase
         $price->addData(
             [
                 'CurrencyCode' => AbstractIntegrationTest::SAMPLE_CURRENCY_CODE,
-                'EndingDate' => '1900-01-01T00:00:00',
+                'EndingDate' => '2027-02-02',
                 'IsDeleted' => 0,
                 'ItemId' => $itemId,
+                'Status' => 1,
                 'MinimumQuantity' => '0.0000',
                 'ModifyDate' => '2024-08-01T00:00:00',
                 'PriceInclVat' => 0,
                 'Priority' => 0,
                 'QtyPerUnitOfMeasure' => '0.0000',
-                'StartingDate' => '1900-01-01T00:00:00',
+                'StartingDate' => '2026-03-25',
                 'StoreId' => AbstractIntegrationTest::WEB_STORE,
                 'UnitOfMeasure' => $uomCode,
                 'UnitPrice' => '12.0000',
