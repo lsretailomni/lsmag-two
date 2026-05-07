@@ -825,7 +825,7 @@ class Data extends AbstractHelperOmni
         $url = OmniService::getUrl($url);
         $client = $this->createInstance(OmniClient::class, ['uri' => $url]);
 
-        $requestXml = new SimpleXMLElement('<Request/>');
+        $requestXml = new \SimpleXMLElement('<Request/>');
         $requestXml->addChild('Request_ID', 'GET_TABLE_DATA');
         $requestBody = $requestXml->addChild('Request_Body');
         $requestBody->addChild('Table_Name', $tableName);
@@ -896,11 +896,11 @@ class Data extends AbstractHelperOmni
     /**
      * Format table data into a flat array
      *
-     * @param SimpleXMLElement $response
+     * @param \SimpleXMLElement $response
      * @param bool $returnMultiple
      * @return array
      */
-    public function formatTableDataResponse(SimpleXMLElement $response, bool $returnMultiple = true): array
+    public function formatTableDataResponse(\SimpleXMLElement $response, bool $returnMultiple = true): array
     {
         $fieldMap = $records = [];
         foreach ($response->Response_Body->WS_Table_Field_Buffer ?? [] as $field) {

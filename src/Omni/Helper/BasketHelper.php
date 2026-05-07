@@ -802,6 +802,8 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
+     * Get default web store
+     *
      * @return string|null
      * @throws NoSuchEntityException
      */
@@ -811,7 +813,7 @@ class BasketHelper extends AbstractHelperOmni
             $this->storeId = $this->lsr->getActiveWebStore();
         }
 
-        return $this->store_id;
+        return $this->storeId;
     }
 
     /**
