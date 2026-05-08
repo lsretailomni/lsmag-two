@@ -89,6 +89,16 @@ class ReplItemVariant extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemVarian
         return $this->setData(self::getDbColumnsMapping()[self::BLOCKED], $value);
     }
 
+    public function getPicture(): ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::PICTURE]);
+    }
+
+    public function setPicture(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::PICTURE], $value);
+    }
+
     public function getSalesBlocked(): ?bool
     {
         return $this->getData(self::getDbColumnsMapping()[self::SALES_BLOCKED]);

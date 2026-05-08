@@ -260,6 +260,10 @@ interface ReplVendorInterface
 
     public function setAllowMultiplePostingGroups(?bool $value);
 
+    public function getSelfBillingAgreement(): ?bool;
+
+    public function setSelfBillingAgreement(?bool $value);
+
     public function getPreferredBankAccountCode(): ?string;
 
     public function setPreferredBankAccountCode(?string $value);
@@ -303,6 +307,10 @@ interface ReplVendorInterface
     public function getValidateEuVatRegNo(): ?bool;
 
     public function setValidateEuVatRegNo(?bool $value);
+
+    public function getCopyBuyFromAddToQteFrom(): ?int;
+
+    public function setCopyBuyFromAddToQteFrom(?int $value);
 
     public function getCurrencyId(): ?string;
 

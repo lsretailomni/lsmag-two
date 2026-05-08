@@ -649,6 +649,16 @@ class ReplVendor extends \Ls\Omni\Client\CentralEcommerce\Entity\Vendor implemen
         return $this->setData(self::getDbColumnsMapping()[self::ALLOW_MULTIPLE_POSTING_GROUPS], $value);
     }
 
+    public function getSelfBillingAgreement(): ?bool
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::SELFBILLING_AGREEMENT]);
+    }
+
+    public function setSelfBillingAgreement(?bool $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::SELFBILLING_AGREEMENT], $value);
+    }
+
     public function getPreferredBankAccountCode(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::PREFERRED_BANK_ACCOUNT_CODE]);
@@ -757,6 +767,16 @@ class ReplVendor extends \Ls\Omni\Client\CentralEcommerce\Entity\Vendor implemen
     public function setValidateEuVatRegNo(?bool $value)
     {
         return $this->setData(self::getDbColumnsMapping()[self::VALIDATE_EU_VAT_REG_NO], $value);
+    }
+
+    public function getCopyBuyFromAddToQteFrom(): ?int
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::COPY_BUYFROM_ADD_TO_QTE_FROM]);
+    }
+
+    public function setCopyBuyFromAddToQteFrom(?int $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::COPY_BUYFROM_ADD_TO_QTE_FROM], $value);
     }
 
     public function getCurrencyId(): ?string

@@ -369,6 +369,16 @@ class ReplItemCategory extends \Ls\Omni\Client\CentralEcommerce\Entity\ItemCateg
         return $this->setData(self::getDbColumnsMapping()[self::LSC_PLB_CATEGORY], $value);
     }
 
+    public function getLscItemTemplateCode2(): ?string
+    {
+        return $this->getData(self::getDbColumnsMapping()[self::LSC_ITEM_TEMPLATE_CODE_2]);
+    }
+
+    public function setLscItemTemplateCode2(?string $value)
+    {
+        return $this->setData(self::getDbColumnsMapping()[self::LSC_ITEM_TEMPLATE_CODE_2], $value);
+    }
+
     public function getSystemid(): ?string
     {
         return $this->getData(self::getDbColumnsMapping()[self::SYSTEMID]);

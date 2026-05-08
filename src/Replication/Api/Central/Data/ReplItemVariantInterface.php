@@ -36,6 +36,10 @@ interface ReplItemVariantInterface
 
     public function setBlocked(?bool $value);
 
+    public function getPicture(): ?string;
+
+    public function setPicture(?string $value);
+
     public function getSalesBlocked(): ?bool;
 
     public function setSalesBlocked(?bool $value);
