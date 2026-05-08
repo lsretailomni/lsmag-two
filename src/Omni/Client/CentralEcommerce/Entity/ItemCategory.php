@@ -45,6 +45,7 @@ class ItemCategory extends AbstractModel
     public const LSC_PHYS_INVT_COUNT_PER_CODE = 'LSC Phys Invt Count. Per. Code';
     public const LSC_ALLOCATION_RULE_CODE = 'LSC Allocation Rule Code';
     public const LSC_PLB_CATEGORY = 'LSC PLB Category';
+    public const LSC_ITEM_TEMPLATE_CODE_2 = 'LSC Item Template Code 2';
     public const SYSTEMID = '$systemId';
     public const SYSTEMCREATEDAT = 'SystemCreatedAt';
     public const SYSTEMCREATEDBY = 'SystemCreatedBy';
@@ -86,6 +87,7 @@ class ItemCategory extends AbstractModel
 	self::LSC_PHYS_INVT_COUNT_PER_CODE => 'lsc_phys_invt_count_per_code',
 	self::LSC_ALLOCATION_RULE_CODE => 'lsc_allocation_rule_code',
 	self::LSC_PLB_CATEGORY => 'lsc_plb_category',
+	self::LSC_ITEM_TEMPLATE_CODE_2 => 'lsc_item_template_code_2',
 	self::SYSTEMID => 'systemid',
 	self::SYSTEMCREATEDAT => 'systemcreatedat',
 	self::SYSTEMCREATEDBY => 'systemcreatedby',
@@ -437,6 +439,16 @@ class ItemCategory extends AbstractModel
     public function setLscPlbCategory(?bool $value)
     {
         return $this->setData(self::LSC_PLB_CATEGORY, $value);
+    }
+
+    public function getLscItemTemplateCode2(): ?string
+    {
+        return $this->getData(self::LSC_ITEM_TEMPLATE_CODE_2);
+    }
+
+    public function setLscItemTemplateCode2(?string $value)
+    {
+        return $this->setData(self::LSC_ITEM_TEMPLATE_CODE_2, $value);
     }
 
     public function getSystemid(): ?string

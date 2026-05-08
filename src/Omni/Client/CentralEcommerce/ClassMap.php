@@ -342,6 +342,8 @@ class ClassMap
         		'GetDocumentList_Result' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\GetDocumentListResult',
         		'GetDocumentListV2' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\GetDocumentListV2',
         		'GetDocumentListV2_Result' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\GetDocumentListV2Result',
+        		'GetDocumentV2' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\GetDocumentV2',
+        		'GetDocumentV2_Result' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\GetDocumentV2Result',
         		'GetHierarchyNode' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\GetHierarchyNode',
         		'GetHierarchyNode_Result' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\GetHierarchyNodeResult',
         		'GetHierarchyV2' => 'Ls\\Omni\\Client\\CentralEcommerce\\Entity\\GetHierarchyV2',

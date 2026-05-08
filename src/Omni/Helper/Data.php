@@ -765,7 +765,7 @@ class Data extends AbstractHelperOmni
      * @param array $connectionParams
      * @param array $query
      * @param array $data
-     * @return DOMXPath
+     * @return \DOMXPath
      * @throws GuzzleException|NoSuchEntityException
      */
     public function fetchOdataV4Xml($baseUrl = '', $connectionParams = [], $query = [], $data = [])
@@ -782,11 +782,11 @@ class Data extends AbstractHelperOmni
             $data
         );
 
-        $dom = new DomDocument('1.0');
+        $dom = new \DomDocument('1.0');
         $dom->loadXML($response);
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput       = true;
-        $xpath = new DOMXPath($dom);
+        $xpath = new \DOMXPath($dom);
         $xpath->registerNamespace('edm', 'http://docs.oasis-open.org/odata/ns/edm');
 
         return $xpath;
