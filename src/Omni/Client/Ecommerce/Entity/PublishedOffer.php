@@ -15,9 +15,9 @@ use Ls\Omni\Exception\InvalidEnumException;
 class PublishedOffer extends Entity
 {
     /**
-     * @property ArrayOfstring $CouponBarcodes
+     * @property ArrayOfCoupon $Coupons
      */
-    protected $CouponBarcodes = null;
+    protected $Coupons = null;
 
     /**
      * @property ArrayOfImageView $Images
@@ -85,21 +85,21 @@ class PublishedOffer extends Entity
     protected $ValidationText = null;
 
     /**
-     * @param ArrayOfstring $CouponBarcodes
+     * @param ArrayOfCoupon $Coupons
      * @return $this
      */
-    public function setCouponBarcodes($CouponBarcodes)
+    public function setCoupons($Coupons)
     {
-        $this->CouponBarcodes = $CouponBarcodes;
+        $this->Coupons = $Coupons;
         return $this;
     }
 
     /**
-     * @return ArrayOfstring
+     * @return ArrayOfCoupon
      */
-    public function getCouponBarcodes()
+    public function getCoupons()
     {
-        return $this->CouponBarcodes;
+        return $this->Coupons;
     }
 
     /**

@@ -32,6 +32,7 @@ class DataAssignObserver implements ObserverInterface
      * @param Http $request
      * @param LSR $lsr
      * @param QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
+     * @param CheckoutSession $checkoutSession
      */
     public function __construct(
         public Data $helper,
@@ -202,6 +203,7 @@ class DataAssignObserver implements ObserverInterface
                 }
             }
         }
+
         return $message;
     }
 

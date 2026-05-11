@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Added support for LS Central Standalone integration which provides a direct connection between Magento and LS Central without using LS Commerce Services or the eCommerce APIs. [77960](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/77960/)
+## [2.11.0] - 2026-04-20
+
+### Added
+- Added support for LS Central wishlist integration. [79041](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/79041)
+- Added option to create shipping in Magento without tracking number in webhooks. [79592](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/79592)
+- Added validation for coupon based on coupon barcode no and coupon code field and added coupon usage line in customer order creation. [79040](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/79040)
+- Added support for multi currency. [73747](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/73747)
+- Added: Support for Retail tax calculation (NA version). [69474](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/69474) 
+- Added timestamp support in hospitality for offline orders. [77629](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/77629)
+- Added support for creating simple products based on unit of measure (UOM). [77124](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/77124)
+- Added displayed discount start and expiry date/time on promotions shown on the products page. [73801](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/73801)
+- Added in Hospitality, unavailable items and modifiers are now displayed in a grayed‑out state on category, product, and search pages in Magento to improve visibility and user awareness. [74249](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/74249)
+- Added Kitchen Order Status Page to Magento Classic Interface. [72844](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/72844)
+- Added auto refresh on kitchen order status. [72845](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/72845)
+- Added PHP 8.4 compatibility with Magento 2.4.8. [72850](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/72850)
+- Added data translation for modifiers. [67668](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/67668)
+- Added data translation for recipes. [68317](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/68317)
+- Added support for hospitality group ordering. [59728](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/59728)
+
+### Changed
+- Changed price replication to use base price replication. [79190](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/79190)
+
+### Bugs/Fixes
+- Fixed multicurrency for guest users. [80346](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/80346)
+- Fixed UOM issues that occurred when a unit of measure was blocked. [80219](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/80219)
+- Fixed inconsistent confirmation email issue in hospitality. [80794](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/80794)
+- Fixed unit/integration tests. [80080](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/80080)
+- Fixed purchase gift card issues. [79684](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/79684)
+- Fixed issues with order sync from admin & cron. [76013](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/76013)
+- Fixed current availability issue where unavailable modifier options were not displayed as grayed out. [79039](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/79039)
+- Fixed product status on store view level. [77814](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/77814)
+- Fixed unnecessary calls to LS Central. [77120](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/77120)
+- Fixed issues with the current availability integration cache. [76971](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/76971) 
+- Fixed order synchronization failures for orders with discount offers. [75676](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/75676)
+- Fixed issue with discount validator conditional load on checkout. [76306](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/76306)
+- Fixed from and to date handling in discount recommendations. [75516](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/75516)
+- Fixed Order emails are sent only after the Order ID number is generated. [75408](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/75408)
+- Fixed kitchen status info display incase of multiple KOTs. [68869](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/68869)
+- Fixed discount offer triggers. [49314](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/49314)
+>>>>>>> master
 
 ## [2.10.0] - 2025-03-14
 

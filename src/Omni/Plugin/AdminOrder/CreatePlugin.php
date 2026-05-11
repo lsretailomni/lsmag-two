@@ -5,8 +5,6 @@ namespace Ls\Omni\Plugin\AdminOrder;
 
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\OneList;
-use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\ItemHelper;
@@ -73,7 +71,6 @@ class CreatePlugin
                 $couponCode = $quote->getCouponCode();
                 $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $quote->getStore()->getWebsiteId());
                 $this->basketHelper->storeId = $webStore;
-                /** @var OneList|null $oneList */
                 $oneList = $this->basketHelper->getOneListAdmin(
                     $quote->getCustomerEmail(),
                     $quote->getStore()->getWebsiteId(),
@@ -97,7 +94,6 @@ class CreatePlugin
                     $quote->setBaseGrandTotal(0);
                     $this->basketHelper->quoteRepository->save($quote);
                 }
-                /** @var Order $basketData */
                 $basketData = $this->basketHelper->update($oneList);
                 $quote = $this->basketHelper->getCurrentQuote();
                 $this->itemHelper->setDiscountedPricesForItems($quote, $basketData, 2);

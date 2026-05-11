@@ -133,7 +133,7 @@ class Totals extends AbstractOrderBlock
         if (!$orderLines) {
             return $fee;
         }
-        
+
         if (!is_array($orderLines)) {
             $orderLines = [$orderLines];
         }
@@ -233,7 +233,7 @@ class Totals extends AbstractOrderBlock
             }
             $newDocumentId        = $this->_request->getParam('new_order_id');
             $newDocumentId        = ($newDocumentId) ? [$newDocumentId] : [];
-            
+
             $lscMemberSalesBuffer = $order instanceof LSCMemberSalesBuffer ? [$order] : (is_array($order->getLscMemberSalesBuffer()) ?
                 $order->getLscMemberSalesBuffer() :
                 [$order->getLscMemberSalesBuffer()]);
@@ -276,7 +276,7 @@ class Totals extends AbstractOrderBlock
                 }
             }
         }
-        
+
         return $orderLines;
     }
 
@@ -301,7 +301,6 @@ class Totals extends AbstractOrderBlock
      *
      * @param $loyaltyPoints
      * @return float|int
-     * @throws NoSuchEntityException|GuzzleException
      */
     public function formatLoyaltyPoints($loyaltyPoints)
     {

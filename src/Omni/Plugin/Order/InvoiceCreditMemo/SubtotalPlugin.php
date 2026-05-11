@@ -18,8 +18,8 @@ class SubtotalPlugin
      */
     public function afterCollect($subject, $subtotalClass, $invoiceCreditMemo)
     {
-        $subtotal            = 0;
-        $baseSubTotal        = 0;
+        $subtotal = 0;
+        $baseSubTotal = 0;
 
         foreach ($invoiceCreditMemo->getAllItems() as $item) {
             $orderItem = $invoiceCreditMemo->getOrder()->getItemById($item->getOrderItemId());

@@ -17,6 +17,7 @@ class ItemVariant extends AbstractModel
     public const DESCRIPTION_2 = 'Description 2';
     public const ITEM_ID = 'Item Id';
     public const BLOCKED = 'Blocked';
+    public const PICTURE = 'Picture';
     public const SALES_BLOCKED = 'Sales Blocked';
     public const PURCHASING_BLOCKED = 'Purchasing Blocked';
     public const SERVICE_BLOCKED = 'Service Blocked';
@@ -35,6 +36,7 @@ class ItemVariant extends AbstractModel
 	self::DESCRIPTION_2 => 'description_2',
 	self::ITEM_ID => 'item_id',
 	self::BLOCKED => 'blocked',
+	self::PICTURE => 'picture',
 	self::SALES_BLOCKED => 'sales_blocked',
 	self::PURCHASING_BLOCKED => 'purchasing_blocked',
 	self::SERVICE_BLOCKED => 'service_blocked',
@@ -111,6 +113,16 @@ class ItemVariant extends AbstractModel
     public function setBlocked(?bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->getData(self::PICTURE);
+    }
+
+    public function setPicture(?string $value)
+    {
+        return $this->setData(self::PICTURE, $value);
     }
 
     public function getSalesBlocked(): ?bool

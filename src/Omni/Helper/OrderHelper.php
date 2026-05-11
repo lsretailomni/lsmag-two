@@ -17,7 +17,6 @@ use \Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateV6;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\SalesEntryStatus;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
-use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
 use \Ls\Omni\Client\CentralEcommerce\Entity\RootCustomerOrderCreateV6;
 use \Ls\Omni\Client\CentralEcommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\CentralEcommerce\Operation;
@@ -276,8 +275,7 @@ class OrderHelper extends AbstractHelperOmni
                 ->setCustomerordercreatecolinev6($customerOrderCoLines)
                 ->setCustomerordercreatecodiscountlinev6($customerOrderDiscountCoLines);
 
-        } catch
-        (Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
@@ -300,6 +298,8 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Update shipping amount to shipment order line
      *
      * @param array $customerOrderCoLines
@@ -506,9 +506,7 @@ class OrderHelper extends AbstractHelperOmni
                     CustomerOrderCreateCOPaymentV6::TENDER_TYPE => $tenderTypeId,
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_VALID_DATE => $preApprovedDate,
                     CustomerOrderCreateCOPaymentV6::EXTERNAL_REFERENCE => $order->getIncrementId(),
-                    CustomerOrderCreateCOPaymentV6::CURRENCY_CODE => $order->getOrderCurrency()->getCurrencyCode(),
-                    CustomerOrderCreateCOPaymentV6::CURRENCY_FACTOR => 0,
-                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT_LCY => $order->getGrandTotal() * 1
+                    CustomerOrderCreateCOPaymentV6::CURRENCY_CODE => $order->getOrderCurrency()->getCurrencyCode()
                 ]
             );
             // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
@@ -535,22 +533,21 @@ class OrderHelper extends AbstractHelperOmni
         }
 
         if ($order->getLsPointsSpent()) {
+            $pointDiscount = $this->loyaltyHelper->getLsPointsDiscount($order->getLsPointsSpent(), true);
             $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
-            $pointRate = 0;
             $orderPayment = $this->createInstance(CustomerOrderCreateCOPaymentV6::class);
             $orderPayment->addData(
                 [
                     CustomerOrderCreateCOPaymentV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId,
                     CustomerOrderCreateCOPaymentV6::LINE_NO => $lineNumber,
-                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT => $order->getLsPointsSpent(),
+                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT => $pointDiscount,
                     CustomerOrderCreateCOPaymentV6::TENDER_TYPE => $tenderTypeId,
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_VALID_DATE => $preApprovedDate,
                     CustomerOrderCreateCOPaymentV6::EXTERNAL_REFERENCE => $order->getIncrementId(),
                     CustomerOrderCreateCOPaymentV6::CURRENCY_CODE => 'LOY',
-                    CustomerOrderCreateCOPaymentV6::CURRENCY_FACTOR => 0,
-                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT_LCY => $order->getLsPointsSpent() * $pointRate,
                     CustomerOrderCreateCOPaymentV6::CARDOR_CUSTOMERNUMBER => $cardId,
                     CustomerOrderCreateCOPaymentV6::TYPE => '1',
+                    CustomerOrderCreateCOPaymentV6::LOYALTY_POINTPAYMENT => true
                 ]
             );
             $orderPaymentArray[] = $orderPayment;
@@ -572,7 +569,6 @@ class OrderHelper extends AbstractHelperOmni
                     CustomerOrderCreateCOPaymentV6::EXTERNAL_REFERENCE => $order->getIncrementId(),
                     CustomerOrderCreateCOPaymentV6::CURRENCY_CODE => $giftCardCurrencyCode,
                     CustomerOrderCreateCOPaymentV6::CURRENCY_FACTOR => 0,
-                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT_LCY => 0,
                     CustomerOrderCreateCOPaymentV6::AUTHORIZATION_CODE => $order->getLsGiftCardPin(),
                     CustomerOrderCreateCOPaymentV6::CARDOR_CUSTOMERNUMBER => $order->getLsGiftCardNo(),
                     CustomerOrderCreateCOPaymentV6::TYPE => '1',
@@ -1296,8 +1292,7 @@ class OrderHelper extends AbstractHelperOmni
         $currency,
         $storeId,
         $orderType = null
-    )
-    {
+    ) {
         $magentoOrder = $this->getGivenValueFromRegistry('current_mag_order');
         $currencyObject = null;
         $currentStoreCurrencyCode = $this->storeManager->getStore()->getCurrentCurrency()->getCode();

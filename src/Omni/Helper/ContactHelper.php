@@ -23,7 +23,6 @@ use \Ls\Omni\Client\CentralEcommerce\Operation\GetMemberContactInfo_GetMemberCon
 use \Ls\Omni\Client\CentralEcommerce\Operation\MemberContactCreate;
 use \Ls\Omni\Client\CentralEcommerce\Operation\MemberContactUpdate;
 use \Ls\Omni\Client\CentralEcommerce\Operation\MemberLogon;
-use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Exception\NavException;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
@@ -1231,7 +1230,7 @@ class ContactHelper extends AbstractHelperOmni
      * @throws Exception
      * @throws GuzzleException
      */
-    public function updateBasketAndWishlistAfterLogin($result)
+    public function updateRequiredOneListAfterLogin($result)
     {
         $quote = $this->checkoutSession->getQuote();
         $items = $quote->getAllVisibleItems();
@@ -1248,29 +1247,6 @@ class ContactHelper extends AbstractHelperOmni
         /** Update Wishlist to Omni */
 //        $this->eventManager->dispatch('controller_action_postdispatch_wishlist_index_update');
         $this->setBasketUpdateChecking();
-    }
-
-    /**
-     * Get one list type
-     *
-     * @param object $arrayOneLists
-     * @param string $type
-     * @return \Ls\Omni\Client\Ecommerce\Entity\OneList|null
-     * @throws NoSuchEntityException
-     */
-    public function getOneListTypeObject($arrayOneLists, $type)
-    {
-        if (is_array($arrayOneLists)) {
-            /** @var \Ls\Omni\Client\Ecommerce\Entity\OneList $oneList */
-            foreach ($arrayOneLists as $oneList) {
-                if ($oneList->getListType() == $type &&
-                    $oneList->getStoreId() == $this->basketHelper->getDefaultWebStore()
-                ) {
-                    return $oneList;
-                }
-            }
-        }
-        return null;
     }
 
     /**
@@ -1531,30 +1507,6 @@ class ContactHelper extends AbstractHelperOmni
     public function unsetCustomerIdFromCustomerSession()
     {
         return $this->customerSession->unsetData(LSR::SESSION_CUSTOMER_ID);
-    }
-
-    /**
-     * Execute the OneListGetByCardId request
-     *
-     * @param $cardId
-     * @return \Ls\Omni\Client\Ecommerce\Entity\OneListGetByCardIdResponse|ResponseInterface
-     * @throws InvalidEnumException
-     */
-    public function getOneListGetByCardId($cardId)
-    {
-        $request = new \Ls\Omni\Client\Ecommerce\Operation\OneListGetByCardId();
-        // @codingStandardsIgnoreLine
-        $entity = new \Ls\Omni\Client\Ecommerce\Entity\OneListGetByCardId();
-        $entity->setCardId($cardId);
-        $entity->setListType(ListType::WISH);
-        $entity->setIncludeLines(true);
-        try {
-            $response = $request->execute($entity);
-        } catch (\Magento\Framework\Exception\LocalizedException $e) {
-            $this->_logger->error($e->getMessage());
-        }
-
-        return $response;
     }
 
     /**

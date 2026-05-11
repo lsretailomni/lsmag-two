@@ -61,9 +61,6 @@ class CartTotalRepositoryTest extends AbstractIntegrationTest
         $this->customerSession  = $this->objectManager->get(CustomerSession::class);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
@@ -120,6 +117,9 @@ class CartTotalRepositoryTest extends AbstractIntegrationTest
         DataFixture(SetShippingAddress::class, ['cart_id' => '$cart1.id$']),
         DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart1$'])
     ]
+    /**
+     * @magentoAppIsolation enabled
+     */
     public function testAroundGet()
     {
         $customer      = $this->fixtures->get('customer');
@@ -129,7 +129,6 @@ class CartTotalRepositoryTest extends AbstractIntegrationTest
         $result = $this->cartTotalRepository->get($quote->getId());
 
         $extensionAttributes = $result->getExtensionAttributes()->__toArray();
-
         $this->assertNotNull($result->getExtensionAttributes());
         $this->assertArrayHasKey('loyalty_points', $extensionAttributes);
         $this->assertNotEquals(0, $extensionAttributes['loyalty_points']['rateLabel']);

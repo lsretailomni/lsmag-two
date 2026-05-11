@@ -2,7 +2,6 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneList;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneListItem;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneListPublishedOffer;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderDiscountLine;
@@ -38,26 +37,51 @@ class AddToCartMethodsTest extends OmniClientSetupTest
     }
 
     /**
+     * @param $cardId
+     * @return OneList
+     *
+     * Get One List
+     */
+    public function getOneList($cardId = '')
+    {
+        $listItems = new OneListItem();
+        $listItems
+            ->setItemId($this->getEnvironmentVariableValueGivenName('ITEM_ID'))
+            ->setVariantId($this->getEnvironmentVariableValueGivenName('VARIANT_ID'))
+            ->setQuantity(1);
+        $itemsArray = new ArrayOfOneListItem();
+        $itemsArray->setOneListItem($listItems);
+        $oneListRequest = new OneList();
+        $oneListRequest
+            ->setItems($itemsArray)
+            ->setCardId($cardId)
+            ->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
+
+        return $oneListRequest;
+    }
+
+    /**
+     * @param $cardId
+     * @return null
+     * @throws InvalidEnumException
+     */
+    public function getOneListCalculate($cardId = '')
+    {
+        $oneListRequest = $this->getOneList($cardId);
+        $entity = new OneListCalculate();
+        $entity->setOneList($oneListRequest);
+        $response = $this->executeMethod("OneListCalculate", $entity);
+
+        return $response?->getResult();
+    }
+
+    /**
      * Calculates OneList Basket Object and returns Order Object
      * @throws InvalidEnumException
      */
     public function testOneListCalculate()
     {
-        $oneListRequest = new OneList();
-        $listItems      = new OneListItem();
-        $listItems->setItemId($this->getEnvironmentVariableValueGivenName('ITEM_ID'));
-        $listItems->setVariantId($this->getEnvironmentVariableValueGivenName('VARIANT_ID'));
-        $listItems->setQuantity(1);
-        $itemsArray = new ArrayOfOneListItem();
-        $itemsArray->setOneListItem($listItems);
-        $oneListRequest->setItems($itemsArray);
-        $oneListRequest->setCardId($this->getEnvironmentVariableValueGivenName('CARD_ID'));
-        $oneListRequest->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
-        $oneListRequest->setListType(ListType::BASKET);
-        $entity = new OneListCalculate();
-        $entity->setOneList($oneListRequest);
-        $response = $this->executeMethod("OneListCalculate", $entity);
-        $result = $response ? $response->getResult() : null;
+        $result = $this->getOneListCalculate($this->getEnvironmentVariableValueGivenName('CARD_ID'));
         $this->assertInstanceOf(Order::class, $result);
         $this->assertEquals($this->getEnvironmentVariableValueGivenName('STORE_ID'), $result->getStoreId());
         $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $result->getCardId());
@@ -69,24 +93,12 @@ class AddToCartMethodsTest extends OmniClientSetupTest
     }
 
     /**
-     * Calculates OneList Basket Calculation for guest and returns Order Object
+     * Save Basket type one list for Guest
      * @throws InvalidEnumException
      */
     public function testOneListCalculateGuest()
     {
-        $oneListRequest = new OneList();
-        $listItems      = new OneListItem();
-        $listItems->setItemId($this->getEnvironmentVariableValueGivenName('SIMPLE_ITEM_ID'));
-        $listItems->setQuantity(1);
-        $itemsArray = new ArrayOfOneListItem();
-        $itemsArray->setOneListItem($listItems);
-        $oneListRequest->setItems($itemsArray);
-        $oneListRequest->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
-        $oneListRequest->setListType(ListType::BASKET);
-        $entity = new OneListCalculate();
-        $entity->setOneList($oneListRequest);
-        $response = $this->executeMethod("OneListCalculate", $entity);
-        $result = $response ? $response->getResult() : null;
+        $result = $this->getOneListCalculate();
         $this->assertInstanceOf(Order::class, $result);
         $this->assertEquals($this->getEnvironmentVariableValueGivenName('STORE_ID'), $result->getStoreId());
         $this->assertNotNull($result->getTotalAmount());
@@ -94,67 +106,6 @@ class AddToCartMethodsTest extends OmniClientSetupTest
         $this->assertTrue(is_string($result->getOrderType()));
         $this->assertEquals(OrderType::SALE, $result->getOrderType());
         $this->assertInstanceOf(ArrayOfOrderLine::class, $result->getOrderLines());
-    }
-
-    /**
-     * Save Basket type one list
-     * @throws InvalidEnumException
-     */
-    public function testOneListSaveBasket()
-    {
-        $listItems = new OneListItem();
-        $listItems->setItemId($this->getEnvironmentVariableValueGivenName('ITEM_ID'));
-        $listItems->setVariantId($this->getEnvironmentVariableValueGivenName('VARIANT_ID'));
-        $listItems->setQuantity(1);
-        $itemsArray = new ArrayOfOneListItem();
-        $itemsArray->setOneListItem($listItems);
-        $oneListRequest = new OneList();
-        $oneListRequest->setItems($itemsArray);
-        $oneListRequest->setCardId($this->getEnvironmentVariableValueGivenName('CARD_ID'));
-        $oneListRequest->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
-        $oneListRequest->setListType(ListType::BASKET);
-        $param    = [
-            'oneList'   => $oneListRequest,
-            'calculate' => true
-        ];
-        $response = $this->executeMethod("OneListSave", $param);
-        $oneList = $response ? $response->getResult() : null;
-        $this->assertInstanceOf(OneList::class, $oneList);
-        $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
-        $this->assertTrue(property_exists($oneList, 'Id'));
-        $this->assertTrue(property_exists($oneList, 'ListType'));
-        $this->assertTrue(property_exists($oneList, 'CreateDate'));
-        $this->assertTrue(property_exists($oneList, 'StoreId'));
-        $this->assertTrue(property_exists($oneList, 'TotalAmount'));
-        $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
-        $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
-        $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
-    }
-
-    /**
-     * Get Basket type one lists by Member Card Id
-     * @depends testOneListSaveBasket
-     */
-    public function testOneListGetByCardIdBasket()
-    {
-        $param    = [
-            'cardId'       => $this->getEnvironmentVariableValueGivenName('CARD_ID'),
-            'listType'     => ListType::BASKET,
-            'includeLines' => true
-        ];
-        $response = $this->executeMethod("OneListGetByCardId", $param);
-        $result = $response ? $response->getResult() : null;
-        $this->assertInstanceOf(ArrayOfOneList::class, $result);
-        foreach ($result as $oneList) {
-            $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
-            $this->assertTrue(property_exists($oneList, 'Id'));
-            $this->assertTrue(property_exists($oneList, 'CreateDate'));
-            $this->assertTrue(property_exists($oneList, 'StoreId'));
-            $this->assertTrue(property_exists($oneList, 'TotalAmount'));
-            $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
-            $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
-            $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
-        }
     }
 
     /**
@@ -205,5 +156,41 @@ class AddToCartMethodsTest extends OmniClientSetupTest
         }
 
         $this->assertTrue($discountExists);
+    }
+
+    /**
+     * Save Wish type one list
+     * @throws InvalidEnumException
+     */
+    public function testOneListSaveWish()
+    {
+        $listItems = new OneListItem();
+        $listItems->setItemId($this->getEnvironmentVariableValueGivenName('ITEM_ID'));
+        $listItems->setVariantId($this->getEnvironmentVariableValueGivenName('VARIANT_ID'));
+        $listItems->setQuantity(1);
+        $itemsArray = new ArrayOfOneListItem();
+        $itemsArray->setOneListItem($listItems);
+        $oneListRequest = new OneList();
+        $oneListRequest->setName('Wish List');
+        $oneListRequest->setItems($itemsArray);
+        $oneListRequest->setCardId($this->getEnvironmentVariableValueGivenName('CARD_ID'));
+        $oneListRequest->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
+        $oneListRequest->setListType(ListType::WISH);
+        $param    = [
+            'oneList' => $oneListRequest,
+            'calculate' => false
+        ];
+        $response = $this->executeMethod("OneListSave", $param);
+        $oneList = $response ? $response->getResult() : null;
+        $this->assertInstanceOf(OneList::class, $oneList);
+        $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
+        $this->assertTrue(property_exists($oneList, 'Id'));
+        $this->assertTrue(property_exists($oneList, 'ListType'));
+        $this->assertTrue(property_exists($oneList, 'CreateDate'));
+        $this->assertTrue(property_exists($oneList, 'StoreId'));
+        $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
     }
 }

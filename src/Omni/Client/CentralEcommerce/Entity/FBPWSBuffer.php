@@ -18,7 +18,7 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
 
     public const QUANTITY = 'Quantity';
 
-    public const QUANITYTO_TRIGGER = 'QuanitytoTrigger';
+    public const QUANTITY_TO_TRIGGER = 'QuantityToTrigger';
 
     public const NUMBEROF_UNUSED_COUPONS = 'NumberofUnusedCoupons';
 
@@ -65,39 +65,39 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param ?float $Quantity
+     * @param int $Quantity
      * @return $this
      */
-    public function setQuantity(?float $Quantity)
+    public function setQuantity($Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return ?float
+     * @return int
      */
-    public function getQuantity(): ?float
+    public function getQuantity()
     {
         return $this->getData(self::QUANTITY);
     }
 
     /**
-     * @param ?float $QuanitytoTrigger
+     * @param int $QuantityToTrigger
      * @return $this
      */
-    public function setQuanitytotrigger(?float $QuanitytoTrigger)
+    public function setQuantitytotrigger($QuantityToTrigger)
     {
-        $this->setData(self::QUANITYTO_TRIGGER, $QuanitytoTrigger);
+        $this->setData(self::QUANTITY_TO_TRIGGER, $QuantityToTrigger);
         return $this;
     }
 
     /**
-     * @return ?float
+     * @return int
      */
-    public function getQuanitytotrigger(): ?float
+    public function getQuantitytotrigger()
     {
-        return $this->getData(self::QUANITYTO_TRIGGER);
+        return $this->getData(self::QUANTITY_TO_TRIGGER);
     }
 
     /**

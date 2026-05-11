@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Ls\Omni\Helper;
 
-use DomDocument;
-use DOMXPath;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
@@ -27,11 +25,10 @@ use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Sales\Model\Order\Invoice\Item;
+use Magento\Framework\Phrase;
 use Magento\Sales\Model\Order\Creditmemo;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Phrase;
-use SimpleXMLElement;
 
 /**
  * Helper class that is used on multiple areas
@@ -97,7 +94,7 @@ class Data extends AbstractHelperOmni
     /**
      * Get Store hours
      *
-     * @param string $storeId
+     * @param string $webStoreId
      * @return array
      */
     public function getStoreHours($webStoreId)
@@ -110,7 +107,7 @@ class Data extends AbstractHelperOmni
                 $storeResults = $cachedResponse;
             } else {
                 $storeResults = [];
-                $websiteId = $this->lsr->getCurrentWebsiteId();
+                $websiteId = (string) $this->lsr->getCurrentWebsiteId();
                 $response = $this->storeHelper->getStore($websiteId, $webStoreId);
                 if (!empty($response)) {
                     $storeResults = $this->fetchAllStoreHoursGivenStore($webStoreId);
@@ -768,7 +765,7 @@ class Data extends AbstractHelperOmni
      * @param array $connectionParams
      * @param array $query
      * @param array $data
-     * @return DOMXPath
+     * @return \DOMXPath
      * @throws GuzzleException|NoSuchEntityException
      */
     public function fetchOdataV4Xml($baseUrl = '', $connectionParams = [], $query = [], $data = [])
@@ -785,11 +782,11 @@ class Data extends AbstractHelperOmni
             $data
         );
 
-        $dom = new DomDocument('1.0');
+        $dom = new \DomDocument('1.0');
         $dom->loadXML($response);
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput       = true;
-        $xpath = new DOMXPath($dom);
+        $xpath = new \DOMXPath($dom);
         $xpath->registerNamespace('edm', 'http://docs.oasis-open.org/odata/ns/edm');
 
         return $xpath;
@@ -828,7 +825,7 @@ class Data extends AbstractHelperOmni
         $url = OmniService::getUrl($url);
         $client = $this->createInstance(OmniClient::class, ['uri' => $url]);
 
-        $requestXml = new SimpleXMLElement('<Request/>');
+        $requestXml = new \SimpleXMLElement('<Request/>');
         $requestXml->addChild('Request_ID', 'GET_TABLE_DATA');
         $requestBody = $requestXml->addChild('Request_Body');
         $requestBody->addChild('Table_Name', $tableName);
@@ -899,11 +896,11 @@ class Data extends AbstractHelperOmni
     /**
      * Format table data into a flat array
      *
-     * @param SimpleXMLElement $response
+     * @param \SimpleXMLElement $response
      * @param bool $returnMultiple
      * @return array
      */
-    public function formatTableDataResponse(SimpleXMLElement $response, bool $returnMultiple = true): array
+    public function formatTableDataResponse(\SimpleXMLElement $response, bool $returnMultiple = true): array
     {
         $fieldMap = $records = [];
         foreach ($response->Response_Body->WS_Table_Field_Buffer ?? [] as $field) {
@@ -1027,6 +1024,7 @@ class Data extends AbstractHelperOmni
 
             $totalPointsAmount = $this->loyaltyHelper->getLsPointsDiscount($pointsSpent);
             $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
+            $baseTotalPointsAmount = $this->itemHelper->convertToBaseCurrency($totalPointsAmount);
             $pointsSpent       = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
             $giftCardAmount    = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
 
@@ -1037,7 +1035,7 @@ class Data extends AbstractHelperOmni
             $invoiceCreditMemo->setLsGiftCardNo($giftCardNo);
 
             $grandTotalAmount     = $invoiceCreditMemo->getGrandTotal() - $totalPointsAmount - $giftCardAmount;
-            $baseGrandTotalAmount = $invoiceCreditMemo->getBaseGrandTotal() - $totalPointsAmount - $giftCardAmount;
+            $baseGrandTotalAmount = $invoiceCreditMemo->getBaseGrandTotal() - $baseTotalPointsAmount - $giftCardAmount;
             $invoiceCreditMemo->setGrandTotal($grandTotalAmount);
             $invoiceCreditMemo->setBaseGrandTotal($baseGrandTotalAmount);
         }

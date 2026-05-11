@@ -73,6 +73,7 @@ class Vendor extends AbstractModel
     public const DISABLE_SEARCH_BY_NAME = 'Disable Search by Name';
     public const CREDITOR_NO = 'Creditor No.';
     public const ALLOW_MULTIPLE_POSTING_GROUPS = 'Allow Multiple Posting Groups';
+    public const SELFBILLING_AGREEMENT = 'Self-Billing Agreement';
     public const PREFERRED_BANK_ACCOUNT_CODE = 'Preferred Bank Account Code';
     public const CASH_FLOW_PAYMENT_TERMS_CODE = 'Cash Flow Payment Terms Code';
     public const PRIMARY_CONTACT_NO = 'Primary Contact No.';
@@ -84,6 +85,7 @@ class Vendor extends AbstractModel
     public const BASE_CALENDAR_CODE = 'Base Calendar Code';
     public const DOCUMENT_SENDING_PROFILE = 'Document Sending Profile';
     public const VALIDATE_EU_VAT_REG_NO = 'Validate EU Vat Reg. No.';
+    public const COPY_BUYFROM_ADD_TO_QTE_FROM = 'Copy Buy-from Add. to Qte From';
     public const CURRENCY_ID = 'Currency Id';
     public const PAYMENT_TERMS_ID = 'Payment Terms Id';
     public const PAYMENT_METHOD_ID = 'Payment Method Id';
@@ -165,6 +167,7 @@ class Vendor extends AbstractModel
 	self::DISABLE_SEARCH_BY_NAME => 'disable_search_by_name',
 	self::CREDITOR_NO => 'creditor_no',
 	self::ALLOW_MULTIPLE_POSTING_GROUPS => 'allow_multiple_posting_groups',
+	self::SELFBILLING_AGREEMENT => 'selfbilling_agreement',
 	self::PREFERRED_BANK_ACCOUNT_CODE => 'preferred_bank_account_code',
 	self::CASH_FLOW_PAYMENT_TERMS_CODE => 'cash_flow_payment_terms_code',
 	self::PRIMARY_CONTACT_NO => 'primary_contact_no',
@@ -176,6 +179,7 @@ class Vendor extends AbstractModel
 	self::BASE_CALENDAR_CODE => 'base_calendar_code',
 	self::DOCUMENT_SENDING_PROFILE => 'document_sending_profile',
 	self::VALIDATE_EU_VAT_REG_NO => 'validate_eu_vat_reg_no',
+	self::COPY_BUYFROM_ADD_TO_QTE_FROM => 'copy_buyfrom_add_to_qte_from',
 	self::CURRENCY_ID => 'currency_id',
 	self::PAYMENT_TERMS_ID => 'payment_terms_id',
 	self::PAYMENT_METHOD_ID => 'payment_method_id',
@@ -821,6 +825,16 @@ class Vendor extends AbstractModel
         return $this->setData(self::ALLOW_MULTIPLE_POSTING_GROUPS, $value);
     }
 
+    public function getSelfBillingAgreement(): ?bool
+    {
+        return $this->getData(self::SELFBILLING_AGREEMENT);
+    }
+
+    public function setSelfBillingAgreement(?bool $value)
+    {
+        return $this->setData(self::SELFBILLING_AGREEMENT, $value);
+    }
+
     public function getPreferredBankAccountCode(): ?string
     {
         return $this->getData(self::PREFERRED_BANK_ACCOUNT_CODE);
@@ -929,6 +943,16 @@ class Vendor extends AbstractModel
     public function setValidateEuVatRegNo(?bool $value)
     {
         return $this->setData(self::VALIDATE_EU_VAT_REG_NO, $value);
+    }
+
+    public function getCopyBuyFromAddToQteFrom(): ?int
+    {
+        return $this->getData(self::COPY_BUYFROM_ADD_TO_QTE_FROM);
+    }
+
+    public function setCopyBuyFromAddToQteFrom(?int $value)
+    {
+        return $this->setData(self::COPY_BUYFROM_ADD_TO_QTE_FROM, $value);
     }
 
     public function getCurrencyId(): ?string

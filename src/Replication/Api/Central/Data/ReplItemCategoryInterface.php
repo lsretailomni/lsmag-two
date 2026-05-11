@@ -148,6 +148,10 @@ interface ReplItemCategoryInterface
 
     public function setLscPlbCategory(?bool $value);
 
+    public function getLscItemTemplateCode2(): ?string;
+
+    public function setLscItemTemplateCode2(?string $value);
+
     public function getSystemid(): ?string;
 
     public function setSystemid(?string $value);

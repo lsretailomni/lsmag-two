@@ -99,6 +99,11 @@ class OrderLine extends Entity
     protected $SerialNumber = null;
 
     /**
+     * @property boolean $ServiceItem
+     */
+    protected $ServiceItem = null;
+
+    /**
      * @property string $SourcingLocation
      */
     protected $SourcingLocation = null;
@@ -137,6 +142,11 @@ class OrderLine extends Entity
      * @property boolean $VendorSourcing
      */
     protected $VendorSourcing = null;
+
+    /**
+     * @property string $WishListNo
+     */
+    protected $WishListNo = null;
 
     /**
      * @param float $Amount
@@ -455,6 +465,24 @@ class OrderLine extends Entity
     }
 
     /**
+     * @param boolean $ServiceItem
+     * @return $this
+     */
+    public function setServiceItem($ServiceItem)
+    {
+        $this->ServiceItem = $ServiceItem;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getServiceItem()
+    {
+        return $this->ServiceItem;
+    }
+
+    /**
      * @param string $SourcingLocation
      * @return $this
      */
@@ -596,6 +624,24 @@ class OrderLine extends Entity
     public function getVendorSourcing()
     {
         return $this->VendorSourcing;
+    }
+
+    /**
+     * @param string $WishListNo
+     * @return $this
+     */
+    public function setWishListNo($WishListNo)
+    {
+        $this->WishListNo = $WishListNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWishListNo()
+    {
+        return $this->WishListNo;
     }
 }
 

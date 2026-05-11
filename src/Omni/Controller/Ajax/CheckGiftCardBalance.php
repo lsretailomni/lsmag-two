@@ -12,6 +12,7 @@ use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\Result\Raw;
 use Magento\Framework\Controller\Result\RawFactory;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\Helper\Data;
 
@@ -39,7 +40,9 @@ class CheckGiftCardBalance implements HttpPostActionInterface
      * Entry point for the controller
      *
      * @return Json|Raw
-     * @throws NoSuchEntityException|GuzzleException
+     * @throws GuzzleException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
@@ -51,9 +54,9 @@ class CheckGiftCardBalance implements HttpPostActionInterface
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
 
-        $resultJson = $this->resultJsonFactory->create();
-        $post = $this->request->getContent();
-        $postData = json_decode($post);
+        $resultJson   = $this->resultJsonFactory->create();
+        $post         = $this->request->getContent();
+        $postData     = json_decode($post);
         $giftCardCode = $postData->gift_card_code;
         $giftCardPin = (isset($postData->gift_card_pin)) ? $postData->gift_card_pin : '';
         $data = [];
@@ -63,17 +66,17 @@ class CheckGiftCardBalance implements HttpPostActionInterface
 
             if (is_object($giftCardResponse)) {
                 $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
-
-                $data['giftcardbalance'] = $this->priceHelper->currency(
+                $data['giftcardbalance'] = $this->giftCardHelper->formatValue(
                     $convertedGiftCardBalanceArr['gift_card_balance_amount'],
-                    true,
-                    false
+                    true
                 );
-                $data['expirydate'] = $giftCardResponse->getExpirydate() !== '0001-01-01' ?
-                    $giftCardResponse->getExpirydate() : null;
+                $data['expirydate']      = $this->giftCardHelper->formatExpireDate($giftCardResponse->getExpirydate());
             } else {
-                $data['giftcardbalance'] = $this->priceHelper->currency($giftCardResponse, true, false);
-                $data['expirydate'] = null;
+                $data['giftcardbalance'] = $this->giftCardHelper->formatValue(
+                    $giftCardResponse,
+                    true
+                );
+                $data['expirydate']      = null;
             }
 
             if (empty($giftCardResponse)) {

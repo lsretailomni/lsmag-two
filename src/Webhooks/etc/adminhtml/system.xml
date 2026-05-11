@@ -88,6 +88,18 @@
                     </group>
                 </group>
             </group>
+            <group id="ls_order_management">
+                <field id="shipment_without_tracking"
+                       translate="label"
+                       type="select"
+                       sortOrder="18"
+                       showInWebsite="1"
+                       showInDefault="1">
+                    <label>Enable shipment creation without tracking number</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If yes shipment will be created in Magento without tracking number from Central in Shipment webhook.</comment>
+                </field>
+            </group>
         </section>
     </system>
 </config>

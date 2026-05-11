@@ -3456,6 +3456,13 @@ class ReplicationHelper extends AbstractHelper
      * @param string $storeId
      * @return array
      */
+    /**
+     * Getting all available uom codes
+     *
+     * @param string $itemId
+     * @param string $storeId
+     * @return array
+     */
     public function getUomCodes($itemId, $storeId)
     {
         $filters = [
@@ -3479,7 +3486,6 @@ class ReplicationHelper extends AbstractHelper
             $storeId
         );
 
-        /** @var ReplItemUnitOfMeasure $items */
         try {
             $items    = $this->replItemUomRepository->getList($searchCriteria)->getItems();
             $replItem = $this->itemRepository->getList($searchCriteriaItem)->getItems();
@@ -3489,6 +3495,7 @@ class ReplicationHelper extends AbstractHelper
             }
             foreach ($items as $item) {
                 $allowUom = true;
+
                 if (!$uomMode) {
                     if (($purchaseUnitOfMeasure != $salesUnitOfMeasure && $item->getCode() == $purchaseUnitOfMeasure) ||
                         ($item->getEComSelection() == 1)) {
@@ -3501,10 +3508,9 @@ class ReplicationHelper extends AbstractHelper
                         $item->setData('IsDeleted', 1);
                     }
                 }
-                if ($allowUom) {
-                    $uomDescription = $this->getUomDescription($item);
-                    /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $item */
 
+                if ($allowUom) {
+                    $uomDescription                    = $this->getUomDescription($item);
                     $itemUom[$itemId][$uomDescription] = $item->getCode();
                 } else {
                     $item->setData('processed_at', $this->getDateTime());
@@ -3886,6 +3892,10 @@ class ReplicationHelper extends AbstractHelper
                 break;
             }
         }
+        if ($parentStockItem->getStockId() !== 1) {
+            $childrenIsInStock = true;
+        }
+
         if ($parentStockItem->getStockId() !== 1) {
             $childrenIsInStock = true;
         }

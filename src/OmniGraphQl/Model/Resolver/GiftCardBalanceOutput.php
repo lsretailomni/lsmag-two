@@ -42,10 +42,9 @@ class GiftCardBalanceOutput implements ResolverInterface
             $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($response);
             return [
                 'currency' => $convertedGiftCardBalanceArr['gift_card_currency'],
-                'value'    => $this->priceHelper->currency(
+                'value'    => $this->giftCardHelper->formatValue(
                     $convertedGiftCardBalanceArr['gift_card_balance_amount'],
-                    true,
-                    false
+                    true
                 )
             ];
         } else {

@@ -22,7 +22,6 @@ use \Ls\Omni\Client\CentralEcommerce\Entity\WishListLink;
 use \Ls\Omni\Client\CentralEcommerce\Operation\WishListCreate as WishListCreateOperation;
 use \Ls\Omni\Client\CentralEcommerce\Operation\WishListGet as WishListGetOperation;
 use \Ls\Omni\Client\CentralEcommerce\Operation\WishListItemModify;
-use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\CentralEcommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Client\CentralEcommerce\Operation\EcomCalculateBasket;
 use \Ls\Omni\Exception\InvalidEnumException;
@@ -750,16 +749,16 @@ class BasketHelper extends AbstractHelperOmni
 
                 if ($quoteItem->getDiscountAmount() > 0) {
                     if (!$discount && !$discountPercentage) {
-                        $discount = $quoteItem->getDiscountAmount();
+                        $discount           = $quoteItem->getDiscountAmount();
                         $discountPercentage = $quoteItem->getDiscountPercent();
 
                         if ($discountPercentage == 0) {
-                            $rowTotalInclTax = $quoteItem->getRowTotalInclTax();
+                            $rowTotalInclTax    = $quoteItem->getRowTotalInclTax();
                             $discountPercentage = ($discount / $rowTotalInclTax) * 100;
                         }
                     } else {
-                        $rowTotalInclTax = $quoteItem->getRowTotalInclTax() + $discount;
-                        $discount += $quoteItem->getDiscountAmount();
+                        $rowTotalInclTax    = $quoteItem->getRowTotalInclTax() + $discount;
+                        $discount           += $quoteItem->getDiscountAmount();
                         $discountPercentage = ($discount / $rowTotalInclTax) * 100;
                     }
                 }
@@ -803,7 +802,7 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
-     * Get configured store code for the current scope
+     * Get default web store
      *
      * @return string|null
      * @throws NoSuchEntityException
@@ -1404,7 +1403,7 @@ class BasketHelper extends AbstractHelperOmni
         }
 
         $basketData = $this->update($oneList);
-        $quote = $this->getCurrentQuote();
+        $quote      = $this->getCurrentQuote();
         if (is_object($basketData)) {
             $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
             $cartQuote = $this->checkoutSession->getQuote();
@@ -1519,7 +1518,7 @@ class BasketHelper extends AbstractHelperOmni
                     $itemOption = $item->getOptionByCode('option_' . $option->getId());
                     if ($itemOption) {
                         $optionValue = $itemOption->getValue();
-                        $values = explode(',', $optionValue); // Handle multiple selected values
+                        $values      = explode(',', $optionValue); // Handle multiple selected values
 
                         foreach ($values as $valueId) {
                             $value = $option->getValueById($valueId);
