@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file.
 - Added option to create shipping in Magento without tracking number in webhooks. [79592](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/79592)
 - Added validation for coupon based on coupon barcode no and coupon code field and added coupon usage line in customer order creation. [79040](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/79040)
 - Added support for multi currency. [73747](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/73747)
-- Added: Support for Retail tax calculation (NA version). [69474](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/69474) 
+-  Support for Retail tax calculation (NA version). [69474](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/69474) 
 - Added timestamp support in hospitality for offline orders. [77629](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/77629)
 - Added support for creating simple products based on unit of measure (UOM). [77124](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/77124)
 - Added displayed discount start and expiry date/time on promotions shown on the products page. [73801](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/73801)
@@ -44,7 +44,6 @@ All notable changes to this project will be documented in this file.
 - Fixed Order emails are sent only after the Order ID number is generated. [75408](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/75408)
 - Fixed kitchen status info display incase of multiple KOTs. [68869](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/68869)
 - Fixed discount offer triggers. [49314](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/49314)
->>>>>>> master
 
 ## [2.10.0] - 2025-03-14
 
