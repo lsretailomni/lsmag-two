@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file.
 - Added option to create shipping in Magento without tracking number in webhooks. [79592](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/79592)
 - Added validation for coupon based on coupon barcode no and coupon code field and added coupon usage line in customer order creation. [79040](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/79040)
 - Added support for multi currency. [73747](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/73747)
--  Support for Retail tax calculation (NA version). [69474](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/69474) 
+- Added Support for Retail tax calculation (NA version). [69474](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/69474) 
 - Added timestamp support in hospitality for offline orders. [77629](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/77629)
 - Added support for creating simple products based on unit of measure (UOM). [77124](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/77124)
 - Added displayed discount start and expiry date/time on promotions shown on the products page. [73801](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/73801)
