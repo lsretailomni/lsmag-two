@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplStoreRepositoryInterface as ReplStoreRepository;
 use Ls\Replication\Model\ReplStoreFactory;
 use Ls\Replication\Api\Data\ReplStoreInterface;
 
-class ReplEcommStoresTask extends AbstractReplicationTask
+abstract class ReplEcommStoresTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_store';
 
@@ -108,19 +108,6 @@ class ReplEcommStoresTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommStores($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

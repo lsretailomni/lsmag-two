@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplCurrencyExchRateRepositoryInterface as ReplCurrencyEx
 use Ls\Replication\Model\ReplCurrencyExchRateFactory;
 use Ls\Replication\Api\Data\ReplCurrencyExchRateInterface;
 
-class ReplEcommCurrencyRateTask extends AbstractReplicationTask
+abstract class ReplEcommCurrencyRateTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_currency_exch_rate';
 
@@ -108,19 +108,6 @@ class ReplEcommCurrencyRateTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommCurrencyRate($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

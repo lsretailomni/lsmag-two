@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Controller\Adminhtml\Cron;
 
@@ -16,41 +17,10 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManager;
-use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\System\Store;
 
-/**
- * Class Grid
- * @package Ls\Replication\Controller\Adminhtml\Cron
- */
 class Grid extends Action
 {
-    /** @var PageFactory */
-    public $resultPageFactory;
-
-    /** @var ObjectManagerInterface */
-    public $objectManager;
-
-    /**
-     * @var Logger
-     */
-    public $logger;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    public $storeManager;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var Store
-     */
-    public $systemStoreManager;
-
     /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
@@ -62,19 +32,13 @@ class Grid extends Action
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory,
-        ObjectManagerInterface $objectManager,
-        Logger $logger,
-        StoreManager $storeManager,
-        LSR $lsr,
-        Store $systemStoreManager
+        public PageFactory $resultPageFactory,
+        public ObjectManagerInterface $objectManager,
+        public Logger $logger,
+        public StoreManager $storeManager,
+        public LSR $lsr,
+        public Store $systemStoreManager
     ) {
-        $this->resultPageFactory  = $resultPageFactory;
-        $this->objectManager      = $objectManager;
-        $this->logger             = $logger;
-        $this->storeManager       = $storeManager;
-        $this->lsr                = $lsr;
-        $this->systemStoreManager = $systemStoreManager;
         parent::__construct($context);
     }
 

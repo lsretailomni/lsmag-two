@@ -2,9 +2,11 @@
 
 namespace Integration\Plugin;
 
+use Ls\Core\Model\LSR;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Model\Session;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
 use Magento\TestFramework\Fixture\AppArea;
@@ -42,6 +44,11 @@ class SetShippingMethodsTest extends GraphQlTestBase
     public $checkoutSession;
 
     /**
+     * @var Session
+     */
+    public $customerSession;
+
+    /**
      * @var ManagerInterface
      */
     public $eventManager;
@@ -58,6 +65,7 @@ class SetShippingMethodsTest extends GraphQlTestBase
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
         $this->maskedQuote     = $this->objectManager->get(QuoteIdToMaskedQuoteIdInterface::class);
         $this->checkoutSession = $this->objectManager->create(Session::class);
+        $this->customerSession = $this->objectManager->create(CustomerSession::class);
         $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
         $this->basketHelper    = $this->objectManager->create(BasketHelper::class);
     }
@@ -77,10 +85,17 @@ class SetShippingMethodsTest extends GraphQlTestBase
         $cart            = $this->addSimpleProduct($emptyCart, $product);
         $cart            = $this->setShippingAddress($cart);
 
+        $this->customerSession->setData('customer_id', $customer->getId());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
+        $this->checkoutSession->setQuoteId($cart->getId());
+        
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
         $maskedQuoteId = $this->maskedQuote->execute($cart->getId());
         $query         = $this->getQuery($maskedQuoteId, "S0013");
+
+        
+        
         $headerMap     = ['Authorization' => 'Bearer ' . $this->authToken];
 
         $response = $this->graphQlMutation(

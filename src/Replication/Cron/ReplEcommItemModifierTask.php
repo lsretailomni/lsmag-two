@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplItemModifierRepositoryInterface as ReplItemModifierRe
 use Ls\Replication\Model\ReplItemModifierFactory;
 use Ls\Replication\Api\Data\ReplItemModifierInterface;
 
-class ReplEcommItemModifierTask extends AbstractReplicationTask
+abstract class ReplEcommItemModifierTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_item_modifier';
 
@@ -108,19 +108,6 @@ class ReplEcommItemModifierTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommItemModifier($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

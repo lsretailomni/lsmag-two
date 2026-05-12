@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplDiscountValidationRepositoryInterface as ReplDiscount
 use Ls\Replication\Model\ReplDiscountValidationFactory;
 use Ls\Replication\Api\Data\ReplDiscountValidationInterface;
 
-class ReplEcommDiscountValidationsTask extends AbstractReplicationTask
+abstract class ReplEcommDiscountValidationsTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_discount_validation';
 
@@ -108,19 +108,6 @@ class ReplEcommDiscountValidationsTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommDiscountValidations($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

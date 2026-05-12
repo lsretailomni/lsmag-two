@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplCurrencyRepositoryInterface as ReplCurrencyRepository
 use Ls\Replication\Model\ReplCurrencyFactory;
 use Ls\Replication\Api\Data\ReplCurrencyInterface;
 
-class ReplEcommCurrencyTask extends AbstractReplicationTask
+abstract class ReplEcommCurrencyTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_currency';
 
@@ -108,19 +108,6 @@ class ReplEcommCurrencyTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommCurrency($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

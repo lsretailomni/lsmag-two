@@ -26,31 +26,6 @@ class LsPushNotificationSendObserver implements ObserverInterface
     public const API_REQUEST_ENDPOINT = 'https://onesignal.com/api/v1/';
 
     /**
-     * @var ResponseFactory
-     */
-    public $responseFactory;
-
-    /**
-     * @var ClientFactory
-     */
-    public $clientFactory;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var Json
-     */
-    public $serializer;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /**
      * @param LSR $lsr
      * @param ClientFactory $clientFactory
      * @param ResponseFactory $responseFactory
@@ -58,17 +33,12 @@ class LsPushNotificationSendObserver implements ObserverInterface
      * @param LoggerInterface $logger
      */
     public function __construct(
-        LSR $lsr,
-        ClientFactory $clientFactory,
-        ResponseFactory $responseFactory,
-        Json $serializer,
-        LoggerInterface $logger
+        public LSR $lsr,
+        public ClientFactory $clientFactory,
+        public ResponseFactory $responseFactory,
+        public Json $serializer,
+        public LoggerInterface $logger
     ) {
-        $this->lsr             = $lsr;
-        $this->clientFactory   = $clientFactory;
-        $this->responseFactory = $responseFactory;
-        $this->serializer      = $serializer;
-        $this->logger          = $logger;
     }
 
     /**

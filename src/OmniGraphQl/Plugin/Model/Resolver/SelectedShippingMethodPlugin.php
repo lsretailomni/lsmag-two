@@ -11,19 +11,12 @@ use Magento\Quote\Model\Quote\Address;
 
 class SelectedShippingMethodPlugin
 {
-
-    /**
-     * @var StoreHelper
-     */
-    public $storeHelper;
-
     /**
      * @param StoreHelper $storeHelper
      */
     public function __construct(
-        StoreHelper  $storeHelper
+        public StoreHelper $storeHelper
     ) {
-        $this->storeHelper = $storeHelper;
     }
 
     /**

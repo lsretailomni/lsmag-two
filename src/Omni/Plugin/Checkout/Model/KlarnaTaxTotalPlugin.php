@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
@@ -13,38 +14,15 @@ use Magento\Store\Model\StoreManagerInterface;
 class KlarnaTaxTotalPlugin
 {
     /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
-
-    /**
-     * @var object
-     */
-    private $klarnaConfig;
-
-    /**
-     * @var LSR
-     */
-    private $lsr;
-
-    /**
-     * @var Factory
-     */
-    private $factory;
-
-    /**
      * @param StoreManagerInterface $storeManager
      * @param Factory $factory
      * @param LSR $lsr
      */
     public function __construct(
-        StoreManagerInterface $storeManager,
-        Factory $factory,
-        LSR $lsr
+        public StoreManagerInterface $storeManager,
+        public Factory $factory,
+        public LSR $lsr
     ) {
-        $this->storeManager = $storeManager;
-        $this->factory      = $factory;
-        $this->lsr          = $lsr;
     }
 
     /**

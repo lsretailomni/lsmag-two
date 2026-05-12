@@ -25,6 +25,9 @@ class OrderPaymentTest extends AbstractWebhookBase
 
         // Create customer
         $this->customer = $this->getOrCreateCustomer();
+
+//        $this->objectManager = Bootstrap::getObjectManager();
+//        $this->orderPayment = $this->objectManager->get();
     }
 
     /**
@@ -37,38 +40,40 @@ class OrderPaymentTest extends AbstractWebhookBase
         // Create order
         $order = $this->getOrCreateOrder($incrementId, $documentId, $this->customer, $this->product, true, false);
         // Bootstrapping Magento
-        $objectManager = Bootstrap::getObjectManager();
+
         $serviceInfo   = [
             'rest' => [
-                'resourcePath' => '/V1/orderpayment',
-                'httpMethod'   => Request::HTTP_METHOD_POST
+                'resourcePath' => '/V1/OrderMessagePayment',
+                'httpMethod'   => Request::HTTP_METHOD_POST,
             ],
         ];
 
         $requestData = [
-            'OrderId'      => $documentId,
-            'Status'       => '0',
-            'Amount'       => $order->getGrandTotal(),
-            'CurrencyCode' => 'GBP',
-            'Token'        => $order->getPayment()->getCcTransId(),
-            'AuthCode'     => '',
-            'Reference'    => $incrementId,
-            'Lines'        => [
-                [
-                    'LineNo'          => '10000',
-                    'ItemId'          => $this->productSku,
-                    'VariantId'       => '',
-                    'UnitOfMeasureId' => 'PCS',
-                    'Quantity'        => 1.0,
-                    'Amount'          => $this->product->getPrice(),
-                ],
-                [
-                    'LineNo'          => '20000',
-                    'ItemId'          => '66010',
-                    'VariantId'       => '',
-                    'UnitOfMeasureId' => 'PCS',
-                    'Quantity'        => 1.0,
-                    'Amount'          => 5.0,
+            'orderPayment' => [
+                'OrderId'      => $documentId,
+                'Status'       => '0',
+                'Amount'       => $order->getGrandTotal(),
+                'CurrencyCode' => 'GBP',
+                'Token'        => $order->getPayment()->getCcTransId(),
+                'AuthCode'     => '',
+                'Reference'    => $incrementId,
+                'Lines'        => [
+                    [
+                        'LineNo'          => '10000',
+                        'ItemId'          => $this->productSku,
+                        'VariantId'       => '',
+                        'UnitOfMeasureId' => 'PCS',
+                        'Quantity'        => 1.0,
+                        'Amount'          => $this->product->getPrice(),
+                    ],
+                    [
+                        'LineNo'          => '20000',
+                        'ItemId'          => '66010',
+                        'VariantId'       => '',
+                        'UnitOfMeasureId' => 'PCS',
+                        'Quantity'        => 1.0,
+                        'Amount'          => 5.0,
+                    ]
                 ]
             ]
         ];
@@ -76,9 +81,7 @@ class OrderPaymentTest extends AbstractWebhookBase
         // Using the Magento Web API client to send the request
         $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         if ($response) {
-            foreach ($response as $result) {
-                $this->assertEquals(true, $result['success']);
-            }
+            $this->assertEquals(1, $response['OrderMessagePaymentResult']);
         }
     }
 
@@ -96,46 +99,46 @@ class OrderPaymentTest extends AbstractWebhookBase
         $objectManager = Bootstrap::getObjectManager();
         $serviceInfo   = [
             'rest' => [
-                'resourcePath' => '/V1/orderpayment',
+                'resourcePath' => '/V1/OrderMessagePayment',
                 'httpMethod'   => Request::HTTP_METHOD_POST
             ],
         ];
 
         // The input data (this data should align with the actual endpoint requirements)
         $requestData = [
-            'OrderId'      => $documentId,
-            'Status'       => '0',
-            'Amount'       => $order->getGrandTotal(),
-            'CurrencyCode' => 'GBP',
-            'Token'        => $order->getPayment()->getCcTransId(),
-            'AuthCode'     => '',
-            'Reference'    => $incrementId,
-            'Lines'        => [
-                [
-                    'LineNo'          => '10000',
-                    'ItemId'          => $this->productSku,
-                    'VariantId'       => '',
-                    'UnitOfMeasureId' => 'PCS',
-                    'Quantity'        => 1.0,
-                    'Amount'          => $this->product->getPrice(),
-                ],
-                [
-                    'LineNo'          => '20000',
-                    'ItemId'          => '66010',
-                    'VariantId'       => '',
-                    'UnitOfMeasureId' => 'PCS',
-                    'Quantity'        => 1.0,
-                    'Amount'          => 5.0,
+                'orderPayment' => [
+                'OrderId'      => $documentId,
+                'Status'       => '0',
+                'Amount'       => $order->getGrandTotal(),
+                'CurrencyCode' => 'GBP',
+                'Token'        => $order->getPayment()->getCcTransId(),
+                'AuthCode'     => '',
+                'Reference'    => $incrementId,
+                'Lines'        => [
+                    [
+                        'LineNo'          => '10000',
+                        'ItemId'          => $this->productSku,
+                        'VariantId'       => '',
+                        'UnitOfMeasureId' => 'PCS',
+                        'Quantity'        => 1.0,
+                        'Amount'          => $this->product->getPrice(),
+                    ],
+                    [
+                        'LineNo'          => '20000',
+                        'ItemId'          => '66010',
+                        'VariantId'       => '',
+                        'UnitOfMeasureId' => 'PCS',
+                        'Quantity'        => 1.0,
+                        'Amount'          => 5.0,
+                    ]
                 ]
-            ]
+                ]
         ];
 
         // Using the Magento Web API client to send the request
         $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         if ($response) {
-            foreach ($response as $result) {
-                $this->assertEquals(true, $result['success']);
-            }
+            $this->assertEquals(1, $response['OrderMessagePaymentResult']);
         }
     }
 
@@ -153,36 +156,38 @@ class OrderPaymentTest extends AbstractWebhookBase
         $objectManager = Bootstrap::getObjectManager();
         $serviceInfo   = [
             'rest' => [
-                'resourcePath' => '/V1/orderpayment',
+                'resourcePath' => '/V1/OrderMessagePayment',
                 'httpMethod'   => Request::HTTP_METHOD_POST
             ],
         ];
 
         // The input data (this data should align with the actual endpoint requirements)
         $requestData = [
-            'OrderId'      => $documentId,
-            'Status'       => '0',
-            'Amount'       => $order->getGrandTotal(),
-            'CurrencyCode' => 'GBP',
-            'Token'        => $order->getPayment()->getCcTransId(),
-            'AuthCode'     => '',
-            'Reference'    => $incrementId,
-            'Lines'        => [
-                [
-                    'LineNo'          => '10000',
-                    'ItemId'          => $this->productSku,
-                    'VariantId'       => '',
-                    'UnitOfMeasureId' => 'PCS',
-                    'Quantity'        => 1.0,
-                    'Amount'          => $this->product->getPrice(),
-                ],
-                [
-                    'LineNo'          => '20000',
-                    'ItemId'          => '66010',
-                    'VariantId'       => '',
-                    'UnitOfMeasureId' => 'PCS',
-                    'Quantity'        => 1.0,
-                    'Amount'          => 5.0,
+            'orderPayment' => [
+                'OrderId'      => $documentId,
+                'Status'       => '0',
+                'Amount'       => $order->getGrandTotal(),
+                'CurrencyCode' => 'GBP',
+                'Token'        => $order->getPayment()->getCcTransId(),
+                'AuthCode'     => '',
+                'Reference'    => $incrementId,
+                'Lines'        => [
+                    [
+                        'LineNo'          => '10000',
+                        'ItemId'          => $this->productSku,
+                        'VariantId'       => '',
+                        'UnitOfMeasureId' => 'PCS',
+                        'Quantity'        => 1.0,
+                        'Amount'          => $this->product->getPrice(),
+                    ],
+                    [
+                        'LineNo'          => '20000',
+                        'ItemId'          => '66010',
+                        'VariantId'       => '',
+                        'UnitOfMeasureId' => 'PCS',
+                        'Quantity'        => 1.0,
+                        'Amount'          => 5.0,
+                    ]
                 ]
             ]
         ];
@@ -190,9 +195,7 @@ class OrderPaymentTest extends AbstractWebhookBase
         // Using the Magento Web API client to send the request
         $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         if ($response) {
-            foreach ($response as $result) {
-                $this->assertEquals(true, $result['success']);
-            }
+            $this->assertEquals(1, $response['OrderMessagePaymentResult']);
         }
     }
 }

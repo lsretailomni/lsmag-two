@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
@@ -12,30 +13,17 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class UpdateAmountPaypal
 {
-    const SUBTOTAL = 'subtotal';
-
-    const TAX = 'tax';
-
-    /**
-     * @var CheckoutSession
-     */
-    public $checkoutSession;
-
-    /**
-     * LoyaltyHelper
-     */
-    public $loyaltyHelper;
+    public const SUBTOTAL = 'subtotal';
+    public const TAX = 'tax';
 
     /**
      * @param CheckoutSession $checkoutSession
      * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
-        CheckoutSession $checkoutSession,
-        LoyaltyHelper $loyaltyHelper
+        public CheckoutSession $checkoutSession,
+        public LoyaltyHelper $loyaltyHelper
     ) {
-        $this->checkoutSession = $checkoutSession;
-        $this->loyaltyHelper   = $loyaltyHelper;
     }
 
     /**

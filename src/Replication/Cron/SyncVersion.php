@@ -1,13 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
-use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
@@ -15,39 +16,19 @@ use Magento\Store\Model\ScopeInterface;
  */
 class SyncVersion
 {
-    /**
-     * @var ReplicationHelper
-     */
-    public $replicationHelper;
-
-    /**
-     * @var Data
-     */
-    public $helper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
     /** @var StoreInterface $store */
     public $store;
 
     /**
-     * SyncVersion constructor.
      * @param LSR $lsr
      * @param Data $helper
      * @param ReplicationHelper $replicationHelper
      */
     public function __construct(
-        LSR $lsr,
-        Data $helper,
-        ReplicationHelper $replicationHelper
+        public LSR $lsr,
+        public Data $helper,
+        public ReplicationHelper $replicationHelper
     ) {
-
-        $this->lsr               = $lsr;
-        $this->helper            = $helper;
-        $this->replicationHelper = $replicationHelper;
     }
 
     /**
@@ -56,6 +37,7 @@ class SyncVersion
      * @param $storeData
      * @return array|void
      * @throws NoSuchEntityException
+     * @throws GuzzleException
      */
     public function execute($storeData = null)
     {
@@ -81,10 +63,11 @@ class SyncVersion
                         $this->store->getId(),
                         ScopeInterface::SCOPE_STORES
                     );
-                    $baseUrl = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $this->store->getId());
-                    $lsKey   = $this->lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $this->store->getId());
-                    $pong    = $this->helper->omniPing($baseUrl, $lsKey);
-                    $this->helper->parsePingResponseAndSaveToConfigData($pong, $this->getScopeId());
+                    $pong    = $this->helper->omniPing();
+
+                    if (!empty($pong)) {
+                        $this->helper->parsePingResponseAndSaveToConfigData($pong, $this->getScopeId());
+                    }
                 }
                 $this->lsr->setStoreId(null);
             }
@@ -99,7 +82,7 @@ class SyncVersion
      *
      * @param $storeData
      * @return array|null
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function executeManually($storeData = null)
     {

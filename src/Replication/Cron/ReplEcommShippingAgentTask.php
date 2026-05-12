@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplShippingAgentRepositoryInterface as ReplShippingAgent
 use Ls\Replication\Model\ReplShippingAgentFactory;
 use Ls\Replication\Api\Data\ReplShippingAgentInterface;
 
-class ReplEcommShippingAgentTask extends AbstractReplicationTask
+abstract class ReplEcommShippingAgentTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_shipping_agent';
 
@@ -108,19 +108,6 @@ class ReplEcommShippingAgentTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommShippingAgent($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

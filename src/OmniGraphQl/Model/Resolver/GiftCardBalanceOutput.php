@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
@@ -15,28 +16,13 @@ use Magento\Framework\Pricing\Helper\Data;
 class GiftCardBalanceOutput implements ResolverInterface
 {
     /**
-     * @var GiftCardHelper
-     */
-    public $giftCardHelper;
-
-    /**
-     * @var Data
-     */
-    public $priceHelper;
-
-    /**
-     * Giftcard balance output constructor.
-     *
      * @param GiftCardHelper $giftCardHelper
      * @param Data $priceHelper
      */
-
     public function __construct(
-        GiftCardHelper $giftCardHelper,
-        Data $priceHelper,
+        public GiftCardHelper $giftCardHelper,
+        public Data $priceHelper,
     ) {
-        $this->giftCardHelper = $giftCardHelper;
-        $this->priceHelper    = $priceHelper;
     }
 
     /**
@@ -56,10 +42,9 @@ class GiftCardBalanceOutput implements ResolverInterface
             $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($response);
             return [
                 'currency' => $convertedGiftCardBalanceArr['gift_card_currency'],
-                'value'    => $this->priceHelper->currency(
+                'value'    => $this->giftCardHelper->formatValue(
                     $convertedGiftCardBalanceArr['gift_card_balance_amount'],
-                    true,
-                    false
+                    true
                 )
             ];
         } else {

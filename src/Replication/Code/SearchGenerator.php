@@ -1,5 +1,6 @@
 <?php
 // @codingStandardsIgnoreFile
+declare(strict_types=1);
 
 namespace Ls\Replication\Code;
 
@@ -9,33 +10,30 @@ use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\Api\SearchResults;
 
 /**
- * Class SearchGenerator
+ * Generates a model class that extends Magento's SearchResults and implements a custom search interface.
+ *
  * @package Ls\Replication\Code
  */
 class SearchGenerator extends AbstractGenerator
 {
-    /** @var string */
-    public static $namespace = 'Ls\\Replication\\Model';
-
-    /** @var ReplicationOperation */
-    protected $operation;
+    /** @var string $namespace Namespace for the generated search result model */
+    public static $namespace = 'Ls\\Replication\\Model\\Central';
 
     /**
-     * SearchGenerator constructor.
      * @param ReplicationOperation $operation
      * @throws Exception
      */
-
-    public function __construct(ReplicationOperation $operation)
+    public function __construct(public ReplicationOperation $operation)
     {
         parent::__construct();
-        $this->operation = $operation;
     }
 
     /**
-     * @return string
+     * Generate the class content for the search result model.
+     *
+     * @return string Generated class PHP code
      */
-    public function generate()
+    public function generate(): string
     {
         $this->class->setNamespaceName(self::$namespace);
         $this->class->setName($this->operation->getSearchName());
@@ -43,20 +41,23 @@ class SearchGenerator extends AbstractGenerator
         $this->class->addUse(SearchResults::class);
         $this->class->setExtendedClass('SearchResults');
         $this->class->setImplementedInterfaces([$this->operation->getSearchInterfaceName()]);
-        $interface_name = $this->operation->getSearchInterfaceName();
-        $content        = $this->file->generate();
-        $content        = str_replace(
+
+        $interfaceName = $this->operation->getSearchInterfaceName();
+        $content       = $this->file->generate();
+
+        // Clean up generated content for proper naming and formatting
+        $content = str_replace(
             'extends Magento\\Framework\\Model\\AbstractModel',
             'extends AbstractModel',
             $content
         );
-        $content        = str_replace(
+        $content = str_replace(
             ', Magento\\Framework\\DataObject\\IdentityInterface',
             ', IdentityInterface',
             $content
         );
-        $content        = str_replace('extends \SearchResults', 'extends SearchResults', $content);
-        $content        = str_replace("implements \\{$interface_name}", "implements {$interface_name}", $content);
-        return $content;
+        $content = str_replace('extends \SearchResults', 'extends SearchResults', $content);
+
+        return str_replace("implements \\{$interfaceName}", "implements {$interfaceName}", $content);
     }
 }

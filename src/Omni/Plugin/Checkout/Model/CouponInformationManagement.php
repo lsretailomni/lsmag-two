@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Framework\Exception\CouldNotDeleteException;
@@ -14,35 +16,27 @@ use Magento\Quote\Model\QuoteRepository;
 
 class CouponInformationManagement
 {
-    /** @var QuoteRepository */
-    public $quoteRepository;
-
-    /** @var BasketHelper; */
-    public $basketHelper;
-
     /**
      * @param QuoteRepository $quoteRepository
      * @param BasketHelper $basketHelper
      */
     public function __construct(
-        QuoteRepository $quoteRepository,
-        BasketHelper $basketHelper
+        public QuoteRepository $quoteRepository,
+        public BasketHelper $basketHelper
     ) {
-        $this->quoteRepository = $quoteRepository;
-        $this->basketHelper    = $basketHelper;
     }
 
     /**
      * Around plugin to set and validate coupon from Central on checkout
      *
      * @param CouponManagement $subject
-     * @param $proceed
-     * @param $cartId
-     * @param $couponCode
+     * @param callable $proceed
+     * @param int $cartId
+     * @param string $couponCode
      * @return bool|mixed
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
-     * @throws LocalizedException
+     * @throws LocalizedException|GuzzleException
      */
     public function aroundSet(CouponManagement $subject, $proceed, $cartId, $couponCode)
     {
@@ -78,10 +72,10 @@ class CouponInformationManagement
      * Before plugin to remove and validate coupon from Central on checkout
      *
      * @param CouponManagement $subject
-     * @param $cartId
+     * @param int $cartId
      * @return void
      * @throws CouldNotDeleteException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function beforeRemove(CouponManagement $subject, $cartId)
     {

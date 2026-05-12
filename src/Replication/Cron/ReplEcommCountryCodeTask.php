@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplCountryCodeRepositoryInterface as ReplCountryCodeRepo
 use Ls\Replication\Model\ReplCountryCodeFactory;
 use Ls\Replication\Api\Data\ReplCountryCodeInterface;
 
-class ReplEcommCountryCodeTask extends AbstractReplicationTask
+abstract class ReplEcommCountryCodeTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_country_code';
 
@@ -108,19 +108,6 @@ class ReplEcommCountryCodeTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommCountryCode($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

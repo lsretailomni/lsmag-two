@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Product;
 
@@ -18,41 +19,17 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class AttributeData
 {
     /**
-     * @var ReplExtendedVariantValueRepository
-     */
-    public $replExtendedVariantValueRepository;
-
-    /**
-     * @var ReplicationHelper
-     */
-    public $replicationHelper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var SortOrderBuilder
-     */
-    public $sortOrderBuilder;
-
-    /**
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
      * @param ReplicationHelper $replicationHelper
      * @param LSR $lsr
      * @param SortOrderBuilder $sortOrderBuilder
      */
     public function __construct(
-        ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
-        ReplicationHelper $replicationHelper,
-        LSR $lsr,
-        SortOrderBuilder $sortOrderBuilder
+        public ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
+        public ReplicationHelper $replicationHelper,
+        public LSR $lsr,
+        public SortOrderBuilder $sortOrderBuilder
     ) {
-        $this->replicationHelper                  = $replicationHelper;
-        $this->replExtendedVariantValueRepository = $replExtendedVariantValueRepository;
-        $this->lsr                                = $lsr;
-        $this->sortOrderBuilder                   = $sortOrderBuilder;
     }
 
     /**

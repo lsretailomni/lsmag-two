@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Cart;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Helper\GiftCardHelper;
 use Magento\Checkout\Block\Cart\AbstractCart;
 use Magento\Checkout\Model\Session as CheckoutSession;
@@ -9,19 +11,9 @@ use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template\Context;
 
-/**
- * Get gift card information for cart
- */
 class Giftcard extends AbstractCart
 {
-
     /**
-     * @var GiftCardHelper
-     */
-    public $giftCardHelper;
-
-    /**
-     * Giftcard constructor.
      * @param GiftCardHelper $giftCardHelper
      * @param Context $context
      * @param CustomerSession $customerSession
@@ -29,42 +21,29 @@ class Giftcard extends AbstractCart
      * @param array $data
      */
     public function __construct(
-        GiftCardHelper $giftCardHelper,
+        public GiftCardHelper $giftCardHelper,
         Context $context,
         CustomerSession $customerSession,
         CheckoutSession $checkoutSession,
         array $data = []
     ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);
-        $this->giftCardHelper = $giftCardHelper;
-    }
-
-    /**
-     * Get gift card balance
-     *
-     * @return float|null
-     */
-    public function getGiftCardBalance()
-    {
-        return $this->giftCardHelper->getGiftCardBalance();
     }
 
     /**
      * Get gift card amount used
      *
-     * @return mixed
+     * @return string
      */
     public function getGiftCardAmountUsed()
     {
-        if ($this->getQuote()->getLsGiftCardAmountUsed() > 0) {
-            return $this->getQuote()->getLsGiftCardAmountUsed();
-        }
+        return $this->getQuote()->getLsGiftCardAmountUsed() > 0 ? $this->getQuote()->getLsGiftCardAmountUsed() : "";
     }
 
     /**
      * Get gift card number
      *
-     * @return mixed
+     * @return string
      */
     public function getGiftCardNo()
     {
@@ -74,7 +53,7 @@ class Giftcard extends AbstractCart
     /**
      * Get gift card pin
      *
-     * @return mixed
+     * @return string
      */
     public function getGiftCardPin()
     {
@@ -84,8 +63,8 @@ class Giftcard extends AbstractCart
     /**
      * Get gift card is enable on cart page
      *
-     * @return string
-     * @throws NoSuchEntityException
+     * @return bool
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getGiftCardActive()
     {
@@ -95,7 +74,7 @@ class Giftcard extends AbstractCart
     /**
      * Get is pin code field enable
      *
-     * @return string
+     * @return bool
      * @throws NoSuchEntityException
      */
     public function isPinCodeFieldEnable()

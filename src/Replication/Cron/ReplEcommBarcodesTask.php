@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplBarcodeRepositoryInterface as ReplBarcodeRepository;
 use Ls\Replication\Model\ReplBarcodeFactory;
 use Ls\Replication\Api\Data\ReplBarcodeInterface;
 
-class ReplEcommBarcodesTask extends AbstractReplicationTask
+abstract class ReplEcommBarcodesTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_barcode';
 
@@ -108,19 +108,6 @@ class ReplEcommBarcodesTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommBarcodes($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

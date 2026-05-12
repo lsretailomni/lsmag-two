@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
@@ -12,31 +13,21 @@ use Magento\Quote\Model\QuoteRepository;
  */
 class ShippingInformationManagement
 {
-    /** @var QuoteRepository */
-    public $quoteRepository;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
     /**
      * @param QuoteRepository $quoteRepository
      * @param BasketHelper $basketHelper
      */
     public function __construct(
-        QuoteRepository $quoteRepository,
-        BasketHelper $basketHelper
+        public QuoteRepository $quoteRepository,
+        public BasketHelper $basketHelper
     ) {
-        $this->quoteRepository = $quoteRepository;
-        $this->basketHelper    = $basketHelper;
     }
 
     /**
      * Before plugin to persist values in quote
      *
      * @param \Magento\Checkout\Model\ShippingInformationManagement $subject
-     * @param mixed $cartId
+     * @param int $cartId
      * @param ShippingInformationInterface $addressInformation
      * @throws NoSuchEntityException
      */

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Ls\OmniGraphQl\Model\Resolver;
 
 use Magento\Framework\Exception\NoSuchEntityException;

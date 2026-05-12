@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Controller\Cart;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -21,29 +23,6 @@ use Magento\Store\Model\StoreManagerInterface;
 class RedeemPoints extends \Magento\Checkout\Controller\Cart
 {
     /**
-     * Sales quote repository
-     *
-     * @var CartRepositoryInterface
-     */
-    public $quoteRepository;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
-     * @var Data
-     */
-    public $data;
-
-    /**
-     * RedeemPoints constructor.
      * @param Context $context
      * @param ScopeConfigInterface $scopeConfig
      * @param CheckoutSession $checkoutSession
@@ -62,10 +41,10 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
         StoreManagerInterface $storeManager,
         Validator $formKeyValidator,
         Cart $cart,
-        CartRepositoryInterface $quoteRepository,
-        LoyaltyHelper $loyaltyHelper,
-        BasketHelper $basketHelper,
-        Data $data
+        public CartRepositoryInterface $quoteRepository,
+        public LoyaltyHelper $loyaltyHelper,
+        public BasketHelper $basketHelper,
+        public Data $data
     ) {
         parent::__construct(
             $context,
@@ -75,10 +54,6 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
             $formKeyValidator,
             $cart
         );
-        $this->quoteRepository = $quoteRepository;
-        $this->loyaltyHelper   = $loyaltyHelper;
-        $this->basketHelper    = $basketHelper;
-        $this->data            = $data;
     }
 
     /**
@@ -87,6 +62,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
      * @return Redirect
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @throws GuzzleException
      */
     public function execute()
     {
@@ -100,10 +76,10 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
 
         $loyaltyPoints = (float)$loyaltyPoints;
         try {
-            $cartQuote          = $this->cart->getQuote();
-            $itemsCount         = $cartQuote->getItemsCount();
-            $isPointValid       = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
-            $orderBalance       = $this->data->getOrderBalance(
+            $cartQuote = $this->cart->getQuote();
+            $itemsCount = $cartQuote->getItemsCount();
+            $isPointValid = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
+            $orderBalance = $this->data->getOrderBalance(
                 $cartQuote->getLsGiftCardAmountUsed(),
                 0,
                 $this->basketHelper->getBasketSessionValue()

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer\Adminhtml;
 
@@ -8,29 +9,16 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\View\Element\Template;
 
-/**
- * Class BlockObserver
- * @package Ls\Omni\Observer\Adminhtml
- */
 class BlockObserver implements ObserverInterface
 {
-    /** @var TimezoneInterface */
-    private $date;
-
-    /** @var Template */
-    private $coreTemplate;
-
     /**
-     * BlockObserver constructor.
      * @param TimezoneInterface $date
      * @param Template $coreTemplate
      */
     public function __construct(
-        TimezoneInterface $date,
-        Template $coreTemplate
+        public TimezoneInterface $date,
+        public Template $coreTemplate
     ) {
-        $this->date         = $date;
-        $this->coreTemplate = $coreTemplate;
     }
 
     /**

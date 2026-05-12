@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Adminhtml\System\Config;
 
@@ -8,17 +9,11 @@ use Magento\Sales\Model\ResourceModel\Order\Status\CollectionFactory;
 class RestrictedOrderStatuses implements OptionSourceInterface
 {
     /**
-     * @var CollectionFactory
-     */
-    private $statusCollectionFactory;
-
-    /**
      * @param CollectionFactory $statusCollectionFactory
      */
     public function __construct(
-        CollectionFactory $statusCollectionFactory
+        public CollectionFactory $statusCollectionFactory
     ) {
-        $this->statusCollectionFactory = $statusCollectionFactory;
     }
 
     /**

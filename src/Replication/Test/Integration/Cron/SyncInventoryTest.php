@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Replication\Cron\ProductCreateTask;
 use \Ls\Replication\Cron\SyncInventory as SyncInventoryAlias;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
+use Magento\TestFramework\Fixture\Config;
 
 class SyncInventoryTest extends AbstractTaskTest
 {
@@ -26,6 +27,9 @@ class SyncInventoryTest extends AbstractTaskTest
         parent::tearDown();
     }
 
+    #[
+        Config(LSR::SC_SERVICE_TIMEOUT, AbstractIntegrationTest::SC_SERVICE_TIMEOUT)
+    ]
     public function actualExecute()
     {
         $storeId           = $this->storeManager->getStore()->getId();
@@ -78,7 +82,7 @@ class SyncInventoryTest extends AbstractTaskTest
 
         $this->modifySpecificItemInv(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID,
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ID,
             $outOfStock
         );
         $this->executeUntilReady(SyncInventoryAlias::class, [
@@ -118,7 +122,7 @@ class SyncInventoryTest extends AbstractTaskTest
 
         $this->assertMultipleItemsInventory(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID,
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ID,
             $storeId,
             1
         );
@@ -145,7 +149,7 @@ class SyncInventoryTest extends AbstractTaskTest
     {
         $itemStock = $this->replicationHelper->getInventoryStatus(
             $itemId,
-            AbstractIntegrationTest::CS_STORE,
+            AbstractIntegrationTest::WEB_STORE,
             $this->storeManager->getWebsite()->getId(),
             $variantId
         );

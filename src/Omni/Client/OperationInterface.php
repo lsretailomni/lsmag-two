@@ -1,26 +1,16 @@
 <?php
+declare(strict_types=1);
+
 namespace Ls\Omni\Client;
 
-use \Ls\Omni\Service\Soap\Client;
+use Magento\Catalog\Model\AbstractModel;
 
-/**
- * Interface OperationInterface
- * @package Ls\Omni\Client
- */
 interface OperationInterface
 {
-    /** @return RequestInterface */
-    public function & getOperationInput();
-
     /**
-     * @param RequestInterface $request
+     * Method responsible to make request
      *
-     * @return ResponseInterface
+     * @return AbstractModel
      */
-    public function execute(?RequestInterface $request = null);
-
-    /**
-     * @return Client
-     */
-    public function getClient();
+    public function execute();
 }

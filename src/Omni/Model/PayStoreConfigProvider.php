@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model;
 
@@ -9,10 +10,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Payment\Helper\Data as PaymentHelper;
 use Magento\Payment\Model\MethodInterface;
 
-/**
- * Class PayStoreConfigProvider
- * @package Ls\Omni\Model
- */
 class PayStoreConfigProvider implements ConfigProviderInterface
 {
     /**
@@ -26,21 +23,14 @@ class PayStoreConfigProvider implements ConfigProviderInterface
     public $method;
 
     /**
-     * @var Escaper
-     */
-    public $escaper;
-
-    /**
-     * PayStoreConfigProvider constructor.
      * @param PaymentHelper $paymentHelper
      * @param Escaper $escaper
      * @throws LocalizedException
      */
     public function __construct(
-        PaymentHelper $paymentHelper,
-        Escaper $escaper
+        public PaymentHelper $paymentHelper,
+        public Escaper $escaper
     ) {
-        $this->escaper = $escaper;
         $this->method  = $paymentHelper->getMethodInstance($this->methodCode);
     }
 

@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Order;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
@@ -21,30 +23,6 @@ use Magento\Backend\Model\Session\Quote as BackendQuoteSession;
 class OrderManagement
 {
     /**
-     * @var LSR
-     */
-    private $lsr;
-    /**
-     * @var OrderHelper
-     */
-    private $orderHelper;
-
-    /**
-     * @var OrderRepository
-     */
-    private $orderRepository;
-
-    /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /**
-     * @var BackendQuoteSession
-     */
-    private $backendQuoteSession;
-
-    /**
      * @param LSR $lsr
      * @param OrderHelper $orderHelper
      * @param OrderRepository $orderRepository
@@ -52,17 +30,12 @@ class OrderManagement
      * @param BackendQuoteSession $backendQuoteSession
      */
     public function __construct(
-        LSR $lsr,
-        OrderHelper $orderHelper,
-        OrderRepository $orderRepository,
-        BasketHelper $basketHelper,
-        BackendQuoteSession $backendQuoteSession
+        public LSR $lsr,
+        public OrderHelper $orderHelper,
+        public OrderRepository $orderRepository,
+        public BasketHelper $basketHelper,
+        public BackendQuoteSession $backendQuoteSession
     ) {
-        $this->lsr                 = $lsr;
-        $this->orderHelper         = $orderHelper;
-        $this->orderRepository     = $orderRepository;
-        $this->basketHelper        = $basketHelper;
-        $this->backendQuoteSession = $backendQuoteSession;
     }
 
     /**
@@ -75,7 +48,7 @@ class OrderManagement
      * @throws AlreadyExistsException
      * @throws InputException
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function aroundCancel(OrderManagementInterface $subject, $proceed, $id)
     {

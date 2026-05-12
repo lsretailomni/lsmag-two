@@ -2,18 +2,17 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <!-- Adding Stores page Link to Footer Menu -->
         <referenceBlock name="footer_links">
-            <block class="Magento\Framework\View\Element\Html\Link" name="omni.stores" before="-"
-                   ifconfig="ls_mag/service/base_url">
+            <!-- Adding Stores page Link to Footer Menu -->
+            <block class="Ls\Omni\Block\Html\Link" name="omni.stores" before="-">
                 <arguments>
                     <argument name="class" xsi:type="string">ls-footer-stores</argument>
                     <argument name="label" xsi:type="string" translate="true">Stores</argument>
                     <argument name="path" xsi:type="string">omni/stores</argument>
                 </arguments>
             </block>
-            <block class="Magento\Framework\View\Element\Html\Link" name="omni.giftcardbalance" before="-"
-                   ifconfig="ls_mag/service/base_url">
+            <!-- Adding gift card balance check page Link to Footer Menu -->
+            <block class="Ls\Omni\Block\Html\Link" name="omni.giftcardbalance" before="-">
                 <arguments>
                     <argument name="class" xsi:type="string">ls-footer-gift-card</argument>
                     <argument name="label" xsi:type="string" translate="true">Check Gift Card Balance</argument>

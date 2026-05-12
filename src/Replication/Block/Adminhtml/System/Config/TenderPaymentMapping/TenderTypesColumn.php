@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Block\Adminhtml\System\Config\TenderPaymentMapping;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
@@ -16,20 +18,6 @@ use Magento\Framework\View\Element\Html\Select;
 class TenderTypesColumn extends Select
 {
     /**
-     * @var ReplicationHelper
-     */
-    public $helper;
-
-    /** @var RequestInterface */
-    public $request;
-
-    /** @var Data */
-    public $dataHelper;
-
-    /** @var LSR */
-    public $lsr;
-
-    /**
      * @param Context $context
      * @param ReplicationHelper $helper
      * @param Data $dataHelper
@@ -39,17 +27,13 @@ class TenderTypesColumn extends Select
      */
     public function __construct(
         Context $context,
-        ReplicationHelper $helper,
-        Data $dataHelper,
-        LSR $lsr,
-        RequestInterface $request,
+        public ReplicationHelper $helper,
+        public Data $dataHelper,
+        public LSR $lsr,
+        public RequestInterface $request,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->helper     = $helper;
-        $this->dataHelper = $dataHelper;
-        $this->lsr        = $lsr;
-        $this->request    = $request;
     }
 
     /**
@@ -78,6 +62,8 @@ class TenderTypesColumn extends Select
      * Render block HTML
      *
      * @return string
+     * @throws GuzzleException
+     * @throws NoSuchEntityException
      */
     public function _toHtml(): string
     {
@@ -92,29 +78,32 @@ class TenderTypesColumn extends Select
      *
      * @return array
      * @throws NoSuchEntityException
+     * @throws GuzzleException
      */
     private function getSourceOptions(): array
     {
         $storeTenderTypes = [];
 
-        $scopeId = (int)$this->request->getParam('website');
-        
-        if ($scopeId == 0 && $this->lsr->getStoreManagerObject()->isSingleStoreMode()) {
+        $websiteId = (int)$this->request->getParam('website');
+
+        if ($websiteId == 0 && $this->lsr->getStoreManagerObject()->isSingleStoreMode()) {
             $stores               = $this->lsr->getAllStores();
             $store                = reset($stores);
             $storeTenderTypeArray = $this->helper->getTenderTypes($store->getId());
         } else {
-            $storeTenderTypeArray = $this->helper->getTenderTypes($scopeId);
+            $storeTenderTypeArray = $this->helper->getTenderTypes($websiteId);
         }
+        $type = 0;
         if (empty($storeTenderTypeArray)) {
-            $storeTenderTypeArray = $this->dataHelper->getTenderTypesDirectly($scopeId);
+            $storeTenderTypeArray = $this->dataHelper->fetchWebStoreTenderTypes();
+            $type = 1;
         }
         $storeTenderTypes[] = ['value' => '', 'label' => __('Select tender type')];
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[] = [
-                    'value' => $storeTenderType->getTenderTypeId(),
-                    'label' => __($storeTenderType->getName())
+                    'value' => $type == 1 ? $storeTenderType->getCode() : $storeTenderType->getTenderTypeId(),
+                    'label' => $type == 1 ? $storeTenderType->getDescription() : $storeTenderType->getName()
                 ];
             }
         }

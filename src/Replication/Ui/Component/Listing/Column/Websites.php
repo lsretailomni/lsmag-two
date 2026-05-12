@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Ui\Component\Listing\Column;
 
@@ -10,20 +11,8 @@ use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Ui\Component\Listing\Columns\Column;
 
-/**
- * Class ColorStatus
- * @package Ls\Replication\Ui\Component\Listing\Column
- */
 class Websites extends Column
 {
-    /**
-     * @var StoreManagerInterface
-     */
-    public $storeManager;
-
-    /** @var LSR */
-    public $lsr;
-
     /**
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
@@ -35,13 +24,11 @@ class Websites extends Column
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        StoreManagerInterface $storeManager,
-        LSR $lsr,
+        public StoreManagerInterface $storeManager,
+        public LSR $lsr,
         array $components = [],
         array $data = []
     ) {
-        $this->storeManager = $storeManager;
-        $this->lsr = $lsr;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 

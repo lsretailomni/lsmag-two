@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplItemVariantRepositoryInterface as ReplItemVariantRepo
 use Ls\Replication\Model\ReplItemVariantFactory;
 use Ls\Replication\Api\Data\ReplItemVariantInterface;
 
-class ReplEcommItemVariantsTask extends AbstractReplicationTask
+abstract class ReplEcommItemVariantsTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_item_variant';
 
@@ -109,20 +109,6 @@ class ReplEcommItemVariantsTask extends AbstractReplicationTask
         $this->factory = $factory;
         $this->data_interface = $data_interface;
     }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommItemVariants($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
-    }
-
     public function getConfigPath()
     {
         return self::CONFIG_PATH;

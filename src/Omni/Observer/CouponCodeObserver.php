@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
@@ -16,28 +18,16 @@ use Magento\Framework\Message\ManagerInterface;
  */
 class CouponCodeObserver implements ObserverInterface
 {
-    /** @var BasketHelper */
-    private $basketHelper;
-
-    /** @var ManagerInterface */
-    private $messageManager;
-
-    /** @var LSR @var */
-    private $lsr;
-
     /**
      * @param BasketHelper $basketHelper
      * @param ManagerInterface $messageManager
-     * @param LSR $LSR
+     * @param LSR $lsr
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        ManagerInterface $messageManager,
-        LSR $LSR
+        public BasketHelper $basketHelper,
+        public ManagerInterface $messageManager,
+        public LSR $lsr
     ) {
-        $this->basketHelper    = $basketHelper;
-        $this->messageManager  = $messageManager;
-        $this->lsr             = $LSR;
     }
 
     /**
@@ -48,6 +38,7 @@ class CouponCodeObserver implements ObserverInterface
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
+     * @throws GuzzleException
      */
     public function execute(Observer $observer)
     {
@@ -62,7 +53,8 @@ class CouponCodeObserver implements ObserverInterface
             $controller = $observer->getControllerAction();
             $couponCode = $controller->getRequest()->getParam('coupon_code');
             $couponCode = !empty($couponCode) ? trim($couponCode) : '';
-            $status     = $this->basketHelper->setCouponCode($couponCode);
+            $status = $this->basketHelper->setCouponCode($couponCode);
+
             if ($controller->getRequest()->getParam('remove') == 1) {
                 $this->messageManager->addSuccessMessage(__("Coupon code successfully removed."));
             } else {
@@ -74,12 +66,13 @@ class CouponCodeObserver implements ObserverInterface
                 } else {
                     if ($status == "") {
                         $message = __("Coupon Code is not valid for these item(s)");
-                        $status  = __($message);
+                        $status = __($message);
                     }
                     $this->messageManager->addErrorMessage($status);
                 }
             }
         }
+
         return $this;
     }
 }

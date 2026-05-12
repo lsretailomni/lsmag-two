@@ -2,14 +2,12 @@ define([
     'jquery',
     'ko',
     'uiComponent',
-    'Ls_Omni/js/action/get-gift-card-balance',
-    'mage/translate',
-    'mage/storage',
-], function ($, ko, Component, getGiftCardBalanceAction, $t, storage) {
+    'Ls_Omni/js/action/get-gift-card-balance'
+], function ($, ko, Component, getGiftCardBalanceAction) {
     'use strict';
-    var giftCardBalance = ko.observable(null);
-    var giftCardExpiryDate = ko.observable(null);
-    var errorMessages = ko.observable(null);
+    var giftCardBalance = ko.observable(null),
+        giftCardExpiryDate = ko.observable(null),
+        errorMessages = ko.observable(null);
     return Component.extend({
         defaults: {
             template: 'Ls_Omni/gift-card-balance'

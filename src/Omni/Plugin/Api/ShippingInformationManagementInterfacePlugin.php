@@ -1,15 +1,15 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Api;
 
-use Ls\Core\Model\LSR;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Api\Data\ShippingInformationInterface;
-use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Psr\Log\LoggerInterface;
 
 /**
  * Interceptor to intercept ShippingInformationManagementInterface methods
@@ -17,25 +17,11 @@ use Psr\Log\LoggerInterface;
 class ShippingInformationManagementInterfacePlugin
 {
     /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * @param BasketHelper $basketHelper
-     * @param LoggerInterface $logger
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        LoggerInterface $logger,
+        public BasketHelper $basketHelper
     ) {
-        $this->basketHelper = $basketHelper;
-        $this->logger       = $logger;
     }
 
     /**
@@ -49,6 +35,8 @@ class ShippingInformationManagementInterfacePlugin
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
+     * @throws GuzzleException
+     * @throws AlreadyExistsException
      */
     public function afterSaveAddressInformation(
         $subject,
@@ -59,7 +47,7 @@ class ShippingInformationManagementInterfacePlugin
         if (!is_numeric($cartId)) {
             return $result;
         }
-        
+
         $this->basketHelper->syncBasketWithCentral($cartId);
         return $result;
     }

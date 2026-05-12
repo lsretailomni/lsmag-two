@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Model\Resolver\Stock;
 
-use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\StockHelper;
+use \Ls\Core\Model\LSR;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\GraphQl\Config\Element\Field;
@@ -20,7 +21,6 @@ class ItemAvailabilityOutput implements ResolverInterface
      * @param StockHelper $stockHelper
      * @param ProductRepositoryInterface $productRepository
      * @param DataHelper $dataHelper
-     * @param LSR $lsr
      */
     public function __construct(
         public StockHelper $stockHelper,
@@ -41,8 +41,8 @@ class ItemAvailabilityOutput implements ResolverInterface
                 'stores' => [],
             ];
         }
-
         $parentProduct = null;
+
         if (!empty($args['parent_sku'])) {
             try {
                 $parentProduct = $this->productRepository->get($args['parent_sku']);

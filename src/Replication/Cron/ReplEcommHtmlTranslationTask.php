@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplDataTranslationRepositoryInterface as ReplDataTransla
 use Ls\Replication\Model\ReplDataTranslationFactory;
 use Ls\Replication\Api\Data\ReplDataTranslationInterface;
 
-class ReplEcommHtmlTranslationTask extends AbstractReplicationTask
+abstract class ReplEcommHtmlTranslationTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_html_translation';
 
@@ -108,19 +108,6 @@ class ReplEcommHtmlTranslationTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommHtmlTranslation($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

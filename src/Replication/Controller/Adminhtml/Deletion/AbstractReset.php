@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
@@ -49,25 +50,11 @@ abstract class AbstractReset extends Action
 
     /** List of ls tables required in discount rules */
     public const LS_DISCOUNT_RELATED_TABLES = [
-        'ls_replication_repl_discount',
         'ls_replication_repl_discount_setup',
         'ls_replication_repl_discount_validation'
     ];
 
     public const LS_TRANSLATION_TABLE = 'ls_replication_repl_data_translation';
-
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /**
-     * @var ReplAttributeCollectionFactory
-     */
-    public $replAttributeCollectionFactory;
-
-    /**
-     * @var ReplExtendedCollectionFactory
-     */
-    public $replExtendedCollectionFactory;
 
     /**
      * @param Context $context
@@ -77,14 +64,11 @@ abstract class AbstractReset extends Action
      */
     public function __construct(
         Context $context,
-        ReplicationHelper $replicationHelper,
-        ReplAttributeCollectionFactory $replAttributeCollectionFactory,
-        ReplExtendedCollectionFactory $replExtendedCollectionFactory
+        public ReplicationHelper $replicationHelper,
+        public ReplAttributeCollectionFactory $replAttributeCollectionFactory,
+        public ReplExtendedCollectionFactory $replExtendedCollectionFactory
     ) {
         parent::__construct($context);
-        $this->replicationHelper              = $replicationHelper;
-        $this->replAttributeCollectionFactory = $replAttributeCollectionFactory;
-        $this->replExtendedCollectionFactory  = $replExtendedCollectionFactory;
     }
 
     /**

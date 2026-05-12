@@ -1,47 +1,19 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Controller\Adminhtml\Grids;
 
-use Magento\Backend\App\Action;
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\Page;
-use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\Phrase;
 
-/**
- * Class AttributeOptionValue
- * @package Ls\Replication\Controller\Adminhtml\Grids
- */
-class AttributeOptionValue extends Action
+class AttributeOptionValue extends AbstractGrid
 {
     /**
-     * @var PageFactory
-     */
-    public $resultPageFactory;
-
-    /**
-     * Constructor
+     * Get title
      *
-     * @param Context $context
-     * @param PageFactory $resultPageFactory
+     * @return Phrase
      */
-    public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory
-    ) {
-        parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-    }
-
-    /**
-     * Load the grid defined through grid component
-     *
-     * @return Page
-     */
-    public function execute()
+    public function getTitle()
     {
-        $resultPage = $this->resultPageFactory->create();
-        //Set the header title of grid
-        $resultPage->getConfig()->getTitle()->prepend(__('Attribute Option Value Replication'));
-        return $resultPage;
+        return __('Attribute Option Value Replication');
     }
 }

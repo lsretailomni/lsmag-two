@@ -49,7 +49,7 @@ class TruncateAllFlatTables implements DataPatchInterface
 
     /** List of ls tables required in discount rules */
     public const LS_DISCOUNT_RELATED_TABLES = [
-        'ls_replication_repl_discount',
+        'ls_replication_repl_discount_setup',
         'ls_replication_repl_discount_validation'
     ];
 

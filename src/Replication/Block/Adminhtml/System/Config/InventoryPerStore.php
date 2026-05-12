@@ -1,13 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Block\Adminhtml\System\Config;
 
 use Magento\Framework\Data\OptionSourceInterface;
 
-/**
- * Class InventoryPerStore
- * @package Ls\Replication\Block\Adminhtml\System\Config
- */
 class InventoryPerStore implements OptionSourceInterface
 {
     /**

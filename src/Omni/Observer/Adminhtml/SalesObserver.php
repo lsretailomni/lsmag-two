@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer\Adminhtml;
 
@@ -14,25 +15,13 @@ use Magento\Framework\Event\ObserverInterface;
 class SalesObserver implements ObserverInterface
 {
     /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    private $loyaltyHelper;
-
-    /**
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        LoyaltyHelper $loyaltyHelper
+        public BasketHelper $basketHelper,
+        public LoyaltyHelper $loyaltyHelper
     ) {
-        $this->basketHelper  = $basketHelper;
-        $this->loyaltyHelper = $loyaltyHelper;
     }
 
     /**
@@ -40,27 +29,30 @@ class SalesObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $event              = $observer->getEvent();
-        $quote              = $event->getQuote();
+        $event = $observer->getEvent();
+        $quote = $event->getQuote();
         $shippingAssignment = $event->getShippingAssignment();
-        $addressType        = $shippingAssignment->getShipping()->getAddress()->getAddressType();
-        $total              = $event->getTotal();
+        $addressType = $shippingAssignment->getShipping()->getAddress()->getAddressType();
+        $total = $event->getTotal();
+        $pointDiscount  = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
+        $giftCardAmount = $quote->getLsGiftCardAmountUsed();
 
-        $basketData = $this->basketHelper->getBasketSessionValue();
+        if ($pointDiscount > 0.001) {
+            $quote->setLsPointsDiscount($pointDiscount);
+        }
 
-        if (!empty($basketData)) {
-            $pointDiscount  = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
-            $giftCardAmount = $quote->getLsGiftCardAmountUsed();
+        if ($addressType == AbstractAddress::TYPE_SHIPPING) {
+            $basketData = $this->basketHelper->getOneListCalculationFromCheckoutSession($quote);
 
-            if ($pointDiscount > 0.001) {
-                $quote->setLsPointsDiscount($pointDiscount);
-            }
-
-            if ($addressType == AbstractAddress::TYPE_SHIPPING) {
-                $grandTotal = $basketData->getTotalAmount() + $total->getShippingAmount()
+            if (!empty($basketData)) {
+                $pointDiscount  = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
+                $giftCardAmount = $quote->getLsGiftCardAmountUsed();
+                $mobileTransaction = current((array)$basketData->getMobiletransaction());
+                $grandTotal = $mobileTransaction->getGrossamount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;
-                $taxAmount  = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
-                $subTotal   = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
+                $taxAmount = $mobileTransaction->getGrossamount() - $mobileTransaction->getNetamount();
+                $subTotal = $mobileTransaction->getGrossamount() + $mobileTransaction->getLinediscount();
+
                 $total->setTaxAmount($taxAmount)
                     ->setBaseTaxAmount($taxAmount)
                     ->setSubtotal($subTotal - $taxAmount)
@@ -70,10 +62,11 @@ class SalesObserver implements ObserverInterface
                     ->setGrandTotal($grandTotal)
                     ->setBaseGrandTotal($grandTotal)
                     ->setSubtotalWithDiscount($subTotal);
-            } else {
-                $total->setBaseGrandTotal(0);
-                $total->setGrandTotal(0);
             }
+
+        } else {
+            $total->setBaseGrandTotal(0);
+            $total->setGrandTotal(0);
         }
     }
 }

@@ -17,19 +17,6 @@ use Magento\Framework\Translate\Inline\StateInterface;
 class EmailNotification extends AbstractNotification
 {
     /**
-     * @var TransportBuilder
-     */
-    public $transportBuilder;
-
-    /**
-     * @var StateInterface
-     */
-    public $inlineTranslation;
-
-    /** @var LSR */
-    public $lsr;
-
-    /**
      * @param Data $helper
      * @param Logger $logger
      * @param TransportBuilder $transportBuilder
@@ -40,18 +27,15 @@ class EmailNotification extends AbstractNotification
      * @param array $data
      */
     public function __construct(
-        Data $helper,
-        Logger $logger,
-        TransportBuilder $transportBuilder,
-        StateInterface $inlineTranslation,
-        ReceiverFactory $receiverFactory,
-        SenderFactory $senderFactory,
-        LSR $lsr,
+        public Data $helper,
+        public Logger $logger,
+        public TransportBuilder $transportBuilder,
+        public StateInterface $inlineTranslation,
+        public ReceiverFactory $receiverFactory,
+        public SenderFactory $senderFactory,
+        public LSR $lsr,
         array $data = []
     ) {
-        $this->transportBuilder  = $transportBuilder;
-        $this->inlineTranslation = $inlineTranslation;
-        $this->lsr = $lsr;
         parent::__construct($helper, $logger, $receiverFactory, $senderFactory, $data);
     }
 

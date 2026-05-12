@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\GiftCard;
 
@@ -18,59 +19,21 @@ use Magento\Quote\Model\Quote;
 class GiftCardManagement
 {
     /**
-     * Sales quote repository
-     *
-     * @var CartRepositoryInterface
-     */
-    public $quoteRepository;
-
-    /**
-     * @var GiftCardHelper
-     */
-    public $giftCardHelper;
-
-    /**
-     * @var Data
-     */
-    public $dataHelper;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
-     * @var PriceHelper
-     */
-    public $priceHelper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * GiftCardManagement constructor.
      * @param CartRepositoryInterface $quoteRepository
      * @param GiftCardHelper $giftCardHelper
      * @param Data $dataHelper
      * @param BasketHelper $basketHelper
      * @param PriceHelper $priceHelper
+     * @param LSR $lsr
      */
     public function __construct(
-        CartRepositoryInterface $quoteRepository,
-        GiftCardHelper $giftCardHelper,
-        Data $dataHelper,
-        BasketHelper $basketHelper,
-        PriceHelper $priceHelper,
-        LSR $lsr
+        public CartRepositoryInterface $quoteRepository,
+        public GiftCardHelper $giftCardHelper,
+        public Data $dataHelper,
+        public BasketHelper $basketHelper,
+        public PriceHelper $priceHelper,
+        public LSR $lsr
     ) {
-        $this->quoteRepository = $quoteRepository;
-        $this->giftCardHelper  = $giftCardHelper;
-        $this->dataHelper      = $dataHelper;
-        $this->basketHelper    = $basketHelper;
-        $this->priceHelper     = $priceHelper;
-        $this->lsr             = $lsr;
     }
 
     /**

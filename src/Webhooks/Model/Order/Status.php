@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Model\Order;
 
@@ -10,6 +11,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order\CreditmemoFactory;
+use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Service\CreditmemoService;
 
 /**
@@ -18,46 +20,6 @@ use Magento\Sales\Model\Service\CreditmemoService;
 class Status
 {
     public const SUCCESS_MESSAGE = 'success';
-
-    /**
-     * @var Data
-     */
-    public $helper;
-
-    /**
-     * @var NotificationHelper
-     */
-    private $notificationHelper;
-
-    /**
-     * @var OrderCancel
-     */
-    public $orderCancel;
-
-    /**
-     * @var CreditMemo
-     */
-    public $creditMemo;
-
-    /**
-     * @var Payment
-     */
-    public $payment;
-
-    /**
-     * @var Invoice
-     */
-    public $invoice;
-
-    /**
-     * @var CreditmemoFactory
-     */
-    public $creditMemoFactory;
-
-    /**
-     * @var CreditmemoService
-     */
-    public $creditMemoService;
 
     /**
      * @var array
@@ -69,26 +31,21 @@ class Status
      * @param Cancel $orderCancel
      * @param CreditMemo $creditMemo
      * @param Payment $payment
+     * @param Invoice $invoice
      * @param NotificationHelper $notificationHelper
      * @param CreditmemoFactory $creditMemoFactory
      * @param CreditmemoService $creditMemoService
      */
     public function __construct(
-        Data $helper,
-        OrderCancel $orderCancel,
-        CreditMemo $creditMemo,
-        Payment $payment,
-        NotificationHelper $notificationHelper,
-        CreditmemoFactory $creditMemoFactory,
-        CreditmemoService $creditMemoService
+        public Data $helper,
+        public OrderCancel $orderCancel,
+        public CreditMemo $creditMemo,
+        public Payment $payment,
+        public Invoice $invoice,
+        public NotificationHelper $notificationHelper,
+        public CreditmemoFactory $creditMemoFactory,
+        public CreditmemoService $creditMemoService
     ) {
-        $this->helper             = $helper;
-        $this->orderCancel        = $orderCancel;
-        $this->creditMemo         = $creditMemo;
-        $this->payment            = $payment;
-        $this->notificationHelper = $notificationHelper;
-        $this->creditMemoFactory  = $creditMemoFactory;
-        $this->creditMemoService  = $creditMemoService;
     }
 
     /**
@@ -125,7 +82,7 @@ class Status
      *
      * @param string $status
      * @param array $itemsInfo
-     * @param OrderInterface|array $magOrder
+     * @param OrderInterface|array $magentoOrder
      * @param array $data
      * @throws NoSuchEntityException|LocalizedException
      */
@@ -224,7 +181,7 @@ class Status
                 foreach ($itemsInfo as $item) {
                     $itemId    = $item['ItemId'];
                     $variantId = $item['VariantId'];
-                    $invoice   = $this->helper->getItemInvoice($magOrder, $itemId, $variantId);
+                    $invoice   = $this->getItemInvoice($magOrder, $itemId, $variantId);
                 }
                 $shippingItemId = $this->helper->getShippingItemId();
                 $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
@@ -250,13 +207,43 @@ class Status
         foreach ($itemsInfo as $item) {
             $itemId    = $item['ItemId'];
             $variantId = $item['VariantId'];
-            $exists2   = $this->helper->getItemInvoice($magOrder, $itemId, $variantId);
+            $exists2   = $this->getItemInvoice($magOrder, $itemId, $variantId);
             $exists1   = $exists1 && $exists2;
         }
 
         return $exists1;
     }
 
+    /**
+     * Get item invoice
+     *
+     * @param $magOrder
+     * @param $itemId
+     * @param $variantId
+     * @return false|Invoice
+     * @throws NoSuchEntityException
+     */
+    public function getItemInvoice($magOrder, $itemId, $variantId)
+    {
+        $invoices        = $magOrder->getInvoiceCollection();
+        $requiredInvoice = false;
+
+        foreach ($invoices as $invoice) {
+            $invoiceIncrementId = $invoice->getIncrementId();
+            $invoiceObj         = $this->invoice->loadByIncrementId($invoiceIncrementId);
+
+            foreach ($invoiceObj->getItems() as $invoiceItem) {
+                $product = $this->helper->getProductById($invoiceItem->getProductId());
+
+                if ($product->getLsrItemId() == $itemId && $product->getLsrVariantId() == $variantId) {
+                    $requiredInvoice = $invoiceObj;
+                    break;
+                }
+            }
+        }
+
+        return $requiredInvoice;
+    }
 
     /**
      * Get Helper Object

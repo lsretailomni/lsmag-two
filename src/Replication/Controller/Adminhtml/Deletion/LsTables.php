@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
 use Ls\Core\Model\LSR;
+use Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -32,15 +34,16 @@ class LsTables extends AbstractReset
         'ls_replication_repl_store',
         'ls_replication_repl_store_tender_type',
         'ls_replication_repl_unit_of_measure',
-        'ls_replication_repl_vendor'
+        'ls_replication_repl_vendor',
+        'ls_replication_repl_price',
+        'ls_replication_repl_inv_status'
     ];
 
     public const TABLE_CONFIGS = [
         'ls_mag/replication/',
         'ls_mag/replication/last_execute_',
         'ls_mag/replication/status_',
-        'ls_mag/replication/max_key_',
-        'ls_mag/replication/app_id_'
+        'ls_mag/replication/last_entry_no_',
     ];
 
     /**
@@ -99,6 +102,19 @@ class LsTables extends AbstractReset
                     'TranslationId = ?' => LSR::SC_TRANSLATION_ID_ITEM_HTML,
                     'scope_id = ?'      => $scopeId
                 ]
+            );
+        } elseif ($jobName == 'repl_data_translation_lang_code') {
+            $this->replicationHelper->updateConfigValue(
+                null,
+                LSR::SC_STORE_REPLICATED_DATA_TRANSLATION_LANG_CODE,
+                $scopeId,
+                ScopeInterface::SCOPE_STORES
+            );
+            $this->replicationHelper->updateConfigValue(
+                null,
+                LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
+                $scopeId,
+                ScopeInterface::SCOPE_STORES
             );
         } else {
             $replicationTableName = $this->replicationHelper->getGivenTableName($replicationTableName);

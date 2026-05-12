@@ -14,6 +14,11 @@ $memberData = $block->getMembershipInfo();
             <th><?= $block->escapeHtml(__('Member Contact No.:')) ?></th>
             <td><?= (isset($memberData['lsr_id'])) ? $memberData['lsr_id'] : '' ?></td>
         </tr>
+
+        <tr>
+            <th><?= $block->escapeHtml(__('Member Account No.:')) ?></th>
+            <td><?= (isset($memberData['lsr_account_id'])) ? $memberData['lsr_account_id'] : '' ?></td>
+        </tr>
         <tr>
             <th><?= $block->escapeHtml(__('Member Card No.:')) ?></th>
             <td><?= (isset($memberData['lsr_cardid'])) ? $memberData['lsr_cardid'] : '' ?></td>

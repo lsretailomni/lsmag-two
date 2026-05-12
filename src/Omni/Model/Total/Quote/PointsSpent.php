@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\Total\Quote;
 
@@ -6,10 +7,6 @@ use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 
-/**
- * Class PointsSpent
- * @package Ls\Omni\Model\Total\Quote
- */
 class PointsSpent extends AbstractTotal
 {
     /**

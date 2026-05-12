@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Model\Cache;
 
@@ -8,16 +9,10 @@ use Magento\PageCache\Model\Cache\Type;
 class TypePlugin
 {
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
      * @param LSR $lsr
      */
-    public function __construct(LSR $lsr)
+    public function __construct(public LSR $lsr)
     {
-        $this->lsr = $lsr;
     }
 
     /**

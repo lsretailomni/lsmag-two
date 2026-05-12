@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Controller\Stock;
 
@@ -17,41 +18,17 @@ use Magento\Framework\View\Result\PageFactory;
 class Store implements HttpPostActionInterface
 {
     /**
-     * @var Http
-     */
-    public $request;
-
-    /**
-     * @var JsonFactory
-     */
-    public $resultJsonFactory;
-
-    /**
-     * @var PageFactory
-     */
-    public $resultPageFactory;
-
-    /**
-     * @var AbstractHelperOmni
-     */
-    public $abstractHelperOmni;
-
-    /**
      * @param JsonFactory $resultJsonFactory
      * @param Http $request
      * @param PageFactory $resultPageFactory
      * @param AbstractHelperOmni $abstractHelperOmni
      */
     public function __construct(
-        JsonFactory $resultJsonFactory,
-        Http $request,
-        PageFactory $resultPageFactory,
-        AbstractHelperOmni $abstractHelperOmni
+        public JsonFactory $resultJsonFactory,
+        public Http $request,
+        public PageFactory $resultPageFactory,
+        public AbstractHelperOmni $abstractHelperOmni
     ) {
-        $this->request            = $request;
-        $this->resultJsonFactory  = $resultJsonFactory;
-        $this->resultPageFactory  = $resultPageFactory;
-        $this->abstractHelperOmni = $abstractHelperOmni;
     }
 
     /**
@@ -62,46 +39,38 @@ class Store implements HttpPostActionInterface
      */
     public function execute()
     {
-        $result             = $this->resultJsonFactory->create();
-        $stockHelper        = $this->abstractHelperOmni->getStockHelper();
-        $dataHelper         = $this->abstractHelperOmni->getDataHelper();
-        $checkoutSession    = $this->abstractHelperOmni->getCheckoutSession();
+        $result = $this->resultJsonFactory->create();
+        $stockHelper = $this->abstractHelperOmni->getStockHelper();
+        $dataHelper = $this->abstractHelperOmni->getDataHelper();
+        $checkoutSession = $this->abstractHelperOmni->getCheckoutSession();
 
         if ($this->request->isAjax()) {
-            $selectedStore      = $this->request->getParam('storeid');
-            $items              = $checkoutSession->getQuote()->getAllVisibleItems();
+            $selectedStore = $this->request->getParam('storeid');
+            $items = $checkoutSession->getQuote()->getAllVisibleItems();
             $notAvailableNotice = __('Please check other stores or remove the not available item(s) from your ');
             list($response, $stockCollection) = $stockHelper->getGivenItemsStockInGivenStore(
                 $items,
                 $selectedStore
             );
 
-            if ($response) {
-                if (is_object($response)) {
-                    if (!is_array($response->getInventoryResponse())) {
-                        $response = [$response->getInventoryResponse()];
-                    } else {
-                        $response = $response->getInventoryResponse();
-                    }
-                }
-
+            if ($response && !empty($response->getInventorybufferout())) {
                 $stockCollection = $stockHelper->updateStockCollection($response, $stockCollection);
-                $hours           = $dataHelper->getStoreHours($selectedStore);
-                $resultPage      = $this->resultPageFactory->create();
-                $storeHoursHtml  = $resultPage->getLayout()->createBlock(Stores::class)
+                $hours = $dataHelper->getStoreHours($selectedStore);
+                $resultPage = $this->resultPageFactory->create();
+                $storeHoursHtml = $resultPage->getLayout()->createBlock(Stores::class)
                     ->setTemplate('Ls_Omni::stores/hours.phtml')
                     ->setData(['hours' => $hours])
                     ->toHtml();
-                $result          = $result->setData(
+                $result = $result->setData(
                     [
-                        'remarks'        => $notAvailableNotice,
-                        'stocks'         => $stockCollection,
+                        'remarks' => $notAvailableNotice,
+                        'stocks' => $stockCollection,
                         'storeHoursHtml' => $storeHoursHtml
                     ]
                 );
             } else {
                 $notAvailableNotice = __('Oops! Unable to do stock lookup currently.');
-                $result             = $result->setData(
+                $result = $result->setData(
                     ['remarks' => $notAvailableNotice, 'stocks' => null, 'storeHoursHtml' => null]
                 );
             }

@@ -19,7 +19,7 @@ use Ls\Replication\Api\LoyItemRepositoryInterface as LoyItemRepository;
 use Ls\Replication\Model\LoyItemFactory;
 use Ls\Replication\Api\Data\LoyItemInterface;
 
-class ReplEcommFullItemTask extends AbstractReplicationTask
+abstract class ReplEcommFullItemTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_loy_item';
 
@@ -108,19 +108,6 @@ class ReplEcommFullItemTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommFullItem($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

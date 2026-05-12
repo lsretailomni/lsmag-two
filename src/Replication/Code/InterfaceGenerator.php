@@ -1,6 +1,6 @@
 <?php
 // @codingStandardsIgnoreFile
-
+declare(strict_types=1);
 namespace Ls\Replication\Code;
 
 use Laminas\Code\Generator\ClassGenerator;

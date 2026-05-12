@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Ls\Omni\Plugin\Quote;
 
 use Magento\Quote\Model\Quote\Item\AbstractItem;

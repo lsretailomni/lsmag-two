@@ -1,5 +1,6 @@
 <?php
 // @codingStandardsIgnoreFile
+declare(strict_types=1);
 
 namespace Ls\Replication\Code;
 
@@ -16,7 +17,6 @@ use Magento\Framework\ObjectManagerInterface;
  */
 class CronTabGenerator
 {
-
     /**
      * @param Service\Metadata $metadata
      * @throws \DOMException

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Model\Order;
 
@@ -15,31 +16,6 @@ use Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoader;
 class CreditMemo
 {
     /**
-     * @var CreditmemoSender
-     */
-    private $creditMemoSender;
-
-    /**
-     * @var CreditmemoLoader
-     */
-    private $creditMemoLoader;
-
-    /**
-     * @var CreditmemoManagementInterface
-     */
-    private $creditMemoManagement;
-
-    /**
-     * @var Logger
-     */
-    private $logger;
-
-    /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
      * @param CreditmemoSender $creditMemoSender
      * @param CreditmemoLoader $creditMemoLoader
      * @param CreditmemoManagementInterface $creditMemoManagement
@@ -47,17 +23,12 @@ class CreditMemo
      * @param Logger $logger
      */
     public function __construct(
-        CreditmemoSender $creditMemoSender,
-        CreditmemoLoader $creditMemoLoader,
-        CreditmemoManagementInterface $creditMemoManagement,
-        Data $helper,
-        Logger $logger
+        public CreditmemoSender $creditMemoSender,
+        public CreditmemoLoader $creditMemoLoader,
+        public CreditmemoManagementInterface $creditMemoManagement,
+        public Data $helper,
+        public Logger $logger
     ) {
-        $this->creditMemoSender     = $creditMemoSender;
-        $this->creditMemoLoader     = $creditMemoLoader;
-        $this->creditMemoManagement = $creditMemoManagement;
-        $this->helper               = $helper;
-        $this->logger               = $logger;
     }
 
     /**

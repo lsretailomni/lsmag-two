@@ -1,13 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Checkout\Block\Checkout\AttributeMerger;
 
 use Magento\Checkout\Block\Checkout\AttributeMerger;
 
-/**
- * Class StreetPlugin
- * @package Ls\Omni\Plugin\Checkout\Block\Checkout\AttributeMerger
- */
 class StreetPlugin
 {
     /**

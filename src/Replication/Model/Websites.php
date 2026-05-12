@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Model;
 
@@ -8,16 +9,10 @@ use Magento\Store\Model\System\Store as StoreManager;
 class Websites implements OptionSourceInterface
 {
     /**
-     * @var StoreManager
-     */
-    public $storeManager;
-
-    /**
      * @param StoreManager $storeManager
      */
-    public function __construct(StoreManager $storeManager)
+    public function __construct(public StoreManager $storeManager)
     {
-        $this->storeManager = $storeManager;
     }
 
     /**

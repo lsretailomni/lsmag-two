@@ -3,8 +3,9 @@
 namespace Ls\Core\Model;
 
 use Exception;
-use \Ls\Omni\Client\Ecommerce\Entity\PingResponse;
-use \Ls\Omni\Client\Ecommerce\Operation\Ping;
+use \Ls\Omni\Client\CentralEcommerce\Entity\TestConnection;
+use \Ls\Omni\Client\CentralEcommerce\Entity\TestConnectionResult;
+use \Ls\Omni\Model\Central\TokenRequestService;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\CacheHelper;
@@ -17,6 +18,7 @@ use Magento\Config\Model\ResourceModel\Config\Data\Collection as ConfigDataColle
 use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\Translate\Inline\StateInterface;
@@ -65,6 +67,16 @@ class Data
     public $scopeConfig;
 
     /**
+     * @var TokenRequestService
+     */
+    public $tokenRequestService;
+
+    /**
+     * @var \Ls\Omni\Helper\Data
+     */
+    public $omniDataHelper;
+
+    /**
      * @param StoreManagerInterface $storeManager
      * @param TransportBuilder $transportBuilder
      * @param StateInterface $state
@@ -73,6 +85,7 @@ class Data
      * @param CacheHelper $cacheHelper
      * @param ScopeConfigInterface $scopeConfig
      * @param LoggerInterface $logger
+     * @param TokenRequestService $tokenRequestService
      */
     public function __construct(
         StoreManagerInterface $storeManager,
@@ -82,7 +95,8 @@ class Data
         ConfigCollectionFactory $configDataCollectionFactory,
         CacheHelper $cacheHelper,
         ScopeConfigInterface $scopeConfig,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        TokenRequestService $tokenRequestService
     ) {
         $this->storeManager                = $storeManager;
         $this->transportBuilder            = $transportBuilder;
@@ -92,6 +106,7 @@ class Data
         $this->scopeConfig                 = $scopeConfig;
         $this->configDataCollectionFactory = $configDataCollectionFactory;
         $this->logger                      = $logger;
+        $this->tokenRequestService         = $tokenRequestService;
     }
 
     /**
@@ -121,7 +136,6 @@ class Data
         );
         return $enabled === '1' || $enabled === 1;
     }
-
 
     /**
      * @return mixed
@@ -193,37 +207,32 @@ class Data
     }
 
     /**
-     * Function for commerce service ping
+     * Get omni data helper using lazy load
      *
-     * @param $baseUrl
-     * @param $lsKey
-     * @return PingResponse|ResponseInterface
+     * @return \Ls\Omni\Helper\Data
      */
-    public function omniPing($baseUrl, $lsKey)
+    public function getOmniDataHelper()
     {
-        //@codingStandardsIgnoreStart
-        $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
-        $url          = OmniService::getUrl($service_type, $baseUrl);
-        $client       = new OmniClient($url, $service_type);
-        $ping         = new Ping();
-        //@codingStandardsIgnoreEnd
-        $ping->setClient($client);
-        $ping->setToken($lsKey);
-        $client->setClassmap($ping->getClassMap());
+        if ($this->omniDataHelper) {
+            return $this->omniDataHelper;
+        }
 
-        return $ping->execute();
+        $this->omniDataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
+
+        return $this->omniDataHelper;
     }
 
     /**
      * Checks heartbeat of commerce service
      *
-     * @param $url
-     * @param $lsKey
-     * @param $websiteId
+     * @param string $baseUrl
+     * @param array $connectionParams
+     * @param array $query
+     * @param string $websiteId
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function isEndpointResponding($url, $lsKey, $websiteId)
+    public function isEndpointResponding($baseUrl, $connectionParams, $query, $websiteId)
     {
         try {
             $cacheId       = LSR::PING_RESPONSE_CACHE . $websiteId;
@@ -233,15 +242,16 @@ class Data
                 return true;
             }
 
-            $response = $this->omniPing($url, $lsKey);
+            $omniDataHelper = $this->getOmniDataHelper();
+
+            $response = $omniDataHelper->omniPing($baseUrl, $connectionParams, $query);
 
             if ($response &&
-                strpos($response->getResult(), 'ERROR') === false &&
-                strpos($response->getResult(), 'Failed') === false
+                !empty($response->getLSRetailVersion())
             ) {
                 $this->cacheHelper->persistContentInCache(
                     $cacheId,
-                    $response->getResult(),
+                    $response,
                     [Type::CACHE_TAG],
                     $this->getCommerceServiceHeartbeatTimeout()
                 );
@@ -250,13 +260,12 @@ class Data
                     $this->setNotificationEmailSent(0);
                 }
 
-                //Set license validity
-                if (strpos($response->getResult(), 'CL:') !== false) {
-                    if (strpos($response->getResult(), 'CL:True EL:True') !== false) {
-                        $this->setLicenseStatus("1");
-                    } else {
-                        $this->setLicenseStatus("0");
-                    }
+                if (!empty($response->getLSRetailLicenseKeyActive()) &&
+                    !empty($response->getLSRetailLicenseUnitEcom())
+                ) {
+                    $this->setLicenseStatus("1");
+                } else {
+                    $this->setLicenseStatus("0");
                 }
 
                 return true;
@@ -333,6 +342,7 @@ class Data
         $configDataCollection->addFieldToFilter('scope', $scope);
         $configDataCollection->addFieldToFilter('scope_id', $scopeId);
         $configDataCollection->addFieldToFilter('path', $path);
+        //echo $configDataCollection->getSelectSql()->__toString();
         if ($configDataCollection->count() !== 0) {
             return $configDataCollection->getFirstItem()->getValue();
         }

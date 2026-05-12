@@ -1,12 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\Controller\Order;
 
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
-use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\App\Request\Http;
@@ -20,39 +18,6 @@ use Magento\Framework\View\Result\PageFactory;
 class AbstractOrderController
 {
     /**
-     * @var ManagerInterface
-     */
-    public $messageManager;
-
-    /**
-     * @var ResultFactory
-     */
-    public $resultRedirect;
-
-    /** @var PageFactory */
-    public $resultPageFactory;
-
-    /**
-     * @var Http $request
-     */
-    public $request;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var ResultFactory
-     */
-    public $resultFactory;
-
-    /**
-     * @var UrlInterface
-     */
-    public $url;
-
-    /**
      * @param PageFactory $resultPageFactory
      * @param Http $request
      * @param OrderHelper $orderHelper
@@ -62,29 +27,21 @@ class AbstractOrderController
      * @param UrlInterface $url
      */
     public function __construct(
-        PageFactory $resultPageFactory,
-        Http $request,
-        OrderHelper $orderHelper,
-        ResultFactory $result,
-        ManagerInterface $messageManager,
-        ResultFactory $resultFactory,
-        UrlInterface $url
+        public PageFactory $resultPageFactory,
+        public Http $request,
+        public OrderHelper $orderHelper,
+        public ResultFactory $result,
+        public ManagerInterface $messageManager,
+        public ResultFactory $resultFactory,
+        public UrlInterface $url
     ) {
-        $this->resultRedirect    = $result;
-        $this->messageManager    = $messageManager;
-        $this->request           = $request;
-        $this->orderHelper       = $orderHelper;
-        $this->resultPageFactory = $resultPageFactory;
-        $this->resultFactory     = $resultFactory;
-        $this->url               = $url;
     }
 
     /**
      * Register Values in registry
      *
-     * @return ResultInterface|void
+     * @return ResultInterface|null
      * @throws InvalidEnumException
-     * @throws NoSuchEntityException
      */
     public function registerValuesInRegistry()
     {
@@ -123,9 +80,8 @@ class AbstractOrderController
      *
      * @param $orderId
      * @param $type
-     * @return SalesEntry|SalesEntry[]|SalesEntryGetResponse|SalesEntryGetSalesByOrderIdResponse|ResponseInterface|null
+     * @return GetSelectedSalesDoc_GetSelectedSalesDoc|null
      * @throws InvalidEnumException
-     * @throws NoSuchEntityException
      */
     public function fetchAndSetCurrentOrderInRegistry($orderId, $type)
     {
@@ -141,40 +97,48 @@ class AbstractOrderController
     /**
      * Set has return sales
      *
-     * @param $transactions
+     * @param $order
      * @return void
-     * @throws InvalidEnumException
-     * @throws NoSuchEntityException
      */
-    public function setHasReturnSales($transactions)
+    public function setHasReturnSales($order)
     {
-        if (!is_array($transactions) && $transactions->getIdType() == DocumentIdType::ORDER) {
-            if ($transactions->getPosted()) {
-                $transactions = $this->orderHelper->fetchOrder(
-                    $transactions->getCustomerOrderNo(),
-                    DocumentIdType::RECEIPT
-                );
-            } else {
-                $this->orderHelper->registerGivenValueInRegistry('has_return_sales', false);
-                return;
+        $refundExists = false;
+
+        $lscMemberSalesBuffer = is_array($order->getLscMemberSalesBuffer()) ?
+            $order->getLscMemberSalesBuffer() :
+            [$order->getLscMemberSalesBuffer()];
+
+        foreach ($lscMemberSalesBuffer as $transaction) {
+            if (!empty($transaction->getRefundReceiptNo())) {
+                $refundExists = true;
+                break;
             }
         }
 
-        if (empty($transactions)) {
-            $this->orderHelper->registerGivenValueInRegistry('has_return_sales', false);
-            return;
+        $this->orderHelper->registerGivenValueInRegistry('has_return_sales', $refundExists);
+    }
+
+    /**
+     * Get current transaction
+     *
+     * @return array
+     */
+    public function getCurrentTransaction()
+    {
+        $order = $this->orderHelper->getOrder(true);
+        $documentId = $this->request->getParam('order_id');
+        $requiredTransaction = [];
+        $lscMemberSalesBuffer = is_array($order->getLscMemberSalesBuffer()) ?
+            $order->getLscMemberSalesBuffer() :
+            [$order->getLscMemberSalesBuffer()];
+
+        foreach ($lscMemberSalesBuffer as $transaction) {
+            if ($transaction->getDocumentId() == $documentId) {
+                $requiredTransaction[] = $transaction;
+                break;
+            }
         }
 
-        if (!is_array($transactions)) {
-            $transactions = [$transactions];
-        }
-
-        $hasReturnSales = $this->orderHelper->hasReturnSale($transactions);
-
-        if ($hasReturnSales) {
-            $this->orderHelper->registerGivenValueInRegistry('has_return_sales', true);
-        } else {
-            $this->orderHelper->registerGivenValueInRegistry('has_return_sales', false);
-        }
+        return $requiredTransaction;
     }
 }

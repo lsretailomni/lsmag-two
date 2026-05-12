@@ -1,28 +1,19 @@
 <?php
 // @codingStandardsIgnoreFile
+declare(strict_types=1);
 
 namespace Ls\Replication\Code;
 
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Laminas\Code\Generator\GeneratorInterface;
 
-/**
- * Class SystemConfigGenerator
- * @package Ls\Replication\Code
- */
 class SystemConfigGenerator implements GeneratorInterface
 {
-    /** @var  ReplicationOperation */
-    protected $operation;
-
     /**
-     * SystemConfigGenerator constructor.
      * @param ReplicationOperation $operation
      */
-
-    public function __construct(ReplicationOperation $operation)
+    public function __construct(public ReplicationOperation $operation)
     {
-        $this->operation = $operation;
     }
 
     /**

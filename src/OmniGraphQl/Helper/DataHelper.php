@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Helper;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
-use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
+use \Ls\Omni\Client\CentralEcommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\StockHelper;
@@ -48,99 +49,6 @@ use Magento\Store\Model\StoreManagerInterface;
 class DataHelper extends AbstractHelper
 {
     /**
-     * @var ManagerInterface
-     */
-    private $eventManager;
-
-    /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /**
-     * @var CheckoutSession
-     */
-    private $checkoutSession;
-
-    /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-
-    /** @var CustomerRepositoryInterface */
-    public $customerRepository;
-
-    /** @var CustomerFactory */
-    public $customerFactory;
-
-    /**
-     * @var Session
-     */
-    public $customerSession;
-
-    /**
-     * @var Data
-     */
-    public $omniDataHelper;
-
-    /** @var CollectionFactory */
-    public $storeCollectionFactory;
-
-    /**
-     * @var GetCartForUser
-     */
-    public $getCartForUser;
-
-    /**
-     * @var MaskedQuoteIdToQuoteIdInterface
-     */
-    public $maskedQuoteIdToQuoteId;
-
-    /**
-     * @var CartRepositoryInterface
-     */
-    public $cartRepository;
-
-    /**
-     * @var StockHelper
-     */
-    public $stockHelper;
-
-    /**
-     * @var StoreHelper
-     */
-    public $storeHelper;
-
-    /**
-     * @var Information
-     */
-    public $storeInfo;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    public $storeManager;
-
-    /** @var AddressInterfaceFactory */
-    public $addressFactory;
-
-    /** @var DataProvider */
-    public DataProvider $dataProvider;
-    /**
-     * @var TimezoneInterface
-     */
-    private TimezoneInterface $timeZoneInterface;
-    /**
-     * @var LSR
-     */
-    private LSR $lsr;
-
-    /**
      * @param Context $context
      * @param ManagerInterface $eventManager
      * @param BasketHelper $basketHelper
@@ -166,50 +74,29 @@ class DataHelper extends AbstractHelper
      */
     public function __construct(
         Context $context,
-        ManagerInterface $eventManager,
-        BasketHelper $basketHelper,
-        CheckoutSession $checkoutSession,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        OrderRepositoryInterface $orderRepository,
-        CustomerRepositoryInterface $customerRepository,
-        CustomerFactory $customerFactory,
-        Session $customerSession,
-        Data $omniDataHelper,
-        CollectionFactory $storeCollectionFactory,
-        GetCartForUser $getCartForUser,
-        MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
-        CartRepositoryInterface $cartRepository,
-        StockHelper $stockHelper,
-        StoreHelper $storeHelper,
-        Information $storeInfo,
-        StoreManagerInterface $storeManager,
-        AddressInterfaceFactory $addressFactory,
-        DataProvider $dataProvider,
-        TimezoneInterface $timeZoneInterface,
-        LSR $lsr
+        public ManagerInterface $eventManager,
+        public BasketHelper $basketHelper,
+        public CheckoutSession $checkoutSession,
+        public SearchCriteriaBuilder $searchCriteriaBuilder,
+        public OrderRepositoryInterface $orderRepository,
+        public CustomerRepositoryInterface $customerRepository,
+        public CustomerFactory $customerFactory,
+        public Session $customerSession,
+        public Data $omniDataHelper,
+        public CollectionFactory $storeCollectionFactory,
+        public GetCartForUser $getCartForUser,
+        public MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
+        public CartRepositoryInterface $cartRepository,
+        public StockHelper $stockHelper,
+        public StoreHelper $storeHelper,
+        public Information $storeInfo,
+        public StoreManagerInterface $storeManager,
+        public AddressInterfaceFactory $addressFactory,
+        public DataProvider $dataProvider,
+        public TimezoneInterface $timeZoneInterface,
+        public LSR $lsr
     ) {
         parent::__construct($context);
-        $this->eventManager           = $eventManager;
-        $this->basketHelper           = $basketHelper;
-        $this->checkoutSession        = $checkoutSession;
-        $this->searchCriteriaBuilder  = $searchCriteriaBuilder;
-        $this->orderRepository        = $orderRepository;
-        $this->customerRepository     = $customerRepository;
-        $this->customerFactory        = $customerFactory;
-        $this->customerSession        = $customerSession;
-        $this->omniDataHelper         = $omniDataHelper;
-        $this->storeCollectionFactory = $storeCollectionFactory;
-        $this->getCartForUser         = $getCartForUser;
-        $this->maskedQuoteIdToQuoteId = $maskedQuoteIdToQuoteId;
-        $this->cartRepository         = $cartRepository;
-        $this->stockHelper            = $stockHelper;
-        $this->storeHelper            = $storeHelper;
-        $this->storeInfo              = $storeInfo;
-        $this->storeManager           = $storeManager;
-        $this->addressFactory         = $addressFactory;
-        $this->dataProvider           = $dataProvider;
-        $this->timeZoneInterface      = $timeZoneInterface;
-        $this->lsr                    = $lsr;
     }
 
     /**
@@ -317,13 +204,13 @@ class DataHelper extends AbstractHelper
             'phone'                             => $store['Phone'],
             'city'                              => $store['City'],
             'country'                           => $store['Country'],
-            'county'                            => $store['County'],
+//            'county'                            => $store['County'],
             'state'                             => $store['State'],
             'zip_code'                          => $store['ZipCode'],
             'currency_accepted'                 => $store['Currency'],
             'street'                            => $store['Street'],
             'available_hospitality_sales_types' =>
-                $store['HospSalesTypes'] ? explode('|', $store['HospSalesTypes']) : null,
+                !empty($store['HospSalesTypes']) ? explode('|', $store['HospSalesTypes']) : null,
             'store_hours'                       => $this->formatStoreTiming($store['nav_id'])
         ];
     }
@@ -416,15 +303,7 @@ class DataHelper extends AbstractHelper
             $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
             list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
 
-            if ($response) {
-                if (is_object($response)) {
-                    if (!is_array($response->getInventoryResponse())) {
-                        $response = [$response->getInventoryResponse()];
-                    } else {
-                        $response = $response->getInventoryResponse();
-                    }
-                }
-
+            if ($response && !empty($response->getInventorybufferout())) {
                 $clickNCollectStoresIds = $this->dataProvider->getClickAndCollectStoreIds($storesData);
                 $this->dataProvider->filterClickAndCollectStores($response, $clickNCollectStoresIds);
 
@@ -480,12 +359,12 @@ class DataHelper extends AbstractHelper
      * @param String $storeId
      * @param String $websiteId
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function getOrderTakingCalendarGivenStoreId($storeId, $websiteId, $calendarType = null)
     {
-        $store         = $this->storeHelper->getStore($websiteId, $storeId);
-        $slots         = $this->storeHelper->formatDateTimeSlotsValues($store->getStoreHours(), $calendarType);
+        $result = $this->omniDataHelper->fetchAllStoreHoursGivenStore($storeId);
+        $slots = $this->storeHelper->formatDateTimeSlotsValues($result, $calendarType);
         $formattedData = [];
 
         foreach ($slots as $index => $slot) {
@@ -503,8 +382,8 @@ class DataHelper extends AbstractHelper
      * Get cart model given required data
      *
      * @param String $maskedCartId
-     * @param String $userId
-     * @param String $storeId
+     * @param int $userId
+     * @param int $storeId
      * @return Quote
      * @throws GraphQlAuthorizationException
      * @throws GraphQlInputException
@@ -594,15 +473,15 @@ class DataHelper extends AbstractHelper
         if ($coupon->getDescription()) {
             $responseArr['coupon_description'] = $coupon->getDescription();
         }
-        if ($coupon->getDetails()) {
-            $responseArr['coupon_details'] = $coupon->getDetails();
+        if ($coupon->getSecondarytext()) {
+            $responseArr['coupon_details'] = $coupon->getSecondarytext();
         }
-        if ($coupon->getCode() != DiscountType::PROMOTION) {
-            if ($coupon->getExpirationDate()) {
-                $responseArr['coupon_expire_date'] = $this->getFormattedOfferExpiryDate($coupon->getExpirationDate());
+        if ($coupon->getDiscounttype() == "9") {
+            if ($coupon->getEndingdate()) {
+                $responseArr['coupon_expire_date'] = $this->getFormattedOfferExpiryDate($coupon->getEndingdate());
             }
-            if ($coupon->getOfferId()) {
-                $responseArr['offer_id'] = $coupon->getOfferId();
+            if ($coupon->getDiscountno()) {
+                $responseArr['offer_id'] = $coupon->getDiscountno();
             }
         }
 
@@ -612,17 +491,21 @@ class DataHelper extends AbstractHelper
     /**
      * Get formatted expiry date
      *
-     * @param $date
+     * @param string $date
      * @return string
      */
     public function getFormattedOfferExpiryDate($date)
     {
         try {
-            return $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
+            $format = $this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
                 $this->lsr->getActiveWebStore()
-            ));
+            );
+
+            $date = new \DateTime($date);
+
+            return $this->timeZoneInterface->date($date)->format($format);
 
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());

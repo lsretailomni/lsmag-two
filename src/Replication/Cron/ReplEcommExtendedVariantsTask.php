@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtend
 use Ls\Replication\Model\ReplExtendedVariantValueFactory;
 use Ls\Replication\Api\Data\ReplExtendedVariantValueInterface;
 
-class ReplEcommExtendedVariantsTask extends AbstractReplicationTask
+abstract class ReplEcommExtendedVariantsTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_extended_variant_value';
 
@@ -108,19 +108,6 @@ class ReplEcommExtendedVariantsTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommExtendedVariants($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

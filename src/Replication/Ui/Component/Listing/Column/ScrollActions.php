@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Ui\Component\Listing\Column;
 
@@ -9,9 +10,6 @@ use Magento\Ui\Component\Listing\Columns\Column;
 
 class ScrollActions extends Column
 {
-    /** @var UrlInterface */
-    public $urlBuilder;
-
     /**
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
@@ -22,11 +20,10 @@ class ScrollActions extends Column
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        UrlInterface $urlBuilder,
+        public UrlInterface $urlBuilder,
         array $components = [],
         array $data = []
     ) {
-        $this->urlBuilder       = $urlBuilder;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 

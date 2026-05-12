@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplHierarchyHospDealLineRepositoryInterface as ReplHiera
 use Ls\Replication\Model\ReplHierarchyHospDealLineFactory;
 use Ls\Replication\Api\Data\ReplHierarchyHospDealLineInterface;
 
-class ReplEcommHierarchyHospDealLineTask extends AbstractReplicationTask
+abstract class ReplEcommHierarchyHospDealLineTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_hierarchy_hosp_deal_line';
 
@@ -108,19 +108,6 @@ class ReplEcommHierarchyHospDealLineTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommHierarchyHospDealLine($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

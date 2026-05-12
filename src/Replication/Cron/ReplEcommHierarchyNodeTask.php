@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplHierarchyNodeRepositoryInterface as ReplHierarchyNode
 use Ls\Replication\Model\ReplHierarchyNodeFactory;
 use Ls\Replication\Api\Data\ReplHierarchyNodeInterface;
 
-class ReplEcommHierarchyNodeTask extends AbstractReplicationTask
+abstract class ReplEcommHierarchyNodeTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_hierarchy_node';
 
@@ -108,19 +108,6 @@ class ReplEcommHierarchyNodeTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommHierarchyNode($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

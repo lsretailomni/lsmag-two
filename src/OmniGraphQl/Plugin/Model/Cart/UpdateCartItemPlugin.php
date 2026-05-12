@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Plugin\Model\Cart;
 
@@ -14,24 +15,14 @@ use Magento\QuoteGraphQl\Model\Cart\UpdateCartItem;
  */
 class UpdateCartItemPlugin
 {
-    /** @var LSR @var */
-    private $lsr;
-
     /**
-     * @var StockHelper
-     */
-    private $stockHelper;
-
-    /**
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param StockHelper $stockHelper
      */
     public function __construct(
-        LSR $LSR,
-        StockHelper $stockHelper
+        public LSR $lsr,
+        public StockHelper $stockHelper
     ) {
-        $this->lsr         = $LSR;
-        $this->stockHelper = $stockHelper;
     }
 
     /**

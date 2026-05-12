@@ -4,11 +4,7 @@ namespace Ls\Customer\Block\Order;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntriesGetByCardIdResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -25,69 +21,34 @@ use Magento\Framework\Api\SortOrderBuilder;
 class Recent extends Template
 {
     /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var PriceCurrencyInterface
-     */
-    public $priceCurrency;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    public $searchCriteriaBuilder;
-
-    /**
-     * @var CustomerSession
-     */
-    public $customerSession;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var SortOrderBuilder
-     */
-    public $sortOrderBuilder;
-
-    /**
-     * Recent constructor.
+     *  Recent constructor.
+     *
      * @param Context $context
      * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SortOrderBuilder $sortOrderBuilder
      * @param CustomerSession $customerSession
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
-        Context $context,
-        OrderHelper $orderHelper,
-        PriceCurrencyInterface $priceCurrency,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        SortOrderBuilder $sortOrderBuilder,
-        CustomerSession $customerSession,
-        LSR $LSR,
+        public Context $context,
+        public OrderHelper $orderHelper,
+        public PriceCurrencyInterface $priceCurrency,
+        public SearchCriteriaBuilder $searchCriteriaBuilder,
+        public SortOrderBuilder $sortOrderBuilder,
+        public CustomerSession $customerSession,
+        public LSR $lsr,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->orderHelper           = $orderHelper;
-        $this->priceCurrency         = $priceCurrency;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->sortOrderBuilder      = $sortOrderBuilder;
-        $this->customerSession       = $customerSession;
-        $this->lsr                   = $LSR;
     }
 
     /**
      * Get recent order history
      *
-     * @return array|ArrayOfSalesEntry|SalesEntriesGetByCardIdResponse|ResponseInterface|null
+     * @return array|null
      * @throws NoSuchEntityException
      */
     public function getOrderHistory()
@@ -100,9 +61,9 @@ class Recent extends Template
         )) {
             $response = [];
             $orders   = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
-            if ($orders) {
+            if (is_array($orders) && count($orders) > 0) {
                 try {
-                    $response = $orders;
+                    $response = $this->orderHelper->processOrderData($orders);
                 } catch (Exception $e) {
                     $this->_logger->error($e->getMessage());
                 }
@@ -118,6 +79,20 @@ class Recent extends Template
             $customerId,
             $sortOrder
         );
+    }
+
+    /**
+     * Get store currency code
+     *
+     * If store currency code is not passed then get store currency code from LSR
+     *
+     * @param $storeCurrencyCode
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getStoreCurrencyCode($storeCurrencyCode)
+    {
+        return ($storeCurrencyCode) ? $storeCurrencyCode : $this->lsr->getStoreCurrencyCode();
     }
 
     /**
@@ -160,31 +135,19 @@ class Recent extends Template
             false,
             $this->lsr->getCustomerIntegrationOnFrontend()
         )) {
-            if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
-                // This condition is added to support viewing of orders created by POS
-                if (!empty($magOrder)) {
-                    return $this->getUrl(
-                        'customer/order/view',
-                        [
-                            'order_id' => $order->getId()
-                        ]
-                    );
-                }
-            }
-
-            if (!empty($magOrder) && !empty($order->getStoreCurrency())) {
-                if ($order->getStoreCurrency() != $magOrder->getOrderCurrencyCode()) {
-                    $order->setCustomerOrderNo(null);
+            if (!empty($magOrder) && !empty($order['Store Currency Code'])) {
+                if ($order['Store Currency Code'] != $magOrder->getOrderCurrencyCode()) {
+                    $order['Customer Order No'] = null;
                 }
             }
 
             return $this->getUrl(
                 'customer/order/view',
                 [
-                    'order_id' => $order->getIdType() == 'Order' && $order->getCustomerOrderNo() ?
-                        $order->getCustomerOrderNo() : $order->getId(),
-                    'type'     => $order->getIdType() == 'Order' && $order->getCustomerOrderNo() ?
-                        DocumentIdType::ORDER : $order->getIdType()
+                    'order_id' => $order['IdType'] == 'Order' && $order['Customer Document ID'] ?
+                        $order['Customer Document ID'] : $order['Document ID'],
+                    'type'     => $order['IdType'] == 'Order' && $order['Document ID'] ?
+                        DocumentIdType::ORDER : $order['IdType']
                 ]
             );
         }
@@ -207,17 +170,17 @@ class Recent extends Template
      * Formulating order canceling url
      *
      * @param OrderInterface $magentoOrder
-     * @param SalesEntry $centralOrder
+     * @param $centralOrder
      * @return string
      */
-    public function getCancelUrl(OrderInterface $magentoOrder, SalesEntry $centralOrder)
+    public function getCancelUrl(OrderInterface $magentoOrder, $centralOrder)
     {
         return $magentoOrder && $centralOrder ? $this->getUrl(
             'customer/order/cancel',
             [
                 'magento_order_id' => $magentoOrder->getId(),
-                'central_order_id' => $centralOrder->getId(),
-                'id_type'          => $centralOrder->getIdType()
+                'central_order_id' => $centralOrder['Document ID'],
+                'id_type'          => $centralOrder['ID Type']
             ]
         ) : '';
     }
@@ -242,14 +205,6 @@ class Recent extends Template
     public function getOrderByDocumentId($salesEntry)
     {
         return $this->orderHelper->getOrderByDocumentId($salesEntry);
-    }
-
-    /**
-     * @return string
-     */
-    public function getOmniVersion()
-    {
-        return $this->lsr->getOmniVersion();
     }
 
     /**

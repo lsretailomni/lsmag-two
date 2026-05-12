@@ -1,34 +1,29 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Client;
 
 use DOMDocument;
 use Exception;
+use Laminas\Code\Reflection\ClassReflection;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\NavException;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use \Ls\Omni\Helper\CacheHelper;
+use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Logger\FlatReplicationLogger;
 use \Ls\Replication\Logger\OmniLogger;
+use Magento\Catalog\Model\AbstractModel;
 use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Exception\InputException;
+use Magento\Framework\DataObject;
 use Magento\Framework\Session\SessionManagerInterface;
 use Psr\Log\LoggerInterface;
+use ReflectionException;
 use SoapFault;
 
-/**
- * Class AbstractOperation
- * @package Ls\Omni\Client
- */
 abstract class AbstractOperation implements OperationInterface
 {
-    /**
-     * @var string
-     */
-    private static $header = 'LSRETAIL-KEY';
-
     /**
      * @var ServiceType
      */
@@ -75,27 +70,27 @@ abstract class AbstractOperation implements OperationInterface
     public $flatReplicationLogger;
 
     /**
-     * @var LSR
+     * @var Data
      */
-    public $lsr;
+    public $dataHelper;
 
     /**
-     * @param ServiceType $service_type
+     * Constructor function
      */
-    public function __construct(
-        ServiceType $service_type
-    ) {
-        $this->service_type = $service_type;
+    public function __construct()
+    {
         $this->objectManager = ObjectManager::getInstance();
         $this->omniLogger = $this->objectManager->get(OmniLogger::class);
         $this->magentoLogger = $this->objectManager->get(LoggerInterface::class);
         $this->flatReplicationLogger = $this->objectManager->get(FlatReplicationLogger::class);
         $this->session = $this->objectManager->get(SessionManagerInterface::class);
         $this->cacheHelper = $this->objectManager->get(CacheHelper::class);
-        $this->lsr = $this->objectManager->get(LSR::class);
+        $this->dataHelper  = $this->objectManager->get(Data::class);
     }
 
     /**
+     * Get service type
+     *
      * @return ServiceType
      */
     public function getServiceType()
@@ -109,75 +104,44 @@ abstract class AbstractOperation implements OperationInterface
     /** If we change this then we need to change our generator classes in Client/Loyalty Folder as well. */
     // @codingStandardsIgnoreStart
     /**
-     * @param $operation_name
+     * @param $operationName
      * @return NavException|NavObjectReferenceNotAnInstanceException|string|null
      * @throws Exception
      */
-    public function makeRequest($operation_name)
+    public function makeRequest($operationName)
     {
-        $request_input = $this->getOperationInput();
+        $requestInput = $this->getRequest();
+        $this->enrichRequest($requestInput);
         $client        = $this->getClient();
-        $header        = self::$header;
         $response      = null;
         $lsr           = $this->objectManager->get("\Ls\Core\Model\LSR");
-        if (empty($this->token)) {
-            $this->setToken($lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $lsr->getWebsiteId()));
-        }
-        //@codingStandardsIgnoreStart
-        $client->setStreamContext(
-            stream_context_create(
-                [
-                    'http' =>
-                        [
-                            'header'  => "$header: {$this->token}",
-                            'timeout' => floatval($lsr->getWebsiteConfig(LSR::SC_SERVICE_TIMEOUT, $lsr->getWebsiteId()))
-                        ]
-                ]
-            )
-        );
         $client->setLocation($client->getWSDL());
         //@codingStandardsIgnoreEnd
         $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         try {
-            $response = $client->{$operation_name}($request_input);
+            $isDataObject = $requestInput instanceof DataObject;
+            $requestInput = $isDataObject ? $this->convertToArray($requestInput) : $requestInput;
+            $response = $client->{$operationName}($requestInput);
+            if (is_object($response)) {
+                if ($isDataObject) {
+                    $response = $this->convertSoapResponseToDataObject($response);
+                }
+            }
 
-            if ($operation_name == 'OrderCreate') {
+            if ($operationName == 'OrderCreate') {
                 $lsr->setLicenseValidity("1");
             }
         } catch (SoapFault $e) {
             $navException = $this->parseException($e);
             $this->magentoLogger->critical($navException);
             if ($e->getMessage() != "") {
-                if ($e->faultcode == 's:Error' &&
-                    ($operation_name == 'OneListCalculate' || $operation_name == 'OneListHospCalculate')) {
+                if ($e->faultcode == 's:Error' && $operationName == 'OneListCalculate') {
                     $response = $e->getMessage();
-                    $errMsg = $this->lsr->getStoreConfig(LSR::LS_ERROR_MESSAGE_ON_BASKET_FAIL);
-                    $this->magentoLogger->critical($errMsg);
-                    if ($this->lsr->getDisableProcessOnBasketFailFlag() && $operation_name == 'OneListHospCalculate') {
-                        $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
-                        $this->debugLog($operation_name, $requestTime, $responseTime, $lsr->getWebsiteId());
-                        throw new InputException(
-                            __($errMsg)
-                        );
-                    }
-                } elseif ($e->faultcode == "WSDL" &&
-                    ($operation_name == 'OneListCalculate' || $operation_name == 'OneListHospCalculate')
-                ) {
-                    $response = $e->getMessage();
-                    $errMsg = $this->lsr->getStoreConfig(LSR::LS_ERROR_MESSAGE_ON_BASKET_FAIL);
-                    $this->magentoLogger->critical($errMsg);
-                    if ($this->lsr->getDisableProcessOnBasketFailFlag() && $operation_name == 'OneListHospCalculate') {
-                        $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
-                        $this->debugLog($operation_name, $requestTime, $responseTime, $lsr->getWebsiteId());
-                        throw new InputException(
-                            __($errMsg)
-                        );
-                    }
-                } elseif ($e->getCode() == 504 && $operation_name == 'ContactCreate') {
+                } elseif ($e->getCode() == 504 && $operationName == 'ContactCreate') {
                     $response = null;
-                } elseif ($operation_name == 'Ping') {
+                } elseif ($operationName == 'Ping') {
                     throw new Exception('Unable to ping commerce service.');
-                } elseif ($operation_name == 'OrderCreate' &&
+                } elseif ($operationName == 'OrderCreate' &&
                     $e->faultcode == 's:GeneralErrorCode' &&
                     str_contains($e->faultstring, 'LS Central Ecom unit')
                 ) {
@@ -191,18 +155,130 @@ abstract class AbstractOperation implements OperationInterface
         }
         $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
 
-        $this->debugLog($operation_name, $requestTime, $responseTime, $lsr->getWebsiteId());
+        $this->debugLog($operationName, $requestTime, $responseTime, $lsr->getWebsiteId());
+
+        if (!empty($this->getClient()->getLastRequest())) {
+            $this->setRequestXml($this->formatXML($this->getClient()->getLastRequest()));
+        }
+
+        if (!empty($this->getClient()->getLastResponse())) {
+            $this->setResponseXml($this->formatXML($this->getClient()->getLastResponse()));
+        }
+
+        if ($response) {
+            $this->setResponse($response);
+            $this->setError(new \Exception($response->getErrortext()));
+        }
 
         return $response;
     }
     // @codingStandardsIgnoreEnd
 
     /**
-     * @return OmniClient
+     * Convert given nested object to flat array
+     *
+     * @param $object
+     * @return array|mixed
      */
-    abstract public function getClient();
+    public function convertToArray($object)
+    {
+        if (!($object instanceof DataObject)) {
+            return [];
+        }
+
+        $data = $object->getData();
+
+        foreach ($data as $key => $value) {
+            if ($value instanceof DataObject) {
+                $data[$key] = $this->convertToArray($value);
+            } elseif (is_array($value)) {
+                $data[$key] = array_map(function ($item) {
+                    return $item instanceof DataObject
+                        ? $this->convertToArray($item)
+                        : $item;
+                }, $value);
+            }
+        }
+
+        return $data;
+    }
 
     /**
+     * Convert soap object to data object
+     *
+     * @param $response
+     * @return DataObject
+     */
+    private function convertSoapResponseToDataObject($response): DataObject
+    {
+        $data = [];
+
+        foreach (get_object_vars($response) as $key => $value) {
+            // Handle nested objects recursively
+            if (is_object($value)) {
+                $data[$key] = $this->convertSoapResponseToDataObject($value);
+            } elseif (is_array($value)) {
+                $data[$key] = $this->convertSoapResponseArray($value);
+            } else {
+                $data[$key] = $value;
+            }
+        }
+        $className = get_class($response);
+        $obj = $this->objectManager->create($className);
+
+        return $obj->addData($data);
+    }
+
+    /**
+     * Convert soap response array
+     *
+     * @param array $array
+     * @return array
+     */
+    private function convertSoapResponseArray(array $array): array
+    {
+        $result = [];
+        foreach ($array as $key => $item) {
+            if (is_object($item)) {
+                $result[$key] = $this->convertSoapResponseToDataObject($item);
+            } elseif (is_array($item)) {
+                $result[$key] = $this->convertSoapResponseArray($item);
+            } else {
+                $result[$key] = $item;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Replace null in missing parameters
+     *
+     * @param $requestInput
+     * @return void
+     * @throws ReflectionException
+     */
+    public function enrichRequest($requestInput)
+    {
+        $reflectedEntity = new ClassReflection($requestInput);
+        $constants = $reflectedEntity->getConstants();
+
+        foreach ($constants as $constantName => $constant) {
+            if ($constantName === 'CLASS_NAME' ||
+                $constantName == 'CUSTOM_ATTRIBUTES' ||
+                $constantName == 'EXTENSION_ATTRIBUTES_KEY'
+            ) {
+                continue;
+            }
+
+            if (!$requestInput->hasData($constant)) {
+                $requestInput->setData($constant, null);
+            }
+        }
+    }
+
+    /**
+     * Set token
+     *
      * @param string $token
      *
      * @return $this
@@ -215,6 +291,8 @@ abstract class AbstractOperation implements OperationInterface
     }
 
     /**
+     * Parse exception
+     *
      * @param SoapFault $exception
      * @return NavException|NavObjectReferenceNotAnInstanceException
      */
@@ -295,6 +373,8 @@ abstract class AbstractOperation implements OperationInterface
     }
 
     /**
+     * Format xml
+     *
      * @param $xmlString
      * @return string
      */
@@ -355,5 +435,18 @@ abstract class AbstractOperation implements OperationInterface
     {
         $this->session->start();
         return $this->session->getMessage();
+    }
+
+    /**
+     * Set operation input
+     *
+     * @param array $params
+     * @return AbstractModel
+     */
+    public function & setOperationInput(array $params = [])
+    {
+        $model = $this->objectManager->create(AbstractModel::class);
+
+        return $model;
     }
 }

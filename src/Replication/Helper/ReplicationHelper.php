@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Helper;
 
@@ -145,384 +146,817 @@ class ReplicationHelper extends AbstractHelper
         'product'
     ];
 
+    public const TABLE_NAME_PREFIX = 'ls_replication_';
+    public const CRON_JOBS_MAPPING = [
+        'LscAttribute' => 'Attribute',
+        'LscAttributeOptionValue' => 'AttributeOptionValue',
+        'LscAttributeValue' => 'AttributeValue',
+        'Hierarchyview' => 'Hierarchy',
+        'Hierarchynodesview' => 'HierarchyNode',
+        'Hierarchynodeslinkview' => 'HierarchyLeaf',
+        'LscBarcodes' => 'Barcodes',
+        'LscWiExtdVariantValues' => 'ExtendedVariants',
+        'Variantregview' => 'ItemVariantRegistrations',
+        'ItemVariant' => 'ItemVariant',
+        'LscWiItemBuffer' => 'Items',
+        'LscRetailImageLink' => 'ImageLinks',
+        'LscWiPrice' => 'Prices',
+        'Salepriceview' => 'BasePrices',
+        'LscInventoryLookupTable' => 'InventoryStatus',
+        'LscTenderType' => 'StoreTenderTypes',
+        'VatPostingSetup' => 'TaxSetup',
+        'Storeview' => 'Stores',
+        'Countryview' => 'CountryCode',
+        'Periodicdiscview' => 'DiscountSetup',
+        'LscValidationPeriod' => 'DiscountValidations',
+        'LscDataTranslation' => 'DataTranslation',
+        'LscItemHtmlMl' => 'HtmlTranslation',
+        'LscOfferHtmlMl' => 'DealHtmlTranslation',
+        'LscWiItemRecipeBuffer' => 'ItemRecipe',
+        'LscWiItemModifier' => 'ItemModifier',
+        'Hierarchydealview' => 'HierarchyHospDeal',
+        'Hierarchydeallineview' => 'HierarchyHospDealLine',
+        'Vendor' => 'Vendor',
+        'Vendoritemview' => 'VendorItemMapping',
+        'UnitOfMeasure' => 'UnitOfMeasures',
+        'Itemuomupdview' => 'ItemUnitOfMeasures',
+    ];
+
+    public const ENTITY_MAPPING = [
+        'ReplLscItemHtmlMl' => 'ReplLscDataTranslation',
+        'ReplLscOfferHtmlMl' => 'ReplLscDataTranslation'
+    ];
+
+    public const SAME_NAME_MAPPING = [
+        'PeriodicDiscView' => [
+            'Type' => [
+                0 => 'Line Type',
+                1 => 'Type'
+            ]
+        ]
+    ];
+
+    public const DB_TABLES_MAPPING = [
+        'repl_lsc_attribute' => [
+            'table_name' => 'repl_attribute',
+            'columns_mapping' => [
+                'code' => 'Code',
+                'default_value' => 'DefaultValue',
+                'description' => 'Description',
+                'value_type' => 'ValueType',
+            ]
+        ],
+        'repl_lsc_attribute_option_value' => [
+            'table_name' => 'repl_attribute_option_value',
+            'columns_mapping' => [
+                'attribute_code' => 'Code',
+                'option_value' => 'Value',
+                'sequence' => 'Sequence',
+            ]
+        ],
+        'repl_lsc_attribute_value' => [
+            'table_name' => 'repl_attribute_value',
+            'columns_mapping' => [
+                'attribute_code' => 'Code',
+                'attribute_value' => 'Value',
+                'link_field_1' => 'LinkField1',
+                'link_field_2' => 'LinkField2',
+                'link_field_3' => 'LinkField3',
+                'link_type' => 'LinkType',
+                'numeric_value' => 'NumbericValue',
+                'sequence' => 'Sequence',
+            ]
+        ],
+        'repl_hierarchyview' => [
+            'table_name' => 'repl_hierarchy',
+            'columns_mapping' => [
+                'hierarchy_code' => 'nav_id',
+                'description' => 'Description',
+                'type' => ['name' => 'Type' , 'type' => 'text'],
+                'priority' => 'Priority',
+                'sales_type_filter' => 'SalesType',
+                'start_date' => 'StartDate',
+                'validation_schedule_id' => 'ValidationScheduleId'
+            ]
+        ],
+        'repl_hierarchynodesview' => [
+            'table_name' => 'repl_hierarchy_node',
+            'columns_mapping' => [
+                'hierarchy_code' => 'HierarchyCode',
+                'description' => 'Description',
+                'node_id' => 'nav_id',
+                'parent_node_id' => 'ParentNode',
+                'children_order' => 'ChildrenOrder',
+                'indentation' => 'Indentation',
+                'presentation_order' => 'PresentationOrder',
+                'retail_image_id' => 'ImageId'
+            ]
+        ],
+        'repl_hierarchynodeslinkview' => [
+            'table_name' => 'repl_hierarchy_leaf',
+            'columns_mapping' => [
+                'hierarchy_code' => 'HierarchyCode',
+                'description' => 'Description',
+                'deal_price' => 'DealPrice',
+                'node_id' => 'NodeId',
+                'type' => ['name' => 'Type' , 'type' => 'text'],
+                'no' => 'nav_id',
+                'retail_image_id' => 'ImageId',
+                'item_unit_of_measure' => 'ItemUOM',
+                'sort_order' => 'SortOrder',
+                'validation_period_id' => 'ValidationPeriod',
+            ]
+        ],
+        'repl_lsc_barcodes' => [
+            'table_name' => 'repl_barcode',
+            'columns_mapping' => [
+                'barcode_no' => 'nav_id',
+                'description' => 'Description',
+                'item_no' => 'ItemId',
+                'unit_of_measure_code' => 'UnitOfMeasure',
+                'variant_code' => 'VariantId'
+            ]
+        ],
+        'repl_lsc_wi_extd_variant_values' => [
+            'table_name' => 'repl_extended_variant_value',
+            'columns_mapping' => [
+                'item_no' => 'ItemId',
+                'dimension' => 'Dimensions',
+                'code' => 'Code',
+                'value' => 'Value',
+                'framework_code' => 'FrameworkCode',
+                'logical_order' => 'LogicalOrder'
+            ]
+        ],
+        'repl_variantregview' => [
+            'table_name' => 'repl_item_variant_registration',
+            'columns_mapping' => [
+                'item_no' => 'ItemId',
+                'variant' => 'VariantId',
+                'framework_code' => 'FrameworkCode',
+                'variant_dimension_1' => 'VariantDimension1',
+                'variant_dimension_2' => 'VariantDimension2',
+                'variant_dimension_3' => 'VariantDimension3',
+                'variant_dimension_4' => 'VariantDimension4',
+                'variant_dimension_5' => 'VariantDimension5',
+                'variant_dimension_6' => 'VariantDimension6',
+                'block_sale_on_pos' => 'BlockedOnPos',
+                'blocked_on_ecommerce' => 'BlockedOnECom',
+                'lsc_order' => 'Order',
+                'lsc_pos_selection' => 'Selection',
+            ]
+        ],
+        'repl_item_variant' => [
+            'table_name' => 'repl_item_variant',
+            'columns_mapping' => [
+                'item_no' => 'ItemId',
+                'code' => 'VariantId',
+                'description' => 'Description',
+                'description_2' => 'Description2'
+            ]
+        ],
+        'repl_itemuomupdview' => [
+            'table_name' => 'repl_item_unit_of_measure',
+            'columns_mapping' => [
+                'code' => 'Code',
+                'item_no' => 'ItemId',
+                'qty_per_unit_of_measure' => 'QtyPrUOM',
+                'lsc_count_as_1_on_receipt' => 'CountAsOne',
+                'cubage' => 'Cubage',
+                'description' => 'Description',
+                'lsc_ecom_selection' => 'EComSelection',
+                'height' => 'Height',
+                'length' => 'Length',
+                'width' => 'Width',
+                'weight' => 'Weight',
+                'lsc_order' => 'Order',
+                'lsc_pos_selection' => 'Selection',
+            ]
+        ],
+        'repl_unit_of_measure' => [
+            'table_name' => 'repl_unit_of_measure',
+            'columns_mapping' => [
+                'code' => 'nav_id',
+                'description' => 'Description'
+            ]
+        ],
+        'repl_lsc_wi_item_buffer' => [
+            'table_name' => 'repl_item',
+            'columns_mapping' => [
+                'no' => 'nav_id',
+                'description' => 'Description',
+                'base_unit_of_measure' => 'BaseUnitOfMeasure',
+                'vat_prod_posting_group' => 'TaxItemGroupId',
+                'lsc_zero_price_valid' => 'ZeroPriceValId',
+                'unit_price' => 'UnitPrice',
+                'purch_unit_of_measure' => 'PurchUnitOfMeasure',
+                'sales_unit_of_measure' => 'SalseUnitOfMeasure',
+                'vendor_no' => 'VendorId',
+                'vendor_item_no' => 'VendorItemId',
+                'season_code' => 'SeasonCode',
+                'item_category_code' => 'ItemCategoryCode',
+                'lsc_item_family_code' => 'ItemFamilyCode',
+                'lsc_retail_product_code' => 'ProductGroupId',
+                'lsc_special_group_codes' => 'SpecialGroups',
+                'gross_weight' => 'GrossWeight',
+                'units_per_parcel' => 'UnitsPerParcel',
+                'unit_volume' => 'UnitVolume',
+                'item_html' => 'Details',
+                'block_discount' => 'BlockDiscount',
+                'block_manual_price_change' => 'BlockManualPriceChange',
+                'block_negative_adjustment' => 'BlockNegativeAdjustment',
+                'block_positive_adjustment' => 'BlockPositiveAdjustment',
+                'block_purchase_return' => 'BlockPurchaseReturn',
+                'block_sale_on_pos' => 'BlockedOnPos',
+                'blocked_on_ecommerce' => 'BlockedOnECom',
+                'blocked' => 'Blocked',
+                'countryregion_of_origin_code' => 'CountryOfOrigin',
+                'tariff_no' => 'TariffNo',
+                'type' => 'Type',
+                'item_tracking_code' => 'ItemTrackingCode'
+            ]
+        ],
+        'repl_lsc_retail_image_link' => [
+            'table_name' => 'repl_image_link',
+            'columns_mapping' => [
+                'image_id' => 'ImageId',
+                'display_order' => 'DisplayOrder',
+                'tablename' => 'TableName',
+                'keyvalue' => 'KeyValue',
+                'image_description' => 'ImageDescription'
+            ]
+        ],
+        'repl_salepriceview' => [
+            'table_name' => 'repl_price',
+            'columns_mapping' => [
+                'asset_no' => 'ItemId',
+                'currency_code' => 'CurrencyCode',
+                'ending_date' => 'EndingDate',
+                'line_no' => 'LineNumber',
+                'lsc_unit_price_including_vat' => 'UnitPriceInclVat',
+                'minimum_quantity' => 'MinimumQuantity',
+                'price_includes_vat' => 'PriceInclVat',
+                'price_list_code' => 'PriceListCode',
+                'priority' => 'Priority',
+                'source_no' => 'SaleCode',
+                'source_type' => 'SaleType',
+                'starting_date' => 'StartingDate',
+                'status' => 'Status',
+                'unit_of_measure_code' => 'UnitOfMeasure',
+                'unit_price' => 'UnitPrice',
+                'variant_code' => 'VariantId',
+                'vat_bus_posting_gr_price' => 'VatBusPostingGrPrice',
+                'store_id' => 'StoreId'
+            ]
+        ],
+        'repl_lsc_inventory_lookup_table' => [
+            'table_name' => 'repl_inv_status',
+            'columns_mapping' => [
+                'item_no' => 'ItemId',
+                'variant_code' => 'VariantId',
+                'store_no' => 'StoreId',
+                'net_inventory' => 'Quantity'
+            ]
+        ],
+        'repl_lsc_tender_type' => [
+            'table_name' => 'repl_store_tender_type',
+            'columns_mapping' => [
+                'above_min_change_tender_type' => 'AboveMinimumTenderId',
+                'code' => 'TenderTypeId',
+                'description' => 'Name',
+                'function' => 'TenderFunction',
+                'valid_on_mobile_pos' => 'ValidOnMobilePOS',
+                'change_tend_code' => 'ChangeTenderId',
+                'min_change' => 'MinimumChangeAmount',
+                'rounding' => 'RoundingMethode',
+                'rounding_to' => 'Rounding',
+                'overtender_allowed' => 'AllowOverTender',
+                'overtender_max_amt' => 'MaximumOverTenderAmount',
+                'undertender_allowed' => 'AllowUnderTender',
+                'returnminus_allowed' => 'ReturnAllowed',
+                'drawer_opens' => 'OpenDrawer',
+                'counting_required' => 'CountingRequired',
+                'foreign_currency' => 'ForeignCurrency'
+            ]
+        ],
+        'repl_vat_posting_setup' => [
+            'table_name' => 'repl_tax_setup',
+            'columns_mapping' => [
+                'vat_bus_posting_group' => 'BusinessTaxGroup',
+                'vat_prod_posting_group' => 'ProductTaxGroup',
+                'vat' => 'TaxPercent'
+            ]
+        ],
+        'repl_vendor' => [
+            'table_name' => 'repl_vendor',
+            'columns_mapping' => [
+                'no' => 'nav_id',
+                'name' => 'Name',
+                'blocked' => 'Blocked',
+                'last_date_modified' => 'UpdatedOnUtc',
+            ]
+        ],
+        'repl_vendoritemview' => [
+            'table_name' => 'repl_loy_vendor_item_mapping',
+            'columns_mapping' => [
+                'vendorno' => 'NavManufacturerId',
+                'itemno' => 'NavProductId',
+                'vendoritemno' => 'NavManufacturerItemId',
+            ]
+        ],
+        'repl_countryview' => [
+            'table_name' => 'repl_country_code',
+            'columns_mapping' => [
+                'code' => 'Code',
+                'name' => 'Name',
+                'lsc_web_store_customer_no' => 'CustomerNo',
+                'taxpostgroup' => 'TaxPostGroup'
+            ]
+        ],
+        'repl_currency' => [
+            'table_name' => 'repl_currency',
+            'columns_mapping' => [
+                'code' => 'CurrencyCode',
+                'description' => 'Description',
+                'amount_rounding_precision' => 'RoundOfSales',
+                'invoice_rounding_type' => 'RoundOfTypeAmount',
+                'invoice_rounding_precision' => 'RoundOfAmount',
+                'lsc_pos_currency_symbol' => 'Symbol'
+            ]
+        ],
+        'repl_item_category' => [
+            'table_name' => 'repl_item_category',
+            'columns_mapping' => [
+                'description' => 'Description',
+                'code' => 'nav_id'
+            ]
+        ],
+        'repl_customer' => [
+            'table_name' => 'repl_customer',
+            'columns_mapping' => [
+                'lsc_customer_id' => 'nav_id',
+                'name' => 'Name',
+                'address' => 'Street',
+                'city' => 'City',
+                'county' => 'Country',
+                'home_page' => 'URL',
+                'email' => 'Email',
+                'blocked' => 'Blocked',
+                'no' => 'AccountNumber',
+                'post_code' => 'ZipCode',
+                'mobile_phone_no' => 'CellularPhone',
+                'phone_no' => 'PhoneLocal',
+                'currency_code' => 'Currency',
+                'vat_bus_posting_group' => 'TaxGroup',
+                'prices_including_vat' => 'IncludeTax',
+            ]
+        ],
+        'repl_lsc_validation_period' => [
+            'table_name' => 'repl_discount_validation',
+            'columns_mapping' => [
+                'nav_id' => 'nav_id',
+                'description' => 'Description',
+                'starting_date' => 'StartDate',
+                'ending_date' => 'EndDate',
+                'offer_starting_time' => 'OfferStartTime',
+                'offer_ending_time' => 'OfferEndTime',
+                'starting_time' => 'StartTime',
+                'ending_time' => 'EndTime',
+                'monday_starting_time' => 'MondayStart',
+                'monday_ending_time' => 'MondayEnd',
+                'tuesday_starting_time' => 'TuesdayStart',
+                'tuesday_ending_time' => 'TuesdayEnd',
+                'wednesday_starting_time' => 'WednesdayStart',
+                'wednesday_ending_time' => 'WednesdayEnd',
+                'thursday_starting_time' => 'ThursdayStart',
+                'thursday_ending_time' => 'ThursdayEnd',
+                'friday_starting_time' => 'FridayStart',
+                'friday_ending_time' => 'FridayEnd',
+                'saturday_starting_time' => 'SaturdayStart',
+                'saturday_ending_time' => 'SaturdayEnd',
+                'sunday_starting_time' => 'SundayStart',
+                'sunday_ending_time' => 'SundayEnd',
+                'time_within_bounds' => 'TimeWithinBounds',
+                'ending_time_after_midnight' => 'EndAfterMidnight',
+                'mon_time_within_bounds' => 'MondayWithinBounds',
+                'mon_end_time_after_midnight' => 'MondayEndAfterMidnight',
+                'tue_time_within_bounds' => 'TuesdayWithinBounds',
+                'tue_end_time_after_midnight' => 'TuesdayEndAfterMidnight',
+                'wed_time_within_bounds' => 'WednesdayWithinBounds',
+                'wed_end_time_after_midnight' => 'WednesdayEndAfterMidnight',
+                'thu_time_within_bounds' => 'ThursdayWithinBounds',
+                'thu_end_time_after_midnight' => 'ThursdayEndAfterMidnight',
+                'fri_time_within_bounds' => 'FridayWithinBounds',
+                'fri_end_time_after_midnight' => 'FridayEndAfterMidnight',
+                'sat_time_within_bounds' => 'SaturdayWithinBounds',
+                'sat_end_time_after_midnight' => 'SaturdayEndAfterMidnight',
+                'sun_time_within_bounds' => 'SundayWithinBounds',
+                'sun_end_time_after_midnight' => 'SundayEndAfterMidnight'
+            ]
+        ],
+        'repl_periodicdiscview' => [
+            'table_name' => 'repl_discount_setup',
+            'columns_mapping' => [
+                'amount_to_trigger' => 'AmountToTrigger',
+                'coupon_code' => 'CouponCode',
+                'coupon_qty_needed' => 'CouponQtyNeeded',
+                'currency_code' => 'CurrencyCode',
+                'customer_disc_group' => 'CustomerDiscountGroup',
+                'deal_pricedisc' => 'DealPriceDiscount',
+                'deal_price_value' => 'DealPriceValue',
+                'description' => 'Description',
+                'discount_amount_value' => 'DiscountAmountValue',
+                'discount_value' => 'DiscountValue',
+                'discount_type' => ['name' => 'DiscountValueType', 'type' => 'text'],
+                'status' => 'Enabled',
+                'exclude' => 'Exclude',
+                'disc_type' => 'IsPercentage',
+                'discount_amount' => 'LineDiscountAmount',
+                'discount_amount_including_vat' => 'LineDiscountAmountInclVAT',
+                'line_group' => 'LineGroup',
+                'member_points' => 'LineMemberPoints',
+                'line_no' => 'LineNumber',
+                'type' => ['name' => 'Type', 'type' => 'text'],
+                'member_value' => 'LoyaltySchemeCode',
+                'maximum_discount_amount' => 'MaxDiscountAmount',
+                'member_attribute' => 'MemberAttribute',
+                'member_type' => ['name' => 'MemberType', 'type' => 'text'],
+                'no' => 'Number',
+                'no_of_items_needed' => 'NumberOfItemNeeded',
+                'offer_no' => 'OfferNo',
+                'offer_price' => 'OfferPrice',
+                'offer_price_including_vat' => 'OfferPriceInclVAT',
+                'price_group' => 'PriceGroup',
+                'priority' => 'PriorityNo',
+                'prod_group_category' => 'ProductItemCategory',
+                'prompt_for_action' => 'PromptForAction',
+                'split_deal_pricedisc' => 'SplitDealPriceDiscount',
+                'standard_price' => 'StandardPrice',
+                'standard_price_including_vat' => 'StandardPriceInclVAT',
+                'store_group_codes' => 'StoreGroupCodes',
+                'tender_offer' => 'TenderOffer',
+                'tender_offer_amount' => 'TenderOfferAmount',
+                'tender_type_code' => 'TenderTypeCode',
+                'tender_type_value' => 'TenderTypeValue',
+                'trigger_popup_on_pos' => 'TriggerPopUp',
+                'unit_of_measure' => 'UnitOfMeasureId',
+                'valid_from_before_exp_date' => 'ValidFromBeforeExpDate',
+                'valid_to_before_exp_date' => 'ValidToBeforeExpDate',
+                'validation_period_id' => 'ValidationPeriodId',
+                'variant_code' => 'VariantId',
+                'variant_type' => 'VariantType',
+                'line_type' => ['name' => 'LineType', 'type' => 'text']
+            ]
+        ],
+        'repl_storeview' => [
+            'table_name' => 'repl_store',
+            'columns_mapping' => [
+                'no' => 'nav_id',
+                'name' => 'Name',
+                'address' => 'Street',
+                'post_code' => 'ZipCode',
+                'city' => 'City',
+                'county' => 'State',
+                'country_code' => 'Country',
+                'latitude' => 'Latitute',
+                'longitude' => 'Longitude',
+                'phone_no' => 'Phone',
+                'currency_code' => 'Currency',
+                'functionality_profile' => 'FunctionalityProfile',
+                'store_vat_bus_post_gr' => 'TaxGroup',
+                'click_and_collect' => 'ClickAndCollect',
+                'price_group_codes' => 'PriceGroupCodes',
+                'store_group_codes' => 'StoreGroupCodes',
+                'calc_inv_for_sourcing_location' => 'UseSourcingLocation',
+            ]
+        ],
+        'repl_lsc_data_translation' => [
+            'table_name' => 'repl_data_translation',
+            'columns_mapping' => [
+                'key' => 'Key',
+                'language_code' => 'LanguageCode',
+                'translation' => 'Text',
+                'translation_id' => 'TranslationId'
+            ]
+        ],
+        'repl_lsc_item_html_ml' => [
+            'table_name' => 'repl_data_translation',
+            'columns_mapping' => [
+                'item_no' => 'Key',
+                'language' => 'LanguageCode',
+                'html' => 'Text',
+                'translation_id' => 'TranslationId'
+            ]
+        ],
+        'repl_lsc_offer_html_ml' => [
+            'table_name' => 'repl_data_translation',
+            'columns_mapping' => [
+                'offer_no' => 'Key',
+                'language' => 'LanguageCode',
+                'html' => 'Text',
+                'translation_id' => 'TranslationId'
+            ]
+        ],
+        'repl_hierarchydealview' => [
+            'table_name' => 'repl_hierarchy_hosp_deal',
+            'columns_mapping' => [
+                'hierarchy_code' => 'HierarchyCode',
+                'node_id' => 'ParentNode',
+                'offer_no' => 'DealNo',
+                'no' => 'No',
+                'description' => 'Description',
+                'line_no' => 'LineNo',
+                'type' => ['name' => 'Type', 'type' => 'text'],
+                'variant_code' => 'VariantCode',
+                'unit_of_measure' => 'UnitOfMeasure',
+                'min_selection' => 'MinSelection',
+                'max_selection' => 'MaxSelection',
+                'modifier_added_amount' => 'AddedAmount',
+                'deal_mod_size_gr_index' => 'DealModSizeGroupIndex',
+                'retail_image_id' => 'ImageId',
+            ]
+        ],
+        'repl_hierarchydeallineview' => [
+            'table_name' => 'repl_hierarchy_hosp_deal_line',
+            'columns_mapping' => [
+                'hierarchy_code' => 'HierarchyCode',
+                'node_id' => 'ParentNode',
+                'offer_no' => 'DealNo',
+                'offer_line_no' => 'DealLineNo',
+                'deal_modifier_line_no' => 'LineNo',
+                'deal_modifier_code' => 'DealLineCode',
+                'item_no' => 'ItemNo',
+                'description' => 'Description',
+                'variant_code' => 'VariantCode',
+                'unit_of_measure' => 'UnitOfMeasure',
+                'min_selection' => 'MinSelection',
+                'max_item_selection' => 'MaxSelection',
+                'added_amount' => 'AddedAmount',
+                'retail_image_id' => 'ImageId',
+            ]
+        ],
+        'repl_lsc_wi_item_modifier' => [
+            'table_name' => 'repl_item_modifier',
+            'columns_mapping' => [
+                'amount_percent' => 'AmountPercent',
+                'infocode_code' => 'Code',
+                'description' => 'Description',
+                'explanatory_header_text' => 'ExplanatoryHeaderText',
+                'group_max_selection' => 'GroupMaxSelection',
+                'group_min_selection' => 'GroupMinSelection',
+                'parent_item_no' => 'nav_id',
+                'max_selection' => 'MaxSelection',
+                'min_selection' => 'MinSelection',
+                'price_type' => ['name' => 'PriceType', 'type' => 'text'],
+                'prompt' => 'Prompt',
+                'subcode' => 'SubCode',
+                'time_modifier_minutes' => 'TimeModifierMinutes',
+                'item_no' => 'TriggerCode',
+                'price_handling' => ['name' => 'AlwaysCharge', 'type' => 'text'],
+                'trigger_function' => ['name' => 'TriggerFunction', 'type' => 'text'],
+                'usage_subcategory' => ['name' => 'Type', 'type' => 'text'],
+                'unit_of_measure' => 'UnitOfMeasure',
+                'usage_category' => ['name' => 'UsageCategory', 'type' => 'text'],
+                'variant_code' => 'VariantCode',
+            ]
+        ],
+        'repl_lsc_wi_item_recipe_buffer' => [
+            'table_name' => 'repl_item_recipe',
+            'columns_mapping' => [
+                'description' => 'Description',
+                'lsc_exclusion' => 'Exclusion',
+                'lsc_price_on_exclusion' => 'ExclusionPrice',
+                'retail_image_id' => 'ImageId',
+                'parent_item_no' => 'RecipeNo',
+                'line_no' => 'LineNo',
+                'quantity_per' => 'QuantityPer',
+                'no' => 'ItemNo',
+                'unit_of_measure_code' => 'UnitOfMeasure'
+            ]
+        ],
+    ];
+
     /** @var array List of Replication Tables with unique field */
     public const JOB_CODE_UNIQUE_FIELD_ARRAY = [
-        "ls_mag/replication/repl_attribute"                  => ["Code", "scope_id"],
-        "ls_mag/replication/repl_attribute_option_value"     => ["Code", "Sequence", "scope_id"],
-        "ls_mag/replication/repl_attribute_value"            => [
-            "Code",
-            "LinkField1",
-            "LinkField2",
-            "LinkField3",
-            "Sequence",
-            "scope_id"
+        'ls_mag/replication/repl_attribute' => [
+            'code' => 'Code',
+            'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_barcode"                    => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_country_code"               => ["Name", "scope_id"],
-        "ls_mag/replication/repl_currency"                   => ["CurrencyCode", "scope_id"],
-        "ls_mag/replication/repl_currency_exch_rate"         => ["CurrencyCode", "scope_id"],
-        "ls_mag/replication/repl_customer"                   => ["AccountNumber", "scope_id"],
-        "ls_mag/replication/repl_data_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
-        "ls_mag/replication/repl_html_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
-        "ls_mag/replication/repl_deal_html_translation"      => ["TranslationId", "Key", "LanguageCode", "scope_id"],
-        "ls_mag/replication/repl_data_translation_lang_code" => ["Code", "scope_id"],
-        "ls_mag/replication/repl_discount"                   => [
-            "ItemId",
-            "LoyaltySchemeCode",
-            "OfferNo",
-            "StoreId",
-            "VariantId",
-            "MinimumQuantity",
-            "scope_id"
+        'ls_mag/replication/repl_attribute_option_value' => [
+            'attribute_code' => 'Code',
+            'sequence' => 'Sequence',
+            'scope_id' => 'scope_id'
         ],
-        "ls_mag/replication/repl_discount_setup"             => [
-            "OfferNo",
-            "LineNumber",
-            "scope_id"
+        'ls_mag/replication/repl_attribute_value' => [
+            'attribute_code' => 'Code',
+            'link_field_1' => 'LinkField1',
+            'link_field_2' => 'LinkField2',
+            'link_field_3' => 'LinkField3',
+            'sequence' => 'Sequence',
+            'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/repl_discount_validation"        => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_extended_variant_value"     => [
-            "Code",
-            "FrameworkCode",
-            "ItemId",
-            "Value",
-            "scope_id"
+        'ls_mag/replication/repl_barcode' => [
+            'barcode_no' => 'nav_id',
+            'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/repl_hierarchy"                  => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_leaf"             => ["nav_id", "NodeId", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_node"             => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_image"                      => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_image_link"                 => ["ImageId", "KeyValue", "scope_id"],
-        "ls_mag/replication/repl_item"                       => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_item_category"              => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_item_unit_of_measure"       => ["Code", "ItemId", "scope_id"],
-        "ls_mag/replication/repl_item_variant_registration"  => [
-            "ItemId",
-            "VariantId",
-            "scope_id"
+        'ls_mag/replication/repl_country_code' => [
+            'code' => 'Code',
+            'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/repl_item_variant"               => [
-            "ItemId",
-            "VariantId",
-            "scope_id"
+        'ls_mag/replication/repl_currency' => [
+            'code' => 'CurrencyCode',
+            'county_name' => 'Name',
+            'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/repl_loy_vendor_item_mapping"    => ["NavManufacturerId", "NavProductId", "scope_id"],
-        "ls_mag/replication/repl_price"                      => [
-            "ItemId",
-            "VariantId",
-            "StoreId",
-            "QtyPerUnitOfMeasure",
-            "UnitOfMeasure",
-            "PriceListCode",
-            "scope_id"
+        'ls_mag/replication/repl_currency_exch_rate' => [
+            'currency_code',
+            'scope_id'
         ],
-        "ls_mag/replication/repl_inv_status"                 => ["ItemId", "VariantId", "StoreId", "scope_id"],
-        "ls_mag/replication/repl_product_group"              => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_shipping_agent"             => ["Name", "scope_id"],
-        "ls_mag/replication/repl_store"                      => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_store_tender_type"          => ["TenderTypeId", "scope_id"],
-        "ls_mag/replication/repl_unit_of_measure"            => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => [
-            "DealNo",
-            "ItemNo",
-            "LineNo",
-            "UnitOfMeasure",
-            "scope_id"
+        'ls_mag/replication/repl_customer' => [
+            'lsc_customer_id' => 'nav_id',
+            'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo", "UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/repl_item_recipe"                => ["RecipeNo", "LineNo", "scope_id"],
-        "ls_mag/replication/repl_item_modifier"              => [
-            "nav_id",
-            "Code",
-            "SubCode",
-            "scope_id"
+        'ls_mag/replication/repl_data_translation' => [
+            'key' => 'Key',
+            'language_code' => 'LanguageCode',
+            'translation_id' => 'TranslationId',
+            'scope_id'  => 'scope_id'
         ],
-        "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_tax_setup"                  => ["BusinessTaxGroup", "ProductTaxGroup", "scope_id"]
+        'ls_mag/replication/repl_html_translation' => [
+            'key' => 'Key',
+            'language_code' => 'LanguageCode',
+            'translation_id' => 'TranslationId',
+            'scope_id'  => 'scope_id'
+        ],
+        'ls_mag/replication/repl_deal_html_translation' => [
+            'key' => 'Key',
+            'language_code' => 'LanguageCode',
+            'translation_id' => 'TranslationId',
+            'scope_id'  => 'scope_id'
+        ],
+        'ls_mag/replication/repl_data_translation_lang_code' => [
+            'code',
+            'scope_id'
+        ],
+        'ls_mag/replication/repl_discount' => [
+            'offer_no' => 'OfferNo',
+            'customer_disc_group' => 'CustomerDiscountGroup',
+            'no' => 'Number',
+            'unit_of_measure' => 'UnitOfMeasureId',
+            'variant_code' => 'VariantId',
+            'scope_id'  => 'scope_id'
+        ],
+        'ls_mag/replication/repl_discount_setup' => [
+            'offer_no' => 'OfferNo',
+            'line_no' => 'LineNumber',
+            'scope_id'  => 'scope_id'
+        ],
+        'ls_mag/replication/repl_discount_validation' => [
+            'nav_id' => 'nav_id',
+            'scope_id'  => 'scope_id'
+        ],
+        'ls_mag/replication/repl_extended_variant_value' => [
+            'item_no' => 'ItemId',
+            'code' => 'Code',
+            'value' => 'Value',
+            'framework_code' => 'FrameworkCode',
+            'scope_id'  => 'scope_id'
+        ],
+        'ls_mag/replication/repl_hierarchy' => [
+            'hierarchy_code' => 'nav_id',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_hierarchy_leaf' => [
+            'no' => 'nav_id',
+            'node_id' => 'NodeId',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_hierarchy_node' => [
+            'node_id' => 'nav_id',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_image_link' => [
+            'image_id' => 'ImageId',
+            'keyvalue' => 'KeyValue',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_item' => [
+            'no' => 'nav_id',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_item_category' => [
+            'code' => 'nav_id',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_item_unit_of_measure' => [
+            'code' => 'Code',
+            'item_no' => 'ItemId',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_item_variant_registration' => [
+            'item_no' => 'ItemId',
+            'variant' => 'VariantId',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_item_variant' => [
+            'item_no' => 'ItemId',
+            'code' => 'VariantId',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_loy_vendor_item_mapping' => [
+            'vendorno' => 'NavManufacturerId',
+            'itemno' => 'NavProductId',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_price' => [
+            'store_id' => 'StoreId',
+            'asset_no' => 'ItemId',
+            'unit_of_measure_code' => 'UnitOfMeasure',
+            'variant_code' => 'VariantId',
+            'price_list_code' => 'PriceListCode',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_inv_status' => [
+            'item_no' => 'ItemId',
+            'variant_code' => 'VariantId',
+            'store_no' => 'StoreId',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_product_group' => [
+            'code',
+            'scope_id'
+        ],
+        'ls_mag/replication/repl_shipping_agent' => [
+            'name',
+            'scope_id'
+        ],
+        'ls_mag/replication/repl_store' => [
+            'no' => 'nav_id',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_store_tender_type' => [
+            'code' => 'TenderTypeId',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_unit_of_measure' => [
+            'code' => 'nav_id',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_vendor' => [
+            'no' => 'nav_id',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_hierarchy_hosp_deal_line' => [
+            'offer_no' => 'DealNo',
+            'offer_line_no' => 'DealLineNo',
+            'item_no' => 'ItemNo',
+            'unit_of_measure' => 'UnitOfMeasure',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_hierarchy_hosp_deal' => [
+            'offer_no' => 'DealNo',
+            'no' => 'No',
+            'line_no' => 'LineNo',
+            'unit_of_measure' => 'UnitOfMeasure',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_item_recipe' => [
+            'parent_item_no' => 'RecipeNo',
+            'line_no' => 'LineNo',
+            'scope_id' => 'scope_id'
+        ],
+        'ls_mag/replication/repl_item_modifier' => [
+            'parent_item_no' => 'nav_id',
+            'item_no' => 'TriggerCode',
+            'scope_id' => 'scope_id',
+            'subcode' => 'SubCode'
+        ],
+        'ls_mag/replication/loy_item' => [
+            'nav_id',
+            'scope_id'
+        ],
+        'ls_mag/replication/repl_tax_setup' => [
+            'vat_bus_posting_group' => 'BusinessTaxGroup',
+            'vat_prod_posting_group' => 'ProductTaxGroup',
+            'scope_id' => 'scope_id'
+        ]
     ];
 
     /** @var array List of Replication Tables with unique field for delete */
     public const DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY = [
-        "ls_mag/replication/repl_item_variant_registration" => [
-            "ItemId",
-            "VariantDimension1",
-            "VariantDimension2",
-            "VariantDimension3",
-            "VariantDimension4",
-            "VariantDimension5",
-            "VariantDimension6"
+        'ls_mag/replication/repl_variantregview' => [
+            'item_no',
+            'variant_dimension_1',
+            'variant_dimension_2',
+            'variant_dimension_3',
+            'variant_dimension_4',
+            'variant_dimension_5',
+            'variant_dimension_6',
         ],
-        "ls_mag/replication/repl_hierarchy_hosp_deal_line"  => ["DealNo", "DealLineNo", "LineNo", "scope_id"],
-
+        'ls_mag/replication/repl_hierarchy_hosp_deal_line'  => ['DealNo', 'DealLineNo', 'LineNo', 'scope_id'],
     ];
 
     public $connection;
-
-    /** @var StoreManagerInterface */
-    public $storeManager;
-
-    /** @var Filesystem */
-    public $filesystem;
-
-    /** @var SearchCriteriaBuilder */
-    public $searchCriteriaBuilder;
-
-    /** @var FilterBuilder */
-    public $filterBuilder;
-
-    /** @var FilterGroupBuilder */
-    public $filterGroupBuilder;
-
-    /** @var ReplImageLinkRepositoryInterface */
-    public $replImageLinkRepositoryInterface;
-
-    /** @var Config */
-    public $eavConfig;
-
-    /** @var WriterInterface */
-    public $configWriter;
-
-    /** @var Set */
-    public $attributeSet;
-
-    /** @var TypeListInterface */
-    public $cacheTypeList;
-
-    /** @var LSR */
-    public $lsr;
-
-    /** @var ResourceConnection */
-    public $resource;
-
-    /** @var SortOrder */
-    public $sortOrder;
-
-    /** @var DateTime */
-    public $dateTime;
-
-    /** @var TimezoneInterface */
-    public $timezone;
-
-    /** @var Logger */
-    public $_logger;
-
-    /**
-     * @var ReplItemRepository
-     */
-    public $itemRepository;
-
-    /**
-     * @var FileSystemDirectory
-     */
-    public $fileSystemDirectory;
-
-    /** @var CollectionFactory */
-    public $categoryCollectionFactory;
-
-    /** @var ReplHierarchyLeafRepository */
-    public $replHierarchyLeafRepository;
-
-    /** @var CategoryLinkManagementInterface */
-    public $categoryLinkManagement;
-
-    /**  @var ReplAttributeValueCollectionFactory */
-    public $replAttributeValueCollectionFactory;
-
-    /**
-     * @var ReplExtendedVariantValueCollectionFactory
-     */
-    public $replExtendedVariantValueCollectionFactory;
-
-    /**
-     * @var TypeFactory
-     */
-    public $eavTypeFactory;
-
-    /**
-     * @var SetFactory
-     */
-    public $attributeSetFactory;
-
-    /**
-     * @var AttributeSetManagement
-     */
-    public $attributeSetManagement;
-
-    /**
-     * @var AttributeManagement
-     */
-    public $attributeManagement;
-
-    /**
-     * @var GroupFactory
-     */
-    public $attributeSetGroupFactory;
-
-    /**
-     * @var AttributeGroupRepositoryInterface
-     */
-    public $attributeGroupRepository;
-
-    /**
-     * @var AttributeSetRepositoryInterface
-     */
-    public $attributeSetRepository;
-
-    /**
-     * @var ReplAttributeValueRepositoryInterface
-     */
-    public $replAttributeValueRepositoryInterface;
-
-    /** @var ConfigurableProTypeModel */
-    public $configurableProTypeModel;
-
-    /** @var ReplExtendedVariantValueRepository */
-    public $extendedVariantValueRepository;
-
-    /** @var ReplItemVariantRegistrationRepository */
-    public $itemVariantRegistrationRepository;
-
-    /** @var ReplItemUnitOfMeasure */
-    public $replItemUomRepository;
-
-    /** @var ReplTaxSetupRepositoryInterface */
-    public $replTaxSetupRepository;
-
-    /** @var ReplStoreTenderTypeRepositoryInterface */
-    public $replStoreTenderTypeRepository;
-
-    /**
-     * @var TaxClassRepositoryInterface
-     */
-    public $taxClassRepository;
-
-    /**
-     * @var ClassModelFactory
-     */
-    public $classModelFactory;
-
-    /** @var ReplInvStatusRepository */
-    public $replInvStatusRepository;
-
-    /**
-     * @var SourceItemsSave
-     */
-    public $sourceItemsSave;
-
-    /**
-     * @var SourceItemInterfaceFactory
-     */
-    public $sourceItemFactory;
-
-    /**
-     * @var DefaultSourceProviderInterfaceFactory
-     */
-    public $defaultSourceProviderFactory;
-
-    /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
-     */
-    public $productCollectionFactory;
-
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    public $categoryRepository;
-    /**
-     * @var ResourceModelCategory
-     */
-    public $categoryResourceModel;
-
-    /**
-     * @var RuleCollectionFactory
-     */
-    public $ruleCollectionFactory;
-
-    /**
-     * @var ReplUnitOfMeasureRepositoryInterface
-     */
-    public $replUnitOfMeasureRepository;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    public $productRepository;
-
-    /**
-     * @var GetParentSkusOfChildrenSkus
-     */
-    public $getParentSkusOfChildrenSkus;
-
-    /**
-     * @var StockStatusRepository
-     */
-    public $stockStatusRepository;
-
-    /**
-     * @var GetProductIdsBySkus
-     */
-    public $getProductIdsBySkus;
-
-    /**
-     * @var AttributeFactory
-     */
-    public $eavAttributeFactory;
-
-    /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product
-     */
-    public $productResourceModel;
-
-    /**
-     * @var ProductMetadataInterface
-     */
-    public $productMetadata;
-
-    /**
-     * @var GetStockSourceLinksInterface
-     */
-    public $getStockSourceLinks;
-
-    /**
-     * @var SourceItemRepositoryInterface
-     */
-    public $sourceItemRepository;
-
-    /**
-     * @var SourceItemsDeleteInterface
-     */
-    public $sourceItemDeleteRepository;
-
-    /**
-     * @var GetAssignedStockIdForWebsite
-     */
-    public $getAssignedStockIdForWebsite;
-
-    /**
-     * @var StockItemCriteriaInterfaceFactory
-     */
-    public $criteriaInterfaceFactory;
-
-    /**
-     * @var StockItemRepositoryInterface
-     */
-    public $stockItemRepository;
-
-    /**
-     * @var StockConfigurationInterface
-     */
-    public $stockConfiguration;
-
-    /**
-     * @var IsSingleSourceModeInterface
-     */
-    public $isSingleSourceMode;
-
-    /**
-     * @var Type
-     */
-    public $pageCache;
 
     /**
      * @param Context $context
@@ -531,15 +965,15 @@ class ReplicationHelper extends AbstractHelper
      * @param FilterGroupBuilder $filterGroupBuilder
      * @param ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface
      * @param StoreManagerInterface $storeManager
-     * @param Filesystem $Filesystem
+     * @param Filesystem $filesystem
      * @param Config $eavConfig
      * @param WriterInterface $configWriter
      * @param Set $attributeSet
      * @param TypeListInterface $cacheTypeList
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param ResourceConnection $resource
      * @param SortOrder $sortOrder
-     * @param DateTime $date
+     * @param DateTime $dateTime
      * @param TimezoneInterface $timezone
      * @param Logger $_logger
      * @param ReplItemRepository $itemRepository
@@ -583,7 +1017,7 @@ class ReplicationHelper extends AbstractHelper
      * @param ProductMetadataInterface $productMetadata
      * @param GetStockSourceLinksInterface $getStockSourceLinks
      * @param SourceItemRepositoryInterface $sourceItemRepository
-     * @param SourceItemsDeleteInterface $sourceItemsDelete
+     * @param SourceItemsDeleteInterface $sourceItemDeleteRepository
      * @param GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite
      * @param StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory
      * @param StockItemRepositoryInterface $stockItemRepository
@@ -593,135 +1027,71 @@ class ReplicationHelper extends AbstractHelper
      */
     public function __construct(
         Context $context,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        FilterBuilder $filterBuilder,
-        FilterGroupBuilder $filterGroupBuilder,
-        ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
-        StoreManagerInterface $storeManager,
-        Filesystem $Filesystem,
-        Config $eavConfig,
-        WriterInterface $configWriter,
-        Set $attributeSet,
-        TypeListInterface $cacheTypeList,
-        LSR $LSR,
-        ResourceConnection $resource,
-        SortOrder $sortOrder,
-        DateTime $date,
-        TimezoneInterface $timezone,
+        public SearchCriteriaBuilder $searchCriteriaBuilder,
+        public FilterBuilder $filterBuilder,
+        public FilterGroupBuilder $filterGroupBuilder,
+        public ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
+        public StoreManagerInterface $storeManager,
+        public Filesystem $filesystem,
+        public Config $eavConfig,
+        public WriterInterface $configWriter,
+        public Set $attributeSet,
+        public TypeListInterface $cacheTypeList,
+        public LSR $lsr,
+        public ResourceConnection $resource,
+        public SortOrder $sortOrder,
+        public DateTime $dateTime,
+        public TimezoneInterface $timezone,
         Logger $_logger,
-        ReplItemRepository $itemRepository,
-        FileSystemDirectory $fileSystemDirectory,
-        CollectionFactory $categoryCollectionFactory,
-        ReplHierarchyLeafRepository $replHierarchyLeafRepository,
-        CategoryLinkManagementInterface $categoryLinkManagement,
-        ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
-        ReplExtendedVariantValueCollectionFactory $replExtendedVariantValueCollectionFactory,
-        TypeFactory $eavTypeFactory,
-        SetFactory $attributeSetFactory,
-        AttributeSetManagement $attributeSetManagement,
-        AttributeManagement $attributeManagement,
-        GroupFactory $attributeSetGroupFactory,
-        AttributeGroupRepositoryInterface $attributeGroupRepository,
-        AttributeSetRepositoryInterface $attributeSetRepository,
-        ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
-        ConfigurableProTypeModel $configurableProTypeModel,
-        ReplExtendedVariantValueRepository $extendedVariantValueRepository,
-        ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository,
-        ReplItemUnitOfMeasure $replItemUomRepository,
-        ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
-        ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
-        TaxClassRepositoryInterface $taxClassRepository,
-        ClassModelFactory $classModelFactory,
-        ReplInvStatusRepository $replInvStatusRepository,
-        SourceItemsSave $sourceItemsSave,
-        SourceItemInterfaceFactory $sourceItemFactory,
-        DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
-        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
-        CategoryRepositoryInterface $categoryRepository,
-        ResourceModelCategory $categoryResourceModel,
-        RuleCollectionFactory $ruleCollectionFactory,
-        ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository,
-        ProductRepositoryInterface $productRepository,
-        GetParentSkusOfChildrenSkus $getParentSkusOfChildrenSkus,
-        StockStatusRepository $stockStatusRepository,
-        GetProductIdsBySkus $getProductIdsBySkus,
-        AttributeFactory $eavAttributeFactory,
-        \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
-        ProductMetadataInterface $productMetadata,
-        GetStockSourceLinksInterface $getStockSourceLinks,
-        SourceItemRepositoryInterface $sourceItemRepository,
-        SourceItemsDeleteInterface $sourceItemsDelete,
-        GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite,
-        StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory,
-        StockItemRepositoryInterface $stockItemRepository,
-        StockConfigurationInterface $stockConfiguration,
-        IsSingleSourceModeInterface $isSingleSourceMode,
-        Type $pageCache
+        public ReplItemRepository $itemRepository,
+        public FileSystemDirectory $fileSystemDirectory,
+        public CollectionFactory $categoryCollectionFactory,
+        public ReplHierarchyLeafRepository $replHierarchyLeafRepository,
+        public CategoryLinkManagementInterface $categoryLinkManagement,
+        public ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
+        public ReplExtendedVariantValueCollectionFactory $replExtendedVariantValueCollectionFactory,
+        public TypeFactory $eavTypeFactory,
+        public SetFactory $attributeSetFactory,
+        public AttributeSetManagement $attributeSetManagement,
+        public AttributeManagement $attributeManagement,
+        public GroupFactory $attributeSetGroupFactory,
+        public AttributeGroupRepositoryInterface $attributeGroupRepository,
+        public AttributeSetRepositoryInterface $attributeSetRepository,
+        public ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
+        public ConfigurableProTypeModel $configurableProTypeModel,
+        public ReplExtendedVariantValueRepository $extendedVariantValueRepository,
+        public ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository,
+        public ReplItemUnitOfMeasure $replItemUomRepository,
+        public ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
+        public ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
+        public TaxClassRepositoryInterface $taxClassRepository,
+        public ClassModelFactory $classModelFactory,
+        public ReplInvStatusRepository $replInvStatusRepository,
+        public SourceItemsSave $sourceItemsSave,
+        public SourceItemInterfaceFactory $sourceItemFactory,
+        public DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
+        public \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
+        public CategoryRepositoryInterface $categoryRepository,
+        public ResourceModelCategory $categoryResourceModel,
+        public RuleCollectionFactory $ruleCollectionFactory,
+        public ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository,
+        public ProductRepositoryInterface $productRepository,
+        public GetParentSkusOfChildrenSkus $getParentSkusOfChildrenSkus,
+        public StockStatusRepository $stockStatusRepository,
+        public GetProductIdsBySkus $getProductIdsBySkus,
+        public AttributeFactory $eavAttributeFactory,
+        public \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
+        public ProductMetadataInterface $productMetadata,
+        public GetStockSourceLinksInterface $getStockSourceLinks,
+        public SourceItemRepositoryInterface $sourceItemRepository,
+        public SourceItemsDeleteInterface $sourceItemDeleteRepository,
+        public GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite,
+        public StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory,
+        public StockItemRepositoryInterface $stockItemRepository,
+        public StockConfigurationInterface $stockConfiguration,
+        public IsSingleSourceModeInterface $isSingleSourceMode,
+        public Type $pageCache
     ) {
-        $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
-        $this->filterBuilder                             = $filterBuilder;
-        $this->filterGroupBuilder                        = $filterGroupBuilder;
-        $this->storeManager                              = $storeManager;
-        $this->filesystem                                = $Filesystem;
-        $this->replImageLinkRepositoryInterface          = $replImageLinkRepositoryInterface;
-        $this->eavConfig                                 = $eavConfig;
-        $this->configWriter                              = $configWriter;
-        $this->attributeSet                              = $attributeSet;
-        $this->cacheTypeList                             = $cacheTypeList;
-        $this->lsr                                       = $LSR;
-        $this->resource                                  = $resource;
-        $this->sortOrder                                 = $sortOrder;
-        $this->dateTime                                  = $date;
-        $this->timezone                                  = $timezone;
-        $this->_logger                                   = $_logger;
-        $this->itemRepository                            = $itemRepository;
-        $this->fileSystemDirectory                       = $fileSystemDirectory;
-        $this->categoryCollectionFactory                 = $categoryCollectionFactory;
-        $this->replHierarchyLeafRepository               = $replHierarchyLeafRepository;
-        $this->categoryLinkManagement                    = $categoryLinkManagement;
-        $this->replAttributeValueCollectionFactory       = $replAttributeValueCollectionFactory;
-        $this->replExtendedVariantValueCollectionFactory = $replExtendedVariantValueCollectionFactory;
-        $this->eavTypeFactory                            = $eavTypeFactory;
-        $this->attributeSetFactory                       = $attributeSetFactory;
-        $this->attributeSetManagement                    = $attributeSetManagement;
-        $this->attributeManagement                       = $attributeManagement;
-        $this->attributeSetGroupFactory                  = $attributeSetGroupFactory;
-        $this->attributeGroupRepository                  = $attributeGroupRepository;
-        $this->attributeSetRepository                    = $attributeSetRepository;
-        $this->replAttributeValueRepositoryInterface     = $replAttributeValueRepositoryInterface;
-        $this->configurableProTypeModel                  = $configurableProTypeModel;
-        $this->extendedVariantValueRepository            = $extendedVariantValueRepository;
-        $this->itemVariantRegistrationRepository         = $itemVariantRegistrationRepository;
-        $this->replItemUomRepository                     = $replItemUomRepository;
-        $this->replTaxSetupRepository                    = $replTaxSetupRepository;
-        $this->replStoreTenderTypeRepository             = $replStoreTenderTypeRepository;
-        $this->taxClassRepository                        = $taxClassRepository;
-        $this->classModelFactory                         = $classModelFactory;
-        $this->replInvStatusRepository                   = $replInvStatusRepository;
-        $this->sourceItemsSave                           = $sourceItemsSave;
-        $this->sourceItemFactory                         = $sourceItemFactory;
-        $this->defaultSourceProviderFactory              = $defaultSourceProviderFactory;
-        $this->productCollectionFactory                  = $productCollectionFactory;
-        $this->categoryRepository                        = $categoryRepository;
-        $this->categoryResourceModel                     = $categoryResourceModel;
-        $this->ruleCollectionFactory                     = $ruleCollectionFactory;
-        $this->replUnitOfMeasureRepository               = $replUnitOfMeasureRepository;
-        $this->productRepository                         = $productRepository;
-        $this->getParentSkusOfChildrenSkus               = $getParentSkusOfChildrenSkus;
-        $this->stockStatusRepository                     = $stockStatusRepository;
-        $this->getProductIdsBySkus                       = $getProductIdsBySkus;
-        $this->eavAttributeFactory                       = $eavAttributeFactory;
-        $this->productResourceModel                      = $productResourceModel;
-        $this->productMetadata                           = $productMetadata;
-        $this->getStockSourceLinks                       = $getStockSourceLinks;
-        $this->sourceItemRepository                      = $sourceItemRepository;
-        $this->sourceItemDeleteRepository                = $sourceItemsDelete;
-        $this->getAssignedStockIdForWebsite              = $getAssignedStockIdForWebsite;
-        $this->criteriaInterfaceFactory                  = $criteriaInterfaceFactory;
-        $this->stockItemRepository                       = $stockItemRepository;
-        $this->stockConfiguration                        = $stockConfiguration;
-        $this->isSingleSourceMode                        = $isSingleSourceMode;
-        $this->pageCache                                 = $pageCache;
         parent::__construct(
             $context
         );
@@ -1428,17 +1798,31 @@ class ReplicationHelper extends AbstractHelper
          * Added the condition to update config value based on specific store id.
          */
         if ($storeId && !$this->lsr->isSSM()) {
-            $this->configWriter->save(
-                $path,
-                $value,
-                $scope,
-                $storeId
-            );
+            if ($value === null) {
+                $this->configWriter->delete(
+                    $path,
+                    $scope,
+                    $storeId
+                );
+            } else {
+                $this->configWriter->save(
+                    $path,
+                    $value,
+                    $scope,
+                    $storeId
+                );
+            }
         } else {
-            $this->configWriter->save(
-                $path,
-                $value
-            );
+            if ($value === null) {
+                $this->configWriter->delete(
+                    $path
+                );
+            } else {
+                $this->configWriter->save(
+                    $path,
+                    $value
+                );
+            }
         }
     }
 
@@ -1491,15 +1875,18 @@ class ReplicationHelper extends AbstractHelper
 
     /**
      * For getting tax setup information
-     * @return array|null
+     *
+     * @param int $websiteId
+     * @return array
      */
-    public function getTaxSetup()
+    public function getTaxSetup(int $websiteId)
     {
         $items   = null;
         $filters = [
             ['field' => 'ProductTaxGroup', 'value' => '', 'condition_type' => 'neq'],
             ['field' => 'BusinessTaxGroup', 'value' => '', 'condition_type' => 'neq'],
-            ['field' => 'TaxPercent', 'value' => 0, 'condition_type' => 'gt']
+            ['field' => 'TaxPercent', 'value' => 0, 'condition_type' => 'gt'],
+            ['field' => 'scope_id', 'value' => $websiteId, 'condition_type' => 'eq']
         ];
 
         $searchCriteria = $this->buildCriteriaForDirect($filters, -1, true);
@@ -2296,6 +2683,21 @@ class ReplicationHelper extends AbstractHelper
         return in_array($mimeType, $this->defaultMimeTypes);
     }
 
+    /**
+     * Get image format
+     *
+     * @param $format
+     * @return string
+     */
+    public function getImageFormat($format)
+    {
+        $format = strtolower($format);
+        $array = explode('image/', $format);
+        $format = end($array);
+
+        return $format;
+    }
+
     /** return SortOrder object based on the parameters provided
      * @param $field
      * @param string $direction
@@ -3026,7 +3428,7 @@ class ReplicationHelper extends AbstractHelper
                 ->addFilter('Code', true, 'notnull')
                 ->addFilter('Dimensions', true, 'notnull')
                 ->addFilter('scope_id', $storeId, 'eq')->create();
-            $sortOrder      = $this->sortOrder->setField('DimensionLogicalOrder')->setDirection(SortOrder::SORT_ASC);
+            $sortOrder      = $this->sortOrder->setField('Dimensions')->setDirection(SortOrder::SORT_ASC);
             $searchCriteria->setSortOrders([$sortOrder]);
             $attributeCodes = $this->extendedVariantValueRepository->getList($searchCriteria)->getItems();
 
@@ -3410,7 +3812,7 @@ class ReplicationHelper extends AbstractHelper
 
             $sourceItems[$sku] = $this->getSourceItemGivenData(
                 $sku,
-                $replInvStatus->getQuantity(),
+                $replInvStatus->getQuantity() ?? 0,
                 ($replInvStatus->getQuantity() > 0) ? 1 : 0
             );
 
@@ -3490,6 +3892,9 @@ class ReplicationHelper extends AbstractHelper
                 break;
             }
         }
+        if ($parentStockItem->getStockId() !== 1) {
+            $childrenIsInStock = true;
+        }
 
         if ($parentStockItem->getStockId() !== 1) {
             $childrenIsInStock = true;
@@ -3537,7 +3942,7 @@ class ReplicationHelper extends AbstractHelper
         $sourceItem = $this->sourceItemFactory->create();
         $sourceItem->setSourceCode($sourceCode);
         $sourceItem->setSku($sku);
-        $sourceItem->setQuantity($inventory);
+        $sourceItem->setQuantity((float)$inventory);
         $sourceItem->setStatus($status);
 
         return $sourceItem;

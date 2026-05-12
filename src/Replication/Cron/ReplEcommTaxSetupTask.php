@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplTaxSetupRepositoryInterface as ReplTaxSetupRepository
 use Ls\Replication\Model\ReplTaxSetupFactory;
 use Ls\Replication\Api\Data\ReplTaxSetupInterface;
 
-class ReplEcommTaxSetupTask extends AbstractReplicationTask
+abstract class ReplEcommTaxSetupTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_tax_setup';
 
@@ -108,19 +108,6 @@ class ReplEcommTaxSetupTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommTaxSetup($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

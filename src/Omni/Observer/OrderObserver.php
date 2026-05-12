@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
@@ -21,50 +23,20 @@ use Psr\Log\LoggerInterface;
  */
 class OrderObserver implements ObserverInterface
 {
-    /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /**
-     * @var OrderHelper
-     */
-    private $orderHelper;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var Order
-     */
-    private $orderResourceModel;
-
-    /**
-     * @var LSR
-     */
-    private $lsr;
-
     /***
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
      * @param LoggerInterface $logger
      * @param Order $orderResourceModel
-     * @param LSR $LSR
+     * @param LSR $lsr
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        OrderHelper $orderHelper,
-        LoggerInterface $logger,
-        Order $orderResourceModel,
-        LSR $LSR
+        public BasketHelper $basketHelper,
+        public OrderHelper $orderHelper,
+        public LoggerInterface $logger,
+        public Order $orderResourceModel,
+        public LSR $lsr
     ) {
-        $this->basketHelper       = $basketHelper;
-        $this->orderHelper        = $orderHelper;
-        $this->logger             = $logger;
-        $this->orderResourceModel = $orderResourceModel;
-        $this->lsr                = $LSR;
     }
 
     /**
@@ -76,18 +48,18 @@ class OrderObserver implements ObserverInterface
      * @throws InputException
      * @throws NoSuchEntityException
      * @throws InvalidEnumException
-     * @throws LocalizedException
+     * @throws LocalizedException|GuzzleException
      * phpcs:disable Generic.Metrics.NestingLevel.TooHigh
      */
     public function execute(Observer $observer)
     {
-        $check              = false;
-        $order              = $observer->getEvent()->getData('order');
+        $check = false;
+        $order = $observer->getEvent()->getData('order');
 
         $oneListCalculation = $this->basketHelper->getOneListCalculationFromCheckoutSession();
         if (empty($order->getIncrementId())) {
             $orderIds = $observer->getEvent()->getOrderIds();
-            $order    = $this->orderHelper->orderRepository->get($orderIds[0]);
+            $order = $this->orderHelper->orderRepository->get($orderIds[0]);
         }
 
         if (!$this->orderHelper->isAllowed($order)) {
@@ -110,8 +82,8 @@ class OrderObserver implements ObserverInterface
                 $paymentMethod = $order->getPayment();
                 if (!empty($paymentMethod)) {
                     $paymentMethod = $order->getPayment()->getMethodInstance();
-                    $transId       = $order->getPayment()->getLastTransId();
-                    $check         = $paymentMethod->isOffline();
+                    $transId = $order->getPayment()->getLastTransId();
+                    $check = $paymentMethod->isOffline();
                     if ($paymentMethod->getCode() === 'free') {
                         $check = true;
                     }
@@ -121,11 +93,12 @@ class OrderObserver implements ObserverInterface
             // Loyalty Points/Gift card
             if (!empty($oneListCalculation)) {
                 if (($check || !empty($transId))) {
-                    $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+                    $request = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                     $response = $this->orderHelper->placeOrder($request);
                     try {
-                        if ($response) {
-                            $documentId = $response->getResult()->getId();
+                        if ($response && $response->getResponsecode() == "0000") {
+                            $documentId = $this->orderHelper->getDocumentIdFromResponseBasedOnIndustry($response);
+
                             if (!empty($documentId)) {
                                 $order->setDocumentId($documentId);
                                 $this->basketHelper->setLastDocumentIdInCheckoutSession($documentId);

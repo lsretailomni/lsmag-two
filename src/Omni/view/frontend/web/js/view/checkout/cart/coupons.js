@@ -1,23 +1,33 @@
 define([
-    "jquery",
-    "jquery/ui",
-    "OwlCarousel"
+    'jquery',
+    'jquery/ui'
 ], function ($) {
-    "use strict";
-    return function main(config, element) {
-        var $element = $(element);
-        var ajaxUrl = config.ajaxUrl;
-        $(document).ready(function () {
+    'use strict';
+
+    $.widget('lsomni.coupons', {
+        options: {
+            ajaxUrl: '',
+        },
+
+        _create: function () {
+            var self = this;
+
+            // Delay to ensure other components render first
             setTimeout(function () {
                 $.ajax({
-                    context: '#ls-coupons',
-                    url: ajaxUrl,
-                    type: "POST"
-                }).done(function (data) {
-                    $('#ls-coupons').html(data.output);
-                    return true;
+                    url: self.options.ajaxUrl,
+                    type: 'POST',
+                    success: function (data) {
+                        $('#ls-coupons').html(data.output);
+                    },
+                    error: function (xhr) {
+                        console.error('Coupon load error:', xhr.statusText, xhr.responseText);
+                    }
                 });
             }, 2000);
-        });
-    };
+        }
+    });
+
+    return $.lsomni.coupons;
 });
+

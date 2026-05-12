@@ -5,10 +5,8 @@ define([
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/model/totals',
     'Ls_Omni/js/action/set-gift-card',
-    'Ls_Omni/js/action/cancel-gift-card',
-    'mage/translate',
-    'mage/storage'
-], function ($, ko, Component, quote, totals, setGiftCardAction, cancelGiftCardAction, $t, storage) {
+    'Ls_Omni/js/action/cancel-gift-card'
+], function ($, ko, Component, quote, totals, setGiftCardAction, cancelGiftCardAction) {
     'use strict';
 
     var giftCardAmount = ko.observable(null),

@@ -77,7 +77,7 @@
                 </item>
             </argument>
         </paging>
-        <filters name="listing_filters" />
+        <filters name="listing_filters"/>
         <!-- Mass action -->
         <massaction name="listing_massaction">
             <action name="reset">

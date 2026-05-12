@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Model\Order;
 
@@ -14,41 +15,17 @@ use Magento\Framework\Translate\Inline\StateInterface;
 class Notify
 {
     /**
-     * @var Logger
-     */
-    private $logger;
-
-    /**
-     * @var TransportBuilder
-     */
-    private $transportBuilder;
-    /**
-     * @var StateInterface
-     */
-    private $inlineTranslation;
-
-    /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
-     * Notify constructor.
      * @param TransportBuilder $transportBuilder
      * @param StateInterface $state
      * @param Data $helper
      * @param Logger $logger
      */
     public function __construct(
-        TransportBuilder $transportBuilder,
-        StateInterface $state,
-        Data $helper,
-        Logger $logger
+        public TransportBuilder $transportBuilder,
+        public StateInterface $state,
+        public Data $helper,
+        public Logger $logger
     ) {
-        $this->transportBuilder  = $transportBuilder;
-        $this->inlineTranslation = $state;
-        $this->helper            = $helper;
-        $this->logger            = $logger;
     }
 
     /**

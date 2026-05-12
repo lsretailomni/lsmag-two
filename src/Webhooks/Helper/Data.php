@@ -1,15 +1,16 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Helper;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\CentralEcommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId;
+use \Ls\Omni\Client\CentralEcommerce\Operation\GetSelectedSalesDoc_GetSelectedSalesDoc;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
-use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Webhooks\Api\Data\OrderPaymentResponseInterface;
+use \Ls\Webhooks\Api\Data\OrderPaymentResponseInterfaceFactory;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -30,62 +31,6 @@ use Magento\Sales\Model\Order\Invoice;
  */
 class Data
 {
-
-    /**
-     * @var Logger
-     */
-    public $logger;
-
-    /**
-     * @var OrderRepositoryInterface
-     */
-    public $orderRepository;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    public $searchCriteriaBuilder;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var OmniHelper
-     */
-    public $omniHelper;
-
-    /**
-     * @var ItemHelper
-     */
-    public $itemHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var SerializerJson
-     */
-    public $jsonSerializer;
-
-    /**
-     * @var ProductRepository
-     */
-    public ProductRepository $productRepository;
-
-    /**
-     * @var Invoice
-     */
-    public $invoice;
-
     /**
      * @param Logger $logger
      * @param OrderRepositoryInterface $orderRepository
@@ -97,32 +42,22 @@ class Data
      * @param LoyaltyHelper $loyaltyHelper
      * @param SerializerJson $jsonSerializer
      * @param ProductRepository $productRepository
-     * @param Invoice $invoice
+     * @param OrderPaymentResponseInterfaceFactory $paymentResponseFactory
      */
     public function __construct(
-        Logger $logger,
-        OrderRepositoryInterface $orderRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        OrderHelper $orderHelper,
-        LSR $lsr,
-        OmniHelper $omniHelper,
-        ItemHelper $itemHelper,
-        LoyaltyHelper $loyaltyHelper,
-        SerializerJson $jsonSerializer,
-        ProductRepository $productRepository,
-        Invoice $invoice
+        public Logger $logger,
+        public OrderRepositoryInterface $orderRepository,
+        public SearchCriteriaBuilder $searchCriteriaBuilder,
+        public OrderHelper $orderHelper,
+        public LSR $lsr,
+        public OmniHelper $omniHelper,
+        public ItemHelper $itemHelper,
+        public LoyaltyHelper $loyaltyHelper,
+        public SerializerJson $jsonSerializer,
+        public ProductRepository $productRepository,
+        public OrderPaymentResponseInterfaceFactory $paymentResponseFactory,
+        public Invoice $invoice
     ) {
-        $this->logger                = $logger;
-        $this->orderRepository       = $orderRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->orderHelper           = $orderHelper;
-        $this->lsr                   = $lsr;
-        $this->omniHelper            = $omniHelper;
-        $this->itemHelper            = $itemHelper;
-        $this->loyaltyHelper         = $loyaltyHelper;
-        $this->jsonSerializer        = $jsonSerializer;
-        $this->productRepository     = $productRepository;
-        $this->invoice               = $invoice;
     }
 
     /**
@@ -399,6 +334,21 @@ class Data
     }
 
     /**
+     * Create payment output message
+     *
+     * @param bool $status
+     * @param string $statusMsg
+     * @return OrderPaymentResponseInterface
+     */
+    public function formulatePaymentOutputMessage($status, $statusMsg)
+    {
+        $response = $this->paymentResponseFactory->create();
+        return $response
+            ->setOrderMessagePaymentResult($status)
+            ->setMessage($statusMsg);
+    }
+
+    /**
      * Return message to Ls Central
      * @param $status
      * @param $message
@@ -555,9 +505,10 @@ class Data
     }
 
     /**
+     * Fetch order from Central using orderId
+     *
      * @param $orderId
-     * @return SalesEntry|SalesEntry[]|SalesEntryGetResponse|SalesEntryGetSalesByOrderIdResponse|ResponseInterface|null
-     * @throws NoSuchEntityException
+     * @return GetSalesInfoByOrderId_GetSalesInfoByOrderId|GetSelectedSalesDoc_GetSelectedSalesDoc|null
      * @throws InvalidEnumException
      */
     public function fetchOrder($orderId)
