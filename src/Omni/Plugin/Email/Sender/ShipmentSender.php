@@ -1,16 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Email\Sender;
 
 use Magento\Sales\Model\Order\Shipment;
 
-/**
- * Class ShipmentSender
- * @package Ls\Omni\Plugin\Email\Sender
- */
 class ShipmentSender
 {
-
     /**
      * @param $subject
      * @param Shipment $shipment

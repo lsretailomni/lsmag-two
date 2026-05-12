@@ -42,7 +42,7 @@ define([
             return this;
         },
         isDisplay: function () {
-            return window.checkoutConfig.shipping.pickup_date_timeslots.delivery_hours_enabled === "1";
+            return window.checkoutConfig.shipping.pickup_date_timeslots.delivery_hours_enabled === "1" || window.checkoutConfig.shipping.pickup_date_timeslots.enabled === "1";
         },
         updateLabels: function () {
             let interval= setInterval(function () {

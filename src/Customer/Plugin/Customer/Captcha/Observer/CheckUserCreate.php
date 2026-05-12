@@ -3,6 +3,7 @@
 namespace Ls\Customer\Plugin\Customer\Captcha\Observer;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Captcha\Observer\CheckUserCreateObserver;
@@ -23,59 +24,23 @@ use Zend_Log_Exception;
 class CheckUserCreate
 {
     /**
-     * @var LoggerInterface
-     */
-    private LoggerInterface $logger;
-    /**
-     * @var ContactHelper
-     */
-    private ContactHelper $contactHelper;
-    /**
-     * @var ManagerInterface
-     */
-    private ManagerInterface $messageManager;
-    /**
-     * @var CustomerSession
-     */
-    private CustomerSession $customerSession;
-    /**
-     * @var LSR
-     */
-    private LSR $lsr;
-    /**
-     * @var RedirectInterface
-     */
-    private RedirectInterface $redirectInterface;
-    /**
-     * @var ActionFlag
-     */
-    private ActionFlag $actionFlag;
-
-    /**
      * @param LoggerInterface $logger
      * @param ContactHelper $contactHelper
      * @param ManagerInterface $messageManager
      * @param CustomerSession $customerSession
      * @param RedirectInterface $redirectInterface
      * @param ActionFlag $actionFlag
-     * @param LSR $LSR
+     * @param LSR $lsr
      */
     public function __construct(
-        LoggerInterface $logger,
-        ContactHelper $contactHelper,
-        ManagerInterface $messageManager,
-        CustomerSession $customerSession,
-        RedirectInterface $redirectInterface,
-        ActionFlag $actionFlag,
-        LSR $LSR
+        public LoggerInterface $logger,
+        public ContactHelper $contactHelper,
+        public ManagerInterface $messageManager,
+        public CustomerSession $customerSession,
+        public RedirectInterface $redirectInterface,
+        public ActionFlag $actionFlag,
+        public LSR $lsr
     ) {
-        $this->logger            = $logger;
-        $this->contactHelper     = $contactHelper;
-        $this->messageManager    = $messageManager;
-        $this->customerSession   = $customerSession;
-        $this->redirectInterface = $redirectInterface;
-        $this->actionFlag        = $actionFlag;
-        $this->lsr               = $LSR;
     }
 
     /**
@@ -85,13 +50,15 @@ class CheckUserCreate
      * @param object $result
      * @param Observer $observer
      * @return void
+     * @throws GuzzleException
      * @throws LocalizedException
      * @throws NoSuchEntityException
+     * @throws Zend_Log_Exception
      */
     public function afterExecute(
-        \Magento\Captcha\Observer\CheckUserCreateObserver $subject,
+        CheckUserCreateObserver $subject,
         object $result,
-        \Magento\Framework\Event\Observer $observer
+        Observer $observer
     ) {
         if (!$this->actionFlag->get('', ActionInterface::FLAG_NO_DISPATCH)) {
             $this->customerRegisterationOnCentral($observer);
@@ -104,7 +71,7 @@ class CheckUserCreate
      * @param Observer $observer
      * @return $this
      * @throws LocalizedException
-     * @throws NoSuchEntityException|Zend_Log_Exception
+     * @throws NoSuchEntityException|Zend_Log_Exception|GuzzleException
      */
     public function customerRegisterationOnCentral($observer)
     {

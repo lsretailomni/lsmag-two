@@ -8,18 +8,16 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Replication\Logger\Logger;
+use \Ls\Replication\Logger\Logger;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Config\Model\ResourceModel\Config;
-use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
-use Ls\Omni\Client\Ecommerce\Operation\ReplEcommVendor;
-use Ls\Replication\Api\ReplVendorRepositoryInterface as ReplVendorRepository;
-use Ls\Replication\Model\ReplVendorFactory;
-use Ls\Replication\Api\Data\ReplVendorInterface;
+use \Ls\Core\Model\Data as LsHelper;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Api\ReplVendorRepositoryInterface as ReplVendorRepository;
+use \Ls\Replication\Model\ReplVendorFactory;
+use \Ls\Replication\Api\Data\ReplVendorInterface;
 
-class ReplEcommVendorTask extends AbstractReplicationTask
+abstract class ReplEcommVendorTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_vendor';
 
@@ -108,19 +106,6 @@ class ReplEcommVendorTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommVendor($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

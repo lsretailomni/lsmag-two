@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Cron;
 
@@ -88,121 +89,11 @@ use Magento\Framework\Filesystem\Driver\File;
  */
 class ProductCreateTask
 {
-    /** @var Config */
-    public $eavConfig;
-
-    /** @var Configurable */
-    public $configurable;
-
-    /** @var Attribute */
-    public $attribute;
-
-    /** @var ProductInterfaceFactory */
-    public $productFactory;
-
-    /** @var ProductRepositoryInterface */
-    public $productRepository;
-
-    /** @var ReplItemRepository */
-    public $itemRepository;
-
-    /** @var ReplBarcodeRepository */
-    public $replBarcodeRepository;
-
-    /** @var ReplImageLinkRepositoryInterface */
-    public $replImageLinkRepositoryInterface;
-
-    /** @var ReplHierarchyLeafRepository */
-    public $replHierarchyLeafRepository;
-
-    /** @var ReplPriceRepository */
-    public $replPriceRepository;
-
-    /** @var ReplItemUnitOfMeasure */
-    public $replItemUomRepository;
-
-    /** @var ReplInvStatusRepository */
-    public $replInvStatusRepository;
-
-    /** @var ProductAttributeMediaGalleryEntryInterface */
-    public $attributeMediaGalleryEntry;
-
-    /** @var ImageContentFactory */
-    public $imageContent;
-
-    /** @var SearchCriteriaBuilder */
-    public $searchCriteriaBuilder;
-
-    /** @var Logger */
-    public $logger;
-
-    /** @var LoyaltyHelper */
-    public $loyaltyHelper;
-
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /** @var ReplAttributeValueRepositoryInterface */
-    public $replAttributeValueRepositoryInterface;
-
-    /** @var LSR */
-    public $lsr;
-
     /** @var bool */
     public $cronStatus = false;
 
-    /** @var ReplItemVariantRegistrationRepository */
-    public $replItemVariantRegistrationRepository;
-
-    /**  @var ReplInvStatusCollectionFactory */
-    public $replInvStatusCollectionFactory;
-
-    /** @var ReplPriceCollectionFactory */
-    public $replPriceCollectionFactory;
-
-    /** @var ReplItemUomCollectionFactory */
-    public $replItemUomCollectionFactory;
-
-    /** @var ItemVariantRegistrationCollectionFactory */
-    public $replItemVariantRegistrationCollectionFactory;
-
-    /** @var ReplHierarchyLeafCollectionFactory */
-    public $replHierarchyLeafCollectionFactory;
-
-    /** @var ReplImageLinkCollectionFactory */
-    public $replImageLinkCollectionFactory;
-
-    /**  @var ReplAttributeValueCollectionFactory */
-    public $replAttributeValueCollectionFactory;
-
-    /** @var \Magento\Catalog\Model\ResourceModel\Product */
-    public $productResourceModel;
-
-    /** @var CategoryLinkRepositoryInterface */
-    public $categoryLinkRepositoryInterface;
-
-    /** @var CollectionFactory */
-    public $collectionFactory;
-
-    /** @var CategoryRepositoryInterface */
-    public $categoryRepository;
-
     /** @var int */
     public $remainingRecords;
-
-    /**
-     * @var MediaGalleryProcessor
-     */
-    public $mediaGalleryProcessor;
-
-    /**
-     * @var UpdateHandlerFactory
-     */
-    public $updateHandlerFactory;
-    /**
-     * @var EntryConverterPool
-     */
-    public $entryConverterPool;
 
     /** @var StoreInterface $store */
     public $store;
@@ -211,103 +102,13 @@ class ProductCreateTask
     public $webStoreId = false;
 
     /**
-     * @var Factory
-     */
-    public $optionsFactory;
-
-    /**
-     * @var AttributeManagement
-     */
-    public $attributeManagement;
-
-    /**
-     * @var AttributeGroupRepositoryInterface
-     */
-    public $attributeGroupRepository;
-
-    /**
-     * @var ReplItemUnitOfMeasureSearchResultsFactory
-     */
-    public $replItemUnitOfMeasureSearchResultsFactory;
-
-    /**
-     * @var ReplItemVariantRegistrationSearchResultsFactory
-     */
-    public $replItemVariantRegistrationSearchResultsFactory;
-
-    /**
-     * @var EavAttributeCollectionFactory
-     */
-    public $eavAttributeCollectionFactory;
-
-    /**
-     * @var ReplItemVendorCollectionFactory
-     */
-    public $replItemVendorCollectionFactory;
-
-    /**
-     * @var ReplLoyVendorItemMappingRepositoryInterface
-     */
-    public $replVendorItemMappingRepositoryInterface;
-
-    /**
-     * @var GroupFactory
-     */
-    public $attributeSetGroupFactory;
-
-    /**
      * @var array
      */
     public array $imagesFetched;
-
-    /**
-     * @var Product\Media\Config
-     */
-    public $mediaConfig;
-    /**
-     * @var Filesystem
-     */
-    public Filesystem $filesystem;
     /**
      * @var Filesystem\Directory\WriteInterface
      */
     public Filesystem\Directory\WriteInterface $mediaDirectory;
-    /**
-     * @var ResourceConnection
-     */
-    public ResourceConnection $resourceConnection;
-    /**
-     * @var File
-     */
-    public File $file;
-    /**
-     * @var MediaProcessor
-     */
-    public MediaProcessor $mediaProcessor;
-
-    /**
-     * @var ImportImageService
-     */
-    public $imageService;
-
-    /**
-     * @var ReplItemVariantCollectionFactory
-     */
-    public $replItemVariantCollectionFactory;
-
-    /**
-     * @var ReplItemVariantRepository
-     */
-    public $replItemVariantRepository;
-    /**
-     * @var DataTranslationTask
-     */
-    public $dataTranslationTask;
-
-    /**
-     * @var SortOrderBuilder
-     */
-    public $sortOrderBuilder;
 
     /**
      * @var string
@@ -318,7 +119,7 @@ class ProductCreateTask
      * @param Config $eavConfig
      * @param ConfigurableProTypeModel $configurable
      * @param Attribute $attribute
-     * @param ProductInterfaceFactory $productInterfaceFactory
+     * @param ProductInterfaceFactory $productFactory
      * @param ProductRepositoryInterface $productRepository
      * @param ProductAttributeMediaGalleryEntryInterface $attributeMediaGalleryEntry
      * @param ImageContentFactory $imageContent
@@ -327,7 +128,7 @@ class ProductCreateTask
      * @param ReplHierarchyLeafRepository $replHierarchyLeafRepository
      * @param ReplBarcodeRepository $replBarcodeRepository
      * @param ReplPriceRepository $replPriceRepository
-     * @param ReplItemUnitOfMeasure $replItemUnitOfMeasureRepository
+     * @param ReplItemUnitOfMeasure $replItemUomRepository
      * @param ReplInvStatusRepository $replInvStatusRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface
@@ -336,7 +137,7 @@ class ProductCreateTask
      * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
      * @param ReplLoyVendorItemMappingRepositoryInterface $replVendorItemMappingRepositoryInterface
      * @param Logger $logger
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param ReplInvStatusCollectionFactory $replInvStatusCollectionFactory
      * @param ReplPriceCollectionFactory $replPriceCollectionFactory
      * @param ReplItemUomCollectionFactory $replItemUomCollectionFactory
@@ -372,116 +173,62 @@ class ProductCreateTask
      * @throws FileSystemException
      */
     public function __construct(
-        Config $eavConfig,
-        Configurable $configurable,
-        Attribute $attribute,
-        ProductInterfaceFactory $productInterfaceFactory,
-        ProductRepositoryInterface $productRepository,
-        ProductAttributeMediaGalleryEntryInterface $attributeMediaGalleryEntry,
-        ImageContentFactory $imageContent,
-        ReplItemRepository $itemRepository,
-        ReplItemVariantRegistrationRepository $replItemVariantRegistrationRepository,
-        ReplHierarchyLeafRepository $replHierarchyLeafRepository,
-        ReplBarcodeRepository $replBarcodeRepository,
-        ReplPriceRepository $replPriceRepository,
-        ReplItemUnitOfMeasure $replItemUnitOfMeasureRepository,
-        ReplInvStatusRepository $replInvStatusRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
-        LoyaltyHelper $loyaltyHelper,
-        ReplicationHelper $replicationHelper,
-        ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
-        ReplLoyVendorItemMappingRepositoryInterface $replVendorItemMappingRepositoryInterface,
-        Logger $logger,
-        LSR $LSR,
-        ReplInvStatusCollectionFactory $replInvStatusCollectionFactory,
-        ReplPriceCollectionFactory $replPriceCollectionFactory,
-        ReplItemUomCollectionFactory $replItemUomCollectionFactory,
-        ItemVariantRegistrationCollectionFactory $replItemVariantRegistrationCollectionFactory,
-        ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
-        ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
-        \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
-        CategoryRepositoryInterface $categoryRepository,
-        CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
-        CollectionFactory $collectionFactory,
-        ReplImageLinkCollectionFactory $replImageLinkCollectionFactory,
-        MediaProcessor $mediaProcessor,
-        MediaGalleryProcessor $mediaGalleryProcessor,
-        UpdateHandlerFactory $updateHandlerFactory,
-        EntryConverterPool $entryConverterPool,
-        Factory $optionsFactory,
-        AttributeManagement $attributeManagement,
-        AttributeGroupRepositoryInterface $attributeGroupRepository,
-        ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory,
-        ReplItemVariantRegistrationSearchResultsFactory $replItemVariantRegistrationSearchResultsFactory,
-        EavAttributeCollectionFactory $eavAttributeCollectionFactory,
-        ReplItemVendorCollectionFactory $replItemVendorCollectionFactory,
-        GroupFactory $attributeSetGroupFactory,
-        Product\Media\Config $mediaConfig,
-        ReplItemVariantCollectionFactory $replItemVariantCollectionFactory,
-        ReplItemVariantRepository $replItemVariantRepository,
-        Filesystem $filesystem,
-        ResourceConnection $resourceConnection,
-        File $file,
-        DataTranslationTask $dataTranslationTask,
-        ImportImageService $imageService,
-        SortOrderBuilder $sortOrderBuilder
+        public Config $eavConfig,
+        public Configurable $configurable,
+        public Attribute $attribute,
+        public ProductInterfaceFactory $productFactory,
+        public ProductRepositoryInterface $productRepository,
+        public ProductAttributeMediaGalleryEntryInterface $attributeMediaGalleryEntry,
+        public ImageContentFactory $imageContent,
+        public ReplItemRepository $itemRepository,
+        public ReplItemVariantRegistrationRepository $replItemVariantRegistrationRepository,
+        public ReplHierarchyLeafRepository $replHierarchyLeafRepository,
+        public ReplBarcodeRepository $replBarcodeRepository,
+        public ReplPriceRepository $replPriceRepository,
+        public ReplItemUnitOfMeasure $replItemUomRepository,
+        public ReplInvStatusRepository $replInvStatusRepository,
+        public SearchCriteriaBuilder $searchCriteriaBuilder,
+        public ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
+        public LoyaltyHelper $loyaltyHelper,
+        public ReplicationHelper $replicationHelper,
+        public ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
+        public ReplLoyVendorItemMappingRepositoryInterface $replVendorItemMappingRepositoryInterface,
+        public Logger $logger,
+        public LSR $lsr,
+        public ReplInvStatusCollectionFactory $replInvStatusCollectionFactory,
+        public ReplPriceCollectionFactory $replPriceCollectionFactory,
+        public ReplItemUomCollectionFactory $replItemUomCollectionFactory,
+        public ItemVariantRegistrationCollectionFactory $replItemVariantRegistrationCollectionFactory,
+        public ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
+        public ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
+        public \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
+        public CategoryRepositoryInterface $categoryRepository,
+        public CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
+        public CollectionFactory $collectionFactory,
+        public ReplImageLinkCollectionFactory $replImageLinkCollectionFactory,
+        public MediaProcessor $mediaProcessor,
+        public MediaGalleryProcessor $mediaGalleryProcessor,
+        public UpdateHandlerFactory $updateHandlerFactory,
+        public EntryConverterPool $entryConverterPool,
+        public Factory $optionsFactory,
+        public AttributeManagement $attributeManagement,
+        public AttributeGroupRepositoryInterface $attributeGroupRepository,
+        public ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory,
+        public ReplItemVariantRegistrationSearchResultsFactory $replItemVariantRegistrationSearchResultsFactory,
+        public EavAttributeCollectionFactory $eavAttributeCollectionFactory,
+        public ReplItemVendorCollectionFactory $replItemVendorCollectionFactory,
+        public GroupFactory $attributeSetGroupFactory,
+        public Product\Media\Config $mediaConfig,
+        public ReplItemVariantCollectionFactory $replItemVariantCollectionFactory,
+        public ReplItemVariantRepository $replItemVariantRepository,
+        public Filesystem $filesystem,
+        public ResourceConnection $resourceConnection,
+        public File $file,
+        public DataTranslationTask $dataTranslationTask,
+        public ImportImageService $imageService,
+        public SortOrderBuilder $sortOrderBuilder
     ) {
-        $this->eavConfig                                       = $eavConfig;
-        $this->configurable                                    = $configurable;
-        $this->attribute                                       = $attribute;
-        $this->productFactory                                  = $productInterfaceFactory;
-        $this->productRepository                               = $productRepository;
-        $this->attributeMediaGalleryEntry                      = $attributeMediaGalleryEntry;
-        $this->imageContent                                    = $imageContent;
-        $this->itemRepository                                  = $itemRepository;
-        $this->replItemVariantRegistrationRepository           = $replItemVariantRegistrationRepository;
-        $this->replHierarchyLeafRepository                     = $replHierarchyLeafRepository;
-        $this->replBarcodeRepository                           = $replBarcodeRepository;
-        $this->replPriceRepository                             = $replPriceRepository;
-        $this->replItemUomRepository                           = $replItemUnitOfMeasureRepository;
-        $this->replInvStatusRepository                         = $replInvStatusRepository;
-        $this->searchCriteriaBuilder                           = $searchCriteriaBuilder;
-        $this->logger                                          = $logger;
-        $this->replImageLinkRepositoryInterface                = $replImageLinkRepositoryInterface;
-        $this->loyaltyHelper                                   = $loyaltyHelper;
-        $this->replicationHelper                               = $replicationHelper;
-        $this->replAttributeValueRepositoryInterface           = $replAttributeValueRepositoryInterface;
-        $this->replVendorItemMappingRepositoryInterface        = $replVendorItemMappingRepositoryInterface;
-        $this->lsr                                             = $LSR;
-        $this->replInvStatusCollectionFactory                  = $replInvStatusCollectionFactory;
-        $this->replPriceCollectionFactory                      = $replPriceCollectionFactory;
-        $this->replItemUomCollectionFactory                    = $replItemUomCollectionFactory;
-        $this->replItemVariantRegistrationCollectionFactory    = $replItemVariantRegistrationCollectionFactory;
-        $this->replHierarchyLeafCollectionFactory              = $replHierarchyLeafCollectionFactory;
-        $this->replAttributeValueCollectionFactory             = $replAttributeValueCollectionFactory;
-        $this->productResourceModel                            = $productResourceModel;
-        $this->categoryLinkRepositoryInterface                 = $categoryLinkRepositoryInterface;
-        $this->collectionFactory                               = $collectionFactory;
-        $this->categoryRepository                              = $categoryRepository;
-        $this->replImageLinkCollectionFactory                  = $replImageLinkCollectionFactory;
-        $this->mediaProcessor                                  = $mediaProcessor;
-        $this->mediaGalleryProcessor                           = $mediaGalleryProcessor;
-        $this->updateHandlerFactory                            = $updateHandlerFactory;
-        $this->entryConverterPool                              = $entryConverterPool;
-        $this->optionsFactory                                  = $optionsFactory;
-        $this->attributeManagement                             = $attributeManagement;
-        $this->attributeGroupRepository                        = $attributeGroupRepository;
-        $this->replItemUnitOfMeasureSearchResultsFactory       = $replItemUnitOfMeasureSearchResultsFactory;
-        $this->replItemVariantRegistrationSearchResultsFactory = $replItemVariantRegistrationSearchResultsFactory;
-        $this->eavAttributeCollectionFactory                   = $eavAttributeCollectionFactory;
-        $this->replItemVendorCollectionFactory                 = $replItemVendorCollectionFactory;
-        $this->attributeSetGroupFactory                        = $attributeSetGroupFactory;
-        $this->mediaConfig                                     = $mediaConfig;
-        $this->replItemVariantCollectionFactory                = $replItemVariantCollectionFactory;
-        $this->replItemVariantRepository                       = $replItemVariantRepository;
-        $this->filesystem                                      = $filesystem;
-        $this->mediaDirectory                                  = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
-        $this->resourceConnection                              = $resourceConnection;
-        $this->file                                            = $file;
-        $this->dataTranslationTask                             = $dataTranslationTask;
-        $this->imageService                                    = $imageService;
-        $this->sortOrderBuilder                                = $sortOrderBuilder;
+        $this->mediaDirectory = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
         $this->lsr->setFpcInvalidateFlag(true);
     }
 
@@ -638,16 +385,9 @@ class ProductCreateTask
                                 } else {
                                     $filteredUomCodes[$item->getNavId()] = $allUomCodes;
                                 }
+
                                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                 if (!empty($uomCodesNotProcessed) && $isUomMode == 'simple') {
-                                    $uomCodesNotProcessed = array_filter(
-                                        $uomCodesNotProcessed,
-                                        function ($uomCode) use ($baseUom) {
-                                            return $uomCode->getCode() !== $baseUom;
-                                        }
-                                    );
-                                }
-                                if (empty($variants) && (count($filteredUomCodes) == 0 || (count($filteredUomCodes) <= 1))) {
                                     foreach ($uomCodesNotProcessed as $uomCode) {
                                         if (!empty($uomCode)) {
                                             $this->syncUomAdditionalAttributes($product, $uomCode, $item);
@@ -735,13 +475,11 @@ class ProductCreateTask
                                 if (isset($itemBarcodes[$item->getNavId()])) {
                                     $product->setCustomAttribute('barcode', $itemBarcodes[$item->getNavId()]);
                                 }
-
                                 $baseUom       = $item->getBaseUnitOfMeasure();
                                 $totalUomCodes = $this->replicationHelper->getUomCodes(
                                     $item->getNavId(),
                                     $this->getScopeId()
                                 );
-
 
                                 $filteredUomCodes = [];
                                 $UomCodesCountCriteria = 1;
@@ -757,6 +495,7 @@ class ProductCreateTask
                                     $filteredUomCodes[$item->getNavId()] = $allUomCodes;
                                 }
 
+
                                 $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
                                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
 
@@ -769,14 +508,6 @@ class ProductCreateTask
                                     );
                                 }
 
-                                if (empty($variants) && (count($filteredUomCodes[$item->getNavId()]) <= 1)) {
-                                    foreach ($uomCodesNotProcessed as $uomCode) {
-                                        if (!empty($uomCode)) {
-                                            $this->syncUomAdditionalAttributes($product, $uomCode, $item);
-                                        }
-                                    }
-                                }
-
                                 try {
                                     // @codingStandardsIgnoreLine
                                     $this->logger->debug('Trying to save product ' . $item->getNavId() . ' in store ' . $store->getName());
@@ -787,7 +518,6 @@ class ProductCreateTask
                                         $this->replicationHelper->updateInventory($productSaved, $itemStock);
                                     }
 
-                                    // Create configurable or multiple simple products
                                     if (!empty($variants) || count($filteredUomCodes) > $UomCodesCountCriteria) {
                                         $this->createConfigurableProducts(
                                             $productSaved,
@@ -1171,10 +901,8 @@ class ProductCreateTask
                             ->setDisabled(false)
                             ->setContent($imageContent);
 
-                        if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
-                            $this->attributeMediaGalleryEntry
-                                ->setLabel(($image->getImageDescription()) ?: $productData->getName());
-                        }
+                        $this->attributeMediaGalleryEntry
+                            ->setLabel(($image->getImageDescription()) ?: $productData->getName());
 
                         if ($i == 0) {
                             $types = ['image', 'small_image', 'thumbnail'];
@@ -1206,9 +934,7 @@ class ProductCreateTask
                 $existentImage = $this->imagesFetched[$image->getImageId()];
                 $existentImage->setLabel(($image->getDescription()) ?: $productData->getName());
 
-                if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
-                    $existentImage->setLabel(($image->getImageDescription()) ?: $productData->getName());
-                }
+                $existentImage->setLabel(($image->getImageDescription()) ?: $productData->getName());
 
                 if ($i == 0) {
                     $types = ['image', 'small_image', 'thumbnail'];
@@ -1474,15 +1200,20 @@ class ProductCreateTask
 
         if ($variantId) {
             $parameter = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
+        } else {
+            $filters[] = ['field' => 'VariantId', 'value' => true, 'condition_type' => 'null'];
         }
 
         if ($unitOfMeasure) {
             $parameter = ['field' => 'UnitOfMeasure', 'value' => $unitOfMeasure, 'condition_type' => 'eq'];
+        } else {
+            $filters[] = ['field' => 'UnitOfMeasure', 'value' => true, 'condition_type' => 'null'];
         }
 
         if (isset($unitOfMeasure) && isset($variantId)) {
-            $parameter  = ['field' => 'UnitOfMeasure', 'value' => $unitOfMeasure, 'condition_type' => 'eq'];
-            $parameter2 = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
+            $parameter = null;
+            $filters[]  = ['field' => 'UnitOfMeasure', 'value' => $unitOfMeasure, 'condition_type' => 'eq'];
+            $filters[] = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
         }
 
         $item           = null;
@@ -1492,8 +1223,6 @@ class ProductCreateTask
             $items = $this->replPriceRepository->getList($searchCriteria)->getItems();
             if (!empty($items)) {
                 $item = reset($items);
-                /** @var ReplInvStatus $invStatus */
-
                 if ($process) {
                     $item->setData('is_updated', 0);
                     $item->setData('processed', 1);
@@ -2332,6 +2061,7 @@ class ProductCreateTask
                 $this->replItemVariantRegistrationRepository->save($value);
             }
         }
+
         if (!$checkUomType) {
             $this->finalizeConfigurableProduct($configProduct, $attributesCode, $associatedProductIds);
         }
@@ -2379,10 +2109,7 @@ class ProductCreateTask
             } catch (Exception $e) {
                 // @codingStandardsIgnoreLine
                 $this->logger->debug(sprintf('Issue while saving Attribute Id : %s and Product Id : %s - %s',
-                    $attribute->getId(),
-                    $productId,
-                    $e->getMessage()
-                ));
+                    $attribute->getId(), $productId, $e->getMessage()));
             }
             $position++;
         }
@@ -2665,6 +2392,7 @@ class ProductCreateTask
         if (empty($product->getCustomAttribute('uom'))) {
             $product->setCustomAttribute('uom', $uomCode->getCode());
         }
+        $product->setCustomAttribute('uom', $uomCode->getCode());
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_QTY, $uomCode->getQtyPrUOM());
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_HEIGHT, $uomCode->getHeight());
         $weight = ($uomCode->getWeight() != "0" && $uomCode->getWeight()) ?
@@ -2898,7 +2626,6 @@ class ProductCreateTask
     ) {
         $productStatus = true;
         $productV      = $this->productFactory->create();
-
         $productV->setName($name);
         $productV->setStoreId(0);
         $productV->setWebsiteIds([$this->store->getWebsiteId()]);
@@ -3061,6 +2788,7 @@ class ProductCreateTask
             $this->logger->debug($e->getMessage());
         }
     }
+
 
     /**
      * Handle product type switch based on UOM changes and configuration, and mark UOM codes as processed if needed
@@ -3356,6 +3084,7 @@ class ProductCreateTask
      * @param $product
      * @param $storeId
      * @param $item
+     * @return void
      */
     public function updateProductStatusByScope($product, $storeId, $item)
     {

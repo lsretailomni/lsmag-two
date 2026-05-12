@@ -2,6 +2,7 @@
 
 namespace Ls\Core\Model;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -16,6 +17,10 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class LSR
 {
+    const TOKEN_ENDPOINT = 'https://login.microsoftonline.com/%s/oauth2/v2.0/token';
+    const BC_BASE_URL = 'https://api.businesscentral.dynamics.com/v2.0';
+    const TOKEN_SCOPE = 'https://api.businesscentral.dynamics.com/.default';
+    const TOKEN_GRANT_TYPE = 'client_credentials';
     const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>
 Please define the LS Retail Service Base URL and Web Store to proceed.<br/>
 Go to Stores > Configuration > LS Retail > General Configuration.';
@@ -63,6 +68,19 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     // SERVICE
     const SC_SERVICE_ENABLE = 'ls_mag/service/enabled';
     const SC_SERVICE_BASE_URL = 'ls_mag/service/base_url';
+
+    const SC_SERVICE_TOKEN = 'ls_mag/service/token';
+    const SC_SERVICE_TOKEN_EXPIRY = 'ls_mag/service/token_expiry';
+    const SC_TENANT = 'ls_mag/service/tenant';
+    const SC_ENVIRONMENT_NAME = 'ls_mag/service/environment_name';
+    const SC_COMPANY_NAME = 'ls_mag/service/company_name';
+    const SC_WEB_SERVICE_URI = 'ls_mag/service/web_service_uri';
+    const SC_ODATA_URI = 'ls_mag/service/odata_service_uri';
+    const SC_USERNAME = 'ls_mag/service/username';
+    const SC_PASSWORD = 'ls_mag/service/password';
+    const SC_CLIENT_ID = 'ls_mag/service/client_id';
+    const SC_CLIENT_SECRET = 'ls_mag/service/client_secret';
+
     const SC_SERVICE_LS_KEY = 'ls_mag/service/ls_key';
     const SC_SERVICE_STORE = 'ls_mag/service/selected_store';
     const SC_SERVICE_LCY_CODE = 'ls_mag/service/local_currency_code';
@@ -175,9 +193,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO = 'ls_mag/replication/success_repl_data_translation_to_magento';
     const SC_CRON_DATA_TRANSLATION_TO_MAGENTO_CONFIG_PATH_LAST_EXECUTE =
         'ls_mag/replication/last_execute_repl_data_translation_to_magento';
+
+    const SC_STORE_REPLICATED_DATA_TRANSLATION_LANG_CODE = 'ls_mag/replication/replicated_data_translation_lang_code';
     const SC_STORE_DATA_TRANSLATION_LANG_CODE = 'ls_mag/replication/replicate_data_translation_lang_code';
     const SC_TRANSLATION_ID_ITEM_DESCRIPTION = 'T0000000027-F0000000003';
     const SC_TRANSLATION_ID_ITEM_HTML = 'T0010001410-F0000000020';
+    public const SC_TRANSLATION_ID_DEAL_ITEM_HTML = 'T0010000825-F0000000020';
     const SC_TRANSLATION_ID_HIERARCHY_NODE = 'T0010000921-F0000000004';
     const SC_TRANSLATION_ID_ATTRIBUTE = 'T0010000784-F0000000005';
     const SC_TRANSLATION_ID_ATTRIBUTE_OPTION_VALUE = 'T0010000785-F0000000003';
@@ -282,6 +303,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SESSION_CUSTOMER_SECURITYTOKEN = 'lsr-s-c-st';
     const SESSION_CUSTOMER_CARDID = 'lsr-s-c-cid';
     const SESSION_CUSTOMER_LSRID = 'lsr-s-c-lid';
+    const SESSION_CUSTOMER_LSR_ACCOUNT_ID = 'lsr-s-c-aid';
     const SESSION_CART_ONELIST = 'lsr-s-c-onelist';
     const SESSION_CART_WISHLIST = 'lsr-s-c-wishlist';
     const SESSION_CHECKOUT_MEMBERPOINTS = 'member_points';
@@ -295,6 +317,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SESSION_CHECKOUT_STORE_PICKUP_HOURS = 'store_pickup_hours';
 
     const SESSION_CHECKOUT_DELIVERY_HOURS = 'delivery_hours';
+
+    const SESSION_CHECKOUT_GIFT_CARD = 'gift_card';
 
     // WORKFLOW
     const W_TYPE = 'T';
@@ -411,7 +435,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
     const COUPONS = 'LS_COUPONS_';
     const STORE = 'LS_STORE_';
-    const STORES = 'LS_STORES';
+    const STORES = 'LS_STORES_';
     const STORE_HOURS = 'LS_STORE_HOURS_';
     const RETURN_POLICY_CACHE = 'LS_RETURN_POLICY_';
     const PING_RESPONSE_CACHE = 'PING_RESPONSE_';
@@ -542,6 +566,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const OnPremise = '0';
     const Saas = '1';
 
+    const TYPE_GIFT_CARD = 'giftcard';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -661,25 +687,30 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * Validate base url
      *
-     * @param $baseUrl
-     * @param $lsKey
-     * @param $websiteId
+     * @param string $baseUrl
+     * @param array $connectionParams
+     * @param array $query
+     * @param string $websiteId
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function validateBaseUrl($baseUrl = null, $lsKey = null, $websiteId = null)
+    public function validateBaseUrl($baseUrl = '', $connectionParams = [], $query = [], $websiteId = '0')
     {
-        if ($baseUrl == null) {
-            $baseUrl = $this->getStoreConfig(self::SC_SERVICE_BASE_URL);
+        $centralType = $connectionParams['centralType'] ??
+            $this->getWebsiteConfig(self::SC_REPLICATION_CENTRAL_TYPE, $websiteId);
+
+        if ($centralType == '1') {
+            if (empty($baseUrl)) {
+                $baseUrl = $this->getWebsiteConfig(self::SC_SERVICE_BASE_URL, $websiteId);
+            }
+            if (empty($baseUrl)) {
+                return false;
+            }
         }
-        if ($lsKey == null) {
-            $lsKey = $this->getStoreConfig(self::SC_SERVICE_LS_KEY);
-        }
-        if (empty($baseUrl)) {
-            return false;
-        }
+        $this->data->getOmniDataHelper()->setMissingParameters($baseUrl, $connectionParams, $query);
         $websiteId = ($websiteId) ?: $this->getWebsiteId();
-        return $this->data->isEndpointResponding($baseUrl, $lsKey, $websiteId);
+
+        return $this->data->isEndpointResponding($baseUrl, $connectionParams, $query, $websiteId);
     }
 
     /**
@@ -687,7 +718,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      *
      * @param bool $storeId
      * @param bool $scope
-     * @return bool
+     * @param bool $force
+     * @return bool|null
      * @throws NoSuchEntityException
      */
     public function isLSR($storeId = false, $scope = false, $force = true)
@@ -695,7 +727,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if (!$this->isEnabled($storeId, $scope) || !$force) {
             return false;
         }
-
         if (isset($this->validateBaseUrlResponse) &&
             $this->validateBaseUrlStoreId == $storeId &&
             $scope == $this->validateBaseUrlScope
@@ -703,25 +734,29 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             return $this->validateBaseUrlResponse;
         }
         $this->validateBaseUrlStoreId = $storeId;
-        $websiteId                    = '';
+        $websiteId = '';
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
-            $baseUrl                    = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
-            $store                      = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
-            $lsKey                      = $this->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
-            $websiteId                  = $storeId;
+            $baseUrl = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+            $store = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
+            $websiteId = $storeId;
             $this->validateBaseUrlScope = $scope;
+            $centralType = $this->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $storeId);
         } else {
-            $baseUrl                    = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
-            $store                      = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
-            $lsKey                      = $this->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
+            $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+            $store = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
+            $centralType = $this->getStoreConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $storeId);
             $this->validateBaseUrlScope = false;
         }
-        if (empty($baseUrl) || empty($store)) {
+        if ($centralType == '1' && (empty($baseUrl) || empty($store))) {
             $this->validateBaseUrlResponse = false;
         } else {
-            $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl, $lsKey, $websiteId);
+            $this->validateBaseUrlResponse = $this->validateBaseUrl(
+                $baseUrl,
+                ['centralType' => $centralType],
+                [],
+                $websiteId
+            );
         }
-
         return $this->validateBaseUrlResponse;
     }
 
@@ -791,6 +826,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * Get default google map api key from config
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -805,6 +841,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * Get default latitude from config
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -819,6 +856,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * Get default longitude from config
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -833,6 +871,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     /**
      * Get default default zoom from config
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -889,9 +928,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * check if inventory lookup is enabled
+     * Check if inventory lookup is enabled
      *
-     * @param null $storeId
+     * @param ?string $storeId
      * @return array|string
      * @throws NoSuchEntityException
      */
@@ -1002,27 +1041,22 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * Get central version
      *
-     * @param null $storeId
-     * @param null $scope
-     * @param bool $formatted
-     * @return array|string
+     * @param string|null $storeId
+     * @param string|null $scope
+     * @return string
      * @throws NoSuchEntityException
      */
-    public function getCentralVersion($storeId = null, $scope = null, $formatted = true)
+    public function getCentralVersion($storeId = null, $scope = null)
     {
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
-            $centralVersion = $this->getWebsiteConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
-
-            return $formatted && $centralVersion ? strstr($centralVersion, " ", true) : $centralVersion;
+            return $this->getWebsiteConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
         }
 
         //If StoreID is not passed they retrieve it from the global area.
         if ($storeId === null) {
             $storeId = $this->getCurrentStoreId();
         }
-        $centralVersion = $this->getStoreConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
-
-        return $formatted && $centralVersion ? strstr($centralVersion, " ", true) : $centralVersion;
+        return $this->getStoreConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
     }
 
     /**
@@ -1100,7 +1134,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getStoreManagerObject()
     {
-
         return $this->storeManager;
     }
 
@@ -1435,24 +1468,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * To keep running discount replication for commerce service older version and running discount replication for saas
-     *
-     * @param $store
-     * @param $scope
-     * @return array
-     * @throws NoSuchEntityException
-     */
-    public function validateForOlderVersion($store, $scope = null)
-    {
-        $status = ['discountSetup' => false, 'discount' => true];
-        if (version_compare($this->getOmniVersion($store->getId(), $scope), '2023.10', '>')) {
-            $status = ['discountSetup' => true, 'discount' => false];
-        }
-
-        return $status;
-    }
-
-    /**
      * Is single store mode
      *
      * @return bool
@@ -1517,5 +1532,14 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         $websiteId = $this->getCurrentWebsiteId();
         return $this->getWebsiteConfig(LSR::LS_DISABLE_ORDER_CREATE_ON_BASKET_FAIL, $websiteId);
+    }
+
+    /**
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function getStoreId()
+    {
+        return $this->storeManager->getStore()->getStoreId();
     }
 }

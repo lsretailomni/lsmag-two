@@ -2,10 +2,6 @@
 
 namespace Ls\Customer\Block\Onepage;
 
-/**
- * Class Success
- * @package Ls\Customer\Block\Onepage
- */
 class Success extends \Magento\Checkout\Block\Onepage\Success
 {
     /**
@@ -48,5 +44,4 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
     {
         return $this->_checkoutSession;
     }
-
 }

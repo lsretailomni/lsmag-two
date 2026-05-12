@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplDiscountSetupRepositoryInterface as ReplDiscountSetup
 use Ls\Replication\Model\ReplDiscountSetupFactory;
 use Ls\Replication\Api\Data\ReplDiscountSetupInterface;
 
-class ReplEcommDiscountSetupTask extends AbstractReplicationTask
+abstract class ReplEcommDiscountSetupTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_discount_setup';
 
@@ -108,19 +108,6 @@ class ReplEcommDiscountSetupTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommDiscountSetup($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

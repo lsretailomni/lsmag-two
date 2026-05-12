@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <ls_mag>
             <webhooks>
@@ -29,9 +29,14 @@
                 <notification_cancel>1</notification_cancel>
                 <template_cancel>ls_mag_webhooks_template_cancel</template_cancel>
             </webhooks>
-        <ls_order_management>
-            <shipment_without_tracking>0</shipment_without_tracking>
-        </ls_order_management>
+            <ls_order_management>
+                <shipment_without_tracking>0</shipment_without_tracking>
+            </ls_order_management>
         </ls_mag>
+        <oauth>
+            <consumer>
+                <enable_integration_as_bearer>1</enable_integration_as_bearer>
+            </consumer>
+        </oauth>
     </default>
 </config>

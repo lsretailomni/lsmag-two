@@ -24,7 +24,7 @@ $magOrder = $block->getMagOrder();
         <?php endif ?>
         <?php if ($magOrder->canCancel() &&
             $block->orderCancellationOnFrontendIsEnabled() &&
-            strtolower($centralOrder->getStatus()) !== strtolower(LSR::LS_STATE_CANCELED)): ?>
+            strtolower($block->getOrderStatus()) !== strtolower(LSR::LS_STATE_CANCELED)): ?>
             <a href="#"
                class="action order cancel"
                data-post='<?= /* @escapeNotVerified */

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\System\Source;
 
@@ -6,33 +7,16 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Data\OptionSourceInterface;
 use Magento\Payment\Model\Config;
 
-/**
- * Class PaymentOption
- * @package Ls\Omni\Model\System\Source
- */
 class PaymentOption implements OptionSourceInterface
 {
     /**
-     * @var ScopeConfigInterface
-     */
-    public $appConfigScopeConfigInterface;
-
-    /**
-     * @var Config
-     */
-    public $paymentModelConfig;
-
-    /**
-     * PaymentOption constructor.
      * @param ScopeConfigInterface $appConfigScopeConfigInterface
      * @param Config $paymentModelConfig
      */
     public function __construct(
-        ScopeConfigInterface $appConfigScopeConfigInterface,
-        Config $paymentModelConfig
+        public ScopeConfigInterface $appConfigScopeConfigInterface,
+        public Config $paymentModelConfig
     ) {
-        $this->appConfigScopeConfigInterface = $appConfigScopeConfigInterface;
-        $this->paymentModelConfig            = $paymentModelConfig;
     }
 
     /**

@@ -2,16 +2,15 @@
 
 namespace Ls\Webhooks\Api;
 
+use \Ls\Webhooks\Api\Data\OrderReturnsMessageInterface;
+
 interface OrderReturnsInterface
 {
     /**
      * Create order returns
      *
-     * @param string $OrderId
-     * @param string $ReturnType
-     * @param string $Amount
-     * @param mixed $Lines
+     * @param OrderReturnsMessageInterface $message
      * @return mixed
      */
-    public function set(string $OrderId, string $ReturnType, string $Amount, $Lines);
+    public function set(OrderReturnsMessageInterface $orderReturns);
 }

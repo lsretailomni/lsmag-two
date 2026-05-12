@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Quote;
 
 use Closure;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -16,43 +18,17 @@ use Magento\Quote\Model\Quote;
 class CartTotalRepository
 {
     /**
-     * Quote repository.
-     *
-     * @var CartRepositoryInterface
-     */
-    private $quoteRepository;
-
-    /**
-     * @var TotalsExtensionFactory
-     */
-    private $totalExtensionFactory;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    private $loyaltyHelper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
      * @param CartRepositoryInterface $quoteRepository
      * @param TotalsExtensionFactory $totalExtensionFactory
-     * @param LoyaltyHelper $helper
+     * @param LoyaltyHelper $loyaltyHelper
      * @param LSR $lsr
      */
     public function __construct(
-        CartRepositoryInterface $quoteRepository,
-        TotalsExtensionFactory $totalExtensionFactory,
-        LoyaltyHelper $helper,
-        LSR $lsr
+        public CartRepositoryInterface $quoteRepository,
+        public TotalsExtensionFactory $totalExtensionFactory,
+        public LoyaltyHelper $loyaltyHelper,
+        public LSR $lsr
     ) {
-        $this->quoteRepository       = $quoteRepository;
-        $this->totalExtensionFactory = $totalExtensionFactory;
-        $this->loyaltyHelper         = $helper;
-        $this->lsr                   = $lsr;
     }
 
     /**
@@ -62,7 +38,7 @@ class CartTotalRepository
      * @param Closure $proceed
      * @param $cartId
      * @return TotalsInterface
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function aroundGet(CartTotalRepositoryInterface $subject, Closure $proceed, $cartId)
     {

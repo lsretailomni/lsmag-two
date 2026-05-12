@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\OneList;
+use \Ls\Omni\Client\CentralEcommerce\Entity\RootMobileTransaction;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Event\Observer;
@@ -20,41 +22,17 @@ use Psr\Log\LoggerInterface;
 class CartObserver implements ObserverInterface
 {
     /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var CheckoutSession
-     */
-    private $checkoutSession;
-
-    /**
-     * @var LSR
-     */
-    private $lsr;
-
-    /**
      * @param BasketHelper $basketHelper
      * @param LoggerInterface $logger
      * @param CheckoutSession $checkoutSession
-     * @param LSR $LSR
+     * @param LSR $lsr
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        LoggerInterface $logger,
-        CheckoutSession $checkoutSession,
-        LSR $LSR
+        public BasketHelper $basketHelper,
+        public LoggerInterface $logger,
+        public CheckoutSession $checkoutSession,
+        public LSR $lsr
     ) {
-        $this->basketHelper    = $basketHelper;
-        $this->logger          = $logger;
-        $this->checkoutSession = $checkoutSession;
-        $this->lsr             = $LSR;
     }
 
     /**
@@ -63,7 +41,7 @@ class CartObserver implements ObserverInterface
      * @param Observer $observer
      * @return $this
      * @throws NoSuchEntityException
-     * @throws LocalizedException
+     * @throws LocalizedException|GuzzleException
      */
     public function execute(Observer $observer)
     {
@@ -81,7 +59,7 @@ class CartObserver implements ObserverInterface
                     $quote = $this->checkoutSession->getQuote();
                 }
                 // This will create one list if not created and will return onelist if its already created.
-                /** @var OneList|null $oneList */
+                /** @var RootMobileTransaction|null $oneList */
                 $oneList = $this->basketHelper->get();
                 // add items from the quote to the oneList and return the updated onelist
                 $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);

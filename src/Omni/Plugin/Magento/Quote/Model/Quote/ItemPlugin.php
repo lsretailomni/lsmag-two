@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Magento\Quote\Model\Quote;
 
@@ -12,24 +13,14 @@ use Magento\Quote\Model\Quote\Item;
  */
 class ItemPlugin
 {
-    /** @var LSR @var */
-    private $lsr;
-
     /**
-     * @var StockHelper
-     */
-    private $stockHelper;
-
-    /**
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param StockHelper $stockHelper
      */
     public function __construct(
-        LSR $LSR,
-        StockHelper $stockHelper
+        public LSR $lsr,
+        public StockHelper $stockHelper
     ) {
-        $this->lsr         = $LSR;
-        $this->stockHelper = $stockHelper;
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Config\Model\Config\Structure\Element;
 
@@ -12,17 +13,11 @@ use Magento\Config\Model\Config\Structure\Element\Field;
 class FieldPlugin
 {
     /**
-     * @var StoreManagerInterface
-     */
-    public $storeManager;
-
-    /**
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        StoreManagerInterface $storeManager
+        public StoreManagerInterface $storeManager
     ) {
-        $this->storeManager = $storeManager;
     }
 
     /**

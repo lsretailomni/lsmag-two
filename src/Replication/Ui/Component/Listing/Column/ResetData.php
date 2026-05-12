@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Ui\Component\Listing\Column;
 
@@ -12,11 +13,7 @@ class ResetData extends Column
     /** Url path */
     public const URL_PATH_EXECUTE = 'ls_repl/deletion/lstables';
 
-    /** @var UrlInterface */
-    public $urlBuilder;
-
     /**
-     * ResetData constructor.
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
      * @param UrlInterface $urlBuilder
@@ -26,11 +23,10 @@ class ResetData extends Column
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        UrlInterface $urlBuilder,
+        public UrlInterface $urlBuilder,
         array $components = [],
         array $data = []
     ) {
-        $this->urlBuilder       = $urlBuilder;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 

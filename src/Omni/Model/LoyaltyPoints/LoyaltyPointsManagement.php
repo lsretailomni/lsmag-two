@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\LoyaltyPoints;
 
@@ -15,28 +16,13 @@ use Magento\Quote\Model\Quote;
 class LoyaltyPointsManagement
 {
     /**
-     * Sales quote repository
-     *
-     * @var CartRepositoryInterface
-     */
-    public $quoteRepository;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * LoyaltyPointsManagement constructor.
      * @param CartRepositoryInterface $quoteRepository
      * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
-        CartRepositoryInterface $quoteRepository,
-        LoyaltyHelper $loyaltyHelper
+        public CartRepositoryInterface $quoteRepository,
+        public LoyaltyHelper $loyaltyHelper
     ) {
-        $this->quoteRepository = $quoteRepository;
-        $this->loyaltyHelper   = $loyaltyHelper;
     }
 
     /**

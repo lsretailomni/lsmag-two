@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\Carrier;
 
@@ -17,13 +18,8 @@ use Magento\Shipping\Model\Rate\ResultFactory;
 use PHPUnit\Exception;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class Clickandcollect
- * @package Ls\Omni\Model\Carrier
- */
 class Clickandcollect extends AbstractCarrier implements CarrierInterface
 {
-
     /** @var string */
     // @codingStandardsIgnoreLine
     public $_code = 'clickandcollect';
@@ -32,19 +28,7 @@ class Clickandcollect extends AbstractCarrier implements CarrierInterface
     // @codingStandardsIgnoreLine
     public $_isFixed = true;
 
-    /** @var ResultFactory */
-    public $rateResultFactory;
-
-    /** @var MethodFactory */
-    public $rateMethodFactory;
-
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * Clickandcollect constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param ErrorFactory $rateErrorFactory
      * @param LoggerInterface $logger
@@ -57,14 +41,11 @@ class Clickandcollect extends AbstractCarrier implements CarrierInterface
         ScopeConfigInterface $scopeConfig,
         ErrorFactory $rateErrorFactory,
         LoggerInterface $logger,
-        ResultFactory $rateResultFactory,
-        MethodFactory $rateMethodFactory,
-        LSR $lsr,
+        public ResultFactory $rateResultFactory,
+        public MethodFactory $rateMethodFactory,
+        public LSR $lsr,
         array $data = []
     ) {
-        $this->rateResultFactory = $rateResultFactory;
-        $this->rateMethodFactory = $rateMethodFactory;
-        $this->lsr               = $lsr;
         parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
     }
 

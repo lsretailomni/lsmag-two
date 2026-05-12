@@ -1,14 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Adminhtml\System\Config;
 
 use \Ls\Core\Model\LSR;
 use Magento\Framework\Data\OptionSourceInterface;
 
-/**
- * Class TimeFormat
- * @package Magento\Config\Model\Config\Source
- */
 class TimeFormat implements OptionSourceInterface
 {
     /**

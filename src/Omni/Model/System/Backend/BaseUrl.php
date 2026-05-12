@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\System\Backend;
 
@@ -11,10 +12,6 @@ use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class BaseUrl
- * @package Ls\Omni\Model\System\Backend
- */
 class BaseUrl extends Value
 {
     /** @var LoggerInterface */

@@ -18,6 +18,7 @@ use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Fixture\CustomerFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use Magento\Checkout\Test\Fixture\SetBillingAddress as SetBillingAddress;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote\Address\Total\CollectorInterface;
 use Magento\Quote\Model\Quote\Address\TotalFactory;
 use Magento\Checkout\Test\Fixture\SetShippingAddress as SetShippingAddress;
@@ -169,11 +170,36 @@ class SalesObserverTest extends AbstractIntegrationTest
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
-        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'website'),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'store', 'default' ),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website' ),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'store', 'default'),
+        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'website'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'store', 'default'),
+        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'website'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'store', 'default'),
+        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'website'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'website'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'store', 'default'),
+        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'store', 'default'),
+        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'store', 'default'),
+        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'store', 'default'),
+        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'store', 'default'),
+        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'website'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'website'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'website'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -246,11 +272,12 @@ class SalesObserverTest extends AbstractIntegrationTest
         ));
 
         $expectedLsPointsDiscount = $this->loyaltyHelper->getLsPointsDiscount(AbstractIntegrationTest::LSR_LOY_POINTS);
+        $mobileTransaction = current((array)$this->basketHelper->getOneListCalculationFromCheckoutSession()->getMobiletransaction());
         $this->assertNotEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
         $this->assertNotNull($this->basketHelper->getOneListCalculationFromCheckoutSession());
         $this->assertEquals(
-            $this->basketHelper->getOneListCalculationFromCheckoutSession()->getPointsRewarded(),
-            $this->checkoutSession->getQuote()->getLsPointsEarn()
+            (float) $mobileTransaction->getIssuedpoints(),
+            (float) $this->checkoutSession->getQuote()->getLsPointsEarn()
         );
 
         $this->assertEqualsWithDelta(
@@ -262,5 +289,19 @@ class SalesObserverTest extends AbstractIntegrationTest
         $cart->delete();
         $this->checkoutSession->clearQuote();
         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
+    }
+
+    /**
+     * Get Ls points discount
+     *
+     * @param $pointsSpent
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    public function getLsPointsDiscount($pointsSpent)
+    {
+        $loyaltyPointsRate = $this->loyaltyHelper->getPointRate(null, 'LOY');
+
+        return ($loyaltyPointsRate > 0) ? $pointsSpent * (1 / $loyaltyPointsRate) : 0;
     }
 }

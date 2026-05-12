@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
@@ -13,32 +15,6 @@ use Psr\Log\LoggerInterface;
 
 class HidePaymentMethods implements ObserverInterface
 {
-
-    /**
-     * @var  BasketHelper
-     */
-    private $basketHelper;
-
-    /**
-     * @var Data
-     */
-    private $data;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var Quote
-     */
-    private $quoteResourceModel;
-
-    /**
-     * @var  LSR
-     */
-    private $lsr;
-
     /**
      * @param BasketHelper $basketHelper
      * @param Data $data
@@ -47,17 +23,12 @@ class HidePaymentMethods implements ObserverInterface
      * @param LSR $lsr
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        Data $data,
-        LoggerInterface $logger,
-        Quote $quoteResourceModel,
-        LSR $lsr
+        public BasketHelper $basketHelper,
+        public Data $data,
+        public LoggerInterface $logger,
+        public Quote $quoteResourceModel,
+        public LSR $lsr
     ) {
-        $this->basketHelper       = $basketHelper;
-        $this->quoteResourceModel = $quoteResourceModel;
-        $this->lsr                = $lsr;
-        $this->data               = $data;
-        $this->logger             = $logger;
     }
 
     /**
@@ -65,6 +36,7 @@ class HidePaymentMethods implements ObserverInterface
      *
      * @param Observer $observer
      * @return void
+     * @throws GuzzleException
      */
     public function execute(Observer $observer)
     {

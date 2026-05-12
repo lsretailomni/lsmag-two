@@ -2,6 +2,7 @@
 
 namespace Ls\Customer\Plugin\Controller\Account;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Api\CustomerMetadataInterface;
@@ -17,41 +18,6 @@ use Magento\Store\Model\StoreManagerInterface;
 class ForgotPasswordPostPlugin
 {
     /**
-     * @var CustomerFactory
-     */
-    public $customerFactory;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    public $storeManager;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var ContactHelper
-     */
-    public $contactHelper;
-
-    /**
-     * @var Customer
-     */
-    public $customerResourceModel;
-
-    /**
-     * @var RedirectFactory
-     */
-    public $resultRedirectFactory;
-
-    /**
-     * @var MessageManagerInterface
-     */
-    public $messageManager;
-
-    /**
      * @param CustomerFactory $customerFactory
      * @param StoreManagerInterface $storeManager
      * @param LSR $lsr
@@ -61,30 +27,23 @@ class ForgotPasswordPostPlugin
      * @param MessageManagerInterface $messageManager
      */
     public function __construct(
-        CustomerFactory $customerFactory,
-        StoreManagerInterface $storeManager,
-        LSR $lsr,
-        ContactHelper $contactHelper,
-        Customer $customerResourceModel,
-        RedirectFactory $resultRedirectFactory,
-        MessageManagerInterface $messageManager
+        public CustomerFactory $customerFactory,
+        public StoreManagerInterface $storeManager,
+        public LSR $lsr,
+        public ContactHelper $contactHelper,
+        public Customer $customerResourceModel,
+        public RedirectFactory $resultRedirectFactory,
+        public MessageManagerInterface $messageManager
     ) {
-        $this->customerFactory       = $customerFactory;
-        $this->storeManager          = $storeManager;
-        $this->lsr                   = $lsr;
-        $this->contactHelper         = $contactHelper;
-        $this->customerResourceModel = $customerResourceModel;
-        $this->resultRedirectFactory = $resultRedirectFactory;
-        $this->messageManager        = $messageManager;
     }
 
     /**
      * Around plugin to search and create customer in magento in case if needed
      *
      * @param ForgotPasswordPost $subject
-     * @param $proceed
+     * @param callable $proceed
      * @return Redirect|mixed
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -102,15 +61,19 @@ class ForgotPasswordPostPlugin
                 try {
                     $search = $this->contactHelper->searchWithUsernameOrEmail($email);
 
-                    if ($search) {
+                    if ($search && $search->getLscMemberLoginCard()) {
                         $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
                         /** @var Customer $customer */
                         $customer = $this->customerFactory->create()
                             ->setWebsiteId($websiteId)
-                            ->loadByEmail($search->getEmail());
-                        $subject->getRequest()->setPostValue('email', $search->getEmail());
-                        $userName = ($customer->getData('lsr_username')) ?: $search->getUserName();
-                        $result   = $this->contactHelper->forgotPassword($userName);
+                            ->loadByEmail($search->getLscMemberContact()->getEmail());
+                        $subject->getRequest()->setPostValue(
+                            'email',
+                            $search->getLscMemberContact()->getEmail()
+                        );
+                        $userName = ($customer->getData('lsr_username')) ?:
+                            $search->getLscMemberLoginCard()->getLoginId();
+                        $result = $this->contactHelper->forgotPassword($userName);
 
                         if ($result) {
                             if (!$customer->getId()) {

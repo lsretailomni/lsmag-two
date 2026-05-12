@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\Payment;
 
@@ -25,10 +26,6 @@ use Magento\Quote\Api\Data\PaymentMethodInterface;
 use Magento\Sales\Model\Order\Payment;
 use Magento\Store\Model\ScopeInterface;
 
-/**
- * Class PayStore
- * @package Ls\Omni\Model\Payment
- */
 class PayStore extends AbstractExtensibleModel implements
     MethodInterface,
     PaymentMethodInterface
@@ -135,41 +132,12 @@ class PayStore extends AbstractExtensibleModel implements
      */
     public $canReviewPayment = false;
 
-
     /**
      * @var bool
      */
     public $canCancelInvoice = false;
 
     /**
-     * @var Data
-     */
-    public $paymentData;
-
-    /**
-     * Core store config
-     *
-     * @var ScopeConfigInterface
-     */
-    public $scopeConfig;
-
-    /**
-     * @var Logger
-     */
-    public $logger;
-
-    /**
-     * @var DirectoryHelper
-     */
-    private $directory;
-
-    /**
-     * @var $dataObject
-     */
-    public $dataObject;
-
-    /**
-     * PayStore constructor.
      * @param Context $context
      * @param Registry $registry
      * @param ExtensionAttributesFactory $extensionFactory
@@ -188,11 +156,11 @@ class PayStore extends AbstractExtensibleModel implements
         Registry $registry,
         ExtensionAttributesFactory $extensionFactory,
         AttributeValueFactory $customAttributeFactory,
-        Data $paymentData,
-        ScopeConfigInterface $scopeConfig,
-        DataObject $dataObject,
-        Logger $logger,
-        DirectoryHelper $directory,
+        public Data $paymentData,
+        public ScopeConfigInterface $scopeConfig,
+        public DataObject $dataObject,
+        public Logger $logger,
+        public DirectoryHelper $directory,
         ?AbstractResource $resource = null,
         ?AbstractDb $resourceCollection = null,
         array $data = []
@@ -206,11 +174,6 @@ class PayStore extends AbstractExtensibleModel implements
             $resourceCollection,
             $data
         );
-        $this->paymentData = $paymentData;
-        $this->scopeConfig = $scopeConfig;
-        $this->dataObject  = $dataObject;
-        $this->logger      = $logger;
-        $this->directory   = $directory;
         $this->initializeData($data);
     }
 

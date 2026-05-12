@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface as ReplAttrib
 use Ls\Replication\Model\ReplAttributeOptionValueFactory;
 use Ls\Replication\Api\Data\ReplAttributeOptionValueInterface;
 
-class ReplEcommAttributeOptionValueTask extends AbstractReplicationTask
+abstract class ReplEcommAttributeOptionValueTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_attribute_option_value';
 
@@ -108,19 +108,6 @@ class ReplEcommAttributeOptionValueTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommAttributeOptionValue($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

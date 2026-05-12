@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Block\Adminhtml\System\Config\TenderPaymentMapping;
 
@@ -7,29 +8,19 @@ use Magento\Framework\View\Element\Context;
 use Magento\Framework\View\Element\Html\Select;
 use \Ls\Omni\Model\System\Source\PaymentOption;
 
-/**
- * payment methods class
- */
 class PaymentMethodsColumn extends Select
 {
     /**
-     * @var PaymentOption
-     */
-    public $paymentOption;
-
-    /**
-     * PaymentMethodsColumn constructor.
      * @param Context $context
      * @param PaymentOption $paymentOption
      * @param array $data
      */
     public function __construct(
         Context $context,
-        PaymentOption $paymentOption,
+        public PaymentOption $paymentOption,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->paymentOption = $paymentOption;
     }
 
     /**

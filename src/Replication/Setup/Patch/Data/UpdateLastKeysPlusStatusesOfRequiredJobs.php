@@ -3,7 +3,6 @@
 namespace Ls\Replication\Setup\Patch\Data;
 
 use \Ls\Replication\Cron\ReplEcommAttributeValueTask;
-use \Ls\Replication\Cron\ReplEcommDiscountsTask;
 use \Ls\Replication\Cron\ReplEcommInventoryStatusTask;
 use \Ls\Replication\Cron\ReplEcommItemsTask;
 use \Ls\Replication\Cron\ReplEcommPricesTask;
@@ -79,8 +78,6 @@ class UpdateLastKeysPlusStatusesOfRequiredJobs implements DataPatchInterface, Pa
         $this->replicationHelper->updateCronStatus(false, ReplEcommStoresTask::CONFIG_PATH);
         $this->replicationHelper->updateCronStatus(false, ReplEcommAttributeValueTask::CONFIG_PATH_STATUS);
         $this->replicationHelper->updateCronStatus(false, ReplEcommAttributeValueTask::CONFIG_PATH);
-        $this->replicationHelper->updateCronStatus(false, ReplEcommDiscountsTask::CONFIG_PATH_STATUS);
-        $this->replicationHelper->updateCronStatus(false, ReplEcommDiscountsTask::CONFIG_PATH);
         $this->replicationHelper->updateCronStatus(false, ReplEcommPricesTask::CONFIG_PATH_STATUS);
         $this->replicationHelper->updateCronStatus(false, ReplEcommPricesTask::CONFIG_PATH);
     }

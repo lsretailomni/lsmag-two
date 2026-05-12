@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\Controller\Order;
 
@@ -45,34 +46,28 @@ class Creditmemo extends AbstractOrderController implements HttpGetActionInterfa
      */
     public function fetchAndSetCurrentOrderInRegistry($orderId, $type)
     {
-        $transactions = parent::fetchAndSetCurrentOrderInRegistry($orderId, $type);
-        $response     = [];
+        parent::fetchAndSetCurrentOrderInRegistry($orderId, $type);
 
-        if (!is_array($transactions)) {
-            $transactions = [$transactions];
-        }
-        $transactionIds = [];
-        foreach ($transactions as $transaction) {
-            if (!in_array($transaction->getId(), $transactionIds)) {
-                $returnTransactions = $this->orderHelper->getReturnDetailsAgainstId($transaction->getId());
+        $currentTransaction = current($this->getCurrentTransaction());
+        $returnTransactions = $this->orderHelper->getReturnDetailsAgainstId(
+            $currentTransaction->getDocumentId()
+        );
+        $newOrderId = null;
 
-                if (!empty($returnTransactions)) {
-                    // @codingStandardsIgnoreStart
-                    $response = array_merge($response, $returnTransactions);
-                    // @codingStandardsIgnoreEnd
-                    $transactionIds[] = $transaction->getId();
-                }
+        if (!empty($returnTransactions) && !empty($returnTransactions->getLscMemberSalesBuffer())) {
+            $lscMemberSalesBuffer = is_array($returnTransactions->getLscMemberSalesBuffer()) ?
+                $returnTransactions->getLscMemberSalesBuffer() :
+                [$returnTransactions->getLscMemberSalesBuffer()];
+
+            foreach ($lscMemberSalesBuffer as $transaction) {
+                $newOrderId[] = $transaction->getDocumentId();
             }
+            $this->request->setParam('new_order_id', $newOrderId);
+            $this->orderHelper->registerGivenValueInRegistry('current_order', $returnTransactions);
+        } else {
+            $returnTransactions = $this->orderHelper->getOrder(true);
         }
 
-        if (empty($response)) {
-            $response = $transactions;
-        }
-
-        if ($response) {
-            $this->orderHelper->registerGivenValueInRegistry('current_order', $response);
-        }
-
-        return $response;
+        return $returnTransactions;
     }
 }

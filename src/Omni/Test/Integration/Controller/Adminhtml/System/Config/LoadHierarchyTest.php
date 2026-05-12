@@ -36,9 +36,18 @@ class LoadHierarchyTest extends AbstractBackendController
 
     public function testExecute()
     {
-        $this->getRequest()->setParam("baseUrl", AbstractIntegrationTest::CS_URL);
-        $this->getRequest()->setParam("storeId", AbstractIntegrationTest::CS_STORE);
-        $this->getRequest()->setParam("lsKey", '');
+        $this->getRequest()->setParam("baseUrl", AbstractIntegrationTest::BASE_URL);
+        $this->getRequest()->setParam("tenant", AbstractIntegrationTest::SC_TENANT);
+        $this->getRequest()->setParam("client_id", AbstractIntegrationTest::SC_CLIENT_ID);
+        $this->getRequest()->setParam("client_secret", AbstractIntegrationTest::SC_CLIENT_SECRET);
+        $this->getRequest()->setParam("company_name", AbstractIntegrationTest::SC_COMPANY_NAME);
+        $this->getRequest()->setParam("environment_name", AbstractIntegrationTest::SC_ENVIRONMENT_NAME);
+        $this->getRequest()->setParam("storeId", AbstractIntegrationTest::WEB_STORE);
+        $this->getRequest()->getParam('central_type', AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE);
+        $this->getRequest()->getParam('web_service_uri', AbstractIntegrationTest::SC_WEB_SERVICE_URI);
+        $this->getRequest()->getParam('odata_uri', AbstractIntegrationTest::SC_ODATA_URI);
+        $this->getRequest()->getParam('username', AbstractIntegrationTest::SC_USERNAME);
+        $this->getRequest()->getParam('password', AbstractIntegrationTest::SC_PASSWORD);
         $this->getRequest()->setParam("scopeId", '1');
         $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
         $this->dispatch('backend/omni/system_config/loadHierarchy');
@@ -51,8 +60,18 @@ class LoadHierarchyTest extends AbstractBackendController
 
     public function testExecuteNullResult()
     {
-        $this->getRequest()->setParam("baseUrl", AbstractIntegrationTest::CS_URL);
+        $this->getRequest()->setParam("baseUrl", AbstractIntegrationTest::BASE_URL);
+        $this->getRequest()->setParam("tenant", AbstractIntegrationTest::SC_TENANT);
+        $this->getRequest()->setParam("client_id", AbstractIntegrationTest::SC_CLIENT_ID);
+        $this->getRequest()->setParam("client_secret", AbstractIntegrationTest::SC_CLIENT_SECRET);
+        $this->getRequest()->setParam("company_name", AbstractIntegrationTest::SC_COMPANY_NAME);
+        $this->getRequest()->setParam("environment_name", AbstractIntegrationTest::SC_ENVIRONMENT_NAME);
         $this->getRequest()->setParam("storeId", 'S0000');
+        $this->getRequest()->getParam('central_type', AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE);
+        $this->getRequest()->getParam('web_service_uri', AbstractIntegrationTest::SC_WEB_SERVICE_URI);
+        $this->getRequest()->getParam('odata_uri', AbstractIntegrationTest::SC_ODATA_URI);
+        $this->getRequest()->getParam('username', AbstractIntegrationTest::SC_USERNAME);
+        $this->getRequest()->getParam('password', AbstractIntegrationTest::SC_PASSWORD);
         $this->getRequest()->setParam("lsKey", '');
         $this->getRequest()->setParam("scopeId", '5');
         $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
@@ -61,6 +80,6 @@ class LoadHierarchyTest extends AbstractBackendController
         $content = json_decode($this->getResponse()->getBody());
         $this->assertEquals('true', $content->success);
         $this->assertNotNull($content->hierarchy);
-        $this->assertEquals(1, count($content->hierarchy));
+        $this->assertEquals(0, count($content->hierarchy));
     }
 }

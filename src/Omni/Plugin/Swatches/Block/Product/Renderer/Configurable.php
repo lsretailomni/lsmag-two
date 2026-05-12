@@ -1,13 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Swatches\Block\Product\Renderer;
 
 use Ls\Core\Model\LSR;
 
-/**
- * Class Configurable
- * @package Ls\Omni\Plugin\Swatches\Block\Product\Renderer
- */
 class Configurable
 {
     /**

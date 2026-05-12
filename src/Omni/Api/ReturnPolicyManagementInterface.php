@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Api;
 
@@ -11,15 +12,15 @@ interface ReturnPolicyManagementInterface
      * Get return policy data
      *
      * @param string $itemId
-     * @param string $variantId
+     * @param ?string $variantId
      * @param string $storeId
-     * @param boolean $variantIdIsSku
+     * @param bool $variantIdIsSku
      * @return mixed
      */
     public function getReturnPolicy(
-        $itemId,
-        $variantId,
-        $storeId,
-        $variantIdIsSku = false
+        string $itemId,
+        ?string $variantId,
+        string $storeId,
+        bool $variantIdIsSku = false
     );
 }

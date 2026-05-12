@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Block\Adminhtml\Order\Create\Shipping;
 
@@ -14,33 +15,15 @@ use \Ls\Core\Model\LSR;
 class FormPlugin
 {
     /**
-     * @var Currency
-     */
-    public $currency;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var CheckoutSession
-     */
-    private $checkoutSession;
-
-    /**
      * @param Currency $currency
      * @param LSR $lsr
      * @param CheckoutSession $checkoutSession
      */
     public function __construct(
-        Currency $currency,
-        LSR $lsr,
-        CheckoutSession $checkoutSession
+        public Currency $currency,
+        public LSR $lsr,
+        public CheckoutSession $checkoutSession
     ) {
-        $this->lsr = $lsr;
-        $this->currency = $currency;
-        $this->checkoutSession = $checkoutSession;
     }
 
     /**

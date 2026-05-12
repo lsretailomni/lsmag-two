@@ -1,17 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Controller\Adminhtml\Order;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Model\Sales\AdminOrder\OrderEdit;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Redirect;
-use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -23,42 +23,11 @@ use Psr\Log\LoggerInterface;
 class Request extends Action
 {
     /**
-     * @var OrderRepositoryInterface
-     */
-    public $orderRepository;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
      * @var ManagerInterface
      */
     public $messageManager;
 
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var OrderEdit
-     */
-    public $orderEdit;
-
-    /**
-     * Request constructor.
      * @param Context $context
      * @param OrderRepositoryInterface $orderRepository
      * @param BasketHelper $basketHelper
@@ -69,20 +38,14 @@ class Request extends Action
      */
     public function __construct(
         Action\Context $context,
-        OrderRepositoryInterface $orderRepository,
-        BasketHelper $basketHelper,
-        LoggerInterface $logger,
-        OrderHelper $orderHelper,
-        LSR $lsr,
-        OrderEdit $orderEdit
+        public OrderRepositoryInterface $orderRepository,
+        public BasketHelper $basketHelper,
+        public LoggerInterface $logger,
+        public OrderHelper $orderHelper,
+        public LSR $lsr,
+        public OrderEdit $orderEdit
     ) {
-        $this->orderRepository = $orderRepository;
-        $this->basketHelper    = $basketHelper;
-        $this->logger          = $logger;
-        $this->orderHelper     = $orderHelper;
-        $this->messageManager  = $context->getMessageManager();
-        $this->lsr             = $lsr;
-        $this->orderEdit       = $orderEdit;
+        $this->messageManager = $context->getMessageManager();
         parent::__construct($context);
     }
 
@@ -90,22 +53,22 @@ class Request extends Action
      * Send order to Ls Central admin controller execute
      *
      * @return Redirect
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute()
     {
         $orderId = $this->getRequest()->getParam('order_id');
-        $order   = $this->orderRepository->get($orderId);
+        $order = $this->orderRepository->get($orderId);
         $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
         $this->lsr->setStoreId($order->getStoreId());
-        $response       = null;
+        $response = null;
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
 
         if ($this->lsr->isLSR($order->getStoreId())) {
             try {
                 $oneListCalculation = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
-                $documentId         = null;
+                $documentId = null;
                 if (!empty($oneListCalculation)) {
                     if ($order->getRelationParentId()) {
                         $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId(
@@ -117,7 +80,7 @@ class Request extends Action
                             if ($documentId) {
                                 $customerOrder = $this->orderHelper->getOrderDetailsAgainstId($documentId);
                                 $this->orderEdit->unsetItemsArray();
-                                $req      = $this->orderEdit->prepareOrder(
+                                $req = $this->orderEdit->prepareOrder(
                                     $order,
                                     $oneListCalculation,
                                     $oldOrder,
@@ -137,8 +100,8 @@ class Request extends Action
                                     $isClickCollect = false;
                                     $shippingMethod = $order->getShippingMethod(true);
                                     if ($shippingMethod !== null) {
-                                        $carrierCode    = $shippingMethod->getData('carrier_code');
-                                        $method         = $shippingMethod->getData('method');
+                                        $carrierCode = $shippingMethod->getData('carrier_code');
+                                        $method = $shippingMethod->getData('method');
                                         $isClickCollect = $carrierCode == 'clickandcollect';
                                     }
                                     if ($isClickCollect) {
@@ -156,18 +119,16 @@ class Request extends Action
                     }
 
                     if (empty($documentId)) {
-                        $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+                        $request = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                         $response = $this->orderHelper->placeOrder($request);
 
-                        if ($response) {
-                            if (!empty($response->getResult()->getId())) {
-                                $documentId = $response->getResult()->getId();
-                                $order->setDocumentId($documentId);
-                                $order->addCommentToStatusHistory(
-                                    __('Order request has been sent to LS Central successfully by the admin manually.')
-                                );
-                                $this->orderRepository->save($order);
-                            }
+                        if ($response && $response->getResponsecode() == "0000") {
+                            $documentId = $this->orderHelper->getDocumentIdFromResponseBasedOnIndustry($response);
+                            $order->setDocumentId($documentId);
+                            $order->addCommentToStatusHistory(
+                                __('Order request has been sent to LS Central successfully by the admin manually.')
+                            );
+                            $this->orderRepository->save($order);
                             $this->messageManager->addSuccessMessage(
                                 __('Order request has been sent to LS Central successfully')
                             );
@@ -186,6 +147,7 @@ class Request extends Action
         }
         $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
         $this->lsr->setStoreId(null);
+
         return $resultRedirect;
     }
 }

@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface as ReplUnitOfMeasure
 use Ls\Replication\Model\ReplUnitOfMeasureFactory;
 use Ls\Replication\Api\Data\ReplUnitOfMeasureInterface;
 
-class ReplEcommUnitOfMeasuresTask extends AbstractReplicationTask
+abstract class ReplEcommUnitOfMeasuresTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_unit_of_measure';
 
@@ -108,19 +108,6 @@ class ReplEcommUnitOfMeasuresTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommUnitOfMeasures($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

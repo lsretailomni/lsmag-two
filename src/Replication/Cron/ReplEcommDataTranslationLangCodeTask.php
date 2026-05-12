@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplDataTranslationLangCodeRepositoryInterface as ReplDat
 use Ls\Replication\Model\ReplDataTranslationLangCodeFactory;
 use Ls\Replication\Api\Data\ReplDataTranslationLangCodeInterface;
 
-class ReplEcommDataTranslationLangCodeTask extends AbstractReplicationTask
+abstract class ReplEcommDataTranslationLangCodeTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_data_translation_lang_code';
 
@@ -108,19 +108,6 @@ class ReplEcommDataTranslationLangCodeTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommDataTranslationLangCode($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

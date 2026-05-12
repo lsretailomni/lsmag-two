@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model;
 
@@ -11,14 +12,6 @@ use Magento\Framework\UrlInterface;
 
 class SetCouponData
 {
-    /** @var BasketHelper */
-    public $basketHelper;
-
-    /** @var  RedirectFactory $redirectFactory */
-    public $redirectFactory;
-
-    /** @var UrlInterface */
-    public $url;
 
     /**
      * @param BasketHelper $basketHelper
@@ -26,13 +19,10 @@ class SetCouponData
      * @param UrlInterface $url
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        RedirectFactory $redirectFactory,
-        UrlInterface $url
+        public BasketHelper $basketHelper,
+        public RedirectFactory $redirectFactory,
+        public UrlInterface $url
     ) {
-        $this->basketHelper    = $basketHelper;
-        $this->redirectFactory = $redirectFactory;
-        $this->url             = $url;
     }
 
     /**

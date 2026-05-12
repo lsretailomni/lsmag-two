@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\Api;
 
@@ -19,39 +20,17 @@ class DiscountManagement implements DiscountManagementInterface
     public const GIFTCARD_REMARKS = 'giftcard';
 
     /**
-     * @var QuoteIdMaskFactory
-     */
-    public $quoteIdMaskFactory;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /** @var GiftCardHelper */
-    public $giftCardHelper;
-
-    /**
-     * @var CartRepositoryInterface
-     */
-    public $cartRepository;
-
-    /**
      * @param QuoteIdMaskFactory $quoteIdMaskFactory
      * @param BasketHelper $basketHelper
      * @param GiftCardHelper $giftCardHelper
      * @param CartRepositoryInterface $cartRepository
      */
     public function __construct(
-        QuoteIdMaskFactory $quoteIdMaskFactory,
-        BasketHelper $basketHelper,
-        GiftCardHelper $giftCardHelper,
-        CartRepositoryInterface $cartRepository
+        public QuoteIdMaskFactory $quoteIdMaskFactory,
+        public BasketHelper $basketHelper,
+        public GiftCardHelper $giftCardHelper,
+        public CartRepositoryInterface $cartRepository
     ) {
-        $this->quoteIdMaskFactory = $quoteIdMaskFactory;
-        $this->basketHelper       = $basketHelper;
-        $this->giftCardHelper     = $giftCardHelper;
-        $this->cartRepository     = $cartRepository;
     }
 
     /**
@@ -69,7 +48,7 @@ class DiscountManagement implements DiscountManagementInterface
         $remarks     = self::NON_COUPON_REMARKS;
 
         if (!$existingBasketCalculation ||
-            empty($existingBasketCalculation->getOrderDiscountLines()->getOrderDiscountLine())
+            empty($existingBasketCalculation->getMobiletransdiscountline())
         ) {
             $discountsValidity = [
                 'valid'   => true,
@@ -78,7 +57,8 @@ class DiscountManagement implements DiscountManagementInterface
                 'remarks' => $remarks
             ];
         } else {
-            $existingBasketTotal = $existingBasketCalculation->getTotalAmount();
+            $mobileTransaction = current((array) $existingBasketCalculation->getMobiletransaction());
+            $existingBasketTotal = $mobileTransaction->getGrossamount();
             $this->basketHelper->setCalculateBasket('1');
             $basketData = $this->basketHelper->syncBasketWithCentral($cartId);
 
@@ -96,7 +76,8 @@ class DiscountManagement implements DiscountManagementInterface
 
             /** @var  Order $newBasketCalculation */
             if (is_object($basketData) && $newBasketCalculation) {
-                $newBasketTotal    = $newBasketCalculation->getTotalAmount();
+                $newMobileTransaction = current((array) $newBasketCalculation->getMobiletransaction());
+                $newBasketTotal    = $newMobileTransaction->getGrossamount();
                 $discountMsg       = $newBasketTotal > $existingBasketTotal ?
                     __($this->basketHelper->getLsrModel()->getDiscountValidationMsg()) :
                     __('Your order summary has been updated.');

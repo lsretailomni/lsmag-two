@@ -1,26 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Info;
 
 use Magento\Payment\Block\Info;
 
-/**
- * Class Loyaltypoints
- * @package Ls\Omni\Block\Info
- */
 class Loyaltypoints extends Info
 {
-
-    /**
-     * @var string
-     */
-    public $payableTo;
-
-    /**
-     * @var string
-     */
-    public $mailingAddress;
-
     /**
      * @var string
      */
@@ -28,6 +14,8 @@ class Loyaltypoints extends Info
     public $_template = 'Ls_Omni::info/loyaltypoints.phtml';
 
     /**
+     * Get html for pdf
+     *
      * @return string
      */
     public function toPdf()

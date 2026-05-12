@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
@@ -14,51 +15,17 @@ use Magento\Tax\Model\Calculation;
 class KlarnaItemsPlugin
 {
     /**
-     * @var object
-     */
-    private $dataConverter;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
-
-    /**
-     * @var Calculation
-     */
-    private $taxCalculation;
-
-    /**
-     * @var object
-     */
-    private $klarnaConfig;
-
-    /**
-     * @var LSR
-     */
-    private $lsr;
-
-    /**
-     * @var Factory
-     */
-    private $factory;
-
-    /**
      * @param StoreManagerInterface $storeManager
      * @param Calculation $taxCalculation
      * @param Factory $factory
      * @param LSR $lsr
      */
     public function __construct(
-        StoreManagerInterface $storeManager,
-        Calculation $taxCalculation,
-        Factory $factory,
-        LSR $lsr
+        public StoreManagerInterface $storeManager,
+        public Calculation $taxCalculation,
+        public Factory $factory,
+        public LSR $lsr
     ) {
-        $this->storeManager   = $storeManager;
-        $this->taxCalculation = $taxCalculation;
-        $this->factory        = $factory;
-        $this->lsr            = $lsr;
     }
 
     /**

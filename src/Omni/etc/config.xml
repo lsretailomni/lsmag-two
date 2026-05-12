@@ -5,6 +5,9 @@
     <default>
         <ls_mag>
             <service>
+                <central_type>1</central_type>
+                <client_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <password backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <local_currency_code>GBP</local_currency_code>
                 <debug>0</debug>
                 <advanced>0</advanced>
@@ -42,7 +45,7 @@
             </ls_stores>
             <ls_basket_calculation>
                 <place_to_sync>0</place_to_sync>
-                <ship_to_params>0</ship_to_params>                
+                <ship_to_params>0</ship_to_params>
             </ls_basket_calculation>
             <ls_order_management>
                 <shipping_item_id>66010</shipping_item_id>

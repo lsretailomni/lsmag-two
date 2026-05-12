@@ -1,13 +1,12 @@
 <?php
 // @codingStandardsIgnoreFile
 use Ls\Omni\ViewModel\GeneralViewModel;
-use Magento\Framework\View\Element\Template;
 
 /** @var $viewModel GeneralViewModel */
-/** @var $block Template */
+/** @var $block \Magento\Catalog\Block\Product\View */
 $viewModel = $block->getViewModel();
 ?>
-<?php $_product = $viewModel->getProduct(); ?>
+<?php $_product = $block->getProduct(); ?>
 <?php $isEnableCheck = $viewModel->isValid(); ?>
 <?php $buttonTitle = __('Add to Cart'); ?>
 <?php if ($_product->isSaleable()): ?>
@@ -21,6 +20,7 @@ $viewModel = $block->getViewModel();
                         <input type="number"
                                name="qty"
                                id="qty"
+                               min="0"
                                value="<?= /* @escapeNotVerified */
                                $block->getProductDefaultQty() * 1 ?>"
                                title="<?= /* @escapeNotVerified */
@@ -39,7 +39,7 @@ $viewModel = $block->getViewModel();
                         title="<?= /* @escapeNotVerified */
                         $buttonTitle ?>"
                         class="action primary tocart"
-                        id="product-addtocart-button">
+                        id="product-addtocart-button" disabled>
                     <span><?= /* @escapeNotVerified */
                         $buttonTitle ?></span>
                 </button>

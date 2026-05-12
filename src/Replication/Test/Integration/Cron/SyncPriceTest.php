@@ -69,7 +69,7 @@ class SyncPriceTest extends AbstractTaskTest
 
         $this->modifySpecificItemPrice(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ID
         );
 
         $this->executeUntilReady(SyncPrice::class, [

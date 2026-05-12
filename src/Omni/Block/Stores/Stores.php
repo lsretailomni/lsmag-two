@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Block\Stores;
 
@@ -9,6 +10,7 @@ use \Ls\Omni\Helper\Data;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template;
 use Magento\Store\Model\ScopeInterface;
 use Psr\Log\LoggerInterface;
@@ -19,29 +21,6 @@ use Psr\Log\LoggerInterface;
 class Stores extends Template
 {
     /**
-     * @var CollectionFactory
-     */
-    public $replStoreFactory;
-    /**
-     * @var ScopeConfigInterface
-     */
-    public $scopeConfig;
-    /**
-     * @var Data
-     */
-    public $storeHoursHelper;
-    /**
-     * @var Data
-     */
-    public $logger;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * Stores Constructor.
      * @param Template\Context $context
      * @param CollectionFactory $replStoreCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
@@ -51,34 +30,32 @@ class Stores extends Template
      */
     public function __construct(
         Template\Context $context,
-        CollectionFactory $replStoreCollectionFactory,
-        ScopeConfigInterface $scopeConfig,
-        Data $storeHoursHelper,
-        LSR $lsr,
-        LoggerInterface $logger
+        public CollectionFactory $replStoreCollectionFactory,
+        public ScopeConfigInterface $scopeConfig,
+        public Data $storeHoursHelper,
+        public LSR $lsr,
+        public LoggerInterface $logger
     ) {
-        $this->replStoreFactory = $replStoreCollectionFactory;
-        $this->scopeConfig      = $scopeConfig;
-        $this->storeHoursHelper = $storeHoursHelper;
-        $this->lsr              = $lsr;
-        $this->logger           = $logger;
         parent::__construct($context);
     }
 
     /**
+     * Get replicated store collection
+     *
      * @return Collection
      */
     public function getStores()
     {
+        $collection = $this->replStoreCollectionFactory->create();
         try {
-            $collection = $this->replStoreFactory->create()
+            $collection = $collection
                 ->addFieldToFilter('IsDeleted', 0)
                 ->addFieldToFilter('scope_id', $this->lsr->getCurrentWebsiteId());
-
-            return $collection;
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
+
+        return $collection;
     }
 
     /**
@@ -100,19 +77,18 @@ class Stores extends Template
     }
 
     /**
-     * @return mixed
+     * Get configured google map key
+     *
+     * @return string
+     * @throws NoSuchEntityException
      */
     public function getStoreMapKey()
     {
-        try {
-            return $this->scopeConfig->getValue(
-                LSR::SC_CLICKCOLLECT_GOOGLE_API_KEY,
-                ScopeInterface::SCOPE_STORE,
-                $this->lsr->getCurrentStoreId()
-            );
-        } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
-        }
+        return $this->scopeConfig->getValue(
+            LSR::SC_CLICKCOLLECT_GOOGLE_API_KEY,
+            ScopeInterface::SCOPE_STORE,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
@@ -136,7 +112,7 @@ class Stores extends Template
                 $formattedTime .= "<td class='dayofweek'>" . $entry["day"] . "</td><td class='normal-hour'>";
             }
 
-            if ($entry['type'] == StoreHourOpeningType::NORMAL) {
+            if ($entry['type'] == "0") {
                 $formattedTime .= "<span>" .
                     date(
                         $hoursFormat,
@@ -145,7 +121,7 @@ class Stores extends Template
                         $hoursFormat,
                         $entryTimeStampClose
                     ) . "</span><br/>";
-            } elseif ($entry['type'] == StoreHourOpeningType::TEMPORARY) {
+            } elseif ($entry['type'] == "1") {
                 $formattedTime .= "<span class='special-hour'>" .
                     date(
                         $hoursFormat,

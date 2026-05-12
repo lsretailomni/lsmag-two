@@ -66,10 +66,10 @@ class SyncPrice extends ProductCreateTask
                     /** Get list of only those prices whose items are already processed */
                     $filters = [
                         ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
-                        ['field' => 'main_table.Status', 'value' => 'Active', 'condition_type' => 'eq']
+                        ['field' => 'main_table.Status', 'value' => '1', 'condition_type' => 'eq']
                     ];
 
-                    $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+                    $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                         $filters,
                         $productPricesBatchSize,
                         1
@@ -199,7 +199,7 @@ class SyncPrice extends ProductCreateTask
     protected function isFuturePrice($replPrice)
     {
         // Only check if status is Active
-        if ($replPrice->getStatus() !== 'Active') {
+        if ($replPrice->getStatus() !== '1') {
             return false;
         }
 
@@ -253,7 +253,7 @@ class SyncPrice extends ProductCreateTask
     protected function isValidPrice($replPrice)
     {
         // Check if status is Active
-        if ($replPrice->getStatus() !== 'Active') {
+        if ($replPrice->getStatus() !== '1') {
             return false;
         }
 
@@ -278,7 +278,6 @@ class SyncPrice extends ProductCreateTask
         try {
             $currentDate = $this->replicationHelper->getCurrentDate();
             $format      = LSR::DATE_FORMAT;
-
             // Case 1: Only start date is valid (check if current date is after start)
             if (!$isStartingDateInvalid && $isEndingDateInvalid) {
                 $startDateTime = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
@@ -298,7 +297,7 @@ class SyncPrice extends ProductCreateTask
                     $format
                 );
                 if ($currentDate > $endDateTime) {
-                    return false;
+                    return false; // Price has expired
                 }
                 return true;
             }
@@ -313,7 +312,6 @@ class SyncPrice extends ProductCreateTask
                     $endingDate,
                     $format
                 );
-
                 if ($currentDate < $startDateTime || $currentDate > $endDateTime) {
                     return false;
                 }
@@ -371,8 +369,8 @@ class SyncPrice extends ProductCreateTask
             }
             $price->addData(
                 [
-                    'is_updated'   => 0,
-                    'processed'    => 1,
+                    'is_updated' => 0,
+                    'processed' => 1,
                     'processed_at' => $this->replicationHelper->getDateTime()
                 ]
             );
@@ -405,9 +403,9 @@ class SyncPrice extends ProductCreateTask
      */
     public function getPrice($productData, $replItemPriceList)
     {
-        $itemId    = $productData->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+        $itemId = $productData->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
         $variantId = $productData->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
-        $uom       = $productData->getData(LSR::LS_UOM_ATTRIBUTE);
+        $uom = $productData->getData(LSR::LS_UOM_ATTRIBUTE);
         if ($uom) {
             $attr = $productData->getResource()->getAttribute(LSR::LS_UOM_ATTRIBUTE);
             if ($attr->usesSource()) {
@@ -423,7 +421,7 @@ class SyncPrice extends ProductCreateTask
             }
         }
         if ($uom) {
-            $variantId         = '';
+            $variantId = '';
             $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($itemId);
             if ($uom == $baseUnitOfMeasure) {
                 $uom = '';
@@ -449,17 +447,17 @@ class SyncPrice extends ProductCreateTask
     public function getItemPriceList($itemId)
     {
         $replItemPriceListArray = [];
-        $webStoreId             = $this->lsr->getStoreConfig(
+        $webStoreId = $this->lsr->getStoreConfig(
             LSR::SC_SERVICE_STORE,
             $this->store->getId()
         );
-        $filters                = [
+        $filters = [
             ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
             ['field' => 'StoreId', 'value' => $webStoreId, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
-            ['field' => 'Status', 'value' => 'Active', 'condition_type' => 'eq']
+            ['field' => 'Status', 'value' => '1', 'condition_type' => 'eq']
         ];
-        $searchCriteria         = $this->replicationHelper
+        $searchCriteria = $this->replicationHelper
             ->buildCriteriaForDirect($filters, -1)
             ->setSortOrders(
                 [
@@ -474,7 +472,7 @@ class SyncPrice extends ProductCreateTask
             foreach ($replItemPriceList->getItems() as $replPrice) {
                 // Validate price before adding to array
                 if ($this->isValidPrice($replPrice)) {
-                    $key                          = $replPrice->getItemId() . '-' . $replPrice->getVariantId() . '-' .
+                    $key = $replPrice->getItemId() . '-' . $replPrice->getVariantId() . '-' .
                         $replPrice->getUnitOfMeasure();
                     $replItemPriceListArray[$key] = $replPrice;
                 }
@@ -503,15 +501,16 @@ class SyncPrice extends ProductCreateTask
      */
     public function getRemainingRecords(
         $storeData = null
-    ) {
+    )
+    {
         if (!$this->remainingRecords) {
             /** Get list of only those prices whose items are already processed */
             $filters = [
                 ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
-                ['field' => 'main_table.Status', 'value' => 'Active', 'condition_type' => 'eq']
+                ['field' => 'main_table.Status', 'value' => '1', 'condition_type' => 'eq']
             ];
 
-            $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
+            $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters
             );
             $collection = $this->replPriceCollectionFactory->create();

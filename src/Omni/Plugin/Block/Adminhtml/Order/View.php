@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Block\Adminhtml\Order;
 
@@ -10,23 +11,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class View
 {
     /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
      * @param OrderHelper $orderHelper
      * @param BasketHelper $basketHelper
      */
-    public function __construct(OrderHelper $orderHelper, BasketHelper $basketHelper)
+    public function __construct(public OrderHelper $orderHelper, public BasketHelper $basketHelper)
     {
-        $this->orderHelper = $orderHelper;
-        $this->basketHelper = $basketHelper;
     }
 
     /**

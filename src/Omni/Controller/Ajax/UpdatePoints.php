@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Controller\Ajax;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
@@ -11,64 +13,18 @@ use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Controller\Result\Raw;
 use Magento\Framework\Controller\Result\RawFactory;
-use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote;
 
-/**
- * Class UpdatePoints
- * @package Ls\Omni\Controller\Ajax
- */
 class UpdatePoints implements HttpPostActionInterface
 {
-
-    /** @var JsonFactory */
-    public $resultJsonFactory;
-
-    /** @var RawFactory */
-    public $resultRawFactory;
-
-    /** @var LoyaltyHelper */
-    public $loyaltyHelper;
-
     /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
-     * @var CheckoutSession
-     */
-    public $checkoutSession;
-
-    /**
-     * @var CustomerSession
-     */
-    public $customerSession;
-
-    /**
-     * @var CartRepositoryInterface
-     */
-    public $cartRepository;
-
-    /**
-     * @var Data
-     */
-    public $data;
-
-    /**
-     * @var RequestInterface
-     */
-    public RequestInterface $request;
-
-    /**
-     * UpdatePoints constructor.
-     * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param RawFactory $resultRawFactory
      * @param CustomerSession $customerSession
@@ -80,38 +36,30 @@ class UpdatePoints implements HttpPostActionInterface
      * @param RequestInterface $request
      */
     public function __construct(
-        Context $context,
-        JsonFactory $resultJsonFactory,
-        RawFactory $resultRawFactory,
-        CustomerSession $customerSession,
-        LoyaltyHelper $loyaltyHelper,
-        BasketHelper $basketHelper,
-        Data $data,
-        CheckoutSession $checkoutSession,
-        CartRepositoryInterface $cartRepository,
-        RequestInterface $request
+        public JsonFactory $resultJsonFactory,
+        public RawFactory $resultRawFactory,
+        public CustomerSession $customerSession,
+        public LoyaltyHelper $loyaltyHelper,
+        public BasketHelper $basketHelper,
+        public Data $data,
+        public CheckoutSession $checkoutSession,
+        public CartRepositoryInterface $cartRepository,
+        public RequestInterface $request
     ) {
-        $this->resultJsonFactory = $resultJsonFactory;
-        $this->resultRawFactory  = $resultRawFactory;
-        $this->loyaltyHelper     = $loyaltyHelper;
-        $this->checkoutSession   = $checkoutSession;
-        $this->customerSession   = $customerSession;
-        $this->cartRepository    = $cartRepository;
-        $this->basketHelper      = $basketHelper;
-        $this->data              = $data;
-        $this->request           = $request;
     }
 
     /**
-     * For updating loyalty points amount
+     * Add or remove loyalty points from checkout page
      *
-     * @return $this|ResponseInterface|ResultInterface
+     * @return Json|Raw
+     * @throws GuzzleException
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
         $httpBadRequestCode = 400;
-        $resultRaw          = $this->resultRawFactory->create();
-        $isPost             = $this->request->isPost();
+        $resultRaw = $this->resultRawFactory->create();
+        $isPost = $this->request->isPost();
         if (!$isPost || !$this->request->isXmlHttpRequest()) {
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
@@ -119,18 +67,18 @@ class UpdatePoints implements HttpPostActionInterface
         $resultJson = $this->resultJsonFactory->create();
         if (!$this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID)) {
             $response = [
-                'error'   => 'true',
+                'error' => 'true',
                 'message' => __('Customer session not found.')
             ];
             return $resultJson->setData($response);
         }
-        $post          = $this->request->getContent();
-        $postData      = json_decode($post);
+        $post = $this->request->getContent();
+        $postData = json_decode($post);
         $loyaltyPoints = (float)$postData->loyaltyPoints;
-        $isPointValid  = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
+        $isPointValid = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
         if (!is_numeric($loyaltyPoints) || $loyaltyPoints < 0 || !$isPointValid) {
             $response = [
-                'error'   => 'true',
+                'error' => 'true',
                 'message' => __(
                     'The loyalty points "%1" are not valid.',
                     $loyaltyPoints
@@ -139,9 +87,9 @@ class UpdatePoints implements HttpPostActionInterface
             return $resultJson->setData($response);
         }
         try {
-            $cartId             = $this->checkoutSession->getQuoteId();
-            $quote              = $this->cartRepository->get($cartId);
-            $orderBalance       = $this->data->getOrderBalance(
+            $cartId = $this->checkoutSession->getQuoteId();
+            $quote = $this->cartRepository->get($cartId);
+            $orderBalance = $this->data->getOrderBalance(
                 $quote->getLsGiftCardAmountUsed(),
                 0,
                 $this->basketHelper->getBasketSessionValue()
@@ -155,7 +103,7 @@ class UpdatePoints implements HttpPostActionInterface
                 $response = ['success' => 'true'];
             } else {
                 $response = [
-                    'error'   => 'true',
+                    'error' => 'true',
                     'message' => __(
                         'The loyalty points "%1" are exceeding order total amount.',
                         $loyaltyPoints
@@ -169,6 +117,8 @@ class UpdatePoints implements HttpPostActionInterface
     }
 
     /**
+     * Validate quote
+     *
      * @param Quote $quote
      * @return void
      * @throws LocalizedException

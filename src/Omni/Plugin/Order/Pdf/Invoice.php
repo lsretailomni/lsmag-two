@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Order\Pdf;
 
@@ -11,18 +12,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class Invoice
 {
     /**
-     * LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * Invoice constructor.
      * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
-        LoyaltyHelper $loyaltyHelper
+        public LoyaltyHelper $loyaltyHelper
     ) {
-        $this->loyaltyHelper = $loyaltyHelper;
     }
 
     /**

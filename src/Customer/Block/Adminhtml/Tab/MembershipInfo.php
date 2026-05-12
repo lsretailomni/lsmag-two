@@ -8,35 +8,24 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Ui\Component\Layout\Tabs\TabInterface;
 use Magento\Customer\Model\CustomerRegistry;
 
-/**
- * Customer membership view block
- * Class MembershipInfo
- * @package Ls\Customer\Block\Adminhtml\Tab
- */
 class MembershipInfo extends Template implements TabInterface
 {
-
     /**
-     * @var CustomerRegistry
-     */
-    protected $customerRegistry;
-
-    /**
-     * MembershipInfo constructor.
      * @param Context $context
      * @param CustomerRegistry $customerRegistry
      * @param array $data
      */
     public function __construct(
-        Context $context,
-        CustomerRegistry $customerRegistry,
-        array $data = []
+        public Context $context,
+        public CustomerRegistry $customerRegistry,
+        public array $data = []
     ) {
-        $this->customerRegistry = $customerRegistry;
         parent::__construct($context, $data);
     }
 
     /**
+     * Get tab label
+     *
      * @return Phrase
      */
     public function getTabLabel()
@@ -45,6 +34,8 @@ class MembershipInfo extends Template implements TabInterface
     }
 
     /**
+     * Get tab title
+     *
      * @return Phrase
      */
     public function getTabTitle()
@@ -53,7 +44,9 @@ class MembershipInfo extends Template implements TabInterface
     }
 
     /**
-     * @return bool
+     * Can show label
+     *
+     * @return true
      */
     public function canShowTab()
     {
@@ -61,7 +54,9 @@ class MembershipInfo extends Template implements TabInterface
     }
 
     /**
-     * @return bool
+     * Check to see if hidden
+     *
+     * @return false
      */
     public function isHidden()
     {
@@ -69,6 +64,8 @@ class MembershipInfo extends Template implements TabInterface
     }
 
     /**
+     * Get tab class
+     *
      * @return string
      */
     public function getTabClass()
@@ -77,6 +74,8 @@ class MembershipInfo extends Template implements TabInterface
     }
 
     /**
+     * Get tab url
+     *
      * @return string
      */
     public function getTabUrl()
@@ -85,7 +84,9 @@ class MembershipInfo extends Template implements TabInterface
     }
 
     /**
-     * @return bool
+     * Check to see if ajax loaded
+     *
+     * @return false
      */
     public function isAjaxLoaded()
     {
@@ -100,21 +101,26 @@ class MembershipInfo extends Template implements TabInterface
     public function getMembershipInfo()
     {
         try {
-            $data            = $this->_backendSession->getCustomerData();
+            $data = $this->_backendSession->getCustomerData();
 
             if (!isset($data['account']['email']) || !isset($data['account']['website_id'])) {
                 return [
-                    'lsr_id'       => '',
-                    'lsr_cardid'   => '',
-                    'lsr_username' => ''
+                    'lsr_id' => '',
+                    'lsr_cardid' => '',
+                    'lsr_username' => '',
+                    'lsr_account_id' => ''
                 ];
             }
 
-            $customerDetails = $this->customerRegistry->retrieveByEmail($data['account']['email'], $data['account']['website_id']);
+            $customerDetails = $this->customerRegistry->retrieveByEmail(
+                $data['account']['email'],
+                $data['account']['website_id']
+            );
             return [
-                'lsr_id'       => $customerDetails->getData('lsr_id'),
-                'lsr_cardid'   => $customerDetails->getData('lsr_cardid'),
-                'lsr_username' => $customerDetails->getData('lsr_username')
+                'lsr_id' => $customerDetails->getData('lsr_id'),
+                'lsr_cardid' => $customerDetails->getData('lsr_cardid'),
+                'lsr_username' => $customerDetails->getData('lsr_username'),
+                'lsr_account_id' => $customerDetails->getData('lsr_account_id')
             ];
         } catch (\Exception $e) {
             $this->_logger->critical($e);

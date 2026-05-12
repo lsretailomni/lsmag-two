@@ -2,68 +2,47 @@
 
 namespace Ls\Replication\Model\System\Source;
 
-use \Ls\Replication\Model\ReplDataTranslationLangCode;
-use \Ls\Replication\Api\ReplDataTranslationLangCodeRepositoryInterface as ReplDataTranslationLangCodeRepository;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Model\ReplDataTranslationLangCodeSearchResults;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Data\OptionSourceInterface;
+use Magento\Framework\Serialize\Serializer\Json;
 
-/**
- * Class LanguageCode
- * @package Ls\Replication\Model\System\Source
- */
 class LanguageCode implements OptionSourceInterface
 {
-
     /**
-     * @var ReplDataTranslationLangCodeRepository
-     */
-    protected $replDataTranslationLangCodeRepository;
-
-    /**
-     * @var ReplicationHelper
-     */
-    protected $replicationHelper;
-
-    /**
-     * @var Http
-     */
-    private $request;
-
-    /**
-     * LanguageCode constructor.
-     * @param ReplDataTranslationLangCodeRepository $replDataTranslationLangCodeRepository
-     * @param ReplicationHelper $replicationHelper
      * @param Http $request
+     * @param LSR $lsr
+     * @param Json $jsonEncoder
      */
     public function __construct(
-        ReplDataTranslationLangCodeRepository $replDataTranslationLangCodeRepository,
-        ReplicationHelper $replicationHelper,
-        Http $request
+        public Http $request,
+        public LSR $lsr,
+        public Json $jsonEncoder
     ) {
-        $this->replDataTranslationLangCodeRepository = $replDataTranslationLangCodeRepository;
-        $this->replicationHelper                     = $replicationHelper;
-        $this->request                               = $request;
     }
 
     /**
+     * Get list of options
+     *
      * @return array
      */
     public function toOptionArray()
     {
         $storeId       = $this->request->getParam('store', 0);
-        $scopeIdFilter = [
-            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq']
-        ];
-        $langCodes[]   = ['value' => 'Default', 'label' => __('Default')];
-        $criteria      = $this->replicationHelper->buildCriteriaForDirect($scopeIdFilter);
-        /** @var ReplDataTranslationLangCodeSearchResults $replData */
-        $replData = $this->replDataTranslationLangCodeRepository->getList($criteria);
-        /** @var ReplDataTranslationLangCode $langCode */
-        foreach ($replData->getItems() as $langCode) {
-            $langCodes[] = ['value' => $langCode->getCode(), 'label' => $langCode->getCode()];
+        $serializedStr = $this->lsr->getStoreConfig(
+            LSR::SC_STORE_REPLICATED_DATA_TRANSLATION_LANG_CODE,
+            $storeId
+        );
+        $langCodes[] = ['value' => 'Default', 'label' => __('Default')];
+
+        if (!empty($serializedStr)) {
+            $records = $this->jsonEncoder->unserialize($serializedStr);
+
+            foreach ($records as $langCode) {
+                $langCodes[] = ['value' => $langCode['Language Code'], 'label' => $langCode['Language Name']];
+            }
         }
+
         return $langCodes;
     }
 }

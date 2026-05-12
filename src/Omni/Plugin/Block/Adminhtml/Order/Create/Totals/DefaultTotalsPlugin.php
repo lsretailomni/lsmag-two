@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Ls\Omni\Plugin\Block\Adminhtml\Order\Create\Totals;
 
 use Magento\Directory\Model\Currency;
@@ -8,16 +10,10 @@ use Magento\Sales\Block\Adminhtml\Order\Create\Totals\DefaultTotals;
 class DefaultTotalsPlugin
 {
     /**
-     * @var Currency
-     */
-    public $currency;
-
-    /**
      * @param Currency $currency
      */
-    public function __construct(Currency $currency)
+    public function __construct(public Currency $currency)
     {
-        $this->currency = $currency;
     }
 
     /**

@@ -1,23 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Api;
 
-/**
- * Interface OrderShipmentInterface
- * @api
- */
+use Ls\Webhooks\Api\Data\OrderShipmentMessageInterface;
+
 interface OrderShipmentInterface
 {
     /**
-     * Set order shipment API
-     * @param string $OrderId
-     * @param string $ShipmentNo
-     * @param string $TrackingId
-     * @param string $TrackingUrl
-     * @param string $Provider
-     * @param string $Service
-     * @param mixed $Lines
-     * @return mixed
+     * Accepts the incoming order status update webhook
+     *
+     * @param \Ls\Webhooks\Api\Data\OrderShipmentMessageInterface $orderShipping
+     * @return bool
      */
-    public function set($OrderId, $ShipmentNo, $TrackingId, $TrackingUrl, $Provider, $Service, $Lines);
+    public function set(OrderShipmentMessageInterface $orderShipping);
 }

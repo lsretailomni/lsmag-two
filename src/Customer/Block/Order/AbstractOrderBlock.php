@@ -114,8 +114,10 @@ class AbstractOrderBlock extends Template
      */
     public function getOrder($all = false)
     {
-        if ($this->getData('current_order')) {
-            return $this->getData('current_order');
+        if (!$all) {
+            if ($this->getData('current_order')) {
+                return $this->getData('current_order');
+            }
         }
 
         return $this->orderHelper->getOrder($all);

@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\Block\Order\Custom;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Helper\OrderHelper;
+use Magento\Framework\DataObject;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Block\Items\AbstractItems;
 use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
@@ -15,81 +16,56 @@ use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
  */
 class Items extends AbstractItems
 {
-    /** @var  LSR $lsr */
-    public $lsr;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-    /**
-     * @var CollectionFactory|mixed|null
-     */
-    public $itemCollectionFactory;
-
-    /**
-     * @var Collection|null
-     */
-    private $itemCollection;
-
     /**
      * @param Context $context
      * @param LSR $lsr
      * @param OrderHelper $orderHelper
+     * @param Collection $itemCollection
+     * @param CollectionFactory $itemCollectionFactory
      * @param array $data
      */
     public function __construct(
-        Context $context,
-        LSR $lsr,
-        OrderHelper $orderHelper,
-        CollectionFactory $itemCollectionFactory,
+        public Context $context,
+        public LSR $lsr,
+        public OrderHelper $orderHelper,
+        public Collection $itemCollection,
+        public CollectionFactory $itemCollectionFactory,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->lsr                   = $lsr;
-        $this->orderHelper           = $orderHelper;
-        $this->itemCollectionFactory = $itemCollectionFactory;
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Get items
      *
-     * @return \Magento\Framework\DataObject[]
+     * @return DataObject[]
      */
     public function getItems()
     {
-        $type         = $this->_request->getParam('type');
-        $order        = $this->getOrder();
-        if ($this->getMagOrder() && $type != DocumentIdType::RECEIPT) {
-            $magentoOrder = $this->getMagOrder();
+        $order = $this->getOrder(true);
+        $orderLines = [];
+        $documentId = $this->_request->getParam('order_id');
+        if ($order) {
+            $orderLines = $order->getLscMemberSalesDocLine();
 
-            if (!empty($magentoOrder) && !empty($order->getStoreCurrency())) {
-                if ($order->getStoreCurrency() != $magentoOrder->getOrderCurrencyCode()) {
-                    $magentoOrder = null;
+            $orderLines = $orderLines && is_array($orderLines) ?
+                $orderLines : (($orderLines && !is_array($orderLines)) ? [$orderLines] : []);
+
+            $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
+
+            foreach ($orderLines as $key => $line) {
+                if ($line->getDocumentId() !== $documentId ||
+                    $line->getNumber() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID) ||
+                    $line->getEntryType() == 1 ||
+                    $line->getEntryType() == 4
+                ) {
+                    unset($orderLines[$key]);
                 }
             }
-            return $this->itemCollection->getItems();
         }
 
-        $orderLines = $order->getLines()->getSalesEntryLine();
-        $options = [];
-        $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
-        foreach ($orderLines as $key => $line) {
-            foreach ($orderLines as $orderLine) {
-                if ($line->getLineNumber() == $orderLine->getParentLine() &&
-                    $orderLine->getParentLine() != 0) {
-                    $line->setPrice($line->getPrice() + $orderLine->getAmount()/$orderLine->getQuantity());
-                    $line->setAmount($line->getAmount() + $orderLine->getAmount());
-                }
-            }
-            if ($line->getParentLine() !=0) {
-                unset($orderLines[$key]);
-            }
-            if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
-                unset($orderLines[$key]);
-                break;
-            }
-        }
         return $orderLines;
     }
 

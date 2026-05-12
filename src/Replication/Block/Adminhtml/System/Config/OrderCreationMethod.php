@@ -1,13 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Block\Adminhtml\System\Config;
 
 use Magento\Framework\Data\OptionSourceInterface;
 
-/**
- * Class OrderCreationMethod
- * @package Ls\Replication\Block\Adminhtml\System\Config
- */
 class OrderCreationMethod implements OptionSourceInterface
 {
 

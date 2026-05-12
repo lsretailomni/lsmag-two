@@ -2,77 +2,20 @@
 
 namespace Ls\Customer\Observer;
 
-use Exception;
-use \Ls\Core\Model\LSR;
-use Ls\Omni\Exception\InvalidEnumException;
-use \Ls\Omni\Helper\ContactHelper;
-use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\ResourceModel\Customer;
+use GuzzleHttp\Exception\GuzzleException;
+use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\InvalidTransitionException;
-use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Observer responsible for customer register from checkout
  */
-class CheckoutRegisterObserver implements ObserverInterface
+class CheckoutRegisterObserver extends AbstractOmniObserver
 {
-    /** @var ContactHelper */
-    private $contactHelper;
-
-    /** @var CheckoutSession */
-    private $checkoutSession;
-
-    /** @var OrderRepositoryInterface */
-    private $orderRepository;
-
-    /** @var CustomerFactory */
-    private $customerFactory;
-
-    /** @var StoreManagerInterface */
-    private $storeManager;
-
-    /** @var Customer */
-    private $customerResourceModel;
-
-    /** @var LSR @var */
-    private $lsr;
-
-    /**
-     * @param ContactHelper $contactHelper
-     * @param CheckoutSession $checkoutSession
-     * @param OrderRepositoryInterface $orderRepository
-     * @param CustomerFactory $customerFactory
-     * @param StoreManagerInterface $storeManager
-     * @param Customer $customerResourceModel
-     * @param LSR $LSR
-     */
-
-    public function __construct(
-        ContactHelper $contactHelper,
-        CheckoutSession $checkoutSession,
-        OrderRepositoryInterface $orderRepository,
-        CustomerFactory $customerFactory,
-        StoreManagerInterface $storeManager,
-        Customer $customerResourceModel,
-        LSR $LSR
-    ) {
-        $this->contactHelper         = $contactHelper;
-        $this->checkoutSession       = $checkoutSession;
-        $this->orderRepository       = $orderRepository;
-        $this->customerFactory       = $customerFactory;
-        $this->storeManager          = $storeManager;
-        $this->customerResourceModel = $customerResourceModel;
-        $this->lsr                   = $LSR;
-    }
-
     /**
      * Entry point for the observer
      *
@@ -83,7 +26,7 @@ class CheckoutRegisterObserver implements ObserverInterface
      * @throws AlreadyExistsException
      * @throws InputException
      * @throws NoSuchEntityException
-     * @throws InvalidTransitionException
+     * @throws InvalidTransitionException|GuzzleException
      */
     // @codingStandardsIgnoreStart
     public function execute(Observer $observer)

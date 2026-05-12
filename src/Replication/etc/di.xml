@@ -61,8 +61,6 @@
                 type="Ls\Replication\Model\ReplDataTranslationRepository"/>
     <preference for="Ls\Replication\Api\ReplDataTranslationLangCodeRepositoryInterface"
                 type="Ls\Replication\Model\ReplDataTranslationLangCodeRepository"/>
-    <preference for="Ls\Replication\Api\ReplDiscountRepositoryInterface"
-                type="Ls\Replication\Model\ReplDiscountRepository"/>
     <preference for="Ls\Replication\Api\ReplDiscountSetupRepositoryInterface"
                 type="Ls\Replication\Model\ReplDiscountSetupRepository"/>
     <preference for="Ls\Replication\Api\ReplDiscountValidationRepositoryInterface"
@@ -117,7 +115,6 @@
                 type="Ls\Replication\Model\ReplDataTranslation"/>
     <preference for="Ls\Replication\Api\Data\ReplDataTranslationLangCodeInterface"
                 type="Ls\Replication\Model\ReplDataTranslationLangCode"/>
-    <preference for="Ls\Replication\Api\Data\ReplDiscountInterface" type="Ls\Replication\Model\ReplDiscount"/>
     <preference for="Ls\Replication\Api\Data\ReplDiscountSetupInterface" type="Ls\Replication\Model\ReplDiscountSetup"/>
     <preference for="Ls\Replication\Api\Data\ReplDiscountValidationInterface"
                 type="Ls\Replication\Model\ReplDiscountValidation"/>
@@ -164,8 +161,6 @@
                 type="Ls\Replication\Model\ReplDataTranslationSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplDataTranslationLangSearchResultsInterface"
                 type="Ls\Replication\Model\ReplDataTranslationLangCodeSearchResults"/>
-    <preference for="Ls\Replication\Api\Data\ReplDiscountSearchResultsInterface"
-                type="Ls\Replication\Model\ReplDiscountSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplDiscountSetupSearchResultsInterface"
                 type="Ls\Replication\Model\ReplDiscountSetupSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplDiscountValidationSearchResultsInterface"
@@ -262,9 +257,6 @@
                 </item>
                 <item name="ls_repl_grids_attributeoptionvalue_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplAttributeOptionValue\Grid\Collection
-                </item>
-                <item name="ls_repl_grids_discount_data_source" xsi:type="string">
-                    Ls\Replication\Model\ResourceModel\ReplDiscount\Grid\Collection
                 </item>
                 <item name="ls_repl_grids_discount_setup_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplDiscountSetup\Grid\Collection

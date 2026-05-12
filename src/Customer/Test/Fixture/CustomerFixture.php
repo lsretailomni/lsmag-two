@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Ls\Customer\Test\Fixture;
 
-use \Ls\Customer\Test\Integration\AbstractIntegrationTest;
-use Ls\Omni\Helper\ContactHelper;
+use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
+use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\CustomerRegistry;
 use Magento\Customer\Model\ResourceModel\Customer;

@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Customer\ViewModel;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
@@ -17,29 +19,9 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 class ItemRenderer implements ArgumentInterface
 {
     /**
-     * @var ItemHelper
-     */
-    public $itemHelper;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var PriceCurrencyInterface
-     */
-    public $priceCurrency;
-
-    /**
      * @var array
      */
     public $lines = [];
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
 
     /**
      * @param ItemHelper $itemHelper
@@ -48,15 +30,11 @@ class ItemRenderer implements ArgumentInterface
      * @param BasketHelper $basketHelper
      */
     public function __construct(
-        ItemHelper $itemHelper,
-        OrderHelper $orderHelper,
-        PriceCurrencyInterface $priceCurrency,
-        BasketHelper $basketHelper
+        public ItemHelper $itemHelper,
+        public OrderHelper $orderHelper,
+        public PriceCurrencyInterface $priceCurrency,
+        public BasketHelper $basketHelper
     ) {
-        $this->itemHelper    = $itemHelper;
-        $this->orderHelper   = $orderHelper;
-        $this->priceCurrency = $priceCurrency;
-        $this->basketHelper = $basketHelper;
     }
 
     /**
@@ -70,6 +48,8 @@ class ItemRenderer implements ArgumentInterface
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Get matched line and discount info
      *
      * @param $orderItem
@@ -84,7 +64,7 @@ class ItemRenderer implements ArgumentInterface
 
         if ($currentOrder) {
             if (empty($this->lines)) {
-                $this->lines = $currentOrder->getLines()->getSalesEntryLine();
+                $this->lines = $currentOrder->getLscMemberSalesDocLine();
             }
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $orderItem->getSku()
@@ -98,15 +78,15 @@ class ItemRenderer implements ArgumentInterface
                     $optionsCheck = ($options) ? isset($options['options']) : null;
                     if ($optionsCheck) {
                         foreach ($this->lines as $orderLine) {
-                            if ($line->getLineNumber() == $orderLine->getParentLine() &&
-                                $orderLine->getParentLine() != 0) {
+                            if ($orderLine->getParentLine() != 0 &&
+                                $orderLine->getParentLine() !== $orderLine->getLineNo() &&
+                                $line->getLineNo() == $orderLine->getParentLine()
+                            ) {
                                 $line->setPrice($line->getPrice() + $orderLine->getPrice());
                                 $line->setAmount($line->getAmount() + $orderLine->getAmount());
                             }
                         }
                     }
-
-                    unset($this->lines[$index]);
                     break;
                 } else {
                     $line = null;
@@ -122,6 +102,7 @@ class ItemRenderer implements ArgumentInterface
      *
      * @param $amount
      * @return float
+     * @throws NoSuchEntityException
      */
     public function getFormattedPrice($amount)
     {
@@ -140,7 +121,7 @@ class ItemRenderer implements ArgumentInterface
      * @param $item
      * @return float|int
      * @throws NoSuchEntityException
-     * @throws InvalidEnumException
+     * @throws InvalidEnumException|GuzzleException
      */
     public function getItemRowDiscount($item)
     {

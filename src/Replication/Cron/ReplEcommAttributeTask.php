@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplAttributeRepositoryInterface as ReplAttributeReposito
 use Ls\Replication\Model\ReplAttributeFactory;
 use Ls\Replication\Api\Data\ReplAttributeInterface;
 
-class ReplEcommAttributeTask extends AbstractReplicationTask
+abstract class ReplEcommAttributeTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_attribute';
 
@@ -108,19 +108,6 @@ class ReplEcommAttributeTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommAttribute($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

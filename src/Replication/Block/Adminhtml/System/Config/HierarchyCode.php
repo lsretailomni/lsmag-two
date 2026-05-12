@@ -1,73 +1,57 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Block\Adminhtml\System\Config;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchy;
-use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Omni\Helper\Data;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Data\OptionSourceInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 
-/**
- * Class HierarchyCode
- * @package Ls\Replication\Block\Adminhtml\System\Config
- */
 class HierarchyCode implements OptionSourceInterface
 {
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /** @var LSR */
-    public $lsr;
-
-    /** @var RequestInterface */
-    public $request;
-
     /**
-     * HierarchyCode constructor.
-     * @param ReplicationHelper $replicationHelper
      * @param LSR $lsr
+     * @param Data $helper
      * @param RequestInterface $request
      */
     public function __construct(
-        ReplicationHelper $replicationHelper,
-        LSR $lsr,
-        RequestInterface $request
+        public LSR $lsr,
+        public Data $helper,
+        public RequestInterface $request
     ) {
-        $this->replicationHelper = $replicationHelper;
-        $this->lsr               = $lsr;
-        $this->request           = $request;
     }
 
     /**
+     * Get options list
+     *
      * @return array
-     * @throws NoSuchEntityException
+     * @throws GuzzleException|NoSuchEntityException
      */
     public function toOptionArray()
     {
-        $hierarchyCodes[] = [
-            'value' => '',
-            'label' => __('Please select your hierarchy code')
-        ];
-        // Get current Website Id.
+        // get current Website Id.
         $websiteId = (int)$this->request->getParam('website');
-        if ($this->lsr->isLSR($websiteId, 'website')) {
-            $hierarchyData = $this->replicationHelper->getHierarchyByStore($websiteId);
-            if ($hierarchyData) {
-                $data = $hierarchyData->getHierarchies()->getReplHierarchy();
-                foreach ($data as $item) {
-                    if ($item instanceof ReplHierarchy) {
-                        $hierarchyCodes[] = [
-                            'value' => $item->getId(),
-                            'label' => __($item->getDescription())
-                        ];
-                    }
-                }
+        $hierarchies = [];
+
+        if ($this->lsr->validateBaseUrl('', [], [], $websiteId)) {
+            $hierarchies = $this->helper->fetchWebStoreHierarchies();
+        }
+
+        if (!empty($hierarchies)) {
+            $optionList = [['value' => '', 'label' => __('Please select your hierarchy code')]];
+            foreach ($hierarchies as $hierarchy) {
+                $optionList[] = [
+                    'value' => $hierarchy->getHierarchyCode(),
+                    'label' => $hierarchy->getDescription()
+                ];
             }
         } else {
-            $this->replicationHelper->getLogger()->debug('Store not set');
+            $optionList = [['value' => '', 'label' => __('Store not set')]];
         }
-        return $hierarchyCodes;
+
+        return $optionList;
     }
 }

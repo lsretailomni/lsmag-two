@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
@@ -22,31 +23,6 @@ use Magento\OfflineShipping\Model\Carrier\Flatrate;
 class SetShippingMethodsOnCartPlugin
 {
     /**
-     * @var DataHelper
-     */
-    public $dataHelper;
-
-    /**
-     * @var Clickandcollect
-     */
-    public $carrierModel;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
-     * @var Data
-     */
-    public Data $helper;
-
-    /**
-     * @var Flatrate
-     */
-    public $flatRateCarrier;
-
-    /**
      * @param DataHelper $dataHelper
      * @param Clickandcollect $carrierModel
      * @param Flatrate $flatRateCarrier
@@ -54,17 +30,12 @@ class SetShippingMethodsOnCartPlugin
      * @param Data $helper
      */
     public function __construct(
-        DataHelper $dataHelper,
-        Clickandcollect $carrierModel,
-        Flatrate $flatRateCarrier,
-        BasketHelper $basketHelper,
-        Data $helper
+        public DataHelper $dataHelper,
+        public Clickandcollect $carrierModel,
+        public Flatrate $flatRateCarrier,
+        public BasketHelper $basketHelper,
+        public Data $helper
     ) {
-        $this->dataHelper      = $dataHelper;
-        $this->carrierModel    = $carrierModel;
-        $this->basketHelper    = $basketHelper;
-        $this->helper          = $helper;
-        $this->flatRateCarrier = $flatRateCarrier;
     }
 
     /**

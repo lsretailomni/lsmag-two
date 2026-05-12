@@ -1,27 +1,23 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Model\Total\Quote;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 
-/**
- * Class PointsDiscount
- * @package Ls\Omni\Model\Total\Quote
- */
 class PointsDiscount extends AbstractTotal
 {
-
     /**
      * @var LoyaltyHelper
      */
     public $loyaltyHelper;
 
     /**
-     * PointsDiscount constructor.
      * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
@@ -36,7 +32,7 @@ class PointsDiscount extends AbstractTotal
      * @param Quote $quote
      * @param Total $total
      * @return array|null
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function fetch(Quote $quote, Total $total)
     {

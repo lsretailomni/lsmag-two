@@ -11,7 +11,7 @@
             <description value="Customer can see order number with link on success page"/>
             <severity value="CRITICAL"/>
             <group value="ls"/>
-            <group value="lsCheckout"/>
+            <group value="lsCheckout2"/>
         </annotations>
         <before>
             <magentoCLI command="config:set carriers/clickandcollect/active 0" stepKey="disableClickAndCollect" after="EnablingGuestCheckoutLogin"/>

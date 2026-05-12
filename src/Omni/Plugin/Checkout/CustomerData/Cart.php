@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Plugin\Checkout\CustomerData;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
@@ -20,42 +22,6 @@ use Psr\Log\LoggerInterface;
 class Cart
 {
     /**
-     * @var CheckoutSession
-     */
-    public $checkoutSession;
-
-    /**
-     * @var $checkoutHelper
-     */
-    public $checkoutHelper;
-
-    /**
-     * @var Data
-     */
-    public $data;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /**
-     * @var Renderer
-     */
-    public $itemPriceRenderer;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * Cart constructor.
      * @param CheckoutSession $checkoutSession
      * @param \Magento\Checkout\Helper\Data $checkoutHelper
      * @param Data $data
@@ -65,49 +31,46 @@ class Cart
      * @param LSR $lsr
      */
     public function __construct(
-        CheckoutSession $checkoutSession,
-        \Magento\Checkout\Helper\Data $checkoutHelper,
-        Data $data,
-        BasketHelper $basketHelper,
-        LoggerInterface $logger,
-        Renderer $itemPriceRenderer,
-        LSR $lsr
+        public CheckoutSession $checkoutSession,
+        public \Magento\Checkout\Helper\Data $checkoutHelper,
+        public Data $data,
+        public BasketHelper $basketHelper,
+        public LoggerInterface $logger,
+        public Renderer $itemPriceRenderer,
+        public LSR $lsr
     ) {
-        $this->checkoutSession   = $checkoutSession;
-        $this->checkoutHelper    = $checkoutHelper;
-        $this->data              = $data;
-        $this->basketHelper      = $basketHelper;
-        $this->logger            = $logger;
-        $this->itemPriceRenderer = $itemPriceRenderer;
-        $this->lsr               = $lsr;
     }
 
     /**
+     * After plugin to set price, discount, row_total in minicart
+     *
      * @param \Magento\Checkout\CustomerData\Cart $subject
      * @param array $result
      * @return array
-     * @throws NoSuchEntityException|LocalizedException
+     * @throws NoSuchEntityException|LocalizedException|GuzzleException
      */
-    public function afterGetSectionData(\Magento\Checkout\CustomerData\Cart $subject, array $result)
-    {
+    public function afterGetSectionData(
+        \Magento\Checkout\CustomerData\Cart $subject,
+        array $result
+    ) {
         $quote = $this->checkoutSession->getQuote();
 
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             try {
                 $discountAmountTextMessage = __("Save");
-                $items                     = $quote->getAllVisibleItems();
+                $items = $quote->getAllVisibleItems();
                 if (is_array($result['items'])) {
                     foreach ($result['items'] as $key => $itemAsArray) {
                         if ($item = $this->findItemById($itemAsArray['item_id'], $items)) {
                             $lineDiscount = $this->basketHelper->getItemRowDiscount($item);
-                            $customPrice  = $this->basketHelper->getItemRowTotal($item);
+                            $customPrice = $this->basketHelper->getItemRowTotal($item);
                             $item->setCustomPrice($customPrice);
                             $item->setDiscountAmount($lineDiscount);
                             $this->itemPriceRenderer->setItem($item);
                             $this->itemPriceRenderer->setTemplate(
                                 'Magento_Tax::checkout/cart/item/price/sidebar.phtml'
                             );
-                            $originalPrice  = '';
+                            $originalPrice = '';
                             $discountAmount = '';
                             if ($item->getDiscountAmount() > 0) {
                                 $discountAmount = $this->checkoutHelper->formatPrice($item->getDiscountAmount());
@@ -115,11 +78,11 @@ class Cart
                             }
 
                             $item->setPriceInclTax($customPrice);
-                            $result['items'][$key]['lsPriceOriginal']  = ($originalPrice != "") ?
+                            $result['items'][$key]['lsPriceOriginal'] = ($originalPrice != "") ?
                                 $this->checkoutHelper->formatPrice($originalPrice) : $originalPrice;
                             $result['items'][$key]['lsDiscountAmount'] = ($discountAmount != "") ?
                                 '(' . __($discountAmountTextMessage) . ' ' . $discountAmount . ')' : $discountAmount;
-                            $result['items'][$key]['product_price']    = $this->itemPriceRenderer->toHtml();
+                            $result['items'][$key]['product_price'] = $this->itemPriceRenderer->toHtml();
                         }
                     }
                 }
@@ -129,7 +92,7 @@ class Cart
         } else {
             if (is_array($result['items'])) {
                 foreach ($result['items'] as $key => $itemAsArray) {
-                    $result['items'][$key]['lsPriceOriginal']  = "";
+                    $result['items'][$key]['lsPriceOriginal'] = "";
                     $result['items'][$key]['lsDiscountAmount'] = "";
                 }
             }

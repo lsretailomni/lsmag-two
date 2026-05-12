@@ -1,22 +1,18 @@
 <?php
 // @codingStandardsIgnoreFile
+declare(strict_types=1);
 
 namespace Ls\Replication\Code;
 
 use DOMDocument;
 use Laminas\Code\Generator\GeneratorInterface;
 use Laminas\Code\Reflection\ClassReflection;
-use \Ls\Omni\Service\Metadata;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\DB\ExpressionConverter;
 use Magento\Framework\Module\Dir\Reader;
 use ReflectionException;
 
-/**
- * Class SchemaUpdateGenerator
- * @package Ls\Replication\Code
- */
 class SchemaUpdateGenerator implements GeneratorInterface
 {
     /** @var array List of Replication Tables indexer for search */
@@ -314,21 +310,19 @@ class SchemaUpdateGenerator implements GeneratorInterface
         ]
     ];
 
-    /** @var Metadata */
-    protected $metadata;
-
     /**
-     * SchemaUpdateGenerator constructor.
-     * @param Metadata $metadata
+     * @param array $replicationOperations
      */
-    public function __construct(Metadata $metadata)
+    public function __construct(public array $replicationOperations)
     {
-        $this->metadata = $metadata;
     }
 
     /**
      * Create dynamic db_schema.xml file and save to etc folder of Replication Module
+     *
+     * @return void
      * @throws ReflectionException
+     * @throws \DOMException
      */
     public function generate()
     {
@@ -338,230 +332,342 @@ class SchemaUpdateGenerator implements GeneratorInterface
         $schema->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
         $schema->setAttribute('xsi:noNamespaceSchemaLocation', 'urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd');
         $tables = [];
-        foreach ($this->metadata->getOperations() as $operationName => $operation) {
-            if (strpos($operationName, 'ReplEcomm') !== false) {
-                $replicationOperation = $this->metadata->getReplicationOperationByName($operation->getName());
-                $tableName            = "ls_replication_" . $replicationOperation->getTableName();
-                $tableIncludedInIndex = array_key_exists($tableName, self::$indexerColumnLists);
-                if (!in_array($tableName, $tables)) {
-                    $table = $dom->createElement('table');
-                    $table->setAttribute('name', $tableName);
-                    $table->setAttribute('resource', 'default');
-                    $table->setAttribute('engine', 'innodb');
-                    $table->setAttribute('comment', $replicationOperation->getName());
-                    $column = $dom->createElement('column');
-                    $column->setAttribute('xsi:type', 'int');
-                    $column->setAttribute('name', $replicationOperation->getTableColumnId());
-                    $column->setAttribute('padding', '10');
-                    $column->setAttribute('unsigned', 'false');
-                    $column->setAttribute('nullable', 'false');
-                    $column->setAttribute('identity', 'true');
-                    $column->setAttribute('comment', $replicationOperation->getTableColumnId());
-                    $table->appendChild($column);
-                    $extraColumnsArray   = [
-                        [
-                            'name'       => 'processed',
-                            'field_type' => 'boolean',
-                            'default'    => '0',
-                            'comment'    => 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied'
-                        ],
-                        [
-                            'name'       => 'is_updated',
-                            'field_type' => 'boolean',
-                            'default'    => '0',
-                            'comment'    => 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables'
-                        ],
-                        [
-                            'name'       => 'is_failed',
-                            'field_type' => 'boolean',
-                            'default'    => '0',
-                            'comment'    => 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables'
-                        ],
-                        [
-                            'name'       => 'identity_value',
-                            'field_type' => 'varchar',
-                            'default'    => '',
-                            'length'     => '200',
-                            'comment'    => 'Hash value of all unique columns'
-                        ],
-                        [
-                            'name'       => 'checksum',
-                            'field_type' => 'text',
-                            'default'    => '',
-                            'comment'    => 'Checksum'
-                        ],
-                        [
-                            'name'       => 'processed_at',
-                            'field_type' => 'timestamp',
-                            'default'    => '',
-                            'comment'    => 'Processed At'
-                        ],
-                        [
-                            'name'       => 'created_at',
-                            'field_type' => 'timestamp',
-                            'default'    => 'CURRENT_TIMESTAMP',
-                            'comment'    => 'Created At'
-                        ],
-                        [
-                            'name'       => 'updated_at',
-                            'field_type' => 'timestamp',
-                            'default'    => 'CURRENT_TIMESTAMP',
-                            'comment'    => 'Updated At'
-                        ]
+        $dbTablesMapping = ReplicationHelper::DB_TABLES_MAPPING;
+        foreach ($this->replicationOperations as $replicationOperation) {
+            $columnMappings = null;
+            $tableName = $replicationOperation->getTableName();
+            $tableIdColumnName = $replicationOperation->getTableColumnId();
+
+            if (isset($dbTablesMapping[$tableName])) {
+                $mappings = $dbTablesMapping[$tableName];
+                $tableName = ReplicationHelper::TABLE_NAME_PREFIX . $mappings['table_name'];
+                $columnMappings = $mappings['columns_mapping'];
+                $tableIdColumnName = $mappings['table_name'] . "_id";
+            } else {
+                continue;
+            }
+
+            $tableIncludedInIndex = array_key_exists($tableName, self::$indexerColumnLists);
+            if (!in_array($tableName, $tables)) {
+                $table = $dom->createElement('table');
+                $table->setAttribute('name', $tableName);
+                $table->setAttribute('resource', 'default');
+                $table->setAttribute('engine', 'innodb');
+                $table->setAttribute('comment', $replicationOperation->getName());
+                $column = $dom->createElement('column');
+                $column->setAttribute('xsi:type', 'int');
+                $column->setAttribute('name', $tableIdColumnName);
+                $column->setAttribute('padding', '10');
+                $column->setAttribute('unsigned', 'false');
+                $column->setAttribute('nullable', 'false');
+                $column->setAttribute('identity', 'true');
+                $column->setAttribute('comment', $tableIdColumnName);
+                $table->appendChild($column);
+                $extraColumnsArray = [
+                    [
+                        'name' => 'scope',
+                        'field_type' => 'varchar',
+                        'default' => '',
+                        'length' => '200',
+                        'comment' => 'Record Scope'
+                    ],
+                    [
+                        'name' => 'scope_id',
+                        'field_type' => 'int',
+                        'default' => '',
+                        'comment' => 'Record Scope ID'
+                    ],
+                    [
+                        'name' => 'IsDeleted',
+                        'field_type' => 'boolean',
+                        'default' => '0',
+                        'comment' => 'Flag to check if data is deleted in Central. 0 means not deleted & 1 means deleted in Central.'
+                    ],
+                    [
+                        'name' => 'processed',
+                        'field_type' => 'boolean',
+                        'default' => '0',
+                        'comment' => 'Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables & 1 means already copied'
+                    ],
+                    [
+                        'name' => 'is_updated',
+                        'field_type' => 'boolean',
+                        'default' => '0',
+                        'comment' => 'Flag to check if data is already updated from Omni into Magento. 0 means already updated & 1 means needs to be updated into Magento tables'
+                    ],
+                    [
+                        'name' => 'is_failed',
+                        'field_type' => 'boolean',
+                        'default' => '0',
+                        'comment' => 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables'
+                    ],
+                    [
+                        'name' => 'identity_value',
+                        'field_type' => 'varchar',
+                        'default' => '',
+                        'length' => '200',
+                        'comment' => 'Hash value of all unique columns'
+                    ],
+                    [
+                        'name' => 'checksum',
+                        'field_type' => 'text',
+                        'default' => '',
+                        'comment' => 'Checksum'
+                    ],
+                    [
+                        'name' => 'processed_at',
+                        'field_type' => 'timestamp',
+                        'default' => '',
+                        'comment' => 'Processed At'
+                    ],
+                    [
+                        'name' => 'created_at',
+                        'field_type' => 'timestamp',
+                        'default' => 'CURRENT_TIMESTAMP',
+                        'comment' => 'Created At'
+                    ],
+                    [
+                        'name' => 'updated_at',
+                        'field_type' => 'timestamp',
+                        'default' => 'CURRENT_TIMESTAMP',
+                        'comment' => 'Updated At'
+                    ]
+                ];
+
+
+                if ($tableName == 'ls_replication_repl_item_variant') {
+                    $extraColumnsArray[] =  [
+                        'name'       => 'ready_to_process',
+                        'field_type' => 'boolean',
+                        'default'    => '0',
+                        'comment'    => 'Flag to check if data is ready to be processed. 0 means not yet ready & 1 means already ready'
                     ];
-
-
-                    if ($tableName == 'ls_replication_repl_item_variant') {
-                        $extraColumnsArray[] =  [
-                            'name'       => 'ready_to_process',
-                            'field_type' => 'boolean',
-                            'default'    => '0',
-                            'comment'    => 'Flag to check if data is ready to be processed. 0 means not yet ready & 1 means already ready'
-                        ];
-                    }
-
-                    $restrictions        = $this->metadata->getRestrictions();
-                    $reflectedEntity     = new ClassReflection($replicationOperation->getOmniEntityFqn());
-                    $defaultColumnsArray = $propertyTypes = [];
-                    $simpleTypes         = ['boolean', 'string', 'int', 'float'];
-                    foreach ($reflectedEntity->getProperties() as $property) {
-                        $docblock = $property->getDocBlock()->getContents();
-                        preg_match('/property\s(:?\w+)\s\$(:?\w+)/m', $docblock, $matches);
-                        $type = $matches[1];
-                        $name = $matches[2];
-                        if (array_search($type, $simpleTypes) === false) {
-                            if (array_key_exists($type, $restrictions)) {
-                                $propertyTypes[$name] = $type;
-                            }
-                        } else {
-                            $propertyTypes[$name] = $type;
-                        }
-                    }
-                    foreach ($propertyTypes as $raw_name => $type) {
-                        $name    = $raw_name;
-                        $length  = null;
-                        $default = '';
-
-                        (array_search($type, $simpleTypes) === false) and ($type = 'string');
-                        if ($type == 'int') {
-                            $fieldType = 'int';
-                        } elseif ($type == 'float') {
-                            $fieldType = 'decimal';
-                        } elseif ($type == 'boolean') {
-                            $fieldType = 'boolean';
-                            $default   = '0';
-                        } else {
-                            $lower_name = strtolower($name);
-                            if (strpos($lower_name, 'image64') === false) {
-                                $fieldType = 'text';
-                            } else {
-                                $fieldType = 'blob';
-                            }
-                        }
-                        if ($name == 'Id') {
-                            $name = 'nav_id';
-                        }
-
-                        /** OMNI-5424, all indexer columns should be varchar 100 */
-                        if ($tableIncludedInIndex) {
-                            if (in_array($name, self::$indexerColumnLists[$tableName]) && $fieldType == 'text') {
-                                $fieldType = 'varchar';
-                            }
-                        }
-
-                        $defaultColumnsArray[] = [
-                            'name'       => $name,
-                            'field_type' => $fieldType,
-                            'default'    => $default,
-                            'comment'    => $name
-                        ];
-                    }
-                    $allColumnsArray = array_merge($defaultColumnsArray, $extraColumnsArray);
-                    foreach ($allColumnsArray as $columnValue) {
-                        $extraColumn = $dom->createElement('column');
-                        $extraColumn->setAttribute('xsi:type', $columnValue['field_type']);
-                        $extraColumn->setAttribute('name', $columnValue['name']);
-                        if ($columnValue['field_type'] == 'decimal') {
-                            $extraColumn->setAttribute('scale', '4');
-                            $extraColumn->setAttribute('precision', '20');
-                        }
-                        if ($columnValue['field_type'] == 'int')
-                            $extraColumn->setAttribute('padding', '11');
-                        if ($columnValue['field_type'] == 'varchar')
-                            $extraColumn->setAttribute('length', 200);
-                        if ($columnValue['default'] != '')
-                            $extraColumn->setAttribute('default', $columnValue['default']);
-                        if ($columnValue['name'] == 'created_at')
-                            $extraColumn->setAttribute('on_update', 'false');
-                        if ($columnValue['name'] == 'updated_at')
-                            $extraColumn->setAttribute('on_update', 'true');
-                        $extraColumn->setAttribute('nullable', 'true');
-                        $extraColumn->setAttribute('comment', $columnValue['comment']);
-                        $table->appendChild($extraColumn);
-                    }
-                    // for primary key
-                    $constraint = $dom->createElement('constraint');
-                    $constraint->setAttribute('xsi:type', 'primary');
-                    $constraint->setAttribute('referenceId', 'PRIMARY');
-                    $column = $dom->createElement('column');
-                    $column->setAttribute('name', $replicationOperation->getTableColumnId());
-                    $constraint->appendChild($column);
-                    $table->appendChild($constraint);
-
-                    //indexer based on the searchable column and add here
-                    /**
-                     * this will be the final outcome
-                     *  <index referenceId="CATALOG_PRODUCT_ENTITY_SKU" indexType="btree">
-                     *       <column name="sku"/>
-                     *  </index>
-                     */
-                    if (array_key_exists($tableName, self::$indexerColumnLists)) {
-                        $indexerColumns = self::$indexerColumnLists[$tableName];
-                        if ($indexerColumns && !empty($indexerColumns)) {
-                            foreach ($indexerColumns as $indexerColumn) {
-                                $referenceId     = strtoupper(implode("_", array($tableName, $indexerColumn)));
-                                $indexColumnNode = $dom->createElement('index');
-                                $indexColumnNode->setAttribute('indexType', 'btree');
-                                $indexColumnNode->setAttribute('referenceId', $referenceId);
-                                $column = $dom->createElement('column');
-                                $column->setAttribute('name', $indexerColumn);
-                                $indexColumnNode->appendChild($column);
-                                $table->appendChild($indexColumnNode);
-                            }
-                        }
-                    }
-
-                    //unique constraint based on the combination of column
-                    /**
-                     * this will be the final outcome
-                     * <constraint xsi:type="unique" referenceId="CATALOG_CATEGORY_PRODUCT_CATEGORY_ID_PRODUCT_ID">
-                     *       <column name="category_id"/>
-                     *       <column name="product_id"/>
-                     *  </constraint>
-                     */
-                    $keyToSearch = str_replace("ls_replication_", "ls_mag/replication/","$tableName");
-                    if (array_key_exists($keyToSearch, ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY)) {
-                        $uniqueColumns = ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$keyToSearch];
-                        if ($uniqueColumns && !empty($uniqueColumns)) {
-                            $uniqueColumnNode = $dom->createElement('constraint');
-                            $uniqueColumnNode->setAttribute('xsi:type', 'unique');
-                            $fields      = ReplicationHelper::UNIQUE_HASH_COLUMN_NAME;
-                            $prefix      = 'unq_';
-                            $referenceId = strtoupper(ExpressionConverter::shortenEntityName(
-                                $tableName . '_' . $fields,
-                                $prefix
-                            ));
-                            $uniqueColumnNode->setAttribute('referenceId', $referenceId);
-                            $column = $dom->createElement('column');
-                            $column->setAttribute('name', ReplicationHelper::UNIQUE_HASH_COLUMN_NAME);
-                            $uniqueColumnNode->appendChild($column);
-                        }
-                        $table->appendChild($uniqueColumnNode);
-                    }
-
-                    $schema->appendChild($table);
-                    array_push($tables, $tableName);
                 }
+
+                $reflectedEntity     = new ClassReflection($replicationOperation->getOmniEntityFqn());
+                $defaultColumnsArray = [];
+                $constants = $reflectedEntity->getConstants();
+                $methods = $reflectedEntity->getMethods(\ReflectionMethod::IS_PUBLIC);
+
+                $originalClass = $replicationOperation->getOmniEntityFqn();
+                $objectManager = $this->getObjectManager();
+                $mapping = $objectManager->get($originalClass);
+                $dbColumnsMapping = $mapping->getDbColumnsMapping();
+                if ($tableName == 'ls_replication_repl_hierarchy_leaf')
+                {
+                    $x = 1;
+                }
+                foreach ($methods as $method) {
+                    if ($method->getDeclaringClass()->getName() !== $originalClass ||
+                        $method->getName() == 'getDbColumnsMapping'
+                    ) {
+                        continue;
+                    }
+                    $name = $method->getName();
+                    $body = $method->getBody();
+
+                    if (str_starts_with($name, 'get')) {
+                        preg_match('/self::([A-Z0-9_]+)/', $body, $matches);
+
+                        if (!empty($matches)) {
+                            $constName = $matches[1];
+                            $propertyName = $constants[$constName];
+                            if (isset($dbColumnsMapping[$propertyName])) {
+                                $propertyName = $dbColumnsMapping[$propertyName];
+                            }
+                            if (!isset($defaultColumnsArray[$constName])) {
+                                $defaultColumnsArray[$constName] = [
+                                    'name' => $propertyName,
+                                    'comment' => $propertyName
+                                ];
+                            }
+
+                            $returnType = $method->getReturnType();
+                            $returnTypeName = '';
+                            if ($returnType instanceof \ReflectionNamedType) {
+                                $returnTypeName = $returnType->getName();
+                                $nullablePrefix = $returnType->allowsNull() ? '?' : '';
+                            }
+                            $fieldType = '';
+                            $default = '';
+                            if ($returnTypeName == 'int') {
+                                $fieldType = 'int';
+                            } elseif ($returnTypeName == 'float') {
+                                $fieldType = 'decimal';
+                            } elseif ($returnTypeName == 'bool') {
+                                $fieldType = 'boolean';
+                                $default   = '0';
+                            } else {
+                                $lower_name = strtolower($name);
+                                if (strpos($lower_name, 'image64') === false) {
+                                    $fieldType = 'text';
+                                } else {
+                                    $fieldType = 'blob';
+                                }
+                            }
+                            $defaultColumnsArray[$constName]['field_type'] = $fieldType;
+                            $defaultColumnsArray[$constName]['default'] = $default;
+                        }
+                    }
+                }
+
+                array_multisort(array_column($defaultColumnsArray, 'name'), SORT_ASC, $defaultColumnsArray);
+
+                $allColumnsArray = array_merge($defaultColumnsArray, $extraColumnsArray);
+                foreach ($allColumnsArray as $columnValue) {
+                    $columnName = $columnValue['name'];
+                    $columnType = $columnValue['field_type'];
+                    if ($columnMappings) {
+                        if (isset($columnMappings[$columnName])) {
+                            if (isset($columnMappings[$columnName]['name']) &&
+                                isset($columnMappings[$columnName]['type'])
+                            ) {
+                                $columnType = $columnMappings[$columnName]['type'];
+                                $columnName = $columnMappings[$columnName]['name'];
+                            } else {
+                                $columnName = $columnMappings[$columnName];
+                            }
+
+                            if ($tableIncludedInIndex) {
+                                if (in_array($columnName, self::$indexerColumnLists[$tableName])
+                                    && $columnType == 'text'
+                                ) {
+                                    $columnType = 'varchar';
+                                }
+                            }
+                        } else {
+                            $isExtraColumns = false;
+                            foreach ($extraColumnsArray as $extraColumn) {
+                                if ($columnName == $extraColumn['name']) {
+                                    $isExtraColumns = true;
+                                    break;
+                                }
+                            }
+
+                            if (!$isExtraColumns) {
+                                continue;
+                            }
+                        }
+                    }
+                    $extraColumn = $dom->createElement('column');
+                    $extraColumn->setAttribute('xsi:type', $columnType);
+                    $extraColumn->setAttribute('name', $columnName);
+                    if ($columnType == 'decimal') {
+                        $extraColumn->setAttribute('scale', '4');
+                        $extraColumn->setAttribute('precision', '20');
+                    }
+                    if ($columnType == 'int')
+                        $extraColumn->setAttribute('padding', '11');
+                    if ($columnType == 'varchar')
+                        $extraColumn->setAttribute('length', '200');
+                    if ($columnValue['default'] != '')
+                        $extraColumn->setAttribute('default', $columnValue['default']);
+                    if ($columnValue['name'] == 'created_at')
+                        $extraColumn->setAttribute('on_update', 'false');
+                    if ($columnValue['name'] == 'updated_at')
+                        $extraColumn->setAttribute('on_update', 'true');
+                    $extraColumn->setAttribute('nullable', 'true');
+                    $extraColumn->setAttribute('comment', $columnValue['comment']);
+                    $table->appendChild($extraColumn);
+                }
+
+                // Add custom columns for specific tables that are not in service response
+                $customColumns = $this->getCustomColumnsForTable($tableName);
+                foreach ($customColumns as $customColumn) {
+                    $customExtraColumn = $dom->createElement('column');
+                    $customExtraColumn->setAttribute('xsi:type', $customColumn['field_type']);
+                    $customExtraColumn->setAttribute('name', $customColumn['name']);
+
+                    if ($customColumn['field_type'] == 'decimal') {
+                        $customExtraColumn->setAttribute('scale', '4');
+                        $customExtraColumn->setAttribute('precision', '20');
+                    }
+
+                    if ($customColumn['field_type'] == 'varchar') {
+                        $customExtraColumn->setAttribute('length', '200');
+                    }
+
+                    if ($customColumn['field_type'] == 'int') {
+                        $customExtraColumn->setAttribute('padding', '11');
+                    }
+
+                    if (!empty($customColumn['default'])) {
+                        $customExtraColumn->setAttribute('default', $customColumn['default']);
+                    }
+
+                    $customExtraColumn->setAttribute('nullable', 'true');
+                    $customExtraColumn->setAttribute('comment', $customColumn['comment']);
+                    $table->appendChild($customExtraColumn);
+                }
+
+                // for primary key
+                $constraint = $dom->createElement('constraint');
+                $constraint->setAttribute('xsi:type', 'primary');
+                $constraint->setAttribute('referenceId', 'PRIMARY');
+                $column = $dom->createElement('column');
+                $column->setAttribute('name', $tableIdColumnName);
+                $constraint->appendChild($column);
+                $table->appendChild($constraint);
+
+                //indexer based on the searchable column and add here
+                /**
+                 * this will be the final outcome
+                 *  <index referenceId="CATALOG_PRODUCT_ENTITY_SKU" indexType="btree">
+                 *       <column name="sku"/>
+                 *  </index>
+                 */
+                if (array_key_exists($tableName, self::$indexerColumnLists)) {
+                    $indexerColumns = self::$indexerColumnLists[$tableName];
+                    if ($indexerColumns && !empty($indexerColumns)) {
+                        foreach ($indexerColumns as $indexerColumn) {
+                            $optimizedFieldName = $this->formatGivenValue(ucwords(strtolower($indexerColumn)));
+                            $constName = str_replace(
+                                ' ',
+                                '_',
+                                strtoupper(preg_replace('/\B([A-Z])/', '_$1', $optimizedFieldName))
+                            );
+                            $referenceId     = strtoupper(implode("_", array($tableName, $constName)));
+                            $indexColumnNode = $dom->createElement('index');
+                            $indexColumnNode->setAttribute('indexType', 'btree');
+                            $indexColumnNode->setAttribute('referenceId', $referenceId);
+                            $column = $dom->createElement('column');
+                            $column->setAttribute('name', $indexerColumn);
+                            $indexColumnNode->appendChild($column);
+                            $table->appendChild($indexColumnNode);
+                        }
+                    }
+                }
+
+                //unique constraint based on the combination of column
+                /**
+                 * this will be the final outcome
+                 * <constraint xsi:type="unique" referenceId="CATALOG_CATEGORY_PRODUCT_CATEGORY_ID_PRODUCT_ID">
+                 *       <column name="category_id"/>
+                 *       <column name="product_id"/>
+                 *  </constraint>
+                 */
+                $keyToSearch = str_replace("ls_replication_", "ls_mag/replication/","$tableName");
+                if (array_key_exists($keyToSearch, ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY)) {
+                    $uniqueColumns = ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$keyToSearch];
+                    if ($uniqueColumns && !empty($uniqueColumns)) {
+                        $uniqueColumnNode = $dom->createElement('constraint');
+                        $uniqueColumnNode->setAttribute('xsi:type', 'unique');
+                        $fields      = ReplicationHelper::UNIQUE_HASH_COLUMN_NAME;
+                        $prefix      = 'unq_';
+                        $referenceId = strtoupper(ExpressionConverter::shortenEntityName(
+                            $tableName . '_' . $fields,
+                            $prefix
+                        ));
+                        $uniqueColumnNode->setAttribute('referenceId', $referenceId);
+                        $column = $dom->createElement('column');
+                        $column->setAttribute('name', ReplicationHelper::UNIQUE_HASH_COLUMN_NAME);
+                        $uniqueColumnNode->appendChild($column);
+                    }
+                    $table->appendChild($uniqueColumnNode);
+                }
+
+                $schema->appendChild($table);
+                array_push($tables, $tableName);
             }
         }
 
@@ -570,14 +676,69 @@ class SchemaUpdateGenerator implements GeneratorInterface
     }
 
     /**
+     * Get custom columns for specific tables that are not in service response
+     *
+     * @param string $tableName
+     * @return array
+     */
+    private function getCustomColumnsForTable(string $tableName): array
+    {
+        $customColumns = [];
+
+        // Add custom columns for repl_price table
+        if ($tableName == 'ls_replication_repl_price') {
+            $customColumns = [
+                [
+                    'name' => 'StoreId',
+                    'field_type' => 'varchar',
+                    'default' => '',
+                    'comment' => 'store_id'
+                ],
+                [
+                    'name' => 'QtyPerUnitOfMeasure',
+                    'field_type' => 'decimal',
+                    'default' => '',
+                    'comment' => 'qty_per_unit_of_measure'
+                ]
+            ];
+        }
+
+        return $customColumns;
+    }
+
+    /**
+     * Get db_schema.xml path
+     *
      * @return string
      */
     public function getPath()
     {
-        $objectManager = ObjectManager::getInstance();
+        $objectManager = $this->getObjectManager();
         /** @var  Reader $dirReader */
         $dirReader = $objectManager->get('\Magento\Framework\Module\Dir\Reader');
         $basePath  = $dirReader->getModuleDir('', 'Ls_Replication');
         return $basePath . "/etc/db_schema.xml";
+    }
+
+    /**
+     * Get formatted value
+     *
+     * @param string $value
+     * @param string $replaceWith
+     * @return string
+     */
+    public function formatGivenValue(string $value, string $replaceWith = ''): string
+    {
+        return trim(preg_replace('/[\/\[\]()$\-._%&]/', $replaceWith, $value));
+    }
+
+    /**
+     * Get object Manager object
+     *
+     * @return ObjectManager
+     */
+    public function getObjectManager(): ObjectManager
+    {
+        return ObjectManager::getInstance();
     }
 }

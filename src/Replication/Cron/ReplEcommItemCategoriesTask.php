@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplItemCategoryRepositoryInterface as ReplItemCategoryRe
 use Ls\Replication\Model\ReplItemCategoryFactory;
 use Ls\Replication\Api\Data\ReplItemCategoryInterface;
 
-class ReplEcommItemCategoriesTask extends AbstractReplicationTask
+abstract class ReplEcommItemCategoriesTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_item_category';
 
@@ -108,19 +108,6 @@ class ReplEcommItemCategoriesTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommItemCategories($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

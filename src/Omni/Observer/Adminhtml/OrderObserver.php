@@ -1,15 +1,18 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer\Adminhtml;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Model\Sales\AdminOrder\OrderEdit;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Model\ResourceModel\Order;
@@ -20,68 +23,35 @@ use Psr\Log\LoggerInterface;
  */
 class OrderObserver implements ObserverInterface
 {
-
-    /** @var BasketHelper */
-    private $basketHelper;
-
-    /** @var OrderHelper */
-    private $orderHelper;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /** @var Order $orderResourceModel */
-    private $orderResourceModel;
-
-    /** @var LSR @var */
-    private $lsr;
-
-    /**
-     * @var ManagerInterface
-     */
-    private $messageManager;
-
-    /**
-     * @var OrderEdit
-     */
-    private $orderEdit;
-
     /**
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
      * @param LoggerInterface $logger
      * @param Order $orderResourceModel
-     * @param LSR $LSR
+     * @param LSR $lsr
      * @param ManagerInterface $messageManager
      * @param OrderEdit $orderEdit
      */
     public function __construct(
-        BasketHelper $basketHelper,
-        OrderHelper $orderHelper,
-        LoggerInterface $logger,
-        Order $orderResourceModel,
-        LSR $LSR,
-        ManagerInterface $messageManager,
-        OrderEdit $orderEdit
+        public BasketHelper $basketHelper,
+        public OrderHelper $orderHelper,
+        public LoggerInterface $logger,
+        public Order $orderResourceModel,
+        public LSR $lsr,
+        public ManagerInterface $messageManager,
+        public OrderEdit $orderEdit
     ) {
-        $this->basketHelper       = $basketHelper;
-        $this->orderHelper        = $orderHelper;
-        $this->logger             = $logger;
-        $this->orderResourceModel = $orderResourceModel;
-        $this->lsr                = $LSR;
-        $this->messageManager     = $messageManager;
-        $this->orderEdit          = $orderEdit;
     }
 
     /**
      * Execute method to perform order creation and updates
      *
      * @param Observer $observer
-     * @return $this|void
-     * @throws AlreadyExistsException
+     * @return $this
      * @throws NoSuchEntityException
+     * @throws GuzzleException
+     * @throws InvalidEnumException
+     * @throws LocalizedException
      */
     public function execute(Observer $observer)
     {
@@ -89,6 +59,7 @@ class OrderObserver implements ObserverInterface
         $order = $observer->getEvent()->getData('order');
         $this->orderHelper->storeManager->setCurrentStore($order->getStoreId());
         $this->orderHelper->checkoutSession->setQuoteId($order->getQuoteId());
+        $this->orderHelper->customerSession->setData('customer_id', $order->getCustomerId());
         $this->orderHelper->customerSession->setCustomerId($order->getCustomerId());
         $this->basketHelper->setCalculateBasket(false);
         $oneListCalculation = $this->basketHelper->calculateOneListFromOrder($order);
@@ -130,7 +101,6 @@ class OrderObserver implements ObserverInterface
                                     $shippingMethod = $order->getShippingMethod(true);
                                     if ($shippingMethod !== null) {
                                         $carrierCode    = $shippingMethod->getData('carrier_code');
-                                        $method         = $shippingMethod->getData('method');
                                         $isClickCollect = $carrierCode == 'clickandcollect';
                                     }
                                     if ($isClickCollect) {
@@ -149,8 +119,8 @@ class OrderObserver implements ObserverInterface
                         $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                         $response = $this->orderHelper->placeOrder($request);
                         if ($response) {
-                            if (!empty($response->getResult()->getId())) {
-                                $documentId = $response->getResult()->getId();
+                            if (!empty($response->getCustomerOrderId())) {
+                                $documentId = $response->getCustomerOrderId();
                                 $order->setDocumentId($documentId);
                                 $this->orderResourceModel->save($order);
                                 $this->messageManager->addSuccessMessage(

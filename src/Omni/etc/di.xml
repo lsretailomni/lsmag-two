@@ -12,6 +12,14 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Config\Model\Config\TypePool">
+        <arguments>
+            <!-- sensitive config items -->
+            <argument name="sensitive" xsi:type="array">
+                <item name="ls_mag/service/password" xsi:type="string">1</item>
+            </argument>
+        </arguments>
+    </type>
     <type name="Magento\Checkout\Controller\Cart\CouponPost">
         <plugin name="SetCouponData" type="Ls\Omni\Model\SetCouponData" sortOrder="1"/>
     </type>
@@ -121,7 +129,7 @@
     <!-- In order to calculate basket on checkout for logged in user -->
     <type name="Magento\Checkout\Api\ShippingInformationManagementInterface">
         <plugin name="calculate_basket"
-                type="Ls\Omni\Plugin\Api\ShippingInformationManagementInterfacePlugin" sortOrder="1"/>
+                type="Ls\Omni\Plugin\Api\ShippingInformationManagementInterfacePlugin"  sortOrder="1"/>
     </type>
     <!-- In order to fix klarna api items total -->
     <type name="Klarna\Core\Model\Checkout\Orderline\Items">

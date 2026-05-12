@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Omni\Observer;
 
@@ -25,37 +26,6 @@ use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
 class DataAssignObserver implements ObserverInterface
 {
     /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
-     * @var BasketHelper
-     */
-    private $basketHelper;
-    /**
-     * @var StoreHelper
-     */
-    private StoreHelper $storeHelper;
-    /**
-     * @var Http
-     */
-    private Http $request;
-    /**
-     * @var LSR
-     */
-    private LSR $lsr;
-    /**
-     * @var QuoteIdToMaskedQuoteIdInterface
-     */
-    private $quoteIdToMaskedQuoteId;
-
-    /**
-     * @var CheckoutSession
-     */
-    private $checkoutSession;
-
-    /**
      * @param Data $helper
      * @param BasketHelper $basketHelper
      * @param StoreHelper $storeHelper
@@ -65,21 +35,14 @@ class DataAssignObserver implements ObserverInterface
      * @param CheckoutSession $checkoutSession
      */
     public function __construct(
-        Data $helper,
-        BasketHelper $basketHelper,
-        StoreHelper $storeHelper,
-        Http $request,
-        LSR $lsr,
-        QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId,
-        CheckoutSession $checkoutSession
+        public Data $helper,
+        public BasketHelper $basketHelper,
+        public StoreHelper $storeHelper,
+        public Http $request,
+        public LSR $lsr,
+        public QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId,
+        public CheckoutSession $checkoutSession
     ) {
-        $this->helper                 = $helper;
-        $this->basketHelper           = $basketHelper;
-        $this->storeHelper            = $storeHelper;
-        $this->request                = $request;
-        $this->lsr                    = $lsr;
-        $this->quoteIdToMaskedQuoteId = $quoteIdToMaskedQuoteId;
-        $this->checkoutSession        = $checkoutSession;
     }
 
     /***
@@ -117,7 +80,7 @@ class DataAssignObserver implements ObserverInterface
         if (!$errorMessage &&
             $quote->getShippingAddress()->getShippingMethod() == "clickandcollect_clickandcollect"
         ) {
-            $maskedCartId = $this->quoteIdToMaskedQuoteId->execute($quote->getId());
+            $maskedCartId = $this->quoteIdToMaskedQuoteId->execute((int) $quote->getId());
 
             $errorMessage = $this->validateClickAndCollectOrder(
                 $quote,
@@ -228,7 +191,6 @@ class DataAssignObserver implements ObserverInterface
             $storeId,
             $quote
         );
-
         if (empty($this->checkoutSession->getNoManageStock())) {
             if (!$stockCollection) {
                 $message = __('Oops! Unable to do stock lookup currently.');

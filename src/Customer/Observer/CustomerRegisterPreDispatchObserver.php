@@ -3,82 +3,29 @@
 namespace Ls\Customer\Observer;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\ActionFlag;
-use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Message\ManagerInterface;
-use Psr\Log\LoggerInterface;
+use Zend_Log_Exception;
 
 /**
  * Class CustomerRegisterPreDispatchObserver
  * We need to check if email is already exist or not,
  * If exist redirect back to registration with error message that email already exist.
  */
-class CustomerRegisterPreDispatchObserver implements ObserverInterface
+class CustomerRegisterPreDispatchObserver extends AbstractOmniObserver
 {
-    /** @var ContactHelper */
-    private $contactHelper;
-
-    /** @var ManagerInterface */
-    private $messageManager;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var CustomerSession */
-    private $customerSession;
-
-    /** @var RedirectInterface */
-    private $redirectInterface;
-
-    /** @var ActionFlag */
-    private $actionFlag;
-
-    /** @var LSR @var */
-    private $lsr;
-
     /**
-     * UsernameObserver constructor.
-     * @param ContactHelper $contactHelper
-     * @param ManagerInterface $messageManager
-     * @param LoggerInterface $logger
-     * @param CustomerSession $customerSession
-     * @param RedirectInterface $redirectInterface
-     * @param ActionFlag $actionFlag
-     * @param LSR $LSR
-     */
-    public function __construct(
-        ContactHelper $contactHelper,
-        ManagerInterface $messageManager,
-        LoggerInterface $logger,
-        CustomerSession $customerSession,
-        RedirectInterface $redirectInterface,
-        ActionFlag $actionFlag,
-        LSR $LSR
-    ) {
-        $this->contactHelper     = $contactHelper;
-        $this->messageManager    = $messageManager;
-        $this->logger            = $logger;
-        $this->customerSession   = $customerSession;
-        $this->redirectInterface = $redirectInterface;
-        $this->actionFlag        = $actionFlag;
-        $this->lsr               = $LSR;
-    }
-
-    /**
-     * Observer execute
+     * Entry point for the observer
      *
      * @param Observer $observer
      * @return $this
      * @throws LocalizedException
      * @throws NoSuchEntityException
+     * @throws Zend_Log_Exception|GuzzleException
      */
     public function execute(Observer $observer)
     {

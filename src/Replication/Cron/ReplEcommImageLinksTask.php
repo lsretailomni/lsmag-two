@@ -19,7 +19,7 @@ use Ls\Replication\Api\ReplImageLinkRepositoryInterface as ReplImageLinkReposito
 use Ls\Replication\Model\ReplImageLinkFactory;
 use Ls\Replication\Api\Data\ReplImageLinkInterface;
 
-class ReplEcommImageLinksTask extends AbstractReplicationTask
+abstract class ReplEcommImageLinksTask extends AbstractReplicationTask
 {
     public const JOB_CODE = 'replication_repl_image_link';
 
@@ -108,19 +108,6 @@ class ReplEcommImageLinksTask extends AbstractReplicationTask
         $this->repository = $repository;
         $this->factory = $factory;
         $this->data_interface = $data_interface;
-    }
-
-    public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
-    {
-        $request = new ReplEcommImageLinks($baseUrl);
-        $request->getOperationInput()
-                 ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
-                                                        ->setFullReplication($fullReplication)
-                                                        ->setLastKey($lastKey)
-                                                        ->setMaxKey($maxKey)
-                                                        ->setStoreId($storeId)
-                                                        ->setAppId($appId));
-        return $request;
     }
 
     public function getConfigPath()

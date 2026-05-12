@@ -1,14 +1,16 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Webhooks\Model\Order;
 
 use Exception;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Webhooks\Api\Data\OrderPaymentResponseInterface;
 use \Ls\Webhooks\Helper\NotificationHelper;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
-use \Ls\Core\Model\LSR;
 use Magento\Framework\DB\TransactionFactory;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -28,71 +30,6 @@ use Magento\Shipping\Model\ShipmentNotifier;
 class Payment
 {
     /**
-     * @var Logger
-     */
-    private $logger;
-
-    /**
-     * @var InvoiceService
-     */
-    private $invoiceService;
-
-    /**
-     * @var TransactionFactory
-     */
-    private $transactionFactory;
-
-    /**
-     * @var InvoiceSender
-     */
-    private $invoiceSender;
-
-    /**
-     * @var Data
-     */
-    private $helper;
-
-    /**
-     * @var NotificationHelper
-     */
-    private $notificationHelper;
-
-    /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @var Order
-     */
-    private $convertOrder;
-
-    /**
-     * @var ShipmentNotifier
-     */
-    private $shipmentNotifier;
-
-    /**
-     * @var ShipmentRepositoryInterface
-     */
-    private $shipmentRepository;
-
-    /**
-     * @var DefaultSourceProviderInterfaceFactory
-     */
-    private $defaultSourceProviderFactory;
-
-    /**
-     * @var ReplicationHelper
-     */
-    private $replicationHelper;
-
-    /**
-     * @var ManagerInterface
-     */
-    private $eventManager;
-
-    /**
      * @param Logger $logger
      * @param InvoiceService $invoiceService
      * @param TransactionFactory $transactionFactory
@@ -108,33 +45,20 @@ class Payment
      * @param ManagerInterface $eventManager
      */
     public function __construct(
-        Logger $logger,
-        InvoiceService $invoiceService,
-        TransactionFactory $transactionFactory,
-        InvoiceSender $invoiceSender,
-        Data $helper,
-        NotificationHelper $notificationHelper,
-        OrderRepositoryInterface $orderRepository,
-        Order $convertOrder,
-        ShipmentNotifier $shipmentNotifier,
-        ShipmentRepositoryInterface $shipmentRepository,
-        DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
-        ReplicationHelper $replicationHelper,
-        ManagerInterface $eventManager
+        public Logger $logger,
+        public InvoiceService $invoiceService,
+        public TransactionFactory $transactionFactory,
+        public InvoiceSender $invoiceSender,
+        public Data $helper,
+        public NotificationHelper $notificationHelper,
+        public OrderRepositoryInterface $orderRepository,
+        public Order $convertOrder,
+        public ShipmentNotifier $shipmentNotifier,
+        public ShipmentRepositoryInterface $shipmentRepository,
+        public DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
+        public ReplicationHelper $replicationHelper,
+        public ManagerInterface $eventManager
     ) {
-        $this->logger                       = $logger;
-        $this->invoiceService               = $invoiceService;
-        $this->transactionFactory           = $transactionFactory;
-        $this->invoiceSender                = $invoiceSender;
-        $this->helper                       = $helper;
-        $this->notificationHelper           = $notificationHelper;
-        $this->orderRepository              = $orderRepository;
-        $this->convertOrder                 = $convertOrder;
-        $this->shipmentNotifier             = $shipmentNotifier;
-        $this->shipmentRepository           = $shipmentRepository;
-        $this->defaultSourceProviderFactory = $defaultSourceProviderFactory;
-        $this->replicationHelper            = $replicationHelper;
-        $this->eventManager                 = $eventManager;
     }
 
     /**
@@ -143,12 +67,13 @@ class Payment
      * @param $data
      * @param bool $linesMerged
      * @param null $magentoOrder
-     * @return array[]
+     * @return OrderPaymentResponseInterface
      */
     public function generateInvoice($data, $linesMerged = true, $magentoOrder = null)
     {
         $documentId = $data['OrderId'];
         $lines      = $data['Lines'];
+
         if (array_key_exists('Amount', $data)) {
             $totalAmount = $data['Amount'];
         } else {
@@ -161,9 +86,7 @@ class Payment
         try {
             $order           = (!empty($magentoOrder)) ? $magentoOrder :
                 $this->helper->getOrderByDocumentId($documentId);
-            $this->helper->getLsrObject()->setStoreId($order->getStoreId());
             $industry = $this->helper->getLsrObject()->getStoreConfig(LSR::LS_INDUSTRY_VALUE, $order->getStoreId());
-
             if ($industry !== LSR::LS_INDUSTRY_VALUE_RETAIL) {
                 $isRetail = false;
             }
@@ -172,7 +95,7 @@ class Payment
             $validateOrder   = $this->validateOrder($order, $documentId);
             $validateInvoice = false;
             $invoice         = null;
-            if ($validateOrder['data']['success'] && $order->canInvoice()) {
+            if ($validateOrder->getOrderMessagePaymentResult() && $order->canInvoice()) {
                 $items = $this->helper->getItems($order, $lines, $linesMerged);
                 foreach ($items as $itemsData) {
                     foreach ($itemsData as $itemData) {
@@ -203,11 +126,11 @@ class Payment
                     }
                 }
 
-                $validateOrder   = $this->validatePayment($order, $totalAmount, $documentId, $shippingAmount);
+                $validateOrder   = $this->validatePayment($order, (string)$totalAmount, $documentId, $shippingAmount);
                 $invoice         = $this->invoiceService->prepareInvoice($order, $itemsToInvoice);
                 $validateInvoice = $this->validateInvoice($invoice, $documentId);
             }
-            if ($validateInvoice && $validateOrder['data']['success']) {
+            if ($validateInvoice && $validateOrder->getOrderMessagePaymentResult()) {
                 $baseTotalAmount = $totalAmount;
                 $baseSubtotal    = $subtotal;
 
@@ -262,7 +185,7 @@ class Payment
                         );
                     }
 
-                    return $this->helper->outputMessage(
+                    return $this->helper->formulatePaymentOutputMessage(
                         true,
                         $message
                     );
@@ -270,7 +193,7 @@ class Payment
                     $this->logger->error('We can\'t send the invoice email right now for document id #'
                         . $documentId);
 
-                    return $this->helper->outputMessage(
+                    return $this->helper->formulatePaymentOutputMessage(
                         false,
                         "We can\'t send the invoice email right now for document id #" . $documentId
                     );
@@ -281,7 +204,7 @@ class Payment
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
 
-            return $this->helper->outputMessage(
+            return $this->helper->formulatePaymentOutputMessage(
                 false,
                 $e->getMessage()
             );
@@ -293,7 +216,7 @@ class Payment
      *
      * @param $order
      * @param $documentId
-     * @return array[]
+     * @return OrderPaymentResponseInterface
      */
     public function validateOrder($order, $documentId)
     {
@@ -305,7 +228,7 @@ class Payment
             $validate = false;
         }
 
-        return $this->helper->outputMessage($validate, $message);
+        return $this->helper->formulatePaymentOutputMessage($validate, $message);
     }
 
     /**
@@ -315,14 +238,14 @@ class Payment
      * @param $amount
      * @param $documentId
      * @param $shippingAmount
-     * @return array[]
+     * @return OrderPaymentResponseInterface
      */
     public function validatePayment($order, $amount, $documentId, $shippingAmount)
     {
         $validate   = true;
         $message    = '';
-        $grandTotal = (float)$order->getGrandTotal();
-        $totalDue   = (float)$order->getTotalDue();
+        $grandTotal = (string)$order->getGrandTotal();
+        $totalDue   = (string)$order->getTotalDue();
 
         if (bccomp($grandTotal, $amount, 3) == -1 && bccomp($totalDue, $amount, 3) != 1) {
             $message = "Invoice amount is greater than order amount for document id #" . $documentId;
@@ -330,7 +253,7 @@ class Payment
             $validate = false;
         }
 
-        return $this->helper->outputMessage($validate, $message);
+        return $this->helper->formulatePaymentOutputMessage($validate, $message);
     }
 
     /**

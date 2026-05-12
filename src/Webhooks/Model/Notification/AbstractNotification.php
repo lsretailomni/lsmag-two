@@ -20,44 +20,20 @@ abstract class AbstractNotification extends DataObject
     public const NOTIFICATION_TYPE = 'notification_type';
 
     /**
-     * @var Logger
-     */
-    public $logger;
-
-    /**
-     * @var Data
-     */
-    public $helper;
-
-    /**
-     * @var ReceiverFactory
-     */
-    public $receiver;
-
-    /**
-     * @var SenderFactory
-     */
-    public $sender;
-
-    /**
      * @param Data $helper
      * @param Logger $logger
-     * @param ReceiverFactory $receiverFactory
-     * @param SenderFactory $senderFactory
+     * @param ReceiverFactory $receiver
+     * @param SenderFactory $sender
      * @param array $data
      */
     public function __construct(
-        Data $helper,
-        Logger $logger,
-        ReceiverFactory $receiverFactory,
-        SenderFactory $senderFactory,
+        public Data $helper,
+        public Logger $logger,
+        public ReceiverFactory $receiver,
+        public SenderFactory $sender,
         array $data = []
     ) {
         parent::__construct($data);
-        $this->helper   = $helper;
-        $this->logger   = $logger;
-        $this->receiver = $receiverFactory;
-        $this->sender   = $senderFactory;
     }
 
     /**

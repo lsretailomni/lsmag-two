@@ -1,16 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\Replication\Block\Adminhtml\Logs;
 
 use Magento\Framework\View\Element\Template;
 
-/**
- * Class Report
- * @package Ls\Replication\Block\Adminhtml\Logs
- */
 class Report extends Template
 {
-
     /**
      * @param Template\Context $context
      * @param array $layoutProcessors
@@ -18,11 +14,10 @@ class Report extends Template
      */
     public function __construct(
         Template\Context $context,
-        array $layoutProcessors = [],
+        public array $layoutProcessors = [],
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->layoutProcessors = $layoutProcessors;
     }
 
     /**

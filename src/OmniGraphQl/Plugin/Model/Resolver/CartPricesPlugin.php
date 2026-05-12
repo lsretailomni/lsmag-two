@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
-use Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\BasketHelper;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Quote\Model\Quote;
@@ -14,26 +16,14 @@ use Magento\Quote\Model\Quote\TotalsCollector;
  */
 class CartPricesPlugin
 {
-
-    /**
-     * @var TotalsCollector
-     */
-    private $totalsCollector;
-    /**
-     * @var BasketHelper
-     */
-    private BasketHelper $basketHelper;
-
     /**
      * @param TotalsCollector $totalsCollector
      * @param BasketHelper $basketHelper
      */
     public function __construct(
-        TotalsCollector $totalsCollector,
-        BasketHelper $basketHelper,
+        public TotalsCollector $totalsCollector,
+        public BasketHelper $basketHelper,
     ) {
-        $this->totalsCollector = $totalsCollector;
-        $this->basketHelper    = $basketHelper;
     }
 
     /**
@@ -93,10 +83,11 @@ class CartPricesPlugin
      * @param Total $total
      * @param string $currency
      * @return array|null
+     * @throws NoSuchEntityException
      */
     private function getDiscounts($quote, Total $total, string $currency)
     {
-        $totalDiscounts = $this->getTotalDiscount($quote);
+        $totalDiscounts = $this->getTotalDiscount();
         if ($totalDiscounts === 0) {
             return null;
         }
@@ -109,16 +100,18 @@ class CartPricesPlugin
     /**
      * Calculate total discounts in quote based on basket calculation response
      *
-     * @param object $quote
      * @return float|int
+     * @throws NoSuchEntityException
      */
-    public function getTotalDiscount($quote)
+    public function getTotalDiscount()
     {
         $amount     = 0;
         $basketData = $this->basketHelper->getBasketSessionValue();
-        if (!empty($basketData)) {
-            $amount = -$basketData->getTotalDiscount();
+
+        if (!empty($basketData) && !empty($basketData->getMobiletransaction())) {
+            $amount = -current((array)$basketData->getMobiletransaction())->getLineDiscount();
         }
+
         return $amount;
     }
 }

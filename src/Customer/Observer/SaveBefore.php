@@ -2,57 +2,28 @@
 
 namespace Ls\Customer\Observer;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
-use \Ls\Omni\Helper\ContactHelper;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Psr\Log\LoggerInterface;
 
 /**
- * We need to check if email is already exist or not
+ * Observer responsible for observing customer_save_before
  */
-class SaveBefore implements ObserverInterface
+class SaveBefore extends AbstractOmniObserver
 {
-    /** @var ContactHelper */
-    private $contactHelper;
-
-    /** @var LSR @var */
-    private $lsr;
-
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * SaveBefore constructor.
-     * @param ContactHelper $contactHelper
-     * @param LoggerInterface $logger
-     * @param LSR $LSR
-     */
-    public function __construct(
-        ContactHelper $contactHelper,
-        LoggerInterface $logger,
-        LSR $LSR
-    ) {
-        $this->contactHelper = $contactHelper;
-        $this->logger        = $logger;
-        $this->lsr           = $LSR;
-    }
-
-    /**
-     * Validating before registration
+     * Entry point for the observer
      *
      * @param Observer $observer
-     * @return $this|void
+     * @return $this
      * @throws AlreadyExistsException~
      * @throws InputException
      * @throws InvalidEnumException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute(Observer $observer)
     {

@@ -3,19 +3,24 @@ declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Test\Integration;
 
+use Braintree\Configuration;
 use \Ls\Core\Model\LSR;
-use \Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
+use \Ls\Replication\Cron\ReplEcommStoresTask;
+use \Ls\Replication\Cron\ReplLscStoreviewTask;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
+use Magento\Framework\Encryption\Encryptor;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\InventoryApi\Api\SourceItemsSaveInterface;
 use Magento\Quote\Api\CartManagementInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteIdMask;
 use Magento\Quote\Model\QuoteIdMaskFactory;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\GraphQlAbstract;
 use Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory;
@@ -56,6 +61,7 @@ abstract class GraphQlTestBase extends GraphQlAbstract
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->objectManager            = Bootstrap::getObjectManager();
         $this->sourceItemsSaveInterface = $this->objectManager->create(SourceItemsSaveInterface::class);
         $this->sourceItem               = $this->objectManager->create(SourceItemInterfaceFactory::class);
@@ -67,6 +73,28 @@ abstract class GraphQlTestBase extends GraphQlAbstract
             WEB_API_TEST_EMAIL : 'pipeline_retail@lsretail.com';
         $this->password   = (defined('PASSWORD')) ?
             PASSWORD : 'Nmswer123@';
+    }
+
+    /**
+     * Save configuration value
+     *
+     * @param mixed $value
+     * @param string $path
+     * @param bool $isSensitive
+     * @return void
+     */
+    public function saveConfig($value, $path, $isSensitive = false)
+    {
+        if ($value === false || $value === null) {
+            return;
+        }
+        $replicationHelper = $this->objectManager->get(ReplicationHelper::class);
+
+        if ($isSensitive) {
+            $encryptor = $this->objectManager->get(Encryptor::class);
+            $value     = $encryptor->encrypt($value);
+        }
+        $replicationHelper->updateConfigValue($value, $path, 1);
     }
 
     /**
@@ -82,10 +110,12 @@ abstract class GraphQlTestBase extends GraphQlAbstract
     protected function executeQuery(string $query, ?string $token = ''): array
     {
         // Initialize headers array
-        $headers = [];
+        $headers                 = [];
+        $headers['store']        = "default";
+        $headers['content-type'] = "application/json";
 
         // Add Authorization header if token is provided
-        if ($token !== null) {
+        if ($token !== "") {
             $headers['Authorization'] = "Bearer $token";
         }
 
@@ -108,7 +138,7 @@ abstract class GraphQlTestBase extends GraphQlAbstract
         $headers = [];
 
         // Add Authorization header if token is provided
-        if ($token !== null) {
+        if ($token !== "") {
             $headers['Authorization'] = "Bearer $token";
         }
 
@@ -123,9 +153,9 @@ abstract class GraphQlTestBase extends GraphQlAbstract
      */
     protected function loginAndFetchToken(): string
     {
-        $email    = getenv('EMAIL') ?: throw new \RuntimeException('TEST_USER_EMAIL is not set in .env');
+        $email    = getenv('EMAIL') ?: throw new \RuntimeException('EMAIL is not set in .env');
         $password = getenv('PASSWORD') ?:
-            throw new \RuntimeException('TEST_USER_PASSWORD is not set in .env');
+            throw new \RuntimeException('PASSWORD is not set in .env');
 
         $loginMutation = <<<MUTATION
         mutation {
@@ -309,5 +339,29 @@ abstract class GraphQlTestBase extends GraphQlAbstract
         } catch (NoSuchEntityException $e) {
             $this->fail("Error:- " . $e->getMessage());
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function replicateStoresData()
+    {
+        $this->saveConfig(0, ReplEcommStoresTask::CONFIG_PATH_STATUS);
+        $storeManager = Bootstrap::getObjectManager()->get(StoreManagerInterface::class);
+        $storeData    = $storeManager->getWebsite();
+        $job          = Bootstrap::getObjectManager()->create(ReplLscStoreviewTask::class);
+        $job->executeManually($storeData);
+    }
+
+    /**
+     * return environment variable
+     *
+     * @param $param
+     * @return array|false|string
+     */
+    public function getEnvironment($param)
+    {
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction
+        return getenv($param);
     }
 }
