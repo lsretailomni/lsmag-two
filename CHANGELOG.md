@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [3.0.0] - 2026-05-05
+## [3.0.0] - 2026-05-12
 
 ### Added
 - Added support for LS Central Standalone integration which provides a direct connection between Magento and LS Central without using LS Commerce Services or the eCommerce APIs. [77960](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/77960/)
