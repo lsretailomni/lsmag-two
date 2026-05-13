@@ -54,7 +54,6 @@ class StoreHelper extends AbstractHelperOmni
     public function getStore(string $websiteId = '', ?string $webStore = null)
     {
         $response = [];
-
         if ($webStore == null) {
             $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         }
@@ -66,8 +65,35 @@ class StoreHelper extends AbstractHelperOmni
             if ($cachedResponse) {
                 $response = $cachedResponse;
             } else {
-                $response = $this->fetchStoresDataFromCentral($webStore);
-                if (!empty($response)) {
+                $storeData = $this->fetchStoresDataFromCentral($webStore);
+                if (!empty($storeData)) {                    
+                    foreach ($storeData->getData() as $key => $data) {
+                        foreach ($data as $store) {
+                            if($key == "LSC Store") {
+                                if($store->getNo() == $webStore){
+                                    $response['LSC_Store'][] = $store;
+                                    break;
+                                }
+                            }                           
+                            if($key == "LSC Store Group Setup") {
+                                if($store->getStoreCode() == $webStore) {
+                                    $response['LSC_Store_Group_Setup'][] = $store;
+                                }
+                            }
+                            if($key == "LSC Store Price Group") {
+                                if($store->getStore() == $webStore) {
+                                    $response['LSC_Store_Price_Setup'][] = $store;
+                                }
+                            }
+
+                            if($key == "LSC Hospitality Type") {
+                                if($store->getRestaurantNo() == $webStore) {
+                                    $response['LSC_Hospitality_Type'][] = $store;
+                                }
+                            }
+                        }
+                    }
+                    
                     $this->cacheHelper->persistContentInCache(
                         $cacheId,
                         $response,
