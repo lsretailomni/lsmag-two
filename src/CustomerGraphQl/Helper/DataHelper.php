@@ -243,7 +243,7 @@ class DataHelper
             'store_name'              => $salesEntry->getStoreName(),
             'store_currency'          => ($salesEntry->getStoreCurrency()) ?: $orderCurrencyCode,
             'total_amount'            => $this->formatValue($salesEntry->getTotalAmount()),
-            'total_net_amount'        => $this->formatValue($salesEntry->getTotalNetAmount()),
+            'total_net_amount'        => $this->formatValue($salesEntry->getTotalAmount()),
             'total_tax_amount'        => $this->formatValue(
                 $salesEntry->getTotalAmount() - $salesEntry->getTotalNetAmount()
             ),
