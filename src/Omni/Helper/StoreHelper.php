@@ -41,7 +41,7 @@ class StoreHelper extends AbstractHelperOmni
     {
         $storeDetails = $this->getStore($websiteId);
 
-        return $storeDetails->getLscSalesType();
+        return array_key_exists('LSC_Sales_Type',$storeDetails) ? $storeDetails['LSC_Sales_Type'] : [];
     }
 
     /**
@@ -84,6 +84,10 @@ class StoreHelper extends AbstractHelperOmni
                                 if($store->getStore() == $webStore) {
                                     $response['LSC_Store_Price_Setup'][] = $store;
                                 }
+                            }
+                            
+                            if($key == "LSC Sales Type") {
+                                $response['LSC_Sales_Type'][] = $store;
                             }
 
                             if($key == "LSC Hospitality Type") {
