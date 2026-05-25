@@ -34,7 +34,7 @@ class ClientPing extends Command
      *
      * @return int Return code (0 indicates success)
      */
-    public function execute(InputInterface $input, OutputInterface $output): int
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $pingResponse = $this->getOmniDataHelper()->omniPing();
 

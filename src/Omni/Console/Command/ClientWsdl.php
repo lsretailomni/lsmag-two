@@ -35,7 +35,7 @@ class ClientWsdl extends Command
      *
      * @return int Return code (0 indicates success)
      */
-    public function execute(InputInterface $input, OutputInterface $output): int
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         // Fetch the WSDL URL for the specified Omni service
         $wsdlUrl = Service::getUrl($this->type, $this->baseUrl);

@@ -44,7 +44,7 @@ class ClientGenerate extends Command
      * @return int
      * @throws Exception|GuzzleException
      */
-    public function execute(InputInterface $input, OutputInterface $output): int
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $interfaceFolder = 'CentralEcommerce';
 

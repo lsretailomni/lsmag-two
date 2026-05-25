@@ -91,7 +91,7 @@ class ReplicationGenerate extends OmniCommand
      * @return int
      * @throws Exception|GuzzleException
      */
-    public function execute(InputInterface $input, OutputInterface $output): int
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->createPathIfNotExist();
         $omniDataHelper = $this->getOmniDataHelper();
