@@ -1,9 +1,9 @@
 trigger:
   branches:
     include:
-      - release
+      - release-standard
 variables:
-  BRANCH_NAME: release
+  BRANCH_NAME: release-standard
 steps:
   - checkout: self
     fetchTags: true
