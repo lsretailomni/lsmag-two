@@ -190,12 +190,12 @@ class Totals extends AbstractOrderBlock
 
                         $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
                         if ($giftCardTenderId == $tenderTypeId) {
-                            $this->giftCardAmount = $line->getAmount();
+                            $this->giftCardAmount = $line->getAmountInCurrency();
                         }
 
                         $loyaltyTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
                         if ($loyaltyTenderId == $tenderTypeId) {
-                            $this->loyaltyPointAmount = $this->formatLoyaltyPoints($line->getAmount());
+                            $this->loyaltyPointAmount = $this->formatLoyaltyPoints($line->getAmountInCurrency());
                         }
                     } else {
                         $methods[] = __('Unknown');
@@ -287,10 +287,10 @@ class Totals extends AbstractOrderBlock
      */
     public function getOrderPayments()
     {
-        if ($this->getOrder() && !empty($this->getOrder()->getLscMemberSalesDocLine())) {
-            return is_array($this->getOrder()->getLscMemberSalesDocLine()) ?
-                $this->getOrder()->getLscMemberSalesDocLine() :
-                [$this->getOrder()->getLscMemberSalesDocLine()];
+        if ($this->getOrder(true) && !empty($this->getOrder(true)->getLscMemberSalesDocLine())) {
+            return is_array($this->getOrder(true)->getLscMemberSalesDocLine()) ?
+                $this->getOrder(true)->getLscMemberSalesDocLine() :
+                [$this->getOrder(true)->getLscMemberSalesDocLine()];
         }
 
         return null;
