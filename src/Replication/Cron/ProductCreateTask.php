@@ -594,7 +594,7 @@ class ProductCreateTask
                                 $this->caterUomsRemoval();
                             }
                             if ($fullReplicationStandardVariantStatus == 1) {
-                                $this-> updateStandardVariantsOnly();
+                                $this->updateStandardVariantsOnly();
                             }
                             $this->updateBarcodeOnly();
                         }
