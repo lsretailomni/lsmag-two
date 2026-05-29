@@ -128,6 +128,7 @@ class HierarchyNodesLinkView
         }
 
         if (!empty($deletedFields)) {
+            $sameNameExists = false;
             foreach ($deletedRows as $row) {
                 $values = $row['Fields'] ?? [];
                 $entry = $this->createInstance(
