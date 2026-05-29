@@ -75,7 +75,7 @@ $magentoOrder = $block->getMagOrder();
             <?php if (!$checkIsShipment): ?>
                 <tfoot>
                 <?= /* @noEscape */
-                $block->getChildBlock('custom_order_totals')->setCurrentOrder($trans)->toHtml() ?>
+                $block->getChildBlock('custom_order_totals')->setCurrentOrder($order)->toHtml() ?>
                 </tfoot>
             <?php endif; ?>
         </table>

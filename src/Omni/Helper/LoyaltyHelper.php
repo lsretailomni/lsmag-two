@@ -135,14 +135,10 @@ class LoyaltyHelper extends AbstractHelperOmni
 
     /**
      * Get loyalty points available to customer
-     *
-<<<<<<< HEAD
-     * @return float
-     * @throws GuzzleException
-=======
-     * @return int|Entity\CardGetPointBalanceResponse|ResponseInterface|null
->>>>>>> master
-     * @throws NoSuchEntityException|LocalizedException
+     * 
+     * @return float|mixed
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function getLoyaltyPointsAvailableToCustomer()
     {
