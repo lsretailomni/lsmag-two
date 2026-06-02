@@ -654,7 +654,8 @@ class SyncImages extends ProductCreateTask
         $filters  = [
             ['field' => 'main_table.TableName', 'value' => 'Item%', 'condition_type' => 'like'],
             ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
-            ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
+            ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
+            ['field' => 'main_table.ImageId', 'value' => true, 'condition_type' => 'notnull']
         ];
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
