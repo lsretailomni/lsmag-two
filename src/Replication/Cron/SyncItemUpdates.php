@@ -360,7 +360,8 @@ class SyncItemUpdates extends ProductCreateTask
                 $criteria,
                 'nav_id',
                 null,
-                ['repl_hierarchy_leaf_id']
+                ['repl_hierarchy_leaf_id'],
+                true
             );
             $websiteId = $this->store->getWebsiteId();
             $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
