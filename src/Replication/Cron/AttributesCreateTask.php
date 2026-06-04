@@ -321,10 +321,11 @@ class AttributesCreateTask
         if ($variants->getTotalCount() > 0) {
             /** @var ReplExtendedVariantValue $variant */
             foreach ($variants->getItems() as $variant) {
-                if (empty($variantCodes[$variant->getCode()]) ||
-                    !array_key_exists($variant->getValue(), $variantCodes[$variant->getCode()])) {
-                    $variantCodes[$variant->getCode()][$variant->getValue()][$variant->getLogicalOrder()]
-                        = $variant->getValue();
+                $code          = $variant->getCode() ?? '';
+                $value         = $variant->getValue() ?? '';
+                $logicalOrder  = $variant->getLogicalOrder() ?? '';
+                if (!isset($variantCodes[$code][$value])) {
+                    $variantCodes[$code][$value][$logicalOrder] = $value;
                 }
                 $variant->setData('processed_at', $this->replicationHelper->getDateTime());
                 $variant->setData('processed', 1);

@@ -1754,7 +1754,7 @@ class ReplicationHelper extends AbstractHelper
             $storeId
         );
 
-        if ($existingData == $data) {
+        if ($existingData && $existingData == $data) {
             return;
         } else {
             $this->updateConfigValue(($data) ? 1 : 0, $path, $storeId, $scope);
