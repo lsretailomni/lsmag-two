@@ -1991,6 +1991,7 @@ class ReplicationHelper extends AbstractHelper
      * @param string $primaryTableColumnName
      * @param string $primaryTableColumnName2
      * @param array $groupColumns
+     * @param bool $isItemCategory
      * @return void
      * @throws LocalizedException
      */
@@ -2193,10 +2194,11 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Apply join for lsr_item_id and item category custom attribute
      *
-     * @param mixed $collection
-     * @param mixed $mainTableAlias
-     * @param mixed $mainTableItemIdColumn
+     * @param $collection
+     * @param string $mainTableAlias
+     * @param string $mainTableItemIdColumn
      * @param array $groupColumns
+     * @param bool $isItemCategory
      * @return void
      * @throws LocalizedException
      */
