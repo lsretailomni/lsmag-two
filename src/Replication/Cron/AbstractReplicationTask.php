@@ -211,6 +211,7 @@ abstract class AbstractReplicationTask
     public function saveSource($properties, $source)
     {
         $isDeleted = 0;
+        $resetItemId    = null;
         if ($source->getIsDeleted()) {
             $uniqueAttributes = (array_key_exists(
                 $this->getConfigPath(),
@@ -349,6 +350,19 @@ abstract class AbstractReplicationTask
                 (int)$source->getData(HierarchyDealView::TYPE)
             );
             $source->setData(HierarchyDealView::TYPE, $value1);
+        } elseif ($source->getIsDeleted() && $confPath == ReplEcommBasePricesTask::CONFIG_PATH) {
+            // Find ItemId from the existing row for this scope + line + price list.
+            $criteria = $this->getSearchCriteria();
+            $criteria->addFilter('scope', $source->getScope());
+            $criteria->addFilter('scope_id', $source->getScopeId());
+            $criteria->addFilter('LineNumber', $source->getLineNo());
+            $criteria->addFilter('PriceListCode', $source->getPriceListCode());
+            $matchedRows = $this->getRepository()->getList($criteria->create())->getItems();
+
+            if(!empty($matchedRows)) {
+                $matchedRow = reset($matchedRows);
+                $resetItemId = ($matchedRow && $matchedRow->getItemId()) ? $matchedRow->getItemId() : null;    
+            }
         }
         $checksum = $this->getHashGivenString($source->getData());
         $uniqueAttributesHash = $this->generateIdentityValue($uniqueAttributes, $source, $properties);
@@ -418,8 +432,45 @@ abstract class AbstractReplicationTask
         try {
             $this->getRepository()->save($entity);
             $entity->setData([]);
+
+            if (!empty($resetItemId) && 
+                $source->getIsDeleted() && 
+                $confPath == ReplEcommBasePricesTask::CONFIG_PATH
+            ) {
+                //After deletion, reset processed status for all the records with the same ItemId for this scope,
+                //so they can be re-processed in next sync price cron runs.
+                $this->resetSyncPriceItems($source, $resetItemId);
+            }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Reset price records by ItemId
+     * 
+     * @param $source
+     * @param $resetItemId
+     * @return void
+     */
+    public function resetSyncPriceItems($source, $resetItemId)
+    {
+        $resetCriteria = $this->getSearchCriteria();
+        $resetCriteria->addFilter('scope', $source->getScope());
+        $resetCriteria->addFilter('scope_id', $source->getScopeId());
+        $resetCriteria->addFilter('ItemId', $resetItemId);
+
+        $rowsToReset = $this->getRepository()->getList($resetCriteria->create())->getItems();
+
+        if(!empty($rowsToReset)) {
+            try {
+                foreach ($rowsToReset as $rowToReset) {
+                    $rowToReset->setProcessed(0);
+                    $this->getRepository()->save($rowToReset);
+                }
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+            }            
         }
     }
 
