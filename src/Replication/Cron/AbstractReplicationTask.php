@@ -549,6 +549,10 @@ abstract class AbstractReplicationTask
 
                 $sourceValue = $source->getData($key);
 
+                if ($index == "record_id" && $sourceValue != "") {
+                    $sourceValue = str_replace('Item Variant: ', '', $sourceValue);
+                }
+                
                 if ($sourceValue == "") {
                     $criteria->addFilter($attribute, true, 'null');
                 } else {
@@ -594,6 +598,10 @@ abstract class AbstractReplicationTask
                 $sourceValue = $source->getData($index);
             } else {
                 $sourceValue = $source->getData($key);
+            }
+            
+            if ($index == "record_id" && $sourceValue != "") {
+                $sourceValue = str_replace('Item Variant: ', '', $sourceValue);
             }
 
             $uniqueAttributesHash[] = ($sourceValue !== "" ? $sourceValue : $index) . '#' . $i;
