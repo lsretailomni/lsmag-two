@@ -1,0 +1,15 @@
+<?php
+
+use Magento\Framework\Escaper;
+use Ls\Customer\Block\Order\Hyva\Info;
+
+/** @var Info $block */
+/** @var Escaper $escaper */
+?>
+
+<span class="order-status inline-block px-3 py-3 border rounded border-gray-300">
+    <span class="sr-only">
+        <?= $escaper->escapeHtml(__('Status')) ?>:&nbsp;
+    </span>
+    <?= $escaper->escapeHtml($block->getOrderStatus()) ?>
+</span>
