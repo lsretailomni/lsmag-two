@@ -19,11 +19,12 @@ $giftMessageHelper = $this->helper(Message::class);
 
 $_order = $block->getOrder();
 $magOrder = $block->getMagOrder();
-
+$heading = $block->getHeading();
 ?>
 <div class="md:flex md:justify-between md:flex-wrap md:gap-4 items-center mb-3">
     <div class="lg:flex items-center text-center md:text-left print:flex print:text-left">
         <div class="lg:inline-block">
+            <div class="text-2xl"><?= $escaper->escapeHtml($heading) ?></div>
             <?= $block->getChildHtml('order.date') ?>
         </div>
         <div class="mt-3 lg:mt-0 lg:inline-block lg:ml-5 print:ml-5 print:mt-0">

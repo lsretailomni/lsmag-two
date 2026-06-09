@@ -45,6 +45,7 @@ class AbstractOrderBlock extends Template
         public CustomerSession $customerSession,
         public CountryFactory $countryFactory,
         public \Magento\Framework\App\Http\Context $httpContext,
+        public \Magento\Framework\App\Request\Http $request,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -214,6 +215,28 @@ class AbstractOrderBlock extends Template
         }
 
         return [$title, $class];
+    }
+
+    public function getHeading()
+    {
+        $detail = $this->orderHelper->getGivenValueFromRegistry('current_detail');
+        $orderId = $this->request->getParam('order_id');
+        $heading = '';
+        switch ($detail) {
+            case 'order':
+                break;
+            case 'shipment':
+                $heading = __('Shipment # %1', $orderId);
+                break;
+            case 'invoice':
+                $heading = __('Invoice # %1', $orderId);
+                break;
+            case 'creditmemo':
+                $heading = __('Credit Memo # %1', $orderId);
+                break;
+        }
+
+        return $heading;
     }
 
     /**
