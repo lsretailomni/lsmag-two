@@ -1,14 +1,8 @@
 <?php
-/**
- * Hyvä Themes - https://hyva.io
- * Copyright © Hyvä Themes. All rights reserved.
- * See COPYING.txt for license details.
- */
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Magento\Framework\Escaper;
-use Magento\Sales\Block\Order\Items;
 use Magento\Shipping\Helper\Data as ShippingHelper;
 
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
@@ -21,14 +15,20 @@ use Magento\Shipping\Helper\Data as ShippingHelper;
 /** @var HeroiconsOutline $heroicons */
 $heroicons = $viewModels->require(HeroiconsOutline::class);
 
-$order = $block->getMagOrder();
+$magentoOrder = $block->getMagOrder();
+$centralOrder = $block->getLscMemberSalesBuffer($block->getOrder());
+$shipmentUrl = $block->getPrintAllShipmentUrl($centralOrder);
 $shippingHelper = $this->helper(ShippingHelper::class);
+$shipmentCollection = $block->filterShipmentForOrderLines(
+    $magentoOrder->getShipmentsCollection(),
+    $block->getItems()
+);
 ?>
-<?php foreach ($order->getShipmentsCollection() as $shipment): ?>
+<?php foreach ($magentoOrder->getShipmentsCollection() as $shipment): ?>
     <?php $tracks = $shipment->getTracksCollection(); ?>
     <div class="order-title text-center md:text-left font-semibold">
         <?= $escaper->escapeHtml(__('Shipment #')) ?><?= $escaper->escapeHtml($shipment->getIncrementId()) ?>
-        <a href="<?= $escaper->escapeUrl($block->getUrl('*/*/printShipment', ['shipment_id' => $shipment->getId()])) ?>"
+        <a href="<?= $escaper->escapeUrl($shipmentUrl) ?>"
            class="inline-block ml-2 pl-2 border-l text-sm font-normal"
            target="_blank"
            rel="noopener">

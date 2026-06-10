@@ -184,7 +184,7 @@ class History extends \Magento\Sales\Block\Order\History
      * Formulating order canceling url
      *
      * @param OrderInterface $magentoOrder
-     * @param $centralOrder
+     * @param \Ls\Omni\Client\CentralEcommerce\Entity\LSCMemberSalesBuffer $centralOrder
      * @return string
      */
     public function getCancelUrl(OrderInterface $magentoOrder, $centralOrder)
@@ -193,8 +193,8 @@ class History extends \Magento\Sales\Block\Order\History
             'customer/order/cancel',
             [
                 'magento_order_id' => $magentoOrder->getId(),
-                'central_order_id' => $centralOrder->getId(),
-                'id_type'          => $centralOrder->getIdType()
+                'central_order_id' => $centralOrder->getDocumentId(),
+                'id_type'          => $centralOrder->getData('IdType')
             ]
         ) : '';
     }
