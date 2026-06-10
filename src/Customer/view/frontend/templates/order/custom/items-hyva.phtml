@@ -1,7 +1,6 @@
 <?php
 
 use Magento\Framework\Escaper;
-use Magento\GiftMessage\Helper\Message as GiftMessageHelper;
 use Ls\Customer\Block\Order\Custom\Hyva\Items;
 
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
@@ -10,7 +9,6 @@ use Ls\Customer\Block\Order\Custom\Hyva\Items;
 /** @var Items $block */
 /** @var Escaper $escaper */
 
-$helper = $this->helper(GiftMessageHelper::class);
 $cols = $block->getData('is_context_shipment') ? 3 : 5;
 $order = $block->getOrder(true);
 ?>
@@ -24,61 +22,17 @@ $order = $block->getOrder(true);
             <div class="p-2 text-right"><?= $escaper->escapeHtml(__('Subtotal')) ?></div><?php endif; ?>
     </div>
     <?php $items = $block->getItems(); ?>
-    <?php $giftMessage = '' ?>
     <?php foreach ($items as $item): ?>
         <?php
         if ($item->getEntryType() == 1 || $item->getParentItem()) :
             continue;
         endif;
         ?>
-        <tbody>
         <?php if ($item instanceof \Magento\Sales\Model\Order\Item): ?>
             <?= /* @noEscape */ $block->getItemHtml($item) ?>
         <?php else: ?>
             <?= /* @noEscape */ $block->getCustomItemRenderer($item); ?>
         <?php endif; ?>
-        </tbody>
-        <?php if ($helper->isMessagesAllowed('order_item', $item) && $item->getGiftMessageId()): ?>
-            <?php $giftMessage = $helper->getGiftMessageForEntity($item); ?>
-            <div class="col options mb-2">
-                <a href="#"
-                   id="order-item-gift-message-link-<?= (int)$item->getId() ?>"
-                   class="action show"
-                   aria-controls="order-item-gift-message-<?= (int)$item->getId() ?>"
-                   data-item-id="<?= (int)$item->getId() ?>">
-                    <?= $escaper->escapeHtml(__('Gift Message')) ?>
-                </a>
-                <?php $giftMessage =
-                    $helper->getGiftMessageForEntity($item); ?>
-                <div class="order-gift-message" id="order-item-gift-message-<?= (int)$item->getId() ?>" role="region"
-                     aria-expanded="false" tabindex="-1">
-                    <a href="#"
-                       title="<?= $escaper->escapeHtml(__('Close')) ?>"
-                       aria-controls="order-item-gift-message-<?= (int)$item->getId() ?>"
-                       data-item-id="<?= (int)$item->getId() ?>"
-                       class="action close">
-                        <?= $escaper->escapeHtml(__('Close')) ?>
-                    </a>
-                    <dl class="item-options">
-                        <dt class="item-sender">
-                            <strong class="label">
-                                <?= $escaper->escapeHtml(__('From')) ?>
-                            </strong>
-                            <?= $escaper->escapeHtml($giftMessage->getSender()) ?>
-                        </dt>
-                        <dt class="item-recipient">
-                            <strong class="label">
-                                <?= $escaper->escapeHtml(__('To')) ?>
-                            </strong>
-                            <?= $escaper->escapeHtml($giftMessage->getRecipient()) ?>
-                        </dt>
-                        <dd class="item-message">
-                            <?= /* @noEscape */ $helper->getEscapedGiftMessage($item) ?>
-                        </dd>
-                    </dl>
-                </div>
-            </div>
-        <?php endif ?>
     <?php endforeach; ?>
 </div>
 <div class="flex justify-end border-t border-gray-300 mt-2">

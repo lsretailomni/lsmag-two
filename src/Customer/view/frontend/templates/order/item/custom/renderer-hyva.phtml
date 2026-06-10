@@ -81,7 +81,7 @@ $cols = $checkIsShipment ? 3 : 5;
                             <?= /* @noEscape */ $block->getFormattedPrice($_item->getPrice() * $_item->getQuantity()) ?>
                         </span>
                     </div>
-                    <div class="lsdiscountamount text-sm text-green-600">
+                    <div class="lsdiscountamount text-sm text-red-600">
                         <?= /* @noEscape */ '(' . __($block->getDiscountLabel()) . ' ' . $block->getFormattedPrice($_item->getDiscountAmount()) . ')' ?>
                     </div>
                 </div>

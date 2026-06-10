@@ -2,7 +2,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="customer_account"/>
-    <update handle="sales_order_invoice_renderers"/>
+    <update handle="sales_order_item_renderers"/>
     <update handle="customer_order_info_links"/>
     <body>
         <referenceContainer name="content">
@@ -29,6 +29,9 @@
                 <block class="Ls\Customer\Block\Order\Custom\Hyva\Items"
                        name="custom_order_items_custom"
                        template="Ls_Customer::order/custom/invoice/items-hyva.phtml">
+                    <block class="Ls\Customer\Block\Order\Item\Custom\Hyva\Renderer"
+                           name="custom_order_item_renderer_custom"
+                    />
                     <block class="Magento\Framework\View\Element\RendererList"
                            name="sales.order.invoice.renderers"
                            as="renderer.list"/>

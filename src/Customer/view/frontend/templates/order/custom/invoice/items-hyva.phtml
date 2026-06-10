@@ -2,7 +2,6 @@
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
-use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\Escaper;
 
 /** @var Escaper $escaper */
@@ -40,21 +39,18 @@ $invoiceCollection = $block->filterShipmentForOrderLines(
             <div class="p-2"><?= $escaper->escapeHtml(__('Qty Invoiced')) ?></div>
             <div class="p-2 text-right"><?= $escaper->escapeHtml(__('Subtotal')) ?></div>
         </div>
-        <?php $items = $invoice->getAllItems(); ?>
+        <?php $items = $block->getItems(); ?>
         <?php foreach ($items as $item): ?>
             <?php
-            $magentoOrderItem = $item->getOrderItem();
-            $parentItem = $magentoOrderItem->getParentItem();
-            if ($parentItem && $parentItem->getData('product_type') === Configurable::TYPE_CODE) {
+            if ($item->getEntryType() == 1 || $item->getParentItem()) :
                 continue;
-            }
+            endif;
             ?>
-            <div class="<?= ($parentItem) ?
-                'child-item ml-2 px-4 mb-2 border-l-4 border-gray-300 text-sm' :
-                'parent-item mb-2'
-            ?>">
-                <?= $block->getItemHtml($item) ?>
-            </div>
+            <?php if ($item instanceof \Magento\Sales\Model\Order\Item): ?>
+                <?= /* @noEscape */ $block->getItemHtml($item) ?>
+            <?php else: ?>
+                <?= /* @noEscape */ $block->getCustomItemRenderer($item); ?>
+            <?php endif; ?>
         <?php endforeach; ?>
     </div>
 <?php endforeach; ?>
