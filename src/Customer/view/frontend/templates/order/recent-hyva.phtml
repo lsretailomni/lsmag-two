@@ -1,0 +1,342 @@
+<?php
+/** @var History $block */
+/** @var Magento\Framework\Escaper $escaper */
+/** @var Hyva\Theme\Model\ViewModelRegistry $viewModels */
+
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Ls\Core\Model\LSR;
+use Ls\Customer\Block\Order\History;
+use Magento\Framework\Data\Helper\PostHelper;
+
+$_orders    = $block->getOrderHistory();
+$orderExist = false;
+$orderCount = 0;
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+$iconNeutral = $heroicons->switchVerticalHtml('w-3 h-3 inline text-gray-300', 16, 16, ['aria-hidden' => 'true']);
+$iconAsc     = $heroicons->arrowUpHtml('w-3 h-3 inline', 16, 16, ['aria-hidden' => 'true']);
+$iconDesc    = $heroicons->arrowDownHtml('w-3 h-3 inline', 16, 16, ['aria-hidden' => 'true']);
+$extraActions = [];
+if ($extraActionTitleBlocks = $block->getLayout()->getChildBlocks('order-list-extra-action-titles')) {
+    foreach ($extraActionTitleBlocks as $alias => $extraActionTitleBlock) {
+        $extraActions[$alias] = $extraActionTitleBlock->toHtml();
+    }
+    $extraActions = array_filter($extraActions, function ($output, string $alias) use ($block): bool {
+        return trim($output) && $block->getLayout()->getChildBlock('order-list-extra-action-buttons', $alias);
+    }, ARRAY_FILTER_USE_BOTH);
+}
+
+$count = count($_orders);
+$orderExist = $count > 0;
+?>
+
+<div
+        class="block block-dashboard-orders card mt-4"
+        x-data="{ tabIndex: -1 }"
+>
+    <div class="block-title order my-4 flex justify-between items-center">
+        <h2
+                id="recentOrders"
+                class="text-2xl block"
+                @focus="tabIndex = 0;"
+                @blur="tabIndex = -1"
+                :tabindex="tabIndex"
+        ><?= $escaper->escapeHtml(__('Recent Orders')) ?></h2>
+        <?php if ($count > 0): ?>
+            <a
+                    class="action view inline-block underline"
+                    href="<?= $escaper->escapeUrl($block->getUrl('sales/order/history')) ?>"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('View all orders')) ?>"
+            ><?= $escaper->escapeHtml(__('View All')) ?></a>
+        <?php endif; ?>
+    </div>
+    <div class="overflow-x-auto">
+        <?= $block->getChildHtml() ?>
+        <?php if ($_orders): ?>
+            <?php if (is_array($_orders) && !(end($_orders) instanceof Magento\Sales\Api\Data\OrderInterface)) ?>
+                <table
+                        id="my-orders-table"
+                        class="block-content w-full sm:table-fixed lg:table-auto"
+                        aria-labelledby="recentOrders"
+                >
+                    <thead class="text-sm">
+                    <tr>
+                        <th class="p-2 text-start">
+                            <?= $escaper->escapeHtml(__('Document ID #')) ?>
+                        </th>
+                        <th class="p-2 text-start hidden lg:table-cell">
+                            <?= $escaper->escapeHtml(__('Date')) ?>
+                        </th>
+                        <th class="p-2 text-start">
+                            <?= $escaper->escapeHtml(__('Ship To')) ?>
+                        </th>
+                        <th class="p-2 text-start">
+                            <?= $escaper->escapeHtml(__('Store Name')) ?>
+                        </th>
+                        <th class="p-2 text-start hidden lg:table-cell">
+                            <?= $escaper->escapeHtml(__('Order Total')) ?>
+                        </th>
+                        <th class="p-2 text-start hidden lg:table-cell">
+                            <?= $escaper->escapeHtml(__('Status')) ?>
+                        </th>
+                        <th class="p-2 text-center">
+                            <?= $escaper->escapeHtml(__('View')) ?>
+                            <?php if ($this->helper('Magento\Sales\Helper\Reorder')->isAllow()): ?>
+                                / <?= $escaper->escapeHtml(__('Reorder')) ?>
+                            <?php endif; ?>
+                            <?php foreach ($extraActions as $extraActionTitle): ?>
+                                / <?= /** @noEscape  */ $extraActionTitle ?>
+                            <?php endforeach; ?>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($_orders as $i => $_order):
+                        if ($orderCount == LSR::MAX_RECENT_ORDER) {
+                            break;
+                        }
+
+                        if ($_order->getSaleIsReturnSale()) {
+                            continue;
+                        }
+
+                        $magOrder   = null;
+                        $documentId = null;
+                        $documentId = !empty($_order->getCustomerDocumentId()) ? $_order->getCustomerDocumentId() : (!empty($_order->getDocumentId()) ? $_order->getDocumentId() : "");
+
+                        if (!empty($documentId)) {
+                            $magOrder = $block->getOrderByDocumentId($documentId);
+
+                            if ($magOrder) {
+                                $block->registerValueInRegistry($magOrder);
+                                $magOrderIncrementId = $magOrder->getIncrementId();
+                            }
+                        }
+
+                        $storeCurrency = $block->getStoreCurrencyCode($_order->getStoreCurrencyCode());
+                        ?>
+                        <tr class="align-top even:bg-gray-100">
+                            <th
+                                    id="order<?= $escaper->escapeHtmlAttr($documentId ?? $magOrderIncrementId) ?>"
+                                    class="p-2 text-start font-normal"
+                            >
+                                <?= $escaper->escapeHtml($documentId ?? $magOrderIncrementId) ?>
+                                <p class="lg:hidden text-sm">
+                                    <?= $escaper->escapeHtml($block->getFormattedDate($_order->getDateTime())) ?>
+                                </p>
+                            </th>
+                            <td class="p-2 hidden lg:table-cell">                                
+                                <span aria-hidden="true">
+                                        <?= $escaper->escapeHtmlAttr($block->getFormattedDate($_order->getDateTime())); ?>
+                                    </span>
+                                <span class="sr-only">
+                                        <?= $escaper->escapeHtml($block->getFormattedDate($_order->getDateTime())); ?>
+                                    </span>
+                            </td>
+                            <td class="p-2">
+                                <?= $_order->getShipToName() ? $escaper->escapeHtml($_order->getShipToName()) : __('Not Applicable') ?>
+                            </td>
+                            <td class="p-2">
+                                <?= $_order->getStoreName() ?>
+                            </td>
+                            <td class="p-2 hidden lg:table-cell">
+                                <?= /* @noEscape */ $block->getFormattedPrice($_order->getGrossAmount(), $storeCurrency, "",$_order['IdType']) ?>
+                            </td>
+                            <td class="p-2 hidden lg:table-cell">
+                                <?= $escaper->escapeHtml($_order['Status']) ?>
+                            </td>
+                            <td class="p-2">
+                                <div class="flex items-center justify-evenly">
+                                    <a
+                                            href="<?= (!empty($magOrder)) ? $block->getViewUrl($_order, $magOrder) : $block->getViewUrl($_order) ?>"
+                                            class="inline-block text-sm underline"
+                                            title="<?= $escaper->escapeHtmlAttr(__('View Order')) ?>"
+                                            aria-label="<?= $escaper->escapeHtmlAttr(__('View order') . ' ' . ltrim($documentId ?? $magOrderIncrementId, '0')) ?>"
+                                    >
+                                        <?= $heroicons->eyeHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+                                    </a>
+                                    <?php if ($magOrder && $this->helper(Reorder::class)->canReorder($magOrder->getEntityId())): ?>
+                                        <?php $formData = json_decode(
+                                                $this->helper(PostHelper::class)->getPostData(
+                                                        $block->getReorderUrl($magOrder)
+                                                ),
+                                                true
+                                        ) ?>
+                                        <form
+                                                action="<?= $escaper->escapeUrl($formData['action']) ?>"
+                                                method="post"
+                                                class="inline-flex items-center"
+                                        >
+                                            <?= $block->getBlockHtml('formkey'); ?>
+                                            <input type="hidden" name="data" value='<?= /* @noEscape */ json_encode($formData['data']) ?>'>
+                                            <button
+                                                    title="<?= $escaper->escapeHtmlAttr(__('Reorder')) ?>"
+                                                    type="submit"
+                                                    class="inline-block text-sm"
+                                                    aria-label="<?= $escaper->escapeHtmlAttr(__('Reorder') . ' ' . ltrim($documentId ?? $magOrderIncrementId, '0')) ?>"
+                                            >
+                                                <?= $heroicons->refreshHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+                                            </button>
+                                        </form>
+                                    <?php else: ?>
+                                        <?= $heroicons->refreshHtml('text-gray-300', 24, 24, ['aria-hidden' => 'true']) ?>
+                                    <?php endif ?>
+                                    <?php foreach (array_keys($extraActions) as $alias): ?>
+                                        <?php if (!empty($magOrder) && $magOrder->canCancel() &&
+                                                $block->orderCancellationOnFrontendIsEnabled() &&
+                                                isset($_order['Status']) &&
+                                                strtolower($_order['Status']) !== strtolower(LSR::LS_STATE_CANCELED)
+                                        ): ?>
+                                            <?php $button = $block->getLayout()->getChildBlock('order-list-extra-action-buttons', $alias) ?>
+                                            <?= $button->assign('order', $magOrder)->setData([
+                                                            'magorder' => $magOrder,
+                                                            'centralOrder' => $_order,
+                                                    ]
+                                                 )->toHtml() 
+                                            ?>
+                                        <?php endif ?>
+                                    
+                                        <?php if (!empty($magOrder) && $magOrder->canCancel() &&
+                                                $block->orderCancellationOnFrontendIsEnabled() &&
+                                                isset($_order['Status']) &&
+                                                strtolower($_order['Status']) !== strtolower(LSR::LS_STATE_CANCELED)
+                                        ): ?>
+                                            <a href="#"
+                                               class="action order cancel"
+                                               data-post='<?= /* @escapeNotVerified */
+                                               $this->helper(PostHelper::class)->getPostData(
+                                                       $block->getCancelUrl($magOrder, $_order),
+                                                       [
+                                                               'confirmation'        => 1,
+                                                               'confirmationMessage' => __('Do you wish to cancel this order?')
+                                                       ]
+                                               ) ?>'>
+                                        <span><?= /* @escapeNotVerified */
+                                            __('Cancel') ?></span>
+                                            </a>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php $orderCount++ ?>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: //Magento Orders ?> 
+        <table
+                id="my-orders-table"
+                class="block-content w-full sm:table-fixed lg:table-auto"
+                aria-labelledby="recentOrders"
+        >
+            <thead class="text-sm">
+            <tr>
+                <th class="p-2 text-start">
+                    <?= $escaper->escapeHtml(__('Doc ID')) ?>
+                </th>
+                <th class="p-2 text-start hidden lg:table-cell">
+                    <?= $escaper->escapeHtml(__('Date')) ?>
+                </th>
+                <th class="p-2 text-start">
+                    <?= $escaper->escapeHtml(__('Ship To')) ?>
+                </th>
+                <th class="p-2 text-start hidden lg:table-cell">
+                    <?= $escaper->escapeHtml(__('Order Total')) ?>
+                </th>
+                <th class="p-2 text-start hidden lg:table-cell">
+                    <?= $escaper->escapeHtml(__('Status')) ?>
+                </th>
+                <th class="p-2 text-center">
+                    <?= $escaper->escapeHtml(__('View')) ?>
+                    <?php if ($this->helper(Reorder::class)->isAllow()): ?>
+                        / <?= $escaper->escapeHtml(__('Reorder')) ?>
+                    <?php endif; ?>
+                    <?php foreach ($extraActions as $extraActionTitle): ?>
+                        / <?= /** @noEscape  */ $extraActionTitle ?>
+                    <?php endforeach; ?>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($orders as $order): ?>
+                <tr class="align-top even:bg-gray-100">
+                    <th
+                            id="order<?= $escaper->escapeHtmlAttr($order->getRealOrderId()) ?>"
+                            class="p-2 text-start font-normal"
+                    >
+                        <?= $escaper->escapeHtml($order->getRealOrderId()) ?>
+                        <p class="lg:hidden text-sm">
+                            <?= $escaper->escapeHtml($block->formatDate($order->getCreatedAt())) ?>
+                        </p>
+                    </th>
+                    <td class="p-2 hidden lg:table-cell">
+                        <span aria-hidden="true">
+                                        <?= $escaper->escapeHtmlAttr($block->formatDate($_order->getCreatedAt())); ?>
+                                    </span>
+                        <span class="sr-only">
+                                        <?= $escaper->escapeHtml($block->formatDate($_order->getCreatedAt())); ?>
+                                    </span>
+                    </td>
+                    <td class="p-2">
+                        <?= $order->getShippingAddress() ? $escaper->escapeHtml($order->getShippingAddress()->getName()) : __('Not Applicable') ?>
+                    </td>
+                    <td class="p-2 hidden lg:table-cell">
+                        <?= /* @noEscape */ $order->formatPrice($order->getGrandTotal()) ?>
+                    </td>
+                    <td class="p-2 hidden lg:table-cell">
+                        <?= $escaper->escapeHtml($order->getStatusLabel()) ?>
+                    </td>
+                    <td class="p-2">
+                        <div class="flex items-center justify-evenly">
+                            <a
+                                    href="<?= $escaper->escapeUrl($block->getViewUrl($order)) ?>"
+                                    class="inline-block text-sm underline"
+                                    title="<?= $escaper->escapeHtmlAttr(__('View Order')) ?>"
+                                    aria-label="<?= $escaper->escapeHtmlAttr(__('View order') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
+                            >
+                                <?= $heroicons->eyeHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+                            </a>
+                            <?php if ($this->helper(Reorder::class)->canReorder($order->getEntityId())): ?>
+                                <?php $formData = json_decode(
+                                        $this->helper(PostHelper::class)->getPostData(
+                                                $block->getReorderUrl($order)
+                                        ),
+                                        true
+                                ) ?>
+                                <form
+                                        action="<?= $escaper->escapeUrl($formData['action']) ?>"
+                                        method="post"
+                                        class="inline-flex items-center"
+                                >
+                                    <?= $block->getBlockHtml('formkey'); ?>
+                                    <input type="hidden" name="data" value='<?= /* @noEscape */ json_encode($formData['data']) ?>'>
+                                    <button
+                                            title="<?= $escaper->escapeHtmlAttr(__('Reorder')) ?>"
+                                            type="submit"
+                                            class="inline-block text-sm"
+                                            aria-label="<?= $escaper->escapeHtmlAttr(__('Reorder') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
+                                    >
+                                        <?= $heroicons->refreshHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+                                    </button>
+                                </form>
+                            <?php else: ?>
+                                <?= $heroicons->refreshHtml('text-gray-300', 24, 24, ['aria-hidden' => 'true']) ?>
+                            <?php endif ?>
+                            <?php foreach (array_keys($extraActions) as $alias): ?>
+                                <?php $button = $block->getLayout()->getChildBlock('order-list-extra-action-buttons', $alias) ?>
+                                <?= $button->assign('order', $order)->setData('order', $order)->toHtml() ?>
+                            <?php endforeach; ?>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+            <?php endif; ?>
+        <?php if ($orderExist == false) : ?>
+            <div class="message info empty">
+                <span><?= $escaper->escapeHtml(__('You have placed no orders.')) ?></span>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
