@@ -211,6 +211,19 @@ class History extends \Magento\Sales\Block\Order\History
     }
 
     /**
+     * Get required document_id for order view page url
+     *
+     * @param $_order
+     * @return string
+     */
+    public function getRequiredDocumentId($_order)
+    {
+        return !empty($_order->getCustomerDocumentId())
+            ? $_order->getCustomerDocumentId()
+            : (!empty($_order->getDocumentId()) ? $_order->getDocumentId() : '');
+    }
+
+    /**
      * Get respective magento order given Central sales entry Object
      *
      * @param $order
@@ -237,14 +250,6 @@ class History extends \Magento\Sales\Block\Order\History
     public function getPrintAllInvoicesUrl($order)
     {
         return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getDocumentId()]);
-    }
-
-    /**
-     * @return string
-     */
-    public function getOmniVersion()
-    {
-        return $this->lsr->getOmniVersion();
     }
 
     /**

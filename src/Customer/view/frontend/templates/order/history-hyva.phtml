@@ -32,9 +32,7 @@ if ($_orders) {
     foreach ($ordersList as $_order) {
         if ($_order->getSaleIsReturnSale()) continue;
 
-        $documentId = !empty($_order->getCustomerDocumentId())
-            ? $_order->getCustomerDocumentId()
-            : (!empty($_order->getDocumentId()) ? $_order->getDocumentId() : '');
+        $documentId = $block->getRequiredDocumentId($_order);
 
         $magOrder = null;
         $magOrderIncrementId = '';
