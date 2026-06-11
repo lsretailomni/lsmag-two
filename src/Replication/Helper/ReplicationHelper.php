@@ -1991,6 +1991,7 @@ class ReplicationHelper extends AbstractHelper
      * @param string $primaryTableColumnName
      * @param string $primaryTableColumnName2
      * @param array $groupColumns
+     * @param bool $isItemCategory
      * @return void
      * @throws LocalizedException
      */
@@ -2193,10 +2194,11 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Apply join for lsr_item_id and item category custom attribute
      *
-     * @param mixed $collection
-     * @param mixed $mainTableAlias
-     * @param mixed $mainTableItemIdColumn
+     * @param $collection
+     * @param string $mainTableAlias
+     * @param string $mainTableItemIdColumn
      * @param array $groupColumns
+     * @param bool $isItemCategory
      * @return void
      * @throws LocalizedException
      */
@@ -2216,22 +2218,32 @@ class ReplicationHelper extends AbstractHelper
             'catalog_product',
             LSR::LS_ITEM_CATEGORY
         )->getId();
-        $itemCategoryClause      = '';
-        $itemIdClause            = " AND $itemIdTableAlias.attribute_id = $itemAttributeId";
+
         if ($isItemCategory) {
-            $itemCategoryClause .= " OR $itemIdTableAlias.attribute_id = $itemCategoryAttributeId";
+            // Type-aware join: match attribute_id based on the Type column value
+            $joinCondition =
+                "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
+                " AND (" .
+                "($mainTableAlias.Type = 'Item' AND $itemIdTableAlias.attribute_id = $itemAttributeId)" .
+                " OR " .
+                "($mainTableAlias.Type = 'ItemCategory' AND $itemIdTableAlias.attribute_id = $itemCategoryAttributeId)" .
+                ")";
+        } else {
+            // Standard join: only match item attribute_id
+            $joinCondition =
+                "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
+                " AND $itemIdTableAlias.attribute_id = $itemAttributeId";
         }
-        $itemCategoryClause =
-            $collection->getSelect()->joinInner(
-                [self::ITEM_ID_TABLE_ALIAS => $this->getGivenTableName('catalog_product_entity_varchar')],
-                $this->magentoEditionSpecificJoinWhereClause(
-                    "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
-                    $itemIdClause . $itemCategoryClause,
-                    $this->getGivenTableName('catalog_product_entity_varchar'),
-                    [$itemIdTableAlias]
-                ),
-                []
-            );
+
+        $collection->getSelect()->joinInner(
+            [self::ITEM_ID_TABLE_ALIAS => $this->getGivenTableName('catalog_product_entity_varchar')],
+            $this->magentoEditionSpecificJoinWhereClause(
+                $joinCondition,
+                $this->getGivenTableName('catalog_product_entity_varchar'),
+                [$itemIdTableAlias]
+            ),
+            []
+        );
 
         foreach ($groupColumns as $groupColumn) {
             $collection->getSelect()->group("$mainTableAlias.$groupColumn");
