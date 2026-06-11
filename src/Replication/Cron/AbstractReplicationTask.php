@@ -7,7 +7,7 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\Data as LsHelper;
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\CentralEcommerce\Entity\LSCValidationPeriod;
+use \Ls\Omni\Client\CentralEcommerce\Entity\LSCValidationPeriod;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyDealType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyLeafType;
@@ -27,7 +27,6 @@ use \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemHTMLML;
 use \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIItemBuffer;
 use \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIItemModifier;
 use \Ls\Omni\Client\CentralEcommerce\Entity\PeriodicDiscView;
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommBasePrices;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
@@ -77,8 +76,7 @@ abstract class AbstractReplicationTask
         public Logger               $logger,
         public LsHelper             $ls_helper,
         public ReplicationHelper    $rep_helper
-    )
-    {
+    ) {
         $this->setDefaultScope();
     }
 
@@ -359,9 +357,9 @@ abstract class AbstractReplicationTask
             $criteria->addFilter('PriceListCode', $source->getPriceListCode());
             $matchedRows = $this->getRepository()->getList($criteria->create())->getItems();
 
-            if(!empty($matchedRows)) {
+            if (!empty($matchedRows)) {
                 $matchedRow = reset($matchedRows);
-                $resetItemId = ($matchedRow && $matchedRow->getItemId()) ? $matchedRow->getItemId() : null;    
+                $resetItemId = ($matchedRow && $matchedRow->getItemId()) ? $matchedRow->getItemId() : null;
             }
         }
         $checksum = $this->getHashGivenString($source->getData());
@@ -433,8 +431,8 @@ abstract class AbstractReplicationTask
             $this->getRepository()->save($entity);
             $entity->setData([]);
 
-            if (!empty($resetItemId) && 
-                $source->getIsDeleted() && 
+            if (!empty($resetItemId) &&
+                $source->getIsDeleted() &&
                 $confPath == ReplEcommBasePricesTask::CONFIG_PATH
             ) {
                 //After deletion, reset processed status for all the records with the same ItemId for this scope,
@@ -448,7 +446,7 @@ abstract class AbstractReplicationTask
 
     /**
      * Reset price records by ItemId
-     * 
+     *
      * @param $source
      * @param $resetItemId
      * @return void
@@ -462,7 +460,7 @@ abstract class AbstractReplicationTask
 
         $rowsToReset = $this->getRepository()->getList($resetCriteria->create())->getItems();
 
-        if(!empty($rowsToReset)) {
+        if (!empty($rowsToReset)) {
             try {
                 foreach ($rowsToReset as $rowToReset) {
                     $rowToReset->setProcessed(0);
@@ -470,7 +468,7 @@ abstract class AbstractReplicationTask
                 }
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
-            }            
+            }
         }
     }
 
@@ -527,11 +525,10 @@ abstract class AbstractReplicationTask
      */
     public function checkEntityExistByAttributes(
         array $uniqueAttributes,
-              $source,
-        int   $uniqueAttributesHash,
+        $source,
+        int $uniqueAttributesHash,
         array $properties
-    )
-    {
+    ) {
         $criteria = $this->getSearchCriteria();
         $criteria->addFilter(ReplicationHelper::UNIQUE_HASH_COLUMN_NAME, $uniqueAttributesHash);
 
@@ -552,7 +549,7 @@ abstract class AbstractReplicationTask
                 if ($index == "record_id" && $sourceValue != "") {
                     $sourceValue = str_replace('Item Variant: ', '', $sourceValue);
                 }
-                
+
                 if ($sourceValue == "") {
                     $criteria->addFilter($attribute, true, 'null');
                 } else {
@@ -599,7 +596,7 @@ abstract class AbstractReplicationTask
             } else {
                 $sourceValue = $source->getData($key);
             }
-            
+
             if ($index == "record_id" && $sourceValue != "") {
                 $sourceValue = str_replace('Item Variant: ', '', $sourceValue);
             }
