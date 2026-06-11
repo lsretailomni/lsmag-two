@@ -871,6 +871,8 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Get respective magento order given Central sales entry Object
      *
      * @param $salesEntry

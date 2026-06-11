@@ -184,7 +184,7 @@ class History extends \Magento\Sales\Block\Order\History
      * Formulating order canceling url
      *
      * @param OrderInterface $magentoOrder
-     * @param $centralOrder
+     * @param \Ls\Omni\Client\CentralEcommerce\Entity\LSCMemberSalesBuffer $centralOrder
      * @return string
      */
     public function getCancelUrl(OrderInterface $magentoOrder, $centralOrder)
@@ -193,8 +193,8 @@ class History extends \Magento\Sales\Block\Order\History
             'customer/order/cancel',
             [
                 'magento_order_id' => $magentoOrder->getId(),
-                'central_order_id' => $centralOrder->getId(),
-                'id_type'          => $centralOrder->getIdType()
+                'central_order_id' => $centralOrder->getDocumentId(),
+                'id_type'          => $centralOrder->getData('IdType')
             ]
         ) : '';
     }
@@ -208,6 +208,19 @@ class History extends \Magento\Sales\Block\Order\History
     public function orderCancellationOnFrontendIsEnabled()
     {
         return $this->lsr->orderCancellationOnFrontendIsEnabled();
+    }
+
+    /**
+     * Get required document_id for order view page url
+     *
+     * @param $_order
+     * @return string
+     */
+    public function getRequiredDocumentId($_order)
+    {
+        return !empty($_order->getCustomerDocumentId())
+            ? $_order->getCustomerDocumentId()
+            : (!empty($_order->getDocumentId()) ? $_order->getDocumentId() : '');
     }
 
     /**
@@ -237,14 +250,6 @@ class History extends \Magento\Sales\Block\Order\History
     public function getPrintAllInvoicesUrl($order)
     {
         return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getDocumentId()]);
-    }
-
-    /**
-     * @return string
-     */
-    public function getOmniVersion()
-    {
-        return $this->lsr->getOmniVersion();
     }
 
     /**

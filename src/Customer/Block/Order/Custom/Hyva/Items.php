@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace Ls\Customer\Block\Order\Custom\Hyva;
 
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\DataObject;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Block\Items\AbstractItems;
 use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
@@ -22,6 +24,7 @@ class Items extends AbstractItems
      * @param OrderHelper $orderHelper
      * @param Collection $itemCollection
      * @param CollectionFactory $itemCollectionFactory
+     * @param ItemHelper $itemHelper
      * @param array $data
      */
     public function __construct(
@@ -30,6 +33,7 @@ class Items extends AbstractItems
         public OrderHelper $orderHelper,
         public Collection $itemCollection,
         public CollectionFactory $itemCollectionFactory,
+        public ItemHelper $itemHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -53,7 +57,9 @@ class Items extends AbstractItems
             $orderLines = $orderLines && is_array($orderLines) ?
                 $orderLines : (($orderLines && !is_array($orderLines)) ? [$orderLines] : []);
 
-            $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
+            if ($this->getChildBlock("custom_order_item_renderer_custom")) {
+                $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
+            }
 
             foreach ($orderLines as $key => $line) {
                 if ($line->getDocumentId() !== $documentId ||
@@ -81,6 +87,17 @@ class Items extends AbstractItems
     }
 
     /**
+     * Get order header
+     *
+     * @param $salesEntry
+     * @return \Ls\Omni\Client\CentralEcommerce\Entity\LSCMemberSalesBuffer
+     */
+    public function getLscMemberSalesBuffer($salesEntry)
+    {
+        return $this->orderHelper->getLscMemberSalesBuffer($salesEntry);
+    }
+
+    /**
      * Get magento order
      *
      * @return mixed
@@ -88,6 +105,46 @@ class Items extends AbstractItems
     public function getMagOrder()
     {
         return $this->orderHelper->getGivenValueFromRegistry('current_mag_order');
+    }
+
+    /**
+     * Get print all invoices url
+     *
+     * @param object $order
+     * @return string
+     */
+    public function getPrintAllInvoicesUrl($order)
+    {
+        $reqType = $this->getRequest()->getParam('type');
+
+        $params ['order_id'] = $order->getDocumentId();
+
+        if ($reqType) {
+            $params ['order_id'] = $this->getRequest()->getParam('order_id');
+            $params ['type']     = $reqType;
+        }
+
+        return $this->getUrl('*/*/printInvoice', $params);
+    }
+
+    /**
+     * Get print all shipment url
+     *
+     * @param object $order
+     * @return string
+     */
+    public function getPrintAllShipmentUrl($order)
+    {
+        $reqType = $this->getRequest()->getParam('type');
+
+        $params ['order_id'] = $order->getDocumentId();
+
+        if ($reqType) {
+            $params ['order_id'] = $this->getRequest()->getParam('order_id');
+            $params ['type'] = $reqType;
+        }
+
+        return $this->getUrl('*/*/printShipment', $params);
     }
 
     /**
@@ -112,5 +169,47 @@ class Items extends AbstractItems
         }
 
         return parent::_prepareLayout();
+    }
+
+    /**
+     * Filter Magento shipments based on order lines, as we are showing only those shipments which are related to order lines.
+     * If shipment doesn't have any order line then we are not showing that shipment in shipment tab.
+     *
+     * @param $shipmentsCollection
+     * @param array $orderLines
+     * @return mixed
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function filterShipmentForOrderLines($shipmentsCollection, array $orderLines)
+    {
+        $requiredShipmentCollection = $shipmentsCollection;
+
+        foreach ($shipmentsCollection as $shipment) {
+            $allExists = false;
+            foreach ($shipment->getAllItems() as $shipmentLine) {
+                $orderItem = $shipmentLine->getOrderItem();
+
+                if (!$orderItem->getParentItemId()) {
+                    list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                        $orderItem->getSku()
+                    );
+                    foreach ($orderLines as $key => $orderLine) {
+                        if ($itemId == $orderLine->getNumber() &&
+                            $variantId == $orderLine->getVariantCode() &&
+                            $uom == $orderLine->getUnitOfMeasure() &&
+                            $shipmentLine->getQty() == $orderLine->getQuantity()
+                        ) {
+                            $allExists = true;
+                        }
+                    }
+                }
+            }
+
+            if (!$allExists) {
+                $requiredShipmentCollection->removeItemByKey($shipment->getId());
+            }
+        }
+
+        return $requiredShipmentCollection;
     }
 }
