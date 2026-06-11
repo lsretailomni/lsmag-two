@@ -7,6 +7,7 @@ use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Ls\Core\Model\LSR;
 use Ls\Customer\Block\Order\History;
 use Magento\Framework\Data\Helper\PostHelper;
+use Magento\Sales\Helper\Reorder;
 
 $_orders    = $block->getOrderHistory();
 $orderExist = false;
@@ -194,27 +195,8 @@ $orderExist = $count > 0;
                                                     ]
                                                  )->toHtml() 
                                             ?>
-                                        <?php endif ?>
-                                    
-                                        <?php if (!empty($magOrder) && $magOrder->canCancel() &&
-                                                $block->orderCancellationOnFrontendIsEnabled() &&
-                                                isset($_order['Status']) &&
-                                                strtolower($_order['Status']) !== strtolower(LSR::LS_STATE_CANCELED)
-                                        ): ?>
-                                            <a href="#"
-                                               class="action order cancel"
-                                               data-post='<?= /* @escapeNotVerified */
-                                               $this->helper(PostHelper::class)->getPostData(
-                                                       $block->getCancelUrl($magOrder, $_order),
-                                                       [
-                                                               'confirmation'        => 1,
-                                                               'confirmationMessage' => __('Do you wish to cancel this order?')
-                                                       ]
-                                               ) ?>'>
-                                        <span><?= /* @escapeNotVerified */
-                                            __('Cancel') ?></span>
-                                            </a>
-                                        <?php endif; ?>
+                                        <?php endif ?>                                    
+                                        
                                     <?php endforeach; ?>
                                 </div>
                             </td>
