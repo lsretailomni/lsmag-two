@@ -142,8 +142,10 @@ class SyncItemUpdates extends ProductCreateTask
             try {
                 $sku = $hierarchyLeaf->getNavId();
                 if ($hierarchyLeaf->getType() == HierarchyLeafType::ITEM_CATEGORY) {
-                    $products = $this->replicationHelper->getProductsByItemCategory($hierarchyLeaf->getNavId(),
-                        $this->store->getId());
+                    $products = $this->replicationHelper->getProductsByItemCategory(
+                        $hierarchyLeaf->getNavId(),
+                        $this->store->getId()
+                    );
                     foreach ($products as $product) {
                         if ($product) {
                             $this->replicationHelper->assignProductToCategories($product, $this->store, true);
