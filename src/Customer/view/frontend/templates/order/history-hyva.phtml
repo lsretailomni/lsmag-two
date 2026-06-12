@@ -15,15 +15,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 $iconNeutral = $heroicons->switchVerticalHtml('w-3 h-3 inline text-gray-300', 16, 16, ['aria-hidden' => 'true']);
 $iconAsc     = $heroicons->arrowUpHtml('w-3 h-3 inline', 16, 16, ['aria-hidden' => 'true']);
 $iconDesc    = $heroicons->arrowDownHtml('w-3 h-3 inline', 16, 16, ['aria-hidden' => 'true']);
-$extraActions = [];
-if ($extraActionTitleBlocks = $block->getLayout()->getChildBlocks('order-list-extra-action-titles')) {
-    foreach ($extraActionTitleBlocks as $alias => $extraActionTitleBlock) {
-        $extraActions[$alias] = $extraActionTitleBlock->toHtml();
-    }
-    $extraActions = array_filter($extraActions, function ($output, string $alias) use ($block): bool {
-        return trim($output) && $block->getLayout()->getChildBlock('order-list-extra-action-buttons', $alias);
-    }, ARRAY_FILTER_USE_BOTH);
-}
 
 // Build orders JSON for Alpine
 $ordersData = [];
@@ -117,12 +108,10 @@ if ($_orders) {
     >
         <?php /* Search bar */ ?>
         <div class="flex flex-col sm:flex-row gap-2 mb-4">
-            <select
-                x-model="searchColumn"
+            <select x-model="searchColumn"
                 @change="updateFilter()"
                 class="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:w-48"
-                aria-label="<?= $escaper->escapeHtmlAttr(__('Search by column')) ?>"
-            >
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Search by column')) ?>">
                 <option value="documentId"><?= $escaper->escapeHtml(__('Doc ID')) ?></option>
                 <option value="date"><?= $escaper->escapeHtml(__('Date')) ?></option>
                 <option value="shipTo"><?= $escaper->escapeHtml(__('Ship To')) ?></option>
@@ -130,21 +119,17 @@ if ($_orders) {
                 <option value="status"><?= $escaper->escapeHtml(__('Status')) ?></option>
             </select>
             <div class="relative flex-1">
-                <input
-                    type="text"
+                <input type="text"
                     x-model="searchText"
                     @input="updateFilter()"
                     placeholder="<?= $escaper->escapeHtmlAttr(__('Search orders...')) ?>"
                     class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    aria-label="<?= $escaper->escapeHtmlAttr(__('Search orders')) ?>"
-                />
-                <button
-                    x-show="searchText.length"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Search orders')) ?>"/>
+                <button x-show="searchText.length"
                     @click="searchText = ''; updateFilter()"
                     class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     aria-label="<?= $escaper->escapeHtmlAttr(__('Clear search')) ?>"
-                    type="button"
-                >
+                    type="button">
                     <?= $heroicons->xHtml('', 16, 16, ['aria-hidden' => 'true']) ?>
                 </button>
             </div>
@@ -206,18 +191,13 @@ if ($_orders) {
                         <template x-if="cancelEnabled">
                             <span> / <?= $escaper->escapeHtml(__('Cancel')) ?></span>
                         </template>
-                        <?php foreach ($extraActions as $extraActionTitle): ?>
-                            / <?= /** @noEscape */ $extraActionTitle ?>
-                        <?php endforeach; ?>
                     </th>
                 </tr>
                 </thead>
                 <tbody>
                 <template x-for="(order, index) in filteredOrders()" :key="order.documentId + index">
-                    <tr
-                        x-show="visibleRows.includes(index)"
-                        class="border-b even:bg-gray-100 align-top"
-                    >
+                    <tr x-show="visibleRows.includes(index)"
+                        class="border-b even:bg-gray-100 align-top">
                         <td class="p-2 text-sm" x-text="order.documentId"></td>
                         <td class="p-2 text-sm" x-text="order.date"></td>
                         <td class="p-2 text-sm" x-text="order.shipTo"></td>
@@ -228,12 +208,10 @@ if ($_orders) {
                             <div class="flex items-center justify-evenly gap-1">
 
                                 <?php /* View */ ?>
-                                <a
-                                :href="order.viewUrl"
+                                <a :href="order.viewUrl"
                                 class="inline-block text-sm underline"
                                 :title="'<?= $escaper->escapeHtmlAttr(__('View Order')) ?>' + ' ' + order.documentId"
-                                :aria-label="'<?= $escaper->escapeHtmlAttr(__('View Order')) ?>' + ' ' + order.documentId"
-                                >
+                                :aria-label="'<?= $escaper->escapeHtmlAttr(__('View Order')) ?>' + ' ' + order.documentId">
                                 <?= $heroicons->eyeHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
                                 </a>
 
@@ -242,12 +220,10 @@ if ($_orders) {
                                     <form :action="order.reorderAction" method="post" class="inline-flex items-center">
                                         <?= $block->getBlockHtml('formkey') ?>
                                         <input type="hidden" name="data" :value="JSON.stringify(order.reorderData)">
-                                        <button
-                                            type="submit"
+                                        <button type="submit"
                                             class="inline-block text-sm underline"
                                             :title="'<?= $escaper->escapeHtmlAttr(__('Reorder')) ?>' + ' ' + order.documentId"
-                                            :aria-label="'<?= $escaper->escapeHtmlAttr(__('Reorder')) ?>' + ' ' + order.documentId"
-                                        >
+                                            :aria-label="'<?= $escaper->escapeHtmlAttr(__('Reorder')) ?>' + ' ' + order.documentId">
                                             <?= $heroicons->refreshHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
                                         </button>
                                     </form>
@@ -262,12 +238,10 @@ if ($_orders) {
                                     <form :action="order.cancelAction" method="post" class="inline-flex items-center">
                                         <?= $block->getBlockHtml('formkey') ?>
                                         <input type="hidden" name="data" :value="JSON.stringify(order.cancelData)">
-                                        <button
-                                            type="submit"
+                                        <button type="submit"
                                             class="inline-block text-sm underline text-red-600 hover:text-red-800"
                                             :title="'<?= $escaper->escapeHtmlAttr(__('Cancel Order')) ?>' + ' ' + order.documentId"
-                                            :aria-label="'<?= $escaper->escapeHtmlAttr(__('Cancel Order')) ?>' + ' ' + order.documentId"
-                                        >
+                                            :aria-label="'<?= $escaper->escapeHtmlAttr(__('Cancel Order')) ?>' + ' ' + order.documentId">
                                             <?= $heroicons->xCircleHtml('text-red-500', 24, 24, ['aria-hidden' => 'true']) ?>
                                         </button>
                                     </form>
@@ -276,12 +250,6 @@ if ($_orders) {
                                 <template x-if="cancelEnabled && !(order.hasMagOrder && order.canCancel)">
                                     <span aria-hidden="true"><?= $heroicons->xCircleHtml('text-gray-300', 24, 24, ['aria-hidden' => 'true']) ?></span>
                                 </template>
-
-                                <?php foreach (array_keys($extraActions) as $alias): ?>
-                                    <?php $button = $block->getLayout()->getChildBlock('order-list-extra-action-buttons', $alias) ?>
-                                    <?= $button->assign('order', $magOrder)->setData('order', $magOrder)->toHtml() ?>
-                                <?php endforeach; ?>
-
                             </div>
                         </td>
                     </tr>
