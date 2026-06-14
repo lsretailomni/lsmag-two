@@ -8,7 +8,7 @@ use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 
-class GiftCardNo extends AbstractTotal
+class VoucherNo extends AbstractTotal
 {
     public function __construct(
         private readonly GiftCardHelper $giftCardHelper
@@ -16,16 +16,16 @@ class GiftCardNo extends AbstractTotal
     }
 
     /**
-     * Return only the GIFTCARDNO entries from unified column as a segment for JS rendering.
+     * Return only non-GIFTCARDNO (voucher) entries from unified column as a segment for JS rendering.
      */
     public function fetch(Quote $quote, Total $total)
     {
-        $giftCardEntriesJson = $this->giftCardHelper->getGiftCardEntriesJson($quote->getLsPosDataEntries());
-        if (!empty($giftCardEntriesJson)) {
+        $voucherEntriesJson = $this->giftCardHelper->getVoucherEntriesJson($quote->getLsPosDataEntries());
+        if (!empty($voucherEntriesJson)) {
             return [
                 'code'  => $this->getCode(),
-                'title' => __('Gift Card No'),
-                'value' => $giftCardEntriesJson,
+                'title' => __('Voucher No'),
+                'value' => $voucherEntriesJson,
             ];
         }
         return null;

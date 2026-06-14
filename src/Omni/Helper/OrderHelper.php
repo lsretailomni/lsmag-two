@@ -554,27 +554,44 @@ class OrderHelper extends AbstractHelperOmni
             $lineNumber += 10000;
         }
 
-        if ($order->getLsGiftCardAmountUsed()) {
-            $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
-            $giftCardCurrencyCode = $order->getOrderCurrency()->getCurrencyCode();
+        // Unified entry processing: both gift cards and vouchers stored in ls_pos_data_entries.
+        // Each entry: {entry_type, entry_no, pin_code, amount, currency_code, currency_factor, tender_type}
+        $entries = json_decode((string)$order->getLsPosDataEntries(), true);
+        if (is_array($entries) && count($entries) > 0) {
+            $currencyCode = $order->getOrderCurrency()->getCurrencyCode();
+            foreach ($entries as $entry) {
+                $entryNo     = $entry['entry_no'] ?? '';
+                $entryPin    = $entry['pin_code'] ?? '';
+                $entryAmount = (float)($entry['amount'] ?? 0);
+                // Use tender_type saved on apply; fall back to config lookup
+                $tenderTypeId = $entry['tender_type'] ?? '';
+                if (empty($tenderTypeId)) {
+                    $entryType    = $entry['entry_type'] ?? '';
+                    $entryConfig  = $this->lsr->getVoucherConfigByCode($entryType);
+                    $tenderTypeId = $entryConfig
+                        ? $entryConfig['tender_type']
+                        : $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+                }
+                $entryCurrencyCode   = $currencyCode;
+                $entryCurrencyFactor = 0;
 
-            $orderPayment = $this->createInstance(CustomerOrderCreateCOPaymentV6::class);
-            $orderPayment->addData(
-                [
-                    CustomerOrderCreateCOPaymentV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId,
-                    CustomerOrderCreateCOPaymentV6::LINE_NO => $lineNumber,
-                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT => $order->getLsGiftCardAmountUsed(),
-                    CustomerOrderCreateCOPaymentV6::TENDER_TYPE => $tenderTypeId,
+                $orderPayment = $this->createInstance(CustomerOrderCreateCOPaymentV6::class);
+                $orderPayment->addData([
+                    CustomerOrderCreateCOPaymentV6::STORE_NO                => $isClickCollect ? $order->getPickupStore() : $storeId,
+                    CustomerOrderCreateCOPaymentV6::LINE_NO                 => $lineNumber,
+                    CustomerOrderCreateCOPaymentV6::PRE_APPROVED_AMOUNT     => $entryAmount,
+                    CustomerOrderCreateCOPaymentV6::TENDER_TYPE             => $tenderTypeId,
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_VALID_DATE => $preApprovedDate,
-                    CustomerOrderCreateCOPaymentV6::EXTERNAL_REFERENCE => $order->getIncrementId(),
-                    CustomerOrderCreateCOPaymentV6::CURRENCY_CODE => $giftCardCurrencyCode,
-                    CustomerOrderCreateCOPaymentV6::CURRENCY_FACTOR => 0,
-                    CustomerOrderCreateCOPaymentV6::AUTHORIZATION_CODE => $order->getLsGiftCardPin(),
-                    CustomerOrderCreateCOPaymentV6::CARDOR_CUSTOMERNUMBER => $order->getLsGiftCardNo(),
-                    CustomerOrderCreateCOPaymentV6::TYPE => '1',
-                ]
-            );
-            $orderPaymentArray[] = $orderPayment;
+                    CustomerOrderCreateCOPaymentV6::EXTERNAL_REFERENCE      => $order->getIncrementId(),
+                    CustomerOrderCreateCOPaymentV6::CURRENCY_CODE           => $entryCurrencyCode,
+                    CustomerOrderCreateCOPaymentV6::CURRENCY_FACTOR         => $entryCurrencyFactor,
+                    CustomerOrderCreateCOPaymentV6::AUTHORIZATION_CODE      => $entryPin,
+                    CustomerOrderCreateCOPaymentV6::CARDOR_CUSTOMERNUMBER   => $entryNo,
+                    CustomerOrderCreateCOPaymentV6::TYPE                    => '1',
+                ]);
+                $orderPaymentArray[] = $orderPayment;
+                $lineNumber += 10000;
+            }
         }
 
         return $orderPaymentArray;

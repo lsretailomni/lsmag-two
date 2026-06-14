@@ -14,10 +14,9 @@ define([
 ) {
     'use strict';
 
-    return function (gift_card_no, gift_card_amount, gift_card_pin, isGiftCardApplied) {
+    return function (gift_card_no, gift_card_amount, gift_card_pin, isGiftCardApplied, isVoucherApplied) {
         var quoteId = quote.getQuoteId(),
-            url = 'omni/ajax/updateGiftCard',
-            message = $t('Gift card successfully applied.');
+            url = 'omni/ajax/updateGiftCard';
 
         fullScreenLoader.startLoader();
 
@@ -31,10 +30,17 @@ define([
             true,
             'application/json'
         ).done(function (response) {
-            var deferred;
+            var deferred,
+                message = $t('POS data entry successfully applied.');
             if (response.success) {
                 deferred = $.Deferred();
-                isGiftCardApplied(true);
+                // Mark as applied — use whichever observable is provided
+                if (typeof isGiftCardApplied === 'function') {
+                    isGiftCardApplied(true);
+                }
+                if (typeof isVoucherApplied === 'function') {
+                    isVoucherApplied(true);
+                }
                 totals.isLoading(true);
                 getPaymentInformationAction(deferred);
                 $.when(deferred).done(function () {

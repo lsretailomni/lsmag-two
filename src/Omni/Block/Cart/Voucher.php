@@ -3,25 +3,24 @@ declare(strict_types=1);
 
 namespace Ls\Omni\Block\Cart;
 
-use GuzzleHttp\Exception\GuzzleException;
-use \Ls\Omni\Helper\GiftCardHelper;
+use \Ls\Omni\Helper\VoucherHelper;
 use Magento\Checkout\Block\Cart\AbstractCart;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template\Context;
 
-class Giftcard extends AbstractCart
+class Voucher extends AbstractCart
 {
     /**
-     * @param GiftCardHelper $giftCardHelper
+     * @param VoucherHelper $voucherHelper
      * @param Context $context
      * @param CustomerSession $customerSession
      * @param CheckoutSession $checkoutSession
      * @param array $data
      */
     public function __construct(
-        public GiftCardHelper $giftCardHelper,
+        public VoucherHelper $voucherHelper,
         Context $context,
         CustomerSession $customerSession,
         CheckoutSession $checkoutSession,
@@ -31,46 +30,47 @@ class Giftcard extends AbstractCart
     }
 
     /**
-     * Get gift card amount used
+     * Get voucher amount used
      *
      * @return string
      */
-    public function getGiftCardAmountUsed()
+    public function getVoucherAmountUsed()
     {
-        $total = (float)array_sum(array_column(json_decode((string)$this->getQuote()->getLsPosDataEntries(), true) ?? [], 'amount'));
+        $amounts = array_column(json_decode((string)$this->getQuote()->getLsPosDataEntries(), true) ?? [], 'amount');
+        $total = array_sum($amounts);
         return $total > 0 ? $total : "";
     }
 
     /**
-     * Get gift card number
+     * Get voucher number
      *
      * @return string
      */
-    public function getGiftCardNo()
+    public function getVoucherNo()
     {
         return $this->getQuote()->getLsPosDataEntries();
     }
 
     /**
-     * Get gift card pin
+     * Get voucher pin
      *
      * @return string
      */
-    public function getGiftCardPin()
+    public function getVoucherPin()
     {
         $entries = json_decode((string)$this->getQuote()->getLsPosDataEntries(), true) ?? [];
         return $entries ? (end($entries)['pin_code'] ?? null) : null;
     }
 
     /**
-     * Get gift card is enable on cart page
+     * Get voucher is enable on cart page
      *
      * @return bool
-     * @throws NoSuchEntityException|GuzzleException
+     * @throws NoSuchEntityException
      */
-    public function getGiftCardActive()
+    public function getVoucherActive()
     {
-        return $this->giftCardHelper->isGiftCardEnabled('cart');
+        return $this->voucherHelper->isVoucherEnabled('cart');
     }
 
     /**
@@ -81,6 +81,7 @@ class Giftcard extends AbstractCart
      */
     public function isPinCodeFieldEnable()
     {
-        return $this->giftCardHelper->isPinCodeFieldEnable();
+        return $this->voucherHelper->isPinCodeFieldEnable();
     }
 }
+

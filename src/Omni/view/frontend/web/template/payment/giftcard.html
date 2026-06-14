@@ -2,7 +2,7 @@
      data-bind="mageInit: {'collapsible':{'openedState': '_active'}}">
     <div class="payment-option-title field choice" data-role="title">
         <span class="action action-toggle" id="block-discount-heading" role="heading" aria-level="2">
-            <!-- ko i18n: 'Apply Gift Card'--><!-- /ko -->
+            <!-- ko i18n: 'Apply Gift Card / Voucher'--><!-- /ko -->
         </span>
     </div>
     <div class="payment-option-content" data-role="content">
@@ -13,7 +13,7 @@
             <div class="payment-option-inner">
                 <div class="field">
                     <label class="label">
-                        <span data-bind="i18n: 'Enter Gift Card'"></span>
+                        <span data-bind="i18n: 'Enter Gift Card / Voucher'"></span>
                     </label>
                     <div class="control">
                         <input class="input-text"
@@ -21,21 +21,21 @@
                                id="gift_card_no"
                                name="gift_card_no"
                                data-validate="{'required-entry':true}"
-                               data-bind="value: giftCardNo, attr:{placeholder: $t('Enter Gift Card Code')} "/>
+                               data-bind="value: giftCardNo, attr:{placeholder: $t('Enter Code')} "/>
                         <div id="pincode" data-bind="visible: isPinCodeFieldEnable()">
                             <input class="input-text"
                                    type="password"
                                    id="gift_card_pin"
                                    name="gift_card_pin"
                                    data-validate="{'required-entry':true}"
-                                   data-bind="value: giftCardPin, attr:{placeholder: $t('Enter Gift Card Pin')} "/>
+                                   data-bind="value: giftCardPin, attr:{placeholder: $t('Enter Pin')} "/>
                         </div>
                         <input class="input-text"
                                type="number"
                                id="gift_card_amount"
                                name="gift_card_amount"
                                data-validate="{'required-entry':true, 'required-number':true, 'validate-not-negative-number':true}"
-                               data-bind="value: giftCardAmount, attr:{placeholder: $t('Enter Gift Card Amount')} "/>
+                               data-bind="value: giftCardAmount, attr:{placeholder: $t('Enter Amount')} "/>
                     </div>
                 </div>
             </div>

@@ -322,11 +322,12 @@ class Data extends AbstractHelperOmni
                 }
                 $quote          = $this->cartRepository->get($this->checkoutSession->getQuoteId());
                 $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
+                $voucherAmount  = (float) array_sum(array_column(json_decode((string)$quote->getLsPosDataEntries(), true) ?? [], 'amount'));
                 $mobileTransaction = current($basketData->getMobiletransaction());
                 $discountAmount = $mobileTransaction->getLinediscount();
                 $totalAmount    = $mobileTransaction->getGrossamount() + $discountAmount + $shippingAmount;
 
-                $combinedTotalLoyalGiftCard    = $giftCardAmount + $loyaltyAmount;
+                $combinedTotalLoyalGiftCard    = $giftCardAmount + $loyaltyAmount + $voucherAmount;
                 $combinedDiscountPaymentAmount = $discountAmount + $combinedTotalLoyalGiftCard;
                 if ($loyaltyAmount > $totalAmount) {
                     $message = __('The loyalty points "%1" are exceeding order total amount.', $loyaltyPoints);
@@ -996,9 +997,10 @@ class Data extends AbstractHelperOmni
     {
         $pointsSpent    = $invoiceCreditMemo->getOrder()->getLsPointsSpent();
         $giftCardAmount = $invoiceCreditMemo->getOrder()->getLsGiftCardAmountUsed();
+        $voucherAmount  = (float) array_sum(array_column(json_decode((string)$invoiceCreditMemo->getOrder()->getLsPosDataEntries(), true) ?? [], 'amount'));
         $lsDiscountAmount = $invoiceCreditMemo->getOrder()->getLsDiscountAmount();
 
-        if ($pointsSpent > 0 || $giftCardAmount > 0 || $lsDiscountAmount > 0) {
+        if ($pointsSpent > 0 || $giftCardAmount > 0 || $lsDiscountAmount > 0 || $voucherAmount > 0) {
             $totalItemsQuantities = $totalItemsInvoice = 0;
             $pointsEarn           = $invoiceCreditMemo->getOrder()->getLsPointsEarn();
             $invoiceCreditMemo->setLsPointsEarn($pointsEarn);
@@ -1027,15 +1029,15 @@ class Data extends AbstractHelperOmni
             $baseTotalPointsAmount = $this->itemHelper->convertToBaseCurrency($totalPointsAmount);
             $pointsSpent       = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
             $giftCardAmount    = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
+            $voucherAmount     = ($voucherAmount / $totalItemsQuantities) * $totalItemsInvoice;
 
             $invoiceCreditMemo->setLsPointsSpent($pointsSpent);
-            $invoiceCreditMemo->setLsGiftCardAmountUsed($giftCardAmount);
 
-            $giftCardNo = $invoiceCreditMemo->getOrder()->getLsGiftCardNo();
-            $invoiceCreditMemo->setLsGiftCardNo($giftCardNo);
+            // Copy unified entry column from order to invoice/creditmemo
+            $invoiceCreditMemo->setLsPosDataEntries($invoiceCreditMemo->getOrder()->getLsPosDataEntries());
 
-            $grandTotalAmount     = $invoiceCreditMemo->getGrandTotal() - $totalPointsAmount - $giftCardAmount;
-            $baseGrandTotalAmount = $invoiceCreditMemo->getBaseGrandTotal() - $baseTotalPointsAmount - $giftCardAmount;
+            $grandTotalAmount     = $invoiceCreditMemo->getGrandTotal() - $totalPointsAmount - $giftCardAmount - $voucherAmount;
+            $baseGrandTotalAmount = $invoiceCreditMemo->getBaseGrandTotal() - $baseTotalPointsAmount - $giftCardAmount - $voucherAmount;
             $invoiceCreditMemo->setGrandTotal($grandTotalAmount);
             $invoiceCreditMemo->setBaseGrandTotal($baseGrandTotalAmount);
         }
