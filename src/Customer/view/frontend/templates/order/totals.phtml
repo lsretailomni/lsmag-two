@@ -55,6 +55,17 @@ use \Ls\Customer\Block\Order\Totals;
     </tr>
 <?php endif; ?>
 
+<?php foreach ($block->voucherEntries as $voucherEntry): ?>
+    <tr class="discount">
+        <th colspan="4" class="mark" scope="row">
+            <?= $escaper->escapeHtml(__('%1 Redeemed', $voucherEntry['label'])) ?>
+        </th>
+        <td class="amount" data-th="<?= $escaper->escapeHtml(__('%1 Redeemed', $voucherEntry['label'])) ?>">
+            <span class="price">-<?= $escaper->escapeHtml($block->getFormattedPrice($voucherEntry['amount'])); ?></span>
+        </td>
+    </tr>
+<?php endforeach; ?>
+
 <tr class="shipping">
     <th colspan="4" class="mark" scope="row">
         <?= $escaper->escapeHtml(__('Shipment & Handling')) ?>

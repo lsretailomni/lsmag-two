@@ -24,6 +24,11 @@ class Totals extends AbstractOrderBlock
     public $loyaltyPointAmount = 0;
 
     /**
+     * @var array
+     */
+    public $voucherEntries = [];
+
+    /**
      * Get formatted price
      *
      * @param $amount
@@ -103,7 +108,8 @@ class Totals extends AbstractOrderBlock
      */
     public function getTotalAmount()
     {
-        return $this->getGrandTotal() - $this->giftCardAmount - $this->loyaltyPointAmount;
+        $voucherTotal = array_sum(array_column($this->voucherEntries, 'amount'));
+        return $this->getGrandTotal() - $this->giftCardAmount - $this->loyaltyPointAmount - $voucherTotal;
     }
 
     /**
@@ -189,13 +195,16 @@ class Totals extends AbstractOrderBlock
                         $methods[] = __($method);
 
                         $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+                        $loyaltyTenderId  = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
                         if ($giftCardTenderId == $tenderTypeId) {
                             $this->giftCardAmount = $line->getAmount();
-                        }
-
-                        $loyaltyTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
-                        if ($loyaltyTenderId == $tenderTypeId) {
+                        } elseif ($loyaltyTenderId == $tenderTypeId) {
                             $this->loyaltyPointAmount = $this->formatLoyaltyPoints($line->getAmount());
+                        } else {
+                            $this->voucherEntries[] = [
+                                'label'  => $method,
+                                'amount' => (float)$line->getAmount(),
+                            ];
                         }
                     } else {
                         $methods[] = __('Unknown');

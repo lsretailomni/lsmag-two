@@ -1,80 +1,70 @@
-<div class="row mt-4">
-    <div class="col-md-6">
-        <!-- ko if: getErrorMessages() -->
-        <div style="color:red" class="error-messages" data-bind="'html': getErrorMessages()"></div>
-        <!-- /ko -->
-        <form method="post" data-role="save"
-              data-bind="submit:checkGiftCardBalance">
-            <div
-                    data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
-                <div class="field required">
-                    <label class="label">
-                        <span data-bind="i18n: 'Gift Card Code:'"></span>
-                        <span style="color:red">*</span>
-                    </label>
-                    <div class="control">
-                        <input class="input-text"
-                               type="text"
-                               id="gift_card_code"
-                               name="gift_card_code"
-                               data-validate="{'required-entry':true}"
-                               data-bind="attr:{placeholder: $t('Enter Gift Card Code')} "/>
-                    </div>
-                    <div id="pincode" data-bind="visible: isPinCodeFieldEnable()">
-                        <br/>
-                        <label class="label">
-                            <span data-bind="i18n: 'Gift Card Pin:'"></span>
-                            <span style="color:red">*</span>
-                        </label>
-                        <div class="control">
-                            <input class="input-text"
-                                   type="password"
-                                   id="gift_card_pin"
-                                   name="gift_card_pin"
-                                   data-validate="{'required-entry':true}"
-                                   data-bind="attr:{placeholder: $t('Enter Gift Card Pin')} "/>
-                        </div>
-                    </div>
+<div class="gift-card-balance-page">
+    <!-- ko if: getErrorMessages() -->
+    <div class="message message-error" role="alert" data-bind="'html': getErrorMessages()"></div>
+    <!-- /ko -->
+    <form method="post" data-role="save" data-bind="submit:checkGiftCardBalance">
+        <fieldset class="fieldset" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+            <div class="field required">
+                <label class="label" for="gift_card_code">
+                    <span data-bind="i18n: 'Gift Card Code'"></span>
+                </label>
+                <div class="control">
+                    <input class="input-text"
+                           type="text"
+                           id="gift_card_code"
+                           name="gift_card_code"
+                           data-validate="{'required-entry':true}"
+                           data-bind="attr:{placeholder: $t('Enter Gift Card Code')}"/>
                 </div>
             </div>
-            <br/>
-            <div class="actions-toolbar">
-                <div class="primary">
-                    <button type="submit" class="action primary check-balance-btn">
-                        <span data-bind="i18n: 'Check Balance'"></span>
-                    </button>
-                    <button type="button" class="action primary reset-btn"
-                            data-bind="'value': $t('Reset'), click: cancelGiftCardBalance">
-                        <span data-bind="i18n: 'Reset'"></span>
-                    </button>
+            <!-- ko if: isPinCodeEnabled -->
+            <div class="field required" id="pincode">
+                <label class="label" for="gift_card_pin">
+                    <span data-bind="i18n: 'Gift Card Pin'"></span>
+                </label>
+                <div class="control">
+                    <input class="input-text"
+                           type="password"
+                           id="gift_card_pin"
+                           name="gift_card_pin"
+                           data-validate="{'required-entry':true}"
+                           data-bind="attr:{placeholder: $t('Enter Gift Card Pin')}"/>
                 </div>
             </div>
-        </form>
-        <div class="giftcardinfo mt-5">
-            <div class="container">
-                <div>
-                    <!-- ko if: getGiftCardBalance()-->
-                        <div class="gift-card-balance">
-                            <p>
-                                <strong>
-                                    <span class='label' data-bind="'html': $t('Your balance is: ')"></span>
-                                    <span class='value' data-bind="'html': getGiftCardBalance()"></span>
-                                </strong>
-                            </p>
-                        </div>
-                    <!-- /ko -->
-                    <!-- ko if: getGiftCardExpiryDate()-->
-                        <div class="gift-card-expiry">
-                            <p>
-                                <strong>
-                                    <span class='label' data-bind="'html': $t('Expiry Date: ')"></span>
-                                    <span class='value' data-bind="'html': getGiftCardExpiryDate()"></span>
-                                </strong>
-                            </p>
-                        </div>
-                    <!-- /ko -->
-                </div>
+            <!-- /ko -->
+        </fieldset>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button type="submit" class="action primary check-balance-btn">
+                    <span data-bind="i18n: 'Check Balance'"></span>
+                </button>
+                <button type="button" class="action secondary reset-btn"
+                        data-bind="click: cancelGiftCardBalance">
+                    <span data-bind="i18n: 'Reset'"></span>
+                </button>
             </div>
         </div>
+    </form>
+    <div class="giftcardinfo">
+        <!-- ko if: getGiftCardBalance() -->
+        <div class="gift-card-balance-result">
+            <p>
+                <strong>
+                    <span data-bind="i18n: 'Your balance is: '"></span>
+                    <span data-bind="text: getGiftCardBalance()"></span>
+                </strong>
+            </p>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: getGiftCardExpiryDate() -->
+        <div class="gift-card-expiry-result">
+            <p>
+                <strong>
+                    <span data-bind="i18n: 'Expiry Date: '"></span>
+                    <span data-bind="text: getGiftCardExpiryDate()"></span>
+                </strong>
+            </p>
+        </div>
+        <!-- /ko -->
     </div>
 </div>
