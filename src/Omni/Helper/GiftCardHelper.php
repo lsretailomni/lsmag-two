@@ -46,6 +46,9 @@ class GiftCardHelper extends AbstractHelperOmni
             !empty(current($responseData->getGetdataentrybalancexml()->getPosdataentry())->getData()) ?
                 current($responseData->getGetdataentrybalancexml()->getPosdataentry()) : null;
 
+            if ($response !== null && !$this->isEntryApplicable($response)) {
+                $response = null;
+            }
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -83,6 +86,42 @@ class GiftCardHelper extends AbstractHelperOmni
         $now = new \DateTime();
 
         return $date < $now;
+    }
+
+    /**
+     * Validate a POSDataEntry response against ecommerce applicability rules.
+     *
+     * Returns false (entry must not be applied) when:
+     * - BlockedOnECom is set to a truthy value
+     * - Unposted is true
+     * - WebStore is non-empty AND does not match the store configured in LS settings
+     *
+     * @param POSDataEntry $entry
+     * @return bool
+     */
+    public function isEntryApplicable(POSDataEntry $entry): bool
+    {
+        if (filter_var($entry->getBlockedonecom(), FILTER_VALIDATE_BOOLEAN)) {
+            $this->_logger->debug('POS entry rejected: BlockedOnECom is set');
+            return false;
+        }
+
+        if ($entry->getUnposted() === true) {
+            $this->_logger->debug('POS entry rejected: Unposted is true');
+            return false;
+        }
+
+        $entryWebStore = $entry->getWebstore();
+        if (!empty($entryWebStore) && $entryWebStore !== $this->lsr->getActiveWebStore()) {
+            $this->_logger->debug(sprintf(
+                'POS entry rejected: WebStore "%s" does not match configured store "%s"',
+                $entryWebStore,
+                $this->lsr->getActiveWebStore()
+            ));
+            return false;
+        }
+
+        return true;
     }
 
     /**
