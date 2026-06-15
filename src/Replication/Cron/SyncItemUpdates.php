@@ -142,8 +142,10 @@ class SyncItemUpdates extends ProductCreateTask
             try {
                 $sku = $hierarchyLeaf->getNavId();
                 if ($hierarchyLeaf->getType() == HierarchyLeafType::ITEM_CATEGORY) {
-                    $products = $this->replicationHelper->getProductsByItemCategory($hierarchyLeaf->getNavId(),
-                        $this->store->getId());
+                    $products = $this->replicationHelper->getProductsByItemCategory(
+                        $hierarchyLeaf->getNavId(),
+                        $this->store->getId()
+                    );
                     foreach ($products as $product) {
                         if ($product) {
                             $this->replicationHelper->assignProductToCategories($product, $this->store, true);
@@ -360,7 +362,8 @@ class SyncItemUpdates extends ProductCreateTask
                 $criteria,
                 'nav_id',
                 null,
-                ['repl_hierarchy_leaf_id']
+                ['repl_hierarchy_leaf_id'],
+                true
             );
             $websiteId = $this->store->getWebsiteId();
             $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
