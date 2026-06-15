@@ -208,11 +208,8 @@ class ReplicationHelper extends AbstractHelper
         ],
         "ls_mag/replication/repl_loy_vendor_item_mapping"    => ["NavManufacturerId", "NavProductId", "scope_id"],
         "ls_mag/replication/repl_price"                      => [
-            "ItemId",
-            "VariantId",
+            "LineNumber",
             "StoreId",
-            "QtyPerUnitOfMeasure",
-            "UnitOfMeasure",
             "PriceListCode",
             "scope_id"
         ],
