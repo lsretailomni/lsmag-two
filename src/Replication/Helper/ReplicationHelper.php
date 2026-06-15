@@ -838,7 +838,7 @@ class ReplicationHelper extends AbstractHelper
         'ls_mag/replication/repl_image_link' => [
             'image_id' => 'ImageId',
             'scope_id' => 'scope_id',
-            'record_id' => 'KeyValue'
+            'keyvalue' => 'KeyValue',
         ],
         'ls_mag/replication/repl_item' => [
             'no' => 'nav_id',
@@ -942,16 +942,22 @@ class ReplicationHelper extends AbstractHelper
 
     /** @var array List of Replication Tables with unique field for delete */
     public const DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY = [
-        'ls_mag/replication/repl_variantregview' => [
-            'item_no',
-            'variant_dimension_1',
-            'variant_dimension_2',
-            'variant_dimension_3',
-            'variant_dimension_4',
-            'variant_dimension_5',
-            'variant_dimension_6',
+        'ls_mag/replication/repl_item_variant_registration' => [
+            'item_no' => 'ItemId',
+            'variant_dimension_1' => 'VariantDimension1',
+            'variant_dimension_2' => 'VariantDimension2',
+            'variant_dimension_3' => 'VariantDimension3',
+            'variant_dimension_4' => 'VariantDimension4',
+            'variant_dimension_5' => 'VariantDimension5',
+            'variant_dimension_6' => 'VariantDimension6',
+            'scope_id' => 'scope_id'
         ],
-        'ls_mag/replication/repl_hierarchy_hosp_deal_line'  => ['DealNo', 'DealLineNo', 'LineNo', 'scope_id'],
+        'ls_mag/replication/repl_hierarchy_hosp_deal_line'  => [
+            'offer_no' => 'DealNo',
+            'offer_line_no' => 'DealLineNo',
+            'deal_modifier_line_no' => 'LineNo',
+            'scope_id' => 'scope_id'
+        ],
     ];
 
     public $connection;

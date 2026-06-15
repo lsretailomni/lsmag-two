@@ -208,8 +208,9 @@ abstract class AbstractReplicationTask
      */
     public function saveSource($properties, $source)
     {
-        $isDeleted = 0;
+        $isDeleted      = 0;
         $resetItemId    = null;
+        $deletedImages  = [];
         if ($source->getIsDeleted()) {
             $uniqueAttributes = (array_key_exists(
                 $this->getConfigPath(),
@@ -361,6 +362,22 @@ abstract class AbstractReplicationTask
                 $matchedRow = reset($matchedRows);
                 $resetItemId = ($matchedRow && $matchedRow->getItemId()) ? $matchedRow->getItemId() : null;
             }
+        } elseif ($source->getIsDeleted() && $confPath == ReplLscRetailImageLinkTask::CONFIG_PATH) {
+            // Find records to update IsDeleted by scope + image id.
+
+            if ($source->getImageId()) {
+                $imageId = str_replace('Item Variant: ', '', $source->getImageId());
+            }
+            
+            $criteria = $this->getSearchCriteria();
+            $criteria->addFilter('scope', $source->getScope());
+            $criteria->addFilter('scope_id', $source->getScopeId());
+            $criteria->addFilter('ImageId', $source->getImageId());
+            $deletedImages = $this->getRepository()->getList($criteria->create())->getItems();
+
+            if (!empty($deletedImages)) {
+                $this->updateDeletedImages($deletedImages);
+            }
         }
         $checksum = $this->getHashGivenString($source->getData());
         $uniqueAttributesHash = $this->generateIdentityValue($uniqueAttributes, $source, $properties);
@@ -428,8 +445,16 @@ abstract class AbstractReplicationTask
             }
         }
         try {
-            $this->getRepository()->save($entity);
-            $entity->setData([]);
+            if (!empty($deletedImages) &&
+                $source->getIsDeleted() &&
+                $confPath == ReplLscRetailImageLinkTask::CONFIG_PATH
+            ) { // Do not save  and reset entity, if IsDeleted is true.
+                // The relevant items to delete are updated in function updateDeletedImages().
+                $entity->setData([]);
+            } else {
+                $this->getRepository()->save($entity);
+                $entity->setData([]);
+            }
 
             if (!empty($resetItemId) &&
                 $source->getIsDeleted() &&
@@ -441,6 +466,27 @@ abstract class AbstractReplicationTask
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Set IsDeleted true for variant images based on ImageId
+     * 
+     * @param $deletedImages
+     * @return void'
+     */
+    public function updateDeletedImages($deletedImages)
+    {
+        if (!empty($deletedImages)) {
+            try {
+                foreach ($deletedImages as $deletedImage) {
+                    $deletedImage->setIsDeleted(1);
+                    $deletedImage->setProcessed(0);
+                    $this->getRepository()->save($deletedImage);
+                }
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+            }
         }
     }
 
@@ -546,10 +592,6 @@ abstract class AbstractReplicationTask
 
                 $sourceValue = $source->getData($key);
 
-                if ($index == "record_id" && $sourceValue != "") {
-                    $sourceValue = str_replace('Item Variant: ', '', $sourceValue);
-                }
-
                 if ($sourceValue == "") {
                     $criteria->addFilter($attribute, true, 'null');
                 } else {
@@ -595,10 +637,6 @@ abstract class AbstractReplicationTask
                 $sourceValue = $source->getData($index);
             } else {
                 $sourceValue = $source->getData($key);
-            }
-
-            if ($index == "record_id" && $sourceValue != "") {
-                $sourceValue = str_replace('Item Variant: ', '', $sourceValue);
             }
 
             $uniqueAttributesHash[] = ($sourceValue !== "" ? $sourceValue : $index) . '#' . $i;
