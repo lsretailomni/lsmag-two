@@ -37,6 +37,11 @@ $orderHelper   = $this->helper(OrderHelper::class);
 $salesBuffer   = $orderHelper->getLscMemberSalesBuffer($centralOrder);
 $idType        = $orderHelper->getOrderType($centralOrder->getDocumentSourceType());
 
+$recentBlock = $block->getLayout()->createBlock(
+        \Ls\Customer\Block\Order\Recent::class
+);
+
+
 //if ($order->canCancel() &&
 //$block->orderCancellationOnFrontendIsEnabled() &&
 //strtolower($block->getOrderStatus()) !== strtolower(LSR::LS_STATE_CANCELED)){
@@ -50,7 +55,7 @@ $idType        = $orderHelper->getOrderType($centralOrder->getDocumentSourceType
 //}
 ?>
 
-<?php if ($orderCancellation->canCancel($order->getEntityId())): ?>
+<?php if ($orderCancellation->canCancel($order->getEntityId()) && $recentBlock->orderCancellationOnFrontendIsEnabled()): ?>
     <button
         type="button"
         class="inline-block text-sm"
