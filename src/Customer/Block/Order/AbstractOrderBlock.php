@@ -9,6 +9,7 @@ use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\View\Element\Template;
@@ -30,6 +31,7 @@ class AbstractOrderBlock extends Template
      * @param CustomerSession $customerSession
      * @param CountryFactory $countryFactory
      * @param \Magento\Framework\App\Http\Context $httpContext
+     * @param Http $request
      * @param array $data
      */
     public function __construct(
@@ -45,7 +47,7 @@ class AbstractOrderBlock extends Template
         public CustomerSession $customerSession,
         public CountryFactory $countryFactory,
         public \Magento\Framework\App\Http\Context $httpContext,
-        public \Magento\Framework\App\Request\Http $request,
+        public Http $request,
         array $data = []
     ) {
         parent::__construct($context, $data);
