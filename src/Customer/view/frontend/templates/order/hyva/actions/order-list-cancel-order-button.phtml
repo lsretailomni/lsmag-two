@@ -10,6 +10,7 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Hyva\Theme\ViewModel\Sales\OrderCancellation;
+use Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 use Magento\OrderCancellationUi\ViewModel\Config as OrderCancellationUiConfig;
@@ -26,22 +27,41 @@ $orderCancellation = $viewModels->require(OrderCancellation::class);
 
 /** @var OrderCancellationUiConfig $orderCancellationUiConfig */
 $orderCancellationUiConfig = $viewModels->require(OrderCancellationUiConfig::class);
-
+$idType = null;
 $order = $block->getData('magorder');
 $centralOrder = $block->getData('centralOrder');
-$reasons = $orderCancellationUiConfig->getCancellationReasons((int) $order->getId())
+$reasons = $orderCancellationUiConfig->getCancellationReasons((int) $order->getId());
+
+$cancelOrderId = $centralOrder && $centralOrder->getDocumentId() ? $centralOrder->getDocumentId() : $order->getRealOrderId();
+$orderHelper   = $this->helper(OrderHelper::class);
+$salesBuffer   = $orderHelper->getLscMemberSalesBuffer($centralOrder);
+$idType        = $orderHelper->getOrderType($centralOrder->getDocumentSourceType());
+
+//if ($order->canCancel() &&
+//$block->orderCancellationOnFrontendIsEnabled() &&
+//strtolower($block->getOrderStatus()) !== strtolower(LSR::LS_STATE_CANCELED)){
+//    $cancelUrl = $this->helper(PostHelper::class)->getPostData(
+//            $block->getCancelUrl($order, $centralOrder),
+//            [
+//                    'confirmation' => 1,
+//                    'confirmationMessage' => __('Do you wish to cancel this order?')
+//            ]
+//    );
+//}
 ?>
 
 <?php if ($orderCancellation->canCancel($order->getEntityId())): ?>
     <button
         type="button"
         class="inline-block text-sm"
-        title="<?= $escaper->escapeHtmlAttr(__('Cancel order') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
-        aria-label="<?= $escaper->escapeHtmlAttr(__('Cancel order') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
+        title="<?= $escaper->escapeHtmlAttr(__('Cancel order') . ' ' . ltrim($cancelOrderId, '0')) ?>"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Cancel order') . ' ' . ltrim($cancelOrderId, '0')) ?>"
         x-data
         @click="$dispatch('confirm-cancel-order', {
-            order_id: <?= (int) $order->getId() ?>,
-            increment_id: '<?= $escaper->escapeJs($order->getRealOrderId()) ?>',
+            increment_id: '<?= $escaper->escapeJs($cancelOrderId) ?>',
+            magento_order_id: '<?= $order->getId() ?>',
+            central_order_id: '<?= $centralOrder->getDocumentId() ?>',
+            id_type: '<?= $idType ?>',
             reasons: <?= $escaper->escapeHtmlAttr(json_encode(array_values($reasons))) ?>,
         })"
     >

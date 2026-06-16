@@ -19,6 +19,11 @@
                 <argument name="template" xsi:type="string">Ls_Customer::order/hyva/actions/order-list-cancel-order-button.phtml</argument>
             </action>
         </referenceBlock>
+        <referenceBlock name="cancel-order-modal">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ls_Customer::order/hyva/actions/cancel-order-modal.phtml</argument>
+            </action>
+        </referenceBlock>
     </body>
 </page>
 
