@@ -72,18 +72,28 @@ $_orders = $block->getOrderHistory();
                 strtolower($_order['Status']) !== strtolower(LSR::LS_STATE_CANCELED);
 
             $extraActionButtons = [];
-            $block->getLayout()->getBlock('cancel-order-modal')->setTemplate('Ls_Customer::order/hyva/actions/cancel-order-modal.phtml');
+
+            if ($cancelModal = $block->getLayout()->getBlock('cancel-order-modal')) {
+                $cancelModal->setTemplate('Ls_Customer::order/hyva/actions/cancel-order-modal.phtml');
+            }
+
             foreach (array_keys($extraActionTitles) as $alias) {
                 $buttonBlock = $block->getLayout()->getChildBlock('order-list-extra-action-buttons', $alias);
+
                 if (!$buttonBlock || empty($magOrder)) {
                     $extraActionButtons[$alias] = '';
                 }
+
+                if ($alias == 'cancel') {
+                    $buttonBlock->setTemplate('Ls_Customer::order/hyva/actions/order-list-cancel-order-button.phtml');
+                }
+
                 $extraActionButtons[$alias] = $buttonBlock
                     ->assign('order', $magOrder)
                     ->setData([
                         'magorder' => $magOrder,
                         'centralOrder' => $_order,
-                    ])->setTemplate('Ls_Customer::order/hyva/actions/order-list-cancel-order-button.phtml')
+                    ])
                     ->toHtml();
             }
 
