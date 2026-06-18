@@ -277,7 +277,7 @@ abstract class AbstractReplicationTask
             $criteria->addFilter('PriceListCode', $source->getPriceListCode());
             $matchedRows = $this->getRepository()->getList($criteria->create())->getItems();
 
-            if(!empty($matchedRows)) {
+            if (!empty($matchedRows)) {
                 $matchedRow = reset($matchedRows);
                 $resetItemId = ($matchedRow && $matchedRow->getItemId()) ? $matchedRow->getItemId() : null;
             }
@@ -346,7 +346,7 @@ abstract class AbstractReplicationTask
 
         $rowsToReset = $this->getRepository()->getList($resetCriteria->create())->getItems();
 
-        if(!empty($rowsToReset)) {
+        if (!empty($rowsToReset)) {
             try {
                 foreach ($rowsToReset as $rowToReset) {
                     $rowToReset->setProcessed(0);
