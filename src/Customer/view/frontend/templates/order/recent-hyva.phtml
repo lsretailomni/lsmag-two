@@ -27,6 +27,12 @@ if ($extraActionTitleBlocks = $block->getLayout()->getChildBlocks('order-list-ex
     }, ARRAY_FILTER_USE_BOTH);
 }
 
+usort($_orders, function ($a, $b) {
+    return strtotime($b->getDateTime()) <=> strtotime($a->getDateTime());
+});
+
+$_orders = array_slice($_orders, 0, LSR::MAX_RECENT_ORDER);
+
 $count = count($_orders);
 $orderExist = $count > 0;
 ?>
@@ -93,10 +99,6 @@ $orderExist = $count > 0;
                     </thead>
                     <tbody>
                     <?php foreach ($_orders as $i => $_order):
-                        if ($orderCount == LSR::MAX_RECENT_ORDER) {
-                            break;
-                        }
-
                         if ($_order->getSaleIsReturnSale()) {
                             continue;
                         }
