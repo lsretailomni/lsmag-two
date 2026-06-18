@@ -365,14 +365,16 @@ abstract class AbstractReplicationTask
         } elseif ($source->getIsDeleted() && $confPath == ReplLscRetailImageLinkTask::CONFIG_PATH) {
             // Find records to update IsDeleted by scope + image id.
 
-            if ($source->getImageId()) {
-                $imageId = str_replace('Item Variant: ', '', $source->getImageId());
+            if ($source->getRecordId()) {
+                $keyValue = str_replace('Item Variant: ', '', $source->getRecordId());
+                $keyValue = str_replace('Item: ', '', $keyValue);
             }
             
             $criteria = $this->getSearchCriteria();
             $criteria->addFilter('scope', $source->getScope());
             $criteria->addFilter('scope_id', $source->getScopeId());
             $criteria->addFilter('ImageId', $source->getImageId());
+            $criteria->addFilter('KeyValue', $keyValue);
             $deletedImages = $this->getRepository()->getList($criteria->create())->getItems();
 
             if (!empty($deletedImages)) {

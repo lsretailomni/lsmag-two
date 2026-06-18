@@ -838,7 +838,7 @@ class ReplicationHelper extends AbstractHelper
         'ls_mag/replication/repl_image_link' => [
             'image_id' => 'ImageId',
             'scope_id' => 'scope_id',
-            'keyvalue' => 'KeyValue',
+            'record_id' => 'KeyValue',
         ],
         'ls_mag/replication/repl_item' => [
             'no' => 'nav_id',
