@@ -1,0 +1,89 @@
+<?php
+/**
+ *
+ * @var Proactive $block
+ */
+
+use Ls\Omni\Block\Product\View\Discount\Proactive;
+
+$currentProductSku = $block->getProductSku();
+$ajaxUrl           = $block->getUrl('omni/ajax/HyvaProactiveDiscountsAndCoupons');
+?>
+<?php if ($block->isValid()): ?>
+<div id="ls-discounts"
+     x-data="lsProactiveDiscounts"
+     data-ajax-url="<?= $block->escapeUrl($ajaxUrl) ?>"
+     data-product-sku="<?= $block->escapeHtmlAttr((string) $currentProductSku) ?>"
+     class="ls-proactive-discounts my-4">
+    <template x-if="loading">
+        <div class="flex items-center gap-2 py-3 text-sm text-fg-secondary">
+            <svg class="animate-spin h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg"
+                 fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+            <span><?= $block->escapeHtml(__('Loading Product Discounts...')) ?></span>
+        </div>
+    </template>
+    <div x-ref="content"></div>
+</div>
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('lsProactiveDiscounts', () => ({
+            loading: true,
+
+            init() {
+                const root = this.$root;
+                const ajaxUrl = root.dataset.ajaxUrl;
+                const sku = root.dataset.productSku;
+                const url = ajaxUrl + (ajaxUrl.includes('?') ? '&' : '?')
+                    + 'currentProduct=' + encodeURIComponent(sku);
+
+                fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.$refs.content.innerHTML = data.output || '';
+                        // Injected markup carries x-data attributes; wire them up.
+                        Alpine.initTree(this.$refs.content);
+                    })
+                    .catch(error => console.error('Discount load error:', error))
+                    .finally(() => { this.loading = false; });
+            }
+        }));
+
+        Alpine.data('lsDiscountDropdown', () => ({
+            open: false,
+            modalOpen: false,
+            modalContent: '',
+
+            toggle() {
+                this.open = !this.open;
+            },
+
+            close() {
+                this.open = false;
+            },
+
+            /**
+             * Mix & match offers render a "Click Here to see the items" link plus a
+             * hidden #ls-popup-model-<offerNo> container. Delegate the click and show
+             * that container's contents in an Alpine modal (replaces the jQuery modal).
+             */
+            openItems(event) {
+                const trigger = event.target.closest('.ls-click-product-promotion');
+                if (!trigger) {
+                    return;
+                }
+                event.preventDefault();
+                const popup = document.getElementById('ls-popup-model-' + trigger.dataset.id);
+                this.modalContent = popup ? popup.innerHTML : '';
+                this.modalOpen = true;
+            },
+
+            closeModal() {
+                this.modalOpen = false;
+            }
+        }));
+    });
+</script>
+<?php endif; ?>

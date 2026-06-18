@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- The Luma block is parented to product.info.extrahint, which Hyvä never prints. Drop it. -->
+        <referenceBlock name="ls.omni.product.discount.proactive" remove="true"/>
+
+        <!-- Render below add-to-cart, wishlist and compare via the Hyvä product.info.additional container. -->
+        <referenceContainer name="product.info.additional">
+            <block class="Ls\Omni\Block\Product\View\Discount\Proactive"
+                   name="ls.omni.product.discount.proactive.hyva"
+                   template="Ls_Omni::product/hyva/proactive.phtml"
+                   ifconfig="ls_mag/ls_discounts/discount"/>
+        </referenceContainer>
+    </body>
+</page>
