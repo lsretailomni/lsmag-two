@@ -1,471 +1,654 @@
 <?php
 /** @var History $block */
 /** @var Magento\Framework\Escaper $escaper */
+
 /** @var Hyva\Theme\Model\ViewModelRegistry $viewModels */
 
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Ls\Core\Model\LSR;
 use Ls\Customer\Block\Order\History;
 use Magento\Framework\Data\Helper\PostHelper;
+use Hyva\Theme\Model\ViewModelRegistry;
+use Magento\Framework\Escaper;
+use Magento\Sales\Model\Order;
 
-$_orders = $block->getOrderHistory();
+$isLsr = $block->isLsr();
 $orderExist = false;
-/** @var HeroiconsOutline $heroicons */
-$heroicons = $viewModels->require(HeroiconsOutline::class);
-$iconNeutral = $heroicons->switchVerticalHtml('w-3 h-3 inline text-gray-300', 16, 16, ['aria-hidden' => 'true']);
-$iconAsc     = $heroicons->arrowUpHtml('w-3 h-3 inline', 16, 16, ['aria-hidden' => 'true']);
-$iconDesc    = $heroicons->arrowDownHtml('w-3 h-3 inline', 16, 16, ['aria-hidden' => 'true']);
-
-// Build orders JSON for Alpine
-$ordersData = [];
-if ($_orders) {
-    $ordersList = is_array($_orders) ? $_orders : iterator_to_array($_orders);
-    foreach ($ordersList as $_order) {
-        if ($_order->getSaleIsReturnSale()) continue;
-
-        $documentId = $block->getRequiredDocumentId($_order);
-
-        $magOrder = null;
-        $magOrderIncrementId = '';
-        if (!empty($documentId)) {
-            $magOrder = $block->getOrderByDocumentId($documentId);
-            if ($magOrder) {
-                $block->registerValueInRegistry($magOrder);
-                $magOrderIncrementId = $magOrder->getIncrementId();
-            }
-        }
-
-        $storeCurrency = $block->getStoreCurrencyCode($_order->getStoreCurrencyCode());
-
-        $canReorder = !empty($magOrder) &&
-            $this->helper(\Magento\Sales\Helper\Reorder::class)->canReorder($magOrder->getEntityId());
-
-        $canCancel = !empty($magOrder) &&
-            $magOrder->canCancel() &&
-            $block->orderCancellationOnFrontendIsEnabled() &&
-            strtolower($_order['Status']) !== strtolower(LSR::LS_STATE_CANCELED);
-
-        $reorderFormData = null;
-        if ($canReorder) {
-            $reorderFormData = json_decode(
-                $this->helper(PostHelper::class)->getPostData($block->getReorderUrl($magOrder)),
-                true
-            );
-        }
-
-        $cancelFormData = null;
-        if ($canCancel) {
-            $cancelFormData = json_decode(
-                $this->helper(PostHelper::class)->getPostData(
-                    $block->getCancelUrl($magOrder, $_order),
-                    [
-                        'confirmation'        => 1,
-                        'confirmationMessage' => __('Do you wish to cancel this order?')
-                    ]
-                ),
-                true
-            );
-        }
-
-        $ordersData[] = [
-            'documentId'      => $documentId ?: $magOrderIncrementId,
-            'date'            => $block->getFormattedDate($_order->getDateTime()),
-            'dateTimestamp'   => (int) $block->getFormattedDateToTimeStamp($_order->getDateTime()),
-            'shipTo'          => (string) ($_order->getShipToName() ?: __('Not Applicable')),
-            'storeName'       => (string) ($_order->getStoreName() ?: ''),
-            'total'           => $block->getFormattedPrice($_order->getGrossAmount(), $storeCurrency, '', $_order['IdType']),
-            'status'          => (string) ($_order['Status'] ?: ''),
-            'viewUrl'         => $magOrder ? $block->getViewUrl($_order, $magOrder) : $block->getViewUrl($_order),
-            'canReorder'      => $canReorder,
-            'reorderAction'   => $reorderFormData['action'] ?? '',
-            'reorderData'     => $reorderFormData['data'] ?? [],
-            'canCancel'       => $canCancel,
-            'cancelAction'    => $cancelFormData['action'] ?? '',
-            'cancelData'      => $cancelFormData['data'] ?? [],
-            'hasMagOrder'     => !empty($magOrder),
-        ];
-    }
-    $orderExist = count($ordersData) > 0;
-}
+$_orders = $block->getOrderHistory();
 ?>
 
-<?= $block->getChildHtml('info') ?>
+<?php if ($isLsr) : ?>
+    <?php
+    /** @var HeroiconsOutline $heroicons */
+    $heroicons = $viewModels->require(HeroiconsOutline::class);
+    $iconNeutral = $heroicons->switchVerticalHtml('w-3 h-3 inline text-gray-300', 16, 16, ['aria-hidden' => 'true']);
+    $iconAsc = $heroicons->arrowUpHtml('w-3 h-3 inline', 16, 16, ['aria-hidden' => 'true']);
+    $iconDesc = $heroicons->arrowDownHtml('w-3 h-3 inline', 16, 16, ['aria-hidden' => 'true']);
 
-<?php if ($orderExist): ?>
-    <div
-        class="mb-4"
-        x-data="orderHistory(<?= $escaper->escapeHtmlAttr(json_encode([
-            'orders'         => $ordersData,
-            'resultsPerPage' => 10,
-            'allowReorder'   => $this->helper(\Magento\Sales\Helper\Reorder::class)->isAllow(),
-            'cancelEnabled'  => (bool) $block->orderCancellationOnFrontendIsEnabled(),
-            'icons' => [
-                'neutral' => $iconNeutral,
-                'asc'     => $iconAsc,
-                'desc'    => $iconDesc,
-            ],
-        ])) ?>)"
-    >
-        <?php /* Search bar */ ?>
-        <div class="flex flex-col sm:flex-row gap-2 mb-4">
-            <select x-model="searchColumn"
-                @change="updateFilter()"
-                class="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:w-48"
-                aria-label="<?= $escaper->escapeHtmlAttr(__('Search by column')) ?>">
-                <option value="documentId"><?= $escaper->escapeHtml(__('Doc ID')) ?></option>
-                <option value="date"><?= $escaper->escapeHtml(__('Date')) ?></option>
-                <option value="shipTo"><?= $escaper->escapeHtml(__('Ship To')) ?></option>
-                <option value="storeName"><?= $escaper->escapeHtml(__('Store Name')) ?></option>
-                <option value="status"><?= $escaper->escapeHtml(__('Status')) ?></option>
-            </select>
-            <div class="relative flex-1">
-                <input type="text"
-                    x-model="searchText"
-                    @input="updateFilter()"
-                    placeholder="<?= $escaper->escapeHtmlAttr(__('Search orders...')) ?>"
-                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    aria-label="<?= $escaper->escapeHtmlAttr(__('Search orders')) ?>"/>
-                <button x-show="searchText.length"
-                    @click="searchText = ''; updateFilter()"
-                    class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    aria-label="<?= $escaper->escapeHtmlAttr(__('Clear search')) ?>"
-                    type="button">
-                    <?= $heroicons->xHtml('', 16, 16, ['aria-hidden' => 'true']) ?>
-                </button>
+    $extraActionTitles = [];
+    if ($extraActionTitleBlocks = $block->getLayout()->getChildBlocks('order-list-extra-action-titles')) {
+        foreach ($extraActionTitleBlocks as $alias => $extraActionTitleBlock) {
+            $html = $extraActionTitleBlock->toHtml();
+            if (trim($html) && $block->getLayout()->getChildBlock('order-list-extra-action-buttons', $alias)) {
+                $extraActionTitles[$alias] = $html;
+            }
+        }
+    }
+
+    $ordersData = [];
+    if ($_orders) {
+        $ordersList = is_array($_orders) ? $_orders : iterator_to_array($_orders);
+        foreach ($ordersList as $_order) {
+            if ($_order->getSaleIsReturnSale()) continue;
+
+            $documentId = $block->getRequiredDocumentId($_order);
+
+            $magOrder = null;
+            $magOrderIncrementId = '';
+            if (!empty($documentId)) {
+                $magOrder = $block->getOrderByDocumentId($documentId);
+                if ($magOrder) {
+                    $block->registerValueInRegistry($magOrder);
+                    $magOrderIncrementId = $magOrder->getIncrementId();
+                }
+            }
+
+            $storeCurrency = $block->getStoreCurrencyCode($_order->getStoreCurrencyCode());
+
+            $canReorder = !empty($magOrder) &&
+                $this->helper(\Magento\Sales\Helper\Reorder::class)->canReorder($magOrder->getEntityId());
+
+            $reorderFormData = null;
+            if ($canReorder) {
+                $reorderFormData = json_decode(
+                    $this->helper(PostHelper::class)->getPostData($block->getReorderUrl($magOrder)),
+                    true
+                );
+            }
+
+            $canCancel = !empty($magOrder) &&
+                $magOrder->canCancel() &&
+                $block->orderCancellationOnFrontendIsEnabled() &&
+                strtolower($_order['Status']) !== strtolower(LSR::LS_STATE_CANCELED);
+
+            $extraActionButtons = [];
+            $block->getLayout()->getBlock('cancel-order-modal')->setTemplate('Ls_Customer::order/hyva/actions/cancel-order-modal.phtml');
+            foreach (array_keys($extraActionTitles) as $alias) {
+                $buttonBlock = $block->getLayout()->getChildBlock('order-list-extra-action-buttons', $alias);
+                if (!$buttonBlock || empty($magOrder)) {
+                    $extraActionButtons[$alias] = '';
+                }
+                $extraActionButtons[$alias] = $buttonBlock
+                    ->assign('order', $magOrder)
+                    ->setData([
+                        'magorder' => $magOrder,
+                        'centralOrder' => $_order,
+                    ])->setTemplate('Ls_Customer::order/hyva/actions/order-list-cancel-order-button.phtml')
+                    ->toHtml();
+            }
+
+            $ordersData[] = [
+                'documentId' => $documentId ?: $magOrderIncrementId,
+                'date' => $block->getFormattedDate($_order->getDateTime()),
+                'dateTimestamp' => (int)$block->getFormattedDateToTimeStamp($_order->getDateTime()),
+                'shipTo' => (string)($_order->getShipToName() ?: __('Not Applicable')),
+                'storeName' => (string)($_order->getStoreName() ?: ''),
+                'total' => $block->getFormattedPrice($_order->getGrossAmount(), $storeCurrency, '', $_order['IdType']),
+                'status' => (string)($_order['Status'] ?: ''),
+                'viewUrl' => $magOrder ? $block->getViewUrl($_order, $magOrder) : $block->getViewUrl($_order),
+                'hasMagOrder' => !empty($magOrder),
+                'canReorder' => $canReorder,
+                'reorderAction' => $reorderFormData['action'] ?? '',
+                'reorderData' => $reorderFormData['data'] ?? [],
+                'canCancel' => $canCancel,
+                'extraActions' => $extraActionButtons,
+            ];
+        }
+        $orderExist = count($ordersData) > 0;
+    }
+    ?>
+
+    <?= $block->getChildHtml('info') ?>
+
+    <?php if ($orderExist): ?>
+        <div
+            class="mb-4"
+            x-data="orderHistory(<?= $escaper->escapeHtmlAttr(json_encode([
+                'orders' => $ordersData,
+                'resultsPerPage' => 10,
+                'allowReorder' => $this->helper(\Magento\Sales\Helper\Reorder::class)->isAllow(),
+                'cancelEnabled' => (bool)$block->orderCancellationOnFrontendIsEnabled(),
+                'extraAliases' => array_keys($extraActionTitles),   // ordered list of aliases
+                'icons' => [
+                    'neutral' => $iconNeutral,
+                    'asc' => $iconAsc,
+                    'desc' => $iconDesc,
+                ],
+            ])) ?>)"
+        >
+            <!-- Search bar -->
+            <div class="flex flex-col sm:flex-row gap-2 mb-4">
+                <select
+                    x-model="searchColumn"
+                    @change="updateFilter()"
+                    class="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 sm:w-48"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Search by column')) ?>"
+                >
+                    <option value="documentId"><?= $escaper->escapeHtml(__('Doc ID')) ?></option>
+                    <option value="date"><?= $escaper->escapeHtml(__('Date')) ?></option>
+                    <option value="shipTo"><?= $escaper->escapeHtml(__('Ship To')) ?></option>
+                    <option value="storeName"><?= $escaper->escapeHtml(__('Store Name')) ?></option>
+                    <option value="status"><?= $escaper->escapeHtml(__('Status')) ?></option>
+                </select>
+                <div class="relative flex-1">
+                    <input
+                        type="text"
+                        x-model="searchText"
+                        @input="updateFilter()"
+                        placeholder="<?= $escaper->escapeHtmlAttr(__('Search orders...')) ?>"
+                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Search orders')) ?>"
+                    />
+                    <button
+                        x-show="searchText.length"
+                        @click="searchText = ''; updateFilter()"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Clear search')) ?>"
+                        type="button"
+                    >
+                        <?= $heroicons->xHtml('', 16, 16, ['aria-hidden' => 'true']) ?>
+                    </button>
+                </div>
             </div>
+
+            <!-- Orders table -->
+            <div class="overflow-x-auto card">
+                <table class="w-full" id="my-orders-table" x-show="filteredOrders().length > 0">
+                    <caption class="sr-only"><?= $escaper->escapeHtml(__('Orders')) ?></caption>
+                    <thead class="text-sm border-b">
+                    <tr>
+                        <th class="p-2 text-start cursor-pointer select-none hover:bg-gray-50"
+                            @click="sortBy('documentId')">
+                        <span class="flex items-center gap-1">
+                            <?= $escaper->escapeHtml(__('Doc ID')) ?>
+                            <span x-html="sortIcon('documentId')"></span>
+                        </span>
+                        </th>
+                        <th class="p-2 text-start cursor-pointer select-none hover:bg-gray-50"
+                            @click="sortBy('date')">
+                        <span class="flex items-center gap-1">
+                            <?= $escaper->escapeHtml(__('Date')) ?>
+                            <span x-html="sortIcon('date')"></span>
+                        </span>
+                        </th>
+                        <th class="p-2 text-start cursor-pointer select-none hover:bg-gray-50"
+                            @click="sortBy('shipTo')">
+                        <span class="flex items-center gap-1">
+                            <?= $escaper->escapeHtml(__('Ship To')) ?>
+                            <span x-html="sortIcon('shipTo')"></span>
+                        </span>
+                        </th>
+                        <th class="p-2 text-start hidden lg:table-cell cursor-pointer select-none hover:bg-gray-50"
+                            @click="sortBy('storeName')">
+                        <span class="flex items-center gap-1">
+                            <?= $escaper->escapeHtml(__('Store Name')) ?>
+                            <span x-html="sortIcon('storeName')"></span>
+                        </span>
+                        </th>
+                        <th class="p-2 text-start hidden lg:table-cell cursor-pointer select-none hover:bg-gray-50"
+                            @click="sortBy('total')">
+                        <span class="flex items-center gap-1">
+                            <?= $escaper->escapeHtml(__('Total')) ?>
+                            <span x-html="sortIcon('total')"></span>
+                        </span>
+                        </th>
+                        <th class="p-2 text-start hidden lg:table-cell cursor-pointer select-none hover:bg-gray-50"
+                            @click="sortBy('status')">
+                        <span class="flex items-center gap-1">
+                            <?= $escaper->escapeHtml(__('Status')) ?>
+                            <span x-html="sortIcon('status')"></span>
+                        </span>
+                        </th>
+                        <th class="p-2 text-center">
+                            <?= $escaper->escapeHtml(__('View')) ?>
+                            <template x-if="allowReorder">
+                                <span> / <?= $escaper->escapeHtml(__('Reorder')) ?></span>
+                            </template>
+                            <?php foreach ($extraActionTitles as $extraActionTitle): ?>
+                                / <?= /** @noEscape */
+                                $extraActionTitle ?>
+                            <?php endforeach; ?>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <template x-for="(order, index) in filteredOrders()" :key="order.documentId + index">
+                        <tr
+                            x-show="visibleRows.includes(index)"
+                            class="border-b even:bg-gray-100 align-top"
+                        >
+                            <td class="p-2 text-sm" x-text="order.documentId"></td>
+                            <td class="p-2 text-sm" x-text="order.date"></td>
+                            <td class="p-2 text-sm" x-text="order.shipTo"></td>
+                            <td class="p-2 text-sm hidden lg:table-cell" x-text="order.storeName"></td>
+                            <td class="p-2 text-sm hidden lg:table-cell" x-text="order.total"></td>
+                            <td class="p-2 text-sm hidden lg:table-cell" x-text="order.status"></td>
+                            <td class="p-2">
+                                <div class="flex items-center justify-evenly gap-1">
+
+                                    <!-- View -->
+                                    <a
+                                        :href="order.viewUrl"
+                                        class="inline-block text-sm underline"
+                                        :title="'<?= $escaper->escapeHtmlAttr(__('View Order')) ?>' + ' ' + order.documentId"
+                                        :aria-label="'<?= $escaper->escapeHtmlAttr(__('View Order')) ?>' + ' ' + order.documentId"
+                                    >
+                                        <?= $heroicons->eyeHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+                                    </a>
+
+                                    <!-- Reorder — active -->
+                                    <template x-if="order.hasMagOrder && allowReorder && order.canReorder">
+                                        <form :action="order.reorderAction" method="post"
+                                              class="inline-flex items-center">
+                                            <?= $block->getBlockHtml('formkey') ?>
+                                            <input type="hidden" name="data" :value="JSON.stringify(order.reorderData)">
+                                            <button
+                                                type="submit"
+                                                class="inline-block text-sm underline"
+                                                :title="'<?= $escaper->escapeHtmlAttr(__('Reorder')) ?>' + ' ' + order.documentId"
+                                                :aria-label="'<?= $escaper->escapeHtmlAttr(__('Reorder')) ?>' + ' ' + order.documentId"
+                                            >
+                                                <?= $heroicons->refreshHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+                                            </button>
+                                        </form>
+                                    </template>
+                                    <!-- Reorder — disabled placeholder -->
+                                    <template x-if="allowReorder && !(order.hasMagOrder && order.canReorder)">
+                                    <span aria-hidden="true">
+                                        <?= $heroicons->refreshHtml('text-gray-300', 24, 24, ['aria-hidden' => 'true']) ?>
+                                    </span>
+                                    </template>
+
+                                    <template x-for="alias in extraAliases" :key="alias">
+                                        <span class="inline-flex items-center"
+                                              x-html="order.extraActions[alias] ?? ''"></span>
+                                    </template>
+
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                    </tbody>
+                </table>
+
+                <!-- Empty search result -->
+                <div x-show="filteredOrders().length === 0" class="p-4 text-center text-gray-500 text-sm">
+                    <?= $escaper->escapeHtml(__('No orders match your search.')) ?>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4 gap-3"
+                 x-show="filteredOrders().length > 0">
+                <p class="text-sm text-gray-600">
+                    <?= $escaper->escapeHtml(__('Showing')) ?>
+                    <strong x-text="startEntry()"></strong>
+                    <?= $escaper->escapeHtml(__('to')) ?>
+                    <strong x-text="endEntry()"></strong>
+                    <?= $escaper->escapeHtml(__('of')) ?>
+                    <strong x-text="filteredOrders().length"></strong>
+                    <?= $escaper->escapeHtml(__('orders')) ?>
+                </p>
+                <div x-show="displayPagination" class="flex items-center gap-1 flex-wrap">
+                    <button
+                        x-show="!hidePreviousButton"
+                        @click="toPreviousPage()"
+                        type="button"
+                        class="px-3 py-1 text-sm border rounded hover:bg-gray-100"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Previous page')) ?>"
+                    >
+                        <?= $escaper->escapeHtml(__('Previous')) ?>
+                    </button>
+                    <template x-for="page in pages" :key="page">
+                        <button
+                            @click="activePage(page)"
+                            type="button"
+                            :class="isActive === page
+                            ? 'px-3 py-1 text-sm border rounded bg-blue-600 text-white font-semibold'
+                            : 'px-3 py-1 text-sm border rounded hover:bg-gray-100'"
+                            :aria-label="'<?= $escaper->escapeHtmlAttr(__('Page')) ?>' + ' ' + page"
+                            :aria-current="isActive === page ? 'page' : false"
+                            x-text="page"
+                        ></button>
+                    </template>
+                    <button
+                        x-show="!hideNextButton"
+                        @click="toNextPage()"
+                        type="button"
+                        class="px-3 py-1 text-sm border rounded hover:bg-gray-100"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Next page')) ?>"
+                    >
+                        <?= $escaper->escapeHtml(__('Next')) ?>
+                    </button>
+                    <button
+                        x-show="displayPagination"
+                        @click="showAllItems()"
+                        type="button"
+                        class="px-3 py-1 text-sm border rounded hover:bg-gray-100 text-gray-500"
+                    >
+                        <?= $escaper->escapeHtml(__('Show All')) ?>
+                    </button>
+                </div>
+            </div>
+
         </div>
 
-        <?php /* Orders table */ ?>
-        <div class="overflow-x-auto card">
-            <table class="w-full" id="my-orders-table" x-show="filteredOrders().length > 0">
-                <caption class="sr-only"><?= $escaper->escapeHtml(__('Orders')) ?></caption>
-                <thead class="text-sm border-b">
+        <script>
+            function orderHistory(config) {
+                return {
+                    allOrders: config.orders || [],
+                    resultsPerPage: config.resultsPerPage || 10,
+                    allowReorder: config.allowReorder || false,
+                    cancelEnabled: config.cancelEnabled || false,
+                    extraAliases: config.extraAliases || [],
+                    icons: config.icons || {},
+
+                    searchColumn: 'documentId',
+                    searchText: '',
+                    filters: {
+                        documentId: '',
+                        date: '',
+                        shipTo: '',
+                        storeName: '',
+                        status: ''
+                    },
+
+                    sortColumn: 'date',
+                    sortDirection: 'desc',
+
+                    pages: [],
+                    visibleRows: [],
+                    displayPagination: false,
+                    hidePreviousButton: true,
+                    hideNextButton: true,
+                    isActive: 1,
+
+                    init() {
+                        this.buildPages(this.allOrders.length)
+                        this.activePage(1)
+                    },
+
+                    sortBy(column) {
+                        if (this.sortColumn === column) {
+                            this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc'
+                        } else {
+                            this.sortColumn = column
+                            this.sortDirection = 'asc'
+                        }
+                        this.$nextTick(() => {
+                            this.buildPages(this.filteredOrders().length)
+                            this.activePage(1)
+                        })
+                    },
+
+                    sortIcon(column) {
+                        if (this.sortColumn !== column) return this.icons.neutral
+                        return this.sortDirection === 'asc' ? this.icons.asc : this.icons.desc
+                    },
+
+                    filteredOrders() {
+                        const filtered = this.allOrders.filter(order => {
+                            return (
+                                (!this.filters.documentId || order.documentId.toLowerCase().includes(this.filters.documentId.toLowerCase())) &&
+                                (!this.filters.date || order.date.includes(this.filters.date)) &&
+                                (!this.filters.shipTo || order.shipTo.toLowerCase().includes(this.filters.shipTo.toLowerCase())) &&
+                                (!this.filters.storeName || order.storeName.toLowerCase().includes(this.filters.storeName.toLowerCase())) &&
+                                (!this.filters.status || order.status.toLowerCase().includes(this.filters.status.toLowerCase()))
+                            )
+                        })
+
+                        const dir = this.sortDirection === 'asc' ? 1 : -1
+                        const col = this.sortColumn
+
+                        return filtered.sort((a, b) => {
+                            if (col === 'date') {
+                                return ((a.dateTimestamp || 0) - (b.dateTimestamp || 0)) * dir
+                            }
+                            if (col === 'total') {
+                                const numA = parseFloat(String(a.total).replace(/[^0-9.-]/g, '')) || 0
+                                const numB = parseFloat(String(b.total).replace(/[^0-9.-]/g, '')) || 0
+                                return (numA - numB) * dir
+                            }
+                            return String(a[col] ?? '').localeCompare(String(b[col] ?? '')) * dir
+                        })
+                    },
+
+                    updateFilter() {
+                        Object.keys(this.filters).forEach(k => this.filters[k] = '')
+                        this.filters[this.searchColumn] = this.searchText
+                        this.$nextTick(() => {
+                            this.buildPages(this.filteredOrders().length)
+                            this.activePage(1)
+                        })
+                    },
+
+                    buildPages(totalItems) {
+                        this.pages = []
+                        const totalPages = Math.ceil(totalItems / this.resultsPerPage)
+                        if (totalPages > 1) {
+                            this.displayPagination = true
+                            for (let i = 1; i <= totalPages; i++) this.pages.push(i)
+                            this.hideNextButton = false
+                        } else {
+                            this.displayPagination = false
+                        }
+                    },
+
+                    activePage(page) {
+                        this.isActive = page
+                        const filtered = this.filteredOrders()
+                        const end = this.resultsPerPage * page
+                        const start = end - this.resultsPerPage
+                        this.visibleRows = filtered
+                            .map((_, i) => i)
+                            .filter(i => i >= start && i < end)
+                        this.hidePreviousButton = page === 1
+                        this.hideNextButton = page === this.pages.length || this.pages.length === 0
+                    },
+
+                    toPreviousPage() {
+                        if (this.isActive > 1) this.activePage(this.isActive - 1)
+                    },
+
+                    toNextPage() {
+                        if (this.isActive < this.pages.length) this.activePage(this.isActive + 1)
+                    },
+
+                    showAllItems() {
+                        this.visibleRows = this.filteredOrders().map((_, i) => i)
+                        this.displayPagination = false
+                    },
+
+                    startEntry() {
+                        if (!this.filteredOrders().length) return 0
+                        if (!this.displayPagination) return 1
+                        return ((this.isActive - 1) * this.resultsPerPage) + 1
+                    },
+
+                    endEntry() {
+                        const total = this.filteredOrders().length
+                        if (!this.displayPagination) return total
+                        const end = this.isActive * this.resultsPerPage
+                        return end > total ? total : end
+                    }
+                }
+            }
+
+            window.addEventListener('alpine:init', () => Alpine.data('orderHistory', orderHistory), {once: true})
+        </script>
+
+    <?php else: ?>
+        <div class="message info empty">
+            <span><?= $escaper->escapeHtml(__('You have placed no orders.')) ?></span>
+        </div>
+    <?php endif ?>
+<?php else: ?>
+    <?php
+    /** @var History $block */
+    /** @var Escaper $escaper */
+    /** @var ViewModelRegistry $viewModels */
+
+    /** @var HeroiconsOutline $heroicons */
+    $heroicons = $viewModels->require(HeroiconsOutline::class);
+    /** @var Order[] $orders */
+    $orders = $block->getOrders();
+
+    $extraActions = [];
+    if ($extraActionTitleBlocks = $block->getLayout()->getChildBlocks('order-list-extra-action-titles')) {
+        foreach ($extraActionTitleBlocks as $alias => $extraActionTitleBlock) {
+            $extraActions[$alias] = $extraActionTitleBlock->toHtml();
+        }
+        $extraActions = array_filter($extraActions, function ($output, string $alias) use ($block): bool {
+            return trim($output) && $block->getLayout()->getChildBlock('order-list-extra-action-buttons', $alias);
+        }, ARRAY_FILTER_USE_BOTH);
+    }
+
+    ?>
+    <h2 id="my-orders-title" class="text-2xl mb-6"><?= $escaper->escapeHtml(__('My Orders')) ?></h2>
+    <?= $block->getChildHtml('info') ?>
+    <?php if ($orders && count($orders)): ?>
+        <div class="overflow-x-auto card mb-4">
+            <table
+                id="my-orders-table"
+                class="w-full sm:table-fixed lg:table-auto"
+                aria-labelledby="my-orders-title"
+            >
+                <thead class="text-sm">
                 <tr>
-                    <th class="p-2 text-start cursor-pointer select-none hover:bg-gray-50"
-                        @click="sortBy('documentId')">
-                            <span class="flex items-center gap-1">
-                                <?= $escaper->escapeHtml(__('Doc ID')) ?>
-                                <span x-html="sortIcon('documentId')"></span>
-                            </span>
+                    <th class="p-2 text-start">
+                        <?= $escaper->escapeHtml(__('Order #')) ?>
                     </th>
-                    <th class="p-2 text-start cursor-pointer select-none hover:bg-gray-50"
-                        @click="sortBy('date')">
-                            <span class="flex items-center gap-1">
-                                <?= $escaper->escapeHtml(__('Date')) ?>
-                                <span x-html="sortIcon('date')"></span>
-                            </span>
+                    <th class="p-2 text-start hidden lg:table-cell">
+                        <?= $escaper->escapeHtml(__('Date')) ?>
                     </th>
-                    <th class="p-2 text-start cursor-pointer select-none hover:bg-gray-50"
-                        @click="sortBy('shipTo')">
-                            <span class="flex items-center gap-1">
-                                <?= $escaper->escapeHtml(__('Ship To')) ?>
-                                <span x-html="sortIcon('shipTo')"></span>
-                            </span>
+                    <?= $block->getChildHtml('extra.column.header') ?>
+                    <th class="p-2 text-start">
+                        <?= $escaper->escapeHtml(__('Ship To')) ?>
                     </th>
-                    <th class="p-2 text-start hidden lg:table-cell cursor-pointer select-none hover:bg-gray-50"
-                        @click="sortBy('storeName')">
-                            <span class="flex items-center gap-1">
-                                <?= $escaper->escapeHtml(__('Store Name')) ?>
-                                <span x-html="sortIcon('storeName')"></span>
-                            </span>
+                    <th class="p-2 text-start hidden lg:table-cell">
+                        <?= $escaper->escapeHtml(__('Order Total')) ?>
                     </th>
-                    <th class="p-2 text-start hidden lg:table-cell cursor-pointer select-none hover:bg-gray-50"
-                        @click="sortBy('total')">
-                            <span class="flex items-center gap-1">
-                                <?= $escaper->escapeHtml(__('Total')) ?>
-                                <span x-html="sortIcon('total')"></span>
-                            </span>
-                    </th>
-                    <th class="p-2 text-start hidden lg:table-cell cursor-pointer select-none hover:bg-gray-50"
-                        @click="sortBy('status')">
-                            <span class="flex items-center gap-1">
-                                <?= $escaper->escapeHtml(__('Status')) ?>
-                                <span x-html="sortIcon('status')"></span>
-                            </span>
+                    <th class="p-2 text-start hidden lg:table-cell">
+                        <?= $escaper->escapeHtml(__('Status')) ?>
                     </th>
                     <th class="p-2 text-center">
                         <?= $escaper->escapeHtml(__('View')) ?>
-                        <template x-if="allowReorder">
-                            <span> / <?= $escaper->escapeHtml(__('Reorder')) ?></span>
-                        </template>
-                        <template x-if="cancelEnabled">
-                            <span> / <?= $escaper->escapeHtml(__('Cancel')) ?></span>
-                        </template>
+                        <?php if ($this->helper(\Magento\Sales\Helper\Reorder::class)->isAllow()): ?>
+                            / <?= $escaper->escapeHtml(__('Reorder')) ?>
+                        <?php endif; ?>
+                        <?php foreach ($extraActions as $extraActionTitle): ?>
+                            / <?= /** @noEscape */
+                            $extraActionTitle ?>
+                        <?php endforeach; ?>
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                <template x-for="(order, index) in filteredOrders()" :key="order.documentId + index">
-                    <tr x-show="visibleRows.includes(index)"
-                        class="border-b even:bg-gray-100 align-top">
-                        <td class="p-2 text-sm" x-text="order.documentId"></td>
-                        <td class="p-2 text-sm" x-text="order.date"></td>
-                        <td class="p-2 text-sm" x-text="order.shipTo"></td>
-                        <td class="p-2 text-sm hidden lg:table-cell" x-text="order.storeName"></td>
-                        <td class="p-2 text-sm hidden lg:table-cell" x-text="order.total"></td>
-                        <td class="p-2 text-sm hidden lg:table-cell" x-text="order.status"></td>
+                <?php foreach ($orders as $order): ?>
+                    <tr class="align-top even:bg-gray-100">
+                        <th class="p-2 text-start font-normal">
+                            <?= $escaper->escapeHtml($order->getRealOrderId()) ?>
+                            <p class="lg:hidden text-sm"><?= $escaper->escapeHtml($block->formatDate($order->getCreatedAt())) ?></p>
+                        </th>
+                        <td class="p-2 hidden lg:table-cell">
+                            <?php
+                            $date = $order->getCreatedAt();
+                            $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
+                            $formatLong = $block->getDateFormat() ?: \IntlDateFormatter::LONG;
+                            ?>
+                            <time datetime="<?= $escaper->escapeHtmlAttr($block->formatDate($date, $format)); ?>">
+                                <span
+                                    aria-hidden="true"><?= $escaper->escapeHtml($block->formatDate($date, $format)); ?></span>
+                                <span class="sr-only">
+                                    <?= $escaper->escapeHtml($block->formatDate($date, $formatLong)); ?>
+                                </span>
+                            </time>
+                        </td>
+                        <?php $extra = $block->getChildBlock('extra.container') ?>
+                        <?php if ($extra): ?>
+                            <?php $extra->setOrder($order) ?>
+                            <?= $extra->getChildHtml() ?>
+                        <?php endif; ?>
                         <td class="p-2">
-                            <div class="flex items-center justify-evenly gap-1">
-
-                                <?php /* View */ ?>
-                                <a :href="order.viewUrl"
-                                class="inline-block text-sm underline"
-                                :title="'<?= $escaper->escapeHtmlAttr(__('View Order')) ?>' + ' ' + order.documentId"
-                                :aria-label="'<?= $escaper->escapeHtmlAttr(__('View Order')) ?>' + ' ' + order.documentId">
-                                <?= $heroicons->eyeHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
-                                </a>
-
-                                <?php /* Reorder — active */ ?>
-                                <template x-if="order.hasMagOrder && allowReorder && order.canReorder">
-                                    <form :action="order.reorderAction" method="post" class="inline-flex items-center">
-                                        <?= $block->getBlockHtml('formkey') ?>
-                                        <input type="hidden" name="data" :value="JSON.stringify(order.reorderData)">
-                                        <button type="submit"
-                                            class="inline-block text-sm underline"
-                                            :title="'<?= $escaper->escapeHtmlAttr(__('Reorder')) ?>' + ' ' + order.documentId"
-                                            :aria-label="'<?= $escaper->escapeHtmlAttr(__('Reorder')) ?>' + ' ' + order.documentId">
-                                            <?= $heroicons->refreshHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
-                                        </button>
-                                    </form>
-                                </template>
-                                <?php /* Reorder — disabled placeholder */ ?>
-                                <template x-if="allowReorder && !(order.hasMagOrder && order.canReorder)">
-                                    <span aria-hidden="true"><?= $heroicons->refreshHtml('text-gray-300', 24, 24, ['aria-hidden' => 'true']) ?></span>
-                                </template>
-
-                                <?php /* Cancel — active */ ?>
-                                <template x-if="order.hasMagOrder && cancelEnabled && order.canCancel">
-                                    <form :action="order.cancelAction" method="post" class="inline-flex items-center">
-                                        <?= $block->getBlockHtml('formkey') ?>
-                                        <input type="hidden" name="data" :value="JSON.stringify(order.cancelData)">
-                                        <button type="submit"
-                                            class="inline-block text-sm underline text-red-600 hover:text-red-800"
-                                            :title="'<?= $escaper->escapeHtmlAttr(__('Cancel Order')) ?>' + ' ' + order.documentId"
-                                            :aria-label="'<?= $escaper->escapeHtmlAttr(__('Cancel Order')) ?>' + ' ' + order.documentId">
-                                            <?= $heroicons->xCircleHtml('text-red-500', 24, 24, ['aria-hidden' => 'true']) ?>
-                                        </button>
-                                    </form>
-                                </template>
-                                <?php /* Cancel — disabled placeholder */ ?>
-                                <template x-if="cancelEnabled && !(order.hasMagOrder && order.canCancel)">
-                                    <span aria-hidden="true"><?= $heroicons->xCircleHtml('text-gray-300', 24, 24, ['aria-hidden' => 'true']) ?></span>
-                                </template>
-                            </div>
+                            <?= $order->getShippingAddress() ? $escaper->escapeHtml($order->getShippingAddress()->getName()) : '&nbsp;' ?>
+                        </td>
+                        <td class="p-2 hidden lg:table-cell">
+                            <?= /* @noEscape */
+                            $order->formatPrice($order->getGrandTotal()) ?>
+                        </td>
+                        <td class="p-2 hidden lg:table-cell">
+                            <?= $escaper->escapeHtml($order->getStatusLabel()) ?>
+                        </td>
+                        <td class="p-2">
+                            <?php // 'received' is an order status added in Magento_AsyncOrder in Adobe Commerce ?>
+                            <?php // The condition will always return 'true' in Magento Open Source ?>
+                            <?php if ($order->getStatus() !== 'received'): ?>
+                                <div class="flex items-center justify-evenly">
+                                    <a
+                                        href="<?= $escaper->escapeUrl($block->getViewUrl($order)) ?>"
+                                        class="inline-block text-sm underline"
+                                        title="<?= $escaper->escapeHtmlAttr(__('View Order')) ?>"
+                                        aria-label="<?= $escaper->escapeHtmlAttr(__('View order') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
+                                    >
+                                        <?= $heroicons->eyeHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+                                    </a>
+                                    <?php if ($this->helper(\Magento\Sales\Helper\Reorder::class)->canReorder($order->getEntityId())): ?>
+                                        <?php $formData = json_decode(
+                                            $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)->getPostData(
+                                                $block->getReorderUrl($order)
+                                            ),
+                                            true
+                                        ) ?>
+                                        <form
+                                            action="<?= /* @noEscape */
+                                            $formData['action'] ?>"
+                                            method="post"
+                                            class="inline-flex items-center"
+                                        >
+                                            <?= $block->getBlockHtml('formkey'); ?>
+                                            <input type="hidden" name="data"
+                                                   value="<?= $escaper->escapeHtmlAttr(json_encode($formData['data'])) ?>">
+                                            <button
+                                                title="<?= $escaper->escapeHtmlAttr(__('Reorder')) ?>"
+                                                type="submit"
+                                                class="inline-block text-sm underline"
+                                                aria-label="<?= $escaper->escapeHtmlAttr(__('Reorder') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
+                                            >
+                                                <?= $heroicons->refreshHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+                                            </button>
+                                        </form>
+                                    <?php else: ?>
+                                        <?= $heroicons->refreshHtml('text-gray-300', 24, 24, ['aria-hidden' => 'true']) ?>
+                                    <?php endif ?>
+                                    <?php foreach (array_keys($extraActions) as $alias): ?>
+                                        <?php $button = $block->getLayout()->getChildBlock('order-list-extra-action-buttons', $alias) ?>
+                                        <?= $button->assign('order', $order)->setData('order', $order)->toHtml() ?>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif ?>
                         </td>
                     </tr>
-                </template>
+                <?php endforeach; ?>
                 </tbody>
             </table>
-
-            <?php /* Empty search result */ ?>
-            <div x-show="filteredOrders().length === 0" class="p-4 text-center text-gray-500 text-sm">
-                <?= $escaper->escapeHtml(__('No orders match your search.')) ?>
-            </div>
         </div>
-
-        <?php /* Pagination */ ?>
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4 gap-3"
-             x-show="filteredOrders().length > 0">
-            <p class="text-sm text-gray-600">
-                <?= $escaper->escapeHtml(__('Showing')) ?>
-                <strong x-text="startEntry()"></strong>
-                <?= $escaper->escapeHtml(__('to')) ?>
-                <strong x-text="endEntry()"></strong>
-                <?= $escaper->escapeHtml(__('of')) ?>
-                <strong x-text="filteredOrders().length"></strong>
-                <?= $escaper->escapeHtml(__('orders')) ?>
-            </p>
-            <div x-show="displayPagination" class="flex items-center gap-1 flex-wrap">
-                <button
-                    x-show="!hidePreviousButton"
-                    @click="toPreviousPage()"
-                    type="button"
-                    class="px-3 py-1 text-sm border rounded hover:bg-gray-100"
-                    aria-label="<?= $escaper->escapeHtmlAttr(__('Previous page')) ?>"
-                >
-                    <?= $escaper->escapeHtml(__('Previous')) ?>
-                </button>
-                <template x-for="page in pages" :key="page">
-                    <button
-                        @click="activePage(page)"
-                        type="button"
-                        :class="isActive === page
-                            ? 'px-3 py-1 text-sm border rounded bg-blue-600 text-white font-semibold'
-                            : 'px-3 py-1 text-sm border rounded hover:bg-gray-100'"
-                        :aria-label="'<?= $escaper->escapeHtmlAttr(__('Page')) ?>' + ' ' + page"
-                        :aria-current="isActive === page ? 'page' : false"
-                        x-text="page"
-                    ></button>
-                </template>
-                <button
-                    x-show="!hideNextButton"
-                    @click="toNextPage()"
-                    type="button"
-                    class="px-3 py-1 text-sm border rounded hover:bg-gray-100"
-                    aria-label="<?= $escaper->escapeHtmlAttr(__('Next page')) ?>"
-                >
-                    <?= $escaper->escapeHtml(__('Next')) ?>
-                </button>
-                <button
-                    x-show="displayPagination"
-                    @click="showAllItems()"
-                    type="button"
-                    class="px-3 py-1 text-sm border rounded hover:bg-gray-100 text-gray-500"
-                >
-                    <?= $escaper->escapeHtml(__('Show All')) ?>
-                </button>
+        <?php if ($block->getPagerHtml()): ?>
+            <div class="order-products-toolbar toolbar bottom">
+                <?= $block->getPagerHtml() ?>
             </div>
-        </div>
+        <?php endif ?>
+    <?php else: ?>
+        <div class="message info empty"><span><?= $escaper->escapeHtml($block->getEmptyOrdersMessage()) ?></span></div>
+    <?php endif ?>
 
-    </div>
-
-    <script>
-        function orderHistory(config) {
-            return {
-                allOrders:      config.orders || [],
-                resultsPerPage: config.resultsPerPage || 10,
-                allowReorder:   config.allowReorder || false,
-                cancelEnabled:  config.cancelEnabled || false,
-                icons:          config.icons || {},
-
-                searchColumn: 'documentId',
-                searchText:   '',
-                filters: {
-                    documentId: '',
-                    date:       '',
-                    shipTo:     '',
-                    storeName:  '',
-                    status:     ''
-                },
-
-                sortColumn:    'date',
-                sortDirection: 'desc',
-
-                pages:              [],
-                visibleRows:        [],
-                displayPagination:  false,
-                hidePreviousButton: true,
-                hideNextButton:     true,
-                isActive:           1,
-
-                init() {
-                    this.buildPages(this.allOrders.length)
-                    this.activePage(1)
-                },
-
-                sortBy(column) {
-                    if (this.sortColumn === column) {
-                        this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc'
-                    } else {
-                        this.sortColumn    = column
-                        this.sortDirection = 'asc'
-                    }
-                    this.$nextTick(() => {
-                        this.buildPages(this.filteredOrders().length)
-                        this.activePage(1)
-                    })
-                },
-
-                sortIcon(column) {
-                    if (this.sortColumn !== column) return this.icons.neutral
-                    return this.sortDirection === 'asc' ? this.icons.asc : this.icons.desc
-                },
-
-                filteredOrders() {
-                    const filtered = this.allOrders.filter(order => {
-                        return (
-                            (!this.filters.documentId || order.documentId.toLowerCase().includes(this.filters.documentId.toLowerCase())) &&
-                            (!this.filters.date       || order.date.includes(this.filters.date)) &&
-                            (!this.filters.shipTo     || order.shipTo.toLowerCase().includes(this.filters.shipTo.toLowerCase())) &&
-                            (!this.filters.storeName  || order.storeName.toLowerCase().includes(this.filters.storeName.toLowerCase())) &&
-                            (!this.filters.status     || order.status.toLowerCase().includes(this.filters.status.toLowerCase()))
-                        )
-                    })
-
-                    const dir = this.sortDirection === 'asc' ? 1 : -1
-                    const col = this.sortColumn
-
-                    return filtered.sort((a, b) => {
-                        // Use pre-computed timestamp for reliable date sorting
-                        if (col === 'date') {
-                            return ((a.dateTimestamp || 0) - (b.dateTimestamp || 0)) * dir
-                        }
-                        // Strip currency symbols for numeric total sorting
-                        if (col === 'total') {
-                            const numA = parseFloat(String(a.total).replace(/[^0-9.-]/g, '')) || 0
-                            const numB = parseFloat(String(b.total).replace(/[^0-9.-]/g, '')) || 0
-                            return (numA - numB) * dir
-                        }
-                        // String sort for all other columns
-                        return String(a[col] ?? '').localeCompare(String(b[col] ?? '')) * dir
-                    })
-                },
-
-                updateFilter() {
-                    Object.keys(this.filters).forEach(k => this.filters[k] = '')
-                    this.filters[this.searchColumn] = this.searchText
-                    this.$nextTick(() => {
-                        this.buildPages(this.filteredOrders().length)
-                        this.activePage(1)
-                    })
-                },
-
-                buildPages(totalItems) {
-                    this.pages = []
-                    const totalPages = Math.ceil(totalItems / this.resultsPerPage)
-                    if (totalPages > 1) {
-                        this.displayPagination = true
-                        for (let i = 1; i <= totalPages; i++) this.pages.push(i)
-                        this.hideNextButton = false
-                    } else {
-                        this.displayPagination = false
-                    }
-                },
-
-                activePage(page) {
-                    this.isActive = page
-                    const filtered = this.filteredOrders()
-                    const end      = this.resultsPerPage * page
-                    const start    = end - this.resultsPerPage
-                    this.visibleRows = filtered
-                        .map((_, i) => i)
-                        .filter(i => i >= start && i < end)
-                    this.hidePreviousButton = page === 1
-                    this.hideNextButton     = page === this.pages.length || this.pages.length === 0
-                },
-
-                toPreviousPage() {
-                    if (this.isActive > 1) this.activePage(this.isActive - 1)
-                },
-
-                toNextPage() {
-                    if (this.isActive < this.pages.length) this.activePage(this.isActive + 1)
-                },
-
-                showAllItems() {
-                    this.visibleRows      = this.filteredOrders().map((_, i) => i)
-                    this.displayPagination = false
-                },
-
-                startEntry() {
-                    if (!this.filteredOrders().length) return 0
-                    if (!this.displayPagination) return 1
-                    return ((this.isActive - 1) * this.resultsPerPage) + 1
-                },
-
-                endEntry() {
-                    const total = this.filteredOrders().length
-                    if (!this.displayPagination) return total
-                    const end = this.isActive * this.resultsPerPage
-                    return end > total ? total : end
-                }
-            }
-        }
-        window.addEventListener('alpine:init', () => Alpine.data('orderHistory', orderHistory), {once: true})
-    </script>
-
-<?php else: ?>
-    <div class="message info empty">
-        <span><?= $escaper->escapeHtml(__('You have placed no orders.')) ?></span>
-    </div>
 <?php endif ?>

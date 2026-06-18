@@ -5,6 +5,8 @@
     <update handle="sales_order_item_renderers"/>
     <update handle="sales_order_item_price"/>
     <update handle="customer_order_info_links"/>
+    <update handle="hyva_modal"/>
+    <update handle="hyva_form_validation"/>
     <body>
         <referenceContainer name="content">
             <block class="Ls\Customer\Block\Order\Custom\Hyva\View"
@@ -55,6 +57,13 @@
                 <referenceBlock name="custom.order.date" remove="true"/>
                 <referenceBlock name="sales.order.info.buttons" remove="true"/>
             </block>
+        </referenceContainer>
+
+        <referenceBlock name="sales.order.buttons">
+            <block name="order-cancellation-button" template="Ls_Customer::order/hyva/actions/order-view-cancel-order-button.phtml"/>
+        </referenceBlock>
+        <referenceContainer name="before.body.end">
+            <block name="cancel-order-modal" template="Ls_Customer::order/hyva/actions/cancel-order-modal.phtml"/>
         </referenceContainer>
         <block class="Magento\Framework\View\Element\Template"
                name="additional.product.info"

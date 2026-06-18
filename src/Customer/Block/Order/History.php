@@ -81,6 +81,19 @@ class History extends \Magento\Sales\Block\Order\History
     }
 
     /**
+     * @return bool|null
+     * @throws NoSuchEntityException
+     */
+    public function isLsr()
+    {
+        return $this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getCustomerIntegrationOnFrontend()
+        );
+    }
+
+    /**
      * Get formatted price
      *
      * @param $amount
