@@ -194,17 +194,9 @@ class Totals extends AbstractOrderBlock
                         $method    = $tenderTypeMapping[$tenderTypeId];
                         $methods[] = __($method);
 
-                        $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
-                        $loyaltyTenderId  = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
-                        if ($giftCardTenderId == $tenderTypeId) {
-                            $this->giftCardAmount = $line->getAmount();
-                        } elseif ($loyaltyTenderId == $tenderTypeId) {
+                        $loyaltyTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
+                        if ($loyaltyTenderId == $tenderTypeId) {
                             $this->loyaltyPointAmount = $this->formatLoyaltyPoints($line->getAmount());
-                        } else {
-                            $this->voucherEntries[] = [
-                                'label'  => $method,
-                                'amount' => (float)$line->getAmount(),
-                            ];
                         }
                     } else {
                         $methods[] = __('Unknown');
@@ -212,6 +204,25 @@ class Totals extends AbstractOrderBlock
                 }
             }
         }
+
+        // Build gift card amount and voucher entries from the Magento order's stored POS data entries.
+        // Reading from ls_pos_data_entries avoids treating regular card payment lines as vouchers.
+        $magOrder   = $this->getMagOrder();
+        $allEntries = json_decode((string)($magOrder ? $magOrder->getLsPosDataEntries() : null), true) ?? [];
+        foreach ($allEntries as $entry) {
+            $entryType = $entry['entry_type'] ?? '';
+            $entryNo   = $entry['entry_no'] ?? '';
+            $amount    = (float)($entry['amount'] ?? 0);
+            if (strtoupper($entryType) === 'GIFTCARDNO') {
+                $this->giftCardAmount += $amount;
+            } else {
+                $this->voucherEntries[] = [
+                    'label'  => $entryNo ? ($entryType . ' - ' . $entryNo) : $entryType,
+                    'amount' => $amount,
+                ];
+            }
+        }
+
         return [implode(', ', $methods), $giftCardInfo, $loyaltyInfo];
     }
 

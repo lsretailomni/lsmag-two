@@ -6,15 +6,15 @@ namespace Ls\Omni\Test\Integration\Helper;
 use Ls\Omni\Client\CentralEcommerce\Entity\CustomerOrderCreateCOPaymentV6;
 use Ls\Omni\Helper\OrderHelper;
 use Ls\Omni\Test\Integration\AbstractIntegrationTest;
+use Magento\Directory\Model\Currency;
 use Magento\Payment\Model\MethodInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment;
 use Magento\TestFramework\Helper\Bootstrap;
 
 /**
- * Verifies that POS data entry payment lines (gift cards, vouchers) are built
- * without CURRENCY_CODE or CURRENCY_FACTOR — these fields are intentionally
- * omitted from all entries in ls_pos_data_entries.
+ * Verifies that POS data entry payment lines (gift cards, vouchers) carry CURRENCY_CODE,
+ * matching the main payment line and loyalty payment line behaviour.
  *
  * @magentoAppArea frontend
  * @magentoAppIsolation enabled
@@ -52,10 +52,16 @@ class OrderHelperVoucherPaymentTest extends AbstractIntegrationTest
         $paymentMock->method('getAmountPaid')->willReturn(0);
         $paymentMock->method('getAmountAuthorized')->willReturn(0);
 
+        $currencyMock = $this->getMockBuilder(Currency::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getCurrencyCode'])
+            ->getMock();
+        $currencyMock->method('getCurrencyCode')->willReturn('USD');
+
         $orderMock = $this->getMockBuilder(Order::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getPayment', 'getGrandTotal', 'getIncrementId',
-                           'getStoreId', 'getPickupStore', 'getShippingMethod'])
+                           'getStoreId', 'getPickupStore', 'getShippingMethod', 'getOrderCurrency'])
             ->getMock();
         $orderMock->method('getPayment')->willReturn($paymentMock);
         $orderMock->method('getGrandTotal')->willReturn(100.0);
@@ -63,6 +69,7 @@ class OrderHelperVoucherPaymentTest extends AbstractIntegrationTest
         $orderMock->method('getStoreId')->willReturn(1);
         $orderMock->method('getPickupStore')->willReturn('');
         $orderMock->method('getShippingMethod')->willReturn(null);
+        $orderMock->method('getOrderCurrency')->willReturn($currencyMock);
 
         // These use DataObject magic via getData/setData
         $orderMock->setData('ls_pos_data_entries', json_encode($posEntries));
@@ -75,7 +82,7 @@ class OrderHelperVoucherPaymentTest extends AbstractIntegrationTest
     /**
      * @magentoAppIsolation enabled
      */
-    public function testGiftCardEntryPaymentLineHasNoCurrencyCode(): void
+    public function testGiftCardEntryPaymentLineHasCurrencyCode(): void
     {
         $order = $this->buildMockOrder([
             ['entry_type' => 'GIFTCARDNO', 'entry_no' => 'GC001', 'pin_code' => '1234',
@@ -86,15 +93,17 @@ class OrderHelperVoucherPaymentTest extends AbstractIntegrationTest
 
         $this->assertNotEmpty($payments);
         foreach ($payments as $payment) {
-            $this->assertNull($payment->getCurrencyCode(), 'CURRENCY_CODE must not be set on POS entry payment lines');
-            $this->assertNull($payment->getCurrencyFactor(), 'CURRENCY_FACTOR must not be set on POS entry payment lines');
+            $this->assertNotEmpty(
+                $payment->getCurrencycode(),
+                'CURRENCY_CODE must be set on POS entry payment lines'
+            );
         }
     }
 
     /**
      * @magentoAppIsolation enabled
      */
-    public function testVoucherEntryPaymentLineHasNoCurrencyCode(): void
+    public function testVoucherEntryPaymentLineHasCurrencyCode(): void
     {
         $order = $this->buildMockOrder([
             ['entry_type' => 'STOREVOUCHER', 'entry_no' => 'SV001', 'pin_code' => '',
@@ -105,15 +114,17 @@ class OrderHelperVoucherPaymentTest extends AbstractIntegrationTest
 
         $this->assertNotEmpty($payments);
         foreach ($payments as $payment) {
-            $this->assertNull($payment->getCurrencyCode(), 'CURRENCY_CODE must not be set on voucher payment lines');
-            $this->assertNull($payment->getCurrencyFactor(), 'CURRENCY_FACTOR must not be set on voucher payment lines');
+            $this->assertNotEmpty(
+                $payment->getCurrencycode(),
+                'CURRENCY_CODE must be set on voucher payment lines'
+            );
         }
     }
 
     /**
      * @magentoAppIsolation enabled
      */
-    public function testMultipleMixedEntriesAllHaveNoCurrencyCode(): void
+    public function testMultipleMixedEntriesAllHaveCurrencyCode(): void
     {
         $order = $this->buildMockOrder([
             ['entry_type' => 'GIFTCARDNO', 'entry_no' => 'GC001', 'pin_code' => '1234',
@@ -128,8 +139,11 @@ class OrderHelperVoucherPaymentTest extends AbstractIntegrationTest
 
         $this->assertCount(3, $payments);
         foreach ($payments as $payment) {
-            $this->assertNull($payment->getCurrencyCode(), 'CURRENCY_CODE must not be set on any POS entry payment line');
-            $this->assertNull($payment->getCurrencyFactor(), 'CURRENCY_FACTOR must not be set on any POS entry payment line');
+            $this->assertSame(
+                'USD',
+                $payment->getCurrencycode(),
+                'CURRENCY_CODE must be the order currency code on all POS entry payment lines'
+            );
         }
     }
 }

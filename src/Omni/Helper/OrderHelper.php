@@ -556,9 +556,9 @@ class OrderHelper extends AbstractHelperOmni
 
         // Unified entry processing: both gift cards and vouchers stored in ls_pos_data_entries.
         // Each entry: {entry_type, entry_no, pin_code, amount, tender_type}
-        // Currency code is intentionally omitted for all POS data entries.
         $entries = json_decode((string)$order->getLsPosDataEntries(), true);
         if (is_array($entries) && count($entries) > 0) {
+            $currencyCode = $order->getOrderCurrency()->getCurrencyCode();
             foreach ($entries as $entry) {
                 $entryNo     = $entry['entry_no'] ?? '';
                 $entryPin    = $entry['pin_code'] ?? '';
@@ -581,6 +581,7 @@ class OrderHelper extends AbstractHelperOmni
                     CustomerOrderCreateCOPaymentV6::TENDER_TYPE             => $tenderTypeId,
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_VALID_DATE => $preApprovedDate,
                     CustomerOrderCreateCOPaymentV6::EXTERNAL_REFERENCE      => $order->getIncrementId(),
+                    CustomerOrderCreateCOPaymentV6::CURRENCY_CODE           => $currencyCode,
                     CustomerOrderCreateCOPaymentV6::AUTHORIZATION_CODE      => $entryPin,
                     CustomerOrderCreateCOPaymentV6::CARDOR_CUSTOMERNUMBER   => $entryNo,
                     CustomerOrderCreateCOPaymentV6::TYPE                    => '1',
