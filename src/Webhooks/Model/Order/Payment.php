@@ -91,6 +91,7 @@ class Payment
                 $isRetail = false;
             }
             $storeId         = $order->getStoreId();
+            $this->helper->getLsrObject()->setStoreId($storeId);
             $isOffline       = $order->getPayment()->getMethodInstance()->isOffline();
             $validateOrder   = $this->validateOrder($order, $documentId);
             $validateInvoice = false;
