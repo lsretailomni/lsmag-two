@@ -1,11 +1,12 @@
 <?php
-/** @var History $block */
+/** @var Recent $block */
 /** @var Magento\Framework\Escaper $escaper */
 /** @var Hyva\Theme\Model\ViewModelRegistry $viewModels */
 
 use Hyva\Theme\ViewModel\HeroiconsOutline;
-use Ls\Core\Model\LSR;
-use Ls\Customer\Block\Order\History;
+use \Ls\Core\Model\LSR;
+use \Ls\Customer\Block\Order\Recent;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Framework\Data\Helper\PostHelper;
 use Magento\Sales\Helper\Reorder;
 
@@ -27,14 +28,18 @@ if ($extraActionTitleBlocks = $block->getLayout()->getChildBlocks('order-list-ex
     }, ARRAY_FILTER_USE_BOTH);
 }
 
-usort($_orders, function ($a, $b) {
-    return strtotime($b->getDateTime()) <=> strtotime($a->getDateTime());
-});
-
-$_orders = array_slice($_orders, 0, LSR::MAX_RECENT_ORDER);
-
 $count = count($_orders);
 $orderExist = $count > 0;
+
+if($orderExist) {
+    usort($_orders, function ($a, $b) {
+        $aDate = $a instanceof OrderInterface ? $a->getCreatedAt() : $a->getDateTime();
+        $bDate = $b instanceof OrderInterface ? $b->getCreatedAt() : $b->getDateTime();
+        return strtotime((string) $bDate) <=> strtotime((string) $aDate);
+    });
+
+    $_orders = array_slice($_orders, 0, LSR::MAX_RECENT_ORDER);
+}
 ?>
 
 <div

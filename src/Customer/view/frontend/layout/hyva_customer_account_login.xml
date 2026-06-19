@@ -4,7 +4,7 @@
     <body>
         <referenceBlock name="customer_form_login">
             <action method="setTemplate">
-                <argument name="template" xsi:type="string">Magento_Customer::form/login.phtml</argument>
+                <argument name="template" xsi:type="string">Ls_Customer::form/login-hyva.phtml</argument>
             </action>
         </referenceBlock>
     </body>
