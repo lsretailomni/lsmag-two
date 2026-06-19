@@ -1,0 +1,30 @@
+<?php
+/**
+ * LS Retail custom footer links for the Hyvä theme.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<nav aria-label="<?= $escaper->escapeHtmlAttr(__('Stores & Gift Cards')) ?>"
+     class="md:w-1/4 w-full flex flex-wrap pr-4">
+    <div class="w-full">
+        <h2 class="text-md leading-5 font-semibold tracking-wider uppercase">
+            <?= $escaper->escapeHtml(__('Stores & Gift Cards')) ?>
+        </h2>
+        <ul class="mt-4">
+            <li>
+                <a href="<?= $escaper->escapeUrl($block->getUrl('omni/stores')) ?>"
+                   class="ls-footer-stores text-base leading-6">
+                    <?= $escaper->escapeHtml(__('Stores')) ?>
+                </a>
+            </li>
+            <li class="mt-4">
+                <a href="<?= $escaper->escapeUrl($block->getUrl('omni/giftcardbalance')) ?>"
+                   class="ls-footer-gift-card text-base leading-6">
+                    <?= $escaper->escapeHtml(__('Check Gift Card Balance')) ?>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

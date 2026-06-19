@@ -1,0 +1,175 @@
+<?php
+/**
+ * Hyvä version of the Stores page.
+ *
+ * @var Stores $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+use Ls\Omni\Block\Stores\Stores;
+
+$show = true;
+if (array_key_exists('data', $block->getData())) {
+    $collection = $block->getData()['data'];
+    $show       = false;
+} else {
+    $collection = $block->getStores();
+}
+$apiKey      = (string) $block->getStoreMapKey();
+$showMaps    = $show;
+$counter     = 0;
+?>
+<?php if ($collection && $collection->getSize()): ?>
+    <div class="ls-stores">
+        <h1 class="text-2xl font-semibold mb-6"><?= $escaper->escapeHtml(__('Stores')) ?></h1>
+
+        <?php if ($showMaps): ?>
+            <div id="map" class="w-full rounded border border-gray-200 mb-8" style="height: 300px;"></div>
+        <?php endif; ?>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stores-maps-container">
+            <?php foreach ($collection as $stores):
+                $store   = $stores->getData();
+                $storeId = $store['nav_id'];
+                $hours   = $block->hasData('storeHours') && !$block->getData('storeHours')
+                    ? []
+                    : $block->getStoreHours($storeId);
+                $state   = $store['State'] ?? '';
+                ?>
+                <div class="card store-map-plus-info-container" id="store-<?= $escaper->escapeHtmlAttr($storeId) ?>">
+                    <?php if ($showMaps): ?>
+                        <div id="map<?= (int) $counter ?>"
+                             class="w-full rounded border border-gray-200 mb-4 store-map"
+                             style="height:200px;"></div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($store['Name'])): ?>
+                        <div class="store-name font-semibold text-lg mb-2">
+                            <?= $escaper->escapeHtml($store['Name']) ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($store['Street']) && !empty($store['City']) && !empty($store['Country'])):
+                        $mapQuery = $store['Street'] . '+' . $store['City'] . '+' . $state . '+'
+                            . ($store['ZipCode'] ?? '') . '+' . $store['Country'];
+                        $address = $store['Street'] . ', ' . $store['City'] . ' ' . $state . ' '
+                            . ($store['ZipCode'] ?? '') . ' ' . $store['Country'];
+                        ?>
+                        <div class="store-address mb-1">
+                            <span class="font-medium"><?= $escaper->escapeHtml(__('Address')) ?>:</span>
+                            <a class="text-primary underline" target="_blank" rel="noopener"
+                               href="http://maps.google.com/maps?q=<?= $escaper->escapeHtmlAttr($mapQuery) ?>">
+                                <?= $escaper->escapeHtml($address) ?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($store['Phone'])): ?>
+                        <div class="store-phone mb-1">
+                            <span class="font-medium"><?= $escaper->escapeHtml(__('Phone')) ?>:</span>
+                            <a class="text-primary underline" href="tel:<?= $escaper->escapeHtmlAttr($store['Phone']) ?>">
+                                <?= $escaper->escapeHtml($store['Phone']) ?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($hours)): ?>
+                        <div class="store-opening-hours mt-3">
+                            <div class="font-medium mb-1"><?= $escaper->escapeHtml(__('Hours')) ?></div>
+                            <table class="w-full text-sm ls-store-hours">
+                                <?php foreach ($hours as $h): ?>
+                                    <tr><?= /* @noEscape */ $block->getFormattedHours($h) ?></tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <?php $counter++; endforeach; ?>
+        </div>
+
+        <?php if ($showMaps): ?>
+            <script>
+                (function () {
+                    var lsApiKey = '<?= $escaper->escapeJs($apiKey) ?>';
+                    var lsLocations = [
+                        <?php foreach ($collection->getData() as $store):
+                            $state = $store['State'] ?? '';
+                            $label = $store['Name'] . ', ' . $store['Street'] . ', ' . $store['City'] . ' '
+                                . $state . ' ' . ($store['ZipCode'] ?? '') . ' ' . $store['Country'];
+                            ?>
+                        [<?= /* @noEscape */ json_encode($label) ?>, <?= (float) $store['Latitute'] ?>, <?= (float) $store['Longitude'] ?>, 14],
+                        <?php endforeach; ?>
+                    ];
+
+                    window.lsStoresLocations = lsLocations;
+                    window.initLsStoresMap = function () {
+                        var locations = window.lsStoresLocations || [];
+                        if (!locations.length || !window.google || !window.google.maps) {
+                            return;
+                        }
+
+                        var allMapEl = document.getElementById('map');
+                        if (allMapEl) {
+                            var allMap = new google.maps.Map(allMapEl, {
+                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                            });
+                            var infoWindow = new google.maps.InfoWindow();
+                            var bounds = new google.maps.LatLngBounds();
+                            locations.forEach(function (loc) {
+                                var marker = new google.maps.Marker({
+                                    position: { lat: parseFloat(loc[1]), lng: parseFloat(loc[2]) },
+                                    map: allMap
+                                });
+                                bounds.extend(marker.position);
+                                marker.addListener('click', function () {
+                                    infoWindow.setContent(loc[0]);
+                                    infoWindow.open(allMap, marker);
+                                });
+                            });
+                            allMap.fitBounds(bounds);
+                        }
+
+                        locations.forEach(function (loc, i) {
+                            var el = document.getElementById('map' + i);
+                            if (!el) {
+                                return;
+                            }
+                            var storeMap = new google.maps.Map(el, {
+                                zoom: loc[3],
+                                center: { lat: parseFloat(loc[1]), lng: parseFloat(loc[2]) },
+                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                            });
+                            var marker = new google.maps.Marker({
+                                position: { lat: parseFloat(loc[1]), lng: parseFloat(loc[2]) },
+                                map: storeMap
+                            });
+                            marker.addListener('click', function () {
+                                window.open(
+                                    'https://www.google.com/maps/dir/?api=1&destination=' + loc[1] + ',' + loc[2],
+                                    '_blank'
+                                );
+                            });
+                        });
+                    };
+
+                    if (window.google && window.google.maps) {
+                        window.initLsStoresMap();
+                    } else if (!document.getElementById('ls-google-maps-api')) {
+                        var script = document.createElement('script');
+                        script.id = 'ls-google-maps-api';
+                        script.async = true;
+                        script.defer = true;
+                        script.src = 'https://maps.googleapis.com/maps/api/js?key='
+                            + encodeURIComponent(lsApiKey) + '&callback=initLsStoresMap';
+                        document.head.appendChild(script);
+                    }
+                })();
+            </script>
+        <?php endif; ?>
+    </div>
+<?php else: ?>
+    <div class="ls-stores">
+        <h1 class="text-2xl font-semibold mb-6"><?= $escaper->escapeHtml(__('Stores')) ?></h1>
+        <p class="text-gray-600"><?= $escaper->escapeHtml(__('No stores found.')) ?></p>
+    </div>
+<?php endif; ?>

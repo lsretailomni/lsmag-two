@@ -2,14 +2,6 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <!--
-            Hyvä's layout reset removes the standard Magento (image) CAPTCHA from the
-            registration form. Without the field, no captcha[user_create] value is
-            posted, so the server-side check fails with "Incorrect CAPTCHA".
-            Re-add it here with a Hyvä-compatible template. The DefaultCaptcha block
-            renders nothing when the CAPTCHA is disabled for the user_create form,
-            so this is safe regardless of the admin configuration.
-        -->
         <referenceContainer name="form.additional.info">
             <block class="Magento\Captcha\Block\Captcha\DefaultCaptcha"
                    name="ls.captcha.create"
