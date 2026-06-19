@@ -1054,12 +1054,15 @@ class Data extends AbstractHelperOmni
         $storeTenderTypes     = [];
         $scopeId              = $this->lsr->getCurrentWebsiteId();
         $storeTenderTypeArray = $this->getTenderTypes($scopeId);
-        if (empty($storeTenderTypeArray)) {
-            $storeTenderTypeArray = $this->getTenderTypesDirectly($scopeId);
-        }
-        if (!empty($storeTenderTypeArray)) {
+        
+        if (!empty($storeTenderTypeArray)) {            
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[$storeTenderType->getTenderTypeId()] = $storeTenderType->getName();
+            }
+        } else {
+            $storeDirTenderTypeArray = $this->getTenderTypesDirectly($scopeId);
+            foreach ($storeDirTenderTypeArray as $storeTenderType) {
+                $storeTenderTypes[$storeTenderType->getCode()] = $storeTenderType->getName();
             }
         }
 

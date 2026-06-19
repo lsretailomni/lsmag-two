@@ -886,7 +886,7 @@ class ProductCreateTask
                 )
             ];
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
-            if (!array_key_exists($image->getImageId(), $this->imagesFetched)) {
+            if ($image->getImageId() && !array_key_exists($image->getImageId(), $this->imagesFetched)) {
                 $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
                 if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
                     $mimeType = $this->getMimeType($result['image']);
