@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!--
+            Hyvä's layout reset removes the standard Magento (image) CAPTCHA from the
+            registration form. Without the field, no captcha[user_create] value is
+            posted, so the server-side check fails with "Incorrect CAPTCHA".
+            Re-add it here with a Hyvä-compatible template. The DefaultCaptcha block
+            renders nothing when the CAPTCHA is disabled for the user_create form,
+            so this is safe regardless of the admin configuration.
+        -->
+        <referenceContainer name="form.additional.info">
+            <block class="Magento\Captcha\Block\Captcha\DefaultCaptcha"
+                   name="ls.captcha.create"
+                   template="Ls_Customer::form/captcha.phtml"
+                   after="-"
+                   cacheable="false">
+                <action method="setFormId">
+                    <argument name="formId" xsi:type="string">user_create</argument>
+                </action>
+                <action method="setImgWidth">
+                    <argument name="width" xsi:type="string">230</argument>
+                </action>
+                <action method="setImgHeight">
+                    <argument name="height" xsi:type="string">50</argument>
+                </action>
+            </block>
+        </referenceContainer>
+        <!--
+            Add the e-mail 80 character limit (Luma parity). The jQuery validation
+            widget used on Luma does not run under Hyvä, so set the maxlength
+            attribute that Hyvä's form validation reads natively.
+        -->
+        <referenceContainer name="before.body.end">
+            <block name="ls.customer.create.email.validation"
+                   template="Ls_Customer::form/email-validation-hyva.phtml"/>
+        </referenceContainer>
+    </body>
+</page>
