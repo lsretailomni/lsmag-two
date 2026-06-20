@@ -1,0 +1,121 @@
+<?php
+
+/**
+ * Hyvä-styled loyalty offers grid (Luma-like tile layout).
+ *
+ * Shared by every loyalty page (offers / member / point / general / coupon).
+ * The page-specific filtering is driven by layout arguments:
+ *   filter_mode  : "none" | "offer_type" | "discount_type"
+ *   filter_value : the value matched when filter_mode is not "none"
+ *
+ * Styling lives in Ls_Customer::css/loyalty-hyva.css (loaded via hyva_customer_loyalty.xml).
+ *
+ * @var \Ls\Customer\Block\Loyalty\Offers $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+use Ls\Customer\Block\Loyalty\Offers;
+
+$filterMode  = $block->getData('filter_mode') ?: 'none';
+$filterValue = $block->getData('filter_value');
+$offers      = $block->getOffers();
+$mediaPath   = $block->getMediaPathToLoad();
+$cards       = [];
+
+if (is_array($offers)) {
+    foreach ($offers as $offer) {
+        $publishedOffer = $offer['Offer'];
+        $discountType   = $block->getDiscountType($publishedOffer->getDiscountType());
+
+        if ($filterMode === 'offer_type'
+            && $block->getOfferType($publishedOffer->getOfferCategory()) !== $filterValue
+        ) {
+            continue;
+        }
+
+        if ($filterMode === 'discount_type' && $discountType !== $filterValue) {
+            continue;
+        }
+
+        $offerProductCategory = $block->getOfferProductCategoryLink($offer);
+        if (empty($offerProductCategory)) {
+            continue;
+        }
+
+        $images     = $block->fetchImages($offer);
+        $endingDate = $publishedOffer->getEndingDate();
+
+        $cards[] = [
+            'offer'    => $publishedOffer,
+            'discount' => $discountType,
+            'image'    => (is_array($images) && !empty($images[0])) ? $mediaPath . $images[0] : '',
+            'expiry'   => $endingDate ? $block->getOfferExpiryDate($endingDate) : '',
+            'link'     => $offerProductCategory,
+        ];
+    }
+}
+?>
+<div class="loyalty-offers">
+    <?php if (!empty($cards)) : ?>
+        <div class="ls-loyalty-grid">
+            <?php foreach ($cards as $card) : ?>
+                <?php $offer = $card['offer']; ?>
+                <div class="ls-loyalty-card">
+                    <?php if ($card['image']) : ?>
+                        <div class="ls-loyalty-card__media">
+                            <img src="<?= $escaper->escapeUrl($card['image']) ?>"
+                                 alt="<?= $escaper->escapeHtmlAttr($offer->getDescription()) ?>"
+                                 loading="lazy"/>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($offer->getDescription()) : ?>
+                        <h3 class="ls-loyalty-card__title">
+                            <?= $escaper->escapeHtml($offer->getDescription()) ?>
+                        </h3>
+                    <?php endif; ?>
+
+                    <?php if ($card['discount'] === 'Coupon' && $offer->getDiscountNo()) : ?>
+                        <p class="ls-loyalty-card__line">
+                            <b><?= $escaper->escapeHtml(__('Code:')) ?></b>
+                            <?= $escaper->escapeHtml($offer->getDiscountNo()) ?>
+                        </p>
+                    <?php endif; ?>
+
+                    <?php if ($card['discount']) : ?>
+                        <p class="ls-loyalty-card__line">
+                            <b><?= $escaper->escapeHtml(__('Offer Type:')) ?></b>
+                            <?= $escaper->escapeHtml($card['discount']) ?>
+                        </p>
+                    <?php endif; ?>
+
+                    <?php if ($card['expiry']) : ?>
+                        <p class="ls-loyalty-card__line">
+                            <b><?= $escaper->escapeHtml(__('Expiry:')) ?></b>
+                            <?= $escaper->escapeHtml($card['expiry']) ?>
+                        </p>
+                    <?php endif; ?>
+
+                    <?php if ($offer->getSecondarytext()) : ?>
+                        <p class="ls-loyalty-card__desc">
+                            <?= $escaper->escapeHtml($offer->getSecondarytext()) ?>
+                        </p>
+                    <?php endif; ?>
+
+                    <?php if (!empty($card['link'][0])) : ?>
+                        <div class="ls-loyalty-card__actions">
+                            <a class="ls-loyalty-card__btn"
+                               href="<?= $escaper->escapeUrl($card['link'][0]) ?>">
+                                <?= $escaper->escapeHtml(__((string) $card['link'][1])) ?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php else : ?>
+        <div class="ls-loyalty-empty">
+            <?= $escaper->escapeHtml(__('No offers')) ?>
+        </div>
+    <?php endif; ?>
+</div>
