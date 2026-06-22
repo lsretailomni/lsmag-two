@@ -2,48 +2,38 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <!-- The Luma block is parented to product.info.extrahint, which Hyvä never prints. Drop it. -->
+
         <referenceBlock name="ls.omni.product.discount.proactive" remove="true"/>
 
-        <!--
-            The Luma availability/return-policy blocks are rendered via getBlockHtml() from the
-            Luma addtocart.phtml, which Hyvä never uses. Drop them and render Hyvä variants below.
-        -->
         <referenceBlock name="ls.omni.product.availability" remove="true"/>
         <referenceBlock name="ls.omni.product.return.policy" remove="true"/>
 
-        <!--
-            All three render inside the Hyvä product.info.additional container (the only generic
-            render slot the theme exposes in this region). Proactive discounts and the return
-            policy stay here, below the add-to-cart button. Availability is anchored here too, but
-            its template relocates itself between the price and the add-to-cart row on init, since
-            the theme exposes no native layout slot at that position.
-        -->
         <referenceContainer name="product.info.additional">
-            <!-- Availability: relocated by its template to sit under the price, above add-to-cart. -->
+
+            <!-- 1. Check Availability in Stores -->
             <block name="ls.omni.product.availability.hyva"
                    template="Ls_Omni::product/hyva/view/availability.phtml"
-                   ifconfig="ls_mag/one_list/product_availability"
-                   before="-">
+                   ifconfig="ls_mag/one_list/product_availability">
                 <arguments>
                     <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\GeneralViewModel</argument>
                 </arguments>
             </block>
 
+            <!-- 2. Return Policy -->
+            <block name="ls.omni.product.return.policy.hyva"
+                   template="Ls_Omni::product/hyva/view/returnpolicy.phtml"
+                   ifconfig="ls_mag/return_policy/show_return_policy">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\GeneralViewModel</argument>
+                </arguments>
+            </block>
+
+            <!-- 3. Offers and Promotions -->
             <block class="Ls\Omni\Block\Product\View\Discount\Proactive"
                    name="ls.omni.product.discount.proactive.hyva"
                    template="Ls_Omni::product/hyva/proactive.phtml"
                    ifconfig="ls_mag/ls_discounts/discount"/>
 
-            <!-- Return Policy: under the add-to-cart button. -->
-            <block name="ls.omni.product.return.policy.hyva"
-                   template="Ls_Omni::product/hyva/view/returnpolicy.phtml"
-                   ifconfig="ls_mag/return_policy/show_return_policy"
-                   after="-">
-                <arguments>
-                    <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\GeneralViewModel</argument>
-                </arguments>
-            </block>
         </referenceContainer>
     </body>
 </page>

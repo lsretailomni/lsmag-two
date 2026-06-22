@@ -57,3 +57,11 @@
 .info-window .store-opening-hours .dayofweek {
     @apply pr-4 font-semibold whitespace-nowrap;
 }
+
+#ls-discounts .discount-description {
+    @apply font-bold text-red-600;
+}
+
+#ls-discounts .discount-from-to-label {
+    @apply font-bold;
+}

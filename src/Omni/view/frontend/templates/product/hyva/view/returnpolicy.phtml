@@ -1,11 +1,5 @@
 <?php
 /**
- * Hyvä variant of the "Return Policy" component.
- *
- * Mirrors the Luma returnpolicy.phtml flow (POST rest/V1/get-return-policy, show the
- * returned HTML in a modal) but drops RequireJS/jQuery in favour of Alpine.js. The Luma
- * template is left untouched.
- *
  * @var Template $block
  * @var \Ls\Omni\ViewModel\GeneralViewModel $viewModel
  */
@@ -20,10 +14,15 @@ $viewModel = $block->getViewModel();
          data-product-sku="<?= $block->escapeHtmlAttr((string) $viewModel->getProduct()->getSku()) ?>">
 
         <a href="#"
-           class="return-policy inline-flex items-center text-primary underline hover:no-underline"
+           class="return-policy inline-flex items-center gap-2 text-primary underline hover:no-underline"
+           :class="{ 'pointer-events-none opacity-60': loading }"
            @click.prevent="show()">
-            <span x-show="!loading"><?= $block->escapeHtml(__('Return Policy')) ?></span>
-            <span x-show="loading" x-cloak><?= $block->escapeHtml(__('Loading...')) ?></span>
+            <svg x-show="loading" x-cloak class="animate-spin h-4 w-4 text-primary" xmlns="http://www.w3.org/2000/svg"
+                 fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+            <span><?= $block->escapeHtml(__('Return Policy')) ?></span>
         </a>
 
         <div x-show="open"
@@ -57,15 +56,29 @@ $viewModel = $block->getViewModel();
                 open: false,
                 loading: false,
                 content: '',
+                variantId: '',
+
+                init() {
+                    // Configurable products: track the resolved simple-product id so the return
+                    // policy is looked up per variant. Hyvä fires this whenever an option dropdown
+                    // changes and exposes the matched simple product as detail.productIndex.
+                    window.addEventListener('configurable-selection-changed', (event) => {
+                        this.variantId = (event.detail && event.detail.productIndex) || '';
+                    });
+                },
 
                 show() {
+                    // Ignore repeat clicks while a request is already in flight.
+                    if (this.loading) {
+                        return;
+                    }
                     const form = document.getElementById('product_addtocart_form');
                     if (form && typeof form.reportValidity === 'function' && !form.reportValidity()) {
                         return;
                     }
 
                     const itemId = this.$root.dataset.productSku;
-                    const variantId = (document.querySelector('input[name=selected_configurable_option]') || {}).value || '';
+                    const variantId = this.variantId || '';
                     const base = (typeof BASE_URL !== 'undefined' ? BASE_URL : '/');
                     const url = base + 'rest/V1/get-return-policy'
                         + '?itemId=' + encodeURIComponent(itemId)

@@ -1,11 +1,5 @@
 <?php
 /**
- * Hyvä variant of the "Check Availability in Stores" component.
- *
- * Mirrors the Luma availability.phtml flow (POST omni/stock/product, render a Google
- * Map of stores that have the item) but drops RequireJS/jQuery in favour of Alpine.js
- * and a dynamically injected Google Maps script. The Luma template is left untouched.
- *
  * @var Template $block
  * @var \Ls\Omni\ViewModel\GeneralViewModel $viewModel
  */
@@ -25,10 +19,15 @@ $viewModel = $block->getViewModel();
          data-default-zoom="<?= $block->escapeHtmlAttr((string) $viewModel->getDefaultZoom()) ?>">
 
         <a href="#"
-           class="checkavailability inline-flex items-center text-primary underline hover:no-underline"
+           class="checkavailability inline-flex items-center gap-2 text-primary underline hover:no-underline"
+           :class="{ 'pointer-events-none opacity-60': loading }"
            @click.prevent="check()">
-            <span x-show="!loading"><?= $block->escapeHtml(__('Check Availability in Stores')) ?></span>
-            <span x-show="loading" x-cloak><?= $block->escapeHtml(__('Checking...')) ?></span>
+            <svg x-show="loading" x-cloak class="animate-spin h-4 w-4 text-primary" xmlns="http://www.w3.org/2000/svg"
+                 fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+            <span><?= $block->escapeHtml(__('Check Availability in Stores')) ?></span>
         </a>
 
         <?php // Modal: holds either the store map or a "not available" message. ?>
@@ -69,10 +68,6 @@ $viewModel = $block->getViewModel();
                 variantId: '',
 
                 init() {
-                    // The block is anchored in product.info.additional; move it between the price
-                    // and the add-to-cart row, which the Hyvä theme exposes no native slot for.
-                    this.$nextTick(() => this.relocate());
-
                     // Configurable products: track the resolved simple-product id so availability
                     // is looked up per variant. Hyvä fires this whenever an option dropdown changes
                     // and exposes the matched simple product as detail.productIndex.
@@ -102,23 +97,11 @@ $viewModel = $block->getViewModel();
                     return true;
                 },
 
-                relocate() {
-                    const button = document.getElementById('product-addtocart-button');
-                    if (!button) {
-                        return; // Not saleable / no button: leave the block where it rendered.
-                    }
-                    const cartGroup = button.parentElement;            // qty + add-to-cart group
-                    const row = cartGroup && cartGroup.parentElement;  // price + add-to-cart row
-                    if (!row || row.contains(this.$root)) {
+                check() {
+                    // Ignore repeat clicks while a request is already in flight.
+                    if (this.loading) {
                         return;
                     }
-                    // Force the flex row to wrap so the full-width strip sits on its own line.
-                    row.classList.add('flex-wrap');
-                    this.$root.classList.add('basis-full', 'w-full');
-                    row.insertBefore(this.$root, cartGroup);
-                },
-
-                check() {
                     // Configurable products require a variant to be selected first; simple skip this.
                     if (!this.validateOptions()) {
                         return;
