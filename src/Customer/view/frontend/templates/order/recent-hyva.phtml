@@ -202,8 +202,9 @@ if($orderExist) {
                                                     ]
                                                  )->toHtml() 
                                             ?>
-                                        <?php endif ?>                                    
-                                        
+                                        <?php else: ?>
+                                            <?= $heroicons->xCircleHtml('text-gray-300', 24, 24, ['aria-hidden' => 'true']) ?>
+                                        <?php endif ?>
                                     <?php endforeach; ?>
                                 </div>
                             </td>
