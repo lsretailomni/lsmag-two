@@ -21,8 +21,6 @@ $counter     = 0;
 ?>
 <?php if ($collection && $collection->getSize()): ?>
     <div class="ls-stores">
-        <h1 class="text-2xl font-semibold mb-6"><?= $escaper->escapeHtml(__('Stores')) ?></h1>
-
         <?php if ($showMaps): ?>
             <div id="map" class="w-full rounded border border-gray-200 mb-8" style="height: 300px;"></div>
         <?php endif; ?>
@@ -44,8 +42,11 @@ $counter     = 0;
                     <?php endif; ?>
 
                     <?php if (!empty($store['Name'])): ?>
-                        <div class="store-name font-semibold text-lg mb-2">
-                            <?= $escaper->escapeHtml($store['Name']) ?>
+                        <div class="store-name ls-store-icon-label ls-store-icon-label--store font-semibold text-lg mb-2">
+                            <span>
+                                <span class="font-medium"><?= $escaper->escapeHtml(__('Store')) ?>:</span>
+                                <?= $escaper->escapeHtml($store['Name']) ?>
+                            </span>
                         </div>
                     <?php endif; ?>
 
@@ -55,28 +56,32 @@ $counter     = 0;
                         $address = $store['Street'] . ', ' . $store['City'] . ' ' . $state . ' '
                             . ($store['ZipCode'] ?? '') . ' ' . $store['Country'];
                         ?>
-                        <div class="store-address mb-1">
-                            <span class="font-medium"><?= $escaper->escapeHtml(__('Address')) ?>:</span>
-                            <a class="text-primary underline" target="_blank" rel="noopener"
-                               href="http://maps.google.com/maps?q=<?= $escaper->escapeHtmlAttr($mapQuery) ?>">
-                                <?= $escaper->escapeHtml($address) ?>
-                            </a>
+                        <div class="store-address ls-store-icon-label ls-store-icon-label--address mb-1">
+                            <span>
+                                <span class="font-medium"><?= $escaper->escapeHtml(__('Address')) ?>:</span>
+                                <a class="text-primary underline" target="_blank" rel="noopener"
+                                   href="http://maps.google.com/maps?q=<?= $escaper->escapeHtmlAttr($mapQuery) ?>">
+                                    <?= $escaper->escapeHtml($address) ?>
+                                </a>
+                            </span>
                         </div>
                     <?php endif; ?>
 
                     <?php if (!empty($store['Phone'])): ?>
-                        <div class="store-phone mb-1">
-                            <span class="font-medium"><?= $escaper->escapeHtml(__('Phone')) ?>:</span>
-                            <a class="text-primary underline" href="tel:<?= $escaper->escapeHtmlAttr($store['Phone']) ?>">
-                                <?= $escaper->escapeHtml($store['Phone']) ?>
-                            </a>
+                        <div class="store-phone ls-store-icon-label ls-store-icon-label--phone mb-1">
+                            <span>
+                                <span class="font-medium"><?= $escaper->escapeHtml(__('Phone')) ?>:</span>
+                                <a class="text-primary underline" href="tel:<?= $escaper->escapeHtmlAttr($store['Phone']) ?>">
+                                    <?= $escaper->escapeHtml($store['Phone']) ?>
+                                </a>
+                            </span>
                         </div>
                     <?php endif; ?>
 
                     <?php if (!empty($hours)): ?>
-                        <div class="store-opening-hours mt-3">
-                            <div class="font-medium mb-1"><?= $escaper->escapeHtml(__('Hours')) ?></div>
-                            <table class="w-full text-sm ls-store-hours">
+                        <div class="store-opening-hours ls-store-icon-label ls-store-icon-label--hours mt-3">
+                            <span class="font-medium"><?= $escaper->escapeHtml(__('Hours')) ?>:</span>
+                            <table class="text-sm ls-store-hours">
                                 <?php foreach ($hours as $h): ?>
                                     <tr><?= /* @noEscape */ $block->getFormattedHours($h) ?></tr>
                                 <?php endforeach; ?>
@@ -169,7 +174,6 @@ $counter     = 0;
     </div>
 <?php else: ?>
     <div class="ls-stores">
-        <h1 class="text-2xl font-semibold mb-6"><?= $escaper->escapeHtml(__('Stores')) ?></h1>
         <p class="text-gray-600"><?= $escaper->escapeHtml(__('No stores found.')) ?></p>
     </div>
 <?php endif; ?>

@@ -2,7 +2,6 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <!-- Adding Loyalty link to the Hyvä customer account header dropdown -->
         <referenceBlock name="header.customer.logged.in.links">
             <block class="Ls\Customer\Block\Link" name="customer.header.loyalty.link"
                    template="Ls_Customer::loyalty/link-hyva.phtml"
