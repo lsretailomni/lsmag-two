@@ -19,11 +19,6 @@
                 </action>
             </block>
         </referenceContainer>
-        <!--
-            Add the e-mail 80 character limit (Luma parity). The jQuery validation
-            widget used on Luma does not run under Hyvä, so set the maxlength
-            attribute that Hyvä's form validation reads natively.
-        -->
         <referenceContainer name="before.body.end">
             <block name="ls.customer.create.email.validation"
                    template="Ls_Customer::form/email-validation-hyva.phtml"/>

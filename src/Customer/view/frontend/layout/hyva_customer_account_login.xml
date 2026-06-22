@@ -7,5 +7,22 @@
                 <argument name="template" xsi:type="string">Ls_Customer::form/login-hyva.phtml</argument>
             </action>
         </referenceBlock>
+        <referenceContainer name="form.additional.info">
+            <block class="Magento\Captcha\Block\Captcha\DefaultCaptcha"
+                   name="ls.captcha.login"
+                   template="Ls_Customer::form/captcha.phtml"
+                   after="-"
+                   cacheable="false">
+                <action method="setFormId">
+                    <argument name="formId" xsi:type="string">user_login</argument>
+                </action>
+                <action method="setImgWidth">
+                    <argument name="width" xsi:type="string">230</argument>
+                </action>
+                <action method="setImgHeight">
+                    <argument name="height" xsi:type="string">50</argument>
+                </action>
+            </block>
+        </referenceContainer>
     </body>
 </page>
