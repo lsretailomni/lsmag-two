@@ -1,0 +1,103 @@
+<?php
+/**
+ * Hyvä variant of the "Return Policy" component.
+ *
+ * Mirrors the Luma returnpolicy.phtml flow (POST rest/V1/get-return-policy, show the
+ * returned HTML in a modal) but drops RequireJS/jQuery in favour of Alpine.js. The Luma
+ * template is left untouched.
+ *
+ * @var Template $block
+ * @var \Ls\Omni\ViewModel\GeneralViewModel $viewModel
+ */
+
+use Magento\Framework\View\Element\Template;
+
+$viewModel = $block->getViewModel();
+?>
+<?php if ($viewModel->isValid()): ?>
+    <div class="ls-return-policy my-4"
+         x-data="lsOmniReturnPolicy"
+         data-product-sku="<?= $block->escapeHtmlAttr((string) $viewModel->getProduct()->getSku()) ?>">
+
+        <a href="#"
+           class="return-policy inline-flex items-center text-primary underline hover:no-underline"
+           @click.prevent="show()">
+            <span x-show="!loading"><?= $block->escapeHtml(__('Return Policy')) ?></span>
+            <span x-show="loading" x-cloak><?= $block->escapeHtml(__('Loading...')) ?></span>
+        </a>
+
+        <div x-show="open"
+             x-cloak
+             class="fixed inset-0 z-50 flex items-center justify-center p-4"
+             role="dialog"
+             aria-modal="true"
+             @keydown.escape.window="close()">
+            <div class="absolute inset-0 bg-black/50" @click="close()"></div>
+            <div class="card relative z-10 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+                <div class="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
+                    <h3 class="text-lg font-semibold"><?= $block->escapeHtml(__('Return Policy')) ?></h3>
+                    <button type="button"
+                            class="text-fg-secondary hover:text-fg"
+                            aria-label="<?= $block->escapeHtmlAttr(__('Close')) ?>"
+                            @click="close()">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="2" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div x-ref="content" x-html="content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('lsOmniReturnPolicy', () => ({
+                open: false,
+                loading: false,
+                content: '',
+
+                show() {
+                    const form = document.getElementById('product_addtocart_form');
+                    if (form && typeof form.reportValidity === 'function' && !form.reportValidity()) {
+                        return;
+                    }
+
+                    const itemId = this.$root.dataset.productSku;
+                    const variantId = (document.querySelector('input[name=selected_configurable_option]') || {}).value || '';
+                    const base = (typeof BASE_URL !== 'undefined' ? BASE_URL : '/');
+                    const url = base + 'rest/V1/get-return-policy'
+                        + '?itemId=' + encodeURIComponent(itemId)
+                        + '&variantId=' + encodeURIComponent(variantId)
+                        + '&storeId=';
+
+                    this.loading = true;
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data) {
+                                this.content = data;
+                                this.open = true;
+                                this.$nextTick(() => Alpine.initTree(this.$refs.content));
+                            } else {
+                                window.alert('<?= $block->escapeJs(__('Return Policy not found')) ?>');
+                            }
+                        })
+                        .catch(error => console.error('Return policy load error:', error))
+                        .finally(() => { this.loading = false; });
+                },
+
+                close() {
+                    this.open = false;
+                }
+            }));
+        });
+    </script>
+<?php endif; ?>
