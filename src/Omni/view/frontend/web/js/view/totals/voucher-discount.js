@@ -32,17 +32,22 @@ define([
         },
 
         /**
-         * Get list of individual applied vouchers from ls_pos_data_entries segment (JSON array)
+         * Get list of individual applied vouchers (non-GIFTCARDNO entries).
+         * Reads from TotalsInterface extension_attributes — segment.value is float-typed
+         * in Magento's API and would cast JSON to 0.
          */
         getVoucherList: function () {
-            var segment = totals.getSegment('ls_pos_data_entries');
-            if (!segment || !segment.value) {
+            var totalsData = totals.totals();
+            var extAttrs   = totalsData && totalsData.extension_attributes;
+            if (!extAttrs || !extAttrs.ls_pos_data_entries) {
                 return [];
             }
             try {
-                var parsed = JSON.parse(segment.value);
+                var parsed = JSON.parse(extAttrs.ls_pos_data_entries);
                 if (Array.isArray(parsed)) {
-                    return parsed;
+                    return parsed.filter(function (e) {
+                        return (e.entry_type || '').toUpperCase() !== 'GIFTCARDNO';
+                    });
                 }
             } catch (e) {}
             return [];

@@ -20,6 +20,12 @@ class POSDataEntry extends \Magento\Catalog\Model\AbstractModel
 
     public const PIN = 'PIN';
 
+    public const UNPOSTED = 'Unposted';
+
+    public const BLOCKED_ON_ECOM = 'BlockedOnECom';
+
+    public const WEB_STORE = 'WebStore';
+
     /**
      * @param ?float $Balance
      * @return $this
@@ -90,6 +96,60 @@ class POSDataEntry extends \Magento\Catalog\Model\AbstractModel
     public function getPin()
     {
         return $this->getData(self::PIN);
+    }
+
+    /**
+     * @param ?bool $Unposted
+     * @return $this
+     */
+    public function setUnposted(?bool $Unposted)
+    {
+        $this->setData(self::UNPOSTED, $Unposted);
+        return $this;
+    }
+
+    /**
+     * @return ?bool
+     */
+    public function getUnposted(): ?bool
+    {
+        return $this->getData(self::UNPOSTED);
+    }
+
+    /**
+     * @param ?string $BlockedOnECom
+     * @return $this
+     */
+    public function setBlockedonecom(?string $BlockedOnECom)
+    {
+        $this->setData(self::BLOCKED_ON_ECOM, $BlockedOnECom);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getBlockedonecom(): ?string
+    {
+        return $this->getData(self::BLOCKED_ON_ECOM);
+    }
+
+    /**
+     * @param ?string $WebStore
+     * @return $this
+     */
+    public function setWebstore(?string $WebStore)
+    {
+        $this->setData(self::WEB_STORE, $WebStore);
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getWebstore(): ?string
+    {
+        return $this->getData(self::WEB_STORE);
     }
 }
 

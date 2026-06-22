@@ -44,7 +44,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->getData(self::LSC_MEMBER_SALES_DOC_LINE);
     }
 
-    public function setLscMemberSalesDocLine(?LSCMemberSalesDocLine $value)
+    public function setLscMemberSalesDocLine(?array $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
     }

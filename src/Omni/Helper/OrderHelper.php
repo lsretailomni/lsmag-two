@@ -558,7 +558,6 @@ class OrderHelper extends AbstractHelperOmni
         // Each entry: {entry_type, entry_no, pin_code, amount, tender_type}
         $entries = json_decode((string)$order->getLsPosDataEntries(), true);
         if (is_array($entries) && count($entries) > 0) {
-            $currencyCode = $order->getOrderCurrency()->getCurrencyCode();
             foreach ($entries as $entry) {
                 $entryNo     = $entry['entry_no'] ?? '';
                 $entryPin    = $entry['pin_code'] ?? '';
@@ -581,7 +580,6 @@ class OrderHelper extends AbstractHelperOmni
                     CustomerOrderCreateCOPaymentV6::TENDER_TYPE             => $tenderTypeId,
                     CustomerOrderCreateCOPaymentV6::PRE_APPROVED_VALID_DATE => $preApprovedDate,
                     CustomerOrderCreateCOPaymentV6::EXTERNAL_REFERENCE      => $order->getIncrementId(),
-                    CustomerOrderCreateCOPaymentV6::CURRENCY_CODE           => $currencyCode,
                     CustomerOrderCreateCOPaymentV6::AUTHORIZATION_CODE      => $entryPin,
                     CustomerOrderCreateCOPaymentV6::CARDOR_CUSTOMERNUMBER   => $entryNo,
                     CustomerOrderCreateCOPaymentV6::TYPE                    => '1',
@@ -868,8 +866,19 @@ class OrderHelper extends AbstractHelperOmni
             }
         }
 
-        return $fetchedOrder && !empty($fetchedOrder->getData()) ?
+        $result = $fetchedOrder && !empty($fetchedOrder->getData()) ?
             $fetchedOrder : $this->getOrderDetailsAgainstId($docId, $type);
+
+        // GetSelectedSalesDoc (ORDER type) returns empty once an order is posted/completed
+        // in LS Central (it becomes a Receipt). GetSalesInfoByOrderId retrieves posted orders.
+        if (!$result && $type === DocumentIdType::ORDER) {
+            $salesInfo = $this->getSalesOrderByOrderIdNew($docId);
+            if ($salesInfo && !empty($salesInfo->getData())) {
+                $result = $salesInfo;
+            }
+        }
+
+        return $result;
     }
 
     /**

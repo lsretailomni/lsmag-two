@@ -41,22 +41,10 @@
             </div>
             <div class="actions-toolbar">
                 <div class="primary">
-                    <!-- ko ifnot: isGiftCardApplied() -->
                     <button class="action action-apply" type="submit"
                             data-bind="'value': $t('Apply'), click: applyGiftCard">
                         <span><!-- ko i18n: 'Apply'--><!-- /ko --></span>
                     </button>
-                    <!-- /ko -->
-                    <!-- ko if: isGiftCardApplied() -->
-                    <button class="action action-apply" type="submit"
-                            data-bind="'value': $t('Update'), click: applyGiftCard">
-                        <span><!-- ko i18n: 'Update'--><!-- /ko --></span>
-                    </button>
-                    <button class="action action-cancel" type="submit"
-                            data-bind="'value': $t('Cancel'), click: cancelGiftCard">
-                        <span><!-- ko i18n: 'Cancel'--><!-- /ko --></span>
-                    </button>
-                    <!-- /ko -->
                 </div>
             </div>
         </form>

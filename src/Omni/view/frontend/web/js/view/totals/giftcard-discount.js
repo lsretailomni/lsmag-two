@@ -32,17 +32,22 @@ define([
             },
 
             /**
-             * Get list of individual applied gift cards from ls_gift_card_no segment (JSON array)
+             * Get list of individual applied gift cards (GIFTCARDNO entries only).
+             * Reads from TotalsInterface extension_attributes — segment.value is float-typed
+             * in Magento's API and would cast JSON to 0.
              */
             getGiftCardList: function () {
-                var segment = totals.getSegment('ls_gift_card_no');
-                if (!segment || !segment.value) {
+                var totalsData = totals.totals();
+                var extAttrs   = totalsData && totalsData.extension_attributes;
+                if (!extAttrs || !extAttrs.ls_pos_data_entries) {
                     return [];
                 }
                 try {
-                    var parsed = JSON.parse(segment.value);
+                    var parsed = JSON.parse(extAttrs.ls_pos_data_entries);
                     if (Array.isArray(parsed)) {
-                        return parsed;
+                        return parsed.filter(function (e) {
+                            return (e.entry_type || '').toUpperCase() === 'GIFTCARDNO';
+                        });
                     }
                 } catch (e) {}
                 return [];

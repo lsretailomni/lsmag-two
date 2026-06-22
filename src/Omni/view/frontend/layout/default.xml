@@ -15,7 +15,7 @@
             <block class="Ls\Omni\Block\Html\Link" name="omni.giftcardbalance" before="-">
                 <arguments>
                     <argument name="class" xsi:type="string">ls-footer-gift-card</argument>
-                    <argument name="label" xsi:type="string" translate="true">Check Gift Card Balance</argument>
+                    <argument name="label" xsi:type="string" translate="true">Check Gift Card/Voucher Balance</argument>
                     <argument name="path" xsi:type="string">omni/giftcardbalance</argument>
                 </arguments>
             </block>

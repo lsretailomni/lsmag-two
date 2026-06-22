@@ -38,7 +38,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->getData(self::LSC_MEMBER_SALES_BUFFER);
     }
 
-    public function setLscMemberSalesBuffer(?LSCMemberSalesBuffer $value)
+    public function setLscMemberSalesBuffer(?array $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
     }
@@ -48,7 +48,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->getData(self::LSC_MEMBER_SALES_DOC_LINE);
     }
 
-    public function setLscMemberSalesDocLine(?LSCMemberSalesDocLine $value)
+    public function setLscMemberSalesDocLine(?array $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
     }
@@ -88,7 +88,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->getData(self::SALES_SHIPMENT_LINE);
     }
 
-    public function setSalesShipmentLine(?SalesShipmentLine $value)
+    public function setSalesShipmentLine(?array $value)
     {
         return $this->setData(self::SALES_SHIPMENT_LINE, $value);
     }
