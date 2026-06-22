@@ -65,19 +65,19 @@ class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
     }
 
     /**
-     * @param ?float $Quantity
+     * @param int $Quantity
      * @return $this
      */
-    public function setQuantity(?float $Quantity)
+    public function setQuantity($Quantity)
     {
         $this->setData(self::QUANTITY, $Quantity);
         return $this;
     }
 
     /**
-     * @return ?float
+     * @return int
      */
-    public function getQuantity(): ?float
+    public function getQuantity()
     {
         return $this->getData(self::QUANTITY);
     }

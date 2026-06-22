@@ -28,7 +28,7 @@ class GetMemContSalesHist_GetMemContSalesHist extends AbstractModel
         return $this->getData(self::LSC_MEMBER_SALES_BUFFER);
     }
 
-    public function setLscMemberSalesBuffer(?LSCMemberSalesBuffer $value)
+    public function setLscMemberSalesBuffer(?array $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
     }
