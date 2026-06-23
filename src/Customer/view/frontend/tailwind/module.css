@@ -1,11 +1,16 @@
 /**
- * Loyalty offers tile layout for the Hyvä theme.
+ * Ls_Customer — Hyvä (Tailwind CSS-first) module styles.
  *
- * Self-contained styles (not Tailwind utilities) so the tiles render reliably
- * regardless of the theme's Tailwind content scan / purge configuration, while
- * still picking up the Hyvä primary colour tokens when they are available.
+ * Discovered by `hyva-sources` at view/frontend/tailwind/module.css and @imported
+ * into the theme's generated/hyva-source.css, so these rules compile into the
+ * single global styles.css (no runtime <css src>, no extra CSS request).
+ *
+ * @source registers this module's templates so the Tailwind utility classes they
+ * use survive purge.
  */
+@source "../templates/**/*.phtml";
 
+/* Loyalty offers — tile grid (Luma-like layout) */
 .ls-loyalty-grid {
     display: grid;
     grid-template-columns: 1fr;

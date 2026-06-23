@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <head>
-        <css src="Ls_Customer::css/loyalty-hyva.css"/>
-    </head>
     <body>
         <!-- Render the loyalty sidebar as a proper Hyvä account navigation card -->
         <referenceBlock name="sidebar.main.account_nav">

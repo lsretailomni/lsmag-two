@@ -16,10 +16,10 @@ $customer = $viewModels->require(Customer::class);
 /** @var StoreConfig $storeConfig */
 $storeConfig = $viewModels->require(StoreConfig::class);
 ?>
-<div class="md:w-1/2 w-full flex flex-wrap pr-4">
+<div class="md:w-1/4 w-full flex flex-wrap pr-4">
     <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-8 xl:col-span-2">
         <nav aria-label="<?= $escaper->escapeHtmlAttr(__('Quick Links')) ?>"
-             class="md:w-1/4 w-full flex flex-wrap pr-4">
+             class="md:w-auto w-full flex flex-wrap pr-4">
             <div class="w-full">
                 <h2 class="text-md leading-5 font-semibold tracking-wider uppercase">
                     <?= $escaper->escapeHtml(__('Quick Links')) ?>
@@ -39,46 +39,6 @@ $storeConfig = $viewModels->require(StoreConfig::class);
                     </li>
                 </ul>
             </div>
-        </nav>
-        <nav aria-label="Company Menu">
-            <h2 class="text-md leading-5 font-semibold tracking-wider uppercase">
-                Company
-            </h2>
-            <ul class="mt-4">
-                <li>
-                    <a href="#" class="text-base leading-6">
-                        About
-                    </a>
-                </li>
-                <li class="mt-4">
-                    <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account')) ?>"
-                       class="text-base leading-6">
-                        <?= $escaper->escapeHtml(__('My Account')) ?>
-                    </a>
-                </li>
-                <?php if (!$customer->customerLoggedIn()): ?>
-                    <li class="mt-4">
-                        <a href="<?= $escaper->escapeUrl($block->getUrl('sales/guest/form')) ?>"
-                           class="text-base leading-6">
-                            <?= $escaper->escapeHtml(__('Orders and Returns')) ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
-                <?php if ($storeConfig->getStoreConfig('catalog/seo/search_terms')): ?>
-                    <li class="mt-4">
-                        <a href="<?= $escaper->escapeUrl($block->getUrl('search/term/popular')) ?>"
-                           class="text-base leading-6">
-                            <?= $escaper->escapeHtml(__('Search Terms')) ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
-                <li class="mt-4">
-                    <a href="<?= $escaper->escapeUrl($block->getUrl('contact')) ?>"
-                       class="text-base leading-6">
-                        <?= $escaper->escapeHtml(__('Contact')) ?>
-                    </a>
-                </li>
-            </ul>
         </nav>
     </div>
 </div>
