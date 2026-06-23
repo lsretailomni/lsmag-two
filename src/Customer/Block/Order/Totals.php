@@ -29,6 +29,11 @@ class Totals extends AbstractOrderBlock
     public $voucherEntries = [];
 
     /**
+     * @var array
+     */
+    public $giftCardEntries = [];
+
+    /**
      * Get formatted price
      *
      * @param $amount
@@ -215,10 +220,16 @@ class Totals extends AbstractOrderBlock
             $amount    = (float)($entry['amount'] ?? 0);
             if (strtoupper($entryType) === 'GIFTCARDNO') {
                 $this->giftCardAmount += $amount;
+                $this->giftCardEntries[] = [
+                    'entry_type' => 'Gift Card',
+                    'entry_no'   => $entryNo,
+                    'amount'     => $amount,
+                ];
             } else {
                 $this->voucherEntries[] = [
-                    'label'  => $entryNo ? ($entryType . ' - ' . $entryNo) : $entryType,
-                    'amount' => $amount,
+                    'entry_type' => $entryType ?: 'Voucher',
+                    'entry_no'   => $entryNo,
+                    'amount'     => $amount,
                 ];
             }
         }

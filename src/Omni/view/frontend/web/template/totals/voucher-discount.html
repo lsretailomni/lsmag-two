@@ -3,7 +3,7 @@
 <!-- ko foreach: getVoucherList() -->
 <tr class="totals sub voucher-discount">
     <th class="mark" scope="row">
-        <!-- ko text: $t('Voucher Redeemed') + ' (' + ($data.entry_no || $data.no || '') + ')' --><!-- /ko -->
+        <!-- ko text: ($data.entry_type || 'Voucher') + ' ' + $t('Redeemed') + ' (' + ($data.entry_no || $data.no || '') + ')' --><!-- /ko -->
         <button type="button"
                 class="action action-cancel action-delete"
                 style="margin-left: 8px; background: none; border: none; cursor: pointer; color: #e02b27; font-size: 12px; vertical-align: middle;"
