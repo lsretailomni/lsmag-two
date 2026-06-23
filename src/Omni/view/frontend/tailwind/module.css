@@ -65,3 +65,12 @@
     padding-right: 1rem;
     white-space: nowrap;
 }
+
+.special-hour {
+    .special-label {
+        font-size: 8px;
+        padding-left: 5px;
+        color: green;
+        vertical-align: middle;
+    }
+}
