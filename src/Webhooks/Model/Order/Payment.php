@@ -74,7 +74,10 @@ class Payment
         $documentId = $data['OrderId'];
         $lines      = $data['Lines'];
 
-        if (array_key_exists('Amount', $data)) {
+        // When the webhook carries no top-level total (e.g. COLLECTED/SHIPPED status messages),
+        // the invoice total must be accumulated from the order lines instead.
+        $hasAmount = array_key_exists('Amount', $data);
+        if ($hasAmount) {
             $totalAmount = $data['Amount'];
         } else {
             $totalAmount = 0;
@@ -103,7 +106,7 @@ class Payment
                         $orderItemId                  = $item->getItemId();
                         $itemsToInvoice[$orderItemId] = $itemData['qty'];
                         $subtotal                     += $itemData['amount_with_discount'];
-                        if ($isOffline || !$isRetail) {
+                        if ($isOffline || !$isRetail || !$hasAmount) {
                             $totalAmount += $itemData['amount'];
                         }
                     }
@@ -112,12 +115,15 @@ class Payment
                 foreach ($lines as $line) {
                     if ($line['ItemId'] == $this->helper->getShippingItemId()) {
                         $shippingAmount = $line['Amount'];
-                        if ($isOffline || !$isRetail) {
+                        if ($isOffline || !$isRetail || !$hasAmount) {
                             $totalAmount += $shippingAmount;
                         }
                     }
                 }
-                if (($isOffline || !$isRetail) && !$order->hasInvoices()) {
+                // When a top-level Amount is supplied (OrderPayment webhook) it already arrives net
+                // of gift-card / loyalty usage, so these deductions apply only to the total built
+                // from the order lines (offline, non-retail or status-webhook online flows).
+                if (($isOffline || !$isRetail || !$hasAmount) && !$order->hasInvoices()) {
                     if ($order->getLsGiftCardAmountUsed() > 0) {
                         $totalAmount = $totalAmount - $order->getLsGiftCardAmountUsed();
                     }
