@@ -158,7 +158,7 @@ class OrderHelper extends AbstractHelperOmni
                         $order->getBillingAddress()->getTelephone(),
                     CustomerOrderCreateCOHeaderV6::SHIP_TO_EMAIL => $customerEmail,
                     CustomerOrderCreateCOHeaderV6::EXTERNAL_ID => $order->getIncrementId(),
-                    CustomerOrderCreateCOHeaderV6::CREATED_AT_STORE => $storeId,
+                    CustomerOrderCreateCOHeaderV6::CREATED_AT_STORE => $isClickCollect ? $order->getPickupStore() : $storeId,
                     CustomerOrderCreateCOHeaderV6::SHIP_ORDER => !$isClickCollect,
                     CustomerOrderCreateCOHeaderV6::CURRENCY_FACTOR =>
                         $this->loyaltyHelper->getPointRate($order->getStoreId(), null, true),
@@ -871,6 +871,8 @@ class OrderHelper extends AbstractHelperOmni
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Get respective magento order given Central sales entry Object
      *
      * @param $salesEntry

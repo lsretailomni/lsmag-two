@@ -1,0 +1,36 @@
+<?php
+/**
+ * Hyvä styled version of the Ls_Customer telephone widget.
+ *
+ * Keeps the Hyvä markup (full-width form-input) while preserving the custom
+ * validation logic that Ls_Customer adds to the telephone input (maxlength +
+ * data-validate). Only used when the active theme is a Hyvä theme; Luma keeps
+ * using Ls_Customer::widget/telephone.phtml.
+ *
+ * @var Telephone $block
+ * @var Escaper $escaper
+ */
+
+use Magento\Customer\Block\Widget\Telephone;
+use Magento\Framework\Escaper;
+
+$validationClass = $escaper->escapeHtmlAttr($block->getAttributeValidationClass('telephone'));
+?>
+<div class="field field-reserved telephone <?= $block->isRequired() ? 'required' : '' ?>">
+    <label for="telephone" class="label">
+        <span><?= $escaper->escapeHtml(__('Phone Number')) ?></span>
+    </label>
+    <div class="control">
+        <input type="text"
+               name="telephone"
+               id="telephone"
+               maxlength="30"
+               data-validate='{"required":true,"maxlength":30}'
+               <?php if ($block->isRequired()): ?>required<?php endif; ?>
+               @input.debounce="onChange"
+               value="<?= $escaper->escapeHtmlAttr($block->getTelephone()) ?>"
+               title="<?= $escaper->escapeHtmlAttr(__('Phone Number')) ?>"
+               class="form-input w-full <?= $validationClass ?: '' ?>"
+        >
+    </div>
+</div>

@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Render the loyalty sidebar as a proper Hyvä account navigation card -->
+        <referenceBlock name="sidebar.main.account_nav">
+            <arguments>
+                <argument name="block_title" xsi:type="string" translate="true">My Loyalty</argument>
+                <argument name="block_id" xsi:type="string">loyalty-nav</argument>
+                <argument name="is_nav" xsi:type="boolean">true</argument>
+            </arguments>
+        </referenceBlock>
+
+        <!-- Swap each loyalty offer list to the Hyvä template. References to blocks that are
+             not present on the current loyalty page are ignored by the layout merge. -->
+        <referenceBlock name="ls_customer_loyalty_offers">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ls_Customer::loyalty/offers-hyva.phtml</argument>
+            </action>
+            <arguments>
+                <argument name="filter_mode" xsi:type="string">none</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="ls_customer_member_offers">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ls_Customer::loyalty/offers-hyva.phtml</argument>
+            </action>
+            <arguments>
+                <argument name="filter_mode" xsi:type="string">offer_type</argument>
+                <argument name="filter_value" xsi:type="string">SpecialMember</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="ls_customer_point_offers">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ls_Customer::loyalty/offers-hyva.phtml</argument>
+            </action>
+            <arguments>
+                <argument name="filter_mode" xsi:type="string">offer_type</argument>
+                <argument name="filter_value" xsi:type="string">PointOffer</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="ls_customer_general_offers">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ls_Customer::loyalty/offers-hyva.phtml</argument>
+            </action>
+            <arguments>
+                <argument name="filter_mode" xsi:type="string">offer_type</argument>
+                <argument name="filter_value" xsi:type="string">General</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="ls_customer_loyalty_coupons">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ls_Customer::loyalty/offers-hyva.phtml</argument>
+            </action>
+            <arguments>
+                <argument name="filter_mode" xsi:type="string">discount_type</argument>
+                <argument name="filter_value" xsi:type="string">Coupon</argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

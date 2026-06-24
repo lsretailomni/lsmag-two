@@ -129,6 +129,9 @@ class Link extends Current
             }
             return parent::_toHtml();
         } else {
+            if ($this->getPath() == 'customer/order/view') {
+                return parent::_toHtml();
+            }
             return '';
         }
     }
