@@ -115,8 +115,6 @@ class Status
                     if ($isClickAndCollectOrder) {
                         $orderStatus = LSR::LS_STATE_COLLECTED;
                     }
-                    // Invoice (and, for C&C, ship) for both offline and online payments so the
-                    // order can transition to complete. generateInvoice() guards with canInvoice().
                     $this->payment->generateInvoice($data, false);
                     break;
                 case LSR::LS_STATE_SHIPPED:

@@ -181,8 +181,6 @@ class OrderStatusTest extends AbstractWebhookBase
             }
         }
 
-        // A COLLECTED Click & Collect order must be invoiced, shipped and moved to complete so
-        // that stock reservations are released (regardless of online/offline payment) — ADO 83548.
         $reloadedOrder = $objectManager->create(\Magento\Sales\Model\Order::class)
             ->loadByIncrementId($incrementId);
         $this->assertTrue($reloadedOrder->hasInvoices(), 'Collected C&C order should have an invoice.');
