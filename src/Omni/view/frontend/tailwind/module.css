@@ -1,0 +1,76 @@
+/**
+ * Ls_Omni — Hyvä (Tailwind CSS-first) module styles.
+ *
+ * Discovered by `hyva-sources` at view/frontend/tailwind/module.css and @imported
+ * into the theme's generated/hyva-source.css, so these rules compile into the
+ * single global styles.css (no runtime <css src>, no extra CSS request).
+ *
+ * @source registers this module's templates so the Tailwind utility classes they
+ * use (grid, gap-*, card, …) survive purge.
+ *
+ * Store icons are inlined as SVG data URIs so they resolve regardless of where
+ * the compiled styles.css ends up.
+ */
+@source "../templates/**/*.phtml";
+
+/* Stores page — icon labels (Store / Address / Phone / Hours) */
+.ls-store-icon-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ls-store-icon-label::before {
+    content: "";
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.ls-store-icon-label--store::before {
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke-width%3D%221.5%22%20stroke%3D%22%236b7280%22%20width%3D%2224%22%20height%3D%2224%22%3E%20%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M13.5%2021v-7.5a.75.75%200%200%201%20.75-.75h3a.75.75%200%200%201%20.75.75V21m-4.5%200H2.36m11.14%200H18m0%200h3.64m-1.39%200V9.349M3.75%2021V9.349m0%200a3.001%203.001%200%200%200%203.75-.615A2.993%202.993%200%200%200%209.75%209.75c.896%200%201.7-.393%202.25-1.016a2.993%202.993%200%200%200%202.25%201.016c.896%200%201.7-.393%202.25-1.015a3.001%203.001%200%200%200%203.75.614m-16.5%200a3.004%203.004%200%200%201-.621-4.72L4.318%203.44A1.5%201.5%200%200%201%205.378%203h13.243a1.5%201.5%200%200%201%201.06.44l1.19%201.189a3%203%200%200%201-.621%204.72m-13.5%200a3.001%203.001%200%200%200%203.75-.614%22%20%2F%3E%20%3C%2Fsvg%3E");
+}
+
+.ls-store-icon-label--address {
+    align-items: flex-start;
+}
+
+.ls-store-icon-label--address::before {
+    margin-top: 2px;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke-width%3D%221.5%22%20stroke%3D%22%236b7280%22%20width%3D%2224%22%20height%3D%2224%22%3E%20%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M15%2010.5a3%203%200%201%201-6%200%203%203%200%200%201%206%200Z%22%20%2F%3E%20%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M19.5%2010.5c0%207.142-7.5%2011.25-7.5%2011.25S4.5%2017.642%204.5%2010.5a7.5%207.5%200%201%201%2015%200Z%22%20%2F%3E%20%3C%2Fsvg%3E");
+}
+
+.ls-store-icon-label--phone::before {
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke-width%3D%221.5%22%20stroke%3D%22%236b7280%22%20width%3D%2224%22%20height%3D%2224%22%3E%20%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M2.25%206.75c0%208.284%206.716%2015%2015%2015h2.25a2.25%202.25%200%200%200%202.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97%201.293c-.282.376-.769.542-1.21.38a12.035%2012.035%200%200%201-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963%203.102a1.125%201.125%200%200%200-1.091-.852H4.5A2.25%202.25%200%200%200%202.25%204.5v2.25Z%22%20%2F%3E%20%3C%2Fsvg%3E");
+}
+
+.ls-store-icon-label--hours {
+    align-items: flex-start;
+}
+
+.ls-store-icon-label--hours::before {
+    margin-top: 2px;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke-width%3D%221.5%22%20stroke%3D%22%236b7280%22%20width%3D%2224%22%20height%3D%2224%22%3E%20%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M12%206v6h4.5m4.5%200a9%209%200%201%201-18%200%209%209%200%200%201%2018%200Z%22%20%2F%3E%20%3C%2Fsvg%3E");
+}
+
+/* Stores page — opening-hours table (readable day / time columns) */
+.ls-store-hours td {
+    vertical-align: top;
+}
+
+.ls-store-hours .dayofweek {
+    padding-right: 1rem;
+    white-space: nowrap;
+}
+
+.special-hour {
+    .special-label {
+        font-size: 8px;
+        padding-left: 5px;
+        color: green;
+        vertical-align: middle;
+    }
+}

@@ -1,0 +1,108 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/** @var  $block Renderer */
+/**
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+use \Ls\Customer\Block\Order\Item\Custom\Renderer;
+
+$_item           = $block->getItem();
+$checkIsShipment = $block->checkIsShipment();
+$discountInfo    = $block->getItemDiscountLines();
+$sku             = $_item->getNumber();
+
+if (!empty($_item->getVariantCode())) {
+    $sku .= '-' . $_item->getVariantCode();
+}
+
+if (!empty($_item->getUnitOfMeasure())) {
+    $sku .= '-' . $_item->getUnitOfMeasure();
+}
+
+$cols = $checkIsShipment ? 3 : 5;
+?>
+<div id="order-item-row-<?= /* @noEscape */ $_item->getItemId() ?>"
+     class="lg:grid grid-cols-<?= $escaper->escapeHtmlAttr($cols) ?> py-2">
+
+    <div class="p-2 col-span-2">
+        <span class="font-semibold">
+            <?= /* @noEscape */ !empty($_item->getDescription()) ? $_item->getDescription() : $_item->getNumber() ?>
+        </span>
+        <div class="item-options mt-2">
+            <div class="text-sm flex">
+                <span><?= $escaper->escapeHtml(__('SKU')) ?>:</span>
+                <span class="text-sm ml-1"><?= /* @noEscape */ $sku ?></span>
+            </div>
+            <?php if (!empty($_item->getVariantDescription()) && $_item->getVariantDescription() !== $_item->getDescription()): ?>
+                <div class="text-sm mt-1">
+                    <?= /* @noEscape */ $_item->getVariantDescription() ?>
+                </div>
+            <?php endif; ?>
+            <?php if ($_options = $block->getItemOptions()): ?>
+                <?php foreach ($_options as $_option): ?>
+                    <div class="text-sm flex mt-1">
+                        <span><?= $escaper->escapeHtml($_option['label']) ?>:</span>
+                        <?php if (!$block->getPrintStatus()): ?>
+                            <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                            <span<?= (isset($_formatedOptionValue['full_view']) ? ' class="tooltip wrapper ml-1"' : ' class="ml-1"') ?>>
+                                <?= $escaper->escapeHtml($_formatedOptionValue['value'], ['a']) ?>
+                                <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                    <div class="tooltip content">
+                                        <dl class="item options">
+                                            <dt><?= $escaper->escapeHtml($_option['label']) ?></dt>
+                                            <dd><?= $escaper->escapeHtml($_formatedOptionValue['full_view']) ?></dd>
+                                        </dl>
+                                    </div>
+                                <?php endif; ?>
+                            </span>
+                        <?php else: ?>
+                            <?php $optionValue = isset($_option['print_value']) ? $_option['print_value'] : $_option['value'] ?>
+                            <span class="ml-1"><?= $escaper->escapeHtml($optionValue) ?></span>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <?php if (!empty($discountInfo)): ?>
+                <p class="mt-1"><strong><?= /* @noEscape */ $discountInfo[0] ?></strong></p>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <?php if (!$checkIsShipment): ?>
+        <div class="p-2 flex justify-between lg:block">
+            <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Price')) ?></p>
+            <?php if (!empty($_item->getDiscountAmount()) && $_item->getDiscountAmount() !== 0): ?>
+                <div>
+                    <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()) ?>
+                    <div class="lsdiscountprice2">
+                        <span class="line-through text-gray-400">
+                            <?= /* @noEscape */ $block->getFormattedPrice($_item->getPrice() * $_item->getQuantity()) ?>
+                        </span>
+                    </div>
+                    <div class="lsdiscountamount text-sm text-red-600">
+                        <?= /* @noEscape */ '(' . __($block->getDiscountLabel()) . ' ' . $block->getFormattedPrice($_item->getDiscountAmount()) . ')' ?>
+                    </div>
+                </div>
+            <?php else: ?>
+                <?= /* @noEscape */ $block->getFormattedPrice($_item->getPrice()) ?>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="p-2 flex justify-between lg:block">
+        <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Qty')) ?></p>
+        <div class="text-right lg:text-left">
+            <?= /* @noEscape */ $block->getFormattedQty($_item->getQuantity()) ?>
+        </div>
+    </div>
+
+    <?php if (!$checkIsShipment): ?>
+        <div class="p-2 text-right flex justify-between lg:block">
+            <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Subtotal')) ?></p>
+            <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()) ?>
+        </div>
+    <?php endif; ?>
+
+</div>

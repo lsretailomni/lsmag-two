@@ -40,7 +40,8 @@ class DataHelper
         public Data $data,
         public Currency $currencyHelper,
         public LSR $lsr,
-        public ItemHelper $itemHelper
+        public ItemHelper $itemHelper,
+        public \Magento\Store\Model\StoreManagerInterface $storeManager,
     ) {
     }
 
@@ -230,7 +231,13 @@ class DataHelper
             $externalId = $magOrder->getIncrementId();
             $orderCurrencyCode = $magOrder->getOrderCurrencyCode();
         }
+
         $orderCurrencyCode = ($salesEntry->getStoreCurrencyCode()) ?: $orderCurrencyCode;
+
+        if (empty($orderCurrencyCode)) {
+            $orderCurrencyCode = $this->storeManager->getStore()->getCurrentCurrencyCode();
+        }
+
         $orderId = !empty($salesEntry->getDocumentId()) ?
             $salesEntry->getDocumentId() : "";
 
@@ -273,7 +280,7 @@ class DataHelper
             'status' => $this->orderHelper->getOrderStatus($salesEntry),
             'store_id' => $salesEntry->getStoreId(),
             'store_name' => $salesEntry->getStoreName(),
-            'store_currency' => ($salesEntry->getStoreCurrency()) ?: $orderCurrencyCode,
+            'store_currency' => $orderCurrencyCode,
             'total_amount' => $this->formatValue($salesEntry->getGrossAmount()),
             'total_net_amount' => $this->formatValue($salesEntry->getNetAmount()),
             'total_tax_amount' => $this->formatValue(

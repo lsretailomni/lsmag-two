@@ -3,7 +3,8 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="Ls\Omni\Block\GiftCardBalance\GiftCardBalance" before="-" cacheable="false"
+            <block class="Ls\Omni\Block\GiftCardBalance\GiftCardBalance" name="ls.omni.giftcardbalance"
+                   before="-" cacheable="false"
                    template="giftcardbalance/giftcardbalance.phtml">
                 <arguments>
                     <argument name="jsLayout" xsi:type="array">
