@@ -9,6 +9,7 @@ use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\View\Element\Template;
@@ -17,54 +18,6 @@ use Magento\Sales\Model\OrderRepository;
 
 class AbstractOrderBlock extends Template
 {
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var PriceCurrencyInterface
-     */
-    public $priceCurrency;
-
-    /** @var LSR $lsr */
-    public $lsr;
-
-    /**
-     * @var DataHelper
-     */
-    public $dataHelper;
-
-    /**
-     * @var PriceHelper
-     */
-    public $priceHelper;
-
-    /**
-     * @var OrderRepository
-     */
-    public $orderRepository;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    public $searchCriteriaBuilder;
-
-    /**
-     * @var CustomerSession
-     */
-    public $customerSession;
-
-    /**
-     * @var CountryFactory
-     */
-    public $countryFactory;
-
     /**
      * @param Context $context
      * @param PriceCurrencyInterface $priceCurrency
@@ -77,32 +30,26 @@ class AbstractOrderBlock extends Template
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param CustomerSession $customerSession
      * @param CountryFactory $countryFactory
+     * @param \Magento\Framework\App\Http\Context $httpContext
+     * @param Http $request
      * @param array $data
      */
     public function __construct(
         Context $context,
-        PriceCurrencyInterface $priceCurrency,
-        LoyaltyHelper $loyaltyHelper,
-        LSR $lsr,
-        OrderHelper $orderHelper,
-        DataHelper $dataHelper,
-        PriceHelper $priceHelper,
-        OrderRepository $orderRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        CustomerSession $customerSession,
-        CountryFactory $countryFactory,
+        public PriceCurrencyInterface $priceCurrency,
+        public LoyaltyHelper $loyaltyHelper,
+        public LSR $lsr,
+        public OrderHelper $orderHelper,
+        public DataHelper $dataHelper,
+        public PriceHelper $priceHelper,
+        public OrderRepository $orderRepository,
+        public SearchCriteriaBuilder $searchCriteriaBuilder,
+        public CustomerSession $customerSession,
+        public CountryFactory $countryFactory,
+        public \Magento\Framework\App\Http\Context $httpContext,
+        public Http $request,
         array $data = []
     ) {
-        $this->priceCurrency         = $priceCurrency;
-        $this->loyaltyHelper         = $loyaltyHelper;
-        $this->lsr                   = $lsr;
-        $this->orderHelper           = $orderHelper;
-        $this->dataHelper            = $dataHelper;
-        $this->priceHelper           = $priceHelper;
-        $this->orderRepository       = $orderRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->customerSession       = $customerSession;
-        $this->countryFactory        = $countryFactory;
         parent::__construct($context, $data);
     }
 
@@ -270,5 +217,40 @@ class AbstractOrderBlock extends Template
         }
 
         return [$title, $class];
+    }
+
+    public function getHeading()
+    {
+        $detail = $this->orderHelper->getGivenValueFromRegistry('current_detail');
+        $orderId = $this->request->getParam('order_id');
+        $heading = '';
+        switch ($detail) {
+            case 'order':
+                break;
+            case 'shipment':
+                $heading = __('Shipment # %1', $orderId);
+                break;
+            case 'invoice':
+                $heading = __('Invoice # %1', $orderId);
+                break;
+            case 'creditmemo':
+                $heading = __('Credit Memo # %1', $orderId);
+                break;
+        }
+
+        return $heading;
+    }
+
+    /**
+     * Return back title for logged in and guest users
+     *
+     * @return \Magento\Framework\Phrase
+     */
+    public function getBackTitle()
+    {
+        if ($this->httpContext->getValue(\Magento\Customer\Model\Context::CONTEXT_AUTH)) {
+            return __('Back to My Orders');
+        }
+        return __('View Another Order');
     }
 }

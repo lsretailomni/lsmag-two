@@ -1,0 +1,98 @@
+<?php
+
+use Magento\Framework\Escaper;
+use Magento\GiftMessage\Helper\Message;
+use Ls\Customer\Block\Order\Custom\Hyva\View;
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+
+/** @var View $block */
+/** @var Escaper $escaper */
+
+$giftMessageHelper = $this->helper(Message::class);
+
+$_order = $block->getOrder();
+$magOrder = $block->getMagOrder();
+$heading = $block->getHeading();
+?>
+<div class="md:flex md:justify-between md:flex-wrap md:gap-4 items-center mb-3">
+    <div class="lg:flex items-center text-center md:text-left print:flex print:text-left">
+        <div class="lg:inline-block">
+            <div class="text-2xl"><?= $escaper->escapeHtml($heading) ?></div>
+            <?= $block->getChildHtml('order.date') ?>
+        </div>
+        <div class="mt-3 lg:mt-0 lg:inline-block lg:ml-5 print:ml-5 print:mt-0">
+            <?= $block->getChildHtml('order.status') ?>
+        </div>
+    </div>
+    <?php if (!$block->getData('is_context_shipment')): ?>
+        <?= $block->getChildHtml('sales.order.buttons') ?>
+    <?php else: ?>
+        <?= $block->getChildHtml('sales.shipment.buttons') ?>
+    <?php endif; ?>
+</div>
+<div class="order-details-items ordered">
+    <div class="card mb-2">
+        <?= $block->getChildHtml('order_top_items') ?>
+    </div>
+    <div class="p-4 card">
+        <div class="mb-4">
+            <?= $block->getChildHtml('sales.order.info') ?>
+        </div>
+
+        <?= $block->getChildHtml('order.comments') ?>
+
+        <div class="mb-4 pb-4 border-b border-gray-300">
+            <?= $block->getChildHtml('custom.order.info') ?>
+        </div>
+        <?php if (!$block->getData('is_context_shipment')): ?>
+            <div class="order-title">
+                <p class="text-lg mt-8 mb-2"><?= $escaper->escapeHtml(__('Items Ordered')) ?></p>
+                <?php if ($magOrder && !empty($magOrder->getTracksCollection()->getItems())): ?>
+                    <?= $block->getChildHtml('tracking-info-link') ?>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+
+
+        <?= $block->getChildHtml('custom_order_items_custom') ?>
+
+        <?php if ($magOrder && $giftMessageHelper->isMessagesAllowed('order', $magOrder) && $magOrder->getGiftMessageId()): ?>
+            <div class="block block-order-details-gift-message">
+                <div class="block-title"><strong><?= $escaper->escapeHtml(__('Gift Message for This Order')) ?></strong>
+                </div>
+                <?php
+                $giftMessage =
+                    $giftMessageHelper->getGiftMessageForEntity($magOrder);
+                ?>
+                <div class="block-content">
+                    <dl class="item-options">
+                        <dt class="item-sender">
+                            <strong class="label">
+                                <?= $escaper->escapeHtml(__('From')) ?>
+                            </strong>
+                            <?= $escaper->escapeHtml($giftMessage->getSender()) ?>
+                        </dt>
+                        <dt class="item-recipient">
+                            <strong class="label">
+                                <?= $escaper->escapeHtml(__('To')) ?>
+                            </strong>
+                            <?= $escaper->escapeHtml($giftMessage->getRecipient()) ?>
+                        </dt>
+                        <dd class="item-message">
+                            <?= /* @noEscape */ $giftMessageHelper->getEscapedGiftMessage($magOrder) ?>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        <?php endif; ?>
+        <div class="actions-toolbar">
+            <div class="secondary">
+                <a class="action back" href="<?= $escaper->escapeUrl($block->getBackUrl()) ?>">
+                    <span><?= $escaper->escapeHtml($block->getBackTitle()) ?></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

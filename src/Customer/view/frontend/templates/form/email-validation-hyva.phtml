@@ -1,0 +1,23 @@
+<?php
+/**
+ * Adds the 80 character limit validation to the e-mail field on the Hyvä
+ * customer registration form.
+ *
+ * On Luma this limit is enforced by the jQuery "customerFormValidations" widget
+ * (Ls_Customer::form/validation.phtml), which does not run under Hyvä. Hyvä's
+ * form validation automatically derives a "maxlength" rule from an input's
+ * maxlength attribute (see getRules() in advanced-form-validation.phtml), so we
+ * just set that attribute on the e-mail input. The validation runs both on
+ * input and on submit, because validate() re-reads the field attributes.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ */
+?>
+<script>
+    (function () {
+        var emailField = document.getElementById('email_address');
+        if (emailField && !emailField.hasAttribute('maxlength')) {
+            emailField.setAttribute('maxlength', '80');
+        }
+    })();
+</script>
