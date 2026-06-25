@@ -1,0 +1,17 @@
+<?php
+/**
+ * LS Central gift card amount used totals segment (Hyvä).
+ *
+ * The AlpineJS scope of this file is the method `initCartTotals()`
+ * in Magento_Checkout::php-cart/totals.phtml. The companion JS block
+ * `ls_gift_card_amount_used.js` registers the `initGiftcardDiscountSegment` Alpine.data.
+ */
+?>
+<div x-data="initGiftcardDiscountSegment">
+<template x-if="isGiftcardDiscountSegment()" data-total-code="ls_gift_card_amount_used">
+    <div :class="wrapperClass">
+        <div x-text="formatTotalLabel"></div>
+        <div x-text="formatGiftcardDiscountValue()" class="justify-self-end"></div>
+    </div>
+</template>
+</div>
