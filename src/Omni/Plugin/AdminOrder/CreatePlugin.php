@@ -85,9 +85,7 @@ class CreatePlugin
                     }
                 }
                 if (count($quote->getAllItems()) == 0) {
-                    $quote->setLsGiftCardAmountUsed(0);
-                    $quote->setLsGiftCardNo(null);
-                    $quote->setLsGiftCardPin(null);
+                    $quote->setLsPosDataEntries(null);
                     $quote->setLsPointsSpent(0);
                     $quote->setLsPointsEarn(0);
                     $quote->setGrandTotal(0);
@@ -101,11 +99,11 @@ class CreatePlugin
                 if (!empty($basketData) && method_exists($basketData, 'getPointsRewarded')) {
                     $quote->setLsPointsEarn($basketData->getPointsRewarded())->save();
                 }
-                if ($quote->getLsGiftCardAmountUsed() > 0 ||
+                if ((float)array_sum(array_column(json_decode((string)$quote->getLsPosDataEntries(), true) ?? [], 'amount')) > 0 ||
                     $quote->getLsPointsSpent() > 0) {
                     $this->data->orderBalanceCheck(
-                        $quote->getLsGiftCardNo(),
-                        $quote->getLsGiftCardAmountUsed(),
+                        $quote->getLsPosDataEntries(),
+                        (float)array_sum(array_column(json_decode((string)$quote->getLsPosDataEntries(), true) ?? [], 'amount')),
                         $quote->getLsPointsSpent(),
                         $basketData
                     );

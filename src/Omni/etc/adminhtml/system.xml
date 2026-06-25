@@ -287,7 +287,7 @@
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
                 </depends>
-                <label>Gift Card</label>
+                <label>POS Data Entry</label>
                 <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
@@ -315,6 +315,16 @@
                        showInWebsite="1" showInStore="1">
                     <label>Show Pin Code Field</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                </field>
+                <field id="voucher_configuration" translate="label comment" sortOrder="5"
+                       showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>POS Data Entry Configuration</label>
+                    <frontend_model>Ls\Omni\Block\Adminhtml\System\Config\VoucherGiftCardConfig</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <comment>Configure multiple pos data entry types with code, item type, item/account no, tender type.</comment>
                     <depends>
                         <field id="*/*/active">1</field>
                     </depends>

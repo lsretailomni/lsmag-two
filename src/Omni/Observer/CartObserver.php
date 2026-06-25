@@ -64,9 +64,8 @@ class CartObserver implements ObserverInterface
                 // add items from the quote to the oneList and return the updated onelist
                 $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
                 if (count($quote->getAllItems()) == 0) {
-                    $quote->setLsGiftCardAmountUsed(0);
-                    $quote->setLsGiftCardNo(null);
-                    $quote->setLsGiftCardPin(null);
+                    // Clear unified entry column (covers both gift cards and vouchers)
+                    $quote->setLsPosDataEntries(null);
                     $quote->setLsPointsSpent(0);
                     $quote->setLsPointsEarn(0);
                     $quote->setSubtotal(0);
