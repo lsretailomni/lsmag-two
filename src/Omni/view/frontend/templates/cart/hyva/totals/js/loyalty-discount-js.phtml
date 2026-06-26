@@ -17,7 +17,7 @@ use Hyva\Theme\ViewModel\HyvaCsp;
                 return this.segment.code === 'ls_points_discount';
             },
             formatLoyaltyDiscountValue() {
-                return hyva.formatPrice(this.segment.value);
+                return '-' + hyva.formatPrice(this.segment.value);
             }
         };
     }
