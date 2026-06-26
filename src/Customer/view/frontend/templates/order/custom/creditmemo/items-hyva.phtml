@@ -1,0 +1,134 @@
+<?php
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+/** @var \Ls\Customer\Block\Order\Custom\Hyva\Items $block */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+$magentoOrder         = $block->getMagOrder();
+$order                = $block->getOrder(true);
+$centralOrder         = $block->getLscMemberSalesBuffer($block->getOrder());
+$lsItems              = $block->getItems();
+$creditmemoCollection = $magentoOrder->getCreditmemosCollection();
+$renderer             = $block->getChildBlock('custom_order_item_renderer_custom');
+
+// Build LS items map keyed by itemId-variantId-uom, skipping parent/comment lines
+$lsItemsMap = [];
+foreach ($lsItems as $lsItem) {
+    if ($lsItem->getEntryType() == 1 || $lsItem->getParentItem()) {
+        continue;
+    }
+    $key              = $lsItem->getNumber() . '-' . $lsItem->getVariantCode() . '-' . $lsItem->getUnitOfMeasure();
+    $lsItemsMap[$key] = $lsItem;
+}
+?>
+<?php foreach ($creditmemoCollection as $creditmemo): ?>
+    <?php
+    // Index this credit memo's items by parsed SKU for comparison against LS Central lines
+    $creditmemoItemsMap = [];
+    foreach ($creditmemo->getAllItems() as $creditmemoItem) {
+        $orderItem = $creditmemoItem->getOrderItem();
+        if ($orderItem && $orderItem->getParentItemId()) {
+            continue;
+        }
+        [$itemId, $variantId, $uom] = $block->itemHelper->getComparisonValues($creditmemoItem->getSku());
+        $key                        = $itemId . '-' . $variantId . '-' . $uom;
+        $creditmemoItemsMap[$key]   = $creditmemoItem;
+    }
+
+    // Only show LS lines that have a matching Magento credit memo item
+    $matchedItems = array_intersect_key($lsItemsMap, $creditmemoItemsMap);
+
+    if (empty($matchedItems)) {
+        continue;
+    }
+    ?>
+    <div class="order-title text-center md:text-left font-semibold">
+        <?= $escaper->escapeHtml(__('Credit Memo #')) ?><?= $escaper->escapeHtml($creditmemo->getIncrementId()) ?>
+        <a href="<?= $escaper->escapeUrl($block->getPrintCreditMemoUrl($centralOrder, $creditmemo)) ?>"
+           class="inline-block ml-2 pl-2 border-l text-sm font-normal"
+           target="_blank"
+           rel="noopener">
+            <?= $heroicons->printerHtml('inline-block', 20, 20) ?>
+            <span class="inline-block ml-1 underline"><?= $escaper->escapeHtml(__('Print Credit Memo')) ?></span>
+        </a>
+    </div>
+
+    <div class="order-items creditmemo">
+        <div class="hidden lg:grid grid-cols-5 text-sm">
+            <div class="p-2 col-span-2"><?= $escaper->escapeHtml(__('Product Name')) ?></div>
+            <div class="p-2"><?= $escaper->escapeHtml(__('Price')) ?></div>
+            <div class="p-2"><?= $escaper->escapeHtml(__('Qty Refunded')) ?></div>
+            <div class="p-2 text-right"><?= $escaper->escapeHtml(__('Subtotal')) ?></div>
+        </div>
+
+        <?php foreach ($matchedItems as $key => $lsItem): ?>
+            <?php
+            $creditmemoItem = $creditmemoItemsMap[$key];
+            $lsQty          = (float)$lsItem->getQuantity();
+            $magentoQty     = (float)$creditmemoItem->getQty();
+            $qtyMismatch    = abs($lsQty - $magentoQty) > 0.001;
+            $renderer->setData('item', $lsItem);
+
+            $sku = $lsItem->getNumber();
+            if (!empty($lsItem->getVariantCode())) {
+                $sku .= '-' . $lsItem->getVariantCode();
+            }
+            if (!empty($lsItem->getUnitOfMeasure())) {
+                $sku .= '-' . $lsItem->getUnitOfMeasure();
+            }
+            ?>
+            <div class="lg:grid grid-cols-5 py-2 border-b border-gray-100<?= $qtyMismatch ? ' bg-yellow-50' : '' ?>">
+                <div class="p-2 col-span-2">
+                    <span class="font-semibold">
+                        <?= $escaper->escapeHtml(
+                            !empty($lsItem->getDescription()) ? $lsItem->getDescription() : $lsItem->getNumber()
+                        ) ?>
+                    </span>
+                    <div class="item-options mt-2 text-sm">
+                        <div class="flex">
+                            <span><?= $escaper->escapeHtml(__('SKU')) ?>:</span>
+                            <span class="ml-1"><?= $escaper->escapeHtml($sku) ?></span>
+                        </div>
+                        <?php if (!empty($lsItem->getVariantDescription()) && $lsItem->getVariantDescription() !== $lsItem->getDescription()): ?>
+                            <div class="mt-1"><?= $escaper->escapeHtml($lsItem->getVariantDescription()) ?></div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="p-2 flex justify-between lg:block">
+                    <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Price')) ?></p>
+                    <?= /* @noEscape */ $renderer->getFormattedPrice($lsItem->getPrice()) ?>
+                </div>
+
+                <div class="p-2 flex justify-between lg:block">
+                    <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Qty Refunded')) ?></p>
+                    <div class="text-sm space-y-1">
+                        <div>
+                            <?= $escaper->escapeHtml(number_format($lsQty, 2, '.', '')) ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-2 text-right flex justify-between lg:block">
+                    <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Subtotal')) ?></p>
+                    <?= /* @noEscape */ $renderer->getFormattedPrice($lsItem->getAmount()) ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php endforeach; ?>
+
+<div class="flex justify-end border-t border-gray-300 mt-2">
+    <div class="lg:w-1/3">
+        <div class="grid grid-cols-2 text-right p-2 gap-2">
+            <?= /* @noEscape */ $block->getChildBlock('custom_order_totals')->setCurrentOrder($order)->toHtml() ?>
+        </div>
+    </div>
+</div>

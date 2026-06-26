@@ -51,6 +51,11 @@ class Items extends AbstractItems
         $order = $this->getOrder(true);
         $orderLines = [];
         $documentId = $this->_request->getParam('order_id');
+        $detail = $this->orderHelper->getGivenValueFromRegistry('current_detail');
+        if ($detail == 'creditmemo') {
+            $documentId = current($this->_request->getParam('new_order_id'));
+        }
+
         if ($order) {
             $orderLines = $order->getLscMemberSalesDocLine();
 
@@ -125,6 +130,28 @@ class Items extends AbstractItems
         }
 
         return $this->getUrl('*/*/printInvoice', $params);
+    }
+
+    /**
+     * Get print credit memo url
+     *
+     * @param object $order
+     * @param object $creditmemo
+     * @return string
+     */
+    public function getPrintCreditMemoUrl($order, $creditmemo)
+    {
+        $reqType = $this->getRequest()->getParam('type');
+
+        $params['order_id']      = $order->getDocumentId();
+        $params['creditmemo_id'] = $creditmemo->getId();
+
+        if ($reqType) {
+            $params['order_id'] = $this->getRequest()->getParam('order_id');
+            $params['type']     = $reqType;
+        }
+
+        return $this->getUrl('*/*/PrintRefunds', $params);
     }
 
     /**
