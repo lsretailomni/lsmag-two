@@ -42,6 +42,12 @@
                                             </item>
                                             <item name="sortOrder" xsi:type="string">3</item>
                                         </item>
+                                        <item name="ls_entry_amount" xsi:type="array">
+                                            <item name="component" xsi:type="string">
+                                                Ls_Omni/js/view/totals/voucher-discount
+                                            </item>
+                                            <item name="sortOrder" xsi:type="string">4</item>
+                                        </item>
                                     </item>
                                 </item>
                                 <item name="grand-total" xsi:type="array">

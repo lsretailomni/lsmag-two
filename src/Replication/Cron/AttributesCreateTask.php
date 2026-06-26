@@ -1040,9 +1040,14 @@ class AttributesCreateTask
         $attributeData['update_product_preview_image'] = 1;
         $attributeData['use_product_image_for_swatch'] = 0;
         $attributeData['optionvisual']                 = $this->getOptionSwatch($attributeData);
-        $attributeData['defaultvisual']                = $this->getOptionDefaultVisual($attributeData);
+        // Keep the swatch without any preselected default option.
+        $attributeData['defaultvisual']                = [];
         $attributeData['swatchvisual']                 = $this->getOptionSwatchVisual($attributeData);
         $attribute->addData($attributeData);
+        // Clear any previously stored default so the swatch plugin's else-branch
+        // (default => [0 => getDefaultValue()]) resolves to empty instead of restoring it.
+        $attribute->setDefaultValue('');
+        $attribute->setData('default', []);
         // @codingStandardsIgnoreLine
         $attribute->save();
     }

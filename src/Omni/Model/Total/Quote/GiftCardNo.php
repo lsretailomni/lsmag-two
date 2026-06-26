@@ -3,30 +3,31 @@ declare(strict_types=1);
 
 namespace Ls\Omni\Model\Total\Quote;
 
+use Ls\Omni\Helper\GiftCardHelper;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 
 class GiftCardNo extends AbstractTotal
 {
+    public function __construct(
+        private readonly GiftCardHelper $giftCardHelper
+    ) {
+    }
+
     /**
-     * For fetching git card number from quote
-     *
-     * @param Quote $quote
-     * @param Total $total
-     * @return array
+     * Return only the GIFTCARDNO entries from unified column as a segment for JS rendering.
      */
     public function fetch(Quote $quote, Total $total)
     {
-        $totals         = [];
-        $giftCardNumber = $quote->getLsGiftCardNo();
-        if (!empty($giftCardNumber)) {
-            $totals[] = [
+        $giftCardEntriesJson = $this->giftCardHelper->getGiftCardEntriesJson($quote->getLsPosDataEntries());
+        if (!empty($giftCardEntriesJson)) {
+            return [
                 'code'  => $this->getCode(),
                 'title' => __('Gift Card No'),
-                'value' => $giftCardNumber,
+                'value' => $giftCardEntriesJson,
             ];
         }
-        return $totals;
+        return null;
     }
 }
