@@ -10,7 +10,7 @@
 <div x-data="initLoyaltyDiscountSegment">
 <template x-if="isLoyaltyDiscountSegment()" data-total-code="ls_points_discount">
     <div :class="wrapperClass">
-        <div x-text="formatTotalLabel"></div>
+        <div x-text="segment.title"></div>
         <div x-text="formatLoyaltyDiscountValue()" class="justify-self-end"></div>
     </div>
 </template>
