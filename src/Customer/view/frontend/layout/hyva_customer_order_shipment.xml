@@ -1,73 +1,40 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <update handle="customer_account"/>
+    <update handle="hyva_sales_order_view_base"/>
     <update handle="sales_order_shipment_renderers"/>
-    <update handle="customer_order_info_links"/>
     <body>
-        <referenceContainer name="content">
-            <block class="Ls\Customer\Block\Order\Custom\Hyva\View"
-                   name="sales.order.view"
-                   cacheable="false">
+        <referenceBlock name="sales.order.view">
+            <arguments>
+                <argument name="is_context_shipment" xsi:type="string">true</argument>
+            </arguments>
+            <block class="Ls\Customer\Block\Order\Custom\Hyva\Items"
+                   name="custom_order_items_custom"
+                   template="Ls_Customer::order/custom/shipment/items-hyva.phtml"
+                   before="order.status">
                 <arguments>
                     <argument name="is_context_shipment" xsi:type="string">true</argument>
                 </arguments>
-                <block class="Ls\Customer\Block\Order\Hyva\Info"
-                       name="order.date"
-                       template="Ls_Customer::order/order_date.phtml"
-                />
-                <block class="Ls\Customer\Block\Order\Info"
-                       name="sales.order.buttons"
-                       template="Ls_Customer::order/info/buttons-hyva.phtml"
-                />
-                <container name="order_top_items" />
-                <block class="Ls\Customer\Block\Order\Custom\Hyva\View"
-                       name="order.comments"
-                       template="Magento_Sales::order/order_comments.phtml"
-                />
-                <block class="Ls\Customer\Block\Order\Hyva\Info" name="sales.order.info" />
-                <block class="Ls\Customer\Block\Order\Hyva\Info"
-                       name="custom.order.info"
-                       template="Ls_Customer::order/useful_info.phtml" />
-                <block class="Ls\Customer\Block\Order\Custom\Hyva\Items"
-                       name="custom_order_items_custom"
-                       template="Ls_Customer::order/custom/shipment/items-hyva.phtml">
+                <block class="Magento\Shipping\Block\Tracking\Link"
+                       name="track-all-link"
+                       template="Magento_Shipping::tracking/link.phtml">
                     <arguments>
-                        <argument name="is_context_shipment" xsi:type="string">true</argument>
+                        <argument name="label"
+                                  xsi:type="string"
+                                  translate="true">
+                            Track All Shipments
+                        </argument>
                     </arguments>
-                    <block class="Magento\Shipping\Block\Tracking\Link"
-                           name="track-all-link"
-                           template="Magento_Shipping::tracking/link.phtml">
-                        <arguments>
-                            <argument name="label"
-                                      xsi:type="string"
-                                      translate="true">
-                                Track All Shipments
-                            </argument>
-                        </arguments>
-                    </block>
-                    <block class="Magento\Framework\View\Element\RendererList"
-                           name="sales.order.shipment.renderers"
-                           as="renderer.list"
-                    />
-                    <block class="Magento\Sales\Block\Order\Comments"
-                           name="order.comments"
-                           template="Magento_Sales::order/comments.phtml"
-                    />
                 </block>
-
-                <block class="Ls\Customer\Block\Order\Hyva\Info"
-                       name="order.status"
-                       template="Ls_Customer::order/order_status-hyva.phtml"
+                <block class="Magento\Framework\View\Element\RendererList"
+                       name="sales.order.shipment.renderers"
+                       as="renderer.list"
                 />
-                <referenceBlock name="custom.order.status" remove="true"/>
-                <referenceBlock name="custom.order.date" remove="true"/>
-                <referenceBlock name="sales.order.info.buttons" remove="true"/>
+                <block class="Magento\Sales\Block\Order\Comments"
+                       name="order.comments"
+                       template="Magento_Sales::order/comments.phtml"
+                />
             </block>
-        </referenceContainer>
-        <block class="Magento\Framework\View\Element\Template"
-               name="additional.product.info"
-               template="Magento_Theme::template.phtml"
-        />
+        </referenceBlock>
     </body>
 </page>
