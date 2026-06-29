@@ -78,7 +78,7 @@ class LoyaltyPointsManagement
         $itemsCount         = $cartQuote->getItemsCount();
         $isPointValid       = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
         $orderBalance = $this->loyaltyHelper->dataHelper->getOrderBalance(
-            $cartQuote->getLsGiftCardAmountUsed(),
+            (float)array_sum(array_column(json_decode((string)$cartQuote->getLsPosDataEntries(), true) ?? [], 'amount')),
             0,
             $this->loyaltyHelper->basketHelper->getBasketSessionValue()
         );

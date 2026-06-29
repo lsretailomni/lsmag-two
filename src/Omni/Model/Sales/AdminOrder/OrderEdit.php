@@ -400,7 +400,7 @@ class OrderEdit
                 );
                 $orderPaymentArray[] = $orderPaymentLoyalty;
             }
-            if ($order->getLsGiftCardAmountUsed()) {
+            if ((float)array_sum(array_column(json_decode((string)$order->getLsPosDataEntries(), true) ?? [], 'amount'))) {
                 $tenderTypeId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
                 // @codingStandardsIgnoreStart
                 $orderPaymentGiftCard = $this->orderHelper->createInstance(COEditPayment::class);
@@ -410,10 +410,10 @@ class OrderEdit
                     [
                         COEditPayment::CURRENCY_FACTOR => 1,
                         COEditPayment::CURRENCY_CODE => $order->getOrderCurrency()->getCurrencyCode(),
-                        COEditPayment::PRE_APPROVED_AMOUNT => $order->getLsGiftCardAmountUsed(),
+                        COEditPayment::PRE_APPROVED_AMOUNT => (float)array_sum(array_column(json_decode((string)$order->getLsPosDataEntries(), true) ?? [], 'amount')),
                         COEditPayment::LINE_NO => $startingLineNumber + 2,
-                        COEditPayment::CARDOR_CUSTOMERNUMBER => $order->getLsGiftCardNo(),
-                        COEditPayment::AUTHORIZATION_CODE => $order->getLsGiftCardPin(),
+                        COEditPayment::CARDOR_CUSTOMERNUMBER => $order->getLsPosDataEntries(),
+                        COEditPayment::AUTHORIZATION_CODE => (($__e = json_decode((string)$order->getLsPosDataEntries(), true)) ? (end($__e)['pin_code'] ?? null) : null),
                         COEditPayment::EXTERNAL_REFERENCE => $order->getIncrementId(),
                         COEditPayment::PRE_APPROVED_VALID_DATE => $preApprovedDate,
                         COEditPayment::TENDER_TYPE => $tenderTypeId

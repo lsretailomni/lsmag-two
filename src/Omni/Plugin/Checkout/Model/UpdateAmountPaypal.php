@@ -54,7 +54,7 @@ class UpdateAmountPaypal
             $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent()) : 0;
 
         if (in_array($paymentMethod, $paypalMehodList)) {
-            $result[self::SUBTOTAL] = $quote->getSubtotal() - ($loyaltyPoints + $quote->getLsGiftCardAmountUsed());
+            $result[self::SUBTOTAL] = $quote->getSubtotal() - ($loyaltyPoints + (float)array_sum(array_column(json_decode((string)$quote->getLsPosDataEntries(), true) ?? [], 'amount')));
         }
 
         return $result;

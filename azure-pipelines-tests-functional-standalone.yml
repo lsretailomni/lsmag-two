@@ -158,7 +158,8 @@ jobs:
           cd $(magentoDirectory)
           mkdir -p artifacts/lsretail/lsmag-two
           cp -a /home/vsts/work/1/s/. $(magentoDirectory)/artifacts/lsretail/lsmag-two/
-          composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --require-dev magento/magento2-functional-testing-framework:$(functionalTestingFrameworkVersion) --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
+          php -r '$f="artifacts/lsretail/lsmag-two/composer.json"; $j=json_decode(file_get_contents($f), true); $j["version"]="dev-master"; file_put_contents($f, json_encode($j, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));'
+          composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --require-dev magento/magento2-functional-testing-framework:$(functionalTestingFrameworkVersion) --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}, "canonical": false}' -s alpha -n
           composer config use-include-path true
           composer config --no-plugins allow-plugins true
           composer config minimum-stability stable

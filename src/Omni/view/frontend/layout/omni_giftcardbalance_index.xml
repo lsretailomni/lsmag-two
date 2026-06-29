@@ -13,6 +13,7 @@
                                 <item name="component" xsi:type="string">Ls_Omni/js/view/gift-card-balance</item>
                                 <item name="config" xsi:type="array">
                                     <item name="template" xsi:type="string">Ls_Omni/gift-card-balance</item>
+                                    <item name="isPinCodeEnabled" xsi:type="helper" helper="Ls\Omni\Helper\GiftCardHelper::isPinCodeFieldEnable"/>
                                 </item>
                             </item>
                         </item>

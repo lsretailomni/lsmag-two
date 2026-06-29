@@ -64,6 +64,14 @@ class CartTotalRepository
                 $totalsExtension->setLoyaltyPoints($pointsConfig);
                 $quoteTotals->setExtensionAttributes($totalsExtension);
             }
+
+            $lsPosData = $quote->getLsPosDataEntries();
+            if (!empty($lsPosData)) {
+                /** @var TotalsExtensionInterface $totalsExtension */
+                $totalsExtension = $quoteTotals->getExtensionAttributes() ?: $this->totalExtensionFactory->create();
+                $totalsExtension->setLsPosDataEntries($lsPosData);
+                $quoteTotals->setExtensionAttributes($totalsExtension);
+            }
         }
 
         return $quoteTotals;

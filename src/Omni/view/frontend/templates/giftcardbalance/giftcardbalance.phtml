@@ -1,15 +1,13 @@
 <?php
-    /** @var \Ls\Omni\Block\GiftCardBalance\GiftCardBalance $block */
+/** @var \Ls\Omni\Block\GiftCardBalance\GiftCardBalance $block */
 ?>
-<script>var giftCardPinEnable = "<?= $block->isPinCodeFieldEnable(); ?>";</script>
 <div id="gift-card-balance" data-bind="scope:'gift-card-balance'">
     <!-- ko template: getTemplate() --><!-- /ko -->
     <script type="text/x-magento-init">
         {
             "#gift-card-balance": {
                 "Magento_Ui/js/core/app": <?= /* @escapeNotVerified */ $block->getJsLayout(); ?>
+            }
         }
-    }
-
     </script>
 </div>

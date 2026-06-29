@@ -90,6 +90,15 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         $total->addTotalAmount('grand_total', $paymentDiscount);
         $total->addBaseTotalAmount('grand_total', $paymentDiscount);
 
+        // LS Central prices are already tax-inclusive (gross amounts).
+        // Magento's Tax collector adds tax on top of these prices, inflating the grand total.
+        // Cancel that extra tax so Order Balance = gross subtotal + shipping - discounts.
+        $taxAmount = $total->getTaxAmount();
+        if ($taxAmount > 0) {
+            $total->addTotalAmount('grand_total', -$taxAmount);
+            $total->addBaseTotalAmount('grand_total', -$total->getBaseTaxAmount());
+        }
+
         if ($quote->getCouponCode()) {
             $total->setCouponCode($quote->getCouponCode());
         }
@@ -125,14 +134,6 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                 'title' => $title,
                 'value' => $amount
             ];
-
-            $paymentDiscount = $this->getGiftCardLoyaltyDiscount($quote);
-            $total->addTotalAmount('discount', $amount);
-            $total->addTotalAmount('grand_total', $paymentDiscount);
-        } else {
-            $total->addTotalAmount('discount', $amount);
-            $total->addTotalAmount('grand_total', 0);
-            $quote->getBillingAddress()->setDiscountAmount(0)->save();
         }
 
         return $result;
@@ -172,8 +173,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                 $quote->setLsPointsDiscount($pointDiscount);
             }
         }
-        $giftCardAmount = $quote->getLsGiftCardAmountUsed();
 
-        return -$pointDiscount - $giftCardAmount;
+        return -$pointDiscount;
     }
 }

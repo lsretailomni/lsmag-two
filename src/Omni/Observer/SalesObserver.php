@@ -49,7 +49,7 @@ class SalesObserver implements ObserverInterface
             $pointDiscount = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent(), true);
         }
 
-        $giftCardAmount     = $quote->getLsGiftCardAmountUsed();
+        $giftCardAmount     = (float)array_sum(array_column(json_decode((string)$quote->getLsPosDataEntries(), true) ?? [], 'amount'));
 
         if ($pointDiscount > 0.001) {
             $quote->setLsPointsDiscount($pointDiscount);
