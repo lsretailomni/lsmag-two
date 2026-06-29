@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Block\Items\AbstractItems;
@@ -183,6 +184,62 @@ class Items extends AbstractItems
     public function getCustomItemRenderer($item)
     {
         return $this->getChildBlock("custom_order_item_renderer_custom")->setData("item", $item)->toHtml();
+    }
+
+    /**
+     * Build LS Central items map keyed by itemId-variantId-uom, skipping parent/comment lines
+     *
+     * @return DataObject[]
+     */
+    public function getLsItemsMap()
+    {
+        $lsItemsMap = [];
+
+        foreach ($this->getItems() as $lsItem) {
+            if ($lsItem->getEntryType() == 1 || $lsItem->getParentItem()) {
+                continue;
+            }
+            $key              = $lsItem->getNumber() . '-' . $lsItem->getVariantCode() . '-' . $lsItem->getUnitOfMeasure();
+            $lsItemsMap[$key] = $lsItem;
+        }
+
+        return $lsItemsMap;
+    }
+
+    /**
+     * Index a credit memo's items by parsed SKU for comparison against LS Central lines
+     *
+     * @param object $creditmemo
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getCreditmemoItemsMap($creditmemo)
+    {
+        $creditmemoItemsMap = [];
+
+        foreach ($creditmemo->getAllItems() as $creditmemoItem) {
+            $orderItem = $creditmemoItem->getOrderItem();
+            if ($orderItem && $orderItem->getParentItemId()) {
+                continue;
+            }
+            [$itemId, $variantId, $uom] = $this->itemHelper->getComparisonValues($creditmemoItem->getSku());
+            $key                        = $itemId . '-' . $variantId . '-' . $uom;
+            $creditmemoItemsMap[$key]   = $creditmemoItem;
+        }
+
+        return $creditmemoItemsMap;
+    }
+
+    /**
+     * Get LS Central lines that have a matching Magento credit memo item
+     *
+     * @param array $lsItemsMap
+     * @param array $creditmemoItemsMap
+     * @return array
+     */
+    public function getMatchedItems(array $lsItemsMap, array $creditmemoItemsMap)
+    {
+        return array_intersect_key($lsItemsMap, $creditmemoItemsMap);
     }
 
     /**
