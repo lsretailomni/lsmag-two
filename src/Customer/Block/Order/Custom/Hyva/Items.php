@@ -152,7 +152,7 @@ class Items extends AbstractItems
             $params['type']     = $reqType;
         }
 
-        return $this->getUrl('*/*/PrintRefunds', $params);
+        return $this->getUrl('*/*/printRefunds', $params);
     }
 
     /**
