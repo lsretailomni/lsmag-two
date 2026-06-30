@@ -90,7 +90,7 @@ class UpdatePoints implements HttpPostActionInterface
             $cartId = $this->checkoutSession->getQuoteId();
             $quote = $this->cartRepository->get($cartId);
             $orderBalance = $this->data->getOrderBalance(
-                $quote->getLsGiftCardAmountUsed(),
+                (float)array_sum(array_column(json_decode((string)$quote->getLsPosDataEntries(), true) ?? [], 'amount')),
                 0,
                 $this->basketHelper->getBasketSessionValue()
             );

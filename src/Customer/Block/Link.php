@@ -73,7 +73,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link implements SortLink
      */
     public function getLabel()
     {
-        return __('Loyalty');
+        return __('My Loyalty');
     }
 
     /**

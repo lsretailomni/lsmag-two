@@ -43,8 +43,12 @@ class DiscountManagement implements DiscountManagementInterface
         }
         $existingBasketCalculation = $this->basketHelper->getOneListCalculation();
         $quote                     = $this->basketHelper->getCartRepositoryObject()->get($cartId);
-        $giftCardNo  = $quote->getLsGiftCardNo();
-        $giftCardPin = $quote->getLsGiftCardPin();
+
+        // Decode entries and use the first entry's code/pin for expiry validation
+        $entries     = json_decode((string)$quote->getLsPosDataEntries(), true) ?: [];
+        $firstEntry  = !empty($entries) ? $entries[0] : [];
+        $giftCardNo  = $firstEntry['entry_no'] ?? null;
+        $giftCardPin = $firstEntry['pin_code'] ?? null;
         $remarks     = self::NON_COUPON_REMARKS;
 
         if (!$existingBasketCalculation ||
@@ -107,10 +111,17 @@ class DiscountManagement implements DiscountManagementInterface
                 'remarks' => $remarks
             ];
         } else {
-            $giftCardValidation = $this->validateGiftCardExpiry($quote, $giftCardNo, $giftCardPin);
+            // Validate all entries; if any is expired, clear the whole list
+            $allValid = true;
+            foreach ($entries as $entry) {
+                if (!$this->validateGiftCardExpiry($quote, $entry['entry_no'] ?? '', $entry['pin_code'] ?? null, $entry['entry_type'] ?? 'GIFTCARDNO')) {
+                    $allValid = false;
+                    break;
+                }
+            }
 
             $giftCardValidity = [
-                'valid'   => $giftCardValidation,
+                'valid'   => $allValid,
                 'msg'     => __(
                     $this->basketHelper->getLsrModel()->getGiftCardValidationMsg()
                 ),
@@ -123,21 +134,22 @@ class DiscountManagement implements DiscountManagementInterface
     }
 
     /**
-     * Check to see if applied gift card is still valid
+     * Check to see if applied gift card / voucher entry is still valid
      *
      * @param $quote
      * @param $giftCardNo
      * @param $giftCardPin
+     * @param string $entryType
      * @return bool
      * @throws Exception
      */
-    public function validateGiftCardExpiry($quote, $giftCardNo, $giftCardPin)
+    public function validateGiftCardExpiry($quote, $giftCardNo, $giftCardPin, string $entryType = 'GIFTCARDNO')
     {
-        $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $giftCardPin);
+        $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $giftCardPin, $entryType);
 
         if (is_object($giftCardResponse)) {
             if ($this->giftCardHelper->isGiftCardExpired($giftCardResponse)) {
-                $quote->setLsGiftCardNo(null)->setLsGiftCardPin(null)->setLsGiftCardAmountUsed(0);
+                $quote->setLsPosDataEntries(null);
                 $quote->collectTotals();
                 $this->cartRepository->save($quote);
 

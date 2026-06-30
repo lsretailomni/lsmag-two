@@ -37,7 +37,8 @@ class Giftcard extends AbstractCart
      */
     public function getGiftCardAmountUsed()
     {
-        return $this->getQuote()->getLsGiftCardAmountUsed() > 0 ? $this->getQuote()->getLsGiftCardAmountUsed() : "";
+        $total = (float)array_sum(array_column(json_decode((string)$this->getQuote()->getLsPosDataEntries(), true) ?? [], 'amount'));
+        return $total > 0 ? $total : "";
     }
 
     /**
@@ -47,7 +48,7 @@ class Giftcard extends AbstractCart
      */
     public function getGiftCardNo()
     {
-        return $this->getQuote()->getLsGiftCardNo();
+        return $this->getQuote()->getLsPosDataEntries();
     }
 
     /**
@@ -57,7 +58,8 @@ class Giftcard extends AbstractCart
      */
     public function getGiftCardPin()
     {
-        return $this->getQuote()->getLsGiftCardPin();
+        $entries = json_decode((string)$this->getQuote()->getLsPosDataEntries(), true) ?? [];
+        return $entries ? (end($entries)['pin_code'] ?? null) : null;
     }
 
     /**

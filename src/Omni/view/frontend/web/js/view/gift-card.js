@@ -4,35 +4,14 @@ define([
     'uiComponent',
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/model/totals',
-    'Ls_Omni/js/action/set-gift-card',
-    'Ls_Omni/js/action/cancel-gift-card'
-], function ($, ko, Component, quote, totals, setGiftCardAction, cancelGiftCardAction) {
+    'Ls_Omni/js/action/set-gift-card'
+], function ($, ko, Component, quote, totals, setGiftCardAction) {
     'use strict';
 
     var giftCardAmount = ko.observable(null),
         giftCardNo = ko.observable(null),
         giftCardPin = ko.observable(null),
-        isGiftCardApplied;
-
-    if (totals) {
-        var giftAmount = totals.getSegment('ls_gift_card_amount_used'),
-            giftNo = totals.getSegment('ls_gift_card_no'),
-            giftPin = totals.getSegment('ls_gift_card_pin');
-
-        if (giftAmount) {
-            giftCardAmount(giftAmount.value);
-        }
-
-        if (giftNo) {
-            giftCardNo(giftNo.value);
-        }
-
-        if (giftPin) {
-            giftCardPin(giftPin.value);
-        }
-    }
-
-    isGiftCardApplied = ko.observable(giftCardNo() != null && giftCardAmount() != null);
+        isGiftCardApplied = ko.observable(false);
 
     return Component.extend({
         defaults: {
@@ -44,7 +23,7 @@ define([
         giftCardPin: giftCardPin,
 
         /**
-         * Applied flag
+         * Applied flag — true when any POS data entry is applied
          */
         isGiftCardApplied: isGiftCardApplied,
 
@@ -55,23 +34,14 @@ define([
         },
 
         /**
-         * Giftcard apply procedure
+         * Apply POS data entry and clear fields so another can be added immediately.
          */
         applyGiftCard: function () {
             if (this.validateGiftCard()) {
-                setGiftCardAction(giftCardNo(), giftCardAmount(), giftCardPin(), isGiftCardApplied);
-            }
-        },
-
-        /**
-         * Cancel GiftCard
-         */
-        cancelGiftCard: function () {
-            if (this.validateGiftCard()) {
+                setGiftCardAction(giftCardNo(), giftCardAmount(), giftCardPin(), isGiftCardApplied, null);
                 giftCardNo('');
                 giftCardAmount('');
                 giftCardPin('');
-                cancelGiftCardAction(isGiftCardApplied);
             }
         },
 

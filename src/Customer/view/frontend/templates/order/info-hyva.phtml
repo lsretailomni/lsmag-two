@@ -1,0 +1,50 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+    /** @var \Ls\Customer\Block\Order\Hyva\Info $block */
+    /** @var Magento\Framework\Escaper $escaper */
+?>
+
+<?php $_order = $block->getOrder(); ?>
+<div class="mb-4 pb-4 border-b border-gray-300">
+    <div class="grid grid-cols-1 md:grid-cols-2 print:grid-cols-2 lg:grid-cols-4 gap-2">
+        <?php if (!empty($billingAddress = $block->getFormattedAddress(true))) : ?>
+            <div class="w-full py-4">
+                <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Billing Address')) ?></p>
+                <div class="box-content">
+                    <address><?= /* @noEscape */ $billingAddress ?></address>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!$block->getClickAndCollectOrder() && !empty($shippingAddress = $block->getFormattedAddress())) : ?>
+            <div class="w-full py-4">
+                <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Shipping Address')) ?></p>
+                <div class="box-content">
+                    <address><?= /* @noEscape */ $block->getFormattedAddress() ?></address>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($block->getShippingDescription())) : ?>
+            <div class="w-full py-4">
+                <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Shipping Method')) ?></p>
+                <div class="box-content">
+                    <address><?= /* @noEscape */ $block->getShippingDescription() ?></address>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($paymentMethods = $block->getPaymentDescription()[0])) : ?>
+            <div class="w-full py-4">
+                <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Payment Method')) ?></p>
+                <div class="box-content">
+                    <address><?= /* @noEscape */ $paymentMethods ?></address>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

@@ -10,6 +10,9 @@
                   sort_order="700"/>
             <item name="ls_gift_card_no" instance="Ls\Omni\Model\Total\Quote\GiftCardNo" sort_order="800"/>
             <item name="ls_gift_card_pin" instance="Ls\Omni\Model\Total\Quote\GiftCardPin" sort_order="900"/>
+            <item name="ls_entry_amount" instance="Ls\Omni\Model\Total\Quote\VoucherAmountUsed"
+                  sort_order="1000"/>
+            <item name="ls_pos_data_entries" instance="Ls\Omni\Model\Total\Quote\VoucherNo" sort_order="1100"/>
         </group>
     </section>
     <section name="order_invoice">

@@ -5,6 +5,7 @@ namespace Ls\Omni\Observer;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\Data;
+use \Ls\Omni\Helper\GiftCardHelper;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
@@ -40,6 +41,7 @@ class DataAssignObserver implements ObserverInterface
         public StoreHelper $storeHelper,
         public Http $request,
         public LSR $lsr,
+        public GiftCardHelper $giftCardHelper,
         public QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId,
         public CheckoutSession $checkoutSession
     ) {
@@ -61,14 +63,11 @@ class DataAssignObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         $quote              = $observer->getQuote();
-        $giftCardNo         = $quote->getLsGiftCardNo();
-        $giftCardPin        = $quote->getLsGiftCardPin();
-        $giftCardCnyFactor  = $quote->getLsGiftCardCnyFactor();
-        $giftCardCnyCode    = $quote->getLsGiftCardCnyCode();
-        $giftCardAmountUsed = $quote->getLsGiftCardAmountUsed();
+        // Gift card amount is now computed from the unified ls_pos_data_entries column
+        $giftCardAmountUsed = $this->giftCardHelper->getGiftCardTotal($quote->getLsPosDataEntries());
         $loyaltyPointsSpent = $quote->getLsPointsSpent();
         $errorMessage       = $this->helper->orderBalanceCheck(
-            $giftCardNo,
+            null,
             $giftCardAmountUsed,
             $loyaltyPointsSpent,
             $this->basketHelper->getBasketSessionValue(),
@@ -117,11 +116,9 @@ class DataAssignObserver implements ObserverInterface
         $order->setLsPointsSpent($loyaltyPointsSpent);
         $order->setLsPointsEarn($quote->getLsPointsEarn());
         $order->setLsDiscountAmount($quote->getLsDiscountAmount());
-        $order->setLsGiftCardAmountUsed($giftCardAmountUsed);
-        $order->setLsGiftCardNo($giftCardNo);
-        $order->setLsGiftCardPin($giftCardPin);
-        $order->setLsGiftCardCnyFactor($giftCardCnyFactor);
-        $order->setLsGiftCardCnyCode($giftCardCnyCode);
+
+        // Unified entry column (gift cards + vouchers in one JSON column)
+        $order->setLsPosDataEntries($quote->getLsPosDataEntries());
 
         return $this;
     }

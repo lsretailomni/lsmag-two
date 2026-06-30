@@ -7,7 +7,7 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\Data as LsHelper;
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\CentralEcommerce\Entity\LSCValidationPeriod;
+use \Ls\Omni\Client\CentralEcommerce\Entity\LSCValidationPeriod;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyDealType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyLeafType;
@@ -27,7 +27,6 @@ use \Ls\Omni\Client\CentralEcommerce\Entity\LSCItemHTMLML;
 use \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIItemBuffer;
 use \Ls\Omni\Client\CentralEcommerce\Entity\LSCWIItemModifier;
 use \Ls\Omni\Client\CentralEcommerce\Entity\PeriodicDiscView;
-use Ls\Omni\Client\Ecommerce\Entity\ReplEcommBasePrices;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
@@ -77,8 +76,7 @@ abstract class AbstractReplicationTask
         public Logger               $logger,
         public LsHelper             $ls_helper,
         public ReplicationHelper    $rep_helper
-    )
-    {
+    ) {
         $this->setDefaultScope();
     }
 
@@ -210,7 +208,9 @@ abstract class AbstractReplicationTask
      */
     public function saveSource($properties, $source)
     {
-        $isDeleted = 0;
+        $isDeleted      = 0;
+        $resetItemId    = null;
+        $deletedImages  = [];
         if ($source->getIsDeleted()) {
             $uniqueAttributes = (array_key_exists(
                 $this->getConfigPath(),
@@ -349,6 +349,35 @@ abstract class AbstractReplicationTask
                 (int)$source->getData(HierarchyDealView::TYPE)
             );
             $source->setData(HierarchyDealView::TYPE, $value1);
+        } elseif ($source->getIsDeleted() && $confPath == ReplEcommBasePricesTask::CONFIG_PATH) {
+            // Find ItemId from the existing row for this scope + line + price list.
+            $criteria = $this->getSearchCriteria();
+            $criteria->addFilter('scope', $source->getScope());
+            $criteria->addFilter('scope_id', $source->getScopeId());
+            $criteria->addFilter('LineNumber', $source->getLineNo());
+            $criteria->addFilter('PriceListCode', $source->getPriceListCode());
+            $matchedRows = $this->getRepository()->getList($criteria->create())->getItems();
+
+            if (!empty($matchedRows)) {
+                $matchedRow = reset($matchedRows);
+                $resetItemId = ($matchedRow && $matchedRow->getItemId()) ? $matchedRow->getItemId() : null;
+            }
+        } elseif ($source->getIsDeleted() && $confPath == ReplLscRetailImageLinkTask::CONFIG_PATH) {
+            // Find records to update IsDeleted by scope + image id.
+
+            if (!empty($source->getRecordId())) {
+                $keyValue = preg_replace('/^.*:\s/', '', $source->getRecordId());
+                $criteria = $this->getSearchCriteria();
+                $criteria->addFilter('scope', $source->getScope());
+                $criteria->addFilter('scope_id', $source->getScopeId());
+                $criteria->addFilter('ImageId', $source->getImageId());
+                $criteria->addFilter('KeyValue', $keyValue);
+                $deletedImages = $this->getRepository()->getList($criteria->create())->getItems();
+
+                if (!empty($deletedImages)) {
+                    $this->updateDeletedImages($deletedImages);
+                }
+            }
         }
         $checksum = $this->getHashGivenString($source->getData());
         $uniqueAttributesHash = $this->generateIdentityValue($uniqueAttributes, $source, $properties);
@@ -416,10 +445,76 @@ abstract class AbstractReplicationTask
             }
         }
         try {
-            $this->getRepository()->save($entity);
-            $entity->setData([]);
+            if (!empty($deletedImages) &&
+                $source->getIsDeleted() &&
+                $confPath == ReplLscRetailImageLinkTask::CONFIG_PATH
+            ) { // Do not save  and reset entity, if IsDeleted is true.
+                // The relevant items to delete are updated in function updateDeletedImages().
+                $entity->setData([]);
+            } else {
+                $this->getRepository()->save($entity);
+                $entity->setData([]);
+            }
+
+            if (!empty($resetItemId) &&
+                $source->getIsDeleted() &&
+                $confPath == ReplEcommBasePricesTask::CONFIG_PATH
+            ) {
+                //After deletion, reset processed status for all the records with the same ItemId for this scope,
+                //so they can be re-processed in next sync price cron runs.
+                $this->resetSyncPriceItems($source, $resetItemId);
+            }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Set IsDeleted true for variant images based on ImageId
+     *
+     * @param $deletedImages
+     * @return void'
+     */
+    public function updateDeletedImages($deletedImages)
+    {
+        if (!empty($deletedImages)) {
+            try {
+                foreach ($deletedImages as $deletedImage) {
+                    $deletedImage->setIsDeleted(1);
+                    $deletedImage->setProcessed(0);
+                    $this->getRepository()->save($deletedImage);
+                }
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+            }
+        }
+    }
+
+    /**
+     * Reset price records by ItemId
+     *
+     * @param $source
+     * @param $resetItemId
+     * @return void
+     */
+    public function resetSyncPriceItems($source, $resetItemId)
+    {
+        $resetCriteria = $this->getSearchCriteria();
+        $resetCriteria->addFilter('scope', $source->getScope());
+        $resetCriteria->addFilter('scope_id', $source->getScopeId());
+        $resetCriteria->addFilter('ItemId', $resetItemId);
+
+        $rowsToReset = $this->getRepository()->getList($resetCriteria->create())->getItems();
+
+        if (!empty($rowsToReset)) {
+            try {
+                foreach ($rowsToReset as $rowToReset) {
+                    $rowToReset->setProcessed(0);
+                    $this->getRepository()->save($rowToReset);
+                }
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+            }
         }
     }
 
@@ -476,11 +571,10 @@ abstract class AbstractReplicationTask
      */
     public function checkEntityExistByAttributes(
         array $uniqueAttributes,
-              $source,
-        int   $uniqueAttributesHash,
+        $source,
+        int $uniqueAttributesHash,
         array $properties
-    )
-    {
+    ) {
         $criteria = $this->getSearchCriteria();
         $criteria->addFilter(ReplicationHelper::UNIQUE_HASH_COLUMN_NAME, $uniqueAttributesHash);
 

@@ -25,8 +25,8 @@ class RemoveGiftCard extends AbstractGiftCard
             if ($result) {
                 $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
                 $cart    = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
-                $cart->setLsGiftCardNo(null)
-                    ->setLsGiftCardPin(null)
+                $cart->setLsPosDataEntries(null)
+
                     ->setLsGiftCardCnyFactor(null)
                     ->setLsGiftCardCnyCode(null)
                     ->save();

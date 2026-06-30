@@ -1,0 +1,144 @@
+<?php
+/**
+ * Hyvä (Alpine.js) version of the Check Gift Card Balance page.
+ *
+ * The Luma template renders a Magento UI (Knockout) component which does not run
+ * under Hyvä. This template reproduces the same behaviour with Alpine.js, posting
+ * to the unchanged omni/ajax/CheckGiftCardBalance endpoint.
+ *
+ * @var \Ls\Omni\Block\GiftCardBalance\GiftCardBalance $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$isPinEnabled = (bool) $block->isPinCodeFieldEnable();
+$ajaxUrl      = $block->getUrl('omni/ajax/CheckGiftCardBalance');
+?>
+<div class="ls-gift-card-balance card max-w-xl" x-data="lsGiftCardBalance()">
+    <h1 class="text-2xl font-semibold mb-6">
+        <?= $escaper->escapeHtml(__('Check Gift Card Balance')) ?>
+    </h1>
+
+    <template x-if="errorMessage">
+        <div class="message error mb-4 p-3 rounded bg-red-100 text-red-700" x-html="errorMessage"></div>
+    </template>
+
+    <form @submit.prevent="checkBalance()" class="mb-6">
+        <div class="field required mb-4">
+            <label class="label" for="gift_card_code">
+                <span><?= $escaper->escapeHtml(__('Gift Card Code')) ?></span>
+            </label>
+            <div class="control">
+                <input type="text"
+                       id="gift_card_code"
+                       name="gift_card_code"
+                       x-model="giftCardCode"
+                       required
+                       placeholder="<?= $escaper->escapeHtmlAttr(__('Enter Gift Card Code')) ?>"
+                       class="form-input w-full">
+            </div>
+        </div>
+
+        <?php if ($isPinEnabled): ?>
+            <div class="field required mb-4">
+                <label class="label" for="gift_card_pin">
+                    <span><?= $escaper->escapeHtml(__('Gift Card Pin')) ?></span>
+                </label>
+                <div class="control">
+                    <input type="password"
+                           id="gift_card_pin"
+                           name="gift_card_pin"
+                           x-model="giftCardPin"
+                           required
+                           placeholder="<?= $escaper->escapeHtmlAttr(__('Enter Gift Card Pin')) ?>"
+                           class="form-input w-full">
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <div class="actions-toolbar flex flex-wrap gap-4 mt-6">
+            <button type="submit" class="btn btn-primary" :disabled="loading">
+                <span x-show="!loading"><?= $escaper->escapeHtml(__('Check Balance')) ?></span>
+                <span x-show="loading" x-cloak><?= $escaper->escapeHtml(__('Checking...')) ?></span>
+            </button>
+            <button type="button" class="btn btn-secondary" @click="reset()">
+                <?= $escaper->escapeHtml(__('Reset')) ?>
+            </button>
+        </div>
+    </form>
+
+    <template x-if="balance">
+        <div class="ls-gift-card-result border-t border-gray-200 pt-4">
+            <p class="text-lg mb-1">
+                <strong><?= $escaper->escapeHtml(__('Your balance is:')) ?></strong>
+                <span x-html="balance"></span>
+            </p>
+            <template x-if="expiryDate">
+                <p class="text-lg">
+                    <strong><?= $escaper->escapeHtml(__('Expiry Date:')) ?></strong>
+                    <span x-text="expiryDate"></span>
+                </p>
+            </template>
+        </div>
+    </template>
+</div>
+
+<script>
+    function lsGiftCardBalance() {
+        return {
+            giftCardCode: '',
+            giftCardPin: '',
+            balance: null,
+            expiryDate: null,
+            errorMessage: null,
+            loading: false,
+            reset() {
+                this.giftCardCode = '';
+                this.giftCardPin = '';
+                this.balance = null;
+                this.expiryDate = null;
+                this.errorMessage = null;
+            },
+            checkBalance() {
+                this.balance = null;
+                this.expiryDate = null;
+                this.errorMessage = null;
+
+                if (!this.giftCardCode) {
+                    return;
+                }
+
+                const payload = { gift_card_code: this.giftCardCode };
+                <?php if ($isPinEnabled): ?>
+                payload.gift_card_pin = this.giftCardPin;
+                <?php endif; ?>
+
+                this.loading = true;
+                fetch('<?= $escaper->escapeJs($ajaxUrl) ?>', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                    .then((response) => response.json())
+                    .then((response) => {
+                        if (response.success) {
+                            const data = JSON.parse(response.data);
+                            this.balance = data.giftcardbalance;
+                            this.expiryDate = data.expirydate;
+                        } else {
+                            this.errorMessage = response.message
+                                || '<?= $escaper->escapeJs(__('The gift card is not valid.')) ?>';
+                        }
+                    })
+                    .catch(() => {
+                        this.errorMessage = '<?= $escaper->escapeJs(__('Something went wrong. Please try again.')) ?>';
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+            }
+        };
+    }
+</script>

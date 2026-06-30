@@ -414,6 +414,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_GIFTCARD_SHOW_ON_CHECKOUT = 'ls_mag/ls_giftcard/checkout';
     const LS_GIFTCARD_SHOW_PIN_CODE_FIELD = 'ls_mag/ls_giftcard/pin_code';
     const LS_GIFTCARD_TENDER_TYPE = 'giftcard';
+    const LS_VOUCHER_GIFT_CARD_CONFIGURATION = 'ls_mag/ls_giftcard/voucher_configuration';
 
     //Discount Management
     const LS_DISCOUNT_SHOW_ON_PRODUCT = 'ls_mag/ls_discounts/discount';
@@ -1541,5 +1542,43 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getStoreId()
     {
         return $this->storeManager->getStore()->getStoreId();
+    }
+
+    /**
+     * Get voucher/gift card configuration from admin dynamic rows
+     *
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getVoucherGiftCardConfiguration(): array
+    {
+        $config = $this->getStoreConfig(
+            self::LS_VOUCHER_GIFT_CARD_CONFIGURATION,
+            $this->getCurrentStoreId()
+        );
+
+        if (is_string($config)) {
+            $config = json_decode($config, true);
+        }
+
+        return is_array($config) ? $config : [];
+    }
+
+    /**
+     * Get voucher config entry by code
+     *
+     * @param string $code
+     * @return array|null
+     * @throws NoSuchEntityException
+     */
+    public function getVoucherConfigByCode(string $code): ?array
+    {
+        $config = $this->getVoucherGiftCardConfiguration();
+        foreach ($config as $entry) {
+            if (isset($entry['code']) && $entry['code'] === $code) {
+                return $entry;
+            }
+        }
+        return null;
     }
 }

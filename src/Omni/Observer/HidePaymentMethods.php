@@ -50,7 +50,7 @@ class HidePaymentMethods implements ObserverInterface
                 $this->lsr->getStoreConfig(LSR::SC_PAYMENT_OPTION, $this->lsr->getCurrentStoreId())
             );
             $orderTotal      = $this->data->getOrderBalance(
-                $quote->getLsGiftCardAmountUsed(),
+                (float)array_sum(array_column(json_decode((string)$quote->getLsPosDataEntries(), true) ?? [], 'amount')),
                 $quote->getLsPointsSpent(),
                 $basketData
             );

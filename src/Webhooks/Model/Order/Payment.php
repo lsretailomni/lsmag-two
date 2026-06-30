@@ -118,9 +118,10 @@ class Payment
                         }
                     }
                 }
+
                 if (($isOffline || !$isRetail || !$hasAmount) && !$order->hasInvoices()) {
-                    if ($order->getLsGiftCardAmountUsed() > 0) {
-                        $totalAmount = $totalAmount - $order->getLsGiftCardAmountUsed();
+                    if ((float)array_sum(array_column(json_decode((string)$order->getLsPosDataEntries(), true) ?? [], 'amount')) > 0) {
+                        $totalAmount = $totalAmount - (float)array_sum(array_column(json_decode((string)$order->getLsPosDataEntries(), true) ?? [], 'amount'));
                     }
                     if ($order->getLsPointsSpent() > 0) {
                         $totalAmount = $totalAmount - $this->helper->getLsPointsDiscount($order->getLsPointsSpent());

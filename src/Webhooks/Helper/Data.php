@@ -274,12 +274,11 @@ class Data
                         } else {
                             $items[$globalCounter][$itemId]['qty'] = $skuValues['Quantity'];
                         }
-                        if (array_key_exists('Amount', $skuValues)) {
-                            $totalAmount                                            += $skuValues['Amount'];
-                            $items[$globalCounter][$itemId]['amount_with_discount'] =
-                                $totalAmount + ($orderItem->getLsDiscountAmount() / $orderItem->getQtyOrdered()) * $skuValues['Quantity'];
+                        $amount = is_array($skuValues) && array_key_exists('Amount', $skuValues) ? $skuValues['Amount'] : 0;
+                        $totalAmount                                            += $amount;
+                        $items[$globalCounter][$itemId]['amount_with_discount'] =
+                            $totalAmount + ($orderItem->getLsDiscountAmount() / $orderItem->getQtyOrdered()) * $skuValues['Quantity'];
                             $items[$globalCounter][$itemId]['amount']               = $totalAmount;
-                        }
                         $items[$globalCounter][$itemId]['itemStatus'] = $child->getStatusId();
                         $counter++;
                         unset($itemsInfo[$index]);
