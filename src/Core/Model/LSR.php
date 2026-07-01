@@ -90,6 +90,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SERVICE_TIMEOUT = 'ls_mag/service/timeout';
     const SC_SERVICE_VERSION = 'ls_mag/service/version';
     const SC_SERVICE_LS_CENTRAL_VERSION = 'ls_mag/service/ls_central_version';
+    const SC_USE_SALES_PRICE = 'ls_mag/replication/use_sales_price';
     const SC_SERVICE_HEART_BEAT_TIMEOUT = 'ls_mag/service/heart_beat_timeout';
     const SC_SERVICE_LICENSE_VALIDITY = 'ls_mag/service/license_validity';
 
