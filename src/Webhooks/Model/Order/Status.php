@@ -91,7 +91,6 @@ class Status
         $magentoOrders = is_array($magentoOrder) ? $magentoOrder : [$magentoOrder];
         foreach ($magentoOrders as $magOrder) {
             $items                  = $this->helper->getItems($magOrder, $itemsInfo, false);
-            $isOffline              = $magOrder->getPayment()->getMethodInstance()->isOffline();
             $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
             $storeId                = $magOrder->getStoreId();
             $orderStatus            = null;
@@ -116,14 +115,10 @@ class Status
                     if ($isClickAndCollectOrder) {
                         $orderStatus = LSR::LS_STATE_COLLECTED;
                     }
-                    if ($isOffline) {
-                        $this->payment->generateInvoice($data, false);
-                    }
+                    $this->payment->generateInvoice($data, false);
                     break;
                 case LSR::LS_STATE_SHIPPED:
-                    if ($isOffline) {
-                        $this->payment->generateInvoice($data, false);
-                    }
+                    $this->payment->generateInvoice($data, false);
                     break;
                 default:
                     $orderStatus = $status;
