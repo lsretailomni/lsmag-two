@@ -7,5 +7,6 @@
                    template="Ls_Omni::html/footer/ls-links-hyva.phtml"
                    before="-"/>
         </referenceBlock>
+        <referenceBlock name="cart-drawer" template="Ls_Omni::cart/hyva/cart-drawer.phtml"/>
     </body>
 </page>

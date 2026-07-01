@@ -1,0 +1,17 @@
+<?php
+/**
+ * LS Central loyalty points discount totals segment (Hyvä).
+ *
+ * The AlpineJS scope of this file is the method `initCartTotals()`
+ * in Magento_Checkout::php-cart/totals.phtml. The companion JS block
+ * `ls_points_discount.js` registers the `initLoyaltyDiscountSegment` Alpine.data.
+ */
+?>
+<div x-data="initLoyaltyDiscountSegment">
+<template x-if="isLoyaltyDiscountSegment()" data-total-code="ls_points_discount">
+    <div :class="wrapperClass">
+        <div x-text="segment.title"></div>
+        <div x-text="formatLoyaltyDiscountValue()" class="justify-self-end"></div>
+    </div>
+</template>
+</div>

@@ -238,7 +238,7 @@ class Proactive extends Template
             $input      = $startDate . ' ' . $startTime;
             $formattedStartDate = $this->getFormattedDateTime($input);
             $description[] = "
-        <span class='coupon-expiration-date-label discount-label'>" . __('From :') . "</span>
+        <span class='coupon-expiration-date-label discount-label discount-from-to-label'>" . __('From :') . "</span>
         <span class='coupon-expiration-date-value discount-value'>" . $formattedStartDate . '</span>';
         }
 
@@ -246,7 +246,7 @@ class Proactive extends Template
             $input      = $endDate . ' ' . $endTime;
             $formattedEndDate = $this->getFormattedDateTime($input);
             $description[] = "
-        <span class='coupon-expiration-date-label discount-label'>" . __('To :') . "</span>
+        <span class='coupon-expiration-date-label discount-label discount-from-to-label'>" . __('To :') . "</span>
         <span class='coupon-expiration-date-value discount-value'>" . $formattedEndDate .'</span>';
         }
 

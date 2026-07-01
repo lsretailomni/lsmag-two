@@ -57,7 +57,7 @@ class SalesObserver implements ObserverInterface
 
         if (($quote->isVirtual() && $addressType == AbstractAddress::TYPE_BILLING) ||
             (!$quote->isVirtual() && $addressType == AbstractAddress::TYPE_SHIPPING)) {
-            $basketData = $this->basketHelper->getBasketSessionValue();
+            $basketData = $this->basketHelper->getOneListCalculationFromCheckoutSession($quote);
 
             if (!empty($basketData)) {
                 $mobileTransaction = current((array) $basketData->getMobiletransaction());

@@ -1,0 +1,129 @@
+<?php
+/**
+ * LS Central "Apply Loyalty Points" cart section (Hyvä).
+ *
+ * Models the Luma cart/loyalty-points.phtml logic on the Hyvä Alpine.js pattern,
+ * using native form submission with Alpine managing accordion and cancel state.
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\ViewModel\LucideIcons;
+use Ls\Omni\Block\Cart\LoyaltyPoints;
+use Magento\Framework\Escaper;
+
+/** @var LoyaltyPoints $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HyvaCsp $hyvaCsp */
+$hyvaCsp = $viewModels->require(HyvaCsp::class);
+
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
+
+$availablePoints = (int) $block->getMemberPoints();
+$pointRate = 0;
+if ($availablePoints > 0) {
+    $pointRate = $block->getPointsRate();
+}
+$lsPointsSpent = $block->getLsPointsSpent();
+$hasPointsApplied = !empty($lsPointsSpent);
+?>
+<?php if ($availablePoints > 0 && $pointRate > 0): ?>
+<div class="loyalty-points-section my-4"
+     x-data="initLsLoyaltyPoints"
+     data-applied="<?= $hasPointsApplied ? '1' : '0' ?>"
+     data-points="<?= $lsPointsSpent ?>"
+>
+    <button
+        type="button"
+        class="flex items-center justify-between w-full py-2 text-left font-semibold"
+        @click="open = !open"
+        :aria-expanded="open"
+    >
+        <span class="inline-flex items-center gap-2">
+            <?= $lucideIcons->sparklesHtml('text-primary', 20, 20, ['aria-hidden' => 'true']) ?>
+            <span><?= $escaper->escapeHtml(__('Apply Loyalty Points')) ?></span>
+        </span>
+        <svg class="w-4 h-4 transition-transform" :class="open ? 'rotate-180' : ''"
+             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
+        </svg>
+    </button>
+    <div x-show="open" x-cloak class="mt-2 mb-4">
+        <p class="text-sm mb-3">
+            <?= /* @noEscape */ __(
+                'You have %1. Each of %2 gets %3 discount.',
+                '<strong>' . $escaper->escapeHtml((string) $availablePoints) . ' ' . $escaper->escapeHtml(__('loyalty points')) . '</strong>',
+                '<strong>' . $escaper->escapeHtml($block->formatValue($pointRate)) . ' ' . $escaper->escapeHtml(__('Points')) . '</strong>',
+                '<strong>' . $escaper->escapeHtml($block->getFormattedPrice(1)) . '</strong>'
+            ) ?>
+        </p>
+        <form
+            id="loyalty-points-form"
+            action="<?= $escaper->escapeUrl($block->getUrl('omni/cart/RedeemPoints')) ?>"
+            method="post"
+        >
+            <?= $block->getBlockHtml('formkey') ?>
+            <input type="hidden" name="remove-points" id="remove-points" :value="removing ? '1' : '0'"/>
+            <label for="loyalty_points" class="sr-only">
+                <?= $escaper->escapeHtml(__('Points to redeem')) ?>
+            </label>
+            <div class="flex flex-wrap gap-2 items-start">
+                <input
+                    type="number"
+                    min="0"
+                    step="any"
+                    class="form-input"
+                    id="loyalty_points"
+                    name="loyalty_points"
+                    x-model="points"
+                    placeholder="<?= $escaper->escapeHtmlAttr(__('Enter points to redeem')) ?>"
+                />
+                <template x-if="!applied">
+                    <button type="submit" class="btn btn-primary" :disabled="Number(points) <= 0">
+                        <?= $escaper->escapeHtml(__('Redeem')) ?>
+                    </button>
+                </template>
+                <template x-if="applied">
+                    <span class="flex gap-2">
+                        <button type="submit" class="btn btn-primary" :disabled="Number(points) <= 0">
+                            <?= $escaper->escapeHtml(__('Update')) ?>
+                        </button>
+                        <button type="button" class="btn btn-secondary" @click="cancelPoints($event)">
+                            <?= $escaper->escapeHtml(__('Cancel')) ?>
+                        </button>
+                    </span>
+                </template>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function initLsLoyaltyPoints() {
+        return {
+            open: false,
+            points: '0',
+            applied: false,
+            removing: false,
+            init() {
+                this.applied = this.$el.dataset.applied === '1';
+                this.open = this.applied;
+                this.points = this.$el.dataset.points || '0';
+            },
+            cancelPoints(event) {
+                this.removing = true;
+                this.points = '0';
+                const form = event.target.closest('form');
+                this.$nextTick(() => form.submit());
+            }
+        };
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('initLsLoyaltyPoints', initLsLoyaltyPoints), {once: true})
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
+<?php endif; ?>
