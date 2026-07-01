@@ -90,6 +90,10 @@
                 type="Ls\Replication\Model\Central\ReplSalesPrice"/>
     <preference for="Ls\Replication\Api\Central\Data\ReplSalesPriceSearchResultsInterface"
                 type="Ls\Replication\Model\Central\ReplSalesPriceSearchResults"/>
+    <preference for="Ls\Replication\Model\ResourceModel\ReplSalesPrice"
+                type="Ls\Replication\Model\Central\ResourceModel\ReplSalesPrice"/>
+    <preference for="Ls\Replication\Model\ResourceModel\ReplSalesPrice\Collection"
+                type="Ls\Replication\Model\Central\ResourceModel\ReplSalesPrice\Collection"/>
     <preference for="Ls\Replication\Api\ReplInvStatusRepositoryInterface"
                 type="Ls\Replication\Model\ReplInvStatusRepository"/>
     <preference for="Ls\Replication\Api\ReplProductGroupRepositoryInterface"
