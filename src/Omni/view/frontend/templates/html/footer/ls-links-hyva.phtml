@@ -37,6 +37,8 @@ $storeConfig = $viewModels->require(StoreConfig::class);
                             <?= $escaper->escapeHtml(__('Check Gift Card Balance')) ?>
                         </a>
                     </li>
+                    <?php // Slot for additional LS footer quick links contributed by other modules (e.g. Hospitality). ?>
+                    <?= /* @noEscape */ $block->getChildHtml() ?>
                 </ul>
             </div>
         </nav>
