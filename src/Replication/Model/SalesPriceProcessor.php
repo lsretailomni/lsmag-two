@@ -18,6 +18,8 @@ class SalesPriceProcessor
 
     private const INVALID_DATE_ALT = '1900-01-01';
 
+    private const INVALID_DATE_MIN = '0001-01-01';
+
     /**
      * Returns true if the sales price record is not yet active (start date is in the future).
      *
@@ -182,6 +184,7 @@ class SalesPriceProcessor
     {
         return empty($date)
             || strpos($date, self::INVALID_DATE) === 0
-            || strpos($date, self::INVALID_DATE_ALT) === 0;
+            || strpos($date, self::INVALID_DATE_ALT) === 0
+            || strpos($date, self::INVALID_DATE_MIN) === 0;
     }
 }
