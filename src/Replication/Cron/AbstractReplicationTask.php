@@ -46,6 +46,61 @@ use ReflectionException;
  */
 abstract class AbstractReplicationTask
 {
+    /**
+     * Default number of buffered rows flushed per INSERT ... ON DUPLICATE KEY UPDATE statement.
+     */
+    public const BATCH_CHUNK_SIZE = 1000;
+
+    /**
+     * Soft ceiling on bound placeholders per statement. MySQL's hard limit is 65,535; staying
+     * well under it keeps wide flat tables safe.
+     */
+    private const PLACEHOLDER_BUDGET = 60000;
+
+    /**
+     * Pending batch rows keyed by config path. Each entry holds the column=>value map plus the
+     * originating $source and $properties so a failed chunk can be replayed through the ORM path.
+     *
+     * @var array
+     */
+    protected $upsertBuffer = [];
+
+    /**
+     * Resolved flat-table name keyed by config path.
+     *
+     * @var array
+     */
+    protected $upsertTableCache = [];
+
+    /**
+     * Cached table description (column metadata) keyed by table name.
+     *
+     * @var array
+     */
+    protected $upsertTableDescriptions = [];
+
+    /**
+     * Whether a flat table has a single-column UNIQUE index on identity_value, keyed by table name.
+     *
+     * @var array
+     */
+    protected $identityUniqueIndexCache = [];
+
+    /**
+     * Count of rows in the current run that could not be written by either the batch path or the
+     * ORM replay fallback. A non-zero value de-asserts the cron success status.
+     *
+     * @var int
+     */
+    protected $flushFailures = 0;
+
+    /**
+     * Aggregated fallback-to-ORM counts for the current run, keyed by reason.
+     *
+     * @var array
+     */
+    protected $fallbackCounts = [];
+
     /** @var array All those config path don't have no lastkey means always zero as LastKey */
     private static $no_lastkey_config_path = [
         'ls_mag/replication/repl_country_code',
@@ -134,7 +189,7 @@ abstract class AbstractReplicationTask
     /**
      * Entry point for the cron when running manually from admin
      *
-     * @param $storeData
+     * @param mixed $storeData
      * @return int[]
      * @throws NoSuchEntityException|GuzzleException
      */
@@ -147,9 +202,9 @@ abstract class AbstractReplicationTask
     /**
      * Update the Custom Replication Success Status
      *
-     * @param bool $storeId
+     * @param string $storeId
      */
-    public function updateSuccessStatus($storeId = false)
+    public function updateSuccessStatus($storeId)
     {
         $confPath = $this->getConfigPath();
 
@@ -180,8 +235,8 @@ abstract class AbstractReplicationTask
     /**
      * Update all dependent flat to magento crons status
      *
-     * @param $websiteId
-     * @param $path
+     * @param string $websiteId
+     * @param string $path
      * @return void
      */
     public function updateAllStoresConfigs($websiteId, $path)
@@ -200,7 +255,11 @@ abstract class AbstractReplicationTask
     }
 
     /**
-     * Save new source or update already existing source
+     * Save new source or update already existing source.
+     *
+     * Dispatcher: config-specific source formatting is applied once, then eligible rows are
+     * buffered for a chunked INSERT ... ON DUPLICATE KEY UPDATE ({@see flushBuffer()}); everything
+     * else falls back to the unchanged ORM path ({@see saveSourceOrm()}).
      *
      * @param array $properties
      * @param mixed $source
@@ -208,21 +267,57 @@ abstract class AbstractReplicationTask
      */
     public function saveSource($properties, $source)
     {
-        $isDeleted      = 0;
-        $resetItemId    = null;
-        $deletedImages  = [];
-        if ($source->getIsDeleted()) {
-            $uniqueAttributes = (array_key_exists(
-                $this->getConfigPath(),
-                ReplicationHelper::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY
-            )) ?
-                ReplicationHelper::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()] :
-                ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
-            $isDeleted = 1;
-        } else {
-            $uniqueAttributes = ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
-        }
         $confPath = $this->getConfigPath();
+
+        // Apply config-specific source formatting exactly once, before the batch/ORM split, so a
+        // batched row and a possible ORM replay of it never double-apply the transform.
+        $this->formatSourceColumns($source, $confPath);
+
+        if (!$this->isBatchEligible($source, $confPath, $source->getScopeId())) {
+            $this->saveSourceOrm($properties, $source);
+            return;
+        }
+
+        try {
+            $uniqueAttributes     = ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$confPath];
+            $checksum             = $this->getHashGivenString($source->getData());
+            $uniqueAttributesHash = $this->generateIdentityValue($uniqueAttributes, $source, $properties);
+            $row                  = $this->buildUpsertRow($properties, $source, $checksum, $uniqueAttributesHash);
+        } catch (Exception $e) {
+            $this->countFallback('build_error');
+            $this->logger->debug('Batch upsert build error, falling back to ORM: ' . $e->getMessage());
+            $this->saveSourceOrm($properties, $source);
+            return;
+        }
+
+        $this->upsertBuffer[$confPath][] = [
+            'row'        => $row,
+            'source'     => $source,
+            'properties' => $properties,
+        ];
+
+        $chunkLimit = min(self::BATCH_CHUNK_SIZE, $this->maxRowsPerChunk(count($row)));
+        if (count($this->upsertBuffer[$confPath]) >= $chunkLimit) {
+            $this->flushBuffer($confPath, $source->getScopeId());
+        }
+    }
+
+    /**
+     * Apply config-specific in-place column formatting to a source row before it is persisted.
+     *
+     * This is the config-specific transform chain lifted out of the original saveSource() body,
+     * applied once by {@see saveSource()} before the batch/ORM split so the transform runs exactly
+     * once even when a buffered row is later replayed through the ORM path on a flush failure. The
+     * delete-time side-effect branches (base price ItemId reset, retail image link cascade) are NOT
+     * here; they remain in {@see saveSourceOrm()} and their config paths are excluded from batching.
+     *
+     * @param mixed $source
+     * @param string $confPath
+     * @return void
+     * @throws ReflectionException
+     */
+    public function formatSourceColumns($source, $confPath)
+    {
         if ($confPath == ReplLscValidationPeriodTask::CONFIG_PATH) {
             $source->setData(
                 LSCValidationPeriod::TIME_WITHIN_BOUNDS,
@@ -349,7 +444,41 @@ abstract class AbstractReplicationTask
                 (int)$source->getData(HierarchyDealView::TYPE)
             );
             $source->setData(HierarchyDealView::TYPE, $value1);
-        } elseif ($source->getIsDeleted() && $confPath == ReplEcommBasePricesTask::CONFIG_PATH) {
+        }
+    }
+
+    /**
+     * Save new source or update already existing source via the ORM repository (legacy path).
+     *
+     * This is the original body of saveSource() and is used both for ineligible rows and as the
+     * per-row replay fallback when a batch chunk fails to flush. Config-specific column formatting
+     * is applied earlier in {@see saveSource()} via {@see formatSourceColumns()}.
+     *
+     * @param array $properties
+     * @param mixed $source
+     * @throws Exception
+     */
+    public function saveSourceOrm($properties, $source)
+    {
+        $isDeleted      = 0;
+        $resetItemId    = null;
+        $deletedImages  = [];
+        if ($source->getIsDeleted()) {
+            $uniqueAttributes = (array_key_exists(
+                $this->getConfigPath(),
+                ReplicationHelper::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY
+            )) ?
+                ReplicationHelper::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()] :
+                ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
+            $isDeleted = 1;
+        } else {
+            $uniqueAttributes = ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
+        }
+        // Config-specific source formatting is applied once in saveSource() before dispatch, via
+        // formatSourceColumns(), so it is not repeated here. Only the delete-time side-effect
+        // branches remain, and their config paths are excluded from batching by isBatchEligible().
+        $confPath = $this->getConfigPath();
+        if ($source->getIsDeleted() && $confPath == ReplEcommBasePricesTask::CONFIG_PATH) {
             // Find ItemId from the existing row for this scope + line + price list.
             $criteria = $this->getSearchCriteria();
             $criteria->addFilter('scope', $source->getScope());
@@ -399,10 +528,7 @@ abstract class AbstractReplicationTask
         }
 
         $entity->setData('IsDeleted', $isDeleted);
-        if ($confPath == ReplLscSalepriceviewTask::CONFIG_PATH) {
-            $this->getLsrModel()->setStoreId($source->getScopeId());
-            $entity->setData('store_id', $this->getLsrModel()->getActiveWebStore());
-        }
+        $this->applyStoreScopedColumns($entity, $source, $confPath);
         if ($entity->getChecksum() != $checksum) {
             $entity->addData(
                 [
@@ -416,33 +542,7 @@ abstract class AbstractReplicationTask
                 $entity->setData($property, $source->getData($propertyIndex));
             }
 
-            $mappings = \Ls\Replication\Helper\ReplicationHelper::DB_TABLES_MAPPING;
-            foreach ($mappings as $mapping) {
-                if (\Ls\Replication\Helper\ReplicationHelper::TABLE_NAME_PREFIX . $mapping['table_name'] ==
-                    $entity->getResource()->getMainTable()
-                ) {
-                    $columnsMapping = $mapping['columns_mapping'];
-                    foreach ($columnsMapping as $columnName => $columnMapping) {
-                        if ($entity->hasData($columnName)) {
-
-                            $value = $entity->getData($columnName);
-
-                            if (($columnName == 'offer_starting_time' || $columnName == 'offer_ending_time') &&
-                                !empty($value)
-                            ) {
-                                $timeObj = new \DateTime($value);
-                                $value = $timeObj->format('H:i:s');
-                            }
-
-                            $entity->setData(
-                                is_array($columnMapping) ? $columnMapping['name'] : $columnMapping,
-                                $value
-                            );
-                        }
-                    }
-                    break;
-                }
-            }
+            $this->applyDbColumnMapping($entity);
         }
         try {
             if (!empty($deletedImages) &&
@@ -470,9 +570,479 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * Apply the DB_TABLES_MAPPING column rename/format layer to an entity in place.
+     *
+     * Shared by {@see saveSourceOrm()} and {@see buildUpsertRow()} so the batch and ORM write paths
+     * produce identical column data. For the flat table matching the entity, each source column is
+     * copied to its mapped DB column name; offer start/end times are reformatted to H:i:s.
+     *
+     * @param mixed $entity
+     * @return void
+     * @throws \DateMalformedStringException
+     */
+    protected function applyDbColumnMapping($entity)
+    {
+        foreach (ReplicationHelper::DB_TABLES_MAPPING as $mapping) {
+            if (ReplicationHelper::TABLE_NAME_PREFIX . $mapping['table_name'] !=
+                $entity->getResource()->getMainTable()
+            ) {
+                continue;
+            }
+            foreach ($mapping['columns_mapping'] as $columnName => $columnMapping) {
+                if (!$entity->hasData($columnName)) {
+                    continue;
+                }
+                $value = $entity->getData($columnName);
+                if (($columnName == 'offer_starting_time' || $columnName == 'offer_ending_time') &&
+                    !empty($value)
+                ) {
+                    $timeObj = new \DateTime($value);
+                    $value   = $timeObj->format('H:i:s');
+                }
+                $entity->setData(is_array($columnMapping) ? $columnMapping['name'] : $columnMapping, $value);
+            }
+            break;
+        }
+    }
+
+    /**
+     * Inject store-scoped enrichment columns that are not part of the source->column mapping.
+     *
+     * Currently only the sale-price view (repl_price) needs it: store_id is resolved from the
+     * active web store for the row's scope. Shared by {@see saveSourceOrm()} and
+     * {@see buildUpsertRow()} so the batch and ORM paths write the same store_id. For config paths
+     * / tables without a store_id column the value is set transiently and dropped by the column
+     * filter, matching the ORM path's _prepareDataForTable behaviour.
+     *
+     * @param mixed $entity
+     * @param mixed $source
+     * @param string $confPath
+     * @return void
+     * @throws NoSuchEntityException
+     */
+    protected function applyStoreScopedColumns($entity, $source, $confPath)
+    {
+        if ($confPath == ReplLscSalepriceviewTask::CONFIG_PATH) {
+            $this->getLsrModel()->setStoreId($source->getScopeId());
+            $entity->setData('store_id', $this->getLsrModel()->getActiveWebStore());
+        }
+    }
+
+    /**
+     * Whether the batch upsert write path is enabled for the given store via store config.
+     *
+     * Defaults to enabled (see config.xml); toggle off + cache flush restores the ORM path.
+     *
+     * @param mixed $storeId
+     * @return bool
+     */
+    protected function isBatchUpsertEnabled($storeId)
+    {
+        return $this->scope_config->isSetFlag(
+            LSR::SC_REPLICATION_BATCH_UPSERT_ENABLED,
+            $this->defaultScope,
+            $storeId
+        );
+    }
+
+    /**
+     * Eligibility gate: a row is batched iff ALL conditions hold; otherwise it takes the ORM path.
+     *
+     * Only genuine per-row side effects are excluded, all of them delete-time:
+     *  - deletions keyed by the delete-specific unique attribute set
+     *    (DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY): their identity_value differs from the original row's,
+     *    so an upsert would insert a duplicate deleted row instead of flipping the existing flag;
+     *  - base-price deletions ({@see resetSyncPriceItems()} resets sibling rows by ItemId);
+     *  - retail-image-link deletions ({@see updateDeletedImages()} cascades to related rows).
+     * Pure column-formatting paths (enum decode, base64, validation-period times, data-translation
+     * remaps) and the sale-price store_id enrichment ARE batched: formatSourceColumns() and
+     * applyStoreScopedColumns() run for both paths and buildUpsertRow() reuses the same
+     * entity-population code as the ORM path, so the written row is identical.
+     *
+     * @param mixed $source
+     * @param string $confPath
+     * @param mixed $storeId
+     * @return bool
+     */
+    protected function isBatchEligible($source, $confPath, $storeId)
+    {
+        if (!$this->isBatchUpsertEnabled($storeId)) {
+            // Presence flag, not a per-row counter: a disabled flag is a single configuration
+            // state, not a mass-fallback incident.
+            $this->fallbackCounts['flag_off'] = 1;
+            return false;
+        }
+
+        if (!array_key_exists($confPath, ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY)) {
+            $this->countFallback('unmapped');
+            return false;
+        }
+
+        $isDeleted = $source->getIsDeleted();
+
+        if ($isDeleted && array_key_exists($confPath, ReplicationHelper::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY)) {
+            $this->countFallback('delete_array');
+            return false;
+        }
+
+        if ($isDeleted && $confPath === ReplEcommBasePricesTask::CONFIG_PATH) {
+            $this->countFallback('base_price_delete');
+            return false;
+        }
+
+        if ($isDeleted && $confPath === ReplLscRetailImageLinkTask::CONFIG_PATH) {
+            $this->countFallback('image_link_delete');
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Build the column => value map for one buffered row.
+     *
+     * Reuses the exact entity-population path the ORM save uses (property loop keyed by the
+     * db-column mapping + {@see applyDbColumnMapping()}), then returns the entity's data array so
+     * batch-written rows are byte-identical to the ORM path. No repository SELECT is performed —
+     * the INSERT ... ON DUPLICATE KEY UPDATE resolves existence via the identity_value unique key.
+     *
+     * @param array $properties
+     * @param mixed $source
+     * @param mixed $checksum
+     * @param mixed $identity
+     * @return array
+     * @throws \DateMalformedStringException
+     */
+    protected function buildUpsertRow($properties, $source, $checksum, $identity)
+    {
+        $entity = $this->getFactory()->create();
+        $entity->setData('IsDeleted', $source->getIsDeleted() ? 1 : 0);
+        $this->applyStoreScopedColumns($entity, $source, $this->getConfigPath());
+        $entity->addData(
+            [
+                'checksum'                                 => $checksum,
+                ReplicationHelper::UNIQUE_HASH_COLUMN_NAME => $identity,
+                'scope'                                    => $source->getScope(),
+                'scope_id'                                 => $source->getScopeId(),
+            ]
+        );
+        foreach ($properties as $propertyIndex => $property) {
+            $entity->setData($property, $source->getData($propertyIndex));
+        }
+        $this->applyDbColumnMapping($entity);
+
+        return $entity->getData();
+    }
+
+    /**
+     * Count one more row that fell back to the ORM path, keyed by reason.
+     *
+     * Maximum buffered rows per statement for a given column count, keeping the total placeholder
+     * count under MySQL's limit (one extra placeholder is reserved for the updated_at literal bind).
+     *
+     * @param int $columnCount
+     * @return int
+     */
+    protected function maxRowsPerChunk($columnCount)
+    {
+        if ($columnCount < 1) {
+            return self::BATCH_CHUNK_SIZE;
+        }
+
+        return max(1, (int) floor(self::PLACEHOLDER_BUDGET / $columnCount));
+    }
+
+    /**
+     * Build the chunked INSERT ... ON DUPLICATE KEY UPDATE statement and its positional binds.
+     *
+     * ON DUPLICATE KEY UPDATE refreshes every column to VALUES(col) EXCEPT identity_value (the
+     * matched unique key), and additionally forces is_updated=1, is_failed=0, and updated_at=<now>
+     * (bound). processed/created_at are never referenced and stay untouched.
+     *
+     * @param string $table
+     * @param string[] $columns
+     * @param array $rows
+     * @return array
+     */
+    protected function buildUpsertSql($table, array $columns, array $rows)
+    {
+        $connection = $this->rep_helper->getConnection();
+
+        $quotedColumns = array_map([$connection, 'quoteIdentifier'], $columns);
+        $placeholders  = '(' . implode(',', array_fill(0, count($columns), '?')) . ')';
+        $valuesClause  = implode(',', array_fill(0, count($rows), $placeholders));
+
+        $updateParts = [];
+        foreach ($columns as $column) {
+            if ($column === ReplicationHelper::UNIQUE_HASH_COLUMN_NAME) {
+                continue;
+            }
+            $quoted        = $connection->quoteIdentifier($column);
+            $updateParts[] = $quoted . ' = VALUES(' . $quoted . ')';
+        }
+        $updateParts[] = $connection->quoteIdentifier('is_updated') . ' = 1';
+        $updateParts[] = $connection->quoteIdentifier('is_failed') . ' = 0';
+        $updateParts[] = $connection->quoteIdentifier('updated_at') . ' = ?';
+
+        // Identifiers are quoted and every value is a positional bind; the raw statement is
+        // required because insertOnDuplicate() cannot set literals on the update branch only.
+        // phpcs:ignore Magento2.SQL.RawQuery.FoundRawSql
+        $sql = 'INSERT INTO ' . $connection->quoteIdentifier($table)
+            . ' (' . implode(',', $quotedColumns) . ')'
+            . ' VALUES ' . $valuesClause
+            . ' ON DUPLICATE KEY UPDATE ' . implode(', ', $updateParts);
+
+        // Prepare each value exactly as the ORM save path does (AbstractDb::_prepareDataForTable ->
+        // prepareColumnValue): empty nullable columns become NULL, numerics/dates are cast/formatted.
+        $describe = $this->getTableDescription($table);
+
+        $bind = [];
+        foreach ($rows as $row) {
+            foreach ($columns as $column) {
+                $value  = $row[$column] ?? null;
+                $bind[] = isset($describe[$column])
+                    ? $connection->prepareColumnValue($describe[$column], $value)
+                    : $value;
+            }
+        }
+        $bind[] = $this->rep_helper->getDateTime();
+
+        return [$sql, $bind];
+    }
+
+    /**
+     * Flush all buffered rows for a config path as one statement per chunk.
+     *
+     * On a chunk failure the chunk's rows are replayed through {@see saveSourceOrm()} row by row;
+     * any row that still fails is logged and counted in {@see $flushFailures}.
+     *
+     * @param string $confPath
+     * @param mixed $storeId
+     * @return void
+     */
+    protected function flushBuffer($confPath, $storeId)
+    {
+        if (empty($this->upsertBuffer[$confPath])) {
+            return;
+        }
+
+        $entries                       = $this->upsertBuffer[$confPath];
+        $this->upsertBuffer[$confPath] = [];
+
+        $table = $this->resolveUpsertTable($confPath);
+        if (empty($table)) {
+            $this->replayChunkViaOrm($entries, $confPath, 'no_table');
+            return;
+        }
+
+        if (!$this->tableHasIdentityUniqueIndex($table)) {
+            // Without a single-column UNIQUE on identity_value the upsert cannot dedupe and would
+            // insert duplicates; fall back to the ORM path which resolves existence explicitly.
+            $this->replayChunkViaOrm($entries, $confPath, 'no_identity_unique_index');
+            return;
+        }
+
+        $columns = array_values(array_intersect(array_keys($entries[0]['row']), $this->getTableColumns($table)));
+        if (empty($columns)) {
+            $this->replayChunkViaOrm($entries, $confPath, 'no_columns');
+            return;
+        }
+
+        $maxRows      = min(self::BATCH_CHUNK_SIZE, $this->maxRowsPerChunk(count($columns)));
+        $chunks       = array_chunk($entries, $maxRows);
+        $connection   = $this->rep_helper->getConnection();
+        $start        = microtime(true);
+        $rowsFlushed  = 0;
+        $rowsReplayed = 0;
+
+        foreach ($chunks as $chunk) {
+            $rows         = array_column($chunk, 'row');
+            [$sql, $bind] = $this->buildUpsertSql($table, $columns, $rows);
+
+            try {
+                $connection->query($sql, $bind);
+                $rowsFlushed += count($chunk);
+            } catch (Exception $e) {
+                $this->logger->error(
+                    'Batch upsert chunk flush failed, replaying via ORM',
+                    [
+                        'config_path' => $confPath,
+                        'table'       => $table,
+                        'store_id'    => $storeId,
+                        'rows'        => count($chunk),
+                        'exception'   => $e->getMessage(),
+                    ]
+                );
+                $rowsReplayed += $this->replayChunkViaOrm($chunk, $confPath, 'chunk_flush_failed');
+            }
+        }
+
+        $this->logger->info(
+            'Batch upsert flush',
+            [
+                'config_path'   => $confPath,
+                'table'         => $table,
+                'store_id'      => $storeId,
+                'scope'         => $this->defaultScope,
+                'rows_upserted' => $rowsFlushed,
+                'rows_replayed' => $rowsReplayed,
+                'chunks'        => count($chunks),
+                'duration_ms'   => (int) round((microtime(true) - $start) * 1000),
+            ]
+        );
+    }
+
+    /**
+     * Replay a chunk's buffered rows through the ORM path, one row at a time.
+     *
+     * @param array $chunk
+     * @param string $confPath
+     * @param string $reason
+     * @return int number of rows successfully replayed via the ORM path
+     */
+    protected function replayChunkViaOrm(array $chunk, $confPath, $reason)
+    {
+        $replayed = 0;
+        foreach ($chunk as $entry) {
+            try {
+                $this->saveSourceOrm($entry['properties'], $entry['source']);
+                $replayed++;
+            } catch (Exception $e) {
+                $this->flushFailures++;
+                $this->logger->error(
+                    'Batch upsert ORM replay failed',
+                    [
+                        'config_path' => $confPath,
+                        'reason'      => $reason,
+                        'exception'   => $e->getMessage(),
+                    ]
+                );
+            }
+        }
+
+        return $replayed;
+    }
+
+    /**
+     * Resolve the flat-table name for a config path, cached per config path.
+     *
+     * @param string $confPath
+     * @return string
+     */
+    protected function resolveUpsertTable($confPath)
+    {
+        if (!array_key_exists($confPath, $this->upsertTableCache)) {
+            $this->upsertTableCache[$confPath] = (string) $this->getFactory()
+                ->create()
+                ->getResource()
+                ->getMainTable();
+        }
+
+        return $this->upsertTableCache[$confPath];
+    }
+
+    /**
+     * Table description (column metadata) for a flat table, cached per table.
+     *
+     * @param string $table
+     * @return array
+     */
+    protected function getTableDescription($table)
+    {
+        if (!array_key_exists($table, $this->upsertTableDescriptions)) {
+            $this->upsertTableDescriptions[$table] = $this->rep_helper->getConnection()->describeTable($table);
+        }
+
+        return $this->upsertTableDescriptions[$table];
+    }
+
+    /**
+     * Get the real column names of a flat table, cached per table.
+     *
+     * Real column names of a flat table, cached per table. Used to filter out entity properties
+     * that are not actual DB columns before building the INSERT.
+     *
+     * @param string $table
+     * @return string[]
+     */
+    protected function getTableColumns($table)
+    {
+        return array_keys($this->getTableDescription($table));
+    }
+
+    /**
+     * Check if the table has a single-column UNIQUE index on identity_value, cached per table.
+     *
+     * Whether the table has a single-column UNIQUE index on identity_value, cached per table. This
+     * is required for the ON DUPLICATE KEY UPDATE dedupe to be correct.
+     *
+     * @param string $table
+     * @return bool
+     */
+    protected function tableHasIdentityUniqueIndex($table)
+    {
+        if (!array_key_exists($table, $this->identityUniqueIndexCache)) {
+            $hasUnique = false;
+            try {
+                foreach ($this->rep_helper->getConnection()->getIndexList($table) as $index) {
+                    $indexColumns = $index['COLUMNS_LIST'] ?? [];
+                    if (($index['INDEX_TYPE'] ?? '') === 'unique' &&
+                        count($indexColumns) === 1 &&
+                        in_array(ReplicationHelper::UNIQUE_HASH_COLUMN_NAME, $indexColumns, true)
+                    ) {
+                        $hasUnique = true;
+                        break;
+                    }
+                }
+            } catch (Exception $e) {
+                $hasUnique = false;
+            }
+            $this->identityUniqueIndexCache[$table] = $hasUnique;
+        }
+
+        return $this->identityUniqueIndexCache[$table];
+    }
+
+    /**
+     * Increment the aggregated fallback-to-ORM counter for a reason.
+     *
+     * @param string $reason
+     * @return void
+     */
+    protected function countFallback($reason)
+    {
+        if (!isset($this->fallbackCounts[$reason])) {
+            $this->fallbackCounts[$reason] = 0;
+        }
+        $this->fallbackCounts[$reason]++;
+    }
+
+    /**
+     * Emit a single aggregated line with fallback-to-ORM counts by reason for the run.
+     *
+     * @param string $confPath
+     * @param mixed $storeId
+     * @return void
+     */
+    protected function logFallbackSummary($confPath, $storeId)
+    {
+        if (empty($this->fallbackCounts)) {
+            return;
+        }
+
+        $this->logger->info(
+            'Batch upsert fallback counts',
+            array_merge(
+                ['config_path' => $confPath, 'store_id' => $storeId],
+                $this->fallbackCounts
+            )
+        );
+    }
+
+    /**
      * Set IsDeleted true for variant images based on ImageId
      *
-     * @param $deletedImages
+     * @param array $deletedImages
      * @return void'
      */
     public function updateDeletedImages($deletedImages)
@@ -493,8 +1063,8 @@ abstract class AbstractReplicationTask
     /**
      * Reset price records by ItemId
      *
-     * @param $source
-     * @param $resetItemId
+     * @param mixed $source
+     * @param string $resetItemId
      * @return void
      */
     public function resetSyncPriceItems($source, $resetItemId)
@@ -564,7 +1134,7 @@ abstract class AbstractReplicationTask
      * Check the Entity exist or not
      *
      * @param array $uniqueAttributes
-     * @param $source
+     * @param mixed $source
      * @param int $uniqueAttributesHash
      * @param array $properties
      * @return mixed
@@ -684,7 +1254,6 @@ abstract class AbstractReplicationTask
      * Check LastKey is always zero or not using Replication Config Path
      *
      * @return bool
-     * @throws NoSuchEntityException
      */
     public function isLastKeyAlwaysZero()
     {
@@ -700,7 +1269,7 @@ abstract class AbstractReplicationTask
     /**
      * Get last key
      *
-     * @param $storeId
+     * @param string $storeId
      * @return mixed|null
      */
     public function getLastKey($storeId)
@@ -717,7 +1286,7 @@ abstract class AbstractReplicationTask
     /**
      * Get last entry no
      *
-     * @param $storeId
+     * @param string $storeId
      * @return mixed|null
      */
     public function getLastEntryNo($storeId)
@@ -734,7 +1303,7 @@ abstract class AbstractReplicationTask
     /**
      * Check to see if running first time
      *
-     * @param $storeId
+     * @param string $storeId
      * @return mixed|null
      */
     public function isFirstTime($storeId)
@@ -751,8 +1320,8 @@ abstract class AbstractReplicationTask
     /**
      * Persist last key
      *
-     * @param $lastKey
-     * @param $storeId
+     * @param string $lastKey
+     * @param string $storeId
      * @return void
      */
     public function persistLastKey($lastKey, $storeId)
@@ -825,15 +1394,17 @@ abstract class AbstractReplicationTask
     /**
      * Get Batch Size
      *
-     * @param $lsr
-     * @param $storeId
+     * @param LSR $lsr
+     * @param string $storeId
      * @return int
      */
     public function getBatchSize($lsr, $storeId)
     {
         $batchSize = 100;
-        $isBatchSizeSet = $lsr->getStoreConfig(
-            LSR::SC_REPLICATION_DEFAULT_BATCHSIZE
+        $isBatchSizeSet = $lsr->getGivenConfigInGivenScope(
+            LSR::SC_REPLICATION_DEFAULT_BATCHSIZE,
+            $this->defaultScope,
+            $storeId
         );
         if ($isBatchSizeSet && is_numeric($isBatchSizeSet)) {
             $batchSize = $isBatchSizeSet;
@@ -845,8 +1416,8 @@ abstract class AbstractReplicationTask
     /**
      * Get WebStore ID
      *
-     * @param $lsr
-     * @param $storeId
+     * @param LSR $lsr
+     * @param string $storeId
      * @return string
      */
     public function getWebStoreId($lsr, $storeId)
@@ -861,8 +1432,8 @@ abstract class AbstractReplicationTask
     /**
      * Get WebStore ID
      *
-     * @param $lsr
-     * @param $storeId
+     * @param LSR $lsr
+     * @param string $storeId
      * @return string
      */
     public function getBaseUrl($lsr, $storeId)
@@ -897,7 +1468,7 @@ abstract class AbstractReplicationTask
     /**
      * Make request Fetch Data for given store
      *
-     * @param $storeId
+     * @param string $storeId
      * @throws NoSuchEntityException|GuzzleException
      */
     public function fetchDataGivenStore($storeId)
@@ -953,11 +1524,18 @@ abstract class AbstractReplicationTask
     /**
      * Use given request and save response
      *
-     * @param $request
-     * @param $storeId
+     * @param mixed $request
+     * @param string $storeId
      */
     public function processResponseGivenRequest($request, $storeId)
     {
+        // Reset per-run batch state at the top to guard against a leaked buffer from a prior
+        // aborted run on a shared task instance.
+        $confPath             = $this->getConfigPath();
+        $this->upsertBuffer   = [];
+        $this->flushFailures  = 0;
+        $this->fallbackCounts = [];
+
         try {
             $properties = $this->getProperties();
             $response = $request->execute();
@@ -973,19 +1551,29 @@ abstract class AbstractReplicationTask
                 if ($result != null) {
                     // @codingStandardsIgnoreLine
                     if (count($result) > 0) {
-                        foreach ($result as $source) {
-                            //TODO need to understand this before we modify it.
-                            $source->setScope($this->defaultScope)
-                                ->setScopeId($storeId);
+                        try {
+                            foreach ($result as $source) {
+                                //TODO need to understand this before we modify it.
+                                $source->setScope($this->defaultScope)
+                                    ->setScopeId($storeId);
 
-                            $this->saveSource($properties, $source);
+                                $this->saveSource($properties, $source);
+                            }
+                            $this->updateSuccessStatus($storeId);
+                        } finally {
+                            // Always drain buffered rows, even if the row loop aborted mid-way.
+                            $this->flushBuffer($confPath, $storeId);
                         }
-                        $this->updateSuccessStatus($storeId);
                     }
                 }
 
                 if ($remaining == 0) {
                     $this->cronStatus = true;
+                }
+                // If any row could not be persisted by either path, do not mark the job complete so
+                // LS Central re-pulls on the next tick.
+                if ($this->flushFailures > 0) {
+                    $this->cronStatus = false;
                 }
                 $this->persistLastKey($lastKey, $storeId);
                 $this->persistLastEntryNo($lastEntryNo, $storeId);
@@ -1006,6 +1594,20 @@ abstract class AbstractReplicationTask
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
+        } finally {
+            // Batch diagnostics are emitted regardless of whether response processing completed or
+            // aborted mid-way, so a partial/failed run is still observable.
+            $this->logFallbackSummary($confPath, $storeId);
+            $this->logger->info(
+                'Batch upsert run summary',
+                [
+                    'config_path'    => $confPath,
+                    'store_id'       => $storeId,
+                    'fallback_rows'  => array_sum($this->fallbackCounts),
+                    'flush_failures' => $this->flushFailures,
+                    'cron_status'    => $this->cronStatus,
+                ]
+            );
         }
     }
 
