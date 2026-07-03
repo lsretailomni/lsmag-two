@@ -92,6 +92,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const SC_REPLICATION_DEFAULT_STOP_FPC_PURGE = 'ls_mag/replication/stop_fpc_purge_on_index';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
+    const SC_REPLICATION_BATCH_UPSERT_ENABLED = 'ls_mag/replication/batch_upsert_enabled';
     const SC_REPLICATION_PRODUCT_BATCHSIZE = 'ls_mag/replication/product_batch_size';
     const SC_REPLICATION_PRODUCT_ATTRIBUTE_BATCH_SIZE = 'ls_mag/replication/product_attribute_batch_size';
     const SC_REPLICATION_DISCOUNT_BATCH_SIZE = 'ls_mag/replication/discount_batch_size';
