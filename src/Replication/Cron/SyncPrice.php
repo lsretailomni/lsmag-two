@@ -7,7 +7,6 @@ namespace Ls\Replication\Cron;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplPrice;
-use \Ls\Replication\Model\Central\ReplSalesPrice;
 use \Ls\Replication\Model\SalesPriceProcessor;
 use \Ls\Replication\Model\ResourceModel\ReplPrice\Collection;
 use Magento\Framework\Exception\LocalizedException;
@@ -72,12 +71,6 @@ class SyncPrice extends ProductCreateTask
                     $this->logger->debug('Running SyncPrice Task for store ' . $this->store->getName());
                     $this->processed = [];
                     $this->storePriceGroups = null;
-
-                    if ($this->lsr->getStoreConfig(LSR::SC_USE_SALES_PRICE, $this->store->getId())) {
-                        $this->executeSalesPrice($this->store->getId());
-                        $this->lsr->setStoreId(null);
-                        continue;
-                    }
 
                     $productPricesBatchSize = $this->replicationHelper->getProductPricesBatchSize();
 
@@ -414,116 +407,6 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
-     * Process sales prices sourced from the repl_sales_price table (GetSalesPrice flow).
-     *
-     * Only runs when the UseSalesPrice config is enabled.
-     *
-     * @param int|string $storeId
-     * @return void
-     */
-    public function executeSalesPrice(int|string $storeId): void
-    {
-        $this->logger->debug('Running SyncPrice (sales price) flow for store ' . $this->store->getName());
-
-        $scopeId = $this->getScopeId();
-        $processor = $this->getSalesPriceProcessor();
-        $collection = $this->getReplSalesPriceCollection();
-        $collection->addFieldToFilter('is_updated', 1)
-            ->addFieldToFilter('scope_id', $scopeId);
-
-        /** @var ReplSalesPrice $salesPrice */
-        foreach ($collection as $salesPrice) {
-            try {
-                if ($processor->isFutureSalesPrice($salesPrice)) {
-                    // Not active yet - do not mark as processed so it is retried later.
-                    continue;
-                }
-
-                if (!$processor->isValidSalesPrice($salesPrice)) {
-                    $this->markSalesPriceProcessed($salesPrice);
-                    continue;
-                }
-
-                $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
-                    $salesPrice->getItemNo(),
-                    (string) $salesPrice->getVariantCode(),
-                    (string) $salesPrice->getUnitOfMeasureCode(),
-                    $storeId
-                );
-
-                if (!empty($productData)) {
-                    $products = is_array($productData) ? $productData : [$productData];
-                    $price = $salesPrice->getLscUnitPriceIncludingVat();
-
-                    foreach ($products as $product) {
-                        if ($price !== null && $product->getPrice() != $price) {
-                            $product->setPrice($price);
-                            $this->productResourceModel->saveAttribute($product, 'price');
-                        }
-                    }
-                }
-
-                $this->markSalesPriceProcessed($salesPrice);
-            } catch (\Exception $e) {
-                $this->logger->debug(
-                    sprintf(
-                        'Error processing sales price for item: %s, variant: %s - Error: %s',
-                        $salesPrice->getItemNo(),
-                        $salesPrice->getVariantCode(),
-                        $e->getMessage()
-                    )
-                );
-            }
-        }
-
-        $remaining = $this->getRemainingSalesPriceRecords($scopeId);
-        if ($remaining == 0) {
-            $this->cronStatus = true;
-        }
-        $this->replicationHelper->updateCronStatus(
-            $this->cronStatus,
-            LSR::SC_SUCCESS_CRON_PRODUCT_PRICE,
-            $this->store->getId(),
-            false,
-            ScopeInterface::SCOPE_STORES
-        );
-        $this->logger->debug('End SyncPrice (sales price) flow for store ' . $this->store->getName());
-    }
-
-    /**
-     * Get the number of remaining unprocessed sales price records for the given scope.
-     *
-     * @param int|string $scopeId
-     * @return int
-     */
-    private function getRemainingSalesPriceRecords(int|string $scopeId): int
-    {
-        $collection = $this->getReplSalesPriceCollection();
-        $collection->addFieldToFilter('is_updated', 1)
-            ->addFieldToFilter('scope_id', $scopeId);
-
-        return (int) $collection->getSize();
-    }
-
-    /**
-     * Mark a sales price record as processed.
-     *
-     * @param ReplSalesPrice $salesPrice
-     * @return void
-     */
-    private function markSalesPriceProcessed(ReplSalesPrice $salesPrice): void
-    {
-        $salesPrice->addData(
-            [
-                'is_updated' => 0,
-                'processed' => 1,
-                'processed_at' => $this->replicationHelper->getDateTime()
-            ]
-        );
-        $this->getReplSalesPriceRepository()->save($salesPrice);
-    }
-
-    /**
      * Lazily resolve the sales price processor.
      *
      * @return SalesPriceProcessor
@@ -538,29 +421,6 @@ class SyncPrice extends ProductCreateTask
         // is not inherited here; the static ObjectManager call is used deliberately, not out of laziness.
         return \Magento\Framework\App\ObjectManager::getInstance()
             ->get(SalesPriceProcessor::class);
-    }
-
-    /**
-     * Lazily create a repl_sales_price collection.
-     *
-     * @return \Ls\Replication\Model\Central\ResourceModel\ReplSalesPrice\Collection
-     */
-    private function getReplSalesPriceCollection(): \Ls\Replication\Model\Central\ResourceModel\ReplSalesPrice\Collection
-    {
-        return \Magento\Framework\App\ObjectManager::getInstance()
-            ->get(\Ls\Replication\Model\Central\ResourceModel\ReplSalesPrice\CollectionFactory::class)
-            ->create();
-    }
-
-    /**
-     * Lazily resolve the repl_sales_price repository.
-     *
-     * @return \Ls\Replication\Api\Central\ReplSalesPriceRepositoryInterface
-     */
-    private function getReplSalesPriceRepository(): \Ls\Replication\Api\Central\ReplSalesPriceRepositoryInterface
-    {
-        return \Magento\Framework\App\ObjectManager::getInstance()
-            ->get(\Ls\Replication\Api\Central\ReplSalesPriceRepositoryInterface::class);
     }
 
     /**

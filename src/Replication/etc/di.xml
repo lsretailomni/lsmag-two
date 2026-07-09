@@ -312,6 +312,8 @@
                 type="Ls\Replication\Plugin\SalePriceViewRequestPlugin" sortOrder="10"/>
         <plugin name="ls_replication_saleprice_cron_gate"
                 type="Ls\Replication\Plugin\PriceCronGatePlugin" sortOrder="20"/>
+        <plugin name="ls_replication_salesprice_source_reshape"
+                type="Ls\Replication\Plugin\SalesPriceSourceReshapePlugin" sortOrder="30"/>
     </type>
     <type name="Ls\Replication\Cron\ReplLscSalesPriceTask">
         <plugin name="ls_replication_salesprice_cron_gate"

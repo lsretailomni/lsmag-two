@@ -9,11 +9,13 @@ use Ls\Replication\Cron\ReplLscSalepriceviewTask;
 use Ls\Replication\Cron\ReplLscSalesPriceTask;
 
 /**
- * Gates the price replication cron tasks based on the UseSalesPrice config.
+ * Gates the price replication cron tasks.
  *
- * Only one of the two price-fetch cron tasks should run for a given configuration:
- * - UseSalesPrice = Yes: run ReplLscSalesPriceTask, skip ReplLscSalepriceviewTask.
- * - UseSalesPrice = No:  run ReplLscSalepriceviewTask, skip ReplLscSalesPriceTask.
+ * The repl_price cron (ReplLscSalepriceviewTask) is now the single price-fetch task for every
+ * configuration: SalePriceViewRequestPlugin routes it to the correct operation (SalePriceView,
+ * PriceListLine or SalesPrice) and all responses land in the shared repl_price table, so it must
+ * never be gated off. The legacy repl_sales_price cron (ReplLscSalesPriceTask) is retired and is
+ * always skipped.
  */
 class PriceCronGatePlugin
 {
@@ -25,7 +27,7 @@ class PriceCronGatePlugin
     }
 
     /**
-     * Skip the fetch when the target task is gated off for the current configuration.
+     * Skip the retired sales price task; always proceed for the unified sale price view task.
      *
      * @param ReplLscSalepriceviewTask|ReplLscSalesPriceTask $subject
      * @param callable $proceed
@@ -37,18 +39,9 @@ class PriceCronGatePlugin
         callable $proceed,
         $storeId
     ) {
-        $useSalesPrice = (bool) $this->lsr->getStoreConfig(LSR::SC_USE_SALES_PRICE, $storeId);
-
         if ($subject instanceof ReplLscSalesPriceTask) {
-            // The sales price task only runs when UseSalesPrice = Yes.
-            if (!$useSalesPrice) {
-                return null;
-            }
-        } elseif ($subject instanceof ReplLscSalepriceviewTask) {
-            // The legacy sale price view task only runs when UseSalesPrice = No.
-            if ($useSalesPrice) {
-                return null;
-            }
+            // Retired: the repl_price cron now handles the UseSalesPrice = Yes case too.
+            return null;
         }
 
         return $proceed($storeId);

@@ -12,11 +12,13 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for the PriceCronGatePlugin.
+ *
+ * The repl_price cron (ReplLscSalepriceviewTask) is the single price-fetch task and must never
+ * be gated off; the legacy repl_sales_price cron (ReplLscSalesPriceTask) is retired and always
+ * skipped. Behavior no longer depends on the UseSalesPrice config.
  */
 class PriceCronGatePluginTest extends TestCase
 {
-    private const CONFIG_PATH_USE_SALES_PRICE = 'ls_mag/replication/use_sales_price';
-
     private const STORE_ID = 1;
 
     /**
@@ -35,12 +37,9 @@ class PriceCronGatePluginTest extends TestCase
         $this->plugin = new PriceCronGatePlugin($this->lsr);
     }
 
-    public function testAroundFetchDataGivenStore_SalePriceViewTask_WhenUseSalesPriceYes_SkipsAndReturnsNull(): void
+    public function testSalePriceViewTaskAlwaysProceeds(): void
     {
         $subject = $this->createMock(ReplLscSalepriceviewTask::class);
-        $this->lsr->method('getStoreConfig')
-            ->with(self::CONFIG_PATH_USE_SALES_PRICE, self::STORE_ID)
-            ->willReturn('1');
 
         $proceedCalled = false;
         $proceed = function () use (&$proceedCalled) {
@@ -50,30 +49,13 @@ class PriceCronGatePluginTest extends TestCase
 
         $result = $this->plugin->aroundFetchDataGivenStore($subject, $proceed, self::STORE_ID);
 
-        $this->assertNull($result);
-        $this->assertFalse($proceedCalled, '$proceed must NOT be called when the sale price view task is gated off.');
-    }
-
-    public function testAroundFetchDataGivenStore_SalePriceViewTask_WhenUseSalesPriceNo_CallsProced(): void
-    {
-        $subject = $this->createMock(ReplLscSalepriceviewTask::class);
-        $this->lsr->method('getStoreConfig')
-            ->with(self::CONFIG_PATH_USE_SALES_PRICE, self::STORE_ID)
-            ->willReturn('0');
-
-        $proceed = fn () => 'PROCEED_RESULT';
-
-        $result = $this->plugin->aroundFetchDataGivenStore($subject, $proceed, self::STORE_ID);
-
+        $this->assertTrue($proceedCalled, 'The unified sale price view task must always proceed.');
         $this->assertSame('PROCEED_RESULT', $result);
     }
 
-    public function testAroundFetchDataGivenStore_SalesPriceTask_WhenUseSalesPriceNo_SkipsAndReturnsNull(): void
+    public function testSalesPriceTaskIsAlwaysSkipped(): void
     {
         $subject = $this->createMock(ReplLscSalesPriceTask::class);
-        $this->lsr->method('getStoreConfig')
-            ->with(self::CONFIG_PATH_USE_SALES_PRICE, self::STORE_ID)
-            ->willReturn('0');
 
         $proceedCalled = false;
         $proceed = function () use (&$proceedCalled) {
@@ -83,21 +65,7 @@ class PriceCronGatePluginTest extends TestCase
 
         $result = $this->plugin->aroundFetchDataGivenStore($subject, $proceed, self::STORE_ID);
 
-        $this->assertNull($result);
-        $this->assertFalse($proceedCalled, '$proceed must NOT be called when the sales price task is gated off.');
-    }
-
-    public function testAroundFetchDataGivenStore_SalesPriceTask_WhenUseSalesPriceYes_CallsProced(): void
-    {
-        $subject = $this->createMock(ReplLscSalesPriceTask::class);
-        $this->lsr->method('getStoreConfig')
-            ->with(self::CONFIG_PATH_USE_SALES_PRICE, self::STORE_ID)
-            ->willReturn('1');
-
-        $proceed = fn () => 'PROCEED_RESULT';
-
-        $result = $this->plugin->aroundFetchDataGivenStore($subject, $proceed, self::STORE_ID);
-
-        $this->assertSame('PROCEED_RESULT', $result);
+        $this->assertNull($result, 'The retired sales price task must be skipped.');
+        $this->assertFalse($proceedCalled, '$proceed must NOT be called for the retired sales price task.');
     }
 }
