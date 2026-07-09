@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+
+        <referenceBlock name="ls.omni.product.discount.proactive" remove="true"/>
+
+        <referenceBlock name="ls.omni.product.availability" remove="true"/>
+        <referenceBlock name="ls.omni.product.return.policy" remove="true"/>
+
+        <referenceContainer name="product.info.additional">
+
+            <!-- 1. Check Availability in Stores -->
+            <block name="ls.omni.product.availability.hyva"
+                   template="Ls_Omni::product/hyva/view/availability.phtml"
+                   ifconfig="ls_mag/one_list/product_availability">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\GeneralViewModel</argument>
+                </arguments>
+            </block>
+
+            <!-- 2. Return Policy -->
+            <block name="ls.omni.product.return.policy.hyva"
+                   template="Ls_Omni::product/hyva/view/returnpolicy.phtml"
+                   ifconfig="ls_mag/return_policy/show_return_policy">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\GeneralViewModel</argument>
+                </arguments>
+            </block>
+
+            <!-- 3. Offers and Promotions -->
+            <block class="Ls\Omni\Block\Product\View\Discount\Proactive"
+                   name="ls.omni.product.discount.proactive.hyva"
+                   template="Ls_Omni::product/hyva/proactive.phtml"
+                   ifconfig="ls_mag/ls_discounts/discount"/>
+
+        </referenceContainer>
+    </body>
+</page>

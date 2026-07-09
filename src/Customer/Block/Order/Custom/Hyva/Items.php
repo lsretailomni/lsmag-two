@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Block\Items\AbstractItems;
@@ -51,6 +52,11 @@ class Items extends AbstractItems
         $order = $this->getOrder(true);
         $orderLines = [];
         $documentId = $this->_request->getParam('order_id');
+        $detail = $this->orderHelper->getGivenValueFromRegistry('current_detail');
+        if ($detail == 'creditmemo') {
+            $documentId = current($this->_request->getParam('new_order_id'));
+        }
+
         if ($order) {
             $orderLines = $order->getLscMemberSalesDocLine();
 
@@ -128,6 +134,28 @@ class Items extends AbstractItems
     }
 
     /**
+     * Get print credit memo url
+     *
+     * @param object $order
+     * @param object $creditmemo
+     * @return string
+     */
+    public function getPrintCreditMemoUrl($order, $creditmemo)
+    {
+        $reqType = $this->getRequest()->getParam('type');
+
+        $params['order_id']      = $order->getDocumentId();
+        $params['creditmemo_id'] = $creditmemo->getId();
+
+        if ($reqType) {
+            $params['order_id'] = $this->getRequest()->getParam('order_id');
+            $params['type']     = $reqType;
+        }
+
+        return $this->getUrl('*/*/printRefunds', $params);
+    }
+
+    /**
      * Get print all shipment url
      *
      * @param object $order
@@ -156,6 +184,62 @@ class Items extends AbstractItems
     public function getCustomItemRenderer($item)
     {
         return $this->getChildBlock("custom_order_item_renderer_custom")->setData("item", $item)->toHtml();
+    }
+
+    /**
+     * Build LS Central items map keyed by itemId-variantId-uom, skipping parent/comment lines
+     *
+     * @return DataObject[]
+     */
+    public function getLsItemsMap()
+    {
+        $lsItemsMap = [];
+
+        foreach ($this->getItems() as $lsItem) {
+            if ($lsItem->getEntryType() == 1 || $lsItem->getParentItem()) {
+                continue;
+            }
+            $key              = $lsItem->getNumber() . '-' . $lsItem->getVariantCode() . '-' . $lsItem->getUnitOfMeasure();
+            $lsItemsMap[$key] = $lsItem;
+        }
+
+        return $lsItemsMap;
+    }
+
+    /**
+     * Index a credit memo's items by parsed SKU for comparison against LS Central lines
+     *
+     * @param object $creditmemo
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getCreditmemoItemsMap($creditmemo)
+    {
+        $creditmemoItemsMap = [];
+
+        foreach ($creditmemo->getAllItems() as $creditmemoItem) {
+            $orderItem = $creditmemoItem->getOrderItem();
+            if ($orderItem && $orderItem->getParentItemId()) {
+                continue;
+            }
+            [$itemId, $variantId, $uom] = $this->itemHelper->getComparisonValues($creditmemoItem->getSku());
+            $key                        = $itemId . '-' . $variantId . '-' . $uom;
+            $creditmemoItemsMap[$key]   = $creditmemoItem;
+        }
+
+        return $creditmemoItemsMap;
+    }
+
+    /**
+     * Get LS Central lines that have a matching Magento credit memo item
+     *
+     * @param array $lsItemsMap
+     * @param array $creditmemoItemsMap
+     * @return array
+     */
+    public function getMatchedItems(array $lsItemsMap, array $creditmemoItemsMap)
+    {
+        return array_intersect_key($lsItemsMap, $creditmemoItemsMap);
     }
 
     /**

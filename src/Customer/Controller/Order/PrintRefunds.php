@@ -28,6 +28,8 @@ class PrintRefunds extends AbstractOrderController implements HttpGetActionInter
         if ($result) {
             return $result;
         }
+
+        $this->orderHelper->registerGivenValueInRegistry('current_detail', 'creditmemo');
         $this->orderHelper->registerGivenValueInRegistry('current_invoice_option', false);
         $this->orderHelper->registerGivenValueInRegistry('current_shipment_option', false);
         $this->orderHelper->registerGivenValueInRegistry('hide_shipping_links', true);
@@ -62,10 +64,37 @@ class PrintRefunds extends AbstractOrderController implements HttpGetActionInter
             foreach ($lscMemberSalesBuffer as $transaction) {
                 $newOrderId[] = $transaction->getDocumentId();
             }
+
+            $isCnC = $this->isClickAndCollectOrder();
+            $this->request->setParam('isCnc', $isCnC);
             $this->request->setParam('new_order_id', $newOrderId);
             $this->orderHelper->registerGivenValueInRegistry('current_order', $returnTransactions);
         }
 
         return $returnTransactions;
+    }
+
+    /**
+     * Check to see if current order is click and collect
+     *
+     * @return bool
+     */
+    public function isClickAndCollectOrder()
+    {
+        $isCc = false;
+        $order = $this->orderHelper->getOrder(true);
+
+        $lines = !is_array($order->getLscMemberSalesDocLine()) ?
+            [$order->getLscMemberSalesDocLine()] :
+            $order->getLscMemberSalesDocLine();
+
+        foreach ($lines as $line) {
+            if ($line->getClickAndCollectLine()) {
+                $isCc = true;
+                break;
+            }
+        }
+
+        return $isCc;
     }
 }

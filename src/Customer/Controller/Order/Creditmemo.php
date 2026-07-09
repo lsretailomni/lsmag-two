@@ -47,8 +47,8 @@ class Creditmemo extends AbstractOrderController implements HttpGetActionInterfa
     public function fetchAndSetCurrentOrderInRegistry($orderId, $type)
     {
         parent::fetchAndSetCurrentOrderInRegistry($orderId, $type);
-
         $currentTransaction = current($this->getCurrentTransaction());
+
         $returnTransactions = $this->orderHelper->getReturnDetailsAgainstId(
             $currentTransaction->getDocumentId()
         );
@@ -62,12 +62,38 @@ class Creditmemo extends AbstractOrderController implements HttpGetActionInterfa
             foreach ($lscMemberSalesBuffer as $transaction) {
                 $newOrderId[] = $transaction->getDocumentId();
             }
+            $isCnC = $this->isClickAndCollectOrder();
             $this->request->setParam('new_order_id', $newOrderId);
+            $this->request->setParam('isCnc', $isCnC);
             $this->orderHelper->registerGivenValueInRegistry('current_order', $returnTransactions);
         } else {
             $returnTransactions = $this->orderHelper->getOrder(true);
         }
 
         return $returnTransactions;
+    }
+
+    /**
+     * Check to see if current order is click and collect
+     *
+     * @return bool
+     */
+    public function isClickAndCollectOrder()
+    {
+        $isCc = false;
+        $order = $this->orderHelper->getOrder(true);
+
+        $lines = !is_array($order->getLscMemberSalesDocLine()) ?
+            [$order->getLscMemberSalesDocLine()] :
+            $order->getLscMemberSalesDocLine();
+
+        foreach ($lines as $line) {
+            if ($line->getClickAndCollectLine()) {
+                $isCc = true;
+                break;
+            }
+        }
+
+        return $isCc;
     }
 }

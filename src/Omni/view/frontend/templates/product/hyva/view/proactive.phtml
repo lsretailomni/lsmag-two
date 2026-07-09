@@ -1,0 +1,147 @@
+<?php
+/**
+ * @var Proactive $block
+ */
+
+use Ls\Omni\Block\Product\View\Discount\Proactive;
+use Magento\Catalog\Model\Product\Type;
+
+$productData = $block->getData();
+$product     = $block->getProductGivenSku($productData['data']['productSku']);
+
+if ($product->getTypeId() == Type::TYPE_BUNDLE) {
+    $itemId = $block->getLinkedProductsItemIds($product);
+} else {
+    $itemId = [$block->getLsCentralItemIdBySku($productData['data']['productSku'])];
+}
+
+$coupons        = $block->getCoupons($itemId);
+$discountOffers = $mixAndMatchDiscounts = $multibuyOffers = [];
+
+foreach ($itemId as $item) {
+    $discounts = $block->getProactiveDiscounts($item);
+
+    if (!empty($discounts)) {
+        list($discountOffer, $mixAndMatchDiscount, $multibuyOffer) = $block->getRelevantDiscountOffers($discounts);
+
+        if (!empty($discountOffer)) {
+            foreach ($discountOffer as $doNo => $do) {
+                if (!isset($discountOffers[$doNo])) {
+                    $discountOffers[$doNo]['offer']     = $do;
+                    $discountOffers[$doNo]['discounts'] = $discounts;
+                    $discountOffers[$doNo]['item']      = $item;
+                }
+            }
+        }
+
+        if (!empty($mixAndMatchDiscount)) {
+            foreach ($mixAndMatchDiscount as $mmNo => $mm) {
+                if (!isset($mixAndMatchDiscounts[$mmNo])) {
+                    $mixAndMatchDiscounts[$mmNo]['offer']     = $mm;
+                    $mixAndMatchDiscounts[$mmNo]['discounts'] = $discounts;
+                    $mixAndMatchDiscounts[$mmNo]['item']      = $item;
+                }
+            }
+        }
+
+        if (!empty($multibuyOffer)) {
+            foreach ($multibuyOffer as $mbNo => $mb) {
+                if (!isset($multibuyOffers[$mbNo])) {
+                    $multibuyOffers[$mbNo]['offer']     = $mb;
+                    $multibuyOffers[$mbNo]['discounts'] = $discounts;
+                    $multibuyOffers[$mbNo]['item']      = $item;
+                }
+            }
+        }
+    }
+}
+
+$hasOffers = !empty($discountOffers) || !empty($mixAndMatchDiscounts) || !empty($multibuyOffers) || !empty($coupons);
+?>
+<?php if ($hasOffers): ?>
+<div class="proactive-discounts-container"
+     x-data="lsDiscountDropdown"
+     @click="openItems($event)">
+    <div class="flex items-center justify-between gap-4">
+    <div class="discount-dropdown-label font-medium text-fg whitespace-nowrap">
+        <span><?= $block->escapeHtml(__('Offers and Promotions:')) ?></span>
+    </div>
+
+    <div class="relative inline-block w-64 max-w-md" @click.outside="close()">
+        <button type="button"
+                class="btn btn-primary w-full justify-between"
+                @click="toggle()"
+                :aria-expanded="open">
+            <span><?= $block->escapeHtml(__('Find Discounts')) ?></span>
+            <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': open }"
+                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
+            </svg>
+        </button>
+
+        <div x-show="open"
+             x-cloak
+             x-transition
+             class="absolute z-20 mt-2 w-full max-h-96 overflow-y-auto rounded-lg border border-gray-300
+                    bg-surface shadow-lg divide-y divide-gray-200">
+            <?php foreach ($coupons as $coupon): ?>
+                <div class="dropdown-content-wrapper content-coupon p-4 text-sm">
+                    <?= /* @noEscape */ $block->getFormattedDescriptionForCoupon($coupon) ?>
+                </div>
+            <?php endforeach; ?>
+
+            <?php foreach ($discountOffers as $discountOffer): ?>
+                <div class="dropdown-content-wrapper content-coupon p-4 text-sm">
+                    <?= /* @noEscape */ $block->getFormattedDescriptionForDiscountOffer($discountOffer['offer']) ?>
+                </div>
+            <?php endforeach; ?>
+
+            <?php foreach ($multibuyOffers as $multibuyOffer): ?>
+                <div class="dropdown-content-wrapper content-coupon p-4 text-sm">
+                    <?= /* @noEscape */ $block->getFormattedDescriptionForMultibuyOffer(
+                        $multibuyOffer['offer'],
+                        $multibuyOffer['discounts']
+                    ) ?>
+                </div>
+            <?php endforeach; ?>
+
+            <?php foreach ($mixAndMatchDiscounts as $mixAndMatchDiscount): ?>
+                <div class="dropdown-content-wrapper content-coupon p-4 text-sm">
+                    <?= /* @noEscape */ $block->getFormattedDescriptionForMixAndMatchOffer(
+                        $mixAndMatchDiscount['offer'],
+                        $mixAndMatchDiscount['discounts'],
+                        $mixAndMatchDiscount['item']
+                    ) ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    </div>
+
+    <?php // Mix & match "see the items" modal (replaces the Luma jQuery modal) ?>
+    <div x-show="modalOpen"
+         x-cloak
+         class="fixed inset-0 z-50 flex items-center justify-center p-4"
+         role="dialog"
+         aria-modal="true"
+         @keydown.escape.window="closeModal()">
+        <div class="absolute inset-0 bg-black/50" @click="closeModal()"></div>
+        <div class="card relative z-10 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
+                <h3 class="text-lg font-semibold"><?= $block->escapeHtml(__('Items')) ?></h3>
+                <button type="button"
+                        class="text-fg-secondary hover:text-fg"
+                        aria-label="<?= $block->escapeHtmlAttr(__('Close')) ?>"
+                        @click="closeModal()">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke-width="2" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div x-html="modalContent"></div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

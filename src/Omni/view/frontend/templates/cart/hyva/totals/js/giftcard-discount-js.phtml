@@ -1,0 +1,26 @@
+<?php
+/**
+ * Registers the Alpine.data for the LS Central gift card amount used totals segment.
+ *
+ * The AlpineJS scope of this file is the method `initCartTotals()`
+ * in Magento_Checkout::php-cart/totals.phtml.
+ */
+
+use Hyva\Theme\ViewModel\HyvaCsp;
+
+/** @var HyvaCsp $hyvaCsp */
+?>
+<script>
+    function initGiftcardDiscountSegment() {
+        return {
+            isGiftcardDiscountSegment() {
+                return this.segment.code === 'ls_gift_card_amount_used';
+            },
+            formatGiftcardDiscountValue() {
+                return '-' + hyva.formatPrice(this.segment.value);
+            }
+        };
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('initGiftcardDiscountSegment', initGiftcardDiscountSegment), {once: true})
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
