@@ -41,8 +41,11 @@ class StoreHelper extends AbstractHelperOmni
     {
         $storeDetails = $this->getStore($websiteId);
 
-        return array_key_exists('LSC_Sales_Type', $storeDetails->getData()) ?
-            $storeDetails->getData()['LSC_Sales_Type'] : [];
+        if ($storeDetails instanceof DataObject) {
+            $storeDetails = $storeDetails->getData();
+        }
+        return array_key_exists('LSC_Sales_Type', $storeDetails) ?
+            $storeDetails['LSC_Sales_Type'] : [];
     }
 
     /**
