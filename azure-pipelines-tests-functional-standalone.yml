@@ -175,19 +175,6 @@ jobs:
         displayName: 'Magento Code Preparation'
 
       - script: |
-          cd $(magentoDirectory)
-          echo "Resolved lsmag-two install source:"
-          composer show lsretail/lsmag-two 2>/dev/null | grep -E "^name|^versions|^source|^path|^dist" || true
-          PR_MARKER="vendor/lsretail/lsmag-two/src/Omni/Test/Mftf/Test/LsVoucherOnShoppingCartTest.xml"
-          if [ -f "$PR_MARKER" ]; then
-            echo "PR code confirmed: $PR_MARKER is present (path-repo/symlink install of the branch under test)."
-          else
-            echo "##vso[task.logissue type=error]PR code NOT installed: $PR_MARKER is missing. lsmag-two was resolved from the feed instead of the artifacts path repo."
-            exit 1
-          fi
-        displayName: 'Verify PR code is installed (not feed package)'
-
-      - script: |
           telnet 127.0.0.1 3306
           mysql --host 127.0.0.1 --user=root --password=mysql -e "CREATE DATABASE $(databaseName)"
         displayName: 'Magento Database Creation'
@@ -297,26 +284,26 @@ jobs:
           php ../../../vendor/bin/mftf doctor --verbose
         displayName: 'Configure LS Retail & MFTF & Validations'
 
-#      - script: |
-#          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsCustomer --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-#          echo "====debug.log===="; if [ -f $(magentoDirectory)/var/log/debug.log ]; then cat $(magentoDirectory)/var/log/debug.log; fi
-#          echo "====omniclient.log===="; if [ -f $(magentoDirectory)/var/log/omniclient.log ]; then cat $(magentoDirectory)/var/log/omniclient.log; fi
-#          echo "====mftf.log===="; if [ -f $(magentoDirectory)/dev/tests/acceptance/mftf.log ]; then cat $(magentoDirectory)/dev/tests/acceptance/mftf.log; fi
-#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \; 2>/dev/null || true
-#        displayName: 'Running Functional tests for group lsCustomer'
-#        continueOnError: true
-#
-#      - script: |
-#          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsPDP --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-#          echo "====debug.log===="; if [ -f $(magentoDirectory)/var/log/debug.log ]; then cat $(magentoDirectory)/var/log/debug.log; fi
-#          echo "====omniclient.log===="; if [ -f $(magentoDirectory)/var/log/omniclient.log ]; then cat $(magentoDirectory)/var/log/omniclient.log; fi
-#          echo "====mftf.log===="; if [ -f $(magentoDirectory)/dev/tests/acceptance/mftf.log ]; then cat $(magentoDirectory)/dev/tests/acceptance/mftf.log; fi
-#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \; 2>/dev/null || true
-#        displayName: 'Running Functional tests for group lsPDP'
-#        continueOnError: true
-#
+      - script: |
+          cd $(magentoDirectory)/dev/tests/acceptance
+          php ../../../vendor/bin/mftf run:group lsCustomer --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+          echo "====debug.log===="; if [ -f $(magentoDirectory)/var/log/debug.log ]; then cat $(magentoDirectory)/var/log/debug.log; fi
+          echo "====omniclient.log===="; if [ -f $(magentoDirectory)/var/log/omniclient.log ]; then cat $(magentoDirectory)/var/log/omniclient.log; fi
+          echo "====mftf.log===="; if [ -f $(magentoDirectory)/dev/tests/acceptance/mftf.log ]; then cat $(magentoDirectory)/dev/tests/acceptance/mftf.log; fi
+          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \; 2>/dev/null || true
+        displayName: 'Running Functional tests for group lsCustomer'
+        continueOnError: true
+
+      - script: |
+          cd $(magentoDirectory)/dev/tests/acceptance
+          php ../../../vendor/bin/mftf run:group lsPDP --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+          echo "====debug.log===="; if [ -f $(magentoDirectory)/var/log/debug.log ]; then cat $(magentoDirectory)/var/log/debug.log; fi
+          echo "====omniclient.log===="; if [ -f $(magentoDirectory)/var/log/omniclient.log ]; then cat $(magentoDirectory)/var/log/omniclient.log; fi
+          echo "====mftf.log===="; if [ -f $(magentoDirectory)/dev/tests/acceptance/mftf.log ]; then cat $(magentoDirectory)/dev/tests/acceptance/mftf.log; fi
+          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \; 2>/dev/null || true
+        displayName: 'Running Functional tests for group lsPDP'
+        continueOnError: true
+
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
           php ../../../vendor/bin/mftf run:group lsCms --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
@@ -326,54 +313,54 @@ jobs:
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \; 2>/dev/null || true
         displayName: 'Running Functional tests for group lsCms'
         continueOnError: true
-#
-#      - script: |
-#          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsReplication --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-#          echo "====debug.log===="; if [ -f $(magentoDirectory)/var/log/debug.log ]; then cat $(magentoDirectory)/var/log/debug.log; fi
-#          echo "====omniclient.log===="; if [ -f $(magentoDirectory)/var/log/omniclient.log ]; then cat $(magentoDirectory)/var/log/omniclient.log; fi
-#          echo "====mftf.log===="; if [ -f $(magentoDirectory)/dev/tests/acceptance/mftf.log ]; then cat $(magentoDirectory)/dev/tests/acceptance/mftf.log; fi
-#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \; 2>/dev/null || true
-#        displayName: 'Running Functional tests for group lsReplication'
-#        continueOnError: true
 
-#      - script: |
-#          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsConfig --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-#          echo "====debug.log===="; if [ -f $(magentoDirectory)/var/log/debug.log ]; then cat $(magentoDirectory)/var/log/debug.log; fi
-#          echo "====omniclient.log===="; if [ -f $(magentoDirectory)/var/log/omniclient.log ]; then cat $(magentoDirectory)/var/log/omniclient.log; fi
-#          echo "====mftf.log===="; if [ -f $(magentoDirectory)/dev/tests/acceptance/mftf.log ]; then cat $(magentoDirectory)/dev/tests/acceptance/mftf.log; fi
-#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \; 2>/dev/null || true
-#        displayName: 'Running Functional tests for group lsConfig'
-#        continueOnError: true
+      - script: |
+          cd $(magentoDirectory)/dev/tests/acceptance
+          php ../../../vendor/bin/mftf run:group lsReplication --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+          echo "====debug.log===="; if [ -f $(magentoDirectory)/var/log/debug.log ]; then cat $(magentoDirectory)/var/log/debug.log; fi
+          echo "====omniclient.log===="; if [ -f $(magentoDirectory)/var/log/omniclient.log ]; then cat $(magentoDirectory)/var/log/omniclient.log; fi
+          echo "====mftf.log===="; if [ -f $(magentoDirectory)/dev/tests/acceptance/mftf.log ]; then cat $(magentoDirectory)/dev/tests/acceptance/mftf.log; fi
+          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \; 2>/dev/null || true
+        displayName: 'Running Functional tests for group lsReplication'
+        continueOnError: true
 
-#      - script: |
-#          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsShoppingCart --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-#          echo "====debug.log===="; if [ -f $(magentoDirectory)/var/log/debug.log ]; then cat $(magentoDirectory)/var/log/debug.log; fi
-#          echo "====omniclient.log===="; if [ -f $(magentoDirectory)/var/log/omniclient.log ]; then cat $(magentoDirectory)/var/log/omniclient.log; fi
-#          echo "====mftf.log===="; if [ -f $(magentoDirectory)/dev/tests/acceptance/mftf.log ]; then cat $(magentoDirectory)/dev/tests/acceptance/mftf.log; fi
-#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \; 2>/dev/null || true
-#        displayName: 'Running Functional tests for group lsShoppingCart'
-#        continueOnError: true
-#
-#      - script: |
-#          RANDOM_NUM=$(shuf -i 1000-9999 -n 1)
-#          ORDER_PREFIX="${RANDOM_NUM}-"
-#          sed -i "s/^ORDER_PREFIX=.*/ORDER_PREFIX=${ORDER_PREFIX}/" .env
-#          echo "ORDER_PREFIX set to ${ORDER_PREFIX} for lsCheckout tests"
-#        displayName: 'Set random ORDER_PREFIX for lsCheckout'
-#        workingDirectory: $(magentoDirectory)/dev/tests/acceptance
-#
-#      - script: |
-#          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsCheckout --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
-#          echo "====debug.log===="; if [ -f $(magentoDirectory)/var/log/debug.log ]; then cat $(magentoDirectory)/var/log/debug.log; fi
-#          echo "====omniclient.log===="; if [ -f $(magentoDirectory)/var/log/omniclient.log ]; then cat $(magentoDirectory)/var/log/omniclient.log; fi
-#          echo "====mftf.log===="; if [ -f $(magentoDirectory)/dev/tests/acceptance/mftf.log ]; then cat $(magentoDirectory)/dev/tests/acceptance/mftf.log; fi
-#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \; 2>/dev/null || true
-#        displayName: 'Running Functional tests for group lsCheckout'
-#        continueOnError: true
+      - script: |
+          cd $(magentoDirectory)/dev/tests/acceptance
+          php ../../../vendor/bin/mftf run:group lsConfig --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+          echo "====debug.log===="; if [ -f $(magentoDirectory)/var/log/debug.log ]; then cat $(magentoDirectory)/var/log/debug.log; fi
+          echo "====omniclient.log===="; if [ -f $(magentoDirectory)/var/log/omniclient.log ]; then cat $(magentoDirectory)/var/log/omniclient.log; fi
+          echo "====mftf.log===="; if [ -f $(magentoDirectory)/dev/tests/acceptance/mftf.log ]; then cat $(magentoDirectory)/dev/tests/acceptance/mftf.log; fi
+          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \; 2>/dev/null || true
+        displayName: 'Running Functional tests for group lsConfig'
+        continueOnError: true
+
+      - script: |
+          cd $(magentoDirectory)/dev/tests/acceptance
+          php ../../../vendor/bin/mftf run:group lsShoppingCart --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+          echo "====debug.log===="; if [ -f $(magentoDirectory)/var/log/debug.log ]; then cat $(magentoDirectory)/var/log/debug.log; fi
+          echo "====omniclient.log===="; if [ -f $(magentoDirectory)/var/log/omniclient.log ]; then cat $(magentoDirectory)/var/log/omniclient.log; fi
+          echo "====mftf.log===="; if [ -f $(magentoDirectory)/dev/tests/acceptance/mftf.log ]; then cat $(magentoDirectory)/dev/tests/acceptance/mftf.log; fi
+          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \; 2>/dev/null || true
+        displayName: 'Running Functional tests for group lsShoppingCart'
+        continueOnError: true
+
+      - script: |
+          RANDOM_NUM=$(shuf -i 1000-9999 -n 1)
+          ORDER_PREFIX="${RANDOM_NUM}-"
+          sed -i "s/^ORDER_PREFIX=.*/ORDER_PREFIX=${ORDER_PREFIX}/" .env
+          echo "ORDER_PREFIX set to ${ORDER_PREFIX} for lsCheckout tests"
+        displayName: 'Set random ORDER_PREFIX for lsCheckout'
+        workingDirectory: $(magentoDirectory)/dev/tests/acceptance
+
+      - script: |
+          cd $(magentoDirectory)/dev/tests/acceptance
+          php ../../../vendor/bin/mftf run:group lsCheckout --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+          echo "====debug.log===="; if [ -f $(magentoDirectory)/var/log/debug.log ]; then cat $(magentoDirectory)/var/log/debug.log; fi
+          echo "====omniclient.log===="; if [ -f $(magentoDirectory)/var/log/omniclient.log ]; then cat $(magentoDirectory)/var/log/omniclient.log; fi
+          echo "====mftf.log===="; if [ -f $(magentoDirectory)/dev/tests/acceptance/mftf.log ]; then cat $(magentoDirectory)/dev/tests/acceptance/mftf.log; fi
+          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \; 2>/dev/null || true
+        displayName: 'Running Functional tests for group lsCheckout'
+        continueOnError: true
 
       - script: |
           docker logs $(SELENIUM_CONTAINER_ID)
