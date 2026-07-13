@@ -41,6 +41,7 @@ class OrderStatus implements OrderStatusInterface
                 'orderKOTStatus' => $orderMessage->getOrderKOTStatus(),
                 'QueueCounter' => $orderMessage->getQueueCounter(),
                 'KOTNo' => $orderMessage->getKOTNO(),
+                'ExternalId' => $orderMessage->getExternalId(),
             ];
             $this->logger->info('OrderStatus = ', $data);
 
@@ -63,6 +64,7 @@ class OrderStatus implements OrderStatusInterface
         if (!empty($lines)) {
             foreach ($lines as $line) {
                 $formattedLines[] = [
+                    'LineNo' => $line->getLineNo(),
                     'NewStatus' => $line->getNewStatus(),
                     'ItemId' => $line->getItemId(),
                     'Quantity' => $line->getQuantity(),

@@ -112,6 +112,22 @@ class OrderStatusMessage extends AbstractExtensibleModel implements OrderStatusM
     /**
      * @inheritdoc
      */
+    public function getExternalId()
+    {
+        return $this->getData(self::EXTERNAL_ID);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setExternalId($externalId)
+    {
+        return $this->setData(self::EXTERNAL_ID, $externalId);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getOrderKOTStatus()
     {
         return $this->getData(self::ORDER_KOT_STATUS);
