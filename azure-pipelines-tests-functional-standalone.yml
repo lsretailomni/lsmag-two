@@ -207,6 +207,15 @@ jobs:
           php bin/magento config:set cms/wysiwyg/enabled disabled
           php bin/magento config:set admin/security/admin_account_sharing 1
           php bin/magento config:set admin/security/use_form_key 0
+          # voucher_configuration is a serialized (ArraySerialized/JSON) dynamic-rows field, which
+          # bin/magento config:set cannot write. Seed the JSON directly at default scope so the LS
+          # voucher MFTF test can auto-detect the VOUCHER entry type.
+          cat > /tmp/voucher_cfg.sql <<SQL_EOF
+          INSERT INTO core_config_data (scope, scope_id, path, value)
+          VALUES ('websites', (SELECT website_id FROM store_website WHERE code='base'), 'ls_mag/ls_giftcard/voucher_configuration', '$(VOUCHER_CONFIGURATION)')
+          ON DUPLICATE KEY UPDATE value = VALUES(value);
+          SQL_EOF
+          mysql --host 127.0.0.1 --user=root --password=mysql $(databaseName) < /tmp/voucher_cfg.sql
           php bin/magento cache:flush
           vendor/bin/mftf build:project
           echo "MAGENTO_BASE_URL=$(MAGENTO_BASE_URL)" > dev/tests/acceptance/.env
@@ -246,6 +255,11 @@ jobs:
           echo "CONFIGURABLE_VARIANT_PRODUCT_1_SKU=$(CONFIGURABLE_VARIANT_PRODUCT_1_SKU)" >> dev/tests/acceptance/.env
           echo "CONFIGURABLE_VARIANT_PRODUCT_2_SKU=$(CONFIGURABLE_VARIANT_PRODUCT_2_SKU)" >> dev/tests/acceptance/.env
           echo "GIFT_CARD_NUMBER_1=$(GIFT_CARD_NUMBER_1)" >> dev/tests/acceptance/.env
+          echo "GIFT_CARD_NUMBER_2=$(GIFT_CARD_NUMBER_2)" >> dev/tests/acceptance/.env
+          echo "GIFT_CARD_PIN_2=$(GIFT_CARD_PIN_2)" >> dev/tests/acceptance/.env
+          echo "VOUCHER_NUMBER_1=$(VOUCHER_NUMBER_1)" >> dev/tests/acceptance/.env
+          echo "VOUCHER_PIN_1=$(VOUCHER_PIN_1)" >> dev/tests/acceptance/.env
+          echo 'VOUCHER_CONFIGURATION="'"$(echo "$(VOUCHER_CONFIGURATION)" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
           echo "RESTRICTED_ORDER_STATUSES_DEFAULT=$(RESTRICTED_ORDER_STATUSES_DEFAULT)" >> dev/tests/acceptance/.env
           echo "RESTRICTED_ORDER_STATUSES_UPDATED=$(RESTRICTED_ORDER_STATUSES_UPDATED)" >> dev/tests/acceptance/.env
           echo 'ODATA_WEB_SERVICE_URI_DISABLED="'"$(echo "$(ODATA_WEB_SERVICE_URI_DISABLED)" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env

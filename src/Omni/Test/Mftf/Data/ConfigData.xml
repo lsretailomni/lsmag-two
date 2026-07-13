@@ -184,4 +184,46 @@
         <data key="scope_code">base</data>
         <data key="value">ls_payment_method_pay_at_store,braintree</data>
     </entity>
+    <entity name="GiftCardActive">
+        <data key="path">ls_mag/ls_giftcard/active</data>
+        <data key="label">Gift Card / Voucher Elements Active</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">1</data>
+    </entity>
+    <entity name="GiftCardShowOnCart">
+        <data key="path">ls_mag/ls_giftcard/cart</data>
+        <data key="label">Show Gift Card / Voucher On Cart</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">1</data>
+    </entity>
+    <entity name="GiftCardShowOnCheckout">
+        <data key="path">ls_mag/ls_giftcard/checkout</data>
+        <data key="label">Show Gift Card / Voucher On Checkout</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">1</data>
+    </entity>
+    <entity name="GiftCardPinCodeEnabled">
+        <data key="path">ls_mag/ls_giftcard/pin_code</data>
+        <data key="label">Pin Code Field Enabled</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">1</data>
+    </entity>
+    <entity name="GiftCardPinCodeDisabled">
+        <data key="path">ls_mag/ls_giftcard/pin_code</data>
+        <data key="label">Pin Code Field Disabled</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">0</data>
+    </entity>
+    <entity name="VoucherGiftCardConfiguration">
+        <data key="path">ls_mag/ls_giftcard/voucher_configuration</data>
+        <data key="label">Gift Card / Voucher Configuration</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.VOUCHER_CONFIGURATION}}</data>
+    </entity>
 </entities>

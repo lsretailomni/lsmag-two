@@ -320,7 +320,7 @@
                     </depends>
                 </field>
                 <field id="voucher_configuration" translate="label comment" sortOrder="5"
-                       showInDefault="1" showInWebsite="1" showInStore="0">
+                       showInDefault="0" showInWebsite="1" showInStore="0">
                     <label>POS Data Entry Configuration</label>
                     <frontend_model>Ls\Omni\Block\Adminhtml\System\Config\VoucherGiftCardConfig</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>

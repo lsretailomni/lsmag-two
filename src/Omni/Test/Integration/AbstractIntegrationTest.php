@@ -31,6 +31,7 @@ if (!defined("SC_ODATA_URI_DOWN")) { define('SC_ODATA_URI_DOWN', getenv('SC_ODAT
 if (!defined("SC_USERNAME")) { define('SC_USERNAME', getenv('SC_USERNAME')); }
 if (!defined("SC_PASSWORD")) { define('SC_PASSWORD', getenv('SC_PASSWORD')); }
 if (!defined("USERNAME_1")) { define('USERNAME_1', getenv('USERNAME')); }
+if (!defined("SC_SERVICE_TIMEOUT")) { define('SC_SERVICE_TIMEOUT', getenv('SC_SERVICE_TIMEOUT')); }
 if (!defined("LSR_ID_1")) { define('LSR_ID_1', getenv('LSR_ID')); }
 if (!defined("LSR_CARD_ID_1")) { define('LSR_CARD_ID_1', getenv('LSR_CARD_ID')); }
 if (!defined("LS_MAG_ENABLE")) { define('LS_MAG_ENABLE', getenv('LS_MAG_ENABLE')); }
@@ -44,6 +45,14 @@ if (!defined("GIFTCARD_EXPIRED")) { define('GIFTCARD_EXPIRED', getenv('GIFTCARD_
 if (!defined("GIFTCARD_PIN")) { define('GIFTCARD_PIN', getenv('GIFTCARD_PIN')); }
 if (!defined("GIFTCARD_EXPIRED_PIN")) { define('GIFTCARD_EXPIRED_PIN', getenv('GIFTCARD_EXPIRED_PIN')); }
 if (!defined("GIFTCARD_AMOUNT")) {  define('GIFTCARD_AMOUNT', getenv('GIFTCARD_AMOUNT')); }
+if (!defined("GIFTCARD_ENTRY_TYPE")) { define('GIFTCARD_ENTRY_TYPE', getenv('GIFTCARD_ENTRY_TYPE')); }
+if (!defined("VOUCHER")) { define('VOUCHER', getenv('VOUCHER')); }
+if (!defined("VOUCHER_PIN")) { define('VOUCHER_PIN', getenv('VOUCHER_PIN')); }
+if (!defined("VOUCHER_ENTRY_TYPE")) { define('VOUCHER_ENTRY_TYPE', getenv('VOUCHER_ENTRY_TYPE')); }
+if (!defined("VOUCHER_AMOUNT")) { define('VOUCHER_AMOUNT', getenv('VOUCHER_AMOUNT')); }
+if (!defined("VOUCHER_CONFIGURATION")) { define('VOUCHER_CONFIGURATION', getenv('VOUCHER_CONFIGURATION')); }
+if (!defined("GC_SHOW_ON_CART")) { define('GC_SHOW_ON_CART', getenv('GC_SHOW_ON_CART')); }
+if (!defined("GC_SHOW_PIN_CODE_FIELD")) { define('GC_SHOW_PIN_CODE_FIELD', getenv('GC_SHOW_PIN_CODE_FIELD')); }
 if (!defined("LOY_POINTS")) {  define('LOY_POINTS', getenv('LOY_POINTS')); }
 if (!defined("LICENSE")) { define('LICENSE', getenv('LICENSE')); }
 if (!defined("LS_CENTRAL_VERSION")) { define('LS_CENTRAL_VERSION', getenv('LS_CENTRAL_VERSION')); }
@@ -78,6 +87,7 @@ class AbstractIntegrationTest extends TestCase
     public const SC_USERNAME =  SC_USERNAME;
     public const SC_PASSWORD =  SC_PASSWORD;
     public const SC_ODATA_URI =  SC_ODATA_URI;
+    public const SC_SERVICE_TIMEOUT = SC_SERVICE_TIMEOUT;
     public const SC_ODATA_URI_DOWN =  SC_ODATA_URI_DOWN;
     public const BASE_URL = BASE_URL;
     public const WEB_STORE = WEB_STORE;
@@ -100,6 +110,14 @@ class AbstractIntegrationTest extends TestCase
     public const GIFTCARD_PIN = GIFTCARD_PIN;
     public const GIFTCARD_EXPIRED_PIN = GIFTCARD_EXPIRED_PIN;
     public const GIFTCARD_AMOUNT = GIFTCARD_AMOUNT;
+    public const GIFTCARD_ENTRY_TYPE = GIFTCARD_ENTRY_TYPE;
+    public const VOUCHER = VOUCHER;
+    public const VOUCHER_PIN = VOUCHER_PIN;
+    public const VOUCHER_ENTRY_TYPE = VOUCHER_ENTRY_TYPE;
+    public const VOUCHER_AMOUNT = VOUCHER_AMOUNT;
+    public const VOUCHER_CONFIGURATION = VOUCHER_CONFIGURATION;
+    public const GC_SHOW_ON_CART = GC_SHOW_ON_CART;
+    public const GC_SHOW_PIN_CODE_FIELD = GC_SHOW_PIN_CODE_FIELD;
     public const LOY_POINTS = LOY_POINTS;
     public const LICENSE = LICENSE;
     public const LS_CENTRAL_VERSION = LS_CENTRAL_VERSION;
