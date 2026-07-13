@@ -1,17 +1,70 @@
 /**
- * Ls_Omni — Hyvä (Tailwind CSS-first) module styles.
+ * Hyvä module styles for the Ls_Omni frontend.
  *
- * Discovered by `hyva-sources` at view/frontend/tailwind/module.css and @imported
- * into the theme's generated/hyva-source.css, so these rules compile into the
- * single global styles.css (no runtime <css src>, no extra CSS request).
+ * Merged into the theme's Tailwind build by @hyva-themes/hyva-modules
+ * (`npx hyva-sources` adds an @import for this file to generated/hyva-source.css).
  *
- * @source registers this module's templates so the Tailwind utility classes they
- * use (grid, gap-*, card, …) survive purge.
- *
- * Store icons are inlined as SVG data URIs so they resolve regardless of where
- * the compiled styles.css ends up.
+ * Currently scopes the Google Maps InfoWindow store card (`.info-window`,
+ * added in product/hyva/view/availability.phtml). The shared stores/hours
+ * templates only ship Luma LESS, which the Hyvä theme never compiles, so
+ * without this the popup renders with browser defaults and no spacing.
  */
+
 @source "../templates/**/*.phtml";
+
+.info-window {
+    @apply min-w-[220px] max-w-xs px-1.5 pb-1.5 pt-1 text-sm leading-normal text-fg;
+}
+
+.info-window .store-name,
+.info-window .store-address,
+.info-window .store-phone {
+    @apply mb-2.5;
+}
+
+.info-window label {
+    @apply mr-1.5;
+}
+
+.info-window .store-address strong {
+    @apply mr-1.5;
+}
+
+.info-window .store-address span {
+    @apply break-words;
+}
+
+.info-window .fas {
+    @apply mr-1.5;
+}
+
+.info-window a {
+    @apply underline hover:no-underline;
+}
+
+.info-window .store-opening-hours label {
+    @apply inline-block mb-1.5;
+}
+
+.info-window .store-opening-hours table {
+    @apply w-full border-collapse m-0;
+}
+
+.info-window .store-opening-hours td {
+    @apply py-0.5 align-top;
+}
+
+.info-window .store-opening-hours .dayofweek {
+    @apply pr-4 font-semibold whitespace-nowrap;
+}
+
+#ls-discounts .discount-description {
+    @apply font-bold text-red-600;
+}
+
+#ls-discounts .discount-from-to-label {
+    @apply font-bold;
+}
 
 /* Stores page — icon labels (Store / Address / Phone / Hours) */
 .ls-store-icon-label {

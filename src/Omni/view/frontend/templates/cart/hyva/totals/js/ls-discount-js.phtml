@@ -1,0 +1,26 @@
+<?php
+/**
+ * Registers the Alpine.data for the LS Central discount totals segment.
+ *
+ * The AlpineJS scope of this file is the method `initCartTotals()`
+ * in Magento_Checkout::php-cart/totals.phtml.
+ */
+
+use Hyva\Theme\ViewModel\HyvaCsp;
+
+/** @var HyvaCsp $hyvaCsp */
+?>
+<script>
+    function initLsDiscountSegment() {
+        return {
+            isLsDiscountSegment() {
+                return this.segment.code === 'ls_discount_amount';
+            },
+            formatLsDiscountValue() {
+                return hyva.formatPrice(this.segment.value);
+            }
+        };
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('initLsDiscountSegment', initLsDiscountSegment), {once: true})
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

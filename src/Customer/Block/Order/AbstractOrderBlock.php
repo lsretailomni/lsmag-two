@@ -223,6 +223,7 @@ class AbstractOrderBlock extends Template
     {
         $detail = $this->orderHelper->getGivenValueFromRegistry('current_detail');
         $orderId = $this->request->getParam('order_id');
+        $newOrderId = $this->request->getParam('new_order_id');
         $heading = '';
         switch ($detail) {
             case 'order':
@@ -234,6 +235,7 @@ class AbstractOrderBlock extends Template
                 $heading = __('Invoice # %1', $orderId);
                 break;
             case 'creditmemo':
+                $orderId = !empty($newOrderId) ? current($newOrderId) : $orderId;
                 $heading = __('Credit Memo # %1', $orderId);
                 break;
         }

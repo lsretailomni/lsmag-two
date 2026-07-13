@@ -1,0 +1,45 @@
+<?php
+/**
+ * LS Central coupon recommendations listing (Hyvä).
+ *
+ * Rendered server-side by HyvaCoupons controller and injected into the
+ * coupons.phtml x-html target. Clicking "Apply" dispatches a native
+ * CustomEvent that coupons.phtml's @apply-coupon-code.window listener
+ * picks up and submits automatically.
+ */
+
+declare(strict_types=1);
+
+use Ls\Omni\Block\Cart\HyvaCoupons;
+use Magento\Framework\Escaper;
+
+/** @var HyvaCoupons $block */
+/** @var Escaper $escaper */
+?>
+<?php if ($block->isCouponEnabled() && $block->isCustomerLoggedIn()): ?>
+    <?php $availableCoupons = $block->getAvailableCoupons(); ?>
+    <?php if (!empty($availableCoupons) && !$block->getCouponCode()): ?>
+        <div class="ls-coupons-listing mt-2">
+            <p class="text-sm font-semibold mb-2"><?= $escaper->escapeHtml(__('Available Coupons')) ?></p>
+            <ul class="space-y-2">
+                <?php foreach ($availableCoupons as $coupon): ?>
+                    <?php $couponCode = $coupon->getDiscountno(); ?>
+                    <li class="flex items-start justify-between gap-3 p-3 border border-container rounded">
+                        <div class="text-sm">
+                            <?= /* @noEscape */ $block->getFormattedDescription($coupon) ?>
+                        </div>
+                        <?php if ($couponCode): ?>
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-secondary whitespace-nowrap shrink-0"
+                                onclick="window.dispatchEvent(new CustomEvent('apply-coupon-code', {detail: {code: '<?= $escaper->escapeJs($couponCode) ?>'}}))"
+                            >
+                                <?= $escaper->escapeHtml(__('Apply')) ?>
+                            </button>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>

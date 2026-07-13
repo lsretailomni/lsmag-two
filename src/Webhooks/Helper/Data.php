@@ -592,13 +592,14 @@ class Data
      * @param $magOrder
      * @param $itemId
      * @param $variantId
+     * @param string $uomId
+     * @param float $quantity
      * @return false|Invoice
      * @throws NoSuchEntityException
      */
-    public function getItemInvoice($magOrder, $itemId, $variantId)
+    public function getItemInvoice($magOrder, $itemId, $variantId, $uomId = '', $quantity = 0)
     {
-        $invoices        = $magOrder->getInvoiceCollection();
-        $requiredInvoice = false;
+        $invoices = $magOrder->getInvoiceCollection();
 
         foreach ($invoices as $invoice) {
             $invoiceIncrementId = $invoice->getIncrementId();
@@ -607,13 +608,17 @@ class Data
             foreach ($invoiceObj->getItems() as $invoiceItem) {
                 $product = $this->getProductById($invoiceItem->getProductId());
 
-                if ($product->getLsrItemId() == $itemId && $product->getLsrVariantId() == $variantId) {
-                    $requiredInvoice = $invoiceObj;
-                    break;
+                $itemIdMatch  = $product->getLsrItemId() == $itemId;
+                $variantMatch = $product->getLsrVariantId() == $variantId;
+                $uomMatch     = empty($uomId) || $product->getData('uom') == $uomId;
+                $qtyMatch     = $quantity <= 0 || $invoiceItem->getQty() >= $quantity;
+
+                if ($itemIdMatch && $variantMatch && $uomMatch && $qtyMatch) {
+                    return clone $invoiceObj;
                 }
             }
         }
 
-        return $requiredInvoice;
+        return false;
     }
 }

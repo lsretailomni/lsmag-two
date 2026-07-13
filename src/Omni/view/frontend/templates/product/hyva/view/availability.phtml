@@ -1,0 +1,204 @@
+<?php
+/**
+ * @var Template $block
+ * @var \Ls\Omni\ViewModel\GeneralViewModel $viewModel
+ */
+
+use Magento\Framework\View\Element\Template;
+
+$viewModel = $block->getViewModel();
+?>
+<?php if ($viewModel->isValid()): ?>
+    <div class="ls-availability my-4"
+         x-data="lsOmniAvailability"
+         data-stock-url="<?= $block->escapeUrl($block->getUrl('omni/stock/product')) ?>"
+         data-product-sku="<?= $block->escapeHtmlAttr((string) $viewModel->getProduct()->getSku()) ?>"
+         data-maps-key="<?= $block->escapeHtmlAttr((string) $viewModel->getGoogleMapsApiKey()) ?>"
+         data-default-lat="<?= $block->escapeHtmlAttr((string) $viewModel->getDefaultLatitude()) ?>"
+         data-default-long="<?= $block->escapeHtmlAttr((string) $viewModel->getDefaultLongitude()) ?>"
+         data-default-zoom="<?= $block->escapeHtmlAttr((string) $viewModel->getDefaultZoom()) ?>">
+
+        <a href="#"
+           class="checkavailability inline-flex items-center gap-2 text-primary underline hover:no-underline"
+           :class="{ 'pointer-events-none opacity-60': loading }"
+           @click.prevent="check()">
+            <svg x-show="loading" x-cloak class="animate-spin h-4 w-4 text-primary" xmlns="http://www.w3.org/2000/svg"
+                 fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+            <span><?= $block->escapeHtml(__('Check Availability in Stores')) ?></span>
+        </a>
+
+        <?php // Modal: holds either the store map or a "not available" message. ?>
+        <div x-show="open"
+             x-cloak
+             class="fixed inset-0 z-50 flex items-center justify-center p-4"
+             role="dialog"
+             aria-modal="true"
+             @keydown.escape.window="close()">
+            <div class="absolute inset-0 bg-black/50" @click="close()"></div>
+            <div class="card relative z-10 w-full max-w-3xl max-h-[85vh] overflow-y-auto">
+                <div class="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
+                    <h3 class="text-lg font-semibold"><?= $block->escapeHtml(__('Store Availability')) ?></h3>
+                    <button type="button"
+                            class="text-fg-secondary hover:text-fg"
+                            aria-label="<?= $block->escapeHtmlAttr(__('Close')) ?>"
+                            @click="close()">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="2" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <p x-show="message" x-text="message" x-cloak class="text-sm text-fg-secondary"></p>
+                <div x-show="!message" id="ls-map-canvas" class="w-full h-[400px] rounded"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('lsOmniAvailability', () => ({
+                open: false,
+                loading: false,
+                message: '',
+                mapsPromise: null,
+                variantId: '',
+
+                init() {
+                    // Configurable products: track the resolved simple-product id so availability
+                    // is looked up per variant. Hyvä fires this whenever an option dropdown changes
+                    // and exposes the matched simple product as detail.productIndex.
+                    window.addEventListener('configurable-selection-changed', (event) => {
+                        this.variantId = (event.detail && event.detail.productIndex) || '';
+                    });
+                },
+
+                validateOptions() {
+                    const form = document.getElementById('product_addtocart_form');
+                    if (!form) {
+                        return true;
+                    }
+                    // Simple products have no super_attribute selects, so nothing is validated and
+                    // the check proceeds. Configurable products must have every attribute chosen
+                    // before we can ask for per-variant availability.
+                    const selects = form.querySelectorAll('select[name^="super_attribute"]');
+                    const unselected = Array.from(selects).find((select) => !select.value);
+                    if (unselected) {
+                        // Surface the native "Please select an item" message on the first attribute.
+                        unselected.focus();
+                        if (typeof unselected.reportValidity === 'function') {
+                            unselected.reportValidity();
+                        }
+                        return false;
+                    }
+                    return true;
+                },
+
+                check() {
+                    // Ignore repeat clicks while a request is already in flight.
+                    if (this.loading) {
+                        return;
+                    }
+                    // Configurable products require a variant to be selected first; simple skip this.
+                    if (!this.validateOptions()) {
+                        return;
+                    }
+
+                    const root = this.$root;
+                    const variantId = this.variantId || '';
+                    const url = root.dataset.stockUrl
+                        + (root.dataset.stockUrl.includes('?') ? '&' : '?')
+                        + 'sku=' + encodeURIComponent(root.dataset.productSku)
+                        + '&id=' + encodeURIComponent(variantId);
+
+                    this.loading = true;
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {'X-Requested-With': 'XMLHttpRequest'}
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            const stores = JSON.parse(data.stocks || '{}');
+                            this.message = '';
+                            this.open = true;
+
+                            if (stores.totalRecords > 0) {
+                                this.$nextTick(() => this.renderMap(stores));
+                            } else {
+                                this.message = data.content || '';
+                            }
+                        })
+                        .catch(error => console.error('Availability load error:', error))
+                        .finally(() => { this.loading = false; });
+                },
+
+                close() {
+                    this.open = false;
+                },
+
+                loadMaps() {
+                    if (this.mapsPromise) {
+                        return this.mapsPromise;
+                    }
+                    if (window.google && window.google.maps) {
+                        this.mapsPromise = Promise.resolve();
+                        return this.mapsPromise;
+                    }
+                    const key = this.$root.dataset.mapsKey || '';
+                    this.mapsPromise = new Promise((resolve, reject) => {
+                        window.lsOmniMapsLoaded = () => resolve();
+                        const script = document.createElement('script');
+                        script.src = 'https://maps.googleapis.com/maps/api/js?key='
+                            + encodeURIComponent(key) + '&loading=async&callback=lsOmniMapsLoaded';
+                        script.async = true;
+                        script.onerror = () => reject(new Error('Google Maps failed to load.'));
+                        document.head.appendChild(script);
+                    });
+                    return this.mapsPromise;
+                },
+
+                renderMap(stores) {
+                    this.loadMaps().then(() => {
+                        const root = this.$root;
+                        const center = {
+                            lat: parseFloat(root.dataset.defaultLat),
+                            lng: parseFloat(root.dataset.defaultLong)
+                        };
+                        const map = new google.maps.Map(document.getElementById('ls-map-canvas'), {
+                            zoom: parseInt(root.dataset.defaultZoom, 10),
+                            center: center
+                        });
+                        const infoWindow = new google.maps.InfoWindow();
+                        const storesInfo = new DOMParser()
+                            .parseFromString(stores.storesInfo || '', 'text/html');
+
+                        (stores.items || []).forEach((store) => {
+                            const marker = new google.maps.Marker({
+                                position: {
+                                    lat: parseFloat(store.Latitute),
+                                    lng: parseFloat(store.Longitude)
+                                },
+                                map: map,
+                                title: store.Name
+                            });
+
+                            marker.addListener('click', () => {
+                                const node = storesInfo.getElementById('store-' + store.nav_id);
+                                const content = node ? node.innerHTML : '';
+                                infoWindow.setContent(
+                                    '<div class="omni-stores-index"><div class="stores-maps-container">'
+                                    + '<div class="store-map-plus-info-container info-window">'
+                                    + content + '</div></div></div>'
+                                );
+                                infoWindow.open(map, marker);
+                            });
+                        });
+                    }).catch(error => console.error(error));
+                }
+            }));
+        });
+    </script>
+<?php endif; ?>

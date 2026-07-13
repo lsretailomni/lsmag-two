@@ -74,7 +74,8 @@ class Payment
         $documentId = $data['OrderId'];
         $lines      = $data['Lines'];
 
-        if (array_key_exists('Amount', $data)) {
+        $hasAmount = array_key_exists('Amount', $data);
+        if ($hasAmount) {
             $totalAmount = $data['Amount'];
         } else {
             $totalAmount = 0;
@@ -103,7 +104,7 @@ class Payment
                         $orderItemId                  = $item->getItemId();
                         $itemsToInvoice[$orderItemId] = $itemData['qty'];
                         $subtotal                     += $itemData['amount_with_discount'];
-                        if ($isOffline || !$isRetail) {
+                        if ($isOffline || !$isRetail || !$hasAmount) {
                             if (!$isRetail && $totalAmount > 0) {
                                 continue;
                             }
@@ -115,7 +116,7 @@ class Payment
                 foreach ($lines as $line) {
                     if ($line['ItemId'] == $this->helper->getShippingItemId()) {
                         $shippingAmount = $line['Amount'];
-                        if ($isOffline || !$isRetail) {
+                        if ($isOffline || !$isRetail || !$hasAmount) {
                             if (!$isRetail && $totalAmount > 0) {
                                 continue;
                             }
@@ -123,7 +124,8 @@ class Payment
                         }
                     }
                 }
-                if (($isOffline || !$isRetail) && !$order->hasInvoices()) {
+
+                if (($isOffline || !$isRetail || !$hasAmount) && !$order->hasInvoices()) {
                     if ((float)array_sum(array_column(json_decode((string)$order->getLsPosDataEntries(), true) ?? [], 'amount')) > 0) {
                         $totalAmount = $totalAmount - (float)array_sum(array_column(json_decode((string)$order->getLsPosDataEntries(), true) ?? [], 'amount'));
                     }

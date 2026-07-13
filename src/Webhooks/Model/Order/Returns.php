@@ -122,7 +122,13 @@ class Returns
                 continue;
             }
 
-            $invoice = $this->helper->getItemInvoice($order, $returnItem['ItemId'], $returnItem['VariantId']);
+            $invoice = $this->helper->getItemInvoice(
+                $order,
+                $returnItem['ItemId'],
+                $returnItem['VariantId'],
+                $returnItem['UnitOfMeasureId'] ?? '',
+                $returnItem['Quantity']
+            );
 
             if (!$invoice || !$invoice->canRefund()) {
                 $error = "Invoice cannot be refunded for item: {$lsItemId}, VariantId: {$variantId}, UnitOfMeasureId: {$uomId}";

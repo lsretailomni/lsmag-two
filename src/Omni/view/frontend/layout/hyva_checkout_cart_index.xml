@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.cart.loyaltypoints" remove="true"/>
+        <referenceBlock name="checkout.cart.giftcard" remove="true"/>
+        <!-- (a) Override coupon block with LS Hyvä coupon template -->
+        <referenceBlock name="checkout.cart.coupon" template="Ls_Omni::cart/hyva/coupons.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\CouponsViewModel</argument>
+            </arguments>
+        </referenceBlock>
+
+        <!-- (b) Loyalty + Gift card blocks in cart.discount container -->
+        <referenceContainer name="cart.discount">
+            <block class="Ls\Omni\Block\Cart\LoyaltyPoints"
+                   name="checkout.cart.loyaltypoints.hyva"
+                   template="Ls_Omni::cart/hyva/loyalty-points.phtml"
+                   ifconfig="ls_mag/ls_loyaltypoints/cart"/>
+            <block class="Ls\Omni\Block\Cart\Giftcard"
+                   name="checkout.cart.giftcard.hyva"
+                   template="Ls_Omni::cart/hyva/gift-card.phtml"
+                   ifconfig="ls_mag/ls_giftcard/cart"/>
+        </referenceContainer>
+
+        <!-- (c) LS totals segment renderers + JS Alpine.data registrations -->
+        <referenceBlock name="checkout.cart.totals">
+            <block name="ls_discount" template="Ls_Omni::cart/hyva/totals/ls-discount.phtml"/>
+            <block name="ls_points_discount" template="Ls_Omni::cart/hyva/totals/loyalty-discount.phtml"/>
+            <block name="ls_gift_card_amount_used" template="Ls_Omni::cart/hyva/totals/giftcard-discount.phtml"/>
+            <block name="ls_points_earn" template="Ls_Omni::cart/hyva/totals/points-earn.phtml"/>
+        </referenceBlock>
+        <referenceContainer name="checkout.cart.totals.scripts">
+            <block name="ls_discount.js" template="Ls_Omni::cart/hyva/totals/js/ls-discount-js.phtml"/>
+            <block name="ls_points_discount.js" template="Ls_Omni::cart/hyva/totals/js/loyalty-discount-js.phtml"/>
+            <block name="ls_gift_card_amount_used.js" template="Ls_Omni::cart/hyva/totals/js/giftcard-discount-js.phtml"/>
+            <block name="ls_points_earn.js" template="Ls_Omni::cart/hyva/totals/js/points-earn-js.phtml"/>
+        </referenceContainer>
+
+        <!-- (d) Cart item renderer overrides — inject CartViewModel into all four renderer types -->
+        <referenceBlock name="checkout.cart.item.renderers.default"
+                        template="Ls_Omni::cart/hyva/item/default.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\CartViewModel</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.simple"
+                        template="Ls_Omni::cart/hyva/item/default.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\CartViewModel</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.configurable"
+                        template="Ls_Omni::cart/hyva/item/default.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\CartViewModel</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.bundle"
+                        template="Ls_Omni::cart/hyva/item/default.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\CartViewModel</argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

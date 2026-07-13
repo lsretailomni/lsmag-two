@@ -67,7 +67,7 @@ class StoreHelper extends AbstractHelperOmni
                 $response = $cachedResponse;
             } else {
                 $storeData = $this->fetchStoresDataFromCentral($webStore);
-                if (!empty($storeData)) {                    
+                if (!empty($storeData)) {
                     foreach ($storeData->getData() as $key => $data) {
                         foreach ($data as $store) {
                             if($key == "LSC Store") {
@@ -75,7 +75,7 @@ class StoreHelper extends AbstractHelperOmni
                                     $response['LSC_Store'][] = $store;
                                     break;
                                 }
-                            }                           
+                            }
                             if($key == "LSC Store Group Setup") {
                                 if($store->getStoreCode() == $webStore) {
                                     $response['LSC_Store_Group_Setup'][] = $store;
@@ -86,7 +86,7 @@ class StoreHelper extends AbstractHelperOmni
                                     $response['LSC_Store_Price_Setup'][] = $store;
                                 }
                             }
-                            
+
                             if($key == "LSC Sales Type") {
                                 $response['LSC_Sales_Type'][] = $store;
                             }
@@ -98,10 +98,12 @@ class StoreHelper extends AbstractHelperOmni
                             }
                         }
                     }
-                    
+                    /** @var DataObject $model */
+                    $model = \Magento\Framework\App\ObjectManager::getInstance()->create(DataObject::class);
+                    $model->setData($response);
                     $this->cacheHelper->persistContentInCache(
                         $cacheId,
-                        $response,
+                        $model,
                         [Type::CACHE_TAG],
                         86400
                     );

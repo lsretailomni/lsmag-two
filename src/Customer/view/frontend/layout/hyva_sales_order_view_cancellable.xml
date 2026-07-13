@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="hyva_sales_order_view_base"/>
+    <update handle="hyva_modal"/>
+    <update handle="hyva_form_validation"/>
+    <body>
+        <referenceBlock name="sales.order.buttons">
+            <block name="order-cancellation-button" template="Ls_Customer::order/hyva/actions/order-view-cancel-order-button.phtml"/>
+        </referenceBlock>
+        <referenceContainer name="before.body.end">
+            <block name="cancel-order-modal" template="Ls_Customer::order/hyva/actions/cancel-order-modal.phtml"/>
+        </referenceContainer>
+    </body>
+</page>
