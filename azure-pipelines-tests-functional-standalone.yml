@@ -231,7 +231,7 @@ jobs:
           echo "BROWSER_LOG_BLOCKLIST=$(BROWSER_LOG_BLOCKLIST)" >> dev/tests/acceptance/.env
           echo "ELASTICSEARCH_VERSION=$(ELASTICSEARCH_VERSION)" >> dev/tests/acceptance/.env
           echo "SELENIUM_HOST=$(SELENIUM_HOST)" >> dev/tests/acceptance/.env
-          echo "CUSTOM_MODULE_PATHS=$(CUSTOM_MODULE_PATHS)" >> dev/tests/acceptance/.env
+          echo "SELENIUM_HOST=$(SELENIUM_HOST)" >> dev/tests/acceptance/.env
           echo 'WEB_SERVICE_URI="'"$(echo "$(WEB_SERVICE_URI)" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
           echo 'ODATA_WEB_SERVICE_URI="'"$(echo "$(ODATA_WEB_SERVICE_URI)" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
           echo "SERVICE_USERNAME=$(SERVICE_USERNAME)" >> dev/tests/acceptance/.env
