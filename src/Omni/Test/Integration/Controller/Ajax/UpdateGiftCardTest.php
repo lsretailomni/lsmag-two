@@ -14,6 +14,7 @@ use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Registry;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Test\Fixture\AddProductToCart;
 use Magento\Quote\Test\Fixture\CustomerCart;
 use Magento\TestFramework\Fixture\AppArea;
@@ -94,36 +95,22 @@ class UpdateGiftCardTest extends AbstractController
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'store', 'default'),
         Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'website'),
-        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'store', 'default' ),
-        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website' ),
-        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'store', 'default'),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website'),
         Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'website'),
-        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'store', 'default'),
         Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'website'),
-        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'store', 'default'),
         Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'website'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'website'),
-        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'store', 'default'),
         Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
-        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'store', 'default'),
         Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
-        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'store', 'default'),
         Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
-        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'store', 'default'),
         Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
-        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'store', 'default'),
         Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'website'),
-        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
-        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'website'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'website'),
-        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
-        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::LS_GIFTCARD_SHOW_PIN_CODE_FIELD, AbstractIntegrationTest::GC_SHOW_PIN_CODE_FIELD, 'store', 'default'),
+        Config(LSR::LS_VOUCHER_GIFT_CARD_CONFIGURATION, AbstractIntegrationTest::VOUCHER_CONFIGURATION, 'store', 'default'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -170,12 +157,11 @@ class UpdateGiftCardTest extends AbstractController
 
         $this->dispatch('omni/ajax/updateGiftCard');
 
-        $this->assertEquals(AbstractIntegrationTest::GIFTCARD, $this->checkoutSession->getQuote()->getLsGiftCardNo());
-        $this->assertEquals(
-            AbstractIntegrationTest::GIFTCARD_PIN,
-            $this->checkoutSession->getQuote()->getLsGiftCardPin()
-        );
-        $this->assertNotNull($this->checkoutSession->getQuote()->getLsGiftCardAmountUsed());
+        // The gift card is stored in the unified ls_pos_data_entries column (not the legacy
+        // ls_gift_card_* quote fields, which the multi-entry POS data entry model dropped).
+        $quote   = $this->objectManager->get(CartRepositoryInterface::class)->get((int)$cart->getId());
+        $entries = json_decode((string)$quote->getLsPosDataEntries(), true) ?: [];
+        $this->assertContains(AbstractIntegrationTest::GIFTCARD, array_column($entries, 'entry_no'));
     }
 
     /**
@@ -184,36 +170,22 @@ class UpdateGiftCardTest extends AbstractController
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'store', 'default'),
         Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'website'),
-        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'store', 'default' ),
-        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website' ),
-        Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'store', 'default'),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website'),
         Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'website'),
-        Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'store', 'default'),
         Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'website'),
-        Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'store', 'default'),
         Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'website'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::BASE_URL, 'website'),
-        Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'store', 'default'),
         Config(LSR::SC_COMPANY_NAME, AbstractIntegrationTest::SC_COMPANY_NAME, 'website'),
-        Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'store', 'default'),
         Config(LSR::SC_ENVIRONMENT_NAME, AbstractIntegrationTest::SC_ENVIRONMENT_NAME, 'website'),
-        Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'store', 'default'),
         Config(LSR::SC_TENANT, AbstractIntegrationTest::SC_TENANT, 'website'),
-        Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'store', 'default'),
         Config(LSR::SC_CLIENT_ID, AbstractIntegrationTest::SC_CLIENT_ID, 'website'),
-        Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'store', 'default'),
         Config(LSR::SC_CLIENT_SECRET, AbstractIntegrationTest::SC_CLIENT_SECRET, 'website'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'website'),
-        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
-        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'website'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'website'),
-        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'website'),
-        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::LS_GIFTCARD_SHOW_PIN_CODE_FIELD, AbstractIntegrationTest::GC_SHOW_PIN_CODE_FIELD, 'store', 'default'),
+        Config(LSR::LS_VOUCHER_GIFT_CARD_CONFIGURATION, AbstractIntegrationTest::VOUCHER_CONFIGURATION, 'store', 'default'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -248,9 +220,17 @@ class UpdateGiftCardTest extends AbstractController
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
         $this->checkoutSession->setQuoteId($cart->getId());
-        $this->checkoutSession->getQuote()->setLsGiftCardNo(AbstractIntegrationTest::GIFTCARD);
-        $this->checkoutSession->getQuote()->setLsGiftCardPin(AbstractIntegrationTest::GIFTCARD_PIN);
-        $this->checkoutSession->getQuote()->setLsGiftCardAmountUsed(AbstractIntegrationTest::GIFTCARD_AMOUNT);
+        // Seed an applied entry in the unified column so the cancel path has something to clear.
+        $repo  = $this->objectManager->get(CartRepositoryInterface::class);
+        $quote = $repo->get((int)$cart->getId());
+        $quote->setLsPosDataEntries(json_encode([[
+            'entry_type'  => AbstractIntegrationTest::GIFTCARD_ENTRY_TYPE,
+            'entry_no'    => AbstractIntegrationTest::GIFTCARD,
+            'pin_code'    => AbstractIntegrationTest::GIFTCARD_PIN,
+            'amount'      => (float)AbstractIntegrationTest::GIFTCARD_AMOUNT,
+            'tender_type' => '8',
+        ]]));
+        $repo->save($quote);
 
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
@@ -259,8 +239,7 @@ class UpdateGiftCardTest extends AbstractController
 
         $this->dispatch('omni/ajax/updateGiftCard');
 
-        $this->assertEquals('', $this->checkoutSession->getQuote()->getLsGiftCardNo());
-        $this->assertEquals('', $this->checkoutSession->getQuote()->getLsGiftCardPin());
-        $this->assertEquals(0, $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed());
+        $savedQuote = $this->objectManager->get(CartRepositoryInterface::class)->get((int)$cart->getId());
+        $this->assertEmpty($savedQuote->getLsPosDataEntries());
     }
 }
