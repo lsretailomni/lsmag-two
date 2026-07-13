@@ -175,6 +175,19 @@ jobs:
         displayName: 'Magento Code Preparation'
 
       - script: |
+          cd $(magentoDirectory)
+          echo "Resolved lsmag-two install source:"
+          composer show lsretail/lsmag-two 2>/dev/null | grep -E "^name|^versions|^source|^path|^dist" || true
+          PR_MARKER="vendor/lsretail/lsmag-two/src/Omni/Test/Mftf/Test/LsVoucherOnShoppingCartTest.xml"
+          if [ -f "$PR_MARKER" ]; then
+            echo "PR code confirmed: $PR_MARKER is present (path-repo/symlink install of the branch under test)."
+          else
+            echo "##vso[task.logissue type=error]PR code NOT installed: $PR_MARKER is missing. lsmag-two was resolved from the feed instead of the artifacts path repo."
+            exit 1
+          fi
+        displayName: 'Verify PR code is installed (not feed package)'
+
+      - script: |
           telnet 127.0.0.1 3306
           mysql --host 127.0.0.1 --user=root --password=mysql -e "CREATE DATABASE $(databaseName)"
         displayName: 'Magento Database Creation'
