@@ -48,6 +48,7 @@ jobs:
           databaseName: 'magento'
           composerOverride: '{}'
           phpunitVersion: $(PHP_UNIT_VERSION)
+          functionalTestingFrameworkVersion: $(FUNCTIONAL_TESTING_FRAMEWORK_VERSION)
           magentoDirectory: "/var/www/html"
 
     steps:
