@@ -57,6 +57,7 @@ class CheckGiftCardBalanceTest extends AbstractController
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
         Config(LSR::SC_REPLICATION_CENTRAL_TYPE, AbstractIntegrationTest::SC_REPLICATION_CENTRAL_TYPE, 'website'),
         Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'website'),
+        Config(LSR::SC_WEB_SERVICE_URI, AbstractIntegrationTest::SC_WEB_SERVICE_URI, 'store', 'default'),
         Config(LSR::SC_ODATA_URI, AbstractIntegrationTest::SC_ODATA_URI, 'website'),
         Config(LSR::SC_USERNAME, AbstractIntegrationTest::SC_USERNAME, 'website'),
         Config(LSR::SC_PASSWORD, AbstractIntegrationTest::SC_PASSWORD, 'website'),
@@ -69,6 +70,7 @@ class CheckGiftCardBalanceTest extends AbstractController
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::WEB_STORE, 'website'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_CENTRAL_VERSION, 'website'),
         Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL,  'store', 'default'),
         Config(LSR::LS_GIFTCARD_SHOW_PIN_CODE_FIELD, AbstractIntegrationTest::GC_SHOW_PIN_CODE_FIELD, 'store', 'default'),
         Config(LSR::LS_VOUCHER_GIFT_CARD_CONFIGURATION, AbstractIntegrationTest::VOUCHER_CONFIGURATION, 'store', 'default'),
     ]
