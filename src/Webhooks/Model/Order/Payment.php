@@ -105,6 +105,9 @@ class Payment
                         $itemsToInvoice[$orderItemId] = $itemData['qty'];
                         $subtotal                     += $itemData['amount_with_discount'];
                         if ($isOffline || !$isRetail || !$hasAmount) {
+                            if (!$isRetail && $totalAmount > 0) {
+                                continue;
+                            }
                             $totalAmount += $itemData['amount'];
                         }
                     }
@@ -114,6 +117,9 @@ class Payment
                     if ($line['ItemId'] == $this->helper->getShippingItemId()) {
                         $shippingAmount = $line['Amount'];
                         if ($isOffline || !$isRetail || !$hasAmount) {
+                            if (!$isRetail && $totalAmount > 0) {
+                                continue;
+                            }
                             $totalAmount += $shippingAmount;
                         }
                     }
