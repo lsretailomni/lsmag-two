@@ -19,11 +19,7 @@
          stderr="true">
     <source>
         <include>
-            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Omni/Block</directory>
-            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Omni/Controller</directory>
-            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Omni/Model</directory>
-            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Omni/Observer</directory>
-            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/Omni/Plugin</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Controller/Ajax/CheckGiftCardBalanceTest.php</file>
         </include>
         <exclude>
             <directory>../../../app/code/*/*/Test</directory>
@@ -34,11 +30,7 @@
     </source>
     <testsuites>
         <testsuite name="Ls_Retail_Integration_Tests">
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Block</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Controller</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Model</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Observer</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Plugin</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Integration/Controller/Ajax/CheckGiftCardBalanceTest.php</file>
         </testsuite>
     </testsuites>
     <!-- Code coverage filters -->
