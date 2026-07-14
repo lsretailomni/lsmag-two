@@ -455,10 +455,14 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
-     * When a dated price wins, reset to processed=0 any lines that share the same
-     * PriceListCode and have blank/sentinel dates (open-ended fallback prices).
-     * This ensures the fallback price re-enters the cron queue and is automatically
-     * applied once the dated winner expires.
+     * When a dated price wins, reset to processed=0 any losing line — on ANY price list —
+     * whose validity window outlives the winner, so it re-enters the cron queue and is
+     * automatically re-evaluated (and applied if it then wins) once the dated winner expires.
+     *
+     * A loser "outlives" the winner when it is open-ended on its EndingDate (never expires)
+     * or its EndingDate is strictly later than the winner's EndingDate. Winners are selected
+     * across price lists, so the reset query is intentionally not scoped to PriceListCode;
+     * losers are matched by ItemId + VariantId + StoreId + scope_id + Status=1 (and not the winner).
      *
      * Only runs when the winner itself has actual dates (not open-ended), so that
      * an open-ended winner (base price restored after expiry) does not trigger resets.
@@ -476,12 +480,11 @@ class SyncPrice extends ProductCreateTask
         $webStoreId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $this->store->getId());
         $variantId  = $winner->getVariantId();
         $filters = [
-            ['field' => 'ItemId',        'value' => (string)$winner->getItemId(),                'condition_type' => 'eq'],
-            ['field' => 'PriceListCode', 'value' => (string)($winner->getPriceListCode() ?? ''), 'condition_type' => 'eq'],
-            ['field' => 'StoreId',       'value' => $webStoreId,                                 'condition_type' => 'eq'],
-            ['field' => 'scope_id',      'value' => $this->getScopeId(),                         'condition_type' => 'eq'],
-            ['field' => 'Status',        'value' => '1',                                         'condition_type' => 'eq'],
-            ['field' => 'repl_price_id', 'value' => $winner->getId(),                            'condition_type' => 'neq'],
+            ['field' => 'ItemId',        'value' => (string)$winner->getItemId(), 'condition_type' => 'eq'],
+            ['field' => 'StoreId',       'value' => $webStoreId,                  'condition_type' => 'eq'],
+            ['field' => 'scope_id',      'value' => $this->getScopeId(),          'condition_type' => 'eq'],
+            ['field' => 'Status',        'value' => '1',                          'condition_type' => 'eq'],
+            ['field' => 'repl_price_id', 'value' => $winner->getId(),             'condition_type' => 'neq'],
         ];
         // VariantId is stored as NULL in DB for non-variant items; NULL != '' in SQL.
         if ($variantId !== null && $variantId !== '') {
@@ -493,9 +496,9 @@ class SyncPrice extends ProductCreateTask
         try {
             $nonWinners = $this->replPriceRepository->getList($searchCriteria);
             foreach ($nonWinners->getItems() as $nonWinner) {
-                // Only reset open-ended (blank / sentinel date) lines — these are
-                // the fallback prices that must re-activate when the winner expires.
-                if (!$this->isOpenEndedPrice($nonWinner)) {
+                // Only reset losers whose window outlives the winner — these are the lines
+                // that must re-activate (and be re-evaluated) once the winner expires.
+                if (!$this->outlivesWinner($nonWinner, $winner)) {
                     continue;
                 }
                 $nonWinner->setData('processed', 0);
@@ -515,6 +518,56 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
+     * Returns true when the loser's validity window outlives the winner's, so it must be
+     * re-queued to re-activate once the winner expires.
+     *
+     * A loser outlives the winner when its EndingDate is open-ended (never expires) or is
+     * strictly later than the winner's EndingDate. If the winner never expires there is
+     * nothing to hand off, so no loser outlives it.
+     *
+     * @param object $nonWinner
+     * @param object $winner
+     * @return bool
+     */
+    private function outlivesWinner(object $nonWinner, object $winner): bool
+    {
+        $loserEnd = $this->endingTimestamp($nonWinner->getEndingDate());
+        if ($loserEnd === null) {
+            return true; // open-ended end ⇒ never expires ⇒ always outlives
+        }
+        $winnerEnd = $this->endingTimestamp($winner->getEndingDate());
+        if ($winnerEnd === null) {
+            return false; // winner never expires ⇒ nothing to hand off
+        }
+        return $loserEnd > $winnerEnd;
+    }
+
+    /**
+     * Convert an EndingDate to a comparable day-granularity timestamp, treating blank or
+     * LS Central sentinel dates (0001-01-01 / 1900-01-01) as open-ended (null = never expires).
+     *
+     * Only the date part (YYYY-MM-DD) is parsed so two prices expiring on the same calendar
+     * day compare equal regardless of any time component — matching isValidPrice()'s day-based
+     * expiry semantics and keeping the strict `>` in outlivesWinner() same-day-safe.
+     *
+     * No store-timezone conversion is applied here (unlike isValidPrice()) on purpose:
+     * this only compares winner-vs-loser EndingDates relative to each other, so both dates
+     * share the same frame and their ordering is preserved without a conversion.
+     *
+     * @param string|null $date
+     * @return int|null
+     */
+    private function endingTimestamp(?string $date): ?int
+    {
+        $d = (string)($date ?? '');
+        if ($d === '' || $this->isSentinelDate($d)) {
+            return null;
+        }
+        $ts = strtotime(substr($d, 0, 10));
+        return $ts === false ? null : $ts;
+    }
+
+    /**
      * Returns true when both StartingDate and EndingDate are blank or an LS Central
      * sentinel (0001-01-01 / 1900-01-01), meaning the price has no date restriction.
      *
@@ -523,21 +576,30 @@ class SyncPrice extends ProductCreateTask
      */
     private function isOpenEndedPrice(object $replPrice): bool
     {
-        $invalidPrefixes = ['0001-01-01', '1900-01-01'];
         foreach (['getStartingDate', 'getEndingDate'] as $getter) {
             $date = (string)($replPrice->$getter() ?? '');
-            $isInvalid = $date === '';
-            foreach ($invalidPrefixes as $prefix) {
-                if (strpos($date, $prefix) === 0) {
-                    $isInvalid = true;
-                    break;
-                }
-            }
-            if (!$isInvalid) {
+            if ($date !== '' && !$this->isSentinelDate($date)) {
                 return false;
             }
         }
         return true;
+    }
+
+    /**
+     * Returns true when the given date string starts with an LS Central sentinel
+     * prefix (0001-01-01 / 1900-01-01), i.e. it represents "no date".
+     *
+     * @param string $date
+     * @return bool
+     */
+    private function isSentinelDate(string $date): bool
+    {
+        foreach (['0001-01-01', '1900-01-01'] as $prefix) {
+            if (strpos($date, $prefix) === 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
