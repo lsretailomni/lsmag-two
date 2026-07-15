@@ -217,6 +217,43 @@ class SyncPriceTest extends TestCase
         );
     }
 
+    /**
+     * Item 40015, exact ticket scenario from the DB: a short dated winner on variant 000
+     * (15-16 Jul 2026) is processed while a long-dated item-level line (VariantId NULL,
+     * 1 Jan 2026 -> 12 Dec 2035) exists. The reset matches by ItemId only (NOT variant/UOM),
+     * so the item-level line is re-queued (processed=0, is_updated=1) and re-activates once
+     * the short window expires. This is the real 40015 shape where the two lines differ in
+     * VariantId (000 vs NULL) — the old variant-scoped query missed the loser entirely.
+     */
+    public function testItem40015LongDatedLoserIsRequeuedBehindShortWinner(): void
+    {
+        $winner    = $this->createRecord('2026-07-16', 100, '40015', '000', '2026-07-15');
+        $longLoser = $this->createRecord('2035-12-12', 200, '40015', null, '2026-01-01');
+        $this->stubNonWinners([$longLoser]);
+
+        $this->replPriceRepository->expects($this->once())
+            ->method('save')
+            ->with($this->identicalTo($longLoser));
+
+        $this->invokeReset($winner);
+
+        $this->assertSame(0, $this->writtenFor($longLoser)['processed']);
+        $this->assertSame(1, $this->writtenFor($longLoser)['is_updated']);
+
+        // The reset is scoped to ItemId only — VariantId and UnitOfMeasure are NOT filtered,
+        // so an item-level (VariantId NULL) loser is reachable.
+        $this->assertIsArray($this->capturedFilters);
+        $byField = [];
+        foreach ($this->capturedFilters as $f) {
+            $byField[$f['field']] = $f;
+        }
+        $this->assertSame('40015', $byField['ItemId']['value']);
+        $this->assertArrayNotHasKey('VariantId', $byField);
+        $this->assertArrayNotHasKey('UnitOfMeasure', $byField);
+        $this->assertNull($this->capturedOrParam1, 'no OR-group params under ItemId-only match');
+        $this->assertNull($this->capturedOrParam2, 'no OR-group params under ItemId-only match');
+    }
+
     public function testSameDayLoserWithLaterTimeIsNotReset(): void
     {
         // Winner ends 15 Jul (date-only); loser ends 15 Jul 18:00 (same calendar day, later time).
@@ -313,68 +350,66 @@ class SyncPriceTest extends TestCase
     }
 
     /**
-     * Section D: for an explicit-UOM winner the reset must match losers whose UOM equals the
-     * winner's UOM OR is NULL (the shared blank-UOM fallback line), expressed as an OR group.
-     * A different explicit UOM (e.g. a valid PCS winner) must not be caught by that group.
+     * The reset matches by ItemId only — it does NOT filter by UnitOfMeasure or VariantId.
+     * An explicit-UOM/variant winner therefore produces the same plain ItemId-scoped query
+     * (no OR groups); which losers actually re-queue is decided by outlivesWinner(), not by a
+     * UOM/variant filter. Every price line for the item is a candidate.
      */
-    public function testResetMatchesWinnerUomOrBlankFallbackWhenWinnerHasExplicitUom(): void
+    public function testResetUsesItemIdOnlyQueryRegardlessOfUomOrVariant(): void
     {
-        $winner = $this->createRecord('2026-07-15', 100, 'ITEM01', null, '2026-07-01', 'PACK');
+        $winner = $this->createRecord('2026-07-15', 100, 'ITEM01', '000', '2026-07-01', 'PACK');
         $this->stubNonWinners([]);
 
         $this->invokeReset($winner);
 
-        // UnitOfMeasure is NOT a plain AND filter; it is an OR group (param/param2).
-        $this->assertNull($this->filterFor('UnitOfMeasure'));
-        $this->assertSame(
-            ['field' => 'UnitOfMeasure', 'value' => 'PACK', 'condition_type' => 'eq'],
-            $this->capturedOrParam1
-        );
-        $this->assertSame(
-            ['field' => 'UnitOfMeasure', 'value' => true, 'condition_type' => 'null'],
-            $this->capturedOrParam2
-        );
+        $this->assertNull($this->filterFor('UnitOfMeasure'), 'reset must not filter by UnitOfMeasure');
+        $this->assertNull($this->filterFor('VariantId'), 'reset must not filter by VariantId');
+        $this->assertNull($this->capturedOrParam1, 'no OR-group params under ItemId-only match');
+        $this->assertNull($this->capturedOrParam2, 'no OR-group params under ItemId-only match');
+        $this->assertNotNull($this->filterFor('ItemId'));
+        $this->assertSame('ITEM01', $this->filterFor('ItemId')['value']);
+        $this->assertSame('1', $this->filterFor('Status')['value']);
+        $this->assertSame('neq', $this->filterFor('repl_price_id')['condition_type']);
     }
 
     /**
-     * M1 regression: an explicit-UOM (PCS) dated winner ending 15-Jul must still re-queue a
-     * blank-UOM loser ending 2035 — the blank line is the PCS product's fallback after expiry.
-     * The OR group (uom=PCS OR uom IS NULL) admits the blank loser; outlivesWinner() resets it.
+     * A different-UOM loser that outlives the winner is re-queued — the reset does not skip it
+     * on UOM grounds (ItemId-only match), and outlivesWinner() admits it because its window is
+     * longer. UOM analogue of the 40015 item-level fallback.
      */
-    public function testExplicitUomWinnerStillResetsBlankUomFallbackLoser(): void
+    public function testDifferentUomLoserThatOutlivesWinnerIsReset(): void
     {
-        $winner = $this->createRecord('2026-07-15', 100, 'ITEM01', null, '2026-07-01', 'PCS');
-        // Blank-UOM loser (uom null) ending 2035 — outlives the winner.
-        $blankLoser = $this->createRecord('2035-07-01', 900, 'ITEM01', null, '2026-07-01', null);
-        $this->stubNonWinners([$blankLoser]);
+        $winner   = $this->createRecord('2026-07-15', 100, 'ITEM01', null, '2026-07-01', 'PCS');
+        $otherUom = $this->createRecord('2035-07-01', 900, 'ITEM01', null, '2026-07-01', 'PACK');
+        $this->stubNonWinners([$otherUom]);
 
         $this->replPriceRepository->expects($this->once())
             ->method('save')
-            ->with($this->identicalTo($blankLoser));
+            ->with($this->identicalTo($otherUom));
 
         $this->invokeReset($winner);
 
-        $this->assertSame(0, $this->writtenFor($blankLoser)['processed']);
-        $this->assertSame(1, $this->writtenFor($blankLoser)['is_updated']);
+        $this->assertSame(0, $this->writtenFor($otherUom)['processed']);
+        $this->assertSame(1, $this->writtenFor($otherUom)['is_updated']);
     }
 
     /**
-     * A base/blank-UOM winner (UnitOfMeasure NULL) matches losers with NULL UOM only —
-     * a plain AND null filter, no OR group (nothing more specific to fall back to).
+     * A different-variant loser that expires BEFORE the winner is NOT re-queued — proof that
+     * churn is prevented by the date guard (outlivesWinner), not by a variant filter. Under the
+     * ItemId-only match this sibling is in the query result set, but its shorter window excludes it.
      */
-    public function testResetUsesNullUomFilterWhenWinnerHasBlankUom(): void
+    public function testDifferentVariantLoserThatExpiresBeforeWinnerIsNotChurned(): void
     {
-        $winner = $this->createRecord('2026-07-15', 100, 'ITEM01', null, '2026-07-01', null);
-        $this->stubNonWinners([]);
+        $winner       = $this->createRecord('2026-07-15', 100, 'ITEM01', '000', '2026-07-01', null);
+        $siblingShort = $this->createRecord('2026-07-10', 900, 'ITEM01', '001', '2026-07-01', null);
+        $this->stubNonWinners([$siblingShort]);
+
+        $this->replPriceRepository->expects($this->never())->method('save');
 
         $this->invokeReset($winner);
 
-        $this->assertNull($this->capturedOrParam1);
-        $this->assertNull($this->capturedOrParam2);
-        $uomFilter = $this->filterFor('UnitOfMeasure');
-        $this->assertNotNull($uomFilter);
-        $this->assertTrue($uomFilter['value']);
-        $this->assertSame('null', $uomFilter['condition_type']);
+        $this->assertArrayNotHasKey('processed', $this->writtenFor($siblingShort));
+        $this->assertArrayNotHasKey('is_updated', $this->writtenFor($siblingShort));
     }
 
     /**

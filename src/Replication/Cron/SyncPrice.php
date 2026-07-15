@@ -463,7 +463,10 @@ class SyncPrice extends ProductCreateTask
      * A loser "outlives" the winner when it is open-ended on its EndingDate (never expires)
      * or its EndingDate is strictly later than the winner's EndingDate. Winners are selected
      * across price lists, so the reset query is intentionally not scoped to PriceListCode;
-     * losers are matched by ItemId + VariantId + StoreId + scope_id + Status=1 (and not the winner).
+     * losers are matched by ItemId + StoreId + scope_id + Status=1 (and not the winner).
+     * VariantId and UnitOfMeasure are intentionally not scoped, so an item-level (VariantId/UOM
+     * NULL) line — the shared fallback for all variants/UOMs — is re-queued behind a more specific
+     * dated winner; the date guard below is what decides which candidates actually re-queue.
      *
      * Only runs when the winner itself has actual dates (not open-ended), so that
      * an open-ended winner (base price restored after expiry) does not trigger resets.
@@ -479,8 +482,14 @@ class SyncPrice extends ProductCreateTask
         }
 
         $webStoreId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $this->store->getId());
-        $variantId  = $winner->getVariantId();
-        $uom        = $winner->getUnitOfMeasure();
+
+        // Match losers by ItemId only (within the same store/scope, active, not the winner).
+        // UnitOfMeasure and VariantId are intentionally NOT filtered: every price line for the
+        // item is a candidate loser, so an item-level (VariantId NULL / UOM NULL) line — the
+        // shared fallback for all variants/UOMs — is re-queued when a more specific dated line
+        // wins, and vice-versa. The date guard below (outlivesWinner) is what decides which of
+        // those candidates actually needs re-queuing, so broadening the match here cannot churn
+        // a line whose window does not outlive the winner.
         $filters = [
             ['field' => 'ItemId',        'value' => (string)$winner->getItemId(), 'condition_type' => 'eq'],
             ['field' => 'StoreId',       'value' => $webStoreId,                  'condition_type' => 'eq'],
@@ -488,35 +497,7 @@ class SyncPrice extends ProductCreateTask
             ['field' => 'Status',        'value' => '1',                          'condition_type' => 'eq'],
             ['field' => 'repl_price_id', 'value' => $winner->getId(),             'condition_type' => 'neq'],
         ];
-        // VariantId is stored as NULL in DB for non-variant items; NULL != '' in SQL.
-        if ($variantId !== null && $variantId !== '') {
-            $filters[] = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
-        } else {
-            $filters[] = ['field' => 'VariantId', 'value' => true, 'condition_type' => 'null'];
-        }
-        // Per-UOM selection: a line for a different UOM can legitimately win for its own
-        // UOM product, so a different-UOM winner must not be churned as a non-winner.
-        // BUT the blank-UOM line is the shared fallback (matchPriceForUom step 3) for every
-        // UOM product, so it must still be re-queued when a dated explicit-UOM line wins.
-        // Therefore, for an explicit-UOM winner, match losers whose UnitOfMeasure equals the
-        // winner's UOM OR is NULL (blank fallback) — an OR group via buildCriteriaForDirect's
-        // $parameter/$parameter2 args. When the winner is itself blank/null, the null-only
-        // filter is correct (nothing more specific to fall back to).
-        $uomOrParam1 = null;
-        $uomOrParam2 = null;
-        if ($uom !== null && $uom !== '') {
-            $uomOrParam1 = ['field' => 'UnitOfMeasure', 'value' => $uom, 'condition_type' => 'eq'];
-            $uomOrParam2 = ['field' => 'UnitOfMeasure', 'value' => true, 'condition_type' => 'null'];
-        } else {
-            $filters[] = ['field' => 'UnitOfMeasure', 'value' => true, 'condition_type' => 'null'];
-        }
-        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect(
-            $filters,
-            -1,
-            true,
-            $uomOrParam1,
-            $uomOrParam2
-        );
+        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
         try {
             $nonWinners = $this->replPriceRepository->getList($searchCriteria);
             foreach ($nonWinners->getItems() as $nonWinner) {
