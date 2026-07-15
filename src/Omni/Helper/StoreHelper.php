@@ -41,8 +41,7 @@ class StoreHelper extends AbstractHelperOmni
     {
         $storeDetails = $this->getStore($websiteId);
 
-        return array_key_exists('LSC_Sales_Type', $storeDetails->getData()) ?
-            $storeDetails->getData()['LSC_Sales_Type'] : [];
+        return $storeDetails['LSC_Sales_Type'] ?? [];
     }
 
     /**
@@ -50,7 +49,7 @@ class StoreHelper extends AbstractHelperOmni
      *
      * @param string $websiteId
      * @param string|null $webStore
-     * @return array|GetStores_GetStores|DataObject
+     * @return array
      */
     public function getStore(string $websiteId = '', ?string $webStore = null)
     {
@@ -70,29 +69,29 @@ class StoreHelper extends AbstractHelperOmni
                 if (!empty($storeData)) {
                     foreach ($storeData->getData() as $key => $data) {
                         foreach ($data as $store) {
-                            if($key == "LSC Store") {
-                                if($store->getNo() == $webStore){
+                            if ($key == "LSC Store") {
+                                if ($store->getNo() == $webStore) {
                                     $response['LSC_Store'][] = $store;
                                     break;
                                 }
                             }
-                            if($key == "LSC Store Group Setup") {
-                                if($store->getStoreCode() == $webStore) {
+                            if ($key == "LSC Store Group Setup") {
+                                if ($store->getStoreCode() == $webStore) {
                                     $response['LSC_Store_Group_Setup'][] = $store;
                                 }
                             }
-                            if($key == "LSC Store Price Group") {
-                                if($store->getStore() == $webStore) {
+                            if ($key == "LSC Store Price Group") {
+                                if ($store->getStore() == $webStore) {
                                     $response['LSC_Store_Price_Setup'][] = $store;
                                 }
                             }
 
-                            if($key == "LSC Sales Type") {
+                            if ($key == "LSC Sales Type") {
                                 $response['LSC_Sales_Type'][] = $store;
                             }
 
-                            if($key == "LSC Hospitality Type") {
-                                if($store->getRestaurantNo() == $webStore) {
+                            if ($key == "LSC Hospitality Type") {
+                                if ($store->getRestaurantNo() == $webStore) {
                                     $response['LSC_Hospitality_Type'][] = $store;
                                 }
                             }
@@ -113,7 +112,7 @@ class StoreHelper extends AbstractHelperOmni
             $this->_logger->error($e->getMessage());
         }
 
-        return $response;
+        return is_array($response) ? $response : $response->getData();
     }
 
     /**
