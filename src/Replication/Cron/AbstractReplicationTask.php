@@ -232,16 +232,12 @@ abstract class AbstractReplicationTask
      */
     public function saveSource($properties, $source)
     {
-        if ($source->getIsDeleted()) {
-            $uniqueAttributes = (array_key_exists(
-                $this->getConfigPath(),
-                ReplicationHelper::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY
-            )) ?
-                ReplicationHelper::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()] :
-                ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
-        } else {
-            $uniqueAttributes = ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
-        }
+        $uniqueAttributes = $this->rep_helper->getUniqueFieldArray(
+            $this->getConfigPath(),
+            (bool) $source->getIsDeleted(),
+            $source->getScope(),
+            $source->getScopeId()
+        );
         $confPath = $this->getConfigPath();
         if ($confPath == "ls_mag/replication/repl_discount_validation") {
             $source->setStartDate($this->rep_helper->convertDateTimeIntoCurrentTimeZone(

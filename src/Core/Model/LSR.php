@@ -103,6 +103,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_PRODUCT_ASSIGNMENT_TO_CATEGORY_BATCH_SIZE =
         'ls_mag/replication/product_assignment_to_category_batch_size';
     const SC_REPLICATION_ALL_STORES_ITEMS = 'ls_mag/replication/replicate_all_stores_items';
+    const SC_REPLICATION_USE_SALES_PRICE = 'ls_mag/replication/use_sales_price';
     const SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_WEBSITE = 'ls_mag/replication/manual_cron_grid_default_website';
     const SC_REPLICATION_IDENTICAL_TABLE_WEB_SERVICE_LIST = 'ls_mag/replication/identical_table_web_service_list';
     const SC_REPLICATION_ATTRIBUTE_SETS_MECHANISM = 'ls_mag/replication/attribute_sets_mechanism';
@@ -1235,6 +1236,22 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             self::LSR_DISCOUNT_VALIDATION_ACTIVE,
             $this->storeManager->getStore()->getId()
         );
+    }
+
+    /**
+     * Whether price replication should use the legacy sales-price unique key.
+     *
+     * @param int|bool $scopeId
+     * @param string $scopeType
+     * @return bool
+     */
+    public function isUseSalesPriceEnabled($scopeId = false, $scopeType = ScopeInterface::SCOPE_WEBSITES)
+    {
+        if ($scopeId) {
+            return $this->scopeConfig->isSetFlag(self::SC_REPLICATION_USE_SALES_PRICE, $scopeType, $scopeId);
+        }
+
+        return $this->scopeConfig->isSetFlag(self::SC_REPLICATION_USE_SALES_PRICE);
     }
 
     /**
