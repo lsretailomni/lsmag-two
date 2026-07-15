@@ -3203,15 +3203,23 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Get uom code given description
      *
+     * Optionally scope the reverse lookup by scope_id so that, in a multi-website LS Central
+     * setup where two scopes define different UOM codes sharing the same description text, the
+     * correct scope's code is resolved (mirrors getUomDescriptionGivenCodeAndScopeId()).
+     *
      * @param string $description
+     * @param string|int|null $scopeId
      * @return string
      */
-    public function getUomCodeGivenDescription($description)
+    public function getUomCodeGivenDescription($description, $scopeId = null)
     {
         $uomCode           = '';
         $filters           = [
             ['field' => 'description', 'value' => $description, 'condition_type' => 'eq']
         ];
+        if ($scopeId !== null) {
+            $filters[] = ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq'];
+        }
         $searchCriteria    = $this->buildCriteriaForDirect($filters, -1);
         $replUnitOfMeasure = $this->replUnitOfMeasureRepository->getList($searchCriteria);
 

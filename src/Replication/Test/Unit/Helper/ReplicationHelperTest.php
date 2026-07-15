@@ -176,4 +176,90 @@ class ReplicationHelperTest extends TestCase
 
         $this->assertSame(self::ITEM_VARIANT_REGISTRATION_DELETE_UNIQUE_FIELD_ARRAY, $result);
     }
+
+    /**
+     * When a scope id is supplied, getUomCodeGivenDescription() must add a scope_id filter to the
+     * reverse lookup (mirroring getUomDescriptionGivenCodeAndScopeId) so that in a multi-website
+     * setup the correct scope's UOM code is resolved. Captures the filters handed to
+     * searchCriteriaBuilder::addFilter() and asserts both the description and scope_id are present.
+     */
+    public function testGetUomCodeGivenDescriptionAddsScopeIdFilterWhenScopeProvided(): void
+    {
+        $capturedFilters = [];
+        $searchCriteriaBuilder = $this->getMockBuilder(\stdClass::class)
+            ->addMethods(['setFilterGroups', 'addFilter', 'setPageSize', 'create'])
+            ->getMock();
+        $searchCriteriaBuilder->method('setFilterGroups')->willReturnSelf();
+        $searchCriteriaBuilder->method('addFilter')
+            ->willReturnCallback(function ($field, $value, $condition) use (&$capturedFilters, $searchCriteriaBuilder) {
+                $capturedFilters[$field] = $value;
+                return $searchCriteriaBuilder;
+            });
+        $searchCriteriaBuilder->method('setPageSize')->willReturnSelf();
+        $searchCriteriaBuilder->method('create')->willReturn(
+            $this->createMock(\Magento\Framework\Api\SearchCriteriaInterface::class)
+        );
+
+        $uom = $this->getMockBuilder(\stdClass::class)->addMethods(['getNavId'])->getMock();
+        $uom->method('getNavId')->willReturn('PCS');
+        $results = $this->getMockBuilder(\stdClass::class)
+            ->addMethods(['getTotalCount', 'getItems'])
+            ->getMock();
+        $results->method('getTotalCount')->willReturn(1);
+        $results->method('getItems')->willReturn([$uom]);
+
+        $repository = $this->getMockBuilder(\stdClass::class)->addMethods(['getList'])->getMock();
+        $repository->method('getList')->willReturn($results);
+
+        $this->helper->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->helper->replUnitOfMeasureRepository = $repository;
+
+        $code = $this->helper->getUomCodeGivenDescription('Pieces', 1);
+
+        $this->assertSame('PCS', $code);
+        $this->assertArrayHasKey('description', $capturedFilters);
+        $this->assertSame('Pieces', $capturedFilters['description']);
+        $this->assertArrayHasKey('scope_id', $capturedFilters);
+        $this->assertSame(1, $capturedFilters['scope_id']);
+    }
+
+    /**
+     * Backward compatibility: with no scope id the reverse lookup filters by description only,
+     * never emitting a scope_id filter (the parameter stays optional/nullable).
+     */
+    public function testGetUomCodeGivenDescriptionOmitsScopeIdFilterWhenNoScope(): void
+    {
+        $capturedFilters = [];
+        $searchCriteriaBuilder = $this->getMockBuilder(\stdClass::class)
+            ->addMethods(['setFilterGroups', 'addFilter', 'setPageSize', 'create'])
+            ->getMock();
+        $searchCriteriaBuilder->method('setFilterGroups')->willReturnSelf();
+        $searchCriteriaBuilder->method('addFilter')
+            ->willReturnCallback(function ($field, $value, $condition) use (&$capturedFilters, $searchCriteriaBuilder) {
+                $capturedFilters[$field] = $value;
+                return $searchCriteriaBuilder;
+            });
+        $searchCriteriaBuilder->method('setPageSize')->willReturnSelf();
+        $searchCriteriaBuilder->method('create')->willReturn(
+            $this->createMock(\Magento\Framework\Api\SearchCriteriaInterface::class)
+        );
+
+        $results = $this->getMockBuilder(\stdClass::class)
+            ->addMethods(['getTotalCount', 'getItems'])
+            ->getMock();
+        $results->method('getTotalCount')->willReturn(0);
+        $results->method('getItems')->willReturn([]);
+
+        $repository = $this->getMockBuilder(\stdClass::class)->addMethods(['getList'])->getMock();
+        $repository->method('getList')->willReturn($results);
+
+        $this->helper->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->helper->replUnitOfMeasureRepository = $repository;
+
+        $code = $this->helper->getUomCodeGivenDescription('Pieces');
+
+        $this->assertSame('', $code);
+        $this->assertArrayHasKey('description', $capturedFilters);
+        $this->assertArrayNotHasKey('scope_id', $capturedFilters);
+    }
 }

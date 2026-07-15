@@ -413,10 +413,13 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
-     * When a dated price wins, reset to processed=0 any lines that share the same
-     * PriceListCode and have blank/sentinel dates (open-ended fallback prices).
-     * This ensures the fallback price re-enters the cron queue and is automatically
-     * applied once the dated winner expires.
+     * When a dated price wins, reset to processed=0 any non-winner line that shares the
+     * same PriceListCode and is itself still within a valid date window — whether that
+     * window is open-ended (blank/sentinel dates) or dated-but-currently-active.
+     * This ensures every still-valid fallback price re-enters the cron queue and is
+     * automatically reconsidered once the dated winner expires. Expired or future
+     * non-winners are left alone (expired ones need no further action; future ones are
+     * never marked processed in the first place — see process()/isFuturePrice()).
      *
      * Only runs when the winner itself has actual dates (not open-ended), so that
      * an open-ended winner (base price restored after expiry) does not trigger resets.
@@ -455,9 +458,12 @@ class SyncPrice extends ProductCreateTask
                 if (!$this->isSaleCodeAllowedForStore($nonWinner)) {
                     continue;
                 }
-                // Only reset open-ended (blank / sentinel date) lines — these are
-                // the fallback prices that must re-activate when the winner expires.
-                if (!$this->isOpenEndedPrice($nonWinner)) {
+                // Only reset non-winners that are themselves still within a valid date window
+                // (open-ended, or dated-but-currently-active) — these are the fallback prices
+                // that must re-activate once the current winner expires. Expired/future prices
+                // are left alone (expired ones need no further action; future ones are never
+                // marked processed in the first place, see process()/isFuturePrice()).
+                if (!$this->isValidPrice($nonWinner)) {
                     continue;
                 }
                 $nonWinner->setData('processed', 0);
@@ -645,8 +651,14 @@ class SyncPrice extends ProductCreateTask
      *
      * getItemPriceList() runs the waterfall independently per UOM pool (keyed as
      * itemId-variantId-uom). Here we run a final cross-UOM waterfall so that a
-     * date-specific price beats an open-ended blank-UOM price even when the
-     * Magento product has no UOM attribute set.
+     * date-specific price beats an open-ended blank-UOM price for the same UOM.
+     *
+     * Candidates are first filtered to the product's own UOM: a candidate is kept only when its
+     * UnitOfMeasure is blank (the universal catch-all) or exactly equals the product's resolved
+     * UOM code. A product whose UOM attribute is unset resolves to an empty code, which therefore
+     * keeps ONLY the blank-UOM catch-all candidates and excludes every UOM-specific one. Among the
+     * survivors, a UOM-specific price is preferred over the blank catch-all, and selectBestPrice()
+     * breaks any remaining ties.
      *
      * @param object $productData
      * @param array $replItemPriceList
@@ -675,6 +687,26 @@ class SyncPrice extends ProductCreateTask
                 }
             }
         }
+
+        // Resolve this product's own UOM code so cross-UOM price rows (e.g. a PACK-only
+        // price) are never considered for a different-UOM product (e.g. PCS). A blank
+        // UnitOfMeasure candidate is always kept — it's the universal catch-all. This filter
+        // runs UNCONDITIONALLY before any early return: a lone candidate that is UOM-specific
+        // for a different UOM than the product must still be dropped.
+        $productUomLabel = $productData->getAttributeText(LSR::LS_UOM_ATTRIBUTE);
+        $productUomCode  = $productUomLabel
+            ? $this->replicationHelper->getUomCodeGivenDescription(
+                (string)$productUomLabel,
+                $this->getScopeId()
+            )
+            : '';
+        $candidates = array_values(array_filter(
+            $candidates,
+            function ($c) use ($productUomCode) {
+                $candidateUom = (string)($c->getUnitOfMeasure() ?? '');
+                return $candidateUom === '' || $candidateUom === $productUomCode;
+            }
+        ));
 
         if (empty($candidates)) {
             return null;
