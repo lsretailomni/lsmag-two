@@ -168,19 +168,14 @@ class SyncPrice extends ProductCreateTask
                     continue;
                 }
 
-                // Normalize UOM: if the price record's UOM equals the item's base UOM,
-                // the Magento product is stored without a UOM attribute (blank), so use blank.
-                $uom = $replPrice->getUnitOfMeasure();
-                if ($uom) {
-                    $baseUom = $this->replicationHelper->getBaseUnitOfMeasure($replPrice->getItemId());
-                    if ($uom === $baseUom) {
-                        $uom = '';
-                    }
-                }
+                // Per-UOM pricing: fetch EVERY UOM product for this item+variant (no UOM
+                // filter). A base/blank price line must reach all UOM products, and a
+                // UOM-specific line must still only price its own product — that decision
+                // is made per product in getPrice(), not by narrowing the lookup here.
                 $productDataArray = $this->replicationHelper->getProductDataByIdentificationAttributes(
                     $replPrice->getItemId(),
                     $replPrice->getVariantId(),
-                    $uom,
+                    '',
                     $this->store->getId(),
                     true,
                     true,
@@ -378,9 +373,15 @@ class SyncPrice extends ProductCreateTask
             $price = $replPrice;
             if (!empty($replItemPriceList)) {
                 $replItemPrice = $this->getPrice($productData, $replItemPriceList);
-                if (!empty($replItemPrice)) {
-                    $price = $replItemPrice;
+                // No line matches this product's UOM (exact/base/blank all absent) →
+                // leave the product's price untouched. Falling back to the raw $replPrice
+                // row here would write another UOM's price onto this product (e.g. a PACK
+                // line leaking onto the PCS product). The raw-row fallback ($price =
+                // $replPrice) is kept ONLY when the item has no valid price lines at all.
+                if (empty($replItemPrice)) {
+                    continue;
                 }
+                $price = $replItemPrice;
             }
 
             if ($this->isFuturePrice($price)) {
@@ -479,6 +480,7 @@ class SyncPrice extends ProductCreateTask
 
         $webStoreId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $this->store->getId());
         $variantId  = $winner->getVariantId();
+        $uom        = $winner->getUnitOfMeasure();
         $filters = [
             ['field' => 'ItemId',        'value' => (string)$winner->getItemId(), 'condition_type' => 'eq'],
             ['field' => 'StoreId',       'value' => $webStoreId,                  'condition_type' => 'eq'],
@@ -492,7 +494,29 @@ class SyncPrice extends ProductCreateTask
         } else {
             $filters[] = ['field' => 'VariantId', 'value' => true, 'condition_type' => 'null'];
         }
-        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+        // Per-UOM selection: a line for a different UOM can legitimately win for its own
+        // UOM product, so a different-UOM winner must not be churned as a non-winner.
+        // BUT the blank-UOM line is the shared fallback (matchPriceForUom step 3) for every
+        // UOM product, so it must still be re-queued when a dated explicit-UOM line wins.
+        // Therefore, for an explicit-UOM winner, match losers whose UnitOfMeasure equals the
+        // winner's UOM OR is NULL (blank fallback) — an OR group via buildCriteriaForDirect's
+        // $parameter/$parameter2 args. When the winner is itself blank/null, the null-only
+        // filter is correct (nothing more specific to fall back to).
+        $uomOrParam1 = null;
+        $uomOrParam2 = null;
+        if ($uom !== null && $uom !== '') {
+            $uomOrParam1 = ['field' => 'UnitOfMeasure', 'value' => $uom, 'condition_type' => 'eq'];
+            $uomOrParam2 = ['field' => 'UnitOfMeasure', 'value' => true, 'condition_type' => 'null'];
+        } else {
+            $filters[] = ['field' => 'UnitOfMeasure', 'value' => true, 'condition_type' => 'null'];
+        }
+        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect(
+            $filters,
+            -1,
+            true,
+            $uomOrParam1,
+            $uomOrParam2
+        );
         try {
             $nonWinners = $this->replPriceRepository->getList($searchCriteria);
             foreach ($nonWinners->getItems() as $nonWinner) {
@@ -618,68 +642,73 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
-     * Getting item price of given product
+     * Getting item price for the given product's own UOM.
      *
-     * getItemPriceList() runs the waterfall independently per UOM pool (keyed as
-     * itemId-variantId-uom).  Here we run a final cross-UOM waterfall so that a
-     * date-specific PCS price beats an open-ended blank-UOM price even when the
-     * Magento product has no UOM attribute set.
+     * getItemPriceList() has already run the date/currency waterfall independently per
+     * UOM pool (keyed itemId-variantId-uom), so each key holds a single winner. This
+     * method only selects the key that matches THIS product's UOM, with fallbacks:
+     *   1. exact UOM line  (PCS product → PCS line, PACK product → PACK line)
+     *   2. item base-UOM line  (base line fans out to all UOM products)
+     *   3. blank-UOM line  (item-level catch-all)
+     * When no variant-specific line exists, the same 1→3 priority is applied to the
+     * no-variant ("itemId--…") keys. Returns null when nothing matches.
      *
      * @param object $productData
      * @param array $replItemPriceList
      * @return object|null
      */
-    public function getPrice($productData, $replItemPriceList)
+    public function getPrice($productData, $replItemPriceList): ?object
     {
-        $itemId    = $productData->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
-        $variantId = (string)($productData->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE) ?? '');
+        $itemId     = (string)$productData->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+        $variantId  = (string)($productData->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE) ?? '');
+        $productUom = (string)($productData->getData('uom') ?? '');
+        $baseUom    = (string)($this->replicationHelper->getItemBaseAndSalesUom($itemId)['base'] ?? '');
 
-        // Collect all per-UOM winners for this item+variant (any UOM suffix).
-        $prefix     = $itemId . '-' . $variantId . '-';
-        $candidates = [];
-        foreach ($replItemPriceList as $key => $price) {
-            if (strpos($key, $prefix) === 0) {
-                $candidates[] = $price;
+        $match = $this->matchPriceForUom($replItemPriceList, $itemId, $variantId, $productUom, $baseUom);
+        if ($match !== null) {
+            return $match;
+        }
+
+        // Fallback: if no variant-specific line matched, try the no-variant lines.
+        if ($variantId !== '') {
+            return $this->matchPriceForUom($replItemPriceList, $itemId, '', $productUom, $baseUom);
+        }
+
+        return null;
+    }
+
+    /**
+     * Resolve the price line for a given item+variant scope in UOM priority order:
+     * exact product UOM, then item base UOM, then blank UOM. Returns the first key
+     * present in $replItemPriceList, or null.
+     *
+     * @param array $replItemPriceList
+     * @param string $itemId
+     * @param string $variantId
+     * @param string $productUom
+     * @param string $baseUom
+     * @return object|null
+     */
+    private function matchPriceForUom(
+        array $replItemPriceList,
+        string $itemId,
+        string $variantId,
+        string $productUom,
+        string $baseUom
+    ): ?object {
+        $prefix = $itemId . '-' . $variantId . '-';
+        $candidateKeys = [
+            $prefix . $productUom, // 1. exact UOM
+            $prefix . $baseUom,    // 2. base-UOM fallback
+            $prefix,               // 3. blank-UOM fallback
+        ];
+        foreach ($candidateKeys as $key) {
+            if (isset($replItemPriceList[$key])) {
+                return $replItemPriceList[$key];
             }
         }
 
-        // Fallback: if no variant-specific price found, look for no-variant prices.
-        if (empty($candidates) && $variantId !== '') {
-            $prefix = $itemId . '--';
-            foreach ($replItemPriceList as $key => $price) {
-                if (strpos($key, $prefix) === 0) {
-                    $candidates[] = $price;
-                }
-            }
-        }
-
-        if (empty($candidates)) {
-            return null;
-        }
-
-        if (count($candidates) === 1) {
-            return $candidates[0];
-        }
-
-        // UOM specificity: a price record with an explicit UOM is more specific
-        // than a blank-UOM (catch-all) record. Prefer UOM-specific candidates;
-        // fall back to blank-UOM candidates only when no UOM-specific ones exist.
-        $uomSpecific = array_values(array_filter(
-            $candidates,
-            fn($c) => (string)($c->getUnitOfMeasure() ?? '') !== ''
-        ));
-        if (!empty($uomSpecific)) {
-            $candidates = $uomSpecific;
-        }
-
-        if (count($candidates) === 1) {
-            return $candidates[0];
-        }
-
-        return $this->getSalesPriceProcessor()->selectBestPrice(
-            $candidates,
-            (string)$this->store->getBaseCurrencyCode()
-        );
+        return null;
     }
 
     /**

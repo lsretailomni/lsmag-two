@@ -2840,6 +2840,32 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Get the item's real base and sales UOM codes.
+     *
+     * Unlike getBaseUnitOfMeasure() (which is sales-biased and returns the Sales UOM when
+     * Sales differs from Base), this returns both codes untouched so callers can perform an
+     * exact base-UOM match (e.g. per-UOM price selection with a base-UOM fallback).
+     *
+     * @param mixed $itemId
+     * @return array{base: string, sales: string}
+     */
+    public function getItemBaseAndSalesUom($itemId): array
+    {
+        $criteria = $this->buildCriteriaForDirect(
+            [['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq']],
+            1
+        );
+        foreach ($this->itemRepository->getList($criteria)->getItems() as $item) {
+            return [
+                'base'  => (string)$item->getBaseUnitOfMeasure(),
+                'sales' => (string)$item->getSalseUnitOfMeasure(),
+            ];
+        }
+
+        return ['base' => '', 'sales' => ''];
+    }
+
+    /**
      * Assigning configurable product tax class to associated products
      *
      * @param $product
