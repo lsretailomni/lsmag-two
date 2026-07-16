@@ -1,0 +1,39 @@
+<?php
+/**
+ * LS Central voucher amount used totals segment (Hyvä). Display only.
+ *
+ * Mirrors the Luma web/js/view/totals/voucher-discount.js getVoucherList(): renders one
+ * display row per applied non-GIFTCARDNO (voucher) entry from the ls_pos_data_entries
+ * extension attribute, falling back to the aggregate segment title/value.
+ *
+ * IMPORTANT: display only. The grand-total deduction for ALL entries is performed once by
+ * Ls\Omni\Model\Total\Quote\VoucherAmountUsed::collect (segment code `ls_entry_amount`); this
+ * template must never deduct again.
+ *
+ * The AlpineJS scope of this file is the method `initCartTotals()`
+ * in Magento_Checkout::php-cart/totals.phtml. The companion JS block
+ * `ls_entry_amount.js` registers the `initVoucherDiscountSegment` Alpine.data.
+ */
+?>
+<div x-data="initVoucherDiscountSegment">
+<template x-if="isVoucherDiscountSegment()" data-total-code="ls_entry_amount">
+    <div>
+        <template x-if="getVoucherEntries().length > 0">
+            <div>
+                <template x-for="(entry, index) in getVoucherEntries()" :key="index">
+                    <div :class="wrapperClass">
+                        <div x-text="entryTitle(entry)"></div>
+                        <div x-text="formatEntryAmount(entry)" class="justify-self-end"></div>
+                    </div>
+                </template>
+            </div>
+        </template>
+        <template x-if="getVoucherEntries().length === 0">
+            <div :class="wrapperClass">
+                <div x-text="segment.title"></div>
+                <div x-text="formatVoucherDiscountValue()" class="justify-self-end"></div>
+            </div>
+        </template>
+    </div>
+</template>
+</div>

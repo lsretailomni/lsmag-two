@@ -270,10 +270,13 @@ class Data extends AbstractHelperOmni
      * @param float $giftCardAmount
      * @param float $loyaltyPoints
      * @param RootMobileTransaction $basketData
+     * @param \Magento\Quote\Model\Quote|null $quote Explicit quote to evaluate; falls back to the
+     *        checkout-session quote when null. Required for stateless callers (e.g. GraphQL) that
+     *        have no active checkout session.
      * @return float|int
      * @throws GuzzleException
      */
-    public function getOrderBalance($giftCardAmount, $loyaltyPoints, $basketData)
+    public function getOrderBalance($giftCardAmount, $loyaltyPoints, $basketData, ?\Magento\Quote\Model\Quote $quote = null)
     {
         $loyaltyAmount = $grossAmount = 0;
         try {
@@ -289,7 +292,9 @@ class Data extends AbstractHelperOmni
                 $grossAmount = $mobileTransaction->getGrossamount();
             }
 
-            $quote = $this->cartRepository->get($this->checkoutSession->getQuoteId());
+            if ($quote === null) {
+                $quote = $this->cartRepository->get($this->checkoutSession->getQuoteId());
+            }
             if (!empty($basketData) && !empty($basketData->getMobiletransaction())) {
                 $totalAmount = $grossAmount + $quote->getShippingAddress()->getShippingInclTax();
             } else {

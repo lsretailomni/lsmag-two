@@ -1,22 +1,25 @@
 type Mutation {
-applyLsGiftCard(input: ApplyLsGiftCardInput): LsGiftCardOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\GiftCard\\ApplyGiftCard") @doc(description: "Redeem gift card code")
-removeLsGiftCard(input: RemoveLsGiftCardInput): LsGiftCardOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\GiftCard\\RemoveGiftCard") @doc(description: "Remove gift card code")
+applyLsPosDataEntry(input: ApplyLsPosDataEntryInput): LsPosDataEntryOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\PosDataEntry\\ApplyPosDataEntry") @doc(description: "Apply (append) a gift card or voucher POS data entry")
+removeLsPosDataEntry(input: RemoveLsPosDataEntryInput): LsPosDataEntryOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\PosDataEntry\\RemovePosDataEntry") @doc(description: "Remove a specific gift card or voucher POS data entry")
 applyLsLoyaltyPoints(input: ApplyLsLoyaltyPointsInput): LsLoyaltyPointsOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\LoyaltyPoints\\ApplyLoyaltyPoints") @doc(description: "Redeem loyalty points")
 removeLsLoyaltyPoints(input: RemoveLsLoyaltyPointsInput): LsLoyaltyPointsOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\LoyaltyPoints\\RemoveLoyaltyPoints") @doc(description: "Remove loyalty points")
 }
 
-input ApplyLsGiftCardInput {
-      cart_id: String! @doc(description: "Specifies the quote id and set the gift card code.")
-      code: String! @doc(description: "Specifies the gift card code.")
-      pin: String @doc(description: "Specifies the gift card pin.")
-      amount: Float! @doc(description: "Specifies how much gift card amount will be applied.")
+input ApplyLsPosDataEntryInput {
+      cart_id: String! @doc(description: "Specifies the quote id to which the POS data entry is applied.")
+      entry_type: String @doc(description: "LS Central entry type (e.g. GIFTCARDNO). Omit to auto-detect gift card vs voucher.")
+      code: String! @doc(description: "Specifies the gift card or voucher code.")
+      pin: String @doc(description: "Specifies the gift card or voucher pin, where applicable.")
+      amount: Float! @doc(description: "Specifies how much of the entry amount will be applied.")
 }
 
-input RemoveLsGiftCardInput {
-      cart_id: String! @doc(description: "Specifies the quote id and remove the gift card code.")
+input RemoveLsPosDataEntryInput {
+      cart_id: String! @doc(description: "Specifies the quote id from which the POS data entry is removed.")
+      entry_type: String! @doc(description: "LS Central entry type of the entry to remove (e.g. GIFTCARDNO).")
+      code: String! @doc(description: "Code of the specific entry to remove.")
 }
 
-type LsGiftCardOutput {
+type LsPosDataEntryOutput {
     cart: Cart!
 }
 
@@ -24,10 +27,11 @@ type LsLoyaltyPointsOutput {
     cart: Cart!
 }
 
-type AppliedGiftCard {
-    code: String
-    amount: Float
-    pin: String
+type AppliedLsPosDataEntry {
+    entry_type: String @doc(description: "LS Central entry type (GIFTCARDNO for gift cards, otherwise a voucher tender type).")
+    code: String @doc(description: "The applied entry code (entry_no).")
+    amount: Float @doc(description: "The amount applied from this entry.")
+    pin: String @doc(description: "The entry pin, where applicable.")
 }
 
 input ApplyLsLoyaltyPointsInput {
@@ -47,7 +51,7 @@ type AppliedLoyaltyPoints {
 }
 
 type Cart {
-     applied_gift_card: AppliedGiftCard @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\GiftCard\\AppliedGiftCard") @doc(description:"An array of `Gift Card` object.")
+     applied_ls_pos_data_entries: [AppliedLsPosDataEntry] @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\PosDataEntry\\AppliedPosDataEntries") @doc(description:"An array of applied gift card / voucher POS data entries.")
      loyalty_points_info: AppliedLoyaltyPoints @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\LoyaltyPoints\\LoyaltyPointsInfo") @doc(description:"An array of `Loyalty Point` object.")
      customer_cart_discounts : GetCustomerCartDiscountsOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\GetCustomerCartDiscountsOutput") @doc(description: "Get list of discounts based on customer cart id.")
 }

@@ -14,10 +14,21 @@
         <before>
             <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <!-- Enable the pin code field so the balance can be checked with a pin-protected gift card. -->
+            <magentoCLI command="config:set --scope website --scope-code base {{GiftCardPinCodeEnabled.path}} {{GiftCardPinCodeEnabled.value}}" stepKey="enablePinCodeField"/>
             <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
                 <argument name="tags" value="config"/>
             </actionGroup>
         </before>
+
+        <after>
+            <!-- Reset the pin code field so pin-less gift card tests are unaffected. -->
+            <magentoCLI command="config:set --scope website --scope-code base {{GiftCardPinCodeDisabled.path}} {{GiftCardPinCodeDisabled.value}}" stepKey="disablePinCodeField"/>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCacheAfter">
+                <argument name="tags" value="config"/>
+            </actionGroup>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
 
         <!-- 1. Go to storefront home page -->
         <actionGroup ref="StorefrontOpenHomePageActionGroup" stepKey="goToHomePage"/>
@@ -25,7 +36,9 @@
         <amOnPage url="{{StorefrontCheckGiftCardBalancePage.url}}" stepKey="goToCheckGiftCardBalancePage"/>
         <waitForPageLoad stepKey="waitForStorefrontPageLoad"/>
         <waitForElementVisible selector="{{CheckGiftCardBalanceFormSection.giftCardCodeInput}}" stepKey="assertCheckGiftCardCodeInput"/>
-        <fillField userInput="{{_ENV.GIFT_CARD_NUMBER_1}}" selector="{{CheckGiftCardBalanceFormSection.giftCardCodeInput}}" stepKey="fillGiftCardNo"/>
+        <fillField userInput="{{_ENV.GIFT_CARD_NUMBER_2}}" selector="{{CheckGiftCardBalanceFormSection.giftCardCodeInput}}" stepKey="fillGiftCardNo"/>
+        <waitForElementVisible selector="{{CheckGiftCardBalanceFormSection.giftCardPinInput}}" stepKey="assertCheckGiftCardPinInput"/>
+        <fillField userInput="{{_ENV.GIFT_CARD_PIN_2}}" selector="{{CheckGiftCardBalanceFormSection.giftCardPinInput}}" stepKey="fillGiftCardPin"/>
         <click selector="{{CheckGiftCardBalanceFormSection.checkBalanceBtn}}" stepKey="clickCheckGiftCardBalanceBtn" />
 
         <waitForElementVisible selector="{{CheckGiftCardBalanceInfoSection.giftCardInfoBalanceLabel}}" stepKey="validateCheckGiftCardBalanceLabel"/>

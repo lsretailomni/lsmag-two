@@ -1,6 +1,10 @@
 <?php
 /**
- * LS Central gift card amount used totals segment (Hyvä).
+ * LS Central gift card amount used totals segment (Hyvä). Display only.
+ *
+ * Mirrors the Luma web/js/view/totals/giftcard-discount.js getGiftCardList(): renders one
+ * display row per applied GIFTCARDNO entry from the ls_pos_data_entries extension attribute,
+ * falling back to the aggregate segment title/value when the per-entry data is unavailable.
  *
  * The AlpineJS scope of this file is the method `initCartTotals()`
  * in Magento_Checkout::php-cart/totals.phtml. The companion JS block
@@ -9,9 +13,23 @@
 ?>
 <div x-data="initGiftcardDiscountSegment">
 <template x-if="isGiftcardDiscountSegment()" data-total-code="ls_gift_card_amount_used">
-    <div :class="wrapperClass">
-        <div x-text="segment.title"></div>
-        <div x-text="formatGiftcardDiscountValue()" class="justify-self-end"></div>
+    <div>
+        <template x-if="getGiftCardEntries().length > 0">
+            <div>
+                <template x-for="(entry, index) in getGiftCardEntries()" :key="index">
+                    <div :class="wrapperClass">
+                        <div x-text="entryTitle(entry)"></div>
+                        <div x-text="formatEntryAmount(entry)" class="justify-self-end"></div>
+                    </div>
+                </template>
+            </div>
+        </template>
+        <template x-if="getGiftCardEntries().length === 0">
+            <div :class="wrapperClass">
+                <div x-text="segment.title"></div>
+                <div x-text="formatGiftcardDiscountValue()" class="justify-self-end"></div>
+            </div>
+        </template>
     </div>
 </template>
 </div>

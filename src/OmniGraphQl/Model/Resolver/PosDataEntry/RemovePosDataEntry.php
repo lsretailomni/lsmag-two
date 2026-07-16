@@ -1,35 +1,33 @@
 <?php
 declare(strict_types=1);
 
-
-namespace Ls\OmniGraphQl\Model\Resolver\GiftCard;
+namespace Ls\OmniGraphQl\Model\Resolver\PosDataEntry;
 
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 
 /**
- * Class ApplyGiftCard for applying gift card
+ * Remove a specific gift card or voucher POS data entry from the cart.
  */
-class ApplyGiftCard extends AbstractGiftCard
+class RemovePosDataEntry extends AbstractPosDataEntry
 {
     /**
      * @inheritdoc
      */
-    protected function handleArgs(array $args, $context)
+    protected function handleArgs(array $args, $context): array
     {
         try {
             $maskedCartId = $args['input']['cart_id'];
             $storeId      = (int)$context->getExtensionAttributes()->getStore()->getId();
             $cart         = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
-            $cartId       = $cart->getId();
-            $result       = $this->giftCardManagement->apply(
-                $cartId,
-                $args['input']['code'],
-                $args['input']['pin'],
-                $args['input']['amount']
+
+            $result = $this->giftCardManagement->removeEntry(
+                (int)$cart->getId(),
+                (string)$args['input']['entry_type'],
+                (string)$args['input']['code']
             );
+
             if ($result) {
-                $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
-                $cart    = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
+                $cart = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
             }
         } catch (\Exception $e) {
             throw new GraphQlInputException(__($e->getMessage()));

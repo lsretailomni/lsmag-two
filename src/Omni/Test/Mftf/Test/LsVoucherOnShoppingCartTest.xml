@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
-    <test name="LsGiftCardOnShoppingCartTest">
+    <test name="LsVoucherOnShoppingCartTest">
         <annotations>
-            <stories value="Ls Gift Card Display on Shopping Cart"/>
+            <stories value="Ls Voucher Display on Shopping Cart"/>
             <features value="Checkout"/>
-            <title value="Add multiple products in cart. Check Gift Card display on shopping cart"/>
-            <description value="Verify, user is able to add multiple products in cart and see gift card on shopping cart."/>
+            <title value="Add product in cart. Apply a voucher (POS data entry) on shopping cart"/>
+            <description value="Verify a user can redeem a voucher through the unified gift card / voucher form on the shopping cart and see the voucher discount in the summary."/>
             <severity value="CRITICAL"/>
             <group value="ls"/>
             <group value="lsShoppingCart"/>
@@ -14,7 +14,9 @@
         <before>
             <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
-            <!-- Enable the pin code field so a pin-protected gift card can be applied. -->
+            <magentoCLI command="config:set --scope website --scope-code base {{GiftCardActive.path}} {{GiftCardActive.value}}" stepKey="giftCardActive"/>
+            <magentoCLI command="config:set --scope website --scope-code base {{GiftCardShowOnCart.path}} {{GiftCardShowOnCart.value}}" stepKey="giftCardShowOnCart"/>
+            <magentoCLI command="config:set --scope website --scope-code base {{GiftCardShowOnCheckout.path}} {{GiftCardShowOnCheckout.value}}" stepKey="giftCardShowOnCheckout"/>
             <magentoCLI command="config:set --scope website --scope-code base {{GiftCardPinCodeEnabled.path}} {{GiftCardPinCodeEnabled.value}}" stepKey="enablePinCodeField"/>
             <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
                 <argument name="tags" value="config"/>
@@ -39,10 +41,11 @@
             </actionGroup>
             <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
         </after>
+
         <actionGroup ref="LoginToStorefrontWithUsernameActionGroup" stepKey="loginToStorefrontAccount">
             <argument name="Customer" value="Ls_Simple_US_Customer"/>
         </actionGroup>
-        <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation"  after="loginToStorefrontAccount" />
+        <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation" after="loginToStorefrontAccount"/>
 
         <actionGroup ref="LsStorefrontAddSimpleProductToShoppingCartActionGroup" stepKey="addProductToCart1">
             <argument name="product" value="$product1$"/>
@@ -51,18 +54,19 @@
 
         <actionGroup ref="ClickViewAndEditCartFromMiniCartActionGroup" stepKey="clickMiniCart1"/>
 
-        <seeInCurrentUrl url="{{CheckoutCartPage.url}}" stepKey="verifyCartRedirectAfterAddingProductFromProductPage"/>
+        <seeInCurrentUrl url="{{CheckoutCartPage.url}}" stepKey="verifyCartRedirectAfterAddingProduct"/>
 
-        <click selector="#block-giftcard #block-giftcard-heading" stepKey="clickApplyGiftCardCollapsible" />
-        <fillField userInput="{{_ENV.GIFT_CARD_NUMBER_2}}" selector="#giftcardno" stepKey="fillGiftCardNo"/>
-        <fillField userInput="{{_ENV.GIFT_CARD_PIN_2}}" selector="#giftcardpin" stepKey="fillGiftCardPin"/>
-        <fillField userInput="1" selector="#giftcardamount" stepKey="fillGiftCardAmount"/>
+        <click selector="#block-giftcard #block-giftcard-heading" stepKey="clickApplyVoucherCollapsible"/>
+        <fillField userInput="{{_ENV.VOUCHER_NUMBER_1}}" selector="#giftcardno" stepKey="fillVoucherNo"/>
+        <fillField userInput="{{_ENV.VOUCHER_PIN_1}}" selector="#giftcardpin" stepKey="fillVoucherPin"/>
+        <fillField userInput="1" selector="#giftcardamount" stepKey="fillVoucherAmount"/>
 
         <wait stepKey="waitForSessionLoad1" time="5"/>
-        <click selector="#giftcard-form .applygiftcard" stepKey="clickApplyGiftCardBtn" />
-        <seeInCurrentUrl url="{{CheckoutCartPage.url}}" stepKey="verifyCartRedirectAfterAddingProductFromProductPage2"/>
+        <click selector="#giftcard-form .applygiftcard" stepKey="clickApplyVoucherBtn"/>
+        <seeInCurrentUrl url="{{CheckoutCartPage.url}}" stepKey="verifyCartRedirectAfterApply"/>
         <waitForElementVisible selector="{{CheckoutCartMessageSection.successMessage}}" stepKey="assertSuccess"/>
-        <waitForElementVisible selector="#cart-totals .giftcard-discount" stepKey="validateGiftCardDiscountInSummary"/>
+        <waitForElementVisible selector="#cart-totals .voucher-discount" stepKey="validateVoucherDiscountInSummary"/>
+
         <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices" before="deleteNewUser">
             <argument name="indices" value=""/>
         </actionGroup>
