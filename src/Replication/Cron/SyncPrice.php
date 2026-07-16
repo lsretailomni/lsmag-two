@@ -413,9 +413,17 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
-     * When a dated price wins, reset to processed=0 any non-winner line that shares the
-     * same PriceListCode and is itself still within a valid date window — whether that
-     * window is open-ended (blank/sentinel dates) or dated-but-currently-active.
+     * When a dated price wins, reset to processed=0 any non-winner line for the same
+     * ItemId that is itself still within a valid date window — whether that window is
+     * open-ended (blank/sentinel dates) or dated-but-currently-active.
+     *
+     * Matching is intentionally scoped to ItemId only (not VariantId/PriceListCode):
+     * any currently-valid sibling price for the same item — whether item-level, a
+     * different variant's price, or a different price list — is a reset candidate,
+     * because getPrice()'s own waterfall already spans variant and item-level
+     * candidates and must get the chance to re-run once this winner expires so it can
+     * pick the correct fallback.
+     *
      * This ensures every still-valid fallback price re-enters the cron queue and is
      * automatically reconsidered once the dated winner expires. Expired or future
      * non-winners are left alone (expired ones need no further action; future ones are
@@ -435,21 +443,13 @@ class SyncPrice extends ProductCreateTask
         }
 
         $webStoreId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $this->store->getId());
-        $variantId  = $winner->getVariantId();
         $filters = [
-            ['field' => 'ItemId',        'value' => (string)$winner->getItemId(),                'condition_type' => 'eq'],
-            ['field' => 'PriceListCode', 'value' => (string)($winner->getPriceListCode() ?? ''), 'condition_type' => 'eq'],
-            ['field' => 'StoreId',       'value' => $webStoreId,                                 'condition_type' => 'eq'],
-            ['field' => 'scope_id',      'value' => $this->getScopeId(),                         'condition_type' => 'eq'],
-            ['field' => 'Status',        'value' => 'Active',                                    'condition_type' => 'eq'],
-            ['field' => 'repl_price_id', 'value' => $winner->getId(),                            'condition_type' => 'neq'],
+            ['field' => 'ItemId',        'value' => (string)$winner->getItemId(), 'condition_type' => 'eq'],
+            ['field' => 'StoreId',       'value' => $webStoreId,                  'condition_type' => 'eq'],
+            ['field' => 'scope_id',      'value' => $this->getScopeId(),          'condition_type' => 'eq'],
+            ['field' => 'Status',        'value' => 'Active',                     'condition_type' => 'eq'],
+            ['field' => 'repl_price_id', 'value' => $winner->getId(),             'condition_type' => 'neq'],
         ];
-        // VariantId is stored as NULL in DB for non-variant items; NULL != '' in SQL.
-        if ($variantId !== null && $variantId !== '') {
-            $filters[] = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
-        } else {
-            $filters[] = ['field' => 'VariantId', 'value' => true, 'condition_type' => 'null'];
-        }
         $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
         try {
             $nonWinners = $this->replPriceRepository->getList($searchCriteria);
@@ -464,6 +464,17 @@ class SyncPrice extends ProductCreateTask
                 // are left alone (expired ones need no further action; future ones are never
                 // marked processed in the first place, see process()/isFuturePrice()).
                 if (!$this->isValidPrice($nonWinner)) {
+                    continue;
+                }
+                // Idempotency short-circuit: if this sibling is already in the correct
+                // pending-reevaluation state (processed=0, is_updated=1) from a previous
+                // cron pass, skip the save() entirely. This avoids a redundant no-op DB
+                // write on every cron pass for a sibling that already needs no change —
+                // it does not change WHICH rows get requeued, only avoids re-saving a row
+                // that is unchanged since the last reset. Values may come back as string
+                // '0'/'1' from the repository, so cast before comparing.
+                if ((int)$nonWinner->getData('processed') === 0
+                    && (int)$nonWinner->getData('is_updated') === 1) {
                     continue;
                 }
                 $nonWinner->setData('processed', 0);

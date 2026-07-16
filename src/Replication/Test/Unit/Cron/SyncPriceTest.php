@@ -133,6 +133,20 @@ class SyncPriceTest extends TestCase
         $price->method('getUnitOfMeasure')->willReturn($data['unitOfMeasure']);
         $price->method('getSaleCode')->willReturn($data['saleCode']);
 
+        // resetNonWinnerPrices() reads the current processed/is_updated state via getData()
+        // for its idempotency short-circuit. Only stub getData() when the caller supplies
+        // those keys, so existing tests (which do not) keep the default null (=> not already
+        // requeued) and continue to expect a save().
+        if (array_key_exists('processed', $data) || array_key_exists('is_updated', $data)) {
+            $stateData = [
+                'processed'  => $data['processed'] ?? null,
+                'is_updated' => $data['is_updated'] ?? null,
+            ];
+            $price->method('getData')->willReturnCallback(
+                fn($key) => $stateData[$key] ?? null
+            );
+        }
+
         return $price;
     }
 
@@ -278,6 +292,207 @@ class SyncPriceTest extends TestCase
 
         $this->assertSame(0, $sets['processed']);
         $this->assertSame(1, $sets['is_updated']);
+    }
+
+    /**
+     * A variant-level dated winner must re-queue the currently-valid item-level (VariantId
+     * null) fallback for the same ItemId, even though their VariantIds differ. This is the
+     * core bug fix: getPrice()'s variant->item-level waterfall must get the chance to re-run
+     * once the variant winner expires, so the item-level row cannot be filtered out by VariantId.
+     */
+    public function testResetNonWinnerPricesRequeuesItemLevelFallbackWhenVariantWins(): void
+    {
+        $this->store->method('getId')->willReturn(1);
+        $this->store->method('getWebsiteId')->willReturn(1);
+        $this->lsr->method('getStoreConfig')->willReturn('S0001');
+        $this->replicationHelper->method('buildCriteriaForDirect')->willReturn($this->createMock(SearchCriteriaInterface::class));
+
+        // Winner is variant-specific ("000") and dated.
+        $winner = $this->makeReplPrice([
+            'id'           => 10,
+            'variantId'    => '000',
+            'startingDate' => '2026-07-15',
+            'endingDate'   => '2026-07-16',
+        ]);
+        // Non-winner is the item-level fallback (VariantId null), same ItemId, currently valid.
+        $itemLevel = $this->makeReplPrice([
+            'id'           => 20,
+            'variantId'    => null,
+            'startingDate' => '2026-01-01',
+            'endingDate'   => '2026-12-01',
+        ]);
+
+        $sets = [];
+        $itemLevel->expects($this->exactly(2))
+            ->method('setData')
+            ->willReturnCallback(function ($key, $value) use (&$sets) {
+                $sets[$key] = $value;
+            });
+
+        $this->replPriceRepository->method('getList')
+            ->willReturn($this->makeSearchResults([$itemLevel]));
+        $this->replPriceRepository->expects($this->once())
+            ->method('save')
+            ->with($itemLevel);
+
+        $this->invokeResetNonWinnerPrices($this->syncPrice, $winner);
+
+        $this->assertSame(0, $sets['processed']);
+        $this->assertSame(1, $sets['is_updated']);
+    }
+
+    /**
+     * A currently-valid non-winner that shares the winner's ItemId but has a DIFFERENT
+     * PriceListCode must still be re-queued — PriceListCode is no longer a scoping factor.
+     */
+    public function testResetNonWinnerPricesRequeuesDifferentPriceListCodeSibling(): void
+    {
+        $this->store->method('getId')->willReturn(1);
+        $this->store->method('getWebsiteId')->willReturn(1);
+        $this->lsr->method('getStoreConfig')->willReturn('S0001');
+        $this->replicationHelper->method('buildCriteriaForDirect')->willReturn($this->createMock(SearchCriteriaInterface::class));
+
+        $winner = $this->makeReplPrice([
+            'id'            => 10,
+            'priceListCode' => 'PL01',
+            'startingDate'  => '2026-07-15',
+            'endingDate'    => '2026-07-16',
+        ]);
+        // Same ItemId, different PriceListCode, currently valid.
+        $sibling = $this->makeReplPrice([
+            'id'            => 20,
+            'priceListCode' => 'PL99',
+            'startingDate'  => '2026-01-01',
+            'endingDate'    => '2026-12-01',
+        ]);
+
+        $sets = [];
+        $sibling->expects($this->exactly(2))
+            ->method('setData')
+            ->willReturnCallback(function ($key, $value) use (&$sets) {
+                $sets[$key] = $value;
+            });
+
+        $this->replPriceRepository->method('getList')
+            ->willReturn($this->makeSearchResults([$sibling]));
+        $this->replPriceRepository->expects($this->once())
+            ->method('save')
+            ->with($sibling);
+
+        $this->invokeResetNonWinnerPrices($this->syncPrice, $winner);
+
+        $this->assertSame(0, $sets['processed']);
+        $this->assertSame(1, $sets['is_updated']);
+    }
+
+    /**
+     * ItemId remains the one hard scope: the search criteria built for the winner must include
+     * an eq ItemId filter for the winner's own ItemId (and no VariantId/PriceListCode filter),
+     * so a row belonging to a different item can never be matched — the repository query can
+     * only ever return same-item rows. Verifies the filter construction directly, the same way
+     * this suite exercises query-level behavior for resetNonWinnerPrices().
+     */
+    public function testResetNonWinnerPricesDoesNotResetDifferentItem(): void
+    {
+        $this->store->method('getId')->willReturn(1);
+        $this->store->method('getWebsiteId')->willReturn(1);
+        $this->lsr->method('getStoreConfig')->willReturn('S0001');
+
+        $winner = $this->makeReplPrice([
+            'id'           => 10,
+            'itemId'       => '40020',
+            'startingDate' => '2026-07-15',
+            'endingDate'   => '2026-07-16',
+        ]);
+
+        $capturedFilters = null;
+        $this->replicationHelper->method('buildCriteriaForDirect')
+            ->willReturnCallback(function ($filters, $pageSize) use (&$capturedFilters) {
+                $capturedFilters = $filters;
+                return $this->createMock(SearchCriteriaInterface::class);
+            });
+
+        // No rows returned — this test asserts on the query scoping, not on a reset.
+        $this->replPriceRepository->method('getList')
+            ->willReturn($this->makeSearchResults([]));
+        $this->replPriceRepository->expects($this->never())->method('save');
+
+        $this->invokeResetNonWinnerPrices($this->syncPrice, $winner);
+
+        $this->assertIsArray($capturedFilters);
+
+        $fieldsByName = [];
+        foreach ($capturedFilters as $filter) {
+            $fieldsByName[$filter['field']] = $filter;
+        }
+
+        // ItemId is the hard scope: eq filter pinned to the winner's own item.
+        $this->assertArrayHasKey('ItemId', $fieldsByName);
+        $this->assertSame('40020', $fieldsByName['ItemId']['value']);
+        $this->assertSame('eq', $fieldsByName['ItemId']['condition_type']);
+
+        // VariantId and PriceListCode are no longer scoping factors, so no cross-item leakage
+        // can occur through those dimensions.
+        $this->assertArrayNotHasKey('VariantId', $fieldsByName);
+        $this->assertArrayNotHasKey('PriceListCode', $fieldsByName);
+    }
+
+    /**
+     * Idempotency guard: a matched, currently-valid non-winner that is ALREADY in the correct
+     * pending-reevaluation state (processed=0, is_updated=1) from a previous cron pass must NOT
+     * be re-saved (no redundant no-op DB write) — while a sibling that still needs the change
+     * (processed=1, is_updated=0) MUST be saved. Only the second row triggers save().
+     */
+    public function testResetNonWinnerPricesSkipsSaveForAlreadyRequeuedNonWinner(): void
+    {
+        $this->store->method('getId')->willReturn(1);
+        $this->store->method('getWebsiteId')->willReturn(1);
+        $this->lsr->method('getStoreConfig')->willReturn('S0001');
+        $this->replicationHelper->method('buildCriteriaForDirect')->willReturn($this->createMock(SearchCriteriaInterface::class));
+
+        $winner = $this->makeReplPrice([
+            'id'           => 10,
+            'startingDate' => '2026-07-15',
+            'endingDate'   => '2026-07-16',
+        ]);
+
+        // Already requeued from a prior pass — needs no change, must NOT be saved.
+        // (repository may return these as string '0'/'1'; assert the cast handles it.)
+        $alreadyRequeued = $this->makeReplPrice([
+            'id'           => 20,
+            'startingDate' => '2026-01-01',
+            'endingDate'   => '2026-12-01',
+            'processed'    => '0',
+            'is_updated'   => '1',
+        ]);
+        $alreadyRequeued->expects($this->never())->method('setData');
+
+        // Still in the applied state — needs the reset, MUST be saved.
+        $needsReset = $this->makeReplPrice([
+            'id'           => 21,
+            'startingDate' => '2026-02-01',
+            'endingDate'   => '2026-11-01',
+            'processed'    => '1',
+            'is_updated'   => '0',
+        ]);
+        $needsResetSets = [];
+        $needsReset->expects($this->exactly(2))
+            ->method('setData')
+            ->willReturnCallback(function ($key, $value) use (&$needsResetSets) {
+                $needsResetSets[$key] = $value;
+            });
+
+        $this->replPriceRepository->method('getList')
+            ->willReturn($this->makeSearchResults([$alreadyRequeued, $needsReset]));
+        // save() is called exactly once, and only for the row that actually needs the change.
+        $this->replPriceRepository->expects($this->once())
+            ->method('save')
+            ->with($needsReset);
+
+        $this->invokeResetNonWinnerPrices($this->syncPrice, $winner);
+
+        $this->assertSame(0, $needsResetSets['processed']);
+        $this->assertSame(1, $needsResetSets['is_updated']);
     }
 
     /**
