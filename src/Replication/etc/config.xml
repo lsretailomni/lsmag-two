@@ -12,6 +12,7 @@
                 <unit_of_measure_configuration>configurable</unit_of_measure_configuration>
                 <uom_allow_purchase_unit>1</uom_allow_purchase_unit>
                 <default_batch_size>2000</default_batch_size>
+                <batch_upsert_enabled>1</batch_upsert_enabled>
                 <product_batch_size>30</product_batch_size>
                 <discount_batch_size>-1</discount_batch_size>
                 <product_attribute_batch_size>1000</product_attribute_batch_size>

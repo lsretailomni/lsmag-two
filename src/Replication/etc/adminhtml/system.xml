@@ -116,6 +116,17 @@
                     <label>Default Batch Size</label>
                     <comment>Records Requested on Replication Jobs</comment>
                 </field>
+                <field id="batch_upsert_enabled"
+                       translate="label"
+                       type="select"
+                       sortOrder="61"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Enable Batch Upsert Writes</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>When enabled, eligible flat-table replication rows are written via a chunked INSERT ... ON DUPLICATE KEY UPDATE instead of per-row ORM saves. Disable to fall back to the legacy ORM write path on the next cron tick.</comment>
+                </field>
                 <field id="product_batch_size"
                        translate="label"
                        type="text"
