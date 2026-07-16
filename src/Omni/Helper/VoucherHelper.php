@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Ls\Omni\Helper;
 
+use GuzzleHttp\Exception\GuzzleException;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\CentralEcommerce\Entity\POSDataEntry;
 use Magento\Framework\Exception\NoSuchEntityException;
 
@@ -108,5 +110,51 @@ class VoucherHelper extends AbstractHelperOmni
     public function encodeVouchers(array $vouchers): string
     {
         return json_encode($vouchers);
+    }
+
+    /**
+     * Check if voucher redemption is enabled for the given area.
+     *
+     * Vouchers share the gift card configuration group (ls_mag/ls_giftcard), so this
+     * mirrors GiftCardHelper::isGiftCardEnabled(): the elements must be enabled and the
+     * cart/checkout display toggle for the requested area must be on.
+     *
+     * @param string $area
+     * @return bool
+     * @throws NoSuchEntityException|GuzzleException
+     */
+    public function isVoucherEnabled(string $area): bool
+    {
+        if (!$this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            return false;
+        }
+
+        $elementsEnabled = (bool) $this->lsr->getStoreConfig(
+            LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
+            $this->lsr->getCurrentStoreId()
+        );
+
+        $areaPath = $area === 'cart'
+            ? LSR::LS_GIFTCARD_SHOW_ON_CART
+            : LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT;
+
+        return $elementsEnabled && (bool) $this->lsr->getStoreConfig(
+            $areaPath,
+            $this->lsr->getCurrentStoreId()
+        );
+    }
+
+    /**
+     * Check if the pin code field is enabled for voucher/gift card redemption.
+     *
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    public function isPinCodeFieldEnable(): bool
+    {
+        return (bool) $this->lsr->getStoreConfig(
+            LSR::LS_GIFTCARD_SHOW_PIN_CODE_FIELD,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 }

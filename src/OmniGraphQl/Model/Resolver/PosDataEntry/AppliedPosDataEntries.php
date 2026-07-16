@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace Ls\OmniGraphQl\Model\Resolver\GiftCard;
+namespace Ls\OmniGraphQl\Model\Resolver\PosDataEntry;
 
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\GraphQl\Query\ResolverInterface;
-use Magento\Framework\GraphQl\Config\Element\Field;
-use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use \Ls\Omni\Model\GiftCard\GiftCardManagement;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\GraphQl\Config\Element\Field;
+use Magento\Framework\GraphQl\Query\ResolverInterface;
+use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
 /**
- * Applied gift card data return in cart
+ * Resolve the list of applied gift card / voucher POS data entries for a cart.
  */
-class AppliedGiftCard implements ResolverInterface
+class AppliedPosDataEntries implements ResolverInterface
 {
     /**
      * @param GiftCardManagement $giftCardManagement
@@ -30,9 +30,10 @@ class AppliedGiftCard implements ResolverInterface
         if (!isset($value['model'])) {
             throw new LocalizedException(__('"model" value should be specified'));
         }
-        $cart = $value['model'];
-        $cartId = $cart->getId();
-        $giftCard = $this->giftCardManagement->get($cartId);
-        return !empty($giftCard) ? $giftCard : null;
+
+        $cart    = $value['model'];
+        $entries = $this->giftCardManagement->getEntries((int)$cart->getId());
+
+        return !empty($entries) ? $entries : null;
     }
 }

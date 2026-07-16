@@ -16,6 +16,7 @@ interface OrderStatusMessageInterface
     public const MSG_SUBJECT = 'MsgSubject';
     public const MSG_DETAIL = 'MsgDetail';
     public const EXT_ORDER_STATUS = 'ExtOrderStatus';
+    public const EXTERNAL_ID = 'ExternalId';
     public const ORDER_KOT_STATUS = 'OrderKOTStatus';
     public const LINES = 'Lines';
     public const QUEUE_COUNTER = 'QueueCounter';
@@ -110,6 +111,21 @@ interface OrderStatusMessageInterface
      * @return $this
      */
     public function setExtOrderStatus($extOrderStatus);
+
+    /**
+     * Retrieve the external ID
+     *
+     * @return string|null The external identifier of the order from the source system
+     */
+    public function getExternalId();
+
+    /**
+     * Set the external ID
+     *
+     * @param string|null $externalId The external identifier of the order from the source system
+     * @return $this
+     */
+    public function setExternalId($externalId);
 
     /**
      * Retrieve the Order KOT (Kitchen Order Ticket) status

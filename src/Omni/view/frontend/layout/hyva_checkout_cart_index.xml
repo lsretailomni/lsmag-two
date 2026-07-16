@@ -17,10 +17,11 @@
                    name="checkout.cart.loyaltypoints.hyva"
                    template="Ls_Omni::cart/hyva/loyalty-points.phtml"
                    ifconfig="ls_mag/ls_loyaltypoints/cart"/>
+            <!-- Unified gift card / voucher apply component: shown when gift card OR voucher
+                 is enabled; visibility is gated by the block's isEnabled() (GC OR voucher). -->
             <block class="Ls\Omni\Block\Cart\Giftcard"
                    name="checkout.cart.giftcard.hyva"
-                   template="Ls_Omni::cart/hyva/gift-card.phtml"
-                   ifconfig="ls_mag/ls_giftcard/cart"/>
+                   template="Ls_Omni::cart/hyva/gift-card.phtml"/>
         </referenceContainer>
 
         <!-- (c) LS totals segment renderers + JS Alpine.data registrations -->
@@ -28,12 +29,14 @@
             <block name="ls_discount" template="Ls_Omni::cart/hyva/totals/ls-discount.phtml"/>
             <block name="ls_points_discount" template="Ls_Omni::cart/hyva/totals/loyalty-discount.phtml"/>
             <block name="ls_gift_card_amount_used" template="Ls_Omni::cart/hyva/totals/giftcard-discount.phtml"/>
+            <block name="ls_entry_amount" template="Ls_Omni::cart/hyva/totals/voucher-discount.phtml"/>
             <block name="ls_points_earn" template="Ls_Omni::cart/hyva/totals/points-earn.phtml"/>
         </referenceBlock>
         <referenceContainer name="checkout.cart.totals.scripts">
             <block name="ls_discount.js" template="Ls_Omni::cart/hyva/totals/js/ls-discount-js.phtml"/>
             <block name="ls_points_discount.js" template="Ls_Omni::cart/hyva/totals/js/loyalty-discount-js.phtml"/>
             <block name="ls_gift_card_amount_used.js" template="Ls_Omni::cart/hyva/totals/js/giftcard-discount-js.phtml"/>
+            <block name="ls_entry_amount.js" template="Ls_Omni::cart/hyva/totals/js/voucher-discount-js.phtml"/>
             <block name="ls_points_earn.js" template="Ls_Omni::cart/hyva/totals/js/points-earn-js.phtml"/>
         </referenceContainer>
 

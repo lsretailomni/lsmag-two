@@ -238,7 +238,12 @@ class Data
                 $totalAmount = 0;
                 $counter     = 0;
                 foreach ($itemsInfo as $index => $skuValues) {
-                    if ($itemId == $skuValues['ItemId'] && $uom == $skuValues['UnitOfMeasureId'] &&
+                    // Unit of measure is optional. A supplied
+                    // UOM must match the order item's UOM.
+                    $uomMatches = empty($skuValues['UnitOfMeasureId'])
+                        || $uom == $skuValues['UnitOfMeasureId'];
+                        if ($itemId == $skuValues['ItemId'] && $uomMatches &&
+
                         $variantId == $skuValues['VariantId'] && $itemId != $this->getShippingItemId()) {
                         if (in_array($skuValues['ItemId'], explode(',', $this->getGiftCardIdentifiers()))
                         ) {
@@ -278,7 +283,7 @@ class Data
                         $totalAmount                                            += $amount;
                         $items[$globalCounter][$itemId]['amount_with_discount'] =
                             $totalAmount + ($orderItem->getLsDiscountAmount() / $orderItem->getQtyOrdered()) * $skuValues['Quantity'];
-                            $items[$globalCounter][$itemId]['amount']               = $totalAmount;
+                        $items[$globalCounter][$itemId]['amount']               = $totalAmount;
                         $items[$globalCounter][$itemId]['itemStatus'] = $child->getStatusId();
                         $counter++;
                         unset($itemsInfo[$index]);
