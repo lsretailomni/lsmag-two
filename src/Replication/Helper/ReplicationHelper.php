@@ -254,6 +254,22 @@ class ReplicationHelper extends AbstractHelper
 
     ];
 
+    /** @var string repl_price job-code config path (kept in sync with ReplEcommBasePricesTask::CONFIG_PATH) */
+    private const REPL_PRICE_CONFIG_PATH = 'ls_mag/replication/repl_price';
+
+    /** @var array Legacy sales-price unique key for repl_price (pre-#82767), selectable via config */
+    public const PRICE_SALES_UNIQUE_FIELD_ARRAY = [
+        self::REPL_PRICE_CONFIG_PATH => [
+            "ItemId",
+            "VariantId",
+            "StoreId",
+            "QtyPerUnitOfMeasure",
+            "UnitOfMeasure",
+            "PriceListCode",
+            "scope_id"
+        ],
+    ];
+
     public $connection;
 
     /** @var StoreManagerInterface */
@@ -3187,15 +3203,23 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Get uom code given description
      *
+     * Optionally scope the reverse lookup by scope_id so that, in a multi-website LS Central
+     * setup where two scopes define different UOM codes sharing the same description text, the
+     * correct scope's code is resolved (mirrors getUomDescriptionGivenCodeAndScopeId()).
+     *
      * @param string $description
+     * @param string|int|null $scopeId
      * @return string
      */
-    public function getUomCodeGivenDescription($description)
+    public function getUomCodeGivenDescription($description, $scopeId = null)
     {
         $uomCode           = '';
         $filters           = [
             ['field' => 'description', 'value' => $description, 'condition_type' => 'eq']
         ];
+        if ($scopeId !== null) {
+            $filters[] = ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq'];
+        }
         $searchCriteria    = $this->buildCriteriaForDirect($filters, -1);
         $replUnitOfMeasure = $this->replUnitOfMeasureRepository->getList($searchCriteria);
 
@@ -4074,5 +4098,36 @@ class ReplicationHelper extends AbstractHelper
         $query = $collection->getSelect()->__toString();
 
         return $collection;
+    }
+
+    /**
+     * Return the effective unique-field array for a job code, honoring the use_sales_price config
+     * for repl_price. All other job codes keep the existing delete/non-delete selection unchanged.
+     *
+     * @param string $configPath
+     * @param bool $isDeleted
+     * @param string $scope
+     * @param int|bool $scopeId
+     * @return array
+     */
+    public function getUniqueFieldArray(
+        $configPath,
+        $isDeleted = false,
+        $scope = ScopeInterface::SCOPE_WEBSITES,
+        $scopeId = false
+    ) {
+        if ($configPath === self::REPL_PRICE_CONFIG_PATH
+            && $this->lsr->isUseSalesPriceEnabled($scopeId, $scope)
+        ) {
+            return self::PRICE_SALES_UNIQUE_FIELD_ARRAY[$configPath];
+        }
+
+        if ($isDeleted
+            && array_key_exists($configPath, self::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY)
+        ) {
+            return self::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY[$configPath];
+        }
+
+        return self::JOB_CODE_UNIQUE_FIELD_ARRAY[$configPath];
     }
 }

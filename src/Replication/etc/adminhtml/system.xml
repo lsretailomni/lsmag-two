@@ -25,6 +25,18 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enable if you want to replicate all the stores items</comment>
                 </field>
+                <field id="use_sales_price"
+                       translate="label"
+                       type="select"
+                       sortOrder="15"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Use Sales Price</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If enabled, price replication dedupes on the legacy sales-price key
+                        (ItemId/VariantId/StoreId/UnitOfMeasure/QtyPerUnitOfMeasure/PriceListCode) instead of LineNumber.</comment>
+                </field>
                 <field id="replicate_data_translation_lang_code"
                        translate="label"
                        type="select"
