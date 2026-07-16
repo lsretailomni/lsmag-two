@@ -342,6 +342,168 @@ class SyncPriceTest extends TestCase
     }
 
     /**
+     * Regression test (#84363): a currently-valid non-winner belonging to a DIFFERENT,
+     * non-blank VariantId is another variant's own independently-active price, not a
+     * fallback of this winner, and must never be reset. Without this guard, processing
+     * variant "100"'s winner would reset variant "200"'s own still-valid price, and
+     * processing "200" later would reset "100" right back — an infinite ping-pong where
+     * a price that was just correctly processed for the current date keeps getting
+     * flipped back to processed=0 by the sibling variant's reset call.
+     */
+    public function testResetNonWinnerPricesDoesNotResetDifferentVariantsOwnValidPrice(): void
+    {
+        $this->store->method('getId')->willReturn(1);
+        $this->store->method('getWebsiteId')->willReturn(1);
+        $this->lsr->method('getStoreConfig')->willReturn('S0001');
+        $this->replicationHelper->method('buildCriteriaForDirect')->willReturn($this->createMock(SearchCriteriaInterface::class));
+
+        // Winner is variant-specific ("100") and dated.
+        $winner = $this->makeReplPrice([
+            'id'           => 10,
+            'variantId'    => '100',
+            'startingDate' => '2026-07-15',
+            'endingDate'   => '2026-07-16',
+        ]);
+        // Sibling belongs to a DIFFERENT variant ("200"), also dated and currently valid —
+        // its own legitimate current price, not a fallback for variant "100".
+        $otherVariant = $this->makeReplPrice([
+            'id'           => 20,
+            'variantId'    => '200',
+            'startingDate' => '2026-07-01',
+            'endingDate'   => '2026-07-31',
+        ]);
+        // Assert the guard short-circuits before any state mutation is even attempted.
+        $otherVariant->expects($this->never())->method('setData');
+
+        $this->replPriceRepository->method('getList')
+            ->willReturn($this->makeSearchResults([$otherVariant]));
+        $this->replPriceRepository->expects($this->never())->method('save');
+
+        $this->invokeResetNonWinnerPrices($this->syncPrice, $winner);
+    }
+
+    /**
+     * Symmetric case: the winner itself is item-level (blank VariantId) and the non-winner
+     * has its own specific, non-blank VariantId. The non-winner's own price is independently
+     * owned by that variant's processing pass and must not be reset by the item-level winner.
+     */
+    public function testResetNonWinnerPricesDoesNotResetVariantSpecificSiblingWhenItemLevelWins(): void
+    {
+        $this->store->method('getId')->willReturn(1);
+        $this->store->method('getWebsiteId')->willReturn(1);
+        $this->lsr->method('getStoreConfig')->willReturn('S0001');
+        $this->replicationHelper->method('buildCriteriaForDirect')->willReturn($this->createMock(SearchCriteriaInterface::class));
+
+        // Winner is item-level (blank VariantId) and dated.
+        $winner = $this->makeReplPrice([
+            'id'           => 10,
+            'variantId'    => '',
+            'startingDate' => '2026-07-15',
+            'endingDate'   => '2026-07-16',
+        ]);
+        // Sibling belongs to a specific variant ("300"), also dated and currently valid —
+        // its own legitimate current price, not a fallback for the item-level winner.
+        $variantSpecific = $this->makeReplPrice([
+            'id'           => 20,
+            'variantId'    => '300',
+            'startingDate' => '2026-07-01',
+            'endingDate'   => '2026-07-31',
+        ]);
+        $variantSpecific->expects($this->never())->method('setData');
+
+        $this->replPriceRepository->method('getList')
+            ->willReturn($this->makeSearchResults([$variantSpecific]));
+        $this->replPriceRepository->expects($this->never())->method('save');
+
+        $this->invokeResetNonWinnerPrices($this->syncPrice, $winner);
+    }
+
+    /**
+     * Regression test (#84363): a currently-valid non-winner belonging to a DIFFERENT,
+     * non-blank UnitOfMeasure is an independently-active price for that UOM (e.g. a
+     * "BOX"-specific price alongside this winner's "PACK"-specific price), not a fallback
+     * of this winner, and must never be reset. Without this guard, the same ping-pong
+     * described above for VariantId would recur one dimension over: processing the PACK
+     * winner would reset the BOX sibling's still-valid price, and processing BOX later
+     * would reset PACK right back.
+     */
+    public function testResetNonWinnerPricesDoesNotResetDifferentUomsOwnValidPrice(): void
+    {
+        $this->store->method('getId')->willReturn(1);
+        $this->store->method('getWebsiteId')->willReturn(1);
+        $this->lsr->method('getStoreConfig')->willReturn('S0001');
+        $this->replicationHelper->method('buildCriteriaForDirect')->willReturn($this->createMock(SearchCriteriaInterface::class));
+
+        // Winner is UOM-specific ("PACK") and dated.
+        $winner = $this->makeReplPrice([
+            'id'            => 10,
+            'unitOfMeasure' => 'PACK',
+            'startingDate'  => '2026-07-15',
+            'endingDate'    => '2026-07-16',
+        ]);
+        // Sibling belongs to a DIFFERENT UOM ("BOX"), also dated and currently valid — its
+        // own legitimate current price, not a fallback for the PACK winner.
+        $otherUom = $this->makeReplPrice([
+            'id'            => 20,
+            'unitOfMeasure' => 'BOX',
+            'startingDate'  => '2026-07-01',
+            'endingDate'    => '2026-07-31',
+        ]);
+        $otherUom->expects($this->never())->method('setData');
+
+        $this->replPriceRepository->method('getList')
+            ->willReturn($this->makeSearchResults([$otherUom]));
+        $this->replPriceRepository->expects($this->never())->method('save');
+
+        $this->invokeResetNonWinnerPrices($this->syncPrice, $winner);
+    }
+
+    /**
+     * A blank UnitOfMeasure non-winner (the universal catch-all) must still be re-queued
+     * when a UOM-specific price wins — mirrors the item-level-VariantId-fallback case, just
+     * for UOM. Confirms the blank-UOM guard branch does not over-exclude.
+     */
+    public function testResetNonWinnerPricesRequeuesBlankUomFallbackWhenUomSpecificWins(): void
+    {
+        $this->store->method('getId')->willReturn(1);
+        $this->store->method('getWebsiteId')->willReturn(1);
+        $this->lsr->method('getStoreConfig')->willReturn('S0001');
+        $this->replicationHelper->method('buildCriteriaForDirect')->willReturn($this->createMock(SearchCriteriaInterface::class));
+
+        $winner = $this->makeReplPrice([
+            'id'            => 10,
+            'unitOfMeasure' => 'PACK',
+            'startingDate'  => '2026-07-15',
+            'endingDate'    => '2026-07-16',
+        ]);
+        // Blank-UOM catch-all fallback, currently valid.
+        $blankUom = $this->makeReplPrice([
+            'id'            => 20,
+            'unitOfMeasure' => '',
+            'startingDate'  => '2026-01-01',
+            'endingDate'    => '2026-12-01',
+        ]);
+
+        $sets = [];
+        $blankUom->expects($this->exactly(2))
+            ->method('setData')
+            ->willReturnCallback(function ($key, $value) use (&$sets) {
+                $sets[$key] = $value;
+            });
+
+        $this->replPriceRepository->method('getList')
+            ->willReturn($this->makeSearchResults([$blankUom]));
+        $this->replPriceRepository->expects($this->once())
+            ->method('save')
+            ->with($blankUom);
+
+        $this->invokeResetNonWinnerPrices($this->syncPrice, $winner);
+
+        $this->assertSame(0, $sets['processed']);
+        $this->assertSame(1, $sets['is_updated']);
+    }
+
+    /**
      * A currently-valid non-winner that shares the winner's ItemId but has a DIFFERENT
      * PriceListCode must still be re-queued — PriceListCode is no longer a scoping factor.
      */

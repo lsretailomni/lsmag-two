@@ -417,12 +417,17 @@ class SyncPrice extends ProductCreateTask
      * ItemId that is itself still within a valid date window — whether that window is
      * open-ended (blank/sentinel dates) or dated-but-currently-active.
      *
-     * Matching is intentionally scoped to ItemId only (not VariantId/PriceListCode):
-     * any currently-valid sibling price for the same item — whether item-level, a
-     * different variant's price, or a different price list — is a reset candidate,
-     * because getPrice()'s own waterfall already spans variant and item-level
-     * candidates and must get the chance to re-run once this winner expires so it can
-     * pick the correct fallback.
+     * Query scoping is ItemId only (not VariantId/PriceListCode/UnitOfMeasure) so a
+     * still-valid item-level (no-variant) or blank-UOM (catch-all) fallback is always
+     * found. But NOT every same-item sibling is a real reset candidate: a non-winner
+     * with its own different, non-blank VariantId, or its own different, non-blank
+     * UnitOfMeasure, is an independently valid price for that other variant/UOM — not a
+     * fallback of this winner — and is left alone in the loop below. Resetting it would
+     * just be undone by that other variant's/UOM's own resetNonWinnerPrices() call on
+     * its own processing pass, producing an infinite processed=0/1 ping-pong between the
+     * two prices instead of either ever settling. Only the item-level fallback (blank
+     * VariantId), the blank-UOM catch-all, or a same-variant-same-UOM sibling (e.g. a
+     * different PriceListCode line) are genuine fallback candidates for this winner.
      *
      * This ensures every still-valid fallback price re-enters the cron queue and is
      * automatically reconsidered once the dated winner expires. Expired or future
@@ -453,7 +458,25 @@ class SyncPrice extends ProductCreateTask
         $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
         try {
             $nonWinners = $this->replPriceRepository->getList($searchCriteria);
+            $winnerVariantId = (string)($winner->getVariantId() ?? '');
+            $winnerUom       = (string)($winner->getUnitOfMeasure() ?? '');
             foreach ($nonWinners->getItems() as $nonWinner) {
+                // A different, non-blank VariantId belongs to another variant's own
+                // independently-valid price, not a fallback of this winner — never reset it here
+                // (see class docblock above for why: it would ping-pong with that variant's own
+                // resetNonWinnerPrices() call).
+                $nonWinnerVariantId = (string)($nonWinner->getVariantId() ?? '');
+                if ($nonWinnerVariantId !== '' && $nonWinnerVariantId !== $winnerVariantId) {
+                    continue;
+                }
+                // Same reasoning for UnitOfMeasure: a different, non-blank UOM sibling (e.g.
+                // "BOX" vs this winner's "PACK") is its own independently-valid price for that
+                // UOM, not a fallback of this winner — resetting it would ping-pong the same way.
+                // A blank UOM (the universal catch-all) is always kept as a fallback candidate.
+                $nonWinnerUom = (string)($nonWinner->getUnitOfMeasure() ?? '');
+                if ($nonWinnerUom !== '' && $nonWinnerUom !== $winnerUom) {
+                    continue;
+                }
                 // Never re-queue a price excluded by the store's price groups (AC9).
                 if (!$this->isSaleCodeAllowedForStore($nonWinner)) {
                     continue;
