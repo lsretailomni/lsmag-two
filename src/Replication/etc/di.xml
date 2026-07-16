@@ -84,6 +84,16 @@
     <preference for="Ls\Replication\Api\ReplItemVariantRepositoryInterface"
                 type="Ls\Replication\Model\ReplItemVariantRepository"/>
     <preference for="Ls\Replication\Api\ReplPriceRepositoryInterface" type="Ls\Replication\Model\ReplPriceRepository"/>
+    <preference for="Ls\Replication\Api\Central\ReplSalesPriceRepositoryInterface"
+                type="Ls\Replication\Model\Central\ReplSalesPriceRepository"/>
+    <preference for="Ls\Replication\Api\Central\Data\ReplSalesPriceInterface"
+                type="Ls\Replication\Model\Central\ReplSalesPrice"/>
+    <preference for="Ls\Replication\Api\Central\Data\ReplSalesPriceSearchResultsInterface"
+                type="Ls\Replication\Model\Central\ReplSalesPriceSearchResults"/>
+    <preference for="Ls\Replication\Model\ResourceModel\ReplSalesPrice"
+                type="Ls\Replication\Model\Central\ResourceModel\ReplSalesPrice"/>
+    <preference for="Ls\Replication\Model\ResourceModel\ReplSalesPrice\Collection"
+                type="Ls\Replication\Model\Central\ResourceModel\ReplSalesPrice\Collection"/>
     <preference for="Ls\Replication\Api\ReplInvStatusRepositoryInterface"
                 type="Ls\Replication\Model\ReplInvStatusRepository"/>
     <preference for="Ls\Replication\Api\ReplProductGroupRepositoryInterface"
@@ -296,5 +306,17 @@
                 </item>
             </argument>
         </arguments>
+    </type>
+    <type name="Ls\Replication\Cron\ReplLscSalepriceviewTask">
+        <plugin name="ls_replication_saleprice_request_routing"
+                type="Ls\Replication\Plugin\SalePriceViewRequestPlugin" sortOrder="10"/>
+        <plugin name="ls_replication_saleprice_cron_gate"
+                type="Ls\Replication\Plugin\PriceCronGatePlugin" sortOrder="20"/>
+        <plugin name="ls_replication_salesprice_source_reshape"
+                type="Ls\Replication\Plugin\SalesPriceSourceReshapePlugin" sortOrder="30"/>
+    </type>
+    <type name="Ls\Replication\Cron\ReplLscSalesPriceTask">
+        <plugin name="ls_replication_salesprice_cron_gate"
+                type="Ls\Replication\Plugin\PriceCronGatePlugin" sortOrder="10"/>
     </type>
 </config>

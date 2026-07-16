@@ -25,6 +25,17 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enable if you want to replicate all the stores items</comment>
                 </field>
+                <field id="use_sales_price"
+                       translate="label"
+                       type="select"
+                       sortOrder="55"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="0">
+                    <label>Use Sales Price</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Yes: replicate item prices via GetSalesPrice (repl_sales_price table). No: use GetPriceListLine (LS Central &lt;= 26.0) or SalePriceView (&gt; 26.0).</comment>
+                </field>
                 <field id="replicate_data_translation_lang_code"
                        translate="label"
                        type="select"
