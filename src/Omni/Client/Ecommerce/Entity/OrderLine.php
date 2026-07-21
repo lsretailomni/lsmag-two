@@ -84,6 +84,11 @@ class OrderLine extends Entity
     protected $OrderId = null;
 
     /**
+     * @property string $PTEJsonData
+     */
+    protected $PTEJsonData = null;
+
+    /**
      * @property float $Price
      */
     protected $Price = null;
@@ -408,6 +413,24 @@ class OrderLine extends Entity
     public function getOrderId()
     {
         return $this->OrderId;
+    }
+
+    /**
+     * @param string $PTEJsonData
+     * @return $this
+     */
+    public function setPTEJsonData($PTEJsonData)
+    {
+        $this->PTEJsonData = $PTEJsonData;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPTEJsonData()
+    {
+        return $this->PTEJsonData;
     }
 
     /**

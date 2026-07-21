@@ -69,6 +69,11 @@ class OrderPayment
     protected $LineNumber = null;
 
     /**
+     * @property string $PTEJsonData
+     */
+    protected $PTEJsonData = null;
+
+    /**
      * @property PaymentType $PaymentType
      */
     protected $PaymentType = null;
@@ -284,6 +289,24 @@ class OrderPayment
     public function getLineNumber()
     {
         return $this->LineNumber;
+    }
+
+    /**
+     * @param string $PTEJsonData
+     * @return $this
+     */
+    public function setPTEJsonData($PTEJsonData)
+    {
+        $this->PTEJsonData = $PTEJsonData;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPTEJsonData()
+    {
+        return $this->PTEJsonData;
     }
 
     /**

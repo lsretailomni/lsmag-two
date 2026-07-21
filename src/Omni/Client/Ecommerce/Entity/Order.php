@@ -84,6 +84,11 @@ class Order extends Entity
     protected $OrderType = null;
 
     /**
+     * @property string $PTEJsonData
+     */
+    protected $PTEJsonData = null;
+
+    /**
      * @property float $PointAmount
      */
     protected $PointAmount = null;
@@ -428,6 +433,24 @@ class Order extends Entity
     public function getOrderType()
     {
         return $this->OrderType;
+    }
+
+    /**
+     * @param string $PTEJsonData
+     * @return $this
+     */
+    public function setPTEJsonData($PTEJsonData)
+    {
+        $this->PTEJsonData = $PTEJsonData;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPTEJsonData()
+    {
+        return $this->PTEJsonData;
     }
 
     /**

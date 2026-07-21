@@ -24,6 +24,11 @@ class HierarchyNode extends HierarchyPoint
     protected $Nodes = null;
 
     /**
+     * @property ArrayOfItemRecipe $Recipies
+     */
+    protected $Recipies = null;
+
+    /**
      * @property float $AddedAmount
      */
     protected $AddedAmount = null;
@@ -37,6 +42,11 @@ class HierarchyNode extends HierarchyPoint
      * @property int $DealModSizeGroupIndex
      */
     protected $DealModSizeGroupIndex = null;
+
+    /**
+     * @property string $DisplayPrompt
+     */
+    protected $DisplayPrompt = null;
 
     /**
      * @property int $Indentation
@@ -67,6 +77,11 @@ class HierarchyNode extends HierarchyPoint
      * @property int $PresentationOrder
      */
     protected $PresentationOrder = null;
+
+    /**
+     * @property float $Price
+     */
+    protected $Price = null;
 
     /**
      * @property HierarchyDealType $Type
@@ -117,6 +132,24 @@ class HierarchyNode extends HierarchyPoint
     public function getNodes()
     {
         return $this->Nodes;
+    }
+
+    /**
+     * @param ArrayOfItemRecipe $Recipies
+     * @return $this
+     */
+    public function setRecipies($Recipies)
+    {
+        $this->Recipies = $Recipies;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfItemRecipe
+     */
+    public function getRecipies()
+    {
+        return $this->Recipies;
     }
 
     /**
@@ -171,6 +204,24 @@ class HierarchyNode extends HierarchyPoint
     public function getDealModSizeGroupIndex()
     {
         return $this->DealModSizeGroupIndex;
+    }
+
+    /**
+     * @param string $DisplayPrompt
+     * @return $this
+     */
+    public function setDisplayPrompt($DisplayPrompt)
+    {
+        $this->DisplayPrompt = $DisplayPrompt;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayPrompt()
+    {
+        return $this->DisplayPrompt;
     }
 
     /**
@@ -279,6 +330,24 @@ class HierarchyNode extends HierarchyPoint
     public function getPresentationOrder()
     {
         return $this->PresentationOrder;
+    }
+
+    /**
+     * @param float $Price
+     * @return $this
+     */
+    public function setPrice($Price)
+    {
+        $this->Price = $Price;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->Price;
     }
 
     /**

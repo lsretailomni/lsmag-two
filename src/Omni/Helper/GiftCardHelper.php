@@ -129,68 +129,6 @@ class GiftCardHelper extends AbstractHelperOmni
         return $this->lsr->getStoreConfig(LSR::LS_GIFTCARD_SHOW_PIN_CODE_FIELD, $this->lsr->getCurrentStoreId());
     }
 
-//    /**
-//     * Get currency exchange rate based on store currency or gift card currency passed in param.
-//     *
-//     * @param $giftCardCurrency
-//     * @param $storeId
-//     * @return false|Entity\GetPointRateResponse|ResponseInterface|null
-//     * @throws NoSuchEntityException|LocalizedException
-//     */
-//    public function getPointRate($giftCardCurrency = null, $storeId = null)
-//    {
-//        if (!$storeId) {
-//            $storeId = $this->lsr->getCurrentStoreId();
-//        }
-//
-//        $response        = null;
-//        $getExchangeRate = false;
-//
-//        if ($this->lsr->isLSR($storeId) && $this->isEnabledGiftCard()) {
-//            $cacheId = LSR::POINTRATE . $storeId."_".$giftCardCurrency;
-//            $response = $this->cacheHelper->getCachedContent($cacheId);
-//
-//            if ($response !== false) {
-//                return $this->formatValue($response);
-//            }
-//
-//            if (!empty($giftCardCurrency)) {
-//                $getExchangeRate = ($giftCardCurrency != $this->lsr->getStoreCurrencyCode()) ? true : false;
-//            }
-//
-//            // @codingStandardsIgnoreStart
-//            $request = new Operation\GetPointRate();
-//            $entity = new Entity\GetPointRate();
-//            // @codingStandardsIgnoreEnd
-//
-//            if ($getExchangeRate) {
-//                $entity->setCurrency($giftCardCurrency);
-//            } else {
-//                $entity->setCurrency($this->lsr->getStoreCurrencyCode());
-//            }
-//
-//            try {
-//                $response = $request->execute($entity);
-//            } catch (Exception $e) {
-//                $this->_logger->error($e->getMessage());
-//            }
-//            if (!empty($response)) {
-//                //$currencyFactor = $response->getResult();
-//                //$exchangeRate   = 1 / $currencyFactor;
-//
-//                $this->cacheHelper->persistContentInCache(
-//                    $cacheId,
-//                    $response->getResult(),
-//                    [Type::CACHE_TAG],
-//                    86400
-//                );
-//
-//                return $this->formatValue($response->getResult());
-//            }
-//        }
-//        return $response;
-//    }
-
     /**
      * To check if gift card elements are enabled
      *
