@@ -61,21 +61,30 @@ class Request extends Action
         $order = $this->orderRepository->get($orderId);
         $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
         $this->lsr->setStoreId($order->getStoreId());
+        $this->basketHelper->setCalculateBasket(false);
+        $isOrderEdit = (bool)$order->getRelationParentId() && $this->lsr->getStoreConfig(
+            LSR::LSR_ORDER_EDIT,
+            $order->getStoreId()
+        );
         $response = null;
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
 
         if ($this->lsr->isLSR($order->getStoreId())) {
             try {
-                $oneListCalculation = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
+                if (!$isOrderEdit && $this->lsr->isAdminOrderCustomPriceActive($order->getStoreId())) {
+                    $oneListCalculation = $this->basketHelper->buildOrderFromMagentoOrderItems($order);
+                } else {
+                    $oneListCalculation = $this->basketHelper->calculateOneListFromOrder($order);
+                }
                 $documentId = null;
                 if (!empty($oneListCalculation)) {
-                    if ($order->getRelationParentId()) {
+                    if ($isOrderEdit) {
                         $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId(
                             $order->getRelationParentId()
                         );
 
-                        if ($oldOrder && $this->lsr->getStoreConfig(LSR::LSR_ORDER_EDIT, $order->getStoreId())) {
+                        if ($oldOrder) {
                             $documentId = $oldOrder->getDocumentId();
                             if ($documentId) {
                                 $customerOrder = $this->orderHelper->getOrderDetailsAgainstId($documentId);

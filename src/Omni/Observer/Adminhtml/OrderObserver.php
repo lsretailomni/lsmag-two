@@ -62,7 +62,15 @@ class OrderObserver implements ObserverInterface
         $this->orderHelper->customerSession->setData('customer_id', $order->getCustomerId());
         $this->orderHelper->customerSession->setCustomerId($order->getCustomerId());
         $this->basketHelper->setCalculateBasket(false);
-        $oneListCalculation = $this->basketHelper->calculateOneListFromOrder($order);
+        $isOrderEdit = !empty($order->getRelationParentId()) && $this->lsr->getStoreConfig(
+            LSR::LSR_ORDER_EDIT,
+            $order->getStoreId()
+        );
+        if (!$isOrderEdit && $this->lsr->isAdminOrderCustomPriceActive($order->getStoreId())) {
+            $oneListCalculation = $this->basketHelper->buildOrderFromMagentoOrderItems($order);
+        } else {
+            $oneListCalculation = $this->basketHelper->calculateOneListFromOrder($order);
+        }
         $response           = null;
         /*
          * Adding condition to only process if LSR is enabled.
@@ -70,10 +78,7 @@ class OrderObserver implements ObserverInterface
         if ($this->lsr->isLSR($order->getStoreId())) {
             try {
                 if (!empty($oneListCalculation)) {
-                    if (!empty($order->getRelationParentId()) && $this->lsr->getStoreConfig(
-                        LSR::LSR_ORDER_EDIT,
-                        $order->getStoreId()
-                    )) {
+                    if ($isOrderEdit) {
                         $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId($order->getRelationParentId());
                         if ($oldOrder) {
                             $documentId = $oldOrder->getDocumentId();

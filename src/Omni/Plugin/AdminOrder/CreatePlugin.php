@@ -67,7 +67,9 @@ class CreatePlugin
         }
 
         try {
-            if ($this->lsr->isLSR($quote->getStoreId())) {
+            if ($this->lsr->isLSR($quote->getStoreId())
+                && !$this->lsr->isAdminOrderCustomPriceActive($quote->getStoreId())
+            ) {
                 $couponCode = $quote->getCouponCode();
                 $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $quote->getStore()->getWebsiteId());
                 $this->basketHelper->storeId = $webStore;
