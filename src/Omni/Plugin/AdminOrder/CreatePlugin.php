@@ -91,7 +91,9 @@ class CreatePlugin
         $this->basketHelper->setCorrectStoreIdInCheckoutSession($quote->getStoreId());
         $this->basketHelper->getCustomerSession()->setCustomerId($quote->getCustomer()->getId());
         try {
-            if ($this->lsr->isLSR($quote->getStoreId())) {
+            if ($this->lsr->isLSR($quote->getStoreId()) &&
+                !$this->lsr->isAdminOrderCustomPriceActive($quote->getStoreId())
+            ) {
                 $couponCode = $quote->getCouponCode();
                 $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $quote->getStore()->getWebsiteId());
                 $this->basketHelper->store_id = $webStore;
@@ -134,6 +136,8 @@ class CreatePlugin
                         $basketData
                     );
                 }
+            } elseif ($this->lsr->isLSR($quote->getStoreId())) {
+                $this->itemHelper->setBaseCurrencyFieldsFromItemPrice($quote);
             }
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
