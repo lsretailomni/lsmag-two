@@ -28,6 +28,13 @@ class SyncPrice extends ProductCreateTask
     public $processed = [];
 
     /**
+     * Cached store price group codes, reset per store in execute().
+     *
+     * @var array|null
+     */
+    private $storePriceGroups = null;
+
+    /**
      * Entry point for cron
      *
      * @param mixed $storeData
@@ -61,6 +68,7 @@ class SyncPrice extends ProductCreateTask
                     );
                     $this->logger->debug('Running SyncPrice Task for store ' . $this->store->getName());
                     $this->processed = [];
+                    $this->storePriceGroups = null;
                     $productPricesBatchSize = $this->replicationHelper->getProductPricesBatchSize();
 
                     /** Get list of only those prices whose items are already processed */
@@ -157,6 +165,18 @@ class SyncPrice extends ProductCreateTask
                     continue;
                 }
 
+                // AC9: skip prices excluded by the store's configured price groups.
+                // Mark as processed (do not apply, do not churn); the allowed price for
+                // this item is applied when its own record is processed.
+                if (!$this->isSaleCodeAllowedForStore($replPrice)) {
+                    $replPrice->setData('is_updated', 0);
+                    $replPrice->setData('processed', 1);
+                    $replPrice->setData('processed_at', $this->replicationHelper->getDateTime());
+                    $this->replPriceRepository->save($replPrice);
+                    $this->processed[$replPrice->getId()] = $replPrice->getId();
+                    continue;
+                }
+
                 $productDataArray = $this->replicationHelper->getProductDataByIdentificationAttributes(
                     $replPrice->getItemId(),
                     $replPrice->getVariantId(),
@@ -206,11 +226,13 @@ class SyncPrice extends ProductCreateTask
         $startingDate = $replPrice->getStartingDate();
         $invalidDate = '1900-01-01T00:00:00';
         $invalidDateAlt = '1900-01-01';
+        $invalidDateMin = '0001-01-01';
 
         // If starting date is empty or invalid, it's not a future price
         $isStartingDateInvalid = empty($startingDate) ||
             strpos($startingDate, $invalidDate) === 0 ||
-            strpos($startingDate, $invalidDateAlt) === 0;
+            strpos($startingDate, $invalidDateAlt) === 0 ||
+            strpos($startingDate, $invalidDateMin) === 0;
 
         if ($isStartingDateInvalid) {
             return false;
@@ -261,14 +283,17 @@ class SyncPrice extends ProductCreateTask
         $endingDate = $replPrice->getEndingDate();
         $invalidDate = '1900-01-01T00:00:00';
         $invalidDateAlt = '1900-01-01';
+        $invalidDateMin = '0001-01-01';
 
         $isStartingDateInvalid = empty($startingDate) ||
             strpos($startingDate, $invalidDate) === 0 ||
-            strpos($startingDate, $invalidDateAlt) === 0;
+            strpos($startingDate, $invalidDateAlt) === 0 ||
+            strpos($startingDate, $invalidDateMin) === 0;
 
         $isEndingDateInvalid = empty($endingDate) ||
             strpos($endingDate, $invalidDate) === 0 ||
-            strpos($endingDate, $invalidDateAlt) === 0;
+            strpos($endingDate, $invalidDateAlt) === 0 ||
+            strpos($endingDate, $invalidDateMin) === 0;
 
         // If both dates are invalid/empty, allow the price (no date restrictions)
         if ($isStartingDateInvalid && $isEndingDateInvalid) {
@@ -293,8 +318,9 @@ class SyncPrice extends ProductCreateTask
 
             // Case 2: Only end date is valid (no start date restriction)
             if ($isStartingDateInvalid && !$isEndingDateInvalid) {
+                // Use end-of-day so timezone shifts (e.g. UTC->UTC-X) don't move the date backward.
                 $endDateTime = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
-                    $endingDate,
+                    substr($endingDate, 0, 10) . ' 23:59:59',
                     $format
                 );
                 if ($currentDate > $endDateTime) {
@@ -309,8 +335,9 @@ class SyncPrice extends ProductCreateTask
                     $startingDate,
                     $format
                 );
+                // Use end-of-day so timezone shifts don't move the EndingDate backward.
                 $endDateTime = $this->replicationHelper->convertDateTimeIntoCurrentTimeZone(
-                    $endingDate,
+                    substr($endingDate, 0, 10) . ' 23:59:59',
                     $format
                 );
 
@@ -348,10 +375,11 @@ class SyncPrice extends ProductCreateTask
     public function processProductPrice($productDataArray, $replPrice)
     {
         /** @var ReplPrice $replPrice */
-        $replItemPriceList = null;
-        if (count($productDataArray) > 1) {
-            $replItemPriceList = $this->getItemPriceList($replPrice->getItemId());
-        }
+        // Always resolve the winning price for the item so that, on every run, the
+        // currently-active price is re-selected among all valid candidates (dated
+        // promo vs open-ended base). This is what allows the re-queued fallback price
+        // to take over automatically once a dated winner expires (see resetNonWinnerPrices).
+        $replItemPriceList = $this->getItemPriceList($replPrice->getItemId());
         foreach ($productDataArray as $productData) {
             $price = $replPrice;
             if (!empty($replItemPriceList)) {
@@ -378,7 +406,263 @@ class SyncPrice extends ProductCreateTask
             );
             $this->replPriceRepository->save($price);
             $this->processed[$price->getId()] = $price->getId();
+            // Keep valid non-winner prices unprocessed so they can become the active
+            // price once the current winner expires (e.g. blank-dates fallback price).
+            $this->resetNonWinnerPrices($price);
         }
+    }
+
+    /**
+     * When a dated price wins, reset to processed=0 any non-winner line for the same
+     * ItemId that is itself still within a valid date window — whether that window is
+     * open-ended (blank/sentinel dates) or dated-but-currently-active.
+     *
+     * Query scoping is ItemId only (not VariantId/PriceListCode/UnitOfMeasure) so a
+     * still-valid item-level (no-variant) or blank-UOM (catch-all) fallback is always
+     * found. But NOT every same-item sibling is a real reset candidate: a non-winner
+     * with its own different, non-blank VariantId, or its own different, non-blank
+     * UnitOfMeasure, is an independently valid price for that other variant/UOM — not a
+     * fallback of this winner — and is left alone in the loop below. Resetting it would
+     * just be undone by that other variant's/UOM's own resetNonWinnerPrices() call on
+     * its own processing pass, producing an infinite processed=0/1 ping-pong between the
+     * two prices instead of either ever settling. Only the item-level fallback (blank
+     * VariantId), the blank-UOM catch-all, or a same-variant-same-UOM sibling (e.g. a
+     * different PriceListCode line) are genuine fallback candidates for this winner.
+     *
+     * This ensures every still-valid fallback price re-enters the cron queue and is
+     * automatically reconsidered once the dated winner expires. Expired or future
+     * non-winners are left alone (expired ones need no further action; future ones are
+     * never marked processed in the first place — see process()/isFuturePrice()).
+     *
+     * Only runs when the winner itself has actual dates (not open-ended), so that
+     * an open-ended winner (base price restored after expiry) does not trigger resets.
+     *
+     * @param object $winner
+     * @return void
+     */
+    private function resetNonWinnerPrices($winner)
+    {
+        // Only reset when a dated price wins, not when the open-ended base price is restored.
+        if ($this->isOpenEndedPrice($winner)) {
+            return;
+        }
+
+        $webStoreId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $this->store->getId());
+        $filters = [
+            ['field' => 'ItemId',        'value' => (string)$winner->getItemId(), 'condition_type' => 'eq'],
+            ['field' => 'StoreId',       'value' => $webStoreId,                  'condition_type' => 'eq'],
+            ['field' => 'scope_id',      'value' => $this->getScopeId(),          'condition_type' => 'eq'],
+            ['field' => 'Status',        'value' => 'Active',                     'condition_type' => 'eq'],
+            ['field' => 'repl_price_id', 'value' => $winner->getId(),             'condition_type' => 'neq'],
+        ];
+        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+        try {
+            $nonWinners = $this->replPriceRepository->getList($searchCriteria);
+            $winnerVariantId = (string)($winner->getVariantId() ?? '');
+            $winnerUom       = (string)($winner->getUnitOfMeasure() ?? '');
+            foreach ($nonWinners->getItems() as $nonWinner) {
+                // A different, non-blank VariantId belongs to another variant's own
+                // independently-valid price, not a fallback of this winner — never reset it here
+                // (see class docblock above for why: it would ping-pong with that variant's own
+                // resetNonWinnerPrices() call).
+                $nonWinnerVariantId = (string)($nonWinner->getVariantId() ?? '');
+                if ($nonWinnerVariantId !== '' && $nonWinnerVariantId !== $winnerVariantId) {
+                    continue;
+                }
+                // Same reasoning for UnitOfMeasure: a different, non-blank UOM sibling (e.g.
+                // "BOX" vs this winner's "PACK") is its own independently-valid price for that
+                // UOM, not a fallback of this winner — resetting it would ping-pong the same way.
+                // A blank UOM (the universal catch-all) is always kept as a fallback candidate.
+                $nonWinnerUom = (string)($nonWinner->getUnitOfMeasure() ?? '');
+                if ($nonWinnerUom !== '' && $nonWinnerUom !== $winnerUom) {
+                    continue;
+                }
+                // Never re-queue a price excluded by the store's price groups (AC9).
+                if (!$this->isSaleCodeAllowedForStore($nonWinner)) {
+                    continue;
+                }
+                // Only reset non-winners that are themselves still within a valid date window
+                // (open-ended, or dated-but-currently-active) — these are the fallback prices
+                // that must re-activate once the current winner expires. Expired/future prices
+                // are left alone (expired ones need no further action; future ones are never
+                // marked processed in the first place, see process()/isFuturePrice()).
+                if (!$this->isValidPrice($nonWinner)) {
+                    continue;
+                }
+                // Idempotency short-circuit: if this sibling is already in the correct
+                // pending-reevaluation state (processed=0, is_updated=1) from a previous
+                // cron pass, skip the save() entirely. This avoids a redundant no-op DB
+                // write on every cron pass for a sibling that already needs no change —
+                // it does not change WHICH rows get requeued, only avoids re-saving a row
+                // that is unchanged since the last reset. Values may come back as string
+                // '0'/'1' from the repository, so cast before comparing.
+                if ((int)$nonWinner->getData('processed') === 0
+                    && (int)$nonWinner->getData('is_updated') === 1) {
+                    continue;
+                }
+                $nonWinner->setData('processed', 0);
+                $nonWinner->setData('is_updated', 1);
+                $this->replPriceRepository->save($nonWinner);
+            }
+        } catch (Exception $e) {
+            $this->logger->debug(
+                sprintf(
+                    'Error resetting non-winner prices for item: %s, variant: %s - Error: %s',
+                    $winner->getItemId(),
+                    $winner->getVariantId() ?? '',
+                    $e->getMessage()
+                )
+            );
+        }
+    }
+
+    /**
+     * Returns true when both StartingDate and EndingDate are blank or an LS Central
+     * sentinel (0001-01-01 / 1900-01-01), meaning the price has no date restriction.
+     *
+     * @param object $replPrice
+     * @return bool
+     */
+    private function isOpenEndedPrice($replPrice)
+    {
+        $invalidPrefixes = ['0001-01-01', '1900-01-01'];
+        foreach (['getStartingDate', 'getEndingDate'] as $getter) {
+            $date = (string)($replPrice->$getter() ?? '');
+            $isInvalid = $date === '';
+            foreach ($invalidPrefixes as $prefix) {
+                if (strpos($date, $prefix) === 0) {
+                    $isInvalid = true;
+                    break;
+                }
+            }
+            if (!$isInvalid) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Load the store's configured price group codes from repl_store (AC9).
+     * Result is cached per store — $this->storePriceGroups is reset in execute() per store.
+     *
+     * ObjectManager is used to resolve the ReplStore collection factory because
+     * SyncPrice inherits ProductCreateTask's large constructor; adding a constructor
+     * here would require re-declaring every parent argument.
+     *
+     * @return array
+     */
+    private function getStorePriceGroups()
+    {
+        if ($this->storePriceGroups !== null) {
+            return $this->storePriceGroups;
+        }
+        $webStoreId = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $this->store->getId());
+        $websiteId  = $this->store->getWebsiteId();
+        /** @var \Ls\Replication\Model\ResourceModel\ReplStore\Collection $storeCollection */
+        $storeCollection = \Magento\Framework\App\ObjectManager::getInstance()
+            ->get(\Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory::class)
+            ->create();
+        $storeCollection->addFieldToFilter('scope_id', $websiteId)
+            ->addFieldToFilter('nav_id', $webStoreId);
+        $this->storePriceGroups = [];
+        foreach ($storeCollection->getItems() as $storeData) {
+            if ($storeData->getPriceGroupCodes()) {
+                $this->storePriceGroups = array_values(
+                    array_filter(explode(';', $storeData->getPriceGroupCodes()))
+                );
+                break;
+            }
+        }
+        return $this->storePriceGroups;
+    }
+
+    /**
+     * Whether a price's SaleCode is allowed by the store's configured price groups (AC9).
+     *
+     * When no price groups are configured, all prices are allowed (no check performed).
+     * A blank SaleCode is treated as a universal price and is always allowed.
+     *
+     * @param object $replPrice
+     * @return bool
+     */
+    private function isSaleCodeAllowedForStore($replPrice)
+    {
+        $priceGroups = $this->getStorePriceGroups();
+        if (empty($priceGroups)) {
+            return true;
+        }
+        $saleCode = (string)($replPrice->getSaleCode() ?? '');
+        if ($saleCode === '') {
+            return true;
+        }
+        return in_array($saleCode, $priceGroups, true);
+    }
+
+    /**
+     * Select the best price from multiple valid candidates for the same item/variant/UOM key.
+     *
+     * Priority: currency-specific (matching store base currency) > blank currency,
+     * then nearest (most recent) StartingDate, then PriceListCode desc, then LineNumber desc.
+     * Never selects by lowest price.
+     *
+     * @param object[] $candidates
+     * @param string $storeCurrency the store's base currency code; blank disables currency matching
+     * @return object|null
+     */
+    private function selectBestPrice(array $candidates, $storeCurrency = '')
+    {
+        if (empty($candidates)) {
+            return null;
+        }
+
+        // Currency matching against the store's base currency: prefer matching-currency
+        // lines, fall back to blank-currency lines; exclude non-matching specific currencies.
+        if ($storeCurrency !== '') {
+            $matchingCurrency = array_values(array_filter(
+                $candidates,
+                fn($c) => (string)($c->getCurrencyCode() ?? '') === $storeCurrency
+            ));
+            if (!empty($matchingCurrency)) {
+                $pool = $matchingCurrency;
+            } else {
+                $pool = array_values(array_filter(
+                    $candidates,
+                    fn($c) => (string)($c->getCurrencyCode() ?? '') === ''
+                ));
+            }
+        } else {
+            // No store currency provided — any specific currency beats blank.
+            $currencySpecific = array_values(array_filter(
+                $candidates,
+                fn($c) => (string)($c->getCurrencyCode() ?? '') !== ''
+            ));
+            $pool = !empty($currencySpecific) ? $currencySpecific : array_values($candidates);
+        }
+
+        if (empty($pool)) {
+            return null;
+        }
+        if (count($pool) === 1) {
+            return $pool[0];
+        }
+
+        // Sort descending by starting date (nearest = most recent = highest timestamp),
+        // then descending by PriceListCode, then descending by LineNumber.
+        usort($pool, function ($a, $b) {
+            $tsA = !empty($a->getStartingDate()) ? (strtotime($a->getStartingDate()) ?: 0) : 0;
+            $tsB = !empty($b->getStartingDate()) ? (strtotime($b->getStartingDate()) ?: 0) : 0;
+            if ($tsA !== $tsB) {
+                return $tsB <=> $tsA;
+            }
+            $codeCompare = strcmp((string)($b->getPriceListCode() ?? ''), (string)($a->getPriceListCode() ?? ''));
+            if ($codeCompare !== 0) {
+                return $codeCompare;
+            }
+            return ((int)($b->getLineNumber() ?? 0)) - ((int)($a->getLineNumber() ?? 0));
+        });
+
+        return $pool[0];
     }
 
     /**
@@ -399,6 +683,17 @@ class SyncPrice extends ProductCreateTask
     /**
      * Getting item price of given product
      *
+     * getItemPriceList() runs the waterfall independently per UOM pool (keyed as
+     * itemId-variantId-uom). Here we run a final cross-UOM waterfall so that a
+     * date-specific price beats an open-ended blank-UOM price for the same UOM.
+     *
+     * Candidates are first filtered to the product's own UOM: a candidate is kept only when its
+     * UnitOfMeasure is blank (the universal catch-all) or exactly equals the product's resolved
+     * UOM code. A product whose UOM attribute is unset resolves to an empty code, which therefore
+     * keeps ONLY the blank-UOM catch-all candidates and excludes every UOM-specific one. Among the
+     * survivors, a UOM-specific price is preferred over the blank catch-all, and selectBestPrice()
+     * breaks any remaining ties.
+     *
      * @param object $productData
      * @param array $replItemPriceList
      * @return object|null
@@ -406,38 +701,74 @@ class SyncPrice extends ProductCreateTask
     public function getPrice($productData, $replItemPriceList)
     {
         $itemId    = $productData->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
-        $variantId = $productData->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
-        $uom       = $productData->getData(LSR::LS_UOM_ATTRIBUTE);
-        if ($uom) {
-            $attr = $productData->getResource()->getAttribute(LSR::LS_UOM_ATTRIBUTE);
-            if ($attr->usesSource()) {
-                $uom = $this->replicationHelper->getUomCodeGivenDescription($attr->getSource()->getOptionText($uom));
+        $variantId = (string)($productData->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE) ?? '');
+
+        // Collect all per-UOM winners for this item+variant (any UOM suffix).
+        $prefix     = $itemId . '-' . $variantId . '-';
+        $candidates = [];
+        foreach ($replItemPriceList as $key => $price) {
+            if (strpos($key, $prefix) === 0) {
+                $candidates[] = $price;
             }
         }
-        $key = $itemId . '-' . $variantId . '-' . $uom;
-        if (array_key_exists($key, $replItemPriceList)) {
-            $price = $replItemPriceList[$key];
-            // Validate the price before returning
-            if ($this->isValidPrice($price)) {
-                return $price;
-            }
-        }
-        if ($uom) {
-            $variantId         = '';
-            $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($itemId);
-            if ($uom == $baseUnitOfMeasure) {
-                $uom = '';
-            }
-            $key = $itemId . '-' . $variantId . '-' . $uom;
-            if (array_key_exists($key, $replItemPriceList)) {
-                $price = $replItemPriceList[$key];
-                // Validate the price before returning
-                if ($this->isValidPrice($price)) {
-                    return $price;
+
+        // Fallback: if no variant-specific price found, look for no-variant prices.
+        if (empty($candidates) && $variantId !== '') {
+            $prefix = $itemId . '--';
+            foreach ($replItemPriceList as $key => $price) {
+                if (strpos($key, $prefix) === 0) {
+                    $candidates[] = $price;
                 }
             }
         }
-        return null;
+
+        // Resolve this product's own UOM code so cross-UOM price rows (e.g. a PACK-only
+        // price) are never considered for a different-UOM product (e.g. PCS). A blank
+        // UnitOfMeasure candidate is always kept — it's the universal catch-all. This filter
+        // runs UNCONDITIONALLY before any early return: a lone candidate that is UOM-specific
+        // for a different UOM than the product must still be dropped.
+        $productUomLabel = $productData->getAttributeText(LSR::LS_UOM_ATTRIBUTE);
+        $productUomCode  = $productUomLabel
+            ? $this->replicationHelper->getUomCodeGivenDescription(
+                (string)$productUomLabel,
+                $this->getScopeId()
+            )
+            : '';
+        $candidates = array_values(array_filter(
+            $candidates,
+            function ($c) use ($productUomCode) {
+                $candidateUom = (string)($c->getUnitOfMeasure() ?? '');
+                return $candidateUom === '' || $candidateUom === $productUomCode;
+            }
+        ));
+
+        if (empty($candidates)) {
+            return null;
+        }
+
+        if (count($candidates) === 1) {
+            return $candidates[0];
+        }
+
+        // UOM specificity: a price record with an explicit UOM is more specific
+        // than a blank-UOM (catch-all) record. Prefer UOM-specific candidates;
+        // fall back to blank-UOM candidates only when no UOM-specific ones exist.
+        $uomSpecific = array_values(array_filter(
+            $candidates,
+            fn($c) => (string)($c->getUnitOfMeasure() ?? '') !== ''
+        ));
+        if (!empty($uomSpecific)) {
+            $candidates = $uomSpecific;
+        }
+
+        if (count($candidates) === 1) {
+            return $candidates[0];
+        }
+
+        return $this->selectBestPrice(
+            $candidates,
+            (string)$this->store->getBaseCurrencyCode()
+        );
     }
 
     /**
@@ -470,13 +801,26 @@ class SyncPrice extends ProductCreateTask
             );
         try {
             $replItemPriceList = $this->replPriceRepository->getList($searchCriteria);
+            $allCandidates     = [];
             /** @var ReplPrice $replPrice */
             foreach ($replItemPriceList->getItems() as $replPrice) {
                 // Validate price before adding to array
                 if ($this->isValidPrice($replPrice)) {
-                    $key                          = $replPrice->getItemId() . '-' . $replPrice->getVariantId() . '-' .
+                    // AC9: when the store has price groups configured, only include prices
+                    // whose SaleCode matches one of those groups (blank SaleCode = universal).
+                    if (!$this->isSaleCodeAllowedForStore($replPrice)) {
+                        continue;
+                    }
+                    $key                   = $replPrice->getItemId() . '-' . $replPrice->getVariantId() . '-' .
                         $replPrice->getUnitOfMeasure();
-                    $replItemPriceListArray[$key] = $replPrice;
+                    $allCandidates[$key][] = $replPrice;
+                }
+            }
+            $storeCurrency = (string)$this->store->getBaseCurrencyCode();
+            foreach ($allCandidates as $key => $candidates) {
+                $winner = $this->selectBestPrice($candidates, $storeCurrency);
+                if ($winner !== null) {
+                    $replItemPriceListArray[$key] = $winner;
                 }
             }
         } catch (Exception $e) {

@@ -769,7 +769,7 @@ class ProductCreateTask
                                     );
                                 }
 
-                                if (empty($variants) && (count($filteredUomCodes[$item->getNavId()]) <= 1)) {
+                                if (empty($variants) && (array_key_exists($item->getNavId(),$filteredUomCodes) && count($filteredUomCodes[$item->getNavId()]) <= 1)) {
                                     foreach ($uomCodesNotProcessed as $uomCode) {
                                         if (!empty($uomCode)) {
                                             $this->syncUomAdditionalAttributes($product, $uomCode, $item);
