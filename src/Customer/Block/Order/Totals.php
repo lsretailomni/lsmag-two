@@ -199,10 +199,6 @@ class Totals extends AbstractOrderBlock
                         $method    = $tenderTypeMapping[$tenderTypeId];
                         $methods[] = __($method);
 
-                        $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
-                        if ($giftCardTenderId == $tenderTypeId) {
-                            $this->giftCardAmount = $line->getAmountInCurrency();
-                        }
                         $loyaltyTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
                         if ($loyaltyTenderId == $tenderTypeId) {
                             $this->loyaltyPointAmount = $this->formatLoyaltyPoints($line->getAmountInCurrency());
