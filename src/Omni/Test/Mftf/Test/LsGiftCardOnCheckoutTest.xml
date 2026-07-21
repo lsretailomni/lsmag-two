@@ -15,9 +15,19 @@
         </annotations>
         <before>
             <magentoCLI command="config:set carriers/clickandcollect/active 0" stepKey="disableClickAndCollect" after="EnablingGuestCheckoutLogin"/>
+            <!-- Enable the pin code field so a pin-protected gift card can be applied on checkout. -->
+            <magentoCLI command="config:set --scope website --scope-code base {{GiftCardPinCodeEnabled.path}} {{GiftCardPinCodeEnabled.value}}" stepKey="enablePinCodeField" after="setRequiredConfigs"/>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCachePin" after="enablePinCodeField">
+                <argument name="tags" value="config"/>
+            </actionGroup>
         </before>
         <after>
             <magentoCLI command="config:set carriers/clickandcollect/active 1" stepKey="enableClickAndCollect" after="DisablingGuestCheckoutLogin"/>
+            <!-- Reset the pin code field so pin-less gift card tests are unaffected. -->
+            <magentoCLI command="config:set --scope website --scope-code base {{GiftCardPinCodeDisabled.path}} {{GiftCardPinCodeDisabled.value}}" stepKey="disablePinCodeField" after="enableClickAndCollect"/>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCachePinAfter" after="disablePinCodeField">
+                <argument name="tags" value="config"/>
+            </actionGroup>
         </after>
         <actionGroup ref="AdminOpenCustomersGridActionGroup" stepKey="openCustomersGridPage" before="addProductToCart1"/>
         <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerPage" before="addProductToCart1">
@@ -31,7 +41,8 @@
         </actionGroup>
 
         <click selector=".checkout-payment-method .giftcard .action.action-toggle" stepKey="clickApplyGiftCardCollapsible" before="deleteNewUser" />
-        <fillField userInput="{{_ENV.GIFT_CARD_NUMBER_1}}" selector=".checkout-payment-method .giftcard .form #gift_card_no" stepKey="fillGiftCardNo" before="deleteNewUser"/>
+        <fillField userInput="{{_ENV.GIFT_CARD_NUMBER_2}}" selector=".checkout-payment-method .giftcard .form #gift_card_no" stepKey="fillGiftCardNo" before="deleteNewUser"/>
+        <fillField userInput="{{_ENV.GIFT_CARD_PIN_2}}" selector=".checkout-payment-method .giftcard .form #gift_card_pin" stepKey="fillGiftCardPin" before="deleteNewUser"/>
         <fillField userInput="1" selector=".checkout-payment-method .giftcard .form #gift_card_amount" stepKey="fillGiftCardAmount" before="deleteNewUser"/>
 
         <wait stepKey="waitForSessionLoad1" time="5"/>

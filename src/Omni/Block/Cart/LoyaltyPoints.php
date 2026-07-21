@@ -61,7 +61,7 @@ class LoyaltyPoints extends AbstractCart
         $loyPointRate = $this->loyaltyHelper->getPointRate(null, 'LOY');
         $currentCurrencyPointRate = $this->loyaltyHelper->getPointRate();
 
-        return $loyPointRate / $currentCurrencyPointRate;
+        return $currentCurrencyPointRate > 0 ? $loyPointRate / $currentCurrencyPointRate : 0;
     }
 
     /**

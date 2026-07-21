@@ -863,8 +863,8 @@ class BasketHelper extends AbstractHelperOmni
         $status = $this->fetchUpdatedBasket();
         $mobileTransDiscountLines = $status ? $status->getMobiletransdiscountline() : [];
         $checkCouponAmount = $this->dataHelper->orderBalanceCheck(
-            $this->checkoutSession->getQuote()->getLsGiftCardNo(),
-            $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed(),
+            $this->checkoutSession->getQuote()->getLsPosDataEntries(),
+            (float)array_sum(array_column(json_decode((string)$this->checkoutSession->getQuote()->getLsPosDataEntries(), true) ?? [], 'amount')),
             $this->checkoutSession->getQuote()->getLsPointsSpent(),
             $status,
             false
@@ -1408,7 +1408,7 @@ class BasketHelper extends AbstractHelperOmni
             $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
             $cartQuote = $this->checkoutSession->getQuote();
 
-            if ($cartQuote->getLsGiftCardAmountUsed() > 0 ||
+            if ((float)array_sum(array_column(json_decode((string)$cartQuote->getLsPosDataEntries(), true) ?? [], 'amount')) > 0 ||
                 $cartQuote->getLsPointsSpent() > 0) {
                 $this->validateLoyaltyPointsAgainstOrderTotal($cartQuote, $basketData);
             }
@@ -1451,14 +1451,14 @@ class BasketHelper extends AbstractHelperOmni
     public function validateLoyaltyPointsAgainstOrderTotal($cartQuote, $basketData)
     {
         $this->dataHelper->orderBalanceCheck(
-            $cartQuote->getLsGiftCardNo(),
-            $cartQuote->getLsGiftCardAmountUsed(),
+            $cartQuote->getLsPosDataEntries(),
+            (float)array_sum(array_column(json_decode((string)$cartQuote->getLsPosDataEntries(), true) ?? [], 'amount')),
             $cartQuote->getLsPointsSpent(),
             $basketData
         );
         $loyaltyPoints = $cartQuote->getLsPointsSpent();
         $orderBalance = $this->dataHelper->getOrderBalance(
-            $cartQuote->getLsGiftCardAmountUsed(),
+            (float)array_sum(array_column(json_decode((string)$cartQuote->getLsPosDataEntries(), true) ?? [], 'amount')),
             0,
             $this->getBasketSessionValue()
         );

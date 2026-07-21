@@ -125,7 +125,7 @@ class SyncPriceTest extends AbstractTaskTest
             [
                 'UnitPriceInclVat' => '10.0000',
                 'is_updated' => 1,
-                'Status' => 'Active'
+                'Status' => 1
             ]
         );
 

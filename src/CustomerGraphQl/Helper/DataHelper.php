@@ -303,11 +303,11 @@ class DataHelper
     {
         $isCc = false;
 
-        $lines = !is_array($order->getLscMemberSalesDocLine()) ?
-            [$order->getLscMemberSalesDocLine()] :
-            $order->getLscMemberSalesDocLine();
+        $orderLines = $order->getLscMemberSalesDocLine();
+        $orderLines = $orderLines && is_array($orderLines) ?
+            $orderLines : (($orderLines && !is_array($orderLines)) ? [$orderLines] : []);
 
-        foreach ($lines as $line) {
+        foreach ($orderLines as $line) {
             if ($line->getClickAndCollectLine()) {
                 $isCc = true;
                 break;

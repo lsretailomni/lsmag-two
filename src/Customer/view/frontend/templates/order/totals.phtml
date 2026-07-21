@@ -44,16 +44,27 @@ use \Ls\Customer\Block\Order\Totals;
     </tr>
 <?php endif; ?>
 
-<?php if (!empty($block->giftCardAmount > 0)): ?>
+<?php foreach ($block->giftCardEntries as $giftCardEntry): ?>
     <tr class="discount">
         <th colspan="4" class="mark" scope="row">
-            <?= $escaper->escapeHtml(__('Gift Card Redeemed')) ?>
+            <?= $escaper->escapeHtml(__('%1 Redeemed (%2)', $giftCardEntry['entry_type'], $giftCardEntry['entry_no'])) ?>
         </th>
-        <td class="amount" data-th="<?= $escaper->escapeHtml(__('Gift Card Redeemed')) ?>">
-            <span class="price">-<?= $escaper->escapeHtml($block->getFormattedPrice($block->giftCardAmount)); ?></span>
+        <td class="amount" data-th="<?= $escaper->escapeHtml(__('%1 Redeemed (%2)', $giftCardEntry['entry_type'], $giftCardEntry['entry_no'])) ?>">
+            <span class="price">-<?= $escaper->escapeHtml($block->getFormattedPrice($giftCardEntry['amount'])); ?></span>
         </td>
     </tr>
-<?php endif; ?>
+<?php endforeach; ?>
+
+<?php foreach ($block->voucherEntries as $voucherEntry): ?>
+    <tr class="discount">
+        <th colspan="4" class="mark" scope="row">
+            <?= $escaper->escapeHtml(__('%1 Redeemed (%2)', $voucherEntry['entry_type'], $voucherEntry['entry_no'])) ?>
+        </th>
+        <td class="amount" data-th="<?= $escaper->escapeHtml(__('%1 Redeemed (%2)', $voucherEntry['entry_type'], $voucherEntry['entry_no'])) ?>">
+            <span class="price">-<?= $escaper->escapeHtml($block->getFormattedPrice($voucherEntry['amount'])); ?></span>
+        </td>
+    </tr>
+<?php endforeach; ?>
 
 <tr class="shipping">
     <th colspan="4" class="mark" scope="row">

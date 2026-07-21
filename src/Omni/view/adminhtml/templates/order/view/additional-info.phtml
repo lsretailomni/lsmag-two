@@ -22,9 +22,23 @@ $order = $block->getOrder();
         <td><span id="order_status"><?= $block->escapeHtml($order->getCouponCode()) ?></span></td>
     </tr>
 <?php endif; ?>
-<?php if (!empty($order->getLsGiftCardNo())) : ?>
+<?php
+$posEntries = json_decode((string)$order->getLsPosDataEntries(), true) ?? [];
+if (!empty($posEntries)):
+    foreach ($posEntries as $entry):
+        $entryLabel = ($entry['entry_type'] ?? '') . ' - ' . ($entry['entry_no'] ?? '');
+        $entryAmt   = isset($entry['amount']) ? $order->formatPriceTxt(-(float)$entry['amount']) : '';
+?>
+    <tr>
+        <th><?= $block->escapeHtml(__('%1 Redeemed', $entry['entry_type'] ?? __('POS Entry'))) ?></th>
+        <td><?= $block->escapeHtml($entryLabel) ?><?php if ($entryAmt): ?> (<?= $block->escapeHtml($entryAmt) ?>)<?php endif; ?></td>
+    </tr>
+<?php
+    endforeach;
+elseif (!empty($order->getLsGiftCardNo())):
+?>
     <tr>
         <th><?= $block->escapeHtml(__('Gift Card Code')) ?></th>
-        <td><span id="order_status"><?= $block->escapeHtml($order->getLsGiftCardNo()) ?></span></td>
+        <td><?= $block->escapeHtml($order->getLsGiftCardNo()) ?></td>
     </tr>
 <?php endif; ?>

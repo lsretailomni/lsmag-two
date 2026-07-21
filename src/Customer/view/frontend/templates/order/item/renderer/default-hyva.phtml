@@ -1,0 +1,175 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/**
+ *
+ * @var $block DefaultRenderer
+ * @var $viewModel ItemRenderer
+ * @var $escaper Escaper
+ */
+
+use Ls\Customer\ViewModel\ItemRenderer;
+use Magento\Framework\Escaper;
+use Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer;
+
+$_item     = $block->getItem();
+$viewModel = $block->getViewModel();
+
+// --- Discount resolution (same logic as the working custom renderer) ---
+$discountDescription = '';
+$line                = null;
+
+if ($viewModel && method_exists($viewModel, 'getDiscountInfoGivenOrderItem')) {
+    [$discountInfo, $line] = $viewModel->getDiscountInfoGivenOrderItem($_item);
+
+    if (!empty($discountInfo)) {
+        $discountDescription = $discountInfo[0] ?? '';
+    }
+
+    if ($line && !empty($line->getDiscountAmount()) && $line->getDiscountAmount() > 0 && empty($discountDescription)) {
+        $discountDescription = __('Discounted');
+    }
+}
+
+$hasDiscount = $line && !empty($line->getDiscountAmount()) && $line->getDiscountAmount() > 0;
+
+// --- Price helpers (use viewModel/LS line when available, fall back to native Magento values) ---
+$unitPrice = $hasDiscount
+    ? ($viewModel ? $viewModel->getFormattedPrice($line->getAmount()) : $_item->getPrice())
+    : ($viewModel ? $viewModel->getFormattedPrice($_item->getPrice()) : $_item->getPrice());
+
+$originalPrice = ($hasDiscount && $viewModel)
+    ? $viewModel->getFormattedPrice($line->getAmount() + $line->getDiscountAmount())
+    : null;
+
+$discountAmount = ($hasDiscount && $viewModel)
+    ? $viewModel->getFormattedPrice($line->getDiscountAmount())
+    : null;
+
+$subtotal = ($line && $viewModel)
+    ? $viewModel->getFormattedPrice($line->getAmount())
+    : ($viewModel ? $viewModel->getFormattedPrice($_item->getRowTotal()) : $_item->getRowTotal());
+?>
+<div id="order-item-row-<?= (int)$_item->getId() ?>"
+     class="lg:grid grid-cols-5 py-2 border-b border-gray-100 last:border-b-0">
+
+    <!-- Column 1-2: Product name, SKU, options -->
+    <div class="p-2 col-span-2">
+        <span class="font-semibold">
+            <?= $escaper->escapeHtml($_item->getName()) ?>
+        </span>
+
+        <div class="item-options mt-2 space-y-1">
+
+            <!-- SKU -->
+            <div class="text-sm flex">
+                <span><?= $escaper->escapeHtml(__('SKU')) ?>:</span>
+                <span class="text-sm ml-1"><?= /* @noEscape */ $block->prepareSku($block->getSku()) ?></span>
+            </div>
+
+            <!-- Custom options / configurable attributes -->
+            <?php if ($_options = $block->getItemOptions()): ?>
+                <?php foreach ($_options as $_option): ?>
+                    <div class="text-sm flex mt-1">
+                        <span><?= $escaper->escapeHtml($_option['label']) ?>:</span>
+                        <?php if (!$block->getPrintStatus()): ?>
+                            <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                            <span<?= (isset($_formatedOptionValue['full_view']) ? ' class="tooltip wrapper ml-1"' : ' class="ml-1"') ?>>
+                                <?= $escaper->escapeHtml($_formatedOptionValue['value'], ['a']) ?>
+                                <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                    <div class="tooltip content">
+                                        <dl class="item options">
+                                            <dt><?= $escaper->escapeHtml($_option['label']) ?></dt>
+                                            <dd><?= $escaper->escapeHtml($_formatedOptionValue['full_view']) ?></dd>
+                                        </dl>
+                                    </div>
+                                <?php endif; ?>
+                            </span>
+                        <?php else: ?>
+                            <?php $optionValue = isset($_option['print_value']) ? $_option['print_value'] : $_option['value'] ?>
+                            <span class="ml-1"><?= $escaper->escapeHtml($optionValue) ?></span>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+            <!-- Additional product info block (e.g. gift messages) -->
+            <?php $addtInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+            <?php if ($addtInfoBlock): ?>
+                <div class="text-sm mt-1">
+                    <?= $addtInfoBlock->setItem($_item)->toHtml() ?>
+                </div>
+            <?php endif; ?>
+
+            <!-- Item description -->
+            <?php if ($desc = $escaper->escapeHtml($_item->getDescription())): ?>
+                <div class="text-sm mt-1"><?= $desc ?></div>
+            <?php endif; ?>
+
+            <!-- Discount label -->
+            <?php if (!empty($discountDescription)): ?>
+                <p class="mt-1"><strong><?= /* @noEscape */ $discountDescription ?></strong></p>
+            <?php endif; ?>
+
+        </div>
+    </div>
+
+    <!-- Column 3: Unit price -->
+    <div class="p-2 flex justify-between lg:block">
+        <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Price')) ?></p>
+
+        <?php if ($hasDiscount): ?>
+            <div>
+                <?= /* @noEscape */ $unitPrice ?>
+                <div class="lsdiscountprice2">
+                    <span class="line-through text-gray-400">
+                        <?= /* @noEscape */ $originalPrice ?>
+                    </span>
+                </div>
+                <div class="lsdiscountamount text-sm text-red-600">
+                    <?= /* @noEscape */ '(' . __('Save') . ' ' . $discountAmount . ')' ?>
+                </div>
+            </div>
+        <?php else: ?>
+            <?= /* @noEscape */ $unitPrice ?>
+        <?php endif; ?>
+    </div>
+
+    <!-- Column 4: Qty breakdown -->
+    <div class="p-2 flex justify-between lg:block">
+        <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Qty')) ?></p>
+        <div class="text-right lg:text-left space-y-1">
+            <?php if ($block->getItem()->getQtyOrdered() > 0): ?>
+                <div class="text-sm">
+                    <span class="text-gray-500"><?= $escaper->escapeHtml(__('Ordered')) ?>: </span>
+                    <span><?= (float)$block->getItem()->getQtyOrdered() ?></span>
+                </div>
+            <?php endif; ?>
+            <?php if ($block->getItem()->getQtyShipped() > 0): ?>
+                <div class="text-sm">
+                    <span class="text-gray-500"><?= $escaper->escapeHtml(__('Shipped')) ?>: </span>
+                    <span><?= (float)$block->getItem()->getQtyShipped() ?></span>
+                </div>
+            <?php endif; ?>
+            <?php if ($block->getItem()->getQtyCanceled() > 0): ?>
+                <div class="text-sm">
+                    <span class="text-gray-500"><?= $escaper->escapeHtml(__('Canceled')) ?>: </span>
+                    <span><?= (float)$block->getItem()->getQtyCanceled() ?></span>
+                </div>
+            <?php endif; ?>
+            <?php if ($block->getItem()->getQtyRefunded() > 0): ?>
+                <div class="text-sm">
+                    <span class="text-gray-500"><?= $escaper->escapeHtml(__('Refunded')) ?>: </span>
+                    <span><?= (float)$block->getItem()->getQtyRefunded() ?></span>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- Column 5: Row subtotal -->
+    <div class="p-2 text-right flex justify-between lg:block">
+        <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Subtotal')) ?></p>
+        <?= /* @noEscape */ $subtotal ?>
+    </div>
+
+</div>

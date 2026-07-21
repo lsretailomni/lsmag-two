@@ -90,6 +90,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SERVICE_TIMEOUT = 'ls_mag/service/timeout';
     const SC_SERVICE_VERSION = 'ls_mag/service/version';
     const SC_SERVICE_LS_CENTRAL_VERSION = 'ls_mag/service/ls_central_version';
+    const SC_USE_SALES_PRICE = 'ls_mag/replication/use_sales_price';
     const SC_SERVICE_HEART_BEAT_TIMEOUT = 'ls_mag/service/heart_beat_timeout';
     const SC_SERVICE_LICENSE_VALIDITY = 'ls_mag/service/license_validity';
 
@@ -110,6 +111,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const SC_REPLICATION_DEFAULT_STOP_FPC_PURGE = 'ls_mag/replication/stop_fpc_purge_on_index';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
+    const SC_REPLICATION_BATCH_UPSERT_ENABLED = 'ls_mag/replication/batch_upsert_enabled';
     const SC_REPLICATION_PRODUCT_BATCHSIZE = 'ls_mag/replication/product_batch_size';
     const SC_REPLICATION_PRODUCT_ATTRIBUTE_BATCH_SIZE = 'ls_mag/replication/product_attribute_batch_size';
     const SC_REPLICATION_DISCOUNT_BATCH_SIZE = 'ls_mag/replication/discount_batch_size';
@@ -414,6 +416,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_GIFTCARD_SHOW_ON_CHECKOUT = 'ls_mag/ls_giftcard/checkout';
     const LS_GIFTCARD_SHOW_PIN_CODE_FIELD = 'ls_mag/ls_giftcard/pin_code';
     const LS_GIFTCARD_TENDER_TYPE = 'giftcard';
+    const LS_VOUCHER_GIFT_CARD_CONFIGURATION = 'ls_mag/ls_giftcard/voucher_configuration';
 
     //Discount Management
     const LS_DISCOUNT_SHOW_ON_PRODUCT = 'ls_mag/ls_discounts/discount';
@@ -1541,5 +1544,43 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getStoreId()
     {
         return $this->storeManager->getStore()->getStoreId();
+    }
+
+    /**
+     * Get voucher/gift card configuration from admin dynamic rows
+     *
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getVoucherGiftCardConfiguration(): array
+    {
+        $config = $this->getStoreConfig(
+            self::LS_VOUCHER_GIFT_CARD_CONFIGURATION,
+            $this->getCurrentStoreId()
+        );
+
+        if (is_string($config)) {
+            $config = json_decode($config, true);
+        }
+
+        return is_array($config) ? $config : [];
+    }
+
+    /**
+     * Get voucher config entry by code
+     *
+     * @param string $code
+     * @return array|null
+     * @throws NoSuchEntityException
+     */
+    public function getVoucherConfigByCode(string $code): ?array
+    {
+        $config = $this->getVoucherGiftCardConfiguration();
+        foreach ($config as $entry) {
+            if (isset($entry['code']) && $entry['code'] === $code) {
+                return $entry;
+            }
+        }
+        return null;
     }
 }

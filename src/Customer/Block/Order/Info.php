@@ -171,6 +171,9 @@ class Info extends AbstractOrderBlock
      */
     public function isClickAndCollectOrder()
     {
+        if ($this->_request->getParam('isCnc') !== null) {
+            return $this->_request->getParam('isCnc');
+        }
         $isCc = false;
         $order = $this->getOrder();
 

@@ -1,8 +1,38 @@
 <!-- ko if: getTotal() -->
+<!-- ko if: getGiftCardList().length > 0 -->
+<!-- ko foreach: getGiftCardList() -->
 <tr class="totals sub giftcard-discount">
-    <th class="mark" scope="row" data-bind="text: getTotal().title"></th>
+    <th class="mark" scope="row">
+        <!-- ko text: $t('Gift Card') + ' ' + $t('Redeemed') + ' (' + ($data.entry_no || $data.no || '') + ')' --><!-- /ko -->
+        <button type="button"
+                class="action action-cancel action-delete"
+                style="margin-left: 8px; background: none; border: none; cursor: pointer; color: #e02b27; font-size: 12px; vertical-align: middle;"
+                title="Remove"
+                data-bind="click: $parent.removeGiftCard.bind($parent, $data)">
+            <!-- ko i18n: 'Remove'--><!-- /ko -->
+        </button>
+    </th>
+    <td class="amount">
+        <span class="price" data-bind="html: $parent.getGiftCardAmount($data)"></span>
+    </td>
+</tr>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if: getGiftCardList().length === 0 -->
+<tr class="totals sub giftcard-discount">
+    <th class="mark" scope="row">
+        <span data-bind="text: getTotal().title"></span>
+        <button type="button"
+                class="action action-cancel action-delete"
+                style="margin-left: 8px; background: none; border: none; cursor: pointer; color: #e02b27; font-size: 12px; vertical-align: middle;"
+                title="Remove"
+                data-bind="click: cancelAllGiftCards.bind($data)">
+            <!-- ko i18n: 'Remove'--><!-- /ko -->
+        </button>
+    </th>
     <td class="amount">
         <span class="price" data-bind="html: getValue()"></span>
     </td>
 </tr>
+<!-- /ko -->
 <!-- /ko -->

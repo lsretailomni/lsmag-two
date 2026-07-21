@@ -1,0 +1,87 @@
+<?php
+/** @var Dashboard $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+use Ls\Customer\Block\Account\Dashboard;
+
+$loyaltyPoints = $block->getLoyaltyPointsBalance();
+if ($account = $block->getMembersInfo()) : ?>
+    <div class="block block-dashboard-club-information">
+        <h2 class="block-title my-6 flex justify-between items-center card">
+            <span class="text-2xl block"><?= $escaper->escapeHtml(__('Club Information')) ?></span>
+        </h2>
+
+        <div class="block-content">
+            <div class="flex flex-wrap justify-between -m-4">
+                <div class="lg:w-1/2 w-full p-4">
+                    <div class="flex p-8 sm:flex-row flex-col h-full card">
+                        <div class="grow">
+                            <h3 class="text-gray-900 text-lg title-font font-medium mb-4">
+                                <span><?= $escaper->escapeHtml(__('Member Information')) ?></span>
+                            </h3>
+                            <dl class="space-y-3 text-gray-700">
+                                <div class="flex justify-between gap-4 items-start">
+                                    <dt class="font-medium"><?= $escaper->escapeHtml(__('Club Name:')) ?></dt>
+                                    <dd class="text-right"><?= $escaper->escapeHtml($account->getLscMemberClub()->getDescription()) ?></dd>
+                                </div>
+                                <div class="flex justify-between gap-4 items-start">
+                                    <dt class="font-medium"><?= $escaper->escapeHtml(__('Loyalty Points Earned:')) ?></dt>
+                                    <dd class="font-semibold text-right"><?= $escaper->escapeHtml($loyaltyPoints) ?></dd>
+                                </div>
+                                <?php if (!empty($loyaltyPoints) && ($expiry = $block->getPointBalanceExpiry())) : ?>
+                                    <div class="flex justify-between gap-4 items-start">
+                                        <dt class="font-medium"><?= $escaper->escapeHtml(__('Loyalty Points Expiry:')) ?></dt>
+                                        <dd class="text-right"><?= $escaper->escapeHtml($expiry) ?></dd>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="flex justify-between gap-4 items-start">
+                                    <dt class="font-medium"><?= $escaper->escapeHtml(__('Loyalty Level:')) ?></dt>
+                                    <dd class="font-medium text-right"><?= $escaper->escapeHtml($account->getLscMemberScheme()->getDescription()) ?></dd>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2 w-full p-4">
+                    <div class="flex p-8 sm:flex-row flex-col h-full card">
+                        <div class="grow">
+                            <h3 class="text-gray-900 text-lg title-font font-medium mb-4">
+                                <span><?= $escaper->escapeHtml(__('Next Level')) ?></span>
+                            </h3>
+                            <?php
+                            $nextScheme = $block->getNextScheme(
+                                $account->getLscMemberScheme()->getClubCode(),
+                                $account->getLscMemberScheme()->getUpdateSequence()
+                            );
+                            ?>
+                            <?php if ($nextScheme) : ?>
+                                <dl class="space-y-3 text-gray-700">
+                                    <div class="flex justify-between gap-4 items-start">
+                                        <dt class="font-medium"><?= $escaper->escapeHtml(__('Level:')) ?></dt>
+                                        <dd class="text-right"><?= $escaper->escapeHtml($nextScheme['Description']) ?></dd>
+                                    </div>
+                                    <div class="flex justify-between gap-4 items-start">
+                                        <dt class="font-medium"><?= $escaper->escapeHtml(__('Points Needed:')) ?></dt>
+                                        <dd class="font-semibold text-right"><?= $escaper->escapeHtml($nextScheme['Min. Point for Upgrade']) ?></dd>
+                                    </div>
+                                    <div class="pt-2 border-t border-gray-200">
+                                        <dt class="font-medium mb-2"><?= $escaper->escapeHtml(__('Benefits of Next Level:')) ?></dt>
+                                        <dd class="text-gray-600">
+                                            <?= /** @noEscape */ $account->getLscMemberScheme()->getNextSchemeBenefits() ?>
+                                        </dd>
+                                    </div>
+                                </dl>
+                            <?php else : ?>
+                                <div class="p-4 rounded border border-gray-200 bg-gray-50 text-gray-700 text-sm">
+                                    <?= $escaper->escapeHtml(__('You are at the top level.')) ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+

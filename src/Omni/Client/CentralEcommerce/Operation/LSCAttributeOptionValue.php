@@ -58,6 +58,8 @@ class LSCAttributeOptionValue
         $deletedRows = [];
         if (isset($data['DataSet']['DataSetDel']['DynDataSet']['DataSetRows'])) {
             $deletedRows = $data['DataSet']['DataSetDel']['DynDataSet']['DataSetRows'];
+        } else if (isset($data['TableData']['TableDataDel']['RecRefJson']['Records'])) {
+            $deletedRows = $data['TableData']['TableDataDel']['RecRefJson']['Records'];
         }
 
         if (isset($recRef['RecordFields'])) {
@@ -71,6 +73,8 @@ class LSCAttributeOptionValue
         $deletedFieldsDefinition = [];
         if (isset($data['DataSet']['DataSetDel']['DynDataSet']['DataSetFields'])) {
             $deletedFieldsDefinition = $data['DataSet']['DataSetDel']['DynDataSet']['DataSetFields'];
+        } else if (isset($data['TableData']['TableDataDel']['RecRefJson']['RecordFields'])) {
+            $deletedFieldsDefinition = $data['TableData']['TableDataDel']['RecRefJson']['RecordFields'];
         }
 
         $dataSetName = '';
@@ -128,6 +132,7 @@ class LSCAttributeOptionValue
         }
 
         if (!empty($deletedFields)) {
+            $sameNameExists = false;
             foreach ($deletedRows as $row) {
                 $values = $row['Fields'] ?? [];
                 $entry = $this->createInstance(

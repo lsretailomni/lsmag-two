@@ -1,0 +1,219 @@
+<?php
+/**
+ * LS Central "Apply Discount Code" cart section (Hyvä).
+ *
+ * When LS coupons are enabled this renders the Hyvä Alpine coupon form plus a
+ * lazily-loaded LS coupon-recommendations region (fetched from the Hyvä-specific
+ * omni/ajax/HyvaCoupons controller). When the LS module is
+ * disabled it falls back to the stock Hyvä coupon form so non-LS stores are unchanged.
+ *
+ * Models Magento_Checkout::php-cart/coupon.phtml (Alpine initCouponForm + native form submission)
+ * and the Luma cart/coupons.phtml branching logic.
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\ViewModel\LucideIcons;
+use Hyva\Theme\ViewModel\ReCaptcha;
+use Ls\Omni\ViewModel\CouponsViewModel;
+use Magento\Checkout\Block\Cart\Coupon;
+use Magento\Framework\Escaper;
+
+/** @var Coupon $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HyvaCsp $hyvaCsp */
+$hyvaCsp = $viewModels->require(HyvaCsp::class);
+
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
+
+/** @var CouponsViewModel|null $viewModel */
+$viewModel = $block->getData('view_model');
+
+$showIcon = $block->getShowIcon() ?? true;
+
+// We should use strlen function because coupon code could be "0", converted to bool will lead to false
+$hasCouponCode = (bool) strlen($block->getCouponCode() ?: "");
+/** @var ReCaptcha|null $recaptcha */
+$recaptcha = $block->getData('viewModelRecaptcha');
+
+$couponsEnabled = $viewModel && $viewModel->isCouponsEnabled() == "1";
+$moduleEnabled = $viewModel && $viewModel->isModuleEnabled();
+?>
+<?php if ($couponsEnabled || !$moduleEnabled): ?>
+<script>
+    function initCouponForm() {
+        return {
+            errors: 0,
+            hasCaptchaToken: 0,
+            showCouponForm: 0,
+            hideCouponForm() {
+                return ! this.showCouponForm;
+            },
+            formData: {
+                coupon_code: '',
+                remove: '0'
+            },
+            init(){
+                const browserStorageShowCouponForm = hyva.getBrowserStorage().getItem('hyva.showCouponForm');
+                this.showCouponForm = browserStorageShowCouponForm === 'true' ? true : false;
+                this.formData.coupon_code = this.$root.dataset.couponCode;
+                this.formData.remove = this.$root.dataset.couponCode ? '1' : '0';
+            },
+            toggleShowCoupon() {
+                this.showCouponForm = !this.showCouponForm;
+
+                hyva.getBrowserStorage().setItem('hyva.showCouponForm', this.showCouponForm);
+
+                this.$nextTick(() => this.$refs.couponInput.select());
+            },
+            onInput() {
+                this.formData.coupon_code = this.$event.target.value;
+            },
+            applyRecommendedCode(code) {
+                if (!code) {
+                    return;
+                }
+                this.showCouponForm = true;
+                this.formData.coupon_code = code;
+                this.formData.remove = '0';
+                this.$nextTick(() => {
+                    if (this.$refs.couponInput) {
+                        this.$refs.couponInput.disabled = false;
+                        this.$refs.couponInput.value = code;
+                    }
+                    this.submitForm();
+                });
+            },
+            submitForm() {
+                const $form = document.querySelector('#discount-coupon-form');
+                <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_COUPON_CODE) : '' ?>
+
+                if (this.errors === 0) {
+                    $form.submit();
+                }
+            }
+        };
+    };
+
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('initCouponForm', initCouponForm)
+    }, { once: true });
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
+
+<details
+    class="coupon-form group"
+    x-data="initCouponForm"
+    :open="showCouponForm"
+    data-coupon-code="<?= $escaper->escapeHtmlAttr($block->getCouponCode()) ?>"
+    @apply-coupon-code.window="applyRecommendedCode($event.detail.code)"
+>
+    <summary
+        @click.prevent="toggleShowCoupon"
+        class="list-none flex justify-between items-center gap-2 py-2 font-semibold"
+    >
+        <span class="inline-flex items-center gap-2">
+            <?= $showIcon ? $lucideIcons->sparklesHtml('text-primary', 20, 20, ['aria-hidden' => 'true']) : ''; ?>
+            <span><?= $escaper->escapeHtml(__('Apply Discount Code')) ?></span>
+        </span>
+        <?= $lucideIcons->chevronDownHtml('transform group-open:rotate-180', 20, 20, ['aria-hidden' => 'true']); ?>
+    </summary>
+    <form
+        id="discount-coupon-form"
+        class="mt-2 mb-4"
+        action="<?= $escaper->escapeUrl($block->getUrl('checkout/cart/couponPost')) ?>"
+        method="post"
+        @submit.prevent="submitForm"
+    >
+        <?= $block->getBlockHtml('formkey') ?>
+        <label for="coupon_code" class="label sr-only">
+            <?= $escaper->escapeHtml(__('Enter discount code')) ?>
+        </label>
+        <div class="fieldset coupon space-y-2 flex flex-wrap gap-2 items-start">
+            <input
+                type="text"
+                id="coupon_code"
+                name="coupon_code"
+                class="form-input mb-0"
+                value="<?= $escaper->escapeHtmlAttr($block->getCouponCode()) ?>"
+                @input="onInput"
+                x-ref="couponInput"
+                placeholder="<?= $escaper->escapeHtmlAttr(__('Enter discount code')) ?>"
+                <?php if ($hasCouponCode): ?>
+                    disabled
+                <?php else: ?>
+                    required
+                <?php endif; ?>
+            >
+            <?php if (!$hasCouponCode): ?>
+                <button type="submit" class="btn btn-primary" value="<?= $escaper->escapeHtmlAttr(__('Apply Discount')) ?>"
+                        :disabled="!formData.coupon_code.trim()">
+                    <?= $escaper->escapeHtml(__('Apply Discount')) ?>
+                </button>
+            <?php else: ?>
+                <input type="hidden" name="remove" id="remove-coupon" value="1">
+                <button type="submit" class="btn btn-primary" value="<?= $escaper->escapeHtmlAttr(__('Cancel Coupon')) ?>">
+                    <?= $escaper->escapeHtml(__('Cancel Coupon')) ?>
+                </button>
+            <?php endif; ?>
+            <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_COUPON_CODE) : '' ?>
+            <?php if ($recaptcha && $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_COUPON_CODE)): ?>
+                <?= $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_COUPON_CODE) ?>
+            <?php endif; ?>
+        </div>
+    </form>
+
+    <?php if ($couponsEnabled): ?>
+        <?php // LS coupon recommendations: lazy-loaded from the existing Hyvä AJAX controller. ?>
+        <div
+            class="ls-coupon-recommendations mt-4"
+            x-data="initLsCouponRecommendations"
+            data-recommendations-url="<?= $escaper->escapeUrl($block->getUrl('omni/ajax/HyvaCoupons')) ?>"
+        >
+            <template x-if="loading">
+                <div class="flex items-center gap-2 text-sm text-fg-secondary">
+                    <svg class="animate-spin h-4 w-4 text-primary" xmlns="http://www.w3.org/2000/svg"
+                         fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                    </svg>
+                    <span><?= $escaper->escapeHtml(__('Loading available offers...')) ?></span>
+                </div>
+            </template>
+            <div x-html="recommendationsHtml"></div>
+        </div>
+    <?php endif; ?>
+</details>
+
+<?php if ($couponsEnabled): ?>
+<script>
+    function initLsCouponRecommendations() {
+        return {
+            loading: false,
+            recommendationsHtml: '',
+            init() {
+                this.loading = true;
+                fetch(this.$root.dataset.recommendationsUrl, {
+                    headers: {'X-Requested-With': 'XMLHttpRequest'}
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.recommendationsHtml = data.output || '';
+                        this.loading = false;
+                        this.$nextTick(() => hyva.activateScripts(this.$root));
+                    })
+                    .catch(() => { this.loading = false; });
+            }
+        };
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('initLsCouponRecommendations', initLsCouponRecommendations), {once: true})
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
+<?php endif; ?>
+
+<?php endif; ?>

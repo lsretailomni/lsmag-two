@@ -1,3 +1,7 @@
 # For LS Development work
 composer.lock
 /src/Customer/Controller/Development/
+
+# Local AI / Claude Code dev artifacts (not product code)
+/.claude/
+/.workitems/

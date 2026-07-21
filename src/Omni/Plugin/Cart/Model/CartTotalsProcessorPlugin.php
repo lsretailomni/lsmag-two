@@ -37,6 +37,7 @@ class CartTotalsProcessorPlugin
             unset($totalsBlock['children']['loyalty_points_label']);
             unset($totalsBlock['children']['before_grandtotal']['children']['ls_points_discount']);
             unset($totalsBlock['children']['before_grandtotal']['children']['ls_gift_card_amount_used']);
+            unset($totalsBlock['children']['before_grandtotal']['children']['ls_entry_amount']);
         }
 
         if ($this->loyaltyHelper->isLoyaltyPointsEnabled('cart') == '0') {

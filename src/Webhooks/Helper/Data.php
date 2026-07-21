@@ -238,7 +238,12 @@ class Data
                 $totalAmount = 0;
                 $counter     = 0;
                 foreach ($itemsInfo as $index => $skuValues) {
-                    if ($itemId == $skuValues['ItemId'] && $uom == $skuValues['UnitOfMeasureId'] &&
+                    // Unit of measure is optional. A supplied
+                    // UOM must match the order item's UOM.
+                    $uomMatches = empty($skuValues['UnitOfMeasureId'])
+                        || $uom == $skuValues['UnitOfMeasureId'];
+                        if ($itemId == $skuValues['ItemId'] && $uomMatches &&
+
                         $variantId == $skuValues['VariantId'] && $itemId != $this->getShippingItemId()) {
                         if (in_array($skuValues['ItemId'], explode(',', $this->getGiftCardIdentifiers()))
                         ) {
@@ -274,12 +279,11 @@ class Data
                         } else {
                             $items[$globalCounter][$itemId]['qty'] = $skuValues['Quantity'];
                         }
-                        if (array_key_exists('Amount', $skuValues)) {
-                            $totalAmount                                            += $skuValues['Amount'];
-                            $items[$globalCounter][$itemId]['amount_with_discount'] =
-                                $totalAmount + ($orderItem->getLsDiscountAmount() / $orderItem->getQtyOrdered()) * $skuValues['Quantity'];
-                            $items[$globalCounter][$itemId]['amount']               = $totalAmount;
-                        }
+                        $amount = is_array($skuValues) && array_key_exists('Amount', $skuValues) ? $skuValues['Amount'] : 0;
+                        $totalAmount                                            += $amount;
+                        $items[$globalCounter][$itemId]['amount_with_discount'] =
+                            $totalAmount + ($orderItem->getLsDiscountAmount() / $orderItem->getQtyOrdered()) * $skuValues['Quantity'];
+                        $items[$globalCounter][$itemId]['amount']               = $totalAmount;
                         $items[$globalCounter][$itemId]['itemStatus'] = $child->getStatusId();
                         $counter++;
                         unset($itemsInfo[$index]);
@@ -588,13 +592,14 @@ class Data
      * @param $magOrder
      * @param $itemId
      * @param $variantId
+     * @param string $uomId
+     * @param float $quantity
      * @return false|Invoice
      * @throws NoSuchEntityException
      */
-    public function getItemInvoice($magOrder, $itemId, $variantId)
+    public function getItemInvoice($magOrder, $itemId, $variantId, $uomId = '', $quantity = 0)
     {
-        $invoices        = $magOrder->getInvoiceCollection();
-        $requiredInvoice = false;
+        $invoices = $magOrder->getInvoiceCollection();
 
         foreach ($invoices as $invoice) {
             $invoiceIncrementId = $invoice->getIncrementId();
@@ -603,13 +608,17 @@ class Data
             foreach ($invoiceObj->getItems() as $invoiceItem) {
                 $product = $this->getProductById($invoiceItem->getProductId());
 
-                if ($product->getLsrItemId() == $itemId && $product->getLsrVariantId() == $variantId) {
-                    $requiredInvoice = $invoiceObj;
-                    break;
+                $itemIdMatch  = $product->getLsrItemId() == $itemId;
+                $variantMatch = $product->getLsrVariantId() == $variantId;
+                $uomMatch     = empty($uomId) || $product->getData('uom') == $uomId;
+                $qtyMatch     = $quantity <= 0 || $invoiceItem->getQty() >= $quantity;
+
+                if ($itemIdMatch && $variantMatch && $uomMatch && $qtyMatch) {
+                    return clone $invoiceObj;
                 }
             }
         }
 
-        return $requiredInvoice;
+        return false;
     }
 }

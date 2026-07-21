@@ -56,4 +56,8 @@
     <event name="layout_load_before">
         <observer name="ls_js_layout_render" instance="Ls\Omni\Observer\LayoutRenderObserver" />
     </event>
+    <!-- Register this module with the Hyvä Tailwind build (no effect on Luma) -->
+    <event name="hyva_config_generate_before">
+        <observer name="ls_omni_hyva_config_generate" instance="Ls\Omni\Observer\RegisterModuleForHyvaConfig"/>
+    </event>
 </config>

@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * Hyvä-styled loyalty link rendered inside the customer account header dropdown.
+ *
+ * @var \Ls\Customer\Block\Link $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<a id="<?= $escaper->escapeHtmlAttr($block->getNameInLayout()) ?>"
+   class="block px-4 py-2 lg:px-5 lg:py-2 hover:bg-gray-100"
+   href="<?= $escaper->escapeUrl($block->getHref()) ?>"
+   title="<?= $escaper->escapeHtmlAttr($block->getLabel()) ?>">
+    <?= $escaper->escapeHtml($block->getLabel()) ?>
+</a>

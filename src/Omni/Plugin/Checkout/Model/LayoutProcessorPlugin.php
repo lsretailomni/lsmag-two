@@ -54,6 +54,7 @@ class LayoutProcessorPlugin
         if (!$this->lsr->isEnabled()) {
             unset($shippingAdditional['children']['ls-pickup-additional-options-wrapper']);
             unset($sideBar['children']['summary']['children']['totals']['children']['ls_gift_card_amount_used']);
+            unset($sideBar['children']['summary']['children']['totals']['children']['ls_entry_amount']);
             unset($sideBar['children']['summary']['children']['totals']['children']['ls_points_discount']);
             unset($sideBar['children']['summary']['children']['totals']['children']['loyalty_points_label']);
             unset($payment['children']['renders']['children']['payatstore']);
@@ -81,6 +82,8 @@ class LayoutProcessorPlugin
 
         if (!$this->giftCardHelper->isGiftCardEnabled('checkout')) {
             unset($billingStep['children']['payment']['children']['afterMethods']['children']['gift-card']);
+            unset($sideBar['children']['summary']['children']['totals']['children']['ls_gift_card_amount_used']);
+            unset($sideBar['children']['summary']['children']['totals']['children']['ls_entry_amount']);
         }
 
         if (!($this->lsr->isPickupTimeslotsEnabled() || $this->lsr->isDeliveryTimeslotsEnabled()) &&

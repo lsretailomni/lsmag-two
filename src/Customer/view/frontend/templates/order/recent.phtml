@@ -37,6 +37,12 @@ $orderCount = 0;
             if (is_array($_orders) && !(end($_orders) instanceof Magento\Sales\Api\Data\OrderInterface)):
                 if (count($_orders) > 0):
                     $orderExist = true;
+
+                    usort($_orders, function ($a, $b) {
+                        return strtotime($b->getDateTime()) <=> strtotime($a->getDateTime());
+                    });
+
+                    $_orders = array_slice($_orders, 0, LSR::MAX_RECENT_ORDER);
                     ?>
                     <div class="table-wrapper orders-recent">
                         <table class="data table table-order-items recent" id="my-orders-table">
@@ -62,9 +68,6 @@ $orderCount = 0;
                             </thead>
                             <tbody>
                             <?php foreach ($_orders as $i => $_order):
-                                if ($orderCount == LSR::MAX_RECENT_ORDER) {
-                                    break;
-                                }
 
                                 if ($_order->getSaleIsReturnSale()) {
                                     continue;

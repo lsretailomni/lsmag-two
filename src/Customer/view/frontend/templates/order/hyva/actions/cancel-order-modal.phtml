@@ -1,0 +1,110 @@
+<?php
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Modal;
+use Hyva\Theme\ViewModel\Store;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+$modalViewModel = $viewModels->require(Modal::class);
+$storeViewModel = $viewModels->require(Store::class);
+$order = $block->getData('order');
+
+$modal = $modalViewModel->createModal()->withContent(<<<END_OF_CONTENT
+<div
+    id="cancel-order-modal-title"
+    class="text-xl mb-2" x-text="`{$escaper->escapeJs(__('Cancel order'))} \${increment_id}`"
+></div>
+<div class="field field-reserved required">
+    <label for="cancel-order-reason">
+        <span>{$block->escapeHtml(__('Provide a cancellation reason:'))}</span>
+    </label>
+    <select id="cancel-order-reason" class="form-select max-w-full" x-ref="reason" required>
+        <option value=""></option>
+        <template x-for="reason in reasons">
+        <option :value="reason" x-text="reason"></option>
+        </template>
+    </select>
+</div>
+<div class="mt-4 flex justify-between gap-2">
+    <button @click="validateSafe().then(result => result && ok())" type="button" class="btn btn-primary order-2">
+        {$escaper->escapeHtml(__('Confirm'))}
+    </button>
+    <button @click="cancel()" type="button" class="btn order-1">
+        {$escaper->escapeHtml(__('Close'))}
+    </button>
+</div>
+END_OF_CONTENT
+)
+->withAriaLabelledby('cancel-order-modal-title')
+->addDialogClass('m-4');
+
+?>
+<script>
+    function initOrderCancellationModal() {
+        return {
+            increment_id: null,
+            magento_order_id: null,
+            central_order_id: null,
+            id_type: null,
+            reasons: [],
+            setOrder(event) {
+                this.increment_id = event.detail.increment_id;
+                this.magento_order_id = event.detail.magento_order_id;
+                this.central_order_id = event.detail.central_order_id;
+                this.id_type = event.detail.id_type;
+                this.reasons = event.detail.reasons;
+            },
+            cancelOrder(order_id, reason) {
+                fetch(BASE_URL + 'customer/order/cancel', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: new URLSearchParams({
+                        form_key: hyva.getFormKey(),
+                        magento_order_id: this.magento_order_id,
+                        central_order_id: this.central_order_id,
+                        id_type: this.id_type,
+                        reason: reason
+                    })
+                }).then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                        return;
+                    }
+
+                    return response.json().then(result => {
+                        if (result.redirect_url) {
+                            window.location.href = result.redirect_url;
+                            return;
+                        }
+
+                        window.location.reload();
+                    });
+                }).catch(() => {
+                    dispatchMessages([{
+                        text: 'Something went wrong while cancelling the order.',
+                        type: 'error'
+                    }]);
+                });
+            },
+        }
+    }
+</script>
+<form
+    x-data="Object.assign(hyva.modal(), hyva.formValidation($el), initOrderCancellationModal())"
+    @submit.prevent="null"
+    @confirm-cancel-order.window="
+        setOrder($event);
+        <?= /** @noEscape */ $modal->getShowJs() ?>.then(result => result && cancelOrder($refs.reason.value));
+    "
+>
+    <?= /** @noEscape */ $modal ?>
+</form>

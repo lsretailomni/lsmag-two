@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <move element="ls_customer_account_club" destination="content" after="customer_account_dashboard_address"/>
+        <referenceBlock name="ls_customer_account_club">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ls_Customer::club-hyva.phtml</argument>
+            </action>
+        </referenceBlock>
+        <move element="ls_customer_order_recent" destination="content" after="ls_customer_account_club"/>
+        <referenceBlock name="ls_customer_order_recent">     
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ls_Customer::order/recent-hyva.phtml</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="order-list-cancel-action-button">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ls_Customer::order/hyva/actions/order-list-cancel-order-button.phtml</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="cancel-order-modal">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ls_Customer::order/hyva/actions/cancel-order-modal.phtml</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>
+

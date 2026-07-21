@@ -1,0 +1,33 @@
+<?php
+/**
+ * Registers the Alpine.data for the LS Central loyalty points earned totals segment.
+ *
+ * The AlpineJS scope of this file is the method `initCartTotals()`
+ * in Magento_Checkout::php-cart/totals.phtml.
+ *
+ * Value is formatted as "{n} point(s)" — an integer count, not currency.
+ */
+
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+
+/** @var HyvaCsp $hyvaCsp */
+/** @var Escaper $escaper */
+?>
+<script>
+    function initLsPointsEarnSegment() {
+        return {
+            isLsPointsEarnSegment() {
+                return this.segment.code === 'ls_points_earn';
+            },
+            formatLsPointsEarnValue() {
+                const pts = Math.round(this.segment.value);
+                return pts === 1
+                    ? pts + ' <?= $escaper->escapeJs(__('point')) ?>'
+                    : pts + ' <?= $escaper->escapeJs(__('points')) ?>';
+            }
+        };
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('initLsPointsEarnSegment', initLsPointsEarnSegment), {once: true})
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

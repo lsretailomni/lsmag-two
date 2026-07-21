@@ -57,50 +57,58 @@ class CheckGiftCardBalance implements HttpPostActionInterface
         $resultJson   = $this->resultJsonFactory->create();
         $post         = $this->request->getContent();
         $postData     = json_decode($post);
-        $giftCardCode = $postData->gift_card_code;
-        $giftCardPin = (isset($postData->gift_card_pin)) ? $postData->gift_card_pin : '';
-        $data = [];
+        $giftCardCode = $postData->gift_card_code ?? null;
+        $giftCardPin  = $postData->gift_card_pin ?? '';
 
-        if ($giftCardCode != null) {
-            $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardCode, $giftCardPin);
-
-            if (is_object($giftCardResponse)) {
-                $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
-                $data['giftcardbalance'] = $this->giftCardHelper->formatValue(
-                    $convertedGiftCardBalanceArr['gift_card_balance_amount'],
-                    true
-                );
-                $data['expirydate']      = $this->giftCardHelper->formatExpireDate($giftCardResponse->getExpirydate());
-            } else {
-                $data['giftcardbalance'] = $this->giftCardHelper->formatValue(
-                    $giftCardResponse,
-                    true
-                );
-                $data['expirydate']      = null;
-            }
-
-            if (empty($giftCardResponse)) {
-                $response = [
-                    'error' => 'true',
-                    'message' => __(
-                        'The gift card is not valid.'
-                    )
-                ];
-            } else {
-                $response = [
-                    'success' => 'true',
-                    'data' => json_encode($data)
-                ];
-            }
-        } else {
-            $response = [
-                'error' => 'true',
-                'message' => __(
-                    'The gift card is not valid.'
-                )
-            ];
+        if (empty($giftCardCode)) {
+            return $resultJson->setData([
+                'error'   => 'true',
+                'message' => __('The gift card / voucher code is not valid.')
+            ]);
         }
 
-        return $resultJson->setData($response);
+        // Try each configured entry type in turn; use the first one that returns a balance.
+        $entryTypes       = $this->lsr->getVoucherGiftCardConfiguration();
+        $giftCardResponse = null;
+        $matchedEntryType = null;
+
+        foreach ($entryTypes as $entryConfig) {
+            $entryType        = $entryConfig['code'] ?? '';
+            if (empty($entryType)) {
+                continue;
+            }
+            $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardCode, $giftCardPin, $entryType);
+            if ($giftCardResponse !== null) {
+                $matchedEntryType = $entryType;
+                break;
+            }
+        }
+
+        if (empty($giftCardResponse)) {
+            return $resultJson->setData([
+                'error'   => 'true',
+                'message' => __('The gift card / voucher code is not valid.')
+            ]);
+        }
+
+        $data = [];
+        if (is_object($giftCardResponse)) {
+            $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
+            $data['giftcardbalance'] = $this->giftCardHelper->formatValue(
+                $convertedGiftCardBalanceArr['gift_card_balance_amount'],
+                true
+            );
+            $data['expirydate']  = $this->giftCardHelper->formatExpireDate($giftCardResponse->getExpirydate());
+            $data['entry_type']  = $matchedEntryType;
+        } else {
+            $data['giftcardbalance'] = $this->giftCardHelper->formatValue($giftCardResponse, true);
+            $data['expirydate']      = null;
+            $data['entry_type']      = $matchedEntryType;
+        }
+
+        return $resultJson->setData([
+            'success' => 'true',
+            'data'    => json_encode($data)
+        ]);
     }
 }

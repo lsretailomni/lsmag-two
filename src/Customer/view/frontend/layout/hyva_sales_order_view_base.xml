@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <update handle="customer_order_info_links"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Ls\Customer\Block\Order\Custom\Hyva\View"
+                   name="sales.order.view"
+                   cacheable="false">
+                <block class="Ls\Customer\Block\Order\Hyva\Info"
+                       name="order.date"
+                       template="Ls_Customer::order/order_date.phtml"
+                />
+                <block class="Ls\Customer\Block\Order\Info"
+                       name="sales.order.buttons"
+                       template="Ls_Customer::order/info/buttons-hyva.phtml"
+                />
+                <container name="order_top_items" />
+                <block class="Ls\Customer\Block\Order\Custom\Hyva\View"
+                       name="order.comments"
+                       template="Magento_Sales::order/order_comments.phtml"
+                />
+                <block class="Ls\Customer\Block\Order\Hyva\Info" name="sales.order.info" />
+                <block class="Ls\Customer\Block\Order\Hyva\Info"
+                       name="custom.order.info"
+                       template="Ls_Customer::order/useful_info.phtml" />
+                <block class="Ls\Customer\Block\Order\Hyva\Info"
+                       name="order.status"
+                       template="Ls_Customer::order/order_status-hyva.phtml"
+                />
+                <referenceBlock name="custom.order.status" remove="true"/>
+                <referenceBlock name="custom.order.date" remove="true"/>
+                <referenceBlock name="sales.order.info.buttons" remove="true"/>
+            </block>
+        </referenceContainer>
+        <block class="Magento\Framework\View\Element\Template"
+               name="additional.product.info"
+               template="Magento_Theme::template.phtml"
+        />
+    </body>
+</page>

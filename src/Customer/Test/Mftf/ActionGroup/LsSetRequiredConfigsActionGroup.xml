@@ -9,6 +9,7 @@
         <magentoCLI command="config:set --scope website --scope-code base ls_mag/service/timeout 20" stepKey="setServiceTimeout"/>
         <magentoCLI command="config:set --scope website --scope-code base {{OrderPrefix.path}} {{OrderPrefix.value}}" stepKey="orderPrefix"/>
         <magentoCLI command="config:set --scope website --scope-code base {{ServiceDebug.path}} {{ServiceDebug.value}}" stepKey="serviceDebug"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{ServiceIndustry.path}} {{ServiceIndustry.value}}" stepKey="serviceIndustry"/>
         <amOnPage url="/admin/admin/system_config/edit/section/ls_mag/website/1/#ls_mag_service-link" stepKey="navigateToConfigurationSection"/>
 <!--        <selectOption selector="{{LsConfigManagementSection.ServiceCentralType}}" userInput="{{ServiceCentralTypeSaaS.value}}" stepKey="fillCentralTypeSaaS" />-->
 <!--        <fillField selector="{{LsConfigManagementSection.ServiceTenant}}" userInput="{{ServiceTenant.value}}" stepKey="setServiceTenant"/>-->

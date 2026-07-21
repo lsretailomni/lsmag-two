@@ -1,0 +1,69 @@
+<?php
+/**
+ * Hyvä-compatible CAPTCHA template.
+ *
+ * Renders the Magento standard (image) CAPTCHA without the jQuery
+ * "mage/captcha" widget, using Alpine.js for the reload behaviour so it
+ * works inside Hyvä forms (e.g. the customer forgot-password form).
+ *
+ * @var DefaultCaptcha $block
+ * @var Escaper $escaper
+ */
+
+use Magento\Captcha\Block\Captcha\DefaultCaptcha;
+use Magento\Captcha\Helper\Data as CaptchaHelper;
+use Magento\Framework\Escaper;
+
+/** @var \Magento\Captcha\Model\DefaultModel $captcha */
+$captcha = $block->getCaptchaModel();
+$formId = (string) $block->getFormId();
+$inputName = CaptchaHelper::INPUT_NAME_FIELD_VALUE;
+?>
+<div class="field captcha required mt-4"
+     x-data="{
+        imgSrc: '<?= /* @noEscape */ $escaper->escapeJs($captcha->getImgSrc()) ?>',
+        reload() {
+            fetch('<?= /* @noEscape */ $escaper->escapeJs($block->getRefreshUrl()) ?>', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ formId: '<?= /* @noEscape */ $escaper->escapeJs($formId) ?>' })
+            })
+            .then((response) => response.json())
+            .then((data) => { if (data.imgSrc) { this.imgSrc = data.imgSrc; } });
+        }
+     }">
+    <label for="captcha_<?= $escaper->escapeHtmlAttr($formId) ?>" class="label">
+        <span><?= $escaper->escapeHtml(__('Please type the letters and numbers below')) ?></span>
+    </label>
+    <div class="control captcha">
+        <input name="<?= $escaper->escapeHtmlAttr($inputName) ?>[<?= $escaper->escapeHtmlAttr($formId) ?>]"
+               type="text"
+               class="form-input w-full"
+               id="captcha_<?= $escaper->escapeHtmlAttr($formId) ?>"
+               autocomplete="off"
+               required/>
+        <div class="nested mt-2 flex items-center gap-4">
+            <div class="control captcha-image">
+                <img alt="<?= $escaper->escapeHtmlAttr(__('Please type the letters and numbers below')) ?>"
+                     class="captcha-img"
+                     :src="imgSrc"
+                     height="<?= /* @noEscape */ (float) $block->getImgHeight() ?>"
+                     src="<?= $escaper->escapeUrl($captcha->getImgSrc()) ?>"/>
+            </div>
+            <button type="button"
+                    class="action reload captcha-reload btn btn-secondary"
+                    title="<?= $escaper->escapeHtmlAttr(__('Reload captcha')) ?>"
+                    @click.prevent="reload()">
+                <span><?= $escaper->escapeHtml(__('Reload captcha')) ?></span>
+            </button>
+        </div>
+        <?php if ($captcha->isCaseSensitive()): ?>
+            <div class="captcha-note note mt-2 text-sm">
+                <?= $escaper->escapeHtml(__('Attention: Captcha is case sensitive.')) ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Test\Integration;
 
-use Braintree\Configuration;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Cron\ReplEcommStoresTask;
 use \Ls\Replication\Cron\ReplLscStoreviewTask;

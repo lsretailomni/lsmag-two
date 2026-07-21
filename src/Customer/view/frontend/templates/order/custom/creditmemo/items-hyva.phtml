@@ -1,0 +1,64 @@
+<?php
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+/** @var \Ls\Customer\Block\Order\Custom\Hyva\Items $block */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+$magentoOrder         = $block->getMagOrder();
+$order                = $block->getOrder(true);
+$centralOrder         = $block->getLscMemberSalesBuffer($block->getOrder());
+$creditmemoCollection = $magentoOrder->getCreditmemosCollection();
+$lsItemsMap           = $block->getLsItemsMap();
+?>
+<?php foreach ($creditmemoCollection as $creditmemo): ?>
+    <?php
+    $creditmemoItemsMap = $block->getCreditmemoItemsMap($creditmemo);
+    $matchedItems       = $block->getMatchedItems($lsItemsMap, $creditmemoItemsMap);
+
+    if (empty($matchedItems)) {
+        continue;
+    }
+    ?>
+    <div class="order-title text-center md:text-left font-semibold">
+        <?= $escaper->escapeHtml(__('Credit Memo #')) ?><?= $escaper->escapeHtml($creditmemo->getIncrementId()) ?>
+        <a href="<?= $escaper->escapeUrl($block->getPrintCreditMemoUrl($centralOrder, $creditmemo)) ?>"
+           class="inline-block ml-2 pl-2 border-l text-sm font-normal"
+           target="_blank"
+           rel="noopener">
+            <?= $heroicons->printerHtml('inline-block', 20, 20) ?>
+            <span class="inline-block ml-1 underline"><?= $escaper->escapeHtml(__('Print Credit Memo')) ?></span>
+        </a>
+    </div>
+
+    <div class="order-items creditmemo">
+        <div class="hidden lg:grid grid-cols-5 text-sm">
+            <div class="p-2 col-span-2"><?= $escaper->escapeHtml(__('Product Name')) ?></div>
+            <div class="p-2"><?= $escaper->escapeHtml(__('Price')) ?></div>
+            <div class="p-2"><?= $escaper->escapeHtml(__('Qty Refunded')) ?></div>
+            <div class="p-2 text-right"><?= $escaper->escapeHtml(__('Subtotal')) ?></div>
+        </div>
+
+        <?php foreach ($matchedItems as $key => $lsItem): ?>
+            <?php if ($lsItem instanceof \Magento\Sales\Model\Order\Item): ?>
+                <?= /* @noEscape */ $block->getItemHtml($lsItem) ?>
+            <?php else: ?>
+                <?= /* @noEscape */ $block->getCustomItemRenderer($lsItem); ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+<?php endforeach; ?>
+
+<div class="flex justify-end border-t border-gray-300 mt-2">
+    <div class="lg:w-1/3">
+        <div class="grid grid-cols-2 text-right p-2 gap-2">
+            <?= /* @noEscape */ $block->getChildBlock('custom_order_totals')->setCurrentOrder($order)->toHtml() ?>
+        </div>
+    </div>
+</div>

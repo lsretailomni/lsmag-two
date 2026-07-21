@@ -47,6 +47,13 @@ if (!defined("GIFTCARD_EXPIRED")) { define('GIFTCARD_EXPIRED', getenv('GIFTCARD_
 if (!defined("GIFTCARD_PIN")) { define('GIFTCARD_PIN', getenv('GIFTCARD_PIN')); }
 if (!defined("GIFTCARD_EXPIRED_PIN")) { define('GIFTCARD_EXPIRED_PIN', getenv('GIFTCARD_EXPIRED_PIN')); }
 if (!defined("GIFTCARD_AMOUNT")) { define('GIFTCARD_AMOUNT', getenv('GIFTCARD_AMOUNT')); }
+if (!defined("GIFTCARD_ENTRY_TYPE")) { define('GIFTCARD_ENTRY_TYPE', getenv('GIFTCARD_ENTRY_TYPE')); }
+if (!defined("VOUCHER")) { define('VOUCHER', getenv('VOUCHER')); }
+if (!defined("VOUCHER_PIN")) { define('VOUCHER_PIN', getenv('VOUCHER_PIN')); }
+if (!defined("VOUCHER_ENTRY_TYPE")) { define('VOUCHER_ENTRY_TYPE', getenv('VOUCHER_ENTRY_TYPE')); }
+if (!defined("VOUCHER_AMOUNT")) { define('VOUCHER_AMOUNT', getenv('VOUCHER_AMOUNT')); }
+if (!defined("VOUCHER_CONFIGURATION")) { define('VOUCHER_CONFIGURATION', getenv('VOUCHER_CONFIGURATION')); }
+if (!defined("GC_SHOW_ON_CART")) { define('GC_SHOW_ON_CART', getenv('GC_SHOW_ON_CART')); }
 if (!defined("LOY_POINTS")) { define('LOY_POINTS', getenv('LOY_POINTS')); }
 if (!defined("LICENSE")) { define('LICENSE', getenv('LICENSE')); }
 if (!defined("LS_CENTRAL_VERSION")) { define('LS_CENTRAL_VERSION', getenv('LS_CENTRAL_VERSION')); }
@@ -102,6 +109,13 @@ class AbstractIntegrationTest extends TestCase
     public const GIFTCARD_PIN = GIFTCARD_PIN;
     public const GIFTCARD_EXPIRED_PIN = GIFTCARD_EXPIRED_PIN;
     public const GIFTCARD_AMOUNT = GIFTCARD_AMOUNT;
+    public const GIFTCARD_ENTRY_TYPE = GIFTCARD_ENTRY_TYPE;
+    public const VOUCHER = VOUCHER;
+    public const VOUCHER_PIN = VOUCHER_PIN;
+    public const VOUCHER_ENTRY_TYPE = VOUCHER_ENTRY_TYPE;
+    public const VOUCHER_AMOUNT = VOUCHER_AMOUNT;
+    public const VOUCHER_CONFIGURATION = VOUCHER_CONFIGURATION;
+    public const GC_SHOW_ON_CART = GC_SHOW_ON_CART;
     public const LOY_POINTS = LOY_POINTS;
     public const LICENSE = LICENSE;
     public const LS_CENTRAL_VERSION = LS_CENTRAL_VERSION;
@@ -121,7 +135,6 @@ class AbstractIntegrationTest extends TestCase
     public const ITEM_SIMPLE = ITEM_SIMPLE;
     public const HOSP_STORE = HOSP_STORE;
     public const DISCOUNT_SKU = DISCOUNT_SKU;
-
 
     /**
      * @return void

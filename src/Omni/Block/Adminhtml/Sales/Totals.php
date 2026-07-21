@@ -99,19 +99,44 @@ class Totals extends Template
         $this->getSource();
         $this->loyaltyHelper->getLsr()->setStoreId($order->getStoreId());
 
-        if ($this->getSource()->getLsGiftCardAmountUsed() > 0) {
+        $allEntries = json_decode((string)$this->getSource()->getLsPosDataEntries(), true) ?? [];
+
+        $gcEntries = array_values(array_filter($allEntries, fn($e) => strtoupper($e['entry_type'] ?? '') === 'GIFTCARDNO'));
+        $gcTotal   = (float)array_sum(array_column($gcEntries, 'amount'));
+        if ($gcTotal > 0) {
+            $gcCount = count($gcEntries);
+            $gcTitle = $gcCount === 1
+                ? __('%1 - %2 Redeemed', $gcEntries[0]['entry_type'] ?? 'Gift Card', $gcEntries[0]['entry_no'] ?? '')
+                : __('Gift Cards Redeemed (%1)', $gcCount);
             // @codingStandardsIgnoreLine
             $giftCardAmount = new DataObject(
                 [
-                    'code'  => 'ls_gift_card_amount_used',
-                    'value' => -$this->getSource()->getLsGiftCardAmountUsed(),
-                    'base_value' => -$this->loyaltyHelper->itemHelper->convertToBaseCurrency(
-                        $this->getSource()->getLsGiftCardAmountUsed()
-                    ),
-                    'label' => __('Gift Card Redeemed ') . '(' . $this->getSource()->getLsGiftCardNo() . ')',
+                    'code'       => 'ls_gift_card_amount_used',
+                    'value'      => -$gcTotal,
+                    'base_value' => -$this->loyaltyHelper->itemHelper->convertToBaseCurrency($gcTotal),
+                    'label'      => $gcTitle,
                 ]
             );
             $this->getParentBlock()->addTotalBefore($giftCardAmount, 'discount');
+        }
+
+        $voucherEntries = array_values(array_filter($allEntries, fn($e) => strtoupper($e['entry_type'] ?? '') !== 'GIFTCARDNO'));
+        $voucherTotal   = (float)array_sum(array_column($voucherEntries, 'amount'));
+        if ($voucherTotal > 0) {
+            $vCount = count($voucherEntries);
+            $vTitle = $vCount === 1
+                ? __('%1 - %2 Redeemed', $voucherEntries[0]['entry_type'] ?? 'Voucher', $voucherEntries[0]['entry_no'] ?? '')
+                : __('Vouchers Redeemed (%1)', $vCount);
+            // @codingStandardsIgnoreLine
+            $voucherAmount = new DataObject(
+                [
+                    'code'       => 'ls_entry_amount',
+                    'value'      => -$voucherTotal,
+                    'base_value' => -$this->loyaltyHelper->itemHelper->convertToBaseCurrency($voucherTotal),
+                    'label'      => $vTitle,
+                ]
+            );
+            $this->getParentBlock()->addTotalBefore($voucherAmount, 'discount');
         }
 
         if ($this->getSource()->getLsPointsSpent() > 0) {

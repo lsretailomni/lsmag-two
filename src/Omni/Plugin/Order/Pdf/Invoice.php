@@ -37,8 +37,9 @@ class Invoice
             } else {
                 $invoice->setLsPointsSpent(0);
             }
-            if ($invoice->getLsGiftCardAmountUsed() > 0) {
-                $invoice->setLsGiftCardAmountUsed(-($invoice->getLsGiftCardAmountUsed()));
+            $entryTotal = (float)array_sum(array_column(json_decode((string)$invoice->getLsPosDataEntries(), true) ?? [], 'amount'));
+            if ($entryTotal > 0) {
+                // Entry total is stored in ls_pos_data_entries; no separate column to set
             }
         }
         return [$invoices];

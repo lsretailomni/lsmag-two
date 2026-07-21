@@ -1,0 +1,61 @@
+<?php
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\Sales\OrderCancellation;
+use Ls\Omni\Helper\OrderHelper;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Magento\OrderCancellationUi\ViewModel\Config as OrderCancellationUiConfig;
+
+/** @var Escaper $escaper */
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+/** @var OrderCancellation $orderCancellation */
+$orderCancellation = $viewModels->require(OrderCancellation::class);
+
+/** @var OrderCancellationUiConfig $orderCancellationUiConfig */
+$orderCancellationUiConfig = $viewModels->require(OrderCancellationUiConfig::class);
+$idType = null;
+$order = $block->getData('magorder');
+$centralOrder = $block->getData('centralOrder');
+if ($order) {
+    $reasons = $orderCancellationUiConfig->getCancellationReasons((int) $order->getId());
+}
+
+$cancelOrderId = $centralOrder && $centralOrder->getDocumentId() ? $centralOrder->getDocumentId() : $order->getRealOrderId();
+$orderHelper   = $this->helper(OrderHelper::class);
+$idType        = $orderHelper->getOrderType($centralOrder->getDocumentSourceType());
+
+$recentBlock = $block->getLayout()->createBlock(
+        \Ls\Customer\Block\Order\Recent::class
+);
+
+?>
+
+<?php if ($order && $orderCancellation->canCancel($order->getEntityId()) && $recentBlock->orderCancellationOnFrontendIsEnabled()): ?>
+    <button
+        type="button"
+        class="inline-block text-sm"
+        title="<?= $escaper->escapeHtmlAttr(__('Cancel order') . ' ' . ltrim($cancelOrderId, '0')) ?>"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Cancel order') . ' ' . ltrim($cancelOrderId, '0')) ?>"
+        x-data
+        @click="$dispatch('confirm-cancel-order', {
+            increment_id: '<?= $escaper->escapeJs($cancelOrderId) ?>',
+            magento_order_id: '<?= $order->getId() ?>',
+            central_order_id: '<?= $centralOrder->getDocumentId() ?>',
+            id_type: '<?= $idType ?>',
+            reasons: <?= $escaper->escapeHtmlAttr(json_encode(array_values($reasons))) ?>,
+        })"
+    >
+        <?= $heroicons->xCircleHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+    </button>
+<?php else: ?>
+    <?= $heroicons->xCircleHtml('text-gray-300', 24, 24, ['aria-hidden' => 'true']) ?>
+<?php endif ?>

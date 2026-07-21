@@ -14,6 +14,8 @@
         <before>
             <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <!-- Enable the pin code field so a pin-protected gift card can be applied. -->
+            <magentoCLI command="config:set --scope website --scope-code base {{GiftCardPinCodeEnabled.path}} {{GiftCardPinCodeEnabled.value}}" stepKey="enablePinCodeField"/>
             <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
                 <argument name="tags" value="config"/>
             </actionGroup>
@@ -25,6 +27,11 @@
         </before>
 
         <after>
+            <!-- Reset the pin code field so pin-less gift card tests are unaffected. -->
+            <magentoCLI command="config:set --scope website --scope-code base {{GiftCardPinCodeDisabled.path}} {{GiftCardPinCodeDisabled.value}}" stepKey="disablePinCodeField"/>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCacheAfter">
+                <argument name="tags" value="config"/>
+            </actionGroup>
             <!--Delete test data.-->
             <deleteData createDataKey="product1" stepKey="deleteSimpleProduct1"/>
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
@@ -47,8 +54,9 @@
         <seeInCurrentUrl url="{{CheckoutCartPage.url}}" stepKey="verifyCartRedirectAfterAddingProductFromProductPage"/>
 
         <click selector="#block-giftcard #block-giftcard-heading" stepKey="clickApplyGiftCardCollapsible" />
-        <fillField userInput="{{_ENV.GIFT_CARD_NUMBER_1}}" selector="#giftcard-form .field.gift-card-code-field .control .input-text" stepKey="fillGiftCardNo"/>
-        <fillField userInput="1" selector="#giftcard-form .field.gift-card-amount-field .control .input-text" stepKey="fillGiftCardAmount"/>
+        <fillField userInput="{{_ENV.GIFT_CARD_NUMBER_2}}" selector="#giftcardno" stepKey="fillGiftCardNo"/>
+        <fillField userInput="{{_ENV.GIFT_CARD_PIN_2}}" selector="#giftcardpin" stepKey="fillGiftCardPin"/>
+        <fillField userInput="1" selector="#giftcardamount" stepKey="fillGiftCardAmount"/>
 
         <wait stepKey="waitForSessionLoad1" time="5"/>
         <click selector="#giftcard-form .applygiftcard" stepKey="clickApplyGiftCardBtn" />

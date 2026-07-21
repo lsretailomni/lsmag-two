@@ -1,0 +1,58 @@
+<?php
+/**
+ * Registers the Alpine.data for the LS Central voucher amount used totals segment.
+ *
+ * Mirrors the Luma web/js/view/totals/voucher-discount.js: reads the applied non-GIFTCARDNO
+ * (voucher) entries from the ls_pos_data_entries extension attribute so each voucher renders
+ * on its own display line, with a fallback to the aggregate segment value.
+ *
+ * Display only — no total deduction is performed here (VoucherAmountUsed::collect owns the
+ * single grand-total deduction).
+ *
+ * The AlpineJS scope of this file is the method `initCartTotals()`
+ * in Magento_Checkout::php-cart/totals.phtml.
+ */
+
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+/** @var HyvaCsp $hyvaCsp */
+?>
+<script>
+    function initVoucherDiscountSegment() {
+        return {
+            isVoucherDiscountSegment() {
+                return this.segment.code === 'ls_entry_amount';
+            },
+            getVoucherEntries() {
+                var extAttrs = this.totalsData && this.totalsData.extension_attributes;
+                if (!extAttrs || !extAttrs.ls_pos_data_entries) {
+                    return [];
+                }
+                try {
+                    var parsed = JSON.parse(extAttrs.ls_pos_data_entries);
+                    if (Array.isArray(parsed)) {
+                        return parsed.filter(function (e) {
+                            return (e.entry_type || '').toUpperCase() !== 'GIFTCARDNO';
+                        });
+                    }
+                } catch (e) {}
+                return [];
+            },
+            entryTitle(entry) {
+                var label = entry.entry_type || '<?= $escaper->escapeJs(__('Voucher')) ?>';
+                var code = entry.entry_no || entry.no || '';
+                return label + ' - ' + code + ' <?= $escaper->escapeJs(__('Redeemed')) ?>';
+            },
+            formatEntryAmount(entry) {
+                return '-' + hyva.formatPrice(Number(entry.amount) || 0);
+            },
+            formatVoucherDiscountValue() {
+                return '-' + hyva.formatPrice(this.segment.value);
+            }
+        };
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('initVoucherDiscountSegment', initVoucherDiscountSegment), {once: true})
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

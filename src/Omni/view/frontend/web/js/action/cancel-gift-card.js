@@ -13,32 +13,59 @@ define([
 ) {
     'use strict';
 
-    return function (isApplied) {
-        var quoteId = quote.getQuoteId(),
-            url = 'omni/ajax/updateGiftCard',
-            message = $t('Gift card successfully removed.');
+    /**
+     * Cancel a gift card or voucher, or remove a specific one from the list.
+     *
+     * @param {ko.observable} isApplied
+     * @param {string|null}   giftCardNo          - gift card number (for full cancel)
+     * @param {string|null}   giftCardPin
+     * @param {string|null}   cancelVoucherNo     - specific voucher entry_no to remove
+     * @param {string|null}   cancelGiftCardNo    - specific gift card entry_no to remove
+     * @param {string|null}   cancelAllType       - 'vouchers' to clear all vouchers, 'gift_cards' to clear all gift cards
+     */
+    return function (isApplied, giftCardNo, giftCardPin, cancelVoucherNo, cancelGiftCardNo, cancelAllType) {
+        var url = 'omni/ajax/updateGiftCard';
 
         messageContainer.clear();
         fullScreenLoader.startLoader();
 
+        var payload = {
+            'gift_card_no': giftCardNo || null,
+            'gift_card_amount': 0,
+            'gift_card_pin': giftCardPin || null
+        };
+
+        if (cancelVoucherNo) {
+            payload['cancel_voucher_no'] = cancelVoucherNo;
+        }
+        if (cancelGiftCardNo) {
+            payload['cancel_gift_card_no'] = cancelGiftCardNo;
+        }
+        if (cancelAllType === 'vouchers') {
+            payload['cancel_all_vouchers'] = true;
+        } else if (cancelAllType === 'gift_cards') {
+            payload['cancel_all_gift_cards'] = true;
+        }
+
         return storage.post(
             url,
-            JSON.stringify({'gift_card_no': null, 'gift_card_amount': 0, 'gift_card_pin': null}),
+            JSON.stringify(payload),
             true,
             'application/json'
-        ).done(function () {
-            var deferred = $.Deferred();
+        ).done(function (response) {
+            var deferred,
+                message = $t('POS data entry successfully removed.');
 
             totals.isLoading(true);
-            getPaymentInformationAction(deferred);
+            getPaymentInformationAction(deferred = $.Deferred());
             $.when(deferred).done(function () {
-                isApplied(false);
+                if (!cancelVoucherNo && !cancelGiftCardNo && !payload['cancel_all_vouchers'] && !payload['cancel_all_gift_cards'] && isApplied) {
+                    isApplied(false);
+                }
                 totals.isLoading(false);
                 fullScreenLoader.stopLoader();
             });
-            messageContainer.addSuccessMessage({
-                'message': message
-            });
+            messageContainer.addSuccessMessage({'message': message});
         }).fail(function (response) {
             totals.isLoading(false);
             fullScreenLoader.stopLoader();

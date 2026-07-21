@@ -1,0 +1,158 @@
+<?php
+/**
+ * LS Central "Apply Gift Card / Voucher" cart section (Hyvä).
+ *
+ * Mirrors the Luma multi-entry model on the Hyvä Alpine.js pattern: a single append-only
+ * apply form (one code field + optional pin + amount) that server-side POSTs to
+ * omni/cart/GiftCardUsed, plus a removable list of the currently applied entries. Gift card
+ * vs voucher is auto-detected server-side via VoucherHelper::resolveCode, so one code field
+ * covers both. Each applied entry is removed individually by re-POSTing to the same controller
+ * with cancelgiftcardno (gift cards) or cancelvoucherno (vouchers).
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\ViewModel\LucideIcons;
+use Ls\Omni\Block\Cart\Giftcard;
+use Magento\Framework\Escaper;
+
+/** @var Giftcard $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HyvaCsp $hyvaCsp */
+$hyvaCsp = $viewModels->require(HyvaCsp::class);
+
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
+
+$appliedEntries = $block->getAppliedEntries();
+$hasEntries     = !empty($appliedEntries);
+$pinEnabled     = $block->isPinCodeFieldEnable();
+$formAction     = $escaper->escapeUrl($block->getUrl('omni/cart/GiftCardUsed'));
+?>
+<?php if ($block->isEnabled()): ?>
+<div class="giftcard-section my-4"
+     x-data="initLsGiftcard"
+     data-has-entries="<?= $hasEntries ? '1' : '0' ?>"
+     data-pin-required="<?= $pinEnabled ? '1' : '0' ?>"
+>
+    <button
+        type="button"
+        class="flex items-center justify-between w-full py-2 text-left font-semibold"
+        @click="open = !open"
+        :aria-expanded="open"
+    >
+        <span class="inline-flex items-center gap-2">
+            <?= $lucideIcons->sparklesHtml('text-primary', 20, 20, ['aria-hidden' => 'true']) ?>
+            <span><?= $escaper->escapeHtml(__('Apply Gift Card / Voucher')) ?></span>
+        </span>
+        <svg class="w-4 h-4 transition-transform" :class="open ? 'rotate-180' : ''"
+             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
+        </svg>
+    </button>
+    <div x-show="open" x-cloak class="mt-2 mb-4">
+        <?php if ($hasEntries): ?>
+            <ul class="applied-entries space-y-2 mb-3">
+                <?php foreach ($appliedEntries as $entry): ?>
+                    <?php
+                    $isGiftCard = $block->isGiftCardEntry($entry);
+                    $entryNo    = (string) ($entry['entry_no'] ?? '');
+                    $entryType  = (string) ($entry['entry_type'] ?? ($isGiftCard ? 'Gift Card' : 'Voucher'));
+                    $entryAmt   = $block->getFormattedEntryAmount($entry['amount'] ?? 0);
+                    $cancelName = $isGiftCard ? 'cancelgiftcardno' : 'cancelvoucherno';
+                    ?>
+                    <li class="flex items-center justify-between gap-2 border border-gray-200 rounded px-3 py-2">
+                        <span class="inline-flex flex-col">
+                            <span class="font-medium"><?= $escaper->escapeHtml($entryType) ?></span>
+                            <span class="text-sm text-fg-secondary"><?= $escaper->escapeHtml($entryNo) ?></span>
+                        </span>
+                        <span class="inline-flex items-center gap-3">
+                            <span class="font-medium"><?= $escaper->escapeHtml($entryAmt) ?></span>
+                            <form action="<?= $formAction ?>" method="post" class="inline">
+                                <?= $block->getBlockHtml('formkey') ?>
+                                <input type="hidden" name="<?= $escaper->escapeHtmlAttr($cancelName) ?>"
+                                       value="<?= $escaper->escapeHtmlAttr($entryNo) ?>"/>
+                                <button type="submit" class="btn btn-secondary text-sm"
+                                        aria-label="<?= $escaper->escapeHtmlAttr(__('Remove')) ?>">
+                                    <?= $escaper->escapeHtml(__('Remove')) ?>
+                                </button>
+                            </form>
+                        </span>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+        <form
+            id="giftcard-form"
+            action="<?= $formAction ?>"
+            method="post"
+        >
+            <?= $block->getBlockHtml('formkey') ?>
+            <div class="space-y-2 flex flex-wrap gap-2 items-start">
+                <label for="giftcardno" class="sr-only"><?= $escaper->escapeHtml(__('Gift Card / Voucher Code')) ?></label>
+                <input
+                    type="text"
+                    class="form-input"
+                    id="giftcardno"
+                    name="giftcardno"
+                    x-model="cardNo"
+                    placeholder="<?= $escaper->escapeHtmlAttr(__('Enter Gift Card / Voucher Code')) ?>"
+                    required
+                />
+                <?php if ($pinEnabled): ?>
+                    <label for="giftcardpin" class="sr-only"><?= $escaper->escapeHtml(__('Pin')) ?></label>
+                    <input
+                        type="password"
+                        class="form-input"
+                        id="giftcardpin"
+                        name="giftcardpin"
+                        x-model="cardPin"
+                        placeholder="<?= $escaper->escapeHtmlAttr(__('Enter Pin')) ?>"
+                        required
+                    />
+                <?php endif; ?>
+                <label for="giftcardamount" class="sr-only"><?= $escaper->escapeHtml(__('Amount to Use')) ?></label>
+                <input
+                    type="number"
+                    min="0"
+                    step="any"
+                    class="form-input"
+                    id="giftcardamount"
+                    name="giftcardamount"
+                    x-model="amount"
+                    placeholder="<?= $escaper->escapeHtmlAttr(__('Amount to Use')) ?>"
+                    required
+                />
+                <div class="flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-primary"
+                            :disabled="!cardNo.trim() || (pinRequired && !cardPin.trim()) || Number(amount) <= 0">
+                        <?= $escaper->escapeHtml(__('Apply')) ?>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function initLsGiftcard() {
+        return {
+            open: false,
+            amount: '',
+            cardNo: '',
+            cardPin: '',
+            pinRequired: false,
+            init() {
+                this.open = this.$el.dataset.hasEntries === '1';
+                this.pinRequired = this.$el.dataset.pinRequired === '1';
+            }
+        };
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('initLsGiftcard', initLsGiftcard), {once: true})
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
+<?php endif; ?>

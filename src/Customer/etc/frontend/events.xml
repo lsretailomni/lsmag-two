@@ -5,4 +5,8 @@
     <event name="customer_save_after">
         <observer name="ls_customer_save_after" instance="Ls\Customer\Observer\SaveAfter"/>
     </event>
+    <!-- Register this module with the Hyvä Tailwind build (no effect on Luma) -->
+    <event name="hyva_config_generate_before">
+        <observer name="ls_customer_hyva_config_generate" instance="Ls\Customer\Observer\RegisterModuleForHyvaConfig"/>
+    </event>
 </config>

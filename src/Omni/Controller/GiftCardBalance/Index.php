@@ -26,7 +26,7 @@ class Index implements HttpGetActionInterface
     public function execute()
     {
         $page = $this->resultPageFactory->create();
-        $page->getConfig()->getTitle()->set(__('Check Your Gift Card Balance'));
+        $page->getConfig()->getTitle()->set(__('Check Your Gift Card Balance / Voucher'));
         return $page;
     }
 }

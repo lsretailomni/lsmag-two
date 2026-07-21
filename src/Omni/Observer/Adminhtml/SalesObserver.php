@@ -35,7 +35,7 @@ class SalesObserver implements ObserverInterface
         $addressType = $shippingAssignment->getShipping()->getAddress()->getAddressType();
         $total = $event->getTotal();
         $pointDiscount  = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
-        $giftCardAmount = $quote->getLsGiftCardAmountUsed();
+        $giftCardAmount = (float)array_sum(array_column(json_decode((string)$quote->getLsPosDataEntries(), true) ?? [], 'amount'));
 
         if ($pointDiscount > 0.001) {
             $quote->setLsPointsDiscount($pointDiscount);
@@ -46,7 +46,7 @@ class SalesObserver implements ObserverInterface
 
             if (!empty($basketData)) {
                 $pointDiscount  = $this->loyaltyHelper->getLsPointsDiscount($quote->getLsPointsSpent());
-                $giftCardAmount = $quote->getLsGiftCardAmountUsed();
+                $giftCardAmount = (float)array_sum(array_column(json_decode((string)$quote->getLsPosDataEntries(), true) ?? [], 'amount'));
                 $mobileTransaction = current((array)$basketData->getMobiletransaction());
                 $grandTotal = $mobileTransaction->getGrossamount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;

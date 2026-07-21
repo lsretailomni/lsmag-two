@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="hyva_sales_order_view_base"/>
+    <update handle="sales_order_shipment_renderers"/>
+    <body>
+        <referenceBlock name="sales.order.view">
+            <arguments>
+                <argument name="is_context_shipment" xsi:type="string">true</argument>
+            </arguments>
+            <block class="Ls\Customer\Block\Order\Custom\Hyva\Items"
+                   name="custom_order_items_custom"
+                   template="Ls_Customer::order/custom/shipment/items-hyva.phtml"
+                   before="order.status">
+                <arguments>
+                    <argument name="is_context_shipment" xsi:type="string">true</argument>
+                </arguments>
+                <block class="Magento\Shipping\Block\Tracking\Link"
+                       name="track-all-link"
+                       template="Magento_Shipping::tracking/link.phtml">
+                    <arguments>
+                        <argument name="label"
+                                  xsi:type="string"
+                                  translate="true">
+                            Track All Shipments
+                        </argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Framework\View\Element\RendererList"
+                       name="sales.order.shipment.renderers"
+                       as="renderer.list"
+                />
+                <block class="Magento\Sales\Block\Order\Comments"
+                       name="order.comments"
+                       template="Magento_Sales::order/comments.phtml"
+                />
+            </block>
+        </referenceBlock>
+    </body>
+</page>
