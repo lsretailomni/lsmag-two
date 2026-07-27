@@ -16,7 +16,9 @@ use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote\Item as QuoteItem;
 use Magento\Quote\Model\ResourceModel\Quote as QuoteResourceModel;
+use Magento\Quote\Model\ResourceModel\Quote\Item as QuoteItemResourceModel;
 use Magento\Sales\Model\AdminOrder\Create;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -87,6 +89,24 @@ class CreatePluginTest extends TestCase
      */
     private $quote;
 
+    /**
+     * @var CheckoutSession&MockObject
+     */
+    private $checkoutSession;
+
+    /**
+     * Records every magic (get/set/uns/has-prefixed) call made through
+     * {@see CheckoutSession::__call()} on {@see $checkoutSession}, as [$method, $args] pairs.
+     *
+     * @var array<int, array{0: string, 1: array}>
+     */
+    private $checkoutSessionCalls = [];
+
+    /**
+     * @var array<int, QuoteItem&MockObject>
+     */
+    private $quoteItems = [];
+
     protected function setUp(): void
     {
         $this->basketHelper = $this->getMockBuilder(BasketHelper::class)
@@ -102,15 +122,30 @@ class CreatePluginTest extends TestCase
             ])
             ->getMock();
         $this->basketHelper->method('getCustomerSession')->willReturn($this->createMock(CustomerSession::class));
-        $this->basketHelper->method('getCheckoutSession')->willReturn($this->createMock(CheckoutSession::class));
+        // unsetData() has no declared method of its own on CheckoutSession - it's backed by the
+        // inherited SessionManager::__call() magic method (unlike setQuoteId(), which IS a real
+        // declared method and is mocked normally via PHPUnit, not via __call()). createMock()
+        // mocks __call() itself (since it's a real declared public method), so a plain
+        // createMock() already intercepts every magic call and returns null by default; a
+        // recording callback is attached to it so the unsetData() call under test can be
+        // asserted on.
+        $this->checkoutSessionCalls = [];
+        $this->checkoutSession = $this->createMock(CheckoutSession::class);
+        $this->checkoutSession->method('__call')->willReturnCallback(
+            function (string $method, array $args): void {
+                $this->checkoutSessionCalls[] = [$method, $args];
+            }
+        );
+        $this->basketHelper->method('getCheckoutSession')->willReturn($this->checkoutSession);
         $this->basketHelper->method('getOneListAdmin')->willReturn($this->createMock(RootMobileTransaction::class));
         $this->basketHelper->method('setOneListQuote')->willReturn($this->createMock(RootMobileTransaction::class));
 
         $this->itemHelper = $this->getMockBuilder(ItemHelper::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['setDiscountedPricesForItems'])
+            ->onlyMethods(['setDiscountedPricesForItems', 'setBaseCurrencyFieldsFromItemPrice'])
             ->getMock();
         $this->itemHelper->quoteResourceModel = $this->createMock(QuoteResourceModel::class);
+        $this->itemHelper->itemResourceModel = $this->createMock(QuoteItemResourceModel::class);
 
         $this->lsr = $this->createMock(LSR::class);
         $this->data = $this->createMock(Data::class);
@@ -154,7 +189,8 @@ class CreatePluginTest extends TestCase
         $this->quote->setData('ls_pos_data_entries', null);
         $this->quote->setData('ls_points_spent', 0);
         $this->quote->method('getAllVisibleItems')->willReturn([$this->createMock(Item::class)]);
-        $this->quote->method('getAllItems')->willReturn([$this->createMock(Item::class)]);
+        $this->quoteItems = [$this->createMock(QuoteItem::class), $this->createMock(QuoteItem::class)];
+        $this->quote->method('getAllItems')->willReturn($this->quoteItems);
         $this->quote->method('getStore')->willReturn($store);
         $this->quote->method('getCustomer')->willReturn($customer);
 
@@ -174,6 +210,57 @@ class CreatePluginTest extends TestCase
         $this->basketHelper->expects($this->never())->method('getOneListAdmin');
         $this->basketHelper->expects($this->never())->method('update');
         $this->itemHelper->expects($this->never())->method('setDiscountedPricesForItems');
+
+        $this->plugin->afterSaveQuote($this->subject, 'result');
+    }
+
+    /**
+     * Config ON + LSR enabled - in addition to skipping the recalculation (covered above), the
+     * `stopCalcRowTotal` checkout-session flag must be explicitly cleared so that a value stuck
+     * at `1` from an earlier admin action (which would otherwise make
+     * {@see \Ls\Omni\Plugin\Quote\Item\AbstractItemPlugin::afterGetCalculationPriceOriginal()}
+     * discard the custom price during Magento's native `calcRowTotal()`) does not silently
+     * suppress the custom price.
+     */
+    public function testClearsStopCalcRowTotalFlagWhenConfigEnabledAndLsrEnabled(): void
+    {
+        $this->lsr->method('isLSR')->with(1)->willReturn(true);
+        $this->lsr->method('isAdminOrderCustomPriceActive')->with(1)->willReturn(true);
+
+        $this->basketHelper->expects($this->never())->method('getOneListAdmin');
+        $this->basketHelper->expects($this->never())->method('update');
+        $this->itemHelper->expects($this->never())->method('setDiscountedPricesForItems');
+
+        $this->plugin->afterSaveQuote($this->subject, 'result');
+
+        $this->assertContains(
+            ['unsetData', ['stopCalcRowTotal']],
+            $this->checkoutSessionCalls,
+            'Expected the stopCalcRowTotal checkout-session flag to be cleared when the custom'
+            . ' price toggle is active, so a value stuck at 1 from an earlier admin action does'
+            . ' not suppress the custom price during Magento\'s native calcRowTotal().'
+        );
+    }
+
+    /**
+     * Config ON + LSR enabled - the toggle-ON `elseif` branch trusts Magento's own native item
+     * pricing/totals collection (already run by Create::saveQuote()'s own internal
+     * collectTotals() call) as-is for Price/RowTotal, and only explicitly syncs the secondary
+     * base-currency/tax-inclusive fields via ItemHelper::setBaseCurrencyFieldsFromItemPrice()
+     * (mirroring the proven-working admin-order-create custom-price bypass pattern), then
+     * persists the quote.
+     */
+    public function testSyncsBaseCurrencyFieldsAndSavesQuoteWhenConfigEnabledAndLsrEnabled(): void
+    {
+        $this->lsr->method('isLSR')->with(1)->willReturn(true);
+        $this->lsr->method('isAdminOrderCustomPriceActive')->with(1)->willReturn(true);
+
+        $this->itemHelper->expects($this->once())
+            ->method('setBaseCurrencyFieldsFromItemPrice')
+            ->with($this->quote);
+        $this->itemHelper->quoteResourceModel->expects($this->exactly(2))
+            ->method('save')
+            ->with($this->quote);
 
         $this->plugin->afterSaveQuote($this->subject, 'result');
     }
@@ -214,5 +301,44 @@ class CreatePluginTest extends TestCase
         $this->itemHelper->expects($this->never())->method('setDiscountedPricesForItems');
 
         $this->plugin->afterSaveQuote($this->subject, 'result');
+    }
+
+    /**
+     * Config ON + LSR enabled - {@see CreatePlugin::beforeSaveQuote()} must clear the
+     * `stopCalcRowTotal` checkout-session flag BEFORE
+     * Magento\Sales\Model\AdminOrder\Create::saveQuote() runs its own internal
+     * collectTotals() call, otherwise a value stuck at 1 from an earlier admin action would
+     * cause the custom price to be discarded for the totals collected during the current
+     * request (the after plugin alone is one step too late for that).
+     */
+    public function testBeforeSaveQuoteClearsStopCalcRowTotalFlagWhenConfigEnabledAndLsrEnabled(): void
+    {
+        $this->lsr->method('isLSR')->with(1)->willReturn(true);
+        $this->lsr->method('isAdminOrderCustomPriceActive')->with(1)->willReturn(true);
+
+        $this->plugin->beforeSaveQuote($this->subject);
+
+        $this->assertContains(
+            ['unsetData', ['stopCalcRowTotal']],
+            $this->checkoutSessionCalls,
+            'Expected beforeSaveQuote() to clear the stopCalcRowTotal checkout-session flag'
+            . ' before Create::saveQuote() runs its internal collectTotals() call.'
+        );
+    }
+
+    /**
+     * Config OFF - {@see CreatePlugin::beforeSaveQuote()} must not touch the checkout session at
+     * all; the OneList recalc path manages the flag itself via setGrandTotalGivenQuote().
+     */
+    public function testBeforeSaveQuoteDoesNothingWhenConfigDisabled(): void
+    {
+        $this->lsr->method('isLSR')->with(1)->willReturn(true);
+        $this->lsr->method('isAdminOrderCustomPriceActive')->with(1)->willReturn(false);
+
+        $this->basketHelper->expects($this->never())->method('getCheckoutSession');
+
+        $this->plugin->beforeSaveQuote($this->subject);
+
+        $this->assertSame([], $this->checkoutSessionCalls);
     }
 }

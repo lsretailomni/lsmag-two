@@ -328,6 +328,35 @@ class ItemHelper extends AbstractHelperOmni
     }
 
     /**
+     * Sync each visible item's base-currency/tax-inclusive price fields from its (already
+     * correct) CalculationPrice, and persist - used for the admin-order-create custom-price
+     * bypass path, where Magento's own native item pricing/totals collection is trusted as-is
+     * (RowTotal is deliberately left untouched here) and only these secondary fields, which
+     * Create::saveQuote()'s own internal collectTotals() does not itself keep in sync with a
+     * custom price, need this explicit correction.
+     *
+     * @param \Magento\Quote\Model\Quote $quote
+     * @return void
+     */
+    public function setBaseCurrencyFieldsFromItemPrice($quote)
+    {
+        foreach ($quote->getAllVisibleItems() as $quoteItem) {
+            $unitPrice = $quoteItem->getCalculationPrice();
+            $quoteItem->setBasePrice($this->convertToBaseCurrency($unitPrice))
+                ->setPriceInclTax($unitPrice)
+                ->setBasePriceInclTax($this->convertToBaseCurrency($unitPrice))
+                ->setRowTotalInclTax($quoteItem->getRowTotal());
+            $quoteItem->getProduct()->setIsSuperMode(true);
+            try {
+                // @codingStandardsIgnoreLine
+                $this->itemResourceModel->save($quoteItem);
+            } catch (LocalizedException $e) {
+                $this->_logger->critical("Error saving SKU:-" . $quoteItem->getSku() . " - " . $e->getMessage());
+            }
+        }
+    }
+
+    /**
      * Setting related amounts in each quote_item
      *
      * @param $line

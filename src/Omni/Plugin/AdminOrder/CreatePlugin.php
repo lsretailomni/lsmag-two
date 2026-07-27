@@ -40,6 +40,32 @@ class CreatePlugin
     }
 
     /**
+     * Before plugin to clear the stopCalcRowTotal flag before the quote's totals are collected
+     *
+     * Magento\Sales\Model\AdminOrder\Create::saveQuote() calls $this->getQuote()->collectTotals()
+     * internally before returning, so clearing the flag only in the after plugin is one step too
+     * late for the totals collected during the current request. Clearing it here, before
+     * saveQuote() runs, ensures the custom price set by the admin is not discarded by
+     * Ls\Omni\Plugin\Quote\Item\AbstractItemPlugin::afterGetCalculationPriceOriginal().
+     *
+     * @param Create $subject
+     * @return void
+     */
+    public function beforeSaveQuote(Create $subject): void
+    {
+        if (!$subject->getQuote()->getId() || empty($subject->getQuote()->getAllVisibleItems())) {
+            return;
+        }
+
+        $quote = $subject->getQuote();
+        if ($this->lsr->isLSR($quote->getStoreId())
+            && $this->lsr->isAdminOrderCustomPriceActive($quote->getStoreId())
+        ) {
+            $this->basketHelper->getCheckoutSession()->unsetData('stopCalcRowTotal');
+        }
+    }
+
+    /**
      * After plugin to create oneList after quote is saved
      *
      * @param Create $subject
@@ -110,6 +136,14 @@ class CreatePlugin
                         $basketData
                     );
                 }
+            } elseif ($this->lsr->isAdminOrderCustomPriceActive($quote->getStoreId())) {
+                $this->basketHelper->getCheckoutSession()->unsetData('stopCalcRowTotal');
+                // Magento's own native item pricing/totals collection (already run by
+                // Create::saveQuote()'s own internal collectTotals() call) is trusted as-is for
+                // Price/RowTotal - only the secondary base-currency/tax-inclusive fields it
+                // doesn't itself keep in sync with a custom price need this explicit correction.
+                $this->itemHelper->setBaseCurrencyFieldsFromItemPrice($quote);
+                $this->itemHelper->quoteResourceModel->save($quote);
             }
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
