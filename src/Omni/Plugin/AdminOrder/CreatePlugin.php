@@ -88,6 +88,7 @@ class CreatePlugin
 
         $quote = $subject->getQuote();
         $this->orderHelper->storeManager->setCurrentStore($quote->getStoreId());
+        $this->orderHelper->checkoutSession->setQuoteId($quote->getId());
         $this->basketHelper->setCorrectStoreIdInCheckoutSession($quote->getStoreId());
         $this->basketHelper->getCustomerSession()->setCustomerId($quote->getCustomer()->getId());
         try {
@@ -123,7 +124,13 @@ class CreatePlugin
                 }
                 /** @var Order $basketData */
                 $basketData = $this->basketHelper->update($oneList);
-                $this->itemHelper->setDiscountedPricesForItems($quote, $basketData, 2);
+                if (!empty($basketData)) {
+                    $this->itemHelper->setDiscountedPricesForItems($quote, $basketData, 2);
+                } else {
+                    // OneList calculation failed/returned nothing (e.g. LS Central rejected the
+                    // request) - fall back to catalog price so items don't display as price 0.
+                    $this->itemHelper->setBaseCurrencyFieldsFromItemPrice($quote);
+                }
                 if (!empty($basketData) && method_exists($basketData, 'getPointsRewarded')) {
                     $quote->setLsPointsEarn($basketData->getPointsRewarded())->save();
                 }

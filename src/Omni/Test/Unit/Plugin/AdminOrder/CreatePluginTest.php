@@ -60,15 +60,22 @@ class CreatePluginTest extends TestCase
         $storeManager = $this->createMock(StoreManagerInterface::class);
         $this->orderHelper->storeManager = $storeManager;
 
+        $checkoutSession = $this->createMock(\Magento\Checkout\Model\Session::class);
+        $this->orderHelper->checkoutSession = $checkoutSession;
+
         $customer = $this->createMock(Customer::class);
         $customer->method('getId')->willReturn(5);
 
-        $this->quote = $this->createMock(Quote::class);
+        $this->quote = $this->getMockBuilder(Quote::class)
+            ->addMethods(['setLsPointsEarn'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->quote->method('getId')->willReturn(100);
         $this->quote->method('getAllVisibleItems')->willReturn([$this->createMock(\Magento\Quote\Model\Quote\Item::class)]);
         $this->quote->method('getStoreId')->willReturn(1);
         $this->quote->method('getCustomer')->willReturn($customer);
         $this->quote->method('getAllItems')->willReturn([$this->createMock(\Magento\Quote\Model\Quote\Item::class)]);
+        $this->quote->method('setLsPointsEarn')->willReturnSelf();
 
         $store = $this->createMock(StoreInterface::class);
         $store->method('getWebsiteId')->willReturn(1);
@@ -96,6 +103,7 @@ class CreatePluginTest extends TestCase
     {
         $this->lsr->method('isLSR')->with(1)->willReturn(true);
         $this->lsr->method('isAdminOrderCustomPriceActive')->with(1)->willReturn(true);
+        $this->orderHelper->checkoutSession->expects($this->once())->method('setQuoteId')->with(100);
 
         $this->basketHelper->expects($this->never())->method('getOneListAdmin');
         $this->basketHelper->expects($this->never())->method('setOneListQuote');
@@ -112,13 +120,33 @@ class CreatePluginTest extends TestCase
     {
         $this->lsr->method('isLSR')->with(1)->willReturn(true);
         $this->lsr->method('isAdminOrderCustomPriceActive')->with(1)->willReturn(false);
+        $this->orderHelper->checkoutSession->expects($this->once())->method('setQuoteId')->with(100);
+
+        $oneList = $this->createMock(\Ls\Omni\Client\Ecommerce\Entity\OneList::class);
+        $basketData = $this->createMock(\Ls\Omni\Client\Ecommerce\Entity\Order::class);
+        $this->basketHelper->expects($this->once())->method('getOneListAdmin')->willReturn($oneList);
+        $this->basketHelper->expects($this->once())->method('setOneListQuote')->willReturn($oneList);
+        $this->basketHelper->expects($this->once())->method('update')->willReturn($basketData);
+        $this->itemHelper->expects($this->once())->method('setDiscountedPricesForItems');
+        $this->itemHelper->expects($this->never())->method('setBaseCurrencyFieldsFromItemPrice');
+
+        $this->plugin->afterSaveQuote($this->subject, new DataObject());
+    }
+
+    public function testFallsBackToCatalogPriceWhenOneListCalculationFails()
+    {
+        $this->lsr->method('isLSR')->with(1)->willReturn(true);
+        $this->lsr->method('isAdminOrderCustomPriceActive')->with(1)->willReturn(false);
+        $this->orderHelper->checkoutSession->expects($this->once())->method('setQuoteId')->with(100);
 
         $oneList = $this->createMock(\Ls\Omni\Client\Ecommerce\Entity\OneList::class);
         $this->basketHelper->expects($this->once())->method('getOneListAdmin')->willReturn($oneList);
         $this->basketHelper->expects($this->once())->method('setOneListQuote')->willReturn($oneList);
         $this->basketHelper->expects($this->once())->method('update')->willReturn(null);
-        $this->itemHelper->expects($this->once())->method('setDiscountedPricesForItems');
-        $this->itemHelper->expects($this->never())->method('setBaseCurrencyFieldsFromItemPrice');
+        $this->itemHelper->expects($this->never())->method('setDiscountedPricesForItems');
+        $this->itemHelper->expects($this->once())
+            ->method('setBaseCurrencyFieldsFromItemPrice')
+            ->with($this->quote);
 
         $this->plugin->afterSaveQuote($this->subject, new DataObject());
     }
@@ -126,6 +154,7 @@ class CreatePluginTest extends TestCase
     public function testDoesNothingWhenLsrDisabled()
     {
         $this->lsr->method('isLSR')->with(1)->willReturn(false);
+        $this->orderHelper->checkoutSession->expects($this->once())->method('setQuoteId')->with(100);
 
         $this->basketHelper->expects($this->never())->method('getOneListAdmin');
         $this->basketHelper->expects($this->never())->method('update');
