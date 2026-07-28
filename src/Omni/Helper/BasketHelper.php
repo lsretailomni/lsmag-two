@@ -1433,6 +1433,106 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
+     * Builds an Entity\Order directly from the Magento order's own items, bypassing the remote
+     * OneListCalculate call. Used only when LSR::LS_ADMIN_ORDER_CUSTOM_PRICE_ACTIVE is enabled for
+     * the order's store, and only for genuine admin order-create (never order-edit — see caller).
+     *
+     * @param \Magento\Sales\Model\Order $order
+     * @return Entity\Order
+     * @throws NoSuchEntityException
+     */
+    public function buildOrderFromMagentoOrderItems($order): Entity\Order
+    {
+        $oneListAdmin = $this->getOneListAdmin(
+            $order->getCustomerEmail(),
+            $order->getStore()->getWebsiteId(),
+            $order->getCustomerIsGuest()
+        );
+
+        // @codingStandardsIgnoreLine
+        $orderEntity = new Entity\Order();
+        $orderEntity
+            ->setStoreId($oneListAdmin->getStoreId())
+            ->setCardId($oneListAdmin->getCardId())
+            ->setOrderLines($this->buildOrderLinesFromOrderItems($order));
+
+        return $orderEntity;
+    }
+
+    /**
+     * Builds order lines directly from the Magento order's own visible items. Mirrors
+     * getOrderLinesQuote()'s no-cached-basket-response branch field-for-field, sourced from order
+     * items instead of quote items. Does NOT add a shipping/service line — that is
+     * OrderHelper::updateShippingAmount()'s responsibility regardless of price source.
+     *
+     * @param \Magento\Sales\Model\Order $order
+     * @return Entity\ArrayOfOrderLine
+     */
+    private function buildOrderLinesFromOrderItems($order): Entity\ArrayOfOrderLine
+    {
+        // @codingStandardsIgnoreLine
+        $orderLinesArray = new Entity\ArrayOfOrderLine();
+        $itemsArray = [];
+        $lineNumber = 10000;
+
+        foreach ($order->getAllVisibleItems() as $orderItem) {
+            list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                $orderItem->getSku()
+            );
+            $priceIncTax  = $discountPercentage = $discount = null;
+            $regularPrice = $orderItem->getOriginalPrice();
+            $finalPrice   = $orderItem->getPriceInclTax();
+
+            if ($finalPrice < $regularPrice) {
+                $priceIncTax        = $regularPrice;
+                $discount           = ($regularPrice - $finalPrice) * $orderItem->getQtyOrdered();
+                $discountPercentage = (($regularPrice - $finalPrice) / $regularPrice) * 100;
+            }
+
+            if ($orderItem->getDiscountAmount() > 0) {
+                if (!$discount && !$discountPercentage) {
+                    $discount           = $orderItem->getDiscountAmount();
+                    $discountPercentage = $orderItem->getDiscountPercent();
+
+                    if ($discountPercentage == 0) {
+                        $rowTotalInclTax    = $orderItem->getRowTotalInclTax();
+                        $discountPercentage = ($discount / $rowTotalInclTax) * 100;
+                    }
+                } else {
+                    $rowTotalInclTax    = $orderItem->getRowTotalInclTax() + $discount;
+                    $discount           += $orderItem->getDiscountAmount();
+                    $discountPercentage = ($discount / $rowTotalInclTax) * 100;
+                }
+            }
+
+            // @codingStandardsIgnoreLine
+            $orderLine = (new Entity\OrderLine())
+                ->setValidateTax(1)
+                ->setLineNumber($lineNumber)
+                ->setQuantity($orderItem->getQtyOrdered())
+                ->setItemId($itemId)
+                ->setId('')
+                ->setVariantId($variantId)
+                ->setUomId($uom)
+                ->setLineType(Entity\Enum\LineType::ITEM)
+                ->setAmount($orderItem->getRowTotalInclTax() - $orderItem->getDiscountAmount())
+                ->setNetAmount($orderItem->getRowTotal())
+                ->setPrice($priceIncTax ?? $orderItem->getPriceInclTax())
+                ->setNetPrice($orderItem->getPrice())
+                ->setTaxAmount($orderItem->getTaxAmount())
+                ->setDiscountAmount($discount)
+                ->setDiscountPercent($discountPercentage);
+
+            $itemsArray[] = $orderLine;
+            $lineNumber += 10000;
+        }
+
+        $orderLinesArray->setOrderLine($itemsArray);
+
+        return $orderLinesArray;
+    }
+
+    /**
      * Sending request to Central for basket calculation
      *
      * @param $cartId

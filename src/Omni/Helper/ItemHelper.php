@@ -424,6 +424,33 @@ class ItemHelper extends AbstractHelper
     }
 
     /**
+     * Populate base-currency and tax-inclusive display fields directly from each item's own
+     * price, for admin order-create quotes where OneList calculation is bypassed (custom price
+     * active). Magento's own tax engine is disabled while LSR is active
+     * (Ls\Omni\Model\Sales\Total\Quote\Subtotal::aroundCollect), so these fields would otherwise
+     * never be populated.
+     *
+     * @param \Magento\Quote\Model\Quote $quote
+     */
+    public function setBaseCurrencyFieldsFromItemPrice($quote)
+    {
+        foreach ($quote->getAllVisibleItems() as $quoteItem) {
+            $unitPrice = $quoteItem->getCalculationPrice();
+            $quoteItem->setBasePrice($this->convertToBaseCurrency($unitPrice))
+                ->setPriceInclTax($unitPrice)
+                ->setBasePriceInclTax($this->convertToBaseCurrency($unitPrice))
+                ->setRowTotalInclTax($quoteItem->getRowTotal());
+            $quoteItem->getProduct()->setIsSuperMode(true);
+            try {
+                // @codingStandardsIgnoreLine
+                $this->itemResourceModel->save($quoteItem);
+            } catch (LocalizedException $e) {
+                $this->_logger->critical("Error saving SKU:-" . $quoteItem->getSku() . " - " . $e->getMessage());
+            }
+        }
+    }
+
+    /**
      * This function is overriding in hospitality module
      *
      * Compare one_list lines with quote_item items and set correct prices
@@ -605,6 +632,10 @@ class ItemHelper extends AbstractHelper
                 $type == 1 ? $this->convertToBaseCurrency($amount) :
                     $this->convertToBaseCurrency($rowTotalIncTax)
             );
+
+        if ($type == 2) {
+            $quoteItem->setBasePrice($this->convertToBaseCurrency($unitPrice));
+        }
     }
 
     /**

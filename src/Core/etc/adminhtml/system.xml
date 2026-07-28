@@ -89,6 +89,22 @@
                     <label>Enable order integration on Frontend</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="admin_order_custom_price"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="30"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Use Magento custom price for admin-created orders (skip OneList calculation)</label>
+                    <comment>
+                        When enabled, orders placed from the admin "Create New Order" screen will not be sent
+                        through LS Central's OneList price calculation. Magento's own item prices (including any
+                        admin-entered Custom Price) are sent to LS Central as-is. Default: disabled (existing
+                        behavior).
+                    </comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
         </section>
         <section id="general">
