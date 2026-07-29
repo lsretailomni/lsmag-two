@@ -7,17 +7,14 @@ use \Ls\Omni\Helper\GiftCardHelper;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\Result\Raw;
 use Magento\Framework\Controller\Result\RawFactory;
-use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\Helper\Data;
 
-/**
- * Class CheckGiftCardBalance
- */
 class CheckGiftCardBalance implements HttpPostActionInterface
 {
 
@@ -48,8 +45,6 @@ class CheckGiftCardBalance implements HttpPostActionInterface
     public $lsr;
 
     /**
-     * CheckGiftCardBalance constructor
-     *
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param RawFactory $resultRawFactory
@@ -78,19 +73,19 @@ class CheckGiftCardBalance implements HttpPostActionInterface
     /**
      * Entry point for the controller
      *
-     * @return ResponseInterface|Json|Raw|ResultInterface
+     * @return Json|Raw
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
         $httpBadRequestCode = 400;
-        /** @var Raw $resultRaw */
         $resultRaw = $this->resultRawFactory->create();
         $isPost    = $this->request->isPost();
         if (!$isPost || !$this->request->isXmlHttpRequest()) {
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
 
-        /** @var Json $resultJson */
         $resultJson   = $this->resultJsonFactory->create();
         $post         = $this->request->getContent();
         $postData     = json_decode($post);
@@ -101,15 +96,16 @@ class CheckGiftCardBalance implements HttpPostActionInterface
             $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardCode, $giftCardPin);
             if (is_object($giftCardResponse)) {
                 $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
-
-                $data['giftcardbalance'] = $this->priceHelper->currency(
+                $data['giftcardbalance'] = $this->giftCardHelper->formatValue(
                     $convertedGiftCardBalanceArr['gift_card_balance_amount'],
-                    true,
-                    false
+                    true
                 );
-                $data['expirydate']      = $giftCardResponse->getExpireDate();
+                $data['expirydate']      = $this->giftCardHelper->formatExpireDate($giftCardResponse->getExpireDate());
             } else {
-                $data['giftcardbalance'] = $this->priceHelper->currency($giftCardResponse, true, false);
+                $data['giftcardbalance'] = $this->giftCardHelper->formatValue(
+                    $giftCardResponse,
+                    true
+                );
                 $data['expirydate']      = null;
             }
             if (empty($giftCardResponse)) {

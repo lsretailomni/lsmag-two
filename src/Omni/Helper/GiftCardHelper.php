@@ -7,8 +7,10 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\GiftCard;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\Currency;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
@@ -95,21 +97,21 @@ class GiftCardHelper extends AbstractHelperOmni
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == 'cart') {
                 return ($this->lsr->getStoreConfig(
-                        LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
-                        $this->lsr->getCurrentStoreId()
-                    ) && $this->lsr->getStoreConfig(
-                        LSR::LS_GIFTCARD_SHOW_ON_CART,
-                        $this->lsr->getCurrentStoreId()
-                    )
-                );
-            }
-            return ($this->lsr->getStoreConfig(
                     LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
                     $this->lsr->getCurrentStoreId()
                 ) && $this->lsr->getStoreConfig(
-                    LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,
+                    LSR::LS_GIFTCARD_SHOW_ON_CART,
                     $this->lsr->getCurrentStoreId()
                 )
+                );
+            }
+            return ($this->lsr->getStoreConfig(
+                LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
+                $this->lsr->getCurrentStoreId()
+            ) && $this->lsr->getStoreConfig(
+                LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,
+                $this->lsr->getCurrentStoreId()
+            )
             );
         } else {
             return false;
@@ -125,68 +127,6 @@ class GiftCardHelper extends AbstractHelperOmni
     public function isPinCodeFieldEnable()
     {
         return $this->lsr->getStoreConfig(LSR::LS_GIFTCARD_SHOW_PIN_CODE_FIELD, $this->lsr->getCurrentStoreId());
-    }
-
-    /**
-     * Get currency exchange rate based on store currency or gift card currency passed in param.
-     *
-     * @param $giftCardCurrency
-     * @param $storeId
-     * @return false|Entity\GetPointRateResponse|\Ls\Omni\Client\ResponseInterface|null
-     * @throws NoSuchEntityException
-     */
-    public function getPointRate($giftCardCurrency = null, $storeId = null)
-    {
-        if (!$storeId) {
-            $storeId = $this->lsr->getCurrentStoreId();
-        }
-
-        $response        = null;
-        $getExchangeRate = false;
-
-        if ($this->lsr->isLSR($storeId) && $this->isEnabledGiftCard()) {
-            $cacheId = LSR::POINTRATE . $storeId."_".$giftCardCurrency;
-            $response = $this->cacheHelper->getCachedContent($cacheId);
-
-            if ($response !== false) {
-                return $this->formatValue($response);
-            }
-
-            if (!empty($giftCardCurrency)) {
-                $getExchangeRate = ($giftCardCurrency != $this->lsr->getStoreCurrencyCode()) ? true : false;
-            }
-
-            // @codingStandardsIgnoreStart
-            $request = new Operation\GetPointRate();
-            $entity = new Entity\GetPointRate();
-            // @codingStandardsIgnoreEnd
-
-            if ($getExchangeRate) {
-                $entity->setCurrency($giftCardCurrency);
-            } else {
-                $entity->setCurrency($this->lsr->getStoreCurrencyCode());
-            }
-
-            try {
-                $response = $request->execute($entity);
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
-            }
-            if (!empty($response)) {
-                //$currencyFactor = $response->getResult();
-                //$exchangeRate   = 1 / $currencyFactor;
-
-                $this->cacheHelper->persistContentInCache(
-                    $cacheId,
-                    $response->getResult(),
-                    [Type::CACHE_TAG],
-                    86400
-                );
-
-                return $this->formatValue($response->getResult());
-            }
-        }
-        return $response;
     }
 
     /**
@@ -207,17 +147,42 @@ class GiftCardHelper extends AbstractHelperOmni
      * Format value to two decimal places
      *
      * @param float $value
-     * @return string
+     * @param bool $format
+     * @return array|string|string[]
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
-    public function formatValue($value)
+    public function formatValue($value, $format = false)
     {
-        return str_replace(
-            ',',
-            '.',
-            $this->currencyHelper->format($value, ['display' => Currency::NO_SYMBOL],
-                false
-            )
+        $currency = $this->storeManager->getStore()->getCurrentCurrency();
+
+        return $currency->format(
+            $value,
+            ['display' => $format ? Currency\Data\Currency::USE_SYMBOL : Currency\Data\Currency::NO_SYMBOL],
+            false
         );
+    }
+
+    /**
+     * Format expiry date, showing time only if it exists
+     *
+     * @param string|null $expireDate
+     * @return string|null
+     */
+    public function formatExpireDate(?string $expireDate): ?string
+    {
+        if (empty($expireDate)) {
+            return null;
+        }
+        try {
+            $dateTime = new \DateTime($expireDate);
+            $time     = $dateTime->format('H:i:s');
+            return $time !== '00:00:00'
+                ? $dateTime->format('Y-m-d H:i:s')
+                : $dateTime->format('Y-m-d');
+        } catch (\Exception $e) {
+            return $expireDate;
+        }
     }
 
     /**
@@ -239,19 +204,31 @@ class GiftCardHelper extends AbstractHelperOmni
      *
      * @param $giftCardResponse
      * @return array
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function getConvertedGiftCardBalance($giftCardResponse)
     {
         $pointRate = $storeCurrencyPointRate = $giftCardPointRate = $quotePointRate = 0;
         $currency  = $giftCardResponse->getCurrencyCode();
         if ($this->lsr->getStoreCurrencyCode() == $this->giftCardHelper->getLocalCurrencyCode()) {
-            $pointRate      = $this->giftCardHelper->getPointRate($giftCardResponse->getCurrencyCode());
+            $pointRate = $this->loyaltyHelper->getPointRate(
+                null,
+                $giftCardResponse->getCurrencycode(),
+                true
+            );
             $quotePointRate = $pointRate;
             $case           = 1;
         } elseif ($this->lsr->getStoreCurrencyCode() != $this->giftCardHelper->getLocalCurrencyCode()) {
-            $storeCurrencyPointRate = $this->giftCardHelper->getPointRate($this->lsr->getStoreCurrencyCode());
-            $giftCardPointRate      = $this->giftCardHelper->getPointRate($giftCardResponse->getCurrencyCode());
+            $storeCurrencyPointRate = $this->loyaltyHelper->getPointRate(
+                null,
+                $this->lsr->getStoreCurrencyCode(),
+                true
+            );
+            $giftCardPointRate = $this->loyaltyHelper->getPointRate(
+                null,
+                $giftCardResponse->getCurrencycode(),
+                true
+            );
             $quotePointRate         = $giftCardPointRate;
             $case                   = 2;
         }

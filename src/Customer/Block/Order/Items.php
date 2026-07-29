@@ -49,9 +49,10 @@ class Items extends AbstractItems
         $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $trans);
 
         foreach ($orderLines as $key => $line) {
-            if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
+            if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID) ||
+                $line->getLineType() !== 'Item'
+            ) {
                 unset($orderLines[$key]);
-                break;
             }
         }
 
