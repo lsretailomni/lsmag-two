@@ -88,9 +88,12 @@ class SyncOrders
 
                                 if (empty($documentId)) {
                                     $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
-                                    $basketData = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder(
-                                        $order
-                                    );
+                                    $this->basketHelper->setCalculateBasket(false);
+                                    if ($this->lsr->isAdminOrderCustomPriceActive($order->getStoreId())) {
+                                        $basketData = $this->basketHelper->buildOrderFromMagentoOrderItems($order);
+                                    } else {
+                                        $basketData = $this->basketHelper->calculateOneListFromOrder($order);
+                                    }
 
                                     if (!empty($basketData)) {
                                         $request = $this->orderHelper->prepareOrder($order, $basketData);

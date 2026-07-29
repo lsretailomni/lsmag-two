@@ -453,6 +453,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_CUSTOMER_INTEGRATION_ACTIVE = 'ls_mag/standalone_integration/customer';
     const LS_BASKET_INTEGRATION_ACTIVE = 'ls_mag/standalone_integration/basket';
     const LS_ORDER_INTEGRATION_ACTIVE = 'ls_mag/standalone_integration/order';
+    const LS_ADMIN_ORDER_CUSTOM_PRICE_ACTIVE = 'ls_mag/standalone_integration/admin_order_custom_price';
     //Basket Calculation
     const LS_PLACE_TO_SYNC_BASKET_CALCULATION = 'ls_mag/ls_basket_calculation/place_to_sync';
     const LS_BASKET_CALCULATION_SHIP_TO_PARAMS = 'ls_mag/ls_basket_calculation/ship_to_params';
@@ -1201,6 +1202,22 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         }
 
         return $this->getCustomerIntegrationOnFrontend() && $this->getOrderIntegrationOnFrontend(false);
+    }
+
+    /**
+     * Returns whether admin-created orders should bypass OneList/basket price calculation
+     * and send Magento's own (possibly custom) item prices to LS Central instead.
+     *
+     * Deliberately delegates to the store-scoped getStoreConfig() helper (rather than the
+     * non-scoped scopeConfig->getValue() pattern used above) so that this setting is genuinely
+     * store-view scoped.
+     *
+     * @param int|bool $storeId
+     * @return bool
+     */
+    public function isAdminOrderCustomPriceActive($storeId = false): bool
+    {
+        return (bool)$this->getStoreConfig(self::LS_ADMIN_ORDER_CUSTOM_PRICE_ACTIVE, $storeId);
     }
 
     /**

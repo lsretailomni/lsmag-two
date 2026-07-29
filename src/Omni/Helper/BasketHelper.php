@@ -1307,6 +1307,105 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
+     * Builds a RootMobileTransaction directly from the Magento order's own items, bypassing
+     * the remote EcomCalculateBasket call. Used only when LSR::isAdminOrderCustomPriceActive()
+     * is enabled for the order's store, and only for genuine admin order-create (never
+     * order-edit - see caller).
+     *
+     * @param \Magento\Sales\Model\Order $order
+     * @return RootMobileTransaction|null
+     * @throws InvalidEnumException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function buildOrderFromMagentoOrderItems($order): ?RootMobileTransaction
+    {
+        $oneList = $this->getOneListAdmin(
+            $order->getCustomerEmail(),
+            $order->getStore()->getWebsiteId(),
+            $order->getCustomerIsGuest()
+        );
+
+        $mobileTransaction = $oneList->getMobiletransaction();
+        $storeCode = $mobileTransaction ? $mobileTransaction->getStoreid() : null;
+
+        list($mobileTransactionLines, $mobileTransactionDiscountLines) =
+            $this->buildOrderLinesFromOrderItems($order, $storeCode);
+
+        $oneList->setMobiletransactionline($mobileTransactionLines);
+        $oneList->setMobiletransdiscountline($mobileTransactionDiscountLines);
+
+        return $oneList;
+    }
+
+    /**
+     * Builds order lines (and discount lines) directly from the Magento order's own items -
+     * mirrors getOrderLinesQuote()'s per-item field mapping, substituting order-item getters.
+     * Price is always the tax-inclusive unit price actually charged (getPriceInclTax()) - it
+     * must NOT be overridden with the regular/original price, since that would silently discard
+     * any admin-entered custom price, which defeats the entire purpose of this bypass. NetPrice
+     * and NetAmount are the tax-exclusive equivalents (getPrice()/getRowTotal()).
+     *
+     * @param \Magento\Sales\Model\Order $order
+     * @param string|null $storeCode
+     * @return array
+     */
+    private function buildOrderLinesFromOrderItems($order, $storeCode): array
+    {
+        $mobileTransactionLines = $mobileTransactionDiscountLines = [];
+        $lineNumber = 10000;
+
+        foreach ($order->getAllVisibleItems() as $orderItem) {
+            list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                $orderItem->getSku()
+            );
+
+            $discount = $orderItem->getDiscountAmount();
+            $discountPercentage = $orderItem->getDiscountPercent();
+
+            if ($discount > 0 && $discountPercentage == 0) {
+                $rowTotalInclTax = $orderItem->getRowTotalInclTax();
+                $discountPercentage = ($discount / $rowTotalInclTax) * 100;
+            }
+
+            $orderLine = $this->createInstance(MobileTransactionLine::class);
+            $orderLine->addData([
+                MobileTransactionLine::LINE_NO => $lineNumber,
+                MobileTransactionLine::LINE_TYPE => 0,
+                MobileTransactionLine::STORE_ID => $storeCode,
+                MobileTransactionLine::QUANTITY => $orderItem->getQtyOrdered(),
+                MobileTransactionLine::NUMBER => $itemId,
+                MobileTransactionLine::VARIANT_CODE => $variantId,
+                MobileTransactionLine::UOM_ID => $uom,
+                MobileTransactionLine::NET_PRICE => $orderItem->getPrice(),
+                MobileTransactionLine::PRICE => $orderItem->getPriceInclTax(),
+                MobileTransactionLine::NET_AMOUNT => $orderItem->getRowTotal(),
+                MobileTransactionLine::TAXAMOUNT => $orderItem->getTaxAmount(),
+                MobileTransactionLine::DISCOUNT_AMOUNT => $discount,
+                MobileTransactionLine::DISCOUNT_PERCENT => $discountPercentage,
+            ]);
+
+            $mobileTransactionLines[] = $orderLine;
+
+            if ($discountPercentage && $discount) {
+                $orderDiscountLine = $this->createInstance(MobileTransDiscountLine::class);
+                $orderDiscountLine->addData([
+                    MobileTransDiscountLine::LINE_NO => $lineNumber,
+                    MobileTransDiscountLine::NO => $lineNumber,
+                    MobileTransDiscountLine::DISCOUNT_TYPE => 4,
+                    MobileTransDiscountLine::DISCOUNT_AMOUNT => $discount,
+                    MobileTransDiscountLine::DISCOUNT_PERCENT => $discountPercentage,
+                ]);
+                $mobileTransactionDiscountLines[] = $orderDiscountLine;
+            }
+
+            $lineNumber += 10000;
+        }
+
+        return [$mobileTransactionLines, $mobileTransactionDiscountLines];
+    }
+
+    /**
      * This function is overriding in hospitality module
      *
      * Formulate Central order request given Magento order

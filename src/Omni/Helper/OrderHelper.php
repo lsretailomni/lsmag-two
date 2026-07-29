@@ -87,8 +87,28 @@ class OrderHelper extends AbstractHelperOmni
                 CustomerOrderCreateCOHeaderV6::class
             );
 
-            $storeId = current((array)$oneListCalculateResponse->getMobiletransaction())->getStoreid();
-            $cardId = current((array)$oneListCalculateResponse->getMobiletransaction())->getMembercardno();
+            // Mobiletransaction is a single object when $oneListCalculateResponse came from a
+            // real remote OneList/basket-calculate call, but empty/absent for an admin-order-
+            // create custom-price bypass order (see BasketHelper::buildOrderFromMagentoOrderItems(),
+            // which never performs that remote call). current((array)$object) on a populated
+            // single object mangles its protected data into a nested array instead of unwrapping
+            // it, so emptiness must be detected first - Storeid/Membercardno then fall back to
+            // being derived directly from the Magento order, mirroring the same pattern
+            // BasketHelper::getOneListAdmin()/getOrderLinesQuote() already use for this exact case.
+            $mobileTransactionData = $oneListCalculateResponse->getMobiletransaction();
+            $mobileTransaction = is_array($mobileTransactionData)
+                ? current($mobileTransactionData)
+                : $mobileTransactionData;
+            $storeId = ($mobileTransaction && $mobileTransaction->getStoreid())
+                ? $mobileTransaction->getStoreid()
+                : $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $order->getStore()->getWebsiteId());
+            $cardId = $mobileTransaction ? $mobileTransaction->getMembercardno() : null;
+            if (!$cardId && !$order->getCustomerIsGuest()) {
+                $customer = $this->customerFactory->create()
+                    ->setWebsiteId($order->getStore()->getWebsiteId())
+                    ->loadByEmail($order->getCustomerEmail());
+                $cardId = $customer->getData('lsr_cardid');
+            }
             $customerEmail = $order->getCustomerEmail();
             $customerName = $order->getBillingAddress()->getFirstname() . ' ' .
                 $order->getBillingAddress()->getLastname();
@@ -202,15 +222,16 @@ class OrderHelper extends AbstractHelperOmni
                         CustomerOrderCreateCOLineV6::VARIANT_CODE => $orderLine->getVariantcode(),
                         CustomerOrderCreateCOLineV6::UNITOF_MEASURE_CODE => $orderLine->getUomid(),
                         CustomerOrderCreateCOLineV6::NET_PRICE => $orderLine->getNetprice(),
-                        CustomerOrderCreateCOLineV6::PRICE => $orderLine->getPrice(),
+                        CustomerOrderCreateCOLineV6::PRICE => $orderLine->getPrice() ?: $orderLine->getNetamount(),
                         CustomerOrderCreateCOLineV6::QUANTITY => $orderLine->getQuantity(),
                         CustomerOrderCreateCOLineV6::SERVICE_ITEM => $serviceItem,
                         CustomerOrderCreateCOLineV6::DISCOUNT_AMOUNT => $orderLine->getDiscountamount(),
                         CustomerOrderCreateCOLineV6::DISCOUNT_PERCENT => $orderLine->getDiscountpercent(),
                         CustomerOrderCreateCOLineV6::NET_AMOUNT => $orderLine->getNetamount(),
                         CustomerOrderCreateCOLineV6::VAT_AMOUNT => $orderLine->getTaxamount(),
-                        CustomerOrderCreateCOLineV6::AMOUNT =>
-                            ($orderLine->getPrice() * $orderLine->getQuantity()) - $orderLine->getDiscountamount(),
+                        CustomerOrderCreateCOLineV6::AMOUNT => $orderLine->getPrice()
+                            ? ($orderLine->getPrice() * $orderLine->getQuantity()) - $orderLine->getDiscountamount()
+                            : $orderLine->getNetamount() + $orderLine->getTaxamount(),
                         CustomerOrderCreateCOLineV6::CLICK_AND_COLLECT => $isClickCollect,
                         CustomerOrderCreateCOLineV6::STORE_NO => $isClickCollect ? $order->getPickupStore() : $storeId,
                         CustomerOrderCreateCOLineV6::EXTERNAL_ID => $id,
