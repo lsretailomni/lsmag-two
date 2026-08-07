@@ -2,7 +2,6 @@
 
 namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver\PosDataEntry;
 
-use \Ls\Core\Model\LSR;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use \Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
 use Magento\TestFramework\Fixture\AppArea;
@@ -15,16 +14,6 @@ use Magento\TestFramework\Fixture\AppArea;
  */
 class PosDataEntryBalanceTest extends GraphQlTestBase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-        // Auto-detection walks the admin-configured entry types, so they must be present.
-        $this->saveConfig(
-            AbstractIntegrationTest::VOUCHER_CONFIGURATION,
-            LSR::LS_VOUCHER_GIFT_CARD_CONFIGURATION
-        );
-    }
-
     /**
      * @magentoAppIsolation enabled
      */
@@ -127,7 +116,7 @@ class PosDataEntryBalanceTest extends GraphQlTestBase
         }
         QUERY;
 
-        $response = $this->graphQlQuery($query, [], '', []);
+        $response = $this->executeQuery($query);
 
         $this->assertNotNull($response);
         $this->assertArrayHasKey('get_pos_data_entry_balance', $response);
