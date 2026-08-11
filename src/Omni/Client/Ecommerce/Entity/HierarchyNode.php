@@ -89,16 +89,6 @@ class HierarchyNode extends HierarchyPoint
     protected $Type = null;
 
     /**
-     * @property string $UnitOfMeasure
-     */
-    protected $UnitOfMeasure = null;
-
-    /**
-     * @property string $VariantCode
-     */
-    protected $VariantCode = null;
-
-    /**
      * @param ArrayOfHierarchyLeaf $Leafs
      * @return $this
      */
@@ -376,42 +366,6 @@ class HierarchyNode extends HierarchyPoint
     public function getType()
     {
         return $this->Type;
-    }
-
-    /**
-     * @param string $UnitOfMeasure
-     * @return $this
-     */
-    public function setUnitOfMeasure($UnitOfMeasure)
-    {
-        $this->UnitOfMeasure = $UnitOfMeasure;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUnitOfMeasure()
-    {
-        return $this->UnitOfMeasure;
-    }
-
-    /**
-     * @param string $VariantCode
-     * @return $this
-     */
-    public function setVariantCode($VariantCode)
-    {
-        $this->VariantCode = $VariantCode;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getVariantCode()
-    {
-        return $this->VariantCode;
     }
 }
 

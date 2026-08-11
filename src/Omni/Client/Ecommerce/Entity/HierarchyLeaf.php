@@ -99,11 +99,6 @@ class HierarchyLeaf extends HierarchyPoint
     protected $Type = null;
 
     /**
-     * @property string $VariantCode
-     */
-    protected $VariantCode = null;
-
-    /**
      * @param ArrayOfUnitOfMeasure $ItemUOMs
      * @return $this
      */
@@ -417,24 +412,6 @@ class HierarchyLeaf extends HierarchyPoint
     public function getType()
     {
         return $this->Type;
-    }
-
-    /**
-     * @param string $VariantCode
-     * @return $this
-     */
-    public function setVariantCode($VariantCode)
-    {
-        $this->VariantCode = $VariantCode;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getVariantCode()
-    {
-        return $this->VariantCode;
     }
 }
 
