@@ -74,6 +74,28 @@ class PosDataEntryBalanceTest extends GraphQlTestBase
     }
 
     /**
+     * An entry type outside the admin-configured set is rejected before it reaches LS Central, so it
+     * cannot be used to probe POS data entries (e.g. INCOMEACCOUNT) never exposed to ecommerce. The
+     * auto-detect path already restricts itself to configured entry types; this covers the explicit path.
+     *
+     * @magentoAppIsolation enabled
+     */
+    #[
+        AppArea('graphql')
+    ]
+    public function testUnconfiguredEntryTypeIsRejected()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('The requested entry type is not available.');
+
+        $this->getBalance(
+            AbstractIntegrationTest::GIFTCARD,
+            AbstractIntegrationTest::GIFTCARD_PIN,
+            'THIS-ENTRY-TYPE-IS-NOT-CONFIGURED'
+        );
+    }
+
+    /**
      * @magentoAppIsolation enabled
      */
     #[

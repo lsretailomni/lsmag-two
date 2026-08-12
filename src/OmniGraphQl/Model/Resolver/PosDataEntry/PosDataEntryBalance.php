@@ -47,8 +47,16 @@ class PosDataEntryBalance implements ResolverInterface
             $response  = $resolved['response'] ?? null;
             $entryType = $resolved['entry_type'] ?? null;
         } else {
-            $entryType = (string) $entryType;
-            $response  = $this->giftCardHelper->getGiftCardBalance($code, $pin, $entryType);
+            // Only configured entry types may be queried directly. Without this, an arbitrary entry type
+            // could be supplied to probe POS data entries never exposed to ecommerce, bypassing the
+            // whitelist the auto-detect path above already enforces.
+            $entryType = $this->voucherHelper->normalizeEntryType((string) $entryType);
+
+            if ($entryType === null) {
+                throw new GraphQlInputException(__('The requested entry type is not available.'));
+            }
+
+            $response = $this->giftCardHelper->getGiftCardBalance($code, $pin, $entryType);
         }
 
         if (empty($response)) {
