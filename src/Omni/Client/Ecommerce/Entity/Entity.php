@@ -8,6 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
+#[\AllowDynamicProperties]
 class Entity
 {
     /**

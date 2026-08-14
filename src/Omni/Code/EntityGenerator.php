@@ -252,6 +252,19 @@ CODE
 
         $content = $this->file->generate();
 
+        // Ensure the shared base Entity class stays annotated for PHP 8.2+ dynamic-property
+        // deprecation suppression across regenerations. Laminas\Code\Generator\ClassGenerator
+        // (laminas/laminas-code 4.17.0, currently locked in composer.lock) has no attribute
+        // generation API, so this is injected via string replacement — same technique already
+        // used below for the base-class and interface-name post-processing.
+        if ($this->entity->getName() === 'Entity') {
+            $content = str_replace(
+                "class {$this->entity->getName()}\n{",
+                "#[\\AllowDynamicProperties]\nclass {$this->entity->getName()}\n{",
+                $content
+            );
+        }
+
         // Laminas add / in the start of base class which we dont need. so replace this with blah.
         if ($type->getBase()) {
             $content = str_replace("\\meannothing" . $type->getBase(), $type->getBase(), $content);
