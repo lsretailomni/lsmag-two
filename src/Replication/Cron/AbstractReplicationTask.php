@@ -291,7 +291,12 @@ abstract class AbstractReplicationTask
         }
 
         try {
-            $uniqueAttributes     = ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$confPath];
+            $uniqueAttributes     = $this->rep_helper->getUniqueFieldArray(
+                $confPath,
+                (bool) $source->getIsDeleted(),
+                $this->defaultScope,
+                $storeId
+            );
             $checksum             = $this->getHashGivenString($source);
             $uniqueAttributesHash = $this->generateIdentityValue($uniqueAttributes, $source);
             $row                  = $this->buildUpsertRow($properties, $source, $checksum, $uniqueAttributesHash);
@@ -369,19 +374,15 @@ abstract class AbstractReplicationTask
      */
     public function saveSourceOrm($properties, $source)
     {
-        if ($source->getIsDeleted()) {
-            $uniqueAttributes = (array_key_exists(
-                $this->getConfigPath(),
-                ReplicationHelper::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY
-            )) ?
-                ReplicationHelper::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()] :
-                ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
-        } else {
-            $uniqueAttributes = ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
-        }
         // Config-specific column formatting (e.g. repl_discount_validation date/time conversion)
         // is applied once in bufferOrSave() before dispatch, so it is not repeated here.
         $confPath = $this->getConfigPath();
+        $uniqueAttributes = $this->rep_helper->getUniqueFieldArray(
+            $confPath,
+            (bool) $source->getIsDeleted(),
+            $source->getScope(),
+            $source->getScopeId()
+        );
 
         if ($source->getIsDeleted() && $confPath == ReplEcommBasePricesTask::CONFIG_PATH) {
             // Find ItemId from the existing row for this scope + line + price list.
