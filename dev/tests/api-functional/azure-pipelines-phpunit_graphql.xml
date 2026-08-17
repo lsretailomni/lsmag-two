@@ -19,19 +19,19 @@
          stderr="true">
     <source>
         <include>
-            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/Test/GraphQl</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/Model/Resolver</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/Plugin</directory>
             <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Plugin</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/PosDataEntry</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/LoyaltyPoints</directory>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/Stock/CartItemsAvailabilityTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/GetCustomerCartDiscountsTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/GiftCardBalanceTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/OrderTakingCalendarTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/ReturnPolicyTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/ClickAndCollectStoresTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/StoresTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/Stock/ItemsAvailabilityTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/GetItemDiscountsTest.php</file>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/PosDataEntry</directory>
+            <directory suffix=".php">../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/LoyaltyPoints</directory>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/Stock/CartItemsAvailabilityInStoreOutput.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/GetCustomerCartDiscountsOutput.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/OrderTakingCalendarOutput.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/ReturnPolicyOutput.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/ClickAndCollectStoresOutput.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/StoresOutput.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/Stock/ItemAvailabilityOutput.php</file>
+            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Model/Resolver/GetDiscountsOutput.php</file>
         </include>
         <exclude>
             <directory>../../../app/code/*/*/Test</directory>
@@ -49,7 +49,6 @@
             <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/LoyaltyPoints</directory>
             <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/Stock/CartItemsAvailabilityTest.php</file>
             <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GetCustomerCartDiscountsTest.php</file>
-            <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCardBalanceTest.php</file>
             <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/OrderTakingCalendarTest.php</file>
             <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ReturnPolicyTest.php</file>
             <file>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ClickAndCollectStoresTest.php</file>

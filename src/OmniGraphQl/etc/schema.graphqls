@@ -78,10 +78,11 @@ type Query {
          child_sku: String @doc(description: "Get return policy of particular variant.")
          store_id: String @doc(description: "Get return policy based on store.")
    ): ReturnPolicyOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\ReturnPolicyOutput") @doc(description: "Get return policy output")
-   get_gift_card_balance (
-            gift_card_no: String @doc(description: "Get return policy of particular item.")
-            gift_card_pin: String @doc(description: "Get return policy of particular variant.")
-      ): GiftCardBalanceOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\GiftCardBalanceOutput") @doc(description: "Get gift card balance output")
+   get_pos_data_entry_balance (
+            code: String! @doc(description: "The gift card or voucher code whose balance is required.")
+            pin: String @doc(description: "The gift card or voucher pin, where applicable.")
+            entry_type: String @doc(description: "LS Central entry type (e.g. GIFTCARDNO). Omit to auto-detect gift card vs voucher.")
+      ): PosDataEntryBalanceOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\PosDataEntry\\PosDataEntryBalance") @doc(description: "Get the balance of a gift card or voucher POS data entry")
    order_taking_calendar (
     store_id: String! @doc(description: "Store ID.")
    ): OrderTakingCalendarOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\OrderTakingCalendarOutput") @doc(description: "Get Order taking calender.")
@@ -171,9 +172,11 @@ type ReturnPolicyOutput {
     text: String @doc(description: "Return policy output text")
 }
 
-type GiftCardBalanceOutput {
-    currency: String @doc(description: "Gift Card Balance currency")
-    value: String @doc(description: "Gift Card Balance")
+type PosDataEntryBalanceOutput {
+    currency: String @doc(description: "POS data entry balance currency")
+    value: String @doc(description: "POS data entry balance")
+    entry_type: String @doc(description: "The LS Central entry type that matched (GIFTCARDNO for gift cards, otherwise a voucher tender type).")
+    expiry_date: String @doc(description: "Expiry date of the entry, where applicable.")
     error: String @doc(description: "Error Message")
 }
 

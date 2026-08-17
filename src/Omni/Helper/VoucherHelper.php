@@ -14,6 +14,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class VoucherHelper extends AbstractHelperOmni
 {
     /**
+     * Default LS Central entry type, used when no voucher/gift card configuration exists.
+     */
+    public const ENTRY_TYPE_GIFT_CARD = 'GIFTCARDNO';
+
+    /**
      * Try each configured entry type (code field) against the LS Central balance API.
      * Returns an array with the matched config entry, the balance response, and whether it is a voucher,
      * or null if no configured entry type returns a valid balance.
@@ -32,12 +37,12 @@ class VoucherHelper extends AbstractHelperOmni
 
         if (empty($configs)) {
             // No admin configuration — fall back to default GIFTCARDNO behaviour
-            $response = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $pin, 'GIFTCARDNO');
+            $response = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $pin, self::ENTRY_TYPE_GIFT_CARD);
             if ($response instanceof POSDataEntry) {
                 return [
                     'response'   => $response,
                     'config'     => [],
-                    'entry_type' => 'GIFTCARDNO',
+                    'entry_type' => self::ENTRY_TYPE_GIFT_CARD,
                 ];
             }
             return null;
@@ -57,6 +62,44 @@ class VoucherHelper extends AbstractHelperOmni
                     'config'     => $entry,
                     'entry_type' => $entryType,
                 ];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Resolve a caller-supplied entry type against the configured entry types.
+     *
+     * Accepts only the entry types resolveCode() itself would walk, so an explicitly supplied entry type
+     * cannot be used to query a POS data entry type that was never exposed to ecommerce (e.g. INCOMEACCOUNT).
+     * Matching is case-insensitive and the configured spelling is returned, so LS Central always receives
+     * exactly what was configured.
+     *
+     * @param string $entryType The caller-supplied LS Central entry type
+     * @return string|null The configured entry type, or null when it is not an allowed entry type
+     * @throws NoSuchEntityException
+     */
+    public function normalizeEntryType(string $entryType): ?string
+    {
+        $entryType = trim($entryType);
+
+        if ($entryType === '') {
+            return null;
+        }
+
+        $configs = $this->lsr->getVoucherGiftCardConfiguration();
+
+        if (empty($configs)) {
+            // Mirror resolveCode()'s fallback: only the default gift card entry type is available.
+            return strcasecmp($entryType, self::ENTRY_TYPE_GIFT_CARD) === 0 ? self::ENTRY_TYPE_GIFT_CARD : null;
+        }
+
+        foreach ($configs as $entry) {
+            $code = trim((string)($entry['code'] ?? ''));
+
+            if ($code !== '' && strcasecmp($code, $entryType) === 0) {
+                return $code;
             }
         }
 
