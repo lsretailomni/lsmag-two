@@ -8,6 +8,7 @@ use Ls\Omni\Helper\BasketHelper;
 use Ls\Omni\Helper\ItemHelper;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
+use Magento\Quote\Model\Quote\Item as QuoteItem;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Item as OrderItem;
 use Magento\Store\Model\Store;
@@ -63,13 +64,14 @@ class BasketHelperTest extends TestCase
         $this->lsr = $this->createMock(LSR::class);
         $this->customerFactory = $this->createMock(CustomerFactory::class);
 
-        // Partial mock: only `calculate()` (the sole gateway to the remote OneListCalculate SOAP
-        // call) is stubbed. Everything else (buildOrderFromMagentoOrderItems(),
-        // buildOrderLinesFromOrderItems(), getOneListAdmin(), _offers()) runs as real production
-        // code once implemented.
+        // Partial mock: `calculate()` (the sole gateway to the remote OneListCalculate SOAP call)
+        // and `getOneListCalculation()` (used by getItemRowTotal()/getPrice() to fetch the cached
+        // basket comparison data without a remote call in tests) are stubbed. Everything else
+        // (buildOrderFromMagentoOrderItems(), buildOrderLinesFromOrderItems(), getOneListAdmin(),
+        // _offers()) runs as real production code once implemented.
         $this->basketHelper = $this->getMockBuilder(BasketHelper::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['calculate'])
+            ->onlyMethods(['calculate', 'getOneListCalculation'])
             ->getMock();
 
         // Public, promoted properties inherited from AbstractHelperOmni — assigned directly since
@@ -316,5 +318,92 @@ class BasketHelperTest extends TestCase
         foreach ($lines as $line) {
             $this->assertSame(Entity\Enum\LineType::ITEM, $line->getLineType());
         }
+    }
+
+    /**
+     * FR2/solution-plan-88392 §1a: getItemRowTotal() must compute the row total from
+     * $line->getNetAmount() (tax-exclusive), not $line->getAmount() (tax-inclusive). getAmount()
+     * (24.0) is deliberately different from getNetAmount() (20.0) so this fails if the wrong field
+     * is used.
+     */
+    public function testGetItemRowTotalUsesNetAmountNotAmount(): void
+    {
+        $line = $this->createMock(Entity\OrderLine::class);
+        $line->method('getQuantity')->willReturn(2.0);
+        $line->method('getAmount')->willReturn(24.0);      // tax-inclusive row total
+        $line->method('getNetAmount')->willReturn(20.0);   // tax-exclusive row total
+
+        $orderLines = $this->createMock(Entity\ArrayOfOrderLine::class);
+        $orderLines->method('getOrderLine')->willReturn([$line]);
+
+        $basketData = $this->createMock(Entity\Order::class);
+        $basketData->method('getOrderLines')->willReturn($orderLines);
+
+        $this->basketHelper->method('getOneListCalculation')->willReturn($basketData);
+
+        $this->itemHelper->method('getComparisonValues')->willReturn(['IT001', 'VAR001', 'PCS']);
+        $this->itemHelper->method('isValid')->willReturn(true);
+
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->willReturn('PCS');
+
+        $item = $this->getMockBuilder(QuoteItem::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getProductType', 'getProduct', 'getSku', 'getQty'])
+            ->addMethods(['getRowTotalInclTax'])
+            ->getMock();
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getProduct')->willReturn($product);
+        $item->method('getSku')->willReturn('ITEM001');
+        $item->method('getQty')->willReturn(2.0);
+        $item->method('getRowTotalInclTax')->willReturn(24.0);
+
+        $result = $this->basketHelper->getItemRowTotal($item);
+
+        $this->assertSame(20.0, $result, 'getItemRowTotal() must use getNetAmount(), not getAmount()');
+    }
+
+    /**
+     * FR3/solution-plan-88392 §1b: getPrice() must return $line->getNetPrice() (tax-exclusive), not
+     * $line->getPrice() (tax-inclusive). getPrice() (12.0) is deliberately different from
+     * getNetPrice() (10.0) so this fails if the wrong field is used.
+     */
+    public function testGetPriceUsesNetPriceNotPrice(): void
+    {
+        $line = $this->createMock(Entity\OrderLine::class);
+        $line->method('getPrice')->willReturn(12.0);      // tax-inclusive unit price
+        $line->method('getNetPrice')->willReturn(10.0);   // tax-exclusive unit price
+
+        $orderLines = $this->createMock(Entity\ArrayOfOrderLine::class);
+        $orderLines->method('getOrderLine')->willReturn([$line]);
+
+        $basketData = $this->createMock(Entity\Order::class);
+        $basketData->method('getOrderLines')->willReturn($orderLines);
+
+        $this->basketHelper->method('getOneListCalculation')->willReturn($basketData);
+        // getPrice() finishes with $this->basketHelper->getPriceAddingCustomOptions(...) — the
+        // real (unmocked) implementation, so the inherited `basketHelper` proxy property (normally
+        // wired by the disabled constructor) must be set for that call to succeed.
+        $this->basketHelper->basketHelper = $this->basketHelper;
+
+        $this->itemHelper->method('getComparisonValues')->willReturn(['IT001', 'VAR001', 'PCS']);
+        $this->itemHelper->method('isValid')->willReturn(true);
+
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->willReturn('PCS');
+
+        $item = $this->getMockBuilder(QuoteItem::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getProductType', 'getProduct', 'getSku', 'getQty', 'getPrice'])
+            ->getMock();
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getProduct')->willReturn($product);
+        $item->method('getSku')->willReturn('ITEM001');
+        $item->method('getQty')->willReturn(1.0);
+        $item->method('getPrice')->willReturn(12.0);      // fallback value, must not be returned
+
+        $result = $this->basketHelper->getPrice($item);
+
+        $this->assertSame(10.0, $result, 'getPrice() must use getNetPrice(), not getPrice()');
     }
 }

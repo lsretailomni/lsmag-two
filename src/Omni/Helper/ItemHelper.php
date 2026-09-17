@@ -487,7 +487,7 @@ class ItemHelper extends AbstractHelper
                         $child->getItemId() == $line->getId() :
                         $this->isSameItem($child, $line)
                     ) {
-                        $unitPrice = $line->getAmount() / $line->getQuantity();
+                        $unitPrice = $line->getNetPrice();
                         $this->setRelatedAmountsAgainstGivenQuoteItem($line, $child, $unitPrice, $type);
                         unset($orderLines[$index]);
                         break;
@@ -574,7 +574,8 @@ class ItemHelper extends AbstractHelper
      *
      * @param $line
      * @param $quoteItem
-     * @param $unitPrice
+     * @param $unitPrice Tax-exclusive per-unit price (e.g. OrderLine::getNetPrice()) — the
+     *                   tax-inclusive counterpart is sourced internally from $line->getPrice()
      * @param int $type
      * @throws NoSuchEntityException
      */
@@ -582,6 +583,7 @@ class ItemHelper extends AbstractHelper
     {
         $customPrice = $amount = $taxAmount = $netAmount = $lsDiscountAmount = null;
         $itemQty     = $quoteItem->getQty();
+        $unitPriceInclTax = $line->getPrice();
 
         if ($quoteItem->getParentItem() &&
             $quoteItem->getParentItem()->getProductType() == Type::TYPE_BUNDLE
@@ -619,8 +621,8 @@ class ItemHelper extends AbstractHelper
             ->setOriginalCustomPrice($customPrice)
             ->setTaxAmount($taxAmount)
             ->setBaseTaxAmount($this->convertToBaseCurrency($taxAmount))
-            ->setPriceInclTax($unitPrice)
-            ->setBasePriceInclTax($this->convertToBaseCurrency($unitPrice))
+            ->setPriceInclTax($unitPriceInclTax)
+            ->setBasePriceInclTax($this->convertToBaseCurrency($unitPriceInclTax))
             ->setLsDiscountAmount($lsDiscountAmount)
             ->setRowTotal($type == 1 ? $netAmount : $rowTotal)
             ->setBaseRowTotal(
