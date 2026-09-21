@@ -1140,8 +1140,8 @@ class BasketHelper extends AbstractHelperOmni
                 }
                 if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                     $rowTotal = $line->getQuantity() == $item->getQty() ?
-                        ($line->getNetamount() + $line->getTaxamount()) :
-                        (($line->getNetamount() + $line->getTaxamount()) / $line->getQuantity()) * $item->getQty();
+                        $line->getNetamount() :
+                        ($line->getNetamount() / $line->getQuantity()) * $item->getQty();
                     break;
                 }
             }
@@ -1175,7 +1175,7 @@ class BasketHelper extends AbstractHelperOmni
 
             foreach ($orderLines as $line) {
                 if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                    $price = $line->getPrice();
+                    $price = $line->getNetprice();
                     break;
                 }
             }

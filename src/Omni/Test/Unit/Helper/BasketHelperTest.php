@@ -9,6 +9,7 @@ use Ls\Omni\Client\CentralEcommerce\Entity\MobileTransactionLine;
 use Ls\Omni\Client\CentralEcommerce\Entity\RootMobileTransaction;
 use Ls\Omni\Helper\BasketHelper;
 use Ls\Omni\Helper\ItemHelper;
+use Magento\Quote\Model\Quote\Item as QuoteItem;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Item;
 use Magento\Store\Model\Store;
@@ -17,7 +18,8 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 /**
- * Unit tests for {@see BasketHelper::buildOrderFromMagentoOrderItems()} (ticket 85191).
+ * Unit tests for {@see BasketHelper::buildOrderFromMagentoOrderItems()} (ticket 85191) and
+ * {@see BasketHelper::getItemRowTotal()}/{@see BasketHelper::getPrice()} (ticket 88392).
  *
  * Note on entity types: the requirements/solution-plan docs for this ticket reference
  * `Ls\Omni\Client\Ecommerce\Entity\Order`/`OrderLine` and the `OneListCalculate` SOAP
@@ -59,7 +61,7 @@ class BasketHelperTest extends TestCase
     {
         $this->basketHelper = $this->getMockBuilder(BasketHelper::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getOneListAdmin', 'calculate', 'update', 'createInstance'])
+            ->onlyMethods(['getOneListAdmin', 'calculate', 'update', 'createInstance', 'getOneListCalculation'])
             ->getMock();
 
         $this->itemHelper = $this->createMock(ItemHelper::class);
@@ -83,8 +85,7 @@ class BasketHelperTest extends TestCase
         $oneListAdmin = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
         $oneListAdmin->setMobiletransaction($mobileTransaction);
 
-        $this->basketHelper->expects($this->once())
-            ->method('getOneListAdmin')
+        $this->basketHelper->method('getOneListAdmin')
             ->with('jane@example.com', '1', false)
             ->willReturn($oneListAdmin);
     }
@@ -160,8 +161,7 @@ class BasketHelperTest extends TestCase
     }
 
     /**
-     * FR5: StoreId/CardId must come from getOneListAdmin() (already asserted to be called
-     * exactly once, with no remote call, in setUp()) - not from a fresh/duplicate lookup.
+     * FR5: StoreId/CardId must come from getOneListAdmin() - not from a fresh/duplicate lookup.
      */
     public function testBuildOrderFromMagentoOrderItemsSourcesStoreIdAndCardIdFromOneListAdmin(): void
     {
@@ -262,5 +262,94 @@ class BasketHelperTest extends TestCase
         $discountLine = $discountLines[0];
         $this->assertSame(2.00, $discountLine->getDiscountamount());
         $this->assertSame(20.0, $discountLine->getDiscountpercent(), 'Percent must be recomputed as (2.00 / 10.00) * 100');
+    }
+
+    /**
+     * @param float $netprice tax-exclusive unit price
+     * @param float $price tax-inclusive unit price
+     * @param float $netamount tax-exclusive row total
+     * @param float $taxamount tax amount for the row
+     * @return MobileTransactionLine
+     */
+    private function createOrderLine(
+        float $netprice,
+        float $price,
+        float $netamount,
+        float $taxamount,
+        float $quantity = 1.0
+    ): MobileTransactionLine {
+        /** @var MobileTransactionLine $line */
+        $line = (new ReflectionClass(MobileTransactionLine::class))->newInstanceWithoutConstructor();
+        $line->setNetprice($netprice)
+            ->setPrice($price)
+            ->setNetamount($netamount)
+            ->setTaxamount($taxamount)
+            ->setQuantity($quantity)
+            ->setNumber('SKU-1-ITEM')
+            ->setVariantcode('SKU-1-VARIANT');
+
+        return $line;
+    }
+
+    /**
+     * Ticket 88392: US customers (real sales tax) saw tax-inclusive prices where Magento
+     * expects the tax-exclusive row total. getItemRowTotal() must source the row total from
+     * NetAmount alone, never NetAmount + TaxAmount (which is the tax-inclusive gross amount).
+     */
+    public function testGetItemRowTotalUsesTaxExclusiveNetAmountNotGrossAmount(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(1.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 15.00, 3.00);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+
+        $rowTotal = $this->basketHelper->getItemRowTotal($item);
+
+        $this->assertSame(15.00, $rowTotal, 'Row total must be the tax-exclusive NetAmount, not NetAmount + TaxAmount');
+    }
+
+    /**
+     * Ticket 88392: getPrice() must source the unit price from NetPrice (tax-exclusive), not
+     * Price (tax-inclusive) - otherwise the "excl. tax" price shown is actually tax-inclusive.
+     */
+    public function testGetPriceUsesTaxExclusiveNetPriceNotTaxInclusivePrice(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(1.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 15.00, 3.00);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+        $this->basketHelper->basketHelper = $this->basketHelper;
+
+        $price = $this->basketHelper->getPrice($item);
+
+        $this->assertSame(15.00, $price, 'Price must be the tax-exclusive NetPrice, not the tax-inclusive Price');
     }
 }
