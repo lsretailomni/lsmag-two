@@ -19,11 +19,6 @@
                                     <item name="component" xsi:type="string">Ls_Omni/js/view/totals/label</item>
                                     <item name="sortOrder" xsi:type="string">0</item>
                                 </item>
-                                <item name="subtotal" xsi:type="array">
-                                    <item name="config" xsi:type="array">
-                                        <item name="title" xsi:type="string" translate="true">Subtotal (Inc.Tax)</item>
-                                    </item>
-                                </item>
                                 <item name="before_grandtotal" xsi:type="array">
                                     <item name="children" xsi:type="array">
                                         <item name="ls_discount" xsi:type="array">
