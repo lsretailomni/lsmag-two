@@ -6,13 +6,30 @@ namespace Ls\Customer\Block\Order;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\CentralEcommerce\Entity\LSCMemberSalesBuffer;
+use \Ls\Omni\Helper\Data as DataHelper;
+use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Omni\Helper\OrderHelper;
+use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Directory\Model\CountryFactory;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Pricing\Helper\Data as PriceHelper;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Sales\Model\OrderRepository;
+use Magento\Tax\Model\Config as TaxConfig;
 
 /**
  * Totals class to return total lines
  */
 class Totals extends AbstractOrderBlock
 {
+    /**
+     * @var TaxConfig
+     */
+    public $taxConfig;
+
     /**
      * @var int
      */
@@ -32,6 +49,79 @@ class Totals extends AbstractOrderBlock
      * @var array
      */
     public $giftCardEntries = [];
+
+    /**
+     * @param Context $context
+     * @param PriceCurrencyInterface $priceCurrency
+     * @param LoyaltyHelper $loyaltyHelper
+     * @param LSR $lsr
+     * @param OrderHelper $orderHelper
+     * @param DataHelper $dataHelper
+     * @param PriceHelper $priceHelper
+     * @param OrderRepository $orderRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param CustomerSession $customerSession
+     * @param CountryFactory $countryFactory
+     * @param \Magento\Framework\App\Http\Context $httpContext
+     * @param Http $request
+     * @param TaxConfig $taxConfig
+     * @param array $data
+     */
+    public function __construct(
+        Context $context,
+        PriceCurrencyInterface $priceCurrency,
+        LoyaltyHelper $loyaltyHelper,
+        LSR $lsr,
+        OrderHelper $orderHelper,
+        DataHelper $dataHelper,
+        PriceHelper $priceHelper,
+        OrderRepository $orderRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        CustomerSession $customerSession,
+        CountryFactory $countryFactory,
+        \Magento\Framework\App\Http\Context $httpContext,
+        Http $request,
+        TaxConfig $taxConfig,
+        array $data = []
+    ) {
+        $this->taxConfig = $taxConfig;
+        parent::__construct(
+            $context,
+            $priceCurrency,
+            $loyaltyHelper,
+            $lsr,
+            $orderHelper,
+            $dataHelper,
+            $priceHelper,
+            $orderRepository,
+            $searchCriteriaBuilder,
+            $customerSession,
+            $countryFactory,
+            $httpContext,
+            $request,
+            $data
+        );
+    }
+
+    /**
+     * Whether Sales Totals Subtotal should display excl-tax value only
+     *
+     * @return bool
+     */
+    public function isDisplaySalesSubtotalExclTax()
+    {
+        return $this->taxConfig->displaySalesSubtotalExclTax($this->lsr->getCurrentStoreId());
+    }
+
+    /**
+     * Whether Sales Totals Subtotal should display both excl-tax and incl-tax values
+     *
+     * @return bool
+     */
+    public function isDisplaySalesSubtotalBoth()
+    {
+        return $this->taxConfig->displaySalesSubtotalBoth($this->lsr->getCurrentStoreId());
+    }
 
     /**
      * Get formatted price
