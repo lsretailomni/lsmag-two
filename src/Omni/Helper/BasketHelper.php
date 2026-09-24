@@ -1201,7 +1201,7 @@ class BasketHelper extends AbstractHelperOmni
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $item->getSku()
             );
-            $rowTotal   = $item->getRowTotalInclTax();
+            $rowTotal   = $item->getRowTotal();
             $basketData = $this->getOneListCalculation();
             $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
 

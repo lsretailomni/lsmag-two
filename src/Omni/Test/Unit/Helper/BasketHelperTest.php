@@ -364,6 +364,60 @@ class BasketHelperTest extends TestCase
     }
 
     /**
+     * Regression for PR #69979 review feedback: when no OneListCalculate order line matches the
+     * quote item (isValid() returns false for every line, e.g. basket comparison data is stale or
+     * the item was just added), getItemRowTotal() must fall back to a tax-exclusive value
+     * ($item->getRowTotal()), not $item->getRowTotalInclTax(). The template that renders this value
+     * unconditionally labels it "Excl. Tax", so a tax-inclusive fallback would silently mislabel the
+     * amount. getRowTotal() (18.0) is deliberately different from getRowTotalInclTax() (24.0) so this
+     * fails if the wrong field is used.
+     */
+    public function testGetItemRowTotalFallbackUsesTaxExclusiveRowTotal(): void
+    {
+        $line = $this->createMock(Entity\OrderLine::class);
+        $line->method('getQuantity')->willReturn(2.0);
+        $line->method('getAmount')->willReturn(24.0);
+        $line->method('getNetAmount')->willReturn(20.0);
+
+        $orderLines = $this->createMock(Entity\ArrayOfOrderLine::class);
+        $orderLines->method('getOrderLine')->willReturn([$line]);
+
+        $basketData = $this->createMock(Entity\Order::class);
+        $basketData->method('getOrderLines')->willReturn($orderLines);
+
+        $this->basketHelper->method('getOneListCalculation')->willReturn($basketData);
+
+        $this->itemHelper->method('getComparisonValues')->willReturn(['IT001', 'VAR001', 'PCS']);
+        // No order line matches this quote item, so the loop never assigns $rowTotal and the
+        // fallback set before the loop must be used.
+        $this->itemHelper->method('isValid')->willReturn(false);
+
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->willReturn('PCS');
+
+        $item = $this->getMockBuilder(QuoteItem::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getProductType', 'getProduct', 'getSku', 'getQty'])
+            ->addMethods(['getRowTotalInclTax', 'getRowTotal'])
+            ->getMock();
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getProduct')->willReturn($product);
+        $item->method('getSku')->willReturn('ITEM001');
+        $item->method('getQty')->willReturn(2.0);
+        $item->method('getRowTotalInclTax')->willReturn(24.0);
+        $item->method('getRowTotal')->willReturn(18.0);
+
+        $result = $this->basketHelper->getItemRowTotal($item);
+
+        $this->assertSame(
+            18.0,
+            $result,
+            'getItemRowTotal() fallback (no matching order line) must use the tax-exclusive '
+            . 'getRowTotal(), not getRowTotalInclTax(), since the template labels this value "Excl. Tax"'
+        );
+    }
+
+    /**
      * FR3/solution-plan-88392 §1b: getPrice() must return $line->getNetPrice() (tax-exclusive), not
      * $line->getPrice() (tax-inclusive). getPrice() (12.0) is deliberately different from
      * getNetPrice() (10.0) so this fails if the wrong field is used.
