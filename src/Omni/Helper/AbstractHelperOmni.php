@@ -66,6 +66,7 @@ use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Tax\Model\Config as TaxConfig;
 use Magento\Wishlist\Model\ResourceModel\Wishlist;
 use Magento\Wishlist\Model\WishlistFactory;
 
@@ -152,6 +153,7 @@ class AbstractHelperOmni extends AbstractHelper
      * @param \Magento\Sales\Model\ResourceModel\Order $orderResourceModel
      * @param Json $json
      * @param ConfigInterface $config
+     * @param TaxConfig $taxConfig
      */
     public function __construct(
         public Context $context,
@@ -231,6 +233,7 @@ class AbstractHelperOmni extends AbstractHelper
         public \Magento\Sales\Model\ResourceModel\Order $orderResourceModel,
         public Json $json,
         public ConfigInterface $config,
+        public TaxConfig $taxConfig,
     ) {
         parent::__construct($context);
         $this->initialize();

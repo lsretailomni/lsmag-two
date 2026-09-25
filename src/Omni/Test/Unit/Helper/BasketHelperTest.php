@@ -13,6 +13,7 @@ use Magento\Quote\Model\Quote\Item as QuoteItem;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Item;
 use Magento\Store\Model\Store;
+use Magento\Tax\Model\Config as TaxConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -57,6 +58,11 @@ class BasketHelperTest extends TestCase
      */
     private $itemHelper;
 
+    /**
+     * @var TaxConfig&MockObject
+     */
+    private $taxConfig;
+
     protected function setUp(): void
     {
         $this->basketHelper = $this->getMockBuilder(BasketHelper::class)
@@ -70,6 +76,11 @@ class BasketHelperTest extends TestCase
                 return [$sku . '-ITEM', $sku . '-VARIANT', 'PCS'];
             });
         $this->basketHelper->itemHelper = $this->itemHelper;
+
+        // Unstubbed methods return null => falsy => tax-exclusive, preserving prior test
+        // expectations unless a test opts into incl. tax.
+        $this->taxConfig = $this->createMock(TaxConfig::class);
+        $this->basketHelper->taxConfig = $this->taxConfig;
 
         $this->basketHelper->method('createInstance')
             ->willReturnCallback(static function (?string $entityClassName = null, array $data = []) {
@@ -351,5 +362,99 @@ class BasketHelperTest extends TestCase
         $price = $this->basketHelper->getPrice($item);
 
         $this->assertSame(15.00, $price, 'Price must be the tax-exclusive NetPrice, not the tax-inclusive Price');
+    }
+
+    /**
+     * When "Display Cart Subtotal" is configured for Including Tax, getItemRowTotal() must
+     * source the row total from NetAmount + TaxAmount (tax-inclusive), not NetAmount alone.
+     */
+    public function testGetItemRowTotalUsesTaxInclusiveAmountWhenConfigIsInclTax(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(1.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 15.00, 3.00);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+        $this->taxConfig->method('displayCartSubtotalInclTax')->willReturn(true);
+
+        $rowTotal = $this->basketHelper->getItemRowTotal($item);
+
+        $this->assertSame(18.00, $rowTotal, 'Row total must be NetAmount + TaxAmount when config is incl. tax');
+    }
+
+    /**
+     * When "Display Cart Subtotal" is configured for Including Tax, getPrice() must source the
+     * unit price from Price (tax-inclusive), not NetPrice.
+     */
+    public function testGetPriceUsesTaxInclusivePriceWhenConfigIsInclTax(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(1.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 15.00, 3.00);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+        $this->basketHelper->basketHelper = $this->basketHelper;
+        $this->taxConfig->method('displayCartSubtotalInclTax')->willReturn(true);
+
+        $price = $this->basketHelper->getPrice($item);
+
+        $this->assertSame(18.00, $price, 'Price must be the tax-inclusive Price when config is incl. tax');
+    }
+
+    /**
+     * An explicit $inclTax argument must always override the config default.
+     */
+    public function testGetItemRowTotalExplicitInclTaxArgumentOverridesConfig(): void
+    {
+        $item = $this->createMock(QuoteItem::class);
+        $item->method('getProductType')->willReturn('simple');
+        $item->method('getSku')->willReturn('SKU-1');
+        $item->method('getQty')->willReturn(1.0);
+        $product = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $product->method('getData')->with('uom')->willReturn('PCS');
+        $item->method('getProduct')->willReturn($product);
+
+        $line = $this->createOrderLine(15.00, 18.00, 15.00, 3.00);
+
+        $this->basketHelper->expects($this->once())
+            ->method('getOneListCalculation')
+            ->willReturnCallback(function () use ($line) {
+                $basketData = (new ReflectionClass(RootMobileTransaction::class))->newInstanceWithoutConstructor();
+                $basketData->setMobiletransactionline([$line]);
+                return $basketData;
+            });
+        $this->itemHelper->method('isValid')->willReturn(true);
+        // Config says exclusive, but the explicit argument must still win.
+        $this->taxConfig->method('displayCartSubtotalInclTax')->willReturn(false);
+
+        $rowTotal = $this->basketHelper->getItemRowTotal($item, true);
+
+        $this->assertSame(18.00, $rowTotal, 'Explicit $inclTax = true must override the config default');
     }
 }

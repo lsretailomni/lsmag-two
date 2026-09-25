@@ -42,13 +42,14 @@ class CartViewModel implements ArgumentInterface
      * Get Item row total
      *
      * @param $item
+     * @param bool|null $inclTax defaults to the "Display Cart Subtotal" tax config when not given
      * @return string
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function getItemRowTotal($item)
+    public function getItemRowTotal($item, $inclTax = null)
     {
-        return $this->basketHelper->getItemRowTotal($item);
+        return $this->basketHelper->getItemRowTotal($item, $inclTax);
     }
 
     /**
@@ -68,14 +69,41 @@ class CartViewModel implements ArgumentInterface
      * Get Item price including custom options price
      *
      * @param $item
+     * @param bool|null $inclTax defaults to the "Display Cart Subtotal" tax config when not given
      * @return string
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getItemPriceIncludeCustomOptions($item)
+    public function getItemPriceIncludeCustomOptions($item, $inclTax = null)
     {
-        return $this->basketHelper->getPrice($item);
+        return $this->basketHelper->getPrice($item, $inclTax);
+    }
+
+    /**
+     * Whether the cart item Price/Subtotal cells should render tax-inclusive amounts.
+     *
+     * @return bool
+     */
+    public function isCartItemPriceInclTax(): bool
+    {
+        return $this->basketHelper->isCartItemPriceInclTax();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCartItemPriceExclTax(): bool
+    {
+        return $this->basketHelper->isCartItemPriceExclTax();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCartItemPriceBothTax(): bool
+    {
+        return $this->basketHelper->isCartItemPriceBothTax();
     }
 
     /**
