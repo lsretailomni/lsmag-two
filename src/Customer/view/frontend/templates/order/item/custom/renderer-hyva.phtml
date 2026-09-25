@@ -74,19 +74,40 @@ $cols = $checkIsShipment ? 3 : 5;
         <div class="p-2 flex justify-between lg:block">
             <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Price')) ?></p>
             <?php if (!empty($_item->getDiscountAmount()) && $_item->getDiscountAmount() !== 0): ?>
-                <div>
-                    <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()) ?>
-                    <div class="lsdiscountprice2">
-                        <span class="line-through text-gray-400">
-                            <?= /* @noEscape */ $block->getFormattedPrice($_item->getPrice() * $_item->getQuantity()) ?>
-                        </span>
-                    </div>
-                    <div class="lsdiscountamount text-sm text-red-600">
-                        <?= /* @noEscape */ '(' . __($block->getDiscountLabel()) . ' ' . $block->getFormattedPrice($_item->getDiscountAmount()) . ')' ?>
-                    </div>
+                <?php if ($block->isDisplaySalesPricesInclTax() || $block->isDisplaySalesPricesBoth()): ?>
+                    <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
+                        <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()) ?>
+                        <div class="lsdiscountprice2">
+                            <span class="line-through text-gray-400">
+                                <?= /* @noEscape */ $block->getFormattedPrice($_item->getPrice() * $_item->getQuantity()) ?>
+                            </span>
+                        </div>
+                    </span>
+                <?php endif; ?>
+                <?php if ($block->isDisplaySalesPricesExclTax() || $block->isDisplaySalesPricesBoth()): ?>
+                    <span class="price-excluding-tax" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+                        <?= /* @noEscape */ $block->getFormattedPrice($_item->getNetAmount()) ?>
+                        <div class="lsdiscountprice2">
+                            <span class="line-through text-gray-400">
+                                <?= /* @noEscape */ $block->getFormattedPrice($_item->getNetPrice() * $_item->getQuantity()) ?>
+                            </span>
+                        </div>
+                    </span>
+                <?php endif; ?>
+                <div class="lsdiscountamount text-sm text-red-600">
+                    <?= /* @noEscape */ '(' . __($block->getDiscountLabel()) . ' ' . $block->getFormattedPrice($_item->getDiscountAmount()) . ')' ?>
                 </div>
             <?php else: ?>
-                <?= /* @noEscape */ $block->getFormattedPrice($_item->getPrice()) ?>
+                <?php if ($block->isDisplaySalesPricesInclTax() || $block->isDisplaySalesPricesBoth()): ?>
+                    <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
+                        <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()) ?>
+                    </span>
+                <?php endif; ?>
+                <?php if ($block->isDisplaySalesPricesExclTax() || $block->isDisplaySalesPricesBoth()): ?>
+                    <span class="price-excluding-tax" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+                        <?= /* @noEscape */ $block->getFormattedPrice($_item->getNetAmount()) ?>
+                    </span>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     <?php endif; ?>
@@ -101,7 +122,16 @@ $cols = $checkIsShipment ? 3 : 5;
     <?php if (!$checkIsShipment): ?>
         <div class="p-2 text-right flex justify-between lg:block">
             <p class="lg:sr-only font-medium"><?= $escaper->escapeHtml(__('Subtotal')) ?></p>
-            <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()) ?>
+            <?php if ($block->isDisplaySalesSubtotalInclTax() || $block->isDisplaySalesSubtotalBoth()): ?>
+                <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Incl. Tax')) ?>">
+                    <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()) ?>
+                </span>
+            <?php endif; ?>
+            <?php if ($block->isDisplaySalesSubtotalExclTax() || $block->isDisplaySalesSubtotalBoth()): ?>
+                <span class="price-excluding-tax" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+                    <?= /* @noEscape */ $block->getFormattedPrice($_item->getNetAmount()) ?>
+                </span>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
 

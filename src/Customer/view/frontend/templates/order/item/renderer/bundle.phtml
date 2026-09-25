@@ -70,10 +70,27 @@ $prevOptionId = '';
         </td>
         <td class="col price" data-th="<?= $block->escapeHtmlAttr(__('Price')); ?>">
             <?php if (!$item->getParentItem()) : ?>
-                <?= $viewModel->getFormattedPrice($item->getRowTotalInclTax()); ?>
+                <?php if ($viewModel->isDisplaySalesPricesInclTax() || $viewModel->isDisplaySalesPricesBoth()): ?>
+                    <span class="price-including-tax" data-label="<?= $block->escapeHtmlAttr(__('Incl. Tax')); ?>">
+                        <?= $viewModel->getFormattedPrice($item->getRowTotalInclTax()); ?>
+                        <?php if ($itemRowDiscount > 0): ?>
+                            <div class="lsdiscountprice2">
+                                <span><?= $viewModel->getFormattedPrice($item->getPriceInclTax() * $item->getQtyOrdered()); ?></span>
+                            </div>
+                        <?php endif; ?>
+                    </span>
+                <?php endif; ?>
+                <?php if ($viewModel->isDisplaySalesPricesExclTax() || $viewModel->isDisplaySalesPricesBoth()): ?>
+                    <span class="price-excluding-tax" data-label="<?= $block->escapeHtmlAttr(__('Excl. Tax')); ?>">
+                        <?= $viewModel->getFormattedPrice($item->getRowTotal()); ?>
+                        <?php if ($itemRowDiscount > 0): ?>
+                            <div class="lsdiscountprice2">
+                                <span><?= $viewModel->getFormattedPrice($item->getPrice() * $item->getQtyOrdered()); ?></span>
+                            </div>
+                        <?php endif; ?>
+                    </span>
+                <?php endif; ?>
                 <?php if ($itemRowDiscount > 0): ?>
-                    <div class="lsdiscountprice2">
-                        <span><?= $viewModel->getFormattedPrice($item->getPrice() * $item->getQtyOrdered()); ?></span></div>
                     <div class="lsdiscountamount">
                         <?= '(' . __('Save') . ' ' . $viewModel->getFormattedPrice($itemRowDiscount) . ')'; ?>
                     </div>
