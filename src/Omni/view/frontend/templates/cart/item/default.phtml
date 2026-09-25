@@ -147,6 +147,8 @@ $_item->setDiscountAmount($viewModel->getItemRowDiscount($_item));
                         ?>
                     </div>
                 <?php endif; ?>
+            <?php elseif ($viewModel->isCartItemPriceInclTax()): ?>
+                <?= $block->getRowTotalHtml($_item); ?>
             <?php else: ?>
                 <?= $block->getUnitPriceHtml($_item); ?>
             <?php endif; ?>
