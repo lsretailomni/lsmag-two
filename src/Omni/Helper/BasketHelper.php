@@ -1183,17 +1183,56 @@ class BasketHelper extends AbstractHelperOmni
     }
 
     /**
+     * Whether cart item price/subtotal should be displayed including tax, per the
+     * "Display Cart Subtotal" tax configuration
+     *
+     * @return bool
+     */
+    public function isCartItemPriceInclTax(): bool
+    {
+        return (bool) $this->taxConfig->displayCartSubtotalInclTax();
+    }
+
+    /**
+     * Whether cart item price/subtotal should be displayed excluding tax, per the
+     * "Display Cart Subtotal" tax configuration
+     *
+     * @return bool
+     */
+    public function isCartItemPriceExclTax(): bool
+    {
+        return (bool) $this->taxConfig->displayCartSubtotalExclTax();
+    }
+
+    /**
+     * Whether cart item price/subtotal should be displayed both including and excluding tax, per
+     * the "Display Cart Subtotal" tax configuration
+     *
+     * @return bool
+     */
+    public function isCartItemPriceBothTax(): bool
+    {
+        return (bool) $this->taxConfig->displayCartSubtotalBoth();
+    }
+
+    /**
      * This function is overriding in hospitality module
      *
      * Get Correct Item Row Total for mini-cart after comparison
      *
      * @param $item
+     * @param bool|null $inclTax Force tax-inclusive (true) or tax-exclusive (false) amounts;
+     *                           null (default) follows the "Display Cart Subtotal" tax config.
      * @return string
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function getItemRowTotal($item)
+    public function getItemRowTotal($item, $inclTax = null)
     {
+        if ($inclTax === null) {
+            $inclTax = $this->isCartItemPriceInclTax() || $this->isCartItemPriceBothTax();
+        }
+
         if ($item->getProductType() == Type::TYPE_BUNDLE) {
             $rowTotal = $this->getRowTotalBundleProduct($item);
         } else {
@@ -1201,14 +1240,15 @@ class BasketHelper extends AbstractHelperOmni
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $item->getSku()
             );
-            $rowTotal   = $item->getRowTotal();
+            $rowTotal   = $inclTax ? $item->getRowTotalInclTax() : $item->getRowTotal();
             $basketData = $this->getOneListCalculation();
             $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
 
             foreach ($orderLines as $line) {
                 if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                    $rowTotal = $line->getQuantity() == $item->getQty() ? $line->getNetAmount()
-                        : ($line->getNetAmount() / $line->getQuantity()) * $item->getQty();
+                    $lineAmount = $inclTax ? $line->getAmount() : $line->getNetAmount();
+                    $rowTotal = $line->getQuantity() == $item->getQty() ? $lineAmount
+                        : ($lineAmount / $line->getQuantity()) * $item->getQty();
                     break;
                 }
             }
@@ -1223,20 +1263,26 @@ class BasketHelper extends AbstractHelperOmni
      * Get Correct Item Row Total for mini-cart after comparison
      *
      * @param $item
+     * @param bool|null $inclTax Force tax-inclusive (true) or tax-exclusive (false) amounts;
+     *                           null (default) follows the "Display Cart Subtotal" tax config.
      * @return string
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function getPrice($item)
+    public function getPrice($item, $inclTax = null)
     {
+        if ($inclTax === null) {
+            $inclTax = $this->isCartItemPriceInclTax() || $this->isCartItemPriceBothTax();
+        }
+
         if ($item->getProductType() == Type::TYPE_BUNDLE) {
-            $price = $item->getRowTotal();
+            $price = $inclTax ? $item->getRowTotalInclTax() : $item->getRowTotal();
         } else {
             $baseUnitOfMeasure = $item->getProduct()->getData('uom');
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $item->getSku()
             );
-            $price      = $item->getPrice();
+            $price      = $inclTax ? $item->getPriceInclTax() : $item->getPrice();
             $basketData = $this->getOneListCalculation();
 
             if ($basketData instanceof Entity\OrderHosp) {
@@ -1248,7 +1294,7 @@ class BasketHelper extends AbstractHelperOmni
 
             foreach ($orderLines as $line) {
                 if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                    $price = $line->getNetPrice();
+                    $price = $inclTax ? $line->getPrice() : $line->getNetPrice();
                     break;
                 }
             }
