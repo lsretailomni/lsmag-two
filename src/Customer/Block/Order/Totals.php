@@ -149,9 +149,7 @@ class Totals extends AbstractOrderBlock
     public function getTotalNetAmount()
     {
         $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        $shipmentFee = $this->getShipmentChargeLineFee();
-        return (float)$this->orderHelper->getParameterValues($lineItemObj, "TotalNetAmount") - (float)$shipmentFee
-            + (float)$this->orderHelper->getParameterValues($lineItemObj, "TotalDiscount");
+        return (float)$this->orderHelper->getParameterValues($lineItemObj, "TotalNetAmount");
     }
 
     /**
@@ -169,10 +167,12 @@ class Totals extends AbstractOrderBlock
      * Get total amount
      *
      * @return float
+     * @throws NoSuchEntityException
      */
     public function getTotalAmount()
     {
-        return $this->getGrandTotal() - $this->giftCardAmount - $this->loyaltyPointAmount;
+        return $this->getGrandTotal() + (float)$this->getShipmentChargeLineFee()
+            - $this->giftCardAmount - $this->loyaltyPointAmount;
     }
 
     /**
@@ -189,10 +189,12 @@ class Totals extends AbstractOrderBlock
     /**
      * Get Shipment charge line fee
      *
+     * @param bool $excludingTax Return the tax-exclusive amount (Line::getNetAmount()) instead
+     *                           of the tax-inclusive amount (Line::getAmount())
      * @return float|int|null
      * @throws NoSuchEntityException
      */
-    public function getShipmentChargeLineFee()
+    public function getShipmentChargeLineFee($excludingTax = false)
     {
         $orderLines = $this->getLines();
         $fee        = 0;
@@ -201,7 +203,7 @@ class Totals extends AbstractOrderBlock
                 LSR::LSR_SHIPMENT_ITEM_ID,
                 $this->lsr->getCurrentStoreId()
             )) {
-                $fee = $line->getAmount();
+                $fee = $excludingTax ? $line->getNetAmount() : $line->getAmount();
                 break;
             }
         }
@@ -217,10 +219,7 @@ class Totals extends AbstractOrderBlock
     public function getSubtotal()
     {
         $this->getLoyaltyGiftCardInfo();
-        $shipmentFee = $this->getShipmentChargeLineFee();
-        $grandTotal  = $this->getGrandTotal();
-        $discount    = $this->getTotalDiscount();
-        return (float)$grandTotal + $discount - (float)$shipmentFee;
+        return (float)$this->getGrandTotal();
     }
 
     /**
